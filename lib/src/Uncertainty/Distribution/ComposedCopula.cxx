@@ -499,7 +499,7 @@ Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) co
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return std::min(1.0, std::max(0.0, x));
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
   // General case
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();

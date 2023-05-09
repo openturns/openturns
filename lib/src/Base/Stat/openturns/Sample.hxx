@@ -105,10 +105,11 @@ private:
 public:
 
   /** Comparison operator */
-  Bool operator ==(const Sample & other) const;
   using TypedInterfaceObject<SampleImplementation>::operator ==;
+  Bool operator ==(const Sample & other) const;
 
   /** Comparison operator */
+  using TypedInterfaceObject<SampleImplementation>::operator !=;
   Bool operator !=(const Sample & other) const;
 
 #ifndef SWIG

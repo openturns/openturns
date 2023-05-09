@@ -54,6 +54,7 @@ public:
                         const Point & values);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const CompositeDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

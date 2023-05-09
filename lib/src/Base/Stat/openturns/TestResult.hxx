@@ -72,6 +72,7 @@ public:
   Scalar getStatistic() const;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const TestResult & other) const;
 
   /** Method save() stores the object through the StorageManager */

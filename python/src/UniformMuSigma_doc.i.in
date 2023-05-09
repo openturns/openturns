@@ -14,8 +14,8 @@ The native parameters are defined as follows:
 
 .. math::
 
-    a &= \mu - \sigma \frac{\sqrt{12}}{2} \\
-    b &= \mu + \sigma \frac{\sqrt{12}}{2}
+    a &= \mu - \sigma \sqrt{3} \\
+    b &= \mu + \sigma \sqrt{3}
 
 See also
 --------

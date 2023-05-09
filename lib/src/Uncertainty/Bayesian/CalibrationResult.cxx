@@ -23,6 +23,8 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
+#include "openturns/VisualTest.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,7 +46,9 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
                                      const Distribution & observationsError,
                                      const Sample & inputObservations,
                                      const Sample & outputObservations,
-                                     const Function & residualFunction)
+                                     const Function & residualFunction,
+                                     const Bool & bayesian
+                                    )
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
@@ -53,6 +57,7 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , inputObservations_(inputObservations)
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
+  , bayesian_(bayesian)
 {
   // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
@@ -62,6 +67,12 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   SampleImplementation outputAtPosteriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
   outputAtPosteriorMean.setData(residualFunction_(parameterPosterior_.getMean()) + outputObservations_.getImplementation()->getData());
   outputAtPosteriorMean_ = outputAtPosteriorMean;
+  
+  // Set default colors
+  const Description colors = DrawableImplementation::BuildDefaultPalette(3);
+  priorColor_ = colors[0];
+  posteriorColor_ = colors[1];
+  observationColor_ = colors[2];
 }
 
 
@@ -158,7 +169,11 @@ String CalibrationResult::__repr__() const
       << " parameter MAP=" << parameterMAP_
       << " observations error=" << observationsError_
       << " output observation=" << outputObservations_
-      << " residual function=" << residualFunction_;
+      << " residual function=" << residualFunction_
+      << " bayesian=" << bayesian_
+      << " priorColor_=" << priorColor_
+      << " posteriorColor_=" << posteriorColor_
+      << " observationColor_=" << observationColor_;
   return oss;
 }
 
@@ -175,6 +190,10 @@ void CalibrationResult::save(Advocate & adv) const
   adv.saveAttribute( "residualFunction_", residualFunction_ );
   adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  adv.saveAttribute( "bayesian_", bayesian_ );
+  adv.saveAttribute( "priorColor_", priorColor_ );
+  adv.saveAttribute( "posteriorColor_", posteriorColor_ );
+  adv.saveAttribute( "observationColor_", observationColor_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -190,6 +209,22 @@ void CalibrationResult::load(Advocate & adv)
   adv.loadAttribute( "residualFunction_", residualFunction_ );
   adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  if (adv.hasAttribute("bayesian_"))
+  {
+    adv.loadAttribute( "bayesian_", bayesian_ );
+    adv.loadAttribute( "priorColor_", priorColor_ );
+    adv.loadAttribute( "posteriorColor_", posteriorColor_ );
+    adv.loadAttribute( "observationColor_", observationColor_ );
+  }
+  else
+  {
+    const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
+    bayesian_ = (priorCovariance(0, 0) < SpecFunc::MaxScalar);
+    Description colors = DrawableImplementation::BuildDefaultPalette(3);
+    priorColor_ = colors[0];
+    posteriorColor_ = colors[1];
+    observationColor_ = colors[2];
+  }
 }
 
 void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAtPrior, const Sample & outputAtPosterior)
@@ -210,71 +245,114 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
+  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
-  const Point candidate(getParameterPrior().getMean());
+  const Point initialPoint(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    Graph graph("", getParameterPrior().getDescription()[j], "PDF", true, "topright");
+    const bool upperRightGraph = (j == dimension - 1);
+    Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
+    if (j == 0)
+    {
+        // Show the Y title only for the first graph
+        graph.setYTitle("PDF");
+    }
 
-    // The graphmust show:
+    // The graph must show:
     // + the full posterior PDF
     // + the full prior PDF if it does not shrink too much the posterior graph
-    // + the candidate
+    // + the initial point
 
     // Dry run: draw everything using the natural parameters
     // posterior
-    Graph postPDF(getParameterPosterior().getMarginal(j).drawPDF());
+    Drawable postPDF(getParameterPosterior().getMarginal(j).drawPDF().getDrawable(0));
+    const Scalar xMinPost = postPDF.getData().getMin()[0];
+    const Scalar xMaxPost = postPDF.getData().getMax()[0];
 
-    const Scalar xMinPost = postPDF.getDrawable(0).getData().getMin()[0];
-    const Scalar xMaxPost = postPDF.getDrawable(0).getData().getMax()[0];
-    const Scalar deltaPost = xMaxPost - xMinPost;
+    // initialPoint
+    const Scalar xInitialPoint = initialPoint[j];
 
-    // candidate
-    const Scalar xCandidate = candidate[j];
-    Sample data(1, 2);
-    data(0, 0) = xCandidate;
-    Cloud cloudCandidate(data);
-    cloudCandidate.setColor("red");
-    cloudCandidate.setPointStyle("star");
-    cloudCandidate.setLegend("Candidate");
-
-    // prior
-    Graph priorPDF(getParameterPrior().getMarginal(j).drawPDF());
-
-    const Scalar xMinPrior = priorPDF.getDrawable(0).getData().getMin()[0];
-    const Scalar xMaxPrior = priorPDF.getDrawable(0).getData().getMax()[0];
-
-    // Now, build the common range
-    Scalar xMin = std::min(xMinPost, std::max(xMinPrior, xMinPost - 0.5 * deltaPost));
-    Scalar xMax = std::max(xMaxPost, std::min(xMaxPrior, xMaxPost + 0.5 * deltaPost));
-    const Scalar lowXCandidate = xCandidate - 0.1 * deltaPost;
-    if (lowXCandidate < xMin)
+    // Compute min and max bounds of graphics
+    Scalar xMin;
+    Scalar xMax;
+    if (bayesian_)
     {
-      xMin = lowXCandidate;
-      xMax = std::max(xMaxPost, xMax - (xMin - lowXCandidate));
+        // In the Bayesian framework, only the prior and posterior matters.
+        // prior
+        Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF().getDrawable(0));
+        const Scalar xMinPrior = priorPDF.getData().getMin()[0];
+        const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
+
+        // Now, build the common range
+        xMin = std::min(xMinPrior, xMinPost);
+        xMax = std::max(xMaxPrior, xMaxPost);
+    } else {
+        // In the Least Squares framework, only the initial point and posterior matters.
+        // The initial point is just a point: this is why we need a margin here.
+        // The prior is flat: ignore it to compute the bounds.
+        // Now, build the common range
+        const Scalar xMinRaw = std::min(xMinPost, xInitialPoint);
+        const Scalar xMaxRaw = std::max(xMaxPost, xInitialPoint);
+        const Scalar xScaledRange = xRangeMarginFactor * (xMaxRaw - xMinRaw);
+        xMin = xMinRaw - xScaledRange;
+        xMax = xMaxRaw + xScaledRange;
     }
-
-    const Scalar highXCandidate = xCandidate + 0.1 * deltaPost;
-    if (highXCandidate > xMax)
+    
+    if (bayesian_)
     {
-      xMax = highXCandidate;
-      xMin = std::min(xMinPost, xMin - (highXCandidate - xMax));
+        Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
+        if (upperRightGraph)
+        {
+            priorPDF.setLegend("Prior");
+        }
+        else
+        {
+            priorPDF.setLegend("");
+        }
+        priorPDF.setColor(priorColor_);
+        priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
+        graph.add(priorPDF);
+    }
+    else
+    {
+        Sample data(1, 2);
+        data(0, 0) = xInitialPoint;
+        Cloud cloudStartingPoint;
+        cloudStartingPoint = Cloud(data);
+        cloudStartingPoint.setColor(priorColor_);
+        cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
+        if (upperRightGraph)
+        {
+            cloudStartingPoint.setLegend("Starting point");
+        }
+        else
+        {
+            cloudStartingPoint.setLegend("");
+        }
+        graph.add(cloudStartingPoint);
     }
 
     // Now draw everything using the common range
-    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax);
-    postPDF.setLegends(Description(1, "Posterior"));
-    postPDF.setColors(Description(1, "green"));
-
-    priorPDF.setLegends(Description(1, "Prior"));
-    priorPDF.setColors(Description(1, "red"));
-    priorPDF = getParameterPrior().getMarginal(j).drawPDF(xMin, xMax);
-
-    // assemble the graphs in the correct order
-    graph.add(priorPDF);
+    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
+    if (upperRightGraph)
+    {
+        if (bayesian_)
+        {
+            postPDF.setLegend("Posterior");
+        }
+        else
+        {
+            postPDF.setLegend("Calibrated");
+        }
+    }
+    else
+    {
+        postPDF.setLegend("");
+    }
+    postPDF.setColor(posteriorColor_);
+    postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
-    graph.add(cloudCandidate);
 
     grid.setGraph(0, j, graph);
   }
@@ -283,44 +361,87 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
 GridLayout CalibrationResult::drawResiduals() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
+  //
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
+  grid.setTitle("Residual analysis");
   const Sample priorResiduals(outputObservations_ - outputAtPriorMean_);
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
-  const Point priorMin(priorResiduals.getMin());
-  const Point priorMax(priorResiduals.getMax());
-  const Point postMin(postResiduals.getMin());
-  const Point postMax(postResiduals.getMax());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("Residual analysis", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
+    const bool upperRightGraph = (j == outputDimension - 1);
+    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
 
+    // Get the distributions
     const Distribution errorJ(getObservationsError().getMarginal(j));
-    const Scalar errorMin = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-    const Scalar errorMax = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-    const Scalar delta = 2.0 * (errorMax - errorMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
-    const Scalar xMin = std::min(priorMin[j], std::min(postMin[j], errorMin - delta));
-    const Scalar xMax = std::max(priorMax[j], std::max(postMax[j], errorMax + delta));
+    const Distribution priorResidualsJ(KernelSmoothing().build(priorResiduals.getMarginal(j)));
+    const Distribution postResidualsJ(KernelSmoothing().build(postResiduals.getMarginal(j)));
+    // Dry run
     // prior
-    Graph priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax));
-    priorPDF.setLegends(Description(1, "Initial"));
-    priorPDF.setColors(Description(1, "red"));
+    Drawable priorPDF(priorResidualsJ.drawPDF().getDrawable(0));
+    const Scalar xMinPrior = priorPDF.getData().getMin()[0];
+    const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
+    // posterior
+    Drawable postPDF(postResidualsJ.drawPDF().getDrawable(0));
+    const Scalar xMinPost = postPDF.getData().getMin()[0];
+    const Scalar xMaxPost = postPDF.getData().getMax()[0];
+    // normal
+    Drawable obsPDF(errorJ.drawPDF().getDrawable(0));
+    const Scalar xMinObs = obsPDF.getData().getMin()[0];
+    const Scalar xMaxObs = obsPDF.getData().getMax()[0];
+    // Now, build the common range
+    const Scalar xMin = std::min(xMinPrior, std::min(xMinPost, xMinObs));
+    const Scalar xMax = std::max(xMaxPrior, std::max(xMaxPost, xMaxObs));
+
+    // Now draw everything using the common range
+    // observation error
+    obsPDF = errorJ.drawPDF(xMin, xMax).getDrawable(0);
+    if (upperRightGraph)
+    {
+        if (bayesian_)
+        {
+            obsPDF.setLegend("Normal, hypothesis");
+        }
+        else
+        {
+            obsPDF.setLegend("Normal, estimated");
+        }
+    }
+    else
+    {
+      obsPDF.setLegend("");
+    }
+    obsPDF.setColor(observationColor_);
+    obsPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-ObservationLineStyle"));
+    graph.add(obsPDF);
+
+    // prior
+    priorPDF = priorResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
+    if (upperRightGraph)
+    {
+      priorPDF.setLegend("Initial (kernel smoothing)");
+    }
+    else
+    {
+      priorPDF.setLegend("");
+    }
+    priorPDF.setColor(priorColor_);
+    priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
     graph.add(priorPDF);
 
     // posterior
-    Graph postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF(xMin, xMax));
-    postPDF.setLegends(Description(1, "Calibrated"));
-    postPDF.setColors(Description(1, "green"));
+    postPDF = postResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
+    if (upperRightGraph)
+    {
+      postPDF.setLegend("Calibrated (kernel smoothing)");
+    }
+    else
+    {
+      postPDF.setLegend("");
+    }
+    postPDF.setColor(posteriorColor_);
+    postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
-
-    // observation error
-    Graph obsPDF(errorJ.drawPDF(xMin, xMax));
-    obsPDF.setLegends(Description(1, "Observation errors"));
-    obsPDF.setColors(Description(1, "blue"));
-    graph.add(obsPDF);
 
     grid.setGraph(0, j, graph);
   }
@@ -330,9 +451,6 @@ GridLayout CalibrationResult::drawResiduals() const
 
 GridLayout CalibrationResult::drawObservationsVsInputs() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(outputDimension, inputDimension);
@@ -342,25 +460,43 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
-      Graph graph("", xDescription[j], yDescription[i], true, "topright");
+      const bool upperRightGraph = (i == 0 && j == inputDimension - 1);
+      // Only the last row
+      String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
+      // Only the first column
+      String yTitle = (j == 0) ? yDescription[i] : "";
+      Graph graph("", xTitle, yTitle, true, "topright");
       const Sample inputObservations_j(inputObservations_.getMarginal(j));
 
       // observation
       Cloud obsCloud(inputObservations_j, outputObservations_.getMarginal(i));
-      obsCloud.setLegend("Observations");
-      obsCloud.setColor("blue");
+      if (upperRightGraph)
+      {
+          // Set the legend only for the first graph
+          obsCloud.setLegend("Observations");
+      }
+      obsCloud.setColor(observationColor_);
+      obsCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-ObservationPointStyle" ));
       graph.add(obsCloud);
 
       // model outputs before calibration
       Cloud priorCloud(inputObservations_j, outputAtPriorMean_.getMarginal(i));
-      priorCloud.setLegend("Initial");
-      priorCloud.setColor("red");
+      if (upperRightGraph)
+      {
+          priorCloud.setLegend("Initial");
+      }
+      priorCloud.setColor(priorColor_);
+      priorCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
       graph.add(priorCloud);
 
       // model outputs after calibration
       Cloud postCloud(inputObservations_j, outputAtPosteriorMean_.getMarginal(i));
-      postCloud.setLegend("Calibrated");
-      postCloud.setColor("green");
+      if (upperRightGraph)
+      {
+          postCloud.setLegend("Calibrated");
+      }
+      postCloud.setColor(posteriorColor_);
+      postCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorPointStyle" ));
       graph.add(postCloud);
 
       grid.setGraph(i, j, graph);
@@ -372,9 +508,6 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
 
 GridLayout CalibrationResult::drawObservationsVsPredictions() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Description yDescription(outputObservations_.getDescription());
@@ -383,6 +516,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
+    const bool upperRightGraph = (j == outputDimension - 1);
     // observation diagonal
     Sample diagonalPoints(2, 2);
     diagonalPoints(0, 0) = outputObservations_j.getMin()[0];
@@ -390,19 +524,27 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     diagonalPoints(1, 0) = outputObservations_j.getMax()[0];
     diagonalPoints(1, 1) = diagonalPoints(1, 0);
     Curve diagonal(diagonalPoints);
-    diagonal.setColor("blue");
+    diagonal.setColor(observationColor_);
     graph.add(diagonal);
 
     // predictions before
     Cloud priorCloud(outputObservations_j, outputAtPriorMean_.getMarginal(j));
-    priorCloud.setLegend("Initial");
-    priorCloud.setColor("red");
+    if (upperRightGraph)
+    {
+      priorCloud.setLegend("Initial");
+    }
+    priorCloud.setColor(priorColor_);
+    priorCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
     graph.add(priorCloud);
 
     // predictions after
     Cloud postCloud(outputObservations_j, outputAtPosteriorMean_.getMarginal(j));
-    postCloud.setLegend("Calibrated");
-    postCloud.setColor("green");
+    if (upperRightGraph)
+    {
+      postCloud.setLegend("Calibrated");
+    }
+    postCloud.setColor(posteriorColor_);
+    postCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorPointStyle" ));
     graph.add(postCloud);
 
     grid.setGraph(0, j, graph);
@@ -411,6 +553,29 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
 }
 
 
+GridLayout CalibrationResult::drawResidualsNormalPlot() const
+{
+  const UnsignedInteger outputDimension = outputObservations_.getDimension();
+  GridLayout grid(1, outputDimension);
+  const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  {
+    Graph graph(VisualTest::DrawHenryLine(postResiduals.getMarginal(j)));
+    if (j < outputDimension - 1)
+    {
+      graph.setLegendPosition("");
+    }
+    if (j > 0)
+    {
+      graph.setYTitle("");
+    }
+    graph.setXTitle("Residuals");
+    graph.setTitle("");
+    grid.setGraph(0, j, graph);
+  }
+  grid.setTitle("Residuals after calibration vs Gaussian hypothesis");
+  return grid;
+}
+
 
 END_NAMESPACE_OPENTURNS
-

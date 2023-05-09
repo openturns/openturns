@@ -3,7 +3,8 @@ Kriging the cantilever beam model using HMAT
 ============================================
 """
 # %%
-# In this example, we create a Kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`. We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
+# In this example, we create a Kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`.
+# We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
 
 
 # %%
@@ -36,7 +37,8 @@ myDistribution = cb.distribution
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sample as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sample as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution.
+# Then we evaluate the output using the `model` function.
 
 # %%
 sampleSize_train = 20
@@ -44,7 +46,8 @@ X_train = myDistribution.getSample(sampleSize_train)
 Y_train = model(X_train)
 
 # %%
-# The following figure presents the distribution of the vertical deviations Y on the training sample. We observe that the large deviations occur less often.
+# The following figure presents the distribution of the vertical deviations Y on the training sample.
+# We observe that the large deviations occur less often.
 
 # %%
 histo = ot.HistogramFactory().build(Y_train).drawPDF()
@@ -67,8 +70,10 @@ ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon", 1e-5)
 ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon", 1e-4)
 
 # %%
-# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
+# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class.
+# Then we use a squared exponential covariance kernel.
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
+# This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 basis = ot.ConstantBasisFactory(dim).build()
@@ -84,7 +89,8 @@ print(X_train.getMin(), X_train.getMax())
 
 # %%
 # We need to manually define sensible optimization bounds.
-# Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
+# Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1),
+# we only need to set bounds on the scale parameter.
 
 # %%
 scaleOptimizationBounds = ot.Interval(
@@ -174,3 +180,7 @@ graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
 view = viewer.View(graph)
 
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

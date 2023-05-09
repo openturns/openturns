@@ -61,6 +61,7 @@ public:
       const Bool checkMarginals = ResourceMap::GetAsBool("MaximumEntropyOrderStatisticsDistribution-CheckMarginals"));
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -98,7 +99,6 @@ public:
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  Scalar computeCDFOld(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;

@@ -39,7 +39,18 @@ Use some functionalities:
 [100,20,70]
 >>> vector.add(50)
 >>> vector
-[100,20,70,50]"
+[100,20,70,50]
+
+The `Indices` class has a method that can search for an
+element and return `True` if the element is in the indices, 
+and `False` otherwise.
+We can access to it using the `in` keyword.
+
+>>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(0 in indices)
+False
+>>> print(3 in indices)
+True"
 
 // ---------------------------------------------------------------------
 
@@ -121,3 +132,37 @@ Examples
 >>> indices.fill()
 >>> indices.isIncreasing()
 True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::normInf
+"Compute the infinite norm of the indices.
+
+Returns
+-------
+norm: int
+    The maximum of the indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(indices.normInf())
+9"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::norm1
+"Compute the 1-norm of the indices.
+
+Returns
+-------
+norm: int
+    The sum of the indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(indices.norm1())
+24"

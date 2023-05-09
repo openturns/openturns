@@ -34,15 +34,14 @@ Examples
 >>> sample = distribution.getSample(200)
 >>> # Construct empirical CDF for the sample
 >>> data = ot.Sample(20, 2)
->>> cursor = ot.Point(2)
 >>> for i in range(20):
-...     cursor[0] = 13.0 * i / 20.0 - 6.5
+...     c0 = 13.0 * i / 20.0 - 6.5
 ...     count = 0
 ...     for j in range(200):
-...         if(sample[j, 0] < cursor[0]):
+...         if sample[j, 0] < c0:
 ...             count += 1
-...     cursor[1] = count / 200.0
-...     data[i] = cursor
+...     c1 = count / 200.0
+...     data[i] = [c0, c1]
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('A staircase', 'x1', 'x2', True, 'topleft')
 >>> # Create the staircase

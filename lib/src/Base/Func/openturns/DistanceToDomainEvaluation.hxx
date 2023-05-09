@@ -52,6 +52,7 @@ public:
   DistanceToDomainEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const DistanceToDomainEvaluation & other) const;
 
   /** String converter */

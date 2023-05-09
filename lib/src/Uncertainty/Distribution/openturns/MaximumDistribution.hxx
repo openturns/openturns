@@ -60,6 +60,7 @@ public:
                       const UnsignedInteger size);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MaximumDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

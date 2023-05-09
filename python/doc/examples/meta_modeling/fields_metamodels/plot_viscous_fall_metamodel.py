@@ -72,7 +72,9 @@ def AltiFunc(X):
 
 
 # %%
-# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class. Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`. If we had computed the speed as an extra output field, we would have set `2` instead.
+# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class.
+# Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`.
+# If we had computed the speed as an extra output field, we would have set `2` instead.
 
 # %%
 outputDimension = 1
@@ -167,3 +169,7 @@ plt.show()
 # This shows that the metamodel is quite accurate.
 # However, we observe that the trajectory singularity that occurs when the object
 # touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.
+
+# %%
+# Reset ResourceMap
+ot.ResourceMap.Reload()

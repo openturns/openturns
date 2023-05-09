@@ -59,6 +59,7 @@ public:
   TrendTransform * clone() const override;
 
   /** Comparison operator */
+  using VertexValueFunction::operator ==;
   Bool operator ==(const TrendTransform & other) const;
 
   /** String converter */

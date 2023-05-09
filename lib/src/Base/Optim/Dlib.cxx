@@ -26,6 +26,7 @@
 
 #ifdef OPENTURNS_HAVE_DLIB
 #include "openturns/DlibFunctions.hxx"
+#include "openturns/OTwindows.h" // dlib includes windows.h
 #include <dlib/optimization.h>
 #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
 #include <dlib/global_optimization.h>

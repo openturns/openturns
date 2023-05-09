@@ -47,6 +47,7 @@ public:
 
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const KPermutationsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

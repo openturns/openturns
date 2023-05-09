@@ -196,3 +196,7 @@ graph = sensitivity.draw()
 view = View(graph)
 
 View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

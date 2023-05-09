@@ -121,16 +121,19 @@ result.getTrendCoefficients()
 result.getCovarianceModel()
 
 # %%
-# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients. This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
+# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients.
+# This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 # Create an orthogonal multivariate polynomial factory
 # ----------------------------------------------------
 
 # %%
-# In order to create a Legendre basis which better corresponds to the input marginals, we could consider the orthogonal basis which would be associated to uniform marginals. To compute the bounds of these uniform distributions, we may consider the 1% and 99% quantiles of each marginal.
+# In order to create a Legendre basis which better corresponds to the input marginals, we could consider the orthogonal basis which would be associated to uniform marginals.
+# To compute the bounds of these uniform distributions, we may consider the 1% and 99% quantiles of each marginal.
 #
-# There is, however, a simpler way to proceed. We can simply orthogonalize the input marginals and create the orthogonal polynomial basis corresponding to the inputs. This corresponds to the method we would use in the polynomial chaos.
+# There is, however, a simpler way to proceed. We can simply orthogonalize the input marginals and create the orthogonal polynomial basis corresponding to the inputs.
+# This corresponds to the method we would use in the polynomial chaos.
 #
 # We first create the polynomial basis which corresponds to the inputs.
 

@@ -56,6 +56,7 @@ public:
   virtual ~PythonRandomVector();
 
   /** Comparison operator */
+  using RandomVectorImplementation::operator ==;
   Bool operator ==(const PythonRandomVector & other) const;
 
   /** String converter */

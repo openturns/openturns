@@ -144,7 +144,7 @@ SymmetricTensor PythonHessian::hessian(const Point & inP) const
   {
     result = convert< _PySequence_, Tensor >(callResult.get()).getImplementation();
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._hessian() method is not a 3-d float sequence object (list, tuple, etc.)";
   }

@@ -30,6 +30,8 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Gamma.hxx"
+#include "openturns/Point.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -53,6 +55,11 @@ public:
   virtual Scalar computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
                                   const CovarianceMatrix & covarianceMatrix2,
                                   const SquareMatrix & weightMatrix) const;
+
+  /** Compute the HSIC index for one marginal*/
+  virtual Scalar computeHSICIndex(const CovarianceMatrix &covarianceMatrix1,
+                                  const CovarianceMatrix &covarianceMatrix2,
+                                  const Point & weights) const;
 
   /** Compute the asymptotic p-value */
   virtual Scalar computePValue(const Gamma & distribution,

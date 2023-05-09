@@ -1200,3 +1200,28 @@ Returns
 -------
 result : float"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Clip01
+"Clip a value on [0, 1].
+
+This function can be useful when we want to ensure that a
+given number can be considered as a probability, even if
+there are e.g. rounding errors.
+
+Parameters
+----------
+p : float
+    Value to clip
+tail : bool, default=False
+    If False, then return min(1, max(0,p)). Otherwise return 1 - min(1, max(0,p)). 
+
+Returns
+-------
+clip : float
+    Clipped value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.SpecFunc.Clip01(1.01)"

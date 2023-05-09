@@ -31,6 +31,7 @@ Sensitivity analysis
     ranking_src
     ranking_pcc
     sensitivity_sobol
+    sensitivity_sobol_from_pce
     sensitivity_ancova
     sensitivity_fast
     importance_form

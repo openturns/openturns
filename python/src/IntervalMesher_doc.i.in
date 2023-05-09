@@ -6,7 +6,7 @@ Available constructor:
 
 Parameters
 ----------
-discretization : sequence of int, of dimension :math:`\leq 3`.
+discretization : sequence of int.
     Number of intervals in each direction of the box.
 
 Examples

@@ -10,22 +10,25 @@ inputObservations : 2-d sequence of float
     Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
-candidate : sequence of float
-    The reference value of the parameter.
+startingPoint : sequence of float
+    The reference value of the parameter, used as the starting point
+    of the optimization.
 
 Notes
 -----
-NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model with no assumption on the dependence of the model wrt the parameter.
+NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter 
+of a given model with no assumption on the dependence of the model with respect 
+to the parameter.
 
 The prior distribution of the parameter is a noninformative prior
-emulated using a flat :class:`~openturns.Normal` centered on the candidate and with a variance equal to SpecFunc.MaxScalar.
+emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint` and with a variance equal to SpecFunc.MaxScalar.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
 By default, the posterior distribution is evaluated based on a linear approximation 
 of the model at the optimum. 
 This corresponds to using the :class:`~openturns.LinearLeastSquaresCalibration` at the optimum, 
-and is named *Laplace approximation* in the bayesian context. 
+and is named *Laplace approximation* in the Bayesian context. 
 However, if the key `NonLinearLeastSquaresCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
 is set to a nonzero positive integer, then a bootstrap resampling of the observations 
 is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
@@ -39,6 +42,8 @@ first found by `Build` of :class:`~openturns.OptimizationAlgorithm`.
 Otherwise, the algorithm :class:`~openturns.TNC` is used combined with
 a multistart algorithm which makes use of the `NonLinearLeastSquaresCalibration-MultiStartSize`
 key in the :class:`~openturns.ResourceMap`.
+
+Please read :ref:`code_calibration` for more details.
 
 See also
 --------
@@ -60,8 +65,8 @@ Calibrate a nonlinear model using non-linear least-squares:
 >>> modelX = ot.ParametricFunction(model, params, p_ref)
 >>> y = modelX(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> candidate = [1.0]*3
->>> algo = ot.NonLinearLeastSquaresCalibration(modelX, x, y, candidate)
+>>> startingPoint = [1.0]*3
+>>> algo = ot.NonLinearLeastSquaresCalibration(modelX, x, y, startingPoint)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [2.773...,1.203...,0.499...]"
@@ -69,32 +74,32 @@ Calibrate a nonlinear model using non-linear least-squares:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getModelObservations
-"Accessor to the model evaluation at the candidate.
+"Accessor to the model evaluation at the `startingPoint`.
 
 Returns
 -------
 modelObservation : :class:`~openturns.Sample`
-    Evaluation of the model at the candidate point."
+    Evaluation of the model at the `startingPoint`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getGradientObservations
-"Accessor to the model gradient at the candidate.
+"Accessor to the model gradient at the `startingPoint`.
 
 Returns
 -------
 gradientObservation : :class:`~openturns.Matrix`
-    Gradient of the model at the candidate point."
+    Gradient of the model at the `startingPoint`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getCandidate
-"Accessor to the parameter candidate.
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getStartingPoint
+"Accessor to the parameter `startingPoint`.
 
 Returns
 -------
-candidate : :class:`~openturns.Point`
-    Parameter candidate."
+startingPoint : :class:`~openturns.Point`
+    Parameter startingPoint."
 
 // ---------------------------------------------------------------------
 

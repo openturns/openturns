@@ -6,6 +6,7 @@
 
 %include ComplexMatrixImplementation_doc.i
 
+%rename(__stride__) OT::ComplexMatrixImplementation::stride;
 %rename(ComplexMatrixImplementation_operator___eq__) OT::operator ==(const ComplexMatrixImplementation & lhs, const ComplexMatrixImplementation & rhs);
 
 %template(ComplexCollection)                   OT::Collection<OT::Complex>;
@@ -16,7 +17,7 @@
     try {
       temp = OT::convert<OT::_PySequence_,OT::Collection<OT::Complex> >( $input );
       $1 = &temp;
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Complex");
     }
   }

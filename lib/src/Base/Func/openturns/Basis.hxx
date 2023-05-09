@@ -67,7 +67,12 @@ public:
   FunctionCollection getSubBasis(const Indices & indices) const;
 
   /** Dimension accessor */
+  virtual UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
+  // @deprecated
   virtual UnsignedInteger getDimension() const;
+
+  /** Size accessor */
   virtual UnsignedInteger getSize() const;
 
   /** add an element */

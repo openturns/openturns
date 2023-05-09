@@ -208,3 +208,7 @@ plt.tight_layout()
 # enabled.
 # Moreover, the number of nodes which are duplicated increases when the
 # level increases.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

@@ -88,6 +88,12 @@ public:
   /** Compute the complement between the indices and {0,...,n-1} for a given n */
   Indices complement(const UnsignedInteger n) const;
 
+  /** Compute infinite-norm */
+  UnsignedInteger normInf() const;
+
+  /** Compute 1-norm */
+  UnsignedInteger norm1() const;
+
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   String __repr__() const override;

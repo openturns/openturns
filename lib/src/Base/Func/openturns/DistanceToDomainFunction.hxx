@@ -43,6 +43,7 @@ public:
   DistanceToDomainFunction(const Domain & domain);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const DistanceToDomainFunction & other) const;
 
   /** String converter */

@@ -6,7 +6,7 @@ Parameters
 event : :class:`~openturns.RandomVector`
     Event we are computing the probability of.
 
-rhoQuantile : float  :math:`0<\rho<1`
+quantileLevel : float  :math:`0<quantileLevel<1`
     Intermediate quantile level.
 
 Notes
@@ -22,7 +22,7 @@ The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` 
     \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
 
 with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, 
-:math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
 indicator function of the failure domain. 
 
 The optimal density minimizing the variance of the estimator :math:`h_{opt}` is defined as:
@@ -39,12 +39,12 @@ the IS optimal auxiliary density :math:`h_{opt}` from the preceding equation
 with a kernel density function (e.g. Gaussian kernel). 
 Its iterative principle is described by the following steps.
 
-1. :math:`k=1` and set :math:`\rho \in [0,1]`
+1. :math:`k=1` and set the quantile level :math:`\rho \in [0,1]`
 
 2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
    function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
 
-3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
+3. Compute the empirical quantile of level :math:`\rho` :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
 
 4. Estimate :math:`I_k= \frac{1}{kN} \displaystyle \sum_{j=1}^{k}\sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}` 
 
@@ -101,22 +101,22 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::NAIS::getRhoQuantile
+%feature("docstring") OT::NAIS::getQuantileLevel
 "Accessor to the intermediate quantile level.
 
 Returns
 -------
-rhoQuantile : : float
+quantileLevel : float
     Intermediate quantile level."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::NAIS::setRhoQuantile
+%feature("docstring") OT::NAIS::setQuantileLevel
 "Accessor to the intermediate quantile level.
 
 Parameters
 ----------
-rhoQuantile : : float  :math:`0<\rho<1`
+quantileLevel : float  :math:`0<quantileLevel<1`
     Intermediate quantile level."
     
 // ---------------------------------------------------------------------------

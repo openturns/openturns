@@ -238,3 +238,7 @@ graph = validation.getResidualDistribution().drawPDF()
 graph.setXTitle("Residuals")
 view = viewer.View(graph)
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

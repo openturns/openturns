@@ -5,7 +5,9 @@ Subset sampling method
 Acknowledgement
 ^^^^^^^^^^^^^^^
 
-The text and the figures thereafter come from Vincent Chabridon's PhD thesis, **Reliability-oriented sensitivity analysis under probabilistic model uncertainty, Application to aerospace systems** (2018) in the chapter 3: *Rare event probability estimation*.
+The text and the figures thereafter come from Vincent Chabridon's PhD thesis,
+**Reliability-oriented sensitivity analysis under probabilistic model uncertainty, Application to aerospace systems** (2018)
+in the chapter 3: *Rare event probability estimation*.
 This paragraph has been edited with the kind permission of its author.
 
 
@@ -45,7 +47,8 @@ derived in the :math:`\mathbf{u}` -space (standard space) and is the one present
 Let :math:`E = \{ \overset{\circ}{g}(u) \leq 0 \}` denote a failure event sufficiently rare, where :math:`\overset{\circ}{g}` is the *limit state function* (LSF) in the standard space.
 
 
-One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s = 1, \hdots, m` such that :math:`E = E_m \subset E_{m-1} \subset \hdots \subset E_2 \subset E_1`. Applying chain rule for conditional probabilities, one gets:
+One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s = 1, \hdots, m` such that :math:`E = E_m \subset E_{m-1} \subset \hdots \subset E_2 \subset E_1`.
+Applying chain rule for conditional probabilities, one gets:
 
 .. math::
    \begin{aligned}
@@ -55,7 +58,8 @@ One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s
           {} & =   \prod_{s=1}^m p_s
    \end{aligned}
 
-where :math:`p_1 = \mathbb{P}(E_1)` and :math:`p_s = \mathbb{P}(E_s | E_{s-1})` for :math:`s = 2, \hdots, m`. From this collection of nested failure events, one can define a set of *intermediate nested failure domains* (which are the so-called “subsets”) such that:
+where :math:`p_1 = \mathbb{P}(E_1)` and :math:`p_s = \mathbb{P}(E_s | E_{s-1})` for :math:`s = 2, \hdots, m`.
+From this collection of nested failure events, one can define a set of *intermediate nested failure domains* (which are the so-called “subsets”) such that:
 
 .. math::
    \mathcal{F}_{u,s} = \{ u \in \mathbb{R}^d | \overset{\circ}{g}(u) \leq y_s   \}, s=1,\hdots,m
@@ -65,7 +69,9 @@ where :math:`y_s` belongs to a set of decreasing intermediate thresholds such th
 .. math::
    y_1 > y_2 > \hdots > y_{m-1} > y_m
 
-These thresholds are estimated as :math:`\alpha_{SS}` quantiles from the set of :math:`N` samples of LSF outputs :math:`\mathcal{G}_{u,s} = \{ \overset{\circ}{g}(U^{(j)}) \}_{j=1}^N` with :math:`\alpha_{SS} \in ]0, 1[` the *rarity parameter*. Consequently, one can notice that
+These thresholds are estimated as :math:`\alpha_{SS}` quantiles from the set of :math:`N` samples of LSF outputs
+:math:`\mathcal{G}_{u,s} = \{ \overset{\circ}{g}(U^{(j)}) \}_{j=1}^N` with :math:`\alpha_{SS} \in ]0, 1[` the *rarity parameter*.
+Consequently, one can notice that
 
 .. math::
    \mathcal{F}_{u} = \mathcal{F}_{u,m} \subset \mathcal{F}_{u,m-1} \subset \hdots \subset \mathcal{F}_{u,2} \subset \mathcal{F}_{u,1}
@@ -108,7 +114,8 @@ and, for :math:`\{ U_s^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})
    \hat{p_s} = \frac{1}{N} \sum_{j=1}^N \mathbf{1}_{ \mathcal{F}_{u,s} }(U_s^{(j)})
 
 
-where :math:`N` denotes the number of samples, supposed to be a constant for each level :math:`y_s`, and the indicator function satisfies :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 1` if :math:`\overset{\circ}{g}(u) \leq y_{s-1}` and :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 0` otherwise.
+where :math:`N` denotes the number of samples, supposed to be a constant for each level :math:`y_s`, and the indicator function satisfies
+:math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 1` if :math:`\overset{\circ}{g}(u) \leq y_{s-1}` and :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 0` otherwise.
 
 
 Basically, the SS estimator for :math:`p_f` is given by:

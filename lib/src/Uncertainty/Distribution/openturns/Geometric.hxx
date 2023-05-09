@@ -45,6 +45,7 @@ public:
 
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Geometric & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

@@ -21,12 +21,10 @@
 #ifndef OPENTURNS_ATOMICINT_HXX
 #define OPENTURNS_ATOMICINT_HXX
 
-#include <cassert>
 #include <atomic>
 
-#include "openturns/OTconfig.hxx"
-#include "openturns/MutexLock.hxx"
-
+#include "openturns/OTtypes.hxx"
+#include "openturns/OTdebug.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 

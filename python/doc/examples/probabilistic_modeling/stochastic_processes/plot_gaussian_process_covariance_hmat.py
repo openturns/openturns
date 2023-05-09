@@ -78,3 +78,7 @@ plt.show()
 
 # %%
 # We notice here that we are able to sample the covariance model over a mesh of size `10000`, which is usually tricky on a laptop. This is mainly due to the compression.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

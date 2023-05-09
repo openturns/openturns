@@ -17,7 +17,7 @@
     try {
       temp = OT::buildCollectionFromPySequence< Namespace::Interface >($input);
       $1 = temp.get();
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of " # Interface);
     }
   }

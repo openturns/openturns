@@ -46,8 +46,8 @@ public:
   /** Default constructor */
   explicit NormalCopula(const CorrelationMatrix & correlation);
 
-
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const NormalCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

@@ -46,6 +46,7 @@ public:
   BetaMuSigma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const BetaMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */

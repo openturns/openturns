@@ -43,6 +43,7 @@ public:
   explicit ExtremeValueCopula(const Function & pickandFunction);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ExtremeValueCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

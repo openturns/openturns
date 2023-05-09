@@ -203,11 +203,20 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
   isAlreadyComputedCovariance_ = false;
 
   // avoid description warning with identical entries
-  Description test(description);
-  Description::const_iterator it = std::unique(test.begin(), test.end());
-  if (it != test.end())
+  std::map<String, UnsignedInteger> occurrence;
+  UnsignedInteger idx = 0;
+  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
   {
-    description = Description::BuildDefault(dimension_, "X");
+    const String currentName(description[i]);
+    ++ occurrence[currentName];
+    if (occurrence[currentName] > 1)
+    {
+      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
+        ++ idx;
+      const String newName(OSS() << "X" << idx);
+      ++ occurrence[newName]; // avoid duplicates with new ones too
+      description[i] = newName;
+    }
   }
   setDescription(description);
 

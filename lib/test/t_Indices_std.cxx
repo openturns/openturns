@@ -42,13 +42,41 @@ int main(int, char *[])
     fullprint << "are indices valid with bound=" << size << "? " << (indices.check(size) ? "true" : "false") << std::endl;
     fullprint << "complement wrt 7=" << indices.complement(7) << std::endl;
 
+
     // braced-init-list
     Indices indices2 = {1, 2, 3};
     fullprint << "indices2=" << indices2 << std::endl;
     // copy-list-initialization
     indices2 = {4, 5};
     fullprint << "indices2=" << indices2 << std::endl;
-  }
+
+    // Test contains()
+    Indices indices3 = {};
+    assert(!indices3.contains(0));
+    assert(!indices3.contains(1));
+    assert(!indices3.contains(2));
+    Indices indices4 = {1, 2, 3};
+    assert(indices4.contains(1));
+    assert(indices4.contains(2));
+    assert(indices4.contains(3));
+    assert(!indices4.contains(0));
+    assert(!indices4.contains(4));
+    Indices indices5 = {3, 5, 7};
+    assert(indices5.contains(3));
+    assert(indices5.contains(5));
+    assert(indices5.contains(7));
+    assert(!indices5.contains(0));
+    assert(!indices5.contains(1));
+    
+    // Test normInf() and norm1()
+    Indices indices6 = {};
+    assert(indices6.normInf() == 0);
+    assert(indices6.norm1() == 0);
+    Indices indices7 = {1, 2, 3};
+    assert(indices7.normInf() == 3);
+    assert(indices7.norm1() == 6);
+
+}
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;

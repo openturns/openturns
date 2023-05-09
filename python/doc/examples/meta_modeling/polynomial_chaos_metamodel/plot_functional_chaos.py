@@ -62,7 +62,9 @@ result = algo.getResult()
 metamodel = result.getMetaModel()
 
 # %%
-# Plot the second output of our model depending on :math:`x_2` with :math:`x_1=0.5`. In order to do this, we create a `ParametricFunction` and set the value of :math:`x_1`. Then we use the `getMarginal` method to extract the second output (which index is equal to 1).
+# Plot the second output of our model depending on :math:`x_2` with :math:`x_1=0.5`.
+# In order to do this, we create a `ParametricFunction` and set the value of :math:`x_1`.
+# Then we use the `getMarginal` method to extract the second output (which index is equal to 1).
 
 # %%
 x1index = 0
@@ -84,7 +86,8 @@ graph.setTitle("Metamodel Validation, output #%d" % (outputIndex))
 view = viewer.View(graph)
 
 # %%
-# We see that the metamodel fits approximately to the model, except perhaps for extreme values of :math:`x_2`. However, there is a better way of globally validating the metamodel, using the `MetaModelValidation` on a validation design of experiment.
+# We see that the metamodel fits approximately to the model, except perhaps for extreme values of :math:`x_2`.
+# However, there is a better way of globally validating the metamodel, using the `MetaModelValidation` on a validation design of experiment.
 
 # %%
 n_valid = 100
@@ -118,7 +121,8 @@ print(chaosSI)
 # Let us analyse the results of this global sensitivity analysis.
 #
 # * We see that the first output involves significant multi-indices with total degree 4. The contribution of the interactions are very significant in this model.
-# * The second output involves multi-indices with total degrees from 1 to 7, with a significant contribution of multi-indices with total degress 5 and 7. The first variable is especially significant, with a significant contribution of the interactions.
+# * The second output involves multi-indices with total degrees from 1 to 7, with a significant contribution of multi-indices with total degress 5 and 7.
+#   The first variable is especially significant, with a significant contribution of the interactions.
 
 # %%
 # Draw Sobol' indices.
@@ -138,7 +142,8 @@ view = viewer.View(graph)
 # Testing the sensitivity to the degree
 # -------------------------------------
 #
-# With the specific constructor of `FunctionalChaosAlgorithm` that we use, the `FunctionalChaosAlgorithm-MaximumTotalDegree` in the `ResourceMap` configure the maximum degree explored by the algorithm. This degree is a trade-off.
+# With the specific constructor of `FunctionalChaosAlgorithm` that we use, the `FunctionalChaosAlgorithm-MaximumTotalDegree`
+# in the `ResourceMap` configure the maximum degree explored by the algorithm. This degree is a trade-off.
 #
 # * If the maximum degree is too low, the polynomial may miss some coefficients so that the quality is lower than possible.
 # * If the maximum degree is too large, the number of coefficients to explore is too large, so that the coefficients might be poorly estimated.
@@ -188,11 +193,19 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that a total degree lower than 9 is not sufficient to describe the first output with good predictivity. However, the coefficient of predictivity drops when the total degree gets greater than 12.
+# We see that a total degree lower than 9 is not sufficient to describe the first output with good predictivity.
+# However, the coefficient of predictivity drops when the total degree gets greater than 12.
 # The predictivity of the second output seems to be much less satisfactory: a little more work would be required to improve the metamodel.
 #
 # In this situation, the following methods may be used.
 #
-# * Since the distribution of the input is known, we may want to give this information to the `FunctionalChaosAlgorithm`. This prevents the algorithm from trying to fit the distribution which best fit to the data.
-# * We may want to customize the `adaptiveStrategy` by selecting an enumerate function which best fit to this particular situation. In this specific example, the interactions plays a great role so that the linear enumerate function may provide better results than the hyperbolic rule.
-# * We may want to customize the `projectionStrategy` by selecting an method to compute the coefficient which improves the estimation. Given that the function is symbolic and fast, it might be interesting to try an integration rule instead of the least squares method.
+# * Since the distribution of the input is known, we may want to give this information to the `FunctionalChaosAlgorithm`.
+#   This prevents the algorithm from trying to fit the distribution which best fit to the data.
+# * We may want to customize the `adaptiveStrategy` by selecting an enumerate function which best fit to this particular situation.
+#   In this specific example, the interactions plays a great role so that the linear enumerate function may provide better results than the hyperbolic rule.
+# * We may want to customize the `projectionStrategy` by selecting an method to compute the coefficient which improves the estimation.
+#   Given that the function is symbolic and fast, it might be interesting to try an integration rule instead of the least squares method.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

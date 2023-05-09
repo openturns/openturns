@@ -49,6 +49,7 @@ public:
   KarhunenLoeveProjection * clone() const override;
 
   /** Comparison operator */
+  using FieldToPointFunctionImplementation::operator ==;
   Bool operator ==(const KarhunenLoeveProjection & other) const;
 
   /** String converter */

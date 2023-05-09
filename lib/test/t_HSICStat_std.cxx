@@ -65,11 +65,7 @@ int main(int, char *[])
     Cov2.setScale(Y.computeStandardDeviation());
 
     /* This is the GSA-type estimator: weight is 1. */
-    SquareMatrix W(size);
-    for(UnsignedInteger i = 0; i < size; ++i)
-    {
-      W(i, i) = 1.0;
-    }
+    Point W(size, 1.0);
 
     /* Using a biased estimator */
     HSICVStat estimatorTypeV;

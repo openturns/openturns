@@ -137,13 +137,13 @@ Examples
 >>> import openturns as ot
 >>> print(ot.Drawable().BuildDefaultPalette(4))
 [#1f77b4,#ff7f0e,#2ca02c,#d62728]
->>> name = ot.ResourceMap.GetAsString('Drawable-DefaultPaletteName')
 >>> ot.ResourceMap.SetAsString('Drawable-DefaultPaletteName', 'Rainbow')
 >>> print(ot.Drawable.BuildDefaultPalette(4))
 [#ff0000,#ccff00,#00ff66,#0066ff]
 >>> ot.ResourceMap.SetAsString('Drawable-DefaultPaletteName', 'Tableau')
 >>> print(ot.Drawable.BuildDefaultPalette(4))
-[#1f77b4,#ff7f0e,#2ca02c,#d62728]"
+[#1f77b4,#ff7f0e,#2ca02c,#d62728]
+>>> ot.ResourceMap.Reload()"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildDefaultPalette
 OT_Drawable_BuildDefaultPalette_doc

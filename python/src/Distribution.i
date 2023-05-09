@@ -52,6 +52,11 @@ Distribution __rsub__(Scalar s)
   return (*self * (-1.0)) + s;
 }
 
+Distribution __neg__()
+{
+  return *self * (-1.0);
+}
+
 Distribution __mul__(Scalar s)
 {
  return (*self) * s;
@@ -84,7 +89,7 @@ Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
 from openturns.typ import Interval
 import math
 
-class PythonDistribution(object):
+class PythonDistribution:
     """
     Allow one to override Distribution from Python.
 

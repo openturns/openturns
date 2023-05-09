@@ -72,15 +72,6 @@ d        Triangular(0.09,0.1,0.11)
 E        Normal(200000,2000)
 ======== ==========================
 
-Variables
----------
-
-In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
-
-* F, E: Input. Observed.
-* L, a, D, d: Input. Calibrated.
-* :math:`g_1`, :math:`g_2`, :math:`g_3`: Output. Observed.
-
 References
 ----------
 

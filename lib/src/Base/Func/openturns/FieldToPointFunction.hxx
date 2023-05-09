@@ -60,6 +60,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<FieldToPointFunctionImplementation>::operator ==;
   Bool operator ==(const FieldToPointFunction & other) const;
 
   /** String converter */

@@ -46,6 +46,7 @@ public:
   SquaredNormal(Scalar mu, Scalar sigma);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const SquaredNormal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

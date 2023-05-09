@@ -47,6 +47,7 @@ public:
   ComposedEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const ComposedEvaluation & other) const;
 
   /** String converter */

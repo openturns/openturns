@@ -27,7 +27,7 @@ import io
 __all__ = ["View", "PlotDesign"]
 
 
-class View(object):
+class View:
 
     """
     Create the figure.
@@ -112,7 +112,7 @@ class View(object):
         """Check that the argument is a Python dictionary."""
         result = arg
         if arg is None:
-            result = dict()
+            result = {}
         elif not isinstance(arg, dict):
             raise TypeError("Argument is not a dict")
         return result
@@ -241,8 +241,15 @@ class View(object):
                         figure=self._fig,
                         axes=axes,
                         plot_kw=plot_kw,
+                        axes_kw=axes_kw,
+                        bar_kw=bar_kw,
+                        pie_kw=pie_kw,
+                        polygon_kw=polygon_kw,
+                        polygoncollection_kw=polygoncollection_kw,
                         contour_kw=contour_kw,
+                        step_kw=step_kw,
                         clabel_kw=clabel_kw,
+                        text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
                     self._ax += axes
@@ -362,7 +369,7 @@ class View(object):
             if "marker" not in plot_kw_default:
                 try:
                     plot_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
 
             # set line style
@@ -377,12 +384,12 @@ class View(object):
             if ("linestyle" not in plot_kw_default) and ("ls" not in plot_kw_default):
                 try:
                     plot_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown line style")
             if ("linestyle" not in step_kw_default) and ("ls" not in step_kw_default):
                 try:
                     step_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown line style")
 
             # set line width
@@ -451,10 +458,16 @@ class View(object):
 
             elif drawableKind == "Cloud":
                 plot_kw["linestyle"] = "None"
-                self._ax[0].plot(x, y, **plot_kw)
+                lines = self._ax[0].plot(x, y, **plot_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
-                self._ax[0].plot(x, y, **plot_kw)
+                lines = self._ax[0].plot(x, y, **plot_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Polygon":
 
@@ -475,12 +488,9 @@ class View(object):
 
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
-                colorsRGBA = drawable.getPaletteAsNormalizedRGBA()
-                if "facecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["facecolors"] = colorsRGBA
+                if "facecolors" not in polygoncollection_kw_default and "fc" not in polygoncollection_kw_default:
+                    polygoncollection_kw["facecolors"] = drawable.getPaletteAsNormalizedRGBA()
 
-                if "edgecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["edgecolors"] = colorsRGBA
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
@@ -510,7 +520,7 @@ class View(object):
                         contour_kw["linestyles"] = lineStyleDict[
                             drawable.getLineStyle()
                         ]
-                    except Exception:
+                    except KeyError:
                         warnings.warn("-- Unknown line style")
                 if "colors" not in contour_kw_default:
                     contour_kw["colors"] = [drawable.getColorCode()]
@@ -533,11 +543,15 @@ class View(object):
                         # https://github.com/matplotlib/matplotlib/pull/10710
                         warnings.warn("pyplot.clabel likely failed as in #10710")
                 artists, _ = contourset.legend_elements()
-                legend_handles.append(artists[0])
-                legend_labels.append(drawable.getLegend())
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(artists[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Staircase":
-                self._ax[0].step(x, y, **step_kw)
+                lines = self._ax[0].step(x, y, **step_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Text":
                 # adjust font
@@ -607,7 +621,7 @@ class View(object):
                         "center": "center",
                     }
                     legend_kw["loc"] = legendPositionDict[graph.getLegendPosition()]
-                except Exception:
+                except KeyError:
                     warnings.warn(
                         "-- Unknown legend position: " + graph.getLegendPosition()
                     )
@@ -624,7 +638,7 @@ class View(object):
             # by default legend is a bit too large
             legend_kw.setdefault("prop", {"size": 10})
 
-            if len(legend_handles):
+            if len(legend_handles) > 0:
                 self._ax[0].legend(legend_handles, legend_labels, **legend_kw)
             else:
                 self._ax[0].legend(**legend_kw)

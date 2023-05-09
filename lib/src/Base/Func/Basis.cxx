@@ -115,6 +115,16 @@ void Basis::add(const Function & elt)
 }
 
 /* Dimension accessor */
+UnsignedInteger Basis::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
+UnsignedInteger Basis::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
 UnsignedInteger Basis::getDimension() const
 {
   return getImplementation()->getDimension();

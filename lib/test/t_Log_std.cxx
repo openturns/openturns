@@ -22,51 +22,46 @@
 #include "openturns/OStream.hxx"
 
 #include "openturns/Log.hxx"
+#include <thread>
 
 using namespace OT;
 using namespace OT::Test;
 
 const int N = 100;
 
-void* printDebug(void*)
+void printDebug()
 {
   for(int i = 0; i < N; i++) LOGDEBUG(OSS() << "Debug #" << i);
-  return NULL;
 }
 
 
-void* printInfo(void*)
+void printInfo()
 {
   for(int i = 0; i < N; i++) LOGINFO(OSS() << "Info #" << i);
-  return NULL;
 }
 
 
-void* printUser(void*)
+void printUser()
 {
   for(int i = 0; i < N; i++) LOGUSER(OSS() << "User #" << i);
-  return NULL;
 }
 
 
-void* printWarn(void*)
+void printWarn()
 {
   for(int i = 0; i < N; i++) LOGWARN(OSS() << "Warn #" << i);
-  return NULL;
 }
 
 
-void* printError(void*)
+void printError()
 {
   for(int i = 0; i < N; i++) LOGERROR(OSS() << "Error #" << i);
-  return NULL;
 }
 
 
-void* printTrace(void*)
+void printTrace()
 {
   for(int i = 0; i < N; i++) LOGTRACE(OSS() << "Trace #" << i);
-  return NULL;
 }
 
 
@@ -75,30 +70,29 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  ExitCodeValue rc = ExitCode::Success;
-
   const int nbThreads = 128;
-  pthread_t Threads[nbThreads];
+  std::thread threads[nbThreads];
 
   const int nbFunctions = 6;
-  typedef void * (*FUNC) (void *);
-  FUNC Functions[nbFunctions] = { printDebug, printInfo, printUser, printWarn, printError, printTrace };
+  typedef void (*FUNC) (void);
+  FUNC functions[nbFunctions] = { printDebug, printInfo, printUser, printWarn, printError, printTrace };
 
   Log::Show( Log::ALL );
   Log::SetFile("Log_check.log");
 
   // Create a thread for messages of every level
-  for (int i = 0; i < nbThreads; ++i)
-    pthread_create( Threads + i, 0, Functions[i % nbFunctions], 0 );
+  for (int i = 0; i < nbThreads; ++ i)
+    threads[i] = std::thread(functions[i % nbFunctions]);
 
   // Wait for threads of messages
-  for (int i = 0; i < nbThreads; ++i)
-    pthread_join( Threads[i], 0 );
+  for (int i = 0; i < nbThreads; ++ i)
+    threads[i].join();
 
-  // const UnsignedInteger expectedLength = 4 * N;
-  // UnsignedInteger actualLength = Log::GetInstance().getSize();
+//   const UnsignedInteger expectedLength = 4 * N;
+//   UnsignedInteger actualLength = Log::GetInstance().getSize();
+// 
+//   if (actualLength != expectedLength)
+//     throw TestFailed("unexpected log length");
 
-  // if (actualLength != expectedLength) rc = ExitCode::Error;
-
-  return rc;
+  return ExitCode::Success;
 }

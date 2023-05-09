@@ -46,6 +46,7 @@ public:
 
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Skellam & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

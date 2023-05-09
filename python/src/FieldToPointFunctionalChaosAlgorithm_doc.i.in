@@ -135,16 +135,12 @@ Examples
 >>> algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 >>> algo.setThreshold(4e-2)
 >>> # Temporarily lower the basis size for the sake of this example.
->>> # We need to store the original size.
->>> bs = ot.ResourceMap.GetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize')
 >>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', 100)
 >>> algo.run()
->>> # The algorithm has been run with the lower basis size:
->>> # we can now restore the original value.
->>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
 >>> result = algo.getResult()
 >>> metamodel = result.getFieldToPointMetamodel()
 >>> y0hat = metamodel(x[0])
+>>> ot.ResourceMap.Reload()
 "
 
 // ---------------------------------------------------------------------

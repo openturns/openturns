@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Design matrix cached evaluation
  */
 class OT_API DesignProxy
-  : public Object
+  : public PersistentObject
 {
   CLASSNAME
 public:
@@ -54,7 +54,7 @@ public:
   explicit DesignProxy(const Matrix & matrix);
 
   /** Virtual constructor */
-  DesignProxy * clone() const;
+  DesignProxy * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -62,6 +62,7 @@ public:
   /** Accessors */
   Sample getInputSample() const;
   FunctionCollection getBasis() const;
+  FunctionCollection getBasis(const Indices & indices) const;
 
   /** Compute the design matrix with the provided basis terms indices */
   MatrixImplementation computeDesign(const Indices & indices) const;
@@ -76,12 +77,11 @@ public:
   /** Effective size of sample */
   UnsignedInteger getSampleSize() const;
 
-  /** Weight accessor */
-  void setWeight(const Point & weight);
-  Point getWeight() const;
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
 
-  /** Weight flag accessor */
-  Bool hasWeight() const;
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 
 protected:
   void initialize() const;
@@ -100,9 +100,6 @@ protected:
 
   /** Filter on the rows of the design matrix */
   Indices rowFilter_;
-
-  /** Weight on each basis function */
-  Point weight_;
 
 }; /* class DesignProxy */
 

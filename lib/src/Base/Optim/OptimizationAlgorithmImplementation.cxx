@@ -34,7 +34,6 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   : PersistentObject()
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , startingPoint_(Point(0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
   , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
@@ -72,6 +71,9 @@ Point OptimizationAlgorithmImplementation::getStartingPoint() const
 /* Starting point accessor */
 void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startingPoint)
 {
+  for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
+    if (!SpecFunc::IsNormal(startingPoint[j]))
+      throw InvalidArgumentException(HERE) << "Optimization starting point has nan/inf values: " << startingPoint;
   startingPoint_ = startingPoint;
 }
 
@@ -198,9 +200,7 @@ void OptimizationAlgorithmImplementation::run()
   throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::run()";
 }
 
-/* Virtual constructor */  // set the result from evalaution history
-  void setResultFromEvaluationHistory(const Sample & inputHistory, const Sample & outputHistory);
-
+/* Virtual constructor */
 OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone() const
 {
   return new OptimizationAlgorithmImplementation(*this);
@@ -261,6 +261,7 @@ void OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack,
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
+
 void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   const Sample & inputHistory, const Sample & outputHistory,
   const Sample & inequalityHistory, const Sample & equalityHistory)
@@ -315,8 +316,7 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
           case OptimizationProblemImplementation::CONTINUOUS:
             break;
           case OptimizationProblemImplementation::BINARY:
-	    // TODO: use Clip01
-            constraintError = std::max(constraintError, std::abs(inP[j] - std::max(0.0, std::min(1.0, std::round(inP[j])))));
+            constraintError = std::max(constraintError, std::abs(inP[j] - SpecFunc::Clip01(std::round(inP[j]))));
             break;
           case OptimizationProblemImplementation::INTEGER:
             constraintError = std::max(constraintError, std::abs(inP[j] - std::round(inP[j])));

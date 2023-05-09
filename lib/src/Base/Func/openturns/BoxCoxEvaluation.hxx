@@ -57,6 +57,7 @@ public:
   BoxCoxEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const BoxCoxEvaluation & other) const;
 
   /** String converter */

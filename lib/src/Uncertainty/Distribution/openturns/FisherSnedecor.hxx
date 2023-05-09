@@ -45,6 +45,7 @@ public:
 
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const FisherSnedecor & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

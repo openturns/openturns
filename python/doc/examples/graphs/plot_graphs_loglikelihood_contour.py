@@ -194,3 +194,7 @@ graphFineTune.setLegendPosition("")  # Remove the legend
 graphFineTune.setColors(palette)  # Add colors
 view = viewer.View(graphFineTune)
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

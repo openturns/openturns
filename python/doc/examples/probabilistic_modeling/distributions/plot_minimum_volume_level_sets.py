@@ -28,7 +28,9 @@ graph = n.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution. The `threshold` is the value of the PDF corresponding the `alpha`-probability: the points contained in the LevelSet have a PDF value lower or equal to this threshold.
+# We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution.
+# The `threshold` is the value of the PDF corresponding the `alpha`-probability:
+# the points contained in the LevelSet have a PDF value lower or equal to this threshold.
 
 # %%
 alpha = 0.9
@@ -207,7 +209,9 @@ ot.ResourceMap.SetAsUnsignedInteger(
 )
 
 # %%
-# We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution. The `threshold` is the value of the PDF corresponding the `alpha`-probability: the points contained in the LevelSet have a PDF value lower or equal to this threshold.
+# We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution.
+# The `threshold` is the value of the PDF corresponding the `alpha`-probability:
+# the points contained in the LevelSet have a PDF value lower or equal to this threshold.
 
 # %%
 alpha = 0.9
@@ -258,6 +262,7 @@ numberOfPointsInXAxis = 50
 graph = drawLevelSetContour2D(mixture, numberOfPointsInXAxis, alpha, threshold)
 view = viewer.View(graph)
 plt.show()
-# %%
 
-plt.show()
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

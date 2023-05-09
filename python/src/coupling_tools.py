@@ -158,7 +158,7 @@ class OTCalledProcessError(subprocess.CalledProcessError):
         err_msg = (
             (":\n" + self.stderr[:200].decode()) if self.stderr is not None else ""
         )
-        return super(OTCalledProcessError, self).__str__() + err_msg
+        return super(OTCalledProcessError).__str__(self) + err_msg
 
 
 def execute(

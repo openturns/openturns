@@ -42,6 +42,7 @@ public:
 
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const IndependentCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

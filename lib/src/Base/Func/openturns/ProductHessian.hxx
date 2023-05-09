@@ -53,6 +53,7 @@ public:
   ProductHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const ProductHessian & other) const;
 
   /** String converter */

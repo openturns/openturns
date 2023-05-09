@@ -18,13 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#ifndef _WIN32
 #include <unistd.h> // sysconf
-#include <stdlib.h> // getenv
-#ifndef _MSC_VER
-# include <signal.h>
-# include <pthread.h>
 #endif
-
+#include <stdlib.h> // getenv
+#include <thread>
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
 
@@ -33,7 +31,7 @@ using namespace OT::Test;
 
 #define NB_ITER 1000000
 
-void* threadFunc(void* arg)
+void threadFunc(void* arg)
 {
   //
   AtomicInt * atom = (AtomicInt*) arg;
@@ -45,8 +43,6 @@ void* threadFunc(void* arg)
     atom->decrement();
     atom->fetchAndAdd(1);
   }
-
-  return NULL;
 }
 
 
@@ -66,45 +62,37 @@ int main(int, char *[])
     unsigned int nbThreads;
     if (!(converter >> nbThreads))
     {
-      OSS errorMessage;
-      errorMessage << "OT::AtomicInt wrong nb of thread!";
-      throw TestFailed(errorMessage);
+      throw TestFailed("OT::AtomicInt wrong nb of thread!");
     }
 #endif
-    nbThreads++;
-    pthread_t *threadsIds = new pthread_t[nbThreads];
+    ++ nbThreads;
+    std::thread * threads = new std::thread[nbThreads];
 
-    unsigned int i;
-    for( i = 0; i < nbThreads; ++i )
+    for (unsigned int i = 0; i < nbThreads; ++ i)
     {
-      int rc = pthread_create( threadsIds + i, NULL,
-                               threadFunc,
-                               (void*) &atom );
-      if (rc != 0)
+      try
       {
-#ifndef _MSC_VER
-        int j;
-        for( j = i - 1 ; j >= 0 ; --j )
-          pthread_kill( threadsIds[j], SIGTERM );
-#endif
-        OSS errorMessage;
-        errorMessage << "OT::AtomicInt Threads creation failed!";
-        throw TestFailed(errorMessage);
+        threads[i] = std::thread(threadFunc, (void*) &atom);
       }
-    } /* end for */
+      catch (const std::exception & exc)
+      {
+        throw TestFailed("OT::AtomicInt Threads creation failed!");
+      }
+    }
 
-    for( i = 0; i < nbThreads; ++i )
+    for (unsigned int i = 0; i < nbThreads; ++ i)
     {
-      int rc = pthread_join( threadsIds[i], NULL );
-      if (rc != 0)
+      try
       {
-        OSS errorMessage;
-        errorMessage << "OT::AtomicInt Threads join failed!";
-        throw TestFailed(errorMessage);
+        threads[i].join();
       }
-    } /* end for */
-    delete [] threadsIds;
+      catch (const std::exception & exc)
+      {
+        throw TestFailed("OT::AtomicInt Threads join failed!");
+      }
 
+    }
+    delete [] threads;
     unsigned int shaked = atom.fetchAndAdd(10);
     if (shaked != (NB_ITER * nbThreads))
     {
@@ -115,12 +103,10 @@ int main(int, char *[])
     }
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
   }
-
-
   return ExitCode::Success;
 }

@@ -45,6 +45,7 @@ public:
                      const Scalar psi2 = 0.5);
 
   /** Comparison operator */
+  using ExtremeValueCopula::operator ==;
   Bool operator ==(const JoeCopula & other) const;
 
   /** String converter */

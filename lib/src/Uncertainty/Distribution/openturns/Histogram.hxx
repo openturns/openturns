@@ -54,6 +54,7 @@ public:
             const Point & frequencies);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Histogram & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

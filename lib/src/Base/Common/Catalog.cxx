@@ -32,33 +32,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-static pthread_mutex_t Catalog_InstanceMutex_;
+static std::mutex Catalog_InstanceMutex_;
 static Catalog * Catalog_P_instance_ = 0;
 static const Catalog_init static_initializer_Catalog;
 
 Catalog_init::Catalog_init()
 {
-  if (!Catalog_P_instance_)
-  {
-#ifndef OT_MUTEXINIT_NOCHECK
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init( &attr );
-    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-    pthread_mutex_init( &Catalog_InstanceMutex_, &attr );
-#else
-    pthread_mutex_init( &Catalog_InstanceMutex_, NULL );
-#endif
+  static std::once_flag flag;
+  std::call_once(flag, [&](){ 
     Catalog_P_instance_ = new Catalog;
-  }
+  });
   assert(Catalog_P_instance_);
 }
 
 Catalog_init::~Catalog_init()
 {
-  if (Catalog_P_instance_)
-    pthread_mutex_destroy(&Catalog_InstanceMutex_);
-  delete Catalog_P_instance_;
-  Catalog_P_instance_ = 0;
+  static std::once_flag flag;
+  std::call_once(flag, [&](){
+    delete Catalog_P_instance_;
+    Catalog_P_instance_ = 0;
+  });
 }
 
 

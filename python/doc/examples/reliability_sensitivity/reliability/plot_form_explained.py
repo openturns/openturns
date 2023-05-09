@@ -110,7 +110,9 @@ graphPDF.setLegendPosition("bottomright")
 view = otv.View(graphPDF)
 
 # %%
-# From the previous figure we observe that in the failure domain the PDF takes small (and even very small) values. Consequently the probability of the failure, the integral :math:`P_f` is also expected to be small. The FORM/SORM methods estimate this kind of integral.
+# From the previous figure we observe that in the failure domain the PDF takes small (and even very small) values.
+# Consequently the probability of the failure, the integral :math:`P_f` is also expected to be small.
+# The FORM/SORM methods estimate this kind of integral.
 #
 
 # %%
@@ -280,7 +282,7 @@ print("Design point in standard space : ", designPointStandardSpace)
 
 
 # %%
-# We can get the Hasofer index with the `getHasoferReliabilityIndex` method which is the distance of the design point to the origin :
+# We can get the Hasofer index with the `getHasoferReliabilityIndex` method which is the distance of the design point to the origin:
 betaHL = result.getHasoferReliabilityIndex()
 print("Hasofer index : ", betaHL)
 
@@ -426,7 +428,8 @@ print("Curvature (estimated) = ", resultSORM.getSortedCurvatures()[1])
 
 
 # %%
-# Once the curvature is obtained there are several ways of approximating the failure probability :math:`P_f`. OpenTURNS implements the Breitung, Hohenbichler and Tvedt estimates.
+# Once the curvature is obtained there are several ways of approximating the failure probability :math:`P_f`.
+# The library implements the Breitung, Hohenbichler and Tvedt estimates.
 #
 # For instance, the Breitung approximation gives
 #
@@ -451,3 +454,7 @@ print("Probability of failure (SORM Tvedt) Pf = ", pfTvedt)
 # %%
 # Display all figures
 otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

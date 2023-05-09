@@ -20,7 +20,7 @@
  */
 #include <iostream>
 #include <cstdlib>
-#include <errno.h>
+#include <cstring>
 
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/Log.hxx"

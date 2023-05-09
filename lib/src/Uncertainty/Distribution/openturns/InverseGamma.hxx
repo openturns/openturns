@@ -46,6 +46,7 @@ public:
 
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const InverseGamma & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

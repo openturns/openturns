@@ -42,7 +42,8 @@ dimension = 1
 # .. math::
 #    \hat{Y}(x) = m(x) + Z(x)
 #
-# where :math:`m(.)` is the trend and :math:`Z(.)` is a gaussian process with zero-mean and its covariance matrix is :math:`C_{\theta}(s,t)`. The trend is deterministic and the gaussian process is probabilistc but they both contribute to the metamodel.
+# where :math:`m(.)` is the trend and :math:`Z(.)` is a gaussian process with zero-mean and its covariance matrix is :math:`C_{\theta}(s,t)`.
+# The trend is deterministic and the gaussian process is probabilistc but they both contribute to the metamodel.
 # A special feature of the kriging is the interpolation property : the metamodel is exact at the
 # trainig data.
 covarianceModel = ot.SquaredExponential([1.0], [1.0])

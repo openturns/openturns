@@ -59,9 +59,11 @@ public:
   RegularGrid * clone() const override;
 
   /** Comparison operator */
+  using Mesh::operator ==;
   Bool operator == (const RegularGrid & rhs) const;
 
   /** Comparison operator */
+  using Mesh::operator !=;
   Bool operator != (const RegularGrid & rhs) const;
 
   /** Start accessor */

@@ -100,7 +100,8 @@ data
 # Get a row or a column of a `Sample`
 # -----------------------------------
 #
-# As with `numpy` arrays, we can extract a row or a column with the `:` slicing operator. As a reminder for Python beginners, *slicing* is the fact of extracting a part of an array with one single statement; this avoids `for` loops and improves performance and readability.
+# As with `numpy` arrays, we can extract a row or a column with the `:` slicing operator.
+# As a reminder for Python beginners, *slicing* is the fact of extracting a part of an array with one single statement; this avoids `for` loops and improves performance and readability.
 
 # %%
 row = data[3, :]

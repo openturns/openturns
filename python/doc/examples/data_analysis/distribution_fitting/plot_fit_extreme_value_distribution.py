@@ -21,14 +21,17 @@ ot.RandomGenerator.SetSeed(0)
 # ------------------------------------------------
 
 # %%
-# The :class:`~openturns.GeneralizedExtremeValue` distribution is a family of continuous probability distributions that combine the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distribution, all extreme value distribution.
+# The :class:`~openturns.GeneralizedExtremeValue` distribution is a family of continuous probability distributions
+# that combine the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distribution, all extreme value distribution.
 #
-# In this example we use the associated :class:`~openturns.GeneralizedExtremeValueFactory` to fit sample with extreme values. This factory returns the best model among the Frechet, Gumbel and Weibull estimates according to the BIC criterion.
+# In this example we use the associated :class:`~openturns.GeneralizedExtremeValueFactory` to fit sample with extreme values.
+# This factory returns the best model among the Frechet, Gumbel and Weibull estimates according to the BIC criterion.
 #
 
 
 # %%
-# We draw a sample from a Gumbel of parameters :math:`\beta = 1.0` and :math:`\gamma = 3.0` and another one from a Frechet with parameters :math:`\beta=1.0`, :math:`\alpha = 1.0` and :math:`\gamma = 0.0`.
+# We draw a sample from a Gumbel of parameters :math:`\beta = 1.0` and :math:`\gamma = 3.0`
+# and another one from a Frechet with parameters :math:`\beta=1.0`, :math:`\alpha = 1.0` and :math:`\gamma = 0.0`.
 # We consider both samples as a single sample from an unknown extreme distribution to be fitted.
 #
 

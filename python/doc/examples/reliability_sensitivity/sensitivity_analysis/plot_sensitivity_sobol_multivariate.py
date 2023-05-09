@@ -14,7 +14,8 @@ Estimate Sobol' indices for a function with multivariate output
 #
 # In this example we quantify the sensitivity of a function's outputs to its inputs with Sobol' indices.
 #
-# The function we consider has 5 outputs. In this case, it may be convenient to consider each output separately. It may also be interesting to aggregate the sensitivity indices to get a global understanding of the sensitivity of the inputs to the average output.
+# The function we consider has 5 outputs. In this case, it may be convenient to consider each output separately.
+# It may also be interesting to aggregate the sensitivity indices to get a global understanding of the sensitivity of the inputs to the average output.
 
 # %%
 # Define the model

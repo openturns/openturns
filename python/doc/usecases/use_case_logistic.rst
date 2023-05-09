@@ -113,16 +113,9 @@ Variable      Distribution
 :math:`C`     gaussian, mean :math:`c`, coefficient of variation 30%
 ===========   ===============================================================
 
-No particular probabilistic method was used to set these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. Calibration methods could be used to get a better quantification of these distributions.
-
-Variables
----------
-
-In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
-
-- t: Input. Observed.
-- :math:`z_0`, a, c: Inputs. Calibrated.
-- z: Output. Observed.
+No particular probabilistic method was used to set these distributions.
+An improvement would be to use calibration methods to get a better quantification of these distributions.
+Calibration methods could be used to get a better quantification of these distributions.
 
 Notes
 -----

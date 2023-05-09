@@ -52,28 +52,13 @@ public:
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
-                           const Sample & outputSample,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy,
-                           const ProjectionStrategy & projectionStrategy);
+                           const Sample & outputSample);
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Point & weights,
-                           const Sample & outputSample,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy,
-                           const ProjectionStrategy & projectionStrategy);
-
-  /** Constructor */
-  FunctionalChaosAlgorithm(const Sample & inputSample,
-                           const Sample & outputSample,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy);
-
-  /** Constructor */
-  FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample);
+
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample,
@@ -83,8 +68,35 @@ public:
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Point & weights,
                            const Sample & outputSample,
+                           const Distribution & distribution);
+
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
+
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Point & weights,
+                           const Sample & outputSample,
+                           const Distribution & distribution,
+                           const AdaptiveStrategy & adaptiveStrategy);
+
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
+                           const Distribution & distribution,
+                           const AdaptiveStrategy & adaptiveStrategy,
+                           const ProjectionStrategy & projectionStrategy);
+
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Point & weights,
+                           const Sample & outputSample,
+                           const Distribution & distribution,
+                           const AdaptiveStrategy & adaptiveStrategy,
+                           const ProjectionStrategy & projectionStrategy);
 
   /** Virtual constructor */
   FunctionalChaosAlgorithm * clone() const override;
@@ -140,6 +152,8 @@ private:
 
   /** Maximum residual */
   Scalar maximumResidual_;
+
+protected:
 
   /** Result of the projection */
   FunctionalChaosResult result_;

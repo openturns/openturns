@@ -57,6 +57,7 @@ public:
   UnsignedInteger getIndex() const;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const RandomGeneratorState & other) const;
 
   /** Method save() stores the object through the StorageManager */

@@ -174,6 +174,7 @@ public:
   virtual CovarianceMatrix computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
+  using TypedInterfaceObject<MatrixImplementation>::operator ==;
   Bool operator == (const Matrix & rhs) const;
 
   /** Empty returns true if there is no element in the matrix */
@@ -187,8 +188,17 @@ public:
   /** Extract diagonal */
   Matrix getDiagonal(const SignedInteger k = 0) const;
 
+  /** Extract diagonal */
+  Point getDiagonalAsPoint(const SignedInteger k = 0) const;
+
   /** Fill diagonal with values */
   void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Fill diagonal with the same value */
+  void setDiagonal(const Scalar value, const SignedInteger k = 0);
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Matrix &diag, const SignedInteger k = 0);
 
   /** Hadamard product aka elementwise product */
   Matrix computeHadamardProduct(const Matrix &other) const;

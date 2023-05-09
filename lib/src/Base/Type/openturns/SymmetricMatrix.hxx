@@ -158,6 +158,7 @@ public:
                                         const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const override;
 
   /** Comparison operators */
+  using SquareMatrix::operator ==;
   Bool operator == (const Matrix & rhs) const;
 
   /** Sum all coefficients */

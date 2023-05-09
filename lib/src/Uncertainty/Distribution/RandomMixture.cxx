@@ -2436,7 +2436,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     const Scalar upper = interval.getUpperBound()[0];
     const Scalar cdfLower = computeCDF(lower);
     const Scalar cdfUpper = computeCDF(upper);
-    return std::min(1.0, std::max(0.0, cdfUpper - cdfLower));
+    return SpecFunc::Clip01(cdfUpper - cdfLower);
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
@@ -2498,7 +2498,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     k *= 2;
   }
   // For extrem values of the argument, the computed value can be slightly outside of [0,1]. Truncate it.
-  return (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
+  return SpecFunc::Clip01(value);
 }
 
 /*  Compute the quantile over a regular grid */

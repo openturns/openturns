@@ -19,6 +19,7 @@
  *
  */
 
+#include <limits>
 #include "openturns/FieldToPointFunctionalChaosAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveSVDAlgorithm.hxx"

@@ -46,6 +46,7 @@ public:
                             const Point & coefficients);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const LinearCombinationFunction & other) const;
 
   /** String converter */

@@ -54,6 +54,7 @@ public:
   LinearEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const LinearEvaluation & other) const;
 
   /** String converter */

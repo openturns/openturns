@@ -734,6 +734,9 @@
   <!-- OT::FunctionalChaosSobolIndices parameters -->
   <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
 
+  <!-- OT::LeastSquaresExpansion parameters -->
+  <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
+
   <!-- OT::LinearModelAlgorithm parameters -->
   <LinearModelAnalysis-Identifiers                 value_int="3"      />
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
@@ -910,6 +913,15 @@
   <!-- OT::GaussianNonLinearCalibration parameters -->
   <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
   <GaussianNonLinearCalibration-MultiStartSize value_int="100"   />
+
+  <!-- OT::CalibrationResults parameters -->
+  <CalibrationResult-xRangeMarginFactor   value_float="0.2"  />
+  <CalibrationResult-PriorLineStyle       value_str="dashed" />
+  <CalibrationResult-PosteriorLineStyle   value_str="dotdash"/>
+  <CalibrationResult-ObservationLineStyle value_str="solid"  />
+  <CalibrationResult-PriorPointStyle       value_str="circle" />
+  <CalibrationResult-PosteriorPointStyle   value_str="diamond" />
+  <CalibrationResult-ObservationPointStyle value_str="fsquare" />
 
   <!-- OT::ARMA parameters -->
   <ARMA-MeanEpsilon value_float="1.0e-14" />

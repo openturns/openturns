@@ -58,6 +58,7 @@ public:
 
 
   /** Comparison operator */
+  using TypedInterfaceObject<SolverImplementation>::operator ==;
   Bool operator ==(const Solver & other) const;
 
   /** String converter */

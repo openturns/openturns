@@ -4,8 +4,10 @@
 OT_Basis_doc
 %feature("docstring") OT::Basis::build
 OT_Basis_build_doc
-%feature("docstring") OT::Basis::getDimension
-OT_Basis_getDimension_doc
+%feature("docstring") OT::Basis::getInputDimension
+OT_Basis_getInputDimension_doc
+%feature("docstring") OT::Basis::getOutputDimension
+OT_Basis_getOutputDimension_doc
 %feature("docstring") OT::Basis::getSize
 OT_Basis_getSize_doc
 %feature("docstring") OT::Basis::getSubBasis

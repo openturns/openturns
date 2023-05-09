@@ -92,6 +92,7 @@ public:
   RegularGrid getTimeGrid() const;
 
   /** Comparison operator */
+  using TypedInterfaceObject<FieldImplementation>::operator ==;
   Bool operator ==(const Field & other) const;
 
   /**

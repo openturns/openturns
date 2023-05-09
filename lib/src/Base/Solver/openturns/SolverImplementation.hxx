@@ -50,6 +50,7 @@ public:
   SolverImplementation * clone() const override;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const SolverImplementation & other) const;
 
   /** String converter */

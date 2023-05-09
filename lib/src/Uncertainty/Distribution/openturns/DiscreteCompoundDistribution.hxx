@@ -47,6 +47,7 @@ public:
                                const Distribution & compoundDistribution);
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const DiscreteCompoundDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

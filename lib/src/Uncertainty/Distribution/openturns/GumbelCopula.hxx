@@ -44,6 +44,7 @@ public:
 
 
   /** Comparison operator */
+  using ArchimedeanCopula::operator==;
   Bool operator ==(const GumbelCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

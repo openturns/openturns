@@ -45,6 +45,7 @@ public:
          const Scalar gamma);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Gumbel & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

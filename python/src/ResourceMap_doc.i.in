@@ -76,7 +76,8 @@ value : str
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.Set('DiscreteDistribution-SupportEpsilon', '1.0e-14')"
+>>> ot.ResourceMap.Set('DiscreteDistribution-SupportEpsilon', '1.0e-14')
+"
 
 // ---------------------------------------------------------------------
 

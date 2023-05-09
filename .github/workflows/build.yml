@@ -31,7 +31,7 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
-        OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
