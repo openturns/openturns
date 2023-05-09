@@ -23,7 +23,7 @@ if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
   add_library (CRT_fp8 STATIC EXCLUDE_FROM_ALL CRT_fp8.c)
 endif ()
 
-set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc")
+set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${PROJECT_BINARY_DIR}/lib/etc")
 
 # This macro compiles on the fly and run the corresponding pre-installation test
 # It can have two optional arguments PRE and POST followed by some shell command to be run
@@ -43,7 +43,7 @@ macro (ot_check_test TESTNAME)
   endif ()
   set_target_properties (${TESTNAME_TGT} PROPERTIES
                          UNITY_BUILD OFF
-                         INSTALL_RPATH "${CMAKE_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
+			 INSTALL_RPATH "${PROJECT_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
   set (TESTNAME_LOC ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}${CMAKE_EXECUTABLE_SUFFIX})
 
   set (_CMD)
