@@ -23,6 +23,9 @@ Simulations methods
     SubsetSampling
     AdaptiveDirectionalStratification
     NAIS
+    experimental.CrossEntropyImportanceSampling
+    experimental.PhysicalSpaceCrossEntropyImportanceSampling
+    experimental.StandardSpaceCrossEntropyImportanceSampling
 
 Wilks' method
 =============
@@ -90,3 +93,4 @@ Simulation result
     ProbabilitySimulationResult
     SubsetSamplingResult
     NAISResult
+    experimental.CrossEntropyResult

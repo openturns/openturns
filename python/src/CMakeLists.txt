@@ -982,6 +982,10 @@ ot_add_python_module(simulation simulation_module.i
                       UncertaintySimulationTemplateDefs.i
                       NAISResult.i NAISResult_doc.i.in
                       NAIS.i NAIS_doc.i.in
+                      CrossEntropyResult.i CrossEntropyResult_doc.i.in
+                      CrossEntropyImportanceSampling.i CrossEntropyImportanceSampling_doc.i.in
+                      StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i.in
+                      PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i.in
                     )
 
 ot_add_python_module(stattests stattests_module.i
