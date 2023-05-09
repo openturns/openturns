@@ -13,6 +13,7 @@
  * PhysicalSpaceCrossEntropyImportanceSampling (openturns.experimental)
  * StandardSpaceCrossEntropyImportanceSampling (openturns.experimental)
  * CrossEntropyResult (openturns.experimental)
+ * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -45,6 +46,7 @@
  * Deprecated EllipticalDistribution::getInverseCorrelation
  * HSICStat arguments updated (covariance matrices instead of data + covariance models)
  * Deprecated HSICStat relying on weight matrix
+ * Deprecated Basis::getDimension, use getInputDimension instead
 
 === Documentation ===
  * Add API documentation to common use cases pages
@@ -54,7 +56,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
- * HSIC Target sensitivity bad filtering
+ * #2250 (HSIC Target sensitivity bad filtering)
  * #2252 (The examples of calibration are difficult to understand)
 
 == 1.20 release (2022-11-08) == #release-1.20

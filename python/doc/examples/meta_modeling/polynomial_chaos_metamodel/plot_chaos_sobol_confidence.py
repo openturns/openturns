@@ -129,8 +129,8 @@ _ = otv.View(graph)
 # %%
 # Retrieve Sobol' sensitivity measures associated to the polynomial chaos decomposition of the model.
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-fo_indices = ot.Point([chaosSI.getSobolIndex(i) for i in range(dim_input)])
-to_indices = ot.Point([chaosSI.getSobolTotalIndex(i) for i in range(dim_input)])
+fo_indices = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
+to_indices = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, fo_indices, to_indices)
 _ = otv.View(graph)

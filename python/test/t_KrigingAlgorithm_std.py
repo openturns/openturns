@@ -181,13 +181,16 @@ def test_stationary_fun():
     rho = ot.SymbolicFunction("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))")
     model = ot.StationaryFunctionalCovarianceModel([1], [1], rho)
     x = ot.Normal().getSample(20)
+    x.setDescription(["J0"])
     y = x + ot.Normal(0, 0.1).getSample(20)
+    y.setDescription(["G0"])
 
     algo = ot.KrigingAlgorithm(x, y, model, ot.LinearBasisFactory().build())
     algo.run()
     result = algo.getResult()
     variance = result.getConditionalMarginalVariance(x)
     ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-16, 1e-16)
+    assert algo.getResult().getMetaModel().getOutputDescription() == y.getDescription(), "wrong output description"
 
 
 if __name__ == "__main__":

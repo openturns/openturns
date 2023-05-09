@@ -189,7 +189,7 @@ prob_min : float
 Returns
 -------
 n : int
-    Number of subset steps."
+    Number of subset steps, including the initial Monte Carlo sampling."
 
 // ---------------------------------------------------------------------------
 

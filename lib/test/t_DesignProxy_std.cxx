@@ -54,9 +54,8 @@ int main(int, char *[])
     Matrix design = proxy.computeDesign(full);
     fullprint << design << std::endl;
 
-    proxy.setWeight(Point(sampleSize, 0.5));
-    design = proxy.computeDesign(full);
-    fullprint << design << std::endl;
+    Indices partial = {0, 2};
+    fullprint << proxy.getBasis(partial) << std::endl;
 
     proxy = DesignProxy(design);
     design = proxy.computeDesign(full);

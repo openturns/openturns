@@ -129,6 +129,8 @@ void KrigingAlgorithm::run()
   metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
   metaModel.setGradient(new KrigingGradient(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+  metaModel.setInputDescription(inputSample_.getDescription());
+  metaModel.setOutputDescription(outputSample_.getDescription());
 
   // compute residual, relative error
   const Point outputVariance(outputSample_.computeVariance());

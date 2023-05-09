@@ -4,7 +4,9 @@ Logistic growth model
 """
 # %%
 #
-# In this example, we use the :ref:`logistic growth model <use-case-logistic>` in order to show how to define a function which has a vector input and a field output. We use the `OpenTURNSPythonPointToFieldFunction` class to define the derived class and its methods.
+# In this example, we use the :ref:`logistic growth model <use-case-logistic>` in order to show
+# how to define a function which has a vector input and a field output.
+# We use the `OpenTURNSPythonPointToFieldFunction` class to define the derived class and its methods.
 
 
 # %%

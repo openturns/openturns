@@ -95,3 +95,12 @@ Notes
 -----
 It computes the response surfaces and creates a
 :class:`~openturns.MetaModelResult` structure containing all the results."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::MetaModelAlgorithm::getWeights
+"Return the weights of the input sample.
+
+Returns
+-------
+weights : sequence of float
+    The weights of the points in the input sample."

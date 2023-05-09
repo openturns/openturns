@@ -54,15 +54,37 @@ MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
 
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
+                                       const Point & weights,
+                                       const Sample & outputSample)
+  : MetaModelAlgorithm(inputSample, weights, outputSample, UserDefined(inputSample))
+{
+  // Nothing to do
+}
+
+/* Constructor with parameters */
+MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
+                                       const Sample & outputSample,
+                                       const Distribution & distribution)
+  : MetaModelAlgorithm(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution)
+{
+  // Nothing to do
+}
+
+/* Constructor with parameters */
+MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
+                                       const Point & weights,
                                        const Sample & outputSample,
                                        const Distribution & distribution)
   : PersistentObject()
   , inputSample_(inputSample)
+  , weights_(weights)
   , outputSample_(outputSample)
   , distribution_(distribution)
 {
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "MetaModelAlgorithm input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ")";
+  if (weights.getSize() != inputSample.getSize())
+    throw InvalidArgumentException(HERE) << "MetaModelAlgorithm weights size (" << weights.getSize() << ") does not match input sample size (" << inputSample.getSize() << ")";
   if (distribution.getDimension() != inputSample.getDimension())
     throw InvalidArgumentException(HERE) << "MetaModelAlgorithm distribution dimension (" << distribution.getDimension() << ") does not match input sample dimension (" << inputSample.getDimension() << ")";
 }
@@ -249,6 +271,7 @@ void MetaModelAlgorithm::run()
 }
 
 
+/* Samples accessors */
 Sample MetaModelAlgorithm::getInputSample() const
 {
   return inputSample_;
@@ -261,11 +284,19 @@ Sample MetaModelAlgorithm::getOutputSample() const
 }
 
 
+/* Weights accessors */
+Point MetaModelAlgorithm::getWeights() const
+{
+  return weights_;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void MetaModelAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
+  adv.saveAttribute( "weights_", weights_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "distribution_", distribution_ );
 }
@@ -278,6 +309,10 @@ void MetaModelAlgorithm::load(Advocate & adv)
   {
     adv.loadAttribute( "inputSample_", inputSample_ );
     adv.loadAttribute( "outputSample_", outputSample_ );
+  }
+  if (adv.hasAttribute( "weights_"))
+  {
+    adv.loadAttribute( "weights_", weights_ );
   }
   adv.loadAttribute( "distribution_", distribution_ );
 }

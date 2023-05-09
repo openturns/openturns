@@ -26,14 +26,16 @@ Posterior sampling using a PythonDistribution
 # .. math::
 #   \mathcal L(t_i | f_i=0, \alpha, \beta) = e^{-\left( \frac{t_i}{\beta} \right)^\alpha}.
 #
-# Furthermore, assume that the prior information available on :math:`\alpha, \beta` is represented by independent prior laws, whose respective densities are denoted by :math:`\pi(\alpha)` and :math:`\pi(\beta).`
+# Furthermore, assume that the prior information available on :math:`\alpha, \beta` is represented by independent prior laws,
+# whose respective densities are denoted by :math:`\pi(\alpha)` and :math:`\pi(\beta).`
 #
 # The posterior distribution of :math:`(\alpha, \beta)` represents the update of the prior information on :math:`(\alpha, \beta)` given the dataset.
 # Its PDF is known up to a multiplicative constant:
 #
 #
 # .. math::
-#   \pi(\alpha, \beta | (t_1, f_1), \ldots, (t_n, f_n) ) \propto \pi(\alpha)\pi(\beta) \left(\frac{\alpha}{\beta}\right)^{\sum_i f_i} \left(\prod_{f_i = 1} \frac{t_i}{\beta}\right)^{\alpha-1} \exp\left[-\sum_{i=1}^n\left(\frac{t_i}{\beta}\right)^\alpha\right].
+#   \pi(\alpha, \beta | (t_1, f_1), \ldots, (t_n, f_n) ) \propto \pi(\alpha)\pi(\beta) \left(\frac{\alpha}{\beta}\right)^{\sum_i f_i}
+#   \left(\prod_{f_i = 1} \frac{t_i}{\beta}\right)^{\alpha-1} \exp\left[-\sum_{i=1}^n\left(\frac{t_i}{\beta}\right)^\alpha\right].
 #
 # The :class:`~openturns.RandomWalkMetropolisHastings` class can be used to sample from the posterior distribution. It relies on the following objects:
 #

@@ -31,10 +31,13 @@ Kriging :configure the optimization solver
 # Moreover, the maximization of likelihood may be associated with difficulties e.g. many local maximums or even the non convergence of the optimization algorithm.
 # In this case, it might be useful to fine tune the optimization algorithm so that the convergence of the optimization algorithm is, hopefully, improved.
 #
-# Furthermore, there are several situations in which the optimization can be initialized or completely bypassed. Suppose for example that we have already created an initial kriging metamodel with :math:`N` points and we want to add a single new point.
+# Furthermore, there are several situations in which the optimization can be initialized or completely bypassed.
+# Suppose for example that we have already created an initial kriging metamodel with :math:`N` points and we want to add a single new point.
 #
-# * It might be interesting to initialize the optimization algorithm with the optimum found for the previous kriging metamodel: this may reduce the number of iterations required to maximize the likelihood.
-# * We may as well completely bypass the optimization step: if the previous covariance model was correctly estimated, the update of the parameters may or may not significantly improve the estimates.
+# * It might be interesting to initialize the optimization algorithm with the optimum found for the previous kriging metamodel:
+#   this may reduce the number of iterations required to maximize the likelihood.
+# * We may as well completely bypass the optimization step: if the previous covariance model was correctly estimated,
+#   the update of the parameters may or may not significantly improve the estimates.
 #
 # This is why the goal of this example is to see how to configure the optimization of the hyperparameters of a kriging metamodel.
 
@@ -86,7 +89,8 @@ myDistribution = ot.ComposedDistribution([E, F, L, II], myCopula)
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution.
+# Then we evaluate the output using the `model` function.
 
 # %%
 sampleSize_train = 10

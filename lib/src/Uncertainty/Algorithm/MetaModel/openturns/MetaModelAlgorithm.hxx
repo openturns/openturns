@@ -48,11 +48,20 @@ public:
 
   /** Constructor with parameters */
   MetaModelAlgorithm(const Sample & inputSample,
+                     const Sample & outputSample);
+
+  MetaModelAlgorithm(const Sample & inputSample,
+                     const Point & weights,
+                     const Sample & outputSample);
+
+  MetaModelAlgorithm(const Sample & inputSample,
                      const Sample & outputSample,
                      const Distribution & distribution);
 
   MetaModelAlgorithm(const Sample & inputSample,
-                     const Sample & outputSample);
+                     const Point & weights,
+                     const Sample & outputSample,
+                     const Distribution & distribution);
 
   /** Virtual constructor */
   MetaModelAlgorithm * clone() const override;
@@ -71,6 +80,9 @@ public:
   Sample getInputSample() const;
   Sample getOutputSample() const;
 
+  /** Weights accessor */
+  Point getWeights() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -81,8 +93,13 @@ public:
   static Distribution BuildDistribution(const Sample & inputSample);
 
 protected:
-  /** Learning sample */
+  /** Learning input sample */
   Sample inputSample_;
+
+  /** Weights of the input sample */
+  Point weights_;
+
+  /** Learning output sample */
   Sample outputSample_;
 
   /** The input vector distribution */

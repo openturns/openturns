@@ -20,6 +20,13 @@ g2 = ot.ParametricFunction(f, pset, referencePoint, parametersSet)
 print("g2=", g2)
 print("g2(x)=", g2(x))
 
+# check output description
+outputDesc = ot.Description.BuildDefault(3, "g2_")
+g2.setOutputDescription(outputDesc)
+X = ot.Normal(3).getSample(10)
+Y = g2(X)
+assert Y.getDescription() == outputDesc, "wrong output description"
+
 # with complementary parameter set
 referencePoint = [1.0, 2.0, 0.0]  # x0, x2, x4
 x = [0.85] * 2  # x3, x1

@@ -347,7 +347,9 @@ ypredicted_test = responseSurface(basis(x_test))
 residuals = y_test.asPoint() - ypredicted_test.asPoint()
 
 # %%
-# The `normSquare` method computes the square of the Euclidian norm (i.e. the 2-norm). We divide this by the test sample size (so as to compare the error for different sample sizes) and compute the square root of the result (so that the result has the same unit as y).
+# The `normSquare` method computes the square of the Euclidian norm (i.e. the 2-norm).
+# We divide this by the test sample size (so as to compare the error for different sample sizes)
+# and compute the square root of the result (so that the result has the same unit as y).
 
 # %%
 RMSE = sqrt([residuals.normSquare() / n_test])[0]

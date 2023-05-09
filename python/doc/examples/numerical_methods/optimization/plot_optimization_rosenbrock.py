@@ -62,7 +62,8 @@ graph.setTitle("Rosenbrock function")
 view = viewer.View(graph)
 
 # %%
-# We see that the minimum is on the top right of the picture and the starting point is on the top left of the picture. Since the function has a long valley following the curve :math:`x_2 - x^2=0`, the algorithm generally have to follow the bottom of the valley.
+# We see that the minimum is on the top right of the picture and the starting point is on the top left of the picture.
+# Since the function has a long valley following the curve :math:`x_2 - x^2=0`, the algorithm generally have to follow the bottom of the valley.
 
 # %%
 # Create and solve the optimization problem

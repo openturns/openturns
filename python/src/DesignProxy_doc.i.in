@@ -37,10 +37,15 @@ inputSample : :class:`~openturns.Sample`
 %feature("docstring") OT::DesignProxy::getBasis
 "Accessor to the basis.
 
+Parameters
+----------
+indices : sequence of int, optional
+    Indices of the active functions in the basis
+
 Returns
 -------
-basis : collection of :class:`~openturns.Function`
-    Basis."
+activeBasis : Collection of :class:`~openturns.Function`
+    Collection of functions of the basis associated to the given indices. By default, the whole basis."
 
 // ---------------------------------------------------------------------
 
@@ -96,33 +101,3 @@ Returns
 -------
 hasRowFilter : bool
     Whether sub-indices of the basis are set"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::DesignProxy::setWeight
-"Accessor to the weights.
-
-Parameters
-----------
-weight : sequence of float
-    Weights on each basis term"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::DesignProxy::getWeight
-"Accessor to the weights.
-
-Returns
--------
-weight : :class:`~openturns.Point`
-    Weights on each basis term"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::DesignProxy::hasWeight
-"Weight flag accessor.
-
-Returns
--------
-hasWeight : bool
-    Whether weights are set"

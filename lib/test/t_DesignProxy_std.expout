@@ -2,5 +2,5 @@ class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed
 class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 description=[y0] data=[[1],[4],[9]]
 class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 description=[y0] data=[[1],[8],[27]]
 class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,2,3,1,4,9,1,8,27]
-class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.5,1,1.5,0.5,2,4.5,0.5,4,13.5]
-class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.5,1,1.5,0.5,2,4.5,0.5,4,13.5]
+[[x]->[x^1],[x]->[x^3]]
+class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,2,3,1,4,9,1,8,27]

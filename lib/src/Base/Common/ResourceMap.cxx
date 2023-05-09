@@ -1357,6 +1357,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
   addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
 
+  // LeastSquaresExpansion parameters //
+  addAsString("LeastSquaresExpansion-DecompositionMethod", "QR");
+
   // FunctionalChaosSobolIndices parameters //
   addAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
 

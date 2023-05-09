@@ -3,7 +3,8 @@ Link to a computer code with coupling tools
 ===========================================
 """
 # %%
-# In this example we show how to use the `coupling_tools` module, which allows one to create a function from a computer code based on text file exchanges. We show the main features of the module on a simple example and focus on the `replace` and `get` functions.
+# In this example we show how to use the `coupling_tools` module, which allows one to create a function from a computer code based on text file exchanges.
+# We show the main features of the module on a simple example and focus on the `replace` and `get` functions.
 
 # %%
 # Introduction

@@ -13,7 +13,8 @@ Estimate Sobol' indices for the Ishigami function by a sampling method: a quick 
 #
 # In this example we are going to quantify the correlation between the input variables and the output variable of a model thanks to Sobol indices.
 #
-# Sobol indices are designed to evaluate the importance of a single variable or a specific set of variables. Here the Sobol indices are estimated by sampling from the distributions of the input variables and propagating uncertainty through a function.
+# Sobol indices are designed to evaluate the importance of a single variable or a specific set of variables.
+# Here the Sobol indices are estimated by sampling from the distributions of the input variables and propagating uncertainty through a function.
 #
 # In theory, Sobol indices range from 0 to 1; the closer an index value is to 1, the better the associated input variable explains the function output.
 #
@@ -23,15 +24,18 @@ Estimate Sobol' indices for the Ishigami function by a sampling method: a quick 
 #
 # * First order indices evaluate the importance of one input variable at a time.
 #
-# * Total indices give the relative importance of one input variable and all its interactions with other variables. Alternatively, they can be viewed as measuring how much wriggle room remains to the output when all but one input variables are fixed.
+# * Total indices give the relative importance of one input variable and all its interactions with other variables.
+#   Alternatively, they can be viewed as measuring how much wriggle room remains to the output when all but one input variables are fixed.
 #
-# * In general, we are only interested in first order and total Sobol' indices. There are situations, however, where we want to estimate interactions. Second order indices evaluate the importance of every pair of input variables. The number of second order indices is:
+# * In general, we are only interested in first order and total Sobol' indices.
+#   There are situations, however, where we want to estimate interactions.
+#   Second order indices evaluate the importance of every pair of input variables. The number of second order indices is:
 #
 # .. math::
 #    \binom{d}{2} = \frac{d \times \left( d-1\right)}{2}.
 #
-#
-# In practice, when the number of input variables is not small (say, when :math:`d>5`), then the number of second order indices is too large to be easily analyzed. In these situations, we limit the analysis to the first order and total Sobol' indices.
+# In practice, when the number of input variables is not small (say, when :math:`d>5`), then the number of second order indices is too large to be easily analyzed.
+# In these situations, we limit the analysis to the first order and total Sobol' indices.
 
 # %%
 # Define the model

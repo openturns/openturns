@@ -38,7 +38,8 @@ graph = n.drawPDF()
 type(graph)
 
 # %%
-# The `Graph` class provides several methods to configure the legends, the title and the colors. Since a graphics  can contain several sub-graphics, the `setColors` takes a list of colors as inputs argument: each item of the list corresponds to the sub-graphics.
+# The `Graph` class provides several methods to configure the legends, the title and the colors.
+# Since a graphics  can contain several sub-graphics, the `setColors` takes a list of colors as inputs argument: each item of the list corresponds to the sub-graphics.
 
 # %%
 graph.setXTitle("N")
@@ -109,7 +110,8 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We sometimes want to customize the graphics by choosing the type of point (square, triangle, circle, etc...), of line (continuous, dashed, etc...) or another parameter. We can know the list of possible values with the corresponding `getValid` method.
+# We sometimes want to customize the graphics by choosing the type of point (square, triangle, circle, etc...), of line (continuous, dashed, etc...) or another parameter.
+# We can know the list of possible values with the corresponding `getValid` method.
 #
 # For example, the following function returns the possible values of the `PointStyle` parameter.
 

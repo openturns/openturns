@@ -248,3 +248,12 @@ d1 = ot.MaximumDistribution(d)
 d2 = ot.MaximumDistribution(d)
 assert d1.getDistribution() == d2.getDistribution(), "comp1"
 assert d1 == d2, "comp2"
+
+# check for lost description
+dist_a = ot.Normal()
+dist_a.setDescription(["a"])
+dist_b = ot.Normal()
+dist_b.setDescription(["b"])
+dist_list = [dist_a, dist_b] + [ot.Normal()] * 3
+composed = ot.ComposedDistribution(dist_list)
+assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong description"

@@ -129,7 +129,9 @@ print(empiricalSd)
 # What types for x and for y ?
 # ----------------------------
 #
-# Not all types are possible for the inputs and outputs of the `mySimulator` function. The following table present some of the available types. All in all, any type which can be converted to or from a "vector" can be managed by the `PythonFunction` class.
+# Not all types are possible for the inputs and outputs of the `mySimulator` function.
+# The following table present some of the available types.
+# All in all, any type which can be converted to or from a "vector" can be managed by the `PythonFunction` class.
 #
 #  ====================  =======  ========
 #  Type                  Input X  Output Y

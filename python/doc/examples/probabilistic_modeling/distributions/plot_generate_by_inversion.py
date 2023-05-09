@@ -220,4 +220,5 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# This graphics must be read from the U axis on the left to the blue curve (representing the CDF), and down to the X axis. We see that the horizontal lines on the U axis follow the uniform distribution. On the other hand, the vertical lines (on the X axis) follow the Weibull distribution.
+# This graphics must be read from the U axis on the left to the blue curve (representing the CDF), and down to the X axis.
+# We see that the horizontal lines on the U axis follow the uniform distribution. On the other hand, the vertical lines (on the X axis) follow the Weibull distribution.

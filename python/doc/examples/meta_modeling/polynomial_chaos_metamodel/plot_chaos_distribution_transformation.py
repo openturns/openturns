@@ -57,7 +57,9 @@ Apply a transform or inverse transform on your polynomial chaos
 import openturns as ot
 
 # %%
-# In the first step, we define the LogNormal distribution. Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution. This parametrization can be used thanks to the `ParametrizedDistribution` class.
+# In the first step, we define the LogNormal distribution.
+# Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution.
+# This parametrization can be used thanks to the `ParametrizedDistribution` class.
 
 # %%
 Xparam = ot.LogNormalMuSigma(3.0e4, 9.0e3, 15.0e3)  # in N

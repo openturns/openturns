@@ -37,7 +37,7 @@ Create a 1d-distribution:
 
 >>> import openturns as ot
 >>> points = ot.Sample([[1.0], [2.0], [3.0]])
->>> weights = ot.Point([0.4, 0.5, 1.0])
+>>> weights = [0.4, 0.5, 1.0]
 >>> my_distribution = ot.UserDefined(points, weights)
 >>> print(my_distribution)
 UserDefined({x = [1], p = 0.210526}, {x = [2], p = 0.263158}, {x = [3], p = 0.526316})

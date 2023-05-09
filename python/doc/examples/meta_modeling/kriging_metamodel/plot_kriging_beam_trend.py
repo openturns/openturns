@@ -3,7 +3,8 @@ Choose the trend basis of a kriging metamodel
 =============================================
 """
 # %%
-# The goal of this example is to show how to configure the trend in a Kriging metamodel. This is why this example focuses on the three available trends:
+# The goal of this example is to show how to configure the trend in a Kriging metamodel.
+# This is why this example focuses on the three available trends:
 #
 # * `ConstantBasisFactory`,
 # * `LinearBasisFactory`,
@@ -41,7 +42,9 @@ myDistribution = cb.distribution
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sampling as a design of experiments.
+# This is why we generate an input sample using the `getSample` method of the distribution.
+# Then we evaluate the output using the `model` function.
 
 # %%
 sampleSize_train = 10
@@ -53,8 +56,10 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
+# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class.
+# Then we use a squared exponential covariance kernel.
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
+# This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()
@@ -204,7 +209,9 @@ grid.setGraph(0, 2, graphQuadratic)
 _ = View(grid, figure_kw={"figsize": (13, 4)})
 
 # %%
-# We observe that the three trends perform very well in this case. With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample.
+# We observe that the three trends perform very well in this case.
+# With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample.
+# This does not mean, however, that the trend coefficients will provide a good fit for the validation sample.
 #
 # The number of parameters in each Kriging metamodel is the following:
 #
