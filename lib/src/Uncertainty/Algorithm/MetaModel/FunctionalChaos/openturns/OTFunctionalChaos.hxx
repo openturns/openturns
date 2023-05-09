@@ -29,6 +29,8 @@
 #include "openturns/FunctionalChaosAlgorithm.hxx"
 #include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/FunctionalChaosSobolIndices.hxx"
+#include "openturns/LeastSquaresExpansion.hxx"
+#include "openturns/IntegrationExpansion.hxx"
 #include "openturns/LeastSquaresStrategy.hxx"
 #include "openturns/IntegrationStrategy.hxx"
 #include "openturns/ProjectionStrategy.hxx"
