@@ -314,71 +314,7 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
     const Bool /*asStationary*/,
     const Bool /*correlationFlag*/) const
 {
- // This method relies on useless parameters, this needs to be changed ASAP
-  if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
-  if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
-  if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
-  if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
-  // Check if the model is stationary and if we want to draw it this way
-
-  Graph graph("Covariance values", "x", "x", true, "topright");
-  graph.setIntegerXTick(true);
-  graph.setIntegerYTick(true);
-  Drawable drawable = Drawable();
-  Description palette = drawable.BuildDefaultPalette(int(nLevels_*(nLevels_-1)/2)+1);
-  Sample data = Sample(4,2);
-  for (UnsignedInteger i = 0; i < nLevels_; ++i)
-  {
-    data(0,0) = i;
-    data(0,1) = i;
-    data(1,0) = i;
-    data(1,1) = i+1;
-    data(2,0) = i+1;
-    data(2,1) = i+1;
-    data(3,0) = i+1;
-    data(3,1) = i;
-    Polygon polygon = Polygon(data);
-    polygon.setColor(palette[0]);
-    graph.add(polygon);
-    Collection<String> description;
-	String string = "cov = " + std::to_string(latCovMat_(i,i));
-    description.add(string);
-    Point locPoint(2);
-    locPoint[0] = i+0.5;
-    locPoint[1] = i+0.5;
-    Sample location = Sample(1, locPoint);
-    Text text = Text(location, description);
-    graph.add(text);
-  }
-  UnsignedInteger counter = 1;
-  for (UnsignedInteger i = 0; i < nLevels_; ++i)
-  {
-    for (UnsignedInteger j = i+1; j < nLevels_; ++j)
-    {
-      data(0,0) = i;
-      data(0,1) = j;
-      data(1,0) = i;
-      data(1,1) = j+1;
-      data(2,0) = i+1;
-      data(2,1) = j+1;
-      data(3,0) = i+1;
-      data(3,1) = j;
-	  Polygon polygon = Polygon(data);
-      polygon.setColor(palette[counter]);
-	  graph.add(polygon);
-      Collection<String> description;
-   	  String string = "cov = " + std::to_string(latCovMat_(i,j));
-      description.add(string);
-      Point locPoint(2);
-      locPoint[0] = i+0.5;
-      locPoint[1] = j+0.5;
-      Sample location = Sample(1, locPoint);
-	  Text text = Text(location, description);
-      graph.add(text);
-      counter++;
-    }
-  }
-  return graph;
+  throw NotYetImplementedException(HERE) << "The latentVariableModel class does not possess a draw method.";
 }
 
 /* Method save() stores the object through the StorageManager */

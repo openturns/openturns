@@ -86,35 +86,15 @@ dist = ot.ComposedDistribution(
 )
 
 # %%
-# In this example, we compare the performances of two different discrete kernels :
-# the GowerDistance and the LatentVariableModel. Moreover, we also consider the
-# possibility of modeling each combination of categorical variables through a
-# separate and independent Gaussian process as a benchmark solution.
+# In this example, we compare the performances of the LatentVariableModel with a naive
+# approach, which would consist in modeling each combination of categorical
+# variables through a separate and independent Gaussian process.
 
 # %%
 # In order to deal with mixed continuous / discrete problems we can rely on the
-# ProductCovarianceModel class. We start here by defining the two product kernels:
-
-# %%
-# One relying on the Gower distance kernel
-
-# %%
-kx1 = ot.SquaredExponential(1)
-kx2 = ot.SquaredExponential(1)
-kz1 = ot.GowerDistanceModel(lvls1)
-kz2 = ot.GowerDistanceModel(lvls2)
-kGow = ot.ProductCovarianceModel([kx1, kx2, kz1, kz2])
-kGow.setNuggetFactor(1e-6)
-lb_Gow = [1e-4, 1e-4, 1e-4, 1e-4]
-ub_Gow = [20, 20, 20, 20]
-bounds_Gow = ot.Interval(lb_Gow, ub_Gow)
-initdist_Gow = ot.DistributionCollection()
-for i in range(len(lb_Gow)):
-    initdist_Gow.add(ot.Uniform(lb_Gow[i], ub_Gow[i]))
-initdist_Gow = ot.ComposedDistribution(initdist_Gow)
-
-# %%
-# The scond one relying on the latent variable kernel
+# ProductCovarianceModel class. We start here by defining the product kernel,
+# which combines SquaredExponential kernels for the continuous variables, and
+# LatentVariableModel for the discrete ones.
 
 # %%
 latdim = 2  # Dimension of the latent space
@@ -127,16 +107,19 @@ kz1 = ot.LatentVariableModel(lvls1, latdim)
 kz2 = ot.LatentVariableModel(lvls2, latdim)
 kLV = ot.ProductCovarianceModel([kx1, kx2, kz1, kz2])
 kLV.setNuggetFactor(1e-6)
+# Bounds for the hyperparameter optimization
 lb_LV = [1e-4, 1e-4, 1e-4, 1e-4] + [-10] * activecoord
 ub_LV = [20, 20, 20, 20] + [10] * activecoord
 bounds_LV = ot.Interval(lb_LV, ub_LV)
+# Distribution for the hyperparameters initialization
 initdist_LV = ot.DistributionCollection()
 for i in range(len(lb_LV)):
     initdist_LV.add(ot.Uniform(lb_LV[i], ub_LV[i]))
 initdist_LV = ot.ComposedDistribution(initdist_LV)
 
 # %%
-# Alternatively, we consider a purely continuous kernel for independent Gaussian processes
+# Alternatively, we consider a purely continuous kernel for independent Gaussian processes.
+# One for each combination of categorical variables levels.
 
 # %%
 k_ind = ot.SquaredExponential(2)
@@ -158,7 +141,6 @@ optalg_ind = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_ind)
 
 # %%
 RMSE_LV = []
-RMSE_Gow = []
 RMSE_ind = []
 for rep in range(5):
     # We generate the normalized training data set
@@ -169,20 +151,11 @@ for rep in range(5):
     Y = (Y - Ymin) / (Ymin - Ymax)
 
     # Initialize  and parameterize the optimization algorithm
-    initSample_Gow = initdist_Gow.getSample(10)
-    optalg_Gow = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_Gow)
-
     initSample_LV = initdist_LV.getSample(10)
     optalg_LV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_LV)
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(4).build()
-    algo_Gow = ot.KrigingAlgorithm(X, Y, kGow, basis)
-    algo_Gow.setOptimizationAlgorithm(optalg_Gow)
-    algo_Gow.setOptimizationBounds(bounds_Gow)
-    algo_Gow.run()
-    res_Gow = algo_Gow.getResult()
-
     algo_LV = ot.KrigingAlgorithm(X, Y, kLV, basis)
     algo_LV.setOptimizationAlgorithm(optalg_LV)
     algo_LV.setOptimizationBounds(bounds_LV)
@@ -193,10 +166,6 @@ for rep in range(5):
     Xval = dist.getSample(1000)
     Yval = fun(Xval)
     Yval = (Yval - Ymin) / (Ymin - Ymax)
-
-    Val_Gow = ot.MetaModelValidation(Xval, Yval, res_Gow.getMetaModel())
-    rmse_Gow = np.sqrt(np.mean(np.array(Val_Gow.getResidualSample()) ** 2))
-    RMSE_Gow.append(rmse_Gow)
 
     Val_LV = ot.MetaModelValidation(Xval, Yval, res_LV.getMetaModel())
     rmse_LV = np.sqrt(np.mean(np.array(Val_LV.getResidualSample()) ** 2))
@@ -229,22 +198,11 @@ for rep in range(5):
     RMSE_ind.append(rmse_ind)
 
 plt.figure()
-plt.boxplot([RMSE_Gow, RMSE_LV, RMSE_ind])
-plt.xticks([1, 2, 3], ["Gower distance", "LV", "Independent GPs"])
+plt.boxplot([RMSE_LV, RMSE_ind])
+plt.xticks([1, 2], ["LV", "Independent GPs"])
 plt.ylabel("RMSE")
 
 # %%
 # The obtained results show, for this test-case, a better modeling performance
 # when modeling the function as a mixed categorical/continuous function, rather
 # than relying on multiple purely continuous Gaussian processes.
-
-# %%
-# If now focus only on the results related to the Gower distance and the latent
-# variables discrete kernels, we can see that here the latent variable approach
-# seems to yield better modeling performances, thanks to its more flexible parameterization.
-
-# %%
-plt.figure()
-plt.boxplot([RMSE_Gow, RMSE_LV])
-plt.xticks([1, 2], ["Gower distance", "LV"])
-plt.ylabel("RMSE")

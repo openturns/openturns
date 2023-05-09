@@ -22,15 +22,18 @@ The underlying idea is that each discrete level is mapped onto a distinct point 
 The covariance between the various levels is then computed as the squared exponential covariance between the mappings in 
 the latent space.
 
-The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared exponential model scale and amplitude.
-it is important to note that in order to compensate for possible rotations and translations of the mapping points, the coordinates of the first level mapping
-are fixed to the latent space origin, whereas all of the coordinates of the second level mapping are fixed to :math:`0`, except for the first one. 
+The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared 
+exponential model scale and amplitude. it is important to note that in order to compensate for possible rotations 
+and translations of the mapping points, the coordinates of the first level mapping are fixed to the latent space 
+origin, whereas all of the coordinates of the second level mapping are fixed to :math:`0`, except for the first one. 
 
-As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`
+As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`. In practice, 
+the class distinguishes between the **FullLatentVariables** attribute, which contains the actual latent variables
+coordinates, and the **ActiveLatentVariables** attribute, which contains only the coordinate which can be modified.
 
-Additional information can be found in [zhang2020]_
+Additional information can be found in [zhang2020]_.
 
-Is is important to note that for the sake of simplicity, the discrete variable levels are represented as integers, 
+Is is important to note that for the sake of simplicity, the discrete variable levels **must be** represented as integers, 
 ranging from :math:`0` to :math:`l-1`. However, this representation is purely practical, and the values
 assigned to each level have no practical meaning or effect.
 
@@ -43,7 +46,8 @@ CovarianceModel
 
 Examples
 --------
-Create a latent model covariance function with a latent space of dimension 2, for a discrete variable characterized by 3 levels:
+Create a latent model covariance function with a latent space of dimension 2, for a discrete variable 
+characterized by 3 levels:
 
 >>> import openturns as ot
 >>> covModel = ot.LatentVariableModel(3, 2)
@@ -87,7 +91,9 @@ Parameters
 ----------
 activeLatentVariables : :class:`~openturns.Point`
     Active coordinates of the discrete levels in the latent space. 
-    The inactive coordinates are set to 0."
+    The inactive coordinates are set to 0 (i.e., the first latent 
+    variable is placed in the Euclidean space origin, and the second
+    latent variable can only be placec onto the first axis)."
 
 // ---------------------------------------------------------------------
 
@@ -128,4 +134,9 @@ Parameters
 ----------
 LatentVariables : :class:`~openturns.Point`
     Active coordinates of the discrete levels in the latent space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::draw
+"Not yet implemented"
 

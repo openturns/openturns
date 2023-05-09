@@ -67,7 +67,6 @@ Categorical variables
     :template: class.rst_t
 
     LatentVariableModel
-    GowerDistanceModel
 
 Spectral information
 ====================
