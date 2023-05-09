@@ -37,9 +37,9 @@ macro (ot_check_test TESTNAME)
   set (TESTNAME_SRCS ${TESTNAME_SRC})
   add_executable (${TESTNAME_TGT} EXCLUDE_FROM_ALL ${TESTNAME_SRCS})
   add_dependencies(tests ${TESTNAME_TGT}) 
-  target_link_libraries (${TESTNAME_TGT} OT)
+  target_link_libraries (${TESTNAME_TGT} PRIVATE OT)
   if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
-    target_link_libraries (${TESTNAME_TGT} CRT_fp8)
+    target_link_libraries (${TESTNAME_TGT} PRIVATE CRT_fp8)
   endif ()
   set_target_properties (${TESTNAME_TGT} PROPERTIES
                          UNITY_BUILD OFF
@@ -79,8 +79,6 @@ endmacro ()
 
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 
-## Pre-installation tests
-
 # Common
 ot_check_test (Object_std)
 ot_check_test (OStream_std)
@@ -89,6 +87,8 @@ ot_check_test (Pointer_std)
 ot_check_test (Pointer_cast)
 ot_check_test (Exception_std IGNOREOUT)
 ot_check_test (Log_std)
+find_package (Threads)
+target_link_libraries (t_Log_std PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 ot_check_test (IdFactory_std IGNOREOUT)
 ot_check_test (ComparisonOperator_std)
 if (LIBXML2_FOUND)
@@ -100,6 +100,7 @@ endif ()
 ot_check_test (ResourceMap_std IGNOREOUT)
 ot_check_test (Catalog_std IGNOREOUT)
 ot_check_test (AtomicInt_std IGNOREOUT)
+target_link_libraries (t_AtomicInt_std PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # Type
 ot_check_test (Collection_std)
