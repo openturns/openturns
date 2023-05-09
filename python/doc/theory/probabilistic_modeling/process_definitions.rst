@@ -33,8 +33,9 @@ In this document, we note:
    *covariance function*, defined by:
 
 .. math::
-   \operatorname{Cov}(\vect{s}, \vect{t})
-   = \Expect{(X_{\vect{s}} - m(\vect{s}))(X_{\vect{t}} - m(\vect{t}))^t},
+   C(\vect{s}, \vect{t})
+   & := \Cov{X_{\vect{s}}, X_{\vect{t}}} \\
+   & \; = \Expect{(X_{\vect{s}} - m(\vect{s}))(X_{\vect{t}} - m(\vect{t}))^t},
 
 -  :math:`R : \cD \times \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`
    its *correlation function*, defined for all
@@ -43,7 +44,8 @@ In this document, we note:
 
 .. math::
    R_{ij}(\vect{s}, \vect{t})
-   = \frac{\operatorname{Cov}_{ij}(\vect{s}, \vect{t})}{\sqrt{\operatorname{Cov}_{ij}(\vect{s}, \vect{s}) \operatorname{Cov}_{ij}(\vect{t}, \vect{t})}}.
+   & := \Cor{X_{\vect{s}}, X_{\vect{t}}} \\
+   & \; = \frac{C_{ij}(\vect{s}, \vect{t})}{\sqrt{C_{ij}(\vect{s}, \vect{s}) C_{ij}(\vect{t}, \vect{t})}}.
 
 We recall here some useful definitions.
 
