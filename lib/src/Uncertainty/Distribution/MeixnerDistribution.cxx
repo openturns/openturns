@@ -26,6 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/GaussKronrod.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Distribution.hxx"
@@ -235,26 +236,9 @@ void MeixnerDistribution::computeRange()
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
-struct MeixnerBounds
+
+namespace
 {
-  MeixnerBounds(const MeixnerDistribution & distribution)
-    : distribution_(distribution)
-  {
-    // Nothing to do
-  }
-
-  Point computeObjectiveB(const Point & point) const
-  {
-    return Point(1, distribution_.computePDF(point));
-  }
-
-  Point computeObjectiveCD(const Point & point) const
-  {
-    return Point(1, point[0] * std::sqrt(distribution_.computePDF(point)));
-  }
-
-  const MeixnerDistribution & distribution_;
-};
 
 class MeixnerBoundB: public FunctionImplementation
 {
@@ -266,61 +250,30 @@ public:
     // Nothing to do
   }
 
-  MeixnerBoundB * clone() const
+  MeixnerBoundB * clone() const override
   {
     return new MeixnerBoundB(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     return Point(1, p_distribution_->computePDF(point));
   }
 
-  Matrix gradient(const Point & point) const
+  Matrix gradient(const Point & point) const override
   {
     const Point value = p_distribution_->computeDDF(point);
     return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return p_distribution_->getDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
-  }
-
-  Description getInputDescription() const
-  {
-    return p_distribution_->getDescription();
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "MeixnerDistributionObjectiveB");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  String __repr__() const
-  {
-    OSS oss;
-    oss << "MeixnerBoundB(" << p_distribution_->__str__() << ")";
-    return oss;
-  }
-
-  String __str__(const String & offset) const
-  {
-    OSS oss;
-    oss << offset << "MeixnerBoundB(" << p_distribution_->__str__() << ")";
-    return oss;
   }
 
 private:
@@ -337,18 +290,18 @@ public:
     // Nothing to do
   }
 
-  MeixnerBoundCD * clone() const
+  MeixnerBoundCD * clone() const override
   {
     return new MeixnerBoundCD(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar pdf = p_distribution_->computePDF(point);
     return Point(1, point[0] * std::sqrt(pdf));
   }
 
-  Matrix gradient(const Point & point) const
+  Matrix gradient(const Point & point) const override
   {
     const Scalar sqrtPDF = std::sqrt(p_distribution_->computePDF(point));
     if (sqrtPDF <= 0.0) return MatrixImplementation(1, 1);
@@ -357,50 +310,57 @@ public:
     return MatrixImplementation(1, 1, value);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return p_distribution_->getDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
-  }
-
-  Description getInputDescription() const
-  {
-    return p_distribution_->getDescription();
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "MeixnerDistributionObjectiveCD");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  String __repr__() const
-  {
-    OSS oss;
-    oss << "MeixnerBoundCD(" << p_distribution_->__str__() << ")";
-    return oss;
-  }
-
-  String __str__(const String & offset) const
-  {
-    OSS oss;
-    oss << offset << "MeixnerBoundCD(" << p_distribution_->__str__() << ")";
-    return oss;
   }
 
 private:
   const DistributionImplementation::Implementation p_distribution_;
 }; // class MeixnerBoundCD
+
+// Here we inherit from EvaluationImplementation in order to benefit from the inherited evaluation over a sample
+class MeixnerPDFGradientWrapper: public EvaluationImplementation
+{
+public:
+  MeixnerPDFGradientWrapper(const DistributionImplementation::Implementation & p_distribution)
+    : EvaluationImplementation()
+    , p_distribution_(p_distribution)
+  {
+    // Nothing to do
+  }
+
+  MeixnerPDFGradientWrapper * clone() const override
+  {
+    return new MeixnerPDFGradientWrapper(*this);
+  }
+
+  Point operator() (const Point & point) const override
+  {
+    return p_distribution_->computePDFGradient(point);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 4;
+  }
+
+private:
+  const DistributionImplementation::Implementation p_distribution_;
+}; // class MeixnerBoundCD
+
+
+} // anonymous namespace
 
 /* Update the derivative attributes */
 void MeixnerDistribution::update()
@@ -543,6 +503,46 @@ void MeixnerDistribution::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Get the PDFGradient of the distribution */
+Point MeixnerDistribution::computePDFGradient(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar z = (point[0] - gamma_) / beta_;
+  const Complex zPlus(delta_, z);
+  const Complex zMinus(delta_, -z);
+  const Complex gammaPlus(SpecFunc::Gamma(zPlus));
+  const Complex gammaMinus(SpecFunc::Gamma(zMinus));
+  const Complex gammaProduct(gammaPlus * gammaMinus);
+  const Complex psiPlus(SpecFunc::DiGamma(zPlus));
+  const Complex psiMinus(SpecFunc::DiGamma(zMinus));
+  const Complex iZ(0.0, z);
+  const Complex i(0.0, 1.0);
+  const Scalar cosHalfAlpha = std::cos(0.5 * alpha_);
+  const Scalar powCosHalfAlpha = std::pow(cosHalfAlpha, 2.0 * delta_);
+  const Scalar sinHalfAlpha = std::sin(0.5 * alpha_);
+  const Scalar expAlphaZ = std::exp(alpha_ * z);
+  const Scalar powTwo = std::pow(2.0, 2.0 * delta_ - 1.0);
+  const Scalar gammaTwoDelta = SpecFunc::Gamma(2.0 * delta_);
+  const Scalar denominator = M_PI * beta_ * gammaTwoDelta;
+  const Complex numerator(powTwo * expAlphaZ * powCosHalfAlpha * gammaProduct);
+  Point pdfGradient(4, 0.0);
+  pdfGradient[0] = -(numerator * (iZ * (psiPlus - psiMinus) + 1.0 + alpha_ * z)).real() / (beta_ * denominator);
+  pdfGradient[1] = -numerator.real() * (sinHalfAlpha * delta_ - cosHalfAlpha * z) / (cosHalfAlpha * denominator);
+  pdfGradient[2] = -(numerator * (2.0 * SpecFunc::Psi(2.0 * delta_) - 2.0 * std::log(cosHalfAlpha) - psiMinus - psiPlus - 2.0 * M_LN2)).real() / denominator;
+  pdfGradient[3] =  (numerator * i * (psiMinus - psiPlus + i * alpha_)).real() / (beta_ * denominator);
+  return pdfGradient;
+}
+
+
+/* Get the CDFGradient of the distribution */
+Point MeixnerDistribution::computeCDFGradient(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  return GaussKronrod().integrate(MeixnerPDFGradientWrapper(clone()), Interval(range_.getLowerBound(), point));
+}
+
 /* Get the standard deviation of the distribution */
 Point MeixnerDistribution::getStandardDeviation() const
 {
@@ -646,4 +646,3 @@ void MeixnerDistribution::setOptimizationAlgorithm(const OptimizationAlgorithm &
 }
 
 END_NAMESPACE_OPENTURNS
-

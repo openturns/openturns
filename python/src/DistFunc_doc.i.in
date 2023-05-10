@@ -625,3 +625,141 @@ n : int
 Returns
 -------
 mu : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rUniformSegment
+"Realization of a uniform distribution over a segment.
+
+Parameters
+----------
+a : sequence of float, in :math:`\Rset^n`
+    The first vertex of the segment.
+b : sequence of float, in :math:`\Rset^n`
+    The second vertex of the segment.
+size : int
+    The number of realizations to generate.
+
+Notes
+-----
+This method samples the barycentric coordinates, allowing to work in any dimension.
+
+Returns
+-------
+realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
+    The realizations of the uniform disctribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> a = [1, 5]
+>>> b = [2, 3]
+>>> r = ot.DistFunc.rUniformSegment(a, b)
+>>> r = ot.DistFunc.rUniformSegment(a, b, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rUniformTriangle
+"Realization of a uniform distribution over a triangle.
+
+Parameters
+----------
+a : sequence of float, in :math:`\Rset^n`
+    The first vertex of the triangle.
+b : sequence of float, in :math:`\Rset^n`
+    The second vertex of the triangle.
+c : sequence of float, in :math:`\Rset^n`
+    The third vertex of the triangle.
+size : int
+    The number of realizations to generate.
+
+Notes
+-----
+This method samples the barycentric coordinates, allowing to work in any dimension.
+
+Returns
+-------
+realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
+    The realizations of the uniform disctribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> a = [1, 5]
+>>> b = [2, 3]
+>>> c = [-1, 2]
+>>> r = ot.DistFunc.rUniformTriangle(a, b, c)
+>>> r = ot.DistFunc.rUniformTriangle(a, b, c, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rUniformTetrahedron
+"Realization of a uniform distribution over a tetrahedron.
+
+Parameters
+----------
+a : sequence of float, in :math:`\Rset^n`
+    The first vertex of the triangle.
+b : sequence of float, in :math:`\Rset^n`
+    The second vertex of the triangle.
+c : sequence of float, in :math:`\Rset^n`
+    The third vertex of the triangle.
+d : sequence of float, in :math:`\Rset^n`
+    The fourth vertex of the triangle.
+size : int
+    The number of realizations to generate.
+
+Notes
+-----
+This method samples the barycentric coordinates, allowing to work in any dimension.
+
+Returns
+-------
+realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
+    The realizations of the uniform disctribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> a = [1, 5, 0]
+>>> b = [2, 3, -1]
+>>> c = [-1, 2, 2]
+>>> d = [1, 2, 1]
+>>> r = ot.DistFunc.rUniformTetrahedron(a, b, c, d)
+>>> r = ot.DistFunc.rUniformTetrahedron(a, b, c, d, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rUniformSimplex
+"Realization of a uniform distribution over a simplex.
+
+Parameters
+----------
+vertices : 2-d sequence of float, a list of points in :math:`\Rset^n`
+    The vertices of the simplex.
+size : int
+    The number of realizations to generate.
+
+Notes
+-----
+This method samples the barycentric coordinates, allowing to work in any dimension.
+
+Returns
+-------
+realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
+    The realizations of the uniform disctribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> vertices = [[0, 1, 0, 2, 0, 0],
+...             [1, 0, 2, 3, 1, 0],
+...             [3, 4, 0, 0, 1, 2],
+...             [2, 0, 2, 0, 1, 1],
+...             [1, 3, 1, 4, 1, 5]]
+>>> r = ot.DistFunc.rUniformSimplex(vertices)
+>>> r = ot.DistFunc.rUniformSimplex(vertices, 10)"

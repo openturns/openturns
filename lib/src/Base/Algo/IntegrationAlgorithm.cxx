@@ -20,7 +20,7 @@
  */
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/GaussKronrod.hxx"
+#include "openturns/IteratedQuadrature.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,7 +28,7 @@ CLASSNAMEINIT(IntegrationAlgorithm)
 
 /* Constructor with parameters */
 IntegrationAlgorithm::IntegrationAlgorithm()
-  : TypedInterfaceObject<IntegrationAlgorithmImplementation>(new GaussKronrod())
+  : TypedInterfaceObject<IntegrationAlgorithmImplementation>(new IteratedQuadrature())
 {
   // Nothing to do
 }

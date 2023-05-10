@@ -170,9 +170,15 @@ Scalar Rice::computeComplementaryCDF(const Point & point) const
 /* Compute the mean of the distribution */
 void Rice::computeMean() const
 {
-  //1.253314137315500251207882 = sqrt(pi/2)
-  const Scalar x = -0.5 * std::pow(nu_ / beta_, 2);
-  mean_ = Point(1, beta_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
+  // 1.253314137315500251207882 = sqrt(pi/2)
+  //const Scalar x = -0.5 * std::pow(nu_ / beta_, 2);
+  //mean_ = Point(1, beta_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
+  const Scalar t = std::pow(0.5 * nu_ / beta_, 2);
+  const Scalar B0 = SpecFunc::BesselI0(t);
+  const Scalar B1 = SpecFunc::BesselI1(t);
+  const Scalar E = std::exp(-t);
+  const Scalar L = ((1.0 + 2.0 * t) * B0 + 2.0 * t * B1) * E;
+  mean_ = Point(1, beta_ * 1.253314137315500251207882 * L);
 }
 
 /* Get the standard deviation of the distribution */
@@ -180,6 +186,37 @@ Point Rice::getStandardDeviation() const
 {
   if (!isAlreadyComputedCovariance_) computeCovariance();
   return Point(1, std::sqrt(covariance_(0, 0)));
+}
+
+/* Get the skewness of the distribution */
+Point Rice::getSkewness() const
+{
+  // 1.253314137315500251207882 = sqrt(pi/2)
+  const Scalar t = std::pow(0.5 * nu_ / beta_, 2);
+  const Scalar B0 = SpecFunc::BesselI0(t);
+  const Scalar B1 = SpecFunc::BesselI1(t);
+  const Scalar E = std::exp(-t);
+  const Scalar L = ((1.0 + 2.0 * t) * B0 + 2.0 * t * B1) * E;
+  const Scalar mu3 = 1.253314137315500251207882 * beta_ * (beta_ * beta_ * (M_PI * std::pow(L, 3) - B0 * E - 2.0 * L) - 2.0 * L * std::pow(nu_, 2));
+  const Scalar sigma3 = std::pow(getStandardDeviation()[0], 3);
+  return Point(1, mu3 / sigma3);
+}
+
+/* Get the kurtosis of the distribution */
+Point Rice::getKurtosis() const
+{
+  // 1.253314137315500251207882 = sqrt(pi/2)
+  const Scalar nu2 = nu_ * nu_;
+  const Scalar beta2 = beta_ * beta_;
+  const Scalar t = 0.25 * nu2 / beta2;
+  const Scalar B0 = SpecFunc::BesselI0(t);
+  const Scalar B1 = SpecFunc::BesselI1(t);
+  const Scalar E = std::exp(-t);
+  const Scalar L = ((1.0 + 2.0 * t) * B0 + 2.0 * t * B1) * E;
+  const Scalar L2 = L * L;
+  const Scalar mu4 = nu2 * nu2 + beta2 * (nu2 * (8.0 + M_PI * L2) + beta2 * (8.0 + 2 * M_PI * E * L * B0 - 2.0 * M_PI * L2 - 0.75 * M_PI * M_PI * L2 * L2));
+  const Scalar sigma4 = std::pow(getStandardDeviation()[0], 4);
+  return Point(1, mu4 / sigma4);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

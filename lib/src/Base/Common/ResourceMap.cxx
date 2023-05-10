@@ -1225,6 +1225,10 @@ void ResourceMap::loadDefaultConfiguration()
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
 
+  // UniformOverMesh parameters //
+  addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
+  addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
+
   // VonMisesFactory parameters //
   addAsScalar("VonMisesFactory-AbsolutePrecision", 1.0e-12);
   addAsScalar("VonMisesFactory-RelativePrecision", 1.0e-12);

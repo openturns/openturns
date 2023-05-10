@@ -164,7 +164,9 @@ OT_API Scalar RegularizedIncompleteGammaInverse(const Scalar a,
     const Bool tail = false);
 // Digamma function: psi(x) = ((dgamma/dx) / gamma)(x)
 OT_API Scalar DiGamma(const Scalar x);
+OT_API Complex DiGamma(const Complex & a);
 OT_API Scalar Psi(const Scalar x);
+OT_API Complex Psi(const Complex & a);
 // Inverse of the DiGamma function
 OT_API Scalar DiGammaInv(const Scalar a);
 // Trigamma function: TriGamma(x) = ((d^2gamma/dx^2) / gamma)(x)

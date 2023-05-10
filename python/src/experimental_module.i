@@ -54,6 +54,9 @@
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 
+/* Uncertainty/Distribution */
+%include UniformOverMesh.i
+
 // duplicate helpers
 OTTypedInterfaceObjectHelper(WeightedExperiment)
 OTDefaultCollectionConvertFunctions(WeightedExperiment)

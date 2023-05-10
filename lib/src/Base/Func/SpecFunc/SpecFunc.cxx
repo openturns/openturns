@@ -736,9 +736,49 @@ Scalar SpecFunc::DiGamma(const Scalar x)
   return value + std::log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
 }
 
+Complex SpecFunc::DiGamma(const Complex & a)
+{
+  if (a.imag() == 0.0) return DiGamma(a.real());
+  // Approximation for small arguments
+  // Here, 0.025 is a bound that insure Scalar precision approximation
+  if ( std::abs(a) <= 0.025 ) return -1.0 / a - 0.57721566490153286 + (1.6449340668482264 + (-1.2020569031595943 + (1.0823232337111381 + (-1.0369277551433699 + (1.0173430619844491 + (-1.0083492773819228 + (1.0040773561979442 + (-1.0020083928260822 + 1.0009945751278180 * a) * a) * a) * a) * a) * a) * a) * a) * a;
+  // If the argument is negative, use the reflexion formula
+  if (a.real() < 0.0)
+    {
+      const Complex I(0.0, 1.0);
+      if (a.imag() > 1.0)
+        {
+          const Complex exp2IPi(std::exp(2.0 * M_PI * a * I));
+          return DiGamma(1.0 - a) - M_PI * I * (2.0 * exp2IPi / (exp2IPi - 1.0) - 1.0);
+        }
+      else
+        {
+          const Complex expM2IPi(std::exp(-2.0 * M_PI * a * I));
+          return DiGamma(1.0 - a) + M_PI * I * (2.0 * expM2IPi / (expM2IPi - 1.0) - 1.0);
+        }
+    } // (a.real() < 0.0
+  // Shift the argument until it reaches the asymptotic expansion region
+  // Here, 7.69 is a bound that insure Scalar precision of the approximation
+  Complex z = a;
+  Complex value = 0.0;
+  while ( z.real() < 7.33 )
+  {
+    value -= 1.0 / z;
+    z += 1.0;
+  }
+  // Use the asymptotic expansion in Horner form
+  const Complex y = 1.0 / (z * z);
+  return value + std::log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
+}
+
 Scalar SpecFunc::Psi(const Scalar x)
 {
   return DiGamma(x);
+}
+
+Complex SpecFunc::Psi(const Complex & a)
+{
+  return DiGamma(a);
 }
 
 // Inverse of the DiGamma function

@@ -82,6 +82,11 @@ Continuous parametric distributions
     Triangular
     TruncatedNormal
     Uniform
+
+    :template: classWithPlot.rst_t
+    experimental.UniformOverMesh
+
+    :template: Distribution.rst_t
     VonMises
 
     :template: classWithPlot.rst_t
@@ -297,4 +302,8 @@ Low-level distribution functions
     DistFunc.rHypergeometric
     DistFunc.rNormal
     DistFunc.rPoisson
+    DistFunc.rUniformSegment
+    DistFunc.rUniformTriangle
+    DistFunc.rUniformTetrahedron
+    DistFunc.rUniformSimplex
 

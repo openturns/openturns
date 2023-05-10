@@ -36,8 +36,6 @@ static const Factory<PiecewiseLinearEvaluation> Factory_PiecewiseLinearEvaluatio
 /* Default constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
   : EvaluationImplementation()
-  , locations_(0)
-  , values_(0, 0)
 {
   // Nothing to do
 }
@@ -47,13 +45,11 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Point & values)
   : EvaluationImplementation()
-  , locations_(0)
-  , values_(0, 0)
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
-  Sample sampleValues(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) sampleValues(i, 0) = values[i];
+  SampleImplementation sampleValues(size, 1);
+  sampleValues.setData(values);
   // Check the input
   setLocationsAndValues(locations, sampleValues);
 }
@@ -62,8 +58,6 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Sample & values)
   : EvaluationImplementation()
-  , locations_(0)
-  , values_(0, values.getDimension())
 {
   setLocationsAndValues(locations, values);
 }
@@ -89,15 +83,15 @@ String PiecewiseLinearEvaluation::__str__(const String & ) const
   return OSS(false) << __repr__();
 }
 
-namespace
-{
-Bool computeRegular(const Point & locations)
+/* Check if the locations grid is regular to the given tolerance */
+Bool PiecewiseLinearEvaluation::IsRegular(const Point & locations,
+    const Scalar & epsilon)
 {
   const UnsignedInteger size = locations.getSize();
   if (size >= 2)
   {
     const Scalar step = locations[1] - locations[0];
-    const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+    const Scalar relativeEpsilon = epsilon * std::abs(step);
     for (UnsignedInteger i = 2; i < size; ++i)
     {
       if (!(std::abs(locations[i] - locations[0] - i * step) < relativeEpsilon))
@@ -107,9 +101,14 @@ Bool computeRegular(const Point & locations)
   return true;
 }
 
-// Find the segment containing value by bisection
-UnsignedInteger findSegmentIndex(const Point & locations, const Scalar value, const UnsignedInteger start)
+/* Find the segment containing value by bisection */
+UnsignedInteger PiecewiseLinearEvaluation::FindSegmentIndex(const Point & locations,
+    const Scalar value,
+    const UnsignedInteger start,
+    const Bool isRegular)
 {
+  if (isRegular)
+    return static_cast<UnsignedInteger>(floor((value - locations[0]) / (locations[1] - locations[0])));
   UnsignedInteger iRight = locations.getSize() - 1;
   UnsignedInteger iLeft  = start;
   if (value >= locations[start])
@@ -129,9 +128,7 @@ UnsignedInteger findSegmentIndex(const Point & locations, const Scalar value, co
     if (value < locations[im]) iRight = im;
     else iLeft = im;
   }
-  return  iLeft;
-}
-
+  return iLeft;
 }
 
 /* Evaluation operator */
@@ -145,10 +142,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight])
     return values_[iRight];
-  if (isRegular_)
-    iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
-  else
-    iLeft = findSegmentIndex(locations_, x, 0);
+  iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar xLeft = locations_[iLeft];
   const Scalar xRight = locations_[iLeft + 1];
@@ -183,10 +177,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
       for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
       continue;
     }
-    if (isRegular_)
-      iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
-    else
-      iLeft = findSegmentIndex(locations_, x, iLeft);
+    iLeft = FindSegmentIndex(locations_, x, iLeft, isRegular_);
 
     const Scalar xLeft = locations_[iLeft];
     const Scalar xRight = locations_[iLeft + 1];
@@ -229,7 +220,7 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
         values_(i, j) = oldValues(locationAndIndex[i].second, j);
     }
   }
-  isRegular_ = computeRegular(locations_);
+  isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 
 /* Values accessor */
@@ -242,8 +233,8 @@ void PiecewiseLinearEvaluation::setValues(const Point & values)
 {
   const UnsignedInteger size = values.getSize();
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
-  Sample sampleValues(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) sampleValues(i, 0) = values[i];
+  SampleImplementation sampleValues(size, 1);
+  sampleValues.setData(values);
   values_ = sampleValues;
 }
 
@@ -275,7 +266,7 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
     for (UnsignedInteger j = 0; j < dimension; ++j)
       values_(i, j) = values(locationAndIndex[i].second, j);
   }
-  isRegular_ = computeRegular(locations_);
+  isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 
 /* Input dimension accessor */
@@ -306,7 +297,7 @@ void PiecewiseLinearEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
-  isRegular_ = computeRegular(locations_);
+  isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 
 

@@ -84,6 +84,14 @@ public:
   Complex computeCharacteristicFunction(const Scalar x) const override;
   Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
+  /** Get the gradient of the PDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computePDFGradient;
+  Point computePDFGradient(const Point & point) const override;
+
+  /** Get the gradient of the CDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
+  Point computeCDFGradient(const Point & point) const override;
+
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 

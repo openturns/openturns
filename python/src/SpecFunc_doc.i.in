@@ -596,16 +596,16 @@ SpecFunc.Gamma
 
 Parameters
 ----------
-x : float :math:`\in \Rset^*_+`
+x : float :math:`\in \Rset^*_+` or complex :math:`\in \Cset \setminus \Rset_-`
 
 Returns
 -------
-result : float"
+result : float or complex"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SpecFunc::Psi
-"Psi function.
+"Psi function, alias for digamma function.
 
 .. math::
 
@@ -615,15 +615,15 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma
+SpecFunc.Gamma, SpecFunc.DiGamma
 
 Parameters
 ----------
-x : float :math:`\in \Rset^*_+`
+x : float :math:`\in \Rset^*_+` or complex :math:`\in \Cset \setminus \Rset_-`
 
 Returns
 -------
-result : float"
+result : float or complex"
 
 // ---------------------------------------------------------------------
 
