@@ -62,3 +62,4 @@ OTTypedInterfaceObjectHelper(WeightedExperiment)
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
 OTTypedCollectionInterfaceObjectHelper(WeightedExperiment)
 %include SmolyakExperiment.i
+%include GeneralizedExtremeValueValidation.i

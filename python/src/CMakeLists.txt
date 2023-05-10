@@ -1029,6 +1029,7 @@ ot_add_python_module(experimental experimental_module.i
                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                      UniformOverMesh.i UniformOverMesh_doc.i.in
+                     GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

@@ -226,6 +226,9 @@ Graphical tests
     VisualTest.DrawQQplot
     VisualTest.DrawCDFplot
 
+    :template: class.rst_t
+    experimental.GeneralizedExtremeValueValidation
+
 Hypothesis tests
 ----------------
 
