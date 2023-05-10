@@ -259,9 +259,9 @@ Scalar UserDefined::computeCDF(const Point & point) const
   // Dimension > 1
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point x(points_[i]);
-    UnsignedInteger j = 0;
-    while ((j < dimension) && (x[j] <= point[j] + supportEpsilon_)) ++j;
+    if (points_(i, 0) > point[0] + supportEpsilon_) break;
+    UnsignedInteger j = 1;
+    while ((j < dimension) && (points_(i, j) <= point[j] + supportEpsilon_)) ++j;
     if (j == dimension) cdf += probabilities_[i];
   }
   return cdf;
@@ -297,9 +297,8 @@ Point UserDefined::computeCDFGradient(const Point & point) const
   Point cdfGradient((dimension + 1) * size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point x(points_[i]);
     UnsignedInteger j = 0;
-    while ((j < dimension) && (point[j] <= x[j])) ++j;
+    while ((j < dimension) && (point[j] <= points_(i, j))) ++j;
     if (j == dimension) cdfGradient[i] = 1.0;
   }
   return cdfGradient;
@@ -522,18 +521,16 @@ void UserDefined::setData(const Sample & sample,
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the collection is empty";
   if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution if the weights don't have the same dimension as the sample size.";
   hasUniformWeights_ = true;
-  const UnsignedInteger dimension = sample[0].getDimension();
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
-  // Check if all the given probabilities are >= 0
-  // Check if all the points have the same dimension
-  for (UnsignedInteger i = 1; i < size; ++i) if (sample[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "UserDefined distribution must have all its point with the same dimension";
-  setDimension(dimension);
+    const UnsignedInteger dimension = sample.getDimension();
+    if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
+    setDimension(dimension);
+    // Check if all the given probabilities are >= 0
+    // Check if all the points have the same dimension
   // First, sort the collection such that the sample made with the first component is in ascending order
   Sample weightedData(size, dimension + 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point x(sample[i]);
-    for (UnsignedInteger j = 0; j < dimension; ++j) weightedData(i, j) = x[j];
+    for (UnsignedInteger j = 0; j < dimension; ++j) weightedData(i, j) = sample(i, j);
     weightedData(i, dimension) = weights[i];
   }
   // Sort the pairs
@@ -561,9 +558,7 @@ void UserDefined::setData(const Sample & sample,
   probabilities_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Point x(dimension);
-    for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData(i, j);
-    points_[i] = x;
+    for (UnsignedInteger j = 0; j < dimension; ++j) points_(i, j) = weightedData(i, j);
     probabilities_[i] = SpecFunc::Clip01(weightedData(i, dimension));
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
