@@ -473,10 +473,17 @@
 
   <!-- OT::GeneralizedExtremeValueFactory parameters -->
   <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
+  <GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber value_int="100" />
+  <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
+  <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
+  <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
 
   <!-- OT::ProfileLikelihoodResult parameters -->
   <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />
   <ProfileLikelihoodResult-RelativePrecision value_float="1.0e-10" />
+  <ProfileLikelihoodResult-ConfidenceIntervalMargin value_float="0.05" />
+  <ProfileLikelihoodResult-TextMargin value_float="0.03" />
+  <ProfileLikelihoodResult-StartingScaling value_float="1.0e-2" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />

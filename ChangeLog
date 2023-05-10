@@ -6,6 +6,7 @@
 
 ==== Major changes ====
  * BoxCoxFactory handles linear model
+ * New GeneralizedExtremeValueFactory estimation services: MLE, profiled likelihood, r-maxima, time-varying, return level
 
 ==== New classes ====
  * SmolyakExperiment (openturns.experimental)
@@ -56,6 +57,8 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Add HypothesisTest::LikelihoodRatioTest for nested model selection
+ * Add VisualTest::DrawPPplot
 
 === Bug fixes ===
  * #2250 (HSIC Target sensitivity bad filtering)

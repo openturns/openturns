@@ -24,7 +24,7 @@ Building distributions from samples
 
     DistributionFactory
     DistributionFactoryResult
-    LikelihoodResult
+    DistributionFactoryLikelihoodResult
     ProfileLikelihoodResult
     TimeVaryingResult
 

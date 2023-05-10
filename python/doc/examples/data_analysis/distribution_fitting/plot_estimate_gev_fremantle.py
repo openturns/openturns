@@ -4,15 +4,19 @@ Estimate a GEV on the Fremantle sea levels data
 """
 # %%
 # In this example we are going to estimate the parameters of a generalized extreme value distribution
-# on sea levels data from [coles2001]_:
+# on the sea levels data from [coles2001]_ with different methods:
 #
-# - First with the maximum the log-likehood estimator from independent observations (paragraph 3.4.1)
-# - Then with the maximum the log-likehood estimator with a non-stationary hypothesis (paragraph 6.3.1)
+# - the maximum likelihood estimation
+# - the profile likelihood estimation
+# - the estimation of return level from both maximum likelihood and profile likelihood
+# - the maximum likehood estimator from independent observations (see [coles2001]_ paragraph 3.4.1)
+# - the maximum likehood estimator with a non-stationary hypothesis (see [coles2001]_ paragraph 6.3.1)
 
 # %%
 # Load the Fremantle dataset of highest sea levels per year
 import openturns as ot
 import openturns.viewer as otv
+import openturns.experimental as otexp
 from openturns.usecases import coles
 data = coles.Coles().fremantle
 print(data[:5])
@@ -56,17 +60,53 @@ for i in range(3):
     print(desc[i] + ":", ci)
 
 # %%
+# Validate the inference result thanks to some diagnostic plots
+validation = otexp.GeneralizedExtremeValueValidation(result1, sample)
+graph = validation.drawDiagnosticPlot()
+view = otv.View(graph)
+
+# %%
 # Now estimate the parameters with the profile likelihood
 result2 = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
 
 # %%
 # We can see the confidence interval of :math:`\xi` is a bit smaller with this method
 result2.setConfidenceLevel(0.95)
-print(result2.getXiConfidenceInterval())
+print(result2.getParameterConfidenceInterval())
 
 # %%
 # We can also plot the profile likelihood and the confidence interval
-view = otv.View(result2.drawProfileLikelihood())
+view = otv.View(result2.drawProfileLikelihoodFunction())
+
+# %%
+# Estimate the 10 and 100 years return levels from the MLE estimator
+zm10 = factory.buildReturnLevelEstimator(result1, 10.0)
+return_level10 = zm10.getMean()
+print(f"10 years return level={return_level10}")
+return_level_ci10 = zm10.computeBilateralConfidenceInterval(0.95)
+print(f"CI={return_level_ci10}")
+
+zm100 = factory.buildReturnLevelEstimator(result1, 100.0)
+return_level100 = zm100.getMean()
+print(f"100 years return level={return_level100}")
+return_level_ci100 = zm100.computeBilateralConfidenceInterval(0.95)
+print(f"CI={return_level_ci100}")
+
+# %%
+# Now estimate the 10 years return level with profile likelihood
+result_rl10_prof = factory.buildReturnLevelProfileLikelihoodEstimator(sample, 10.0)
+zm = result_rl10_prof.getParameter()
+print(f"10 years return level (profile)={zm}")
+
+# %%
+# We can see the confidence interval of :math:`z_m` is a bit smaller with this method
+result_rl10_prof.setConfidenceLevel(0.95)
+return_level_ci10 = result_rl10_prof.getParameterConfidenceInterval()
+print(f"CI={return_level_ci10}")
+
+# %%
+# We can also plot the profile likelihood and the confidence interval
+view = otv.View(result_rl10_prof.drawProfileLikelihoodFunction())
 
 # %%
 # Now formulate a non-stationary hypothesis for our parameters
@@ -74,8 +114,8 @@ view = otv.View(result2.drawProfileLikelihood())
 mesh = ot.Mesh(data[:, 0])
 
 # %%
-# Now define the basis for each parameter
-# lets say mu is linear with time, the other parameters remaining constant
+# Now we can define the basis for each parameter.
+# We suppose that mu is linear with time, and that the other parameters remain constant.
 constant = ot.SymbolicFunction(['t'], ['1.0'])
 basis_mu = ot.Basis([constant, ot.SymbolicFunction(['t'], ['t'])])  # linear trend
 basis_sigma = ot.Basis([constant])  # stationary
@@ -103,8 +143,11 @@ view = otv.View(graph)
 # %%
 # The graph suggests a visual evidence of a trend.
 # The strength of this evidence can be assessed with the deviance statistics:
-result4 = ot.HypothesisTest.LikelihoodRatioTest(result1.getLogLikelihood(), result3.getLogLikelihood(), 0.05)
-print(f"hypothesis H0(stationary model) accepted={result4.getBinaryQualityMeasure()}")
+llh1 = result1.getLogLikelihood()
+llh3 = result3.getLogLikelihood()
+result4 = ot.HypothesisTest.LikelihoodRatioTest(llh1, llh3, 0.05)
+accepted = result4.getBinaryQualityMeasure()
+print(f"hypothesis H0(stationary model) accepted={accepted}")
 
 # %%
 # The deviance statistics :math:`D_p` is large compared to the Chi2 quantile
@@ -112,6 +155,12 @@ print(f"hypothesis H0(stationary model) accepted={result4.getBinaryQualityMeasur
 # and is likely a genuine effect in the sea-level process rather than a chance feature in the observed data
 print(f"Dp={result4.getStatistic():.2f}")
 print(f"cAlpha={result4.getThreshold():.2f}")
+
+# %%
+# We can also draw the quantile(t) function for a given quantile level
+# Here it is also linear as the trend is linear only on the mu parameter
+graph = result3.drawQuantileFunction(0.5)
+view = otv.View(graph)
 
 # %%
 otv.View.ShowAll()

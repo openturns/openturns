@@ -27,5 +27,9 @@ print(z)
 print()
 gevrSeqTests(lowestoft, method = "ed")
 
-
-
+# return level via profile likelihood
+period <- 10.0
+dev.new(width=7,height=4)
+y2 <- gevrRl(z, period, conf = 0.95, method = "profile", plot = TRUE)
+print(y2)
+prompt  <- "hit spacebar to close plots"

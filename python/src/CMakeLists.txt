@@ -659,7 +659,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
-                      LikelihoodResult.i LikelihoodResult_doc.i.in
+                      DistributionFactoryLikelihoodResult.i DistributionFactoryLikelihoodResult_doc.i.in
                       ProfileLikelihoodResult.i ProfileLikelihoodResult_doc.i.in
                       TimeVaryingResult.i TimeVaryingResult_doc.i.in
                       Pareto.i Pareto_doc.i.in

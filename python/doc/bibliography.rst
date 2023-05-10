@@ -62,6 +62,9 @@ Bibliography
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
 .. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
     `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
+.. [diebolt2008] Diebolt J., *Improving probability-weighted moment methods for the generalized extreme value distribution*,
+    REVSTAT Statistical Journal, 2008.
+    `pdf <https://www.ine.pt/revstat/pdf/rs080103.pdf>`__
 .. [dimitriadis2016] Dimitriadis J., *On the Accuracy of Loader's Algorithm for
     the Binomial Density and Algorithms for Rectangle Probabilities for Markov
     Increments*, PhD thesis.

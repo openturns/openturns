@@ -22,12 +22,12 @@
 #define OPENTURNS_PROFILELIKELIHOODRESULT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/LikelihoodResult.hxx"
+#include "openturns/DistributionFactoryLikelihoodResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API ProfileLikelihoodResult
-  : public LikelihoodResult
+  : public DistributionFactoryLikelihoodResult
 {
   CLASSNAME
 public:
@@ -36,18 +36,24 @@ public:
   ProfileLikelihoodResult(const Distribution & distribution,
                           const Distribution & parameterDistribution,
                           const Scalar logLikelihood,
-                          const Function & profileLikelihood);
+                          const Function & profileLikelihood,
+                          const Scalar parameter);
 
   ProfileLikelihoodResult * clone() const override;
 
+  /** Confidence level accessor */
   void setConfidenceLevel(const Scalar confidenceLevel);
   Scalar getConfidenceLevel() const;
 
-  Interval getXiConfidenceInterval() const;
+  /** Confidence interval of the outer parameter */
+  Interval getParameterConfidenceInterval() const;
 
+  /** Profile likelihood accessor */
   Function getProfileLikelihoodFunction() const;
-  
-  Graph drawProfileLikelihood() const;
+  Graph drawProfileLikelihoodFunction() const;
+
+  /** Parameter value accessor */
+  Scalar getParameter() const;
 
   String __repr__() const override;
 
@@ -58,10 +64,12 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  UnsignedInteger getParameterIndex() const;
   Scalar getThreshold() const;
 
   Function profileLikelihoodFunction_;
   Scalar confidenceLevel_ = 0.95;
+  Scalar parameter_ = 0.0;
 };
 
 END_NAMESPACE_OPENTURNS

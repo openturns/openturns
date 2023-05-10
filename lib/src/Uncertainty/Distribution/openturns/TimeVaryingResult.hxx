@@ -22,7 +22,7 @@
 #define OPENTURNS_TIMEVARYINGRESULT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/DistributionFactoryResult.hxx"
+#include "openturns/DistributionFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,28 +33,36 @@ class OT_API TimeVaryingResult
 public:
   TimeVaryingResult();
   
-  TimeVaryingResult(const Function & parameterFunction,
+  TimeVaryingResult(const DistributionFactory & factory,
+                    const Function & parameterFunction,
                     const Mesh & mesh,
                     const Distribution & parameterDistribution,
                     const Scalar logLikelihood);
 
   TimeVaryingResult * clone() const override;
 
+  /** Accessor to the optimal parameter */
   Point getOptimalParameter() const;
 
+  /** Accessor to the parameter function */
   Function getParameterFunction() const;
   
   /** Accessor to the distribution of the parameter */
   void setParameterDistribution(const Distribution & parameterDistribution);
   Distribution getParameterDistribution() const;
   
+  /** Accessor to the likelihood value */
   void setLogLikelihood(const Scalar logLikelihood);
   Scalar getLogLikelihood() const;
   
+  /** Draw parameter for all time values */
   Graph drawParameterFunction(const UnsignedInteger parameterIndex = 0) const;
 
   /** Accessor to the distribution at a given time */
-  Distribution getDistribution(const Scalar t);
+  Distribution getDistribution(const Scalar t) const;
+
+  /** Draw quantile for all time values */
+  Graph drawQuantileFunction(const Scalar p) const;
 
   String __repr__() const override;
 
@@ -65,6 +73,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  DistributionFactory factory_;
   Function parameterFunction_;
   Mesh mesh_;
   Distribution parameterDistribution_;

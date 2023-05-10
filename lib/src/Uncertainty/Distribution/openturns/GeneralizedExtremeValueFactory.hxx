@@ -62,7 +62,7 @@ public:
 
   /** Maximum likelihood */
   GeneralizedExtremeValue buildMethodOfLikelihoodMaximization(const Sample & sample) const;
-  LikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const;
+  DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const;
 
   /** Profiled maximum likelihood */
   ProfileLikelihoodResult buildMethodOfProfileLikelihoodMaximizationEstimator(const Sample & sample) const;
@@ -81,6 +81,10 @@ public:
 
   /** Return level */
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;
+
+  /** Return level via profiled likelihood */
+  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
+  GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
 
 }; /* class GeneralizedExtremeValueFactory */
 

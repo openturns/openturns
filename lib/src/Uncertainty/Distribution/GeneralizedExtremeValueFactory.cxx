@@ -47,8 +47,7 @@ static const Factory<GeneralizedExtremeValueFactory> Factory_GeneralizedExtremeV
 GeneralizedExtremeValueFactory::GeneralizedExtremeValueFactory()
   : DistributionFactoryImplementation()
 {
-  // Initialize any other class members here
-  // At last, allocate memory space if needed, but go to destructor to free it
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -126,6 +125,9 @@ public:
     const Scalar sigma = parameter[1];
     const Scalar xi = parameter[2];
 
+    if (sigma <= 0.0)
+      return Point(1, -SpecFunc::MaxScalar);
+
     // beware we cannot write -size, we need to cast to float first
     Scalar ll = -1.0 * size * std::log(sigma);
 
@@ -134,7 +136,6 @@ public:
       const Scalar yi = (sample_(i, 0) - mu) / sigma;
       if (std::abs(xi) < SpecFunc::Precision)
       {
-        // TODO: taylor expansion
         ll += -yi - std::exp(yi);
       }
       else
@@ -153,7 +154,7 @@ private:
 };
 
 
-static Scalar GeneralizedExtremeValueFactoryPWM(const Sample & sample, UnsignedInteger r)
+static Scalar GeneralizedExtremeValueFactoryPWM(const Sample & sample, const UnsignedInteger r)
 {
   Scalar s = 0.0;
   const UnsignedInteger size = sample.getSize();
@@ -163,14 +164,13 @@ static Scalar GeneralizedExtremeValueFactoryPWM(const Sample & sample, UnsignedI
 }
 
 
-LikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const
+DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  // we minimize -loglikelihood
   const Function objective(new GeneralizedExtremeValueLikelihoodEvaluation(sample));
   OptimizationProblem problem(objective);
   problem.setMinimization(false);
@@ -180,9 +180,9 @@ LikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximiza
   const Scalar mean = sample.computeMean()[0];
 
   // sigma > 0
-  const Point lowerBound = {-SpecFunc::MaxScalar, 0.0, -SpecFunc::MaxScalar};
+  const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision, -SpecFunc::MaxScalar});
   const Point upperBound(3, SpecFunc::MaxScalar);
-  const Interval::BoolCollection finiteLowerBound = {false, true, false};
+  const Interval::BoolCollection finiteLowerBound({false, true, false});
   const Interval::BoolCollection finiteUpperBound(3, false);
   problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));  
 
@@ -193,7 +193,7 @@ LikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximiza
   const SymbolicFunction constraint(Description({"mu", "sigma", "xi"}), formulas);
   problem.setInequalityConstraint(constraint);
 
-  // heuristic for the starting point, see fit.gev function from R mev package
+  // pwm for the starting point, see fit.gev function from R mev package
   const Sample sorted(sample.sort());
   const Scalar bpwm1 = GeneralizedExtremeValueFactoryPWM(sorted, 1);
   const Scalar bpwm2 = GeneralizedExtremeValueFactoryPWM(sorted, 2);
@@ -202,7 +202,7 @@ LikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximiza
   const Scalar gamma1mXi0 = SpecFunc::Gamma(1.0 - xi0);
   const Scalar sigma0 = -(2.0 * bpwm1 - mean) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
   const Scalar mu0 = mean - sigma0 * (gamma1mXi0 - 1.0) / xi0;
-  const Point x0 = {mu0, sigma0, xi0};
+  const Point x0({mu0, sigma0, xi0});
 
   // solve optimization problem
   Cobyla solver(problem);
@@ -215,7 +215,7 @@ LikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximiza
   const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));
   const Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  LikelihoodResult result(distribution, parameterDistribution, logLikelihood);
+  DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
   return result;
 }
 
@@ -236,6 +236,8 @@ public:
   , mean_(mean)
   , bpwm1_(bpwm1)
   {
+    zmin_ = sample.getMin()[0];
+    zmax_ = sample.getMax()[0];
   }
 
   GeneralizedExtremeValueProfileLikelihoodEvaluation * clone() const override
@@ -253,28 +255,46 @@ public:
     return 1;
   }
 
+  Description getInputDescription() const override
+  {
+    return {"xi"};
+  }
+
   Point operator() (const Point & parameter) const override
   {
     const Scalar xi0 = parameter[0];
 
-    // we minimize -loglikelihood
     const Function objective(new GeneralizedExtremeValueLikelihoodEvaluation(sample_));
-    const ParametricFunction objectiveXi(objective, Indices(1, 2), parameter);
+    const ParametricFunction objectiveXi(objective, Indices({2}), parameter);
     OptimizationProblem problem(objectiveXi);
     problem.setMinimization(false);
 
     // sigma > 0
-    const Point lowerBound = {-SpecFunc::MaxScalar, 0.0};
+    const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision});
     const Point upperBound(2, SpecFunc::MaxScalar);
-    const Interval::BoolCollection finiteLowerBound = {false, true};
+    const Interval::BoolCollection finiteLowerBound({false, true});
     const Interval::BoolCollection finiteUpperBound(2, false);
     problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));  
+
+    // 1+xi(zi-mu)/sigma > 0
+    Description formulas(2);
+    formulas[0] = OSS() << "sigma + " << xi0 << " * (" << zmax_ << " - mu)";
+    formulas[1] = OSS() << "sigma + " << xi0 << " * (" << zmin_ << " - mu)";
+    const SymbolicFunction constraint(Description({"mu", "sigma"}), formulas);
+    problem.setInequalityConstraint(constraint);
 
     // heuristic for the starting point, see fit.gev function from R mev package
     const Scalar gamma1mXi0 = (xi0 < 1.0) ? SpecFunc::Gamma(1.0 - xi0) : 10.0;
     const Scalar sigma0 = -(2.0 * bpwm1_ - mean_) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
     const Scalar mu0 = mean_ - sigma0 * (gamma1mXi0 - 1.0) / xi0;
-    const Point x0 = {mu0, sigma0};
+    Point x0({mu0, sigma0});
+
+    // make mu great again
+    Point cv(constraint(x0));
+    if (cv[0] < 0.0)
+      x0[0] += cv[0] / xi0;
+    else if (cv[1]<0)
+      x0[0] += cv[1] / xi0;
 
     // solve optimization problem
     Cobyla solver(problem);
@@ -288,7 +308,7 @@ public:
       const Point optimalValue(solver.getResult().getOptimalValue());
       return optimalValue;
     }
-    catch (Exception &)
+    catch (const Exception &)
     {
       return Point(1, -SpecFunc::MaxScalar);
     }
@@ -302,6 +322,8 @@ public:
 private:
   Sample sample_;
   Scalar mean_ = 0.0;
+  Scalar zmin_ = 0.0;
+  Scalar zmax_ = 0.0;
   Scalar bpwm1_ = 0.0;
   mutable Point optimalPoint_;
 };
@@ -313,18 +335,17 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-    
+
   const Scalar mean = sample.computeMean()[0];
 
-  // heuristic for the starting point, see fit.gev function from R mev package
+  // method of probability weighted moments for the starting point, see fit.gev function from R mev package
   const Sample sorted(sample.sort());
   const Scalar bpwm1 = GeneralizedExtremeValueFactoryPWM(sorted, 1);
   const Scalar bpwm2 = GeneralizedExtremeValueFactoryPWM(sorted, 2);
   const Scalar kst = (2.0 * bpwm1 - mean) / (3.0 * bpwm2 - mean) - std::log(2.0) / std::log(3.0);
   const Scalar xi0 = -(7.859 + 2.9554 * kst) * kst;
-  const Point x0 = {xi0};
-  
-  // we minimize -loglikelihood
+  const Point x0({xi0});
+
   const GeneralizedExtremeValueProfileLikelihoodEvaluation profileLikelihoodEvaluation(sample, mean, bpwm1);
   const Function objective(profileLikelihoodEvaluation.clone());
   OptimizationProblem problem(objective);
@@ -344,9 +365,10 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
   optimalParameter.add(xi);
 
   const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));  
-  const Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+  Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+  parameterDistribution.setDescription({"mu", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective);
+  ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, xi);
   return result;
 }
 
@@ -370,7 +392,7 @@ public:
   , m_(sample.getSize())
   {
     if ((r < 1) || (r > R_))
-      throw InvalidArgumentException(HERE) << "1<=r<=R";
+      throw InvalidArgumentException(HERE) << "We must have 1<=r<=R";
   }
 
   GeneralizedExtremeValueRMaximaLikelihoodEvaluation * clone() const override
@@ -394,9 +416,8 @@ public:
     const Scalar sigma = parameter[1];
     const Scalar xi = parameter[2];
 
-    // TODO: taylor expansion
-    if (std::abs(xi) < SpecFunc::Precision)
-      throw InvalidArgumentException(HERE) << "TODO";
+    if (sigma <= 0.0)
+      return Point(1, -SpecFunc::MaxScalar);
 
     Scalar ll = -1.0 * m_ * r_ * std::log(sigma);
     for (UnsignedInteger i = 0; i < m_; ++ i)
@@ -450,13 +471,13 @@ DistributionFactoryResult GeneralizedExtremeValueFactory::buildRMaximaEstimator(
   problem.setMinimization(false);
 
   // sigma > 0
-  const Point lowerBound = {-SpecFunc::MaxScalar, 0.0, -SpecFunc::MaxScalar};
+  const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision, -SpecFunc::MaxScalar});
   const Point upperBound(3, SpecFunc::MaxScalar);
-  const Interval::BoolCollection finiteLowerBound = {false, true, false};
+  const Interval::BoolCollection finiteLowerBound({false, true, false});
   const Interval::BoolCollection finiteUpperBound(3, false);
   problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 
-  // heuristic for the starting point, see gevrFit function from R eva package
+  // pwm + 1d search for the starting point, see gevrFit function from R eva package
   const Sample rMax(sample.sort(0));
   Sample rMax1(rMax);
   Sample rMax2(rMax);
@@ -471,15 +492,15 @@ DistributionFactoryResult GeneralizedExtremeValueFactory::buildRMaximaEstimator(
   const SymbolicFunction solveShape(Description({"sh", "mom0", "mom1", "mom2"}),
                                     Description(1, "(3^sh - 1) / (2^sh - 1) - (3 * mom2 - mom0) / (2 * mom1 - mom0)"));
   const ParametricFunction f(solveShape, Indices({1, 2, 3}), Point({mom0, mom1, mom2}));
-  const Scalar a = -5.0;
-  const Scalar b = 5.0;
+  const Scalar a = ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound");
+  const Scalar b = ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound");
   const Scalar fA = f(Point(1, a))[0];
   const Scalar fB = f(Point(1, b))[0];
-  Brent solver1d;
+  const Brent solver1d;
   const Scalar xi0 = solver1d.solve(f, 0.0, a, b, fA, fB);
   const Scalar sigma0 = ((2.0 * mom1 - mom0) * xi0) / (SpecFunc::Gamma(1.0 - xi0) * (std::pow(2.0, xi0) - 1.0));
   const Scalar mu0 = mom0 + sigma0 * (1.0 - SpecFunc::Gamma(1.0 - xi0)) / xi0;
-  const Point x0 = {mu0, sigma0, xi0};
+  const Point x0({mu0, sigma0, xi0});
 
   // solve optimization problem
   TNC solver(problem);
@@ -594,10 +615,6 @@ public:
       if (sigma <= 0.0)
         return Point(1, -SpecFunc::MaxScalar);
 
-      // TODO: Gumbel
-      if (std::abs(xi) < SpecFunc::Precision)
-        throw InvalidArgumentException(HERE) << "TODO";
-
       ll += -std::log(sigma);
       const Scalar yi = (sample_(i, 0) - mu) / sigma;
       const Scalar c1 = 1.0 + xi * yi;
@@ -675,7 +692,8 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
     for (UnsignedInteger j = 0; j < nI; ++ j)
       coll[j] = basisCollection[i][j];
     const AggregatedFunction aggregated(coll);
-    const ComposedFunction composed(parametric, aggregated);
+    ComposedFunction composed(parametric, aggregated);
+    composed.setOutputDescription({build().getParameterDescription()[i] + "(t)"});
     thetaFunctions[i] = composed;
   }
   Function thetaFunction = AggregatedFunction(thetaFunctions);
@@ -689,9 +707,11 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
 
   // heuristic for feasible mu
   UnsignedInteger i = 0;
-  while ((evaluation(x0)[0] == -SpecFunc::MaxScalar) && (i < 100))
+  const UnsignedInteger maxIter = ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber");
+  const Scalar rho = ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor");
+  while ((evaluation(x0)[0] == -SpecFunc::MaxScalar) && (i < maxIter))
   {
-    x0[0] *= -1.5;
+    x0[0] *= rho;
     ++ i;
   }
 
@@ -730,7 +750,7 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
 
   const Normal parameterDistribution(optimalParameter, covariance);
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  const TimeVaryingResult result(thetaFunction, mesh, parameterDistribution, logLikelihood);
+  const TimeVaryingResult result(*this, thetaFunction, mesh, parameterDistribution, logLikelihood);
   return result;
 }
 
@@ -739,17 +759,210 @@ Distribution GeneralizedExtremeValueFactory::buildReturnLevelEstimator(const Dis
 {
   if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedExtremeValue")
     throw InvalidArgumentException(HERE) << "Return level can only be estimated from a GEV";
-  if (result.getParameterDistribution().getImplementation()->getClassName() != "Normal")
-    throw NotYetImplementedException(HERE) << "GEV parameter distribution is not Gaussian";
   if (!(m > 1.0))
     throw InvalidArgumentException(HERE) << "Return period should be > 1";
   const Scalar p = 1.0 / m;
   const Scalar sigma = result.getDistribution().getParameter()[1];
   const Scalar xi = result.getDistribution().getParameter()[2];
   const Scalar zm = result.getDistribution().computeQuantile(p, true)[0];
-  Matrix dzm(3, 1);
-  dzm(0, 0) = 1.0;
-  const Scalar yp = -std::log(1.0 - p);
+  if (result.getParameterDistribution().getImplementation()->getClassName() == "Normal")
+  {
+    Matrix dzm(3, 1);
+    dzm(0, 0) = 1.0;
+    const Scalar yp = -std::log1p(-p);
+    if (std::abs(xi) < SpecFunc::Precision)
+      dzm(1, 0) = -std::log(yp);
+    else
+    {
+      dzm(1, 0) = -1.0 / xi * (1.0 - std::pow(yp, -xi));
+      dzm(2, 0) = sigma / (xi * xi) * (1.0 - std::pow(yp, -xi)) - sigma / xi * std::pow(yp, -xi) * std::log(yp);
+    }
+    const Matrix Vn(result.getParameterDistribution().getCovariance());
+    const Scalar varZm = (dzm.transpose() * Vn * dzm)(0, 0);
+    return Normal(zm, std::sqrt(varZm));
+  }
+  else
+  {
+    // sample input distribution + kernel smoothing
+    throw NotYetImplementedException(HERE) << "GEV parameter distribution is not Gaussian";
+  }
+}
+
+
+
+class GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3 : public EvaluationImplementation
+{
+public:
+  GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3(const Sample & sample, const Scalar m)
+  : EvaluationImplementation()
+  , llh_(new GeneralizedExtremeValueLikelihoodEvaluation(sample))
+  , m_(m)
+  {
+  }
+
+  GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3 * clone() const override
+  {
+    return new GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 3;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator() (const Point & zParameter) const override
+  {
+    const Scalar zm = zParameter[0];
+    const Scalar sigma = zParameter[1];
+    const Scalar xi = zParameter[2];
+
+    if (sigma <= 0.0)
+      return Point(1, -SpecFunc::MaxScalar);
+
+    const Scalar mu = zm + sigma / xi * (-std::expm1(xi * std::log(m_)));
+
+    Point nativeParameter(zParameter);
+    nativeParameter[0] = mu;
+    return llh_(nativeParameter);
+  }
+
+private:
+  Function llh_;
+  Scalar m_ = 0.0;
+};
+
+class GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1 : public EvaluationImplementation
+{
+public:
+  GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1(const Sample & sample,
+                                                      const Scalar sigma0,
+                                                      const Scalar xi0, const Scalar m)
+  : EvaluationImplementation()
+  , sample_(sample)
+  , sigma0_(sigma0)
+  , xi0_(xi0)
+  , m_(m)
+  {
+  }
+
+  GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1 * clone() const override
+  {
+    return new GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const override
+  {
+    return {"zm"};
+  }
+
+  Point operator() (const Point & parameter) const override
+  {
+    const Function objective(new GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3(sample_, m_));
+    const ParametricFunction objectiveZm(objective, Indices({0}), parameter);
+    OptimizationProblem problem(objectiveZm);
+    problem.setMinimization(false);
+
+
+    // sigma > 0
+    const Point lowerBound({SpecFunc::Precision, -SpecFunc::MaxScalar});
+    const Point upperBound(2, SpecFunc::MaxScalar);
+    const Interval::BoolCollection finiteLowerBound({true, false});
+    const Interval::BoolCollection finiteUpperBound(2, false);
+    problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+
+    const Point x0({sigma0_, xi0_});
+
+    // solve optimization problem
+    Cobyla solver(problem);
+    solver.setProblem(problem);
+    solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+    solver.setStartingPoint(x0);
+    try
+    {
+      solver.run();
+      optimalPoint_ = solver.getResult().getOptimalPoint();
+      const Point optimalValue(solver.getResult().getOptimalValue());
+      return optimalValue;
+    }
+    catch (const Exception &)
+    {
+      return Point(1, -SpecFunc::MaxScalar);
+    }
+  }
+
+  Point getOptimalPoint() const
+  {
+    return optimalPoint_;
+  }
+
+private:
+  Sample sample_;
+  Scalar sigma0_ = 0.0;
+  Scalar xi0_ = 0.0;
+  Scalar m_ = 0.0;
+  mutable Point optimalPoint_;
+};
+
+ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const
+{
+  if (sample.getSize() < 3)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "Return period should be > 1";
+  const Scalar p = 1.0 / m;
+
+  // start from maximum likelihood
+  const Distribution ref(buildMethodOfLikelihoodMaximization(sample));
+
+  const Scalar zm0 = ref.computeQuantile(p, true)[0];
+  const Scalar sigma0 = ref.getParameter()[1];
+  const Scalar xi0 = ref.getParameter()[2];
+  const Point x0({zm0});
+
+  const GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1 profileLikelihoodEvaluation(sample, sigma0, xi0, m);
+  const Function objective(profileLikelihoodEvaluation.clone());
+
+  OptimizationProblem problem(objective);
+  problem.setMinimization(false);
+
+  // solve optimization problem
+  Cobyla solver(problem);
+  solver.setProblem(problem);
+  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+  solver.setStartingPoint(x0);
+  solver.run();
+
+  // rerun once to get optimal (sigma, xi) at optimal zm
+  const Scalar zm = solver.getResult().getOptimalPoint()[0];
+  profileLikelihoodEvaluation(solver.getResult().getOptimalPoint());
+  const Scalar sigma = profileLikelihoodEvaluation.getOptimalPoint()[0];
+  const Scalar xi = profileLikelihoodEvaluation.getOptimalPoint()[1];
+  const Scalar mu = zm + sigma / xi * (-std::expm1(xi * std::log(m)));
+  const Point optimalParameter({mu, sigma, xi});
+ 
+  const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));
+  const Distribution nativeParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+
+  // delta method to transport native parametrization into zm parametrization
+  Matrix dzm(IdentityMatrix(3));
+  const Scalar yp = -std::log1p(-p);
   if (std::abs(xi) < SpecFunc::Precision)
     dzm(1, 0) = -std::log(yp);
   else
@@ -757,9 +970,19 @@ Distribution GeneralizedExtremeValueFactory::buildReturnLevelEstimator(const Dis
     dzm(1, 0) = -1.0 / xi * (1.0 - std::pow(yp, -xi));
     dzm(2, 0) = sigma / (xi * xi) * (1.0 - std::pow(yp, -xi)) - sigma / xi * std::pow(yp, -xi) * std::log(yp);
   }
-  const Matrix Vn(result.getParameterDistribution().getCovariance());
-  const Scalar varZm = (dzm.transpose() * Vn * dzm)(0, 0);
-  return Normal(zm, std::sqrt(varZm));
+  const Matrix Vn(nativeParameterDistribution.getCovariance());
+  const Matrix covZm = (dzm.transpose() * Vn * dzm);
+  Normal parameterDistribution(optimalParameter, CovarianceMatrix(covZm.getImplementation()));
+  parameterDistribution.setDescription({"zm", "sigma", "xi"}); 
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
+  ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm);
+  return result;
+}
+
+GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const
+{
+  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, m).getDistribution());
+  return buildAsGeneralizedExtremeValue(distribution.getParameter());
 }
 
 GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue(const Point & parameters) const

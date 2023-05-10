@@ -365,29 +365,29 @@ class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=tru
 This test helps selecting between two nested models :math:`\mathcal{M}_0 \subset \mathcal{M}_1`
 estimated by likelihood maximization.
 
-Let :math:`\theta_0` the parameters of a model :math:`\mathcal{M}` of dimension :math:`d`
-and :math:`\hat{\theta_0}` its maximum likelihood estimator.
-Lets partition :math:`\theta_0=(\theta^{(1)}, \theta^{(2)})` with :math:`k=dim(\theta^{(1)})`.
-We note :math:`l(\hat{\theta_0})` the associated maximum likelihood.
+Let :math:`\vect{\theta_0}` the parameters of a model :math:`\mathcal{M}` of dimension :math:`d`
+and :math:`\hat{\vect{\theta_0}}` its maximum likelihood estimator.
+Let us partition :math:`\vect{\theta}=(\theta^{(1)}, \theta^{(2)})` and let :math:`k` be the dimension of :math:`\theta^{(1)}`.
+We note :math:`\ell(\hat{\vect{\theta_0}})` the associated maximum likelihood.
 The profiled likehood of :math:`\mathcal{M}` wrt :math:`\theta^{(1)}` is defined by:
 
 .. math::
 
-    l_p = \max_{\theta^2} l(\theta^{(1)}, \theta^{(2)})
+    l_p = \max_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
 
-and its optimum is reached at:
+where the p suffix stands for `profiled` and its optimum is reached at:
 
 .. math::
 
-    \hat{\theta_2}(\theta^{(1)}) = \argmax_{\theta^2} l(\theta^{(1)}, \theta^{(2)})
+    \hat{\theta_2}(\theta^{(1)}) = \argmax_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
 
-In order to select the best model between the model parametrize by :math:`\hat{\theta_0}`
+In order to select the best model between the model parametrize by :math:`\hat{\vect{\theta_0}}`
 and the model parametrized by :math:`(\theta^{(1)}, \hat{\theta_2}(\theta^{(1)}))`,
 we define the deviance statistic as:
 
 .. math::
 
-    \mathcal{D}_p (\theta^{(1)}) = 2(l(\hat{\theta_0}) - l_p(\theta^{(1)}))
+    \mathcal{D}_p (\theta^{(1)}) = 2(\ell(\hat{\vect{\theta_0}}) - \ell_p(\theta^{(1)}))
 
 Then for a large sample size and under suitable regularity conditions :math:`\mathcal{D}_p`
 follows a :math:`\chi^2(k)` distribution.
@@ -395,7 +395,7 @@ follows a :math:`\chi^2(k)` distribution.
 Models are nested in the sense that parameters in model :math:`\mathcal{M}_0`
 parametrized by :math:`(\theta_0^{(1)}, \theta^{(2)})` where :math:`\theta_0^{(1)}` is frozen
 are a subset of the parameters in model :math:`\mathcal{M}_1` parametrized by
-:math:`\theta_0 = (\theta^{(1)}, \theta^{(2)})`.
+:math:`\vect{\theta_0} = (\theta^{(1)}, \theta^{(2)})`.
 
 We want to test the hypothesis :math:`\mathcal{H}_0 = \left\{ \mathcal{M}_0 \right\}`
 against the hypothesis :math:`\mathcal{H}_1 = \left\{ \mathcal{M}_1 \right\}`.
@@ -406,7 +406,7 @@ the domain of acceptance of :math:`\mathcal{H}_0` is:
 
 .. math::
 
-    \mathcal{C}_{\alpha} = \left\{ \theta^{(1)} : l_p(\theta{(1)}) \ge l(\theta_0) - 0.5 c_{\alpha} \right\}
+    \mathcal{C}_{\alpha} = \left\{ \theta^{(1)} : \ell_p(\theta{(1)}) \ge \ell(\vect{\theta_0}) - \frac{1}{2} c_{\alpha} \right\}
 
 where :math:`c_{\alpha}` is the quantile of order :math:`1 - \alpha` of the :math:`\chi^2(k)` distribution
     

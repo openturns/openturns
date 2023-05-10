@@ -1096,10 +1096,17 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralizedExtremeValueFactory parameters //
   addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
+  addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
+  addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
+  addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);
   addAsScalar("ProfileLikelihoodResult-RelativePrecision", 1.0e-10);
+  addAsScalar("ProfileLikelihoodResult-ConfidenceIntervalMargin", 0.05);
+  addAsScalar("ProfileLikelihoodResult-TextMargin", 0.03);
+  addAsScalar("ProfileLikelihoodResult-StartingScaling", 1e-2);
 
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);

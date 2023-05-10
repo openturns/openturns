@@ -71,11 +71,11 @@ estimator_prof_mle = factory.buildMethodOfProfileLikelihoodMaximizationEstimator
 assert estimator_prof_mle.getParameterDistribution().getImplementation().__class__.__name__ == "Normal"
 
 # specific check for profile likelihood
-xi = estimator_prof_mle.getDistribution().getImplementation().getXi()
-ci = estimator_prof_mle.getXiConfidenceInterval()
-print("profile MLE estimator xsi=", xi, estimator_prof_mle.getXiConfidenceInterval())
+xi = estimator_prof_mle.getParameter()
+ci = estimator_prof_mle.getParameterConfidenceInterval()
+print("profile MLE estimator xsi=", xi, ci)
 assert [xi] in ci, "xi should be inside confidence interval"
-graph = estimator_prof_mle.drawProfileLikelihood()
+graph = estimator_prof_mle.drawProfileLikelihoodFunction()
 
 # specific check for R maxima
 sample_rmax = coles.Coles().venice[:, 1:]
@@ -110,6 +110,8 @@ assert estimator_timevar.getParameterDistribution().getImplementation().__class_
 dist0 = estimator_timevar.getDistribution(t0)
 print(dist0)
 assert dist0.getImplementation().__class__.__name__ == "GeneralizedExtremeValue"
+graph_param = estimator_timevar.drawParameterFunction(0)
+graph_quantile = estimator_timevar.drawQuantileFunction(0.99)
 
 # specific check for model selection
 estimator_mle = factory.buildMethodOfLikelihoodMaximizationEstimator(fremantle[:, 1])
@@ -122,3 +124,12 @@ assert not result_deviance.getBinaryQualityMeasure(), "H0 (stationary model) acc
 zm = factory.buildReturnLevelEstimator(estimator_mle, 10.0)
 print('zm=', zm.getMean())
 ott.assert_almost_equal(zm.getMean(), [1.73377], 1e-2, 1e-2)
+
+# specific check for return level via profile likelihood
+estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(fremantle[:, 1], 10.0)
+print(estimator_prof_rl)
+zm = estimator_prof_rl.getParameter()
+ci = estimator_prof_rl.getParameterConfidenceInterval()
+print("profile return level estimator zm=", zm, ci)
+assert [zm] in ci, "zm should be inside confidence interval"
+graph = estimator_prof_rl.drawProfileLikelihoodFunction()

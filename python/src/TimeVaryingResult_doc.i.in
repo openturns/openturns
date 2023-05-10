@@ -1,5 +1,19 @@
 %feature("docstring") OT::TimeVaryingResult
-"GeneralizedExtremeValue factory result for time-varying likelihood estimation.
+"Distribution factory result for time-varying likelihood estimation.
+
+Parameters
+----------
+factory : :class:`~openturns.DistributionFactory`
+    Parent factory
+parameterFunction : :class:`~openturns.Function`
+    The :math:`\theta(t)` function.
+mesh : :class:`~openturns.Mesh`
+    Time grid
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter
+llh : float
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
 
 See also
 --------
@@ -47,7 +61,7 @@ parameterDistribution : :class:`~openturns.Distribution`
 
 Returns
 -------
-parameterFunction : :class:`~openturns.Funtion`
+parameterFunction : :class:`~openturns.Function`
     The :math:`\theta(t)` function."
 
 
@@ -65,24 +79,27 @@ optimalParameter : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::setLogLikelihood
-"Likelihood value accessor.
+"Optimal likelihood value accessor.
 
 Parameters
 ----------
 llh : float
-    Log-likelihood value.
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getLogLikelihood
-"Likelihood value accessor.
+"Optimal likelihood value accessor.
 
 Returns
 -------
 llh : float
-    Log-likelihood value.
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
 "
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::drawParameterFunction
@@ -97,4 +114,20 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     Parameter function graph.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawQuantileFunction
+"Draw the quantile function.
+
+Parameters
+----------
+p : float
+    The quantile level.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Quantile function graph.
 "

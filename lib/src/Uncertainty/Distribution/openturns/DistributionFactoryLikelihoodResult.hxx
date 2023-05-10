@@ -18,26 +18,26 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LIKELIHOODRESULT_HXX
-#define OPENTURNS_LIKELIHOODRESULT_HXX
+#ifndef OPENTURNS_DISTRIBUTIONFACTORYLIKELIHOODRESULT_HXX
+#define OPENTURNS_DISTRIBUTIONFACTORYLIKELIHOODRESULT_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class OT_API LikelihoodResult
+class OT_API DistributionFactoryLikelihoodResult
   : public DistributionFactoryResult
 {
   CLASSNAME
 public:
-  LikelihoodResult();
+  DistributionFactoryLikelihoodResult();
   
-  LikelihoodResult(const Distribution & distribution,
+  DistributionFactoryLikelihoodResult(const Distribution & distribution,
                    const Distribution & parameterDistribution,
                    const Scalar logLikelihood);
 
-  LikelihoodResult * clone() const override;
+  DistributionFactoryLikelihoodResult * clone() const override;
 
   void setLogLikelihood(const Scalar logLikelihood);
   Scalar getLogLikelihood() const;
@@ -56,4 +56,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LIKELIHOODRESULT_HXX */
+#endif /* OPENTURNS_DISTRIBUTIONFACTORYLIKELIHOODRESULT_HXX */

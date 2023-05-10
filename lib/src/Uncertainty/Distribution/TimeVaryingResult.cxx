@@ -24,7 +24,6 @@
 #include "openturns/Brent.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
-#include "openturns/GeneralizedExtremeValueFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,11 +36,13 @@ TimeVaryingResult::TimeVaryingResult()
  : PersistentObject()
  {}
 
-TimeVaryingResult::TimeVaryingResult(const Function & parameterFunction,
+TimeVaryingResult::TimeVaryingResult(const DistributionFactory & factory,
+                                     const Function & parameterFunction,
                                      const Mesh & mesh,
                                      const Distribution & parameterDistribution,
                                      const Scalar logLikelihood)
  : PersistentObject()
+ , factory_(factory)
  , parameterFunction_(parameterFunction)
  , mesh_(mesh)
  , parameterDistribution_(parameterDistribution)
@@ -83,14 +84,64 @@ Scalar TimeVaryingResult::getLogLikelihood() const
   return logLikelihood_;
 }
 
+/* Draw parameter for all time values */
 Graph TimeVaryingResult::drawParameterFunction(const UnsignedInteger parameterIndex) const
 {
   const Sample grid(mesh_.getVertices());
   const Scalar xMin = grid.getMin()[0];
   const Scalar xMax = grid.getMax()[0];
-
   Graph result(parameterFunction_.getMarginal(parameterIndex).draw(xMin, xMax));
+  result.setTitle("Parameter function");
+  return result;
+}
 
+class TimeVaryingResultQuantileEvaluation : public EvaluationImplementation
+{
+public:
+  TimeVaryingResultQuantileEvaluation(const TimeVaryingResult & result, const Scalar p)
+  : result_(result)
+  , p_(p)
+  {
+    setInputDescription({"t"});
+    setOutputDescription({"quantile(t)"});
+  }
+
+  TimeVaryingResultQuantileEvaluation * clone() const override
+  {
+    return new TimeVaryingResultQuantileEvaluation(*this);
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar t = inP[0];
+    return result_.getDistribution(t).computeQuantile(p_);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+private:
+  TimeVaryingResult result_;
+  Scalar p_ = 0.0;
+};
+
+/* Draw quantile for all time values */
+Graph TimeVaryingResult::drawQuantileFunction(const Scalar p) const
+{
+  const Sample grid(mesh_.getVertices());
+  const Scalar xMin = grid.getMin()[0];
+  const Scalar xMax = grid.getMax()[0];
+
+  Function quantileFunction(TimeVaryingResultQuantileEvaluation(*this, p));
+  Graph result(quantileFunction.draw(xMin, xMax));
+  result.setTitle("Quantile function");
   return result;
 }
 
@@ -105,10 +156,10 @@ Function TimeVaryingResult::getParameterFunction() const
 }
 
 /* Accessor to the distribution at a given time */
-Distribution TimeVaryingResult::getDistribution(const Scalar t)
+Distribution TimeVaryingResult::getDistribution(const Scalar t) const
 {
   const Point parameters(parameterFunction_(Point(1, t)));
-  return GeneralizedExtremeValueFactory().build(parameters);
+  return factory_.build(parameters);
 }
 
 /* Method save() stores the object through the StorageManager */

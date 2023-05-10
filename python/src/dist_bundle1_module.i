@@ -69,7 +69,7 @@
 %include WeibullMaxFactory.i
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
-%include LikelihoodResult.i
+%include DistributionFactoryLikelihoodResult.i
 %include ProfileLikelihoodResult.i
 %include TimeVaryingResult.i
 %include GeneralizedExtremeValueFactory.i
