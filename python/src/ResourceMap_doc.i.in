@@ -269,7 +269,7 @@ value : int
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsUnsignedInteger('RandomWalkMetropolisHastings-DefaultBurnIn', 0)"
+>>> ot.ResourceMap.SetAsUnsignedInteger('RandomWalkMetropolisHastings-DefaultBurnIn', 1000)"
 
 // ---------------------------------------------------------------------
 
