@@ -21,6 +21,7 @@
 
 #include "openturns/MarginalEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/BatchFailedException.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -136,9 +137,19 @@ Sample MarginalEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger inputDimension = p_evaluation_->getInputDimension();
   const UnsignedInteger sampleDimension = inSample.getDimension();
   if (sampleDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << inputDimension << ", got dimension=" << sampleDimension;
-  const Sample fullOutput(p_evaluation_->operator()(inSample));
-  callsNumber_.fetchAndAdd(size);
-  return fullOutput.getMarginal(indices_);
+  try
+  {
+    const Sample fullOutput(p_evaluation_->operator()(inSample));
+    callsNumber_.fetchAndAdd(size);
+    return fullOutput.getMarginal(indices_);
+  }
+  catch (BatchFailedException & exc)
+  {
+    // rethrow but with updated output sample
+    callsNumber_.fetchAndAdd(size);
+    exc.setOutputSample(exc.getOutputSample().getMarginal(indices_));
+    throw exc;
+  }
 }
 
 /* Accessor for input point dimension */

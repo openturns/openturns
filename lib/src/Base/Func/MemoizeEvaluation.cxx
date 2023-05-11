@@ -23,6 +23,7 @@
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MarginalEvaluation.hxx"
+#include "openturns/BatchFailedException.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,7 +51,6 @@ MemoizeEvaluation::MemoizeEvaluation()
   : EvaluationProxy()
   , inputStrategy_(Full())
   , outputStrategy_(Full())
-  , isHistoryEnabled_(true)
   , p_cache_(new CacheType)
 {
   // We disable the cache by default
@@ -62,7 +62,6 @@ MemoizeEvaluation::MemoizeEvaluation(const Evaluation & evaluation, const Histor
   : EvaluationProxy(evaluation)
   , inputStrategy_(historyStrategy)
   , outputStrategy_(historyStrategy)
-  , isHistoryEnabled_(true)
   , p_cache_(new CacheType)
 {
   setEvaluation(evaluation);
@@ -138,11 +137,10 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger outDim = getOutputDimension();
 
   Sample outSample;
-  Sample toDo(0, inDim);
   if (p_cache_->isEnabled())
   {
     outSample = Sample(size, outDim);
-    std::set<Point> uniqueValues;
+    std::map<Point, UnsignedInteger> uniqueValues;
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       CacheKeyType inKey(inSample[i].getCollection());
@@ -152,13 +150,16 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
       }
       else
       {
-        uniqueValues.insert(inSample[i]);
+        uniqueValues[inSample[i]] = i;
       }
     }
-    for(std::set<Point>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
+    Sample toDo(0, inDim);
+    Indices toDoIndices;
+    for (auto const & entry : uniqueValues)
     {
       // store unique values
-      toDo.add(*it);
+      toDo.add(entry.first);
+      toDoIndices.add(entry.second);
     }
     UnsignedInteger toDoSize = toDo.getSize();
     CacheType tempCache(toDoSize);
@@ -166,19 +167,56 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 
     if (toDoSize > 0)
     {
-      const Sample result(evaluation_.operator()(toDo));
-      callsNumber_.fetchAndAdd(toDoSize);
-      for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-        tempCache.add(toDo[i], result[i]);
-    }
-    // Fill all the output values
-    for(UnsignedInteger i = 0; i < size; ++ i)
-    {
-      CacheKeyType inKey(inSample[i].getCollection());
-      if (tempCache.hasKey(inKey))
+      Sample result;
+      try
       {
-        outSample[i] = Point::ImplementationType(tempCache.find(inKey));
+        const Sample result(evaluation_.operator()(toDo));
+        callsNumber_.fetchAndAdd(toDoSize);
+        for (UnsignedInteger i = 0; i < toDoSize; ++ i)
+          tempCache.add(toDo[i], result[i]);
       }
+      catch (const BatchFailedException & exc)
+      {
+        // rethrow another BatchFailedException, but with updated indices
+        // as the original evaluation is called on a subset of the input sample
+        callsNumber_.fetchAndAdd(toDoSize);
+        const Indices localOkIndices(exc.getSucceededIndices());
+        const Indices localFailedIndices(exc.getFailedIndices());
+        const Sample localOkSample(exc.getOutputSample());
+        const Description localErrorDescription(exc.getErrorDescription());
+        Indices failedIndices;
+        Description errorDescription;
+        Sample okSample(0, outDim);
+        okSample.setDescription(evaluation_.getOutputDescription());
+        for (UnsignedInteger i = 0; i < localOkIndices.getSize(); ++ i)
+          tempCache.add(toDo[localOkIndices[i]], localOkSample[i]);
+        std::map<Point, String> failCache;
+        for (UnsignedInteger i = 0; i < localFailedIndices.getSize(); ++ i)
+          failCache[toDo[localFailedIndices[i]]] = localErrorDescription[i];
+        for (UnsignedInteger i = 0; i < size; ++ i)
+        {
+          const CacheKeyType inKey(inSample[i].getCollection());
+          if (p_cache_->hasKey(inKey))
+            okSample.add(outSample[i]);// already retrieved
+          else if (tempCache.hasKey(inKey))
+            okSample.add(Point::ImplementationType(tempCache.find(inKey)));
+          else
+          {
+            failedIndices.add(i);
+            errorDescription.add(failCache[inSample[i]]);
+          }
+        }
+        p_cache_->merge(tempCache);
+        const Indices okIndices(failedIndices.complement(size));
+        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, okSample);
+      }
+    }
+    // Fill remaining output values
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const CacheKeyType inKey(inSample[i].getCollection());
+      if (tempCache.hasKey(inKey))
+        outSample[i] = Point::ImplementationType(tempCache.find(inKey));
     }
     p_cache_->merge(tempCache);
   }

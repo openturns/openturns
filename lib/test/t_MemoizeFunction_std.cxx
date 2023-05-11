@@ -24,6 +24,56 @@
 using namespace OT;
 using namespace OT::Test;
 
+
+class FooEvaluation : public EvaluationImplementation
+{
+public:
+  FooEvaluation() : EvaluationImplementation() {}
+
+  FooEvaluation * clone() const override { return new FooEvaluation(*this); }
+
+  UnsignedInteger getInputDimension() const override { return 2; }
+  UnsignedInteger getOutputDimension() const override { return 3; }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar x0 = inP[0];
+    const Scalar x1 = inP[1];
+    if (x1 < 0.0)
+      throw InvalidArgumentException(HERE) << "x1<0 at " << inP.__str__();
+    const Scalar y0 = x0 + x1;
+    const Scalar y1 = x0 * x1;
+    const Scalar y2 = y0 + y1;
+    return {y0, y1, y2};
+  }
+
+  Sample operator()(const Sample & inS) const override
+  {
+    const UnsignedInteger size = inS.getSize();
+    Sample result(size, getOutputDimension());
+    Indices okIndices;
+    Indices failedIndices;
+    Description errors;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      try
+      {
+        result[i] = operator()(inS[i]);
+        okIndices.add(i);
+      }
+      catch (const Exception & exc)
+      {
+        errors.add(exc.what());
+        failedIndices.add(i);
+      }
+    }
+    if (failedIndices.getSize())
+      throw BatchFailedException(HERE, failedIndices, errors, okIndices, result.select(okIndices));
+    return result;
+  }
+};
+
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -77,8 +127,30 @@ int main(int, char *[])
     Function g2(new SymbolicEvaluation(Description(1, "x"), Description(1, "y"), Description(1, "x^3")));
     MemoizeFunction f2(g2);
     fullprint << "default gradient=" << f2.getUseDefaultGradientImplementation() << std::endl;
+
+    // test Batch exception
+    const Function g3(new FooEvaluation);
+    const MemoizeFunction f3(g3);
+    Sample X(Normal(2).getSample(10));
+    X.add(X.select(Indices({0, 1, 3, 8, 9})));
+    std::cout << X << std::endl;
+    try
+    {
+      f3(X);
+    }
+    catch (const BatchFailedException & exc)
+    {
+      std::cout << "i_fail=" << exc.getFailedIndices() << std::endl;
+      std::cout << "X_fail=" << X.select(exc.getFailedIndices()) << std::endl;
+      for (UnsignedInteger i = 0; i < exc.getFailedIndices().getSize(); ++ i)
+        std::cout << "i_fail=" << exc.getFailedIndices()[i] << " error=" << exc.getErrorDescription()[i] << std::endl;
+      std::cout << "i_ok=" << exc.getSucceededIndices() << std::endl;
+      std::cout << "X_ok=" << X.select(exc.getSucceededIndices()) << std::endl;
+      std::cout << "Y_ok=" << exc.getOutputSample()<<std::endl;
+      std::cout << "f(X_ok)=" << f3(X.select(exc.getSucceededIndices())) << std::endl;
+    }
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

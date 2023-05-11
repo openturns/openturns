@@ -26,6 +26,7 @@
 #include "openturns/AggregatedEvaluation.hxx"
 #include "openturns/AggregatedGradient.hxx"
 #include "openturns/AggregatedHessian.hxx"
+#include "openturns/BatchFailedException.hxx" 
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
