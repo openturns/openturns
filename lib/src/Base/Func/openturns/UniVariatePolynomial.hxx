@@ -63,6 +63,8 @@ public:
 
   /** String converter */
   String __repr__() const override;
+  String __repr_html__() const override;
+  String __repr_html__(const String & variableName) const;
   String __str__(const String & offset = "") const override;
   virtual String __str__(const String & variableName,
                          const String & offset) const;

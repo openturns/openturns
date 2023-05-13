@@ -121,6 +121,68 @@ String ProductPolynomialEvaluation::__str__(const String & offset) const
   return oss;
 }
 
+String ProductPolynomialEvaluation::__repr_html__() const
+{
+  OSS oss(false);
+  const UnsignedInteger size = polynomials_.getSize();
+  if (size == 0) return oss;
+  const Description description(getInputDescription());
+  if (size == 1) return (oss << polynomials_[0].__repr_html__(description[0]));
+  Bool allScalar = true;
+  Scalar scalarValue = 1.0;
+  Bool onlyOneNotScalar = false;
+  UnsignedInteger indexNotScalar = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger degree = polynomials_[i].getDegree();
+    const Bool isScalar = degree == 0;
+    // Only one non-scalar so far, and the current one is not scalar
+    if (onlyOneNotScalar && !isScalar) onlyOneNotScalar = false;
+    // Only scalars so far, and the current is not scalar
+    if (allScalar && !isScalar)
+    {
+      onlyOneNotScalar = true;
+      indexNotScalar = i;
+    }
+    if (isScalar) scalarValue *= polynomials_[i].getCoefficients()[0];
+    allScalar = allScalar && isScalar;
+  }
+  // Scalar polynomial
+  if (allScalar) oss << scalarValue;
+  // Only one no unit polynomial in the product
+  else if (onlyOneNotScalar) oss << (polynomials_[indexNotScalar] * scalarValue).__repr_html__(description[indexNotScalar]);
+  // At least two non-scalar factors
+  else
+  {
+    const String scalarValueString(OSS(false) << scalarValue);
+    Bool first = scalarValueString == "1";
+    // There is a non-unit factor
+    if (!first) oss << scalarValue;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const UnsignedInteger degree = polynomials_[i].getDegree();
+      // All the degree 0 factors have already been taken into account
+      if (degree > 0)
+      {
+        if (!first) oss << " <span>&#215;</span> ";        
+        const Point marginalCoefficeints = polynomials_[i].getCoefficients();
+        // We count the number of non zeros coefficients
+        UnsignedInteger numberOfNonZeros = 0;
+        for (UnsignedInteger j = 0; j < marginalCoefficeints.getDimension(); ++j)
+          if (marginalCoefficeints[j] != 0.0)
+            numberOfNonZeros += 1;
+        // We need parentheses if there are two non zero coefficients or more
+        const Bool isNeedForParentheses = (numberOfNonZeros > 1);
+        if (isNeedForParentheses)
+          oss << "(" << polynomials_[i].__repr_html__(description[i]) << ")";
+        else
+          oss << polynomials_[i].__repr_html__(description[i]);
+        first = false;
+      }
+    } // Loop over the factors
+  } // At least two non-scalar factors
+  return oss;
+}
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 Point ProductPolynomialEvaluation::operator() (const Point & inP) const

@@ -30,7 +30,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
-
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -98,7 +98,7 @@ public:
   virtual FunctionCollection getReducedBasis() const;
 
   /** Composed meta model accessor */
-  virtual Function getComposedMetaModel() const;
+  virtual DualLinearCombinationFunction getComposedMetaModel() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -137,7 +137,7 @@ private:
   FunctionPersistentCollection Psi_k_;
 
   /** Composed meta model */
-  Function composedMetaModel_;
+  DualLinearCombinationFunction composedMetaModel_;
 
   /** Selection history */
   Collection<Indices> indicesHistory_;

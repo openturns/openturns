@@ -72,6 +72,16 @@ String UniVariatePolynomial::__repr__() const
          << " coefficients=" << getImplementation()->getCoefficients().__repr__();
 }
 
+String UniVariatePolynomial::__repr_html__() const
+{
+  return OSS(true) << getImplementation()->__repr_html__();
+}
+
+String UniVariatePolynomial::__repr_html__(const String & variableName) const
+{
+  return OSS(true) << getImplementation()->__repr_html__(variableName);
+}
+
 String UniVariatePolynomial::__str__(const String & offset) const
 {
   return OSS(false) << getImplementation()->__str__("X", offset);

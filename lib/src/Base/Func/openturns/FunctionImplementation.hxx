@@ -88,6 +88,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String __repr_html__() const override;
 
   /** Function implementation accessors */
   virtual void setEvaluation(const Evaluation & evaluation);

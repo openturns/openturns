@@ -90,6 +90,11 @@ String ComposedEvaluation::__str__(const String & offset) const
   return oss;
 }
 
+String ComposedEvaluation::__repr_html__() const
+{
+  return __str__();
+}
+
 /* Operator () */
 Point ComposedEvaluation::operator() (const Point & inP) const
 {

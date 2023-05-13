@@ -56,3 +56,11 @@ print("P1*P2=", P1 * P2)
 
 # Multiplication of two polynomials using FFT
 print("P1*P2=", P1 * P2)
+
+# Create a polynomial with a leading term equal to 0 (do not print, then
+# a first term with unity coefficient (hide the coefficient when printing),
+# and then several coefficients equal to 1 or 0
+P1 = ot.UniVariatePolynomial([0.0, 1.0, -2.0, -1.0, 0.0, 1.0])
+print("P1=", P1)
+print("(repr) P1=", repr(P1))
+print("(html) P1=", P1.__repr_html__())

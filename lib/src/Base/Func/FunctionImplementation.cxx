@@ -112,6 +112,12 @@ String FunctionImplementation::__str__(const String & offset) const
   return evaluation_.__str__(offset);
 }
 
+/* String converter */
+String FunctionImplementation::__repr_html__() const
+{
+  return evaluation_.__repr_html__();
+}
+
 /* Description Accessor */
 void FunctionImplementation::setDescription(const Description & description)
 {

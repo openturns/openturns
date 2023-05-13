@@ -81,6 +81,20 @@ String EvaluationImplementation::__str__(const String & ) const
   return OSS(false) << "EvaluationImplementation";
 }
 
+/* String converter */
+String EvaluationImplementation::__repr_html__() const
+{
+  OSS oss(true);
+  oss << "<ul>\n";
+  oss << "  <li> " << "Input dimension = " << getInputDimension() << "  </li>\n";
+  oss << "  <li> " << "Input description = " << getInputDescription() << "  </li>\n";
+  oss << "  <li> " << "Output dimension = " << getOutputDimension() << "  </li>\n";
+  oss << "  <li> " << "Output description = " << getOutputDescription() << "  </li>\n";
+  oss << "  <li> " << "Parameter = " << getParameter() << "  </li>\n";
+  oss << "</ul>\n";
+  return oss;
+}
+
 /* Description Accessor */
 void EvaluationImplementation::setDescription(const Description & description)
 {

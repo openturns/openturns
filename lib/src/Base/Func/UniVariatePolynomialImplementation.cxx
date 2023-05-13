@@ -83,9 +83,11 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar aI = coefficients_[i];
+    Bool mustPrint = false;
     // Only deal with non-zero coefficients
     if (String(OSS(false) << std::abs(aI)) != "0")
     {
+      mustPrint = false;
       // Special case for the first term: no + sign, no leading blank and no trailing blank for the - sign
       if (firstTerm)
       {
@@ -94,14 +96,7 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
         if (aI < 0) oss << "-";
         // If the leading term is a constant, print it even if its absolute value is 1
         if (i == 0) oss  << std::abs(aI);
-        else
-        {
-          // Print the coefficient only if its absolute value is not 1
-          if (String(OSS(false) << std::abs(aI)) != "1") oss << std::abs(aI) << " * ";
-          oss << variableName;
-          // Print the exponent only if it is > 1
-          if (i > 1) oss << "^" << i;
-        }
+        else mustPrint = true;
       } // Leading term
       // For the other coefficients
       else
@@ -110,11 +105,68 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
         // Here, i > 0
         if (aI > 0.0) oss << " + ";
         else oss << " - ";
+        mustPrint = true;
+      } // Non-leading term
+      if (mustPrint)
+      {
         if (String(OSS(false) << std::abs(aI)) != "1") oss << std::abs(aI) << " * ";
         oss << variableName;
         // Print the exponent only if it is > 1
         if (i > 1) oss << "^" << i;
+      }
+    } // Non-null coefficient
+  } // Loop over the coefficients
+  // Here, if firstTerm is true it is because all the coefficients are zero
+  if (firstTerm) oss << "0";
+  return oss;
+}
+
+String UniVariatePolynomialImplementation::__repr_html__() const
+{
+  return __repr_html__("X");
+}
+
+String UniVariatePolynomialImplementation::__repr_html__(const String & variableName) const
+{
+  OSS oss(false);
+  const UnsignedInteger size = coefficients_.getSize();
+  // Specific case for empty polynomial
+  if (size == 0) return oss;
+  Bool firstTerm = true;
+  Bool mustPrint = false;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar aI = coefficients_[i];
+    // Only deal with non-zero coefficients
+    if (String(OSS(false) << std::abs(aI)) != "0")
+    {
+      mustPrint = false;
+      // Special case for the first term: no + sign, no leading blank and no trailing blank for the - sign
+      if (firstTerm)
+      {
+        firstTerm = false;
+        // Sign
+        if (aI < 0) oss << "-";
+        // If the leading term is a constant, print it even if its absolute value is 1
+        if (i == 0) oss  << std::abs(aI);
+        else mustPrint = true;
+      } // Leading term
+      // For the other coefficients
+      else
+      {
+        // Separate the sign from the absolute value by a binary +/- operator
+        // Here, i > 0
+        if (aI > 0.0) oss << " + ";
+        else oss << " - ";
+        mustPrint = true;
       } // Non-leading term
+      if (mustPrint)
+      {
+        if (String(OSS(false) << std::abs(aI)) != "1") oss << std::abs(aI) << " <span>&#215;</span> ";
+        oss << variableName;
+        // Print the exponent only if it is > 1
+        if (i > 1) oss << "<sup>" << i << "</sup>";
+      }
     } // Non-null coefficient
   } // Loop over the coefficients
   // Here, if firstTerm is true it is because all the coefficients are zero

@@ -81,6 +81,14 @@ int main(int, char *[])
     fullprint << projectionStrategy << std::endl;
     std::cout << "ProjectionStrategy (str)= " << std::endl;
     std::cout << projectionStrategy << std::endl;
+    DualLinearCombinationFunction composedMetamodel(result.getComposedMetaModel());
+    fullprint << "ComposedMetamodel, ClassName= " << composedMetamodel.getClassName() << std::endl;
+    fullprint << "ComposedMetamodel (repr)= " << std::endl;
+    fullprint << composedMetamodel << std::endl;
+    std::cout << "ComposedMetamodel (str)= " << std::endl;
+    std::cout << composedMetamodel << std::endl;
+    std::cout << "ComposedMetamodel (html)= " << std::endl;
+    std::cout << composedMetamodel.__repr_html__() << std::endl;
     
   } // try
   catch (TestFailed & ex)

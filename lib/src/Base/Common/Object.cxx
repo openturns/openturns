@@ -39,6 +39,11 @@ String Object::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
+String Object::__repr_html__() const
+{
+  return __repr__();
+}
+
 /* Pretty string converter */
 String Object::__str__(const String & ) const
 {

@@ -268,7 +268,7 @@ FunctionalChaosResult::FunctionCollection FunctionalChaosResult::getReducedBasis
 }
 
 /* Composed meta model accessor */
-Function FunctionalChaosResult::getComposedMetaModel() const
+DualLinearCombinationFunction FunctionalChaosResult::getComposedMetaModel() const
 {
   return composedMetaModel_;
 }

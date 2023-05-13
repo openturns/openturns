@@ -51,7 +51,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class Object
  *
- * @brief The base classe for almost every object in OpenTURNS.
+ * @brief The base class for almost every object in OpenTURNS.
  *
  * Object defines common methods needed by all classes.
  * These are default constructor, copy constructor, virtual
@@ -79,6 +79,16 @@ public:
    * @return A string fully describing the object
    */
   virtual String __repr__() const;
+
+  /**
+   * String HTML converter
+   *
+   * This method shows HTML information of the object. It is used when streaming
+   * the object or for user information.
+   *
+   * @return A string fully describing the object
+   */
+  virtual String __repr_html__() const;
 
 
   /**
