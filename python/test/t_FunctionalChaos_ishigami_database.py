@@ -98,11 +98,10 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         algo.run()
 
         # Examine the results
-        result = ot.FunctionalChaosResult(algo.getResult())
+        result = algo.getResult()
         print("###################################")
-        print(ot.AdaptiveStrategy(adaptiveStrategy))
-        print(ot.ProjectionStrategy(projectionStrategy))
-        # print "coefficients=", result.getCoefficients()
+        print(adaptiveStrategy)
+        print(algo.getProjectionStrategy())
         residuals = result.getResiduals()
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()

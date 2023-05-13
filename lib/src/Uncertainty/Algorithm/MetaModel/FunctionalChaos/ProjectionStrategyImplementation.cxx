@@ -25,6 +25,7 @@
 #include "openturns/FixedExperiment.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -130,10 +131,42 @@ ProjectionStrategyImplementation * ProjectionStrategyImplementation::clone() con
 /* String converter */
 String ProjectionStrategyImplementation::__repr__() const
 {
-  return OSS() << "class=" << GetClassName()
-         << " measure=" << measure_;
+  OSS oss(false);
+  oss << "class=" << GetClassName()
+      << " alpha_k_p=" << alpha_k_p_
+      << " residual=" << residual_p_
+      << " relativeError=" << relativeError_p_
+      << " measure=" << measure_
+      << " weightedExperiment=" << weightedExperiment_
+      << " inputSample_=" << inputSample_
+      << " outputSample=" << outputSample_
+      << " weights_=" << weights_
+      << " proxy=" << proxy_;
+  return oss;
 }
 
+/* String converter */
+String ProjectionStrategyImplementation::__str__(const String &) const
+{
+  return __repr_markdown__();
+}
+
+/* String converter */
+String ProjectionStrategyImplementation::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << GetClassName() << Os::GetEndOfLine()
+      << "- coefficients: " << alpha_k_p_.getDimension() << Os::GetEndOfLine()
+      << "- residual: " << residual_p_ << Os::GetEndOfLine()
+      << "- relative error: " << relativeError_p_ << Os::GetEndOfLine()
+      << "- measure: " << measure_.getClassName() << Os::GetEndOfLine()
+      << "- weighted experiment: " << weightedExperiment_.getClassName() << Os::GetEndOfLine()
+      << "- input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << Os::GetEndOfLine()
+      << "- output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << Os::GetEndOfLine()
+      << "- weights: dimension= " << weights_.getDimension() << Os::GetEndOfLine()
+      << "- design: size= " << proxy_.getSampleSize() << Os::GetEndOfLine();
+  return oss;
+}
 
 /* Measure accessor */
 void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
@@ -217,6 +250,12 @@ Scalar ProjectionStrategyImplementation::getRelativeError() const
 Point ProjectionStrategyImplementation::getCoefficients() const
 {
   return alpha_k_p_;
+}
+
+/* Design proxy accessor */
+DesignProxy ProjectionStrategyImplementation::getDesignProxy() const
+{
+  return proxy_;
 }
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

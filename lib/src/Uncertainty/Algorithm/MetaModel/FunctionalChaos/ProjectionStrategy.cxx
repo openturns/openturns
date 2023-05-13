@@ -130,6 +130,11 @@ Point ProjectionStrategy::getCoefficients() const
   return getImplementation()->getCoefficients();
 }
 
+/* Design proxy accessor */
+DesignProxy ProjectionStrategy::getDesignProxy() const
+{
+  return getImplementation()->getDesignProxy();
+}
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategy::computeCoefficients(const Function & function,
@@ -153,9 +158,9 @@ String ProjectionStrategy::__repr__() const
 
 
 /* String converter */
-String ProjectionStrategy::__str__(const String & ) const
+String ProjectionStrategy::__str__(const String & offset) const
 {
-  return __repr__();
+  return OSS() << getImplementation()->__str__(offset);
 }
 
 
