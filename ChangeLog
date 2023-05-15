@@ -64,6 +64,7 @@
 === Bug fixes ===
  * #2250 (HSIC Target sensitivity bad filtering)
  * #2252 (The examples of calibration are difficult to understand)
+ * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
 
 == 1.20 release (2022-11-08) == #release-1.20
 
