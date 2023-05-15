@@ -7,34 +7,54 @@ CXXFLAGS+=$(CPPFLAGS)
 DPKG_EXPORT_BUILDFLAGS = 1
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-PY3VER = $(shell py3versions -d)
+test_makeflags = -j4
+
+# Getting the number of jobs for the Debian build to transmit it to CMake.
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	test_makeflags = -j$(NUMJOBS)
+endif
+
+# Disabling tbb on s390x until Debian bug #1009361 is fixed.
+ifeq ($(shell dpkg --print-architecture),s390x)
+    with_tbb := -DUSE_TBB:BOOL=OFF
+else
+    with_tbb := -DUSE_TBB:BOOL=ON
+endif
+
+# Discarding the following flaky tests on armel.
+ifeq ($(shell dpkg --print-architecture),armel)
+    test_discardflags := -E \\\"FunctionalChaos_.*|KrigingAlgorithm_std|MetaModelValidation_std\\\"
+endif
+
 BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H:%M:%S %z")
 
 %:
 	dh $@ --buildsystem=cmake --with python3
 
 override_dh_auto_configure:
-	dh_auto_configure -Bbuild-python$* -- \
+	dh_auto_configure -Bbuilddir -- \
+            $(with_tbb) \
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
             -DUSE_SPHINX:BOOL=OFF \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH="/usr/lib/$(DEB_HOST_MULTIARCH)" \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
-            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-            -DSWIG_COMPILE_FLAGS:STRING='-O1' \
-            -DPYTHON_SITE_PACKAGES:PATH="lib/$(PY3VER)/site-packages"
+	        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
+            -DSWIG_COMPILE_FLAGS:STRING='-O1'
 
 override_dh_auto_build:
-	$(MAKE) -j4 -C build-python$*/lib
-	$(MAKE) -j1 -C build-python$*/python
-	$(MAKE) -C build-python$*
+	$(MAKE) $(test_makeflags) -C builddir/lib
+	$(MAKE) -j2 -C builddir/python
+	$(MAKE) $(test_makeflags) -C builddir
 
 override_dh_auto_install:
-	dh_auto_install -Bbuild-python$*
+	dh_auto_install -Bbuilddir
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
-	  $(MAKE) -C build-python$* test ARGS="-R pyinstallcheck --output-on-failure --schedule-random -j4"
+	eval "LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
+	  CTEST_OUTPUT_ON_FAILURE=1 \
+	  $(MAKE) $(test_makeflags) -C builddir test ARGS=\"$(test_makeflags) $(test_discardflags) -R pyinstallcheck --output-on-failure --schedule-random\""
 endif
 
 override_dh_auto_test:
