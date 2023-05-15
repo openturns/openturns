@@ -1540,6 +1540,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
+  addAsUnsignedInteger("VisualTest-CloudSmallSize", 100);
+  addAsUnsignedInteger("VisualTest-CloudMediumSize", 1000);
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
   addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
 

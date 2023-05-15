@@ -918,6 +918,8 @@
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
+  <VisualTest-CloudSmallSize value_int="100" />
+  <VisualTest-CloudMediumSize value_int="1000" />
   <VisualTest-KendallPlot-MonteCarloSize value_int="100" />
   <VisualTest-DependenceConfidenceLevel value_float="0.95" />
 

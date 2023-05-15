@@ -32,6 +32,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+static String VisualTestGetPointStyle(const UnsignedInteger size)
+{
+  const UnsignedInteger smallSize = ResourceMap::GetAsUnsignedInteger("VisualTest-CloudSmallSize");
+  const UnsignedInteger mediumSize = ResourceMap::GetAsUnsignedInteger("VisualTest-CloudMediumSize");
+  if (size < smallSize)
+    return "fcircle";
+  else if (size < mediumSize)
+    return"bullet";
+  else
+    return "dot";
+}
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const Sample & sample1,
@@ -49,9 +60,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
     data(i, 1) = sample2.computeQuantilePerComponent(q)[0];
   }
   Cloud cloudQQplot(data, "Data");
-  if (pointNumber < 100) cloudQQplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudQQplot.setPointStyle("bullet");
-  else cloudQQplot.setPointStyle("dot");
+  cloudQQplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -85,9 +94,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
     data(i, 1) = dist.computeQuantile(p)[0];
   }
   Cloud cloudQQplot(data, "Data");
-  if (size < 100) cloudQQplot.setPointStyle("fcircle");
-  else if (size < 1000) cloudQQplot.setPointStyle("bullet");
-  else cloudQQplot.setPointStyle("dot");
+  cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -120,9 +127,7 @@ Graph VisualTest::DrawPPplot(const Sample & sample1,
     data(i, 1) = sample2.computeEmpiricalCDF(Point({p}));
   }
   Cloud cloud(data, "Data");
-  if (pointNumber < 100) cloud.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloud.setPointStyle("bullet");
-  else cloud.setPointStyle("dot");
+  cloud.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graph("Two sample PP-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -156,9 +161,7 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
     data(i, 1) = dist.computeCDF(sortedSample[i]);
   }
   Cloud cloud(data, "Data");
-  if (size < 100) cloud.setPointStyle("fcircle");
-  else if (size < 1000) cloud.setPointStyle("bullet");
-  else cloud.setPointStyle("dot");
+  cloud.setPointStyle(VisualTestGetPointStyle(size));
   Graph graph("Sample versus model PP-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -186,9 +189,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
   const Sample data2(UserDefined(sample2).computeCDF(sortedSample));
   Cloud cloudCDFplot(data1, data2, "Data");
-  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
-  else cloudCDFplot.setPointStyle("dot");
+  cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -214,9 +215,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
   const Sample data2(dist.computeCDF(sortedSample));
   Cloud cloudCDFplot(data1, data2, "Data");
-  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
-  else cloudCDFplot.setPointStyle("dot");
+  cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
