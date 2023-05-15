@@ -50,10 +50,12 @@ int main(int, char *[])
     elementaryFunctions.add("log2");
     elementaryFunctions.add("log10");
     elementaryFunctions.add("log");
+    elementaryFunctions.add("log1p");
     elementaryFunctions.add("ln");
     elementaryFunctions.add("lngamma");
     elementaryFunctions.add("gamma");
     elementaryFunctions.add("exp");
+    elementaryFunctions.add("expm1");
     elementaryFunctions.add("erf");
     elementaryFunctions.add("erfc");
     elementaryFunctions.add("sqrt");

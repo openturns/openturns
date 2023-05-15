@@ -44,11 +44,13 @@ protected:
   static mu::value_type ACosh(mu::value_type v);
   static mu::value_type ATanh(mu::value_type v);
   static mu::value_type Ln(mu::value_type v);
+  static mu::value_type Log1p(mu::value_type v);
   static mu::value_type Log2(mu::value_type v);
   static mu::value_type LnGamma(mu::value_type v);
   static mu::value_type Gamma(mu::value_type v);
   static mu::value_type Erf(mu::value_type v);
   static mu::value_type Erfc(mu::value_type v);
+  static mu::value_type Expm1(mu::value_type v);
   static mu::value_type Abs(mu::value_type v);
   static mu::value_type Cbrt(mu::value_type v);
   static mu::value_type J0(mu::value_type v);
@@ -233,11 +235,13 @@ MuParser::MuParser()
   DefineFun(_T("acosh"), ACosh); // modified
   DefineFun(_T("atanh"), ATanh); // modified
   DefineFun(_T("log"), Ln); // modified: assigned to log10 by default
+  DefineFun(_T("log1p"), Log1p); // modified
   DefineFun(_T("log2"), Log2); // modified
   DefineFun(_T("lngamma"), LnGamma); // added
   DefineFun(_T("gamma"), Gamma); // added
   DefineFun(_T("erf"), Erf); // added
   DefineFun(_T("erfc"), Erfc); // added
+  DefineFun(_T("expm1"), Expm1); // added
   DefineFun(_T("abs"), Abs); // modified
   DefineFun(_T("cbrt"), Cbrt); // added
   DefineFun(_T("besselJ0"), J0); // added
@@ -286,6 +290,11 @@ value_type MuParser::Ln(value_type v)
   return log(v);
 }
 
+value_type MuParser::Log1p(value_type v)
+{
+  return std::log1p(v);
+}
+
 value_type MuParser::Log2(value_type v)
 {
   return log2(v);
@@ -309,6 +318,11 @@ value_type MuParser::Erf(value_type v)
 value_type MuParser::Erfc(value_type v)
 {
   return erfc(v);
+}
+
+value_type MuParser::Expm1(value_type v)
+{
+  return std::expm1(v);
 }
 
 value_type MuParser::Abs(value_type v)
