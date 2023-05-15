@@ -19,7 +19,9 @@ if 0:
         p = pMin + i1 * (pMax - pMin) / (n1 - 1.0)
         for n in range(nMin, nMax + 1):
             for k in range(n + 1):
-                f1.write(f"{n}, {p}, {k}, {ot.DistFunc.dBinomial(n, p, k)}, {ot.DistFunc.logdBinomial(n, p, k)}\n")
+                f1.write(
+                    f"{n}, {p}, {k}, {ot.DistFunc.dBinomial(n, p, k)}, {ot.DistFunc.logdBinomial(n, p, k)}\n"
+                )
             for iR in range(nR):
                 f2.write(f"{n}, {p}, {iR}, {ot.DistFunc.rBinomial(n, p)}\n")
     f1.close()

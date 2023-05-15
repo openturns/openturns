@@ -97,7 +97,7 @@ public:
   /** Accessors to text rotation */
   Scalar getRotation() const;
   void setRotation(const Scalar rotation);
-  
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

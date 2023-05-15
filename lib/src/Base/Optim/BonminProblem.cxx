@@ -597,7 +597,8 @@ bool BonminProblem::eval_gi(int n,
     nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
 
   // Computing constraints values
-  try {
+  try
+  {
     if (i < nbEqualityConstraints)
       gi = optimProblem_.getEqualityConstraint().getMarginal(i)(xPoint)[0];
     else
@@ -675,7 +676,8 @@ void BonminProblem::finalize_solution( TMINLP::SolverReturn status,
 {
   // Check if solver succeeded
   const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
-                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"};
+                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"
+                                       };
   if (!(status < bonminExitStatus.getSize()))
     throw InternalException(HERE) << "Bonmin solver exited with status UNKNOWN ERROR";
 

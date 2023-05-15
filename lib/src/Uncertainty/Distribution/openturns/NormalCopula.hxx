@@ -136,7 +136,7 @@ public:
   /** Dependence coefficients */
   CorrelationMatrix computeUpperTailDependenceMatrix() const override;
   CorrelationMatrix computeLowerTailDependenceMatrix() const override;
-  
+
   /** Parameters value and description accessor */
   using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;

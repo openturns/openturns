@@ -55,7 +55,12 @@ print(inputTrainingSet.getMin(), inputTrainingSet.getMax())
 
 # %%
 linear_basis = ot.LinearBasisFactory(m.dim).build()
-basis = ot.Basis([ot.AggregatedFunction([linear_basis.build(k)] * 3) for k in range(linear_basis.getSize())])
+basis = ot.Basis(
+    [
+        ot.AggregatedFunction([linear_basis.build(k)] * 3)
+        for k in range(linear_basis.getSize())
+    ]
+)
 
 # %%
 # We would like to have separate covariance models for the three outputs.
@@ -84,7 +89,17 @@ scaleOptimizationBounds = ot.Interval(
 
 # %%
 # We can now define the scaled version of Kriging model.
-optimal_scale = [1e+07, 1126.11, 1446.96, 17.5554, 3.48743, 3.09689, 7.43877, 3.0465, 1.71498]
+optimal_scale = [
+    1e07,
+    1126.11,
+    1446.96,
+    17.5554,
+    3.48743,
+    3.09689,
+    7.43877,
+    3.0465,
+    1.71498,
+]
 covarianceModel.setScale(optimal_scale)
 covarianceModel.setAmplitude([0.542174, 1.0, 1.0])
 

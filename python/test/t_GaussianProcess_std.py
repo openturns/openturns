@@ -59,7 +59,7 @@ ot.RandomGenerator.SetSeed(0)
 standard_deviation = 10.0
 mesh = ot.Mesh([[0.0]])  # singleton
 cov_matrix = ot.CovarianceMatrix(
-    1, [standard_deviation**2]
+    1, [standard_deviation ** 2]
 )  # associated "covariance matrix"
 covModel = ot.UserDefinedCovarianceModel(mesh, cov_matrix)
 

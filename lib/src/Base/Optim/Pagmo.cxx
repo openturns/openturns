@@ -282,9 +282,10 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
   const Description multiObjectiveAgorithms = {"nsga2", "moead",
 #if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
-    "moead_gen",
+                                               "moead_gen",
 #endif
-    "mhaco", "nspso"};
+                                               "mhaco", "nspso"
+                                              };
   if ((problem.getObjective().getOutputDimension() > 1) && !multiObjectiveAgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
   if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAgorithms.contains(getAlgorithmName()))

@@ -132,8 +132,8 @@ print(
 
 # %%
 auxiliaryInputSamples = standardSpaceISResult.getAuxiliaryInputSample()
-auxiliaryInputSamplesPhysicalSpace = distribution.getInverseIsoProbabilisticTransformation()(
-    auxiliaryInputSamples
+auxiliaryInputSamplesPhysicalSpace = (
+    distribution.getInverseIsoProbabilisticTransformation()(auxiliaryInputSamples)
 )
 
 

@@ -74,9 +74,7 @@ for algoName in algoNames:
                         continue
                     result = algo.getResult()
                     x = result.getOptimalPoint()
-                    print(
-                        "x^=", x, "y^=", result.getOptimalValue()
-                    )
+                    print("x^=", x, "y^=", result.getOptimalValue())
                     if not inequality and not equality:
                         if not minimization:
                             if not bound:

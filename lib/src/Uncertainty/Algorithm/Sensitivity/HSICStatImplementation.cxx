@@ -45,16 +45,16 @@ HSICStatImplementation * HSICStatImplementation::clone() const
 
 /* Compute the HSIC index for one marginal*/
 Scalar HSICStatImplementation::computeHSICIndex(const CovarianceMatrix &,
-                                                const CovarianceMatrix &,
-                                                const SquareMatrix &) const
+    const CovarianceMatrix &,
+    const SquareMatrix &) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
 
 /** Compute the HSIC index for one marginal*/
 Scalar HSICStatImplementation::computeHSICIndex(const CovarianceMatrix &,
-                                                const CovarianceMatrix &,
-                                                const Point & ) const
+    const CovarianceMatrix &,
+    const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }

@@ -90,7 +90,7 @@ int main(int, char *[])
 
 //   const UnsignedInteger expectedLength = 4 * N;
 //   UnsignedInteger actualLength = Log::GetInstance().getSize();
-// 
+//
 //   if (actualLength != expectedLength)
 //     throw TestFailed("unexpected log length");
 

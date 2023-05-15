@@ -11,6 +11,7 @@ Estimate tail dependence coefficients on the wind data
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import coles
+
 data = coles.Coles().wind[:, 1:]
 print(data[:5])
 

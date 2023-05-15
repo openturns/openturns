@@ -178,9 +178,7 @@ data
 # %%
 graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)", True)
 # Plot the model
-curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(
-    0
-)
+curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
 curve.setLegend("True model")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)

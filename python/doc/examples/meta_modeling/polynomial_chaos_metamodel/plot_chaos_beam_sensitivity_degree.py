@@ -52,7 +52,7 @@ dim_output = 1  # dimension of the output
 
 def function_beam(X):
     E, F, L, II = X
-    Y = F * L**3 / (3 * E * II)
+    Y = F * L ** 3 / (3 * E * II)
     return [Y]
 
 

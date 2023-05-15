@@ -98,8 +98,8 @@ class GeneralizedExtremeValueLikelihoodEvaluation : public EvaluationImplementat
 {
 public:
   GeneralizedExtremeValueLikelihoodEvaluation(const Sample & sample)
-  : EvaluationImplementation()
-  , sample_(sample)
+    : EvaluationImplementation()
+    , sample_(sample)
   {
   }
 
@@ -184,7 +184,7 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   const Point upperBound(3, SpecFunc::MaxScalar);
   const Interval::BoolCollection finiteLowerBound({false, true, false});
   const Interval::BoolCollection finiteUpperBound(3, false);
-  problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));  
+  problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 
   // 1+xi(zi-mu)/sigma > 0
   Description formulas(2);
@@ -229,12 +229,12 @@ class GeneralizedExtremeValueProfileLikelihoodEvaluation : public EvaluationImpl
 {
 public:
   GeneralizedExtremeValueProfileLikelihoodEvaluation(const Sample & sample,
-                                                      const Scalar mean,
-                                                      const Scalar bpwm1)
-  : EvaluationImplementation()
-  , sample_(sample)
-  , mean_(mean)
-  , bpwm1_(bpwm1)
+      const Scalar mean,
+      const Scalar bpwm1)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , mean_(mean)
+    , bpwm1_(bpwm1)
   {
     zmin_ = sample.getMin()[0];
     zmax_ = sample.getMax()[0];
@@ -274,7 +274,7 @@ public:
     const Point upperBound(2, SpecFunc::MaxScalar);
     const Interval::BoolCollection finiteLowerBound({false, true});
     const Interval::BoolCollection finiteUpperBound(2, false);
-    problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));  
+    problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 
     // 1+xi(zi-mu)/sigma > 0
     Description formulas(2);
@@ -293,7 +293,7 @@ public:
     Point cv(constraint(x0));
     if (cv[0] < 0.0)
       x0[0] += cv[0] / xi0;
-    else if (cv[1]<0)
+    else if (cv[1] < 0)
       x0[0] += cv[1] / xi0;
 
     // solve optimization problem
@@ -364,7 +364,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
   Point optimalParameter(profileLikelihoodEvaluation.getOptimalPoint());
   optimalParameter.add(xi);
 
-  const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));  
+  const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));
   Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
   parameterDistribution.setDescription({"mu", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
@@ -384,12 +384,12 @@ class GeneralizedExtremeValueRMaximaLikelihoodEvaluation : public EvaluationImpl
 {
 public:
   GeneralizedExtremeValueRMaximaLikelihoodEvaluation(const Sample & sample,
-                                                     const UnsignedInteger r)
-  : EvaluationImplementation()
-  , sample_(sample)
-  , R_(sample.getDimension())
-  , r_(r)
-  , m_(sample.getSize())
+      const UnsignedInteger r)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , R_(sample.getDimension())
+    , r_(r)
+    , m_(sample.getSize())
   {
     if ((r < 1) || (r > R_))
       throw InvalidArgumentException(HERE) << "We must have 1<=r<=R";
@@ -449,7 +449,7 @@ private:
 
 /* R largest order statistics */
 DistributionFactoryResult GeneralizedExtremeValueFactory::buildRMaximaEstimator(const Sample & sample,
-                                                                                const UnsignedInteger rx)
+    const UnsignedInteger rx)
 {
   const UnsignedInteger R = sample.getDimension();
   // r=0 means r=R
@@ -552,21 +552,21 @@ class GeneralizedExtremeValueTimeVaryingLikelihoodEvaluation : public Evaluation
 {
 public:
   GeneralizedExtremeValueTimeVaryingLikelihoodEvaluation(const Sample & sample,
-                                                         const Sample & meshValues,
-                                                         const Function & thetaFunction,
-                                                         const GeneralizedExtremeValueFactory::BasisCollection & basisCollection)
-  : EvaluationImplementation()
-  , sample_(sample)
-  , meshValues_(meshValues)
-  , thetaFunction_(thetaFunction)
+      const Sample & meshValues,
+      const Function & thetaFunction,
+      const GeneralizedExtremeValueFactory::BasisCollection & basisCollection)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , meshValues_(meshValues)
+    , thetaFunction_(thetaFunction)
   {
     // rescale constant terms parameters vs non-constant terms parameters
     Collection<Function> coll;
     for (UnsignedInteger i = 0; i < basisCollection.getSize(); ++ i)
       for (UnsignedInteger j = 0; j < basisCollection[i].getSize(); ++ j)
-    {
-      coll.add(basisCollection[i][j]);
-    }
+      {
+        coll.add(basisCollection[i][j]);
+      }
     AggregatedFunction aggregated(coll);
     Sample psi(aggregated(meshValues));
     const Scalar delta = meshValues.getMax()[0] - meshValues.getMin()[0];
@@ -620,7 +620,7 @@ public:
       const Scalar c1 = 1.0 + xi * yi;
       if (c1 <= SpecFunc::Precision) // can be slightly off
         return Point(1, -SpecFunc::MaxScalar);
-      ll += -(1.0 + 1.0 / xi) * std::log(c1) - std::pow(c1, -1.0 / xi);     
+      ll += -(1.0 + 1.0 / xi) * std::log(c1) - std::pow(c1, -1.0 / xi);
     }
     return Point(1, ll);
   }
@@ -634,9 +634,9 @@ private:
 
 
 TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample & sample,
-                                                                    const Mesh & mesh,
-                                                                    const BasisCollection & basisCollection,
-                                                                    const Function & inverseLinkFunction) const
+    const Mesh & mesh,
+    const BasisCollection & basisCollection,
+    const Function & inverseLinkFunction) const
 {
   const Sample grid(mesh.getVertices());
   if (sample.getSize() < 3)
@@ -732,7 +732,7 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
     const Scalar pdfIRef = buildAsGeneralizedExtremeValue(thetaFunction(grid[i])).computePDF(sample[i]);
 
     // evaluate dpdf/dbeta by finite-differences
-    Matrix dpdfi(nP, 1); 
+    Matrix dpdfi(nP, 1);
     for (UnsignedInteger j = 0; j < nP; ++ j)
     {
       Point betaIj(optimalParameter);
@@ -794,9 +794,9 @@ class GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3 : public Ev
 {
 public:
   GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation3(const Sample & sample, const Scalar m)
-  : EvaluationImplementation()
-  , llh_(new GeneralizedExtremeValueLikelihoodEvaluation(sample))
-  , m_(m)
+    : EvaluationImplementation()
+    , llh_(new GeneralizedExtremeValueLikelihoodEvaluation(sample))
+    , m_(m)
   {
   }
 
@@ -840,13 +840,13 @@ class GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1 : public Ev
 {
 public:
   GeneralizedExtremeValueReturnLevelProfileLikelihoodEvaluation1(const Sample & sample,
-                                                      const Scalar sigma0,
-                                                      const Scalar xi0, const Scalar m)
-  : EvaluationImplementation()
-  , sample_(sample)
-  , sigma0_(sigma0)
-  , xi0_(xi0)
-  , m_(m)
+      const Scalar sigma0,
+      const Scalar xi0, const Scalar m)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , sigma0_(sigma0)
+    , xi0_(xi0)
+    , m_(m)
   {
   }
 
@@ -956,7 +956,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   const Scalar xi = profileLikelihoodEvaluation.getOptimalPoint()[1];
   const Scalar mu = zm + sigma / xi * (-std::expm1(xi * std::log(m)));
   const Point optimalParameter({mu, sigma, xi});
- 
+
   const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));
   const Distribution nativeParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
 
@@ -973,7 +973,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   const Matrix Vn(nativeParameterDistribution.getCovariance());
   const Matrix covZm = (dzm.transpose() * Vn * dzm);
   Normal parameterDistribution(optimalParameter, CovarianceMatrix(covZm.getImplementation()));
-  parameterDistribution.setDescription({"zm", "sigma", "xi"}); 
+  parameterDistribution.setDescription({"zm", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm);
   return result;

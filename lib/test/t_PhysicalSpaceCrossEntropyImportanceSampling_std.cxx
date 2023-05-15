@@ -34,7 +34,7 @@ int main()
   const Function beam = SymbolicFunction(input, Description(1, formula));
   // Definition of input variable PDF
   const Point mean = {0.2, 0.0};
-  
+
   const Point sigma = {0.1, 0.1};
 
   const Normal distX(mean, sigma);
@@ -44,26 +44,26 @@ int main()
   const ThresholdEvent event = ThresholdEvent(compositeVector, Less(), 0.0);
 
   Normal aux_distrib(mean, sigma);
-  
+
   const Indices active_parameters = {0, 1, 2, 3};
 
   const Point lowerBnd = {0.1, 0.05, 0.0, 0.05};
-  
+
   const Point  upperBnd = {0.3, 0.2, 0.3, 0.2};
 
-  const Interval bounds(lowerBnd,upperBnd);
-                     
+  const Interval bounds(lowerBnd, upperBnd);
+
   const Point initial_theta = {0.2, 0.1, 0.0, 0.1};
 
   // Definition of the algorithm
   PhysicalSpaceCrossEntropyImportanceSampling algoPhysicalSpaceCE(event,
-                                                                  aux_distrib,
-                                                                  active_parameters,
-                                                                  initial_theta,
-                                                                  bounds);
-  
-  // Run of the algorithm           
-  RandomGenerator::SetSeed(1); 
+      aux_distrib,
+      active_parameters,
+      initial_theta,
+      bounds);
+
+  // Run of the algorithm
+  RandomGenerator::SetSeed(1);
 
   algoPhysicalSpaceCE.run();
 

@@ -32,7 +32,7 @@ class OT_API TimeVaryingResult
   CLASSNAME
 public:
   TimeVaryingResult();
-  
+
   TimeVaryingResult(const DistributionFactory & factory,
                     const Function & parameterFunction,
                     const Mesh & mesh,
@@ -46,15 +46,15 @@ public:
 
   /** Accessor to the parameter function */
   Function getParameterFunction() const;
-  
+
   /** Accessor to the distribution of the parameter */
   void setParameterDistribution(const Distribution & parameterDistribution);
   Distribution getParameterDistribution() const;
-  
+
   /** Accessor to the likelihood value */
   void setLogLikelihood(const Scalar logLikelihood);
   Scalar getLogLikelihood() const;
-  
+
   /** Draw parameter for all time values */
   Graph drawParameterFunction(const UnsignedInteger parameterIndex = 0) const;
 

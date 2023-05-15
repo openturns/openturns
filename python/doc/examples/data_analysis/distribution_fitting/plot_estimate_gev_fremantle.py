@@ -18,6 +18,7 @@ import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 from openturns.usecases import coles
+
 data = coles.Coles().fremantle
 print(data[:5])
 
@@ -116,8 +117,8 @@ mesh = ot.Mesh(data[:, 0])
 # %%
 # Now we can define the basis for each parameter.
 # We suppose that mu is linear with time, and that the other parameters remain constant.
-constant = ot.SymbolicFunction(['t'], ['1.0'])
-basis_mu = ot.Basis([constant, ot.SymbolicFunction(['t'], ['t'])])  # linear trend
+constant = ot.SymbolicFunction(["t"], ["1.0"])
+basis_mu = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])  # linear trend
 basis_sigma = ot.Basis([constant])  # stationary
 basis_xi = ot.Basis([constant])  # stationary
 basis_coll = [basis_mu, basis_sigma, basis_xi]
@@ -136,7 +137,7 @@ print(f"mu(t) = {b_mu:.4f} + {a_mu:.4f} * t")
 # Lets superpose the cloud of data values
 graph = result3.drawParameterFunction(0)
 cloud = ot.Cloud(data[:, :2])
-cloud.setColor('red')
+cloud.setColor("red")
 graph.add(cloud)
 view = otv.View(graph)
 

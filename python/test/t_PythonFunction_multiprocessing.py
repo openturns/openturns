@@ -9,7 +9,7 @@ ot.TESTPREAMBLE()
 
 def myfunPython(x):
     n = x[0]
-    y = [1.0 / (2.0**n)]
+    y = [1.0 / (2.0 ** n)]
     return y
 
 

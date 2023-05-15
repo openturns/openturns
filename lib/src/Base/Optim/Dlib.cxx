@@ -596,9 +596,9 @@ void Dlib::run()
 
   /** SWITCH BETWEEN ALGORITHMS **/
   if (algoName_ == "cg"
-    || algoName_ == "bfgs"
-    || algoName_ == "lbfgs"
-    || algoName_ == "newton")
+      || algoName_ == "bfgs"
+      || algoName_ == "lbfgs"
+      || algoName_ == "newton")
   {
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;

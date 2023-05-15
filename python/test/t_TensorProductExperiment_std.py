@@ -113,7 +113,7 @@ def testTensorProductExperiment2():
     assert nodes.getDimension() == 3
     size = nodes.getSize()
     assert size == weights.getDimension()
-    assert size == maximumMarginalLevel**dimension
+    assert size == maximumMarginalLevel ** dimension
 
 
 def testTensorProductExperiment3():

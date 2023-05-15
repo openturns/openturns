@@ -4582,11 +4582,11 @@ class DistributionImplementationDependenceEvaluation : public EvaluationImplemen
 {
 public:
   DistributionImplementationDependenceEvaluation(const Distribution & distribution,
-                                                 const String & linkFormula,
-                                                 const Bool survival = false)
-  : EvaluationImplementation()
-  , distribution_(distribution)
-  , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
+      const String & linkFormula,
+      const Bool survival = false)
+    : EvaluationImplementation()
+    , distribution_(distribution)
+    , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
   , survival_(survival)
   {}
 

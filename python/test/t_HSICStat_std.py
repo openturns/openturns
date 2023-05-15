@@ -44,7 +44,9 @@ for i in range(3):
     test = X.getMarginal(i)
     # Set input covariance scale
     Cov1.setScale(test.computeStandardDeviation())
-    hsicIndex = estimatorTypeV.computeHSICIndex(Cov1.discretize(test), Cov2.discretize(Y), W)
+    hsicIndex = estimatorTypeV.computeHSICIndex(
+        Cov1.discretize(test), Cov2.discretize(Y), W
+    )
     ott.assert_almost_equal(hsicIndex, hsicIndexRef[i])
 
 # Using an unbiased estimator
@@ -56,5 +58,7 @@ for i in range(3):
     test = X.getMarginal(i)
     # Set input covariance scale
     Cov1.setScale(test.computeStandardDeviation())
-    hsicIndex = estimatorTypeU.computeHSICIndex(Cov1.discretize(test), Cov2.discretize(Y), W)
+    hsicIndex = estimatorTypeU.computeHSICIndex(
+        Cov1.discretize(test), Cov2.discretize(Y), W
+    )
     ott.assert_almost_equal(hsicIndex, hsicIndexRef[i])

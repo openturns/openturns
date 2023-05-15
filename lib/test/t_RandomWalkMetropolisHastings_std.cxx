@@ -47,35 +47,35 @@ int main(int, char *[])
     assert_almost_equal(s1.select(postBurnIn).computeMean()[0], mu, 1e-2, 0.0);
     Collection<Point> dataList(
     {
-        {53.0, 1.0},
-        {57.0, 1.0},
-        {58.0, 1.0},
-        {63.0, 1.0},
-        {66.0, 0.0},
-        {67.0, 0.0},
-        {67.0, 0.0},
-        {67.0, 0.0},
-        {68.0, 0.0},
-        {69.0, 0.0},
-        {70.0, 0.0},
-        {70.0, 0.0},
-        {70.0, 1.0},
-        {70.0, 1.0},
-        {72.0, 0.0},
-        {73.0, 0.0},
-        {75.0, 0.0},
-        {75.0, 1.0},
-        {76.0, 0.0},
-        {76.0, 0.0},
-        {78.0, 0.0},
-        {79.0, 0.0},
-        {81.0, 0.0},
+      {53.0, 1.0},
+      {57.0, 1.0},
+      {58.0, 1.0},
+      {63.0, 1.0},
+      {66.0, 0.0},
+      {67.0, 0.0},
+      {67.0, 0.0},
+      {67.0, 0.0},
+      {68.0, 0.0},
+      {69.0, 0.0},
+      {70.0, 0.0},
+      {70.0, 0.0},
+      {70.0, 1.0},
+      {70.0, 1.0},
+      {72.0, 0.0},
+      {73.0, 0.0},
+      {75.0, 0.0},
+      {75.0, 1.0},
+      {76.0, 0.0},
+      {76.0, 0.0},
+      {78.0, 0.0},
+      {79.0, 0.0},
+      {81.0, 0.0},
     }
     );
-    Sample data(dataList);    
-    
+    Sample data(dataList);
+
     SymbolicFunction fun(
-        {"alpha", "beta", "x"}, {"exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"}
+    {"alpha", "beta", "x"}, {"exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"}
     );
     ParametricFunction linkFunction(fun, {2}, {0.0});
     Normal instrumental2({0.0, 0.0}, {0.5, 0.05}, IdentityMatrix(2));
@@ -94,11 +94,11 @@ int main(int, char *[])
     postBurnIn2.fill(rwmh.getBurnIn());
     Point muPost(sample.select(postBurnIn2).computeMean());
     Point sigma(sample.computeStandardDeviation());
-     
+
     //std::cout << "mu=" << muPost << ", sigma=" << sigma << std::endl;
     assert_almost_equal(muPost, {17.7084, -0.272174}, 0.2, 0.0); // value computed in t_RandomWalkMetropolisHastings_std.py
     assert_almost_equal(sigma, {7.15937, 0.105174}, 0.2, 0.0); // value computed in t_RandomWalkMetropolisHastings_std.py
-    
+
     //std::cout << "acceptance rate=" << rwmh.getAcceptanceRate() << std::endl;
     assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0); // Empirical acceptance rate observed when executing the code
 

@@ -338,10 +338,7 @@ view = otv.View(graph)
 # %%
 #  We can retrieve the calibrated trend coefficients with `getTrendCoefficients` :
 c0 = result.getTrendCoefficients()
-print(
-    "Trend is the curve m(X) = %.6e X**2 + %.6e X + %.6e"
-    % (c0[2], c0[1], c0[0])
-)
+print("Trend is the curve m(X) = %.6e X**2 + %.6e X + %.6e" % (c0[2], c0[1], c0[0]))
 
 
 # %%
@@ -356,9 +353,7 @@ print("Amplitude parameter : %.3e" % sigma)
 # %%
 # The quadratic linear trend obtained is :
 quadraticTrend = ot.SymbolicFunction(["a", "b", "c", "x"], ["a*x^2 + b*x + c"])
-myTrend = ot.ParametricFunction(
-    quadraticTrend, [0, 1, 2], [c0[2], c0[1], c0[0]]
-)
+myTrend = ot.ParametricFunction(quadraticTrend, [0, 1, 2], [c0[2], c0[1], c0[0]])
 
 
 # %%

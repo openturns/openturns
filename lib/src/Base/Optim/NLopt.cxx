@@ -337,7 +337,7 @@ void NLopt::run()
   // https://github.com/stevengj/nlopt/blob/master/src/algs/auglag/auglag.c#L96
   if (getProblem().hasInequalityConstraint() && (inequalityConstraintHistory_.getSize() != evaluationInputHistory_.getSize()))
     inequalityConstraintHistory_ = getProblem().getInequalityConstraint()(evaluationInputHistory_);
-  
+
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 #else
   (void) p_opt_;

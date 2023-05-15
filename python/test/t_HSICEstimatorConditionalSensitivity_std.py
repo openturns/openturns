@@ -64,7 +64,9 @@ for key in [True, False]:
     # We eventually build the HSIC object
     # HSICVStat event is already embedded as it is the only one available
     # for that kind of analysis
-    CSA = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
+    CSA = ot.HSICEstimatorConditionalSensitivity(
+        covarianceModelCollection, X, Y, weight
+    )
 
     # We get the R2-HSIC
     R2HSIC = CSA.getR2HSICIndices()
@@ -88,4 +90,6 @@ for key in [True, False]:
     CSA.setWeightFunction(alternateWeight)
     ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
     ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
-    ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])
+    ott.assert_almost_equal(
+        CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000]
+    )

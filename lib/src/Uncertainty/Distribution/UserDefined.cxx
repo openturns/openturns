@@ -521,11 +521,11 @@ void UserDefined::setData(const Sample & sample,
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the collection is empty";
   if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution if the weights don't have the same dimension as the sample size.";
   hasUniformWeights_ = true;
-    const UnsignedInteger dimension = sample.getDimension();
-    if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
-    setDimension(dimension);
-    // Check if all the given probabilities are >= 0
-    // Check if all the points have the same dimension
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
+  setDimension(dimension);
+  // Check if all the given probabilities are >= 0
+  // Check if all the points have the same dimension
   // First, sort the collection such that the sample made with the first component is in ascending order
   Sample weightedData(size, dimension + 1);
   for (UnsignedInteger i = 0; i < size; ++i)

@@ -211,11 +211,11 @@ public:
                                     const Bool transpose = false);
 
   MatrixImplementation solveLinearSystemTri(const MatrixImplementation & b,
-                                            const Bool lower = true,
-                                            const Bool transpose = false) const;
+      const Bool lower = true,
+      const Bool transpose = false) const;
   MatrixImplementation solveLinearSystemTriInPlace(const MatrixImplementation & b,
-                                                  const Bool lower = true,
-                                                  const Bool transpose = false);
+      const Bool lower = true,
+      const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
   Point solveLinearSystemSymInPlace(const Point & b);

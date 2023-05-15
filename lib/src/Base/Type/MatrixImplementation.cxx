@@ -1730,7 +1730,7 @@ MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) co
 
   /* First step: the size of the diagonal */
   const UnsignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
-  
+
   /* Extraction */
   MatrixImplementation diag(nElt, 1);
   UnsignedInteger index = (k >= 0 ? k * m : -k);

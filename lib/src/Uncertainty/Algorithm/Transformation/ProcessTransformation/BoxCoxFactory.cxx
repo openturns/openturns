@@ -134,11 +134,11 @@ public:
                         const Sample &shiftedOutputSample,
                         const CovarianceModel &covarianceModel,
                         const Basis &basis)
-      : inputSample_(inputSample)
-      , shiftedOutputSample_(shiftedOutputSample)
-      , covarianceModel_(covarianceModel)
-      , basis_(basis)
-      , sumLog_(0.0)
+    : inputSample_(inputSample)
+    , shiftedOutputSample_(shiftedOutputSample)
+    , covarianceModel_(covarianceModel)
+    , basis_(basis)
+    , sumLog_(0.0)
   {
     computeSumLog();
   }
@@ -148,11 +148,11 @@ public:
                         const CovarianceModel &covarianceModel,
                         const Basis &basis,
                         const Scalar sumLog)
-      : inputSample_(inputSample)
-      , shiftedOutputSample_(shiftedOutputSample)
-      , covarianceModel_(covarianceModel)
-      , basis_(basis)
-      , sumLog_(sumLog)
+    : inputSample_(inputSample)
+    , shiftedOutputSample_(shiftedOutputSample)
+    , covarianceModel_(covarianceModel)
+    , basis_(basis)
+    , sumLog_(sumLog)
   {
     // Nothing to do
   }
@@ -220,11 +220,11 @@ public:
   BoxCoxLMOptimizationEvaluation(const Sample & inputSample,
                                  const Sample & shiftedOutputSample,
                                  const Basis & basis)
-      : inputSample_(inputSample)
-      , shiftedOutputSample_(shiftedOutputSample)
-      , basis_(basis)
-      , sumLog_(0.0)
-      , algo_()
+    : inputSample_(inputSample)
+    , shiftedOutputSample_(shiftedOutputSample)
+    , basis_(basis)
+    , sumLog_(0.0)
+    , algo_()
   {
     initialize();
     computeSumLog();

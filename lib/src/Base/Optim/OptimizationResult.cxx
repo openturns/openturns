@@ -308,8 +308,8 @@ void OptimizationResult::store(const Point & x,
     if (!getOptimalValue().getDimension()
         || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
         || (((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
-        || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])) 
-          && (constraintError <= maximumConstraintError)))
+             || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]))
+            && (constraintError <= maximumConstraintError)))
     {
       // update values
       absoluteError_ = absoluteError;

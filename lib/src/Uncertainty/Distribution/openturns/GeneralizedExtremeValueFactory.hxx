@@ -75,9 +75,9 @@ public:
 
   /** Time-varying */
   TimeVaryingResult buildTimeVarying(const Sample & sample,
-                                             const Mesh & mesh,
-                                             const BasisCollection & basisCollection,
-                                             const Function & inverseLinkFunction = Function()) const;
+                                     const Mesh & mesh,
+                                     const BasisCollection & basisCollection,
+                                     const Function & inverseLinkFunction = Function()) const;
 
   /** Return level */
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;

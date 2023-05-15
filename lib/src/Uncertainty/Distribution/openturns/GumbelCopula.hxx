@@ -113,7 +113,7 @@ public:
   CorrelationMatrix computeUpperTailDependenceMatrix() const override;
   CorrelationMatrix computeLowerTailDependenceMatrix() const override;
   CorrelationMatrix computeLowerExtremalDependenceMatrix() const override;
-  
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;

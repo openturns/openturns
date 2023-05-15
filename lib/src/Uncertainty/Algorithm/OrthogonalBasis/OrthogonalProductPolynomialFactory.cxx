@@ -200,7 +200,7 @@ String OrthogonalProductPolynomialFactory::__repr_markdown__() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     intermediateString = OSS() << " " << getMarginalPolynomialName(i) << " ";
-    if (intermediateString.size() > maximumColumnWidth) 
+    if (intermediateString.size() > maximumColumnWidth)
       maximumColumnWidth = intermediateString.size();
   }
   // Create table

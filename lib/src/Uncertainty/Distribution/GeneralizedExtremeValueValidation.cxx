@@ -35,14 +35,14 @@ static const Factory<GeneralizedExtremeValueValidation> Factory_GeneralizedExtre
 
 
 GeneralizedExtremeValueValidation::GeneralizedExtremeValueValidation()
- : PersistentObject()
- {}
+  : PersistentObject()
+{}
 
 GeneralizedExtremeValueValidation::GeneralizedExtremeValueValidation(const DistributionFactoryResult & result,
-                                                                     const Sample & sample)
- : PersistentObject()
- , sample_(sample)
- , result_(result)
+    const Sample & sample)
+  : PersistentObject()
+  , sample_(sample)
+  , result_(result)
 {
   if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedExtremeValue")
     throw InvalidArgumentException(HERE) << "Expected a GEV distribution, got " << result.getDistribution();

@@ -32,7 +32,7 @@ ot.Log.Show(ot.Log.NONE)
 # we use data blocs with size of form 2^p
 tMin = 0.0
 tstep = 0.1
-size = 2**12
+size = 2 ** 12
 tgrid = ot.RegularGrid(tMin, tstep, size)
 
 # We fix the parameter of the Cauchy model

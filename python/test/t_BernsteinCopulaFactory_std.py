@@ -57,9 +57,7 @@ for i, ref_copula in enumerate(coll):
     check_bernstein_copula(est_copula)
     # Penalized Csiszar divergence method
     f = ot.SymbolicFunction("t", "-log(t)")
-    m = ot.BernsteinCopulaFactory.ComputePenalizedCsiszarDivergenceBinNumber(
-        sample, f
-    )
+    m = ot.BernsteinCopulaFactory.ComputePenalizedCsiszarDivergenceBinNumber(sample, f)
     print("Penalized Csiszar divergence m=", m)
     est_copula = ot.BernsteinCopulaFactory().build(sample, m)
     max_error = compute_max_error(ref_copula, est_copula)

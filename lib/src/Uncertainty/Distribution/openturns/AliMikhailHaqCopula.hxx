@@ -115,7 +115,7 @@ public:
   /** Dependence coefficients */
   CorrelationMatrix computeUpperTailDependenceMatrix() const override;
   CorrelationMatrix computeLowerTailDependenceMatrix() const override;
-  
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
@@ -125,7 +125,7 @@ public:
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
-  
+
   /* Interface specific to AliMikhailHaqCopula */
 
   /** Theta accessor */

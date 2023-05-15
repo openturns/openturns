@@ -390,7 +390,9 @@ print("value of the hessian of the failure boundary at u0 = ", d2u0[0, 0, 0])
 #
 x = np.linspace(1.1, 5.0, 100)
 parabola = (
-    failureBoundaryStandardSpace(u0)[0] + du0[0, 0] * (x - u0) + 0.5 * d2u0[0, 0, 0] * (x - u0) ** 2
+    failureBoundaryStandardSpace(u0)[0]
+    + du0[0, 0] * (x - u0)
+    + 0.5 * d2u0[0, 0, 0] * (x - u0) ** 2
 )
 curveParabola = ot.Curve(x, parabola, r"$\mathcal{P}_{u_0}$ (SORM)")
 curveParabola.setLineStyle("dashed")

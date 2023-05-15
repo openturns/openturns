@@ -55,28 +55,50 @@ if False:
     print("survival=", Survival)
     InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
     print("Inverse survival=", InverseSurvival)
-    print("Survival(inverse survival)=", distribution.computeSurvivalFunction(InverseSurvival))
+    print(
+        "Survival(inverse survival)=",
+        distribution.computeSurvivalFunction(InverseSurvival),
+    )
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=", distribution.computeCDF(quantile))
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    (
+        interval,
+        threshold,
+    ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", threshold)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    (
+        interval,
+        beta,
+    ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     print("Bilateral confidence interval=", interval)
     print("beta=", beta)
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False
+    )
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", beta)
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True
+    )
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", beta)
 print("entropy=%.5g" % distribution.computeEntropy())
-print("entropy (MC)=%.5g" % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0])
+print(
+    "entropy (MC)=%.5g"
+    % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0]
+)
 mean = distribution.getMean()
 print("mean=", mean)
 # Too expansive for a test

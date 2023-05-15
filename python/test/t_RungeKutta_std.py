@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 
 f = ot.SymbolicFunction(["t", "y0", "y1"], ["t - y0", "y1 + t^2"])
 nt = 100
-timeGrid = [(i**2.0) / (nt - 1.0) ** 2.0 for i in range(nt)]
+timeGrid = [(i ** 2.0) / (nt - 1.0) ** 2.0 for i in range(nt)]
 phi = ot.ParametricFunction(f, [0], [0.0])
 solver = ot.RungeKutta(phi)
 print("ODE solver=", solver)

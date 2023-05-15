@@ -42,12 +42,8 @@ ot.ResourceMap.SetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", epsilon_a)
 
 
 def computeNumberOfSmolyakNodes(level, epsilon_a, epsilon_r):
-    ot.ResourceMap.SetAsScalar(
-        "SmolyakExperiment-MergeRelativeEpsilon", epsilon_r
-    )
-    ot.ResourceMap.SetAsScalar(
-        "SmolyakExperiment-MergeAbsoluteEpsilon", epsilon_a
-    )
+    ot.ResourceMap.SetAsScalar("SmolyakExperiment-MergeRelativeEpsilon", epsilon_r)
+    ot.ResourceMap.SetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", epsilon_a)
     uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [uniform] * 2
     experiment = otexp.SmolyakExperiment(collection, level)

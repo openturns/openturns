@@ -133,7 +133,7 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
       const UnsignedInteger sortedIndex = order[i];
       const UnsignedInteger rankIndex = indices[sortedIndex];
       // stop when the part of variance becomes less than epsilon
-      if (partOfVariance[sortedIndex] < varianceThreshold) break;      
+      if (partOfVariance[sortedIndex] < varianceThreshold) break;
       Indices multiIndices(enumerateFunction(rankIndex));
 
       oss << "|" << std::setw(6) << sortedIndex << " |";
@@ -153,7 +153,7 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
     oss << OSS::PadString(" Total index", columnWidth) << "|";
     oss << Os::GetEndOfLine();
     // print table dashes
-    oss << "|-------|" 
+    oss << "|-------|"
         << dashesSeparator << dashesSeparator << dashesSeparator << Os::GetEndOfLine();
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
@@ -216,7 +216,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
           if (variablesGroup.contains(variableIndex))
           {
             // Check that any variable in the group has a nonzero degree
-            if (multiIndices[variableIndex] == 0) 
+            if (multiIndices[variableIndex] == 0)
             {
               mustInclude = false;
               break;
@@ -225,7 +225,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
           else
           {
             // Check that any variable not in the group has a zero degree
-            if (multiIndices[variableIndex] > 0) 
+            if (multiIndices[variableIndex] > 0)
             {
               mustInclude = false;
               break;
@@ -345,7 +345,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
         for (UnsignedInteger variableIndex = 0; variableIndex < inputDimension; ++variableIndex)
         {
           // Check that each variable having a nonzero degree is in the group
-          if (multiIndices[variableIndex] > 0 && ! variablesGroup.contains(variableIndex)) 
+          if (multiIndices[variableIndex] > 0 && ! variablesGroup.contains(variableIndex))
           {
             mustInclude = false;
             break;
@@ -396,7 +396,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
         {
           const UnsignedInteger variableIndex = variablesGroup[j];
           // Check if any variable in the group has a nonzero degree
-          if (multiIndices[variableIndex] > 0) 
+          if (multiIndices[variableIndex] > 0)
           {
             mustInclude = true;
             break;

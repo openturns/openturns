@@ -16,14 +16,17 @@ import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 from openturns.usecases import coles
+
 data = coles.Coles().racetime
 print(data[:5])
 
 # %%
 # Plot the 10 largest sea levels per year
-graph = ot.Graph('Fastest annual women 1500m race time', 'Year', 'Race time (s)', True, '')
+graph = ot.Graph(
+    "Fastest annual women 1500m race time", "Year", "Race time (s)", True, ""
+)
 cloud = ot.Cloud(data)
-cloud.setPointStyle('fcircle')
+cloud.setPointStyle("fcircle")
 # cloud.setPointSize(1.0)
 graph.add(cloud)
 graph.setIntegerXTick(True)

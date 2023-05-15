@@ -11,13 +11,13 @@ a = 7.0
 b = 0.1
 # Reference analytical values
 meanTh = a / 2
-covTh = (b**2 * m.pi**8) / 18.0 + (b * m.pi**4) / 5.0 + (a**2) / 8.0 + 1.0 / 2.0
+covTh = (b ** 2 * m.pi ** 8) / 18.0 + (b * m.pi ** 4) / 5.0 + (a ** 2) / 8.0 + 1.0 / 2.0
 sob_1 = [
-    (b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0) / covTh,
-    (a**2 / 8.0) / covTh,
+    (b * m.pi ** 4 / 5.0 + b ** 2 * m.pi ** 8 / 50.0 + 1.0 / 2.0) / covTh,
+    (a ** 2 / 8.0) / covTh,
     0.0,
 ]
-sob_2 = [0.0, (b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0) / covTh, 0.0]
+sob_2 = [0.0, (b ** 2 * m.pi ** 8 / 18.0 - b ** 2 * m.pi ** 8 / 50.0) / covTh, 0.0]
 sob_3 = [0.0]
 sob_T1 = [
     sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0],
@@ -209,7 +209,9 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         for i in range(basisSize):
             globalIndex = indices[i]
             multiIndex = enumerateFunction(globalIndex)
-            if partOfVariance[i] > 1.e-3:
-                print("%d, %d, %s, %.4f" % (i, globalIndex, multiIndex, partOfVariance[i]))
+            if partOfVariance[i] > 1.0e-3:
+                print(
+                    "%d, %d, %s, %.4f" % (i, globalIndex, multiIndex, partOfVariance[i])
+                )
         # Print summary
         print(sensitivity)

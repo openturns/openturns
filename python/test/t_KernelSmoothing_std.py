@@ -128,7 +128,8 @@ for nDist in range(len(coll)):
     algo2.setAutomaticLowerBound(True)
     ks2 = algo2.build(sample)
     print(
-        "with automatic lower boundary correction, pdf(left)=%.6g" % ks2.computePDF(left[nDist]),
+        "with automatic lower boundary correction, pdf(left)=%.6g"
+        % ks2.computePDF(left[nDist]),
         ", pdf(right)=%.6g" % ks2.computePDF(right[nDist]),
     )
 
@@ -148,7 +149,8 @@ for nDist in range(len(coll)):
     algo4.setAutomaticUpperBound(True)
     ks4 = algo4.build(sample)
     print(
-        "with automatic upper boundary correction, pdf(left)=%.6g" % ks4.computePDF(left[nDist]),
+        "with automatic upper boundary correction, pdf(left)=%.6g"
+        % ks4.computePDF(left[nDist]),
         ", pdf(right)=%.6g" % ks4.computePDF(right[nDist]),
     )
 
@@ -167,7 +169,8 @@ for nDist in range(len(coll)):
     algo6.setBoundingOption(ot.KernelSmoothing.BOTH)
     ks6 = algo6.build(sample)
     print(
-        "with automatic boundaries correction, pdf(left)=%.6g" % ks6.computePDF(left[nDist]),
+        "with automatic boundaries correction, pdf(left)=%.6g"
+        % ks6.computePDF(left[nDist]),
         ", pdf(right)=%.6g" % ks6.computePDF(right[nDist]),
     )
 
@@ -197,7 +200,8 @@ for nDist in range(len(coll)):
     algo9.setUpperBound(baseDist.getRange().getUpperBound()[0])
     ks9 = algo9.build(sample)
     print(
-        "with user defined boundaries correction, pdf(left)=%.6g" % ks9.computePDF(left[nDist]),
+        "with user defined boundaries correction, pdf(left)=%.6g"
+        % ks9.computePDF(left[nDist]),
         ", pdf(right)=%.6g" % ks9.computePDF(right[nDist]),
     )
 

@@ -100,4 +100,6 @@ for key in [True, False]:
         TSA.getHSICIndices(), [0.00118685, 4.12193e-05, 5.07577e-05], 1e-4, 0.0
     )
     ott.assert_almost_equal(TSA.getPValuesPermutation(), [0, 0.137862, 0.112887])
-    ott.assert_almost_equal(TSA.getPValuesAsymptotic(), [7.32022e-13, 0.143851, 0.128866])
+    ott.assert_almost_equal(
+        TSA.getPValuesAsymptotic(), [7.32022e-13, 0.143851, 0.128866]
+    )

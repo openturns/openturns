@@ -44,7 +44,7 @@ public:
 
   /** Default constructor */
   explicit  CrossEntropyImportanceSampling(const RandomVector & event,
-                 const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+      const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;
@@ -54,7 +54,7 @@ public:
 
   /** Set quantileLevel */
   void setQuantileLevel(const Scalar & quantileLevel);
-  
+
   /** Main function that computes the failure probability */
   void run() override;
 
@@ -65,16 +65,16 @@ protected:
 
   /** Function computing the output samples from the input samples*/
   virtual Sample computeOutputSamples(const Sample & inputSamples) const;
-  
+
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   virtual void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters);
-  
+
   /** Function optimizing the auxiliary distribution parameters*/
   virtual Point optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const;
 
   // Initial distribution
   Distribution initialDistribution_;
-  
+
   // Auxiliary distribution
   Distribution auxiliaryDistribution_;
 

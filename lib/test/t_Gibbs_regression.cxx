@@ -120,7 +120,7 @@ int main(int, char *[])
     UnsignedInteger sampleSize = 5000;
     Sample sample(sampler.getSample(sampleSize));
     Indices indices(2000);
-    indices.fill(3000,1);
+    indices.fill(3000, 1);
 
     Point x_mu(sample.select(indices).computeMean());
     Point x_sigma(sample.select(indices).computeStandardDeviation());

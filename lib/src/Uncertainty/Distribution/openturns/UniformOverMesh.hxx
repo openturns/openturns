@@ -115,13 +115,13 @@ private:
 
   /** Volume of the mesh */
   Scalar meshVolume_;
- 
+
   /** Auxiliary discrete distribution to select a simplex */
   UserDefined simplexSelection_;
 
   /** Integration algorithm to use for CDF computation */
   IntegrationAlgorithm integrationAlgorithm_;
-  
+
 }; /* class UniformOverMesh */
 
 

@@ -103,6 +103,4 @@ ott.assert_almost_equal(result.getOutputAtPriorMean(), outputAtPriorMean)
 
 modelX.setParameter(result.getParameterPosterior().getMean())
 outputAtPosteriorMean = modelX(x)
-ott.assert_almost_equal(
-    result.getOutputAtPosteriorMean(), outputAtPosteriorMean
-)
+ott.assert_almost_equal(result.getOutputAtPosteriorMean(), outputAtPosteriorMean)

@@ -71,9 +71,9 @@ class OT_API LevelSetBooleanOperationEvaluation : public EvaluationImplementatio
 {
 public:
   explicit LevelSetBooleanOperationEvaluation(const Function::FunctionCollection & collFunc = Function::FunctionCollection(),
-                                              const Collection<ComparisonOperator> & collOp = Collection<ComparisonOperator>(),
-                               const Point & level = Point(),
-                               const Bool intersection = true)
+      const Collection<ComparisonOperator> & collOp = Collection<ComparisonOperator>(),
+      const Point & level = Point(),
+      const Bool intersection = true)
     : EvaluationImplementation()
     , collFunc_(collFunc)
     , collOp_(collOp)
@@ -196,12 +196,30 @@ public:
     adv.loadAttribute("intersection_", intersection_);
   }
 
-  Function::FunctionCollection getFunctionCollection() const { return collFunc_; }
-  Collection<ComparisonOperator> getComparisonOperatorCollection() const { return collOp_; }
-  Point getLevel() const { return level_; }
-  Bool getIntersection() const { return intersection_; }
-  String getClassName() const override { return "LevelSetBooleanOperationEvaluation"; }
-  static String GetClassName() { return "LevelSetBooleanOperationEvaluation"; }
+  Function::FunctionCollection getFunctionCollection() const
+  {
+    return collFunc_;
+  }
+  Collection<ComparisonOperator> getComparisonOperatorCollection() const
+  {
+    return collOp_;
+  }
+  Point getLevel() const
+  {
+    return level_;
+  }
+  Bool getIntersection() const
+  {
+    return intersection_;
+  }
+  String getClassName() const override
+  {
+    return "LevelSetBooleanOperationEvaluation";
+  }
+  static String GetClassName()
+  {
+    return "LevelSetBooleanOperationEvaluation";
+  }
 
 private:
   PersistentCollection<Function> collFunc_;
@@ -225,7 +243,7 @@ LevelSet LevelSet::intersectOrJoin(const LevelSet & other, const Bool intersecti
   // check dimension compatibility
   const String composeType = intersection ? "intersect" : "join";
   if (other.dimension_ != dimension_)
-    throw InvalidArgumentException(HERE) << "Error: cannot "<< composeType << " level sets of different dimensions";
+    throw InvalidArgumentException(HERE) << "Error: cannot " << composeType << " level sets of different dimensions";
 
   Collection<Function> collFunc;
   Collection<ComparisonOperator> collOp;

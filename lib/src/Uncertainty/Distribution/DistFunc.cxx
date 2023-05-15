@@ -1981,7 +1981,7 @@ Sample DistFunc::rUniformSegment(const Point & a,
     const Scalar v = 1.0 - u;
     for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = u * a[i] + v * b[i];
   } // n
-  return result;  
+  return result;
 }
 
 // For uniform distribution over a triangle
@@ -2119,10 +2119,10 @@ Point DistFunc::rUniformSimplex(const Sample & vertices)
   if (numVertices == 4) return rUniformTetrahedron(vertices[0], vertices[1], vertices[2], vertices[3]);
   Point result(vertices[0]);
   for (UnsignedInteger i = 1; i < numVertices; ++i)
-    {
-      const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
-      for (UnsignedInteger j = 0; j < dimension; ++j) result[j] = u * result[j] + (1.0 - u) * vertices(i, j);
-    }
+  {
+    const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
+    for (UnsignedInteger j = 0; j < dimension; ++j) result[j] = u * result[j] + (1.0 - u) * vertices(i, j);
+  }
   return result;
 }
 
@@ -2141,10 +2141,10 @@ Sample DistFunc::rUniformSimplex(const Sample & vertices,
   {
     for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = vertices(0, j);
     for (UnsignedInteger i = 1; i < numVertices; ++i)
-      {
-        const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
-        for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = u * result(n, j) + (1.0 - u) * vertices(i, j);
-      }
+    {
+      const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
+      for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = u * result(n, j) + (1.0 - u) * vertices(i, j);
+    }
   }
   return result;
 }

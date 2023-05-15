@@ -36,11 +36,11 @@ public:
                        const Description & errorDescription,
                        const Indices & succeededIndices,
                        const Sample & outputSample)
-  : Exception(point),
-    failedIndices_(failedIndices),
-    errorDescription_(errorDescription),
-    succeededIndices_(succeededIndices),
-    outputSample_(outputSample)
+    : Exception(point),
+      failedIndices_(failedIndices),
+      errorDescription_(errorDescription),
+      succeededIndices_(succeededIndices),
+      outputSample_(outputSample)
   {
     if (failedIndices_.getSize() != errorDescription.getSize())
       throw InvalidArgumentException(HERE) << "indices size must match error size";
@@ -57,20 +57,44 @@ public:
   }
 
   /** Failed indices accessor */
-  void setFailedIndices(const Indices & failedIndices) {failedIndices_ = failedIndices;}
-  Indices getFailedIndices() const {return failedIndices_;}
+  void setFailedIndices(const Indices & failedIndices)
+  {
+    failedIndices_ = failedIndices;
+  }
+  Indices getFailedIndices() const
+  {
+    return failedIndices_;
+  }
 
   /** Error messages accessor */
-  void setErrorDescription(const Description & errorDescription) {errorDescription_ = errorDescription;}
-  Description getErrorDescription() const {return errorDescription_;}
+  void setErrorDescription(const Description & errorDescription)
+  {
+    errorDescription_ = errorDescription;
+  }
+  Description getErrorDescription() const
+  {
+    return errorDescription_;
+  }
 
   /** Succeeded indices accessor */
-  void setSucceededIndices(const Indices & succeededIndices) {succeededIndices_ = succeededIndices;}
-  Indices getSucceededIndices() const {return succeededIndices_;}
+  void setSucceededIndices(const Indices & succeededIndices)
+  {
+    succeededIndices_ = succeededIndices;
+  }
+  Indices getSucceededIndices() const
+  {
+    return succeededIndices_;
+  }
 
   /** Succeeded evaluations accessor */
-  void setOutputSample(const Sample & outputSample) {outputSample_ = outputSample;}
-  Sample getOutputSample() const {return outputSample_;}
+  void setOutputSample(const Sample & outputSample)
+  {
+    outputSample_ = outputSample;
+  }
+  Sample getOutputSample() const
+  {
+    return outputSample_;
+  }
 
 private:
   Indices failedIndices_;

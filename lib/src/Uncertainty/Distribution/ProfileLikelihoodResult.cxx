@@ -34,18 +34,18 @@ static const Factory<ProfileLikelihoodResult> Factory_ProfileLikelihoodResult;
 
 
 ProfileLikelihoodResult::ProfileLikelihoodResult()
- : DistributionFactoryLikelihoodResult()
- {}
+  : DistributionFactoryLikelihoodResult()
+{}
 
 ProfileLikelihoodResult::ProfileLikelihoodResult(const Distribution & distribution,
-                                                 const Distribution & parameterDistribution,
-                                                 const Scalar logLikelihood,
-                                                const Function & profileLikelihoodFunction,
-                                                 const Scalar parameter)
- : DistributionFactoryLikelihoodResult(distribution, parameterDistribution, logLikelihood)
- , profileLikelihoodFunction_(profileLikelihoodFunction)
- , parameter_(parameter)
- {}
+    const Distribution & parameterDistribution,
+    const Scalar logLikelihood,
+    const Function & profileLikelihoodFunction,
+    const Scalar parameter)
+  : DistributionFactoryLikelihoodResult(distribution, parameterDistribution, logLikelihood)
+  , profileLikelihoodFunction_(profileLikelihoodFunction)
+  , parameter_(parameter)
+{}
 
 ProfileLikelihoodResult * ProfileLikelihoodResult::clone() const
 {
@@ -92,10 +92,10 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   Scalar lb = x - epsilon;
   Scalar flb = profileLikelihoodFunction_(Point({lb}))[0];
   Scalar scaling = epsilon;
-  while ((flb-threshold <= 0.0) == (fx-threshold <= 0.0))
+  while ((flb - threshold <= 0.0) == (fx - threshold <= 0.0))
   {
     if (!SpecFunc::IsNormal(flb))
-      throw InvalidArgumentException(HERE) << "inf @"<<lb;
+      throw InvalidArgumentException(HERE) << "inf @" << lb;
     scaling *= 2.0;
     lb -= scaling;
     flb = profileLikelihoodFunction_(Point({lb}))[0];
@@ -103,10 +103,10 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   scaling = epsilon;
   Scalar ub = x + epsilon;
   Scalar fub = profileLikelihoodFunction_(Point({ub}))[0];
-  while ((fub-threshold <= 0.0) == (fx-threshold <= 0.0))
+  while ((fub - threshold <= 0.0) == (fx - threshold <= 0.0))
   {
     if (!SpecFunc::IsNormal(fub))
-      throw InvalidArgumentException(HERE) << "inf @"<<ub;
+      throw InvalidArgumentException(HERE) << "inf @" << ub;
     scaling *= 2.0;
     ub += scaling;
     fub = profileLikelihoodFunction_(Point({ub}))[0];
@@ -158,7 +158,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 
   dataX = {xMin};
   dataY = {threshold + dy};
-  Text elt(dataX, dataY, {OSS() << "thr="<< threshold}, "right");
+  Text elt(dataX, dataY, {OSS() << "thr=" << threshold}, "right");
   elt.setColor("black");
   result.add(elt);
 
@@ -186,7 +186,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 
   dataX = {ci.getLowerBound()[0] + dx};
   dataY = {bbox.getLowerBound()[1]};
-  elt = Text(dataX, dataY, {OSS() << "lb="<< ci.getLowerBound()[0]}, "right");
+  elt = Text(dataX, dataY, {OSS() << "lb=" << ci.getLowerBound()[0]}, "right");
   elt.setColor("red");
   elt.setRotation(90.0);
   result.add(elt);
@@ -227,7 +227,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 String ProfileLikelihoodResult::__repr__() const
 {
   return OSS() << DistributionFactoryLikelihoodResult::__repr__()
-    << " confidenceLevel_=" << confidenceLevel_;
+         << " confidenceLevel_=" << confidenceLevel_;
 }
 
 Function ProfileLikelihoodResult::getProfileLikelihoodFunction() const

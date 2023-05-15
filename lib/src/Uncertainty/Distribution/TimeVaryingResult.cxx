@@ -33,20 +33,20 @@ static const Factory<TimeVaryingResult> Factory_TimeVaryingResult;
 
 
 TimeVaryingResult::TimeVaryingResult()
- : PersistentObject()
- {}
+  : PersistentObject()
+{}
 
 TimeVaryingResult::TimeVaryingResult(const DistributionFactory & factory,
                                      const Function & parameterFunction,
                                      const Mesh & mesh,
                                      const Distribution & parameterDistribution,
                                      const Scalar logLikelihood)
- : PersistentObject()
- , factory_(factory)
- , parameterFunction_(parameterFunction)
- , mesh_(mesh)
- , parameterDistribution_(parameterDistribution)
- , logLikelihood_(logLikelihood)
+  : PersistentObject()
+  , factory_(factory)
+  , parameterFunction_(parameterFunction)
+  , mesh_(mesh)
+  , parameterDistribution_(parameterDistribution)
+  , logLikelihood_(logLikelihood)
 {
   if (mesh.getDimension() != parameterFunction.getInputDimension())
     throw InvalidArgumentException(HERE) << "the mesh dimension must match the parameter function input dimension";
@@ -99,8 +99,8 @@ class TimeVaryingResultQuantileEvaluation : public EvaluationImplementation
 {
 public:
   TimeVaryingResultQuantileEvaluation(const TimeVaryingResult & result, const Scalar p)
-  : result_(result)
-  , p_(p)
+    : result_(result)
+    , p_(p)
   {
     setInputDescription({"t"});
     setOutputDescription({"quantile(t)"});

@@ -279,7 +279,7 @@ int main(int, char *[])
     std::cout << distribution2 << std::endl;
     std::cout << "Distribution (Markdown)" << std::endl;
     std::cout << distribution2.__repr_markdown__() << std::endl;
-    
+
   }
   catch (TestFailed & ex)
   {

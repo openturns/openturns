@@ -2286,15 +2286,15 @@ Scalar RandomMixture::computeCDF(const Point & point) const
         const Scalar upper = std::min(b, beta);
         Scalar cdf = 0.0;
         if (lower < upper)
-          {
-            cdf = algo_.integrate(convolutionKernel, lower, upper);
-          }
+        {
+          cdf = algo_.integrate(convolutionKernel, lower, upper);
+        }
         // Take into account a possible missing tail:
         // \int_a^alpha F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
         if (lower > a)
-          {
-            cdf += distributionCollection_[0].computeCDF(alpha);
-          }
+        {
+          cdf += distributionCollection_[0].computeCDF(alpha);
+        }
         return cdf;
       }
       // Here alpha1 < 0
@@ -2306,15 +2306,15 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
       if (lower < upper)
-        {
-          cdf = algo_.integrate(convolutionKernel, lower, upper);
-        }
+      {
+        cdf = algo_.integrate(convolutionKernel, lower, upper);
+      }
       // Take into account a possible missing tail:
       // \int_beta^b F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (upper < b)
-        {
-          cdf += distributionCollection_[0].computeComplementaryCDF(beta);
-        }
+      {
+        cdf += distributionCollection_[0].computeComplementaryCDF(beta);
+      }
       return cdf;
     } // alpha2 > 0
     // F(z) = \int_R Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
@@ -2334,15 +2334,15 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
       if (lower < upper)
-        {
-          cdf = algo_.integrate(convolutionKernel, lower, upper);
-        }
+      {
+        cdf = algo_.integrate(convolutionKernel, lower, upper);
+      }
       // Take into account a possible missing tail:
       // \int_beta^b Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (lower > a)
-        {
-          cdf += distributionCollection_[0].computeCDF(alpha);
-        }
+      {
+        cdf += distributionCollection_[0].computeCDF(alpha);
+      }
       return cdf;
     }
     // Here alpha1 < 0
@@ -2354,15 +2354,15 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     const Scalar upper = std::min(b, beta);
     Scalar cdf = 0.0;
     if (lower < upper)
-      {
-        cdf = algo_.integrate(convolutionKernel, lower, upper);
-      }
+    {
+      cdf = algo_.integrate(convolutionKernel, lower, upper);
+    }
     // Take into account a possible missing tail:
     // \int_a^alpha Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
     if (upper < b)
-      {
-        cdf += distributionCollection_[0].computeComplementaryCDF(beta);
-      }
+    {
+      cdf += distributionCollection_[0].computeComplementaryCDF(beta);
+    }
     return cdf;
   } // dimension_ == 1 && size == 2
 

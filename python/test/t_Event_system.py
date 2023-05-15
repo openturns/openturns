@@ -135,14 +135,14 @@ n = 10000
 
 def f1py(x):
     x0 = ot.Sample(x).getMarginal(0)
-    print('eval f1')
+    print("eval f1")
     assert x0.getSize() == n, "no batch eval"
     return x0
 
 
 def f2py(x):
     x1 = ot.Sample(x).getMarginal(1)
-    print('eval f2')
+    print("eval f2")
     assert x1.getSize() > 1, "no batch eval"
     return x1
 

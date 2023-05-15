@@ -37,29 +37,29 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PhysicalSpaceCrossEntropyImportanceSampling
   : public CrossEntropyImportanceSampling
 {
-CLASSNAME
+  CLASSNAME
 public:
-/** Default constructor */
+  /** Default constructor */
   PhysicalSpaceCrossEntropyImportanceSampling();
 
   /** Default constructor */
   PhysicalSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                                              const Distribution &auxiliaryDistribution,
-                                              const Indices &activeParameters,
-                                              const Point &initialAuxiliaryDistributionParameters,
-                                              const Interval &bounds,
-                                              const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+      const Distribution &auxiliaryDistribution,
+      const Indices &activeParameters,
+      const Point &initialAuxiliaryDistributionParameters,
+      const Interval &bounds,
+      const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
-  
+
   /** Set solver */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-  
-  
+
+
   /** Get solver */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
-  
+
 protected:
 
   /** Function computing the output samples from the input samples*/
@@ -77,7 +77,7 @@ private:
 
   // bounds for optimization algorithm
   Interval bounds_;
-  
+
   // Optimization solver
   OptimizationAlgorithm solver_;
 

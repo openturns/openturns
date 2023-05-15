@@ -309,7 +309,7 @@ void Histogram::computeCovariance() const
 Distribution Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
-  if (size == 1) 
+  if (size == 1)
   {
     Uniform standard(-1.0, 1.0);
     standard.setDescription(getDescription());

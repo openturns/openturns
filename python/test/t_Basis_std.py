@@ -28,21 +28,21 @@ try:
     for i in range(degree + 1):
         poly.append(factory.build(i))
     basis = ot.Basis(poly)
-    raise AssertionError('should not go there')
+    raise AssertionError("should not go there")
 except RuntimeError:
     print("ok")
 
 # check basis dimensions
-f1 = ot.SymbolicFunction(['x', 'y'], ['x+y'])
-f2 = ot.SymbolicFunction(['x', 'y'], ['x+y', 'x-y'])
-f3 = ot.SymbolicFunction(['x'], ['x+1'])
+f1 = ot.SymbolicFunction(["x", "y"], ["x+y"])
+f2 = ot.SymbolicFunction(["x", "y"], ["x+y", "x-y"])
+f3 = ot.SymbolicFunction(["x"], ["x+1"])
 try:
     b = ot.Basis([f1, f2])
-    raise AssertionError('should not go there')
+    raise AssertionError("should not go there")
 except TypeError:
     print("ok")
 try:
     b = ot.Basis([f1, f3])
-    raise AssertionError('should not go there')
+    raise AssertionError("should not go there")
 except TypeError:
     print("ok")

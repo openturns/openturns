@@ -204,11 +204,11 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
       const Point inputSampleRange(inputSample_.computeRange());
       for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
       {
-	upperBound[k] = inputSampleRange[k] * scaleFactor;
-	if (upperBound[k] < lowerBound[k])
-	{
-	  upperBound[k] += lowerBound[k];
-	}
+        upperBound[k] = inputSampleRange[k] * scaleFactor;
+        if (upperBound[k] < lowerBound[k])
+        {
+          upperBound[k] += lowerBound[k];
+        }
       }
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
@@ -296,12 +296,12 @@ void GeneralLinearModelAlgorithm::computeF()
   F_ = Matrix(sampleSize * outputDimension, totalSize);
   if (totalSize == 0) return;
 
-  // Compute F  
+  // Compute F
   for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
     // Compute phi_j (X)
     // Here we use potential parallelism in the evaluation of the basis functions
-    // It generates a sample of shape (sampleSize, outputDimension) 
+    // It generates a sample of shape (sampleSize, outputDimension)
     const Sample basisSample = basis_[j](inputSample_);
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
       for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
@@ -413,7 +413,7 @@ void GeneralLinearModelAlgorithm::run()
   else
     result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
   hasRun_ = true;
-  }
+}
 
 // Maximize the log-likelihood of the Gaussian process model wrt the observations
 // If the covariance model has no active parameter, no numerical optimization

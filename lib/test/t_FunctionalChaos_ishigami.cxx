@@ -205,7 +205,7 @@ int main(int, char *[])
             Indices multiIndex(enumerateFunction(globalIndex));
             if (partOfVariance[i] > 1.e-3)
             {
-              fullprint << i << " " << globalIndex << " " << multiIndex << " " 
+              fullprint << i << " " << globalIndex << " " << multiIndex << " "
                         << std::fixed << std::setprecision(4) << partOfVariance[i]
                         << std::endl;
             }

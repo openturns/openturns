@@ -208,12 +208,12 @@ values_FORM = list()
 for tick in times:
     values_MC.append(
         computeCrossingProbability_MonteCarlo(
-            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
         )
     )
     values_QMC.append(
         computeCrossingProbability_QMC(
-            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
         )
     )
     values_FORM.append(

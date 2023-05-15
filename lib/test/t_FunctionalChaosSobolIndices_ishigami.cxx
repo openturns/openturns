@@ -241,34 +241,34 @@ int main(int, char *[])
     S_computed = sensitivity.getSobolIndex(indices0);
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
-    // 
+    //
     fullprint << "X2" << std::endl;
     Indices indices1 = {1};
     S_computed = sensitivity.getSobolIndex(indices1);
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
-    // 
+    //
     fullprint << "X3" << std::endl;
     Indices indices2 = {2};
     S_computed = sensitivity.getSobolIndex(indices2);
     printSobolResult(S_computed, S3);
     assert_almost_equal(S_computed, S3, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 1});
     printSobolResult(S_computed, S12);
     assert_almost_equal(S_computed, S12, rtol, atol);
-    // 
+    //
     fullprint << "X1, X3" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 2});
     printSobolResult(S_computed, S13);
     assert_almost_equal(S_computed, S13, rtol, atol);
-    // 
+    //
     fullprint << "X2, X3" << std::endl;
     S_computed = sensitivity.getSobolIndex({1, 2});
     printSobolResult(S_computed, S23);
     assert_almost_equal(S_computed, S23, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2, X3" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 1, 2});
     printSobolResult(S_computed, S123);
@@ -280,37 +280,37 @@ int main(int, char *[])
     S_exact = S1 + S12 + S13 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex(indices1);
     S_exact = S2 + S12 + S23 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X3" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex(indices2);
     S_exact = S3 + S13 + S23 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 1});
     S_exact = S12 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X1, X3" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 2});
     S_exact = S13 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X2, X3" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({1, 2});
     S_exact = S23 + S123;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2, X3" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 1, 2});
     printSobolResult(S_computed, S123);

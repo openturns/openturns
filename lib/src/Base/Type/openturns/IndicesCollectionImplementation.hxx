@@ -73,7 +73,7 @@ public:
   /** Comparison operators */
   using PersistentObject::operator ==;
   Bool operator == (const IndicesCollectionImplementation & rhs) const;
-  
+
   using PersistentObject::operator !=;
   inline Bool operator != (const IndicesCollectionImplementation & rhs) const
   {
