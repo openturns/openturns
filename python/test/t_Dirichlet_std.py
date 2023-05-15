@@ -135,6 +135,21 @@ for dim in range(1, 2):
         distribution.computeSequentialConditionalQuantile(resCDF),
     )
 
+    # Ticket #2306
+    if dim == 2:
+        condPDF = distribution.computeConditionalPDF(-0.1, [0.5])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        condPDF = distribution.computeConditionalPDF(0.5, [0.5])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        condPDF = distribution.computeConditionalPDF(0.6, [0.5])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        condPDF = distribution.computeSequentialConditionalPDF([0.5, -0.1])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        condPDF = distribution.computeSequentialConditionalPDF([0.5, 0.5])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        condPDF = distribution.computeSequentialConditionalPDF([0.5, 0.6])
+        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+
     # Extract the marginals
     for i in range(dim):
         margin = distribution.getMarginal(i)

@@ -320,7 +320,8 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   if (sumY <= 0.0 || sumY >= 1.0) return 0.0;
   s -= sumThetaConditioning;
   const Scalar z = x / (1.0 - sumY);
-  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+  if (z <= 0.0 || z >= 1.0) return 0.0;
+  return std::exp(-SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
 }
 
 Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
@@ -340,6 +341,7 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
     s -= r;
     r = theta_[conditioningDimension];
     z = x[conditioningDimension] / (1.0 - sumY);
+    if (z <= 0.0 || z >= 1.0) break;
     result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
   }
   return result;
