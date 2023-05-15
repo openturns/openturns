@@ -176,7 +176,7 @@ class View:
         step_kw_default = self._CheckDict(step_kw)
         clabel_kw_default = self._CheckDict(clabel_kw)
         text_kw_default = self._CheckDict(text_kw)
-        legend_kw = self._CheckDict(legend_kw)
+        legend_kw_default = self._CheckDict(legend_kw)
         legend_handles = []
         legend_labels = []
 
@@ -606,6 +606,8 @@ class View:
 
         # Add legend
         if add_legend and has_labels and (graph.getLegendPosition() != ""):
+            legend_kw = legend_kw_default
+
             # set legend position
             if "loc" not in legend_kw:
                 try:

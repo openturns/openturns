@@ -38,7 +38,7 @@ option (BUILD_PYTHON                 "Build the python module for the library"  
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
 # Defines our own module path
-list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 if (POLICY CMP0022)
   # INTERFACE_LINK_LIBRARIES defines the link interface
@@ -321,7 +321,7 @@ if (USE_NLOPT)
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${NLOPT_LIBRARIES})
     list (APPEND OPENTURNS_ENABLED_FEATURES "nlopt")
 
-    try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
     if (_NLOPT_STOGO_BUILDS)
       if (_NLOPT_STOGO_RUNS EQUAL 0)
         set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
@@ -332,7 +332,7 @@ if (USE_NLOPT)
       message (STATUS "nlopt::GD_STOGO: fails to build")
     endif ()
 
-    try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
     if (_NLOPT_AGS_BUILDS)
       if (_NLOPT_AGS_RUNS EQUAL 0)
         set (OPENTURNS_NLOPT_HAVE_AGS TRUE)

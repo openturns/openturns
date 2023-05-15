@@ -34,7 +34,7 @@ if (NOT ot_configure_date)
 endif ()
 if (NOT ot_revision)
   execute_process (COMMAND git rev-parse --short HEAD
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                     OUTPUT_VARIABLE ot_revision
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                  )

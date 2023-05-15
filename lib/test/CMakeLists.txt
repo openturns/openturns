@@ -23,7 +23,7 @@ if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
   add_library (CRT_fp8 STATIC EXCLUDE_FROM_ALL CRT_fp8.c)
 endif ()
 
-set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc")
+set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${PROJECT_BINARY_DIR}/lib/etc")
 
 # This macro compiles on the fly and run the corresponding pre-installation test
 # It can have two optional arguments PRE and POST followed by some shell command to be run
@@ -37,13 +37,13 @@ macro (ot_check_test TESTNAME)
   set (TESTNAME_SRCS ${TESTNAME_SRC})
   add_executable (${TESTNAME_TGT} EXCLUDE_FROM_ALL ${TESTNAME_SRCS})
   add_dependencies(tests ${TESTNAME_TGT}) 
-  target_link_libraries (${TESTNAME_TGT} OT)
+  target_link_libraries (${TESTNAME_TGT} PRIVATE OT)
   if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
-    target_link_libraries (${TESTNAME_TGT} CRT_fp8)
+    target_link_libraries (${TESTNAME_TGT} PRIVATE CRT_fp8)
   endif ()
   set_target_properties (${TESTNAME_TGT} PROPERTIES
                          UNITY_BUILD OFF
-                         INSTALL_RPATH "${CMAKE_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
+			 INSTALL_RPATH "${PROJECT_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
   set (TESTNAME_LOC ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}${CMAKE_EXECUTABLE_SUFFIX})
 
   set (_CMD)
@@ -79,8 +79,6 @@ endmacro ()
 
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 
-## Pre-installation tests
-
 # Common
 ot_check_test (Object_std)
 ot_check_test (OStream_std)
@@ -89,6 +87,8 @@ ot_check_test (Pointer_std)
 ot_check_test (Pointer_cast)
 ot_check_test (Exception_std IGNOREOUT)
 ot_check_test (Log_std)
+find_package (Threads)
+target_link_libraries (t_Log_std PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 ot_check_test (IdFactory_std IGNOREOUT)
 ot_check_test (ComparisonOperator_std)
 if (LIBXML2_FOUND)
@@ -100,6 +100,7 @@ endif ()
 ot_check_test (ResourceMap_std IGNOREOUT)
 ot_check_test (Catalog_std IGNOREOUT)
 ot_check_test (AtomicInt_std IGNOREOUT)
+target_link_libraries (t_AtomicInt_std PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # Type
 ot_check_test (Collection_std)

@@ -71,9 +71,6 @@ endif()
 # Exclude spectra sources from unity build (templates take a lot of memory)
 if (Spectra_FOUND)
   set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 12)
-    set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=use-after-free")
-  endif ()
 endif ()
 
 # Build main library
@@ -112,8 +109,7 @@ set_property (TARGET OT APPEND PROPERTY EXPORT_PROPERTIES "OPENTURNS_ENABLED_FEA
 # Build an empty executable to check link dependencies and completeness
 add_executable (linktest main.cxx)
 target_link_libraries (linktest OT)
-set_target_properties (linktest PROPERTIES
-                                 INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${CMAKE_BINARY_DIR}/lib/src")
+set_target_properties (linktest PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${PROJECT_BINARY_DIR}/lib/src")
 
 # Add targets to the build-tree export set
 export(TARGETS OT FILE "${PROJECT_BINARY_DIR}/OpenTURNS-Targets.cmake")

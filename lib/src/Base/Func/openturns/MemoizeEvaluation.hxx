@@ -28,8 +28,6 @@
 #include "openturns/Full.hxx"
 #include "openturns/Cache.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +49,8 @@ public:
   MemoizeEvaluation();
 
   /** Parameter constructor */
-  explicit MemoizeEvaluation(const Evaluation & evaluation, const HistoryStrategy & historyStrategy = Full());
+  explicit MemoizeEvaluation(const Evaluation & evaluation,
+                             const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual constructor */
   MemoizeEvaluation * clone() const override;
@@ -141,7 +140,7 @@ private:
   mutable HistoryStrategy outputStrategy_;
 
   /** Flag to activate or deactivate the history mechanism */
-  mutable Bool isHistoryEnabled_;
+  mutable Bool isHistoryEnabled_ = true;
 
   /** A cache to store already computed points */
   mutable CacheImplementation p_cache_;

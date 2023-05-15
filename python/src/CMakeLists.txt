@@ -64,7 +64,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   add_custom_target (generate_${MODULENAME}_docstrings
                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
                       -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
-                      -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash.cmake
+		      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
                       DEPENDS ${docstring_sources})
   add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
 

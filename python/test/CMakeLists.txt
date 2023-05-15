@@ -820,7 +820,7 @@ ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
 if (MATPLOTLIB_FOUND)
-  file (GLOB_RECURSE PYFILES "${CMAKE_SOURCE_DIR}/python/doc/examples/*/*.py")
+  file (GLOB_RECURSE PYFILES "${PROJECT_SOURCE_DIR}/python/doc/examples/*/*.py")
   foreach (PYF ${PYFILES})
     if (PYF MATCHES plot)
       get_filename_component (TESTNAME "${PYF}" NAME_WE)
