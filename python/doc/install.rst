@@ -9,7 +9,7 @@ From binary packages
 
 Pip
 ---
-Install x86 binary packages from `PyPI <https://pypi.org/project/openturns/>`_::
+Install binary packages from `PyPI <https://pypi.org/project/openturns/>`_::
 
     pip3 install openturns
 
@@ -45,7 +45,7 @@ Alternatively, you can download the `otconda <https://github.com/openturns/otcon
 containing the library and its modules that allows for an offline installation.
 Note that pre-releases are published on conda-forge like regular releases, so
 if you want to stick to the stable version you will have to explicitly specify
-the required version, eg :code:`conda install openturns=1.18`.
+the required version, eg :code:`conda install openturns=1.20`.
 
 Windows
 -------
@@ -54,11 +54,11 @@ Then just run installer and follow the instructions.
 
 A non-interactive installation is also possible with the command line::
 
-    openturns-1.18-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.20-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 macOS
 -----
-Installation options include pip and conda for x86_86 and arm64 processors.
+Installation options include pip and conda.
 
 Debian/Ubuntu
 -------------
@@ -128,14 +128,14 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_36/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_38/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_36/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_38/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
