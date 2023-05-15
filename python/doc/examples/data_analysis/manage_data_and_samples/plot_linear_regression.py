@@ -17,13 +17,16 @@ Build and validate a linear model
 # The linear model also be validate numerically with several tests:
 #
 # - LinearModelFisher: tests the nullity of the regression linear model coefficients (Fisher distribution used),
-# - LinearModelResidualMean: tests, under the hypothesis of a gaussian sample, if the mean of the residual is equal to zero. It is based on the Student test (equality of mean for two gaussian samples).
+# - LinearModelResidualMean: tests, under the hypothesis of a gaussian sample, if the mean of the residual is equal to zero.
+#   It is based on the Student test (equality of mean for two gaussian samples).
 #
 #
 # The hypothesis on the residuals (centered gaussian distribution) may be validated:
 #
-# - graphically if :math:`\underline{X}` is of dimension 1, by drawing the residual couples (:math:`\varepsilon_i, \varepsilon_{i+1}`), where the residual :math:`\varepsilon_i` is evaluated on the samples :math:`(X, Y)`.
-# - numerically with the LinearModelResidualMean Test which tests, under the hypothesis of a gaussian sample, if the mean of the residual is equal to zero. It is based on the Student test (equality of mean for two gaussian samples).
+# - graphically if :math:`\underline{X}` is of dimension 1, by drawing the residual couples (:math:`\varepsilon_i, \varepsilon_{i+1}`),
+#   where the residual :math:`\varepsilon_i` is evaluated on the samples :math:`(X, Y)`.
+# - numerically with the LinearModelResidualMean Test which tests, under the hypothesis of a gaussian sample, if the mean of the residual is equal to zero.
+#   It is based on the Student test (equality of mean for two gaussian samples).
 #
 
 # %%

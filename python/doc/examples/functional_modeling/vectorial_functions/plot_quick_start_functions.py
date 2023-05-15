@@ -6,7 +6,8 @@ Defining Python and symbolic functions: a quick start introduction to functions
 # Abstract
 # --------
 #
-# In this example, we show how to define Python and symbolic functions. Such functions can be evaluated by the library and used, for example, to propagate uncertainties. We focus on functions which have a vector input and a vector output.
+# In this example, we show how to define Python and symbolic functions.
+# Such functions can be evaluated by the library and used, for example, to propagate uncertainties. We focus on functions which have a vector input and a vector output.
 
 # %%
 # Introduction
@@ -107,7 +108,8 @@ myfunction = ot.PythonFunction(3, 2, mySimulator)
 myfunction([1.0, 2.0, 3.0])
 
 # %%
-# However, the newly created `myfunction` has services that the basic Python function did not have. For example, we can create a `CompositeRandomVector` on top of it, by associating it to the input random vector.
+# However, the newly created `myfunction` has services that the basic Python function did not have.
+# For example, we can create a `CompositeRandomVector` on top of it, by associating it to the input random vector.
 
 # %%
 outputVect = ot.CompositeRandomVector(myfunction, inputRandomVector)

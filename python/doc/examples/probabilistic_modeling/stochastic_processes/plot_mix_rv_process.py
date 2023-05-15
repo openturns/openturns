@@ -6,7 +6,7 @@ Create a process from random vectors and processes
 #
 # The objective is to create a process defined from a random vector and a process.
 #
-# We consider the following limit state function, defined as the difference between a degrading resistance :math:`r(t) = R - bt`  and a time-varying load :math:`S(t)`:
+# We consider the following limit state function, defined as the difference between a degrading resistance :math:`r(t) = R - bt` and a time-varying load :math:`S(t)`:
 #
 # .. math::
 #    \begin{align*}
@@ -14,9 +14,11 @@ Create a process from random vectors and processes
 #    \end{align*}
 #
 # We propose the following probabilistic model:
+#
 # - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;
 # - :math:`b` is the deterioration rate of the resistance; it is deterministic;
-# - :math:`S(t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`, standard deviation :math:`\sigma_S` and a squared exponential covariance model;
+# - :math:`S(t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`,
+#   standard deviation :math:`\sigma_S` and a squared exponential covariance model;
 # - :math:`t` is the time, varying in :math:`[0,T]`.
 #
 
@@ -83,7 +85,8 @@ R = ot.Normal(muR, sigR)
 B = ot.Dirac(b)
 
 # %%
-# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t` :
+# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class
+# and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t`:
 #
 # .. math::
 #    R(\omega)-bt = R(\omega)\phi_1(t) + B(\omega) \phi_2(t)

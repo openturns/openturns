@@ -152,7 +152,8 @@ p = 15
 truncatureBasisStrategy = ot.FixedStrategy(multivariateBasis, p)
 
 # %%
-# CleaningStrategy : among the maximumConsideredTerms = 500 first polynomials, those which have the mostSignificant = 50 most significant contributions with significance criterion significanceFactor equal to :math:`10^{-4}`
+# CleaningStrategy : among the maximumConsideredTerms = 500 first polynomials, those which have the mostSignificant = 50 most significant contributions
+# with significance criterion significanceFactor equal to :math:`10^{-4}`
 # The `True` boolean indicates if we are interested in the online monitoring of the current basis update (removed or added coefficients).
 
 # %%

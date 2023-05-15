@@ -3,7 +3,8 @@ Define a function with a field output: the viscous free fall example
 ====================================================================
 """
 # %%
-# In this example, we define a function which has a vector input and a field output. This is why we use the `PythonPointToFieldFunction` class to create the associated function and propagate the uncertainties through it.
+# In this example, we define a function which has a vector input and a field output.
+# This is why we use the `PythonPointToFieldFunction` class to create the associated function and propagate the uncertainties through it.
 #
 # We consider a viscous free fall as explained :ref:`here <use-case-viscous-fall>`.
 

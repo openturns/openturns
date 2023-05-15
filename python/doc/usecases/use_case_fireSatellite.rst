@@ -10,7 +10,8 @@ Three disciplines are needed to design this satellite.
 The orbit discipline is responsible of computing the orbit period, the satellite velocity, the maximal slewing angle and the eclipse period.
 The power discipline is used to estimate the total power of the system and the area of the solar arrays.
 Finally, the attitude \& control discipline computes the total torque of the satellite and the power required for the attitude control system.
-These disciplines exchange several coupling variables. The multidisciplinary analysis that is used to compute the converged values of the coupling variables is performed through a Fixed Point Iteration algorithm.
+These disciplines exchange several coupling variables.
+The multidisciplinary analysis that is used to compute the converged values of the coupling variables is performed through a Fixed Point Iteration algorithm.
 
 
 .. figure:: ../_static/firesatellite.png
@@ -192,7 +193,8 @@ the power production capability at the beginning of life, and
 .. math::
     P_{sa} = \frac{\left( \frac{P_e T_e}{0.6} + \frac{P_d}{T_d}{0.8} \right)}{T_d}
 
-is the required power output. :math:`P_e` and :math:`P_d` are the satellite requirements during eclipse and daylight (here :math:`P_e = P_d = P_{tot}`). :math:`T_e` and :math:`T_d` are the time per orbit spent in eclipse and daylight.
+is the required power output. :math:`P_e` and :math:`P_d` are the satellite requirements during eclipse and daylight (here :math:`P_e = P_d = P_{tot}`).
+:math:`T_e` and :math:`T_d` are the time per orbit spent in eclipse and daylight.
 
 Finally, the inertia can be derived as follows,
 

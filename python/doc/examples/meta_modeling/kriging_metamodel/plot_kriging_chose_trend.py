@@ -96,7 +96,8 @@ view = otv.View(graph)
 
 # %%
 # A common pre-processing step is to apply a transform on the input data before performing the kriging.
-# To do so we write a linear transform of our input data : we make it unit centered at its mean. Then we fix the mean and the standard deviation to their values with the `ParametricFunction`. We build the inverse transform as well.
+# To do so we write a linear transform of our input data : we make it unit centered at its mean.
+# Then we fix the mean and the standard deviation to their values with the `ParametricFunction`. We build the inverse transform as well.
 #
 # We first compute the mean and standard deviation of the input data :
 mean = Xtrain.computeMean()[0]
@@ -301,7 +302,8 @@ view = otv.View(graph)
 # The trend obtained is decreasing on the interval of study : that is the general trend we observe
 # from the exact model. It is still nowhere close to the exact model but as in the constant case the
 # gaussian part will do the job of building a correct (visually at least) metamodel.
-# We note that the values of the amplitude and the scale parameters are similar to the previous constant case. As it can be seen on the previous figure the metamodel is interpolating (see the last data point).
+# We note that the values of the amplitude and the scale parameters are similar to the previous constant case.
+# As it can be seen on the previous figure the metamodel is interpolating (see the last data point).
 
 
 # %%

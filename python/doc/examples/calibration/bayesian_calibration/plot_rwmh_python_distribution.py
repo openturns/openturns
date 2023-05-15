@@ -3,11 +3,13 @@ Posterior sampling using a PythonDistribution
 =============================================
 """
 # %%
-# In this example we are going to show how to do Bayesian inference using the :class:`~openturns.RandomWalkMetropolisHastings` algorithm in a statistical model defined through a :class:`~openturns.PythonDistribution`.
+# In this example we are going to show how to do Bayesian inference using the :class:`~openturns.RandomWalkMetropolisHastings` algorithm
+# in a statistical model defined through a :class:`~openturns.PythonDistribution`.
 #
 # This method is illustrated on a simple lifetime study test-case, which involves censored data, as described hereafter.
 #
-# In the following, we assume that the lifetime :math:`T_i` of an industrial component follows the Weibull distribution :math:`\mathcal W(\alpha, \beta)`, with CDF  given by :math:`F(t|\alpha,\beta)= 1 - e^{-\left( \frac{t}{\beta} \right)^\alpha}`.
+# In the following, we assume that the lifetime :math:`T_i` of an industrial component follows the Weibull distribution :math:`\mathcal W(\alpha, \beta)`,
+# with CDF given by :math:`F(t|\alpha,\beta)= 1 - e^{-\left( \frac{t}{\beta} \right)^\alpha}`.
 #
 # Our goal is to estimate the model parameters :math:`\alpha, \beta` based on
 # a dataset of recorded failures :math:`(t_1, \ldots, t_n),` some of which
@@ -164,7 +166,8 @@ prior.setDescription(["beta", "alpha"])
 initialState = [a_beta / b_beta, 0.5 * (alpha_max - alpha_min)]
 
 # %%
-# For our random walk proposal distributions, we choose normal steps, with standard deviation equal to roughly :math:`10\%` of the prior range (for the uniform prior) or standard deviation (for the normal prior).
+# For our random walk proposal distributions, we choose normal steps, with standard deviation equal to roughly :math:`10\%` of the prior range (for the uniform prior)
+# or standard deviation (for the normal prior).
 #
 
 # %%

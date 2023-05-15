@@ -28,12 +28,13 @@ vecY = ot.CompositeRandomVector(f, vecX)
 thresholdEvent = ot.ThresholdEvent(vecY, ot.Less(), 1.0)
 
 # %%
-# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1) away from the mean (here 0) account roughly for 68.27% of the set. So the probability of the event is
+# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1) away from the mean (here 0) account roughly for 68.27% of the set.
+# So the probability of the event is:
 #
 print("Probability of the event : %.4f" % 0.6827)
 
 # %%
-# We can also use a basic estimator to get the probability of the event by drawing samples from the initial distribution `distX` and counting those which realize the event :
+# We can also use a basic estimator to get the probability of the event by drawing samples from the initial distribution `distX` and counting those which realize the event:
 print(
     "Probability of the event (event sampling) : %.4f"
     % thresholdEvent.getSample(1000).computeMean()[0]

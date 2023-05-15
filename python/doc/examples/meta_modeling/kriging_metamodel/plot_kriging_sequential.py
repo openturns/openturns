@@ -248,7 +248,8 @@ for krigingStep in range(5):
 # More practical algorithms are presented in the following references.
 #
 # * Mona Abtini. Plans prédictifs à taille fixe et séquentiels pour le krigeage (2008). Thèse de doctorat de l'Université de Lyon.
-# * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007). Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
+# * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007).
+#   Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
 # * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018)
 
 View.ShowAll()

@@ -11,7 +11,8 @@ Use the Adaptive Directional Stratification Algorithm
 #
 # The adaptive directional simulation algorithm operates in the standard. It relies on:
 #
-# 1. a *root strategy* to evaluate the nearest failure point along each direction and take the contribution of each direction to the failure event probability into account. The available strategies are:
+# 1. a *root strategy* to evaluate the nearest failure point along each direction and take the contribution of each direction to the failure event probability into account.
+#    The available strategies are:
 #    - `RiskyAndFast`
 #    - `MediumSafe`
 #    - `SafeAndSlow`

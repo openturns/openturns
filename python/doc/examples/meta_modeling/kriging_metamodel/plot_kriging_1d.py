@@ -130,7 +130,8 @@ result = algo.getResult()
 print(result)
 
 # %%
-# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the `run` method. Then we get the metamodel with `getMetaModel` and evaluate the outputs of the metamodel on the test design of experiments.
+# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the `run` method.
+# Then we get the metamodel with `getMetaModel` and evaluate the outputs of the metamodel on the test design of experiments.
 
 # %%
 krigeageMM = result.getMetaModel()
@@ -163,8 +164,10 @@ view = viewer.View(graph)
 # %%
 # We see that the kriging metamodel is interpolating. This is what is meant by *conditioning* a gaussian process.
 #
-# We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`), then the kriging metamodel is not close to the function :math:`g`.
-# However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`), then the kriging metamodel is quite accurate.
+# We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`),
+# then the kriging metamodel is not close to the function :math:`g`.
+# However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`),
+# then the kriging metamodel is quite accurate.
 
 # %%
 # Compute confidence bounds

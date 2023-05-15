@@ -74,7 +74,8 @@ view = viewer.View(graph)
 # Composite design
 # ----------------
 #
-# A composite design is a stratified design of experiments enabling to create a pattern as the union of an Axial pattern and a Factorial one. The number of points generated is :math:`1 + n_{\mathrm{level}}(2n+2^n)`.
+# A composite design is a stratified design of experiments enabling to create a pattern as the union of an Axial pattern and a Factorial one.
+# The number of points generated is :math:`1 + n_{\mathrm{level}}(2n+2^n)`.
 #
 
 # %%

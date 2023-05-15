@@ -85,10 +85,12 @@ def logLikelihood(X):
 # --------------------
 
 # %%
-# In this section, we use the `draw` method which is available for any `Function` which has 1 or 2 input arguments. In our case, the log-likelihood function has two inputs: :math:`x_0=\mu` and :math:`x_1=\sigma`.
+# In this section, we use the `draw` method which is available for any `Function` which has 1 or 2 input arguments.
+# In our case, the log-likelihood function has two inputs: :math:`x_0=\mu` and :math:`x_1=\sigma`.
 
 # %%
-# Draw the log-likelihood function with the `draw` method: this is much faster than using a `for` loop.  In order to print LaTeX X and Y labels, we use the `"r"` character in front of the string containing the LaTeX command.
+# Draw the log-likelihood function with the `draw` method: this is much faster than using a `for` loop.
+# In order to print LaTeX X and Y labels, we use the `"r"` character in front of the string containing the LaTeX command.
 
 # %%
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
@@ -102,7 +104,8 @@ view = viewer.View(graphBasic)
 # --------------------------------
 
 # %%
-# The level values are computed from the quantiles of the data, so that the contours are equally spaced. We can configure the number of levels by setting the `Contour-DefaultLevelsNumber` key in the `ResourceMap`.
+# The level values are computed from the quantiles of the data, so that the contours are equally spaced.
+# We can configure the number of levels by setting the `Contour-DefaultLevelsNumber` key in the `ResourceMap`.
 
 # %%
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)

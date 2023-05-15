@@ -219,7 +219,8 @@ sample
 # Interactions with Numpy
 # -----------------------
 #
-# The Python classes defined in Python modules are unknown to OpenTURNS and hence cannot be used by the library. This is why it is useful to know how to convert to and from more basic Python variable types, especially Numpy arrays.
+# The Python classes defined in Python modules are unknown to OpenTURNS and hence cannot be used by the library.
+# This is why it is useful to know how to convert to and from more basic Python variable types, especially Numpy arrays.
 
 # %%
 # The following statement creates a `Sample` and converts it into a bidimensional Numpy `array`.

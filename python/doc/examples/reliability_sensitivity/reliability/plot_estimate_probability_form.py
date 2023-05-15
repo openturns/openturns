@@ -3,7 +3,8 @@ Use the FORM - SORM algorithms
 ==============================
 """
 # %%
-# In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example. More precisely, we show how to use the associated results:
+# In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example.
+# More precisely, we show how to use the associated results:
 #
 # - the design point in both physical and standard space,
 # - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohenbichler and Breitung,

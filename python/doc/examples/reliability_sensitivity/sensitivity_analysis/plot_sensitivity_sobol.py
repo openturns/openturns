@@ -98,7 +98,8 @@ view = viewer.View(graph)
 # ---------------------------
 
 # %%
-# We first create a design of experiments with the `SobolIndicesExperiment`. Since we are not interested in second order indices for the moment, we use the default value of the third argument (we will come back to this topic later).
+# We first create a design of experiments with the `SobolIndicesExperiment`.
+# Since we are not interested in second order indices for the moment, we use the default value of the third argument (we will come back to this topic later).
 
 # %%
 size = 1000

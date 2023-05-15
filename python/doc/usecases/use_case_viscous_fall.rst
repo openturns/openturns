@@ -7,7 +7,8 @@ A viscous free fall example
 Introduction
 -------------
 
-We consider an object inside a vertical cylinder which contains a viscous fluid. The fluid generates a drag force which limits the speed of the solid and we assume that the force depends linearily on the object speed:
+We consider an object inside a vertical cylinder which contains a viscous fluid.
+The fluid generates a drag force which limits the speed of the solid and we assume that the force depends linearily on the object speed:
 
 .. math::
    m \frac{dv}{dt} = - m g - c v

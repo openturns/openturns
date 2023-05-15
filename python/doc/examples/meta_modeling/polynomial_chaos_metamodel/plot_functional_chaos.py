@@ -20,7 +20,8 @@ Create a polynomial chaos metamodel
 #
 # and that :math:`X_1` and :math:`X_2` are independent.
 #
-# An interesting point in this example is that the output is multivariate. This is why we are going to use the `getMarginal` method in the script in order to select the output marginal that we want to manage.
+# An interesting point in this example is that the output is multivariate.
+# This is why we are going to use the `getMarginal` method in the script in order to select the output marginal that we want to manage.
 
 # %%
 import openturns as ot

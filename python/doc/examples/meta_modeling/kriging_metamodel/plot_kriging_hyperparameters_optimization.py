@@ -164,7 +164,8 @@ solverImplementation = solver.getImplementation()
 solverImplementation.getClassName()
 
 # %%
-# The `getOptimizationBounds` method returns the bounds. The dimension of these bounds correspond to the spatial dimension of the covariance model. In the metamodeling context, this correspond to the input dimension of the model.
+# The `getOptimizationBounds` method returns the bounds. The dimension of these bounds correspond to the spatial dimension of the covariance model.
+# In the metamodeling context, this correspond to the input dimension of the model.
 
 # %%
 bounds = algo.getOptimizationBounds()
@@ -193,7 +194,8 @@ print(isOptimize)
 # ------------------------------------------------
 
 # %%
-# The starting point of the optimization is based on the parameters of the covariance model. In the following example, we configure the parameters of the covariance model to the arbitrary values `[12.,34.,56.,78.]`.
+# The starting point of the optimization is based on the parameters of the covariance model.
+# In the following example, we configure the parameters of the covariance model to the arbitrary values `[12.,34.,56.,78.]`.
 
 # %%
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [1.0])
@@ -223,7 +225,8 @@ print(basic_covariance_model)
 # --------------------------
 
 # %%
-# It is sometimes useful to completely disable the optimization of the parameters. In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,56.,78.]`.
+# It is sometimes useful to completely disable the optimization of the parameters.
+# In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,56.,78.]`.
 
 # %%
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [91.0])

@@ -86,7 +86,8 @@ print(process.getTimeGrid())
 realization = process.getRealization()
 
 # %%
-# Here it is a sample of size :math:`100 \times 4` (100 time steps, 3 spatial cooordinates and the time variable). We are able to draw its marginals, for instance the first (index 0) one :math:`X_t^0`, against the time with no interpolation :
+# Here it is a sample of size :math:`100 \times 4` (100 time steps, 3 spatial cooordinates and the time variable).
+# We are able to draw its marginals, for instance the first (index 0) one :math:`X_t^0`, against the time with no interpolation:
 interpolate = False
 graph = realization.drawMarginal(0, interpolate)
 graph.setTitle("First marginal of a realization of the process")

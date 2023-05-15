@@ -26,9 +26,11 @@ where :
 - :math:`y_0` is the initial population at time :math:`t=t_0`,
 - :math:`t_{final}` is the final time.
 
-The :math:`a` parameter sets the growth rate of the population. The :math:`b` parameter acts as a competition parameter which limits the size of the population by increasing the competition between its members.
+The :math:`a` parameter sets the growth rate of the population.
+The :math:`b` parameter acts as a competition parameter which limits the size of the population by increasing the competition between its members.
 
-In [1], the author uses this model to simulate the growth of the U.S. population. To do this, the author uses the U.S. census data from 1790 to 1910. For this time interval, R. Pearl and L. Reed [2] computed the following values of the parameters:
+In [1], the author uses this model to simulate the growth of the U.S. population.
+To do this, the author uses the U.S. census data from 1790 to 1910. For this time interval, R. Pearl and L. Reed [2] computed the following values of the parameters:
 
 .. math::
    a = 0.03134, \qquad b = 1.5887 \times 10^{-10}.

@@ -21,7 +21,8 @@ ot.Log.Show(ot.Log.NONE)
 #
 # A regular time grid is a regular discretization of the interval :math:`[0, T] \in \mathbb{R}` into :math:`N` points, noted :math:`(t_0, \dots, t_{N-1})`.
 #
-# The time grid can be defined using :math:`(t_{Min}, \Delta t, N)` where :math:`N` is the number of points in the time grid. :math:`\Delta t` the time step between two consecutive instants and :math:`t_0 = t_{Min}`.
+# The time grid can be defined using :math:`(t_{Min}, \Delta t, N)` where :math:`N` is the number of points in the time grid.
+# :math:`\Delta t` the time step between two consecutive instants and :math:`t_0 = t_{Min}`.
 # Then, :math:`t_k = t_{Min} + k \Delta t` and :math:`t_{Max} = t_{Min} +  (N-1) \Delta t`.
 #
 #
