@@ -1,0 +1,76 @@
+%feature("docstring") OT::GeneralizedExtremeValueValidation
+"Validation of GeneralizedExtremeValue inference.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+result : :class:`~openturns.DistributionFactoryResult`
+    Inference result to validate
+sample : 2-d sequence of float
+    Data on which the inference was performed
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawDiagnosticPlot
+"Draw some diagnostic plots.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Returns a grid of 4 graphs:
+     - the QQ-plot
+     - the PP-plot
+     - the return level graph (with confidence interval)
+     - the density graph.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawReturnLevel
+"Draw the return level with confidence interval.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The return level graph
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawPDF
+"Draw the PDF and data.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The PDF curve and histogram of data.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::setConfidenceLevel
+"Confidence level accessor.
+
+Parameters
+----------
+alpha : float
+    Confidence level for the computation of the return level graph
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::getConfidenceLevel
+"Confidence level accessor.
+
+Returns
+-------
+alpha : float
+    Confidence level for the computation of the return level graph
+"

@@ -110,6 +110,10 @@ public:
   /** Compute the second derivative of the archimedean generator */
   Scalar computeArchimedeanGeneratorSecondDerivative(const Scalar t) const override;
 
+  /** Dependence coefficients */
+  CorrelationMatrix computeUpperTailDependenceMatrix() const override;
+  CorrelationMatrix computeLowerTailDependenceMatrix() const override;
+  
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;

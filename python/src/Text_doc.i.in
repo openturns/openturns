@@ -2,21 +2,21 @@
 "Text.
 
 Available constructors:
-    Text(*data, texts, position=3, legend=' '*)
+    Text(*data, texts, position='top', legend=''*)
 
-    Text(*dataX, dataY, texts, position=3, legend=' '*)
+    Text(*dataX, dataY, texts, position='top', legend=''*)
 
 Parameters
 ----------
 data : 2-d sequence of float
     Locations of texts
 dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
-    X- and Y-locations of texts
+    X and Y-locations of texts
 texts : sequence of str
     Text content
-position : str
-    Text position; valid values are 'top' (default), 'bottom', 'left' or 'right'
-legend : str
+position : str, default='top'
+    Text position; valid values are 'top', 'bottom', 'left' or 'right'
+legend : str, default=''
     Legend of the Text.
 
 Examples
@@ -35,3 +35,38 @@ Examples
 >>> for i in range(5): texts[i] = str(i+1)
 >>> myText = ot.Text(sample[0:5,:], texts)
 >>> myGraph.add(myText)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::Text::setTextRotation
+"Text rotation accessor.
+
+Parameters
+----------
+rotation : float
+    Rotation angle, default value is 0.0"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::Text::getTextRotation
+"Text rotation accessor.
+
+Returns
+-------
+rotation : float
+    Rotation angle, default value is 0.0"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::Text::IsValidTextPosition
+"Text position identifier check.
+
+Parameters
+----------
+pos : str
+    Text position identifier
+    
+Returns
+-------
+isValid : bool
+    Whether the position is a valid identifier"

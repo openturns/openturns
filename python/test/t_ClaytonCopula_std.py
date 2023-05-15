@@ -129,3 +129,6 @@ for i in range(len(thetas)):
     C_py.append(copula.computeCDF(x))
     print("PDF(", x, ")=%.12e" % c_py[i])
     print("CDF(", x, ")=%.12e" % C_py[i])
+
+print("chi=", copula.computeUpperTailDependenceMatrix())
+print("chiL=", copula.computeLowerTailDependenceMatrix())

@@ -1,0 +1,83 @@
+%feature("docstring") OT::ProfileLikelihoodResult
+"Distribution factory result for profile likelihood estimation.
+
+This result class provides the additional optimal likelihood value
+and the confidence interval of the parameter :math:`\theta^{(1)}` according to the deviance statistic
+:math:`\mathcal{D}_p (\theta^{(1)})` (refer to :meth:`~openturns.HypothesisTest::LikelihoodRatioTest`).
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Estimated distribution
+parameterDistribution : :class:`~openturns.Distribution`
+    Distribution of the parameters
+logLikelihood : float
+    Optimal log-likelihood value
+profileLikelihood : :class:`~openturns.Function`
+    Profile likelihood function
+parameter : float
+    Optimal outermost parameter value
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::setConfidenceLevel
+"Confidence level accessor.
+
+Parameters
+----------
+alpha : float
+    Confidence level for the computation of the parameter confidence interval"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getConfidenceLevel
+"Confidence level accessor.
+
+Returns
+-------
+alpha : float
+    Confidence level for the computation of the parameter confidence interval"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getParameter
+"Parameter value accessor.
+
+Returns
+-------
+parameter : float
+    Optimal value of the outermost parameter"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getParameterConfidenceInterval
+"Outer parameter confidence interval accessor.
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Confidence interval of the outer parameter estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getProfileLikelihoodFunction
+"Profile likelihood accessor.
+
+Returns
+-------
+ll : :class:`~openturns.Function`
+    Profile likelihood accessor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::drawProfileLikelihoodFunction
+"Draw the profile likelihood and the confidence interval.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Profile likelihood function graph."

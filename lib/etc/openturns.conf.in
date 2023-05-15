@@ -466,8 +466,24 @@
   <!-- OT::FrechetFactory parameters -->
   <FrechetFactory-BoundMargin value_float="10.0" />
 
-  <!-- OT::GeneralizedParetoFactory parameters -->
+  <!-- OT::GeneralizedExtremeValue parameters -->
   <GeneralizedExtremeValue-XiThreshold value_float="1.0e-6" />
+  <GeneralizedExtremeValue-MMin value_float="1.05" />
+  <GeneralizedExtremeValue-MMax value_float="1.0e3" />
+
+  <!-- OT::GeneralizedExtremeValueFactory parameters -->
+  <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
+  <GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber value_int="100" />
+  <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
+  <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
+  <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
+
+  <!-- OT::ProfileLikelihoodResult parameters -->
+  <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />
+  <ProfileLikelihoodResult-RelativePrecision value_float="1.0e-10" />
+  <ProfileLikelihoodResult-ConfidenceIntervalMargin value_float="0.05" />
+  <ProfileLikelihoodResult-TextMargin value_float="0.03" />
+  <ProfileLikelihoodResult-StartingScaling value_float="1.0e-2" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
@@ -815,6 +831,7 @@
   <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
+  <Distribution-DependenceEpsilon                 value_float="1.0e-12"           />
   <Distribution-DiscreteDrawPDFScaling            value_float="0.25"              />
   <Distribution-QMax                              value_float="0.85"              />
   <Distribution-QMin                              value_float="0.15"              />
@@ -901,8 +918,11 @@
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
+  <VisualTest-CloudSmallSize value_int="100" />
+  <VisualTest-CloudMediumSize value_int="1000" />
   <VisualTest-KendallPlot-MonteCarloSize value_int="100" />
-  
+  <VisualTest-DependenceConfidenceLevel value_float="0.95" />
+
   <!--  OT::RandomWalkMetropolisHastings parameters -->
   <RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor   value_float="1.2" />
   <RandomWalkMetropolisHastings-DefaultAdaptationLowerBound        value_float="0.117" /> <!-- = 0.5 * 0.234 -->

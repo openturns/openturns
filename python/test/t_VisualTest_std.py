@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -18,6 +19,13 @@ print("sampleDistributionQQPlot = ", sampleDistributionQQPlot)
 dist = ot.Geometric()
 qq_plot = ot.VisualTest.DrawQQplot(dist.getSample(size), dist)
 print("discrete QQPlot = ", qq_plot)
+
+sample2 = normal.getSample(size)
+twoSamplesPPPlot = ot.VisualTest.DrawPPplot(sample, sample2)
+print("twoSamplesPPPlot = ", twoSamplesPPPlot)
+
+sampleDistributionPPplot = ot.VisualTest.DrawPPplot(sample, normal)
+print("sampleDistributionPPplot = ", sampleDistributionPPplot)
 
 # HenryLine test
 size = 100
@@ -93,3 +101,17 @@ distribution = ot.ComposedDistribution(
 )
 cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 print("CloudsMarginals = ", cloudsMarginals)
+
+# dependence functions
+copula = ot.GumbelCopula()
+data = copula.getSample(100000)
+graph1 = ot.VisualTest.DrawUpperTailDependenceFunction(data)
+graph2 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data)
+graph3 = ot.VisualTest.DrawLowerTailDependenceFunction(data)
+graph4 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data)
+
+# check vs theoretical value
+theta = copula.getTheta()
+ref = 2.0 - 2.0**(1.0 / theta)
+value = graph1.getDrawable(0).getData()[-4, 1]
+ott.assert_almost_equal(value, ref, 1e-2, 1e-3)

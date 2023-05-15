@@ -572,6 +572,18 @@ public:
                              const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
                              const Bool logScale = false) const;
 
+  /** Dependence functions */
+  virtual CorrelationMatrix computeUpperTailDependenceMatrix() const;
+  virtual CorrelationMatrix computeUpperExtremalDependenceMatrix() const;
+  virtual CorrelationMatrix computeLowerTailDependenceMatrix() const;
+  virtual CorrelationMatrix computeLowerExtremalDependenceMatrix() const;
+
+  /** Draw dependence functions */
+  virtual Graph drawUpperTailDependenceFunction() const;
+  virtual Graph drawUpperExtremalDependenceFunction() const;
+  virtual Graph drawLowerTailDependenceFunction() const;
+  virtual Graph drawLowerExtremalDependenceFunction() const;
+
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
   void setParametersCollection(const PointWithDescriptionCollection & parametersCollection);

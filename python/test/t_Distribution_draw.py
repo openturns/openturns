@@ -54,3 +54,10 @@ graphCDF = distND.drawMarginal2DCDF(2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
 # Quantile
 graphQuantile = dist1D.drawQuantile()
 graphQuantile = dist2D.drawQuantile()
+
+# dependence functions
+copula = ot.FrankCopula()
+graph1 = copula.drawUpperTailDependenceFunction()
+graph2 = copula.drawUpperExtremalDependenceFunction()
+graph3 = copula.drawLowerTailDependenceFunction()
+graph4 = copula.drawLowerExtremalDependenceFunction()

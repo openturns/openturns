@@ -84,9 +84,6 @@ protected:
   /* Bootstrap estimator */
   virtual DistributionFactoryResult buildBootStrapEstimator(const Sample & sample, const Bool isGaussian = false) const;
 
-  /* Build the distribution and the parameter distribution */
-  virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const Sample & sample, const Bool isRegular = false) const;
-
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
 

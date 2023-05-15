@@ -271,3 +271,28 @@ Parameters
 ----------
 xi : float, :math:`\xi \in \Rset`
     Shape parameter :math:`\xi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::computeReturnLevel
+"Accessor to the return level.
+
+Returns
+-------
+q : float, quantile
+    Return level computed as the quantile of level :math:`1-1/m`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::drawReturnLevel
+"Plot the return level.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Return level graph.
+
+Notes
+-----
+The return level plot bounds are defined by the :class:`~openturns.ResourceMap`
+entries `GeneralizedExtremeValue-MMin` and `GeneralizedExtremeValue-MMax`"

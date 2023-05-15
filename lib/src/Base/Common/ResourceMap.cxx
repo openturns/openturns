@@ -1091,6 +1091,22 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralizedExtremeValue parameters //
   addAsScalar("GeneralizedExtremeValue-XiThreshold", 1.0e-6);
+  addAsScalar("GeneralizedExtremeValue-MMin", 1.05);
+  addAsScalar("GeneralizedExtremeValue-MMax", 1.0e3);
+
+  // GeneralizedExtremeValueFactory parameters //
+  addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
+  addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
+  addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
+  addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
+
+  // ProfileLikelihoodResult parameters //
+  addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);
+  addAsScalar("ProfileLikelihoodResult-RelativePrecision", 1.0e-10);
+  addAsScalar("ProfileLikelihoodResult-ConfidenceIntervalMargin", 0.05);
+  addAsScalar("ProfileLikelihoodResult-TextMargin", 0.03);
+  addAsScalar("ProfileLikelihoodResult-StartingScaling", 1e-2);
 
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);
@@ -1438,6 +1454,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultQuantileEpsilon", 1.0e-12);
   addAsScalar("Distribution-DefaultPDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
+  addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
   addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);
@@ -1523,7 +1540,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
+  addAsUnsignedInteger("VisualTest-CloudSmallSize", 100);
+  addAsUnsignedInteger("VisualTest-CloudMediumSize", 1000);
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
+  addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
 
   // RandomWalkMetropolisHastings parameters //
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);

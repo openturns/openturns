@@ -87,6 +87,12 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /* Build the distribution and the parameter distribution */
+  static DistributionFactoryResult BuildEstimator(
+    const DistributionFactoryImplementation & factory,
+    const Sample & sample, const Bool isRegular = false);
+
+  static Distribution BuildGaussianEstimator(const Distribution & distribution, const Sample & sample);
 protected:
   /* The underlying distribution */
   Distribution distribution_;

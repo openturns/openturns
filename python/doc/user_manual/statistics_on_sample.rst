@@ -24,6 +24,9 @@ Building distributions from samples
 
     DistributionFactory
     DistributionFactoryResult
+    DistributionFactoryLikelihoodResult
+    ProfileLikelihoodResult
+    TimeVaryingResult
 
     :template: DistributionFactory.rst_t
 
@@ -222,6 +225,13 @@ Graphical tests
     VisualTest.DrawLinearModelResidual
     VisualTest.DrawQQplot
     VisualTest.DrawCDFplot
+    VisualTest.DrawUpperTailDependenceFunction
+    VisualTest.DrawUpperExtremalDependenceFunction
+    VisualTest.DrawLowerTailDependenceFunction
+    VisualTest.DrawLowerExtremalDependenceFunction
+
+    :template: class.rst_t
+    experimental.GeneralizedExtremeValueValidation
 
 Hypothesis tests
 ----------------
@@ -231,6 +241,7 @@ Hypothesis tests
     :template: function.rst_t
 
     HypothesisTest.ChiSquared
+    HypothesisTest.LikelihoodRatioTest
     HypothesisTest.FullPearson
     HypothesisTest.FullSpearman
     HypothesisTest.PartialPearson

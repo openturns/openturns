@@ -27,9 +27,22 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
+static String VisualTestGetPointStyle(const UnsignedInteger size)
+{
+  const UnsignedInteger smallSize = ResourceMap::GetAsUnsignedInteger("VisualTest-CloudSmallSize");
+  const UnsignedInteger mediumSize = ResourceMap::GetAsUnsignedInteger("VisualTest-CloudMediumSize");
+  if (size < smallSize)
+    return "fcircle";
+  else if (size < mediumSize)
+    return"bullet";
+  else
+    return "dot";
+}
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const Sample & sample1,
@@ -47,9 +60,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
     data(i, 1) = sample2.computeQuantilePerComponent(q)[0];
   }
   Cloud cloudQQplot(data, "Data");
-  if (pointNumber < 100) cloudQQplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudQQplot.setPointStyle("bullet");
-  else cloudQQplot.setPointStyle("dot");
+  cloudQQplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -83,9 +94,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
     data(i, 1) = dist.computeQuantile(p)[0];
   }
   Cloud cloudQQplot(data, "Data");
-  if (size < 100) cloudQQplot.setPointStyle("fcircle");
-  else if (size < 1000) cloudQQplot.setPointStyle("bullet");
-  else cloudQQplot.setPointStyle("dot");
+  cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -102,6 +111,73 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   return graphQQplot;
 }
 
+/* Draw the PPplot of the two Samples when its dimension is 1 */
+Graph VisualTest::DrawPPplot(const Sample & sample1,
+                             const Sample & sample2,
+                             const UnsignedInteger pointNumber)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample2.getDimension();
+  Sample data(pointNumber, 2);
+  const Scalar step = (sample1.getMax()[0] - sample1.getMin()[0]) / (pointNumber + 1.0);
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
+  {
+    const Scalar p = sample1.getMin()[0] + (i + 0.5) * step;
+    data(i, 0) = sample1.computeEmpiricalCDF(Point({p}));
+    data(i, 1) = sample2.computeEmpiricalCDF(Point({p}));
+  }
+  Cloud cloud(data, "Data");
+  cloud.setPointStyle(VisualTestGetPointStyle(pointNumber));
+  Graph graph("Two sample PP-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
+  // First, the bisector
+  Sample diagonal(2, 2);
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(pointNumber - 1, 0);
+  diagonal(1, 1) = data(pointNumber - 1, 0);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graph.add(bisector);
+  // Then the PP plot
+  graph.add(cloud);
+  return graph;
+}
+
+/* Draw the PPplot of one Sample and one Distribution when its dimension is 1 */
+Graph VisualTest::DrawPPplot(const Sample & sample,
+                             const Distribution & dist)
+{
+  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << dist.getDimension();
+  const Sample sortedSample(sample.sortUnique());
+  if (!(sortedSample.getSize() >= 2)) throw InvalidArgumentException(HERE) << "Sample must have at least 2 distinct points";
+  const UnsignedInteger size = sortedSample.getSize() - 1;// avoids last point with p=1
+  Sample data(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
+    data(i, 0) = p;
+    data(i, 1) = dist.computeCDF(sortedSample[i]);
+  }
+  Cloud cloud(data, "Data");
+  cloud.setPointStyle(VisualTestGetPointStyle(size));
+  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  // First, the bisector
+  Sample diagonal(2, 2);
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(size - 1, 0);
+  diagonal(1, 1) = data(size - 1, 0);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graph.add(bisector);
+  // Then the PP plot
+  graph.add(cloud);
+  return graph;
+}
+
 /* Draw the CDFplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample1,
                               const Sample & sample2)
@@ -113,9 +189,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
   const Sample data2(UserDefined(sample2).computeCDF(sortedSample));
   Cloud cloudCDFplot(data1, data2, "Data");
-  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
-  else cloudCDFplot.setPointStyle("dot");
+  cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -141,9 +215,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
   const Sample data2(dist.computeCDF(sortedSample));
   Cloud cloudCDFplot(data1, data2, "Data");
-  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
-  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
-  else cloudCDFplot.setPointStyle("dot");
+  cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
   Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
@@ -538,6 +610,116 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   // Draw the Kendall curve
   graph.add(Curve(firstEmpiricalStatistics, secondEmpiricalStatistics));
   return graph;
+}
+
+/* Draw dependence functions */
+Graph VisualTestDrawDependenceFunction(const Sample & data,
+                                       const String & linkFormula,
+                                       const String & legend,
+                                       const Bool survival = false)
+{
+  if (!data.getSize())
+    throw InvalidArgumentException(HERE) << "The sample must not be empty";
+  if (data.getDimension() != 2)
+    throw InvalidArgumentException(HERE) << "The sample must be of dimension 2";
+  const UnsignedInteger size = data.getSize();
+  const Sample ranked((data.rank() + 1.0) / size);
+  Graph graph("n/a", "u", legend, true, "bottom");
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
+  Sample valuesU(pointNumber, 1);
+  Sample valuesXu(pointNumber, 1);
+  Sample valuesXuLow(pointNumber, 1);
+  Sample valuesXuUp(pointNumber, 1);
+  const Scalar level = ResourceMap::GetAsScalar("VisualTest-DependenceConfidenceLevel");
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+  const SymbolicFunction link(Description({"u", "cuu"}), Description(1, linkFormula));
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
+  {
+    const Scalar u = (i + 1) * 1.0 / (pointNumber + 1);
+    valuesU(i, 0) = u;
+    Scalar cuu = 0.0;
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      if (survival)
+      {
+        if (u < std::min(ranked(j, 0), ranked(j, 1)))
+          cuu += 1.0 / size;
+      }
+      else
+      {
+        if (u > std::max(ranked(j, 0), ranked(j, 1)))
+          cuu += 1.0 / size;
+      }
+    }
+    if ((cuu > 0.0) && (cuu < 1.0))
+    {
+      // estimate
+      valuesXu[i] = link(Point({u, cuu}));
+
+      // confidence interval of cuu, then xu
+      Scalar lb = cuu - xq * std::sqrt((cuu * (1.0 - cuu)) / size);
+      // might be < 0, set something positive below cuu
+      const Scalar epsilon = SpecFunc::Precision;
+      if (lb < 0.0)
+        lb = epsilon;
+      Scalar ub = cuu + xq * std::sqrt((cuu * (1.0 - cuu)) / size);
+      if (ub > 1.0)
+        ub = 1.0 - epsilon;
+      valuesXuLow[i] = link(Point({u, lb}));
+      valuesXuUp [i] = link(Point({u, ub}));
+
+      // clip CI in [-1,1]
+      valuesXuLow(i, 0) = std::max(valuesXuLow(i, 0), -1.0);
+      valuesXuUp(i, 0) = std::min(valuesXuUp(i, 0), 1.0);
+    }
+  }
+
+  // estimate
+  Curve curveXu(valuesU, valuesXu);
+  curveXu.setColor("red");
+  curveXu.setLegend(legend);
+  graph.add(curveXu);
+  // confidence lower bound
+  Curve curveXuLow(valuesU, valuesXuLow);
+  curveXuLow.setColor("blue");
+  curveXuLow.setLineStyle("dashed");
+  curveXuLow.setLegend("CI low");
+  graph.add(curveXuLow);
+  // confidence upper bound
+  Curve curveXuUp(valuesU, valuesXuUp);
+  curveXuUp.setColor("blue");
+  curveXuUp.setLineStyle("dashed");
+  curveXuUp.setLegend("CI up");
+  graph.add(curveXuUp);
+  return graph;
+}
+
+Graph VisualTest::DrawUpperTailDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "2-log(cuu)/log(u)", "$\\chi(u)$"));
+  result.setTitle("Upper tail dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawUpperExtremalDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "-2*log1p(u)/log(cuu)-1", "$\\bar{\\chi}(u)$", true));
+  result.setTitle("Upper extremal dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawLowerTailDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "log1p(cuu)/log1p(u)", "$\\chi_L(u)$"));
+  result.setTitle("Lower tail dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "2*log(u)/log(cuu)-1", "$\\bar{\\chi}_L(u)$"));
+  result.setTitle("Lower extremal dependence function");
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -30,7 +30,6 @@ static const Factory<Text> Factory_Text;
 
 /* Accepted text position */
 std::map<String, UnsignedInteger> Text::Position;
-Bool Text::IsTextFirstInitialization = true;
 
 
 /* Default constructor */
@@ -189,6 +188,15 @@ void Text::setTextSize(const Scalar size)
   textSize_ = size;
 }
 
+Scalar Text::getRotation() const
+{
+  return rotation_;
+}
+
+void Text::setRotation(const Scalar rotation)
+{
+  rotation_ = rotation;
+}
 
 /* Clone method */
 Text * Text::clone() const
@@ -205,6 +213,22 @@ void Text::checkData(const Sample & data) const
   }
 }
 
+Bool Text::IsValidTextPosition(String textPosition)
+{
+  InitializePositionMap();
+  const std::map<String, UnsignedInteger>::const_iterator it(Position.find(textPosition));
+  return (it != Position.end());
+}
+
+void Text::InitializePositionMap()
+{
+  if (!Position.empty()) return;
+  Position["bottom"] = 1;
+  Position["left"] = 2;
+  Position["top"] = 3;
+  Position["right"] = 4;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Text::save(Advocate & adv) const
 {
@@ -212,26 +236,7 @@ void Text::save(Advocate & adv) const
   adv.saveAttribute( "textAnnotations_", textAnnotations_ );
   adv.saveAttribute( "textPositions_", textPositions_ );
   adv.saveAttribute( "textSize_", textSize_ );
-}
-
-Bool Text::IsValidTextPosition(String textPosition)
-{
-  if(IsTextFirstInitialization)
-  {
-    InitializePositionMap();
-    IsTextFirstInitialization = false;
-  }
-
-  const std::map<String, UnsignedInteger>::const_iterator it(Position.find(textPosition));
-  return (it != Position.end());
-}
-
-void Text::InitializePositionMap()
-{
-  Position["bottom"] = 1;
-  Position["left"] = 2;
-  Position["top"] = 3;
-  Position["right"] = 4;
+  adv.saveAttribute( "rotation_", rotation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -241,8 +246,8 @@ void Text::load(Advocate & adv)
   adv.loadAttribute( "textAnnotations_", textAnnotations_ );
   adv.loadAttribute( "textPositions_", textPositions_ );
   adv.loadAttribute( "textSize_", textSize_ );
+  if (adv.hasAttribute("rotation_"))
+    adv.loadAttribute( "rotation_", rotation_ );
 }
-
-
 
 END_NAMESPACE_OPENTURNS

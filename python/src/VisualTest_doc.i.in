@@ -155,6 +155,83 @@ Draw a two-sample QQ-plot:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::VisualTest::DrawPPplot
+"Draw a PP-plot.
+
+Available usages:
+    VisualTest.DrawPPplot(*sample1, sample2, n_points*)
+
+    VisualTest.DrawPPplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+n_points : int, optional
+    The number of points that is used for interpolating the empirical CDF of
+    the two samples (with possibly different sizes).
+
+    It will default to *DistributionImplementation-DefaultPointNumber* from
+    the :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The PP-plot is a visual fitting test for univariate distributions. It
+opposes the sample quantiles to those of the tested quantity (either a
+distribution or another sample) by plotting the following points cloud:
+
+.. math::
+
+    \left(x^{(i)},
+          \widehat{F}\left(x^{(i)}\right)
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
+sample.
+
+If the given sample fits to the tested distribution or sample, then the points
+should be close to be aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bissector**  whose
+equation reads:
+
+.. math::
+
+    y = x, \quad x \in \Rset
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a PP-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
+>>> graph = ot.VisualTest.DrawQQplot(sample, tested_distribution)
+>>> View(graph).show()
+
+Draw a two-sample PP-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> graph = ot.VisualTest.DrawQQplot(sample, another_sample)
+>>> View(graph).show()"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::VisualTest::DrawCDFplot
 "Draw a CDF-plot.
 
@@ -502,3 +579,94 @@ Examples
 >>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 >>> View(clouds).show()"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperTailDependenceFunction
+"Draw upper tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperTailDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperExtremalDependenceFunction
+"Draw upper extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperExtremalDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerTailDependenceFunction
+"Draw lower tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerTailDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerExtremalDependenceFunction
+"Draw lower extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerExtremalDependenceFunction(sample)"

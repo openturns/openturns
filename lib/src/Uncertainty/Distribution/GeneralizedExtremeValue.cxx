@@ -278,6 +278,70 @@ Scalar GeneralizedExtremeValue::computeScalarQuantile(const Scalar prob,
   return actualDistribution_.computeQuantile(prob, tail)[0];
 }
 
+/* Return level */
+Scalar GeneralizedExtremeValue::computeReturnLevel(const Scalar m) const
+{
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "in computeReturnLevel m should be > 1";
+  return computeQuantile(1.0 / m, true)[0];
+}
+
+class GEVReturnLevelEvaluation: public EvaluationImplementation
+{
+public:
+  GEVReturnLevelEvaluation(const GeneralizedExtremeValue & gev)
+    : EvaluationImplementation()
+    , gev_(gev)
+  {
+    // Nothing to do
+  }
+
+  GEVReturnLevelEvaluation * clone() const override
+  {
+    return new GEVReturnLevelEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar m = inP[0];
+    return Point(1, gev_.computeReturnLevel(m));
+  }
+
+private:
+  GeneralizedExtremeValue gev_;
+};
+
+/* Draw return level */
+Graph GeneralizedExtremeValue::drawReturnLevel() const
+{
+  const Scalar xMin = ResourceMap::GetAsScalar("GeneralizedExtremeValue-MMin");
+  const Scalar xMax = ResourceMap::GetAsScalar("GeneralizedExtremeValue-MMax");
+  const GEVReturnLevelEvaluation wrapper(*this);
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
+  Graph graph(wrapper.draw(xMin, xMax, pointNumber, GraphImplementation::LOGX));
+  Drawable drawable(graph.getDrawable(0));
+  drawable.setColor("red");
+  drawable.setLegend("GEV return level");
+  drawable.setLineStyle("solid");
+  drawable.setLineWidth(2);
+  graph.setDrawable(drawable, 0);
+  graph.setXTitle("Return period");
+  graph.setYTitle("Return level");
+  graph.setTitle("");
+  graph.setLegendPosition("bottomright");
+  return graph;
+}
+
 /* Compute the mean of the distribution */
 void GeneralizedExtremeValue::computeMean() const
 {
@@ -417,10 +481,17 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
 /* Actual distribution accessor */
 void GeneralizedExtremeValue::setActualDistribution(const Distribution & distribution)
 {
+  Pointer<DistributionImplementation> impl = distribution.getImplementation();
+
+  // Try to cast the given distribution into a GEV
+  const GeneralizedExtremeValue* p_gev = dynamic_cast<const GeneralizedExtremeValue*>(impl.get());
+  if (p_gev)
+    impl = p_gev->getActualDistribution().getImplementation();
+
   // Try to cast the given distribution into a Gumbel distribution
   try
   {
-    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
+    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(impl.get());
     // If it worked create the actual distribution
     if (p_gumbel)
     {
@@ -440,7 +511,7 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   // Try to cast the given distribution into a Frechet distribution
   try
   {
-    const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
+    const Frechet* p_frechet = dynamic_cast<const Frechet*>(impl.get());
     // If it worked create the actual distribution
     if (p_frechet)
     {
@@ -460,7 +531,7 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   // Try to cast the given distribution into a WeibullMax
   try
   {
-    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(distribution.getImplementation().get());
+    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(impl.get());
     if (p_weibull)
     {
       xi_ = -1.0 / p_weibull->getAlpha();

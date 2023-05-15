@@ -659,6 +659,9 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
+                      DistributionFactoryLikelihoodResult.i DistributionFactoryLikelihoodResult_doc.i.in
+                      ProfileLikelihoodResult.i ProfileLikelihoodResult_doc.i.in
+                      TimeVaryingResult.i TimeVaryingResult_doc.i.in
                       Pareto.i Pareto_doc.i.in
                       ParetoFactory.i ParetoFactory_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
@@ -1026,6 +1029,7 @@ ot_add_python_module(experimental experimental_module.i
                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                      UniformOverMesh.i UniformOverMesh_doc.i.in
+                     GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
@@ -1073,7 +1077,7 @@ if (SPHINX_FOUND)
   endforeach ()
 
   # copy usecases python files
-  file(GLOB usecases "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.py")
+  file(GLOB usecases "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.py" "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.csv")
   foreach(file ${usecases})
     get_filename_component(fname ${file} NAME)
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/usecases/${fname} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/usecases/${fname})

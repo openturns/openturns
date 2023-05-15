@@ -1,20 +1,17 @@
 %feature("docstring") OT::GumbelFactory
 "Gumbel factory.
 
-Available constructor:
-    GumbelFactory()
-
 The parameters are estimated by method of moments:
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{\alpha} =\frac{\pi}{\Hat{\sigma}_x\sqrt{6}}\\
-      \displaystyle\Hat{\beta} =\bar{x}_n-\frac{\gamma\sqrt{6}}{\pi}\Hat{\sigma}_x\\
+      \displaystyle\Hat{\beta} = \frac{\sqrt{6}}{\pi}\Hat{\sigma}_x\\
+      \displaystyle\Hat{\gamma} = \bar{x}_n - \frac{\gamma_e \sqrt{6}}{\pi}\Hat{\sigma}_x\\
     \end{eqnarray*}
 
-with :math:`\gamma \simeq 0.57721` as Euler's constant.
+with :math:`\gamma_e \simeq 0.57721` as Euler's constant.
 
 See also
 --------

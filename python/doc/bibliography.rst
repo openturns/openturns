@@ -25,6 +25,8 @@ Bibliography
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
     `pdf <https://arxiv.org/pdf/1501.05242>`__
+.. [beirlant2004] Beirlant J., Goegebeur Y., Teugels J., Segers J.,
+    *Statistics of extremes: theory and applications*, Wiley, 2004
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
@@ -44,6 +46,8 @@ Bibliography
     http://ceres-solver.org
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
+.. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
+    Springer, 2001.
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
     Marcel Dekker, Inc., New York, 1986.
 .. [damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies
@@ -60,6 +64,9 @@ Bibliography
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
 .. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
     `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
+.. [diebolt2008] Diebolt J., *Improving probability-weighted moment methods for the generalized extreme value distribution*,
+    REVSTAT Statistical Journal, 2008.
+    `pdf <https://www.ine.pt/revstat/pdf/rs080103.pdf>`__
 .. [dimitriadis2016] Dimitriadis J., *On the Accuracy of Loader's Algorithm for
     the Binomial Density and Algorithms for Rectangle Probabilities for Markov
     Increments*, PhD thesis.

@@ -133,6 +133,10 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 
+  /** Dependence coefficients */
+  CorrelationMatrix computeUpperTailDependenceMatrix() const override;
+  CorrelationMatrix computeLowerTailDependenceMatrix() const override;
+  
   /** Parameters value and description accessor */
   using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;

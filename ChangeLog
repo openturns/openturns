@@ -6,6 +6,7 @@
 
 ==== Major changes ====
  * BoxCoxFactory handles linear model
+ * New GeneralizedExtremeValueFactory estimation services: MLE, profiled likelihood, r-maxima, time-varying, return level
 
 ==== New classes ====
  * SmolyakExperiment (openturns.experimental)
@@ -15,6 +16,7 @@
  * CrossEntropyResult (openturns.experimental)
  * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
  * UniformOverMesh (openturns.experimental)
+ * GeneralizedExtremeValueValidation (openturns.experimental)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -55,6 +57,9 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Add HypothesisTest::LikelihoodRatioTest for nested model selection
+ * Add VisualTest::DrawPPplot
+ * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence coefficients
 
 === Bug fixes ===
  * #2250 (HSIC Target sensitivity bad filtering)

@@ -33,6 +33,9 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GradientImplementation.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/BootstrapExperiment.hxx"
+#include "openturns/KernelSmoothing.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -412,7 +415,6 @@ Point MaximumLikelihoodFactory::getKnownParameterValues() const
   return knownParameterValues_;
 }
 
-
 /* Method save() stores the object through the StorageManager */
 void MaximumLikelihoodFactory::save(Advocate & adv) const
 {
@@ -431,6 +433,54 @@ void MaximumLikelihoodFactory::load(Advocate & adv)
   adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
   adv.loadAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
+}
+
+
+Distribution MaximumLikelihoodFactory::BuildGaussianEstimator (
+  const Distribution & distribution,
+  const Sample & sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger parameterDimension = distribution.getParameterDimension();
+  Matrix theta(parameterDimension, parameterDimension);
+  const Sample pdf(distribution.computePDF(sample));
+  const Sample dpdf(distribution.computePDFGradient(sample));
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
+    dpdfi = dpdfi / pdf(i, 0);
+    theta = theta + dpdfi * dpdfi.transpose() / size;
+  }
+  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
+  return Normal(distribution.getParameter(), covariance);
+}
+
+
+DistributionFactoryResult MaximumLikelihoodFactory::BuildEstimator (
+  const DistributionFactoryImplementation & factory,
+  const Sample & sample,
+  const Bool isRegular)
+{
+  const Distribution distribution(factory.build(sample));
+  Distribution parameterDistribution;
+  if (isRegular)
+    parameterDistribution = BuildGaussianEstimator(distribution, sample);
+  else
+  {
+    const UnsignedInteger bootstrapSize = factory.getBootstrapSize();
+    BootstrapExperiment experiment(sample);
+    Sample parameterSample(0, distribution.getParameterDimension());
+    for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
+    {
+      Sample bootstrapSample(experiment.generate());
+      Distribution estimatedDistribution(factory.build(bootstrapSample));
+      parameterSample.add(estimatedDistribution.getParameter());
+    }
+    KernelSmoothing ks;
+    parameterDistribution = ks.build(parameterSample);
+  }
+  DistributionFactoryResult result(distribution, parameterDistribution);
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

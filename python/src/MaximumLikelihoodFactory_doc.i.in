@@ -148,3 +148,45 @@ Returns
 -------
 indices : :class:`~openturns.Indices`
     Indices of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::BuildGaussianEstimator
+"Estimate the distribution of the parameters.
+
+Compute the asymptotic distribution of the parameters of a regular distribution with the delta method.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Inferred distribution
+sample : 2-d sequence of float
+    Data to infer
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Asymptotic Gaussian distribution of the parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::BuildEstimator
+"Estimate the distribution of the parameters.
+
+Compute the asymptotic distribution of the parameters.
+
+Parameters
+----------
+factory : :class:`~openturns.DistributionFactory`
+    Distribution factory to infer the data
+sample : 2-d sequence of float
+    Data to infer
+is_regular : bool
+    Whether the distribution is known to be regular.
+    In that case the estimator of the parameters is Gaussian and is estimated by delta method,
+    else bootstrap is used and yields a distribution resulting from a kernel smoothing.
+
+Returns
+-------
+result : :class:`~openturns.DistributionFactoryResult`
+    Estimated distribution and the estimator of the parameters."

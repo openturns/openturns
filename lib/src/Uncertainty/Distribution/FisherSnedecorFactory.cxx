@@ -76,7 +76,7 @@ Distribution FisherSnedecorFactory::build() const
 
 DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const Sample & sample) const
 {
-  return buildMaximumLikelihoodEstimator(sample, true);
+  return MaximumLikelihoodFactory::BuildEstimator(*this, sample, true);
 }
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sample) const

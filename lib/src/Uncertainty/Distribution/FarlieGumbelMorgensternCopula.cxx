@@ -81,6 +81,13 @@ String FarlieGumbelMorgensternCopula::__repr__() const
   return oss;
 }
 
+String FarlieGumbelMorgensternCopula::__str__(const String & ) const
+{
+  OSS oss(false);
+  oss << getClassName() << "(theta = " << theta_ << ")";
+  return oss;
+}
+
 /* Virtual constructor */
 FarlieGumbelMorgensternCopula * FarlieGumbelMorgensternCopula::clone() const
 {
@@ -246,6 +253,17 @@ Bool FarlieGumbelMorgensternCopula::hasEllipticalCopula() const
 Bool FarlieGumbelMorgensternCopula::hasIndependentCopula() const
 {
   return (theta_ == 0.0);
+}
+
+/* Dependence coefficients */
+CorrelationMatrix FarlieGumbelMorgensternCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix FarlieGumbelMorgensternCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
 }
 
 /* Parameters value accessor */

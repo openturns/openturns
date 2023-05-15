@@ -152,6 +152,8 @@ for i in range(len(all_cases)):
     print("cdf gradient (FD)=", CDFgrFD)
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
+    rl = distribution.computeReturnLevel(10.0)
+    print(f"return level={rl:.6f}")
     print("cdf(quantile)=", distribution.computeCDF(quantile))
     print("entropy=%.6f" % distribution.computeEntropy())
     # Confidence regions

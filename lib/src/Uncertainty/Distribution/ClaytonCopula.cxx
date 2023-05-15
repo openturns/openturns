@@ -464,6 +464,24 @@ Scalar ClaytonCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t
   return (theta_ + 1) * std::pow(t, -theta_ - 2.0);
 }
 
+/* Dependence coefficients */
+CorrelationMatrix ClaytonCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix ClaytonCopula::computeLowerTailDependenceMatrix() const
+{
+  CorrelationMatrix result(getDimension());
+  if (theta_ == 0.0)
+    return result;
+  const Scalar coef = std::pow(2.0,  -1.0 / theta_);
+  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      result(i, j) = coef;
+  return result;
+}
+
 /* Parameters value accessor */
 Point ClaytonCopula::getParameter() const
 {

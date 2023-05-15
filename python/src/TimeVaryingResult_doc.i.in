@@ -1,0 +1,133 @@
+%feature("docstring") OT::TimeVaryingResult
+"Distribution factory result for time-varying likelihood estimation.
+
+Parameters
+----------
+factory : :class:`~openturns.DistributionFactory`
+    Parent factory
+parameterFunction : :class:`~openturns.Function`
+    The :math:`\theta(t)` function.
+mesh : :class:`~openturns.Mesh`
+    Time grid
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter
+llh : float
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getDistribution
+"Accessor to the distribution at a given time.
+
+Parameters
+----------
+t : float
+    Time value
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Parameters
+----------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterFunction
+"Parameter function accessor.
+
+Returns
+-------
+parameterFunction : :class:`~openturns.Function`
+    The :math:`\theta(t)` function."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getOptimalParameter
+"Confidence level accessor.
+
+Returns
+-------
+optimalParameter : :class:`~openturns.Point`
+    Optimal linear combination parameters :math:`\vect{\beta}`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setLogLikelihood
+"Optimal likelihood value accessor.
+
+Parameters
+----------
+llh : float
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getLogLikelihood
+"Optimal likelihood value accessor.
+
+Returns
+-------
+llh : float
+    Optimized log-likelihood value when searching for the optimal
+    basis coefficients.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawParameterFunction
+"Draw the parameter function.
+
+Parameters
+----------
+parameterIndex : int, default=0
+    The parameter index.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Parameter function graph.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawQuantileFunction
+"Draw the quantile function.
+
+Parameters
+----------
+p : float
+    The quantile level.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Quantile function graph.
+"

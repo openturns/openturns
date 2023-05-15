@@ -358,3 +358,81 @@ Examples
 class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]"
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::LikelihoodRatioTest
+"Nested likelihood model selection.
+
+This test helps selecting between two nested models :math:`\mathcal{M}_0 \subset \mathcal{M}_1`
+estimated by likelihood maximization.
+
+Let :math:`\vect{\theta_0}` the parameters of a model :math:`\mathcal{M}` of dimension :math:`d`
+and :math:`\hat{\vect{\theta_0}}` its maximum likelihood estimator.
+Let us partition :math:`\vect{\theta}=(\theta^{(1)}, \theta^{(2)})` and let :math:`k` be the dimension of :math:`\theta^{(1)}`.
+We note :math:`\ell(\hat{\vect{\theta_0}})` the associated maximum likelihood.
+The profiled likehood of :math:`\mathcal{M}` wrt :math:`\theta^{(1)}` is defined by:
+
+.. math::
+
+    l_p = \max_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
+
+where the p suffix stands for `profiled` and its optimum is reached at:
+
+.. math::
+
+    \hat{\theta_2}(\theta^{(1)}) = \argmax_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
+
+In order to select the best model between the model parametrize by :math:`\hat{\vect{\theta_0}}`
+and the model parametrized by :math:`(\theta^{(1)}, \hat{\theta_2}(\theta^{(1)}))`,
+we define the deviance statistic as:
+
+.. math::
+
+    \mathcal{D}_p (\theta^{(1)}) = 2(\ell(\hat{\vect{\theta_0}}) - \ell_p(\theta^{(1)}))
+
+Then for a large sample size and under suitable regularity conditions :math:`\mathcal{D}_p`
+follows a :math:`\chi^2(k)` distribution.
+
+Models are nested in the sense that parameters in model :math:`\mathcal{M}_0`
+parametrized by :math:`(\theta_0^{(1)}, \theta^{(2)})` where :math:`\theta_0^{(1)}` is frozen
+are a subset of the parameters in model :math:`\mathcal{M}_1` parametrized by
+:math:`\vect{\theta_0} = (\theta^{(1)}, \theta^{(2)})`.
+
+We want to test the hypothesis :math:`\mathcal{H}_0 = \left\{ \mathcal{M}_0 \right\}`
+against the hypothesis :math:`\mathcal{H}_1 = \left\{ \mathcal{M}_1 \right\}`.
+The null hypothesis consists in the simplest model :math:`\mathcal{M}_0`
+in which some of the parameters are frozen.
+In that case, according to the :math:`\mathcal{D}_p (\theta^{(1)})` statistic,
+the domain of acceptance of :math:`\mathcal{H}_0` is:
+
+.. math::
+
+    \mathcal{C}_{\alpha} = \left\{ \theta^{(1)} : \ell_p(\theta{(1)}) \ge \ell(\vect{\theta_0}) - \frac{1}{2} c_{\alpha} \right\}
+
+where :math:`c_{\alpha}` is the quantile of order :math:`1 - \alpha` of the :math:`\chi^2(k)` distribution
+    
+If the value of :math:`\mathcal{D}_p (\theta^{(1)})` is small, then we can accept the
+hypothesis :math:`\mathcal{H}_0` that increasing the model parametrization complexity
+does not yield a significant increase in the likelihood of the data.
+If the value of :math:`\mathcal{D}_p (\theta^{(1)})` is high, then we reject the
+hypothesis :math:`\mathcal{H}_0` and :math:`\mathcal{M}_1` better explains the data.
+
+Parameters
+----------
+m0llh : float
+    Model 0 log-likelihood
+m1llh : float
+    Model 1 log-likelihood
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
+    Default value is 0.05
+
+Notes
+-----
+The models must be estimated on the same data.
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+"
