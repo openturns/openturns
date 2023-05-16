@@ -48,9 +48,6 @@ public:
   /** Default constructor */
   explicit DomainDisjunctiveUnion(const DomainCollection & collection);
 
-  /** @deprecated constructor */
-  DomainDisjunctiveUnion(const Domain & left, const Domain & right);
-
   /** Virtual constructor method */
   DomainDisjunctiveUnion * clone() const override;
 

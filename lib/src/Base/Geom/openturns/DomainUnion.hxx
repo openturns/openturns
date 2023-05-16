@@ -48,9 +48,6 @@ public:
   /** Default constructor */
   explicit DomainUnion(const DomainCollection & collection);
 
-  /** @deprecated constructor */
-  DomainUnion(const Domain & left, const Domain & right);
-
   /** Virtual constructor method */
   DomainUnion * clone() const override;
 

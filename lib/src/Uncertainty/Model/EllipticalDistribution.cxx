@@ -593,17 +593,6 @@ CorrelationMatrix EllipticalDistribution::getCorrelation() const
   return R_;
 }
 
-/* Inverse correlation matrix accessor */
-SquareMatrix EllipticalDistribution::getInverseCorrelation() const
-{
-  LOGWARN(OSS() << "getInverseCorrelation is deprecated");
-  SymmetricMatrix inverseR((inverseCholesky_.transpose() * inverseCholesky_).getImplementation());
-  for (UnsignedInteger j = 0; j < dimension_; ++ j)
-    for (UnsignedInteger i = j; i < dimension_; ++ i)
-      inverseR(i, j) *= std::max(SpecFunc::Precision, sigma_[i]) * std::max(SpecFunc::Precision, sigma_[j]);
-  return inverseR;
-}
-
 /* Cholesky factor of the correlation matrix accessor */
 TriangularMatrix EllipticalDistribution::getCholesky() const
 {

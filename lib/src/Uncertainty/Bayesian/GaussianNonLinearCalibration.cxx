@@ -402,14 +402,6 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   return thetaStar;
 }
 
-
-/* Candidate accessor */
-Point GaussianNonLinearCalibration::getCandidate() const
-{
-  LOGWARN(OSS() << "getCandidate is deprecated");
-  return getParameterMean();
-}
-
 /* ParameterMean accessor */
 Point GaussianNonLinearCalibration::getParameterMean() const
 {

@@ -41,34 +41,6 @@ HSICUStat* HSICUStat::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
-                                   const CovarianceMatrix & covarianceMatrix2,
-                                   const SquareMatrix & weightMatrix) const
-{
-  LOGWARN(OSS() << "computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightMatrix) is deprecated in favor of computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightPoint)");
-  Scalar hsic = 0.0;
-  const SignedInteger n = weightMatrix.getNbColumns();
-
-  CovarianceMatrix covarianceMatrix1Copy(covarianceMatrix1);
-  covarianceMatrix1Copy.setDiagonal(0.0, 0);
-  CovarianceMatrix covarianceMatrix2Copy(covarianceMatrix2);
-  covarianceMatrix2Copy.setDiagonal(0.0, 0);
-
-
-  const SquareMatrix Kv(covarianceMatrix1Copy * covarianceMatrix2Copy);
-
-  const Scalar trace = Kv.computeTrace();
-  const Scalar sumKv = Kv.computeSumElements();
-  const Scalar sumCov1 = covarianceMatrix1Copy.computeSumElements();
-  const Scalar sumCov2 = covarianceMatrix2Copy.computeSumElements();
-
-  hsic = trace - 2 * sumKv / (n - 2) + sumCov1 * sumCov2 / (n - 1) / (n - 2);
-  hsic /= n * (n - 3);
-
-  return hsic;
-}
-
-/* Compute the HSIC index for one marginal*/
 Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix &covarianceMatrix1,
                                    const CovarianceMatrix &covarianceMatrix2,
                                    const Point &weights) const

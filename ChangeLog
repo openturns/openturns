@@ -9,6 +9,12 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
+ * Removed deprecated (Non)GaussianLinearCalibration::getCandidate method
+ * Removed deprecated DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
+ * Removed deprecated EllipticalDistribution::getInverseCorrelation method
+ * Removed deprecated Basis::getDimension method
+ * Removed deprecated HSICStat ctors relying on weight matrix
 
 === Documentation ===
 
