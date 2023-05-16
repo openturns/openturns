@@ -162,13 +162,6 @@ Matrix LinearLeastSquaresCalibration::getGradientObservations() const
   return gradientObservations_;
 }
 
-/** Candidate accessor */
-Point LinearLeastSquaresCalibration::getCandidate() const
-{
-  LOGWARN(OSS() << "getCandidate is deprecated");
-  return getStartingPoint();
-}
-
 /* StartingPoint accessor */
 Point LinearLeastSquaresCalibration::getStartingPoint() const
 {

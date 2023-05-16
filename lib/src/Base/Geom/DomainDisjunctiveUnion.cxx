@@ -47,13 +47,6 @@ DomainDisjunctiveUnion::DomainDisjunctiveUnion(const DomainCollection & collecti
       throw InvalidArgumentException(HERE) << "Error: cannot build a DomainDisjunctiveUnion from domains of different dimensions";
 }
 
-/* Default constructor */
-DomainDisjunctiveUnion::DomainDisjunctiveUnion(const Domain & left, const Domain & right)
-  : DomainDisjunctiveUnion(DomainCollection({left, right}))
-{
-  LOGWARN(OSS() << "DomainDisjunctiveUnion(Domain, Domain) is deprecated in favor of DomainDisjunctiveUnion(List[Domain])");
-}
-
 /* Clone method */
 DomainDisjunctiveUnion * DomainDisjunctiveUnion::clone() const
 {

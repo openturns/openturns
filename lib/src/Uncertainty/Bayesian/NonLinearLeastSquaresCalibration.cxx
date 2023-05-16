@@ -327,13 +327,6 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
   return optimalPoint;
 }
 
-/* Candidate accessor */
-Point NonLinearLeastSquaresCalibration::getCandidate() const
-{
-  LOGWARN(OSS() << "getCandidate is deprecated");
-  return getStartingPoint();
-}
-
 /* StartingPoint accessor */
 Point NonLinearLeastSquaresCalibration::getStartingPoint() const
 {

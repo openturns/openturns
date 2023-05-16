@@ -48,9 +48,6 @@ public:
   /** Default constructor */
   explicit DomainIntersection(const DomainCollection & collection);
 
-  /** @deprecated constructor */
-  DomainIntersection(const Domain & left, const Domain & right);
-
   /** Virtual constructor method */
   DomainIntersection * clone() const override;
 

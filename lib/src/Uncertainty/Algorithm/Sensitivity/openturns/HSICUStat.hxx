@@ -41,11 +41,6 @@ public:
   HSICUStat* clone() const override;
 
   /** Compute the HSIC index for one marginal*/
-  Scalar computeHSICIndex(const CovarianceMatrix & CovMat1,
-                          const CovarianceMatrix & CovMat2,
-                          const SquareMatrix & weightMatrix) const override;
-
-  /** Compute the HSIC index for one marginal*/
   Scalar computeHSICIndex(const CovarianceMatrix &CovMat1,
                           const CovarianceMatrix &CovMat2,
                           const Point &weights) const override;

@@ -46,13 +46,6 @@ DomainIntersection::DomainIntersection(const DomainCollection & collection)
       throw InvalidArgumentException(HERE) << "Error: cannot build a DomainIntersection from domains of different dimensions";
 }
 
-/* Default constructor */
-DomainIntersection::DomainIntersection(const Domain & left, const Domain & right)
-  : DomainIntersection(DomainCollection({left, right}))
-{
-  LOGWARN(OSS() << "DomainIntersection(Domain, Domain) is deprecated in favor of DomainIntersection(List[Domain])");
-}
-
 /* Clone method */
 DomainIntersection * DomainIntersection::clone() const
 {
