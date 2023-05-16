@@ -47,13 +47,6 @@ DomainUnion::DomainUnion(const DomainCollection & collection)
       throw InvalidArgumentException(HERE) << "Error: cannot build a DomainUnion from domains of different dimensions";
 }
 
-/* Default constructor */
-DomainUnion::DomainUnion(const Domain & left, const Domain & right)
-  : DomainUnion(DomainCollection({left, right}))
-{
-  LOGWARN(OSS() << "DomainUnion(Domain, Domain) is deprecated in favor of DomainUnion(List[Domain])");
-}
-
 /* Clone method */
 DomainUnion * DomainUnion::clone() const
 {

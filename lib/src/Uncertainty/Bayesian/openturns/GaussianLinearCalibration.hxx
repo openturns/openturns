@@ -76,9 +76,6 @@ public:
   /** Model gradient wrt the parameter accessor */
   Matrix getGradientObservations() const;
 
-  /** @deprecated Candidate accessor */
-  Point getCandidate() const;
-
   /** ParameterMean accessor */
   Point getParameterMean() const;
 

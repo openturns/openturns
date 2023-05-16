@@ -73,7 +73,7 @@ String BasisSequenceImplementation::__str__(const String & ) const
 /* Dimension accessor */
 UnsignedInteger BasisSequenceImplementation::getDimension() const
 {
-  return masterBasis_.getDimension();
+  return masterBasis_.getInputDimension();
 }
 
 /* Size accessor */

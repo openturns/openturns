@@ -131,9 +131,6 @@ protected:
   Point denormalize(const Point & u) const;
 
 public:
-  /** @deprecated Inverse correlation matrix accessor */
-  SquareMatrix getInverseCorrelation() const;
-
   /** Cholesky factor of the correlation matrix accessor */
   TriangularMatrix getCholesky() const;
 

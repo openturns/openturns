@@ -125,11 +125,6 @@ UnsignedInteger Basis::getOutputDimension() const
   return getImplementation()->getOutputDimension();
 }
 
-UnsignedInteger Basis::getDimension() const
-{
-  return getImplementation()->getDimension();
-}
-
 UnsignedInteger Basis::getSize() const
 {
   return getImplementation()->getSize();

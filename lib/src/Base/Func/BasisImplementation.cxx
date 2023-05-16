@@ -87,12 +87,6 @@ UnsignedInteger BasisImplementation::getOutputDimension() const
   throw NotYetImplementedException(HERE) << "In BasisImplementation::getDimension() const";
 }
 
-UnsignedInteger BasisImplementation::getDimension() const
-{
-  LOGWARN(OSS() << "Basis.getDimension is deprecated, use getInputDimension");
-  return getInputDimension();
-}
-
 UnsignedInteger BasisImplementation::getSize() const
 {
   throw NotYetImplementedException(HERE) << "In BasisImplementation::getSize() const";
