@@ -90,11 +90,11 @@ print("ln(distG1):", result)
 graph = result.drawPDF()
 
 
-result = dist1**3
+result = dist1 ** 3
 print("dist1^3:", result)
 graph = result.drawPDF()
 
-result = distG1**2.5
+result = distG1 ** 2.5
 print("dist1^2.5:", result)
 graph = result.drawPDF()
 
@@ -136,7 +136,7 @@ result = dist1 / dist2
 print("dist1/dist2:", result)
 # graph = result.drawPDF()
 
-result = 3 / dist1**2
+result = 3 / dist1 ** 2
 print("3/dist1^2:", result)
 graph = result.drawPDF()
 

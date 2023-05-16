@@ -89,7 +89,7 @@ plt.show()
 
 def myPythonFunction(X):
     x1, x2, x3, x4 = X
-    return [np.cos(x2 * x2 + x4) / (x1 * x1 + 1.0 + x3**4)]
+    return [np.cos(x2 * x2 + x4) / (x1 * x1 + 1.0 + x3 ** 4)]
 
 
 myFunc = ot.PythonFunction(4, 1, myPythonFunction)

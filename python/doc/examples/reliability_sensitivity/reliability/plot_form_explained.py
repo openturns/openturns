@@ -19,7 +19,7 @@ import numpy as np
 # Position of the problem
 # -----------------------
 #
-# We consider a bivariate random vector :math:`X = (X_1, X_2)` with the following independent marginals :
+# We consider a bivariate random vector :math:`X = (X_1, X_2)` with the following independent marginals:
 #
 # - an exponential distribution with parameter :math:`\lambda=1`, :math:`X_1 \sim \mathcal{E}(1.0)` ;
 # - a standard unit gaussian :math:`X_2 \sim \mathcal{N}(0,1)`.
@@ -34,7 +34,7 @@ distX = ot.ComposedDistribution([distX1, distX2])
 
 
 # %%
-# We can draw the bidimensional PDF of the distribution `distX` over :math:`[0,-10] \times [10,10]` :
+# We can draw the bidimensional PDF of the distribution `distX` over :math:`[0,-10] \times [10,10]`:
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
 graphPDF = distX.drawPDF([0, -10], [10, 10])
 graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
@@ -45,7 +45,8 @@ view = otv.View(graphPDF)
 
 
 # %%
-# We consider the model :math:`f : (x_1, x_2) \mapsto x_1 x_2` which maps the random input vector :math:`X` to the output variable :math:`Y=f(X) \in \mathbb{R}`. We also draw the isolines of the model `f`.
+# We consider the model :math:`f : (x_1, x_2) \mapsto x_1 x_2` which maps the random input vector :math:`X` to the output variable :math:`Y=f(X) \in \mathbb{R}`.
+# We also draw the isolines of the model `f`.
 #
 f = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
 graphModel = f.draw([0.0, -10.0], [10.0, 10.0])
@@ -56,7 +57,8 @@ view = otv.View(graphModel)
 
 
 # %%
-# We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event. This probability is simply expressed as an integral :
+# We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event.
+# This probability is simply expressed as an integral:
 #
 # .. math::
 #
@@ -388,7 +390,9 @@ print("value of the hessian of the failure boundary at u0 = ", d2u0[0, 0, 0])
 #
 x = np.linspace(1.1, 5.0, 100)
 parabola = (
-    failureBoundaryStandardSpace(u0)[0] + du0[0, 0] * (x - u0) + 0.5 * d2u0[0, 0, 0] * (x - u0) ** 2
+    failureBoundaryStandardSpace(u0)[0]
+    + du0[0, 0] * (x - u0)
+    + 0.5 * d2u0[0, 0, 0] * (x - u0) ** 2
 )
 curveParabola = ot.Curve(x, parabola, r"$\mathcal{P}_{u_0}$ (SORM)")
 curveParabola.setLineStyle("dashed")

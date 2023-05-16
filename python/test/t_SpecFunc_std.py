@@ -3,11 +3,11 @@
 import openturns as ot
 
 for lx in range(10):
-    x = 2**lx
+    x = 2 ** lx
     print("x=", x, "log2=", ot.SpecFunc.Log2(x))
 
 for lx in range(10):
-    x = 2**lx - 1
+    x = 2 ** lx - 1
     print("x=", x, "bits=", ot.SpecFunc.BitCount(x))
 
 for x in [0, 1, 2, 3, 4, 10, 100, 1000]:
@@ -39,7 +39,7 @@ print(
     ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True),
 )
 
-x = [1.0, 2.0**53, -2.0**53]
+x = [1.0, 2.0 ** 53, -(2.0 ** 53)]
 s1 = sum(x)
 s2 = ot.SpecFunc.AccurateSum(x)
 assert s1 == 0.0, "sum(x) nonzero"

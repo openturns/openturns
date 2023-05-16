@@ -29,16 +29,16 @@ static const Factory<DistributionFactoryLikelihoodResult> Factory_DistributionFa
 
 
 DistributionFactoryLikelihoodResult::DistributionFactoryLikelihoodResult()
- : DistributionFactoryResult()
- {}
+  : DistributionFactoryResult()
+{}
 
 DistributionFactoryLikelihoodResult::DistributionFactoryLikelihoodResult(const Distribution & distribution,
-                                   const Distribution & parameterDistribution,
-                                   const Scalar logLikelihood)
- : DistributionFactoryResult(distribution, parameterDistribution)
- , logLikelihood_(logLikelihood)
- {}
- 
+    const Distribution & parameterDistribution,
+    const Scalar logLikelihood)
+  : DistributionFactoryResult(distribution, parameterDistribution)
+  , logLikelihood_(logLikelihood)
+{}
+
 
 DistributionFactoryLikelihoodResult * DistributionFactoryLikelihoodResult::clone() const
 {
@@ -58,7 +58,7 @@ Scalar DistributionFactoryLikelihoodResult::getLogLikelihood() const
 String DistributionFactoryLikelihoodResult::__repr__() const
 {
   return OSS() << DistributionFactoryResult::__repr__()
-    << " logLikelihood_=" << logLikelihood_;
+         << " logLikelihood_=" << logLikelihood_;
 }
 
 /* Method save() stores the object through the StorageManager */

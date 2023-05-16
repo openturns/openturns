@@ -15,7 +15,7 @@ ot.RandomGenerator.SetSeed(0)
 
 def modelLineaire(X):
     x, theta1, theta2, theta3 = X
-    y = theta1 + theta2 * x + theta3 * x**2
+    y = theta1 + theta2 * x + theta3 * x ** 2
     return [y]
 
 

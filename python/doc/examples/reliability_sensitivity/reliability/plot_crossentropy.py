@@ -132,8 +132,8 @@ print(
 
 # %%
 auxiliaryInputSamples = standardSpaceISResult.getAuxiliaryInputSample()
-auxiliaryInputSamplesPhysicalSpace = distribution.getInverseIsoProbabilisticTransformation()(
-    auxiliaryInputSamples
+auxiliaryInputSamplesPhysicalSpace = (
+    distribution.getInverseIsoProbabilisticTransformation()(auxiliaryInputSamples)
 )
 
 
@@ -277,7 +277,8 @@ graph.add(mycontour)
 view = otv.View(graph)
 
 # %%
-# By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution. In this last example, we add a Normal copula. The correlation parameter will be optimized with associated interval between 0 and 1.
+# By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution.
+# In this last example, we add a Normal copula. The correlation parameter will be optimized with associated interval between 0 and 1.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
@@ -343,7 +344,8 @@ view = otv.View(graph)
 
 # %%
 # The `quantileLevel` parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultQuantileLevel`.
-# Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+# Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling`
+# and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%
 ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.4)

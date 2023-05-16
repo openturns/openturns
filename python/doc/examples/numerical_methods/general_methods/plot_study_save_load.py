@@ -67,7 +67,8 @@ fileName = "study.xml"
 study.setStorageManager(ot.XMLStorageManager(fileName))
 
 # %%
-# Alternatively, large amounts of data can be stored in binary HDF5 file. An XML file (`study_h5.xml`) serves as header for binary data, which are stored in the automatically created `study_h5.h5` file.
+# Alternatively, large amounts of data can be stored in binary HDF5 file.
+# An XML file (`study_h5.xml`) serves as header for binary data, which are stored in the automatically created `study_h5.h5` file.
 study_h5 = ot.Study()
 fileName_h5 = "study_h5.xml"
 study_h5.setStorageManager(ot.XMLH5StorageManager(fileName_h5))

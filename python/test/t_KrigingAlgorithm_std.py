@@ -146,8 +146,12 @@ def test_two_outputs():
     # Build a basis phi from R --> R^2
     # phi_{0,0} = phi_{0,1} = x
     # phi_{1,0} = phi_{1,1} = x^2
-    phi0 = ot.AggregatedFunction([ot.SymbolicFunction(["x"], ["x"]), ot.SymbolicFunction(["x"], ["x"])])
-    phi1 = ot.AggregatedFunction([ot.SymbolicFunction(["x"], ["x^2"]), ot.SymbolicFunction(["x"], ["x^2"])])
+    phi0 = ot.AggregatedFunction(
+        [ot.SymbolicFunction(["x"], ["x"]), ot.SymbolicFunction(["x"], ["x"])]
+    )
+    phi1 = ot.AggregatedFunction(
+        [ot.SymbolicFunction(["x"], ["x^2"]), ot.SymbolicFunction(["x"], ["x^2"])]
+    )
     basis = ot.Basis([phi0, phi1])
     covarianceModel = ot.SquaredExponential([1.0])
     covarianceModel.setActiveParameter([])
@@ -190,7 +194,9 @@ def test_stationary_fun():
     result = algo.getResult()
     variance = result.getConditionalMarginalVariance(x)
     ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-16, 1e-16)
-    assert algo.getResult().getMetaModel().getOutputDescription() == y.getDescription(), "wrong output description"
+    assert (
+        algo.getResult().getMetaModel().getOutputDescription() == y.getDescription()
+    ), "wrong output description"
 
 
 if __name__ == "__main__":

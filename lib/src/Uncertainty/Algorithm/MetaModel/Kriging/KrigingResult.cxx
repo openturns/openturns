@@ -559,7 +559,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       // It generates a sample of shape (sampleSize, outputDimension)
       const Sample basisSample = basis_[j](sample);
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
-          fx(j,  i) = basisSample(i, 0);
+        fx(j,  i) = basisSample(i, 0);
     }
     LOGINFO("Compute ux = psi - fx");
     const Matrix ux(psi - fx);

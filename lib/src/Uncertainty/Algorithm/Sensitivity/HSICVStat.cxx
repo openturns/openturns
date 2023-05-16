@@ -85,20 +85,20 @@ Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
   Scalar weightedSumElements = 0.0;
   for (UnsignedInteger j = 0; j < CovMat2.getDimension(); ++j)
   {
-      const Scalar wjjCjj = weightMatrix(j, j) * CovMat2(j, j);
-      weightedSumRows[j] += wjjCjj;
-      weightedSumElements += wjjCjj * weightMatrix(j, j);
-      for (UnsignedInteger i = j + 1; i < CovMat2.getDimension(); ++i)
-      {
-        const Scalar wiiCij = CovMat2(i, j) * weightMatrix(i, i);
-        const Scalar wjjCij = CovMat2(i, j) * weightMatrix(j, j);
-        const Scalar wiCijwj = wjjCij * weightMatrix(i, i);
-        // Sum rows
-        weightedSumRows[j] += wiiCij;
-        weightedSumRows[i] += wjjCij;
-        // Sum all elements : because of symmetry using both lower and upper
-        weightedSumElements += 2.0 * wiCijwj;
-      }//i
+    const Scalar wjjCjj = weightMatrix(j, j) * CovMat2(j, j);
+    weightedSumRows[j] += wjjCjj;
+    weightedSumElements += wjjCjj * weightMatrix(j, j);
+    for (UnsignedInteger i = j + 1; i < CovMat2.getDimension(); ++i)
+    {
+      const Scalar wiiCij = CovMat2(i, j) * weightMatrix(i, i);
+      const Scalar wjjCij = CovMat2(i, j) * weightMatrix(j, j);
+      const Scalar wiCijwj = wjjCij * weightMatrix(i, i);
+      // Sum rows
+      weightedSumRows[j] += wiiCij;
+      weightedSumRows[i] += wjjCij;
+      // Sum all elements : because of symmetry using both lower and upper
+      weightedSumElements += 2.0 * wiCijwj;
+    }//i
   }//j
 
   // weightedSumRows scaled by 1/n
@@ -118,7 +118,7 @@ Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
       trace += 2.0 * (weightMatrix(i, i) * CovMat1(i, j) * weightMatrix(j, j)) * (CovMat2(i, j) + weightedSumElements - (weightedSumRows[i] + weightedSumRows[j]));
     }
   }
-  return trace / n /n;
+  return trace / n / n;
 }
 
 /* Compute the HSIC index for one marginal*/
@@ -163,7 +163,7 @@ Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix &CovMat1,
   Finally we get for the right side block a matrix that writes as
   (H1 * Ky * H2)[i,j] = Ky[i,j] - \sum_k (Ky[i,k] + Ky[j,k]) * W[k] / n + \sum_{k,l} Ky[k,l] * W[k] * W[l] /n /n
                       = Ky[i,j] -  (weightedSumElements[i] + weightedSumElements[j]) + weightedSumElements
-  One has to note that both left & right side blocks are symmetric. 
+  One has to note that both left & right side blocks are symmetric.
   Finally the trace is computed manually. Indeed it is a O(n^2) algorithm
   whereas building matrices (left/right), computing left * right then the trace is O(n^3)
   trace(left * right) = \sum{i,j} left[i,j] right[j,i]

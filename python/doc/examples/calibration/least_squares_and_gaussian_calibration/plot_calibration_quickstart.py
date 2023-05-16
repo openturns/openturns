@@ -82,7 +82,7 @@ fm.data
 # %%
 def functionSimpleFlooding(X):
     Q, a, b = X
-    H = a * Q**b
+    H = a * Q ** b
     return [H]
 
 

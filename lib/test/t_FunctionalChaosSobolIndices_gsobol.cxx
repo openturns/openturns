@@ -76,7 +76,7 @@ int main(int, char *[])
     --variance;
     SymbolicFunction model(inputVariables, formula);
 
-    // 
+    //
     fullprint << "Reference analytical values" << std::endl;
     Scalar S0 = sobol({0}, a, variance);
     Scalar S1 = sobol({1}, a, variance);
@@ -263,32 +263,32 @@ int main(int, char *[])
     S_computed = sensitivity.getSobolIndex(indices0);
     printSobolResult(S_computed, S0);
     assert_almost_equal(S_computed, S0, rtol, atol);
-    // 
+    //
     fullprint << "X1" << std::endl;
     S_computed = sensitivity.getSobolIndex(indices1);
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
-    // 
+    //
     fullprint << "X2" << std::endl;
     S_computed = sensitivity.getSobolIndex(indices2);
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
-    // 
+    //
     fullprint << "X0, X1" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 1});
     printSobolResult(S_computed, S01);
     assert_almost_equal(S_computed, S01, rtol, atol);
-    // 
+    //
     fullprint << "X0, X2" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 2});
     printSobolResult(S_computed, S02);
     assert_almost_equal(S_computed, S02, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2" << std::endl;
     S_computed = sensitivity.getSobolIndex({1, 2});
     printSobolResult(S_computed, S12);
     assert_almost_equal(S_computed, S12, rtol, atol);
-    // 
+    //
     fullprint << "X0, X1, X2" << std::endl;
     S_computed = sensitivity.getSobolIndex({0, 1, 2});
     printSobolResult(S_computed, S012);
@@ -300,37 +300,37 @@ int main(int, char *[])
     S_exact = S0 + S01 + S02 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X1" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex(indices1);
     S_exact = S1 + S01 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex(indices2);
     S_exact = S2 + S02 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X0, X1" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 1});
     S_exact = S01 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X0, X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 2});
     S_exact = S02 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X1, X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({1, 2});
     S_exact = S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
-    // 
+    //
     fullprint << "X0, X1, X2" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex({0, 1, 2});
     printSobolResult(S_computed, S012);

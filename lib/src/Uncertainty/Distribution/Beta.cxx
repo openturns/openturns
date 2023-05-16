@@ -308,13 +308,13 @@ void Beta::computeCovariance() const
 Distribution Beta::getStandardRepresentative() const
 {
   // Two special cases
-  if (alpha_ == 1.0 && beta_ == 1.0) 
+  if (alpha_ == 1.0 && beta_ == 1.0)
   {
     Uniform standard(-1.0, 1.0);
     standard.setDescription(getDescription());
     return standard;
   }
-  if (alpha_ == -0.5 && beta_ == -0.5) 
+  if (alpha_ == -0.5 && beta_ == -0.5)
   {
     Arcsine standard(-1.0, 1.0);
     standard.setDescription(getDescription());

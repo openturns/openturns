@@ -67,7 +67,7 @@ int main(int, char *[])
     assert(indices5.contains(7));
     assert(!indices5.contains(0));
     assert(!indices5.contains(1));
-    
+
     // Test normInf() and norm1()
     Indices indices6 = {};
     assert(indices6.normInf() == 0);
@@ -76,7 +76,7 @@ int main(int, char *[])
     assert(indices7.normInf() == 3);
     assert(indices7.norm1() == 6);
 
-}
+  }
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;

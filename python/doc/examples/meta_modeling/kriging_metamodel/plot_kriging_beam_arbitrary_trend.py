@@ -43,7 +43,9 @@ myDistribution = cb.distribution
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sampling as a design of experiments.
+# This is why we generate an input sample using the `getSample` method of the distribution.
+# Then we evaluate the output using the `model` function.
 
 # %%
 sampleSize_train = 20

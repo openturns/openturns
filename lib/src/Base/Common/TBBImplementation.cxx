@@ -90,7 +90,8 @@ void TBBImplementation::Disable()
 TBB_init::TBB_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     TBBImplementation_P_instance_ = new TBBImplementation;
     TBBImplementation::Enable();
   });
@@ -99,7 +100,8 @@ TBB_init::TBB_init()
 TBB_init::~TBB_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     delete TBBImplementation_P_instance_;
     TBBImplementation_P_instance_ = 0;
     delete TBBImplementation::P_task_arena_;

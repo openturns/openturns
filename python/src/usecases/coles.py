@@ -36,9 +36,19 @@ class Coles:
     >>> data = coles.Coles().portpirie
     >>> print(data[:3])
     """
+
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        for name in ["portpirie", "venice", "racetime", "fremantle", "rain", "wavesurge", "wind", "wooster"]:
+        for name in [
+            "portpirie",
+            "venice",
+            "racetime",
+            "fremantle",
+            "rain",
+            "wavesurge",
+            "wind",
+            "wooster",
+        ]:
             fn = os.path.join(current_dir, name + ".csv")
             dataset = ot.Sample.ImportFromCSVFile(fn, ",")
             setattr(self, name, dataset)

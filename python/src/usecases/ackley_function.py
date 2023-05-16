@@ -11,7 +11,7 @@ def g(X):
     b = 0.2
     c = 2.0 * m.pi
     d = len(X)
-    sumOfSquared = sum(x**2 for x in X) / d
+    sumOfSquared = sum(x ** 2 for x in X) / d
     sumOfCos = sum(m.cos(c * x) for x in X) / d
     f = -a * m.exp(-b * m.sqrt(sumOfSquared)) - m.exp(sumOfCos) + a + m.exp(1.0)
     return [f]

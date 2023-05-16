@@ -4582,11 +4582,11 @@ class DistributionImplementationDependenceEvaluation : public EvaluationImplemen
 {
 public:
   DistributionImplementationDependenceEvaluation(const Distribution & distribution,
-                                                 const String & linkFormula,
-                                                 const Bool survival = false)
-  : EvaluationImplementation()
-  , distribution_(distribution)
-  , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
+      const String & linkFormula,
+      const Bool survival = false)
+    : EvaluationImplementation()
+    , distribution_(distribution)
+    , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
   , survival_(survival)
   {}
 
@@ -4629,12 +4629,12 @@ Function DistributionImplementation::getUpperTailDependenceFunction() const
 
 Function DistributionImplementation::getUpperExtremalDependenceFunction() const
 {
-  return DistributionImplementationDependenceEvaluation(*this, "-2*log1p(u)/log(cuu)-1", true);
+  return DistributionImplementationDependenceEvaluation(*this, "2*log1p(-u)/log(cuu)-1", true);
 }
 
 Function DistributionImplementation::getLowerTailDependenceFunction() const
 {
-  return DistributionImplementationDependenceEvaluation(*this, "log1p(cuu)/log1p(u)");
+  return DistributionImplementationDependenceEvaluation(*this, "log1p(-cuu)/log1p(-u)");
 }
 
 Function DistributionImplementation::getLowerExtremalDependenceFunction() const

@@ -112,6 +112,6 @@ graph4 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data)
 
 # check vs theoretical value
 theta = copula.getTheta()
-ref = 2.0 - 2.0**(1.0 / theta)
+ref = 2.0 - 2.0 ** (1.0 / theta)
 value = graph1.getDrawable(0).getData()[-4, 1]
 ott.assert_almost_equal(value, ref, 1e-2, 1e-3)

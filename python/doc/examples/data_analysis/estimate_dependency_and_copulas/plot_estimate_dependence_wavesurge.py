@@ -11,6 +11,7 @@ Estimate tail dependence coefficients on the wavesurge data
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import coles
+
 data = coles.Coles().wavesurge
 print(data[:5])
 

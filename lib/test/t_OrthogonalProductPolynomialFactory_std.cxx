@@ -43,7 +43,7 @@ int main(int, char *[])
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
     fullprint << productBasis.__str__() << std::endl;
     fullprint << productBasis.__repr_markdown__() << std::endl;
-    
+
     // Heterogeneous collection
     OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomCollection2(dimension);
     polynomCollection2[0] = LaguerreFactory(2.5);
@@ -52,7 +52,7 @@ int main(int, char *[])
     OrthogonalProductPolynomialFactory productBasis2(polynomCollection2);
     fullprint << productBasis2.__str__() << std::endl;
     fullprint << productBasis2.__repr_markdown__() << std::endl;
-    
+
     // Collection based on distributions
     Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
     OrthogonalProductPolynomialFactory productBasis3(marginals);

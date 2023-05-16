@@ -1,19 +1,16 @@
 = New Features =
 
-== 1.21 release (in-progress) == #release-1.21
+== 1.21rc1 release (2023-05-16) == #release-1.21rc1
 
 === Library ===
 
 ==== Major changes ====
  * BoxCoxFactory handles linear model
- * New GeneralizedExtremeValueFactory estimation services: MLE, profiled likelihood, r-maxima, time-varying, return level
+ * New GEV estimation services: MLE, profiled likelihood, r-maxima, time-varying, return level
 
 ==== New classes ====
  * SmolyakExperiment (openturns.experimental)
- * CrossEntropyImportanceSampling (openturns.experimental)
- * PhysicalSpaceCrossEntropyImportanceSampling (openturns.experimental)
- * StandardSpaceCrossEntropyImportanceSampling (openturns.experimental)
- * CrossEntropyResult (openturns.experimental)
+ * Physical|StandardSpaceCrossEntropyImportanceSampling, CrossEntropyResult (openturns.experimental)
  * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
  * UniformOverMesh (openturns.experimental)
  * GeneralizedExtremeValueValidation (openturns.experimental)
@@ -59,12 +56,38 @@
 === Miscellaneous ===
  * Add HypothesisTest::LikelihoodRatioTest for nested model selection
  * Add VisualTest::DrawPPplot
- * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence coefficients
+ * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence functions
+ * Add Distribution.compute(Upper|Lower)(Tail|Extremal)DependenceMatrix methods to compute dependence coefficients
 
 === Bug fixes ===
+ * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
+ * #2046 ([Debian] DistFunc_binomial issues in tests on arm64 and ppc64el)
+ * #2047 ([Debian] pythoninstallcheck_DistributionFactory_std issues on arm64, armel, armhf, mips64el)
+ * #2153 (HSIC computation cost)
+ * #2185 (Error: no member named '__1' in namespace 'std' ARM64 Android Termux)
+ * #2193 (Tiny spelling issues)
+ * #2194 (SubsetSampling: bug in 1.15)
+ * #2200 (out of bound probas)
+ * #2204 (Build fails with primesieve-11.0)
+ * #2205 (Edges of a PolygonArray)
+ * #2206 (Only Contour legends are shown in a graph mixing Contour and other Drawable (Curve, Cloud,...))
+ * #2209 (The Felhberg algorithm can fail, sometimes)
+ * #2210 (Python Domain.getImplementation does not work)
+ * #2213 (Some script fails)
+ * #2229 (Unary minus for distribution)
+ * #2240 (The Viewer sometimes fail)
  * #2250 (HSIC Target sensitivity bad filtering)
  * #2252 (The examples of calibration are difficult to understand)
+ * #2255 (The description of a Distribution is wrong)
+ * #2268 (MeixnerDistribution: slow pdfgradient)
+ * #2274 (Basis accepts functions with different input (output) dimensions)
+ * #2281 (The marginal of FireSatelliteModel can fail)
+ * #2285 (The input and output descriptions does not go down to the metamodel)
+ * #2287 (DesignProxy.computeDesign() can produce a segmentation fault)
+ * #2297 (Legend location with grid layout)
+ * #2299 (Allow openturns as subproject)
  * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
+
 
 == 1.20 release (2022-11-08) == #release-1.20
 

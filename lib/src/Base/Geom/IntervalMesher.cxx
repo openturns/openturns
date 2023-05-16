@@ -490,13 +490,13 @@ Mesh IntervalMesher::build(const Interval & interval,
   const UnsignedInteger numVertices = allVerticesTuples.getSize();
   Sample vertices(numVertices, dimension);
   for (UnsignedInteger i = 0; i < numVertices; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        {
-          const Scalar s = (1.0 * allVerticesTuples(i, j)) / discretization_[j];
-          vertices(i, j) = lowerBound[j] * (1.0 - s) + upperBound[j] * s;
-        } // j
-    } // i
+      const Scalar s = (1.0 * allVerticesTuples(i, j)) / discretization_[j];
+      vertices(i, j) = lowerBound[j] * (1.0 - s) + upperBound[j] * s;
+    } // j
+  } // i
   // Generate simplices:
   const IndicesCollection allHypercubesTuples(Tuples(discretization_).generate());
   const UnsignedInteger numHypercubes = allHypercubesTuples.getSize();
@@ -509,50 +509,50 @@ Mesh IntervalMesher::build(const Interval & interval,
   Indices base(dimension);
   UnsignedInteger product = 1;
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      base[i] = product;
-      product *= verticesDiscretization[i];
-    }
-  
+  {
+    base[i] = product;
+    product *= verticesDiscretization[i];
+  }
+
   // Generate all the increasing sequences of 0 and 1 of size (dimension+1) encoded in base 2
   Indices standardSimplex(dimension + 1, 0);
   for (UnsignedInteger j = 0; j <= dimension; ++j)
-    {
-      // Interpret these sequences as a binary representation of an integer
-      for (UnsignedInteger k = 0; k < j; ++k)
-        standardSimplex[j] += 1 << k;
-    }
+  {
+    // Interpret these sequences as a binary representation of an integer
+    for (UnsignedInteger k = 0; k < j; ++k)
+      standardSimplex[j] += 1 << k;
+  }
   for (UnsignedInteger i = 0; i < numSimplicesPermutations; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
-      for (UnsignedInteger j = 0; j <= dimension; ++j)
-        {
-          // Translate these sequences into integers using the mixed base verticesDiscretization
-          UnsignedInteger component = standardSimplex[j];
-          for (UnsignedInteger k = 0; k < dimension; ++k)
-            {
-              referenceSimplices(i, j) += (component % 2) * base[allSimplicesPermutations(i, k)];
-              component /= 2;
-            } // k
-        } // j
-    } // i
+      // Translate these sequences into integers using the mixed base verticesDiscretization
+      UnsignedInteger component = standardSimplex[j];
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+      {
+        referenceSimplices(i, j) += (component % 2) * base[allSimplicesPermutations(i, k)];
+        component /= 2;
+      } // k
+    } // j
+  } // i
   // For each hypercube add the reference simplex and all its permutations with
   // the proper translation
   UnsignedInteger simplexIndex = 0;
   for (UnsignedInteger i = 0; i < numHypercubes; ++i)
+  {
+    // Compute the translation associated to this hypercube
+    UnsignedInteger translation = 0;
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+      translation += allHypercubesTuples(i, k) * base[k];
+    for (UnsignedInteger j = 0; j < numSimplicesPermutations; ++j)
     {
-      // Compute the translation associated to this hypercube
-      UnsignedInteger translation = 0;
-      for (UnsignedInteger k = 0; k < dimension; ++k)
-        translation += allHypercubesTuples(i, k) * base[k];
-      for (UnsignedInteger j = 0; j < numSimplicesPermutations; ++j)
-        {
-          for (UnsignedInteger k = 0; k <= dimension; ++k)
-            {
-              simplices(simplexIndex, k) = referenceSimplices(j, k) + translation;
-            } // k
-          ++simplexIndex;
-        } // j
-    } // i
+      for (UnsignedInteger k = 0; k <= dimension; ++k)
+      {
+        simplices(simplexIndex, k) = referenceSimplices(j, k) + translation;
+      } // k
+      ++simplexIndex;
+    } // j
+  } // i
   return Mesh(vertices, simplices);
 }
 

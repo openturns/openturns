@@ -122,7 +122,8 @@ _ = axes[0].set_xlim(-20.0, 20.0)
 
 # %%
 # As returned by the `getActualDistribution` method the GEV distribution is a Frechet.
-# The :class:`~openturns.GeneralizedExtremeValueFactory` class is a convenient class to fit extreme valued samples without an a priori knowledge of the underlying (at least the closest) extreme distribution.
+# The :class:`~openturns.GeneralizedExtremeValueFactory` class is a convenient class to fit extreme valued samples
+# without an a priori knowledge of the underlying (at least the closest) extreme distribution.
 
 
 # %%

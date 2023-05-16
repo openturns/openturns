@@ -37,12 +37,12 @@ indices = ot.Indices()
 assert not (0 in indices), "wrong contains"
 assert not (1 in indices), "wrong contains"
 indices = ot.Indices((1, 2, 3, 4, 5))
-assert (1 in indices), "wrong contains"
-assert (5 in indices), "wrong contains"
+assert 1 in indices, "wrong contains"
+assert 5 in indices, "wrong contains"
 indices = ot.Indices((3, 5, 7))
-assert (3 in indices), "wrong contains"
-assert (5 in indices), "wrong contains"
-assert (7 in indices), "wrong contains"
+assert 3 in indices, "wrong contains"
+assert 5 in indices, "wrong contains"
+assert 7 in indices, "wrong contains"
 assert not (2 in indices), "wrong contains"
 assert not (4 in indices), "wrong contains"
 assert not (0 in indices), "wrong contains"

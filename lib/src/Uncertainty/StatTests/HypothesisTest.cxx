@@ -329,8 +329,8 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample &
 }
 
 TestResult HypothesisTest::LikelihoodRatioTest(const Scalar model0LogLikelihood,
-                                    const Scalar model1LogLikelihood,
-                                    const Scalar level)
+    const Scalar model1LogLikelihood,
+    const Scalar level)
 {
   const Scalar dp = 2.0 * (model1LogLikelihood - model0LogLikelihood);
 

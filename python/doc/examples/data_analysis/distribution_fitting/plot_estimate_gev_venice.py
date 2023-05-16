@@ -17,12 +17,13 @@ import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 from openturns.usecases import coles
+
 data = coles.Coles().venice
 print(data[:5])
 
 # %%
 # Plot the 10 largest sea levels per year
-graph = ot.Graph('Venice sea level', 'year', 'Sea level (cm)', True, '')
+graph = ot.Graph("Venice sea level", "year", "Sea level (cm)", True, "")
 for r in range(10):
     cloud = ot.Cloud(data[:, [0, 1 + r]])
     graph.add(cloud)

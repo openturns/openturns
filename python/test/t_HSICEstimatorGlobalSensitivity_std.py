@@ -55,7 +55,9 @@ for key in [True, False]:
     ot.RandomGenerator.SetState(state)
 
     # We eventually build the HSIC object!
-    hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
+    hsic = ot.HSICEstimatorGlobalSensitivity(
+        covarianceModelCollection, X, Y, estimatorType
+    )
 
     # We get the HSIC indices
     HSICIndices = hsic.getHSICIndices()

@@ -51,7 +51,8 @@ static const ResourceMap_init static_initializer_ResourceMap;
 ResourceMap_init::ResourceMap_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     ResourceMap_P_instance_ = new ResourceMap;
   });
   assert(ResourceMap_P_instance_);
@@ -60,7 +61,8 @@ ResourceMap_init::ResourceMap_init()
 ResourceMap_init::~ResourceMap_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     delete ResourceMap_P_instance_;
     ResourceMap_P_instance_ = 0;
   });
@@ -1334,8 +1336,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("NAIS-DefaultQuantileLevel", 0.25);
 
   // Cross Entropy Importance Sampling parameters //
-  addAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.25); 
-  
+  addAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.25);
+
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 

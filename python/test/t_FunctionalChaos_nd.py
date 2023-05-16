@@ -69,18 +69,18 @@ covTh_Sobol -= 1
 # Reference analytical values
 meanTh_Ishigami = a / 2.0
 covTh_Ishigami = (
-    b**2 * m.pi**8 / 18.0 + (b * m.pi**4) / 5.0 + a**2 / 8.0 + 1.0 / 2.0
+    b ** 2 * m.pi ** 8 / 18.0 + (b * m.pi ** 4) / 5.0 + a ** 2 / 8.0 + 1.0 / 2.0
 )
 sob_1_Ishigami = ot.Point(3)
 sob_1_Ishigami[0] = (
-    b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0
+    b * m.pi ** 4 / 5.0 + b ** 2 * m.pi ** 8 / 50.0 + 1.0 / 2.0
 ) / covTh_Ishigami
-sob_1_Ishigami[1] = (a**2 / 8.0) / covTh_Ishigami
+sob_1_Ishigami[1] = (a ** 2 / 8.0) / covTh_Ishigami
 sob_1_Ishigami[2] = 0.0
 sob_2_Ishigami = ot.Point(3)
 sob_2_Ishigami[0] = 0.0
 sob_2_Ishigami[1] = (
-    b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0
+    b ** 2 * m.pi ** 8 / 18.0 - b ** 2 * m.pi ** 8 / 50.0
 ) / covTh_Ishigami
 sob_2_Ishigami[2] = 0.0
 sob_3_Ishigami = ot.Point(1, 0.0)

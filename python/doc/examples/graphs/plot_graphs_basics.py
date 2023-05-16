@@ -185,7 +185,8 @@ view = viewer.View(graph)
 # Create colored curves
 # ---------------------
 #
-# In some situations, we want to create curves with different colors. In this case, the following function generates a color corresponding to the `indexCurve` integer in a ensemble of `maximumNumberOfCurves` curves.
+# In some situations, we want to create curves with different colors.
+# In this case, the following function generates a color corresponding to the `indexCurve` integer in a ensemble of `maximumNumberOfCurves` curves.
 
 # %%
 def createHSVColor(indexCurve, maximumNumberOfCurves):

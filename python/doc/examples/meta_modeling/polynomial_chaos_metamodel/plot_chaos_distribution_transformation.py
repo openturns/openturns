@@ -111,5 +111,7 @@ Tinverse(sampleZ)
 # ----------
 #
 # The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically.
-# However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`: the expansion is based on the standard variables :math:`\xi`.
-# Hence, the absolute values of the corresponding coefficients have no straightforward interpretation, even though squaring them yields the part of the global variance associated with each coefficient.
+# However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`:
+# the expansion is based on the standard variables :math:`\xi`.
+# Hence, the absolute values of the corresponding coefficients have no straightforward interpretation,
+# even though squaring them yields the part of the global variance associated with each coefficient.

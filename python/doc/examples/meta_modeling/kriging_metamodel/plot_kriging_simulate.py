@@ -122,7 +122,8 @@ krigingResult = algo.getResult()
 krigingResult
 
 # %%
-# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the `run` method. Then we get the metamodel with `getMetaModel` and evaluate the outputs of the metamodel on the test design of experiments.
+# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the `run` method.
+# Then we get the metamodel with `getMetaModel` and evaluate the outputs of the metamodel on the test design of experiments.
 
 # %%
 krigeageMM = krigingResult.getMetaModel()

@@ -197,7 +197,8 @@ standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
 standardSpaceDesignPoint
 
 # %%
-# The key point is to define the importance distribution in the U-space. To define it, we use a multivariate standard Gaussian and configure it so that the center is equal to the design point in the U-space.
+# The key point is to define the importance distribution in the U-space.
+# To define it, we use a multivariate standard Gaussian and configure it so that the center is equal to the design point in the U-space.
 
 # %%
 dimension = myDistribution.getDimension()

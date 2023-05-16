@@ -5,12 +5,8 @@ Comment: hmat-oss authors gave written permission to link their library
  (GPLv3) with OpenTURNS, see COPYING.hmat.
 
 Files: *
-Copyright: Copyright (C) 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+Copyright: Copyright (C) 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
 License: LGPL-3+
-
-Files: lib/include/pthread_win32/*
-Copyright: Université Bordeaux 1, CNRS 2010
-License: LGPL-2.1+
 
 Files: lib/src/Base/Algo/kissfft.hh
 Copyright: 2003-2010 Mark Borgerding.
@@ -25,7 +21,7 @@ Copyright: 2012 Massachusetts Institute of Technology
 License: Expat
 
 Files: lib/src/Base/Func/openturns/exprtk.hpp
-Copyright: 1999-2021 Arash Partow
+Copyright: 1999-2023 Arash Partow
 License: Expat
 
 Files: lib/src/Base/Optim/algocobyla.*

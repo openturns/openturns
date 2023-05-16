@@ -703,14 +703,14 @@ Graph VisualTest::DrawUpperTailDependenceFunction(const Sample & data)
 
 Graph VisualTest::DrawUpperExtremalDependenceFunction(const Sample & data)
 {
-  Graph result(VisualTestDrawDependenceFunction(data, "-2*log1p(u)/log(cuu)-1", "$\\bar{\\chi}(u)$", true));
+  Graph result(VisualTestDrawDependenceFunction(data, "2*log1p(-u)/log(cuu)-1", "$\\bar{\\chi}(u)$", true));
   result.setTitle("Upper extremal dependence function");
   return result;
 }
 
 Graph VisualTest::DrawLowerTailDependenceFunction(const Sample & data)
 {
-  Graph result(VisualTestDrawDependenceFunction(data, "log1p(cuu)/log1p(u)", "$\\chi_L(u)$"));
+  Graph result(VisualTestDrawDependenceFunction(data, "log1p(-cuu)/log1p(-u)", "$\\chi_L(u)$"));
   result.setTitle("Lower tail dependence function");
   return result;
 }

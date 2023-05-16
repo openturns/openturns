@@ -119,7 +119,7 @@ String FunctionalChaosResult::__repr_markdown__() const
   oss << getClassName() << Os::GetEndOfLine()
       << "- input dimension=" << inputDimension << Os::GetEndOfLine()
       << "- output dimension=" << outputDimension << Os::GetEndOfLine()
-      << "- distribution dimension=" << distribution_.getDimension() << Os::GetEndOfLine()  
+      << "- distribution dimension=" << distribution_.getDimension() << Os::GetEndOfLine()
       << "- transformation=" << transformation_.getInputDimension() << " -> " << transformation_.getOutputDimension() << Os::GetEndOfLine()
       << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << Os::GetEndOfLine()
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << Os::GetEndOfLine()
@@ -153,17 +153,17 @@ String FunctionalChaosResult::__repr_markdown__() const
   }
   else
   {
-      if (outputDimension == 1) 
-        oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << Os::GetEndOfLine();
-      else
+    if (outputDimension == 1)
+      oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << Os::GetEndOfLine();
+    else
+    {
+      for (UnsignedInteger j = 0 ; j < outputDimension; ++ j)
       {
-        for (UnsignedInteger j = 0 ; j < outputDimension; ++ j)
-        {
-          intermediateString = OSS() << " Coeff. #" << j;
-          oss << OSS::PadString(intermediateString, columnWidth) << "|";
-        }
-        oss << Os::GetEndOfLine();
+        intermediateString = OSS() << " Coeff. #" << j;
+        oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
+      oss << Os::GetEndOfLine();
+    }
   }
   // Print dashes
   String dashesSeparator = String(columnWidth, '-') + "|";
@@ -189,7 +189,7 @@ String FunctionalChaosResult::__repr_markdown__() const
     }
     const UnsignedInteger rankIndex = I_[i];
     const Indices multiindex(enumerateFunction(rankIndex));
-    
+
     oss << "|" << std::setw(6) << i << " |";
 
     intermediateString = OSS() << " " << multiindex;

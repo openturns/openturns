@@ -69,7 +69,7 @@ UnsignedInteger MixtureClassifier::classify(const Point& inP) const
   if (inP.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << mixture_.getDimension();
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
   UnsignedInteger bestClass = 0;
-  
+
   Scalar bestGrade = std::log(mixture_.getWeights()[0]) + mixture_.getDistributionCollection()[0].computeLogPDF(inP);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {

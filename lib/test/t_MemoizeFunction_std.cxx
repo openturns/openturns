@@ -30,10 +30,19 @@ class FooEvaluation : public EvaluationImplementation
 public:
   FooEvaluation() : EvaluationImplementation() {}
 
-  FooEvaluation * clone() const override { return new FooEvaluation(*this); }
+  FooEvaluation * clone() const override
+  {
+    return new FooEvaluation(*this);
+  }
 
-  UnsignedInteger getInputDimension() const override { return 2; }
-  UnsignedInteger getOutputDimension() const override { return 3; }
+  UnsignedInteger getInputDimension() const override
+  {
+    return 2;
+  }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 3;
+  }
 
   Point operator()(const Point & inP) const override
   {
@@ -146,7 +155,7 @@ int main(int, char *[])
         std::cout << "i_fail=" << exc.getFailedIndices()[i] << " error=" << exc.getErrorDescription()[i] << std::endl;
       std::cout << "i_ok=" << exc.getSucceededIndices() << std::endl;
       std::cout << "X_ok=" << X.select(exc.getSucceededIndices()) << std::endl;
-      std::cout << "Y_ok=" << exc.getOutputSample()<<std::endl;
+      std::cout << "Y_ok=" << exc.getOutputSample() << std::endl;
       std::cout << "f(X_ok)=" << f3(X.select(exc.getSucceededIndices())) << std::endl;
     }
   }

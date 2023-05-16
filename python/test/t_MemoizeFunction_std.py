@@ -104,7 +104,7 @@ f2(x)
 assert f_py.n == 1, "only one eval"
 
 # here we want f modified by ref though evals on f0
-f = ot.MemoizeFunction(ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', 'x1*x2']))
+f = ot.MemoizeFunction(ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "x1*x2"]))
 x = ot.Normal(2).getSample(10)
 f0 = ot.MemoizeFunction(f.getMarginal([0]))
 f0(x)

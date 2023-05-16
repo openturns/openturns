@@ -4,7 +4,8 @@ Mix/max search and sensitivity from design
 """
 # %%
 #
-# In this example, we are going to evaluate the minimum and maximum values of the output variable of interest from a sample and to evaluate the gradient of the limit-state function defining the output variable of interest at a particular point.
+# In this example, we are going to evaluate the minimum and maximum values of the output variable of interest from a sample
+# and to evaluate the gradient of the limit-state function defining the output variable of interest at a particular point.
 
 # %%
 import openturns as ot

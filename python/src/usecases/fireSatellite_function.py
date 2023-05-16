@@ -381,9 +381,9 @@ class FireSatelliteModel:
         L = m.sqrt(A_sa * r_lw / n_sa)
         W = m.sqrt(A_sa / (r_lw * n_sa))
         m_sa = 2 * rho_sa * L * W * t
-        I_saX = m_sa * (1 / 12 * (L**2 + t**2) + (D + L / 2) ** 2)
-        I_saY = m_sa / 12 * (t**2 + W**2)
-        I_saZ = m_sa * (1 / 12 * (L**2 + W**2) + (D + L / 2) ** 2)
+        I_saX = m_sa * (1 / 12 * (L ** 2 + t ** 2) + (D + L / 2) ** 2)
+        I_saY = m_sa / 12 * (t ** 2 + W ** 2)
+        I_saZ = m_sa * (1 / 12 * (L ** 2 + W ** 2) + (D + L / 2) ** 2)
 
         # total moment of inertia
         I_tot = ot.Sample([[I_saX + I_bodyX], [I_saY + I_bodyY], [I_saZ + I_bodyZ]])
@@ -466,7 +466,7 @@ class FireSatelliteModel:
         v = inputs["v"]
 
         # slewing torque
-        tau_slew = 4 * theta_slew * Imax / delta_theta_slew**2
+        tau_slew = 4 * theta_slew * Imax / delta_theta_slew ** 2
 
         # torque due to gravity gradients
         tau_g = 3 * mu / (2 * RE + H) ** 3 * abs(Imax - Imin) * m.sin(2 * theta)
@@ -478,10 +478,10 @@ class FireSatelliteModel:
         tau_m = 2 * M * R_D / (RE + H) ** 3
 
         # torque due to atmospheric drag
-        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v**2
+        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v ** 2
 
         # total disturbance torque
-        tau_dist = m.sqrt(tau_sp**2 + tau_m**2 + tau_g**2 + tau_alpha**2)
+        tau_dist = m.sqrt(tau_sp ** 2 + tau_m ** 2 + tau_g ** 2 + tau_alpha ** 2)
 
         # total torque
         tau_tot = ot.Sample([[tau_dist], [tau_slew]]).getMax()[0]

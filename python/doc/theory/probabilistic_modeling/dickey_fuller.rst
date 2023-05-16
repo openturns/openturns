@@ -317,7 +317,8 @@ with a Fisher test. The statistics is:
 
     \displaystyle \hat{F}_2 = \frac{(SCR_{2,c} - SCR_{2})/2}{SCR_{2}/(n-2)}
 
-where :math:`SCR_{2,c}` is the sum of the square errors of the model 2 :eq:`Model2` assuming :math:`\cH_0` from :eq:`TestSousModele2_2` and :math:`SCR_{2}` is the same sum when we make no assumption on :math:`\rho` and :math:`a`.
+where :math:`SCR_{2,c}` is the sum of the square errors of the model 2 :eq:`Model2` assuming :math:`\cH_0` from :eq:`TestSousModele2_2`
+and :math:`SCR_{2}` is the same sum when we make no assumption on :math:`\rho` and :math:`a`.
 
 The statistics :math:`\hat{F}_2` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-2`.
 The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted if when :math:`\hat{F}_2 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
@@ -393,9 +394,11 @@ The quantiles of the Dickey-Fuller statistics for the random walk model are:
     \right.
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestModel3` is rejected, we then conclude that the model is : :math:`\boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}` where :math:`\rho < 1` which is a **stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestModel3` is accepted, we then conclude that the model is: :math:`\boldsymbol{X_t = X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
+- If :math:`\cH_0` from :eq:`TestModel3` is rejected, we then conclude that the model is : :math:`\boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}`
+  where :math:`\rho < 1` which is a **stationary model**.
+- If :math:`\cH_0` from :eq:`TestModel3` is accepted, we then conclude that the model is: :math:`\boldsymbol{X_t = X_{t-1} + \varepsilon_{t}}`
+  which is a **non stationary model**.
 
 .. topic:: API:
 

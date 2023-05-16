@@ -84,7 +84,8 @@ noise = ot.Normal(0, 0.1)
 noiseSample = noise.getSample(n_train)
 
 # %%
-# The following computes the observation as the sum of the function value and of the noise. The couple (`x_train`,`y_train`) is the training set: it is used to compute the coefficients of the polynomial model.
+# The following computes the observation as the sum of the function value and of the noise.
+# The couple (`x_train`,`y_train`) is the training set: it is used to compute the coefficients of the polynomial model.
 
 # %%
 y_train = g(x_train) + noiseSample

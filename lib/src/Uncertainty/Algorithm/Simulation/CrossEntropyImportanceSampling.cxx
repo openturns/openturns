@@ -41,17 +41,17 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
-                                                               const Scalar quantileLevel)
+    const Scalar quantileLevel)
   : EventSimulation(event)
   , initialDistribution_(event.getAntecedent().getDistribution())
 {
-    if (quantileLevel> 1.)
+  if (quantileLevel > 1.)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
-    
-    if (quantileLevel< 0.)
+
+  if (quantileLevel < 0.)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
-    
-    
+
+
   quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
@@ -83,13 +83,13 @@ Sample CrossEntropyImportanceSampling::computeOutputSamples(const Sample & ) con
 void CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & )
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)";
-} 
-  
+}
+
 // Optimize auxiliary distribution parameters
 Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample &)";
-} 
+}
 
 
 // Main function that computes the failure probability
@@ -102,16 +102,16 @@ void CrossEntropyImportanceSampling::run()
 
   // Evaluation on limit state function
   Sample auxiliaryOutputSample = computeOutputSamples(auxiliaryInputSample);
-  
+
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
-  
+
   Point  auxiliaryDistributionParameters;
 
 
   const ComparisonOperator comparator(getEvent().getOperator());
   const Scalar threshold(getEvent().getThreshold());
-  
+
   if (comparator(currentQuantile, threshold))
   {
     currentQuantile = threshold;
@@ -121,23 +121,23 @@ void CrossEntropyImportanceSampling::run()
     Indices indiceCritic(0);
 
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
-      {
-        const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
-        if (weightBool)
-          indiceCritic.add(i);
-      } 
+    {
+      const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
+      if (weightBool)
+        indiceCritic.add(i);
+    }
 
-     const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
-     
+    const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
+
     // Optimize auxiliary distribution parameters
     auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
 
     // Update auxiliary Distribution Parameters
-    updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
+    updateAuxiliaryDistribution(auxiliaryDistributionParameters);
   } // if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
 
   UnsignedInteger iterationNumber  = 0;
-  
+
   while ((comparator(threshold, currentQuantile)) && (currentQuantile != threshold))
   {
     ++iterationNumber ;
@@ -159,7 +159,7 @@ void CrossEntropyImportanceSampling::run()
 
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
-    
+
     // If failure probability reached, stop the adaptation
     if (comparator(currentQuantile, threshold))
     {
@@ -173,19 +173,19 @@ void CrossEntropyImportanceSampling::run()
         const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
           indiceCritic.add(i);
-      } 
+      }
 
-   // Extract the relevant sample
-   const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
-  
-   // Optimize auxiliary distribution parameters
-   Point auxiliaryDistributionParameters(optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples));
-   
-   // Update auxiliary Distribution Parameters
-   updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
+      // Extract the relevant sample
+      const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
 
-      
-    } // if comparator(currentQuantile, threshold) 
+      // Optimize auxiliary distribution parameters
+      Point auxiliaryDistributionParameters(optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples));
+
+      // Update auxiliary Distribution Parameters
+      updateAuxiliaryDistribution(auxiliaryDistributionParameters);
+
+
+    } // if comparator(currentQuantile, threshold)
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
@@ -224,13 +224,13 @@ void CrossEntropyImportanceSampling::run()
   }  // for i
 
   const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
-  
-  
+
+
   if (sampleSize == 1)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
-    
-    
-     
+
+
+
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (sampleSize - 1) / sampleSize ;
 
   // Save of data in Simulation crossEntropyResult_ structure
@@ -238,7 +238,7 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
   crossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   crossEntropyResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
-  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber+1));
+  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber + 1));
   crossEntropyResult_.setBlockSize(getBlockSize());
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }

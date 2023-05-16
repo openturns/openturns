@@ -744,19 +744,19 @@ Complex SpecFunc::DiGamma(const Complex & a)
   if ( std::abs(a) <= 0.025 ) return -1.0 / a - 0.57721566490153286 + (1.6449340668482264 + (-1.2020569031595943 + (1.0823232337111381 + (-1.0369277551433699 + (1.0173430619844491 + (-1.0083492773819228 + (1.0040773561979442 + (-1.0020083928260822 + 1.0009945751278180 * a) * a) * a) * a) * a) * a) * a) * a) * a;
   // If the argument is negative, use the reflexion formula
   if (a.real() < 0.0)
+  {
+    const Complex I(0.0, 1.0);
+    if (a.imag() > 1.0)
     {
-      const Complex I(0.0, 1.0);
-      if (a.imag() > 1.0)
-        {
-          const Complex exp2IPi(std::exp(2.0 * M_PI * a * I));
-          return DiGamma(1.0 - a) - M_PI * I * (2.0 * exp2IPi / (exp2IPi - 1.0) - 1.0);
-        }
-      else
-        {
-          const Complex expM2IPi(std::exp(-2.0 * M_PI * a * I));
-          return DiGamma(1.0 - a) + M_PI * I * (2.0 * expM2IPi / (expM2IPi - 1.0) - 1.0);
-        }
-    } // (a.real() < 0.0
+      const Complex exp2IPi(std::exp(2.0 * M_PI * a * I));
+      return DiGamma(1.0 - a) - M_PI * I * (2.0 * exp2IPi / (exp2IPi - 1.0) - 1.0);
+    }
+    else
+    {
+      const Complex expM2IPi(std::exp(-2.0 * M_PI * a * I));
+      return DiGamma(1.0 - a) + M_PI * I * (2.0 * expM2IPi / (expM2IPi - 1.0) - 1.0);
+    }
+  } // (a.real() < 0.0
   // Shift the argument until it reaches the asymptotic expansion region
   // Here, 7.69 is a bound that insure Scalar precision of the approximation
   Complex z = a;
@@ -1399,12 +1399,12 @@ Scalar SpecFunc::AccurateSum(const Point & v)
   Scalar sum = 0.0;
   Scalar error = 0.0;
   for (UnsignedInteger i = 0; i < v.getSize(); ++i)
-    {
-      const Scalar y = v[i] - error;
-      const Scalar t = sum + y;
-      error = (t - sum) - y;
-      sum = t;
-    }
+  {
+    const Scalar y = v[i] - error;
+    const Scalar t = sum + y;
+    error = (t - sum) - y;
+    sum = t;
+  }
   return sum;
 #endif
 }

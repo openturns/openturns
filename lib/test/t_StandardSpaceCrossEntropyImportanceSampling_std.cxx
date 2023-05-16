@@ -25,7 +25,7 @@ using namespace OT;
 
 int main()
 {
-  
+
   // Definition of function
   const String formula = "R-F";
 
@@ -38,22 +38,22 @@ int main()
   Point mean(2);
   mean[0] = 0.2;
   mean[1] = 0.0;
-  
+
   Point sigma(2) ;
   sigma[0] = 0.1;
   sigma[1] = 0.1;
-    
+
   const Normal distX(mean, sigma);
-  
+
   const RandomVector inputVector = RandomVector(distX);
   const CompositeRandomVector compositeVector = CompositeRandomVector(beam, inputVector);
   const ThresholdEvent event = ThresholdEvent(compositeVector, Less(), 0.0);
 
   // Definition of the algorithm
-  StandardSpaceCrossEntropyImportanceSampling algoStandardSpaceCE(event,0.2);
-  
+  StandardSpaceCrossEntropyImportanceSampling algoStandardSpaceCE(event, 0.2);
+
   // Run of the algorithm
-  RandomGenerator::SetSeed(1);                                                            
+  RandomGenerator::SetSeed(1);
   algoStandardSpaceCE.run();
 
   const CrossEntropyResult resultCE(algoStandardSpaceCE.getResult());

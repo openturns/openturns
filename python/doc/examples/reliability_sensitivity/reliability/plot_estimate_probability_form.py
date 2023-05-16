@@ -3,7 +3,8 @@ Use the FORM - SORM algorithms
 ==============================
 """
 # %%
-# In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example. More precisely, we show how to use the associated results:
+# In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example.
+# More precisely, we show how to use the associated results:
 #
 # - the design point in both physical and standard space,
 # - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohenbichler and Breitung,
@@ -167,7 +168,7 @@ plt.show()
 
 def cantilever_beam_python(X):
     E, F, L, II = X
-    return [F * L**3 / (3 * E * II)]
+    return [F * L ** 3 / (3 * E * II)]
 
 
 cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)

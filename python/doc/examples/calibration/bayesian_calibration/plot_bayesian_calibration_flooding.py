@@ -195,7 +195,8 @@ linkFunction = ot.ParametricFunction(fullModel, [0], [np.nan])
 print(linkFunction)
 
 # %%
-# Define the value of the reference values of the :math:`\vect\theta` parameter. In the Bayesian framework, this is called the mean of the *prior* Gaussian distribution. In the data assimilation framework, this is called the *background*.
+# Define the value of the reference values of the :math:`\vect\theta` parameter.
+# In the Bayesian framework, this is called the mean of the *prior* Gaussian distribution. In the data assimilation framework, this is called the *background*.
 
 # %%
 KsInitial = 20.0
@@ -214,9 +215,9 @@ sigmaZm = 1.0
 
 # %%
 parameterPriorCovariance = ot.CovarianceMatrix(paramDim)
-parameterPriorCovariance[0, 0] = sigmaKs**2
-parameterPriorCovariance[1, 1] = sigmaZv**2
-parameterPriorCovariance[2, 2] = sigmaZm**2
+parameterPriorCovariance[0, 0] = sigmaKs ** 2
+parameterPriorCovariance[1, 1] = sigmaZv ** 2
+parameterPriorCovariance[2, 2] = sigmaZm ** 2
 
 # %%
 # Define the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`

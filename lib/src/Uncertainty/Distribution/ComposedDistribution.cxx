@@ -177,11 +177,11 @@ String ComposedDistribution::__repr_markdown__() const
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
     intermediateString = OSS() << " " << distributionCollection_[i].__str__() << " ";
-    if (intermediateString.size() > maximumColumnWidth) 
+    if (intermediateString.size() > maximumColumnWidth)
       maximumColumnWidth = intermediateString.size();
   }
   intermediateString = OSS() << " Distribution ";
-  if (intermediateString.size() > maximumColumnWidth) 
+  if (intermediateString.size() > maximumColumnWidth)
     maximumColumnWidth = intermediateString.size();
   // Format the table
   oss << Os::GetEndOfLine();
@@ -190,7 +190,7 @@ String ComposedDistribution::__repr_markdown__() const
   oss << "|-------|----------|" << String(maximumColumnWidth, '-') << "|" << Os::GetEndOfLine();
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    oss << "| " << std::setw(5) << i << " |" 
+    oss << "| " << std::setw(5) << i << " |"
         << " " << std::setw(8) << description_[i] << " |";
     intermediateString = OSS() << " " << distributionCollection_[i].__str__() << " ";
     oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << Os::GetEndOfLine();

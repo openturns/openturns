@@ -72,8 +72,8 @@ view = otv.View(graphModel)
 
 
 # %%
-# We build the :class:`~openturns.MultiFORM` algorithm in a similar fashion as the :class:`~openturns.FORM` algorithm. We choose an optimization solver, here the Cobyla solver, and a starting point, the mean
-# of the distribution `dist`.
+# We build the :class:`~openturns.MultiFORM` algorithm in a similar fashion as the :class:`~openturns.FORM` algorithm.
+# We choose an optimization solver, here the Cobyla solver, and a starting point, the mean of the distribution `dist`.
 solver = ot.Cobyla()
 starting_pt = dist.getMean()
 algo = ot.MultiFORM(solver, failureEvent, starting_pt)

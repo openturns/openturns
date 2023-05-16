@@ -117,7 +117,7 @@ for dimension in dimension_list:
     graph.add(curve)
     # Smolyak
     for level in level_list:
-        number_of_nodes[level - 1, 0] = 2**level * level ** (dimension - 1)
+        number_of_nodes[level - 1, 0] = 2 ** level * level ** (dimension - 1)
     curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     curve.setLegend("")
     curve.setLineStyle("dashed")

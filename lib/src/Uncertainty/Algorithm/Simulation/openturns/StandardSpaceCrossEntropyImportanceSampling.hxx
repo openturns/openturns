@@ -36,28 +36,28 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API StandardSpaceCrossEntropyImportanceSampling
   : public CrossEntropyImportanceSampling
 {
-CLASSNAME
+  CLASSNAME
 public:
-/** Default constructor */
+  /** Default constructor */
   StandardSpaceCrossEntropyImportanceSampling();
 
   /** Default constructor */
   explicit  StandardSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                 const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+      const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   StandardSpaceCrossEntropyImportanceSampling * clone() const override;
-  
+
 protected:
 
-/** Function computing the output samples from the input samples*/
-Sample computeOutputSamples(const Sample & inputSamples) const override;
-  
-/** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
-void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;
-  
-  
-Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
+  /** Function computing the output samples from the input samples*/
+  Sample computeOutputSamples(const Sample & inputSamples) const override;
+
+  /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
+  void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;
+
+
+  Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
 }; /* class StandardSpaceCrossEntropyImportanceSampling */
 
 END_NAMESPACE_OPENTURNS

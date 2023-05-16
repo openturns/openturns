@@ -26,11 +26,11 @@ Hobs = outputH + ot.Normal(0.0, 0.1).getSample(nbobs)
 Qobs = inputSample[:, 0]
 thetaPrior = [20, 49, 51]
 model = ot.ParametricFunction(g, [1, 2, 3], thetaPrior)
-errorCovariance = ot.CovarianceMatrix([[0.5**2]])
+errorCovariance = ot.CovarianceMatrix([[0.5 ** 2]])
 sigma = ot.CovarianceMatrix(3)
-sigma[0, 0] = 5.0**2
-sigma[1, 1] = 1.0**2
-sigma[2, 2] = 1.0**2
+sigma[0, 0] = 5.0 ** 2
+sigma[1, 1] = 1.0 ** 2
+sigma[2, 2] = 1.0 ** 2
 algo = ot.GaussianNonLinearCalibration(
     model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )

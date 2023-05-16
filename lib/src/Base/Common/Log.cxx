@@ -48,7 +48,8 @@ std::ostream & operator << ( std::ostream & os, const _Prefix & pfx )
 Log_init::Log_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     Log_P_instance_ = new Log;
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log Beginning ***"));
   });
@@ -58,7 +59,8 @@ Log_init::Log_init()
 Log_init::~Log_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&]() {
+  std::call_once(flag, [&]()
+  {
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
     delete Log_P_instance_;
     Log_P_instance_ = 0;

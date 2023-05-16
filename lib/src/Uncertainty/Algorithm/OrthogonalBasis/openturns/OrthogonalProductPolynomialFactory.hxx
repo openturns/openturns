@@ -84,7 +84,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
   String __repr_markdown__() const;
-  
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

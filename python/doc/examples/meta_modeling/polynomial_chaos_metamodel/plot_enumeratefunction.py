@@ -121,7 +121,7 @@ def draw_qnorm(q):
     def qnorm(x):
         norm = 0.0
         for xi in x:
-            norm += xi**q
+            norm += xi ** q
         norm = norm ** (1.0 / q)
         return [norm]
 

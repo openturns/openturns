@@ -93,7 +93,7 @@ outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVec
 D = 0.02
 
 # %%
-G = R - F / (D**2 / 4 * np.pi)
+G = R - F / (D ** 2 / 4 * np.pi)
 
 # %%
 G.computeCDF(0.0)

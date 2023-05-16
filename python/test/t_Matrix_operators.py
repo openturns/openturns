@@ -55,7 +55,7 @@ for a in mats:
         print("no vec mul for", iname)
 
     try:
-        a3 = a**3
+        a3 = a ** 3
         print("a**3=", a3)
     except Exception:
         print("no pow for", iname)

@@ -124,7 +124,8 @@ probability = result.getProbabilityEstimate()
 print("Probability = ", probability)
 
 # %%
-# In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval. In order to compute the bounds of the interval, we divide this length by 2.
+# In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval.
+# In order to compute the bounds of the interval, we divide this length by 2.
 
 # %%
 alpha = 0.05

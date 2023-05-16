@@ -39,7 +39,8 @@ static const Catalog_init static_initializer_Catalog;
 Catalog_init::Catalog_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&](){ 
+  std::call_once(flag, [&]()
+  {
     Catalog_P_instance_ = new Catalog;
   });
   assert(Catalog_P_instance_);
@@ -48,7 +49,8 @@ Catalog_init::Catalog_init()
 Catalog_init::~Catalog_init()
 {
   static std::once_flag flag;
-  std::call_once(flag, [&](){
+  std::call_once(flag, [&]()
+  {
     delete Catalog_P_instance_;
     Catalog_P_instance_ = 0;
   });

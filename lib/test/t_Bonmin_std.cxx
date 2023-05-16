@@ -104,7 +104,7 @@ int main()
 
 
     // Defining reference solution
-    const Point referenceSolution= {1.0, 1.0, 0.5, 0.0};
+    const Point referenceSolution = {1.0, 1.0, 0.5, 0.0};
 
     // Defining solvers to test
     const Description solvers(Bonmin::GetAlgorithmNames());

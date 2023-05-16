@@ -151,10 +151,10 @@ sigmaXa = 0.1 * Xa
 sigmaXD = 0.1 * XD
 sigmaXd = 0.1 * Xd
 parameterCovariance = ot.CovarianceMatrix(4)
-parameterCovariance[0, 0] = sigmaXL**2
-parameterCovariance[1, 1] = sigmaXa**2
-parameterCovariance[2, 2] = sigmaXD**2
-parameterCovariance[3, 3] = sigmaXd**2
+parameterCovariance[0, 0] = sigmaXL ** 2
+parameterCovariance[1, 1] = sigmaXa ** 2
+parameterCovariance[2, 2] = sigmaXD ** 2
+parameterCovariance[3, 3] = sigmaXd ** 2
 print(parameterCovariance)
 
 # %%

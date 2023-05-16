@@ -7,7 +7,8 @@ Polynomial chaos is sensitive to the degree
 # Introduction
 # ------------
 #
-# In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial. More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
+# In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial.
+# More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
 #
 # We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule and the family of orthogonal polynomials corresponding to each input variable.
 
@@ -51,7 +52,7 @@ dim_output = 1  # dimension of the output
 
 def function_beam(X):
     E, F, L, II = X
-    Y = F * L**3 / (3 * E * II)
+    Y = F * L ** 3 / (3 * E * II)
     return [Y]
 
 
@@ -296,5 +297,6 @@ pl.show()
 # References
 # ----------
 #
-# * "Metamodel-Based Sensitivity Analysis: Polynomial Chaos Expansions and Gaussian Processes", Loïc Le Gratiet,  Stefano Marelli, Bruno Sudret, Handbook of Uncertainty Quantification, 2017, Springer International Publishing.
+# * "Metamodel-Based Sensitivity Analysis: Polynomial Chaos Expansions and Gaussian Processes", Loïc Le Gratiet, Stefano Marelli, Bruno Sudret,
+#   Handbook of Uncertainty Quantification, 2017, Springer International Publishing.
 #

@@ -27,7 +27,8 @@ Time variant system reliability problem
 #
 # - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;
 # - :math:`b` is the deterioration rate of the resistance; it is deterministic;
-# - :math:`S(\omega,t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`, standard deviation :math:`\sigma_S` and a squared exponential covariance model :math:`C(s,t)`.
+# - :math:`S(\omega,t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`,
+#   standard deviation :math:`\sigma_S` and a squared exponential covariance model :math:`C(s,t)`.
 #
 #
 # The outcrossing rate from the safe to the failure domain at instant :math:`t` is defined by:
@@ -164,7 +165,8 @@ def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
 
 # %%
 # First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model which is the Squared Exponential model.
-# Be careful to the parameter  :math:`\Delta t` which is of great importance: if it is too small, the simulation methods have problems to converge because the correlation rate is too high between the instants :math:`t` and :math:`t+\Delta t`.
+# Be careful to the parameter  :math:`\Delta t` which is of great importance: if it is too small, the simulation methods have problems to converge
+# because the correlation rate is too high between the instants :math:`t` and :math:`t+\Delta t`.
 # We advice to take :math:`\Delta t \simeq 10^{-1}`.
 #
 
@@ -206,12 +208,12 @@ values_FORM = list()
 for tick in times:
     values_MC.append(
         computeCrossingProbability_MonteCarlo(
-            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
         )
     )
     values_QMC.append(
         computeCrossingProbability_QMC(
-            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
         )
     )
     values_FORM.append(

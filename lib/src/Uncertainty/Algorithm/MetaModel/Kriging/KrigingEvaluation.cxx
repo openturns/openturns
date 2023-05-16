@@ -365,7 +365,7 @@ void KrigingEvaluation::load(Advocate & adv)
     adv.loadAttribute("beta_", beta);
     if (basis.getSize() != covarianceModel_.getOutputDimension())
       throw InvalidArgumentException(HERE) << "Collection size differ from covariance model output dimension. Collection size="
-	                                   << basis.getSize() << " whereas covariance model output dimension = " << covarianceModel_.getOutputDimension();
+                                           << basis.getSize() << " whereas covariance model output dimension = " << covarianceModel_.getOutputDimension();
     const UnsignedInteger basisSize = basis[0].getSize();
     for (UnsignedInteger outputMarginalIndex = 1; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
     {

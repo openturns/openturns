@@ -37,9 +37,15 @@ using the normal limit distribution as follows:
 
 .. math::
 
-    \lim_{N\rightarrow\infty}\Prob{P_f\in[\widehat{P}_{f,\inf},\widehat{P}_{f,\sup}]}=\alpha
+    \lim_{N\rightarrow\infty}\Prob{P_f\in[\widehat{P}_{f,\inf},\widehat{P}_{f,\sup}]} = \alpha
 
-with :math:`\widehat{P}_{f,\inf}=\widehat{P}_f - q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}$, $\widehat{P}_{f,\sup}=\widehat{P}_f + q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}`
+with
+
+.. math::
+
+    \widehat{P}_{f,\inf} = \widehat{P}_f - q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}},
+    \widehat{P}_{f,\sup} = \widehat{P}_f + q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}
+
 and :math:`q_\alpha` is the :math:`(1+\alpha)/2`-quantile of the standard normal distribution.
 
 One can also use a convergence indicator that is independent of the confidence

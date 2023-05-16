@@ -65,9 +65,9 @@ Description Bonmin::GetAlgorithmNames()
 {
   const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"
 #if (BONMIN_VERSION_MAJOR * 100000 + BONMIN_VERSION_MINOR * 100 + BONMIN_VERSION_RELEASE) >= 100809
-    , "B-Ecp", "B-iFP"
+                                 , "B-Ecp", "B-iFP"
 #endif
-  };
+                                };
   return algoNames;
 }
 

@@ -51,8 +51,10 @@ for n in range(len(allDistributions)):
         "ddf (FD)=%.6g"
         % (
             (
-                distribution.computePDF(point + ot.Point(1, eps)) - distribution.computePDF(point + ot.Point(1, -eps))
-            ) / (2.0 * eps)
+                distribution.computePDF(point + ot.Point(1, eps))
+                - distribution.computePDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps)
         )
     )
     LPDF = distribution.computeLogPDF(point)
@@ -63,8 +65,10 @@ for n in range(len(allDistributions)):
         "pdf (FD)=%.6g"
         % (
             (
-                distribution.computeCDF(point + ot.Point(1, eps)) - distribution.computeCDF(point + ot.Point(1, -eps))
-            ) / (2.0 * eps)
+                distribution.computeCDF(point + ot.Point(1, eps))
+                - distribution.computeCDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps)
         )
     )
     CDF = distribution.computeCDF(point)

@@ -16,7 +16,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # A recurring issue in uncertainty quantification is to perform analysis on an output variable of interest Y obtained through a model `f` and input parameters `X`.
-# Here we shall consider the input parameters as two independent standard normal distributions :math:`X=(X_1, X_2)`. We therefore use an `IndependentCopula` to describe the link between the two marginals.
+# Here we shall consider the input parameters as two independent standard normal distributions :math:`X=(X_1, X_2)`.
+# We therefore use an `IndependentCopula` to describe the link between the two marginals.
 #
 
 # input parameters

@@ -32,10 +32,10 @@ class OT_API DistributionFactoryLikelihoodResult
   CLASSNAME
 public:
   DistributionFactoryLikelihoodResult();
-  
+
   DistributionFactoryLikelihoodResult(const Distribution & distribution,
-                   const Distribution & parameterDistribution,
-                   const Scalar logLikelihood);
+                                      const Distribution & parameterDistribution,
+                                      const Scalar logLikelihood);
 
   DistributionFactoryLikelihoodResult * clone() const override;
 

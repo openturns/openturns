@@ -238,7 +238,8 @@ view = otv.View(graph)
 # ----------------------
 
 # %%
-# The interesting point with the Ishigami function is that the exact Sobol' indices are known. We can use that property in order to compute the absolute error on the Sobol' indices for the polynomial chaos.
+# The interesting point with the Ishigami function is that the exact Sobol' indices are known.
+# We can use that property in order to compute the absolute error on the Sobol' indices for the polynomial chaos.
 
 # %%
 # To make the comparisons simpler, we gather the results into a list.

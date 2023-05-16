@@ -52,9 +52,11 @@ sensitivity = ot.FunctionalChaosSobolIndices(result)
 #
 def printSobolResult(S_computed, S_exact):
     absolute_error = abs(S_computed - S_exact)
-    print("   S (PCE)    = %.4f" % (S_computed),
-          "   S (exact)  = %.4f" % (S_exact),
-          "   Abs. Error = %.4e" % (absolute_error))
+    print(
+        "   S (PCE)    = %.4f" % (S_computed),
+        "   S (exact)  = %.4f" % (S_exact),
+        "   Abs. Error = %.4e" % (absolute_error),
+    )
     return None
 
 

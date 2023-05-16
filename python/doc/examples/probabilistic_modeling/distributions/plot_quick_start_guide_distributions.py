@@ -276,4 +276,5 @@ view = viewer.View(graph)
 
 plt.show()
 # %%
-# In the specific case of the Gaussian distribution, the specialized :class:`~openturns.TruncatedNormal` distribution can be used instead of the generic :class:`~openturns.TruncatedDistribution` class.
+# In the specific case of the Gaussian distribution, the specialized :class:`~openturns.TruncatedNormal` distribution can be used
+# instead of the generic :class:`~openturns.TruncatedDistribution` class.

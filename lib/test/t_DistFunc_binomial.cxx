@@ -41,13 +41,13 @@ int main(int, char *[])
       const UnsignedInteger k = sample1(i, 2);
       const Scalar ref = sample1(i, 3);
       const Scalar log_ref = sample1(i, 4);
-        
+
       const Scalar val = DistFunc::dBinomial(n, p, k);
-      std::cout << "dbinomial(" << n <<", " << p<<", "<<k<<") ref=" << ref << " val=" << val <<std::endl;
+      std::cout << "dbinomial(" << n << ", " << p << ", " << k << ") ref=" << ref << " val=" << val << std::endl;
       assert_almost_equal(val, ref);
 
       const Scalar log_val = DistFunc::logdBinomial(n, p, k);
-      std::cout << "logdbinomial(" << n <<", " << p<<", "<<k<<") ref=" << log_val << " val=" << log_val <<std::endl;
+      std::cout << "logdbinomial(" << n << ", " << p << ", " << k << ") ref=" << log_val << " val=" << log_val << std::endl;
       assert_almost_equal(log_val, log_ref);
     }
 
@@ -61,7 +61,7 @@ int main(int, char *[])
       const Scalar ref = sample2(i, 3);
 
       const Scalar val = DistFunc::rBinomial(n, p);
-      std::cout << "rBinomial(" << n <<", " << p<<") iR="<<iR<<" ref=" << ref << " val=" << val <<std::endl;
+      std::cout << "rBinomial(" << n << ", " << p << ") iR=" << iR << " ref=" << ref << " val=" << val << std::endl;
       assert_almost_equal(val, ref);
     }
   }

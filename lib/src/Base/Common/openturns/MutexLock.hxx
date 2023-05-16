@@ -33,7 +33,7 @@ class OT_API MutexLock
 {
 public:
   MutexLock (std::mutex & mtx)
-  : mtx_(mtx)
+    : mtx_(mtx)
   {
     try
     {
@@ -47,7 +47,7 @@ public:
   }
 
   MutexLock (const MutexLock & other)
-  : mtx_(other.mtx_)
+    : mtx_(other.mtx_)
   {
     try
     {
@@ -93,7 +93,7 @@ public:
 
   // Default copy-constructor
   MutexLockSingleton (const MutexLockSingleton<T> & other)
-  : singleton_(other.singleton_), lock_(other.lock_) {}
+    : singleton_(other.singleton_), lock_(other.lock_) {}
 
 private:
   // Disable copy-assignment

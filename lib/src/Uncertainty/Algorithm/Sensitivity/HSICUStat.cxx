@@ -48,7 +48,7 @@ Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
   LOGWARN(OSS() << "computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightMatrix) is deprecated in favor of computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightPoint)");
   Scalar hsic = 0.0;
   const SignedInteger n = weightMatrix.getNbColumns();
-  
+
   CovarianceMatrix covarianceMatrix1Copy(covarianceMatrix1);
   covarianceMatrix1Copy.setDiagonal(0.0, 0);
   CovarianceMatrix covarianceMatrix2Copy(covarianceMatrix2);

@@ -49,7 +49,7 @@ public:
   Scalar computeHSICIndex(const CovarianceMatrix &CovMat1,
                           const CovarianceMatrix &CovMat2,
                           const Point &weights) const override;
-  
+
   /** Compute the asymptotic p-value */
   Scalar computePValue(const Gamma & distribution,
                        const UnsignedInteger n,

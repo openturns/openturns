@@ -140,8 +140,9 @@ Such a problem can be addressed by using dedicated algorithms based on the *Mark
 Carlo* (MCMC) sampling technique (see, e.g., Robert and Casella, 2004; Asmussen and Glynn,
 2007).
 
-For instance, dedicated algorithms such as the standard *Metropolis-Hastings* (MH) sampler (Metropolis et al., 1953; Hastings, 1970) can be used. In the specific context of SS, the *modified
-Metropolis-Hastings* (m-MH) sampler originally proposed by Au and Beck (2001) has been proposed to deal with possible higher-dimensional reliability problems than the ones standard MH algorithm traditionally used.
+For instance, dedicated algorithms such as the standard *Metropolis-Hastings* (MH) sampler (Metropolis et al., 1953; Hastings, 1970) can be used.
+In the specific context of SS, the *modified Metropolis-Hastings* (m-MH) sampler originally proposed by Au and Beck (2001) has been proposed to deal
+with possible higher-dimensional reliability problems than the ones standard MH algorithm traditionally used.
 
 Concerning the statistical properties of the estimator of :math:`p_f^{SS}`,
 Au and Beck (2001) point out the fact that this estimator is biased due to the

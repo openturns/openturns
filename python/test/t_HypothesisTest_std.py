@@ -49,7 +49,5 @@ print("Pearson=", ot.HypothesisTest.Pearson(sampleY, sampleZ, 0.10))
 ot.RandomGenerator.SetSeed(0)
 sample1 = ot.Normal().getSample(20)
 sample2 = ot.Normal(0.1, 1.1).getSample(30)
-resultTwoSamplesKolmogorov = ot.HypothesisTest.TwoSamplesKolmogorov(
-    sample1, sample2
-)
+resultTwoSamplesKolmogorov = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
 print(resultTwoSamplesKolmogorov)

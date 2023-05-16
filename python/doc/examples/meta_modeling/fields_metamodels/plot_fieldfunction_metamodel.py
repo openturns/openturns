@@ -82,7 +82,7 @@ view = viewer.View(graph_modes_X)
 # %%
 # Input database generation
 print("Sample the input process")
-size = 1000
+size = 500
 sample_X = process_X.getSample(size)
 
 
