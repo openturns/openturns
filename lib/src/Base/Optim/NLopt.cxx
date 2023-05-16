@@ -70,7 +70,8 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_MMA"] = nlopt::LD_MMA;
   AlgorithmNames_["LN_COBYLA"] = nlopt::LN_COBYLA;
   AlgorithmNames_["LN_NEWUOA"] = nlopt::LN_NEWUOA;
-  AlgorithmNames_["LN_NEWUOA_BOUND"] = nlopt::LN_NEWUOA_BOUND;
+  // https://github.com/stevengj/nlopt/issues/511
+  //AlgorithmNames_["LN_NEWUOA_BOUND"] = nlopt::LN_NEWUOA_BOUND;
   AlgorithmNames_["LN_NELDERMEAD"] = nlopt::LN_NELDERMEAD;
   AlgorithmNames_["LN_SBPLX"] = nlopt::LN_SBPLX;
   AlgorithmNames_["LN_AUGLAG"] = nlopt::LN_AUGLAG;
