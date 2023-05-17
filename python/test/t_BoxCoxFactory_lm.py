@@ -38,10 +38,9 @@ outputSample += epsilon
 factory = ot.BoxCoxFactory()
 
 # Creation of the BoxCoxTransform
-result = ot.LinearModelResult()
 basis = ot.LinearBasisFactory(1).build()
 shift = [1.0e-10]
-myBoxCox, result = factory.build(inputSample, outputSample, shift)
+myBoxCox, result = factory.buildWithLM(inputSample, outputSample, shift)
 
 # estimated lambda =  1.99098,  beta = [9.90054,2.95995]
 beta = [9.90054, 2.95995]

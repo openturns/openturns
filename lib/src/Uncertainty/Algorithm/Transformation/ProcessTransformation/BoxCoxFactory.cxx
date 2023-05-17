@@ -358,11 +358,11 @@ BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
   return build(timeSeries.getValues(), shift);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
+BoxCoxTransform BoxCoxFactory::buildWithGraph(const Field & timeSeries,
                                      const Point & shift,
                                      Graph & graph) const
 {
-  return build(timeSeries.getValues(), shift, graph);
+  return buildWithGraph(timeSeries.getValues(), shift, graph);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Sample & sample) const
@@ -374,10 +374,10 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
                                      const Point & shift) const
 {
   Graph tmp;
-  return build(sample, shift, tmp);
+  return buildWithGraph(sample, shift, tmp);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
+BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
                                      const Point & shift,
                                      Graph & graph) const
 {
@@ -457,7 +457,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
 }
 
 /** Build the factory from data by estimating the best generalized linear model */
-BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
                                      const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
@@ -516,17 +516,17 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   return BoxCoxTransform(optpoint, shift);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample &inputSample,
                                      const Sample &outputSample,
                                      const CovarianceModel &covarianceModel,
                                      const Point &shift,
                                      GeneralLinearModelResult &generalLinearModelResult)
 {
-  return build(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
+  return buildWithGLM(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
 }
 
 /** Build the factory from data by estimating the best generalized linear model */
-BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
                                      const Sample &outputSample,
                                      const Basis &basis,
                                      const Point &shift,
@@ -576,13 +576,13 @@ BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
   return BoxCoxTransform(optpoint, shift);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
                                      const Sample &outputSample,
                                      const Point &shift,
                                      LinearModelResult &linearModelResult)
 {
   const Basis basis(LinearBasisFactory(inputSample.getDimension()).build());
-  return build(inputSample, outputSample, basis, shift, linearModelResult);
+  return buildWithLM(inputSample, outputSample, basis, shift, linearModelResult);
 }
 
 /* String converter */

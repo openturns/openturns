@@ -65,7 +65,7 @@ public:
   BoxCoxTransform build(const Field & timeSeries,
                         const Point & shift) const;
 
-  BoxCoxTransform build(const Field & timeSeries,
+  BoxCoxTransform buildWithGraph(const Field & timeSeries,
                         const Point & shift,
                         Graph & graph) const;
 
@@ -74,31 +74,31 @@ public:
   BoxCoxTransform build(const Sample & sample,
                         const Point & shift) const;
 
-  BoxCoxTransform build(const Sample & sample,
+  BoxCoxTransform buildWithGraph(const Sample & sample,
                         const Point & shift,
                         Graph & graph) const;
 
   /** Build the factory from data by estimating the best generalized linear model */
-  BoxCoxTransform build(const Sample &inputSample,
+  BoxCoxTransform buildWithGLM(const Sample &inputSample,
                         const Sample &outputSample,
                         const CovarianceModel &covarianceModel,
                         const Basis &basis,
                         const Point &shift,
                         GeneralLinearModelResult &generalLinearModelResult);
 
-  BoxCoxTransform build(const Sample & inputSample,
+  BoxCoxTransform buildWithGLM(const Sample & inputSample,
                         const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const Point & shift,
                         GeneralLinearModelResult & generalLinearModelResult);
 
-  BoxCoxTransform build(const Sample &inputSample,
+  BoxCoxTransform buildWithLM(const Sample &inputSample,
                         const Sample &outputSample,
                         const Basis &basis,
                         const Point &shift,
                         LinearModelResult &linearModelResult);
 
-  BoxCoxTransform build(const Sample &inputSample,
+  BoxCoxTransform buildWithLM(const Sample &inputSample,
                         const Sample &outputSample,
                         const Point &shift,
                         LinearModelResult &linearModelResult);
