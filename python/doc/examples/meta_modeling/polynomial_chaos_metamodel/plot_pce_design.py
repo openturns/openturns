@@ -113,8 +113,12 @@ Compute leave-one-out error of a polynomial chaos expansion
 #     = \mathbb{E}_{\vect{X}}\left[\left(g\left(\vect{X}\right) - \tilde{g}\left(\vect{X}\right) \right)^2 \right]
 #
 # The leave-one-out error is an estimator of the mean squared error.
-# Let :math:`\{\vect{x}^{(1)}, \ldots, \vect{x}^{(n)} \in \Rset^{n_X}\}` be
-# independent observations of the input random vector :math:`\vect{X}` and
+# Let:
+#
+# .. math::
+#
+#    \cD = \{\vect{x}^{(1)}, \ldots, \vect{x}^{(n)} \in \Rset^{n_X}\}
+# be independent observations of the input random vector :math:`\vect{X}` and
 # let :math:`\{y^{(1)}, \ldots, y^{(n)} \in \Rset^{n_X}\}` be the corresponding
 # observations of the output of the physical model:
 #
@@ -126,23 +130,32 @@ Compute leave-one-out error of a polynomial chaos expansion
 # Let :math:`\vect{y} \in \Rset^n` be the vector of observations:
 #
 # .. math::
+#
 #     \vect{y} = (y^{(1)}, \ldots, y^{(n)})^T.
 #
 #
-# Let :math:`\vect{y}_{-i} \in \Rset^{n - 1}` be the vector of
-# observation, let aside the :math:`i`-th observation:
+# Consider the following set of inputs, let aside the :math:`i`-th input:
 #
 # .. math::
 #
-#     \vect{y}_{-i} = (y_1, \ldots, y_{i - 1}, y_{i + 1}, \ldots, y_n)^T
+#     \cD_{-i} := \left\{\vect{x}^{(1)}, \ldots, \vect{x}^{(i - 1)}, \vect{x}^{(i + 1)}, \ldots, \vect{x}^{(n)}\right\}
 #
 # for :math:`i \in \{1, ..., n\}`.
+# Let :math:`\vect{y}_{-i} \in \Rset^{n - 1}` be the vector of
+# observations, let aside the :math:`i`-th observation:
+#
+# .. math::
+#
+#     \vect{y}_{-i} = (y^{(1)}, \ldots, y^{(i - 1)}, y^{(i + 1)}, \ldots, y^{(n)})^T
+#
+# for :math:`i \in \{1, ..., n\}`.
+# Let :math:`\tilde{g}_{-i}` the metamodel built on the data set :math:`(\cD_{-i}, \vect{y}_{-i})`.
 # The leave-one-out error is:
 #
 # .. math::
 #
 #    \widehat{\operatorname{MSE}}_{LOO}\left(\tilde{g}\right)
-#    = \frac{1}{n} \sum_{i = 1}^n \left(g\left(\vect{x}^{(i)}\right) - \tilde{g}\left(\vect{x}^{(i)}\right)\right)^2
+#    = \frac{1}{n} \sum_{i = 1}^n \left(g\left(\vect{x}^{(i)}\right) - \tilde{g}_{-i}\left(\vect{x}^{(i)}\right)\right)^2
 #
 # The leave-one-out error is sometimes referred to as *predicted residual sum of
 # squares* (PRESS) or *jacknife error*.
@@ -164,6 +177,12 @@ Compute leave-one-out error of a polynomial chaos expansion
 # for :math:`i = 1, ..., n` and :math:`i = 1, ..., m`.
 # The matrix :math:`\boldsymbol{\Psi}` is mathematically equal to the
 # :math:`D` matrix presented earlier in the present document.
+# Let :math:`H \in \Rset^{n \times n}` be the projection matrix:
+#
+# .. math::
+#
+#     H = \boldsymbol{\Psi} \left(\boldsymbol{\Psi}^T \boldsymbol{\Psi}\right) \boldsymbol{\Psi}^T.
+#
 # It can be proved that  ([blatman2009]_ eq. 4.33 page 85):
 #
 # .. math::
@@ -177,13 +196,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 #     h_i = H_{ii}
 #
-# for :math:`i \in \{1, ..., n\}` where :math:`H \in \Rset^{n \times n}`
-# is the design matrix:
-#
-# .. math::
-#
-#     H = \boldsymbol{\Psi} \left(\boldsymbol{\Psi}^T \boldsymbol{\Psi}\right) \boldsymbol{\Psi}^T
-#
+# for :math:`i \in \{1, ..., n\}`.
 # The goal of this example is to show how to implement the previous equation
 # using the :class:`~openturns.DesignProxy` class.
 
