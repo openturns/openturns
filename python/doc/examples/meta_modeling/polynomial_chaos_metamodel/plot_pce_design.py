@@ -118,6 +118,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 # .. math::
 #
 #    \cD = \{\vect{x}^{(1)}, \ldots, \vect{x}^{(n)} \in \Rset^{n_X}\}
+#
 # be independent observations of the input random vector :math:`\vect{X}` and
 # let :math:`\{y^{(1)}, \ldots, y^{(n)} \in \Rset^{n_X}\}` be the corresponding
 # observations of the output of the physical model:
