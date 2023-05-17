@@ -51,6 +51,7 @@
  * Removed burn-in from Gibbs and all MetropolisHastings classes except RandomWalkMetropolisHastings
  * RandomWalkMetropolisHastings::getRealization|Sample no longer remove states reached during burn-in
  * RandomWalkMetropolisHastings default adaptation parameters were changed to enable adaptation
+ * Split BoxCoxFactory::build into buildWithGraph, buildWithLM, buildWithGLM
 
 === Documentation ===
  * Add API documentation to common use cases pages

@@ -65,7 +65,7 @@ int main(int, char *[])
     const Basis basis = LinearBasisFactory(1).build();
     const DiracCovarianceModel covarianceModel;
     const Point shift = {1e-10};
-    BoxCoxTransform myBoxCox = factory.build(inputSample, outputSample, covarianceModel, basis, shift, result);
+    BoxCoxTransform myBoxCox = factory.buildWithGLM(inputSample, outputSample, covarianceModel, basis, shift, result);
 
     fullprint << "myBoxCox (GLM)=" << myBoxCox.__str__() << std::endl;
     fullprint << "GLM result=" << result.__str__() << std::endl;

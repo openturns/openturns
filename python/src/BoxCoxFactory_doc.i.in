@@ -29,61 +29,139 @@ The objective is to estimate the most likely surrogate model (general linear mod
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BoxCoxFactory::build
-"Estimate the Box Cox transformation.
-
-Available usages with time series & fields:
-    build(*myField*) -> myBoxCoxTransform
-
-    build(*myField, shift*) -> Tuple[myBoxCoxTransform, myGraph]
-
-Available usages with data only:
-
-    build(*mySample*) -> myBoxCoxTransform
-
-    build(*mySample, shift*) -> Tuple[myBoxCoxTransform, myGraph]
-
-Available usages with a general linear model:
-
-    build(*inputSample, outputSample, covarianceModel, basis, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
-
-    build(*inputSample, outputSample, covarianceModel, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
-
-Available usages with a linear model:
-
-    build(*inputSample, outputSample, basis, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
-
-    build(*inputSample, outputSample, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
+%feature("docstring") OT::BoxCoxFactory::buildWithGraph
+"Estimate the Box Cox transformation with graph output.
 
 Parameters
 ----------
-myField : :class:`~openturns.Field`
-    One realization of a  process.
-mySample : 2-d sequence of float
-    A set of *iid* values.
+data : :class:`~openturns.Field` or 2-d sequence of float
+    One realization of a process.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
     By default the opposite of the min vector of the data is used if some data are negative.
-inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
-    The input and output samples of a model evaluated apart.
-basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
-    If :math:`d>1`, the same basis is used for each marginal output.
-covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model.
-    Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
-    See note for some particular applications.
 
 Returns
 -------
 myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
     The estimated Box Cox transformation.
-myGraph : :class:`~openturns.Graph`
-    A graph that is fulfilled with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
-myGeneralLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
-    The structure that contains results of general linear model algorithm.
+graph : :class:`~openturns.Graph`
+    The graph plots the evolution of the likelihood with respect to the value of :math:`\lambda` for each component *i*.
+    It enables to graphically detect the optimal values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::buildWithLM
+"Estimate the Box Cox transformation with linear model.
+
+Refer to :meth:`build` for details.
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
+    The input and output samples of a model evaluated apart.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model.
+    Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
+    See note for some particular applications.
+basis : :class:`~openturns.Basis`, optional
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
+    If :math:`d>1`, the same basis is used for each marginal output.
+shift : :class:`~openturns.Point`
+    It ensures that when shifted, the data are all positive.
+    By default the opposite of the min vector of the data is used if some data are negative.
+
+Returns
+-------
+myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
+    The estimated Box Cox transformation.
 myLinearModelResult : :class:`~openturns.LinearModelResult`
     The structure that contains results of linear model algorithm.
+
+Examples
+--------
+Estimation of a linear model:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> x = ot.Uniform(-1.0, 1.0).getSample(20)
+>>> y = ot.Sample(x)
+>>> # Evaluation of y = ax + b (a: scale, b: translate)
+>>> y = y * [3] + [3.1]
+>>> # inverse transformation
+>>> inv_transformation = ot.SymbolicFunction('x', 'exp(x)')
+>>> y = inv_transformation(y) + ot.Normal(0, 1.0e-4).getSample(20)
+>>> # Estimation
+>>> shift = [1.0e-1]
+>>> myBoxCox, result = ot.BoxCoxFactory().buildWithLM(x, y, shift)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::buildWithGLM
+"Estimate the Box Cox transformation with general linear model.
+
+Refer to :meth:`build` for details.
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
+    The input and output samples of a model evaluated apart.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model.
+    Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
+    See note for some particular applications.
+basis : :class:`~openturns.Basis`, optional
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
+    If :math:`d>1`, the same basis is used for each marginal output.
+shift : :class:`~openturns.Point`
+    It ensures that when shifted, the data are all positive.
+    By default the opposite of the min vector of the data is used if some data are negative.
+
+Returns
+-------
+myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
+    The estimated Box Cox transformation.
+myGeneralLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
+    The structure that contains results of general linear model algorithm.
+
+Examples
+--------
+Estimation of a general linear model:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
+>>> outputSample = ot.Sample(inputSample)
+>>> # Evaluation of y = ax + b (a: scale, b: translate)
+>>> outputSample = outputSample * [3] + [3.1]
+>>> # inverse transfo + small noise
+>>> def f(x): import math; return [math.exp(x[0])]
+>>> inv_transfo = ot.PythonFunction(1, 1, f)
+>>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
+>>> # Estimation
+>>> basis = ot.LinearBasisFactory(1).build()
+>>> covarianceModel = ot.DiracCovarianceModel()
+>>> shift = [1.0e-1]
+>>> myBoxCox, result = ot.BoxCoxFactory().buildWithGLM(inputSample, outputSample, covarianceModel, basis, shift)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::build
+"Estimate the Box Cox transformation.
+
+Parameters
+----------
+data : :class:`~openturns.Field` or 2-d sequence of float
+    One realization of a process.
+shift : :class:`~openturns.Point`, optional
+    It ensures that when shifted, the data are all positive.
+    By default the opposite of the min vector of the data is used if some data are negative.
+
+Returns
+-------
+myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
+    The estimated Box Cox transformation.
 
 Notes
 -----
@@ -161,10 +239,6 @@ Substituting these expressions in the likelihood equation and taking the :math:`
 
 The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)`.
 
-When the empty graph *likelihoodGraph* is precised, it is fulfilled with the evolution of the likelihood with respect to the value of :math:`\lambda` for each component  *i*. It enables to graphically detect the optimal values.
-
-|
-
 In the case of surrogate model estimate, we note :math:`(x_0, \dots, x_{N-1})` the input sample of :math:`X`, :math:`(y_0, \dots, y_{N-1})` the input sample of :math:`Y`.
 We suppose the general linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}` with :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`:
 
@@ -220,35 +294,4 @@ Estimate the Box Cox transformation from a field:
 
 >>> myField = myXtProcess.getRealization()
 >>> myModelTransform = ot.BoxCoxFactory().build(myField)
-
-Estimation of a general linear model:
-
->>> ot.RandomGenerator.SetSeed(0)
->>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
->>> outputSample = ot.Sample(inputSample)
->>> # Evaluation of y = ax + b (a: scale, b: translate)
->>> outputSample = outputSample * [3] + [3.1]
->>> # inverse transfo + small noise
->>> def f(x): import math; return [math.exp(x[0])]
->>> inv_transfo = ot.PythonFunction(1,1, f)
->>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
->>> # Estimation
->>> basis = ot.LinearBasisFactory(1).build()
->>> covarianceModel = ot.DiracCovarianceModel()
->>> shift = [1.0e-1]
->>> myBoxCox, result = ot.BoxCoxFactory().build(inputSample, outputSample, covarianceModel, basis, shift)
-
-Estimation of a linear model:
-
->>> ot.RandomGenerator.SetSeed(0)
->>> x = ot.Uniform(-1.0, 1.0).getSample(20)
->>> y = ot.Sample(x)
->>> # Evaluation of y = ax + b (a: scale, b: translate)
->>> y = y * [3] + [3.1]
->>> # inverse transformation
->>> inv_transformation = ot.SymbolicFunction('x', 'exp(x)')
->>> y = inv_transformation(y) + ot.Normal(0, 1.0e-4).getSample(20)
->>> # Estimation
->>> shift = [1.0e-1]
->>> myBoxCox, result = ot.BoxCoxFactory().build(x, y, shift)
 "
