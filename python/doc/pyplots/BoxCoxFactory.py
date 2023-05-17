@@ -43,7 +43,7 @@ shift = [0.0]
 
 # We estimate the lambda parameter from the field myField
 # All values of the field are positive
-myModelTransform, graph = myBoxCoxFactory.build(myField, shift)
+myModelTransform, graph = myBoxCoxFactory.buildWithGraph(myField, shift)
 graphMarginal2 = (
     ot.KernelSmoothing().build(myModelTransform(myField).getValues()).drawPDF()
 )

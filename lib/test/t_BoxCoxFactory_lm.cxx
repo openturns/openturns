@@ -63,7 +63,7 @@ int main(int, char *[])
     // Creation of the BoxCoxTransform
     LinearModelResult result;
     const Point shift = {1e-10};
-    BoxCoxTransform myBoxCox = factory.build(inputSample, outputSample, shift, result);
+    BoxCoxTransform myBoxCox = factory.buildWithLM(inputSample, outputSample, shift, result);
     // estimated lambda =  1.99098;
     // beta = [9.90054,2.95995]
     assert_almost_equal(myBoxCox.getLambda(), lambda, 1e-2, 1e-2);
