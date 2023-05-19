@@ -1964,8 +1964,20 @@ Point DistFunc::rUniformSegment(const Point & a,
 {
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
+  Point result(dimension);
+  rUniformSegment(&a[0], &b[0], dimension, &result[0]);
+  return result;
+}
+
+void DistFunc::rUniformSegment(const Scalar * a,
+                               const Scalar * b,
+                               const UnsignedInteger dimension,
+                               Scalar * result)
+{
   const Scalar u = RandomGenerator::Generate();
-  return u * a + (1.0 - u) * b;
+  const Scalar v = 1.0 - u;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    result[i] = u * a[i] + v * b[i];
 }
 
 Sample DistFunc::rUniformSegment(const Point & a,
@@ -1975,13 +1987,27 @@ Sample DistFunc::rUniformSegment(const Point & a,
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   Sample result(size, dimension);
-  for (UnsignedInteger n = 0; n < size; ++n)
-  {
-    const Scalar u = RandomGenerator::Generate();
-    const Scalar v = 1.0 - u;
-    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = u * a[i] + v * b[i];
-  } // n
+  rUniformSegment(&a[0], &b[0], dimension, size, &result(0, 0));
   return result;
+}
+
+void DistFunc::rUniformSegment(const Scalar * a,
+                               const Scalar * b,
+                               const UnsignedInteger dimension,
+                               const UnsignedInteger size,
+                               Scalar * result)
+{
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < size; ++j)
+    {
+      const Scalar u = RandomGenerator::Generate();
+      const Scalar v = 1.0 - u;
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        {
+          result[index] = u * a[i] + v * b[i];
+          ++index;
+        } // i
+    } // j
 }
 
 // For uniform distribution over a triangle
@@ -2028,14 +2054,24 @@ Point DistFunc::rUniformTriangle(const Point & a,
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  Point result(dimension);
+  rUniformTriangle(&a[0], &b[0], &c[0], dimension, &result[0]);
+  return result;
+}
+
+void DistFunc::rUniformTriangle(const Scalar * a,
+                                const Scalar * b,
+                                const Scalar * c,
+                                const UnsignedInteger dimension,
+                                Scalar * result)
+{
   const Scalar u = RandomGenerator::Generate();
   const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
   const Scalar x = 1.0 - sqrtV;
   const Scalar y = (1.0 - u) * sqrtV;
   const Scalar z = u * sqrtV;
-  Point result(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = x * a[i] + y * b[i] + z * c[i];
-  return result;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    result[i] = x * a[i] + y * b[i] + z * c[i];
 }
 
 Sample DistFunc::rUniformTriangle(const Point & a,
@@ -2048,6 +2084,18 @@ Sample DistFunc::rUniformTriangle(const Point & a,
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
   Sample result(size, dimension);
+  rUniformTriangle(&a[0], &b[0], &c[0], dimension, size, &result(0, 0));
+  return result;
+}
+
+void DistFunc::rUniformTriangle(const Scalar * a,
+                                const Scalar * b,
+                                const Scalar * c,
+                                const UnsignedInteger dimension,
+                                const UnsignedInteger size,
+                                Scalar * result)
+{
+  UnsignedInteger index = 0;
   for (UnsignedInteger n = 0; n < size; ++n)
   {
     const Scalar u = RandomGenerator::Generate();
@@ -2055,9 +2103,12 @@ Sample DistFunc::rUniformTriangle(const Point & a,
     const Scalar x = 1.0 - sqrtV;
     const Scalar y = (1.0 - u) * sqrtV;
     const Scalar z = u * sqrtV;
-    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = x * a[i] + y * b[i] + z * c[i];
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        result[index] = x * a[i] + y * b[i] + z * c[i];
+        ++index;
+      }
   } // n
-  return result;
 }
 
 // For uniform distribution over a tetrahedron
@@ -2070,6 +2121,18 @@ Point DistFunc::rUniformTetrahedron(const Point & a,
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
   if (d.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the fourth point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  Point result(dimension);
+  rUniformTetrahedron(&a[0], &b[0], &c[0], &d[0], dimension, &result[0]);
+  return result;
+}
+
+void DistFunc::rUniformTetrahedron(const Scalar * a,
+                                   const Scalar * b,
+                                   const Scalar * c,
+                                   const Scalar * d,
+                                   const UnsignedInteger dimension,
+                                   Scalar * result)
+{
   const Scalar u = RandomGenerator::Generate();
   const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
   const Scalar cbrtW = std::cbrt(RandomGenerator::Generate());
@@ -2077,9 +2140,7 @@ Point DistFunc::rUniformTetrahedron(const Point & a,
   const Scalar y = (1.0 - u) * sqrtV * cbrtW;
   const Scalar z = (1.0 - sqrtV) * cbrtW;
   const Scalar t = 1.0 - cbrtW;
-  Point result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = x * a[i] + y * b[i] + z * c[i] + t * d[i];
-  return result;
 }
 
 Sample DistFunc::rUniformTetrahedron(const Point & a,
@@ -2093,6 +2154,19 @@ Sample DistFunc::rUniformTetrahedron(const Point & a,
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
   Sample result(size, dimension);
+  rUniformTetrahedron(&a[0], &b[0], &c[0], &d[0], dimension, &result(0, 0));
+  return result;
+}
+
+void DistFunc::rUniformTetrahedron(const Scalar * a,
+                                   const Scalar * b,
+                                   const Scalar * c,
+                                   const Scalar * d,
+                                   const UnsignedInteger dimension,
+                                   const UnsignedInteger size,
+                                   Scalar * result)
+{
+  UnsignedInteger index = 0;
   for (UnsignedInteger n = 0; n < size; ++n)
   {
     const Scalar u = RandomGenerator::Generate();
@@ -2102,52 +2176,113 @@ Sample DistFunc::rUniformTetrahedron(const Point & a,
     const Scalar y = (1.0 - u) * sqrtV * cbrtW;
     const Scalar z = (1.0 - sqrtV) * cbrtW;
     const Scalar t = 1.0 - cbrtW;
-    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = x * a[i] + y * b[i] + z * c[i] + t * d[i];
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        result[index] = x * a[i] + y * b[i] + z * c[i] + t * d[i];
+        ++index;
+      }
   } // n
-  return result;
 }
 
 // For uniform distribution over a simplex
 Point DistFunc::rUniformSimplex(const Sample & vertices)
 {
-  const UnsignedInteger dimension = vertices.getDimension();
   const UnsignedInteger numVertices = vertices.getSize();
   if (numVertices == 0) throw InvalidArgumentException(HERE) << "Error: expected at least one vertex to define a simplex.";
-  if (numVertices == 1) return vertices[0];
-  if (numVertices == 2) return rUniformSegment(vertices[0], vertices[1]);
-  if (numVertices == 3) return rUniformTriangle(vertices[0], vertices[1], vertices[2]);
-  if (numVertices == 4) return rUniformTetrahedron(vertices[0], vertices[1], vertices[2], vertices[3]);
-  Point result(vertices[0]);
+  const UnsignedInteger dimension = vertices.getDimension();
+  Point result(dimension);
+  rUniformSimplex(&vertices(0, 0), dimension, numVertices, &result[0]);
+  return result;
+}
+
+void DistFunc::rUniformSimplex(const Scalar * vertices,
+                               const UnsignedInteger dimension,
+                               const UnsignedInteger numVertices,
+                               Scalar * result)
+{
+  if (numVertices == 1)
+    {
+      std::copy(vertices, vertices + dimension, result);
+      return;
+    }
+  if (numVertices == 2)
+    {
+      rUniformSegment(vertices, vertices + dimension, dimension, result);
+      return;
+    }
+  if (numVertices == 3)
+    {
+      rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, result);
+      return;
+    }
+  if (numVertices == 4)
+    {
+      rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, result);
+      return;
+    }
+  std::copy(vertices, vertices + dimension, result);
+  UnsignedInteger shift = dimension;
   for (UnsignedInteger i = 1; i < numVertices; ++i)
   {
     const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
-    for (UnsignedInteger j = 0; j < dimension; ++j) result[j] = u * result[j] + (1.0 - u) * vertices(i, j);
+    for (UnsignedInteger j = 0; j < dimension; ++j) result[j] = u * result[j] + (1.0 - u) * vertices[shift + j];
+    shift += dimension;
   }
-  return result;
 }
 
 Sample DistFunc::rUniformSimplex(const Sample & vertices,
                                  const UnsignedInteger size)
 {
-  const UnsignedInteger dimension = vertices.getDimension();
   const UnsignedInteger numVertices = vertices.getSize();
   if (numVertices == 0) throw InvalidArgumentException(HERE) << "Error: expected at least one vertex to define a simplex.";
-  if (numVertices == 1) return Sample(size, vertices[0]);
-  if (numVertices == 2) return rUniformSegment(vertices[0], vertices[1], size);
-  if (numVertices == 3) return rUniformTriangle(vertices[0], vertices[1], vertices[2], size);
-  if (numVertices == 4) return rUniformTetrahedron(vertices[0], vertices[1], vertices[2], vertices[3], size);
+  const UnsignedInteger dimension = vertices.getDimension();
   Sample result(size, dimension);
+  rUniformSimplex(&vertices(0, 0), dimension, numVertices, size, &result(0, 0));
+  return result;
+}
+
+void DistFunc::rUniformSimplex(const Scalar * vertices,
+                               const UnsignedInteger dimension,
+                               const UnsignedInteger numVertices,
+                               const UnsignedInteger size,
+                               Scalar * result)
+{
+  if (numVertices == 1)
+    {
+      for (UnsignedInteger i = 0; i < size; ++i)
+        std::copy(vertices, vertices + dimension, result + i * dimension);
+      return;    
+    }
+  if (numVertices == 2)
+    {
+      rUniformSegment(vertices, vertices + dimension, dimension, size, result);
+      return;
+    }
+  if (numVertices == 3)
+    {
+      rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, size, result);
+      return;
+    }
+  if (numVertices == 4)
+    {
+      rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, size, result);
+      return;
+    }
+  UnsignedInteger shiftResult = 0;
   for (UnsignedInteger n = 0; n < size; ++n)
   {
-    for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = vertices(0, j);
+    std::copy(vertices, vertices + dimension, result + shiftResult);
+    UnsignedInteger shift = dimension;
     for (UnsignedInteger i = 1; i < numVertices; ++i)
     {
       const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
-      for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = u * result(n, j) + (1.0 - u) * vertices(i, j);
-    }
-  }
-  return result;
+      for (UnsignedInteger j = 0; j < dimension; ++j) result[shiftResult + j] = u * result[shiftResult + j] + (1.0 - u) * vertices[shift + j];
+      shift += dimension;
+    } // i
+    shiftResult += dimension;
+  } // n
 }
+
 
 /* K factor for exact two-sided tolerance intervals of normal pooled populations
  * see Janiga, I. Miklos, R. "Statistical Tolerance Intervals for a Normal Distribution", Measurement Science Review, 2001.

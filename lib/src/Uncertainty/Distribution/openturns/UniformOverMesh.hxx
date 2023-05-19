@@ -69,6 +69,9 @@ public:
   /** Get one realization of the distribution */
   Point getRealization() const override;
 
+  /** Get one sample of the distribution */
+  Sample getSample(const UnsignedInteger size) const override;
+
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
@@ -122,6 +125,11 @@ private:
   /** Integration algorithm to use for CDF computation */
   IntegrationAlgorithm integrationAlgorithm_;
 
+  /** Vertices */
+  Sample vertices_;
+
+  /** Simplices */
+  IndicesCollection simplices_;
 }; /* class UniformOverMesh */
 
 
