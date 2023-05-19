@@ -293,6 +293,17 @@ OT_API Point rUniformSegment(const Point & a,
 OT_API Sample rUniformSegment(const Point & a,
                               const Point & b,
                               const UnsignedInteger size);
+#ifndef SWIG
+OT_API void rUniformSegment(const Scalar * a,
+                            const Scalar * b,
+                            const UnsignedInteger dimension,
+                            Scalar * result);
+OT_API void rUniformSegment(const Scalar * a,
+                            const Scalar * b,
+                            const UnsignedInteger dimension,
+                            const UnsignedInteger size,
+                            Scalar * result);
+#endif
 // For uniform distribution over a triangle
 OT_API Point rUniformTriangle(const Point & a,
                               const Point & b,
@@ -301,20 +312,59 @@ OT_API Sample rUniformTriangle(const Point & a,
                                const Point & b,
                                const Point & c,
                                const UnsignedInteger size);
+#ifndef SWIG
+OT_API void rUniformTriangle(const Scalar * a,
+                             const Scalar * b,
+                             const Scalar * c,
+                             const UnsignedInteger dimension,
+                             Scalar * result);
+OT_API void rUniformTriangle(const Scalar * a,
+                             const Scalar * b,
+                             const Scalar * c,
+                             const UnsignedInteger dimension,
+                             const UnsignedInteger size,
+                             Scalar * result);
+#endif
 // For uniform distribution over a tetrahedron
 OT_API Point rUniformTetrahedron(const Point & a,
                                  const Point & b,
                                  const Point & c,
-                                 const Point & cd);
+                                 const Point & d);
 OT_API Sample rUniformTetrahedron(const Point & a,
                                   const Point & b,
                                   const Point & c,
                                   const Point & d,
                                   const UnsignedInteger size);
+#ifndef SWIG
+OT_API void rUniformTetrahedron(const Scalar * a,
+                                const Scalar * b,
+                                const Scalar * c,
+                                const Scalar * d,
+                                const UnsignedInteger dimension,
+                                Scalar * result);
+OT_API void rUniformTetrahedron(const Scalar * a,
+                                const Scalar * b,
+                                const Scalar * c,
+                                const Scalar * d,
+                                const UnsignedInteger dimension,
+                                const UnsignedInteger size,
+                                Scalar * result);
+#endif
 // For uniform distribution over a simplex
 OT_API Point rUniformSimplex(const Sample & vertices);
 OT_API Sample rUniformSimplex(const Sample & vertices,
                               const UnsignedInteger size);
+#ifndef SWIG
+OT_API void rUniformSimplex(const Scalar * vertices,
+                            const UnsignedInteger dimension,
+                            const UnsignedInteger numVertices,
+                            Scalar * result);
+OT_API void rUniformSimplex(const Scalar * vertices,
+                            const UnsignedInteger dimension,
+                            const UnsignedInteger numVertices,
+                            const UnsignedInteger size,
+                            Scalar * result);
+#endif
 // Compute the expectation of the min of n independent standard normal random variables
 OT_API Scalar eZ1(const UnsignedInteger n);
 
