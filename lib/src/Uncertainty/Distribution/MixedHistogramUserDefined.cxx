@@ -51,6 +51,7 @@ MixedHistogramUserDefined::MixedHistogramUserDefined()
 {
   setName("MixedHistogramUserDefined");
   setDimension(1);
+  DistFunc::rDiscreteSetup(normalizedProbabilityTable_, base_, alias_);
   computeRange();
 }
 
@@ -98,6 +99,7 @@ MixedHistogramUserDefined::MixedHistogramUserDefined(const PointCollection & tic
   for (UnsignedInteger i = 0; i < probabilityTable_.getSize(); ++ i)
     weightSum += probabilityTable_[i];
   normalizedProbabilityTable_ = probabilityTable_ / weightSum;
+  DistFunc::rDiscreteSetup(normalizedProbabilityTable_, base_, alias_);
 
   setDimension(dimension);
   computeRange();
@@ -169,8 +171,6 @@ void MixedHistogramUserDefined::computeRange()
 Point MixedHistogramUserDefined::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!base_.getSize())
-    (void) DistFunc::rDiscrete(normalizedProbabilityTable_, base_, alias_);
   const UnsignedInteger index = DistFunc::rDiscrete(base_, alias_);
   Point realization(dimension);
   for (UnsignedInteger j = 0; j < discreteIndices_.getSize(); ++j)

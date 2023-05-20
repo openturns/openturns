@@ -43,12 +43,10 @@ int main(int, char *[])
     fullprint << "rDiscrete(" << p << ", 10)=" << DistFunc::rDiscrete(p, 10) << std::endl;
     Point base;
     Indices alias;
-    fullprint << "rDiscrete(" << p << ", base, alias)=" << DistFunc::rDiscrete(p, base, alias) << std::endl;
-    fullprint << "base=" << base << ", alias=" << alias << std::endl;
-    fullprint << "rDiscrete(" << p << ", base, alias, 10)=" << DistFunc::rDiscrete(p, base, alias, 10) << std::endl;
-    fullprint << "base=" << base << ", alias=" << alias << std::endl;
-    fullprint << "rDiscrete(base=" << base << ", alias=" << alias << ")=" << DistFunc::rDiscrete(base, alias) << std::endl;
-    fullprint << "rDiscrete(base=" << base << ", alias=" << alias << ", 10)=" << DistFunc::rDiscrete(base, alias, 10) << std::endl;
+    DistFunc::rDiscreteSetup(p, base, alias);
+    fullprint << "rDiscreteSetup(" << p.__str__() << ")-> base, alias=" << base.__str__() << ", " << alias.__str__() << std::endl;
+    fullprint << "rDiscrete(base=" << base.__str__() << ", alias=" << alias.__str__() << ")=" << DistFunc::rDiscrete(base, alias) << std::endl;
+    fullprint << "rDiscrete(base=" << base.__str__() << ", alias=" << alias.__str__() << ", 10)=" << DistFunc::rDiscrete(base, alias, 10) << std::endl;
   }
   catch (TestFailed & ex)
   {

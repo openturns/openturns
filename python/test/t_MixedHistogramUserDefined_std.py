@@ -69,6 +69,7 @@ ticksCollection = [[0.0, 1.0, 3.0, 6.0]] * dim
 kind = [ot.MixedHistogramUserDefined.DISCRETE] * dim
 kind[dim - 2] = ot.MixedHistogramUserDefined.CONTINUOUS
 probabilityTable = ot.RandomGenerator.Generate(4 ** (dim - 1) * 3)
+print("probabilityTable=", probabilityTable)
 x = [3.0] * dim
 x[dim - 2] = 5.0
 bench = 0
