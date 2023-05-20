@@ -140,8 +140,8 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
   else if (inputVar == "zm")
     inputVar = "z_m";
   result.setXTitle("$" + inputVar + "$");
-  result.setYTitle("profile log-likelihood value");
-  result.setTitle("profile likelihood");
+  result.setYTitle("$\\ell_p(\\hat{" + inputVar + "})$");
+  result.setTitle("Profile log-likelihood function");
 
   const Interval bbox(result.getDrawable(0).getBoundingBox());
   const Scalar textMargin = ResourceMap::GetAsScalar("ProfileLikelihoodResult-TextMargin");
@@ -172,7 +172,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 
   dataX = {xMin};
   dataY = {fx + dy};
-  elt = Text(dataX, dataY, {OSS() << "$L(\\hat{" + inputVar + "})$=" << fx}, "right");
+  elt = Text(dataX, dataY, {OSS() << "$\\ell_p(\\hat{" + inputVar + "})$=" << fx}, "right");
   elt.setColor("black");
   result.add(elt);
 

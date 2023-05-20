@@ -1,19 +1,35 @@
 %feature("docstring") OT::TimeVaryingResult
-"Distribution factory result for time-varying likelihood estimation.
+"Distribution factory result for non stationary likelihood estimation.
+
+
+We consider a non stationary model with densitiy parameterized by :math:`\vect{\theta} = (\theta^1(t), \dots, \theta^d(t))` depending on time :math:`t`. We refer to this model as Parent Distribution.
+
+Each of :math:`\theta^j(t)` for :math:`1 \leq j \leq d`  has an expression in terms of a parameter vector and covariates:
+
+.. math::
+
+    \theta^j(t)  = h\left(\sum_{i=1}^{d_{j}} \beta_i^{j} X_i^{j}(t)\right)
+
+
+where :math:`h: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function*.
+The functions :math:`X_i^{j}` are scalar functions :math:`\Rset \mapsto \Rset`  and the :math:`\beta_i^{j} \in Rset`.
+
+We denote by :math:`\vect{\beta} = (\beta_1^{1}, \dots, \beta_{d_1}^{1}, \dots, \beta_1^{d}, \dots, \beta_{d_d}^{d})` the complete vector of parameters.
+
+The estimator of vector  :math:`\vect{\beta}` maximizes the likelihood of the Parent distribution.
 
 Parameters
 ----------
 factory : :class:`~openturns.DistributionFactory`
-    Parent factory
+    Parent distribution factory.
 parameterFunction : :class:`~openturns.Function`
-    The :math:`\theta(t)` function.
+    The  function :math:`\vect{\theta}`.
 mesh : :class:`~openturns.Mesh`
-    Time grid
+    Time grid of :math:`t`.
 parameterDistribution : :class:`~openturns.Distribution`
-    The distribution of the parameter
+    The distribution of :math:`\vect{\beta}`.
 llh : float
-    Optimized log-likelihood value when searching for the optimal
-    basis coefficients.
+    Maximum log-likelihood.
 
 See also
 --------
@@ -22,7 +38,7 @@ GeneralizedExtremeValueFactory"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getDistribution
-"Accessor to the distribution at a given time.
+"Accessor to the Parent distribution at a given time.
 
 Parameters
 ----------
@@ -31,28 +47,28 @@ t : float
 
 Returns
 -------
-parameterDistribution : :class:`~openturns.Distribution`
-    The distribution of the parameter."
+distribution : :class:`~openturns.Distribution`
+    The Parent distribution at time :math:`t`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getParameterDistribution
-"Accessor to the distribution of the parameter.
+"Accessor to the distribution of :math:`\vect{\beta}`.
 
 Returns
 -------
 parameterDistribution : :class:`~openturns.Distribution`
-    The distribution of the parameter."
+    The distribution of the  estimator of :math:`\vect{\beta}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::setParameterDistribution
-"Accessor to the distribution of the parameter.
+"Accessor to the distribution of of :math:`\vect{\beta}`.
 
 Parameters
 ----------
 parameterDistribution : :class:`~openturns.Distribution`
-    The distribution of the parameter."
+    The distribution of the estimator of :math:`\vect{\beta}`."
 
 // ---------------------------------------------------------------------
 
@@ -62,18 +78,18 @@ parameterDistribution : :class:`~openturns.Distribution`
 Returns
 -------
 parameterFunction : :class:`~openturns.Function`
-    The :math:`\theta(t)` function."
+    The  function :math:`\vect{\theta}(t)`."
 
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getOptimalParameter
-"Confidence level accessor.
+"Optimal parameter accessor.
 
 Returns
 -------
 optimalParameter : :class:`~openturns.Point`
-    Optimal linear combination parameters :math:`\vect{\beta}`
+    Optimal vector of parameters :math:`\vect{\beta}`.
 "
 
 // ---------------------------------------------------------------------
@@ -84,8 +100,7 @@ optimalParameter : :class:`~openturns.Point`
 Parameters
 ----------
 llh : float
-    Optimized log-likelihood value when searching for the optimal
-    basis coefficients.
+    Maximum log-likelihood.
 "
 
 // ---------------------------------------------------------------------
@@ -96,8 +111,7 @@ llh : float
 Returns
 -------
 llh : float
-    Optimized log-likelihood value when searching for the optimal
-    basis coefficients.
+    Maximum log-likelihood.
 "
 
 // ---------------------------------------------------------------------
@@ -107,19 +121,21 @@ llh : float
 
 Parameters
 ----------
-parameterIndex : int, default=0
-    The parameter index.
+parameterIndex : int, 
+    The index specifying the marginal of :math:`\vect{\theta}`.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Parameter function graph.
+    Graph of :math:`\theta^j(t)`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::drawQuantileFunction
 "Draw the quantile function.
+
+The quantile function is the function :math:`t \mapsto q_p(t)` where :math:`q_p(t)` is the quantile of order :math:`p` of the Parent distribution at time :math:`t`.
 
 Parameters
 ----------
@@ -129,5 +145,4 @@ p : float
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Quantile function graph.
-"
+    Quantile function graph."

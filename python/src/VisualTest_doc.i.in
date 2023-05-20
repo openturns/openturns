@@ -582,9 +582,9 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawUpperTailDependenceFunction
-"Draw upper tail dependence.
+"Draw the upper tail dependence function.
 
-Refer to :ref:`tail_dependence`.
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -594,7 +594,7 @@ sample : 2-d sequence of float
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    The graph of the function :math:`u \mapsto \chi(u) = \lambda_U(u)`.
 
 Examples
 --------
@@ -605,19 +605,19 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawUpperExtremalDependenceFunction
-"Draw upper extremal dependence.
+"Draw the upper extremal dependence function.
 
-Refer to :ref:`tail_dependence`.
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
 sample : 2-d sequence of float
-    Bivariate sample
+    Bivariate sample.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    The graph  of the function :math:`u \mapsto \bar{\chi}(u)`.
 
 Examples
 --------
@@ -628,9 +628,9 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawLowerTailDependenceFunction
-"Draw lower tail dependence.
+"Draw the lower tail dependence function.
 
-Refer to :ref:`tail_dependence`.
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -640,7 +640,7 @@ sample : 2-d sequence of float
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    The graph of the function :math:`u \mapsto \chi_L(u)`.
 
 Examples
 --------
@@ -651,9 +651,9 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawLowerExtremalDependenceFunction
-"Draw lower extremal dependence.
+"Draw the lower extremal dependence function.
 
-Refer to :ref:`tail_dependence`.
+The function is defined in  :ref:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -663,7 +663,7 @@ sample : 2-d sequence of float
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    The graph  of the function :math:`u \mapsto \bar{\chi}_L(u)`.
 
 Examples
 --------

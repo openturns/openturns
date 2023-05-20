@@ -979,10 +979,9 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   return result;
 }
 
-GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const
+Distribution GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const
 {
-  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, m).getDistribution());
-  return buildAsGeneralizedExtremeValue(distribution.getParameter());
+  return buildReturnLevelProfileLikelihoodEstimator(sample, m).getParameterDistribution();
 }
 
 GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue(const Point & parameters) const

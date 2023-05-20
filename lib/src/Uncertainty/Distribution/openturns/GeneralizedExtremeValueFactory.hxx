@@ -84,7 +84,7 @@ public:
 
   /** Return level via profiled likelihood */
   ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
-  GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
+  Distribution buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
 
 }; /* class GeneralizedExtremeValueFactory */
 

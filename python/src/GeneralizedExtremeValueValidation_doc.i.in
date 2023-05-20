@@ -8,9 +8,9 @@
 Parameters
 ----------
 result : :class:`~openturns.DistributionFactoryResult`
-    Inference result to validate
+    Inference result to validate.
 sample : 2-d sequence of float
-    Data on which the inference was performed
+    Data on which the inference was performed.
 
 See also
 --------
@@ -19,15 +19,15 @@ GeneralizedExtremeValueFactory"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueValidation::drawDiagnosticPlot
-"Draw some diagnostic plots.
+"Draw the 4 usual diagnostic plots.
 
 Returns
 -------
 grid : :class:`~openturns.GridLayout`
     Returns a grid of 4 graphs:
-     - the QQ-plot
-     - the PP-plot
-     - the return level graph (with confidence interval)
+     - the QQ-plot,
+     - the PP-plot,
+     - the return level graph (with confidence lines),
      - the density graph.
 "
 
@@ -39,18 +39,18 @@ grid : :class:`~openturns.GridLayout`
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The return level graph
+    The return level graph.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueValidation::drawPDF
-"Draw the PDF and data.
+"Draw the estimated density and the data histogram.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The PDF curve and histogram of data.
+    The estimated density and the data histogram.
 "
 
 // ---------------------------------------------------------------------
@@ -60,8 +60,8 @@ graph : :class:`~openturns.Graph`
 
 Parameters
 ----------
-alpha : float
-    Confidence level for the computation of the return level graph
+level : float
+    Confidence level for the confidence lines.
 "
 
 // ---------------------------------------------------------------------
@@ -71,6 +71,6 @@ alpha : float
 
 Returns
 -------
-alpha : float
-    Confidence level for the computation of the return level graph
+level : float
+    Confidence level for the confidence lines.
 "
