@@ -235,6 +235,8 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   // To force initialization at the first call to getRealization()
   base_ = Point(0);
   alias_ = Indices(0);
+  if (!uniformWeights_)
+    DistFunc::rDiscreteSetup(p_, base_, alias_);
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -270,7 +272,7 @@ Mixture * Mixture::clone() const
 Point Mixture::getRealization() const
 {
   // Select the atom following the weightsDistribution
-  const UnsignedInteger index = (uniformWeights_ ? RandomGenerator::IntegerGenerate(distributionCollection_.getSize()) : (base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(p_, base_, alias_)));
+  const UnsignedInteger index = (uniformWeights_ ? RandomGenerator::IntegerGenerate(distributionCollection_.getSize()) : DistFunc::rDiscrete(base_, alias_));
   return distributionCollection_[index].getRealization();
 }
 

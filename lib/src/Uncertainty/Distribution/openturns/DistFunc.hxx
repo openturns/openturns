@@ -137,13 +137,9 @@ OT_API Indices rBinomial(const UnsignedInteger n,
                          const UnsignedInteger size);
 // For discrete distribution
 #ifndef SWIG
-OT_API UnsignedInteger rDiscrete(const Point & probabilities,
-                                 Point & base,
-                                 Indices & alias);
-OT_API Indices rDiscrete(const Point & probabilities,
-                         Point & base,
-                         Indices & alias,
-                         const UnsignedInteger size);
+OT_API void rDiscreteSetup(const Point & probabilities,
+                           Point & base,
+                           Indices & alias);
 OT_API UnsignedInteger rDiscrete(const Point & base,
                                  const Indices & alias);
 OT_API Indices rDiscrete(const Point & base,

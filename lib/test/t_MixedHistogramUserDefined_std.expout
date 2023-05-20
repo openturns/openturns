@@ -5,11 +5,11 @@ covariance=[[  3.17333  -0.106667 ]
  [ -0.106667  0.506667 ]]
 Elliptical = false
 Continuous = false
-oneRealization=[0.347057,2]
-oneSample first=[0.50304,3] last=[1.67313,2]
-mean=[2.5718,2.4088]
-covariance=[[  3.16119  -0.126637 ]
- [ -0.126637  0.502333 ]]
+oneRealization=[1.27055,2]
+oneSample first=[0.969423,2] last=[5.69837,1]
+mean=[2.57463,2.3987]
+covariance=[[  3.15764  -0.118133 ]
+ [ -0.118133  0.511389 ]]
 Point= [1,1]
 log pdf=-3.80666
 pdf     =0.0222222

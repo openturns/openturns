@@ -526,18 +526,9 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
 /* It implements the alias method as described here: */
 /* http://keithschwarz.com/darts-dice-coins/ */
 /*******************************************************************************************************/
-Indices DistFunc::rDiscrete(const Point & probabilities,
-                            const UnsignedInteger size)
-{
-  Point base;
-  Indices alias;
-  return rDiscrete(probabilities, base, alias, size);
-}
-
-Indices DistFunc::rDiscrete(const Point & probabilities,
-                            Point & base,
-                            Indices & alias,
-                            const UnsignedInteger size)
+void DistFunc::rDiscreteSetup(const Point & probabilities,
+                              Point & base,
+                              Indices & alias)
 {
   // Setup part
   const UnsignedInteger n = probabilities.getSize();
@@ -582,21 +573,6 @@ Indices DistFunc::rDiscrete(const Point & probabilities,
   // The next loop accurs only due to numerical instability
   for (; indexSmall < smallSize; ++indexSmall)
     base[small[indexSmall]] = 1.0;
-  return rDiscrete(base, alias, size);
-}
-
-UnsignedInteger DistFunc::rDiscrete(const Point & probabilities)
-{
-  Point base;
-  Indices alias;
-  return rDiscrete(probabilities, base, alias, 1)[0];
-}
-
-UnsignedInteger DistFunc::rDiscrete(const Point & probabilities,
-                                    Point & base,
-                                    Indices & alias)
-{
-  return DistFunc::rDiscrete(probabilities, base, alias, 1)[0];
 }
 
 UnsignedInteger DistFunc::rDiscrete(const Point & base,
@@ -615,6 +591,20 @@ Indices DistFunc::rDiscrete(const Point & base,
   for (UnsignedInteger i = 0; i < size; ++i)
     result[i] = rDiscrete(base, alias);
   return result;
+}
+
+UnsignedInteger DistFunc::rDiscrete(const Point & probabilities)
+{
+  return rDiscrete(probabilities, 1)[0];
+}
+
+Indices DistFunc::rDiscrete(const Point & probabilities,
+                            const UnsignedInteger size)
+{
+  Point base;
+  Indices alias;
+  rDiscreteSetup(probabilities, base, alias);
+  return rDiscrete(base, alias, size);
 }
 
 /*******************************************************************************************************/
@@ -1999,15 +1989,15 @@ void DistFunc::rUniformSegment(const Scalar * a,
 {
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar v = 1.0 - u;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      const Scalar u = RandomGenerator::Generate();
-      const Scalar v = 1.0 - u;
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        {
-          result[index] = u * a[i] + v * b[i];
-          ++index;
-        } // i
-    } // j
+      result[index] = u * a[i] + v * b[i];
+      ++index;
+    } // i
+  } // j
 }
 
 // For uniform distribution over a triangle
@@ -2104,10 +2094,10 @@ void DistFunc::rUniformTriangle(const Scalar * a,
     const Scalar y = (1.0 - u) * sqrtV;
     const Scalar z = u * sqrtV;
     for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        result[index] = x * a[i] + y * b[i] + z * c[i];
-        ++index;
-      }
+    {
+      result[index] = x * a[i] + y * b[i] + z * c[i];
+      ++index;
+    }
   } // n
 }
 
@@ -2177,10 +2167,10 @@ void DistFunc::rUniformTetrahedron(const Scalar * a,
     const Scalar z = (1.0 - sqrtV) * cbrtW;
     const Scalar t = 1.0 - cbrtW;
     for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        result[index] = x * a[i] + y * b[i] + z * c[i] + t * d[i];
-        ++index;
-      }
+    {
+      result[index] = x * a[i] + y * b[i] + z * c[i] + t * d[i];
+      ++index;
+    }
   } // n
 }
 
@@ -2201,25 +2191,25 @@ void DistFunc::rUniformSimplex(const Scalar * vertices,
                                Scalar * result)
 {
   if (numVertices == 1)
-    {
-      std::copy(vertices, vertices + dimension, result);
-      return;
-    }
+  {
+    std::copy(vertices, vertices + dimension, result);
+    return;
+  }
   if (numVertices == 2)
-    {
-      rUniformSegment(vertices, vertices + dimension, dimension, result);
-      return;
-    }
+  {
+    rUniformSegment(vertices, vertices + dimension, dimension, result);
+    return;
+  }
   if (numVertices == 3)
-    {
-      rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, result);
-      return;
-    }
+  {
+    rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, result);
+    return;
+  }
   if (numVertices == 4)
-    {
-      rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, result);
-      return;
-    }
+  {
+    rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, result);
+    return;
+  }
   std::copy(vertices, vertices + dimension, result);
   UnsignedInteger shift = dimension;
   for (UnsignedInteger i = 1; i < numVertices; ++i)
@@ -2248,26 +2238,26 @@ void DistFunc::rUniformSimplex(const Scalar * vertices,
                                Scalar * result)
 {
   if (numVertices == 1)
-    {
-      for (UnsignedInteger i = 0; i < size; ++i)
-        std::copy(vertices, vertices + dimension, result + i * dimension);
-      return;    
-    }
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+      std::copy(vertices, vertices + dimension, result + i * dimension);
+    return;
+  }
   if (numVertices == 2)
-    {
-      rUniformSegment(vertices, vertices + dimension, dimension, size, result);
-      return;
-    }
+  {
+    rUniformSegment(vertices, vertices + dimension, dimension, size, result);
+    return;
+  }
   if (numVertices == 3)
-    {
-      rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, size, result);
-      return;
-    }
+  {
+    rUniformTriangle(vertices, vertices + dimension, vertices + 2 * dimension, dimension, size, result);
+    return;
+  }
   if (numVertices == 4)
-    {
-      rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, size, result);
-      return;
-    }
+  {
+    rUniformTetrahedron(vertices, vertices + dimension, vertices + 2 * dimension, vertices + 3 * dimension, dimension, size, result);
+    return;
+  }
   UnsignedInteger shiftResult = 0;
   for (UnsignedInteger n = 0; n < size; ++n)
   {
