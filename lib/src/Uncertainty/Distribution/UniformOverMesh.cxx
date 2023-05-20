@@ -72,11 +72,11 @@ String UniformOverMesh::__repr__() const
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " mesh=" << mesh_
-      << " meshDomain" << meshDomain_
-      << " simplicesVolumes" << simplicesVolumes_
-      << " meshVolume" << meshVolume_
-      << " simplexSelection" << simplexSelection_
-      << " integrationAlgorithm" << integrationAlgorithm_;
+      << " meshDomain=" << meshDomain_
+      << " simplicesVolumes=" << simplicesVolumes_
+      << " meshVolume=" << meshVolume_
+      << " probabilities=" << probabilities_
+      << " integrationAlgorithm=" << integrationAlgorithm_;
   return oss;
 }
 
@@ -103,7 +103,7 @@ void UniformOverMesh::computeRange()
 /* Get one realization of the distribution */
 Point UniformOverMesh::getRealization() const
 {
-  const UnsignedInteger index = simplexSelection_.getRealization()[0];
+  const UnsignedInteger index = DistFunc::rDiscrete(base_, alias_);
   const UnsignedInteger dimension = getDimension();
   Point result(dimension);
   if (dimension == 1)
@@ -136,7 +136,7 @@ Point UniformOverMesh::getRealization() const
 /* Get a sample of the distribution */
 Sample UniformOverMesh::getSample(const UnsignedInteger size) const
 {
-  const Point indices(simplexSelection_.getSample(size).asPoint());
+  const Indices indices(DistFunc::rDiscrete(base_, alias_, size));
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
   if (dimension == 1)
@@ -238,7 +238,8 @@ void UniformOverMesh::setMesh(const Mesh & mesh)
   meshDomain_ = MeshDomain(mesh);
   simplicesVolumes_ = mesh.computeSimplicesVolume();
   meshVolume_ = std::accumulate(simplicesVolumes_.begin(), simplicesVolumes_.end(), 0.0);
-  simplexSelection_ = UserDefined(RegularGrid(0.0, 1.0, simplicesVolumes_.getSize()).getVertices(), simplicesVolumes_);
+  probabilities_ = simplicesVolumes_ / meshVolume_;
+  DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
   const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber");
   const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / getDimension())));
   const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber");
@@ -271,10 +272,6 @@ void UniformOverMesh::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "mesh_", mesh_ );
-  adv.saveAttribute( "meshDomain_", meshDomain_ );
-  adv.saveAttribute( "simplicesVolumes_", simplicesVolumes_ );
-  adv.saveAttribute( "meshVolume_", meshVolume_ );
-  adv.saveAttribute( "simplexSelection_", simplexSelection_ );
   adv.saveAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
 }
 
@@ -282,13 +279,10 @@ void UniformOverMesh::save(Advocate & adv) const
 void UniformOverMesh::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "mesh_", mesh_ );
-  adv.loadAttribute( "meshDomain_", meshDomain_ );
-  adv.loadAttribute( "simplicesVolumes_", simplicesVolumes_ );
-  adv.loadAttribute( "meshVolume_", meshVolume_ );
-  adv.loadAttribute( "simplexSelection_", simplexSelection_ );
+  Mesh mesh;
+  adv.loadAttribute( "mesh_", mesh );
   adv.loadAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
-  computeRange();
+  setMesh(mesh);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -1,8 +1,5 @@
 rDiscrete(class=Point name=Unnamed dimension=4 values=[0.1,0.2,0.3,0.4])=2
 rDiscrete(class=Point name=Unnamed dimension=4 values=[0.1,0.2,0.3,0.4], 10)=[1,2,1,1,1,2,0,3,3,3]
-rDiscrete(class=Point name=Unnamed dimension=4 values=[0.1,0.2,0.3,0.4], base, alias)=3
-base=class=Point name=Unnamed dimension=4 values=[0.4,0.8,0.6,1], alias=[2,3,3,0]
-rDiscrete(class=Point name=Unnamed dimension=4 values=[0.1,0.2,0.3,0.4], base, alias, 10)=[3,2,2,3,2,1,3,2,1,1]
-base=class=Point name=Unnamed dimension=4 values=[0.4,0.8,0.6,1], alias=[2,3,3,0]
-rDiscrete(base=class=Point name=Unnamed dimension=4 values=[0.4,0.8,0.6,1], alias=[2,3,3,0])=2
-rDiscrete(base=class=Point name=Unnamed dimension=4 values=[0.4,0.8,0.6,1], alias=[2,3,3,0], 10)=[3,3,2,1,1,2,3,2,1,3]
+rDiscreteSetup([0.1,0.2,0.3,0.4])-> base, alias=[0.4,0.8,0.6,1], [2,3,3,0]
+rDiscrete(base=[0.4,0.8,0.6,1], alias=[2,3,3,0])=3
+rDiscrete(base=[0.4,0.8,0.6,1], alias=[2,3,3,0], 10)=[3,2,2,3,2,1,3,2,1,1]

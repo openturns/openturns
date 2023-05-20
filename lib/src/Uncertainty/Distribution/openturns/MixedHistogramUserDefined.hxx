@@ -172,8 +172,8 @@ private:
   Point normalizedProbabilityTable_;
 
   /** Structures for the alias sampling method */
-  mutable Point base_;
-  mutable Indices alias_;
+  Point base_;
+  Indices alias_;
 
 }; /* class MixedHistogramUserDefined */
 

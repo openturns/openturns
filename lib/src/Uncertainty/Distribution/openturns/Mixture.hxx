@@ -187,8 +187,8 @@ private:
 
   /** The discrete distribution of the weights */
   /** Structures for the alias sampling method */
-  mutable Point base_;
-  mutable Indices alias_;
+  Point base_;
+  Indices alias_;
   Bool uniformWeights_;
   Point p_;
 

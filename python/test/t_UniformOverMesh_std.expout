@@ -2,10 +2,10 @@ Distribution  UniformOverMesh(mesh = class=Mesh name=Unnamed dimension=2 vertice
 Elliptical =  False
 Continuous =  True
 oneRealization= [-0.670972,0.254526]
-oneSample first= [-0.326625,0.16612]  last= [-0.217158,-0.146131]
-mean= [-0.00334831,0.000576502]
-covariance= [[  0.123696  -0.0309812 ]
- [ -0.0309812  0.0221997 ]]
+oneSample first= [-0.313874,0.164614]  last= [0.0228418,0.0938685]
+mean= [-0.00398781,0.000824332]
+covariance= [[  0.124634  -0.0314467 ]
+ [ -0.0314467  0.0221587 ]]
 Point=  [0.1, 0.1]
 ddf     = [0,0]
 log pdf=0.70956

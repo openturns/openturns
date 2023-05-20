@@ -137,10 +137,7 @@ Point UserDefined::getRealization() const
   // Efficient algorithm for uniform weights
   if (hasUniformWeights_) index = RandomGenerator::IntegerGenerate(size);
   // Alias method for nonuniform weights
-  else
-  {
-    index = base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(probabilities_, base_, alias_);
-  }
+  else index = DistFunc::rDiscrete(base_, alias_);
   return points_[index];
 }
 
@@ -157,11 +154,7 @@ Sample UserDefined::getSample(const UnsignedInteger size) const
   }
   // Alias method for nonuniform weights
   else
-  {
-    if (!base_.getSize())
-      (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
     indices = DistFunc::rDiscrete(base_, alias_, size);
-  }
   return points_.select(indices);
 }
 
@@ -561,15 +554,16 @@ void UserDefined::setData(const Sample & sample,
     for (UnsignedInteger j = 0; j < dimension; ++j) points_(i, j) = weightedData(i, j);
     probabilities_[i] = SpecFunc::Clip01(weightedData(i, dimension));
   }
+  base_ = Point(0);
+  alias_ = Indices(0);
+  if (!hasUniformWeights_)
+    DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
-  // trigger reset of alias method
-  base_.clear();
-  alias_.clear();
 }
 
 

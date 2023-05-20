@@ -119,8 +119,8 @@ private:
   /** Volume of the mesh */
   Scalar meshVolume_;
 
-  /** Auxiliary discrete distribution to select a simplex */
-  UserDefined simplexSelection_;
+  /** Probabilities associated to the simplices selection */
+  Point probabilities_;
 
   /** Integration algorithm to use for CDF computation */
   IntegrationAlgorithm integrationAlgorithm_;
@@ -130,6 +130,10 @@ private:
 
   /** Simplices */
   IndicesCollection simplices_;
+
+  /** Structures for the alias sampling method */
+  Point base_;
+  Indices alias_;
 }; /* class UniformOverMesh */
 
 

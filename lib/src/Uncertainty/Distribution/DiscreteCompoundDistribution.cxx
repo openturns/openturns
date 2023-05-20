@@ -101,8 +101,7 @@ void DiscreteCompoundDistribution::computeRange()
 /* Get one realization of the distribution */
 Point DiscreteCompoundDistribution::getRealization() const
 {
-  const UnsignedInteger index = base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(probabilities_, base_, alias_);
-  return Point(1, index);
+  return distribution_.getRealization();
 }
 
 
