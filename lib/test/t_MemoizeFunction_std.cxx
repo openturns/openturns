@@ -77,7 +77,7 @@ public:
       }
     }
     if (failedIndices.getSize())
-      throw BatchFailedException(HERE, failedIndices, errors, okIndices, result.select(okIndices));
+      throw BatchFailedException(HERE, failedIndices, errors, okIndices, result.select(okIndices)) << "operator(Sample) partial fail";
     return result;
   }
 };
@@ -157,6 +157,7 @@ int main(int, char *[])
       std::cout << "X_ok=" << X.select(exc.getSucceededIndices()) << std::endl;
       std::cout << "Y_ok=" << exc.getOutputSample() << std::endl;
       std::cout << "f(X_ok)=" << f3(X.select(exc.getSucceededIndices())) << std::endl;
+      std::cout << "what=" << exc.what() << std::endl;
     }
   }
   catch (const TestFailed & ex)
