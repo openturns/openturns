@@ -306,7 +306,7 @@ CorrelationMatrix GumbelCopula::getKendallTau() const
 CorrelationMatrix GumbelCopula::computeUpperTailDependenceMatrix() const
 {
   CorrelationMatrix result(getDimension());
-  const Scalar coef = 2.0 - std::pow(1.0 * getDimension(), 1.0 / theta_);
+  const Scalar coef = 2.0 - std::pow(2.0, 1.0 / theta_);
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
       result(i, j) = coef;
