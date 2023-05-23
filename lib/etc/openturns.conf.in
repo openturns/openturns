@@ -361,6 +361,9 @@
   <CovarianceModel-DefaultTMin         value_float="-5.0"          />
   <CovarianceModel-DefaultPointNumber  value_int="129" />
 
+  <!-- OT::DiracCovarianceModel parameters -->
+  <DiracCovarianceModel-CheckUnique value_bool="true"         />
+
   <!-- OT::SpectralModelImplementation parameters -->
   <SpectralModel-DefaultMaximumFrequency value_float="5.0"           />
   <SpectralModel-DefaultMinimumFrequency value_float="-5.0"          />

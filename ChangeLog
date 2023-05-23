@@ -88,6 +88,7 @@
  * #2281 (The marginal of FireSatelliteModel can fail)
  * #2285 (The input and output descriptions does not go down to the metamodel)
  * #2287 (DesignProxy.computeDesign() can produce a segmentation fault)
+ * #2296 (DiracCovarianceModel.discretize() is buggy)
  * #2297 (Legend location with grid layout)
  * #2299 (Allow openturns as subproject)
  * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)

@@ -986,6 +986,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("CovarianceModel-DefaultTMin", -5.0);
   addAsUnsignedInteger("CovarianceModel-DefaultPointNumber",  129);
 
+  // DiracCovarianceModel parameters //
+  addAsBool("DiracCovarianceModel-CheckUnique", true);
+
   // SpectralModel parameters //
   addAsScalar("SpectralModel-DefaultMaximumFrequency",  5.0);
   addAsScalar("SpectralModel-DefaultMinimumFrequency", -5.0);
