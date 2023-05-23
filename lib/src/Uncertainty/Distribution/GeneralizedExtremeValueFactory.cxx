@@ -684,15 +684,15 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
 
   GeneralizedExtremeValueTimeVaryingLikelihoodEvaluation evaluation(sample, timeStamps, thetaFunction, 0.0);
   // heuristic for feasible mu
-  UnsignedInteger i = 0;
+  UnsignedInteger k = 0;
   const UnsignedInteger maxIter = ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber");
   const Scalar rho = ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor");
   Point value(evaluation(x0));
-  while (((value[1] <= 0.0) || (value[2] <= 0)) && (i < maxIter))
+  while (((value[1] <= 0.0) || (value[2] <= 0)) && (k < maxIter))
   {
     x0[0] *= rho;
     value = evaluation(x0);
-    ++ i;
+    ++ k;
   }
   LOGINFO(OSS(false) << "Starting points for the coefficients=" << x0);
   const Scalar startingValue = -evaluation(x0)[0];
