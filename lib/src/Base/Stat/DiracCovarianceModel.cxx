@@ -234,6 +234,11 @@ struct DiracCovarianceModelDiscretizePolicy
 
 CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
+  // If we have to check for repeated points and there are repeated points, use the generic discretization method
+  if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
+    return CovarianceModelImplementation::discretize(vertices);
+
+  // Here is the opimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
@@ -283,6 +288,11 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
 
 TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
+  // If we have to check for repeated points and there are repeated points, use the generic discretization method
+  if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
+    return CovarianceModelImplementation::discretizeAndFactorize(vertices);
+
+  // Here is the opimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
