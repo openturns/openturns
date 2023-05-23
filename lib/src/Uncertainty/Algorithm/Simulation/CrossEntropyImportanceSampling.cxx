@@ -117,10 +117,9 @@ void CrossEntropyImportanceSampling::run()
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
   Point auxiliaryDistributionParameters;
-
-
+  
   const ComparisonOperator comparator(getEvent().getOperator());
-  const Scalar threshold(getEvent().getThreshold());
+  const Scalar threshold = getEvent().getThreshold();
 
   if (comparator(currentQuantile, threshold))
   {
@@ -189,7 +188,7 @@ void CrossEntropyImportanceSampling::run()
       const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
 
       // Optimize auxiliary distribution parameters
-      Point auxiliaryDistributionParameters(optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples));
+      auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
 
       // Update auxiliary Distribution Parameters
       updateAuxiliaryDistribution(auxiliaryDistributionParameters);
