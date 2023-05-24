@@ -30,25 +30,6 @@ CLASSNAMEINIT(LatentVariableModel)
 
 static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 
-
-/* Default constructor */
-LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels)
-  : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
-  , latentDim_(2)
-  , nLevels_(nLevels)
-  , latCovMat_(nLevels_)
-  , latCovMod_(latentDim_)
-{
-  if (nLevels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
-  activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
-  activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
-  fullLatentVariables_ = Sample(nLevels_,latentDim_);
-  Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
-  activeParameter.fill();
-  setActiveParameter(activeParameter);
-  updateLatentCovarianceMatrix();
-}
-
 /** Parameters constructor */
 LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
 						 const UnsignedInteger latentDim)

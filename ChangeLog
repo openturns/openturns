@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * LatentVariableModel (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method

@@ -37,12 +37,9 @@ class OT_API LatentVariableModel
 
 public:
 
-  /** Default constructor based on levels*/
-  explicit LatentVariableModel(const UnsignedInteger nLevels = 2);
-
   /** Parameters constructor */
-  LatentVariableModel(const UnsignedInteger nLevels,
-						 const UnsignedInteger latentDim);
+  LatentVariableModel(const UnsignedInteger nLevels = 2,
+						 const UnsignedInteger latentDim = 2);
 
   /** Virtual copy constructor */
   LatentVariableModel * clone() const override;

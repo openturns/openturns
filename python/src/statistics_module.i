@@ -88,7 +88,6 @@
 %include HMatrix.i
 %include IsotropicCovarianceModel.i
 %include CorrelationAnalysis.i
-%include LatentVariableModel.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i
