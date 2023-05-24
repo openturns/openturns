@@ -17,8 +17,9 @@ ot.RandomGenerator.SetSeed(5)
 
 # %%
 # We first show the advantage of modeling the various levels of a mixed
-# continuous-categorical functions through a single surrogate model
+# continuous / categorical function through a single surrogate model
 # on a simple test-case, defined below.
+
 
 # %%
 def illustrativeFunc(inp):
@@ -82,12 +83,6 @@ initSample_ind = initdist_ind.getSample(10)
 optalg_ind = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_ind)
 
 # %%
-# In order to assess their respective robustness with regards to the training data set,
-# we repeat the experiments 10 times with different training of size 72,
-# and compute each time the normalized prediction Root Mean Squared Error (RMSE) on a
-# test data set # of size 1000.
-
-# %%
 # We generate the training data set
 X = dist.getSample(10)
 Y = fun(X)
@@ -128,7 +123,7 @@ for z in range(2):
     algo_ind_list.append(algo_ind.getResult())
 
 # %%
-# We plot the prediction of the mixed continuous-categorical GP,
+# We plot the prediction of the mixed continuous / categorical GP,
 # as well as the one of the two separate continuous GPs
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15, 10))
 for z in range(2):
