@@ -94,9 +94,12 @@
  * Add VisualTest::DrawPPplot
  * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence functions
  * Add Distribution.compute(Upper|Lower)(Tail|Extremal)DependenceMatrix methods to compute dependence coefficients
+<<<<<<< HEAD
  * Enable Pagmo.moead_gen with pagmo>=2.19
  * Enable Bonmin.Ecp/iFP algorithms with bonmin>=1.8.9
  * BoxCoxFactory handles linear model
+=======
+>>>>>>> 6873d3bc6 (corrected changelog)
 
 === Bug fixes ===
  * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
@@ -123,6 +126,7 @@
  * #2281 (The marginal of FireSatelliteModel can fail)
  * #2285 (The input and output descriptions does not go down to the metamodel)
  * #2287 (DesignProxy.computeDesign() can produce a segmentation fault)
+<<<<<<< HEAD
  * #2296 (DiracCovarianceModel.discretize() is buggy)
  * #2297 (Legend location with grid layout)
  * #2299 (Allow openturns as subproject)
@@ -131,6 +135,11 @@
  * #2327 (A sign mistake in FGM document)
  * #2328 (Sample.add weird behaviour)
  * #2338 (HSIC with large amount of data makes crash)
+=======
+ * #2297 (Legend location with grid layout)
+ * #2299 (Allow openturns as subproject)
+ * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
+>>>>>>> 6873d3bc6 (corrected changelog)
 
 
 == 1.20 release (2022-11-08) == #release-1.20
@@ -2868,3 +2877,4 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
