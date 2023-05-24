@@ -47,6 +47,10 @@
  * HSICStat arguments updated (covariance matrices instead of data + covariance models)
  * Deprecated HSICStat relying on weight matrix
  * Deprecated Basis::getDimension, use getInputDimension instead
+ * Removed thinning from Gibbs and all MetropolisHastings classes
+ * Removed burn-in from Gibbs and all MetropolisHastings classes except RandomWalkMetropolisHastings
+ * RandomWalkMetropolisHastings::getRealization|Sample no longer remove states reached during burn-in
+ * RandomWalkMetropolisHastings default adaptation parameters were changed to enable adaptation
 
 === Documentation ===
  * Add API documentation to common use cases pages
