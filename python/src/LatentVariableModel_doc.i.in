@@ -6,8 +6,6 @@
     To use it, import the ``openturns.experimental`` submodule.
 
 Available constructors:
-    LatentVariableModel(*nLevels=2*)
-
     LatentVariableModel(*nLevels, latentDim*)
 
 Parameters
