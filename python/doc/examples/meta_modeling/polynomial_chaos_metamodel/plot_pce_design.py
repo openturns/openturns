@@ -202,6 +202,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 # using the :class:`~openturns.DesignProxy` class.
 
 import openturns as ot
+import openturns.viewer as otv
 import numpy as np
 from openturns.usecases import ishigami_function
 
@@ -348,6 +349,7 @@ print("Inverse Gram : ", inverseGram.getNbRows(), "x", inverseGram.getNbColumns(
 
 # %%
 # Compute leave-one-out error
+predictionsLOO = ot.Sample(nTrain, 1)
 residuals = ot.Point(nTrain)
 for j in range(nTrain):
     indicesLOO = list(range(nTrain))
@@ -366,10 +368,22 @@ for j in range(nTrain):
         sparse,
     )
     metamodelLOO = chaosResultLOO.getMetaModel()
-    yj_LOO = metamodelLOO(xj)
-    residuals[j] = (yj - yj_LOO)[0]
+    predictionsLOO[j] = metamodelLOO(xj)
+    residuals[j] = (yj - predictionsLOO[j])[0]
 mseLOO = residuals.normSquare() / nTrain
 print("mseLOO = ", mseLOO)
+
+# %%
+# For each point in the training sample, we plot the predicted leave-one-out
+# output prediction depending on the observed output.
+
+graph = ot.Graph("Leave-one-out validation", "Observation", "LOO prediction", True)
+cloud = ot.Cloud(yTrain, predictionsLOO)
+graph.add(cloud)
+curve = ot.Curve(yTrain, yTrain)
+graph.add(curve)
+graph.setColors(ot.Drawable().BuildDefaultPalette(2))
+view = otv.View(graph)
 
 # %%
 # In the previous method, we must pay attention to the fact that
@@ -427,3 +441,5 @@ print("Q2 LOO = ", q2LeaveOneOut)
 # We see that the MSE leave-one-out error is equal to the naive LOO error.
 # The numerical differences between the two values are the consequences
 # of the rounding errors in the numerical evaluation of the hat matrix.
+
+otv.View.ShowAll()
