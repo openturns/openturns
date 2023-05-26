@@ -133,7 +133,7 @@ g.add(f2.draw(-3.0, 3.0, 256))
 g.add(f3.draw(-3.0, 3.0, 256))
 g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
 g.setLegendPosition('topright')
-g.setColors(['red', 'blue', 'black'])
+g.setColors(ot.Drawable.BuildDefaultPalette(3))
 g.setTitle('Fourier Series')
 View(g).show()
 
