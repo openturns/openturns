@@ -80,7 +80,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 # - Finally, when we want to compute the analytical leave-one-out error,
 #   we need to compute the diagonal of the  projection matrix :math:`H`.
 #
-# For all these purposes, the `DesignProxy` is _the_ tool.
+# For all these purposes, the `DesignProxy` is *the* tool.
 
 # %%
 # The leave-one-out error
@@ -374,7 +374,7 @@ print("mseLOO = ", mseLOO)
 # %%
 # In the previous method, we must pay attention to the fact that
 # the comparison that we are going to make is not necessarily
-# valid if we use the `~openturns.LARS` selection method,
+# valid if we use the :class:`~openturns.LARS` selection method,
 # because this may lead to a different active basis for each leave-one-out
 # sample.
 #
