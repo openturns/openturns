@@ -27,6 +27,7 @@
 #include "openturns/ProfileLikelihoodResult.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/TimeVaryingResult.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,31 +61,38 @@ public:
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue(const Point & parameters) const;
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue() const;
 
-  /** Maximum likelihood */
-  GeneralizedExtremeValue buildMethodOfLikelihoodMaximization(const Sample & sample) const;
-  DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const;
-
   /** Profiled maximum likelihood */
   ProfileLikelihoodResult buildMethodOfProfileLikelihoodMaximizationEstimator(const Sample & sample) const;
   GeneralizedExtremeValue buildMethodOfProfileLikelihoodMaximization(const Sample & sample) const;
 
-  /** R largest order statistics */
-  DistributionFactoryResult buildRMaximaEstimator(const Sample & sample, const UnsignedInteger r = 0);
-  GeneralizedExtremeValue buildRMaxima(const Sample & sample, const UnsignedInteger r = 0);
-  UnsignedInteger buildBestRMaxima(const Sample & sample, const Indices & r, Point & logLikelihoodOut);
+  /** Maximum likelihood r largest order statistics */
+  DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const UnsignedInteger r = 0) const;
+  GeneralizedExtremeValue buildMethodOfLikelihoodMaximization(const Sample & sample, const UnsignedInteger r = 0) const;
 
   /** Time-varying */
   TimeVaryingResult buildTimeVarying(const Sample & sample,
-                                     const Mesh & mesh,
+                                     const Sample & timeStamps,
                                      const BasisCollection & basisCollection,
-                                     const Function & inverseLinkFunction = Function()) const;
-
+                                     const Function & inverseLinkFunction = Function(),
+                                     const String & initializationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-InitializationMethod"),
+                                     const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-NormalizationMethod")) const;
+#ifdef toto
+  /** Covariates */
+  TimeVaryingResult buildCovariates(const Sample & sample,
+                                    const Sample & covariates,
+                                    const Indices & muIndices,
+                                    const Indices & sigmaIndices,
+                                    const Indices & xiIndices,
+                                    const Function & inverseLinkFunction = Function(),
+                                    const String & initializationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-InitializationMethod"),
+                                    const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-NormalizationMethod")) const;
+#endif
   /** Return level */
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;
 
   /** Return level via profiled likelihood */
   ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
-  Distribution buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
+  GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
 
 }; /* class GeneralizedExtremeValueFactory */
 

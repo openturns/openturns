@@ -24,8 +24,8 @@ factory : :class:`~openturns.DistributionFactory`
     Parent distribution factory.
 parameterFunction : :class:`~openturns.Function`
     The  function :math:`\vect{\theta}`.
-mesh : :class:`~openturns.Mesh`
-    Time grid of :math:`t`.
+timeStamps : 2-d sequence of float
+    Values of :math:`t`.
 parameterDistribution : :class:`~openturns.Distribution`
     The distribution of :math:`\vect{\beta}`.
 llh : float
@@ -43,14 +43,14 @@ GeneralizedExtremeValueFactory"
 Parameters
 ----------
 t : float
-    Time value
+    Time value.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
     The Parent distribution at time :math:`t`."
 
-// ---------------------------------------------------------------------
+// ------------------Time stamps---------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getParameterDistribution
 "Accessor to the distribution of :math:`\vect{\beta}`.
@@ -78,7 +78,17 @@ parameterDistribution : :class:`~openturns.Distribution`
 Returns
 -------
 parameterFunction : :class:`~openturns.Function`
-    The  function :math:`\vect{\theta}(t)`."
+    The  function :math:`t \mapsto \vect{\theta}(t)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getNormalizationFunction
+"Normalizing function accessor.
+
+Returns
+-------
+normalizeFunction : :class:`~openturns.Function`
+    The  function :math:`t \mapsto _tau(t)`."
 
 
 // ---------------------------------------------------------------------

@@ -28,6 +28,15 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(LinearFunction)
 
 /* Default constructor */
+LinearFunction::LinearFunction()
+  : Function(new LinearEvaluation(),
+             new ConstantGradient(),
+             new NullHessian())
+{
+  // Nothing to do
+}
+
+/* Parameter constructor */
 LinearFunction::LinearFunction(const Point & center,
                                const Point & constant,
                                const Matrix & linear)

@@ -21,6 +21,35 @@ GeneralizedExtremeValueFactory"
 %feature("docstring") OT::GeneralizedExtremeValueValidation::drawDiagnosticPlot
 "Draw the 4 usual diagnostic plots.
 
+The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the empirical density of the distribution with the fitted model density.
+
+
+If :math:`(z_{(1)}, \dots, z_{(n)})` denotes the ordered block maximum data, the graphs are defined as follows.
+
+The *probability-probability* plot consists of the points:
+
+.. math::
+    \left\{ \left( i/(n+1), \hat{G}(z_{(i)}) \right), i=1, \dots , n\right\}
+
+
+The *quantile-quantile* plot consists of the points:
+
+.. math::
+    \left\{  \left(  z_{(i)},  \hat{G}^{-1}(i/(n+1))  \right), i=1, \dots , n\right\} 
+
+The *return level* plot consists of the points:
+
+.. math::
+    \left\{ \left( \log(m), \hat{z}_m\right),m> 0\right\}
+
+and the points:
+
+.. math::
+    \left\{ \left( \log(m), z_{m}^{emp}\right), m> 0\right\}
+
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
+:math:`m`-block return level calculated with the fitted GEV.
+
 Returns
 -------
 grid : :class:`~openturns.GridLayout`
@@ -35,6 +64,19 @@ grid : :class:`~openturns.GridLayout`
 
 %feature("docstring") OT::GeneralizedExtremeValueValidation::drawReturnLevel
 "Draw the return level with confidence interval.
+
+The *return level* plot consists of the points:
+
+.. math::
+    \left\{ \left( \log(m), \hat{z}_m\right), 0 < p < 1\right\}
+
+and the points:
+
+.. math::
+    \left\{ \left( \log(m), z_{m}^{emp}\right), m> 0\right\}
+
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
+:math:`m`-block return level calculated with the fitted GEV.
 
 Returns
 -------

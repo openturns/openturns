@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Result of GEV time-varying likelihood
+ *  @brief Result of GEV covariates likelihood
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,41 +18,35 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TIMEVARYINGRESULT_HXX
-#define OPENTURNS_TIMEVARYINGRESULT_HXX
+#ifndef OPENTURNS_COVARIATESRESULT_HXX
+#define OPENTURNS_COVARIATESRESULT_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/LinearFunction.hxx"
-#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class OT_API TimeVaryingResult
+class OT_API CovariatesResult
   : public PersistentObject
 {
   CLASSNAME
 public:
-  TimeVaryingResult();
+  CovariatesResult();
 
-  TimeVaryingResult(const DistributionFactory & factory,
-                    const Sample & data,
+  CovariatesResult(const DistributionFactory & factory,
                     const Function & parameterFunction,
-                    const Sample & timeGrid,
+                    const Sample & covariates,
                     const Distribution & parameterDistribution,
                     const LinearFunction & normalizationFunction,
                     const Scalar logLikelihood);
 
-  TimeVaryingResult * clone() const override;
+  CovariatesResult * clone() const override;
 
   /** Accessor to the optimal parameter */
   Point getOptimalParameter() const;
 
   /** Accessor to the parameter function */
   Function getParameterFunction() const;
-
-  /** Time grid accessor */
-  Sample getTimeGrid() const;
 
   /** Accessor to the normalization function */
   LinearFunction getNormalizationFunction() const;
@@ -74,9 +68,6 @@ public:
   /** Draw quantile for all time values */
   Graph drawQuantileFunction(const Scalar p) const;
 
-  /** Draw diagnostic for time-varying estimation */
-  GridLayout drawDiagnosticPlot() const;
-
   String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
@@ -87,9 +78,8 @@ public:
 
 private:
   DistributionFactory factory_;
-  Sample data_;
   Function parameterFunction_;
-  Sample timeGrid_;
+  Sample covariates_;
   Distribution parameterDistribution_;
   LinearFunction normalizationFunction_;
   Scalar logLikelihood_ = 0.0;
@@ -98,4 +88,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_TIMEVARYINGRESULT_HXX */
+#endif /* OPENTURNS_COVARIATESRESULT_HXX */

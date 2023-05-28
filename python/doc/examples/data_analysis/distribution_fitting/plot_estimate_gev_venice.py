@@ -58,6 +58,7 @@ fitted_GEV = result_LL_max.getDistribution()
 desc = fitted_GEV.getParameterDescription()
 param = fitted_GEV.getParameter()
 print(", ".join([f"{p}: {value:.3f}" for p, value in zip(desc, param)]))
+print('Max log-likelihood (one max): ', result_LL_max.getLogLikelihood())
 
 # %%
 # We get the asymptotic distribution of the estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
@@ -79,7 +80,12 @@ for i in range(3):
     print(desc[i] + ":", ci)
 
 # %%
-# At last, we can validate the inference result thanks the 4 usual diagnostic plots.
+# At last, we can validate the inference result thanks the 4 usual diagnostic plots:
+#
+# - the probability-probability pot,
+# - the quantile-quantile pot,
+# - the return level plot,
+# - the empirical distribution function.
 validation = otexp.GeneralizedExtremeValueValidation(result_LL_max, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
@@ -99,8 +105,13 @@ print(result_PLL_max.getParameterConfidenceInterval())
 # %%
 # We can get the numerical values of the confidence interval: it appears to be a bit smaller
 # with the interval obtained from the profile log-likelihood function than with the log-likelihood function.
-print('Confidence interval for xi = ', result_PLL_max.getParameterConfidenceInterval())
-
+# Note that if the order requested is too high, the confidence interval might not be calculated because
+# one of its bound is out of the definition domain of the log-likelihood function.
+try:
+    print('Confidence interval for xi = ', result_PLL_max.getParameterConfidenceInterval())
+except Exception as ex:
+    print(type(ex))
+    pass
 
 # %%
 # **Stationary GEV modeling from the largest :math:`r` annual sea-levels**
@@ -110,28 +121,21 @@ print('Confidence interval for xi = ', result_PLL_max.getParameterConfidenceInte
 # observed extremes than the annual maxima: the additional information contained in the largest
 # :math:`10` observations can be used to improve the estimation of the GEV model.
 #
-# Now, we drop the year column to keep only the maxima values
+# Now, we drop the year column to keep only the maxima values.
 sample_rmax = data[:, 1:]
 print(sample_rmax[:5])
 
 # %%
-# We estimate the parameters from the largest :math:`r` annual sea-levels for :math:`r=1,5,10`. For each :math:`r` value, we get the estimated parameters.
+# We estimate the parameters from the largest :math:`r` annual sea-levels for :math:`r=1,5,10`.
+# For each :math:`r` value, we get the estimated parameters.
 factory = ot.GeneralizedExtremeValueFactory()
 r_candidate = [1, 5, 10]
 for r in r_candidate:
-    estimate = factory.buildRMaxima(sample_rmax, r)
+    estimate = factory.buildMethodOfLikelihoodMaximization(sample_rmax, r)
     desc = estimate.getParameterDescription()
     p = estimate.getParameter()
     pretty_p = ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)])
     print(f"r={r:2} {pretty_p}")
-
-# %%
-# If we want to prioritise the models with respect to the log-likelihood value and get the best model,
-# we can use the following method. It also stores the log-likelihood value associated to each model.
-best_r, llh = factory.buildBestRMaxima(sample_rmax, r_candidate)
-print('Best model obtained for r = ', best_r)
-for i in range(3):
-    print(f"r={r_candidate[i]} likelihood={llh[i]}")
 
 # %%
 otv.View.ShowAll()

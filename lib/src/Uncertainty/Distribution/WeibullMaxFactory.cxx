@@ -61,7 +61,7 @@ Distribution WeibullMaxFactory::build() const
 
 WeibullMax WeibullMaxFactory::buildAsWeibullMax(const Sample & sample) const
 {
-  Distribution weibullMin(WeibullMinFactory().build(-1.0 * sample));
+  const Distribution weibullMin(WeibullMinFactory().build(-1.0 * sample));
   Point parameter(weibullMin.getParameter());
   parameter[2] *= -1.0;// location parameter (gamma)
   return buildAsWeibullMax(parameter);

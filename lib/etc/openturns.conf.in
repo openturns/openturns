@@ -480,6 +480,8 @@
   <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
   <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
   <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
+  <GeneralizedExtremeValueFactory-InitializationMethod value_string="Gumbel" />
+  <GeneralizedExtremeValueFactory-NormalizationMethod value_string="MinMax" />
 
   <!-- OT::ProfileLikelihoodResult parameters -->
   <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />
