@@ -36,7 +36,7 @@ ot.RandomGenerator.SetSeed(0)
 # Get the data
 # ------------
 #
-# We consider the so-called Linthurst data set, which contains measures of
+# We consider the so-called :ref:`Linthurst<use-case-linthurst-dataset>` data set, which contains measures of
 # aerial biomass (BIO) as well as 5 five physico-chemical properties of
 # the soil: salinity (SAL), pH, K, Na, and Zn.
 # The data set is taken from [rawlings2001]_ table 5.1 page 63.
