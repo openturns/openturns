@@ -13,6 +13,8 @@ Compute leave-one-out error of a polynomial chaos expansion
 # diagonal of the projection matrix.
 # To do this, we use equations from [blatman2009]_ page 85
 # (see also [blatman2011]_).
+# In this advanced example, we use the :class:`~openturns.DesignProxy`
+# and :class:`~openturns.QRMethod` classes.
 
 # %%
 # The design matrix

@@ -18,6 +18,7 @@ Compute confidence intervals of a univariate noisy function
 # This is the confidence interval of the conditional expectation
 # given the input.
 # Secondly, we compute the confidence interval of the noisy output observations.
+# In this advanced example, we use the :class:`~openturns.QRMethod` class.
 
 # %%
 

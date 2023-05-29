@@ -13,7 +13,9 @@ Compute confidence intervals of a regression model from data
 # More precisely, we compute confidence intervals of the output of
 # a regression model.
 # The linear regression model is an order 1 multivariate polynomial.
-# This model is built from a dataset.
+# This model is built from a data set.
+# In this advanced example, we use the :class:`~openturns.DesignProxy`
+# and :class:`~openturns.QRMethod` classes.
 
 # %%
 
@@ -35,7 +37,7 @@ ot.RandomGenerator.SetSeed(0)
 # ------------
 #
 # We consider the so-called Linthurst data set, which contains measures of
-# aerial biomass (BIO) as well as 5 five physicochemical properties of
+# aerial biomass (BIO) as well as 5 five physico-chemical properties of
 # the soil: salinity (SAL), pH, K, Na, and Zn.
 # The data set is taken from [rawlings2001]_ table 5.1 page 63.
 
