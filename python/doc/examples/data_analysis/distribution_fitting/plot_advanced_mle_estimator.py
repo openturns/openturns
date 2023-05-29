@@ -1,6 +1,6 @@
 """
 Fitting a distribution with customized maximum likelihood
-=====================================================
+=========================================================
 """
 # %%
 # Introduction
@@ -27,7 +27,7 @@ import openturns as ot
 
 # %%
 # Simulating a sample
-# -----------------
+# -------------------
 
 # %%
 # In this example, we consider the :class:`~openturns.TruncatedNormal` distribution
@@ -52,7 +52,7 @@ print("Fitted distribution=", fittedDistribution)
 
 # %%
 # Defining the estimation problem
-# -----------------------------
+# -------------------------------
 
 # %%
 # The truncated normal distribution has 4 parameters:
@@ -122,7 +122,7 @@ interval = ot.Interval(bounds_lower, bounds_upper, finiteLowerBound, finiteUpper
 
 # %%
 # Setting the solver and bounds
-# -------------------------
+# -----------------------------
 
 # %%
 # The two methods that we suggest are based on the :class:`~openturns.MaximumLikelihoodFactory` class
@@ -167,7 +167,7 @@ printTruncatedNormalParameters(distribution_MLE)
 
 # %%
 # Using ResourceMap to set the solver
-# ---------------------------------
+# -----------------------------------
 
 # %%
 # Another method is to use a special key of the :class:`ResourceMap`,
@@ -190,7 +190,7 @@ printTruncatedNormalParameters(distribution_MLE)
 
 # %%
 # Fitting a LogNormal with zero location parameter
-# --------------------------------------------
+# ------------------------------------------------
 
 # %%
 # We now consider the :class:`~openturns.LogNormal` distribution
