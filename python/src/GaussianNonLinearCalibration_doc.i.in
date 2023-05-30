@@ -19,7 +19,7 @@ errorCovariance : 2-d sequence of float
 
 Notes
 -----
-GaussianNonLinearCalibration implements the Maximum A Posteriori (MAP) estimator for a nonlinear model
+This class implements the Maximum A Posteriori (MAP) estimator for a nonlinear model
 under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 This algorithm is also known as *3DVAR*. 
 

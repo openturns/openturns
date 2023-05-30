@@ -3,7 +3,6 @@
 A viscous free fall example
 ===========================
 
-
 Introduction
 -------------
 
@@ -13,21 +12,19 @@ The fluid generates a drag force which limits the speed of the solid and we assu
 .. math::
    m \frac{dv}{dt} = - m g - c v
 
-
 for any :math:`t \in [0, t_{max}]` where:
 
-    - :math:`v` is the speed :math:`[m/s]`,
-    - :math:`t` is the time :math:`[s]`,
-    - :math:`t_{max}` is the maximum time :math:`[s]`,
-    - :math:`g = 9.81` is the gravitational acceleration :math:`[m.s^{-2}]`,
-    - :math:`m` is the mass :math:`[kg]`,
-    - :math:`c` is the linear drag coefficient :math:`[kg.s^{-1}]`.
+- :math:`v` is the speed :math:`[m/s]`,
+- :math:`t` is the time :math:`[s]`,
+- :math:`t_{max}` is the maximum time :math:`[s]`,
+- :math:`g = 9.81` is the gravitational acceleration :math:`[m.s^{-2}]`,
+- :math:`m` is the mass :math:`[kg]`,
+- :math:`c` is the linear drag coefficient :math:`[kg.s^{-1}]`.
 
-The previous differential equation has the exact solution:
+The exact solution of the previous differential equation is:
 
 .. math::
    z(t) = z_0 + v_{inf} t + \tau (v_0 - v_{inf})\left(1 - e^{-\frac{t}{\tau}}\right)
-
 
 for any :math:`t \in [0, t_{max}]`
 
@@ -46,18 +43,15 @@ where:
 .. math::
    \tau=\frac{m}{c}.
 
-
 The stationnary speed limit at infinite time is equal to :math:`v_{inf}`:
 
 .. math::
    \lim_{t\rightarrow+\infty} v(t)= v_{inf}.
 
-
 When there is no drag, i.e. when :math:`c=0`, the trajectory depends quadratically on :math:`t`:
 
 .. math::
    z(t) = z_0 + v_0 t -g t^2
-
 
 for any :math:`t \in [0, t_{max}]`.
 
@@ -74,11 +68,10 @@ Probabilistic model
 
 The parameters :math:`z_0`, :math:`v_0`, :math:`m` and :math:`c` are probabilistic:
 
-    - :math:`z_0 \sim \mathcal{U}(100, 150)`,
-    - :math:`v_0 \sim \mathcal{N}(55, 10)`,
-    - :math:`m \sim \mathcal{N}(80, 8)`,
-    - :math:`c \sim \mathcal{U}(0, 30)`.
-
+- :math:`z_0 \sim \mathcal{U}(100, 150)`,
+- :math:`v_0 \sim \mathcal{N}(55, 10)`,
+- :math:`m \sim \mathcal{N}(80, 8)`,
+- :math:`c \sim \mathcal{U}(0, 30)`.
 
 References
 ----------
