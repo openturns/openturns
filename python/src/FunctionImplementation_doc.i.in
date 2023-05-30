@@ -623,9 +623,9 @@ OT_Function_getParameterDimension_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
-    draw(*inputMarg, outputMarg, CP, xiMin, xiMax, ptNb*)
+    draw(*inputMarg, outputMarg, centralPoint, xiMin, xiMax, ptNb*)
 
-    draw(*firstInputMarg, secondInputMarg, outputMarg, CP, xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*firstInputMarg, secondInputMarg, outputMarg, centralPoint, xiMin_xjMin, xiMax_xjMax, ptNbs*)
 
     draw(*xiMin, xiMax, ptNb*)
 
@@ -639,8 +639,8 @@ outputMarg, inputMarg : int, :math:`outputMarg, inputMarg \geq 0`
 firstInputMarg, secondInputMarg : int, :math:`firstInputMarg, secondInputMarg \geq 0`
     In the 2D case, the marginal *outputMarg* is drawn as a function of the
     two marginals with indexes *firstInputMarg* and *secondInputMarg*.
-CP : sequence of float
-    Central point.
+centralPoint : sequence of float
+    Central point with dimension equal to the input dimension of the function.
 xiMin, xiMax : float
     Define the interval where the curve is plotted.
 xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
@@ -652,7 +652,7 @@ Notes
 -----
 We note :math:`f: \Rset^n \rightarrow \Rset^p`
 where :math:`\vect{x} = (x_1, \dots, x_n)` and
-:math:`f(\vect{x}) = (f_1(\vect{x}), \dots,f_p(\vect{x}))`,
+:math:`f(\vect{x}) = (f_1(\vect{x}), \dots, f_p(\vect{x}))`,
 with :math:`n\geq 1` and :math:`p\geq 1`.
 
 - In the first usage:
@@ -661,9 +661,16 @@ Draws graph of the given 1D *outputMarg* marginal
 :math:`f_k: \Rset^n \rightarrow \Rset` as a function of the given 1D *inputMarg*
 marginal with respect to the variation of :math:`x_i` in the interval
 :math:`[x_i^{min}, x_i^{max}]`, when all the other components of
-:math:`\vect{x}` are fixed to the corresponding ones of the central point *CP*.
+:math:`\vect{x}` are fixed to the corresponding components of the *centralPoint* :math:`\vect{c}`.
 Then OpenTURNS draws the graph:
-:math:`t\in [x_i^{min}, x_i^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t,  CP_{i+1} \dots, CP_n)`.
+
+.. math::
+    y = f_k^{(i)}(s)
+
+for any :math:`s \in [x_i^{min}, x_i^{max}]` where :math:`f_k^{(i)}(s)` is defined by the equation:
+
+.. math::
+    f_k^{(i)}(s) = f_k(c_1, \dots, c_{i-1}, s,  c_{i+1} \dots, c_n).
 
 - In the second usage:
 
@@ -671,9 +678,18 @@ Draws the iso-curves of the given *outputMarg* marginal :math:`f_k` as a
 function of the given 2D *firstInputMarg* and *secondInputMarg* marginals
 with respect to the variation of :math:`(x_i, x_j)` in the interval
 :math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
-other components of :math:`\vect{x}` are fixed to the corresponding ones of the
-central point *CP*. Then OpenTURNS draws the graph:
-:math:`(t,u) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t, CP_{i+1}, \dots, CP_{j-1}, u,  CP_{j+1} \dots, CP_n)`.
+other components of :math:`\vect{x}` are fixed to the corresponding components of the
+*centralPoint* :math:`\vect{c}`.
+Then OpenTURNS draws the graph:
+
+.. math::
+    y = f_k^{(i,j)}(s, t)
+
+for any :math:`(s, t) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]` where :math:`f_k^{(i,j)}` 
+is defined by the equation:
+
+.. math::
+    f_k^{(i,j)}(s,t) = f_k(c_1, \dots, c_{i-1}, s, c_{i+1}, \dots, c_{j-1}, t,  c_{j+1} \dots, c_n).
 
 - In the third usage:
 

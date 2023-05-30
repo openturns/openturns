@@ -6,13 +6,13 @@ Bayesian Information Criterion (BIC)
 This method deals with the modelling of a probability distribution of a
 random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to rank variable candidate distributions by using a sample of data
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`.
+:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_n \right\}`.
 The Bayesian Information Criterion (BIC) allows one to
 answer this question in the one dimensional case :math:`n_X =1`.
 
-Let us limit the case to :math:`n_X = 1`. Thus we denote
-:math:`\vect{X} = X^1 = X`. Moreover, let us denote by :math:`\cM_1`,\dots,
-:math:`\cM_K` the parametric models envisaged by user among the
+Let us consider the particular case where :math:`n_X = 1`. Thus we denote
+:math:`\vect{X} = X^1 = X`. Moreover, let us denote by
+:math:`\cM_1, \dots, \cM_K` the parametric models among the
 :ref:`parametric models <parametric_distribution_factories>`. We
 suppose here that the parameters of these models have been estimated
 previously by :ref:`Maximum Likelihood <maximum_likelihood>`
@@ -28,7 +28,7 @@ one would almost always favor complex models involving many parameters.
 If such models provide indeed a large numbers of degrees-of-freedom that
 can be used to fit the sample, one has to keep in mind that complex
 models may be less robust that simpler models with less parameters.
-Actually, the limited available information (:math:`N` data points) does
+Actually, the limited available information (:math:`n` data points) does
 not allow one to estimate robustly too many parameters.
 
 The BIC criterion can be used to avoid this problem. The principle is to
@@ -41,7 +41,7 @@ rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
      \end{aligned}
 
 where :math:`p_i` denotes the number of parameters being adjusted for
-the model :math:`\cM_i`. The smaller :math:`\textrm{BIC}_i`, the better
+the model :math:`\cM_i`. The smaller the :math:`\textrm{BIC}_i`, the better
 the model. Note that the idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
@@ -51,11 +51,16 @@ The term "Bayesian Information Criterion" comes the interpretation of
 the quantity :math:`\textrm{BIC}_i`. In a bayesian context, the unknown
 "true" model may be seen as a random variable. Suppose now that the user
 does not have any informative prior information on which model is more
-relevant among :math:`\cM_1`,\dots, :math:`\cM_K`; all the models are thus
+relevant among :math:`\cM_1, \dots, \cM_K`; all the models are thus
 equally likely from the point of view of the user. Then, one can show
 that :math:`\textrm{BIC}_i` is an approximation of the posterior
 distribution's logarithm for the model :math:`\cM_i`.
 
+This criterion is a valuable criterion to reject
+a model which is not relevant, but can be tricky to interpret in
+some cases.
+For example, if two models have very close BIC, these two models should
+be considered instead of keeping only the model which has the lowest BIC.
 
 .. topic:: API:
 

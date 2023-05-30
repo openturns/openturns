@@ -392,6 +392,7 @@ Notes
 This method allows one to compute the *exact* margin factor :math:`k` of a
 pool of :math:`m` Normal populations of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`.
+This implements the standard NF ISO 16269-6. 
 Let :math:`m_i=\dfrac{1}{n}\sum_{j=1}^nX_{ij}` be the empirical mean
 of the ith population :math:`(X_{i1},\dots,X_{in})` and
 :math:`\sigma^2_{mn}=\dfrac{}{}\sum_{i=1}^m\sum_{j=1}^n(X_{ij}-m_i)^2`
@@ -453,6 +454,7 @@ This method allows one to compute the *exact* margin factor :math:`k` of a
 Normal population of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
+This implements the standard NF ISO 16269-6. 
 
 Examples
 --------

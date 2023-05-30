@@ -21,11 +21,11 @@ following dot-products: :math:`R_n=\langle Q_n, Q_n\rangle` and
 :math:`S_n=\langle xQ_n, Q_n\rangle` where :math:`Q_n` is the monic polynomial
 associated to the orthonormal polynomial :math:`P_n`, needed to compute the
 coefficients of the three-terms recurrence relation that defines :math:`P_n`
-(see :class:`~openturns.OrthogonalUnivariatePolynomialFamily`):
+(see :class:`~openturns.OrthogonalUniVariatePolynomialFamily`):
 
 .. math::
 
-    a_n = 1/\sqrt{\beta_{n+1}}\quad b_n = -\alpha_n/sqrt{\beta_{n+1}}\quad c_n = -\sqrt{\beta_n/\beta_{n+1}}
+    a_n = 1/\sqrt{\beta_{n+1}}\quad b_n = -\alpha_n/\sqrt{\beta_{n+1}}\quad c_n = -\sqrt{\beta_n/\beta_{n+1}}
 
-where :math:`\alpha_n = S_n / R_n` and :math:`\beta_n  = R_n / R_{n-1}, n>0, \beta_0 = 0`.
+where :math:`\alpha_n = S_n / R_n`, :math:`\beta_n  = R_n / R_{n-1}`, :math:`n>0` and :math:`\beta_0 = 0`.
 "

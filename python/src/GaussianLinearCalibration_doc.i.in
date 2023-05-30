@@ -31,7 +31,7 @@ gradientObservations : 2-d sequence of float
 
 Notes
 -----
-GaussianLinearCalibration implements the Maximum A Posteriori (MAP) estimator for a linear model
+This class implements the Maximum A Posteriori (MAP) estimator for a linear model
 under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 This is also known as the Kalman filter. 
 
