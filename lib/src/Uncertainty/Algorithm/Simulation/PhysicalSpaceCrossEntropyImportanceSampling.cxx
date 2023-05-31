@@ -56,6 +56,7 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
   auxiliaryDistribution_ = auxiliaryDistribution;
   quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
   bounds_ = bounds;
+  initialAuxiliaryDistributionParameters_ = initialAuxiliaryDistributionParameters;
 
   Point parameters(auxiliaryDistribution_.getParameter());
 
@@ -186,6 +187,20 @@ void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
   }
   auxiliaryDistribution_.setParameter(parameters);
 }
+
+
+// Reset auxiliary distribution
+void PhysicalSpaceCrossEntropyImportanceSampling::resetAuxiliaryDistribution()
+{
+  Point parameters(auxiliaryDistribution_.getParameter());
+  for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
+  {
+    parameters[activeParameters_[i]] = initialAuxiliaryDistributionParameters_[i];
+  }
+  auxiliaryDistribution_.setParameter(parameters);
+}
+
+
 
 // Optimize auxiliary distribution parameters
 Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
