@@ -56,6 +56,8 @@ protected:
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;
 
+  /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
+  void resetAuxiliaryDistribution() override;
 
   Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
 }; /* class StandardSpaceCrossEntropyImportanceSampling */

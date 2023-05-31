@@ -68,6 +68,9 @@ protected:
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;
 
+  /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
+  void resetAuxiliaryDistribution() override;
+  
   Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
 
 private:
@@ -75,6 +78,9 @@ private:
   // active parameters
   Indices activeParameters_;
 
+  // Initial auxiliary distribution parameters
+  Point initialAuxiliaryDistributionParameters_;
+  
   // bounds for optimization algorithm
   Interval bounds_;
 

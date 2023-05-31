@@ -77,6 +77,12 @@ void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
   auxiliaryDistribution_.setParameter(temporaryParameters);
 }
 
+// Reset auxiliary distribution
+void StandardSpaceCrossEntropyImportanceSampling::resetAuxiliaryDistribution()
+{
+  auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
+}
+
 // Optimize auxiliary distribution parameters
 Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
 {
