@@ -92,9 +92,19 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 }
 
 
+// Reset auxiliary distribution parameters
+void CrossEntropyImportanceSampling::resetAuxiliaryDistribution() 
+{
+  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::resetAuxiliaryDistribution()";
+}
+
 // Main function that computes the failure probability
 void CrossEntropyImportanceSampling::run()
 {
+
+  // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
+  resetAuxiliaryDistribution();
+  
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
@@ -106,7 +116,7 @@ void CrossEntropyImportanceSampling::run()
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
-  Point  auxiliaryDistributionParameters;
+  Point auxiliaryDistributionParameters;
 
 
   const ComparisonOperator comparator(getEvent().getOperator());

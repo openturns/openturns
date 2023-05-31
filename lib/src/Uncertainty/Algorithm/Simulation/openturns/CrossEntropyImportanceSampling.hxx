@@ -72,6 +72,9 @@ protected:
   /** Function optimizing the auxiliary distribution parameters*/
   virtual Point optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const;
 
+  /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
+  virtual void resetAuxiliaryDistribution();
+  
   // Initial distribution
   Distribution initialDistribution_;
 
