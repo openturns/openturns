@@ -117,6 +117,7 @@
  * #2299 (Allow openturns as subproject)
  * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
  * #2323 (Minor wording issues in the cross entropy importance sampling example)
+ * #2327 (A sign mistake in FGM document)
 
 
 == 1.20 release (2022-11-08) == #release-1.20
