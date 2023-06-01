@@ -1031,18 +1031,16 @@ SampleImplementation & SampleImplementation::add(const Point & point)
 
 
 /* Appends another sample to the collection */
-SampleImplementation & SampleImplementation::add(const SampleImplementation & sample)
+SampleImplementation & SampleImplementation::add(const SampleImplementation & other)
 {
-  if (sample.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "Sample has invalid dimension ("
-                                         << sample.getDimension()
-                                         << ") expected : "
-                                         << getDimension();
-  //const UnsignedInteger oldSize = size_;
-  size_ += sample.getSize();
+  if (other.getDimension() != dimension_)
+    throw InvalidArgumentException(HERE) << "Sample has invalid dimension (" << other.getDimension()
+                                         << ") expected : " << getDimension();
+  // save original size in case other=this
+  const UnsignedInteger otherSize = other.getSize();
+  size_ += otherSize;
   data_.resize(size_ * dimension_);
-//   memmove( &data_[oldSize * dimension_], &(sample.data_[0]), sample.getSize() * dimension_ * sizeof(Scalar) );
-  std::copy_backward(sample.begin(), sample.end(), end());
+  std::copy_backward(other.begin(), other.begin() + otherSize, end());
   return *this;
 }
 
