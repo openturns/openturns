@@ -90,7 +90,7 @@ public:
   UnsignedInteger getLatentDimension() const;
 
   /** Number of levels accessor */
-  UnsignedInteger getNLevels() const;
+  UnsignedInteger getLevelNumber() const;
 
   /** Drawing method */
   Graph draw(const UnsignedInteger rowIndex = 0,
@@ -110,10 +110,10 @@ private:
   UnsignedInteger nLevels_;
 
   // The latent covariance matrix
-  CovarianceMatrix latCovMat_;
+  CovarianceMatrix latentCovarianceMatrix_;
 
   // The latent covariance model
-  SquaredExponential latCovMod_;
+  SquaredExponential latentCovarianceModel_;
 
   // The size of the latent variable parameter
   UnsignedInteger activeLatentCoordinateDim_;

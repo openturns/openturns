@@ -34,10 +34,10 @@ int main(int, char *[])
 	LatentVariableModel k = LatentVariableModel(4, 3);
 	k.setLatentVariables(Point({0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.4}));
 	k.setScale(Point({1.5}));
-	k.setAmplitude(Point({2.}));
-	assert_almost_equal(k(1, 1)(0, 0), 4.000000000004);
-	assert_almost_equal(k(1, 2)(0, 0), 3.903407605628054);
-	assert_almost_equal(k(0, 3)(0, 0), 3.750352804194291);
+	k.setAmplitude(Point({2.0}));
+	assert_almost_equal(k(1, 1)(0, 0), 4.0);
+	assert_almost_equal(k(1, 2)(0, 0), 3.903408);
+	assert_almost_equal(k(0, 3)(0, 0), 3.750353);
   }
   catch (TestFailed & ex)
   {

@@ -11,36 +11,40 @@ Available constructors:
 Parameters
 ----------
 nLevels : int
-    Number of levels :math:`l` characterizing the discrete variable.
+    Number of levels :math:`\ell` characterizing the categorical variable.
 latentDim : int
-    The dimension :math:`d_l` of the latent space onto which the discrete variable levels are projected.
+    The dimension :math:`d_\ell` of the latent space onto which the categorical variable levels are projected.
 
 Notes
 -----
 The *Latent variable covariance function* is a covariance model allowing to compute the covariance between 
-different unordered values (or levels) of a discrete variable.
+different unordered values (or levels) of a categorical variable.
 
-The underlying idea is that each discrete level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. 
+The underlying idea is that each categorical level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. 
 The covariance between the various levels is then computed as the squared exponential covariance between the mappings in 
 the latent space.
 
 The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared 
-exponential model scale and amplitude. it is important to note that in order to compensate for possible rotations 
+exponential model scale and amplitude. It is important to note that in order to compensate for possible rotations 
 and translations of the mapping points, the coordinates of the first level mapping are fixed to the latent space 
 origin, whereas all of the coordinates of the second level mapping are fixed to :math:`0`, except for the first one. 
+As a result, the number of active latent variable coordinates is equal to:
 
-As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`. In practice, 
-the class distinguishes between the **FullLatentVariables** attribute, which contains the actual latent variables
-coordinates, and the **ActiveLatentVariables** attribute, which contains only the coordinate which can be modified.
+.. math:
+    d_\ell (\ell - 2) + 1.
 
+In practice, the class distinguishes between the `fullLatentVariables` attribute, which contains the actual latent variables
+coordinates, and the `activeLatentVariables` attribute, which contains only the coordinates that can be modified.
 Additional information can be found in [zhang2020]_.
 
-Is is important to note that for the sake of simplicity, the discrete variable levels **must be** represented as integers, 
-ranging from :math:`0` to :math:`l-1`. However, this representation is purely practical, and the values
-assigned to each level have no practical meaning or effect.
+Is is important to note that for the sake of simplicity, the categorical variable levels **must be** represented as integers, 
+ranging from :math:`0` to :math:`l-1`. However, this representation is purely practical, and the actual values
+assigned to each level have no practical meaning or effect: only the latent variables coordinates have an effect on the
+covariance value. Moreover, these categorical variables, which are encoded using numerical values, can be of a non-numerical
+nature (e.g., types of material, architectural choices, colors, etc.).
 
 Finally, for a similar reason, when using this type of kernel when defining a Gaussian process, it is suggested to 
-rely on a constant functional basis.
+rely on a constant functional basis: please use the :class:`~openturns.ConstantBasisFactory` class.
 
 See Also
 --------
@@ -48,7 +52,7 @@ CovarianceModel
 
 Examples
 --------
-Create a latent model covariance function with a latent space of dimension 2, for a discrete variable 
+Create a latent model covariance function with a latent space of dimension 2, for a categorical variable 
 characterized by 3 levels:
 
 >>> import openturns.experimental as otexp
@@ -67,12 +71,10 @@ characterized by 3 levels:
 %feature("docstring") OT::LatentVariableModel::computeAsScalar
 "Compute the covariance function for scalar model.
 
-Available usages:
-    computeAsScalar(s, t)
-
 Parameters
 ----------
-s, t : floats, must have integer values between :math:`0` and :math:`l-1`
+s, t : floats
+	Must have integer values between :math:`0` and :math:`l-1`
 
 Returns
 -------
@@ -92,10 +94,10 @@ It evaluates :math:`C(s, t)`."
 Parameters
 ----------
 activeLatentVariables : :class:`~openturns.Point`
-    Active coordinates of the discrete levels in the latent space. 
+    Active coordinates of the categorical levels in the latent space. 
     The inactive coordinates are set to 0 (i.e., the first latent 
-    variable is placed in the Euclidean space origin, and the second
-    latent variable can only be placec onto the first axis)."
+    variable is projected onto the Euclidean space origin, and the second
+    latent variable can only be located along the first axis)."
 
 // ---------------------------------------------------------------------
 
@@ -105,7 +107,7 @@ activeLatentVariables : :class:`~openturns.Point`
 Returns
 -------
 activeLatentVariables : :class:`~openturns.Point`
-    Coordinates of the discrete levels in the latent space."
+    Coordinates of the categorical levels in the latent space."
 
 // ---------------------------------------------------------------------
 
@@ -114,7 +116,7 @@ activeLatentVariables : :class:`~openturns.Point`
 
 Returns
 -------
-LatentDimension : int
+latentDimension : int
     Dimension of the latent space."
 
 // ---------------------------------------------------------------------
@@ -124,8 +126,8 @@ LatentDimension : int
 
 Returns
 -------
-NLevels : int
-    Number of levels characterizing the discrete variable."
+nLevels : int
+    Number of levels characterizing the categorical variable."
 
 // ---------------------------------------------------------------------
 
@@ -134,8 +136,8 @@ NLevels : int
 
 Parameters
 ----------
-LatentVariables : :class:`~openturns.Point`
-    Active coordinates of the discrete levels in the latent space."
+LatentVariables : sequence of float 
+    Active coordinates of the categorical levels in the latent space."
 
 // ---------------------------------------------------------------------
 

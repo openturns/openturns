@@ -24,143 +24,144 @@ ot.RandomGenerator.SetSeed(5)
 # %%
 def illustrativeFunc(inp):
     x, z = inp
-    x = 7 * x
-    y = np.cos(x) + 0.5 * z
+    y = np.cos(7 * x) + 0.5 * z
 
     return [y]
 
 
 dim = 2
 fun = ot.PythonFunction(dim, 1, illustrativeFunc)
-lvls = 2  # Number of discrete levels for z
+numberOfZLevels = 2  # Number of categorical levels for z
 # Input distribution
 dist = ot.ComposedDistribution(
-    [ot.Uniform(0, 1), ot.UserDefined(np.arange(0, lvls).reshape((-1, 1)))]
+    [ot.Uniform(0, 1), ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels)))]
 )
 
 # %%
-# In this example, we compare the performances of the LatentVariableModel with a naive
-# approach, which would consist in modeling each combination of categorical
+# In this example, we compare the performances of the :class:`~openturns.experimental.LatentVariableModel`
+# with a naive approach, which would consist in modeling each combination of categorical
 # variables through a separate and independent Gaussian process.
 
 # %%
-# In order to deal with mixed continuous / discrete problems we can rely on the
-# ProductCovarianceModel class. We start here by defining the product kernel,
-# which combines SquaredExponential kernels for the continuous variables, and
-# LatentVariableModel for the discrete ones.
+# In order to deal with mixed continuous / categorical problems we can rely on the
+# :class:`~openturns.ProductCovarianceModel` class. We start here by defining the product kernel,
+# which combines :class:~openturns.SquaredExponential kernels for the continuous variables, and
+# :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
 
 # %%
-latdim = 1  # Dimension of the latent space
-activecoord = 1 + latdim * (lvls - 2)  # Nb ative coordinates in the latent space
+latDim = 1  # Dimension of the latent space
+activeCoord = 1 + latDim * (numberOfZLevels - 2)  # Nb of active coordinates in the latent space
 kx = ot.SquaredExponential(1)
-kz = otexp.LatentVariableModel(lvls, latdim)
+kz = otexp.LatentVariableModel(numberOfZLevels, latDim)
 kLV = ot.ProductCovarianceModel([kx, kz])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
-lb_LV = [1e-4] * dim + [-10] * activecoord
-ub_LV = [2.0] * dim + [10] * activecoord
-bounds_LV = ot.Interval(lb_LV, ub_LV)
+lowerBoundLV = [1e-4] * dim + [-10] * activeCoord
+upperBoundLV = [2.0] * dim + [10] * activeCoord
+boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
-initdist_LV = ot.DistributionCollection()
-for i in range(len(lb_LV)):
-    initdist_LV.add(ot.Uniform(lb_LV[i], ub_LV[i]))
-initdist_LV = ot.ComposedDistribution(initdist_LV)
+initDistLV = ot.DistributionCollection()
+for i in range(len(lowerBoundLV)):
+    initDistLV.add(ot.Uniform(lowerBoundLV[i], upperBoundLV[i]))
+initDistLV = ot.ComposedDistribution(initDistLV)
 
 # %%
 # As a reference, we consider a purely continuous kernel for independent Gaussian processes.
 # One for each combination of categorical variables levels.
 
 # %%
-k_ind = ot.SquaredExponential(1)
-lb_ind = [1e-4]
-ub_ind = [20]
-bounds_ind = ot.Interval(lb_ind, ub_ind)
-initdist_ind = ot.DistributionCollection()
-for i in range(len(lb_ind)):
-    initdist_ind.add(ot.Uniform(lb_ind[i], ub_ind[i]))
-initdist_ind = ot.ComposedDistribution(initdist_ind)
-initSample_ind = initdist_ind.getSample(10)
-optalg_ind = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_ind)
+kIndependent = ot.SquaredExponential(1)
+lowerBoundInd = [1e-4]
+upperBoundInd = [20]
+boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
+initDistInd = ot.DistributionCollection()
+for i in range(len(lowerBoundInd)):
+    initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
+initDistInd = ot.ComposedDistribution(initDistInd)
+initSampleInd = initDistInd.getSample(10)
+optAlgInd = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleInd)
 
 # %%
-# We generate the training data set
-X = dist.getSample(10)
-Y = fun(X)
+# Generate the training data set
+x = dist.getSample(10)
+y = fun(x)
 
 # And the plotting data set
-Xplt = dist.getSample(200)
-Xplt = Xplt.sort()
-Yplt = fun(Xplt)
+xPlt = dist.getSample(200)
+xPlt = xPlt.sort()
+yPlt = fun(xPlt)
 
 # %%
 # Initialize  and parameterize the optimization algorithm
-initSample_LV = initdist_LV.getSample(30)
-optalg_LV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_LV)
+initSampleLV = initDistLV.getSample(30)
+optAlgLV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleLV)
 
 # %%
 # Create and train the Gaussian process models
 basis = ot.ConstantBasisFactory(2).build()
-algo_LV = ot.KrigingAlgorithm(X, Y, kLV, basis)
-algo_LV.setOptimizationAlgorithm(optalg_LV)
-algo_LV.setOptimizationBounds(bounds_LV)
-algo_LV.run()
-res_LV = algo_LV.getResult()
+algoLV = ot.KrigingAlgorithm(x, y, kLV, basis)
+algoLV.setOptimizationAlgorithm(optAlgLV)
+algoLV.setOptimizationBounds(boundsLV)
+algoLV.run()
+resLV = algoLV.getResult()
 
-algo_ind_list = []
+algoIndependentList = []
 for z in range(2):
-    # We select the training samples corresponding to the correct combination
+    # Select the training samples corresponding to the correct combination
     # of categorical levels
-    ind = np.where(np.all(np.array(X[:, 1]) == z, axis=1))[0]
-    Xl = X[ind][:, 0]
-    Yl = Y[ind]
+    ind = np.where(np.all(np.array(x[:, 1]) == z, axis=1))[0]
+    xLoc = x[ind][:, 0]
+    yLoc = y[ind]
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(1).build()
-    algo_ind = ot.KrigingAlgorithm(Xl, Yl, k_ind, basis)
-    algo_ind.setOptimizationAlgorithm(optalg_ind)
-    algo_ind.setOptimizationBounds(bounds_ind)
-    algo_ind.run()
-    algo_ind_list.append(algo_ind.getResult())
+    algoIndependent = ot.KrigingAlgorithm(xLoc, yLoc, kIndependent, basis)
+    algoIndependent.setOptimizationAlgorithm(optAlgInd)
+    algoIndependent.setOptimizationBounds(boundsInd)
+    algoIndependent.run()
+    algoIndependentList.append(algoIndependent.getResult())
 
 # %%
-# We plot the prediction of the mixed continuous / categorical GP,
+# Plot the prediction of the mixed continuous / categorical GP,
 # as well as the one of the two separate continuous GPs
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15, 10))
-for z in range(2):
-    # We select the training samples corresponding to the correct combination
+for z in range(numberOfZLevels):
+    # Select the training samples corresponding to the correct combination
     # of categorical levels
-    ind = np.where(np.all(np.array(X[:, 1]) == z, axis=1))[0]
-    Xl = X[ind][:, 0]
-    Yl = Y[ind]
+    ind = np.where(np.all(np.array(x[:, 1]) == z, axis=1))[0]
+    xLoc = x[ind][:, 0]
+    yLoc = y[ind]
 
-    # Compute the models predictive performances on a validation data set
-    # We compute the predictions independently for each level of z
-    ind = np.where(np.all(np.array(Xplt[:, 1]) == z, axis=1))[0]
-    Xplt_ind = Xplt[ind]
-    Yplt_ind = Yplt[ind]
+    # Compute the models predictive performances on a validation data set.
+    # The predictions are computed independently for each level of z,
+    # i.e., by only considering the values of z corresponding to the
+    # target level.
+    ind = np.where(np.all(np.array(xPlt[:, 1]) == z, axis=1))[0]
+    xPltInd = xPlt[ind]
+    yPltInd = yPlt[ind]
 
-    predMeanLV = res_LV.getConditionalMean(Xplt_ind)
-    predMeanInd = algo_ind_list[z].getConditionalMean(Xplt_ind[:, 0])
-    predSTDLV = np.sqrt(res_LV.getConditionalMarginalVariance(Xplt_ind))
+    predMeanLV = resLV.getConditionalMean(xPltInd)
+    predMeanInd = algoIndependentList[z].getConditionalMean(xPltInd[:, 0])
+    predSTDLV = np.sqrt(resLV.getConditionalMarginalVariance(xPltInd))
     predSTDInd = np.sqrt(
-        algo_ind_list[z].getConditionalMarginalVariance(Xplt_ind[:, 0])
+        algoIndependentList[z].getConditionalMarginalVariance(xPltInd[:, 0])
     )
 
-    (trainingData,) = ax1.plot(Xl[:, 0], Yl, "r*")
-    (trueFunction,) = ax1.plot(Xplt_ind[:, 0], Yplt_ind, "k--")
-    (prediction,) = ax1.plot(Xplt_ind[:, 0], predMeanLV, "b-")
+    (trainingData,) = ax1.plot(xLoc[:, 0], yLoc, "r*")
+    (trueFunction,) = ax1.plot(xPltInd[:, 0], yPltInd, "k--")
+    (prediction,) = ax1.plot(xPltInd[:, 0], predMeanLV, "b-")
     stdPred = ax1.fill_between(
-        Xplt_ind[:, 0].asPoint(),
+        xPltInd[:, 0].asPoint(),
         (predMeanLV - predSTDLV).asPoint(),
         (predMeanLV + predSTDLV).asPoint(),
         alpha=0.5,
         color="blue",
     )
-    ax2.plot(Xl[:, 0], Yl, "r*")
-    ax2.plot(Xplt_ind[:, 0], Yplt_ind, "k--")
-    ax2.plot(Xplt_ind[:, 0], predMeanInd, "b-")
+    ax2.plot(xLoc[:, 0], yLoc, "r*")
+    ax2.plot(xPltInd[:, 0], yPltInd, "k--")
+    ax2.plot(xPltInd[:, 0], predMeanInd, "b-")
     ax2.fill_between(
-        Xplt_ind[:, 0].asPoint(),
+        xPltInd[:, 0].asPoint(),
         (predMeanInd - predSTDInd).asPoint(),
         (predMeanInd + predSTDInd).asPoint(),
         alpha=0.5,
@@ -170,7 +171,7 @@ ax1.legend(
     [trainingData, trueFunction, prediction, stdPred],
     ["Training data", "True function", "Prediction", "Prediction standard deviation"],
 )
-ax1.set_title("Mixed continuous-discrete modeling")
+ax1.set_title("Mixed continuous-categorical modeling")
 ax2.set_title("Separate modeling")
 ax2.set_xlabel("x", fontsize=15)
 ax1.set_ylabel("y", fontsize=15)
@@ -240,133 +241,127 @@ def Goldstein(inp):
 
 dim = 4
 fun = ot.PythonFunction(dim, 1, Goldstein)
-lvls1 = 3  # Number of discrete levels for z1
-lvls2 = 3  # Number of discrete levels for z2
+numberOfZLevels1 = 3  # Number of categorical levels for z1
+numberOfZLevels2 = 3  # Number of categorical levels for z2
 # Input distribution
 dist = ot.ComposedDistribution(
     [
         ot.Uniform(0, 1),
         ot.Uniform(0, 1),
-        ot.UserDefined(np.arange(0, lvls1).reshape((-1, 1))),
-        ot.UserDefined(np.arange(0, lvls2).reshape((-1, 1))),
+        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels1))),
+        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels2))),
     ]
 )
 
 # %%
-# In this example, we compare the performances of the LatentVariableModel with a naive
-# approach, which would consist in modeling each combination of categorical
-# variables through a separate and independent Gaussian process.
+# As in the previous example, we start here by defining the product kernel,
+# which combines :class:~openturns.SquaredExponential kernels for the continuous variables, and
+# :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
 
 # %%
-# In order to deal with mixed continuous / discrete problems we can rely on the
-# ProductCovarianceModel class. We start here by defining the product kernel,
-# which combines SquaredExponential kernels for the continuous variables, and
-# LatentVariableModel for the discrete ones.
-
-# %%
-latdim = 2  # Dimension of the latent space
-activecoord = (
-    2 + latdim * (lvls1 - 2) + latdim * (lvls2 - 2)
+latDim = 2  # Dimension of the latent space
+activeCoord = (
+    2 + latDim * (numberOfZLevels1 - 2) + latDim * (numberOfZLevels2 - 2)
 )  # Nb ative coordinates in the latent space
 kx1 = ot.SquaredExponential(1)
 kx2 = ot.SquaredExponential(1)
-kz1 = otexp.LatentVariableModel(lvls1, latdim)
-kz2 = otexp.LatentVariableModel(lvls2, latdim)
+kz1 = otexp.LatentVariableModel(numberOfZLevels1, latDim)
+kz2 = otexp.LatentVariableModel(numberOfZLevels2, latDim)
 kLV = ot.ProductCovarianceModel([kx1, kx2, kz1, kz2])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
-lb_LV = [1e-4] * dim + [-10] * activecoord
-ub_LV = [3.] * dim + [10.] * activecoord
-bounds_LV = ot.Interval(lb_LV, ub_LV)
+lowerBoundLV = [1e-4] * dim + [-10] * activeCoord
+upperBoundLV = [3.] * dim + [10.] * activeCoord
+boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
-initdist_LV = ot.DistributionCollection()
-for i in range(len(lb_LV)):
-    initdist_LV.add(ot.Uniform(lb_LV[i], ub_LV[i]))
-initdist_LV = ot.ComposedDistribution(initdist_LV)
+initDistLV = ot.DistributionCollection()
+for i in range(len(lowerBoundLV)):
+    initDistLV.add(ot.Uniform(lowerBoundLV[i], upperBoundLV[i]))
+initDistLV = ot.ComposedDistribution(initDistLV)
 
 # %%
 # Alternatively, we consider a purely continuous kernel for independent Gaussian processes.
-# One for each combination of categorical variables levels.
+# one for each combination of categorical variables levels.
 
 # %%
-k_ind = ot.SquaredExponential(2)
-lb_ind = [1e-4, 1e-4]
-ub_ind = [3., 3.]
-bounds_ind = ot.Interval(lb_ind, ub_ind)
-initdist_ind = ot.DistributionCollection()
-for i in range(len(lb_ind)):
-    initdist_ind.add(ot.Uniform(lb_ind[i], ub_ind[i]))
-initdist_ind = ot.ComposedDistribution(initdist_ind)
-initSample_ind = initdist_ind.getSample(10)
-optalg_ind = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_ind)
+kIndependent = ot.SquaredExponential(2)
+lowerBoundInd = [1e-4, 1e-4]
+upperBoundInd = [3., 3.]
+boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
+initDistInd = ot.DistributionCollection()
+for i in range(len(lowerBoundInd)):
+    initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
+initDistInd = ot.ComposedDistribution(initDistInd)
+initSampleInd = initDistInd.getSample(10)
+optAlgInd = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleInd)
 
 # %%
 # In order to assess their respective robustness with regards to the training data set,
 # we repeat the experiments 10 times with different training of size 72,
 # and compute each time the normalized prediction Root Mean Squared Error (RMSE) on a
-# test data set # of size 1000.
+# test data set of size 1000.
 
 # %%
-RMSE_LV = []
-RMSE_ind = []
+rmseLVList = []
+rmseIndList = []
 for rep in range(5):
-    # We generate the normalized training data set
-    X = dist.getSample(72)
-    Y = fun(X)
-    Ymax = Y.getMax()
-    Ymin = Y.getMin()
-    Y = (Y - Ymin) / (Ymin - Ymax)
+    # Generate the normalized training data set
+    x = dist.getSample(72)
+    y = fun(x)
+    yMax = y.getMax()
+    yMin = y.getMin()
+    y = (y - yMin) / (yMin - yMax)
 
     # Initialize  and parameterize the optimization algorithm
-    initSample_LV = initdist_LV.getSample(10)
-    optalg_LV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_LV)
+    initSampleLV = initDistLV.getSample(10)
+    optAlgLV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleLV)
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(dim).build()
-    algo_LV = ot.KrigingAlgorithm(X, Y, kLV, basis)
-    algo_LV.setOptimizationAlgorithm(optalg_LV)
-    algo_LV.setOptimizationBounds(bounds_LV)
-    algo_LV.run()
-    res_LV = algo_LV.getResult()
+    algoLV = ot.KrigingAlgorithm(x, y, kLV, basis)
+    algoLV.setOptimizationAlgorithm(optAlgLV)
+    algoLV.setOptimizationBounds(boundsLV)
+    algoLV.run()
+    resLV = algoLV.getResult()
 
     # Compute the models predictive performances on a validation data set
-    Xval = dist.getSample(1000)
-    Yval = fun(Xval)
-    Yval = (Yval - Ymin) / (Ymin - Ymax)
+    xVal = dist.getSample(1000)
+    yVal = fun(xVal)
+    yVal = (yVal - yMin) / (yMin - yMax)
 
-    Val_LV = ot.MetaModelValidation(Xval, Yval, res_LV.getMetaModel())
-    rmse_LV = np.sqrt(np.mean(np.array(Val_LV.getResidualSample()) ** 2))
-    RMSE_LV.append(rmse_LV)
+    valLV = ot.MetaModelValidation(xVal, yVal, resLV.getMetaModel())
+    rmseLV = valLV.getResidualSample().computeStandardDeviation()[0]
+    rmseLVList.append(rmseLV)
 
-    error = np.empty((0, 1))
-    for z1 in range(3):
-        for z2 in range(3):
-            # We select the training samples corresponding to the correct combination
+    error = ot.Sample(0, 1)
+    for z1 in range(numberOfZLevels1):
+        for z2 in range(numberOfZLevels2):
+            # Select the training samples corresponding to the correct combination
             # of categorical levels
-            ind = np.where(np.all(np.array(X[:, 2:]) == [z1, z2], axis=1))[0]
-            Xl = X[ind][:, :2]
-            Yl = Y[ind]
+            ind = np.where(np.all(np.array(x[:, 2:]) == [z1, z2], axis=1))[0]
+            xLoc = x[ind][:, :2]
+            yLoc = y[ind]
 
             # Create and train the Gaussian process models
             basis = ot.ConstantBasisFactory(2).build()
-            algo_ind = ot.KrigingAlgorithm(Xl, Yl, k_ind, basis)
-            algo_ind.setOptimizationAlgorithm(optalg_ind)
-            algo_ind.setOptimizationBounds(bounds_ind)
-            algo_ind.run()
-            res_ind = algo_ind.getResult()
+            algoIndependent = ot.KrigingAlgorithm(xLoc, yLoc, kIndependent, basis)
+            algoIndependent.setOptimizationAlgorithm(optAlgInd)
+            algoIndependent.setOptimizationBounds(boundsInd)
+            algoIndependent.run()
+            resInd = algoIndependent.getResult()
 
             # Compute the models predictive performances on a validation data set
-            ind = np.where(np.all(np.array(Xval[:, 2:]) == [z1, z2], axis=1))[0]
-            Xval_ind = Xval[ind][:, :2]
-            Yval_ind = Yval[ind]
-            Val_ind = ot.MetaModelValidation(Xval_ind, Yval_ind, res_ind.getMetaModel())
-            error = np.append(error, Val_ind.getResidualSample())
-    rmse_ind = np.sqrt(np.mean(error ** 2))
-    RMSE_ind.append(rmse_ind)
+            ind = np.where(np.all(np.array(xVal[:, 2:]) == [z1, z2], axis=1))[0]
+            xValInd = xVal[ind][:, :2]
+            yValInd = yVal[ind]
+            valInd = ot.MetaModelValidation(xValInd, yValInd, resInd.getMetaModel())
+            error.add(valInd.getResidualSample())
+    rmseInd = error.computeStandardDeviation()[0]
+    rmseIndList.append(rmseInd)
 
 plt.figure()
-plt.boxplot([RMSE_LV, RMSE_ind])
-plt.xticks([1, 2], ["LV", "Independent GPs"])
+plt.boxplot([rmseLVList, rmseIndList])
+plt.xticks([1, 2], ["Mixed continuous-categorical GP", "Independent GPs"])
 plt.ylabel("RMSE")
 
 # %%

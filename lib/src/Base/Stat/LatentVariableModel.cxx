@@ -32,17 +32,17 @@ static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 
 /** Parameters constructor */
 LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
-						 const UnsignedInteger latentDim)
+										 const UnsignedInteger latentDim)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
   , latentDim_(latentDim)
   , nLevels_(nLevels)
-  , latCovMat_(nLevels_)
-  , latCovMod_(latentDim_)
+  , latentCovarianceMatrix_(nLevels_)
+  , latentCovarianceModel_(latentDim_)
 {
   if (latentDim_ < 1) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 1";
   if (nLevels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
   activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
-  activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.);
+  activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.0);
   fullLatentVariables_ = Sample(nLevels_,latentDim_);
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
@@ -59,38 +59,21 @@ LatentVariableModel * LatentVariableModel::clone() const
 /* Computation of the covariance  function */
 Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) const
 {
-  /*check z being one of the levels*/
-  bool isLevelz1 = false;
-  bool isLevelz2 = false;
+  /*checks z1 and z2 being among the known levels*/
+  const bool isLevelz1 = (z1 >= 0 && z1 < nLevels_ && (z1 - floor(z1)) == 0);
+  const bool isLevelz2 = (z2 >= 0 && z2 < nLevels_ && (z2 - floor(z2)) == 0);
 
-  for (UnsignedInteger i = 0; i < nLevels_; ++i)
-  {
-    if (z1 == i) 
-    {
-      isLevelz1 = true;
-      break;
-    }
-  }
+  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << z1 
+  << ", and/or " << z2 << " are not among the known levels. They should both present integer values between 0 and l-1.";
 
-  for (UnsignedInteger i = 0; i < nLevels_; ++i)
-  {
-    if (z2 == i)
-    {
-      isLevelz2 = true;
-      break;
-    }
-  }
-
-  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not amongst the known levels";
-
-  Scalar cov = latCovMat_(z1,z2);
+  Scalar cov = latentCovarianceMatrix_(z1, z2);
 
   return cov;
 }
 
 Scalar LatentVariableModel::computeAsScalar(const Point & z1, const Point & z2) const
 {
-  return computeAsScalar(z1[0],z2[0]);
+  return computeAsScalar(z1[0], z2[0]);
 }
 
 
@@ -140,11 +123,11 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
   }
 
   // Update the latent covariance model
-  latCovMod_.setAmplitude(amplitude_);
-  latCovMod_.setScale(Point(latentDim_,scale_[0]));
+  latentCovarianceModel_.setAmplitude(amplitude_);
+  latentCovarianceModel_.setScale(Point(latentDim_, scale_[0]));
 
   // Third the latent variable coordinates
-  Point activeLatentVariables = Point(activeLatentCoordinateDim_,1.0);
+  Point activeLatentVariables = Point(activeLatentCoordinateDim_, 1.0);
   for (UnsignedInteger i = 0; i < activeLatentCoordinateDim_; ++ i)
   {
     activeLatentVariables[i] = parameter[index];
@@ -227,7 +210,7 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
 
 void LatentVariableModel::updateLatentCovarianceMatrix()
 {
-  latCovMat_ = latCovMod_.discretize(fullLatentVariables_);
+  latentCovarianceMatrix_ = latentCovarianceModel_.discretize(fullLatentVariables_);
 }
 
 /* latentVariables accessor */
@@ -249,7 +232,7 @@ UnsignedInteger LatentVariableModel::getLatentDimension() const
 }
 
 /* NLevels accessor */
-UnsignedInteger LatentVariableModel::getNLevels() const
+UnsignedInteger LatentVariableModel::getLevelNumber() const
 {
 
   return nLevels_;
@@ -262,7 +245,7 @@ void LatentVariableModel::setScale(const Point & scale)
     if (!(scale[index] > 0.0))
       throw InvalidArgumentException(HERE) << "In LatentVariableModel::setScale: the component " << index << " of scale is non positive" ;
   scale_ = scale;
-  latCovMod_.setScale(Point(latentDim_,scale_[0]));
+  latentCovarianceModel_.setScale(Point(latentDim_, scale_[0]));
   updateLatentCovarianceMatrix();
 }
 
@@ -274,14 +257,14 @@ void LatentVariableModel::setAmplitude(const Point & amplitude)
       throw InvalidArgumentException(HERE) << "In LatentVariableModel::setAmplitude, the component " << index << " of amplitude=" << amplitude << " is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
-  latCovMod_.setAmplitude(amplitude_);
+  latentCovarianceModel_.setAmplitude(amplitude_);
   updateLatentCovarianceMatrix();
 }
 
 void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 {
   if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
-  latCovMod_.setNuggetFactor(nuggetFactor_);
+  latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
   nuggetFactor_ = nuggetFactor;
   updateLatentCovarianceMatrix();
 }
