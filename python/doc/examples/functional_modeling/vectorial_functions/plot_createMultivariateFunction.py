@@ -4,10 +4,8 @@ Create multivariate functions
 =============================
 We can create multivariate functions by different methods. One of the methods is to gather
 multivariate functions. The other one is to create a function having multivariate input using
-tensorization of univariate functions. In this example, we present both methods.
+the tensor product of univariate functions. In this example, we present both methods.
 """
-import openturns as ot
-
 # %%
 # Description
 # ===========
@@ -17,18 +15,18 @@ import openturns as ot
 # We can do that:
 #
 # - Case 1: using a finite collection of multivariate functions :math:`f_i:  \mathbb{R}^d \mapsto \mathbb{R}^q`,
-# - Case 2: using a tensorization of a univariate functions family,
-# - Case 3: using a tensorization of an orthogonal univariate polynomial family,
-# - Case 4: using a tensorization of an orthogonal univariate functions family.
+# - Case 2: using the tensor product of univariate functions,
+# - Case 3: using the tensor product of orthogonal univariate polynomials,
+# - Case 4: using the tensor product of orthogonal univariate functions.
 #
 #
 # Case 1: we use a finite collection of multivariate functions
 # ============================================================
 #
-# In that case, we have a  finite collection of multivariate functions  :math:`f_i : \mathbb{R}^d \mapsto \mathbb{R}^q`.
+# In that case, we have a  finite collection of multivariate functions
+# :math:`f_i : \mathbb{R}^d \mapsto \mathbb{R}^q`.
 # We use the :class:`~openturns.Basis` class.
-
-# %%
+#
 # For example, we consider :
 #
 # .. math::
@@ -37,6 +35,8 @@ import openturns as ot
 #       f_2: (x_1, x_2) & = & (x_1+1, 2x_2)\\
 #       f_3: (x_1, x_2) & = & (\cos(x_1x_2), x_2^3)
 #     \end{array}
+
+import openturns as ot
 
 f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1^2', 'x2^2'])
 f2 = ot.SymbolicFunction(['x1', 'x2'], ['x1+1.0', '2.0*x2'])
@@ -47,21 +47,22 @@ f = myBasis.build(1)
 
 
 # %%
-# Case 2: we use a tensorization of a univariate functions family
-# ===============================================================
+# Case 2: we use the tensor product of univariate functions
+# =========================================================
 #
 # In that case, the univariate functions are not necessarily orthogonal with respect to a measure.
 #
 # We have the family of functions: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`.. The :meth:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction` class stores the way the
-# multivariate basis is enumerated: *enumerate(n)* is a multi-index :math:`\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number :math:`n` is:
+# for :math:`1 \leq i \leq d`.. The :meth:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction` 
+# class stores the way the
+# multivariate basis is enumerated: *enumerate(n)* is a multi-index
+# :math:`\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number :math:`n` is:
 #
 # .. math::
 #     f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\alpha_k}(x_i).
 #
 # We use the :class:`~openturns.TensorizedUniVariateFunctionFactory` class.
-
-# %%
+#
 # For example, we consider: :math:`f: \mathbb{R}^2 \mapsto \mathbb{R}`, and:
 #
 # - dimension :math:`x_1`: the family of monomials: :math:`(x_1 \mapsto x_1^k)_{k \geq 0}`,
@@ -82,29 +83,29 @@ print('input dimension = ', f.getInputDimension())
 print('output dimension = ', f.getOutputDimension())
 
 # %%
-# If we want to use an orthogonal univariate polynomials family, then we have to cast the family in the  :class:`~openturns.OrthogonalUniVariatePolynomialFunctionFactory` class.
-
-# %%
+# If we want to use an orthogonal univariate polynomials family, then we have to cast the family
+# in the  :class:`~openturns.OrthogonalUniVariatePolynomialFunctionFactory` class.
+#
 # For example, we use the  Jacobi orthogonal univariate polynomials family.
-
 univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.JacobiFactory())
 
 
 # %%
-# Case 3:  we use a tensorization of an orthogonal univariate polynomials family
-# ==============================================================================
+# Case 3:  we use the tensor product of orthogonal univariate polynomials
+# =======================================================================
 #
 # In that case, the univariate polynomials are orthogonal with respect to a measure :math:`\mu`.
 #
 # We have the family of polynomials: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`. The :meth:`enumerate` function stores of the :class:`~openturns.LinearEnumerateFunction` class the way
+# for :math:`1 \leq i \leq d`. The :meth:`enumerate` function stores of the
+# :class:`~openturns.LinearEnumerateFunction` class the way
 # the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`(\ell_1, \dots, \ell_d)` such that the function number :math:`n`
 # is
 #
 # .. math::
 #     f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\ell_i}(x_i).
-#
+# 
 # We use the  :class:`~openturns.OrthogonalProductPolynomialFactory` class.
 
 # %%
@@ -112,7 +113,6 @@ univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.Jaco
 #
 # - dimension of :math:`x_1`: the family of Jacobi polynomials: :math:`(x_1 \mapsto x_1^k){k \geq 0}`,
 # - dimension of :math:`x_2`: the family of Hermite polynomials: :math:`(x_2 \mapsto \phi^2_k(x_2))_{k \geq 0}`.
-#
 
 univFuncFamily_Jacobi = ot.JacobiFactory()
 univFuncFamily_Hermite = ot.HermiteFactory()
@@ -127,16 +127,19 @@ print('output dimension = ', f.getOutputDimension())
 # We get the measure:
 measure_Jacobi = ot.JacobiFactory().getMeasure()
 measure_Hermite = ot.HermiteFactory().getMeasure()
+print('Measure orthogonal to Jacobi polynomials = ', measure_Jacobi)
+print('Measure orthogonal to Hermite polynomials = ', measure_Hermite)
 
 
 # %%
-# Case 4: we use a tensorization of an orthogonal univariate functions family
-# ===========================================================================
+# Case 4: we use the tensor product orthogonal univariate functions
+# =================================================================
 #
 # In that case, the univariate functions are orthogonal with respect to a measure :math:`\mu`.
 #
 # We have the family of functions: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`.. The :math:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction` class stores the way
+# for :math:`1 \leq i \leq d`. The :math:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction`
+# class stores the way
 # the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number *n* is
 # :math:`f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\alpha_k}(x_i)`.
@@ -163,3 +166,5 @@ f = familyFunction.build(k)
 # We get the measure:
 measure_Haar = ot.HaarWaveletFactory().getMeasure()
 measure_Fourier = ot.FourierSeriesFactory().getMeasure()
+print('Measure orthogonal to Haar wavelets = ', measure_Haar)
+print('Measure orthogonal to Fourier series = ', measure_Fourier)

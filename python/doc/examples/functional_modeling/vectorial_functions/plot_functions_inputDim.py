@@ -3,18 +3,16 @@
 Increase the input dimension of a function
 ==========================================
 """
-
-import openturns as ot
-
 # %%
 # Description
 # ===========
 #
-# We want to build a function :math:`f : \mathbb{R}^d \mapsto \mathbb{R}` from *p* functions :math:`f_i: \mathbb{R} \mapsto \mathbb{R}`.
+# We want to build a function :math:`f : \mathbb{R}^d \mapsto \mathbb{R}` from
+# *p* functions :math:`f_i: \mathbb{R} \mapsto \mathbb{R}`.
 #
 # We can do that:
 #
-# - Case 1: using a tensor product of the functions :math:`f_i`,
+# - Case 1: using the tensor product of the functions :math:`f_i`,
 # - Case 2: by addition of the functions :math:`f_i`.
 #
 # We need to implement both basic steps:
@@ -33,14 +31,14 @@ import openturns as ot
 #
 #      \pi_i : (x_1, \dots, x_d) \mapsto x_i
 #
-# We can do that using :
+# We can do that using:
 #
 # - a :class:`~openturns.SymbolicFunction` class,
 # - a :class:`~openturns.LinearFunction` class.
 
 # %%
-# Method 1: We use the :class:`~openturns.SymbolicFunction` class.
-
+# **Method 1**: We use the :class:`~openturns.SymbolicFunction` class.
+import openturns as ot
 
 def buidProjSymbolic(p, i):
     # R^p --> R
@@ -54,7 +52,7 @@ all_projections = [buidProjSymbolic(d, i) for i in range(d)]
 print(all_projections[0].getInputDimension(), all_projections[0].getOutputDimension())
 
 # %%
-# Method 2: We use the :class:`~openturns.LinearFunction` class.
+# **Method 2**: We use the :class:`~openturns.LinearFunction` class.
 #
 # The function :math:`\pi_i(\vect{x}) = \mat{A}\left(\vect{x}-\vect{c}\right) + \vect{b}`.
 
@@ -98,14 +96,15 @@ print(all_g[0].getInputDimension(), all_g[0].getOutputDimension())
 # .. math::
 #
 #     f: (x_1, \dots, x_d) \mapsto \prod_{i=1}^d f_i(x_i)
-
+#
+# As the operator :math:`*` can only be applied to functions sharing the same input space, we need to
+# use the projection function :math:`\pi_i` and the functions :math:`g_i` all defined on :math:` \mathbb{R}^d`.
 
 def tensorProduct(factors):
     prod = factors[0]
     for i in range(1, len(factors)):
         prod = prod * factors[i]
     return prod
-
 
 f = tensorProduct(all_g)
 print('input dimension =', f.getInputDimension())

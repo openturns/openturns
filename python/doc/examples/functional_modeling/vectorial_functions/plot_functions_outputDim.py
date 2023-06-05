@@ -3,10 +3,6 @@
 Increase the output dimension of a function
 ===========================================
 """
-
-# %%
-import openturns as ot
-
 # %%
 # Description
 # ===========
@@ -17,7 +13,6 @@ import openturns as ot
 #
 # - Case 1: by aggregation  of the functions :math:`f_i`,
 # - Case 2: by creating a vectorial linear combination  of the functions :math:`f_i`.
-#
 #
 # Case 1: Aggregation
 # ===================
@@ -38,6 +33,7 @@ import openturns as ot
 # We use the :class:`~openturns.AggregatedFunction` class.
 #
 # In the example, we take :math:`d=2` and :math:`q=3`.
+import openturns as ot
 
 f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2'])
 f2 = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2^2'])

@@ -3,19 +3,13 @@
 Create univariate functions
 ===========================
 This example presents different ways to create univariate functions which can be used to create
-a functional basis. This is the type of functions involved, for example, in the :class:`~openturns.FunctionalChaosAlgorithm` class. The univariate functions considered in this
+a functional basis. This is the type of functions involved, for example, in the
+:class:`~openturns.FunctionalChaosAlgorithm` class. The univariate functions considered in this
 example can be, in some cases, orthogonal to a distribution, but this is not a necessary
 condition to create univariate functions. For example, Legendre polynomials are orthogonal
 with respect to the uniform distribution, but the monomials of the canonical polynomial basis
 are not necessarily orthogonal.
 """
-# %%
-#
-# Import the required modules
-
-import openturns as ot
-from openturns.viewer import View
-
 # %%
 # Description
 # ===========
@@ -26,16 +20,20 @@ from openturns.viewer import View
 #
 # - Case 1: using an orthogonal polynomial family,
 # - Case 2: using a univariate polynomial,
-# - Case 3: using an orthogonal functions family.
+# - Case 3: using orthogonal functions.
 #
 #
-# Case 1: we use an orthogonal polynomials family
-# ===============================================
+# Case 1: we use an orthogonal polynomial family
+# ==============================================
 #
 # In that case, the polynomials are orthogonal with respect to a measure.
 #
-# For example: we consider the Legendre polynomials family, orthogonal with respect to the uniform distribution on :math:`[0,1]`. We use the :class:`~openturns.LegendreFactory` class.
-# Its method :meth:`~openturns.LegendreFactory.build` applied to :math:`k` returns the polynomial number :math:`k` of the family.
+# For example: we consider the Legendre polynomials family, orthogonal with respect to the uniform
+# distribution on :math:`[0,1]`. We use the :class:`~openturns.LegendreFactory` class.
+# Its method :meth:`~openturns.LegendreFactory.build` applied to :math:`k` returns the polynomial number
+# :math:`k` of the family.
+import openturns as ot
+from openturns.viewer import View
 
 f1 = ot.LegendreFactory().build(1)
 f2 = ot.LegendreFactory().build(2)
@@ -46,15 +44,16 @@ print(type(f1))
 g = f1.draw(-1.0, 1.0, 256)
 g.add(f2.draw(-1.0, 1.0, 256))
 g.add(f3.draw(-1.0, 1.0, 256))
-g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
+g.setLegends([r'$\phi_1(x)$', r'$\phi_2(x)$', r'$\phi_3(x)$'])
 g.setLegendPosition('bottomright')
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
 g.setTitle('Legendre Polynomials')
-View(g).show()
+_ = View(g).show()
 
 # %%
 # We get the measure associated to the polynomial family:
 measure = ot.LegendreFactory().getMeasure()
+print('Measure = ', measure)
 
 # %%
 # Case 2: we use a univariate polynomial
@@ -67,8 +66,7 @@ measure = ot.LegendreFactory().getMeasure()
 # - the :class:`~openturns.UniVariatePolynomial` class,
 # - the :class:`~openturns.MonomialFunctionFactory` class,
 # - the :class:`~openturns.MonomialFunction` class.
-
-# %%
+#
 # For example, we consider :
 #
 # .. math::
@@ -86,13 +84,13 @@ print(g1)
 print(g2)
 
 # %%
-# There is no associated measure: if it is uncommented, the following command will fail, as expected:
+# There is no associated measure: if it is uncommented, the following command will fail, as expected.
 
-# print(ot.MonomialFunctionFactory().getMeasure())
+#print(ot.MonomialFunctionFactory().getMeasure())
 
 # %%
-# Case 3: we use an orthogonal functions family
-# =============================================
+# Case 3: we use orthogonal functions
+# ===================================
 #
 # In that case, the functions are orthogonal with respect to a measure :math:`\mu`.
 #
@@ -102,8 +100,7 @@ print(g2)
 # - the :class:`~openturns.FourierSeriesFactory` class.
 #
 # The method :meth:`~openturns.HaarWaveletFactory.build` returns the function number :math:`k` of the family.
-
-# %%
+#
 # For example, we consider a Haar Wawelet:
 f1 = ot.HaarWaveletFactory().build(1)
 f2 = ot.HaarWaveletFactory().build(2)
@@ -116,11 +113,12 @@ g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
 g.setLegendPosition('topright')
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
 g.setTitle('Haar Wavelets')
-View(g).show()
+_ = View(g).show()
 
 # %%
 # We get the measure: for the Haar Wavelet family, the :math:`\mathcal{U}(0,1)` distribution.
-measure = ot.HaarWaveletFactory().getMeasure()
+measure_Haar = ot.HaarWaveletFactory().getMeasure()
+print('Measure orthogonal to Haar wavelets = ', measure_Haar)
 
 # %%
 # For example, we consider a Fourier Series:
@@ -135,8 +133,9 @@ g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
 g.setLegendPosition('topright')
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
 g.setTitle('Fourier Series')
-View(g).show()
+_ = View(g).show()
 
 # %%
 # We get the measure: for the Fourier Series, the :math:`\mathcal{U}(-\pi, \pi))` distribution.
-measure = ot.FourierSeriesFactory().getMeasure()
+measure_Fourier = ot.FourierSeriesFactory().getMeasure()
+print('Measure orthogonal to Fourier series = ', measure_Fourier)
