@@ -63,8 +63,6 @@ if (OPENTURNS_HAVE_EXPRTK)
   set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
   if (MINGW)
     set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "-Wa,-mbig-obj -g0")
-  elseif (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC|Intel")
-    set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "/bigobj")
   endif ()
 endif()
 
