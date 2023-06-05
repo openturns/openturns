@@ -439,6 +439,8 @@ endif ()
 if (MSVC)
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
+  # for exprtk, boost, swig
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif ()
 
 if (CMAKE_VERSION VERSION_LESS 3.20)
