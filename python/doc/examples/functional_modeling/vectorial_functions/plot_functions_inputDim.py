@@ -40,6 +40,7 @@ Increase the input dimension of a function
 # **Method 1**: We use the :class:`~openturns.SymbolicFunction` class.
 import openturns as ot
 
+
 def buidProjSymbolic(p, i):
     # R^p --> R
     # (x1, ..., xp) --> xi
@@ -100,11 +101,13 @@ print(all_g[0].getInputDimension(), all_g[0].getOutputDimension())
 # As the operator :math:`*` can only be applied to functions sharing the same input space, we need to
 # use the projection function :math:`\pi_i` and the functions :math:`g_i` all defined on :math:` \mathbb{R}^d`.
 
+
 def tensorProduct(factors):
     prod = factors[0]
     for i in range(1, len(factors)):
         prod = prod * factors[i]
     return prod
+
 
 f = tensorProduct(all_g)
 print('input dimension =', f.getInputDimension())

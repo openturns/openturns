@@ -86,7 +86,7 @@ print(g2)
 # %%
 # There is no associated measure: if it is uncommented, the following command will fail, as expected.
 
-#print(ot.MonomialFunctionFactory().getMeasure())
+# print(ot.MonomialFunctionFactory().getMeasure())
 
 # %%
 # Case 3: we use orthogonal functions

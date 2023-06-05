@@ -53,7 +53,7 @@ f = myBasis.build(1)
 # In that case, the univariate functions are not necessarily orthogonal with respect to a measure.
 #
 # We have the family of functions: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`.. The :meth:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction` 
+# for :math:`1 \leq i \leq d`.. The :meth:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction`
 # class stores the way the
 # multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number :math:`n` is:
@@ -105,10 +105,9 @@ univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.Jaco
 #
 # .. math::
 #     f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\ell_i}(x_i).
-# 
+#
 # We use the  :class:`~openturns.OrthogonalProductPolynomialFactory` class.
-
-# %%
+#
 # For example, we consider : :math:`f: \mathbb{R}^2 \mapsto \mathbb{R}`, and:
 #
 # - dimension of :math:`x_1`: the family of Jacobi polynomials: :math:`(x_1 \mapsto x_1^k){k \geq 0}`,

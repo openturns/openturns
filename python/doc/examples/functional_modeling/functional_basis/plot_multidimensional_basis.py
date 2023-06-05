@@ -17,7 +17,7 @@ Create a basis of functions with input and output dimension greater than one
 # We can do that:
 #
 # - Case 1: by the aggregation of :math:`n` given functions :math:`f_i: \mathbb{R}^d \mapsto \mathbb{R}^q`,
-# - Case 2: by the aggregation of :math:`n` functions :math:`f_i: \mathbb{R}^d \mapsto \mathbb{R}^q` built 
+# - Case 2: by the aggregation of :math:`n` functions :math:`f_i: \mathbb{R}^d \mapsto \mathbb{R}^q` built
 #   from factories of functions :math:`g_j:\mathbb{R}^d \mapsto \mathbb{R}`.
 #
 # In both cases, we use the :class:`~openturns.Basis` class to create the basis and the
