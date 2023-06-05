@@ -852,6 +852,7 @@ Notes
 -----
 This will create a header line with componentwise descriptions (obtained from
 :py:meth:`getDescription`) between quotes as column names.
+In scientific formatting the number of significant digits is :math:`precision + 1`.
 
 See Also
 --------
