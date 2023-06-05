@@ -94,12 +94,12 @@ public:
 
   /** Drawing method */
   Graph draw(const UnsignedInteger rowIndex = 0,
-                     const UnsignedInteger columnIndex = 0,
-                     const Scalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
-                     const Scalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
-                     const Bool asStationary = true,
-                     const Bool correlationFlag = false) const override;
+             const UnsignedInteger columnIndex = 0,
+             const Scalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
+             const Scalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
+             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
+             const Bool asStationary = true,
+             const Bool correlationFlag = false) const override;
 
 private:
 

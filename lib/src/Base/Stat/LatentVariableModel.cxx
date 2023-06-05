@@ -42,8 +42,8 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
   if (latentDim_ < 1) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 1";
   if (nLevels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
   activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
-  activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.0);
-  fullLatentVariables_ = Sample(nLevels_,latentDim_);
+  activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
+  fullLatentVariables_ = Sample(nLevels_, latentDim_);
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
   setActiveParameter(activeParameter);
@@ -84,7 +84,7 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
   Collection<Scalar>::const_iterator z1_it = z1_begin;
   Collection<Scalar>::const_iterator z2_it = z2_begin;
 
-  return computeAsScalar(*z1_it,*z2_it);
+  return computeAsScalar(*z1_it, *z2_it);
 }
 
 
@@ -95,9 +95,9 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
     should be :
      - Size of scale : here 1
      - Size of amplitude : here 1
-     - Number of latent variable coordinates : latentDim_*nLevels_-2*latentDim_+1
+     - Number of latent variable coordinates : latentDim_ * nLevels_ - 2 * latentDim_ + 1
     CovarianceModelImplementation::setFullParameter checks that size is
-    equal to the total number of parameters
+    equal to the total number of parameters : 2 + the number of latent variable coordinates
   */
   // Check the size
   const UnsignedInteger totalSize = 2 + activeLatentCoordinateDim_;
@@ -134,8 +134,6 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
     ++ index;
   }
   setLatentVariables(activeLatentVariables);
-
-
 }
 
 Point LatentVariableModel::getFullParameter() const
@@ -179,7 +177,6 @@ String LatentVariableModel::__str__(const String & ) const
       << ")";
   return oss;
 }
-
 
 /* latentVariables accessor */
 void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordinates)
@@ -227,14 +224,12 @@ Point LatentVariableModel::getActiveLatentVariables() const
 /* latentDimension accessor */
 UnsignedInteger LatentVariableModel::getLatentDimension() const
 {
-
   return latentDim_;
 }
 
 /* NLevels accessor */
 UnsignedInteger LatentVariableModel::getLevelNumber() const
 {
-
   return nLevels_;
 }
 

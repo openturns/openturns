@@ -18,11 +18,16 @@ latentDim : int
 Notes
 -----
 The *Latent variable covariance function* is a covariance model allowing to compute the covariance between 
-different unordered values (or levels) of a categorical variable.
+different unordered values (or levels) of a categorical variable :math:`z`.
 
 The underlying idea is that each categorical level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. 
-The covariance between the various levels is then computed as the squared exponential covariance between the mappings in 
-the latent space.
+The covariance between the various levels is then computed as the :class:`~openturns.SquaredExponential` covariance between 
+the mappings in the latent space.
+Let :math:`\phi(\cdot):\mathcal{Z}\rightarrow\mathbb{R}^{d_l}` be the mapping function, the covariance function between
+two discrete values :math:`z_i` and :math:`z_j` is computed as:
+
+.. math:
+    C(z_i, z_j) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\phi(z_i), \phi(z_j)) \in \cD
 
 The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared 
 exponential model scale and amplitude. It is important to note that in order to compensate for possible rotations 
@@ -45,6 +50,7 @@ nature (e.g., types of material, architectural choices, colors, etc.).
 
 Finally, for a similar reason, when using this type of kernel when defining a Gaussian process, it is suggested to 
 rely on a constant functional basis: please use the :class:`~openturns.ConstantBasisFactory` class.
+
 
 See Also
 --------

@@ -13,6 +13,7 @@ import openturns.experimental as otexp
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Seed chosen in order to obtain a visually nice plot
 ot.RandomGenerator.SetSeed(5)
 
 # %%
@@ -25,7 +26,6 @@ ot.RandomGenerator.SetSeed(5)
 def illustrativeFunc(inp):
     x, z = inp
     y = np.cos(7 * x) + 0.5 * z
-
     return [y]
 
 
@@ -56,8 +56,8 @@ kz = otexp.LatentVariableModel(numberOfZLevels, latDim)
 kLV = ot.ProductCovarianceModel([kx, kz])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
-lowerBoundLV = [1e-4] * dim + [-10] * activeCoord
-upperBoundLV = [2.0] * dim + [10] * activeCoord
+lowerBoundLV = [1e-4] * dim + [-10.0] * activeCoord
+upperBoundLV = [2.0] * dim + [10.0] * activeCoord
 boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
 initDistLV = ot.DistributionCollection()
@@ -72,7 +72,7 @@ initDistLV = ot.ComposedDistribution(initDistLV)
 # %%
 kIndependent = ot.SquaredExponential(1)
 lowerBoundInd = [1e-4]
-upperBoundInd = [20]
+upperBoundInd = [20.0]
 boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
 initDistInd = ot.DistributionCollection()
 for i in range(len(lowerBoundInd)):
@@ -271,7 +271,7 @@ kLV = ot.ProductCovarianceModel([kx1, kx2, kz1, kz2])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
 lowerBoundLV = [1e-4] * dim + [-10] * activeCoord
-upperBoundLV = [3.] * dim + [10.] * activeCoord
+upperBoundLV = [3.0] * dim + [10.0] * activeCoord
 boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
 initDistLV = ot.DistributionCollection()
@@ -286,7 +286,7 @@ initDistLV = ot.ComposedDistribution(initDistLV)
 # %%
 kIndependent = ot.SquaredExponential(2)
 lowerBoundInd = [1e-4, 1e-4]
-upperBoundInd = [3., 3.]
+upperBoundInd = [3.0, 3.0]
 boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
 initDistInd = ot.DistributionCollection()
 for i in range(len(lowerBoundInd)):
