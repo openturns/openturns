@@ -17,8 +17,8 @@ Increase the input dimension of a function
 #
 # We need to implement both basic steps:
 #
-# - the projection function: :math:`\pi_i : (x_1, \dots, x_d) \mapsto x_i`,
-# - the composed function: :math:`g_i = f_i \circ \pi_i : (x_1, \dots, x_d) \mapsto f_i(x_i)`.
+# - Step 1: creation of the projection function: :math:`\pi_i : (x_1, \dots, x_d) \mapsto x_i`,
+# - Step 2: creation of the composed function: :math:`g_i = f_i \circ \pi_i : (x_1, \dots, x_d) \mapsto f_i(x_i)`.
 
 
 # %%
@@ -50,7 +50,7 @@ def buidProjSymbolic(p, i):
 
 d = 2
 all_projections = [buidProjSymbolic(d, i) for i in range(d)]
-print(all_projections[0].getInputDimension(), all_projections[0].getOutputDimension())
+print('Input dimension = ', all_projections[0].getInputDimension(), 'Output dimension = ', all_projections[0].getOutputDimension())
 
 # %%
 # **Method 2**: We use the :class:`~openturns.LinearFunction` class.
@@ -99,7 +99,7 @@ print(all_g[0].getInputDimension(), all_g[0].getOutputDimension())
 #     f: (x_1, \dots, x_d) \mapsto \prod_{i=1}^d f_i(x_i)
 #
 # As the operator :math:`*` can only be applied to functions sharing the same input space, we need to
-# use the projection function :math:`\pi_i` and the functions :math:`g_i` all defined on :math:` \mathbb{R}^d`.
+# use the projection function :math:`\pi_i` and the functions :math:`g_i` all defined on :math:`\mathbb{R}^d`.
 
 
 def tensorProduct(factors):

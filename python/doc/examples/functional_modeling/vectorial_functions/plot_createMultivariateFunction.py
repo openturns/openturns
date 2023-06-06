@@ -20,20 +20,20 @@ the tensor product of univariate functions. In this example, we present both met
 # - Case 4: using the tensor product of orthogonal univariate functions.
 #
 #
-# Case 1: we use a finite collection of multivariate functions
-# ============================================================
+# Case 1: Finite collection of multivariate functions
+# ===================================================
 #
 # In that case, we have a  finite collection of multivariate functions
 # :math:`f_i : \mathbb{R}^d \mapsto \mathbb{R}^q`.
 # We use the :class:`~openturns.Basis` class.
 #
-# For example, we consider :
+# For example, we consider:
 #
 # .. math::
 #     \begin{array}{lcl}
 #       f_1(x_1, x_2) & = & (x_1^2, x_2^2)\\
-#       f_2: (x_1, x_2) & = & (x_1+1, 2x_2)\\
-#       f_3: (x_1, x_2) & = & (\cos(x_1x_2), x_2^3)
+#       f_2(x_1, x_2) & = & (x_1+1, 2x_2)\\
+#       f_3(x_1, x_2) & = & (\cos(x_1x_2), x_2^3)
 #     \end{array}
 
 import openturns as ot
@@ -47,8 +47,8 @@ f = myBasis.build(1)
 
 
 # %%
-# Case 2: we use the tensor product of univariate functions
-# =========================================================
+# Case 2: Tensor product of univariate functions
+# ==============================================
 #
 # In that case, the univariate functions are not necessarily orthogonal with respect to a measure.
 #
@@ -59,7 +59,7 @@ f = myBasis.build(1)
 # :math:`\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number :math:`n` is:
 #
 # .. math::
-#     f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\alpha_k}(x_i).
+#     f_n(\vect{x}) = \prod_{i=1}^d \phi^i_{\alpha_i}(x_i).
 #
 # We use the :class:`~openturns.TensorizedUniVariateFunctionFactory` class.
 #
@@ -91,8 +91,8 @@ univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.Jaco
 
 
 # %%
-# Case 3:  we use the tensor product of orthogonal univariate polynomials
-# =======================================================================
+# Case 3:  Tensor product of orthogonal univariate polynomials
+# ============================================================
 #
 # In that case, the univariate polynomials are orthogonal with respect to a measure :math:`\mu`.
 #
@@ -101,10 +101,10 @@ univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.Jaco
 # :class:`~openturns.LinearEnumerateFunction` class the way
 # the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`(\ell_1, \dots, \ell_d)` such that the function number :math:`n`
-# is
+# is:
 #
 # .. math::
-#     f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\ell_i}(x_i).
+#     f_n(\vect{x}) = \prod_{i=1}^d \phi^i_{\ell_i}(x_i).
 #
 # We use the  :class:`~openturns.OrthogonalProductPolynomialFactory` class.
 #
@@ -131,8 +131,8 @@ print('Measure orthogonal to Hermite polynomials = ', measure_Hermite)
 
 
 # %%
-# Case 4: we use the tensor product orthogonal univariate functions
-# =================================================================
+# Case 4: Tensor product of orthogonal univariate functions
+# =========================================================
 #
 # In that case, the univariate functions are orthogonal with respect to a measure :math:`\mu`.
 #
@@ -140,8 +140,11 @@ print('Measure orthogonal to Hermite polynomials = ', measure_Hermite)
 # for :math:`1 \leq i \leq d`. The :math:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction`
 # class stores the way
 # the multivariate basis is enumerated: *enumerate(n)* is a multi-index
-# :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number *n* is
-# :math:`f_n(\vect{x}) = \prod_{k=1}^d \phi^i_{\alpha_k}(x_i)`.
+# :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number *n* is:
+#
+# .. math::
+#
+#      f_n(\vect{x}) = \prod_{i=1}^d \phi^i_{\alpha_i}(x_i)
 #
 # We use the :class:`~openturns.OrthogonalProductFunctionFactory` class.
 
