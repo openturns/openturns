@@ -20,18 +20,19 @@ Create a multivariate basis of functions from scalar multivariable functions
 # that share the same input space.
 #
 # We illustrate two cases that differ from the way the functions :math:`g_i` have been created:
+#
 # - Case 1: we suppose that the functions :math:`g_i` have no particular origin,
 # - Case 2: we suppose that the functions :math:`g_i` have been built from particular bases.
 #
 # In both cases, we use the :class:`~openturns.Basis` class to create the basis and the
 # :class:`~openturns.AggregatedFunction` class to create a multivariate output function from a
-# list of functions.
+# list of scalar multivariable functions.
 #
 # Case 1: Aggregation of given functions
 # ======================================
 # 
 # In that case, we have some functions :math:`g_i: \mathbb{R}^d \mapsto \mathbb{R}` and we aggregate them
-# in order to build the basis :math:`\mathcal{B}=\{f_1,...,f_n\}`.
+# in order to build the basis :math:`\mathcal{B}`.
 #
 # For example, we set :math:`d=2`, :math:`q=3` and we use the functions :math:`(g_1, g_2, g_3)` defined by:
 #
@@ -69,15 +70,17 @@ print('Fonction f_1 : ', basis.build(0))
 # =======================================================
 #
 # In that case, we use some functions :math:`g_i: \mathbb{R}^d \mapsto \mathbb{R}` that have been
-# built from particular bases. For example, they are members of polynomial families which are orthogonal
-# to given distibutions.
+# built from particular bases. For example, they are members of polynomial families which are orthonormal
+# to given distributions.
 #
-# Here, we use both polynomial families:
+# In this example, we use both polynomial families:
 #
-# - :math:`(g_1^i)_{i\geq 0}` which is the Legendre polynomial family orthogonal to the tensor product
-#   of dimension :math:`d` of the uniform(:math:`(-1,1]`) distribution,
-# - :math:`(g_2^i)_{i\geq 0}` which is the Hermite polynomial family orthogonal to the tensor product
-#   of dimension :math:`d` of the normal(:math:`(\mu=0, \sigma=1)` distribution.
+# - :math:`(g_1^i)_{i\geq 0}` which is a orthonormal multivariate polynomial basis with respect to the uniform
+#   distributipn on :math:`[-1,1]^d`(it is obtained through a tensor product of univariate Legendre polynomials
+#   orthonormal with respect to the uniform distribution on :math:`[-1,1]`),
+# - :math:`(g_2^i)_{i\geq 0}` which is a orthonormal multivariate polynomial basis with respect to the multivariate
+#   standard normal distribution (it is obtained through a tensor product of univariate Hermite polynomials
+#   orthonormal with respect to the standard normal univariate distribution).
 #
 # We consider the linear
 # enumeration of the polynomial family. The functions :math:`f_i` are built as the aggregation of

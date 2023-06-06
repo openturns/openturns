@@ -5,8 +5,8 @@ The linear basis is the collection of functions :math:`\psi_k: \mathbb{R}^d \map
 
 .. math::
 
-    \psi_0(x_1, \dots, x_d) = 1 \\
-    \psi_k(x_1, \dots, x_d) = x_d \mbox{for } 1 \leq k \leq d
+    \psi_0(x_1, \dots, x_d) & = 1 \\
+    \psi_k(x_1, \dots, x_d) & = x_k \mbox{for } 1 \leq k \leq d
 
 Parameters
 ----------
