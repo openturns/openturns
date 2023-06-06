@@ -30,7 +30,7 @@ Create a multivariate basis of functions from scalar multivariable functions
 #
 # Case 1: Aggregation of given functions
 # ======================================
-# 
+#
 # In that case, we have some functions :math:`g_i: \mathbb{R}^d \mapsto \mathbb{R}` and we aggregate them
 # in order to build the basis :math:`\mathcal{B}`.
 #
@@ -40,7 +40,7 @@ Create a multivariate basis of functions from scalar multivariable functions
 #     \begin{array}{lcl}
 #       g_1(x_1, x_2) & = & 1\\
 #       g_2(x_1, x_2) & = & x_1 + x_2\\
-#       g_3(x_1, x_2) & = & x_1^2 + x_2^2 
+#       g_3(x_1, x_2) & = & x_1^2 + x_2^2
 #     \end{array}
 #
 # and we want to build the finite basis :math:`\mathcal{B}=\{f_1,f_2\}` defined by:
@@ -54,7 +54,7 @@ import openturns as ot
 d = 2
 q = 3
 
- # Create the functions g_i
+# Create the functions g_i
 g_1 = ot.SymbolicFunction(['x1', 'x2'], ['1'])
 g_2 = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
 g_3 = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2^2'])
@@ -76,7 +76,7 @@ print('Fonction f_1 : ', basis.build(0))
 # In this example, we use both polynomial families:
 #
 # - :math:`(g_1^i)_{i\geq 0}` which is a orthonormal multivariate polynomial basis with respect to the uniform
-#   distributipn on :math:`[-1,1]^d`(it is obtained through a tensor product of univariate Legendre polynomials
+#   distributipn on :math:`[-1,1]^d` (it is obtained through a tensor product of univariate Legendre polynomials
 #   orthonormal with respect to the uniform distribution on :math:`[-1,1]`),
 # - :math:`(g_2^i)_{i\geq 0}` which is a orthonormal multivariate polynomial basis with respect to the multivariate
 #   standard normal distribution (it is obtained through a tensor product of univariate Hermite polynomials
@@ -86,7 +86,7 @@ print('Fonction f_1 : ', basis.build(0))
 # enumeration of the polynomial family. The functions :math:`f_i` are built as the aggregation of
 # the :math:`i`-th polynomials of the families :math:`(g_1^k)_k` and :math:`(g_2^k)_k`.
 # We only consider :math:`g_1^i` and :math:`g_2^i` of total degree less than 2:
-# then we have 6 polynomials :math:`f_i`. 
+# then we have 6 polynomials :math:`f_i`.
 #
 # We still set :math:`d=2`, :math:`q=3`.
 d = 2
