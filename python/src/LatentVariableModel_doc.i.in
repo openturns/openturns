@@ -26,7 +26,7 @@ the mappings in the latent space.
 Let :math:`\phi(\cdot):\mathcal{Z}\rightarrow\mathbb{R}^{d_l}` be the mapping function, the covariance function between
 two discrete values :math:`z_i` and :math:`z_j` is computed as:
 
-.. math:
+.. math::
     C(z_i, z_j) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\phi(z_i), \phi(z_j)) \in \cD
 
 The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared 
@@ -35,7 +35,7 @@ and translations of the mapping points, the coordinates of the first level mappi
 origin, whereas all of the coordinates of the second level mapping are fixed to :math:`0`, except for the first one. 
 As a result, the number of active latent variable coordinates is equal to:
 
-.. math:
+.. math::
     d_\ell (\ell - 2) + 1.
 
 In practice, the class distinguishes between the `fullLatentVariables` attribute, which contains the actual latent variables

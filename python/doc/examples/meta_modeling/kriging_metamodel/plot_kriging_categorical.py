@@ -45,7 +45,7 @@ dist = ot.ComposedDistribution(
 # %%
 # In order to deal with mixed continuous / categorical problems we can rely on the
 # :class:`~openturns.ProductCovarianceModel` class. We start here by defining the product kernel,
-# which combines :class:~openturns.SquaredExponential kernels for the continuous variables, and
+# which combines :class:`~openturns.SquaredExponential` kernels for the continuous variables, and
 # :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
 
 # %%
@@ -255,7 +255,7 @@ dist = ot.ComposedDistribution(
 
 # %%
 # As in the previous example, we start here by defining the product kernel,
-# which combines :class:~openturns.SquaredExponential kernels for the continuous variables, and
+# which combines :class:`~openturns.SquaredExponential` kernels for the continuous variables, and
 # :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
 
 # %%
