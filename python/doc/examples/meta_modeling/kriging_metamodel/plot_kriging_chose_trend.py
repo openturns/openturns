@@ -11,12 +11,14 @@ from matplotlib import pylab as plt
 # ------------
 #
 # In this example we present the polynomial trends which we may use in a kriging metamodel.
-# 
+# This example focuses on three polynomial trends:
 #
 # - :class:`~openturns.ConstantBasisFactory`;
 # - :class:`~openturns.LinearBasisFactory`;
 # - :class:`~openturns.QuadraticBasisFactory`.
 #
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_trend` example,
+# we give another example of this method.
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_arbitrary_trend` example,
 # we show how to configure an arbitrary trend.
 #

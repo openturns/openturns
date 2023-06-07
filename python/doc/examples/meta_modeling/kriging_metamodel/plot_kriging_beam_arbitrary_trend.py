@@ -4,7 +4,8 @@ Kriging: choose an arbitrary trend
 """
 # %%
 # The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
-# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_chose_trend` example,
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_chose_trend`
+# and :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_trend` examples,
 # we show how to configure a polynomial trend.
 #
 # In general, any collection of multivariate functions can be used as the
