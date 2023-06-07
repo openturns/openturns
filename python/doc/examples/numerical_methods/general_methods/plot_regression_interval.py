@@ -15,7 +15,9 @@ Compute confidence intervals of a regression model from data
 # The linear regression model is an order 1 multivariate polynomial.
 # This model is built from a data set.
 # In this advanced example, we use the :class:`~openturns.DesignProxy`
-# and :class:`~openturns.QRMethod` classes.
+# and :class:`~openturns.QRMethod` low level classes.
+# Another example of this method is presented in
+# :doc:`/auto_numerical_methods/general_methods/plot_regression_sinus`.
 
 # %%
 

@@ -14,7 +14,10 @@ Compute leave-one-out error of a polynomial chaos expansion
 # To do this, we use equations from [blatman2009]_ page 85
 # (see also [blatman2011]_).
 # In this advanced example, we use the :class:`~openturns.DesignProxy`
-# and :class:`~openturns.QRMethod` classes.
+# and :class:`~openturns.QRMethod` low level classes.
+# A naive implementation of this method is presented in
+# :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_cv`
+# using K-Fold cross-validation.
 
 # %%
 # The design matrix
@@ -75,9 +78,9 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # - When we use the QR decomposition, we actually do not need to evaluate it in
 #   our script: the :class:`~openturns.QRMethod` class knows how to compute the
-#   solution without evaluating the Gram matrix `D^T D`.
+#   solution without evaluating the Gram matrix :math:`D^T D`.
 # - We may need the inverse Gram matrix
-#   :math:`(D^T D)^{-1}` sometimes, for example when we want to create
+#   :math:`\left(D^T D\right)^{-1}` sometimes, for example when we want to create
 #   a D-optimal design.
 # - Finally, when we want to compute the analytical leave-one-out error,
 #   we need to compute the diagonal of the  projection matrix :math:`H`.
@@ -107,7 +110,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # for any :math:`\vect{x} \in \Rset^{n_X}` where :math:`\{\psi_k : \Rset^{n_X} \rightarrow \Rset\}_{k = 1, \ldots, m}` are the basis functions and
 # :math:`\vect{a} \in \Rset^m` is a vector of parameters.
-# The mean squared error is ([blatman2009]_ eq. 4.30 page 85):
+# The mean squared error is ([blatman2009]_ eq. 4.23 page 83):
 #
 # .. math::
 #
@@ -127,9 +130,9 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # .. math::
 #
-#     y^{(i)} = g\left(\vect{x}^{(i)}\right)
+#     y^{(j)} = g\left(\vect{x}^{(j)}\right)
 #
-# for :math:`i = 1, ..., n`.
+# for :math:`j = 1, ..., n`.
 # Let :math:`\vect{y} \in \Rset^n` be the vector of observations:
 #
 # .. math::
@@ -137,28 +140,28 @@ Compute leave-one-out error of a polynomial chaos expansion
 #     \vect{y} = (y^{(1)}, \ldots, y^{(n)})^T.
 #
 #
-# Consider the following set of inputs, let aside the :math:`i`-th input:
+# Consider the following set of inputs, let aside the :math:`j`-th input:
 #
 # .. math::
 #
-#     \cD_{-i} := \left\{\vect{x}^{(1)}, \ldots, \vect{x}^{(i - 1)}, \vect{x}^{(i + 1)}, \ldots, \vect{x}^{(n)}\right\}
+#     \cD^{(-j)} := \left\{\vect{x}^{(1)}, \ldots, \vect{x}^{(j - 1)}, \vect{x}^{(j + 1)}, \ldots, \vect{x}^{(n)}\right\}
 #
-# for :math:`i \in \{1, ..., n\}`.
-# Let :math:`\vect{y}_{-i} \in \Rset^{n - 1}` be the vector of
-# observations, let aside the :math:`i`-th observation:
+# for :math:`j \in \{1, ..., n\}`.
+# Let :math:`\vect{y}^{(-j)} \in \Rset^{n - 1}` be the vector of
+# observations, let aside the :math:`j`-th observation:
 #
 # .. math::
 #
-#     \vect{y}_{-i} = (y^{(1)}, \ldots, y^{(i - 1)}, y^{(i + 1)}, \ldots, y^{(n)})^T
+#     \vect{y}^{(-j)} = (y^{(1)}, \ldots, y^{(j - 1)}, y^{(j + 1)}, \ldots, y^{(n)})^T
 #
-# for :math:`i \in \{1, ..., n\}`.
-# Let :math:`\tilde{g}_{-i}` the metamodel built on the data set :math:`(\cD_{-i}, \vect{y}_{-i})`.
+# for :math:`j \in \{1, ..., n\}`.
+# Let :math:`\tilde{g}^{(-j)}` the metamodel built on the data set :math:`\left(\cD^{(-j)}, \vect{y}^{(-j)}\right)`.
 # The leave-one-out error is:
 #
 # .. math::
 #
 #    \widehat{\operatorname{MSE}}_{LOO}\left(\tilde{g}\right)
-#    = \frac{1}{n} \sum_{i = 1}^n \left(g\left(\vect{x}^{(i)}\right) - \tilde{g}_{-i}\left(\vect{x}^{(i)}\right)\right)^2
+#    = \frac{1}{n} \sum_{j = 1}^n \left(g\left(\vect{x}^{(j)}\right) - \tilde{g}^{(-j)}\left(\vect{x}^{(j)}\right)\right)^2
 #
 # The leave-one-out error is sometimes referred to as *predicted residual sum of
 # squares* (PRESS) or *jacknife error*.
@@ -175,9 +178,9 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # .. math::
 #
-#     \boldsymbol{\Psi}_{ik} = \psi_k\left(\vect{x}^{(i)}\right)
+#     \boldsymbol{\Psi}_{ik} = \psi_k\left(\vect{x}^{(j)}\right)
 #
-# for :math:`i = 1, ..., n` and :math:`i = 1, ..., m`.
+# for :math:`j = 1, ..., n` and :math:`k = 1, ..., m`.
 # The matrix :math:`\boldsymbol{\Psi}` is mathematically equal to the
 # :math:`D` matrix presented earlier in the present document.
 # Let :math:`H \in \Rset^{n \times n}` be the projection matrix:
@@ -191,15 +194,10 @@ Compute leave-one-out error of a polynomial chaos expansion
 # .. math::
 #
 #    \widehat{\operatorname{MSE}}_{LOO}\left(\tilde{g}\right)
-#    = \frac{1}{n} \sum_{i = 1}^n \left(\frac{g\left(\vect{x}^{(i)}\right) - \tilde{g}\left(\vect{x}^{(i)}\right)}{1 - h_i}\right)^2
+#    = \frac{1}{n} \sum_{j = 1}^n \left(\frac{g\left(\vect{x}^{(j)}\right) - \tilde{g}\left(\vect{x}^{(j)}\right)}{1 - h_{jj}}\right)^2
 #
-# where :math:`h_i \in \Rset` is the diagonal of the hat matrix:
-#
-# .. math::
-#
-#     h_i = H_{ii}
-#
-# for :math:`i \in \{1, ..., n\}`.
+# where :math:`h_{jj} \in \Rset` is the diagonal of the hat matrix
+# for :math:`j \in \{1, ..., n\}`.
 # The goal of this example is to show how to implement the previous equation
 # using the :class:`~openturns.DesignProxy` class.
 

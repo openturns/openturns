@@ -1,16 +1,21 @@
 """
-Chaos cross-validation
-----------------------
+Polynomial chaos expansion cross-validation
+===========================================
 """
 
 # %%
+# Introduction
+# ------------
+#
 # In this example, we show how to perform the cross-validation of the
 # :ref:`Ishigami model<use-case-ishigami>` using polynomial chaos expansion.
 # More precisely, we use the methods suggested in [muller2016]_, chapter 5, page 257.
 # We make the assumption that a dataset is given and we create a metamodel using this data.
 # Once done, we want to assess the quality of the metamodel using the data we have.
+# Another example of this method is presented in
+# :doc:`/auto_numerical_methods/general_methods/plot_pce_design`.
 #
-# We compare several methods:
+# In this example, we compare two methods:
 #
 # - split the data into two subsets, one for training and one for testing,
 # - use k-fold validation.
@@ -24,7 +29,6 @@ Chaos cross-validation
 # It uses the K-Fold method with :math:`k = 5`.
 # The code uses the :class:`~openturns.KFoldSplitter` class, which computes the appropriate indices.
 # Similar results can be obtained with :class:`~openturns.LeaveOneOutSplitter` at a higher cost.
-#
 # This cross-validation method is used here to see which polynomial degree
 # leads to an accurate metamodel of the Ishigami test function.
 
@@ -33,6 +37,13 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import ishigami_function
 
+# %%
+# Define helper functions
+# -----------------------
+
+# %%
+# The next function creates a polynomial chaos expansion from
+# a training data set and a total degree.
 
 # %%
 def compute_sparse_least_squares_chaos(
@@ -70,20 +81,22 @@ def compute_sparse_least_squares_chaos(
     projectionStrategy = ot.LeastSquaresStrategy(
         inputTrain, outputTrain, selectionAlgorithm
     )
-    enumfunc = basis.getEnumerateFunction()
-    P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-    adaptiveStrategy = ot.FixedStrategy(basis, P)
-    chaosalgo = ot.FunctionalChaosAlgorithm(
+    enumerateFunction = basis.getEnumerateFunction()
+    basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
+    adaptiveStrategy = ot.FixedStrategy(basis, basisSize)
+    chaosAlgo = ot.FunctionalChaosAlgorithm(
         inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy
     )
-    chaosalgo.run()
-    result = chaosalgo.getResult()
+    chaosAlgo.run()
+    result = chaosAlgo.getResult()
     return result
 
 
 # %%
+# The next function computes the Q2 score by splitting the data set
+# into a training set and a test set.
 
-
+# %%
 def compute_Q2_score_by_splitting(
     X, Y, basis, totalDegree, distribution, split_fraction=0.75
 ):
@@ -119,8 +132,9 @@ def compute_Q2_score_by_splitting(
 
 
 # %%
+# The next function computes the Q2 score by K-Fold.
 
-
+# %%
 def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5):
     """
     Compute score by KFold.
@@ -154,6 +168,9 @@ def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5)
     Q2_score = Q2_score_list.computeMean()[0]
     return Q2_score
 
+# %%
+# Define the training data set
+# ----------------------------
 
 # %%
 # We start by generating the input and output sample. We use a sample size equal to 1000.
@@ -196,6 +213,10 @@ result
 metamodel = result.getMetaModel()
 
 # %%
+# Validate the metamodel from a test set
+# --------------------------------------
+
+# %%
 # In order to validate our polynomial chaos, we generate an extra pair of
 # input / output samples and use the :class:`~openturns.MetaModelValidation` class.
 test_sample_size = 200  # Size of the validation design of experiments
@@ -229,6 +250,10 @@ view = otv.View(graph)
 # available data is used in order to estimate the :math:`Q^2` score.
 
 # %%
+# Compute the Q2 score from a test set
+# ------------------------------------
+
+# %%
 # In the following script, we compute the :math:`Q^2` score associated with each polynomial degree from 1 to 10.
 degree_max = 10
 degree_list = list(range(1, degree_max))
@@ -251,6 +276,10 @@ view = otv.View(graph)
 # %%
 # We see that the polynomial degree may be increased up to degree 7,
 # after which the :math:`Q^2` score does not increase much.
+
+# %%
+# Compute the Q2 score from K-Fold cross-validation
+# -------------------------------------------------
 #
 # One limitation of the previous method is that the estimate of the :math:`Q^2` may be sensitive to the particular split of the dataset.
 # The following script uses 5-Fold cross validation to estimate the :math:`Q^2` score.
@@ -272,6 +301,10 @@ view = otv.View(graph)
 
 # %%
 # The conclusion is similar to the previous method.
+
+# %%
+# Conclusion
+# ----------
 #
 # When we select the best polynomial degree which maximizes the :math:`Q^2` score,
 # the danger is that the validation set is used both for computing the :math:`Q^2` and to maximize it:
