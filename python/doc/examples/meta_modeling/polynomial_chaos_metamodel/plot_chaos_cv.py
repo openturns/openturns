@@ -46,6 +46,8 @@ from openturns.usecases import ishigami_function
 # a training data set and a total degree.
 
 # %%
+
+
 def compute_sparse_least_squares_chaos(
     inputTrain, outputTrain, basis, totalDegree, distribution
 ):
@@ -167,6 +169,7 @@ def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5)
         Q2_score_list.add([Q2_local])
     Q2_score = Q2_score_list.computeMean()[0]
     return Q2_score
+
 
 # %%
 # Define the training data set
