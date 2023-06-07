@@ -5,7 +5,7 @@ Cross Entropy Importance Sampling
 # %%
 #
 # The objective is to evaluate a failure probability using Cross Entropy Importance Sampling.
-# Two versions working in standard or physical spaces are implemented.
+# Two versions in the standard or physical spaces are implemented.
 # See :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 # We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
@@ -113,7 +113,7 @@ print(
 )
 
 # %%
-# We can also retrieve the optimal auxiliary distribution in standard space.
+# We can also retrieve the optimal auxiliary distribution in the standard space.
 
 # %%
 print(
@@ -128,7 +128,7 @@ print(
 #
 
 # %%
-# First we get the auxiliary samples in standard space and we project them in physical space.
+# First we get the auxiliary samples in the standard space and we project them in physical space.
 
 # %%
 auxiliaryInputSamples = standardSpaceISResult.getAuxiliaryInputSample()
@@ -167,7 +167,7 @@ view = otv.View(graph)
 # -------------------------------------------------------------------
 
 # %%
-# For more advanced use, it is possible to work in the physical space to specify the auxiliary distribution.
+# For a more advanced usage, it is possible to work in the physical space to specify the auxiliary distribution.
 # In this second example, we take the auxiliary distribution in the same family as the initial distribution and we want to optimize all the parameters.
 
 # %%
@@ -228,7 +228,7 @@ print("Probability of failure:", physicalSpaceISResult1.getProbabilityEstimate()
 print("Coefficient of variation:", physicalSpaceISResult1.getCoefficientOfVariation())
 
 # %%
-# We can also decide to optimize only the means of the margins and keep the other parameters identical to the initial distribution.
+# We can also decide to optimize only the means of the marginals and keep the other parameters identical to the initial distribution.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
@@ -356,4 +356,4 @@ print("Modified quantile level:", physicalSpaceIS4.getQuantileLevel())
 
 
 # %%
-# The optimized auxiliary distribution with the dependency between the two margins allows one to better fit the failure domain resulting a lower coefficient of variation.
+# The optimized auxiliary distribution with a dependency between the two marginals allows one to better fit the failure domain, resulting in a lower coefficient of variation.
