@@ -5,7 +5,6 @@ import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 # Latent variable model for 4 categorical levels and
 # a 3-dimensional latent space
