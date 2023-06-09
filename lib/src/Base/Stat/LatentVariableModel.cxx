@@ -284,7 +284,6 @@ void LatentVariableModel::save(Advocate & adv) const
   adv.saveAttribute("activeLatentVariables_", activeLatentVariables_);
   adv.saveAttribute("nLevels_", nLevels_);
   adv.saveAttribute("latentDim_", latentDim_);
-// ADD OTHER ATTRIBUTES
 }
 
 /* Method load() reloads the object from the StorageManager */
