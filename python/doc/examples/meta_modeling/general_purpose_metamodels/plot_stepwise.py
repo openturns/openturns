@@ -14,14 +14,14 @@ import openturns as ot
 from openturns.viewer import View
 import numpy as np
 import matplotlib.pyplot as plt
-from openturns.usecases import linthurst_dataset
+from openturns.usecases import linthurst
 
 # %%
 # We define the data.
 #
 
 # %%
-ds = linthurst_dataset.LinthurstDataset()
+ds = linthurst.Linthurst()
 dimension = ds.data.getDimension() - 1
 
 input_sample = ds.data[:, 1: dimension + 1]

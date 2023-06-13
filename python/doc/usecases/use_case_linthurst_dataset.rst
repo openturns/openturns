@@ -19,13 +19,13 @@ References
 API documentation
 -----------------
 
-.. currentmodule:: openturns.usecases.linthurst_dataset
+.. currentmodule:: openturns.usecases.linthurst
 
-.. autoclass:: LinthurstDataset
+.. autoclass:: Linthurst
     :noindex:
 
 Examples based on this use case
 -------------------------------
 
-.. minigallery:: openturns.usecases.linthurst_dataset.LinthurstDataset
+.. minigallery:: openturns.usecases.linthurst.Linthurst
 

@@ -24,7 +24,7 @@ Compute confidence intervals of a regression model from data
 import openturns as ot
 import openturns.viewer as otv
 import numpy as np
-from openturns.usecases import linthurst_dataset
+from openturns.usecases import linthurst
 
 
 # %%
@@ -49,7 +49,7 @@ ot.RandomGenerator.SetSeed(0)
 #
 
 # %%
-ds = linthurst_dataset.LinthurstDataset()
+ds = linthurst.Linthurst()
 
 
 # %%

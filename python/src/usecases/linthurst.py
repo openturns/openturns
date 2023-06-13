@@ -5,7 +5,7 @@ Use case : Linthurst data set
 import openturns as ot
 
 
-class LinthurstDataset:
+class Linthurst:
     """
     Data class for the Linthurst data set.
 
@@ -22,8 +22,8 @@ class LinthurstDataset:
 
     Examples
     --------
-    >>> from openturns.usecases import linthurst_dataset
-    >>> ds = linthurst_dataset.LinthurstDataset()
+    >>> from openturns.usecases import linthurst
+    >>> ds = linthurst.Linthurst()
     >>> print(ds.data[:5])
     """
 
