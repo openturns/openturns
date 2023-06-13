@@ -137,7 +137,7 @@ view = otv.View(graph)
 # function takes `totalDegree + 1` as its second input argument).
 
 totalDegree = 4
-polynomialCollection = ["x^%d" % (degree) for degree in range(0, totalDegree + 1)]
+polynomialCollection = [f"x^{degree}" for degree in range(0, totalDegree + 1)]
 print(polynomialCollection)
 
 
@@ -209,7 +209,7 @@ yHatTest = ot.Sample.BuildFromPoint(designMatrixTest * betaHat)
 
 def plotPredictions(xTest, yHatTest, totalDegree, color):
     curve = ot.Curve(xTest, yHatTest)
-    curve.setLegend("L.S. degree %d" % (totalDegree))
+    curve.setLegend(f"L.S. degree {totalDegree}")
     curve.setColor(color)
     return curve
 
