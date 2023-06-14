@@ -405,8 +405,12 @@ significance, we check the value :math:`\mathcal{D}_p (\theta^{(1)}_0)`:
 
 Parameters
 ----------
+model0NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_0`
 m0llh : float
     :math:`\mathcal{M}_0` log-likelihood
+model1NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_1`
 m1llh : float
     :math:`\mathcal{M}_1` log-likelihood
 level : float, :math:`0 \leq \alpha \leq 1`, optional

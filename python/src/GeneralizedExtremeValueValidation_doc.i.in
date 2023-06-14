@@ -21,15 +21,15 @@ GeneralizedExtremeValueFactory"
 %feature("docstring") OT::GeneralizedExtremeValueValidation::drawDiagnosticPlot
 "Draw the 4 usual diagnostic plots.
 
-The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the empirical density of the distribution with the fitted model density.
+The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the fitted model density.
 
 
-If :math:`(z_{(1)}, \dots, z_{(n)})` denotes the ordered block maximum data, the graphs are defined as follows.
+If :math:`(z_{(1)} \leq z_{(2)} \leq \dots \leq z_{(n)})` denotes the ordered block maximum data and :math:`\hat{G}` the cumulated density function of the GEV distribution fitted on the data, the graphs are defined as follows.
 
 The *probability-probability* plot consists of the points:
 
 .. math::
-    \left\{ \left( i/(n+1), \hat{G}(z_{(i)}) \right), i=1, \dots , n\right\}
+    \left\{ \left( i/(n+1), \hat{G}(z_{(i)}) \right), i=1, \dots , m\right\}
 
 
 The *quantile-quantile* plot consists of the points:
@@ -40,12 +40,12 @@ The *quantile-quantile* plot consists of the points:
 The *return level* plot consists of the points:
 
 .. math::
-    \left\{ \left( \log(m), \hat{z}_m\right),m> 0\right\}
+    \left\{ \left( m, \hat{z}_m\right), m> 0\right\}
 
 and the points:
 
 .. math::
-    \left\{ \left( \log(m), z_{m}^{emp}\right), m> 0\right\}
+    \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
 
 where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
 :math:`m`-block return level calculated with the fitted GEV.
@@ -68,12 +68,12 @@ grid : :class:`~openturns.GridLayout`
 The *return level* plot consists of the points:
 
 .. math::
-    \left\{ \left( \log(m), \hat{z}_m\right), 0 < p < 1\right\}
+    \left\{ \left( m, \hat{z}_m\right), m >0 \right\}
 
 and the points:
 
 .. math::
-    \left\{ \left( \log(m), z_{m}^{emp}\right), m> 0\right\}
+    \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
 
 where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
 :math:`m`-block return level calculated with the fitted GEV.

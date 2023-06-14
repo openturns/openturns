@@ -28,7 +28,9 @@ from openturns.usecases import coles
 
 data = coles.Coles().fremantle
 print(data[:5])
-graph = ot.Graph("Annual maximum sea-levels at Fremantle", "year", "level (m)", True, "")
+graph = ot.Graph(
+    "Annual maximum sea-levels at Fremantle", "year", "level (m)", True, ""
+)
 cloud = ot.Cloud(data[:, :2])
 cloud.setColor("red")
 graph.add(cloud)
@@ -59,13 +61,13 @@ print(", ".join([f"{p}: {value:.3f}" for p, value in zip(desc, param)]))
 # We get the asymptotic distribution of the estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
 # In that case, the asymptotic distribution is normal.
 parameterEstimate = result_LL.getParameterDistribution()
-print('Asymptotic distribution of the estimator : ')
+print("Asymptotic distribution of the estimator : ")
 print(parameterEstimate)
 
 # %%
 # We get the covariance matrix  and the standard deviation of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
-print('Cov matrix = ', parameterEstimate.getCovariance())
-print('Standard dev = ', parameterEstimate.getStandardDeviation())
+print("Cov matrix = \n", parameterEstimate.getCovariance())
+print("Standard dev = ", parameterEstimate.getStandardDeviation())
 
 # %%
 # We get the marginal confidence intervals of order 0.95.
@@ -105,7 +107,7 @@ view = otv.View(result_PLL.drawProfileLikelihoodFunction())
 # Note that if the order requested is too high, the confidence interval might not be calculated because
 # one of its bound is out of the definition domain of the log-likelihood function.
 try:
-    print('Confidence interval for xi = ', result_PLL.getParameterConfidenceInterval())
+    print("Confidence interval for xi = ", result_PLL.getParameterConfidenceInterval())
 except Exception as ex:
     print(type(ex))
     pass
@@ -184,9 +186,9 @@ view = otv.View(result_zm_10_PLL.drawProfileLikelihoodFunction())
 #
 # where:
 #
-# - the *CenterReduce* method where :math:`c = \dfrac{1}{m} \sum_{i=1}^m t_i` is the mean time stamps
-#   and :math:`d = \sqrt{\dfrac{1}{m} \sum_{i=1}^m (t_i-c)^2}` is the standard deviation of the time stamps;
-# - the *MinMax* method where :math:`c = t_1` is the first time and :math:`d =  = t_m-t_1` the final time;
+# - the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n t_i` is the mean time stamps
+#   and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
+# - the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the final time;
 # - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 #
 # We suppose that :math:`\mu` is linear in time, and that the other parameters remain constant:
@@ -210,12 +212,14 @@ basis_coll = [basis_lin, basis_cst, basis_cst]
 timeStamps = data[:, 0]
 
 # %%
-# We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3, \beta_4)` using the log-likelihood of the data.
+# We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3, \beta_4)`
+# using the log-likelihood of the data.
 #
 # We test the 3 normalizing methods and both initial points in order to evaluate their impact on the results.
 # We can see that:
 #
-# - both normalization methods lead to the same result,
+# - both normalization methods lead to the same result for :math:`\beta_1`, :math:`\beta_3` and :math:`\beta_4`
+#   (note that :math:`\beta_2` depends on the normalization function),
 # - both initial points lead to the same result when the data have been normalized,
 # - it is very important to normalize all the data: if not, the result strongly depends on the initial point
 #   and it differs from the result obtained with normalized data. The results are not optimal in that case
@@ -229,29 +233,36 @@ normMethod_list.append("MinMax")
 normMethod_list.append("CenterReduce")
 normMethod_list.append("None")
 
-print('Linear mu(t) model: ')
+print("Linear mu(t) model: ")
 for normMeth in normMethod_list:
     for initPoint in initiPoint_list:
-        print('normMeth, initPoint = ', normMeth, initPoint)
+        print("normMeth, initPoint = ", normMeth, initPoint)
         # The ot.Function() is the identity function.
-        result = factory.buildTimeVarying(sample, timeStamps, basis_coll, ot.Function(), initPoint, normMeth)
+        result = factory.buildTimeVarying(
+            sample, timeStamps, basis_coll, ot.Function(), initPoint, normMeth
+        )
         beta = result.getOptimalParameter()
-        print('beta1, beta2, beta3, beta4 = ', beta)
-        print('Max log-likelihood =  ', result.getLogLikelihood())
+        print("beta1, beta2, beta3, beta4 = ", beta)
+        print("Max log-likelihood =  ", result.getLogLikelihood())
 
 # %%
 # According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
 # This initial point is cheaper than the *Static* one as it requires no optimization computation.
-result_NonStatLL = factory.buildTimeVarying(sample, timeStamps, basis_coll, ot.Function(), "Gumbel", "MinMax")
+result_NonStatLL = factory.buildTimeVarying(
+    sample, timeStamps, basis_coll, ot.Function(), "Gumbel", "MinMax"
+)
 beta = result_NonStatLL.getOptimalParameter()
-print('beta1, beta2, beta3, beta_4 = ', beta)
+print("beta1, beta2, beta3, beta_4 = ", beta)
 print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau")
 print(f"sigma = {beta[2]:.4f}")
 print(f"xi = {beta[3]:.4f}")
 
 # %%
 # You can get the expression of the normalizing function :math:`t \mapsto \tau(t)`:
-print('Function tau(t): ', result_NonStatLL.getNormalizationFunction())
+normFunc = result_NonStatLL.getNormalizationFunction()
+print("Function tau(t): ", normFunc)
+print("c = ", normFunc.getEvaluation().getImplementation().getCenter()[0])
+print("1/d = ", normFunc.getEvaluation().getImplementation().getLinear()[0, 0])
 
 # %%
 # You can get the function :math:`t \mapsto \vect{\theta}(t)` where :math:`\vect{\theta}(t) = (\mu(t), \sigma(t), \xi(t))`.
@@ -263,16 +274,51 @@ functionTheta = result_NonStatLL.getParameterFunction()
 dist_beta = result_NonStatLL.getParameterDistribution()
 condifence_level = 0.95
 for i in range(beta.getSize()):
-    lower_bound = dist_beta.getMarginal(i).computeQuantile((1 - condifence_level) / 2)[0]
-    upper_bound = dist_beta.getMarginal(i).computeQuantile((1 + condifence_level) / 2)[0]
-    print('Conf interval for beta_' + str(i + 1) + ' = [' + str(lower_bound) + '; ' + str(upper_bound) + ']')
+    lower_bound = dist_beta.getMarginal(i).computeQuantile((1 - condifence_level) / 2)[
+        0
+    ]
+    upper_bound = dist_beta.getMarginal(i).computeQuantile((1 + condifence_level) / 2)[
+        0
+    ]
+    print(
+        "Conf interval for beta_"
+        + str(i + 1)
+        + " = ["
+        + str(lower_bound)
+        + "; "
+        + str(upper_bound)
+        + "]"
+    )
 
 # %%
 # In order to compare different modelings, we get the optimal log-likelihood of the data for both stationary
 # and non stationary models. The difference is significant enough to be in favor of the non stationary model.
-print('Max log-likelihood: ')
-print('Stationary model =  ', result_LL.getLogLikelihood())
-print('Non stationary linear mu(t) model =  ', result_NonStatLL.getLogLikelihood())
+print("Max log-likelihood: ")
+print("Stationary model =  ", result_LL.getLogLikelihood())
+print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood())
+
+# %%
+# In order to draw some diagnostic plots similar to those drawn in the stationary case, we refer to the
+# following result: if :math:`Z_t` is a non stationary GEV model parametrized by :math:`(\mu(t), \sigma(t), \xi(t))`,
+# then the standardized variables :math:`\hat{Z}_t` defined by:
+#
+# .. math::
+#
+#    \hat{Z}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right]
+#
+# have  the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
+#
+# As a result, we can validate the inference result thanks the 4 usual diagnostic plots:
+#
+# - the probability-probability pot,
+# - the quantile-quantile pot,
+# - the return level plot,
+# - the data histogram and the desnity of the fitted model.
+#
+# using the transformed data compared to the Gumbel model. We can see that the adequation is better
+# than with the stationary model.
+graph = result_NonStatLL.drawDiagnosticPlot()
+view = otv.View(graph)
 
 # %%
 # We can draw the mean function  :math:`t \mapsto \Expect{\mbox{GEV}(t)}`. Be careful, it is not the function
@@ -293,24 +339,32 @@ print('Non stationary linear mu(t) model =  ', result_NonStatLL.getLogLikelihood
 # order :math:`p` of the GEV distribution at time :math:`t`.
 # Here, :math:`\mu(t)` is a linear function and the other parameters are constant, so the mean and the quantile
 # functions are also linear functions.
-graph = ot.Graph(r"Annual maximum sea-levels at Fremantle - Linear $\mu(t)$", "year", "level (m)", True, "")
+graph = ot.Graph(
+    r"Annual maximum sea-levels at Fremantle - Linear $\mu(t)$",
+    "year",
+    "level (m)",
+    True,
+    "",
+)
 graph.setIntegerXTick(True)
 # data
 cloud = ot.Cloud(data[:, :2])
 cloud.setColor("red")
 graph.add(cloud)
 # mean function
-meandata = [result_NonStatLL.getDistribution(t).getMean()[0] for t in data[:, 0].asPoint()]
+meandata = [
+    result_NonStatLL.getDistribution(t).getMean()[0] for t in data[:, 0].asPoint()
+]
 curve_meanPoints = ot.Curve(data[:, 0].asPoint(), meandata)
 graph.add(curve_meanPoints)
 # quantile function
 graphQuantile = result_NonStatLL.drawQuantileFunction(0.95)
 drawQuant = graphQuantile.getDrawable(0)
 drawQuant = graphQuantile.getDrawable(0)
-drawQuant.setLineStyle('dashed')
+drawQuant.setLineStyle("dashed")
 graph.add(drawQuant)
-graph.setLegends(['data', 'mean function', 'quantile 0.95  function'])
-graph.setLegendPosition('bottomright')
+graph.setLegends(["data", "mean function", "quantile 0.95  function"])
+graph.setLegendPosition("bottomright")
 view = otv.View(graph)
 
 
@@ -324,21 +378,28 @@ view = otv.View(graph)
 # We use the Likelihood Ratio test. The null hypothesis is the stationary model :math:`\mathcal{M}_0`.
 # The Type I error :math:`\alpha` is taken equal to 0.05.
 #
-# This test confirms that the dependence through time is not negligible: it means that the linear :math:`mu(t)`
+# This test confirms that the dependence through time is not negligible: it means that the linear :math:`\mu(t)`
 # component explains a large variation in the data.
 llh_LL = result_LL.getLogLikelihood()
 llh_NonStatLL = result_NonStatLL.getLogLikelihood()
-resultLikRatioTest = ot.HypothesisTest.LikelihoodRatioTest(llh_LL, llh_NonStatLL, 0.05)
+modelM0_Nb_param = 3
+modelM1_Nb_param = 4
+resultLikRatioTest = ot.HypothesisTest.LikelihoodRatioTest(
+    modelM0_Nb_param, llh_LL, modelM1_Nb_param, llh_NonStatLL, 0.05
+)
 accepted = resultLikRatioTest.getBinaryQualityMeasure()
-print(f"Hypothesis H0 (stationary model) vs H1 (linear mu(t) model):  accepted ? = {accepted}")
+print(
+    f"Hypothesis H0 (stationary model) vs H1 (linear mu(t) model):  accepted ? = {accepted}"
+)
 
 # %%
 # We detail the statistics of the Likelihood Ratio test: the deviance statistics :math:`\mathcal{D}_p` follows
 # a :math:`\chi^2_1` distribution.
 # The model :math:`\mathcal{M}_0` is rejected if the deviance statistics estimated on the data is greater than
-# the p-value :math:`c_{\alpha}` corresponding to the Type I error  :math:`\alpha`.
+# the threshold :math:`c_{\alpha}` or if the p-value is less than the Type I error  :math:`\alpha = 0.05`.
 print(f"Dp={resultLikRatioTest.getStatistic():.2f}")
-print(f"cAlpha={resultLikRatioTest.getThreshold():.2f}")
+print(f"alpha={resultLikRatioTest.getThreshold():.2f}")
+print(f"p-value={resultLikRatioTest.getPValue():.2f}")
 
 # %%
 # We can perform the same study with a quadratic model for :math:`\mu(t)` or a linear model for
@@ -365,28 +426,45 @@ print(f"cAlpha={resultLikRatioTest.getThreshold():.2f}")
 #     \end{align*}
 #
 # For each model, we give the log-likelihood values and we test the validity of each model with respect
-# to the stationary first model.
+# to the non stationary model where :math:`\mu(t)` is linear.
 # We notice that there is no evidence to adopt a quadratic model for :math:`\mu(t)` nor a linear model
 # for :math:`\mu(t)` and :math:`\sigma(t)`: the optimal log-likelihood for each model is very near the likelihood
 # we obtained with a linear model for :math:`\mu(t)` only. It means that these both models do not bring significant
 # improvements with respect to model tested before.
-basis_quad = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"]), ot.SymbolicFunction(["t"], ["t^2"])])
+basis_quad = ot.Basis(
+    [constant, ot.SymbolicFunction(["t"], ["t"]), ot.SymbolicFunction(["t"], ["t^2"])]
+)
 basis_coll_2 = [basis_quad, basis_cst, basis_cst]
 basis_coll_3 = [basis_lin, basis_lin, basis_cst]
-result_NonStatLL_2 = factory.buildTimeVarying(sample, timeStamps, basis_coll_2, ot.Function(), "Gumbel", "MinMax")
-result_NonStatLL_3 = factory.buildTimeVarying(sample, timeStamps, basis_coll_3, ot.Function(), "Gumbel", "MinMax")
-print('Max log-likelihood = ')
-print('Non stationary quadratic mu(t) model = ', result_NonStatLL_2.getLogLikelihood())
-print('Non stationary linear mu(t) and sigma(t) model = ', result_NonStatLL_3.getLogLikelihood())
+result_NonStatLL_2 = factory.buildTimeVarying(
+    sample, timeStamps, basis_coll_2, ot.Function(), "Gumbel", "MinMax"
+)
+result_NonStatLL_3 = factory.buildTimeVarying(
+    sample, timeStamps, basis_coll_3, ot.Function(), "Gumbel", "MinMax"
+)
+print("Max log-likelihood = ")
+print("Non stationary quadratic mu(t) model = ", result_NonStatLL_2.getLogLikelihood())
+print(
+    "Non stationary linear mu(t) and sigma(t) model = ",
+    result_NonStatLL_3.getLogLikelihood(),
+)
 llh_LL = result_LL.getLogLikelihood()
 llh_NonStatLL_2 = result_NonStatLL_2.getLogLikelihood()
 llh_NonStatLL_3 = result_NonStatLL_3.getLogLikelihood()
-resultLikRatioTest_2 = ot.HypothesisTest.LikelihoodRatioTest(llh_LL, llh_NonStatLL_2, 0.05)
-resultLikRatioTest_3 = ot.HypothesisTest.LikelihoodRatioTest(llh_LL, llh_NonStatLL_3, 0.05)
+resultLikRatioTest_2 = ot.HypothesisTest.LikelihoodRatioTest(
+    4, llh_NonStatLL, 5, llh_NonStatLL_2, 0.05
+)
+resultLikRatioTest_3 = ot.HypothesisTest.LikelihoodRatioTest(
+    4, llh_NonStatLL, 5, llh_NonStatLL_3, 0.05
+)
 accepted_2 = resultLikRatioTest_2.getBinaryQualityMeasure()
 accepted_3 = resultLikRatioTest_3.getBinaryQualityMeasure()
-print(f"Hypothesis H0 (stationary model) vs H1 (quadratic mu(t) model):  accepted ? = {accepted_2}")
-print(f"Hypothesis H0 (stationary model) vs H1 (linear mu(t) and sigma(t) model):  accepted ? = {accepted_3}")
+print(
+    f"Hypothesis H0 (linear mu(t) model) vs H1 (quadratic mu(t) model):  accepted ? = {accepted_2}"
+)
+print(
+    f"Hypothesis H0 (linear mu(t) model) vs H1 (linear mu(t) and sigma(t) model):  accepted ? = {accepted_3}"
+)
 
 # %%
 otv.View.ShowAll()

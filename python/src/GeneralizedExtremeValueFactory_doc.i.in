@@ -111,10 +111,10 @@ result : :class:`~openturns.ProfileLikelihoodResult`
 "Estimate the distribution from the :math:`r` largest order statistics.
 
 Let us suppose we have a series of independent and identically distributed variables and that data are grouped
-into :math:`m` blocks. In each block, the largest :math:`R` observations are recorded.
+into :math:`n` blocks. In each block, the largest :math:`R` observations are recorded.
 
 We define the series
-:math:`M_i^{(R)} = (z_i^{(1)}, \hdots, z_i^{(R)})` for :math:`1 \leq i \leq m` where the values are sorted
+:math:`M_i^{(R)} = (z_i^{(1)}, \hdots, z_i^{(R)})` for :math:`1 \leq i \leq n` where the values are sorted
 in decreasing order.
 
 The estimator of :math:`(\mu, \sigma, \xi)` maximizes  the log-likelihood built from the :math:`r` largest order statisctics, with :math:`1 \leq r \leq R` defined as:
@@ -124,7 +124,7 @@ If :math:`\xi \neq 0`, then:
 .. math::
     :label: llR1
 
-    L(\mu, \sigma, \xi) = \prod_{i=1}^m \Biggl( \exp \Biggl\{ - \biggl[ 1 + \xi \Bigl( \frac{z_i^{(r)} - \mu }{\sigma} \Bigr) \biggr]^{-1/\xi} \Biggr\} \prod_{k=1}^r \sigma^{-1} \biggl[ 1 + \xi \Bigl( \frac{z_i^{(k)} - \mu }{\sigma} \Bigr) \biggr]^{-1/\xi-1} \Biggr)
+    \ell(\mu, \sigma, \xi) = -nr \log \sigma - \sum_{i=1}^n   \biggl[ 1 + \xi \Bigl( \frac{z_i^{(r)} - \mu }{\sigma} \Bigr) \biggr]^{-1/\xi}  -\left(\dfrac{1}{\xi} +1 \right)  \sum_{i=1}^n \sum_{k=1}^r  \log \biggl[ 1 + \xi \Bigl( \frac{z_i^{(k)} - \mu }{\sigma} \Bigr) \biggr] 
 
 
 defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_i^{(k)} - \mu}{\sigma} \right) > 0` for all :math:`1 \leq i \leq m` and :math:`1 \leq k \leq r`.
@@ -134,16 +134,14 @@ If :math:`\xi = 0`, then:
 .. math::
     :label: llR2
 
-    L(\mu, \sigma, \xi) = \prod_{i=1}^m \Biggl( \exp \Biggl\{ - \exp \biggl[ - \Bigl( \frac{z_i^{(r)} - \mu }{\sigma} \Bigr) \biggr] \Biggr\} \prod_{k=1}^r \sigma^{-1} \exp \biggl[ - \Bigl( \frac{z_i^{(k)} - \mu }{\sigma} \Bigr) \biggr] \Biggr)
+    \ell(\mu, \sigma, \xi) = -nr \log \sigma - \sum_{i=1}^n   \exp \biggl[ - \Bigl( \frac{z_i^{(r)} - \mu }{\sigma} \Bigr) \biggr] - \sum_{i=1}^n \sum_{k=1}^r  \Bigl( \frac{z_i^{(k)} - \mu }{\sigma} \Bigr) 
 
 
 
 Parameters
 ----------
-sampleM : 2-d sequence of float
-    Block maxima grouped in a sample of size :math:`m` and dimension :math:`R`.
-    
-    The :math:`i`-th point of the sample contains the :math:`R` largest order statistics of block :math:`i`.
+sample : 2-d sequence of float
+    Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
 r : int, :math:`1 \leq r \leq R`, 
     Number of largest order statistics taken into account among the :math:`R` stored ones.
     
@@ -172,9 +170,7 @@ The result class produced by the method provides:
 Parameters
 ----------
 sampleM : 2-d sequence of float
-    Block maxima  grouped in a sample of size :math:`m` and dimension :math:`R`.
-    
-    The :math:`i`-th point of the sample contains the :math:`R` largest order statistics of block :math:`i`.
+    Block maxima  grouped in a sample of size :math:`n` and dimension :math:`R`.
 r : int, :math:`1 \leq r \leq R`, optional
     Number of order statistics taken into account among the :math:`R` stored ones.
     
@@ -196,9 +192,9 @@ We consider a non stationary GEV model to describe the distribution of :math:`Z_
 
     Z_t \sim \mbox{GEV}(\mu(t), \sigma(t), \xi(t))
 
-We have the values of :math:`Z_t` on the time grid :math:`(t_1, \dots, t_m)`.
+We have the values of :math:`Z_t` on the time stamps :math:`(t_1, \dots, t_n)`.
 
-For numerical reasons, it is recommended to normalize the time grid. OpenTURNS applies the following mapping:
+For numerical reasons, it is recommended to normalize the time stamps. OpenTURNS applies the following mapping:
 
 .. math::
 
@@ -206,9 +202,9 @@ For numerical reasons, it is recommended to normalize the time grid. OpenTURNS a
 
 and with three ways of defining :math:`(c,d)`:
 
-- the *CenterReduce* method where :math:`c = \dfrac{1}{m} \sum_{i=1}^m t_i` is the mean time stamps
-  and :math:`d = \sqrt{\dfrac{1}{m} \sum_{i=1}^m (t_i-c)^2}` is the standard deviation of the time stamps;
-- the *MinMax* method where :math:`c = t_1` is the first time and :math:`d =  = t_m-t_1` the range of the time stamps;
+- the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n t_i` is the mean time stamps
+  and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
+- the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the range of the time stamps;
 - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 
 
@@ -226,7 +222,7 @@ where:
 - each :math:`\beta_i^{j} \in \Rset`.
 
 
-We denote by :math:`d_{\mu}`, :math:`d_{\sigma}` and :math:`d_{\xi}` are the size of the functional basis of
+We denote by :math:`d_{\mu}`, :math:`d_{\sigma}` and :math:`d_{\xi}` the size of the functional basis of
 :math:`\mu`, :math:`\sigma` and :math:`\xi` respectively. We denote by
 :math:`\vect{\beta} = (\beta_1^{\mu}, \dots, \beta_{d_{\mu}}^{\mu}, \beta_1^{\sigma}, \dots, \beta_{d_{\sigma}}^{\sigma}, \beta_1^{\xi}, \dots, \beta_{d_{\xi}}^{\xi})`
 the complete vector of parameters.
@@ -235,7 +231,7 @@ The estimator of  :math:`\vect{\beta}` maximizes  the likelihood of the non stat
 
 .. math::
 
-    L(\vect{\beta}) = \prod_{t=1}^{m} g(z_{t};\mu(t), \sigma(t), \xi(t))
+    L(\vect{\beta}) = \prod_{t=1}^{n} g(z_{t};\mu(t), \sigma(t), \xi(t))
 
 where :math:`g(z_{t};\mu(t), \sigma(t), \xi(t))` denotes the GEV density function with parameters
 :math:`\mu(t), \sigma(t), \xi(t)` evaluated at :math:`z_t`.
@@ -244,7 +240,7 @@ Then, if none of the :math:`\xi(t)` is zero, the log-likelihood is defined by:
 
 .. math::
 
-    \ell (\vect{\beta}) = -\sum_{t=1}^{m} \left\{ \log(\sigma(t)) + (1 + 1 / \xi(t) ) \log\left[ 1+\xi(t) \left( \frac{z_t - \mu(t)}{\sigma(t)}\right) \right] + \left[ 1 + \xi(t) \left( \frac{z_t- \mu(t)}{\sigma(t)} \right) \right]^{-1 / \xi(t)} \right\}
+    \ell (\vect{\beta}) = -\sum_{t=1}^{n} \left\{ \log(\sigma(t)) + (1 + 1 / \xi(t) ) \log\left[ 1+\xi(t) \left( \frac{z_t - \mu(t)}{\sigma(t)}\right) \right] + \left[ 1 + \xi(t) \left( \frac{z_t- \mu(t)}{\sigma(t)} \right) \right]^{-1 / \xi(t)} \right\}
 
 defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_t - \mu}{\sigma} \right) > 0`
 for all :math:`t`.
@@ -253,7 +249,7 @@ And if any of the :math:`\xi(t)` is equal to 0, the log-likelihood is defined as
 
 .. math::
 
-    \ell (\vect{\beta}) = -\sum_{t=1}^{m} \left\{ \log(\sigma(t)) + \frac{z_t - \mu(t)}{\sigma(t)} + \exp \left\{ - \frac{z_t - \mu(t)}{\sigma(t)} \right\} \right\}
+    \ell (\vect{\beta}) = -\sum_{t=1}^{n} \left\{ \log(\sigma(t)) + \frac{z_t - \mu(t)}{\sigma(t)} + \exp \left\{ - \frac{z_t - \mu(t)}{\sigma(t)} \right\} \right\}
 
 The initialization of the optimization problem is crucial. OpenTURNS proposes two initial points :math:`(\mu_0, \sigma_0, \xi_0)`:
 
@@ -267,9 +263,10 @@ The initialization of the optimization problem is crucial. OpenTURNS proposes tw
 
 The result class produced by the method provides:
 
-- the estimator of  :math:`\hat{\vect{\beta}}`,
+- the estimator :math:`\hat{\vect{\beta}}`,
 - the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
-- the parameter functions :math:`t \mapsto \vect{\theta}(t)` which give access to the normalizing function :math:`t \mapsto \tau(t)`,
+- the parameter functions :math:`t \mapsto \vect{\theta}(t)`,
+- the normalizing function :math:`t \mapsto \tau(t)`,
 - the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
 - the GEV distribution at time :math:`t`,
 - the quantile functions of order :math:`p`:  :math:`t \mapsto q_p(\mbox{GEV}(\hat{\mu}(t), \hat{\sigma}(t), \hat{\xi}(t))`.
@@ -369,7 +366,8 @@ The result class produced by the method provides:
 - the GEV distribution associated to :math:`(\hat{z}_m, \hat{\sigma}, \hat{\xi})`,
 - the asymptotic distribution of :math:`(\hat{z}_m, \hat{\sigma}, \hat{\xi})`,
 - the profile log-likelihood function :math:`z_m \mapsto \ell_p(z_m)`,
-- the optimal profile log-likelihood value :math:`\ell_p(\hat{z}_m)`.
+- the optimal profile log-likelihood value :math:`\ell_p(\hat{z}_m)`,
+- confidence intervals of level :math:`(1-\alpha)` of :math:`\hat{z}_m`.
 
 Parameters
 ----------

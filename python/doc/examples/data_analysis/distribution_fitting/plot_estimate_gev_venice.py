@@ -58,19 +58,19 @@ fitted_GEV = result_LL_max.getDistribution()
 desc = fitted_GEV.getParameterDescription()
 param = fitted_GEV.getParameter()
 print(", ".join([f"{p}: {value:.3f}" for p, value in zip(desc, param)]))
-print('Max log-likelihood (one max): ', result_LL_max.getLogLikelihood())
+print("Max log-likelihood (one max): ", result_LL_max.getLogLikelihood())
 
 # %%
 # We get the asymptotic distribution of the estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
 # In that case, the asymptotic distribution is normal.
 parameterEstimate = result_LL_max.getParameterDistribution()
-print('Asymptotic distribution of the estimator : ')
+print("Asymptotic distribution of the estimator : ")
 print(parameterEstimate)
 
 # %%
 # We get the covariance matrix  and the standard deviation of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
-print('Cov matrix = ', parameterEstimate.getCovariance())
-print('Standard dev = ', parameterEstimate.getStandardDeviation())
+print("Cov matrix = ", parameterEstimate.getCovariance())
+print("Standard dev = ", parameterEstimate.getStandardDeviation())
 
 # %%
 # We get the marginal confidence intervals of order 0.95.
@@ -108,7 +108,9 @@ print(result_PLL_max.getParameterConfidenceInterval())
 # Note that if the order requested is too high, the confidence interval might not be calculated because
 # one of its bound is out of the definition domain of the log-likelihood function.
 try:
-    print('Confidence interval for xi = ', result_PLL_max.getParameterConfidenceInterval())
+    print(
+        "Confidence interval for xi = ", result_PLL_max.getParameterConfidenceInterval()
+    )
 except Exception as ex:
     print(type(ex))
     pass
