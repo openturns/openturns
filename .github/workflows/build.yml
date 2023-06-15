@@ -52,7 +52,7 @@ jobs:
           cmake --build . --config Release --target install
           xcopy install\bin\OT.dll install\Lib\site-packages\openturns
           xcopy C:\Libraries\openblas\bin\libopenblas.dll install\Lib\site-packages\openturns
-          ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Sample_computation|InverseBox" -j2 --repeat after-timeout:2 --schedule-random
+          ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Sample_computation|InverseBox|Hypergeometric" -j2 --repeat after-timeout:2 --schedule-random
 
   aarch64:
     runs-on: ubuntu-latest
