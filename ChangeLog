@@ -64,6 +64,8 @@
  * Add VisualTest::DrawPPplot
  * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence functions
  * Add Distribution.compute(Upper|Lower)(Tail|Extremal)DependenceMatrix methods to compute dependence coefficients
+ * Enable Pagmo.moead_gen with pagmo>=2.19
+ * Enable Bonmin.Ecp/iFP algorithms with bonmin>=1.8.9
 
 === Bug fixes ===
  * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
