@@ -6,7 +6,7 @@ uid=$1
 gid=$2
 
 env
-pip install "sphinx<6"
+pip install "sphinx<6" --break-system-packages
 
 # build with frozen date unless on release for reproducible builds
 if test "${CIRCLE_BRANCH}" = "master"
