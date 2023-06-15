@@ -147,7 +147,7 @@ graph_quantile = estimator_timevar.drawQuantileFunction(0.99)
 # specific check for model selection
 estimator_mle = factory.buildMethodOfLikelihoodMaximizationEstimator(fremantle[:, 1])
 result_deviance = ot.HypothesisTest.LikelihoodRatioTest(
-    estimator_mle.getLogLikelihood(), estimator_timevar.getLogLikelihood()
+    3, estimator_mle.getLogLikelihood(), 4, estimator_timevar.getLogLikelihood()
 )
 print(result_deviance)
 ott.assert_almost_equal(result_deviance.getStatistic(), 12.674, 1e-2, 1e-2)
