@@ -1,34 +1,10 @@
 = New Features =
 
-== 1.22 release (in-progress) == #release-1.22
+== 1.21 release (2023-06-20) == #release-1.21
 
 === Library ===
 
 ==== Major changes ====
-
-==== New classes ====
-
-==== API changes ====
- * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
- * Removed deprecated (Non)GaussianLinearCalibration::getCandidate method
- * Removed deprecated DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
- * Removed deprecated EllipticalDistribution::getInverseCorrelation method
- * Removed deprecated Basis::getDimension method
- * Removed deprecated HSICStat ctors relying on weight matrix
-
-=== Documentation ===
-
-=== Python module ===
-
-=== Miscellaneous ===
-
-
-== 1.21rc1 release (2023-05-16) == #release-1.21rc1
-
-=== Library ===
-
-==== Major changes ====
- * BoxCoxFactory handles linear model
  * New GEV estimation services: MLE, profiled likelihood, r-maxima, time-varying, return level
 
 ==== New classes ====
@@ -91,6 +67,7 @@
  * Add Distribution.compute(Upper|Lower)(Tail|Extremal)DependenceMatrix methods to compute dependence coefficients
  * Enable Pagmo.moead_gen with pagmo>=2.19
  * Enable Bonmin.Ecp/iFP algorithms with bonmin>=1.8.9
+ * BoxCoxFactory handles linear model
 
 === Bug fixes ===
  * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
