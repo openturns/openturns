@@ -246,6 +246,13 @@ int main(int, char *[])
       // Nothing to do
     }
 
+    // append itself
+    sample5.add(sample5);
+    fullprint << "sample5.add(sample5)=" << sample5 << std::endl;
+
+    // stack itself
+    sample5.stack(sample5);
+    fullprint << "sample5.stack(sample5)=" << sample5 << std::endl;
 
   }
   catch (TestFailed & ex)

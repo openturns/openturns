@@ -611,7 +611,6 @@ void Pagmo::run()
   result_ = OptimizationResult(getProblem());
   result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
   Scalar optimalValue = 0.0;
-  Point optimalPoint;
   Sample finalPoints(0, getProblem().getDimension());
 
   // retrieve final population

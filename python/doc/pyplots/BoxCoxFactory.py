@@ -5,47 +5,47 @@ from openturns.viewer import View
 # Create a process X: R^2 --> R^2
 
 # Define a bi dimensional mesh as a box
-myIndices = ot.Indices([40, 20])
-myMesher = ot.IntervalMesher(myIndices)
+indices = ot.Indices([40, 20])
+mesher = ot.IntervalMesher(indices)
 lowerBound = [0.0, 0.0]
 upperBound = [2.0, 1.0]
-myInterval = ot.Interval(lowerBound, upperBound)
-myMesh = myMesher.build(myInterval)
+interval = ot.Interval(lowerBound, upperBound)
+mesh = mesher.build(interval)
 
 
 # Define a scalar temporal Gaussian process on the mesh
 # this process is stationary
-# myXproc R^2 --> R
+# xProc R^2 --> R
 amplitude = [1.0]
 scale = [0.2, 0.2]
-myCovModel = ot.ExponentialModel(scale, amplitude)
-myXproc = ot.GaussianProcess(myCovModel, myMesh)
+covModel = ot.ExponentialModel(scale, amplitude)
+xProc = ot.GaussianProcess(covModel, mesh)
 
 
-# Transform myXproc to make its variance depend on the vertex (s,t)
+# Transform xProc to make its variance depend on the vertex (s,t)
 # and to get a positive process
 # thanks to the spatial function g
-# myXtProcess R --> R
+# xtProcess R --> R
 g = ot.SymbolicFunction(["x1"], ["exp(x1)"])
-myDynTransform = ot.ValueFunction(g, myMesh)
-myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
+dynTransform = ot.ValueFunction(g, mesh)
+xtProcess = ot.CompositeProcess(dynTransform, xProc)
 
-myField = myXtProcess.getRealization()
-graphMarginal1 = ot.KernelSmoothing().build(myField.getValues()).drawPDF()
+field = xtProcess.getRealization()
+graphMarginal1 = ot.KernelSmoothing().build(field.getValues()).drawPDF()
 graphMarginal1.setTitle("")
 graphMarginal1.setXTitle("X")
 graphMarginal1.setLegendPosition("")
 
 # Initiate a BoxCoxFactory
-myBoxCoxFactory = ot.BoxCoxFactory()
+factory = ot.BoxCoxFactory()
 
 shift = [0.0]
 
-# We estimate the lambda parameter from the field myField
+# We estimate the lambda parameter from the field field
 # All values of the field are positive
-myModelTransform, graph = myBoxCoxFactory.buildWithGraph(myField, shift)
+transform, graph = factory.buildWithGraph(field, shift)
 graphMarginal2 = (
-    ot.KernelSmoothing().build(myModelTransform(myField).getValues()).drawPDF()
+    ot.KernelSmoothing().build(transform(field).getValues()).drawPDF()
 )
 graphMarginal2.setXTitle("T_lambda(X)")
 graphMarginal2.setLegendPosition("")

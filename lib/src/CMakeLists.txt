@@ -63,8 +63,6 @@ if (OPENTURNS_HAVE_EXPRTK)
   set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
   if (MINGW)
     set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "-Wa,-mbig-obj -g0")
-  elseif (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC|Intel")
-    set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "/bigobj")
   endif ()
 endif()
 
@@ -120,7 +118,7 @@ install(EXPORT OpenTURNS-Targets DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH} COMP
 # Install rules for library and executable
 install (TARGETS OT
           EXPORT  OpenTURNS-Targets
-          RUNTIME DESTINATION bin
+          RUNTIME DESTINATION ${OPENTURNS_BIN_PATH}
           LIBRARY DESTINATION ${OPENTURNS_LIBRARY_PATH}
           ARCHIVE DESTINATION ${OPENTURNS_LIBRARY_PATH})
 

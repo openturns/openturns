@@ -14,6 +14,7 @@
  * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
  * UniformOverMesh (openturns.experimental)
  * GeneralizedExtremeValueValidation (openturns.experimental)
+ * Coles (openturns.usecases.coles)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -63,6 +64,8 @@
  * Add VisualTest::DrawPPplot
  * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence functions
  * Add Distribution.compute(Upper|Lower)(Tail|Extremal)DependenceMatrix methods to compute dependence coefficients
+ * Enable Pagmo.moead_gen with pagmo>=2.19
+ * Enable Bonmin.Ecp/iFP algorithms with bonmin>=1.8.9
 
 === Bug fixes ===
  * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
@@ -94,6 +97,8 @@
  * #2299 (Allow openturns as subproject)
  * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
  * #2323 (Minor wording issues in the cross entropy importance sampling example)
+ * #2327 (A sign mistake in FGM document)
+ * #2328 (Sample.add weird behaviour)
 
 
 == 1.20 release (2022-11-08) == #release-1.20

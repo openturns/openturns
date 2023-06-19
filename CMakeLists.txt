@@ -99,34 +99,15 @@ endif ()
 
 set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME)
 
-if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
-  set (CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
-endif ()
+include (GNUInstallDirs)
 
-set (OPENTURNS_LIBRARY_PATH
-      ${CMAKE_INSTALL_LIBDIR}
-      CACHE PATH "The directory where the library is installed"
-   )
-set (OPENTURNS_INCLUDE_PATH
-      include
-      CACHE PATH "The directory where the header files are installed"
-   )
-set (OPENTURNS_CONFIG_CMAKE_PATH
-      ${CMAKE_INSTALL_LIBDIR}/cmake/openturns
-      CACHE PATH "The directory where the CMake files are installed"
-   )
-set (OPENTURNS_SYSCONFIG_PATH
-      etc
-      CACHE PATH "The directory where the configuration file is installed"
-   )
-set (OPENTURNS_DATA_PATH
-      share
-      CACHE PATH "The directory where the common files are installed"
-   )
-set (OPENTURNS_DOC_PATH
-      share/openturns/doc
-      CACHE PATH "The directory where the license files are installed"
-   )
+set (OPENTURNS_LIBRARY_PATH ${CMAKE_INSTALL_LIBDIR} CACHE PATH "The directory where the library is installed")
+set (OPENTURNS_BIN_PATH ${CMAKE_INSTALL_BINDIR} CACHE PATH "Binary install path")
+set (OPENTURNS_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "The directory where the header files are installed")
+set (OPENTURNS_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/openturns CACHE PATH "The directory where the CMake files are installed")
+set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR} CACHE PATH "The directory where the configuration file is installed")
+set (OPENTURNS_DATA_PATH ${CMAKE_INSTALL_DATAROOTDIR} CACHE PATH "The directory where the common files are installed")
+set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DATAROOTDIR}/openturns/doc CACHE PATH "The directory where the license files are installed")
 
 if (WIN32)
   set (DEFAULT_TMP TEMP)
@@ -439,6 +420,8 @@ endif ()
 if (MSVC)
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
+  # for exprtk, boost, swig
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif ()
 
 if (CMAKE_VERSION VERSION_LESS 3.20)

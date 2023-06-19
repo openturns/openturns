@@ -613,7 +613,7 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
 }
 
 /* Draw dependence functions */
-Graph VisualTestDrawDependenceFunction(const Sample & data,
+static Graph VisualTestDrawDependenceFunction(const Sample & data,
                                        const String & linkFormula,
                                        const String & legend,
                                        const Bool survival = false)

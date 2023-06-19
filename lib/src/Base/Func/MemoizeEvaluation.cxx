@@ -167,7 +167,6 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 
     if (toDoSize > 0)
     {
-      Sample result;
       try
       {
         const Sample result(evaluation_.operator()(toDo));
@@ -208,7 +207,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         }
         p_cache_->merge(tempCache);
         const Indices okIndices(failedIndices.complement(size));
-        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, okSample);
+        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, okSample) << exc.what();
       }
     }
     // Fill remaining output values
