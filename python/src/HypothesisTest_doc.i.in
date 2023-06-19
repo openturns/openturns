@@ -365,71 +365,62 @@ class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=tru
 This test helps selecting between two nested models :math:`\mathcal{M}_0 \subset \mathcal{M}_1`
 estimated by likelihood maximization.
 
-Let :math:`\vect{\theta_0}` the parameters of a model :math:`\mathcal{M}` of dimension :math:`d`
-and :math:`\hat{\vect{\theta_0}}` its maximum likelihood estimator.
-Let us partition :math:`\vect{\theta}=(\theta^{(1)}, \theta^{(2)})` and let :math:`k` be the dimension of :math:`\theta^{(1)}`.
-We note :math:`\ell(\hat{\vect{\theta_0}})` the associated maximum likelihood.
-The profiled likehood of :math:`\mathcal{M}` wrt :math:`\theta^{(1)}` is defined by:
+Suppose that  :math:`\mathcal{M}_1` is a model with :math:`d`-dimensional parameter  :math:`\vect{\theta} = (\vect{\theta}^{(1)}, \vect{\theta}^{(2)})` where :math:`\vect{\theta}^{(1)}` is a :math:`k`-dimensional subset of :math:`\vect{\theta}`. We suppose that :math:`\mathcal{M}_0` is obtained by constraining  :math:`\vect{\theta}^{(1)}` to be equal to a fixed value denoted by :math:`\vect{\theta}^{(1)}_0`. Then :math:`\mathcal{M}_0` is a model with parameter :math:`\vect{\theta}^{(2)}`.
+
+Let :math:`\hat{\vect{\theta}}` denote the maximum likelihood estimator of :math:`\vect{\theta}` for model :math:`\mathcal{M}_1` and :math:`\ell(\hat{\vect{\theta}})`  its maximized log-likelihood.
+
+The profile log-likelihood for :math:`\vect{\theta}^{(1)}` is defined as:
 
 .. math::
 
-    l_p = \max_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
+    l_p(\vect{\theta}^{(1)}) = \max_{\vect{\theta}^{(2)}} \ell(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})
 
-where the p suffix stands for `profiled` and its optimum is reached at:
-
-.. math::
-
-    \hat{\theta_2}(\theta^{(1)}) = \argmax_{\theta^2} \ell(\theta^{(1)}, \theta^{(2)})
-
-In order to select the best model between the model parametrize by :math:`\hat{\vect{\theta_0}}`
-and the model parametrized by :math:`(\theta^{(1)}, \hat{\theta_2}(\theta^{(1)}))`,
-we define the deviance statistic as:
+We define the profile deviance statistic depending on :math:`\vect{\theta}^{(1)}` as the maximized log-likelihood with respect to :math:`\vect{\theta}^{(2)}` when :math:`\vect{\theta}^{(1)}` is frozen: 
 
 .. math::
 
-    \mathcal{D}_p (\theta^{(1)}) = 2(\ell(\hat{\vect{\theta_0}}) - \ell_p(\theta^{(1)}))
+    \mathcal{D}_p (\theta^{(1)}) = 2(\ell(\hat{\vect{\theta}}) - l_p(\vect{\theta}^{(1)}))
 
-Then for a large sample size and under suitable regularity conditions :math:`\mathcal{D}_p`
-follows a :math:`\chi^2(k)` distribution.
+Under suitable regularity conditions, for large :math:`n`, :math:`\mathcal{D}_p (\theta^{(1)})` follows a :math:`\chi^2_k` distribution.  
 
-Models are nested in the sense that parameters in model :math:`\mathcal{M}_0`
-parametrized by :math:`(\theta_0^{(1)}, \theta^{(2)})` where :math:`\theta_0^{(1)}` is frozen
-are a subset of the parameters in model :math:`\mathcal{M}_1` parametrized by
-:math:`\vect{\theta_0} = (\theta^{(1)}, \theta^{(2)})`.
-
-We want to test the hypothesis :math:`\mathcal{H}_0 = \left\{ \mathcal{M}_0 \right\}`
-against the hypothesis :math:`\mathcal{H}_1 = \left\{ \mathcal{M}_1 \right\}`.
-The null hypothesis consists in the simplest model :math:`\mathcal{M}_0`
-in which some of the parameters are frozen.
-In that case, according to the :math:`\mathcal{D}_p (\theta^{(1)})` statistic,
-the domain of acceptance of :math:`\mathcal{H}_0` is:
+We use the profile deviance statistic to define the :math:`(1-\alpha)` confidence region
+for the true value of parameter :math:`\vect{\theta}^{(1)}`:
 
 .. math::
 
-    \mathcal{C}_{\alpha} = \left\{ \theta^{(1)} : \ell_p(\theta{(1)}) \ge \ell(\vect{\theta_0}) - \frac{1}{2} c_{\alpha} \right\}
+    \mathcal{C}_{\alpha} = \left\{\vect{\theta}^{(1)} : \mathcal{D}_p (\theta^{(1)}) \leq c_{\alpha} \right\}
 
-where :math:`c_{\alpha}` is the quantile of order :math:`1 - \alpha` of the :math:`\chi^2(k)` distribution
-    
-If the value of :math:`\mathcal{D}_p (\theta^{(1)})` is small, then we can accept the
-hypothesis :math:`\mathcal{H}_0` that increasing the model parametrization complexity
-does not yield a significant increase in the likelihood of the data.
-If the value of :math:`\mathcal{D}_p (\theta^{(1)})` is high, then we reject the
-hypothesis :math:`\mathcal{H}_0` and :math:`\mathcal{M}_1` better explains the data.
+where :math:`c_{\alpha}` is the :math:`(1-\alpha)` quantile of the :math:`\chi^2_k` distribution.
+The level :math:`\alpha` is the Type 1 error of the test, which means the mistaken rejection of model :math:`\mathcal{M}_0`.
+
+
+In order to test the validity of model :math:`\mathcal{M}_0` with parameter
+:math:`(\vect{\theta}^{(1)}_0, \vect{\theta}^{(2)})` relative to :math:`\mathcal{M}_1` with parameter
+:math:`(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})` at the :math:`\alpha`-level of
+significance, we check the value :math:`\mathcal{D}_p (\theta^{(1)}_0)`:
+
+- if :math:`\mathcal{D}_p (\theta^{(1)}_0) \leq c_{\alpha}`, we accept :math:`\mathcal{M}_0` rather than :math:`\mathcal{M}_1`,
+- if :math:`\mathcal{D}_p (\theta^{(1)}_0) \geq c_{\alpha}`, we reject :math:`\mathcal{M}_0` in favor of :math:`\mathcal{M}_1`.
+
 
 Parameters
 ----------
+model0NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_0`
 m0llh : float
-    Model 0 log-likelihood
+    :math:`\mathcal{M}_0` log-likelihood
+model1NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_1`
 m1llh : float
-    Model 1 log-likelihood
+    :math:`\mathcal{M}_1` log-likelihood
 level : float, :math:`0 \leq \alpha \leq 1`, optional
-    This is the risk :math:`\alpha` of committing a Type I error,
-    that is an incorrect rejection of a true null hypothesis.
+    Risk of wrongly rejecting :math:`\mathcal{M}_0`
+    
     Default value is 0.05
 
 Notes
 -----
-The models must be estimated on the same data.
+Both models must have been estimated on the same data.
 
 Returns
 -------

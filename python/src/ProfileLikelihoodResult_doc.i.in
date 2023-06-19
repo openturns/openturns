@@ -1,26 +1,35 @@
 %feature("docstring") OT::ProfileLikelihoodResult
 "Distribution factory result for profile likelihood estimation.
 
-This result class provides the additional optimal likelihood value
-and the confidence interval of the parameter :math:`\theta^{(1)}` according to the deviance statistic
-:math:`\mathcal{D}_p (\theta^{(1)})` (refer to :meth:`~openturns.HypothesisTest::LikelihoodRatioTest`).
+This  class provides all the results obtained after a profile likelihood estimation with respect to the
+parameter :math:`\vect{\theta}^{(1)}`: refer to :meth:`~openturns.HypothesisTest.LikelihoodRatioTest`.
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-    Estimated distribution
+    Parent distribution at optimal parameter :math:`(\hat{\vect{\theta}}^{(1)}, \hat{\vect{\theta}}^{(2)})`.
 parameterDistribution : :class:`~openturns.Distribution`
-    Distribution of the parameters
+    Asymptotic distribution of :math:`(\hat{\vect{\theta}}^{(1)}, \hat{\vect{\theta}}^{(2)})`.
 logLikelihood : float
-    Optimal log-likelihood value
+    Maximum profile log-likelihood.
 profileLikelihood : :class:`~openturns.Function`
-    Profile likelihood function
+    Profile log-likelihood function with respect to the scalar parameter :math:`\theta^{(1)}`.
 parameter : float
-    Optimal outermost parameter value
+    Estimator of :math:`\vect{\theta}^{(1)}`.
 
 See also
 --------
 GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getParameterDistribution
+"Distribution of :math:`(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})` accessor.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    Estimator distribution of :math:`(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})`."
 
 // ---------------------------------------------------------------------
 
@@ -29,8 +38,8 @@ GeneralizedExtremeValueFactory"
 
 Parameters
 ----------
-alpha : float
-    Confidence level for the computation of the parameter confidence interval"
+level : float
+    The confidence level :math:`(1-\alpha)`."
 
 // ---------------------------------------------------------------------
 
@@ -39,45 +48,50 @@ alpha : float
 
 Returns
 -------
-alpha : float
-    Confidence level for the computation of the parameter confidence interval"
+level : float
+    The confidence level :math:`(1-\alpha)`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ProfileLikelihoodResult::getParameter
-"Parameter value accessor.
+"Estimator of :math:`\vect{\theta}^{(1)}`.
 
 Returns
 -------
 parameter : float
-    Optimal value of the outermost parameter"
+    Estimator of :math:`\vect{\theta}^{(1)}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ProfileLikelihoodResult::getParameterConfidenceInterval
-"Outer parameter confidence interval accessor.
+"Confidence interval accessor.
 
 Returns
 -------
 ci : :class:`~openturns.Interval`
-    Confidence interval of the outer parameter estimate."
+    Confidence interval of :math:`\vect{\theta}^{(1)}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ProfileLikelihoodResult::getProfileLikelihoodFunction
-"Profile likelihood accessor.
+"Profile log-likelihood function accessor.
 
 Returns
 -------
 ll : :class:`~openturns.Function`
-    Profile likelihood accessor."
+    Profile log-likelihood function with respect to :math:`\vect{\theta}^{(1)}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ProfileLikelihoodResult::drawProfileLikelihoodFunction
-"Draw the profile likelihood and the confidence interval.
+"Draw the profile likelihood graph with respect to the scalar parameter :math:`\theta^{(1)}`.
+
+If the parameter :math:`\theta^{(1)}` is scalar, the graph of the profile log-likelihood: :math:`\theta^{(1)} \mapsto \ell_p(\theta^{(1)})` provides:
+
+- the estimator :math:`\hat{\theta}^{(1)}` of  :math:`\theta^{(1)}` that maximizes the log-profile likelihood,
+- the :math:`(1-\alpha)`-confidence interval of :math:`\theta^{(1)}` built from the profile deviance statistics :math:`\mathcal{D}_p (\theta^{(1)})`.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Profile likelihood function graph."
+    Profile likelihood graph with respect to the scalar parameter :math:`\theta^{(1)}`."

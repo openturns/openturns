@@ -474,6 +474,7 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
     const Scalar gamma = mu;
     actualDistribution_ = Gumbel(beta, gamma);
   }
+  setRange(actualDistribution_.getRange());
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }

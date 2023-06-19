@@ -45,9 +45,10 @@ class OT_API LinearFunction
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-
   /** Default constructor */
+  LinearFunction();
+
+  /** Parameter constructor */
   LinearFunction(const Point & center,
                  const Point & constant,
                  const Matrix & linear);

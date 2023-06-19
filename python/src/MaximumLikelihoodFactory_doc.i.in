@@ -1,33 +1,39 @@
 %feature("docstring") OT::MaximumLikelihoodFactory
 "Maximum likelihood factory.
 
-Refer to :ref:`maximum_likelihood`.
+The maximum likelihood method is detailed in :ref:`maximum_likelihood`.
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-    The distribution defining the parametric model :math:`p_{\vect{\theta}}` to be adjusted to data.
+    The parametric distribution :math:`p_{\vect{\theta}}`.
 
 Notes
 -----
-Implements generic maximum likelihood estimation.
+This class implements the generic maximum likelihood estimation.
 
 Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`p_{\vect{\theta}}`
-the particular distribution of probability density function we want to fit to the sample,
-and :math:`\vect{\theta} \in \Theta \in \Rset^p` its the parameter vector.
+the density of the parametric distribution we want to fit to the sample, with the
+parameter vector :math:`\vect{\theta} \in \Theta \in \Rset^p` .
 
 
 The likelihood of the sample according to :math:`p_{\vect{\theta}}` is:
 
 .. math::
 
-    likelihood(\vect{x}_1, \dots, \vect{x}_n,\vect{\theta}) = \prod_{i=1}^n p_{\vect{\theta}}(\vect{x}_i)
-
-The parameters :math:`\vect{\theta}` are numerically optimized using an optimization algorithm:
+    L(\vect{x}_1, \dots, \vect{x}_n; \vect{\theta}) = \prod_{i=1}^n p_{\vect{\theta}}(\vect{x}_i)
+    
+The log-likelihood is defined as:
 
 .. math::
 
-    \max_{\vect{\theta} \in \Theta} \log likelihood\, (\vect{x}_1, \dots, \vect{x}_n,\vect{\theta}) = \max_{\vect{\theta} \in \Theta} \sum_{i=1}^n log(p_{\vect{\theta}}(\vect{x}_i))
+    \ell(\vect{x}_1, \dots, \vect{x}_n; \vect{\theta}) = \sum_{i=1}^n \log p_{\vect{\theta}}(\vect{x}_i)
+
+The estimator of  :math:`\vect{\theta}` maximizes the log-likelihood:
+
+.. math::
+
+    \hat{\vect{\theta}} = \argmax_{\vect{\theta} \in \Theta} \log \ell (\vect{x}_1, \dots, \vect{x}_n; \vect{\theta}) 
 
 See also
 --------
@@ -37,7 +43,7 @@ Examples
 --------
 
 In the following example, we estimate the parameters of a `Normal` distribution 
-with maximum likelihood estimation. 
+with maximum likelihood estimation.
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -49,22 +55,22 @@ with maximum likelihood estimation.
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationAlgorithm
-"Accessor to the solver.
+"Accessor to the optimization solver.
 
 Parameters
 ----------
 solver : :class:`~openturns.OptimizationAlgorithm`
-    The solver used for numerical optimization of the likelihood."
+    The solver used for the optimization of the log-likelihood."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationAlgorithm
-"Accessor to the solver.
+"Accessor to the optimization solver.
 
 Returns
 -------
 solver : :class:`~openturns.OptimizationAlgorithm`
-    The solver used for numerical optimization of the likelihood."
+    The solver used for the optimization of the log-likelihood."
 
 // ---------------------------------------------------------------------
 
@@ -74,7 +80,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 Parameters
 ----------
 bounds : :class:`~openturns.Interval`
-    The bounds used for numerical optimization of the likelihood."
+    The bounds used for the optimization of the log-likelihood."
 
 // ---------------------------------------------------------------------
 
@@ -84,7 +90,7 @@ bounds : :class:`~openturns.Interval`
 Returns
 -------
 bounds : :class:`~openturns.Interval`
-    The bounds used for numerical optimization of the likelihood."
+    The bounds used for the optimization of the log-likelihood."
 
 // ---------------------------------------------------------------------
 
@@ -94,7 +100,7 @@ bounds : :class:`~openturns.Interval`
 Parameters
 ----------
 inequalityConstraint : :class:`~openturns.Function`
-    The inequality constraint used for numerical optimization of the likelihood."
+    The inequality constraint used for the optimization of the log-likelihood."
 
 // ---------------------------------------------------------------------
 
@@ -104,14 +110,13 @@ inequalityConstraint : :class:`~openturns.Function`
 Parameters
 ----------
 values : sequence of float
-    Values of fixed parameters.
+    Values of known parameters.
 positions : sequence of int
-    Indices of fixed parameters.
+    Indices of known parameters.
 
 Examples
 --------
-There are situations where a subset of the parameters is known. 
-In this case, only the other parameters must be estimated 
+When a subset of the parameter vector is known, the other parameters only have to be estimated 
 from data. 
 
 In the following example, we consider a sample and want to fit 
@@ -137,7 +142,7 @@ and the fourth parameter (at index 3) to 1.
 Returns
 -------
 values : :class:`~openturns.Point`
-    Values of fixed parameters."
+    Values of known parameters."
 
 // ---------------------------------------------------------------------
 
@@ -147,46 +152,54 @@ values : :class:`~openturns.Point`
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    Indices of fixed parameters."
+    Indices of the known parameters."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MaximumLikelihoodFactory::BuildGaussianEstimator
-"Estimate the distribution of the parameters.
+"Compute the asymptotic distribution of the parameters.
 
-Compute the asymptotic distribution of the parameters of a regular distribution with the delta method.
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-    Inferred distribution
+    Parametric distribution.
 sample : 2-d sequence of float
-    Data to infer
+    Data to infer.
 
 Returns
 -------
-distribution : :class:`~openturns.Distribution`
-    Asymptotic Gaussian distribution of the parameters."
+distribution : :class:`~openturns.Normal`
+    Asymptotic normal distribution of :math:`\hat{\vect{\theta}}`.
+    
+Notes
+-----
+We assume that the parametric model is regular: then, the asymptotic distribution of :math:`\hat{\vect{\theta}}` is normal."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MaximumLikelihoodFactory::BuildEstimator
-"Estimate the distribution of the parameters.
+"Estimate the parameters  and the asymptotic distribution.
 
-Compute the asymptotic distribution of the parameters.
 
 Parameters
 ----------
 factory : :class:`~openturns.DistributionFactory`
     Distribution factory to infer the data
+    
+    
 sample : 2-d sequence of float
     Data to infer
 is_regular : bool
-    Whether the distribution is known to be regular.
-    In that case the estimator of the parameters is Gaussian and is estimated by delta method,
-    else bootstrap is used and yields a distribution resulting from a kernel smoothing.
+    Indicates whether the parametric distribution is regular.
 
 Returns
 -------
 result : :class:`~openturns.DistributionFactoryResult`
-    Estimated distribution and the estimator of the parameters."
+    Result class providing the estimate and the asymptotic distribution.
+    
+Notes
+-----
+If the model is regular, the asymptotic distribution of the estimator is normal and we get it from the Delta method.
+
+If the model is not regular, we use the Bootstrap method and the kernel smoothing method to get the asymptotic distribution of the estimator."
