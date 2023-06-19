@@ -351,6 +351,7 @@
   <!-- OT::HSICEstimator parameters -->
   <HSICEstimator-ParallelPValues value_bool="true" />
   <HSICEstimator-PermutationSize value_int="100" />
+  <HSICEstimator-InputCovarianceMatrixCacheSize value_int="17179869184" />
 
   <!-- OT::RandomGenerator parameters -->
   <RandomGenerator-InitialSeed value_int="0" />
