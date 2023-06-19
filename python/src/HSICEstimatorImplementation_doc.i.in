@@ -5,6 +5,9 @@ Notes
 -----
 HSIC-based analyses must be performed by using the derived classes: :class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity` and :class:`~openturns.HSICEstimatorTargetSensitivity`.
 
+The :class:`~openturns.ResourceMap` key `HSICEstimator-InputCovarianceMatrixCacheSizeMb`
+allows one to limit the total size (in mega bytes) of the input matrix cached.
+
 See also
 --------
 :class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`"

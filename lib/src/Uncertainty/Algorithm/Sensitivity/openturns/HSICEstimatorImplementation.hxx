@@ -142,6 +142,9 @@ protected:
   /* Compute the covariance matrices associated to the inputs and outputs */
   virtual void computeCovarianceMatrices();
 
+  /* Cached accessor to input covariance matrix */
+  virtual CovarianceMatrix getInputCovarianceMatrix(const UnsignedInteger j) const;
+
   /** Compute p-value with permutation */
   virtual void computePValuesPermutationSequential() const;
 
@@ -171,26 +174,28 @@ protected:
   Indices shuffleIndices(const UnsignedInteger size) const;
 
   /** Data */
-  PersistentCollection <CovarianceModel> covarianceModelCollection_ ;
+  PersistentCollection <CovarianceModel> covarianceModelCollection_;
   Sample inputSample_ ;
   Sample outputSample_ ;
   HSICStat estimatorType_;
-  Function weightFunction_ ;
+  Function weightFunction_;
   Point weights_;
-  UnsignedInteger n_ ;
-  UnsignedInteger inputDimension_ ;
+  UnsignedInteger n_ = 0;
+  UnsignedInteger inputDimension_ = 0;
+  CovarianceMatrix outputCovarianceMatrix_;
+
+private:
   mutable Point HSIC_XY_ ;
   mutable Point HSIC_XX_ ;
   mutable Point HSIC_YY_ ;
   mutable Point R2HSICIndices_;
   mutable Point PValuesPermutation_ ;
   mutable Point PValuesAsymptotic_ ;
+  UnsignedInteger permutationSize_ = 0;
+  mutable Bool isAlreadyComputedIndices_ = false;
+  mutable Bool isAlreadyComputedPValuesPermutation_ = false;
+  mutable Bool isAlreadyComputedPValuesAsymptotic_ = false;
   PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
-  CovarianceMatrix outputCovarianceMatrix_;
-  UnsignedInteger permutationSize_ ;
-  mutable Bool isAlreadyComputedIndices_ = false ;
-  mutable Bool isAlreadyComputedPValuesPermutation_ = false ;
-  mutable Bool isAlreadyComputedPValuesAsymptotic_ = false ;
 };
 
 END_NAMESPACE_OPENTURNS
