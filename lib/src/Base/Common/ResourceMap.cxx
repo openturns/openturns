@@ -1105,6 +1105,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
+  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
+  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);

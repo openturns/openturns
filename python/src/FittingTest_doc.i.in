@@ -225,7 +225,7 @@ Returns
 best_model : :class:`~openturns.Distribution`
     The distribution that fits the sample best according to the test.
     This may raise a warning if the best model does not perform well.
-best_result : :class:`~openturns.TestResult`
+best_bic : 
     Best test result.
 
 See Also
