@@ -34,9 +34,9 @@ corresponding method.
 +-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
 | Group interaction :math:`\bdu`      | First order          | :math:`S_\bdu`                     | `getSobolIndex(variableIndices)`             |
 +-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolIndex(variableIndices)`             |
+|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolTotalIndex(variableIndices)`        |
 +-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Group (closed) :math:`\bdu`         | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
+| Group closed :math:`\bdu`           | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
 +-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
 |                                     | Total                | :math:`S^T_\bdu`                   | `getSobolGroupedTotalIndex(variableIndices)` |
 +-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
@@ -144,12 +144,16 @@ Let :math:`i \in \{0, ..., d - 1\}` the index of an input
 variable. 
 Therefore, the method computes the first order Sobol' index :math:`S_i`
 of the variable :math:`X_i`.
+See :ref:`sensitivity_sobol_from_pce_first_order_variable` 
+for the computation of this sensitivity index based on a PCE.
 
 *Case 2: group of variables.*
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the interaction (high order) Sobol'
 index :math:`S_\bdu` of the group :math:`\bdu`.
+See :ref:`sensitivity_sobol_from_pce_interaction_group` 
+for the computation of this sensitivity index based on a PCE.
 
 Parameters
 ----------
@@ -162,13 +166,14 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The first order Sobol' index."
+    The Sobol' first order index of an input variable or interaction index
+    of a group of input variables."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
-"Get the total Sobol' index of an input variable or the interaction total
-index of a group of variables.
+"Get the Sobol' total index of an input variable or the total interaction
+index of a group of input variables.
 This function can take a single variable or a group of variables as input
 argument.
 
@@ -177,12 +182,16 @@ Let :math:`i \in \{0, ..., d - 1\}` the index of an input
 variable. 
 Therefore, the method computes the total index :math:`S^T_i`
 of the variable :math:`X_i`.
+See :ref:`sensitivity_sobol_from_pce_total_variable` 
+for the computation of this sensitivity index based on a PCE.
 
 *Case 2: group of variables.*
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the total interaction (high order)
-Sobol' index :math:`S_\bdu` of the group :math:`\bdu`.
+Sobol' index :math:`S_\bdu^{T, i}` of the group :math:`\bdu`.
+See :ref:`sensitivity_sobol_from_pce_total_interaction_group` 
+for the computation of this sensitivity index based on a PCE.
 
 Parameters
 ----------
@@ -195,17 +204,20 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The total Sobol' index."
+    The Sobol’ total index of an input variable or total interaction
+    index of a group of input variables."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the Sobol first order (closed) indices of a group of input variables.
+"Get the Sobol' first order closed index of a group of input variables.
 
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
-Therefore, the method computes the first order (closed) Sobol' index 
+Therefore, the method computes the first order closed Sobol' index 
 :math:`S^{\operatorname{cl}}_\bdu` of the group :math:`\bdu`.
+See :ref:`sensitivity_sobol_from_pce_first_order_closed_group` 
+for the computation of this sensitivity index based on a PCE.
 
 Parameters
 ----------
@@ -218,7 +230,7 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol' first order index."
+    The Sobol' first order closed index of a group of input variables."
 
 // ---------------------------------------------------------------------
 
@@ -229,6 +241,8 @@ Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the total Sobol' index :math:`S^T_\bdu` of
 the group :math:`\bdu`.
+See :ref:`sensitivity_sobol_from_pce_total_group` 
+for the computation of this sensitivity index based on a PCE.
 
 Parameters
 ----------
@@ -241,13 +255,12 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol' total index."
+    The Sobol' total closed index of a group of input variables."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getPartOfVariance
 "Get the part of variance corresponding to each multi-index.
-
 
 Parameters
 ----------
