@@ -177,7 +177,7 @@ view = otv.View(result_zm_10_PLL.drawProfileLikelihoodFunction())
 #
 # - the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n t_i` is the mean time stamps
 #   and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
-# - the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the final time;
+# - the *MinMax* method where :math:`c = t_1` is the initial time and :math:`d = t_n-t_1` the final time;
 # - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 #
 # .. math::
