@@ -165,24 +165,23 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
   for (UnsignedInteger i = 0; i < dataIni.getSize(); ++i)
     if (dataIni(i, 1) > 2.0 * threshold - fx) filteredData.add(dataIni[i]);
   if (filteredData.getSize() < dataIni.getSize())
-    {
-      xMin = filteredData.getMin()[0];
-      xMax = filteredData.getMax()[0];
-      result = profileLikelihoodFunction_.draw(xMin, xMax);
-    }
+  {
+    xMin = filteredData.getMin()[0];
+    xMax = filteredData.getMax()[0];
+    result = profileLikelihoodFunction_.draw(xMin, xMax);
+  }
   result.setLegends({"likelihood"});
-  // std::cerr << "xMin=" << xMin << ", x=" << x << ", xMax=" << xMax << std::endl;
   String inputVar(profileLikelihoodFunction_.getInputDescription()[0]);
   // use latex syntax
   String base(inputVar);
   String suffix("");
   if (inputVar == "xi")
-      base = "\\xi";
+    base = "\\xi";
   else if (inputVar == "zm")
-    {
-      base = "z";
-      suffix = "_m";
-    }
+  {
+    base = "z";
+    suffix = "_m";
+  }
   inputVar = base + suffix;
   result.setXTitle("$" + inputVar + "$");
   result.setYTitle("profile log-likelihood value");

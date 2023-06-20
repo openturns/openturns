@@ -138,7 +138,6 @@ public:
 
   Point operator() (const Point & parameter) const override
   {
-    // std::cerr << "parameter=" << parameter << std::endl;
     const Scalar mu = parameter[0];
     const Scalar sigma = parameter[1];
     const Scalar xi = parameter[2];
@@ -146,7 +145,6 @@ public:
     if (sigma <= 0.0)
     {
       value[0] = -std::log(SpecFunc::MaxScalar);
-      // std::cerr << "sigma<0:" << sigma << ", ll=" << value[0] << std::endl;
       return value;
     }
 
@@ -175,7 +173,6 @@ public:
         if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
         {
           ll += -std::log(SpecFunc::MaxScalar);
-          // std::cerr << "i=" << i << ", c1<-1:" << c1 << ", xi=" << xi << ", yir=" << yir << ", ll=" << ll << std::endl;
           continue;
         }
         const Scalar log1pC1 = std::log1p(c1);
@@ -188,7 +185,6 @@ public:
           if (c2 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
             ll += -std::log(SpecFunc::MaxScalar);
-            // std::cerr << "i=" << i << ", c2<-1:" << c1 << ", xi=" << xi << ", yik=" << yik << ", ll=" << ll << std::endl;
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c2);
@@ -196,7 +192,6 @@ public:
       } // i
     } // std::abs(xi) >= SpecFunc::Precision
     value[0] = ll;
-    // std::cerr << "ll=" << ll << std::endl;
     return value;
   }
 
@@ -276,7 +271,6 @@ public:
 
     // Adapt mu
     const Point cv(constraint(x0));
-    // std::cerr << "Initial x0=" << x0 << ", cv=" << constraint(x0) << std::endl;
     if (xi0 < 0.0)
       {
         if (cv[0] <= 0.0)
@@ -287,7 +281,6 @@ public:
         if (cv[1] <= 0.0)
           x0[0] = zMin_;
       }
-    // std::cerr << "Final x0=" << x0 << ", cv=" << constraint(x0) << std::endl;
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
@@ -304,7 +297,6 @@ public:
     }
     catch (const Exception &)
     {
-      // std::cerr << "x0=" << x0 << std::endl;
       return Point(1, -std::log(SpecFunc::MaxScalar));
     }
   }
@@ -381,7 +373,6 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
     xiMax = sigma / (mu - zMin);
   else
     xiMax = SpecFunc::MaxScalar;
-  // std::cerr << "mu=" << mu << ", sigma=" << sigma << ", zMin=" << zMin << ", zMax=" << zMax << ", xiMin=" << xiMin << ", xiMax=" << xiMax << std::endl;
   */
   const Scalar xiMin = -SpecFunc::MaxScalar;
   const Scalar xiMax = SpecFunc::MaxScalar;
@@ -469,7 +460,6 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   // Only the maxima are representative of the estimated distribution.
   const Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample.getMarginal(0)));
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  // std::cerr << "optimalParameter=" << optimalParameter << ", logLikelihood=" << logLikelihood << std::endl;
   DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
   return result;
 }
@@ -533,7 +523,6 @@ public:
       if (sigma <= 0.0)
       {
         ll += -std::log(SpecFunc::MaxScalar);
-        // std::cerr << "sigma<0:" << sigma << ", ll=" << ll << std::endl;
         continue;
       }
 
@@ -544,7 +533,6 @@ public:
       if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
       {
         ll += -std::log(SpecFunc::MaxScalar);
-        // std::cerr << "c1<-1:" << c1 << ", xi=" << xi << ", yi=" << yi << ", ll=" << ll << std::endl;
         continue;
       }
       const Scalar log1pC1 = std::log1p(c1);
@@ -1002,7 +990,6 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
     }
     else
     zmMax = SpecFunc::MaxScalar;
-    std::cerr << "mu=" << mu << ", sigma=" << sigma << ", zMin=" << zMin << ", zMax=" << zMax << ", zmMin=" << zmMin << ", zmMax=" << zmMax << std::endl;
   */
   const Scalar zmMin = -SpecFunc::MaxScalar;
   const Scalar zmMax =  SpecFunc::MaxScalar;
