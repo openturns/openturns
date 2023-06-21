@@ -1,5 +1,28 @@
 = New Features =
 
+== 1.22 release (in-progress) == #release-1.22
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
+ * Removed deprecated (Non)GaussianLinearCalibration::getCandidate method
+ * Removed deprecated DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
+ * Removed deprecated EllipticalDistribution::getInverseCorrelation method
+ * Removed deprecated Basis::getDimension method
+ * Removed deprecated HSICStat ctors relying on weight matrix
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+
 == 1.21 release (2023-06-20) == #release-1.21
 
 === Library ===
