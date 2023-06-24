@@ -57,7 +57,6 @@ Y = g(X)
 
 # %%
 
-
 def computeSparseLeastSquaresChaos(X, Y, basis, total_degree, distribution):
     """
     Create a sparse polynomial chaos with least squares.
@@ -330,6 +329,9 @@ def computeAndDrawSobolIndices(
 # %%
 # Plot the boostrap Sobol' indices mean and the confidence intervals.
 # The confidence length will shrink if we increase the initial sample size.
+
+# %%
+# sphinx_gallery_thumbnail_number = 3
 graph = computeAndDrawSobolIndices(30, basis, total_degree, distribution)
 _ = otv.View(graph)
 
