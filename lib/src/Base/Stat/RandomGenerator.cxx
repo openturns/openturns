@@ -37,9 +37,9 @@ public:
 
 
 
-Bool RandomGenerator::IsInitialized = false;
+Bool RandomGenerator::IsInitialized_ = false;
 
-MersenneTwister RandomGenerator::Generator(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));
+MersenneTwister RandomGenerator::Generator_(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
 
 /* Sub-classes methods */
 
@@ -55,71 +55,69 @@ RandomGenerator::RandomGenerator()
 /* Seed accessor */
 void RandomGenerator::SetSeed(const UnsignedInteger seed)
 {
-  Generator.init((uint32_t)(seed));
-  IsInitialized = true;
+  Generator_.init((uint32_t)(seed));
+  IsInitialized_ = true;
 }
 
 /* State accessor */
 void RandomGenerator::SetState(const RandomGeneratorState & state)
 {
-  UnsignedInteger size = state.buffer_.getSize();
-  UnsignedInteger stateSize = Generator.get_state_length_32();
+  const UnsignedInteger size = state.buffer_.getSize();
+  const UnsignedInteger stateSize = Generator_.get_state_length_32();
   /* The unusual case, the given seed is too small. It is completed with 0 */
   Indices stateArray(state.buffer_);
-  for (UnsignedInteger i = size; i < stateSize; i++) stateArray.add(0);
+  for (UnsignedInteger i = size; i < stateSize; ++i)
+    stateArray.add(0);
   // Set the state array
-  Generator.set_state(&stateArray[0]);
+  Generator_.set_state(&stateArray[0]);
   // Set the index
-  Generator.set_index(state.index_);
-  IsInitialized = true;
+  Generator_.set_index(state.index_);
+  IsInitialized_ = true;
   return;
 }
 
 /* Seed accessor */
 RandomGeneratorState RandomGenerator::GetState()
 {
-  UnsignedInteger size = (UnsignedInteger)(Generator.get_state_length_32());
+  const UnsignedInteger size = (UnsignedInteger)(Generator_.get_state_length_32());
   // Create the state and get the index at the same time
-  RandomGeneratorState state(Indices(size, 0), (UnsignedInteger)(Generator.get_index()));
+  RandomGeneratorState state(Indices(size, 0), (UnsignedInteger)(Generator_.get_index()));
   // Get the state array
-  Generator.get_state(&state.buffer_[0]);
+  Generator_.get_state(&state.buffer_[0]);
   return state;
+}
+
+void RandomGenerator::Initialize()
+{
+  if (!IsInitialized_)
+  {
+    SetSeed(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
+    IsInitialized_ = true;
+  }
 }
 
 /* Generate a pseudo-random number uniformly distributed over ]0, 1[ */
 Scalar RandomGenerator::Generate()
 {
-  if (!IsInitialized)
-  {
-    SetSeed(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));
-    IsInitialized = true;
-  }
-  return Generator.gen();
+  Initialize();
+  return Generator_.gen();
 }
 
 /* Generate a pseudo-random integer uniformly distributed over [[0,...,n-1]] */
 UnsignedInteger RandomGenerator::IntegerGenerate(const UnsignedInteger n)
 {
-  if (!IsInitialized)
-  {
-    SetSeed(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));
-    IsInitialized = true;
-  }
-  return Generator.igen((uint32_t)(n));
+  Initialize();
+  return Generator_.igen((uint32_t)(n));
 }
 
 /* Generate a pseudo-random vector of numbers uniformly distributed over ]0, 1[ */
 Point RandomGenerator::Generate(const UnsignedInteger size)
 {
   Point result(size);
-  if (!IsInitialized)
+  Initialize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    SetSeed(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));
-    IsInitialized = true;
-  }
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    result[i] = Generator.gen();
+    result[i] = Generator_.gen();
   }
   return result;
 }
@@ -128,14 +126,10 @@ Point RandomGenerator::Generate(const UnsignedInteger size)
 RandomGenerator::UnsignedIntegerCollection RandomGenerator::IntegerGenerate(const UnsignedInteger size, const UnsignedInteger n)
 {
   UnsignedIntegerCollection result(size);
-  if (!IsInitialized)
+  Initialize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    SetSeed(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));
-    IsInitialized = true;
-  }
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    result[i] = Generator.igen((uint32_t)(n));
+    result[i] = Generator_.igen((uint32_t)(n));
   }
   return result;
 }
