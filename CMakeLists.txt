@@ -426,10 +426,10 @@ endif ()
 
 if (CMAKE_VERSION VERSION_LESS 3.20)
   include (TestBigEndian)
-  test_big_endian (__BIG_ENDIAN__)
+  test_big_endian (DSFMT_BIG_ENDIAN)
 else ()
-  if ("${CMAKE_CXX_BYTE_ORDER}" STREQUAL "BIG_ENDIAN")
-    set (__BIG_ENDIAN__ 1)
+  if (CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+    set (DSFMT_BIG_ENDIAN 1)
   endif ()
 endif ()
 
