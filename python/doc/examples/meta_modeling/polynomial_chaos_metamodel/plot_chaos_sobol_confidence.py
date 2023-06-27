@@ -57,6 +57,7 @@ Y = g(X)
 
 # %%
 
+
 def computeSparseLeastSquaresChaos(X, Y, basis, total_degree, distribution):
     """
     Create a sparse polynomial chaos with least squares.
