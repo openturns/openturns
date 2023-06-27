@@ -65,8 +65,10 @@ private:
   /** Default constructor */
   RandomGenerator();
 
-  static Bool IsInitialized;
-  static MersenneTwister Generator;
+  static void Initialize();
+
+  static Bool IsInitialized_;
+  static MersenneTwister Generator_;
 
 }; /* class RandomGenerator */
 
