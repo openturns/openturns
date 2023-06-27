@@ -66,7 +66,7 @@ inline void twist(uint64v2_t& l, uint64v2_t& r,
 
 inline int idx(int i)
 {
-#ifdef __BIG_ENDIAN__
+#ifdef DSFMT_BIG_ENDIAN
   return i ^ 1;
 #else
   return i;
