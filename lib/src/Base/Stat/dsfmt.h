@@ -79,7 +79,7 @@ namespace tutils
             {
               uint32_t words[4];
               memcpy(&words[0], &u_[i], 16);
-#ifdef __BIG_ENDIAN__
+#ifdef DSFMT_BIG_ENDIAN
               state[4 * i    ] = words[1];
               state[4 * i + 1] = words[0];
               state[4 * i + 2] = words[3];
@@ -99,7 +99,7 @@ namespace tutils
           for (OT::UnsignedInteger i = 0; i <= (uint32_t)(N); i++)
             {
               uint32_t words[4];
-#ifdef __BIG_ENDIAN__
+#ifdef DSFMT_BIG_ENDIAN
               words[1] = (uint32_t)(state[4 * i    ]);
               words[0] = (uint32_t)(state[4 * i + 1]);
               words[3] = (uint32_t)(state[4 * i + 2]);

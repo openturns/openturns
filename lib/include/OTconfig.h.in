@@ -195,9 +195,7 @@
 #cmakedefine size_t
 
 /* Define to 1 if big endian system */
-#ifndef __BIG_ENDIAN__
-#cmakedefine __BIG_ENDIAN__
-#endif
+#cmakedefine DSFMT_BIG_ENDIAN
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
