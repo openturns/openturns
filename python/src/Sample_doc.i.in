@@ -2,6 +2,8 @@
 "Sample of real vectors.
 
 Available constructors:
+    Sample(array)
+
     Sample(*size, dim*)
 
     Sample(*size, point*)
@@ -10,6 +12,8 @@ Available constructors:
 
 Parameters
 ----------
+array : 2-d sequence of float
+    The data
 size : int, :math:`m > 0`, optional
     The sample size.
     Default creates an empty sample with dimension 1.
