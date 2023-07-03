@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 
-project (OpenTURNS)
+project (openturns)
 
 option (USE_BISON                    "Looks for Bison if true and then build parser"                         ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
@@ -107,7 +107,7 @@ set (OPENTURNS_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "The director
 set (OPENTURNS_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/openturns CACHE PATH "The directory where the CMake files are installed")
 set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR} CACHE PATH "The directory where the configuration file is installed")
 set (OPENTURNS_DATA_PATH ${CMAKE_INSTALL_DATAROOTDIR} CACHE PATH "The directory where the common files are installed")
-set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DATAROOTDIR}/openturns/doc CACHE PATH "The directory where the license files are installed")
+set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DOCDIR} CACHE PATH "The directory where the license files are installed")
 
 if (WIN32)
   set (DEFAULT_TMP TEMP)
