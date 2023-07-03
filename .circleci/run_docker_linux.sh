@@ -33,7 +33,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
 make install
 if test -n "${uid}" -a -n "${gid}"
 then
-  cp -r ~/.local/share/openturns/doc/html .
+  cp -r ~/.local/share/doc/openturns/html .
   zip -r openturns-doc.zip html/*
   sudo chown ${uid}:${gid} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
 fi

@@ -106,7 +106,7 @@ make
 
 %install
 make install DESTDIR=%{buildroot}
-rm -r %{buildroot}%{_datadir}/%{name}/doc
+rm -r %{buildroot}%{_datadir}/doc/%{name}
 
 %check
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on-failure %{?_smp_mflags} -E "cppcheck|ChaosSobol|Kriging" --timeout 1000 --schedule-random || echo "fail"
