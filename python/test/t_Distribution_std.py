@@ -2,9 +2,18 @@ import openturns as ot
 import openturns.testing as ott
 import math as m
 
-ot.DistributionFactory.GetContinuousUniVariateFactories()
-for factory in []:
+
+for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     distribution = factory.build()
+
+    # comparison
+    distribution2 = factory.build()
+    print(distribution, distribution2)
+    assert distribution == distribution2, "=="
+    assert not distribution != distribution2, "!="
+    distribution3 = ot.Dirac(42.0)
+    assert distribution != distribution3, "==Dirac"
+    assert not distribution == distribution3, "!=Dirac"
 
     # avoid flat pdfs
     if distribution.getName() == "Dirichlet":
