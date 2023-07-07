@@ -60,7 +60,9 @@ public:
   EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
+protected:
   using PersistentObject::operator ==;
+public:
   Bool operator ==(const EvaluationImplementation & other) const;
 
   /** String converter */

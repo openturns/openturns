@@ -60,7 +60,9 @@ public:
   FieldFunctionImplementation * clone() const override;
 
   /** Comparison operator */
+protected:
   using PersistentObject::operator ==;
+public:
   Bool operator ==(const FieldFunctionImplementation & other) const;
 
   /** String converter */
