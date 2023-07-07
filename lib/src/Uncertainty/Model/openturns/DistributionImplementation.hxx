@@ -69,7 +69,9 @@ public:
   DistributionImplementation();
 
   /** Comparison operator */
+protected:
   using PersistentObject::operator ==;
+public:
   Bool operator ==(const DistributionImplementation & other) const;
 protected:
   virtual Bool equals(const DistributionImplementation & other) const;

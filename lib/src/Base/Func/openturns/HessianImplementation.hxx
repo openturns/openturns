@@ -55,7 +55,9 @@ public:
   HessianImplementation * clone() const override;
 
   /** Comparison operator */
+protected:
   using PersistentObject::operator ==;
+public:
   Bool operator ==(const HessianImplementation & other) const;
 
   /** String converter */
