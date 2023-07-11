@@ -3,7 +3,10 @@
 A two degree-of-fredom primary/secondary damped oscillator
 ==========================================================
 
-We consider a two degree-of-fredom primary/secondary damped oscillator. This system is composed of a two-stage oscillator characterized by a mass, a stiffness and a damping ratio for each of the two oscillators. This system is submitted to a white-noise excitation. The limit-state function is highly non-linear, mainly due to the interactions between the two stages of the system, and presents one failure zone.
+We consider a two degree-of-fredom primary/secondary damped oscillator.
+This system is composed of a two-stage oscillator characterized by a mass, a stiffness and a damping ratio for each of the two oscillators.
+This system is submitted to a white-noise excitation.
+The limit-state function is highly non-linear, mainly due to the interactions between the two stages of the system, and presents one failure zone.
 
 
 .. figure:: ../_static/oscillator.png
