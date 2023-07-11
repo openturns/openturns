@@ -23,7 +23,7 @@ class Oscillator:
 
     sigmaOverMuMp : Constant
           sigmaOverMuMp = 0.1, coefficient of variation of the mass of the primary system
-    
+
     distributionMp : `LogNormalMuSigmaOverMu` distribution of the mass of the primary system
                       ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
 
@@ -32,7 +32,7 @@ class Oscillator:
 
     sigmaOverMuMs : Constant
           sigmaOverMuMs = 0.1, coefficient of variation of the mass of the primary system
-    
+
     distributionMs : `LogNormalMuSigmaOverMu` distribution of the mass of the secondary system
                       ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
 
@@ -41,7 +41,7 @@ class Oscillator:
 
     sigmaOverMuKp : Constant
           sigmaOverMuKp = 0.2, coefficient of variation of the spring stiffness of the primary system
-    
+
     distributionKp : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the primary system
                       ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
 
@@ -50,7 +50,7 @@ class Oscillator:
 
     sigmaOverMuKs : Constant
           sigmaOverMuKs = 0.2, coefficient of variation of the spring stiffness of the secondary system
-    
+
     distributionKs : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the secondary system
                       ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
 
@@ -59,7 +59,7 @@ class Oscillator:
 
     sigmaOverMuZetap : Constant
           sigmaOverMuZetap = 0.4, coefficient of variation of the damping ratio of the primary system
-    
+
     distributionZetap : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the primary system
                       ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
 
@@ -68,7 +68,7 @@ class Oscillator:
 
     sigmaOverMuZetas : Constant
           sigmaOverMuZetas = 0.5, coefficient of variation of the damping ratio of the secondary system
-    
+
     distributionZetas : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the secondary system
                       ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
 
@@ -77,7 +77,7 @@ class Oscillator:
 
     sigmaOverFs : Constant
           sigmaOverFs = 0.1, coefficient of variation of the force capacity of the secondary spring
-    
+
     distributionFs : `LogNormalMuSigmaOverMu` distribution of the force capacity of the secondary spring
                       ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
 
@@ -86,10 +86,9 @@ class Oscillator:
 
     sigmaOverS0 : Constant
           sigmaOverS0 = 0.1, coefficient of variation of the intensity of the white noise
-    
+
     distributionS0 : `LogNormalMuSigmaOverMu` distribution of the intensity of the white noise
                       ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
-
 
     distribution : `ComposedDistribution`
                    The joint distribution of the input parameters
