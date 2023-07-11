@@ -12,79 +12,79 @@ class Oscillator:
     Attributes
     ----------
 
-    dim : Constant
+    dim : int
           dim=8, dimension of the problem
 
     model : `SymbolicFunction`
             The limit state function
 
-    muMp : Constant
+    muMp : float
           muMp = 1.5, mean of the mass of the primary system
 
-    sigmaOverMuMp : Constant
+    sigmaOverMuMp : float
           sigmaOverMuMp = 0.1, coefficient of variation of the mass of the primary system
 
     distributionMp : `LogNormalMuSigmaOverMu` distribution of the mass of the primary system
                       ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
 
-    muMs : Constant
+    muMs : float
           muMs = 0.01, mean of the mass of the primary system
 
-    sigmaOverMuMs : Constant
+    sigmaOverMuMs : float
           sigmaOverMuMs = 0.1, coefficient of variation of the mass of the primary system
 
     distributionMs : `LogNormalMuSigmaOverMu` distribution of the mass of the secondary system
                       ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
 
-    muKp : Constant
+    muKp : float
           muKp = 1, mean of the spring stiffness of the primary system
 
-    sigmaOverMuKp : Constant
+    sigmaOverMuKp : float
           sigmaOverMuKp = 0.2, coefficient of variation of the spring stiffness of the primary system
 
     distributionKp : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the primary system
                       ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
 
-    muKs : Constant
+    muKs : float
           muKs = 0.01, mean of the spring stiffness of the secondary system
 
-    sigmaOverMuKs : Constant
+    sigmaOverMuKs : float
           sigmaOverMuKs = 0.2, coefficient of variation of the spring stiffness of the secondary system
 
     distributionKs : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the secondary system
                       ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
 
-    muZetap : Constant
+    muZetap : float
           muZetap = 0.05, mean of the damping ratio of the primary system
 
-    sigmaOverMuZetap : Constant
+    sigmaOverMuZetap : float
           sigmaOverMuZetap = 0.4, coefficient of variation of the damping ratio of the primary system
 
     distributionZetap : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the primary system
                       ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
 
-    muZetas : Constant
+    muZetas : float
           muZetas = 0.02, mean of the damping ratio of the secondary system
 
-    sigmaOverMuZetas : Constant
+    sigmaOverMuZetas : float
           sigmaOverMuZetas = 0.5, coefficient of variation of the damping ratio of the secondary system
 
     distributionZetas : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the secondary system
                       ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
 
-    muFs : Constant
+    muFs : float
           muFs = 27.5, mean of the force capacity of the secondary spring
 
-    sigmaOverFs : Constant
+    sigmaOverFs : float
           sigmaOverFs = 0.1, coefficient of variation of the force capacity of the secondary spring
 
     distributionFs : `LogNormalMuSigmaOverMu` distribution of the force capacity of the secondary spring
                       ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
 
-    muS0 : Constant
+    muS0 : float
           muS0 = 100, mean of the intensity of the white noise
 
-    sigmaOverS0 : Constant
+    sigmaOverS0 : float
           sigmaOverS0 = 0.1, coefficient of variation of the intensity of the white noise
 
     distributionS0 : `LogNormalMuSigmaOverMu` distribution of the intensity of the white noise
