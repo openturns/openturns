@@ -43,6 +43,7 @@ for name in multi_obj:
         if use_ineq:
             zdt1.setInequalityConstraint(ineq)
         algo = ot.Pagmo(zdt1, name, pop0)
+        algo.setMaximumIterationNumber(10)
         algo.setBlockSize(8)
         # algo.setProgressCallback(progress)
         # algo.setStopCallback(stop)
@@ -54,7 +55,7 @@ for name in multi_obj:
         assert len(fronts) > 0, "no pareto"
         print(name, len(fronts))
         assert (
-            result.getEvaluationNumber() == algo.getGenerationNumber() * size
+            result.getEvaluationNumber() == algo.getMaximumIterationNumber() * size
         ), "wrong size"
 
 # rosenbrock for the other algorithms
@@ -74,6 +75,7 @@ for name in ot.Pagmo.GetAlgorithmNames():
         if use_ineq:
             problem.setInequalityConstraint(ineq)
         algo = ot.Pagmo(problem, name, pop0)
+        algo.setMaximumIterationNumber(10)
         algo.setBlockSize(8)
         # algo.setProgressCallback(progress)
         # algo.setStopCallback(stop)
@@ -174,6 +176,7 @@ problem.setVariablesType(
 )
 for name in ["gaco", "ihs", "sga"]:
     algo = ot.Pagmo(problem, name, pop0)
+    algo.setMaximumIterationNumber(10)
     algo.setBlockSize(8)
     algo.run()
     result = algo.getResult()
@@ -198,6 +201,7 @@ zdt1.setInequalityConstraint(ineq)
 dist = ot.ComposedDistribution([ot.Uniform(0.0, 5.0)] * 2)
 pop0 = dist.getSample(50)
 algo = ot.Pagmo(zdt1, "nsga2", pop0)
+algo.setMaximumIterationNumber(10)
 algo.run()
 result = algo.getResult()
 x = result.getFinalPoints()
