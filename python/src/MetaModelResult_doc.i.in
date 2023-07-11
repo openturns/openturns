@@ -5,8 +5,6 @@ Parameters
 ----------
 sampleX, sampleY : 2-d sequence of float
     Input/output samples
-model : :class:`~openturns.Function`
-    Physical model approximated by a metamodel.
 metaModel : :class:`~openturns.Function`
     Definition of the response surface(s) of the model's output(s).
 residuals : sequence of float
