@@ -3,7 +3,8 @@ Use the FORM - SORM algorithms on non linear function
 =====================================================
 """
 # %%
-# In this example, we estimate a failure probability with the `FORM` and `SORM` algorithms on the :ref:`oscillator <use-case-oscillator>` example. This test-case is highly non linear with a significant curvature near the design point.
+# In this example, we estimate a failure probability with the `FORM` and `SORM` algorithms on the :ref:`oscillator <use-case-oscillator>` example.
+# This test-case is highly non linear with a significant curvature near the design point.
 
 # %%
 # Model definition
@@ -12,7 +13,6 @@ Use the FORM - SORM algorithms on non linear function
 # %%
 from openturns.usecases import oscillator
 import openturns as ot
-import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
 
@@ -46,7 +46,8 @@ event.setName("failure")
 
 # %%
 # Let’s have a look on 2D cross cuts of the limit state function. For each 2D cross cut, the other variables are fixed to the input distribution mean values.
-# This graph allows one to have a first idea of the variations of the function in pair of dimensions. The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
+# This graph allows one to have a first idea of the variations of the function in pair of dimensions. The colors of each contour plot are comparable.
+# The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
 
 
 fig = plt.figure(figsize=(12, 12))
@@ -101,7 +102,8 @@ for i in range(distribution.getDimension()):
 # ----------------------------------------------------------------
 
 # %%
-# The target probability is supposed to be extremely low (:math:`3.78\times 10^{-7}`). Indeed, when performing Monte-Carlo simulation with a simulation budget of 100000 points, no sample are in the failure state, that induces a probability estimate of zero.
+# The target probability is supposed to be extremely low (:math:`3.78\times 10^{-7}`). 
+# Indeed, when performing Monte-Carlo simulation with a simulation budget of 100000 points, no sample are in the failure state, that induces a probability estimate of zero.
 
 experiment = ot.MonteCarloExperiment()
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
@@ -164,7 +166,7 @@ print("Design point in physical space : ", result.getPhysicalSpaceDesignPoint())
 
 distributionStandard = ot.Normal(distribution.getDimension())
 inverseIsoProbabilistic = distribution.getInverseIsoProbabilisticTransformation()
-standardSpaceLimitState = lambda x: model(inverseIsoProbabilistic(x))
+standardSpaceLimitState = ot.ComposedFunction(model,inverseIsoProbabilistic)
 standardSpaceLimitStateFunction = ot.PythonFunction(8, 1, standardSpaceLimitState)
 
 fig = plt.figure(figsize=(12, 12))
@@ -243,7 +245,8 @@ for i in range(distribution.getDimension()):
             ax.set_xlabel(distribution.getDescription()[j])
 
 # %%
-# As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function. Thus, SORM can be used in order to refine this probability estimation by approximating the limit state function with a quadratic model.
+# As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function. 
+# Thus, SORM can be used in order to refine this probability estimation by approximating the limit state function with a quadratic model.
 
 # %%
 # SORM Analysis
@@ -276,7 +279,8 @@ optim_res = resultSORM.getOptimizationResult()
 print("Simulation budget:", optim_res.getEvaluationNumber())
 
 # %%
-# One can see that the probability estimate has been decreased by a factor 10 compared to the FORM estimate. This probability is quite close to the reference probability and obtained with less than 1000 evaluations of the model.
+# One can see that the probability estimate has been decreased by a factor 10 compared to the FORM estimate. 
+# This probability is quite close to the reference probability and obtained with less than 1000 evaluations of the model.
 
 # %%
 # In order to visualize the SORM limit state approximation, we can draw cross cuts of SORM oscultating parabola using second order Taylor approximation.
@@ -369,7 +373,8 @@ for i in range(distribution.getDimension()):
 # ---------------------------------------------------
 
 # %%
-# Different algorithms exist for the reliability analysis by Importance Sampling. One way is to perform post analytical Importance Sampling by defining the auxiliary density centered at the design point found by FORM.
+# Different algorithms exist for the reliability analysis by Importance Sampling. 
+# One way is to perform post analytical Importance Sampling by defining the auxiliary density centered at the design point found by FORM.
 
 
 # %%
