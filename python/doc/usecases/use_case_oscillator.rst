@@ -46,7 +46,12 @@ The tuning parameter of the system is equal to:
 
 .. math:: \theta = \frac{\omega_p - \omega_s}{\omega_a}
 
-Eight uncertainties are considered in the system: on the masses of the primary and secondary systems (:math:`m_p` and :math:`m_s`), on the spring stiffeness of the primary and secondary oscillators (:math:`k_p` and :math:`k_s`), on the damping ratios of the primary and secondary systems (:math:`\zeta_p` and :math:`\zeta_s`), on the force capacity of the secondary spring (:math:`F_s`) and on the intensity of the white noise excitation (:math:`S_0`).
+Eight uncertainties are considered in the system:
+- on the masses of the primary and secondary systems (:math:`m_p` and :math:`m_s`),
+- on the spring stiffeness of the primary and secondary oscillators (:math:`k_p` and :math:`k_s`),
+- on the damping ratios of the primary and secondary systems (:math:`\zeta_p` and :math:`\zeta_s`),
+- on the force capacity of the secondary spring (:math:`F_s`),
+- on the intensity of the white noise excitation (:math:`S_0`).
 
 
 We consider the following distribution functions:
