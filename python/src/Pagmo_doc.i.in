@@ -4,7 +4,7 @@
 This class exposes bio-inspired and evolutionary global optimization algorithms
 from the `Pagmo <https://esa.github.io/pagmo2/>`_ library.
 These algorithms start from an initial population and make it evolve to obtain
-a final population after a defined number of generations (by :meth:`setGenerationNumber`).
+a final population after a defined number of generations (by :meth:`setMaximumIterationNumber`).
 A few of these algorithms allow for multi-objective optimization, and in that
 case the result is not the best point among the final population but a set of
 dominant points: a pareto front.
@@ -20,6 +20,7 @@ startingSample : 2-d sequence of float, optional
 
 Notes
 -----
+The total number of evaluations is the size of the initial population multiplied by the iteration number.
 Starting points provided through the *startingSample* parameter should be
 within the bounds of the :class:`~openturns.OptimizationProblem`, but this is not enforced.
 
@@ -95,7 +96,7 @@ Sample the initial population inside a box:
 Run GACO on our problem:
 
 >>> algo = ot.Pagmo(problem, 'gaco', init_pop) # doctest: +SKIP
->>> algo.setGenerationNumber(5) # doctest: +SKIP
+>>> algo.setMaximumIterationNumber(5) # doctest: +SKIP
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP
@@ -123,7 +124,7 @@ Sample the initial population inside a box:
 Run NSGA2 on our problem:
 
 >>> algo = ot.Pagmo(problem, 'nsga2', init_pop) # doctest: +SKIP
->>> algo.setGenerationNumber(5) # doctest: +SKIP
+>>> algo.setMaximumIterationNumber(5) # doctest: +SKIP
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> final_pop_x = result.getFinalPoints() # doctest: +SKIP
@@ -156,27 +157,6 @@ Parameters
 ----------
 startingSample : 2-d sequence of float
     The initial population."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Pagmo::setGenerationNumber
-"Generation number accessor.
-
-Parameters
-----------
-gen : int
-    Number of generations to evolve.
-    Ignored for the simulated_annealing algorithm."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Pagmo::getGenerationNumber
-"Generation number accessor.
-
-Returns
--------
-gen : int
-    Number of generations to evolve."
 
 // ---------------------------------------------------------------------
 
