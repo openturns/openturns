@@ -388,4 +388,4 @@ print(
 )
 
 # %%
-# We can see that this post-treatment of FORM result allows to greatly improve the quality of the probability estimation.
+# We can see that this post-treatment of FORM result allows one to greatly improve the quality of the probability estimation.
