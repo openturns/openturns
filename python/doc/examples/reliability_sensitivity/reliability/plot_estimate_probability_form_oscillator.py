@@ -102,7 +102,7 @@ for i in range(distribution.getDimension()):
 # ----------------------------------------------------------------
 
 # %%
-# The target probability is supposed to be extremely low (:math:`3.78\times 10^{-7}`). 
+# The target probability is supposed to be extremely low (:math:`3.78\times 10^{-7}`).
 # Indeed, when performing Monte-Carlo simulation with a simulation budget of 100000 points, no sample are in the failure state, that induces a probability estimate of zero.
 
 experiment = ot.MonteCarloExperiment()
@@ -166,7 +166,7 @@ print("Design point in physical space : ", result.getPhysicalSpaceDesignPoint())
 
 distributionStandard = ot.Normal(distribution.getDimension())
 inverseIsoProbabilistic = distribution.getInverseIsoProbabilisticTransformation()
-standardSpaceLimitState = ot.ComposedFunction(model,inverseIsoProbabilistic)
+standardSpaceLimitState = ot.ComposedFunction(model, inverseIsoProbabilistic)
 standardSpaceLimitStateFunction = ot.PythonFunction(8, 1, standardSpaceLimitState)
 
 fig = plt.figure(figsize=(12, 12))
@@ -245,7 +245,7 @@ for i in range(distribution.getDimension()):
             ax.set_xlabel(distribution.getDescription()[j])
 
 # %%
-# As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function. 
+# As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function.
 # Thus, SORM can be used in order to refine this probability estimation by approximating the limit state function with a quadratic model.
 
 # %%
@@ -279,7 +279,7 @@ optim_res = resultSORM.getOptimizationResult()
 print("Simulation budget:", optim_res.getEvaluationNumber())
 
 # %%
-# One can see that the probability estimate has been decreased by a factor 10 compared to the FORM estimate. 
+# One can see that the probability estimate has been decreased by a factor 10 compared to the FORM estimate.
 # This probability is quite close to the reference probability and obtained with less than 1000 evaluations of the model.
 
 # %%
@@ -373,7 +373,7 @@ for i in range(distribution.getDimension()):
 # ---------------------------------------------------
 
 # %%
-# Different algorithms exist for the reliability analysis by Importance Sampling. 
+# Different algorithms exist for the reliability analysis by Importance Sampling.
 # One way is to perform post analytical Importance Sampling by defining the auxiliary density centered at the design point found by FORM.
 
 
@@ -383,7 +383,7 @@ postAnalyticalIS.setMaximumCoefficientOfVariation(0.1)
 postAnalyticalIS.run()
 resultPostAnalyticalIS = postAnalyticalIS.getResult()
 print(
-    "Probability of failure with post analytical IS = ", 
+    "Probability of failure with post analytical IS = ",
     resultPostAnalyticalIS.getProbabilityEstimate(),
 )
 
