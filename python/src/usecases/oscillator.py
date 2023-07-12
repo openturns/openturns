@@ -15,7 +15,7 @@ class Oscillator:
     dim : int
           dim=8, dimension of the problem
 
-    model : `SymbolicFunction`
+    model : :class:`~openturns.SymbolicFunction`
             The limit state function
 
     muMp : float
@@ -24,8 +24,8 @@ class Oscillator:
     sigmaOverMuMp : float
           sigmaOverMuMp = 0.1, coefficient of variation of the mass of the primary system
 
-    distributionMp : `LogNormalMuSigmaOverMu` distribution of the mass of the primary system
-                      ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
+    distributionMp : :class:`~openturns.LogNormal` distribution of the mass of the primary system
+         distributionMp = ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
 
     muMs : float
           muMs = 0.01, mean of the mass of the primary system
@@ -33,8 +33,8 @@ class Oscillator:
     sigmaOverMuMs : float
           sigmaOverMuMs = 0.1, coefficient of variation of the mass of the primary system
 
-    distributionMs : `LogNormalMuSigmaOverMu` distribution of the mass of the secondary system
-                      ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
+    distributionMs : :class:`~openturns.LogNormal` distribution of the mass of the secondary system
+          distributionMs = ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
 
     muKp : float
           muKp = 1, mean of the spring stiffness of the primary system
@@ -42,8 +42,8 @@ class Oscillator:
     sigmaOverMuKp : float
           sigmaOverMuKp = 0.2, coefficient of variation of the spring stiffness of the primary system
 
-    distributionKp : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the primary system
-                      ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
+    distributionKp : :class:`~openturns.LogNormal` distribution of the spring stiffness of the primary system
+          distributionKp = ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
 
     muKs : float
           muKs = 0.01, mean of the spring stiffness of the secondary system
@@ -51,8 +51,8 @@ class Oscillator:
     sigmaOverMuKs : float
           sigmaOverMuKs = 0.2, coefficient of variation of the spring stiffness of the secondary system
 
-    distributionKs : `LogNormalMuSigmaOverMu` distribution of the spring stiffness of the secondary system
-                      ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
+    distributionKs : :class:`~openturns.LogNormal` distribution of the spring stiffness of the secondary system
+          distributionKs = ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
 
     muZetap : float
           muZetap = 0.05, mean of the damping ratio of the primary system
@@ -60,8 +60,8 @@ class Oscillator:
     sigmaOverMuZetap : float
           sigmaOverMuZetap = 0.4, coefficient of variation of the damping ratio of the primary system
 
-    distributionZetap : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the primary system
-                      ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
+    distributionZetap : :class:`~openturns.LogNormal` distribution of the damping ratio of the primary system
+          distributionZetap = ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
 
     muZetas : float
           muZetas = 0.02, mean of the damping ratio of the secondary system
@@ -69,8 +69,8 @@ class Oscillator:
     sigmaOverMuZetas : float
           sigmaOverMuZetas = 0.5, coefficient of variation of the damping ratio of the secondary system
 
-    distributionZetas : `LogNormalMuSigmaOverMu` distribution of the damping ratio of the secondary system
-                      ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
+    distributionZetas : :class:`~openturns.LogNormal` distribution of the damping ratio of the secondary system
+          distributionZetas = ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
 
     muFs : float
           muFs = 27.5, mean of the force capacity of the secondary spring
@@ -78,8 +78,8 @@ class Oscillator:
     sigmaOverFs : float
           sigmaOverFs = 0.1, coefficient of variation of the force capacity of the secondary spring
 
-    distributionFs : `LogNormalMuSigmaOverMu` distribution of the force capacity of the secondary spring
-                      ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
+    distributionFs : :class:`~openturns.LogNormal` distribution of the force capacity of the secondary spring
+          distributionFs = ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
 
     muS0 : float
           muS0 = 100, mean of the intensity of the white noise
@@ -87,10 +87,10 @@ class Oscillator:
     sigmaOverS0 : float
           sigmaOverS0 = 0.1, coefficient of variation of the intensity of the white noise
 
-    distributionS0 : `LogNormalMuSigmaOverMu` distribution of the intensity of the white noise
-                      ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
+    distributionS0 : :class:`~openturns.LogNormal` distribution of the intensity of the white noise
+          distributionS0 = ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
 
-    distribution : `ComposedDistribution`
+    distribution : :class:`~openturns.ComposedDistribution`
                    The joint distribution of the input parameters
 
     Examples
