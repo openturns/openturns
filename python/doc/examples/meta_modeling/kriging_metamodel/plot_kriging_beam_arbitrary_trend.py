@@ -1,12 +1,15 @@
 """
-Configuring an arbitrary trend in Kriging
-=========================================
+Kriging: choose an arbitrary trend
+==================================
 """
 # %%
 # The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_chose_trend`
+# and :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_trend` examples,
+# we show how to configure a polynomial trend.
 #
 # In general, any collection of multivariate functions can be used as the
-# `basis` argument of a `KrigingAlgorithm`.
+# `basis` argument of a :class:`~openturns.KrigingAlgorithm`.
 # In practice, it might not be convenient to create a multivariate basis and
 # this is why we sometimes create it by tensorization of univariate functions.
 # In this example, we first use Legendre polynomials as our univariate functions,
