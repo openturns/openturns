@@ -34,15 +34,15 @@ The Smolyak experiment produces an approximation of the integral:
 
 .. math::
 
-    \int_{\mathcal{X}} g(\boldsymbol{x}) f(\boldsymbol{x}) d\boldsymbol{x}
-    \approx \sum_{i = 1}^{s_t} w_i g\left(\boldsymbol{x}_i\right)
+    \int_{\mathcal{X}} g(\vect{x}) f(\vect{x}) d\vect{x}
+    \approx \sum_{i = 1}^{s_t} w_i g\left(\vect{x}_i\right)
 
 where :math:`s_t \in \mathbb{N}` is the size of the Smolyak
 design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the
-weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d_x}`
+weights and :math:`\vect{x}_1, ..., \vect{x}_{s_t} \in \mathbb{R}^{d_x}`
 are the nodes. 
 
-Let :math:`\boldsymbol{k} = (k_1, ..., k_{d_x}) \in (\mathbb{N}^\star)^{d_x}` 
+Let :math:`\vect{k} = (k_1, ..., k_{d_x}) \in (\mathbb{N}^\star)^{d_x}` 
 be the multi-index where
 
 .. math::
@@ -54,10 +54,10 @@ Consider the 1 and the infinity norms ([lemaitre2010]_ page 57, eq. 3.28):
 
 .. math::
 
-    \|\boldsymbol{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
-    \|\boldsymbol{k}\|_\infty = \max_{i = 1, ..., d_x} k_i.
+    \|\vect{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
+    \|\vect{k}\|_\infty = \max_{i = 1, ..., d_x} k_i.
 
-for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
+for any :math:`\vect{k} \in (\mathbb{N}^\star)^{d_x}`.
 
 Let :math:`\ell` be an integer representing the level of the quadrature.
 Let :math:`Q_{\ell}^{(1)}` be a marginal quadrature of level :math:`\ell`.
@@ -100,15 +100,15 @@ quadrature ([lemaitre2010]_ page 57, eq. 3.30):
 
 .. math::
 
-    T_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell}
+    T_\ell^{(d_x)} = \sum_{\|\vect{k}\|_\infty \leq \ell}
     \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}.
 
 The significant part of the previous equation is the set of multi-indices
-:math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which may be very large
+:math:`\|\vect{k}\|_\infty \leq \ell`, which may be very large
 depending on the dimension of the problem.
 
 One of the ways to reduce the size of this set is to consider the smaller set
-of multi-indices such that :math:`\|\boldsymbol{k}\|_1 \leq \ell + {d_x} - 1`. The sparse
+of multi-indices such that :math:`\|\vect{k}\|_1 \leq \ell + {d_x} - 1`. The sparse
 quadrature ([lemaitre2010]_ page 57, eq. 3.29, [gerstner1998]_  page 214)
 is introduced in the following definition.
 
@@ -116,12 +116,12 @@ The Smolyak sparse quadrature formula at level :math:`\ell` is:
 
 .. math::
 
-    S_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
+    S_\ell^{(d_x)} = \sum_{\|\vect{k}\|_1 \leq \ell + d_x - 1} 
     \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
-As shown by the previous equation, for a given multi-index :math:`\boldsymbol{k}`
+As shown by the previous equation, for a given multi-index :math:`\vect{k}`
 the Smolyak quadrature requires to set the level of each marginal experiment to
 an integer which depends on the multi-index.
 This is done using the :meth:`~openturns.experimental.SmolyakExperiment.setLevel` method of the marginal quadrature.
@@ -134,9 +134,9 @@ The sparse quadrature formula at level :math:`\ell` is:
 
 .. math::
 
-    S_\ell^{(d_x)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
-    (-1)^{\ell + d_x - \|\boldsymbol{k}\|_1 - 1} 
-    {d_x - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
+    S_\ell^{(d_x)} = \sum_{\ell \leq \|\vect{k}\|_1 \leq \ell + d_x - 1} 
+    (-1)^{\ell + d_x - \|\vect{k}\|_1 - 1} 
+    {d_x - 1 \choose \|\vect{k}\|_1 - \ell} 
     Q_{k_1}^{(1)} \otimes \cdots \otimes Q_{k_{d_x}}^{(1)}
 
 for any :math:`\ell \geq 1` where the binomial coefficient is:
@@ -158,13 +158,13 @@ This can reduce the number of nodes, which may be particularly efficient when th
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis
 quadrature rule.
 
-If two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`,
+If two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{d_x}`,
 associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged,
 then the merged node is
 
 .. math::
 
-    \boldsymbol{x}_1' = \boldsymbol{x}_1
+    \vect{x}_1' = \vect{x}_1
 
 and the merged weight is:
 
@@ -181,7 +181,7 @@ Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances.
 These parameters can be set using the :class:`~openturns.ResourceMap` keys
 `SmolyakExperiment-MergeRelativeEpsilon` and `SmolyakExperiment-MergeAbsoluteEpsilon`.
 The criterion is based on a mixed absolute and relative tolerance.
-Two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`
+Two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{d_x}`
 are close to each other and are to be merged if:
 
 .. math::
@@ -211,7 +211,7 @@ Therefore,
 
 .. math::
 
-    \left|\int_{[0, 1]^{d_x}} g(\boldsymbol{x}) d\boldsymbol{x} 
+    \left|\int_{[0, 1]^{d_x}} g(\vect{x}) d\vect{x} 
     - S_\ell(g)\right|
     = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
 
