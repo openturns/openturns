@@ -1,5 +1,5 @@
 """
-Use the FORM - SORM algorithms on non linear function
+Using the FORM - SORM algorithms on a non linear function
 =====================================================
 """
 # %%
