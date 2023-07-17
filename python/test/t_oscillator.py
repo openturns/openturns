@@ -13,6 +13,13 @@ assert_almost_equal(osc.model(osc.distribution.getMean()), [23.1897], 1e-2)
 
 
 # Compute probability with FORM 
+model = osc.model
+distribution = osc.distribution
+vect = ot.RandomVector(distribution)
+G = ot.CompositeRandomVector(model, vect)
+event = ot.ThresholdEvent(G, ot.Less(), 0.0)
+event.setName("failure")
+
 
 optimAlgo = ot.Cobyla()
 optimAlgo.setMaximumEvaluationNumber(1000)
