@@ -122,7 +122,7 @@ print("Failure probability = ", probability)
 # -------------
 
 # %%
-# To get a first idea of the failure probability with reduced simulation budget, one can use the First Order Realibily Method.
+# To get a first idea of the failure probability with reduced simulation budget, one can use the First Order Realiability Method (FORM).
 
 
 # %%
