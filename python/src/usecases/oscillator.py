@@ -136,11 +136,13 @@ class Oscillator:
         self.sigmaOverMuS0 = 0.1
 
         # create the limit state function model
-        formula = "Fs-3*ks*sqrt("
-        formula += "pi_*S0*(zetap/2+zetas/2)*zetas*(zetap*sqrt(kp/mp)^3+zetas*sqrt(ks/ms)^3)*sqrt(kp/mp)/"
-        formula += "(4*zetas*sqrt(ks/ms)^3*(zetap*zetas*(4*(zetap/2+zetas/2)^2+"
-        formula += "((sqrt(kp/mp)-sqrt(ks/ms))/(sqrt(kp/mp)/2+sqrt(ks/ms)/2))^2)+"
-        formula += "(ms/mp)*(zetap/2+zetas/2)^2)*4*(zetap/2+zetas/2)*(sqrt(kp/mp)/2+sqrt(ks/ms)/2)^4))"
+        formula = "Fs - 3 * ks * sqrt("
+        formula += "pi_ * S0 * (zetap/2 + zetas/2) * zetas * (zetap * sqrt(kp / mp)^3 +"
+        formula += "zetas * sqrt(ks / ms)^3) * sqrt(kp / mp) /"
+        formula += "(4 * zetas * sqrt(ks / ms)^3 * (zetap * zetas * (4 * (zetap/2 + zetas/2)^2 +"
+        formula += "((sqrt(kp / mp) - sqrt(ks / ms)) / (sqrt(kp / mp)/2 + sqrt(ks / ms)/2))^2) +"
+        formula += "(ms/mp) * (zetap/2 + zetas/2)^2) * 4 * (zetap/2 + zetas/2) *"
+        formula += "(sqrt(kp / mp)/2 + sqrt(ks / ms)/2)^4))"
 
         self.model = ot.SymbolicFunction(
             ["mp", "ms", "kp", "ks", "zetap", "zetas", "Fs", "S0"], [formula]
