@@ -1,6 +1,6 @@
 """
 Using the FORM - SORM algorithms on a non linear function
-=====================================================
+=========================================================
 """
 # %%
 # In this example, we estimate a failure probability with the `FORM` and `SORM` algorithms on the :ref:`oscillator <use-case-oscillator>` example.
