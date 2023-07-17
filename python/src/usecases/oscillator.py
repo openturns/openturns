@@ -73,12 +73,12 @@ class Oscillator:
           distributionZetas = ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
 
     muFs : float
-          muFs = 27.5, mean of the force capacity of the secondary spring
+          muFs = 27.5, mean of the loading capacity of the secondary spring
 
     sigmaOverFs : float
-          sigmaOverFs = 0.1, coefficient of variation of the force capacity of the secondary spring
+          sigmaOverFs = 0.1, coefficient of variation of the loading capacity of the secondary spring
 
-    distributionFs : :class:`~openturns.LogNormal` distribution of the force capacity of the secondary spring
+    distributionFs : :class:`~openturns.LogNormal` distribution of the loading capacity of the secondary spring
           distributionFs = ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
 
     muS0 : float

@@ -51,12 +51,12 @@ Eight uncertainties are considered in the system:
 - on the masses of the primary and secondary systems (:math:`m_p` and :math:`m_s`),
 - on the spring stiffeness of the primary and secondary oscillators (:math:`k_p` and :math:`k_s`),
 - on the damping ratios of the primary and secondary systems (:math:`\zeta_p` and :math:`\zeta_s`),
-- on the force capacity of the secondary spring (:math:`F_s`),
+- on the loading capacity of the secondary spring (:math:`F_s`),
 - on the intensity of the white noise excitation (:math:`S_0`).
 
 
 We consider the following distribution fResponse of Two-Degree-of-Freedom Systems
-to White-Noise Base Excitationunctions:
+to White-Noise Base Excitation:
 
 - :math:`m_p \sim \text{LogNormalSigmaOverMu}(  \mu_{m_p} = 1.5, \delta_{m_p} = 0.1)`
 - :math:`m_s \sim \text{LogNormalSigmaOverMu}(  \mu_{m_s} = 0.01,  \delta_{m_s} = 0.1)`
