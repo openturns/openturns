@@ -13,7 +13,7 @@ class Oscillator:
     ----------
 
     dim : int
-          dim=8, dimension of the problem
+          dim = 8, dimension of the problem
 
     model : :class:`~openturns.SymbolicFunction`
             The limit state function
