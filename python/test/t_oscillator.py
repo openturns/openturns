@@ -2,6 +2,7 @@
 
 from openturns.testing import assert_almost_equal
 from openturns.usecases import oscillator
+import openturns as ot
 
 """
 Test the Oscillator data class on a reference point.
