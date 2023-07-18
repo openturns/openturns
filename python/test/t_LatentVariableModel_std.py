@@ -12,6 +12,12 @@ k = otexp.LatentVariableModel(4, 3)
 k.setLatentVariables([0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.4])
 k.setScale([1.5])
 k.setAmplitude([2.0])
-ott.assert_almost_equal(k(1, 1)[0, 0], 4.0)
-ott.assert_almost_equal(k(1, 2)[0, 0], 3.903408)
-ott.assert_almost_equal(k(0, 3)[0, 0], 3.750353)
+
+# We define a squared exponential kernel in the latent space as a reference
+kRef = ot.SquaredExponential(3)
+kRef.setScale(ot.Point(3, 1.5))
+kRef.setAmplitude(ot.Point(1, 2.0))
+
+ott.assert_almost_equal(k(1, 1)[0, 0], kRef(ot.Point([0.1, 0.0, 0.0]),ot.Point([0.1, 0.0, 0.0]))[0, 0])
+ott.assert_almost_equal(k(1, 2)[0, 0], kRef(ot.Point([0.1, 0.0, 0.0]),ot.Point([0.2, 0.3, -0.1]))[0, 0])
+ott.assert_almost_equal(k(0, 3)[0, 0], kRef(ot.Point([0.0, 0.0, 0.0]),ot.Point([-0.2, -0.3, 0.4]))[0, 0])

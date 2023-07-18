@@ -39,7 +39,7 @@ public:
 
   /** Parameters constructor */
   LatentVariableModel(const UnsignedInteger nLevels = 2,
-						 const UnsignedInteger latentDim = 2);
+                      const UnsignedInteger latentDim = 2);
 
   /** Virtual copy constructor */
   LatentVariableModel * clone() const override;

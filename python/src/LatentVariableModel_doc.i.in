@@ -137,6 +137,58 @@ nLevels : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LatentVariableModel::setFullParameter
+"Set the full parameters of the covariance function.
+
+Parameters
+----------
+parameter : :class:`~openturns.Point`
+    List of the full parameter of the covariance function i.e.
+    the scale parameter :math:`\vect{\theta} \in \Rset`, the
+    the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getFullParameter
+"Get the full parameters of the covariance function.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    List of the full parameter of the covariance function i.e.
+    the scale parameter :math:`\vect{\theta} \in \Rset`, the
+    the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`""
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::setParameter
+"Set the active parameters values of the covariance function.
+
+Parameters
+----------
+parameter : :class:`~openturns.Point`
+    List of the parameter of the covariance function, among which there are
+    the scale parameter :math:`\vect{\theta} \in \Rset`, the
+    the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getParameter
+"Get the active parameters values of the covariance function.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    List of the full parameter of the covariance function, among which there are
+    the scale parameter :math:`\vect{\theta} \in \Rset`, the
+    the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`""
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LatentVariableModel::setLatentVariables
 "Number of levels accessor.
 

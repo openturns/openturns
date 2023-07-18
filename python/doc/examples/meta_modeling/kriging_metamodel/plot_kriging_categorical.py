@@ -19,7 +19,7 @@ ot.RandomGenerator.SetSeed(5)
 # %%
 # We first show the advantage of modeling the various levels of a mixed
 # continuous / categorical function through a single surrogate model
-# on a simple test-case, defined below.
+# on a simple test-case taken from [pelamatti2020]_, defined below.
 
 
 # %%
@@ -183,8 +183,8 @@ ax2.set_ylabel("y", fontsize=15)
 # able to exploit the information provided by the entire training data set.
 
 # %%
-# We now consider a more complex which is a modified version of the Goldstein function.
-# This function depends on 2 continuous variables and 2 categorical ones.
+# We now consider a more complex function which is a modified version of the Goldstein function,
+# taken from [pelamatti2020]_. This function depends on 2 continuous variables and 2 categorical ones.
 # Each categorical variable is characterized by 3 levels.
 
 

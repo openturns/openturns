@@ -32,7 +32,7 @@ static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 
 /** Parameters constructor */
 LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
-										 const UnsignedInteger latentDim)
+                                         const UnsignedInteger latentDim)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
   , latentDim_(latentDim)
   , nLevels_(nLevels)
@@ -63,7 +63,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
   const bool isLevelz1 = (z1 >= 0 && z1 < nLevels_ && (z1 - floor(z1)) == 0);
   const bool isLevelz2 = (z2 >= 0 && z2 < nLevels_ && (z2 - floor(z2)) == 0);
 
-  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << z1 
+  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << z1
   << ", and/or " << z2 << " are not among the known levels. They should both present integer values between 0 and l-1.";
 
   Scalar cov = latentCovarianceMatrix_(z1, z2);
@@ -71,14 +71,15 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
   return cov;
 }
 
+/* Computation of the covariance  function */
 Scalar LatentVariableModel::computeAsScalar(const Point & z1, const Point & z2) const
 {
   return computeAsScalar(z1[0], z2[0]);
 }
 
-
+/* Computation of the covariance  function */
 Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iterator & z1_begin,
-    const Collection<Scalar>::const_iterator & z2_begin) const
+                                            const Collection<Scalar>::const_iterator & z2_begin) const
 {
 
   Collection<Scalar>::const_iterator z1_it = z1_begin;
@@ -87,7 +88,7 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
   return computeAsScalar(*z1_it, *z2_it);
 }
 
-
+/* Set the covariance model parameters */
 void LatentVariableModel::setFullParameter(const Point & parameter)
 {
   /*
@@ -136,6 +137,7 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
   setLatentVariables(activeLatentVariables);
 }
 
+/* Get the covariance model parameters */
 Point LatentVariableModel::getFullParameter() const
 {
   // Get the generic parameter
@@ -145,6 +147,7 @@ Point LatentVariableModel::getFullParameter() const
   return parameter;
 }
 
+/* Get the covariance model parameters description */
 Description LatentVariableModel::getFullParameterDescription() const
 {
   // Description of the generic parameter
@@ -205,17 +208,19 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
   updateLatentCovarianceMatrix();
 }
 
+/* Updates the covariance matrix between the latent variables */
 void LatentVariableModel::updateLatentCovarianceMatrix()
 {
   latentCovarianceMatrix_ = latentCovarianceModel_.discretize(fullLatentVariables_);
 }
 
-/* latentVariables accessor */
+/* fullLatentVariables accessor */
 Sample LatentVariableModel::getFullLatentVariables() const
 {
   return fullLatentVariables_;
 }
 
+/* activeLatentVariables accessor */
 Point LatentVariableModel::getActiveLatentVariables() const
 {
   return activeLatentVariables_;
@@ -233,6 +238,7 @@ UnsignedInteger LatentVariableModel::getLevelNumber() const
   return nLevels_;
 }
 
+/* Set the covariance model scale */
 void LatentVariableModel::setScale(const Point & scale)
 {
   if (scale.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In LatentVariableModel::setScale: the given scale has a dimension=" << scale.getDimension() << " different from the input dimension=" << inputDimension_;
@@ -244,6 +250,7 @@ void LatentVariableModel::setScale(const Point & scale)
   updateLatentCovarianceMatrix();
 }
 
+/* Set the covariance model amplitude */
 void LatentVariableModel::setAmplitude(const Point & amplitude)
 {
   if (amplitude.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "In LatentVariableModel::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << outputDimension_;
@@ -256,6 +263,7 @@ void LatentVariableModel::setAmplitude(const Point & amplitude)
   updateLatentCovarianceMatrix();
 }
 
+/* Set the covariance model nugget factor */
 void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 {
   if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
