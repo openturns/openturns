@@ -159,7 +159,7 @@ parameter : :class:`~openturns.Point`
     List of the full parameter of the covariance function i.e.
     the scale parameter :math:`\vect{\theta} \in \Rset`, the
     the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
-    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`""
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`"
 
 // ---------------------------------------------------------------------
 
@@ -185,7 +185,7 @@ parameter : :class:`~openturns.Point`
     List of the full parameter of the covariance function, among which there are
     the scale parameter :math:`\vect{\theta} \in \Rset`, the
     the amplitude parameter :math:`\vect{\sigma} \in \Rset`, and
-    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`""
+    the latent variables coordinates,  :math:`\vect{x}_{lat} \in \Rset^{latentDim * nLevels - 2 * latentDim + 1}`"
 
 // ---------------------------------------------------------------------
 
