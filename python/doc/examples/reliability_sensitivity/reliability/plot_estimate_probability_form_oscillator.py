@@ -379,7 +379,7 @@ for i in range(distribution.getDimension()):
 
 # %%
 postAnalyticalIS = ot.PostAnalyticalImportanceSampling(result)
-postAnalyticalIS.setMaximumCoefficientOfVariation(0.1)
+postAnalyticalIS.setMaximumCoefficientOfVariation(0.05)
 postAnalyticalIS.run()
 resultPostAnalyticalIS = postAnalyticalIS.getResult()
 print(
