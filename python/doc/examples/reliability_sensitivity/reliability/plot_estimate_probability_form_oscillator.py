@@ -177,6 +177,12 @@ upperBound = [4] * 8
 # Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 50
 nY = 50
+my_labels = {
+    "MPP": "Design Point",
+    "O": "Origin in Standard Space",
+    "TLSF": "True Limit State Function",
+    "ALSF": "Approximated Limit State Function",
+}
 for i in range(distribution.getDimension()):
     for j in range(i):
 
@@ -220,13 +226,18 @@ for i in range(distribution.getDimension()):
         graph = ot.Graph()
 
         ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-        ax.plot(designPointStandardSpace[j], designPointStandardSpace[i], "o")
-        ax.contour(
-            meshX,
-            meshY,
-            meshZ,
-            [standardSpaceLimitStateFunction(designPointStandardSpace)[0]],
+
+        ax.plot(
+            designPointStandardSpace[j],
+            designPointStandardSpace[i],
+            "o",
+            label=my_labels["MPP"],
         )
+        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+
+        cs = ax.contour(meshX, meshY, meshZ, [0.0])
+        cs.collections[0].set_label(my_labels["TLSF"])
+
         ax.set_xticks([])
         ax.set_yticks([])
 
@@ -236,13 +247,17 @@ for i in range(distribution.getDimension()):
         responseSurface = algo.getMetaModel()
         data2 = responseSurface(inputData)
         meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
-        ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
+
+        cs2 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
+        cs2.collections[0].set_label(my_labels["ALSF"])
 
         # Creation of axes title
         if j == 0:
             ax.set_ylabel(distribution.getDescription()[i])
         if i == 7:
             ax.set_xlabel(distribution.getDescription()[j])
+        if i == 1 and j == 0:
+            ax.legend(loc="upper center", bbox_to_anchor=(8, -1.5))
 
 # %%
 # As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function.
@@ -294,6 +309,14 @@ upperBound = [4] * 8
 designPointStandardSpace = resultSORM.getStandardSpaceDesignPoint()
 nX = 50
 nY = 50
+
+my_labels = {
+    "MPP": "Design Point",
+    "O": "Origin in Standard Space",
+    "TLSF": "True Limit State Function",
+    "ALSF": "Approximated Limit State Function",
+}
+
 for i in range(distribution.getDimension()):
     for j in range(i):
 
@@ -336,13 +359,15 @@ for i in range(distribution.getDimension()):
 
         graph = ot.Graph()
         ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-        ax.plot(designPointStandardSpace[j], designPointStandardSpace[i], "o")
-        ax.contour(
-            meshX,
-            meshY,
-            meshZ,
-            [standardSpaceLimitStateFunction(designPointStandardSpace)[0]],
+        ax.plot(
+            designPointStandardSpace[j],
+            designPointStandardSpace[i],
+            "o",
+            label=my_labels["MPP"],
         )
+        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+        cs = ax.contour(meshX, meshY, meshZ, [0.0])
+        cs.collections[0].set_label(my_labels["TLSF"])
         ax.set_xticks([])
         ax.set_yticks([])
 
@@ -352,19 +377,16 @@ for i in range(distribution.getDimension()):
         responseSurface = algo.getMetaModel()
         data2 = responseSurface(inputData)
         meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
-        ax.contour(
-            meshX,
-            meshY,
-            meshZ2,
-            [standardSpaceLimitStateFunction(designPointStandardSpace)[0]],
-            linestyles="dotted",
-        )
+        cs2 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
+        cs2.collections[0].set_label(my_labels["ALSF"])
 
         # Creation of axes title
         if j == 0:
             ax.set_ylabel(distribution.getDescription()[i])
         if i == 7:
             ax.set_xlabel(distribution.getDescription()[j])
+        if i == 1 and j == 0:
+            ax.legend(loc="upper center", bbox_to_anchor=(8, -1.5))
 # %%
 # We can see that this approximation is very appropriate, explaining the accuracy of the obtained results.
 
