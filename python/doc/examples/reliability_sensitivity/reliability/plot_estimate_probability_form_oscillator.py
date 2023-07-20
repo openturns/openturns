@@ -17,6 +17,7 @@ from matplotlib import pylab as plt
 import numpy as np
 
 ot.Log.Show(ot.Log.NONE)
+ot.RandomGenerator.SetSeed(1)
 
 # %%
 # We load the model from the usecases module:
