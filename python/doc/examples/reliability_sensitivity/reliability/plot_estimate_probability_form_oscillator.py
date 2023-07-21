@@ -8,7 +8,7 @@ Using the FORM - SORM algorithms on a nonlinear function
 
 # %%
 # Model definition
-# ----------------
+# -----------------
 
 # %%
 from openturns.usecases import oscillator
@@ -175,6 +175,7 @@ lowerBound = [-4] * 8
 upperBound = [4] * 8
 
 # sphinx_gallery_thumbnail_number = 2
+
 # Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 50
 nY = 50
@@ -228,16 +229,14 @@ for i in range(distribution.getDimension()):
 
         ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
 
-        ax.plot(
+        cs0 = ax.plot(
             designPointStandardSpace[j],
             designPointStandardSpace[i],
             "o",
             label=my_labels["MPP"],
         )
-        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
-
-        cs = ax.contour(meshX, meshY, meshZ, [0.0])
-        cs.collections[0].set_label(my_labels["TLSF"])
+        cs1 = ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+        cs2 = ax.contour(meshX, meshY, meshZ, [0.0])
 
         ax.set_xticks([])
         ax.set_yticks([])
@@ -249,16 +248,30 @@ for i in range(distribution.getDimension()):
         data2 = responseSurface(inputData)
         meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
 
-        cs2 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
-        cs2.collections[0].set_label(my_labels["ALSF"])
+        cs3 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
 
         # Creation of axes title
         if j == 0:
             ax.set_ylabel(distribution.getDescription()[i])
         if i == 7:
             ax.set_xlabel(distribution.getDescription()[j])
+
         if i == 1 and j == 0:
-            ax.legend(loc="upper center", bbox_to_anchor=(8, -1.5))
+            cs2.collections[0].set_label(my_labels["TLSF"])
+            h2, l2 = cs2.legend_elements()
+            cs3.collections[0].set_label(my_labels["ALSF"])
+            h3, l3 = cs3.legend_elements()
+            lg = ax.legend(
+                [h2[0], h3[0]],
+                [my_labels["TLSF"], my_labels["ALSF"]],
+                frameon=False,
+                loc="upper center",
+                bbox_to_anchor=(8, -1.5),
+            )
+        elif i == 2 and j == 0:
+            lg1 = ax.legend(
+                frameon=False, loc="upper center", bbox_to_anchor=(7.65, -0.8)
+            )
 
 # %%
 # As it can be seen, the curvature of the limit state function near the design point is significant. In that way, FORM provides poor estimate since it linearly approximates the limit state function.
@@ -306,8 +319,6 @@ lowerBound = [-4] * 8
 upperBound = [4] * 8
 
 # Definition of number of meshes in x and y axes for the 2D cross cut plots
-
-designPointStandardSpace = resultSORM.getStandardSpaceDesignPoint()
 nX = 50
 nY = 50
 
@@ -360,15 +371,14 @@ for i in range(distribution.getDimension()):
 
         graph = ot.Graph()
         ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-        ax.plot(
+        cs0 = ax.plot(
             designPointStandardSpace[j],
             designPointStandardSpace[i],
             "o",
             label=my_labels["MPP"],
         )
-        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
-        cs = ax.contour(meshX, meshY, meshZ, [0.0])
-        cs.collections[0].set_label(my_labels["TLSF"])
+        cs1 = ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+        cs2 = ax.contour(meshX, meshY, meshZ, [0.0])
         ax.set_xticks([])
         ax.set_yticks([])
 
@@ -378,16 +388,30 @@ for i in range(distribution.getDimension()):
         responseSurface = algo.getMetaModel()
         data2 = responseSurface(inputData)
         meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
-        cs2 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
-        cs2.collections[0].set_label(my_labels["ALSF"])
+        cs3 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
 
         # Creation of axes title
         if j == 0:
             ax.set_ylabel(distribution.getDescription()[i])
         if i == 7:
             ax.set_xlabel(distribution.getDescription()[j])
+
         if i == 1 and j == 0:
-            ax.legend(loc="upper center", bbox_to_anchor=(8, -1.5))
+            cs2.collections[0].set_label(my_labels["TLSF"])
+            h2, l2 = cs2.legend_elements()
+            cs3.collections[0].set_label(my_labels["ALSF"])
+            h3, l3 = cs3.legend_elements()
+            lg = ax.legend(
+                [h2[0], h3[0]],
+                [my_labels["TLSF"], my_labels["ALSF"]],
+                frameon=False,
+                loc="upper center",
+                bbox_to_anchor=(8, -1.5),
+            )
+        elif i == 2 and j == 0:
+            lg1 = ax.legend(
+                frameon=False, loc="upper center", bbox_to_anchor=(7.65, -0.8)
+            )
 # %%
 # We can see that this approximation is very appropriate, explaining the accuracy of the obtained results.
 
