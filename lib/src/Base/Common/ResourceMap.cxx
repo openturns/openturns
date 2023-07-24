@@ -1217,6 +1217,11 @@ void ResourceMap::loadDefaultConfiguration()
   // TruncatedNormalFactory parameters //
   addAsScalar("TruncatedNormalFactory-SigmaLowerBound", 1.0e-4);
 
+  // TruncatedOverMesh parameters //
+  addAsString("TruncatedOverMesh-OptimizationAlgorithm", "TNC");
+  addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
+  addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);

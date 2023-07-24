@@ -592,6 +592,11 @@
   <!-- OT::TruncatedNormalFactory parameters -->
   <TruncatedNormalFactory-SigmaLowerBound value_float="1.0e-4" />
 
+  <!-- OT::TruncatedOverMesh parameters -->
+  <TruncatedOverMesh-OptimizationAlgorithm value_str="TNC" />
+  <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
+  <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
