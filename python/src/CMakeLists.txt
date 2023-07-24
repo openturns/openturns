@@ -1026,6 +1026,7 @@ ot_add_python_module(experimental experimental_module.i
                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
+                     TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      UniformOverMesh.i UniformOverMesh_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in

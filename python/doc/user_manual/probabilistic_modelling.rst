@@ -82,6 +82,11 @@ Continuous parametric distributions
     Trapezoidal
     Triangular
     TruncatedNormal
+
+    :template: classWithPlot.rst_t
+    experimental.TruncatedOverMesh
+
+    :template: Distribution.rst_t
     Uniform
 
     :template: classWithPlot.rst_t
