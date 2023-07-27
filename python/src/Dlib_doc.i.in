@@ -244,3 +244,23 @@ Returns
 -------
 algorithmNames : :class:`~openturns.Description`
     List of the names of available dlib search strategies."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setAlgorithmName
+"Accessor to the algorithm name.
+
+Parameters
+----------
+algoName : str
+    The identifier of the algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getAlgorithmName
+"Accessor to the algorithm name.
+
+Returns
+-------
+algoName : str
+    The identifier of the algorithm."
