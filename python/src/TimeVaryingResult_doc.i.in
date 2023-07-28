@@ -73,7 +73,17 @@ Returns
 distribution : :class:`~openturns.Distribution`
     The Parent distribution at time :math:`t`."
 
-// ------------------Time stamps---------------------------------------------------
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getTimeGrid
+"Accessor to the time grid.
+
+Returns
+-------
+timeGrid : :class:`~openturns.Sample`
+    Timestamp values."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::TimeVaryingResult::getParameterDistribution
 "Accessor to the distribution of :math:`\vect{\beta}`.
