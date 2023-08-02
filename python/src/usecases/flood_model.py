@@ -118,7 +118,7 @@ class FloodModel:
             ["Q", "Ks", "Zv", "Zm", "B", "L"],
             ["(Q / (Ks * B * sqrt((Zm - Zv) / L)))^(3.0 / 5.0) + Zv - 58.5"],
         )
-        self.model = ot.ParametricFunction(g, [4, 5], [L, B])
+        self.model = ot.ParametricFunction(g, [4, 5], [B, L])
         self.model.setOutputDescription(["H"])
 
         self.distribution = ot.ComposedDistribution([self.Q, self.Ks, self.Zv, self.Zm])
