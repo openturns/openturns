@@ -14,14 +14,11 @@ def use_case_1(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-
     algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
     algo.run()
-
     cov_amplitude = [0.19574963607179355]
-    trend_coefficients = [-0.11094267255,1.01498279538]
+    trend_coefficients = [-0.11094267255, 1.01498279538]
     result = algo.getResult()
-
     ott.assert_almost_equal(result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-5, 1e-5)
     ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-5, 1e-5)
 
@@ -33,15 +30,12 @@ def use_case_2(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-
     algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
     algo.setOptimizeParameters(False)
     algo.run()
-
     cov_amplitude = [1]
-    trend_coefficients = [-0.11094267255,1.01498279538]
+    trend_coefficients = [-0.11094267255, 1.01498279538]
     result = algo.getResult()
-
     ott.assert_almost_equal(result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-5, 1e-5)
     ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-5, 1e-5)
 
@@ -54,14 +48,11 @@ def use_case_3(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-
     algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
     algo.run()
-
-    cov_param = [0.132772599575,0.195632030235]
-    trend_coefficients = [-0.10342495271,1.01410795541]
+    cov_param = [0.132772599575, 0.195632030235]
+    trend_coefficients = [-0.10342495271, 1.01410795541]
     result = algo.getResult()
-
     ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-5, 1e-5)
     ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-5, 1e-5)
 
@@ -75,16 +66,14 @@ def use_case_4(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-
     algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
     algo.run()
-
-    cov_param = [0.132772599575,0.195632030235]
-    trend_coefficients = [-0.10342495271,1.01410795541]
+    cov_param = [0.132772599575, 0.195632030235]
+    trend_coefficients = [-0.10342495271, 1.01410795541]
     result = algo.getResult()
-
     ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-5, 1e-5)
     ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-5, 1e-5)
+
 
 def use_case_5(X, Y):
     """
@@ -103,18 +92,15 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [0.132775532444,0.190698691094]
-    trend_coefficients = [-0.103424639518,1.01410791907]
-
-
+    cov_param = [0.132775532444, 0.190698691094]
+    trend_coefficients = [-0.103424639518, 1.01410791907]
     result = algo.getResult()
-
     ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-5, 1e-5)
     ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-5, 1e-5)
 
 
-
 if __name__ == "__main__":
+
     ot.RandomGenerator.SetSeed(0)
     sampleSize = 40
     inputDimension = 1
