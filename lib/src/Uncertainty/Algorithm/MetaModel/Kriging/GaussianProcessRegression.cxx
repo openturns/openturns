@@ -39,11 +39,10 @@ static const Factory<GaussianProcessRegression> Factory_GaussianProcessRegressio
 /* Default constructor */
 GaussianProcessRegression::GaussianProcessRegression()
   : MetaModelAlgorithm()
-  , inputSample_(0, 0)
-  , outputSample_(0, 0)
   , covarianceModel_()
   , basis_()
-  , gamma_(0)
+  , beta_(0)
+  , gaussianProcessFitterResult_()
   , result_()
 {
   // Nothing to do
@@ -51,30 +50,26 @@ GaussianProcessRegression::GaussianProcessRegression()
 
 GaussianProcessRegression::GaussianProcessRegression(const GaussianProcessFitterResult &result)
   : MetaModelAlgorithm(result.getInputSample(), result.getOutputSample())
-  , inputSample_(result.getInputSample())
-  , outputSample_(result.getOutputSample())
   , covarianceModel_(result.getCovarianceModel())
   , basis_(result.getBasis())
-  , gamma_(0)
+  , beta_(0)
   , gaussianProcessFitterResult_(result)
   , result_()
 { 
-  // TODO
+  // Nothing to do
 }
 
 /* Constructor */
-GaussianProcessRegression::GaussianProcessRegression(const Sample & inputSample,
-                                                     const Sample & outputSample,
-                                                     const CovarianceModel & covarianceModel,
-                                                     const Function & trend)
-  : MetaModelAlgorithm(inputSample, outputSample)
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
-  , covarianceModel_(covarianceModel)
-  , basis_()
-  , gamma_(0)
-  , gaussianProcessFitterResult_()
-  , result_()
+GaussianProcessRegression::GaussianProcessRegression(const Sample &inputSample,
+                                                     const Sample &outputSample,
+                                                     const CovarianceModel &covarianceModel,
+                                                     const Function &trendFunction)
+    : MetaModelAlgorithm(inputSample, outputSample), 
+    covarianceModel_(covarianceModel), 
+    basis_(),
+    beta_(0), 
+    gaussianProcessFitterResult_(), 
+    result_()
 {
   // check in/out samples
   if (inputSample.getSize() != outputSample.getSize())
@@ -90,14 +85,20 @@ GaussianProcessRegression::GaussianProcessRegression(const Sample & inputSample,
     throw InvalidArgumentException(HERE) << "GaussianProcessRegression : Covariance model output dimension is " << covarianceModel.getOutputDimension() << ", expected " << outputDimension;
 
   // trend checking
-  if (trend.getInputDimension() != inputDimension)
-    throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend input dimension is " << trend.getInputDimension() << ", expected " << inputDimension;
-  if (trend.getOutputDimension() != outputDimension)
-    throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend output dimension is " << trend.getOutputDimension() << ", expected " << outputDimension;
-  
-  // TODO : implement the computation
-  // TODO Delegate to GaussianProcessFitter
-  //const Sample residual(outputSample_ - trend(inputSample_));
+  if (trendFunction.getInputDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend input dimension is " << trendFunction.getInputDimension() << ", expected " << inputDimension;
+  if (trendFunction.getOutputDimension() != outputDimension)
+    throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend output dimension is " << trendFunction.getOutputDimension() << ", expected " << outputDimension;
+
+  const Sample detrended(outputSample_ - trendFunction(inputSample_));
+  // Launch a fit
+  GaussianProcessFitter algo(inputSample_, detrended, covarianceModel_);
+  algo.setOptimizeParameters(false);
+  algo.run();
+  gaussianProcessFitterResult_ = algo.getResult();
+  basis_ = Basis(1);
+  basis_[0] = trendFunction;
+  beta_ = Point(outputDimension, 1.0);
 }
 
 /* Virtual constructor */
@@ -106,7 +107,7 @@ GaussianProcessRegression * GaussianProcessRegression::clone() const
   return new GaussianProcessRegression(*this);
 }
 
-void GaussianProcessRegression::computeGamma()
+Point GaussianProcessRegression::computeGamma() const
 {
   // Get cholesky factor & rho from glm
   LOGINFO("Solve L^t.gamma = rho");
@@ -116,12 +117,12 @@ void GaussianProcessRegression::computeGamma()
 
   if (algebraMethod)
   {
-    gamma_ = gaussianProcessFitterResult_.getHMatCholeskyFactor().solveLower(rho, true);
+    return gaussianProcessFitterResult_.getHMatCholeskyFactor().solveLower(rho, true);
   }
   else
   {
     // Arguments are keepIntact=true, matrix_lower=true & solving_transposed=true
-    gamma_ = gaussianProcessFitterResult_.getCholeskyFactor().getImplementation()->solveLinearSystemTri(rho, true, true);
+    return gaussianProcessFitterResult_.getCholeskyFactor().getImplementation()->solveLinearSystemTri(rho, true, true);
   }
 }
 
@@ -131,7 +132,7 @@ void GaussianProcessRegression::run()
 
   // Covariance coefficients are computed once, ever if optimizer is fixed
   LOGINFO("Compute the interpolation part");
-  computeGamma();
+  const Point gamma(computeGamma());
   LOGINFO("Store the estimates");
   LOGINFO("Build the output meta-model");
   Function metaModel;
@@ -140,21 +141,22 @@ void GaussianProcessRegression::run()
   const Basis basis(gaussianProcessFitterResult_.getBasis());
   const CovarianceModel conditionalCovarianceModel(gaussianProcessFitterResult_.getCovarianceModel());
   const Point beta(gaussianProcessFitterResult_.getTrendCoefficients());
-  const UnsignedInteger outputDimension = outputSample_.getDimension();
-  Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
-  covarianceCoefficients.getImplementation()->setData(gamma_);
+  const UnsignedInteger outputDimension = getOutputSample().getDimension();
+  const Sample inputSample(getInputSample());
+  const Sample outputSample(getOutputSample());
+  Sample covarianceCoefficients(inputSample.getSize(), outputDimension);
+  covarianceCoefficients.getImplementation()->setData(gamma);
   // Meta model definition
-  metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
-  metaModel.setGradient(new KrigingGradient(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
+  metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample, conditionalCovarianceModel, beta, covarianceCoefficients));
+  metaModel.setGradient(new KrigingGradient(basis, inputSample, conditionalCovarianceModel, beta, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
   // compute residual, relative error
-  const Point outputVariance(outputSample_.computeVariance());
-  const Sample mY(metaModel(inputSample_));
-  //const Sample mY(outputSample_.getSize(), outputSample_.getDimension());
-  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
+  const Point outputVariance(outputSample.computeVariance());
+  const Sample mY(metaModel(inputSample));
+  const Point squaredResiduals((outputSample - mY).computeRawMoment(2));
 
-  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger size = inputSample.getSize();
   Point residuals(outputDimension);
   Point relativeErrors(outputDimension);
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
@@ -162,8 +164,11 @@ void GaussianProcessRegression::run()
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
-  //TODO Gamma as a Sample
-  //result_ = GaussianProcessRegressionResult(gaussianProcessFitterResult_, gamma_);
+  result_ = GaussianProcessRegressionResult(gaussianProcessFitterResult_, covarianceCoefficients);
+  // Set metamodel
+  result_.setMetaModel(metaModel);
+  result_.setResiduals(residuals);
+  result_.setRelativeErrors(relativeErrors);
 }
 
 

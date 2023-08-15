@@ -53,7 +53,7 @@ public:
   GaussianProcessRegression (const Sample & inputSample,
                              const Sample & outputSample,
                              const CovarianceModel & covarianceModel,
-                             const Function & trend);
+                             const Function & trendFunction);
 
   /** Virtual constructor */
   GaussianProcessRegression * clone() const override;
@@ -77,15 +77,9 @@ public:
 protected:
 
   /** The method helps to compute the gamma point */
-  void computeGamma();
+  Point computeGamma() const;
 
 private:
-
-  // The input data
-  Sample inputSample_;
-
-  // The associated output data
-  Sample outputSample_;
 
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
@@ -93,8 +87,8 @@ private:
   // Basis argument
   Basis basis_;
 
-  // The coefficients of the current output deterministic trend
-  mutable Point gamma_;
+  // The coefficients of the trend
+  Point beta_;
 
   /** Results */
   GaussianProcessFitterResult gaussianProcessFitterResult_;
