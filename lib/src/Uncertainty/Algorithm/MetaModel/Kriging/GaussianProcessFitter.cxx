@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class builds generalized linear models
+ *  @brief The class fits gaussian process models
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -22,11 +22,8 @@
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/HMatrixFactory.hxx"
-#include "openturns/ProductCovarianceModel.hxx"
-#include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/LinearFunction.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/Cobyla.hxx"
@@ -35,12 +32,10 @@
 #else
 #include "openturns/DatabaseFunction.hxx"
 #endif
-#include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
-#include "openturns/MultiStart.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
