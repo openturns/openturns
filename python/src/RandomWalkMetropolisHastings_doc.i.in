@@ -164,22 +164,32 @@ expansionFactor : float, :math:`e > 1`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationRange
-"Get the range.
+"Get the expected range for the acceptance rate.
+During burn-in, at the end of every adaptation period,
+if the acceptance rate does not belong to this range,
+the adaptation factor is multiplied
+either by the expansion factor (if the acceptance rate is too high)
+or by the shrink factor (if the acceptance rate is too low).
 
 Returns
 -------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the adaptation factor."
+    Range :math:`[m,M]` of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationRange
-"Set the range.
+"Set the expected range for the acceptance rate.
+During burn-in, at the end of every adaptation period,
+if the acceptance rate does not belong to this range,
+the adaptation factor is multiplied
+either by the expansion factor (if the acceptance rate is too high)
+or by the shrink factor (if the acceptance rate is too low).
 
 Parameters
 ----------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the adaptation factor."
+    Range :math:`[m,M]` of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
