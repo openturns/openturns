@@ -95,7 +95,7 @@ Get the resulting meta model:
 
 Returns
 -------
-algorithm : :class:`~openturns.OptimizationAlgorithm`
+solver : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters."
 
 // ---------------------------------------------------------------------
@@ -105,7 +105,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`
 
 Parameters
 ----------
-algorithm : :class:`~openturns.OptimizationAlgorithm`
+solver : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters.
 
 Examples
@@ -134,7 +134,7 @@ Create the Kriging algorithm with the optimizer option:
 
 Parameters
 ----------
-bounds : :class:`~openturns.Interval`
+optimizationBounds : :class:`~openturns.Interval`
     The bounds used for numerical optimization of the likelihood.
 
 Notes
@@ -148,7 +148,7 @@ particularly :meth:`~openturns.GeneralLinearModelAlgorithm.setOptimizationBounds
 
 Returns
 -------
-problem : :class:`~openturns.Interval`
+optimizationBounds : :class:`~openturns.Interval`
     The bounds used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
