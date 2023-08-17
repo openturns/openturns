@@ -17,8 +17,8 @@ A quick start guide to the `Point` and `Sample` classes
 #
 # Two fundamental objects in the library are:
 #
-# * `Point`: a multidimensional point in :math:`D` dimensions (:math:`\in \mathbb{R}^D`) ;
-# * `Sample`: a multivariate sample made of :math:`N` points in :math:`D` dimensions.
+# * `Point`: a multidimensional point in :math:`d` dimensions (:math:`\in \mathbb{R}^d`) ;
+# * `Sample`: a multivariate sample made of :math:`n` points in :math:`d` dimensions.
 #
 
 # %%
@@ -66,18 +66,18 @@ p.getDimension()
 # The `Sample` class
 # ------------------
 #
-# The `Sample` class represents a multivariate sample made of :math:`N` points in :math:`\mathbb{R}^D`.
+# The `Sample` class represents a multivariate sample made of :math:`n` points in :math:`\mathbb{R}^d`.
 #
-# * :math:`D` is the *dimension* of the sample,
-# * :math:`N` is the *size* of the sample.
+# * :math:`d` is the *dimension* of the sample,
+# * :math:`n` is the *size* of the sample.
 #
 #
-# A `Sample` can be seen as an array of with :math:`N` rows and :math:`D` columns.
+# A `Sample` can be seen as an array of with :math:`n` rows and :math:`d` columns.
 #
 # *Remark.* The :class:`~openturns.ProcessSample` class can be used to manage a sample of stochastic processes.
 
 # %%
-# The script below creates a `Sample` with size :math:`N=5` and dimension :math:`D=3`.
+# The script below creates a `Sample` with size :math:`n=5` and dimension :math:`d=3`.
 
 # %%
 data = ot.Sample(5, 3)
@@ -133,7 +133,7 @@ print(type(column))
 # * the `row` is a `Point`,
 # * the `column` is a `Sample`.
 #
-# This is consistent with the fact that, in a dimension :math:`D` `Sample`, a row is a :math:`D`-dimensional `Point`.
+# This is consistent with the fact that, in a dimension :math:`d` `Sample`, a row is a :math:`d`-dimensional `Point`.
 
 # %%
 # The following statement extracts several columns (with indices 0 and 2) and creates a new `Sample`.
@@ -142,17 +142,34 @@ print(type(column))
 data.getMarginal([0, 2])
 
 # %%
+# Set a row or a column of a `Sample`
+# -----------------------------------
+
+# %%
 # Slicing can also be used to set a `Sample` row or column.
 
 # %%
 sample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+sample
+
+# %%
+# Set the third row: this must be a `Point` or must be convertible to.
 p = [8.0, 10.0]
 sample[2, :] = p
 sample
 
 # %%
+# Set the second column: this must be a `Sample` or must be convertible to.
 sample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 s = ot.Sample([[3.0], [5.0], [7.0]])
+sample[:, 1] = s
+sample
+
+# %%
+# Sometimes, we want to set a column with a list of floats.
+# This can be done using the :meth:`~openturns.Sample.BuildFromPoint` static method.
+sample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+s = ot.Sample.BuildFromPoint([3.0, 5.0, 7.0])
 sample[:, 1] = s
 sample
 
@@ -231,7 +248,7 @@ array = np.array(sample)
 array
 
 # %%
-type(array)
+print(type(array))
 
 # %%
 # Conversely, the following script creates a Numpy `array`, then converts it into a :class:`~openturns.Sample`.
@@ -278,13 +295,27 @@ sample = ot.Sample([u[i: i + 5] for i in range(len(u) // 5)])
 sample
 
 # %%
-# If we do not set the optional `size` parameter, the library cannot solve the
-# case and an `InvalidArgumentException` is generated.
-# More precisely, the code::
+# When there is an ambiguous case, the library cannot solve the
+# issue and an `InvalidArgumentException` is generated.
+
+# %%
+# More precisely, the code:
+#
+# .. code-block::
 #
 #     sample = ot.Sample(u)
 #
-# produces the exception::
+
+# %%
+# produces the exception:
+#
+# .. code-block::
 #
 #     TypeError: InvalidArgumentException : Invalid array dimension: 1
 #
+
+# %%
+# In order to solve that problem, we can use the :meth:`~openturns.Sample.BuildFromPoint`
+# static method.
+sample = ot.Sample.BuildFromPoint([ui for ui in u])
+sample
