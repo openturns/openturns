@@ -168,13 +168,15 @@ expansionFactor : float, :math:`e > 1`
 During burn-in, at the end of every adaptation period,
 if the acceptance rate does not belong to this range,
 the adaptation factor is multiplied
-either by the expansion factor (if the acceptance rate is too high)
-or by the shrink factor (if the acceptance rate is too low).
+either by the expansion factor
+(if the acceptance rate is larger than the *upperBound*)
+or by the shrink factor
+(if the acceptance rate is smaller than the *lowerBound*).
 
 Returns
 -------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the expected acceptance rate."
+    Range [*lowerBound*, *upperBound*] of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
@@ -183,13 +185,15 @@ range : :class:`~openturns.Interval` of dimension 1
 During burn-in, at the end of every adaptation period,
 if the acceptance rate does not belong to this range,
 the adaptation factor is multiplied
-either by the expansion factor (if the acceptance rate is too high)
-or by the shrink factor (if the acceptance rate is too low).
+either by the expansion factor
+(if the acceptance rate is larger than the *upperBound*)
+or by the shrink factor
+(if the acceptance rate is smaller than the *lowerBound*).
 
 Parameters
 ----------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the expected acceptance rate."
+    Range [*lowerBound*, *upperBound*] of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
