@@ -7,6 +7,9 @@ Available constructor:
 It defines a parametric function from *function* by freezing the variables
 marked by the *indices* set to the values of *referencePoint*.
 
+Please read the example below and :doc:`/auto_functional_modeling/vectorial_functions/plot_parametric_function` 
+for a detailed example of this class.
+
 Parameters
 ----------
 function : :class:`~openturns.Function`
@@ -26,20 +29,20 @@ parametersSet : bool
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['x+y', 'x*z+y'])
+>>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['x + y', 'x * z + y'])
 >>> print(f)
-[x,y,z]->[x+y,x*z+y]
+[x,y,z]->[x + y,x * z + y]
 
 Then create another function by setting x=2 and y=3:
 
->>> g=ot.ParametricFunction(f, [0,1], [2,3])
+>>> g=ot.ParametricFunction(f, [0,1], [2.0, 3.0])
 >>> print(g)
-ParametricEvaluation([x,y,z]->[x+y,x*z+y], parameters positions=[0,1], parameters=[x : 2, y : 3], input positions=[2])
+ParametricEvaluation([x,y,z]->[x + y,x * z + y], parameters positions=[0,1], parameters=[x : 2, y : 3], input positions=[2])
 
 Or by setting z=4 using the complementary set flag:
 
->>> g = ot.ParametricFunction(f, [0,1], [4], False)
+>>> g = ot.ParametricFunction(f, [0, 1], [4.0], False)
 >>> print(g.getInputDescription())
 [x,y]
 >>> print(g)
-ParametricEvaluation([x,y,z]->[x+y,x*z+y], parameters positions=[2], parameters=[z : 4], input positions=[0,1])"
+ParametricEvaluation([x,y,z]->[x + y,x * z + y], parameters positions=[2], parameters=[z : 4], input positions=[0,1])"
