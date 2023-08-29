@@ -6,4 +6,7 @@
 
 %include TTY_doc.i
 
+%ignore OT::TTY::GetColor;
+%nodefaultctor TTY;
+
 %include openturns/TTY.hxx
