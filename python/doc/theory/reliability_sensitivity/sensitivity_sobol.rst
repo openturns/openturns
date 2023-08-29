@@ -159,10 +159,10 @@ where the interaction variances are:
 
 .. math::
     V_{i}        &= \Var{h_{\{i\}}(X_i)}, \label{eq-sde-varvi1-2} \\
-    V_{\{i,j\}}  &= \Var{h_{\{i, j\}}(X_i,X_j)}, \\
-    V_{\{i,j,\}} &= \Var{h_{i,j,k}(X_i,X_j,k)}, \\
+    V_{\{i, j\}}  &= \Var{h_{\{i, j\}}(X_i, X_j)}, \\
+    V_{\{i, j, k\}} &= \Var{h_{i, j, k}(X_i, X_j, X_k)}, \\
     \ldots       & \\
-    V_{\{1,2,\ldots,n_X\}} &= \Var{h_{\{1,2,\ldots,n_X\}}(X_1,X_2,\ldots,X_p)}.
+    V_{\{1, 2, \ldots, n_X\}} &= \Var{h_{\{1, 2, \ldots, n_X\}}(X_1, X_2, \ldots, X_p)}.
 
 More generally, the interaction variance of a group of variables is:
 
@@ -176,14 +176,16 @@ Using the Hoeffding decomposition, we get:
 
    \Var{Y} = \sum_{ \bdu \subseteq \{1, \ldots, n_X\} } V_\bdu.
 
-The Möbius inversion formula implies (see [daveiga2022]_ corrollary 3.5 page 52):
+The Möbius inversion formula implies (see [daveiga2022]_ corollary 3.5 page 52):
 
 .. math::
 
     V_\bdu = \sum_{\bdv \subseteq \bdu} (-1)^{ |\bdu| - |\bdv| } \Var{\Expect{ Y \vert \mat{X}_\bdv} }.
 
-Interaction sensitivity indices of a variable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _reliability_sensitivity_interaction_group:
+
+Interaction sensitivity index of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first order interaction sensitivity indices are equal to:
 
@@ -211,8 +213,13 @@ of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 This index measures the sensitivity of the variance of the output explained
 by interactions within the group.
 
+.. _reliability_sensitivity_total_interaction_group:
+
+Total interaction sensitivity index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The total interaction sensitivity index of the group :math:`\bdu`
-is (see [liu2006]_):
+is (see [liu2006]_ eq. 8 page 714 where it is named "superset importance"):
 
 .. math::
     S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}
@@ -220,8 +227,10 @@ is (see [liu2006]_):
 This index measures the sensitivity of the variance of the output explained
 by interactions within the group and groups of variables containing it.
 
-First order and total sensitivity indices of a variable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _reliability_sensitivity_first_order_variable:
+
+First order Sobol' sensitivity index of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first order Sobol' sensitivity index is equal to the corresponding
 interaction index of the group :math:`\{i\}`:
@@ -240,6 +249,11 @@ The first order Sobol' sensitivity index satisfies the equation:
     S_i &= \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
+
+.. _reliability_sensitivity_total_variable:
+
+Total sensitivity index of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The total  Sobol' sensitivity index is:
 
@@ -263,7 +277,7 @@ For any :math:`i=1,\ldots,n_X`, let us define
     V_i^T   & = \sum_{\bdu \ni i} V_\bdu \\
     V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
 
-Total order Sobol' indices satisfy the equality:
+Total Sobol' indices satisfy the equality:
 
 .. math::
 
@@ -271,15 +285,16 @@ Total order Sobol' indices satisfy the equality:
 
 for :math:`i=1,\ldots,n_X`.
 
-The total order Sobol' index :math:`S_i^T` measures the part of the variance
+The total Sobol' index :math:`S_i^T` measures the part of the variance
 of :math:`Y` explained by :math:`X_i`
 and its interactions with other input variables.
 It can also be viewed as the part of the variance of :math:`Y` that cannot
 be explained without :math:`X_i`.
 
+.. _reliability_sensitivity_first_closed_group:
 
-Sensitivity indices of a group of variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+First order closed sensitivity index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of input variables.
 The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
@@ -294,6 +309,11 @@ measures the sensitivity of the variance of :math:`Y` explained by the
 variables within the group.
 This index is useful when the group contains random variables parameterizing
 a single uncertainty source (see [knio2010]_ page 139).
+
+.. _reliability_sensitivity_total_group:
+
+Total sensitivity index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The total Sobol' index of a group of variables :math:`\bdu`
 is:
