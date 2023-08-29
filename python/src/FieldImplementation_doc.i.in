@@ -387,3 +387,16 @@ value : :class:`~openturns.Field`.
 %enddef
 %feature("docstring") OT::FieldImplementation::getMarginal
 OT_Field_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_asSample_doc
+"Convert to Sample.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Data as a Sample object."
+%enddef
+%feature("docstring") OT::FieldImplementation::asSample
+OT_Field_asSample_doc
