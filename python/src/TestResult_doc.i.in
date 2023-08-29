@@ -69,3 +69,33 @@ Returns
 -------
 statistic : float
     Measure used for the statistical test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getDescription
+"Accessor to the test description.
+
+Returns
+-------
+statistic : :class:`~openturns.Description`
+    Test description."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getTestType
+"Accessor to the test type.
+
+Returns
+-------
+type : str
+    Test type."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::setDescription
+"Accessor to the test description.
+
+Parameters
+----------
+description : sequence of str
+    Test description."

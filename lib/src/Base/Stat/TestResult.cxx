@@ -63,7 +63,7 @@ TestResult * TestResult::clone() const
   return new TestResult(*this);
 }
 
-/* Description Accessor */
+/* Description accessor */
 void TestResult::setDescription(const Description & description)
 {
   description_ = description;
