@@ -35,7 +35,7 @@ Then :math:`distY` is the distribution of the scalar random variable
 
 .. math::
 
-    \displaystyle f_Y(y) = \sum_{k =0}^{k=N} \frac{f_X (g^{-1}(y))}{|g'\circ g^{-1}(y)|}1_{y \in g^{-1}([a_k, a_{k+1}))}
+    \displaystyle f_Y(y) = \sum_{k =0}^{k=N} \frac{f_X (g^{-1}(y))}{|g'\circ g^{-1}(y)|}1_{y \in g([a_k, a_{k+1}))}
 
 with :math:`a_0=\inf \supp{f_X}`, :math:`a_N=\sup \supp{f_X}` and
 :math:`(a_1, \dots, a_N)` such that :math:`g` is monotone over
