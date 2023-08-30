@@ -3,7 +3,12 @@ Bayesian calibration of a computer code
 =======================================
 """
 # %%
-# In this example we are going to compute the parameters of a computer model thanks to Bayesian estimation.
+# In this example we compute the parameters of a computer model thanks
+# to Bayesian estimation.
+# We use the :class:`~openturns.RandomWalkMetropolisHastings` and
+# :class:`~openturns.Gibbs` classes
+# and simulate a sample of the posterior distribution using
+# :ref:`metropolis_hastings`.
 #
 # Let us denote :math:`(y_1, \dots, y_n)` the observation sample,
 # :math:`(\vect z_1, \ldots, \vect z_n) = (f(x_1|\vect\theta), \ldots, f(x_n|\vect\theta))` the model prediction,
@@ -83,7 +88,6 @@ Bayesian calibration of a computer code
 #   in order to sample from the posterior distribution of the calibration parameters.
 
 # %%
-import pylab as pl
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -161,10 +165,11 @@ functionnalModel = ot.ParametricFunction(fullModel, [1, 2, 3], thetaTrue)
 graphModel = functionnalModel.getMarginal(0).draw(xmin, xmax)
 observations = ot.Cloud(x_obs, y_obs)
 observations = ot.Cloud(x_obs, y_obs)
-observations.setColor("red")
 graphModel.add(observations)
 graphModel.setLegends(["Model", "Observations"])
 graphModel.setLegendPosition("topleft")
+palette = ot.Drawable.BuildDefaultPalette(2)
+graphModel.setColors(palette)
 view = viewer.View(graphModel)
 
 # %%
@@ -255,19 +260,64 @@ posterior = kernel.build(sample)
 # %%
 # Display prior vs posterior for each parameter.
 
+
+def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
+    """
+    Plot the prior and posterior distribution of a Bayesian calibration
+
+    Parameters
+    ----------
+    prior : ot.Distribution(dimension)
+        The prior.
+    posterior : ot.Distribution(dimension)
+        The posterior.
+
+    Return
+    ------
+    grid : ot.GridLayout(1, dimension)
+        The prior and posterior PDF for each marginal.
+    """
+    palette = ot.Drawable.BuildDefaultPalette(2)
+    paramDim = prior.getDimension()
+    grid = ot.GridLayout(1, paramDim)
+    parameterNames = prior.getDescription()
+    for parameter_index in range(paramDim):
+        graph = ot.Graph("", parameterNames[parameter_index], "PDF", True)
+        # Prior
+        curve = prior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PriorLineStyle")
+        )
+        curve.setLegend("Prior")
+        graph.add(curve)
+        # Posterior
+        curve = posterior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PosteriorLineStyle")
+        )
+        curve.setLegend("Posterior")
+        graph.add(curve)
+        #
+        if parameter_index < paramDim - 1:
+            graph.setLegends([""])
+        if parameter_index > 0:
+            graph.setYTitle("")
+        graph.setColors(palette)
+        graph.setLegendPosition("topright")
+        grid.setGraph(0, parameter_index, graph)
+    grid.setTitle("Bayesian calibration")
+    return grid
+
+
 # %%
-
-fig = pl.figure(figsize=(12, 4))
-
-for parameter_index in range(paramDim):
-    graph = posterior.getMarginal(parameter_index).drawPDF()
-    priorGraph = prior.getMarginal(parameter_index).drawPDF()
-    priorGraph.setColors(["blue"])
-    graph.add(priorGraph)
-    graph.setLegends(["Posterior", "Prior"])
-    ax = fig.add_subplot(1, paramDim, parameter_index + 1)
-    _ = ot.viewer.View(graph, figure=fig, axes=[ax])
-
-_ = fig.suptitle("Bayesian calibration")
-
+# sphinx_gallery_thumbnail_number = 2
+grid = plot_bayesian_prior_vs_posterior_pdf(prior, posterior)
+viewer.View(
+    grid,
+    figure_kw={"figsize": (8.0, 3.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
 plt.show()
+
+# %%

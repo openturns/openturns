@@ -52,6 +52,7 @@ outputSample = fm.model(inputSample)
 sample = ot.Sample(size, 5)
 sample[:, 0:4] = inputSample
 sample[:, 4] = outputSample
+sample.setDescription(["Q", "Ks", "Zv", "Zm", "H"])
 sample[0:5, :]
 
 # %%
@@ -61,6 +62,9 @@ sample[0:5, :]
 sampleQ = inputSample[:, 0]
 
 # %%
+# The next cell defines a function that computes the conditional sample of
+# a component given that the a marginal (defined by its index `criteriaComponent`)
+# exceeds a given threshold, defined by its quantile level.
 
 
 def computeConditionnedSample(
@@ -103,9 +107,11 @@ conditionnedSampleQ = computeConditionnedSample(
 
 # %%
 # We could as well use:
-# ```
-# conditionnedHistogram = ot.HistogramFactory().buildAsHistogram(conditionnedSampleQ)
-# ```
+#
+# .. code-block::
+#
+#     # conditionnedHistogram = ot.HistogramFactory().buildAsHistogram(conditionnedSampleQ)
+#
 # but this creates an histogram with new classes, corresponding
 # to `conditionnedSampleQ`.
 # We want to use exactly the same classes as the full sample,

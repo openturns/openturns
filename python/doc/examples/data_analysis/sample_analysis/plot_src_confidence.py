@@ -1,12 +1,16 @@
 """
-Compute SRC indices confidence intervals
-----------------------------------------
+Compute squared SRC indices confidence intervals
+------------------------------------------------
 """
 
 # %%
-# This example shows how to compute SRC indices confidence bounds with bootstrap.
-# First, we compute SRC indices and draw them.
+# This example shows how to compute squared SRC indices confidence bounds with bootstrap.
+# First, we compute squared SRC indices and draw them.
 # Then we compute bootstrap confidence bounds using the :class:`~openturns.BootstrapExperiment` class and draw them.
+
+# %%
+# Define the model
+# ~~~~~~~~~~~~~~~~
 
 # %%
 import openturns as ot
@@ -15,10 +19,22 @@ from openturns.usecases import flood_model
 
 # %%
 # Load the flood model.
-flood = flood_model.FloodModel()
-distribution = flood.distribution
-g = flood.model
+fm = flood_model.FloodModel()
+distribution = fm.distribution
+g = fm.model.getMarginal(1)
 dim = distribution.getDimension()
+
+# %%
+# See the distribution
+distribution
+
+# %%
+# See the model
+g.getOutputDescription()
+
+# %%
+# Estimate the squared SRC indices
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # %%
 # We produce a pair of input and output sample.
@@ -28,18 +44,22 @@ X = distribution.getSample(N)
 Y = g(X)
 
 # %%
-# Compute SRC indices from the generated design.
+# Compute squared SRC indices from the generated design.
 importance_factors = ot.CorrelationAnalysis(X, Y).computeSquaredSRC()
 print(importance_factors)
 
 # %%
-# Plot the SRC indices.
+# Plot the squared SRC indices.
 input_names = g.getInputDescription()
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     importance_factors, input_names, "Importance factors"
 )
-graph.setYTitle("Importance factors")
+graph.setYTitle("Squared SRC")
 _ = otv.View(graph)
+
+# %%
+# Compute confidence intervals
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # %%
 # We now compute bootstrap confidence intervals for the importance factors.
@@ -95,7 +115,7 @@ def draw_importance_factors_with_bounds(
         importance_factors, input_names, "Importance factors"
     )
     graph.setColors([palette[0], "black"])
-    graph.setYTitle("Importance factors")
+    graph.setYTitle("Squared SRC")
 
     # Add confidence bounds
     for i in range(dim):
@@ -105,6 +125,9 @@ def draw_importance_factors_with_bounds(
         graph.add(curve)
     return graph
 
+
+# %%
+# sphinx_gallery_thumbnail_number = 2
 
 # %%
 # Plot the SRC indices mean and confidence intervals.
@@ -126,7 +149,7 @@ _ = otv.View(graph)
 # Hence, the variable :math:`Z_m` could be replaced by a constant without
 # reducing the variance of the output much.
 #
-# The variables :math:`K_s` and :math:`Z_v` are somewhat in-between these two
+# The variables :math:`K_s`, :math:`Z_v` and :math:`H_d` are somewhat in-between these two
 # extreme situations. We cannot state that one of them is of greater importance
 # than the other, because the confidence bounds are of comparable magnitude.
 # Looking only at the importance factors, we may wrongly conclude that
