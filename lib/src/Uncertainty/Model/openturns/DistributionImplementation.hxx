@@ -911,7 +911,7 @@ protected:
     Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computePDF(sample);
-    };
+    }
 
     UnsignedInteger getInputDimension() const override
     {
@@ -975,7 +975,7 @@ protected:
     Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computeLogPDF(sample);
-    };
+    }
 
     UnsignedInteger getInputDimension() const override
     {
@@ -1044,12 +1044,12 @@ protected:
     Point computeCDF(const Point & point) const
     {
       return Point(1, p_distribution_->computeCDF(point));
-    };
+    }
 
     Sample computeCDF(const Sample & sample) const
     {
       return p_distribution_->computeCDF(sample);
-    };
+    }
 
     UnsignedInteger getInputDimension() const override
     {
@@ -1487,7 +1487,7 @@ protected:
       , p_distribution_(p_distribution)
     {
       // Nothing to do
-    };
+    }
 
     ShiftedMomentWrapper * clone() const override
     {
@@ -1499,7 +1499,7 @@ protected:
       const Scalar power = std::pow(point[0] - shift_, n_);
       const Scalar pdf = p_distribution_->computePDF(point);
       return Point(1, power * pdf);
-    };
+    }
 
     Sample operator() (const Sample & sample) const override
     {
@@ -1509,7 +1509,7 @@ protected:
       for (UnsignedInteger i = 0; i < size; ++i)
         result(i, 0) = std::pow(sample(i, 0) - shift_, n_) * pdf(i, 0);
       return result;
-    };
+    }
 
     UnsignedInteger getInputDimension() const override
     {
@@ -1551,14 +1551,14 @@ protected:
       , p_distribution_(p_distribution)
     {
       // Nothing to do
-    };
+    }
 
     Scalar operator() (const Scalar x) const override
     {
       Collection<Scalar> z(y_);
       z.add(x);
       return p_distribution_->computePDF(z);
-    };
+    }
 
     void setParameter(const Point & parameters)
     {
@@ -1599,7 +1599,7 @@ protected:
       , p_distribution_(p_distribution)
     {
       // Nothing to do
-    };
+    }
 
     ConditionalCDFWrapper * clone() const override
     {
@@ -1609,7 +1609,7 @@ protected:
     Scalar operator() (const Scalar x) const override
     {
       return p_distribution_->computeConditionalCDF(x, y_);
-    };
+    }
 
     void setParameter(const Point & parameters)
     {
@@ -1673,7 +1673,7 @@ protected:
         result(i, 0) = -std::exp(logPDFI) * logPDFI;
       }
       return result;
-    };
+    }
 
     UnsignedInteger getInputDimension() const override
     {

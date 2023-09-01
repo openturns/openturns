@@ -56,7 +56,7 @@ struct NegativeBinomialFactoryParameterConstraint
     mean_(mean)
   {
     // Nothing to do
-  };
+  }
 
   Point computeConstraint(const Point & parameter) const
   {
