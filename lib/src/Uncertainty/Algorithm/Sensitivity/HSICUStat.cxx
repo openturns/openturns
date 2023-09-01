@@ -32,7 +32,7 @@ CLASSNAMEINIT(HSICUStat)
 HSICUStat::HSICUStat()
 {
   // Nothing
-};
+}
 
 /* Virtual constructor */
 HSICUStat* HSICUStat::clone() const

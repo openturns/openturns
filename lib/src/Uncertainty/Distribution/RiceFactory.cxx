@@ -51,7 +51,7 @@ struct RiceFactoryParameterConstraint
     r2p1_(1.0 + r * r)
   {
     // Nothing to do
-  };
+  }
 
   Point computeConstraint(const Point & parameter) const
   {
