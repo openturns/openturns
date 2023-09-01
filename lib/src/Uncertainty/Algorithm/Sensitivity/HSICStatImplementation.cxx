@@ -35,7 +35,7 @@ HSICStatImplementation::HSICStatImplementation()
   : PersistentObject()
 {
   // Nothing
-};
+}
 
 /* Virtual constructor */
 HSICStatImplementation * HSICStatImplementation::clone() const

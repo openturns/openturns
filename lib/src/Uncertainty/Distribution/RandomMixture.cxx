@@ -1119,7 +1119,7 @@ public:
     , z0_(z0)
   {
     // Nothing to do
-  };
+  }
 
   PDFKernelRandomMixture * clone() const
   {
@@ -1160,7 +1160,7 @@ public:
     , z0_(z0)
   {
     // Nothing to do
-  };
+  }
 
   CDFKernelRandomMixture * clone() const
   {
@@ -1201,7 +1201,7 @@ public:
     , z0_(z0)
   {
     // Nothing to do
-  };
+  }
 
   ComplementaryCDFKernelRandomMixture * clone() const
   {
