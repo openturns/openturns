@@ -28,7 +28,9 @@ The Karhunen-Loeve SVD algorithm solves the Fredholm problem  associated to the
 covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm`
 to get the notations.
 If the mesh is regular, then this decomposition is equivalent to the principal
-component analysis (PCA).
+component analysis (PCA) (see [pearson1907]_, [hotelling1933]_, [jackson1991]_, [jolliffe2002]_).
+In other fields such as computational fluid dynamics for example,
+this is called the proper orthogonal decomposition (POD) (see [luo2018]_).
 
 The SVD approach is a particular case of the quadrature approach (see
 :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the
