@@ -19,7 +19,7 @@ Notes
 -----
 The binning mechanism creates a regular grid of *binNumber* intervals in each
 dimension, then the unit weight of each point is linearly affected to the vertices
-of the bin containing the point. See [wand1994]_ for the details.
+of the bin containing the point (see [wand1994]_ appendix D, page 182).
 
 The boundary correction is available only in one dimension, and it is done using
 the mirroring technique. See the notes of the :meth:`setBoundingOption` method for
@@ -360,7 +360,7 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-This plug-in method is based on the solve-the-equation rule from (Sheather, Jones, 1991).
+This plug-in method is based on the solve-the-equation rule from [sheather1991]_.
 This method can take a lot of time for large samples, as the cost is  quadratic with the sample size.
 
 The `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns.ResourceMap` controls

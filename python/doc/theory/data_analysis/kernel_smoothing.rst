@@ -5,22 +5,35 @@ Kernel smoothing
 
 Kernel smoothing is a non parametric estimation method of the probability density function of a distribution.
 
+Introduction
+~~~~~~~~~~~~
+
+Let :math:`X` be a random variable with probability density function :math:`p`.
+Given a sample of independent observations :math:`x_1, ..., x_n` of :math:`X`
+and any point :math:`x \in \Rset`, the kernel smoothing estimator provides
+an approximation :math:`\hat{p}(x)` of :math:`p(x)`.
+
 In dimension 1, the kernel smoothed probability density function :math:`\hat{p}` has the following expression,
 where *K* is the univariate kernel, *n* the sample size and :math:`(X_1, \cdots, X_n) \in \Rset^n`
-the univariate random sample with :math:`\forall i, \, \, X_i \in \Rset`:
+the univariate random sample with :math:`\forall i, \, \, X_i \in \Rset` ([wand1994]_ eq. 2.2 page 12):
 
 .. math::
   :label: kernelSmooth
 
     \hat{p}(x) = \displaystyle \frac{1}{nh}\sum_{i=1}^{n} K\left(\frac{x-X_i}{h}\right)
 
-The kernel *K* is a function satisfying :math:`\int K(x)\, dx=1`.
+The kernel *K* is a function satisfying:
+
+.. math::
+
+    \int K(x)\, dx=1.
+
 Usually *K* is chosen to be a unimodal probability density function that is symmetric about 0.
 The parameter *h* is called the *bandwidth*.
 
 
 In dimension :math:`d>1`, the kernel may be defined as a product kernel :math:`K_d`,
-as follows where :math:`\vect{x} = (x_1, \cdots, x_d)\in \Rset^d`:
+as follows where :math:`\vect{x} = (x_1, \cdots, x_d)\in \Rset^d` (([wand1994]_ eq. 2.2 page 12) page 91):
 
 .. math::
 
@@ -36,7 +49,7 @@ which components are denoted :math:`\vect{X}_i = (X_{i1}, \dots, X_{id})`:
 
 Let's note that the bandwidth is the vector :math:`\vect{h} = (h_1, \cdots, h_d)`.
 
-The quality of the approximation may be controlled by the AMISE (Asymptotic Mean Integrated Square error) criteria defined as:
+The quality of the approximation may be controlled by the AMISE (Asymptotic Mean Integrated Square error) criteria defined as ([wand1994]_ pages 14-21):
 
 .. math::
 
@@ -49,14 +62,30 @@ The quality of the approximation may be controlled by the AMISE (Asymptotic Mean
   \right.
 
 The quality of the estimation essentially depends on the value of the bandwidth *h*.
-The bandwidth that minimizes the AMISE criteria  has the expression (given in dimension 1):
+In dimension 1, the bandwidth that minimizes the AMISE criteria is
+(see [wand1994]_ eq 2.13 page 22):
 
 .. math::
   :label: AMISE1
 
-  h_{AMISE}(K) = \displaystyle \left[ \frac{R(K)}{\mu_2(K)^2R(p^{(2)})}\right]^{\frac{1}{5}}n^{-\frac{1}{5}}
+  h_{AMISE}(K) = \displaystyle \left[ \frac{R(K)}{\mu_2(K)^2 R(p^{(2)})}\right]^{\frac{1}{5}}n^{-\frac{1}{5}}
 
-where :math:`R(K) = \int K(\vect{x})^2\, d\vect{x}` and :math:`\mu_2(K) = \int \vect{x}^2K(\vect{x})\, d\vect{x} = \sigma_K^2`.
+where the rugosity of the kernel is:
+
+.. math::
+    R(K) = \int K(\vect{x})^2\, d\vect{x}
+
+and the second raw moment of the kernel is:
+
+.. math::
+    \mu_2(K) = \int \vect{x}^2K(\vect{x})\, d\vect{x} = \sigma_K^2.
+
+In the equation :eq:`AMISE1`, the expression :math:`R\left(p^{(2)}\right)` is the rugosity of
+the second derivative of the density probability function :math:`p` that
+we wish to approximate.
+Since, by hypothesis, the true density :math:`p` is unknown, its
+second derivative is also unknown.
+Hence the equation :eq:`AMISE1` cannot be used directly to compute the bandwidth.
 
 If we note that :math:`R(p^{(r)}) = (-1)^r\Phi_{2r}` with :math:`\Phi_r = \int p^{(r)}p(x)\, dx = \mathbb{E}_\vect{X}\left[p^{(r)}\right]`,
 then relation writes:
@@ -77,7 +106,8 @@ Silverman's rule (dimension 1)
 
 In the case where the density *p* is normal with standard deviation :math:`\sigma`,
 then the term :math:`\Phi_4` can be exactly evaluated.
-In that particular case,  the optimal bandwidth of relation :eq:`AMISE` with respect to the AMISE criteria writes as follows:
+In that particular case,  the optimal bandwidth of relation :eq:`AMISE`
+with respect to the AMISE criteria writes as follows (see [silverman1986]_ page 45):
 
 .. math::
   :label: pNormal
@@ -109,7 +139,7 @@ derivative of the density.
 Instead of making the gaussian assumption, the method uses a kernel smoothing method
 in order to make an approximation of higher derivatives of the density.
 
-Relation :eq:`AMISE` requires the evaluation of the quantity :math:`\Phi_4`.
+The equation :eq:`AMISE` requires the evaluation of the quantity :math:`\Phi_4`.
 As a general rule, we use the estimator :math:`\hat{\Phi}_r` of :math:`\Phi_r` defined by:
 
 .. math::
@@ -143,12 +173,13 @@ The optimal parameter *h* is:
 
 Given that preliminary results, the solve-the-equation plug-in method  proceeds as follows:
 
-- Relation :eq:`AMISE` defines :math:`h_{AMISE}(K)` as a function of :math:`\Phi_4` we denote here as:
+- The equation :eq:`AMISE` defines :math:`h_{AMISE}(K)` as a function of :math:`\Phi_4`.
+  Let :math:`t` be the function defined by the equation:
 
   .. math::
     :label: rel1
 
-      h_{AMISE}(K) = t(\Phi_4)
+      h_{AMISE}(K) = t(\Phi_4).
 
 - The term :math:`\Phi_4` is approximated by its estimator defined in
   :eq:`EstimPhirFin` evaluated with its optimal parameter :math:`h^{(4)}_{AMSE}`
@@ -166,24 +197,24 @@ Given that preliminary results, the solve-the-equation plug-in method  proceeds 
 
       \Phi_4 \simeq  \hat{\Phi}_4(h^{(4)}_{AMSE})
 
-- Relations :eq:`AMISE` and :eq:`h4` lead to the new one:
+- The equation :eq:`AMISE` and :eq:`h4` lead to:
 
   .. math::
     :label: h4hAmise
 
-      h^{(4)}_{AMSE} = \displaystyle \left( \frac{-2K^{(4)}(0)\mu_2(K)\Phi_4}{R(K)\Phi_{6}}\right) ^{\frac{1}{7}}h_{AMISE}(K)^{\frac{5}{7}}
+      h^{(4)}_{AMSE} = \displaystyle \left( \frac{-2K^{(4)}(0)\mu_2(K)\Phi_4}{R(K)\Phi_{6}}\right) ^{\frac{1}{7}}h_{AMISE}(K)^{\frac{5}{7}}.
 
-  which rewrites:
+  Let :math:`\ell` be the function defined by the equation:
 
   .. math::
     :label: rel3
 
-      h^{(4)}_{AMSE} = l(h_{AMISE}(K))
+      h^{(4)}_{AMSE} = \ell(h_{AMISE}(K)).
 
-- Relation :eq:`h4hAmise` depends on both terms :math:`\Phi_4` and
+- The equation :eq:`h4hAmise` depends on both terms :math:`\Phi_4` and
   :math:`\Phi_6` which are evaluated with their estimators defined in :eq:`EstimPhirFin`
   respectively with their AMSE optimal parameters :math:`g_1` and :math:`g_2`
-  (see relation :eq:`optimHamse`). It leads to the expressions:
+  (see eq. :eq:`optimHamse`). It leads to the expressions:
 
   .. math::
     :label: g12
@@ -209,16 +240,16 @@ Given that preliminary results, the solve-the-equation plug-in method  proceeds 
     \end{array}
     \right.
 
-Then, to summarize, thanks to relations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:`g12` and :eq:`Phi68`, the optimal bandwidth is solution of the equation:
+Then, to summarize, thanks to the equations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:`g12` and :eq:`Phi68`, the optimal bandwidth is solution of the equation:
 
 .. math::
   :label: equhAmise
 
-    \boldsymbol{h_{AMISE}(K) = t \circ \hat{\Phi}_4 \circ l (h_{AMISE}(K))}
+    h_{AMISE}(K) = t \circ \hat{\Phi}_4 \circ \ell (h_{AMISE}(K))
 
-This method is due to (Sheather, Jones, 1991) who used ideas from (Park, Marron, 1990).
-The algorithm is presented in (Wand, Jones, 1994), page 74 under the "Solve the equation rule" name.
-The implementation uses ideas from (Raykar, Duraiswami, 2006), but the fast selection is not implemented.
+This method is due to [sheather1991]_ who used ideas from [park1990]_.
+The algorithm is presented in [wand1994]_, page 74 under the "Solve the equation rule" name.
+The implementation uses ideas from [raykar2006]_, but the fast selection is not implemented.
 
 Scott rule (dimension d)
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -325,8 +356,10 @@ according to the mirroring technique:
 
 .. topic:: References:
 
-     - *Kernel smoothing*, M.P. Wand and M.C. Jones, Chapman & Hall/CRC edition, ISNB 0-412-55270-1, 1994.
-     - *Multivariate Density Estimation, practice and Visualization, Theory*, David W. Scott, Wiley edition, 1992.
-     - *A reliable data-based bandwidth selection method for kernel density estimation.*, S. J. Sheather and M. C. Jones, Journal of the Royal Statistical Society. Series B (Methodological), 53(3) :683–690, 1991.
-     - "Comparison of data-driven bandwidth selectors.", Byeong U. Park and J. S. Marron. Journal of the American Statistical Association, 85(409) :66–72, 1990.
-     - "Very Fast optimal bandwidth selection for univariate kernel density estimation", Vikas Chandrakant Raykar, Ramani Duraiswami, CS-TR-4774. University of Maryland, CollegePark, MD 20783, 2006
+     - [silverman1986]_
+     - [wand1994]_
+     - [scott2015]_
+     - [sheather1991]_
+     - [park1990]_
+     - [raykar2006]_
+     - [silverman1982]_
