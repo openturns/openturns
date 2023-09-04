@@ -136,8 +136,11 @@ Plug-in bandwidth selection method (dimension 1)
 
 The plug-in bandwidth selection method improves the estimation of the rugosity of the second
 derivative of the density.
-Instead of making the gaussian assumption, the method uses a kernel smoothing method
+Instead of making the Gaussian assumption, the method uses a kernel smoothing method
 in order to make an approximation of higher derivatives of the density.
+This method is due to [sheather1991]_ who used ideas from [park1990]_.
+The algorithm is presented in [wand1994]_, page 74 under the "Solve the equation rule" name.
+The implementation uses ideas from [raykar2006]_, but the fast selection is not implemented.
 
 The equation :eq:`AMISE` requires the evaluation of the quantity :math:`\Phi_4`.
 As a general rule, we use the estimator :math:`\hat{\Phi}_r` of :math:`\Phi_r` defined by:
@@ -169,9 +172,17 @@ The optimal parameter *h* is:
 .. math::
   :label: optimHamse
 
-    h^{(r)}_{AMSE} = \displaystyle \left(\frac{-2K^{(r)}(0)}{\mu_2(K)\Phi_{r+2}}\right)^{\frac{1}{r+3}}n^{-\frac{1}{r+3}}
+    h^{(r)}_{AMSE} = \displaystyle \left(\frac{-2K^{(r)}(0)}{\mu_2(K) \Phi_{r+2}}\right)^{\frac{1}{r+3}}n^{-\frac{1}{r+3}}
 
-Given that preliminary results, the solve-the-equation plug-in method  proceeds as follows:
+The previous equation states that the bandwidth :math:`h^{(r)}` required
+to compute :math:`\hat{p}^{(r)}` depends on :math:`\Phi_{r+2}`.
+But to compute :math:`\Phi_{r+2}`, we need :math:`h^{(r + 2)}`, etc.
+The goal of the method is to break this infinite set of equations at some point
+by providing a *pilot* bandwidth.
+The :math:`\ell`-stage plug-in bandwidth method uses :math:`\ell` different
+intermediate bandwidths before evaluating the final one.
+
+In this document, we present the two stage solve-the-equation plug-in method.
 
 - The equation :eq:`AMISE` defines :math:`h_{AMISE}(K)` as a function of :math:`\Phi_4`.
   Let :math:`t` be the function defined by the equation:
@@ -240,16 +251,35 @@ Given that preliminary results, the solve-the-equation plug-in method  proceeds 
     \end{array}
     \right.
 
-Then, to summarize, thanks to the equations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:`g12` and :eq:`Phi68`, the optimal bandwidth is solution of the equation:
+Then, to summarize, thanks to the equations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:`g12` and :eq:`Phi68`,
+the optimal bandwidth :math:`h_{AMISE}` is solution of the equation:
 
 .. math::
   :label: equhAmise
 
-    h_{AMISE}(K) = t \circ \hat{\Phi}_4 \circ \ell (h_{AMISE}(K))
+    h_{AMISE} = t \circ \hat{\Phi}_4 \circ \ell (h_{AMISE})
 
-This method is due to [sheather1991]_ who used ideas from [park1990]_.
-The algorithm is presented in [wand1994]_, page 74 under the "Solve the equation rule" name.
-The implementation uses ideas from [raykar2006]_, but the fast selection is not implemented.
+A cut-off value can be used to define the function :math:`\hat{\psi_r}` in the equation :eq:`EstimPhirFin`.
+Let :math:`\phi` be the probability density function of the standard Gaussian distribution.
+We have:
+
+.. math::
+    \phi(x) \rightarrow 0
+
+when :math:`|x|\rightarrow +\infty`, with a fast decrease to zero.
+Let :math:`t> 0` the cut-off value.
+The evaluation is as follows:
+
+.. math::
+    \tilde{\phi}(x)= 
+    \begin{cases}
+    \phi(x) & \textrm{ si } |x| \leq t, \\
+    0 & \textrm{ sinon}.
+    \end{cases}
+
+Hence, only the most significant values in the evaluation of :math:`\hat{\psi_r}`
+are taken into account, which improves the speed while slightly decreasing
+the accuracy.
 
 Scott rule (dimension d)
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -322,7 +352,7 @@ applied in each direction *i*, we deduce the Scott rule:
 .. math::
   :label: ScottRule
 
-    \boldsymbol{\vect{h}^{Scott} = \left(\frac{\hat{\sigma}_i^n}{\sigma_K}n^{-1/(d+4)}\right)_i}
+    \vect{h}^{Scott} = \left(\frac{\hat{\sigma}_i^n}{\sigma_K}n^{-1/(d+4)}\right)_i
 
 Boundary treatment
 ~~~~~~~~~~~~~~~~~~
