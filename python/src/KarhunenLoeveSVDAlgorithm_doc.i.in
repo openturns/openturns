@@ -24,24 +24,37 @@ centeredSample : bool, default=False
     
 Notes
 -----
-The Karhunen-Loeve SVD algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
+The Karhunen-Loeve SVD algorithm solves the Fredholm problem  associated to the
+covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm`
+to get the notations.
+If the mesh is regular, then this decomposition is equivalent to the principal
+component analysis (PCA).
 
-The SVD approach is a particular case of the quadrature approach (see :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq p \leq P}` of :math:`L^2(\cD, \Rset^d)` defined on :math:`\cD` by:
+The SVD approach is a particular case of the quadrature approach (see
+:class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the
+functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq p \leq P}` of
+:math:`L^2(\cD, \Rset^d)` defined on :math:`\cD` by:
 
 .. math:: 
 
     \vect{\theta}_p^j(\vect{s})= \left[\mat{C}(\vect{s}, \vect{s}_p) \right]_{:, j}
 
-The SVD approach is used when the covariance function is not explicitly known but only through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
+The SVD approach is used when the covariance function is not explicitly known but only
+through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
 
 It consists in :
 
-    - approximating :math:`\mat{C}` by its empirical estimator  :math:`\dfrac{1}{\tilde{K}} \tilde{\mat{X}}\, \Tr{\tilde{\mat{X}}}` where :math:`\tilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K` if the process is centered and :math:`\tilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})`:math:`\tilde{K}=K-1` otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
+    - approximating :math:`\mat{C}` by its empirical estimator
+      :math:`\dfrac{1}{\tilde{K}} \tilde{\mat{X}}\, \Tr{\tilde{\mat{X}}}` where
+      :math:`\tilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K`
+      if the process is centered and :math:`\tilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})`:math:`\tilde{K}=K-1`
+      otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
     - taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
 
 We suppose now that :math:`K < dL`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
 
-As the matrix :math:`\mat{\Theta} = \mat{C}` is invertible, the Galerkin and collocation approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
+As the matrix :math:`\mat{\Theta} = \mat{C}` is invertible, the Galerkin and collocation
+approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
 
 .. math::
     :label: QuadCollDim1_ter
@@ -54,13 +67,15 @@ The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{dL,\tilde{K}}(\Rset)` wr
 
     \mat{Y} = \mat{U}\, \mat{\Sigma} \, \Tr{\mat{V}}
 
-where  we have :math:`\mat{U} \in \mathcal{M}_{dL,\tilde{K}}(\Rset)`, :math:`\mat{\Sigma}\in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)`, :math:`\mat{V} \in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)` such that :
+where  we have :math:`\mat{U} \in \mathcal{M}_{dL,\tilde{K}}(\Rset)`, 
+:math:`\mat{\Sigma}\in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)`, :math:`\mat{V} \in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)` such that :
 
     - :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\tilde{K}}`,  
     - :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\tilde{K}}` ,
     - :math:`\mat{\Sigma} = diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
 
-Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}` associated to the eigenvalues :math:`\sigma_k^2`.
+Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}`
+associated to the eigenvalues :math:`\sigma_k^2`.
 
 We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \tilde{K}`:
 
