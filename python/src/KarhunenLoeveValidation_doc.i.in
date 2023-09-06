@@ -45,8 +45,8 @@ graph : :class:`~openturns.GridLayout`
 
 Returns
 -------
-graph : :class:`~openturns.ProcessSample`
-    The visual validation graph."
+processSampleResiduals : :class:`~openturns.ProcessSample`
+    The fields of residuals."
 
 // ---------------------------------------------------------------------
 
