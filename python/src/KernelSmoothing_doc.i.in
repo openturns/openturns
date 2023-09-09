@@ -348,7 +348,13 @@ automaticUpperBound : bool
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwidth which components are evaluated according to the Silverman rule assuming a normal distribution. The bandwidth uses a robust estimate of the sample standard deviation, based on the interquartile range (rather than the standard deviation of the distribution and the sample). This method can manage a multivariate sample and produces a multivariate bandwidth.
+    Bandwidth which components are evaluated according to the Silverman rule
+    assuming a normal distribution.
+    The bandwidth uses a robust estimate of the
+    sample standard deviation, based on the interquartile range introduced
+    in :ref:`kernel_smoothing` (rather than the sample standard deviation).
+    This method can manage a multivariate sample and produces a
+    multivariate bandwidth.
 "
 
 // ---------------------------------------------------------------------
@@ -362,7 +368,7 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-This plug-in method is based on the solve-the-equation rule from [sheather1991]_.
+This plug-in method is based on the *solve-the-equation* rule from [sheather1991]_.
 This method can take a lot of time for large samples, as the cost is  quadratic with the sample size.
 
 Several keys of the :class:`~openturns.ResourceMap` are used by the [sheather1991]_ method.
@@ -389,7 +395,7 @@ More precisely, the `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns
 the accuracy of the approximation used to estimate the rugosity of the
 second derivative of the distribution.
 The default value ensures that terms in the sum which weight are lower than
-4.e-6 are ignored, which can reduce the calculation in some situations.
+:math:`4 \times 10^{-6}` are ignored, which can reduce the calculation in some situations.
 The properties of the standard gaussian density are so that,
 in order to make the computation exact, the value of the
 `KernelSmoothing-CutOffPlugin` must be set to 39, but this may increase the
@@ -406,6 +412,18 @@ bandwidth : :class:`~openturns.Point`
     Bandwidth which components are evaluated according to a mixed rule.
 
 Notes
------ 
-Use the plugin rule for small sample, estimate the ratio between the plugin rule and the Silverman rule on this small sample, and finally scale the Silverman bandwidth computed on the full sample with this ratio. The size of the small sample is based on the `KernelSmoothing-SmallSize` key of the :class:`~openturns.ResourceMap`.
+-----
+This method uses the *mixed* rule introduced in :ref:`kernel_smoothing`.
+Its goal is to provide an accurate estimator of the bandwidth 
+when the sample size is large.
+
+Let :math:`n` be the sample size.
+The estimator depends on the threshold sample size :math:`n_t` defined in the
+`KernelSmoothing-SmallSize` key of the :class:`~openturns.ResourceMap`.
+
+
+- If :math:`n \leq n_t`, i.e. for a small sample, we use the plugin solve-the-equation
+  method.
+
+- Otherwise, the *mixed* rule is used.
 "

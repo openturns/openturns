@@ -47,6 +47,8 @@ Bibliography
     `pdf <https://tel.archives-ouvertes.fr/tel-00864175/document>`__
 .. [ceres2012] Sameer Agarwal and Keir Mierle and Others, *Ceres Solver*,
     http://ceres-solver.org
+.. [chacon2018] Chacón, J. E., & Duong, T. (2018).
+    *Multivariate kernel smoothing and its applications.* CRC Press.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
