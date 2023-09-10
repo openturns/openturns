@@ -19,30 +19,70 @@ LinearModelResult
 
 Notes
 -----
-This class is used in order to create a linear model from data samples. The
-linear regression model between the scalar variable :math:`Y` and the :math:`n`
--dimensional vector :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+This class is used in order to create a linear model from an input sample
+and an output sample.
+Let :math:`n` be the sample size and let :math:`n_x` be the input
+sample dimension.
+This class considers the linear regression model between the scalar
+variable :math:`Y` and the :math:`n_x`-dimensional vector :math:`\vect{X} = (X_i)_{1 \leq i \leq n_x}`.
+The linear model can be estimated with or without a functional basis.
+
+If no basis is specified, the model is:
 
 .. math::
 
-    \tilde{Y} = \sum_{i=0}^p a_i \phi_i(X) + \epsilon
+    Y = a_0 + \sum_{i=1}^{n_x} a_i X_i + \epsilon
 
-where :math:`\epsilon` is the residual, supposed to follow the standard Normal
-distribution, :math:`\phi` a functional basis.
-The algorithm class enables to estimate the coefficients of the linear expansion.
+where :math:`a_0, a_1, ..., a_{n_x} \in \Rset`
+are unknown coefficients and :math:`\epsilon` is a random variable with zero mean and constant
+(unknown) variance :math:`\sigma^2` independent from
+the coefficients :math:`\{a_i\}_{i = 0, ..., n_x}`.
+The algorithm estimates the coefficients
+:math:`a_0, a_1, ..., a_{n_x}` of the linear model.
+Moreover, the method estimates the variance :math:`\sigma^2`.
 
-If basis is not specified, the underlying model is :
+If a functional basis is specified, let :math:`p \in \Nset` be the number of
+functions in the basis.
+For :math:`j \in \{1, ..., p\}`, let :math:`\phi_j : \Rset^{n_x} \rightarrow \Rset`
+be the :math:`i`-th basis function.
+The linear model is:
 
 .. math::
 
-    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+    Y = \sum_{j=1}^p a_j \phi_j(\vect{X}) + \epsilon
 
-The coefficients :math:`a_i` are evaluated using a least squares method.
-Default method is `QR`. User might also choose `SVD` or `Cholesky` (useful
-if basis is orthogonal) and large dataset.
+where :math:`\epsilon` is a random variable with zero mean and constant
+(and unknown) variance :math:`\sigma^2` and :math:`a_1, ..., a_p \in \Rset`
+are unknown coefficients.
+The algorithm estimates the coefficients
+:math:`a_1, ..., a_p` of the linear model.
+Moreover, the method estimates the variance :math:`\sigma^2`.
 
-The evaluation of the coefficients is completed by some useful parameters that could
-help the diagnostic of the linearity.
+The coefficients :math:`a_i` are evaluated using a linear least squares method.
+Default method is `QR`. User might also choose `SVD` or `Cholesky` by
+setting the `LinearModelAlgorithm-DecompositionMethod` key of the :class:`~openturns.ResourceMap`.
+This choice can be based depending on the following parameters.
+
+- The Cholesky can be safely used if the functional basis is orthogonal
+  and the sample is drawn from the corresponding distribution,
+  because this ensures that the columns of the design matrix are
+  asymptotically orthogonal when the sample size increases.
+  In this case, evaluating the Gram matrix does not increase
+  the condition number.
+- Selecting the decomposition method can also be based on the sample size.
+
+Please read the :meth:`~openturns.LeastSquaresMethod.Build` help page
+for details on this topic.
+
+The :class:`~openturns.LinearModelAnalysis` class can be used for a detailed
+analysis of the linear model result.
+
+No scaling is involved in this method.
+The scaling of the data, if any, is the responsibility of the user of the algorithm.
+This may be useful if, for example, we use a linear model (without functional basis)
+with very different input magnitudes and use the Cholesky decomposition
+applied to the associated Gram matrix.
+In this case, the Cholesky method may fail to produce accurate results.
 
 Examples
 --------
@@ -55,7 +95,7 @@ Examples
 >>> output_sample = func(input_sample)
 >>> algo = ot.LinearModelAlgorithm(input_sample, output_sample)
 >>> algo.run()
->>> result = ot.LinearModelResult(algo.getResult())"
+>>> result = algo.getResult()"
 
 // ---------------------------------------------------------------------
 
