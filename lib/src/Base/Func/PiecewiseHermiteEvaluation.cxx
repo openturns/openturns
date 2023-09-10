@@ -121,6 +121,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
 {
   if (inSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input sample of dimension 1, got dimension=" << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
+  if (values_.getSize() == 1) return Sample(size, values_[0]);
   const UnsignedInteger dimension = getOutputDimension();
   Sample output(size, dimension);
   const UnsignedInteger iRight = locations_.getSize() - 1;
@@ -154,6 +155,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
 Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
+  if (values_.getSize() == 1) return Point(values_.getDimension());;
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
   if (x <= locations_[iLeft]) return values_[iLeft];
@@ -232,7 +234,7 @@ Sample PiecewiseHermiteEvaluation::getDerivatives() const
 void PiecewiseHermiteEvaluation::setDerivatives(const Sample & derivatives)
 {
   const UnsignedInteger size = derivatives.getSize();
-  if (!(size >= 2)) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function, but size=" << size;
+  if (!(size >= 1)) throw InvalidArgumentException(HERE) << "Error: there must be at least 1 point to build a piecewise Hermite interpolation function, but size=" << size;
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of derivatives=" << size << " must match the number of previously set locations=" << locations_.getSize();
   derivatives_ = derivatives;
 }
@@ -243,7 +245,7 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
     const Sample & derivatives)
 {
   const UnsignedInteger size = locations.getSize();
-  if (!(size >= 2)) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function, but size=" << size;
+  if (!(size >= 1)) throw InvalidArgumentException(HERE) << "Error: there must be at least 1 point to build a piecewise Hermite interpolation function, but size=" << size;
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   if (size != derivatives.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of derivatives=" << derivatives.getSize() << " must match the number of locations=" << size;
   const UnsignedInteger outputDimension = values.getDimension();
