@@ -15,7 +15,7 @@ then
   CIRCLE_BRANCH="${CIRCLE_TAG:1}"
 fi
 mkdir -p openturns.github.io/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}
-cp -r  ~/.local/share/${CIRCLE_PROJECT_REPONAME}/doc/html/* openturns.github.io/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}
+cp -r  ~/.local/share/doc/${CIRCLE_PROJECT_REPONAME}/html/* openturns.github.io/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}
 cd openturns.github.io
 touch .nojekyll
 git config user.email "sayhi@circleci.com"
