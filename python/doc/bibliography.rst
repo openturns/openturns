@@ -47,6 +47,8 @@ Bibliography
     `pdf <https://tel.archives-ouvertes.fr/tel-00864175/document>`__
 .. [ceres2012] Sameer Agarwal and Keir Mierle and Others, *Ceres Solver*,
     http://ceres-solver.org
+.. [chacon2018] Chacón, J. E., & Duong, T. (2018).
+    *Multivariate kernel smoothing and its applications.* CRC Press.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -249,6 +251,9 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [park1990] Byeong U. Park and J. S. Marron.
+    *Comparison of data-driven bandwidth selectors.*
+    Journal of the American Statistical Association, 85(409) :66–72, 1990.
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.
@@ -259,6 +264,9 @@ Bibliography
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
     `pdf <https://hal.archives-ouvertes.fr/hal-00685876/document>`__
+.. [raykar2006] Vikas Chandrakant Raykar, Ramani Duraiswami
+    *Very Fast optimal bandwidth selection for univariate kernel density estimation.*
+    CS-TR-4774. University of Maryland, College Park, MD 20783, 2006
 .. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
     *Applied regression analysis: a research tool.*
     Springer Science and Business Media, 2001.
@@ -288,14 +296,27 @@ Bibliography
     Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
-.. [scott1992] David W. Scott (1992). *Multivariate density estimation*,
+.. [scott1992] Scott, D. W. (1992). *Multivariate density estimation*,
     John Wiley & Sons, Inc.
+.. [scott2015] Scott, D. W. (2015).
+    *Multivariate density estimation: theory, practice, and visualization.*
+    John Wiley & Sons.
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).
+    *A reliable data-based bandwidth selection method for kernel density estimation.*
+    Journal of the Royal Statistical Society. Series B (Methodological),
+    53(3) :683–690.
 .. [simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
     `pdf <https://www.jstatsoft.org/article/view/v039i11/v39i11.pdf>`__
+.. [silverman1982] B. W. Silverman
+    *Algorithm AS 176: Kernel Density Estimation Using the Fast Fourier Transform.*
+    Journal of the Royal Statistical Society. Series C (Applied Statistics),
+    Vol. 31, No. 1 (1982), pp. 93-99 (7 pages)
+.. [silverman1986] Silverman, B. W. (1986).
+    *Density estimation.* (Chapman Hall, London).
 .. [sobol1993] Sobol, I. M. *Sensitivity analysis for non-linear mathematical
     model* Math. Modelling Comput. Exp., 1993, 1, 407-414.
     `pdf <https://openturns.github.io/openturns/papers/sobol1993.pdf>`__

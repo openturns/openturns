@@ -7,7 +7,7 @@ Available constructor:
 Notes
 -----
 
-The range is :math:`[min(data), max(data)]`. 
+The range is :math:`[\min(data), \max(data)]`. 
 
 See the `computeBandwidth` method for the bandwidth selection. 
 
@@ -118,26 +118,20 @@ sample:
 
 .. math::
 
-    \begin{aligned}
     Q_3 = q_n(0.75), \qquad Q_1 = q_n(0.25),
-    \end{aligned}
 
 and let :math:`IQR` be the inter-quartiles range:
 
 .. math::
 
-    \begin{aligned}
     IQR = Q_3 - Q_1.
-    \end{aligned}
 
 In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwidth,
 known as Freedman and Diaconis rule [freedman1981]_:
 
 .. math::
 
-    \begin{aligned}
     h = \frac{IQR}{2\Phi^{-1}(0.75)} \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
-    \end{aligned}
 
 where :math:`\Phi^{-1}` is the quantile function of the gaussian standard 
 distribution. 
@@ -147,13 +141,11 @@ The normalized inter-quartile range is a robust estimator of the scale of the
 distribution (see [wand1994]_, page 60). 
 
 When `useQuantile` is `False`, the bandwidth is the AMISE-optimal one, 
-known as Scott's rule: 
+known as Scott's rule (see [scott2015]_ eq. 3.16 page 59): 
 
 .. math::
 
-    \begin{aligned}
     h = \sigma_n \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
-    \end{aligned}
 
 where :math:`\sigma_n^2` is the unbiaised variance of the data. 
 This estimator is optimal for the gaussian distribution (see [scott1992]_). 
