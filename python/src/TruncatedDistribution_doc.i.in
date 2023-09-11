@@ -140,3 +140,16 @@ threshold : float, :math:`\tau \in [0, 1]`
     If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.
 
     If :math:`F(upperBound)-F(lowerBound)>\tau`: rejection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getSimplifiedVersion
+"Accessor to the simplified distribution.
+
+Drops unneeded truncation if the distribution given as argument is already
+truncated by nature (Uniform, etc).
+
+Returns
+-------
+simplified : :class:`~openturns.Distribution`
+    The simplified distribution."
