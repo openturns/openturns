@@ -43,7 +43,7 @@ set (IPOPT_INCLUDE_DIRS ${IPOPT_INCLUDE_DIR})
 
 # Libraries
 find_library (IPOPT_LIBRARY
-  NAMES ipopt
+  NAMES ipopt ipopt-3
   HINTS ${PC_IPOPT_LIBDIR}
 )
 
