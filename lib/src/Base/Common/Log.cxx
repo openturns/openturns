@@ -291,13 +291,14 @@ void Log::SetFile(const FileName & file)
 /* Set the name of the log file */
 void Log::setFile(const FileName & file)
 {
-  push(Entry(INFO, String("Diverting log to file: ") + file));
+  if (file.size())
+    push(Entry(INFO, String("Diverting log to file: ") + file));
   push(Entry(INFO, "*** Log End ***"));
   delete p_file_;
-  TTY::ShowColors( false );
-  p_file_ = new std::ofstream(file.c_str());
-
-  push(Entry(INFO, "*** Log Beginning ***"));
+  TTY::ShowColors(file.size() == 0);
+  p_file_ = file.size() ? new std::ofstream(file.c_str()) : nullptr;
+  if (file.size())
+    push(Entry(INFO, "*** Log Beginning ***"));
 }
 
 /* Color accessor */
