@@ -109,6 +109,9 @@
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />
 
+  <!-- OT::LevelSetMesher parameters -->
+  <LevelSetMesher-SolveEquation value_bool="true" />
+
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />
 

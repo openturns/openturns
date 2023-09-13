@@ -27,8 +27,10 @@
 #include "openturns/TranslationFunction.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Brent.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -151,6 +153,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   Point localValues(dimension + 1);
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
+  const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
+  Bool minimizeDistance = !solveEquation;
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     UnsignedInteger numGood = 0;
@@ -203,35 +207,42 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a
             // M-B=(v-level)/(v-v*)(C-B)
             const Point currentVertex(boundingVertices[globalVertexIndex]);
-            const Point delta((center - currentVertex) * (localValues[j] - level) / (localValues[j] - centerValue));
-            // If no projection, just add the linear correction
+            const Point shift(center - currentVertex);
+            const Scalar rho = (localValues[j] - level) / (localValues[j] - centerValue);
+            const Point delta(shift * rho);
             flagMovedVertices.add(globalVertexIndex);
+            // If no projection, just add the linear correction
             if (!project) movedVertices.add(currentVertex + delta);
             else
             {
-              // Project the vertices not in the level set on the boundary of the level set
-              // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
-              shiftFunction.setConstant(currentVertex);
-              ComposedFunction levelFunction(function, shiftFunction);
-              problem.setLevelFunction(levelFunction);
-              solver_.setStartingPoint(delta);
-              solver_.setProblem(problem);
-              OptimizationResult result;
-              // Here we have to catch exceptions raised by the gradient
-              try
+              if (solveEquation)
               {
-                solver_.run();
-                result = solver_.getResult();
-              }
-              catch(...)
+                const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
+                const ComposedFunction constraint(function, tToPoint);
+                Brent solver;
+                try
+                {
+                  const Scalar t = solver.solve(constraint, level, 0.0, 1.0);
+                  LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t);
+                  movedVertices.add(tToPoint(Point(1, t)));
+                }
+                catch(...)
+                {
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << solver << ", using minimization for the projection");
+                  minimizeDistance = true;
+                }
+              } // solveEquation
+              if (minimizeDistance)
               {
-                LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
-                // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
-                const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
-                levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
+                // Project the vertices not in the level set on the boundary of the level set
+                // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
+                shiftFunction.setConstant(currentVertex);
+                ComposedFunction levelFunction(function, shiftFunction);
                 problem.setLevelFunction(levelFunction);
+                solver_.setStartingPoint(delta);
                 solver_.setProblem(problem);
-                // Try with the new gradients
+                OptimizationResult result;
+                // Here we have to catch exceptions raised by the gradient
                 try
                 {
                   solver_.run();
@@ -239,15 +250,31 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                 }
                 catch(...)
                 {
-                  // There is definitely a problem with this vertex. Try a gradient-free solver
-                  Cobyla solver(solver_.getProblem());
-                  solver.setStartingPoint(solver_.getStartingPoint());
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
-                  solver.run();
-                  result = solver.getResult();
-                } // Even finite differences gradient failed?
-              } // Gradient failed ?
-              movedVertices.add(currentVertex + result.getOptimalPoint());
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
+                  // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
+                  const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+                  levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
+                  problem.setLevelFunction(levelFunction);
+                  solver_.setProblem(problem);
+                  // Try with the new gradients
+                  try
+                  {
+                    solver_.run();
+                    result = solver_.getResult();
+                  }
+                  catch(...)
+                  {
+                    // There is definitely a problem with this vertex. Try a gradient-free solver
+                    Cobyla solver(solver_.getProblem());
+                    solver.setStartingPoint(solver_.getStartingPoint());
+                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
+                    solver.run();
+                    result = solver.getResult();
+                  } // Even finite differences gradient failed?
+                } // Gradient failed ?
+                movedVertices.add(currentVertex + result.getOptimalPoint());
+                minimizeDistance = !solveEquation;
+              } // minimizeDistance
             } // project
             ++flagGoodVertices[globalVertexIndex];
           } // localValue[j] > level
@@ -268,7 +295,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Shift the vertices indices into the good simplices
   for (UnsignedInteger i = 0; i < goodSimplices.getSize(); ++i)
     goodSimplices[i] -= flagGoodVertices[goodSimplices[i]];
-  Mesh result(goodVertices, IndicesCollection(goodSimplices.getSize() / (dimension + 1), dimension + 1, goodSimplices));
+  Mesh result(goodVertices, IndicesCollection(goodSimplices.getSize() / (dimension + 1), dimension + 1, goodSimplices), false);
   // Fix the orientation of the simplices with moved vertices
   SquareMatrix matrix(dimension + 1);
   for (UnsignedInteger i = 0; i < simplicesToCheck.getSize(); ++i)
@@ -277,4 +304,3 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 }
 
 END_NAMESPACE_OPENTURNS
-
