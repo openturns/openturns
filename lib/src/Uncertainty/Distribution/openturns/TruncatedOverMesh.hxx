@@ -85,10 +85,6 @@ public:
   void setMesh(const Mesh & mesh);
   Mesh getMesh() const;
 
-  /** Integration algorithm accessor */
-  void setIntegrationAlgorithm(const IntegrationAlgorithm & integrationAlgorithm);
-  IntegrationAlgorithm getIntegrationAlgorithm() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -124,12 +120,13 @@ private:
 
   Scalar normalizationFactor_ = 0.0;
 
-  /** Integration algorithm to use for CDF computation */
-  IntegrationAlgorithm integrationAlgorithm_;
-
   /** Structures for the alias sampling method */
   Point base_;
   Indices alias_;
+
+  /** Integration algorithm to use for CDF computation */
+  IntegrationAlgorithm integrationAlgorithm_;
+
 
 }; /* class TruncatedOverMesh */
 

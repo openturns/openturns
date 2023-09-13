@@ -338,6 +338,7 @@ ot_check_test (KarhunenLoeveSVDAlgorithm_std)
 ot_check_test (KarhunenLoeveLifting_std)
 ot_check_test (KarhunenLoeveProjection_std)
 ot_check_test (P1LagrangeInterpolation_std)
+ot_check_test (SimplicialCubature_std IGNOREOUT)
 
 # Analytical
 ot_check_test (Analytical_std)

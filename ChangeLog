@@ -11,6 +11,7 @@
  * StudentCopula (openturns.experimental)
  * StudentCopulaFactory (openturns.experimental)
  * TruncatedOverMesh (openturns.experimental)
+ * SimplicialCubature (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method

@@ -367,6 +367,7 @@ ot_pyinstallcheck_test (KarhunenLoeveReduction_std IGNOREOUT)
 ot_pyinstallcheck_test (KarhunenLoeveValidation_std IGNOREOUT)
 ot_pyinstallcheck_test (P1LagrangeInterpolation_std)
 ot_pyinstallcheck_test (P1LagrangeEvaluation_std IGNOREOUT)
+ot_pyinstallcheck_test (SimplicialCubature_std IGNOREOUT)
 
 ## Model
 ot_pyinstallcheck_test (StandardEvent_std)

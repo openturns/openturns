@@ -1011,6 +1011,12 @@
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
   <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
 
+  <!-- SimplicialCubature parameters -->
+  <SimplicialCubature-DefaultMaximumAbsoluteError value_float="0.0" />
+  <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
+  <SimplicialCubature-DefaultMaximumEvaluationNumber value_int="10000" />
+  <SimplicialCubature-DefaultRule value_int="3" />
+
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />
   <SparseMethod-MaximumErrorFactor value_float="2.0"    />
