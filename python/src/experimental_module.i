@@ -50,6 +50,8 @@
 %import metamodel_module.i
 %include simulation_module.i
 
+/* Base/Algo */
+%include SimplicialCubature.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include UserDefinedMetropolisHastings.i

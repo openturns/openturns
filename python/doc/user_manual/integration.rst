@@ -10,6 +10,7 @@ Integration
 
     IntegrationAlgorithm
     FilonQuadrature
+    experimental.SimplicialCubature
 
 .. autosummary::
     :toctree: _generated/

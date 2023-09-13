@@ -1463,6 +1463,11 @@ void ResourceMap::loadDefaultConfiguration()
   // WeightedExperimentImplementation parameters //
   addAsUnsignedInteger("WeightedExperiment-DefaultSize", 100);
 
+  // SmolyakExperiment parameters //
+  addAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 1.0e-8);
+  addAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", 1.0e-8);
+  addAsBool("SmolyakExperiment-MergeQuadrature", true);
+
   // GaussProductExperiment parameters //
   addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalSize", 5);
 
@@ -1635,6 +1640,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
 
+  // SimplicialCubature parameters //
+  addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
+  addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
+  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
+
   // SparseMethod parameters //
   addAsScalar("SparseMethod-ErrorThreshold", 1.0e-3);
   addAsScalar("SparseMethod-MaximumErrorFactor", 2.0);
@@ -1647,12 +1658,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
-
-  // SmolyakExperiment parameters //
-  addAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 1.0e-8);
-  addAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", 1.0e-8);
-  addAsBool("SmolyakExperiment-MergeQuadrature", true);
-
 }
 
 void ResourceMap::reload()

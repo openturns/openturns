@@ -113,6 +113,9 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
+    ACM Transactions on Mathematical Software 29(3):297-308, September 2003
+    `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__

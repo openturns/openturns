@@ -30,6 +30,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/SimplicialCubature.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -76,8 +77,7 @@ String TruncatedOverMesh::__repr__() const
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " distribution=" << distribution_
-      << " mesh=" << mesh_
-      << " integrationAlgorithm=" << integrationAlgorithm_;
+      << " mesh=" << mesh_;
   return oss;
 }
 
@@ -134,12 +134,17 @@ public:
     // xref "Simplex-stochastic collocation method with improved scalability", Appendix D. Proof of uniform distribution
     const UnsignedInteger dimension = getInputDimension();
     Point result(vertices_[0]);
-    for (UnsignedInteger i = 1; i < dimension + 1; ++ i)
+    if (dimension == 1)
+      result += SpecFunc::Clip01(point[0]) * (vertices_[1] - vertices_[0]);
+    else
     {
-      Scalar prod = 1.0;
-      for (UnsignedInteger j = 1; j < i + 1; ++ j)
-        prod *= std::pow(SpecFunc::Clip01(point[dimension - j], 1.0), 1.0 / (dimension - j + 1));
-      result += prod * (vertices_[i] - vertices_[i - 1]);
+      for (UnsignedInteger i = 1; i < dimension + 1; ++ i)
+      {
+        Scalar prod = 1.0;
+        for (UnsignedInteger j = 1; j < i + 1; ++ j)
+          prod *= std::pow(SpecFunc::Clip01(point[dimension - j], 1.0), 1.0 / (dimension - j + 1));
+        result += prod * (vertices_[i] - vertices_[i - 1]);
+      }
     }
     return result;
   }
@@ -204,13 +209,31 @@ Scalar TruncatedOverMesh::computePDF(const Point & point) const
 Scalar TruncatedOverMesh::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
+
   Scalar cdf = 0.0;
-  // Waiting for a better implementation
   const Interval quadrant(Point(getDimension(), -SpecFunc::MaxScalar), point);
+#if 1
+  // Waiting for a better implementation
   const Interval intersection(quadrant.intersect(getRange()));
   if (intersection == getRange()) cdf = 1.0;
   else if (!intersection.isEmpty())
     cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+#else
+  // integrate pdf over simplices inside the [-inf, X] quadrant
+  SimplicialCubature integrationAlgorithm;
+  const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
+  for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
+  {
+    const Sample simplexVertices(getSimplexVertices(i));
+    // TODO: split simplices that have vertices both inside & outside the quadrant
+    if (!quadrant.contains(simplexVertices.getMax()))
+      continue;
+    Indices simplexIndices(simplexVertices.getSize());
+    simplexIndices.fill();
+    const Mesh simplexMesh(simplexVertices, IndicesCollection(Collection<Indices>(1, simplexIndices)));
+    cdf += integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
+  }
+#endif
   return cdf;
 }
 
@@ -218,24 +241,19 @@ Scalar TruncatedOverMesh::computeCDF(const Point & point) const
 /* Compute the mean of the distribution */
 void TruncatedOverMesh::computeMean() const
 {
-  // TODO
-  return ContinuousDistribution::computeMean();
-//   const UnsignedInteger dimension = getDimension();
-//   mean_ = Point(dimension);
-//   const UnsignedInteger simplicesNumber = mesh.getSimplicesNumber();
-//   probabilities_.resize(simplicesNumber);
-//   pdfSup_.resize(simplicesNumber);
-//   for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
-//   {
-//     // integrate the pdf over the simplex via the unit hypercube transformation
-//     const Indices simplex = mesh.getSimplex(i);
-//     Sample simplexVertices(getSimplexVertices(i));
-//     Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
-//     ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
-//     probabilities_[i] = integrationAlgorithm_.integrate(pdfUnitCube, Interval(dimension))[0];
-//   }
-//   isAlreadyComputedMean_ = true;
+  // integrate x*f(x) using the cubature on mesh
+  Point mean(dimension_);
+  const SimplicialCubature algo;
+  for(UnsignedInteger component = 0; component < dimension_; ++component)
+  {
+    const Implementation marginalDistribution(distribution_.getMarginal(component).getImplementation());
+    const ShiftedMomentWrapper integrand(1, 0.0, marginalDistribution);
+    mean[component] = algo.integrate(integrand, mesh_)[0];
+  }
+  mean_ = mean;
+  isAlreadyComputedMean_ = true;
 }
+
 
 /* Mesh accessor */
 void TruncatedOverMesh::setMesh(const Mesh & mesh)
@@ -254,13 +272,16 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
   for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
   {
     // integrate the pdf over the simplex via the unit hypercube transformation
-    const Indices simplex = mesh.getSimplex(i);
-    Sample simplexVertices(getSimplexVertices(i));
-    Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
-    ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
-    probabilities_[i] = integrationAlgorithm_.integrate(pdfUnitCube, Interval(dimension))[0];
+    const Sample simplexVertices(getSimplexVertices(i));
+    Indices simplexIndices(simplexVertices.getSize());
+    simplexIndices.fill();
+    const SimplicialCubature integrationAlgorithm;
+    const Mesh simplexMesh(simplexVertices, IndicesCollection(Collection<Indices>(1, simplexIndices)));
+    probabilities_[i] = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
 
     // look for pdf maxima over the simplex in the same way
+    const Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
+    const ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
     OptimizationProblem problem(pdfUnitCube);
     problem.setMinimization(false);
     problem.setBounds(Interval(dimension));
@@ -292,25 +313,12 @@ Mesh TruncatedOverMesh::getMesh() const
   return mesh_;
 }
 
-
-/* Integration algorithm accessor */
-void TruncatedOverMesh::setIntegrationAlgorithm(const IntegrationAlgorithm & integrationAlgorithm)
-{
-  integrationAlgorithm_ = integrationAlgorithm;
-}
-
-IntegrationAlgorithm TruncatedOverMesh::getIntegrationAlgorithm() const
-{
-  return integrationAlgorithm_;
-}
-
 /* Method save() stores the object through the StorageManager */
 void TruncatedOverMesh::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "mesh_", mesh_ );
-  adv.saveAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -320,7 +328,6 @@ void TruncatedOverMesh::load(Advocate & adv)
   Mesh mesh;
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "mesh_", mesh );
-  adv.loadAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
   setMesh(mesh);
 }
 
