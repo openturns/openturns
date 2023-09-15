@@ -241,10 +241,9 @@ public:
   DlibNewtonSearchStrategy( const Scalar wolfeRho,
                             const Scalar wolfeSigma,
                             const UnsignedInteger maxLineSearchIterations,
-                            const Function objectiveFunction
-                          )
+                            const DlibFunction & objectiveFunction)
     : DlibSearchStrategyImplementation(wolfeRho, wolfeSigma, maxLineSearchIterations)
-    , hessian_(objectiveFunction.getHessian())
+    , hessian_(objectiveFunction.asDlibHessian())
   {
     // Nothing to do
   }
@@ -270,18 +269,19 @@ private:
 
 /**                               => End of search strategy classes definitions **/
 
-/** DEFINITION OF DLIBSTOPSTRATEGY CLASS **/
 class DlibStopStrategy
 {
 public:
-  DlibStopStrategy( const Dlib& dlibAlgorithm,
-                    OptimizationResult& optimizationResult,
-                    const DlibFunction& objectiveFunction)
+  DlibStopStrategy(const Dlib& dlibAlgorithm,
+                   OptimizationResult& optimizationResult,
+                   const DlibFunction& objectiveFunction,
+                   const Bool minimization = true)
     : dlibAlgorithm_(dlibAlgorithm)
     , optimizationResult_(optimizationResult)
     , objectiveFunction_(objectiveFunction)
-    , lastInput_(Point(dlibAlgorithm_.getProblem().getDimension()))
-    , lastOutput_(Point(1))
+    , lastInput_(dlibAlgorithm_.getProblem().getDimension())
+    , lastOutput_(1)
+    , minimization_(minimization)
   {
     // Nothing to do
   }
@@ -294,7 +294,7 @@ public:
 
     Point xPoint(x.size());
     std::copy(x.begin(), x.end(), xPoint.begin());
-    Point fxPoint(1, funct_value);
+    Point fxPoint(1, minimization_ ? funct_value : -funct_value);
 
     Scalar absoluteError = dlibAlgorithm_.getMaximumAbsoluteError();
     Scalar relativeError = dlibAlgorithm_.getMaximumRelativeError();
@@ -334,6 +334,7 @@ private:
   const DlibFunction & objectiveFunction_;
   Point lastInput_;
   Point lastOutput_;
+  Bool minimization_ = true;
 };
 
 /**                               => End of stop strategy class definition **/
@@ -544,10 +545,6 @@ void Dlib::run()
   if (startingPoint.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: Invalid starting point dimension (" << startingPoint.getDimension() << ", expected " << dimension << ")";
 
-  /** OBJECTIVE FUNCTION: convert objective function to DlibFunction */
-  DlibFunction objectiveDlibFunction(getProblem().getObjective());
-  DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient());
-
   /** STARTING POINT: Convert startingPoint to dlib::matrix */
   DlibVector optimPoint(dimension, 1);
   for (UnsignedInteger i = 0; i < startingPoint.getDimension(); ++ i)
@@ -596,72 +593,36 @@ void Dlib::run()
       || algoName_ == "lbfgs"
       || algoName_ == "newton")
   {
+    // find_max is broken for dlib<19.19, lets use find_min(-f) instead
+    // tweak the sign of the output & gradient according to isMinimization when returning results to dlib
+    DlibFunction objectiveDlibFunction(getProblem().getObjective(), getProblem().isMinimization());
+    DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient(), getProblem().isMinimization());
+
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;
     if (algoName_ == "cg")
-      searchStrategy = DlibCgSearchStrategy(wolfeRho_,
-                                            wolfeSigma_,
-                                            maxLineSearchIterations_);
+      searchStrategy = DlibCgSearchStrategy(wolfeRho_, wolfeSigma_, maxLineSearchIterations_);
     else if (algoName_ == "bfgs")
-      searchStrategy = DlibBfgsSearchStrategy(wolfeRho_,
-                                              wolfeSigma_,
-                                              maxLineSearchIterations_);
+      searchStrategy = DlibBfgsSearchStrategy(wolfeRho_, wolfeSigma_, maxLineSearchIterations_);
     else if (algoName_ == "lbfgs")
-      searchStrategy = DlibLbfgsSearchStrategy( wolfeRho_,
-                       wolfeSigma_,
-                       maxLineSearchIterations_,
-                       maxSize_);
+      searchStrategy = DlibLbfgsSearchStrategy(wolfeRho_, wolfeSigma_, maxLineSearchIterations_, maxSize_);
     else if (algoName_ == "newton")
-      searchStrategy = DlibNewtonSearchStrategy(wolfeRho_,
-                       wolfeSigma_,
-                       maxLineSearchIterations_,
-                       objectiveDlibFunction );
+      searchStrategy = DlibNewtonSearchStrategy(wolfeRho_, wolfeSigma_, maxLineSearchIterations_, objectiveDlibFunction);
 
     // Create stopStrategy
-    DlibStopStrategy stopStrategy(*this,
-                                  result_,
-                                  objectiveDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction, getProblem().isMinimization());
 
-    // Switch on problem type
-    if (getProblem().isMinimization())
-    {
-      if (getProblem().hasBounds())
-        dlib::find_min_box_constrained (searchStrategy,
-                                        stopStrategy,
-                                        objectiveDlibFunction,
-                                        objectiveDlibGradient,
-                                        optimPoint,
-                                        lb,
-                                        ub);
-      else
-        dlib::find_min ( searchStrategy,
-                         stopStrategy,
-                         objectiveDlibFunction,
-                         objectiveDlibGradient,
-                         optimPoint,
-                         SpecFunc::LowestScalar );
-    }
+    // find_max (& find_max_box_constrained) is not used since broken in dlib<19.19
+    if (getProblem().hasBounds())
+      dlib::find_min_box_constrained (searchStrategy, stopStrategy, objectiveDlibFunction, objectiveDlibGradient, optimPoint, lb, ub);
     else
-    {
-      if (getProblem().hasBounds())
-        dlib::find_max_box_constrained (searchStrategy,
-                                        stopStrategy,
-                                        objectiveDlibFunction,
-                                        objectiveDlibGradient,
-                                        optimPoint,
-                                        lb,
-                                        ub);
-      else
-        dlib::find_max (searchStrategy,
-                        stopStrategy,
-                        objectiveDlibFunction,
-                        objectiveDlibGradient,
-                        optimPoint,
-                        SpecFunc::MaxScalar);
-    }
+      dlib::find_min(searchStrategy, stopStrategy, objectiveDlibFunction, objectiveDlibGradient, optimPoint, SpecFunc::LowestScalar);
+
   } // CG, BFGS/LBFGS, Newton
   else if (algoName_ == "global")
   {
+    DlibFunction objectiveDlibFunction(getProblem().getObjective());
+
     // Declare result and lambda function
     dlib::function_evaluation globalOptimResult;
     auto objectiveLambdaFunction = [&](dlib::matrix<double, 0, 1> input)
@@ -708,7 +669,7 @@ void Dlib::run()
                       (inputHistory[i] - inputHistory[i - 1]).norm() / Point(inputHistory[i]).norm(),
                       (outputHistory[i] - outputHistory[i - 1]).norm(),
                       0.0);
-
+    
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, globalOptimResult.y));
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
@@ -717,9 +678,7 @@ void Dlib::run()
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
-    DlibStopStrategy stopStrategy(*this,
-                                  result_,
-                                  residualDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction);
 
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
     auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
@@ -753,9 +712,7 @@ void Dlib::run()
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
-    DlibStopStrategy stopStrategy(*this,
-                                  result_,
-                                  residualDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction);
 
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
     auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
@@ -788,10 +745,8 @@ void Dlib::run()
   }
   else if (algoName_ == "trust_region")
   {
-    // Create stopStrategy
-    DlibStopStrategy stopStrategy(*this,
-                                  result_,
-                                  objectiveDlibFunction);
+    DlibFunction objectiveDlibFunction(getProblem().getObjective());
+    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction);
 
     // Convert optimPoint to DlibFunction::column_vector
     DlibFunction::column_vector optimizer(dimension, 1);
