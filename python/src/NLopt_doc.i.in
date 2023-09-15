@@ -29,11 +29,11 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GD_MLSL_LDS                | first derivative  | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GD_STOGO (optional)        | first derivative  | bounds required             |
+| GD_STOGO (disabled)        | first derivative  | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GD_STOGO_RAND (optional)   | first derivative  | bounds required             |
+| GD_STOGO_RAND (disabled)   | first derivative  | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_AGS (optional)          | no derivative     | bounds required, inequality |
+| GN_AGS (disabled)          | no derivative     | bounds required, inequality |
 +----------------------------+-------------------+-----------------------------+
 | GN_CRS2_LM                 | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
@@ -99,9 +99,9 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | LN_NEWUOA                  | no derivative     | none                        |
 +----------------------------+-------------------+-----------------------------+
-| LN_NEWUOA_BOUND            | no derivative     | bounds                      |
+| LN_NEWUOA_BOUND (disabled) | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
-| LN_PRAXIS                  | no derivative     | bounds                      |
+| LN_PRAXIS (disabled)       | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
 | LN_SBPLX                   | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+

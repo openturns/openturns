@@ -76,12 +76,6 @@
 /* Define to 1 if you have the NLopt library. */
 #cmakedefine OPENTURNS_HAVE_NLOPT
 
-/* Define to 1 if NLopt has STOGO. */
-#cmakedefine OPENTURNS_NLOPT_HAVE_STOGO
-
-/* Define to 1 if NLopt has AGS. */
-#cmakedefine OPENTURNS_NLOPT_HAVE_AGS
-
 /* Define to 1 if you have the Ceres library. */
 #cmakedefine OPENTURNS_HAVE_CERES
 
