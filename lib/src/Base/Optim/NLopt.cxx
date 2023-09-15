@@ -114,9 +114,14 @@ UnsignedInteger NLopt::GetAlgorithmCode(const String & name)
   return it->second;
 }
 
+void NLopt::setSeed(const UnsignedInteger seed)
+{
+  seed_ = seed;
+}
 
 void NLopt::SetSeed(const UnsignedInteger seed)
 {
+  LOGWARN(OSS() << "NLopt.SetSeed is deprecated in favor of setSeed");
 #ifdef OPENTURNS_HAVE_NLOPT
   nlopt::srand(seed);
 #else
@@ -124,7 +129,6 @@ void NLopt::SetSeed(const UnsignedInteger seed)
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
 }
-
 
 /* Default constructor */
 NLopt::NLopt(const String & algoName)
@@ -311,6 +315,9 @@ void NLopt::run()
   std::vector<double> x(startingPoint.toStdVector());
   double optimalValue = 0.0;
 
+  // the default seed is non-deterministic
+  nlopt::srand(seed_);
+
   try
   {
     // The C++ interface of NLopt does not return a code for failures cases.
@@ -373,6 +380,7 @@ void NLopt::save(Advocate & adv) const
   adv.saveAttribute("initialStep_", initialStep_);
   if (!p_localSolver_.isNull())
     adv.saveAttribute("localSolver_", *p_localSolver_);
+  adv.saveAttribute("seed_", seed_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -387,6 +395,8 @@ void NLopt::load(Advocate & adv)
     adv.loadAttribute("localSolver_", localSolver);
     p_localSolver_ = localSolver.clone();
   }
+  if (adv.hasAttribute("seed_"))
+    adv.loadAttribute("seed_", seed_);
 }
 
 void NLopt::setAlgorithmName(const String algoName)

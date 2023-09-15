@@ -207,8 +207,8 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NLopt::SetSeed
-"Initialize the random generator seed.
+%feature("docstring") OT::NLopt::setSeed
+"Random generator seed accessor.
 
 Parameters
 ----------

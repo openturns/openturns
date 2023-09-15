@@ -64,7 +64,10 @@ public:
   void setLocalSolver(const NLopt & localSolver);
   NLopt getLocalSolver() const;
 
-  /** Initialize the random generator seed */
+  /** Set the random generator seed */
+  void setSeed(const UnsignedInteger seed);
+
+  /** @deprecated */
   static void SetSeed(const UnsignedInteger seed);
 
   /** String converter */
@@ -118,6 +121,9 @@ private:
 
   // internal solver
   void * p_opt_ = nullptr;
+
+  // RNG seed
+  UnsignedInteger seed_ = 0;
 };
 
 

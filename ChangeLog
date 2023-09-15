@@ -16,6 +16,7 @@
  * Removed deprecated Basis::getDimension method
  * Removed deprecated HSICStat ctors relying on weight matrix
  * Deprecated Pagmo.setGenerationNumber for setMaximumIterationNumber
+ * Deprecated NLopt.SetSeed for setSeed
 
 === Documentation ===
 
