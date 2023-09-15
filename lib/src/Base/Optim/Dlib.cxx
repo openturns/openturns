@@ -28,9 +28,7 @@
 #include "openturns/DlibFunctions.hxx"
 #include "openturns/OTwindows.h" // dlib includes windows.h
 #include <dlib/optimization.h>
-#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
 #include <dlib/global_optimization.h>
-#endif
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -355,9 +353,7 @@ Description Dlib::GetAlgorithmNames()
     algoNames.add("bfgs");
     algoNames.add("lbfgs");
     algoNames.add("newton");
-#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
     algoNames.add("global");
-#endif
     algoNames.add("least_squares");
     algoNames.add("least_squares_lm");
     algoNames.add("trust_region");
@@ -664,7 +660,6 @@ void Dlib::run()
                         SpecFunc::MaxScalar);
     }
   } // CG, BFGS/LBFGS, Newton
-#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
   else if (algoName_ == "global")
   {
     // Declare result and lambda function
@@ -718,7 +713,6 @@ void Dlib::run()
     result_.setOptimalValue(Point(1, globalOptimResult.y));
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
   }
-#endif
   else if (algoName_ == "least_squares")
   {
     // Create stopStrategy
