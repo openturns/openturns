@@ -288,7 +288,7 @@ if (USE_BOOST)
 endif ()
 
 if (USE_NLOPT)
-  find_package (NLopt CONFIG QUIET)
+  find_package (NLopt 2.6 CONFIG QUIET)
   if (NLopt_FOUND)
     message(STATUS "Found NLopt: ${NLopt_DIR}  (found version \"${NLopt_VERSION}\")")
   else ()
