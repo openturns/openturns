@@ -74,6 +74,12 @@ UnsignedInteger IndicesCollection::getSize() const
   return getImplementation()->getSize();
 }
 
+/* Get the size of Indices */
+UnsignedInteger IndicesCollection::getStride() const
+{
+  return getImplementation()->getStride();
+}
+
 
 /* String converter */
 String IndicesCollection::__repr__() const

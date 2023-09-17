@@ -70,6 +70,9 @@ public:
   /** Number of Indices */
   virtual UnsignedInteger getSize() const;
 
+  /** Size of Indices */
+  virtual UnsignedInteger getStride() const;
+
   /** Comparison operators */
   using PersistentObject::operator ==;
   Bool operator == (const IndicesCollectionImplementation & rhs) const;

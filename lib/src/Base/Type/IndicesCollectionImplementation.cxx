@@ -136,6 +136,12 @@ UnsignedInteger IndicesCollectionImplementation::getSize() const
   return size_;
 }
 
+/* Get the size of Indices */
+UnsignedInteger IndicesCollectionImplementation::getStride() const
+{
+  return values_.getSize() / size_;
+}
+
 IndicesCollectionImplementation::iterator IndicesCollectionImplementation::begin_at(const UnsignedInteger index)
 {
   if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;

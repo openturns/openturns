@@ -73,6 +73,9 @@ public:
   /** Number of Indices */
   UnsignedInteger getSize() const;
 
+  /** Size of Indices */
+  UnsignedInteger getStride() const;
+
 #ifndef SWIG
   /** Iterators on values at the index-th element */
   iterator begin_at(const UnsignedInteger index);
