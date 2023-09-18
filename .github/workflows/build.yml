@@ -16,9 +16,8 @@ jobs:
         pip3 install matplotlib "numpy<1.25" scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
-        git clone -b 1.8.1 https://github.com/jeromerobert/hmat-oss.git hmat-oss
+        git clone -b 1.9.0 https://github.com/jeromerobert/hmat-oss.git hmat-oss
         cd hmat-oss/
-        git cherry-pick dd1b8daf
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |
