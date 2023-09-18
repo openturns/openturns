@@ -17,6 +17,7 @@
  * Removed deprecated HSICStat ctors relying on weight matrix
  * Deprecated Pagmo.setGenerationNumber for setMaximumIterationNumber
  * Deprecated NLopt.SetSeed for setSeed
+ * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
 
 === Documentation ===
 

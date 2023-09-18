@@ -1,2 +1,3 @@
 Remove Pagmo.setGenerationNumber
 Remove NLopt.SetSeed
+Remove IterativeThresholdExceedance(dimension, threshold) ctor

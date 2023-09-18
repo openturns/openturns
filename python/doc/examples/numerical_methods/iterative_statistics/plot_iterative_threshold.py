@@ -22,13 +22,13 @@ distNormal = ot.Normal(dim)
 # :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
-thresholdValue = 1.0
-iterThreshold = ot.IterativeThresholdExceedance(dim, thresholdValue)
+threshold = 1.0
+algo = ot.IterativeThresholdExceedance(dim, ot.Greater(), threshold)
 
 # %%
 # A simple computation shows that the probability of the data being higher than :math:`1` is :math:`0.1587` (with 4 significant digits).
 distribution = ot.Normal()
-exactProbability = distribution.computeComplementaryCDF(thresholdValue)
+exactProbability = distribution.computeComplementaryCDF(threshold)
 print("Exact probability: ", exactProbability)
 
 # %%
@@ -47,10 +47,10 @@ exceedanceNumbers = ot.Sample()
 probabilityEstimateSample = ot.Sample()
 for i in range(size):
     point = distNormal.getRealization()
-    iterThreshold.increment(point)
-    numberOfExceedances = iterThreshold.getThresholdExceedance()[0]
+    algo.increment(point)
+    numberOfExceedances = algo.getThresholdExceedance()[0]
     exceedanceNumbers.add([numberOfExceedances])
-    probabilityEstimate = numberOfExceedances / iterThreshold.getIterationNumber()
+    probabilityEstimate = numberOfExceedances / algo.getIterationNumber()
     probabilityEstimateSample.add([probabilityEstimate])
 
 # %%
@@ -102,13 +102,13 @@ view = otv.View(graph)
 
 # %%
 sample = distNormal.getSample(size)
-iterThreshold.increment(sample)
-numberOfExceedances = iterThreshold.getThresholdExceedance()[0]
+algo.increment(sample)
+numberOfExceedances = algo.getThresholdExceedance()[0]
 print("Number of exceedance: ", numberOfExceedances)
 
 # The empirical probability is close to the exact value.
-numberOfExceedances = iterThreshold.getThresholdExceedance()[0]
-probabilityEstimate = numberOfExceedances / iterThreshold.getIterationNumber()
+numberOfExceedances = algo.getThresholdExceedance()[0]
+probabilityEstimate = numberOfExceedances / algo.getIterationNumber()
 print("Empirical exceedance prb: ", probabilityEstimate)
 
 otv.View.ShowAll()

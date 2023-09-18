@@ -32,9 +32,23 @@ CLASSNAMEINIT(IterativeThresholdExceedance)
 static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExceedance;
 
 /* Default constructor */
-IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar thresholdValue)
+IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
+                                                           const Scalar threshold)
   : IterativeAlgorithmImplementation(dimension)
-  , thresholdValue_(thresholdValue)
+  , operator_(Greater())
+  , thresholdValue_(threshold)
+  , data_(dimension_, 0.0)
+{
+  LOGWARN(OSS() << "IterativeThresholdExceedance(dimension, threshold) is deprecated in favor of IterativeThresholdExceedance(dimension, ComparisonOperator, threshold)");
+}
+
+/* Default constructor */
+IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
+                                                           const ComparisonOperator & op,
+                                                           const Scalar threshold)
+  : IterativeAlgorithmImplementation(dimension)
+  , operator_(op)
+  , thresholdValue_(threshold)
   , data_(dimension_, 0.0)
 {
   // Nothing to do
@@ -82,7 +96,7 @@ void IterativeThresholdExceedance::increment(const Point & newData)
   if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative threshold exceedance.";
   ++ iteration_;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    if (newData[i] > thresholdValue_) data_[i] += 1.0;
+    if (operator_(newData[i], thresholdValue_)) data_[i] += 1.0;
 }
 
 /* Increment the internal data with a Sample */
@@ -97,6 +111,7 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
 void IterativeThresholdExceedance::save(Advocate & adv) const
 {
   IterativeAlgorithmImplementation::save(adv);
+  adv.saveAttribute( "operator_", operator_);
   adv.saveAttribute( "thresholdValue_", thresholdValue_);
   adv.saveAttribute( "data_", data_);
 }
@@ -106,6 +121,10 @@ void IterativeThresholdExceedance::save(Advocate & adv) const
 void IterativeThresholdExceedance::load(Advocate & adv)
 {
   IterativeAlgorithmImplementation::load(adv);
+  if (adv.hasAttribute("operator_"))
+    adv.loadAttribute( "operator_", operator_);
+  else
+    operator_ = Greater();// OT<1.21
   adv.loadAttribute( "thresholdValue_", thresholdValue_);
   adv.loadAttribute( "data_", data_);
 }

@@ -5,8 +5,9 @@ Parameters
 ----------
 dimension : int, default=1
     Dimension of the input data
-
-thresholdValue : float, default=0.0
+operator : :class:`~openturns.ComparisonOperator`, default=:class:`~openturns.Greater`
+    Comparison operator
+threshold : float, default=0.0
     Threshold value
 
 Notes
@@ -25,7 +26,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 5
 >>> threshold = 0.5
->>> myThresholdExceedance = ot.IterativeThresholdExceedance(dim, threshold)
+>>> algo = ot.IterativeThresholdExceedance(dim, ot.Greater(), threshold)
 >>> n = ot.Normal(dim)
 >>> size = 50
 
@@ -33,19 +34,19 @@ Increment with 50 points:
 
 >>> for i in range(size):
 ...     point = n.getRealization()
-...     myThresholdExceedance.increment(point)
->>> print(myThresholdExceedance.getThresholdExceedance())
+...     algo.increment(point)
+>>> print(algo.getThresholdExceedance())
 [14,14,14,17,12]
->>> print(myThresholdExceedance.getIterationNumber())
+>>> print(algo.getIterationNumber())
 50
 
 Increment with one sample of size 50:
 
 >>> sample = n.getSample(size)
->>> myThresholdExceedance.increment(sample)
->>> print(myThresholdExceedance.getIterationNumber())
+>>> algo.increment(sample)
+>>> print(algo.getIterationNumber())
 100
->>> print(myThresholdExceedance.getThresholdExceedance())
+>>> print(algo.getThresholdExceedance())
 [38,30,35,27,32]"
 
 // ---------------------------------------------------------------------

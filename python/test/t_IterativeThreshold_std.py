@@ -17,17 +17,17 @@ referencethreshold = [0, 3]
 
 # Iterative threshold, one point at a time
 dimension = 2
-iterthresholdPoint = ot.IterativeThresholdExceedance(dimension, 15.0)
-iterthresholdPoint.increment(point1)
-iterthresholdPoint.increment(point2)
-iterthresholdPoint.increment(point3)
-computedthreshold = iterthresholdPoint.getThresholdExceedance()
+algo = ot.IterativeThresholdExceedance(dimension, ot.Greater(), 15.0)
+algo.increment(point1)
+algo.increment(point2)
+algo.increment(point3)
+computedthreshold = algo.getThresholdExceedance()
 ott.assert_almost_equal(referencethreshold, computedthreshold)
-iteration = iterthresholdPoint.getIterationNumber()
+iteration = algo.getIterationNumber()
 ott.assert_almost_equal(iteration, 3)
 
 # Iterative threshold, one single sample
-iterthresholdSample = ot.IterativeThresholdExceedance(dimension, 15.0)
+iterthresholdSample = ot.IterativeThresholdExceedance(dimension, ot.Greater(), 15.0)
 iterthresholdSample.increment(sample1)
 computedthreshold = iterthresholdSample.getThresholdExceedance()
 ott.assert_almost_equal(referencethreshold, computedthreshold)
@@ -35,7 +35,7 @@ iteration = iterthresholdSample.getIterationNumber()
 ott.assert_almost_equal(iteration, 3)
 
 # Iterative threshold, one single sample, then one point at a time
-iterthresholdMixed = ot.IterativeThresholdExceedance(dimension, 15.0)
+iterthresholdMixed = ot.IterativeThresholdExceedance(dimension, ot.Greater(), 15.0)
 iterthresholdMixed.increment(sample1)
 iterthresholdMixed.increment(point1)
 iterthresholdMixed.increment(point2)
