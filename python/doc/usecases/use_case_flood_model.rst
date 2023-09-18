@@ -95,7 +95,7 @@ Moreover, we assume that the input random variables are independent.
 We want to estimate the flood probability:
 
  .. math::
-    P_f = \Prob(S > 0).
+    P_f = \Prob{S > 0}.
 
 Analysis of the calibration problem
 -----------------------------------
