@@ -46,7 +46,7 @@ graph : :class:`~openturns.GridLayout`
 Returns
 -------
 processSampleResiduals : :class:`~openturns.ProcessSample`
-    The fields of residuals."
+    The sample of residuals fields."
 
 // ---------------------------------------------------------------------
 
