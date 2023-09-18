@@ -64,8 +64,9 @@ public:
   void setLocalSolver(const NLopt & localSolver);
   NLopt getLocalSolver() const;
 
-  /** Set the random generator seed */
+  /** Random generator seed accessor */
   void setSeed(const UnsignedInteger seed);
+  UnsignedInteger getSeed() const;
 
   /** @deprecated */
   static void SetSeed(const UnsignedInteger seed);

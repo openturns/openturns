@@ -213,4 +213,18 @@ Examples
 Parameters
 ----------
 seed : int
-    The RNG seed."
+    The RNG seed.
+    
+Notes
+-----
+The default is set by the `NLopt-InitialSeed` ResourceMap entry."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::getSeed
+"Random generator seed accessor.
+
+Returns
+-------
+seed : int
+    Seed."

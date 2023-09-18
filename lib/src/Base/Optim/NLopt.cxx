@@ -113,6 +113,11 @@ void NLopt::setSeed(const UnsignedInteger seed)
   seed_ = seed;
 }
 
+UnsignedInteger NLopt::getSeed() const
+{
+  return seed_;
+}
+
 void NLopt::SetSeed(const UnsignedInteger seed)
 {
   LOGWARN(OSS() << "NLopt.SetSeed is deprecated in favor of setSeed");
@@ -128,6 +133,7 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 NLopt::NLopt(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
+  , seed_(ResourceMap::GetAsUnsignedInteger("NLopt-InitialSeed"))
 {
   GetAlgorithmCode(algoName);
 }
@@ -136,6 +142,7 @@ NLopt::NLopt(const OptimizationProblem & problem,
              const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
   , algoName_(algoName)
+  , seed_(ResourceMap::GetAsUnsignedInteger("NLopt-InitialSeed"))
 {
   checkProblem(problem);
 }
