@@ -25,6 +25,9 @@ computedthreshold = algo.getThresholdExceedance()
 ott.assert_almost_equal(referencethreshold, computedthreshold)
 iteration = algo.getIterationNumber()
 ott.assert_almost_equal(iteration, 3)
+algo.increment([20.0, 10.0])
+ratio = algo.getRatio()
+ott.assert_almost_equal(ratio, [0.25, 0.75])
 
 # Iterative threshold, one single sample
 iterthresholdSample = ot.IterativeThresholdExceedance(dimension, ot.Greater(), 15.0)

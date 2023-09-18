@@ -24,6 +24,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Added IterativeThresholdExceedance::getRatio
 
 
 == 1.21 release (2023-06-20) == #release-1.21

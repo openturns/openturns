@@ -52,12 +52,12 @@ Increment with one sample of size 50:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeThresholdExceedance::getThresholdExceedance
-"Returns the number of threshold exceedances component per component
+"Returns the number of threshold exceedances per component
 
 Returns
 -------
 thresholdExceedance : :class:`~openturns.Point`
-    current number of threshold exceedances component per component."
+    Number of threshold exceedances per component."
 
 // ---------------------------------------------------------------------
 
@@ -68,3 +68,13 @@ Returns
 -------
 thresholdValue : float
     the value of the threshold."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeThresholdExceedance::getRatio
+"Returns the ratio of threshold exceedances per iteration
+
+Returns
+-------
+ratio : :class:`~openturns.Point`
+    Ratio of threshold exceedances per iteration, per component."

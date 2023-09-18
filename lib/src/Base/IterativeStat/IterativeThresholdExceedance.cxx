@@ -107,6 +107,13 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j) increment(newData[j]);
 }
 
+Point IterativeThresholdExceedance::getRatio() const
+{
+  if (!getIterationNumber())
+    throw InvalidArgumentException(HERE) << "Cannot compute ratio with zero iterations";
+  return getThresholdExceedance() / getIterationNumber();
+}
+
 /* Method save() stores the object through the StorageManager */
 void IterativeThresholdExceedance::save(Advocate & adv) const
 {

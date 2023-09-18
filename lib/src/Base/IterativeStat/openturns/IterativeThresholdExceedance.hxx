@@ -88,6 +88,9 @@ public:
   /** Accessor to the value exceeding the threshold value */
   Point getThresholdExceedance() const;
 
+  /** Accessor to the ratio */
+  Point getRatio() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
