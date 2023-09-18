@@ -71,7 +71,7 @@ to White-Noise Base Excitation:
 
 The failure probability is:
 
-.. math:: P_f = \Prob(G(m_p,m_s,k_p,k_z,\zeta_p,\zeta_s,F_s,Z_0) \leq 0).
+.. math:: P_f = \Prob{G(m_p,m_s,k_p,k_z,\zeta_p,\zeta_s,F_s,Z_0) \leq 0}.
 
 
 The value of :math:`P_f` is:
