@@ -59,7 +59,7 @@ F         Normal(     :math:`\mu_F=750` ,  :math:`\sigma_F=50`)  [N]
 
 The failure probability is:
 
-.. math:: P_f = \Prob(G(R,F) \leq 0).
+.. math:: P_f = \Prob{G(R,F) \leq 0}.
 
 
 The exact :math:`P_f` is
