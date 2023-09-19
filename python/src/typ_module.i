@@ -43,7 +43,6 @@
 %include HermitianMatrix.i
 %include TriangularMatrix.i
 %include TriangularComplexMatrix.i
-%include ComplexTensorImplementation.i
 %include ComplexTensor.i
 %include CovarianceMatrix.i
 %include CorrelationMatrix.i 
