@@ -8,6 +8,24 @@
 
 %template(ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
+%template(ComplexCollection)                   OT::Collection<OT::Complex>;
+%template(ComplexPersistenCollection)          OT::PersistentCollection<OT::Complex>;
+
+%typemap(in) const ComplexCollection & ($1_basetype temp) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
+    try {
+      temp = OT::convert<OT::_PySequence_,OT::Collection<OT::Complex> >( $input );
+      $1 = &temp;
+    } catch (const OT::InvalidArgumentException &) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Complex");
+    }
+  }
+}
+
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const ComplexCollection & {
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
+       OT::isAPythonBufferOf<OT::Complex, 2>( $input ) || OT::isAPythonSequenceOf<OT::_PyComplex_>($input);
+}
 %apply const ScalarCollection & { const OT::ComplexMatrix::ScalarCollection & };
 %apply const ComplexCollection & { const OT::ComplexMatrix::ComplexCollection & };
 

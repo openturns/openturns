@@ -38,7 +38,6 @@
 %include Tensor.i
 %include SymmetricTensor.i
 %include Cache.i
-%include ComplexMatrixImplementation.i
 %include ComplexMatrix.i
 %include SquareComplexMatrix.i
 %include HermitianMatrix.i

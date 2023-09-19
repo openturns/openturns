@@ -159,7 +159,6 @@ ot_add_python_module(typ typ_module.i
                       SymmetricTensor.i SymmetricTensor_doc.i.in
                       ComplexTensorImplementation.i
                       ComplexTensor.i ComplexTensor_doc.i.in
-                      ComplexMatrixImplementation.i ComplexMatrixImplementation_doc.i.in
                       ComplexMatrix.i ComplexMatrix_doc.i.in
                       HermitianMatrix.i HermitianMatrix_doc.i.in
                       SquareComplexMatrix.i SquareComplexMatrix_doc.i.in
