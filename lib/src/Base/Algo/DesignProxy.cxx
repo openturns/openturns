@@ -103,7 +103,7 @@ String DesignProxy::__repr__() const
 
 
 /* Compute the design matrix with the provided basis terms indices */
-MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
+Matrix DesignProxy::computeDesign(const Indices & indices) const
 {
   // Quick return if the cache is *exactly* the design matrix
   // In particular, it is the case if the DesignProxy has been

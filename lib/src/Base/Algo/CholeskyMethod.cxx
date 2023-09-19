@@ -102,7 +102,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
     {
       Indices previousRowFilter(proxy_.getRowFilter());
       proxy_.setRowFilter(Indices(0));
-      MatrixImplementation mPsiAk2(computeWeightedDesign()); // current design
+      MatrixImplementation mPsiAk2(*computeWeightedDesign().getImplementation()); // current design
       l_ = mPsiAk2.computeGram(true).computeCholesky();
       proxy_.setRowFilter(previousRowFilter);
     }
@@ -119,15 +119,15 @@ void CholeskyMethod::update(const Indices & addedIndices,
     if (conservedIndices.getSize() == 0)
     {
       proxy_.setRowFilter(addedIndices);
-      MatrixImplementation mPsiAk(computeWeightedDesign()); // current design
-      l_ = mPsiAk.computeGram(true).computeCholesky();
+      const Matrix mPsiAk(computeWeightedDesign()); // current design
+      l_ = mPsiAk.computeGram(true).getImplementation()->computeCholesky();
       return;
     }
     // Here we know that some rows have been preserved, so l_ must have been initialized
     // Compute the full design matrix as we need also the removed rows
     Indices previousRowFilter(proxy_.getRowFilter());
     proxy_.setRowFilter(Indices(0));
-    MatrixImplementation mPsiAk(computeWeightedDesign()); // current design
+    const MatrixImplementation mPsiAk(*computeWeightedDesign().getImplementation()); // current design
     const UnsignedInteger nbRows = mPsiAk.getNbRows();
     const UnsignedInteger nbColumns = mPsiAk.getNbColumns();
     proxy_.setRowFilter(previousRowFilter);
@@ -165,8 +165,8 @@ void CholeskyMethod::update(const Indices & addedIndices,
       catch (...)
       {
         LOGINFO(OSS() << "In CholeskyMethod::update: failed to downdate row " << removedIndices[i]);
-        MatrixImplementation mPsiAk2(computeWeightedDesign()); // current design
-        l_ = mPsiAk2.computeGram(true).computeCholesky();
+        const Matrix mPsiAk2(computeWeightedDesign()); // current design
+        l_ = mPsiAk2.computeGram(true).getImplementation()->computeCholesky();
         return;
       }
     } // Added rows
@@ -185,18 +185,18 @@ void CholeskyMethod::update(const Indices & addedIndices,
       static const UnsignedInteger LargeCase = ResourceMap::GetAsUnsignedInteger("CholeskyMethod-LargeCase");
       if (newBasis.getSize() >= LargeCase)
       {
-        MatrixImplementation mPsiAk(computeWeightedDesign());// old design
+        Matrix mPsiAk(computeWeightedDesign());// old design
 
         currentIndices_ = newBasis;
         if (addedIndices.getSize() != 1) throw InvalidArgumentException(HERE) << " in CholeskyMethod::update addedIndices.getSize() != 1";
         const UnsignedInteger basisSize = currentIndices_.getSize();
 
         // update the cholesky decomposition of the Gram matrix
-        const Point xk(computeWeightedDesign(addedIndices));
+        const Point xk(*computeWeightedDesign(addedIndices).getImplementation());
         const Scalar diagk = xk.normSquare();
 
         // solve lower triangular system L*rk=xk'*A to get the extra line panel
-        const Point colk(mPsiAk.genVectProd(xk, true));
+        const Point colk(mPsiAk.getImplementation()->genVectProd(xk, true));
         const Point rk(l_.solveLinearSystem(colk));
         const Scalar rk2 = rk.normSquare();
 
@@ -252,8 +252,8 @@ Point CholeskyMethod::solve(const Point & rhs)
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const MatrixImplementation psiAk(computeWeightedDesign());
-  const Point c(psiAk.genVectProd(b, true));
+  const Matrix psiAk(computeWeightedDesign());
+  const Point c(psiAk.getImplementation()->genVectProd(b, true));
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
   // 1) To say that the matrix L is lower triangular
   // 2) To say that it is L^Tx=y that is solved instead of Lx=y
@@ -296,7 +296,7 @@ SymmetricMatrix CholeskyMethod::getH() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
   TriangularMatrix invL(l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
-  MatrixImplementation psiAk(computeWeightedDesign());
+  MatrixImplementation psiAk(*computeWeightedDesign().getImplementation());
   return invL.getImplementation()->genProd(psiAk, false, true).computeGram(true);
 }
 
@@ -305,7 +305,7 @@ Point CholeskyMethod::getHDiag() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
-  const MatrixImplementation psiAk(computeWeightedDesign());
+  const MatrixImplementation psiAk(*computeWeightedDesign().getImplementation());
   const MatrixImplementation invLPsiAk(invL.genProd(psiAk, false, true));
 
   const UnsignedInteger dimension = psiAk.getNbRows();
