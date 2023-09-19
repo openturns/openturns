@@ -1,3 +1,3 @@
 // SWIG file UncertaintyRandomVectorTemplateDefs.i
 
-%template(ProcessImplementationPointer) OT::Pointer<OT::ProcessImplementation>;
+%template(_ProcessImplementationPointer) OT::Pointer<OT::ProcessImplementation>;

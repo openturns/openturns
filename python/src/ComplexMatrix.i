@@ -6,7 +6,7 @@
 
 %include ComplexMatrix_doc.i
 
-%template(ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
+%template(_ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
 %template(ComplexCollection)                   OT::Collection<OT::Complex>;
 %template(ComplexPersistenCollection)          OT::PersistentCollection<OT::Complex>;

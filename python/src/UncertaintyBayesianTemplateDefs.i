@@ -1,4 +1,4 @@
 // SWIG file UncertaintyBayesianTemplateDefs.i
 
-%template(MetropolisHastingsImplementationPointer) OT::Pointer<OT::MetropolisHastingsImplementation>;
+%template(_MetropolisHastingsImplementationPointer) OT::Pointer<OT::MetropolisHastingsImplementation>;
 

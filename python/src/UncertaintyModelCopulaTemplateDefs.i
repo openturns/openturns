@@ -1,6 +1,6 @@
 // SWIG file UncertaintyModelCopulaTemplateDefs.i
 
-%template(DistributionFactoryImplementationPointer) OT::Pointer<OT::DistributionFactoryImplementation>;
-%template(DistributionImplementationPointer) OT::Pointer<OT::DistributionImplementation>;
-%template(RandomVectorImplementationPointer) OT::Pointer<OT::RandomVectorImplementation>;
+%template(_DistributionFactoryImplementationPointer) OT::Pointer<OT::DistributionFactoryImplementation>;
+%template(_DistributionImplementationPointer) OT::Pointer<OT::DistributionImplementation>;
+%template(_RandomVectorImplementationPointer) OT::Pointer<OT::RandomVectorImplementation>;
 

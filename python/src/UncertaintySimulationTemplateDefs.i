@@ -1,4 +1,4 @@
 // SWIG file UncertaintySimulationTemplateDefs.i
 
-%template(RootStrategyImplementationPointer) OT::Pointer<OT::RootStrategyImplementation>;
-%template(SamplingStrategyImplementationPointer) OT::Pointer<OT::SamplingStrategyImplementation>;
+%template(_RootStrategyImplementationPointer) OT::Pointer<OT::RootStrategyImplementation>;
+%template(_SamplingStrategyImplementationPointer) OT::Pointer<OT::SamplingStrategyImplementation>;

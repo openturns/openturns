@@ -1,5 +1,5 @@
 // SWIG file BaseGraphTemplateDefs.i
 
-%template(DrawableImplementationPointer) OT::Pointer<OT::DrawableImplementation>;
-%template(GraphImplementationPointer) OT::Pointer<OT::GraphImplementation>;
+%template(_DrawableImplementationPointer) OT::Pointer<OT::DrawableImplementation>;
+%template(_GraphImplementationPointer) OT::Pointer<OT::GraphImplementation>;
 
