@@ -6,7 +6,7 @@
 
 %include Path_doc.i
 
-%template(DirectoryList) std::vector<OT::FileName>;
+%template() std::vector<OT::FileName>;
 
 %nodefaultctor Path;
 
