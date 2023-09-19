@@ -34,7 +34,6 @@
 %include Matrix.i
 %include SquareMatrix.i
 %include SymmetricMatrix.i
-%include TensorImplementation.i
 %include Tensor.i
 %include SymmetricTensor.i
 %include Cache.i

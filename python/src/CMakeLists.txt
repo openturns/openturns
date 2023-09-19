@@ -154,7 +154,6 @@ ot_add_python_module(typ typ_module.i
                       Matrix.i Matrix_doc.i.in
                       SquareMatrix.i SquareMatrix_doc.i.in
                       SymmetricMatrix.i SymmetricMatrix_doc.i.in
-                      TensorImplementation.i TensorImplementation_doc.i.in
                       Tensor.i Tensor_doc.i.in
                       SymmetricTensor.i SymmetricTensor_doc.i.in
                       ComplexTensor.i ComplexTensor_doc.i.in
