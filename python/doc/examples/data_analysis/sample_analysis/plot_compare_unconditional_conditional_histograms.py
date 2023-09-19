@@ -3,24 +3,29 @@ Compare unconditional and conditional histograms
 ================================================
 """
 # %%
-# In this example, we compare unconditional and conditional histograms for a simulation.
+# In this example, we compare unconditional and conditional histograms for a
+# simulation.
 # We consider the :ref:`flooding model<use-case-flood-model>`.
 # Let :math:`g` be a function which takes four inputs :math:`Q`, :math:`K_s`,
-# :math:`Z_v` and :math:`Z_m` and returns one output :math:`H`.
+# :math:`Z_v` and :math:`Z_m` and returns one output :math:`S`.
 #
 # We first consider the (unconditional) distribution of the input :math:`Q`.
 #
-# Let :math:`t` be a given threshold on the output :math:`H`: we consider the event :math:`H>t`.
-# Then we consider the conditional distribution of the input :math:`Q` given that :math:`H>t` : :math:`Q|H>t`.
+# Let :math:`t` be a given threshold on the output :math:`S`: we consider
+# the event :math:`S > t`.
+# Then we consider the conditional distribution of the input :math:`Q` given
+# that :math:`S > t` that is to say :math:`Q|S > t`.
 #
 # If these two distributions are significantly different, we conclude that
-# the input :math:`Q` has an impact on the event :math:`H>t`.
+# the input :math:`Q` has an impact on the event :math:`S > t`.
 #
-# In order to approximate the distribution of the output :math:`H`,
+# In order to approximate the distribution of the output :math:`S`,
 # we perform a Monte-Carlo simulation with size 500.
-# The threshold :math:`t` is chosen as the 90% quantile of the empirical distribution of :math:`H`.
+# The threshold :math:`t` is chosen as the 90% quantile of the empirical
+# distribution of :math:`S`.
 # In this example, the distribution is aproximated by its empirical histogram
-# (but this could be done with another distribution approximation as well, such as kernel smoothing for example).
+# (but this could be done with another distribution approximation as well,
+# such as kernel smoothing for example).
 
 # %%
 import numpy as np
@@ -43,20 +48,23 @@ fm = flood_model.FloodModel()
 # %%
 size = 500
 inputSample = fm.distribution.getSample(size)
+inputSample[:5]
+
+# %%
 outputSample = fm.model(inputSample)
+outputSample[:5]
 
 # %%
 # Merge the input and output samples into a single sample.
 
 # %%
-sample = ot.Sample(size, 5)
-sample[:, 0:4] = inputSample
-sample[:, 4] = outputSample
-sample.setDescription(["Q", "Ks", "Zv", "Zm", "H"])
-sample[0:5, :]
+sample = ot.Sample(inputSample)
+sample.stack(outputSample)
+sample[0:5]
 
 # %%
-# Extract the first column of `inputSample` into the sample of the flowrates :math:`Q`.
+# Extract the first column of `inputSample` into the sample of the flowrates
+# :math:`Q`.
 
 # %%
 sampleQ = inputSample[:, 0]
@@ -95,11 +103,15 @@ numberOfBins = 10
 histogram = ot.HistogramFactory().buildAsHistogram(sampleQ, numberOfBins)
 
 # %%
-# Extract the sub-sample of the input flowrates Q which leads to large values of the output H.
+# Extract the sub-sample of the input flowrates Q which leads to large values of the output S.
+
+# %%
+# Search the index of the marginal S in the columns of the sample.
+criteriaComponent = list(sample.getDescription()).index("S")
+criteriaComponent
 
 # %%
 alpha = 0.9
-criteriaComponent = 4
 selectedComponent = 0
 conditionnedSampleQ = computeConditionnedSample(
     sample, alpha, criteriaComponent, selectedComponent
@@ -133,17 +145,17 @@ graph.setLegends(["Q"])
 #
 graphConditionnalQ = conditionnedHistogram.drawPDF()
 graphConditionnalQ.setColors(["blue"])
-graphConditionnalQ.setLegends([r"$Q|H>H_{%s}$" % (alpha)])
+graphConditionnalQ.setLegends([r"$Q | S > S_{%s}$" % (alpha)])
 graph.add(graphConditionnalQ)
 view = viewer.View(graph)
 
 plt.show()
 # %%
 # We see that the two histograms are very different.
-# The high values of the input :math:`Q` seem to often lead to a high value of the output :math:`H`.
+# The high values of the input :math:`Q` seem to often lead to a high value of the output :math:`S`.
 #
 # We could explore this situation further by comparing the unconditional
 # distribution of :math:`Q` (which is known in this case) with the conditonal
-# distribution of :math:`Q|H>t`, estimated by kernel smoothing.
+# distribution of :math:`Q | S > t`, estimated by kernel smoothing.
 # This would have the advantage of accuracy, since the kernel smoothing is a
 # more accurate approximation of a distribution than the histogram.

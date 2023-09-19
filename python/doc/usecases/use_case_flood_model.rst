@@ -149,7 +149,7 @@ We want to estimate the flood probability:
  .. math::
     P_f = \Prob{S > 0}.
 
-The results depends on the hypothesis chosen for :math:`H_d`.
+The results depend on the hypothesis chosen for :math:`H_d`.
 
 - If :math:`H_d` is low, then :math:`P_f = 7.3 \times 10^{-4}`
   (with coefficient of variation lower than 0.01).
@@ -304,7 +304,7 @@ scenario where the height of the dyke is high.
 The next figure presents the Sobol' indices of the three outputs in the
 scenario where the height of the dyke is low.
 We estimate the Sobol' indices from sampling, using a root sample
-size equal to :math:`n = 1000`.
+size equal to :math:`n = 2^{13}` and the Sobol' low discrepancy sequence.
 
 .. plot::
 
@@ -316,7 +316,7 @@ size equal to :math:`n = 1000`.
     fm = flood_model.FloodModel()
     outputDimension = fm.model.getOutputDimension()
 
-    sampleSize = 1000
+    sampleSize = 2**13
     sie = ot.SobolIndicesExperiment(fm.distribution, sampleSize)
     inputDesign = sie.generate()
     input_names = fm.distribution.getDescription()
@@ -356,7 +356,7 @@ scenario where the height of the dyke is high.
     fm = flood_model.FloodModel(distributionHdLow=False)
     outputDimension = fm.model.getOutputDimension()
 
-    sampleSize = 1000
+    sampleSize = 2**13
     sie = ot.SobolIndicesExperiment(fm.distribution, sampleSize)
     inputDesign = sie.generate()
     input_names = fm.distribution.getDescription()
@@ -398,7 +398,7 @@ This is a simpler model that leads to a simplified analysis.
     heightInputDistribution, heightModel = fm.getHeightModel()
     outputDimension = heightModel.getOutputDimension()
 
-    sampleSize = 1000
+    sampleSize = 2**13
     sie = ot.SobolIndicesExperiment(heightInputDistribution, sampleSize)
     inputDesign = sie.generate()
     input_names = heightInputDistribution.getDescription()
