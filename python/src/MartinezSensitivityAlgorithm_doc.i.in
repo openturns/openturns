@@ -52,6 +52,7 @@ sample has a zero mean) defined by:
    \frac{\sum_{k=1}^N z_k z_k'}
    {\sqrt{\sum_{k=1}^N z_k^2} \sqrt{\sum_{k=1}^N \left( z_k' \right)^2}}
 
+for any pair of vectors :math:`\vect{z}, \vect{z}' \in \Rset^N`
 and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
