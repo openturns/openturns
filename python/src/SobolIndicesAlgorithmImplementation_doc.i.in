@@ -62,7 +62,7 @@ OT_SobolIndicesAlgorithm_doc
 
 Parameters
 ----------
-i : int, optional
+marginalIndex : int, optional
     Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
@@ -119,10 +119,32 @@ OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
 %define OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 "Get second order Sobol indices.
 
+Notes
+-----
+Let :math:`n_X \in \Nset` be the input dimension of the random vector.
+For any pair of indices :math:`i, j \in \{1, ..., n_x\}`,
+this method computes the Sobol' interaction indice between :math:`i` and :math:`j`:
+
+.. math::
+    S_{\{i, j\}} = \frac{V_{\{i,j\}}}{\Var{Y}}
+
+The second order Sobol' index :math:`S_{i,j}`  measures the part of
+the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
+Hence, the closed Sobol' indice of the group :math:`\{i, j\}` is:
+
+.. math::
+    S_{\{i, j\}}^{\operatorname{cl}} = S_i + S_j + S_{\{i, j\}}.
+
+Inversely, if the closed Sobol' indice :math:`S_{\{i, j\}}^{\operatorname{cl}}` is known,
+then the interaction Sobol' indice can be computed from the equation:
+
+.. math::
+    S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
+
 Parameters
 ----------
-i : int, optional
-    Index of the marginal of the function, equals to :math:`0` by default.
+marginalIndex : int, optional
+    Index of the output marginal of the function, equals to :math:`0` by default.
 
 Returns
 -------
@@ -139,7 +161,7 @@ OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 
 Parameters
 ----------
-i : int, optional
+marginalIndex : int, optional
     Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
