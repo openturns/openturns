@@ -1,0 +1,175 @@
+%feature("docstring") OT::MemoizeEvaluation
+"Evaluation which keeps tracks of input and output.
+
+Usually we use :class:`~openturns.MemoizeFunction` (aa function 
+provides both the evaluation, the gradient and the hessian). that 
+relies on a :class:`~openturns.Function` passed as argument, and store
+input and output :class:`~openturns.Sample`.
+It also has a caching behavior, enabled by default.
+
+Parameters
+----------
+function : :class:`~openturns.Evaluation`
+    Delegate evaluation
+historyStrategy : :class:`~openturns.HistoryStrategy` (optional)
+    Strategy used to store points, default is :class:`~openturns.Full`.
+
+
+See also
+--------
+HistoryStrategy, Full, Last, Compact, Null
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> f = ot.SymbolicEvaluation(['x'], ['y'], ['x^2'])
+>>> inputSample = ot.Sample([[1], [2], [3], [4]])
+>>> f = ot.MemoizeEvaluation(f)
+>>> outputSample = f(inputSample)
+
+Retrieve input sample:
+
+>>> print(f.getInputHistory())
+0 : [ 1 ]
+1 : [ 2 ]
+2 : [ 3 ]
+3 : [ 4 ]
+
+Retrieve output sample:
+
+>>> print(f.getOutputHistory())
+0 : [  1 ]
+1 : [  4 ]
+2 : [  9 ]
+3 : [ 16 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::enableCache
+"Enable the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::disableCache
+"Disable the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::clearCache
+"Empty the content of the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::isCacheEnabled
+"Test whether the cache is enabled or not.
+
+Returns
+-------
+isCacheEnabled : bool
+    Flag telling whether the cache is enabled.
+    It is enabled by default."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getCacheHits
+"Accessor to the number of computations saved thanks to the cache.
+
+Returns
+-------
+cacheHits : int
+    Integer that counts the number of computations saved thanks to the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getCacheInput
+"Accessor to the input points stored in the cache.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    The input points stored in the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getCacheOutput
+"Accessor to the output points stored in the cache.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    The output points stored in the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::addCacheContent
+"Add input and output points to the cache.
+
+Parameters
+----------
+input_sample : 2-d sequence of float
+    Input points to be added to the cache.
+output_sample : 2-d sequence of float
+    Output points associated with the input_sample to be added to the
+    cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getInputHistory
+"Get the input sample history.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input points which have been evaluated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getOutputHistory
+"Get the output sample history.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output points which have been evaluated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::enableHistory
+"Enable the history."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::disableHistory
+"Disable the history."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::isHistoryEnabled
+"Test whether the history is enabled or not.
+
+Returns
+-------
+isHistoryEnabled : bool
+    Flag telling whether the history is enabled."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::clearHistory
+"Clear input and output history."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::MemoizeEvaluation::setEvaluation
+"Set the evaluation.
+
+Parameters
+----------
+evaluation : :class:`~openturns.Evaluation`
+    Evaluation.
+
+Notes
+-----
+This sets a new evaluation of interest. Cache and history are cleaned and the 
+class will stores new one accounting for the given evaluation 
+and store input and output :class:`~openturns.Sample`.
+It also has a caching behavior, enabled by default."
