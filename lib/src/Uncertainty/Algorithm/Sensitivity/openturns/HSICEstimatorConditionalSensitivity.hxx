@@ -67,10 +67,9 @@ public:
   /** Set the weight function */
   void setWeightFunction(const Function & weightFunction);
 
+protected:
   /** Compute the weights from the weight function */
   void computeWeights() override;
-
-protected:
 
   /** Compute the p-values with asymptotic formula */
   void computePValuesAsymptotic() const override;

@@ -60,6 +60,7 @@ public:
   /** Virtual constructor */
   HSICEstimatorGlobalSensitivity* clone() const override;
 
+protected:
   /** Compute the weights from the weight function */
   void computeWeights() override;
 

@@ -66,9 +66,6 @@ public:
   /** Get the filter function */
   void setFilterFunction(const Function & filterFunction);
 
-  /** Compute the weights from the weight function */
-  void computeWeights() override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -76,6 +73,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+
+  /** Compute the weights from the weight function */
+  void computeWeights() override;
 
   /* data */
   Function filterFunction_ ;
