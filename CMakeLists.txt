@@ -587,7 +587,7 @@ if (BUILD_PYTHON)
     find_python_module (numpy)
     find_python_module (scipy)
     find_python_module (pandas)
-    find_python_module (matplotlib 1.3.1)
+    find_python_module (matplotlib 3)
     find_python_module (chaospy)
     find_python_module (dill)
 
