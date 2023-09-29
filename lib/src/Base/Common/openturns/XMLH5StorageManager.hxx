@@ -69,6 +69,8 @@ public:
   void checkStorageManager() override;
   void setStorageManager() override;
 
+  void initialize(const SaveAction caller) override;
+
   void initialize(const LoadAction caller) override;
   void finalize(const LoadAction caller) override;
 
