@@ -47,13 +47,20 @@ size = 100
 sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
 sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
 cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
-cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
+cloud2 = ot.Cloud(sample2, "red", "fcircle", "Sample2 Cloud")
 graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
 graph.add(cloud1)
 graph.add(cloud2)
 # graph.draw('curve5.png')
 view = View(graph)
 # view.save('curve5.png')
+view.show()
+
+# Cloud, empty legend
+graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
+cloud1 = ot.Cloud(sample1)
+graph.add(cloud1)
+view = View(graph)
 view.show()
 
 # Text

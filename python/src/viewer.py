@@ -50,7 +50,7 @@ class View:
         The axes to draw on.
 
     plot_kw : dict, optional
-        Used when drawing Cloud, Curve drawables
+        Used when drawing Curve drawables
         Passed on as matplotlib.axes.Axes.plot kwargs
 
     axes_kw : dict, optional
@@ -79,6 +79,10 @@ class View:
     clabel_kw : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.clabel kwargs
+
+    scatter_kw : dict, optional
+        Used when drawing Cloud drawables
+        Passed on to matplotlib.pyplot.scatter kwargs
 
     step_kw : dict, optional
         Used when drawing Staircase drawables
@@ -140,6 +144,7 @@ class View:
         contour_kw=None,
         step_kw=None,
         clabel_kw=None,
+        scatter_kw=None,
         text_kw=None,
         legend_kw=None,
         add_legend=True,
@@ -175,6 +180,7 @@ class View:
         contour_kw_default = self._CheckDict(contour_kw)
         step_kw_default = self._CheckDict(step_kw)
         clabel_kw_default = self._CheckDict(clabel_kw)
+        scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         legend_handles = []
@@ -335,11 +341,14 @@ class View:
             contour_kw = dict(contour_kw_default)
             step_kw = dict(step_kw_default)
             clabel_kw = dict(clabel_kw_default)
+            scatter_kw = dict(scatter_kw_default)
             text_kw = dict(text_kw_default)
 
             # set color
             if ("color" not in plot_kw_default) and ("c" not in plot_kw_default):
                 plot_kw["color"] = drawable.getColorCode()
+            if ("color" not in scatter_kw_default) and ("c" not in scatter_kw_default):
+                scatter_kw["color"] = drawable.getColorCode()
             if ("color" not in bar_kw_default) and ("c" not in bar_kw_default):
                 bar_kw["color"] = drawable.getColorCode()
             if ("color" not in step_kw_default) and ("c" not in step_kw_default):
@@ -366,9 +375,9 @@ class View:
                 "dot": ",",
                 "none": "None",
             }
-            if "marker" not in plot_kw_default:
+            if "marker" not in scatter_kw_default:
                 try:
-                    plot_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
+                    scatter_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
                 except KeyError:
                     warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
 
@@ -409,13 +418,12 @@ class View:
                 self._ax[0].set_xlabel(self._ToUnicode(graph.getXTitle()))
                 self._ax[0].set_ylabel(self._ToUnicode(graph.getYTitle()))
 
-                if (len(drawable.getLegend()) > 0) and (
-                    (drawableKind != "Cloud") or (drawable.getPointStyle() != "none")
-                ):
+                if len(drawable.getLegend()) > 0:
                     label = self._ToUnicode(drawable.getLegend())
                     has_labels = True
                     plot_kw.setdefault("label", label)
                     bar_kw.setdefault("label", label)
+                    scatter_kw.setdefault("label", label)
                     step_kw.setdefault("label", label)
                     polygon_kw.setdefault("label", label)
                     polygoncollection_kw.setdefault("label", label)
@@ -457,10 +465,13 @@ class View:
                     xi += x[i]
 
             elif drawableKind == "Cloud":
-                plot_kw["linestyle"] = "None"
-                lines = self._ax[0].plot(x, y, **plot_kw)
+                # https://github.com/matplotlib/matplotlib/issues/11460
+                if "marker" in scatter_kw and scatter_kw["marker"] in [",", "pixel"]:
+                    scatter_kw["s"] = 1
+                    scatter_kw["linewidths"] = 0.0
+                lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
-                    legend_handles.append(lines[0])
+                    legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
