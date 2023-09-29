@@ -68,6 +68,10 @@ public:
 #ifndef SWIG
   void checkStorageManager() override;
   void setStorageManager() override;
+
+  void initialize(const LoadAction caller) override;
+  void finalize(const LoadAction caller) override;
+
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
 

@@ -45,6 +45,9 @@ public:
   template <class CPP_Type>
   void readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, CPP_Type & value);
 
+  void initialize(const LoadAction caller);
+  void finalize(const LoadAction caller);
+
 private:
   template <class CPP_Type>
   void writeToH5(const String & dataSetName);
@@ -64,6 +67,7 @@ private:
   FileName h5FileName_;
   std::vector<Scalar> valBuf_Scalar_;
   std::vector<UnsignedInteger> valBuf_UnsignedInteger_;
+  H5::H5File h5File_;
   Bool isFirstDS_ = true;
   UnsignedInteger compressionLevel_ = 0;
 };
@@ -221,12 +225,28 @@ void XMLH5StorageManagerImplementation::readIndexedValue(Pointer<StorageManager:
 }
 
 
+void XMLH5StorageManagerImplementation::initialize(const LoadAction /*caller*/)
+{
+  isFirstDS_ = true;
+}
+
 template <class CPP_Type>
 void XMLH5StorageManagerImplementation::readFromH5(const String & dataSetName)
 {
-  H5::Exception::dontPrint();
-  H5::H5File file(h5FileName_.c_str(), H5F_ACC_RDONLY);
-  H5::DataSet dataset = file.openDataSet(dataSetName.c_str());
+  if (isFirstDS_)
+  {
+    try
+    {
+      h5File_ = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDONLY);
+    }
+    catch (const H5::Exception &)
+    {
+      throw FileOpenException(HERE) << "Error opening file " << h5FileName_ << " for reading";
+    }
+  }
+  isFirstDS_ = false;
+
+  H5::DataSet dataset = h5File_.openDataSet(dataSetName.c_str());
   H5::DataSpace dataspace = dataset.getSpace();
   const int size = dataspace.getSimpleExtentNpoints();
 
@@ -235,7 +255,11 @@ void XMLH5StorageManagerImplementation::readFromH5(const String & dataSetName)
 
   dataspace.close();
   dataset.close();
-  file.close();
+}
+
+void XMLH5StorageManagerImplementation::finalize(const LoadAction /*caller*/)
+{
+  h5File_.close();
 }
 
 CLASSNAMEINIT(XMLH5StorageManager)
@@ -287,6 +311,17 @@ void XMLH5StorageManager::setStorageManager()
   XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLH5StorageManager");
 }
 
+void XMLH5StorageManager::initialize(const LoadAction caller)
+{
+  XMLStorageManager::initialize(caller);
+  p_implementation_->initialize(caller);
+}
+
+void XMLH5StorageManager::finalize(const LoadAction caller)
+{
+  XMLStorageManager::finalize(caller);
+  p_implementation_->finalize(caller);
+}
 
 void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value)
 {
