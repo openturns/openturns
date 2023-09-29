@@ -37,13 +37,17 @@ public:
       const UnsignedInteger compressionLevel = 0)
     : h5FileName_(h5FileName)
     , compressionLevel_(compressionLevel)
-  {}
+  {
+    H5::Exception::dontPrint();
+  }
 
   template <class CPP_Type>
   void addIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, CPP_Type value);
 
   template <class CPP_Type>
   void readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, CPP_Type & value);
+
+  void initialize(const SaveAction caller);
 
   void initialize(const LoadAction caller);
   void finalize(const LoadAction caller);
@@ -56,7 +60,7 @@ private:
   void readFromH5(const String & dataSetName);
 
   // Buffer size for writing hdf5 slabs
-  const UnsignedInteger BufferSize = 1048576;
+  const UnsignedInteger BufferSize = (1 << 22); // 4mb
 
   // 30kB (max recommended dataset header size)
   // https://support.hdfgroup.org/HDF5/doc/UG/HDF5_Users_Guide.pdf
@@ -127,27 +131,31 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   }
 }
 
+void XMLH5StorageManagerImplementation::initialize(const SaveAction /*caller*/)
+{
+  isFirstDS_ = true;
+}
 
 template <class CPP_Type>
 void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
 {
-  H5::Exception::dontPrint();
-  H5::H5File h5File;
-  if (isFirstDS_)
+  // - truncate file on first call, else r/w mode
+  // - no h5 file should be created if no dataset is necessary
+  // - its slower to copy everything in memory with H5Pset_fapl_core
+  //   and write the h5 only on close as writeToH5 already implements some kind of buffer
+  try
   {
-    //Create new or overwrite existing
-    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_TRUNC);
-    isFirstDS_ = false;
+    h5File_ = H5::H5File(h5FileName_.c_str(), isFirstDS_ ? H5F_ACC_TRUNC : H5F_ACC_RDWR);
   }
-  else
+  catch (const H5::Exception &)
   {
-    //R+W access
-    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
+    throw FileOpenException(HERE) << "Error opening file " << h5FileName_ << " for writing";
   }
+  isFirstDS_ = false;
 
   const hsize_t dims[1] = { getBuffer<CPP_Type>().size() };
 
-  if (!H5Lexists(h5File.getId(), dataSetName.c_str(), H5P_DEFAULT))
+  if (!H5Lexists(h5File_.getId(), dataSetName.c_str(), H5P_DEFAULT))
   {
     //Dataset does not exist, need to create it and initialize it with first chunk
     const hsize_t maxdims[1] = { H5S_UNLIMITED };
@@ -173,14 +181,14 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
     prop.setDeflate(compressionLevel_);
 
     //Create new dataset and write it
-    H5::DataSet dset(h5File.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
+    H5::DataSet dset(h5File_.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
     dset.write(getBuffer<CPP_Type>().data(), getDataType<CPP_Type>());
     prop.close();
   }
   else
   {
     //Dataset exists, and will be appended with buffer values
-    H5::DataSet dset(h5File.openDataSet(dataSetName));
+    H5::DataSet dset(h5File_.openDataSet(dataSetName));
     //Get actual dset size
     const hsize_t offset[1] = { (hsize_t)dset.getSpace().getSimpleExtentNpoints() };
     const hsize_t extent[1] = { dims[0] + offset[0] };
@@ -195,7 +203,7 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
     dset.write(getBuffer<CPP_Type>().data(), getDataType<CPP_Type>(), memspace, filespace);
   }
   getBuffer<CPP_Type>().clear();
-  h5File.close();
+  h5File_.close();
 }
 
 
@@ -309,6 +317,12 @@ void XMLH5StorageManager::checkStorageManager()
 void XMLH5StorageManager::setStorageManager()
 {
   XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLH5StorageManager");
+}
+
+void XMLH5StorageManager::initialize(const SaveAction caller)
+{
+  XMLStorageManager::initialize(caller);
+  p_implementation_->initialize(caller);
 }
 
 void XMLH5StorageManager::initialize(const LoadAction caller)
