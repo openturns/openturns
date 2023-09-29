@@ -1,9 +1,8 @@
 %feature("docstring") OT::ExponentialFactory
 "Exponential factory.
 
-Available constructor:
-    ExponentialFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,12 @@ DistributionFactory, Exponential"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsExponential_doc
-"Build the Exponential distribution.
+%feature("docstring") OT::ExponentialFactory::buildAsExponential
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsExponential()
 
     buildAsExponential(*sample*)
 
@@ -33,14 +34,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Exponential`.
 
 Returns
 -------
 dist : :class:`~openturns.Exponential`
-    The built distribution."
-%enddef
-%feature("docstring") OT::ExponentialFactory::buildAsExponential
-OT_DistributionFactory_buildAsExponential_doc
+    The estimated distribution as a Exponential.
+    
+    In the first usage, the default Exponential distribution is built."
 

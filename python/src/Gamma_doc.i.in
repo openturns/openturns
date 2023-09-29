@@ -1,6 +1,9 @@
 %feature("docstring") OT::Gamma
 "Gamma distribution.
 
+Available constructors:
+    Gamma(*k=1.0, lambda=1.0, gamma=0.0*)
+
 Parameters
 ----------
 k : float

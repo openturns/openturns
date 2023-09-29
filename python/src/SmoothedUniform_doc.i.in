@@ -1,6 +1,9 @@
 %feature("docstring") OT::SmoothedUniform
 "SmoothedUniform distribution.
 
+Available constructors:
+    SmoothedUniform(*a=-1.0, b=1.0, sigma=1.0*)
+
 Parameters
 ----------
 a : float

@@ -1,15 +1,11 @@
 %feature("docstring") OT::HistogramFactory
 "Histogram factory.
 
-Available constructor:
-    HistogramFactory()
-
 Notes
 -----
+The range is :math:`[\min(data), \max(data)]`. 
 
-The range is :math:`[min(data), max(data)]`. 
-
-See the `computeBandwidth` method for the bandwidth selection. 
+See the :meth:`computeBandwidth` method for the bandwidth selection. 
 
 Examples
 --------
@@ -75,18 +71,20 @@ key of the :class:`~openturns.ResourceMap`.
 
 **Available usages**:
 
-    build(*sample*)
+    buildAsHistogram()
 
-    build(*sample*, *binNumber*)
+    buildAsHistogram(*sample*)
 
-    build(*sample*, *bandwidth*)
+    buildAsHistogram(*sample*, *binNumber*)
 
-    build(*sample*, *first*, *width*)
+    buildAsHistogram(*sample*, *bandwidth*)
+
+    buildAsHistogram(*sample*, *first*, *width*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 binNumber : int
     The number of classes. 
 bandwidth : float
@@ -99,13 +97,17 @@ width : 1-d sequence of float
 Returns
 -------
 distribution : :class:`~openturns.Histogram`
-    The estimated distribution"
+    The estimated distribution as a Histogram.
+    
+    In the first usage, the default Histogram distribution is built."
 
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::HistogramFactory::computeBandwidth
 "Compute the bandwidth.
 
+Notes
+-----
 The bandwidth of the histogram is based on the asymptotic mean integrated squared 
 error (AMISE). 
 
@@ -172,7 +174,7 @@ sample : :class:`~openturns.Sample`
 Returns
 -------
 bandwidth : float
-    The estimated bandwidth
+    The estimated bandwidth.
 useQuantile : bool, optional (default=`True`)
     If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule. 
     Otherwise, use the optimal bandwidth estimator based on Scott's rule."
@@ -196,9 +198,9 @@ for :math:`i = 1, ..., K`.
 Parameters
 ----------
 lowerBound : float
-    Lower bound
+    Lower bound.
 probabilities : sequence of float
-    The probabilities
+    The probabilities.
 quantiles : sequence of float
     Quantiles of the desired distribution.
 

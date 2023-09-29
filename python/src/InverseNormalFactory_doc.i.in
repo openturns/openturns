@@ -1,9 +1,8 @@
 %feature("docstring") OT::InverseNormalFactory
 "Inverse Normal factory.
 
-Available constructor:
-    InverseNormalFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,13 @@ DistributionFactory, InverseNormal"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsInverseNormal_doc
-"Build the InverseNormal distribution.
+%feature("docstring") OT::InverseNormalFactory::buildAsInverseNormal
+"Estimate the distribution as native distribution.
+
 
 **Available usages**:
+
+    buildAsInverseNormal()
 
     buildAsInverseNormal(*sample*)
 
@@ -33,14 +35,14 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.InverseNormal`.
 
 Returns
 -------
-dist : :class:`~openturns.InverseNormal`
-    The built distribution."
-%enddef
-%feature("docstring") OT::InverseNormalFactory::buildAsInverseNormal
-OT_DistributionFactory_buildAsInverseNormal_doc
+distribution : :class:`~openturns.InverseNormal`
+    The estimated distribution as a InverseNormal.
+    
+    In the first usage, the default InverseNormal distribution is built."
+    
 

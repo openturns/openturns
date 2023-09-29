@@ -1,6 +1,9 @@
 %feature("docstring") OT::BetaMuSigma
 "Beta distribution parameters.
 
+Available constructors:
+    BetaMuSigma(*mu=0.5, sigma=0.223607, a=0.0, b=1.0*)
+
 Parameters
 ----------
 mu : float
@@ -39,3 +42,18 @@ Convert parameters into the native parameters :math:`(\alpha, \beta, a, b)`:
 
 >>> print(parameters.evaluate())
 [2,3,-1,2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BetaMuSigma::isElliptical
+"Test whether the Beta distribution is elliptical.
+
+Returns
+-------
+test : bool
+    Answer.
+    
+Notes
+-----
+The Beta distribution parametrized by the given :math:`(\mu, \sigma, a, b)`
+is elliptical if :math:`b = 2\mu - a`."

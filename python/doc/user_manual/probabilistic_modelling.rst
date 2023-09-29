@@ -15,6 +15,7 @@ Continuous parametric distributions
 
     Distribution
     DistributionCollection
+    EllipticalDistribution
     PythonDistribution
     ChaospyDistribution
     SciPyDistribution
@@ -283,25 +284,49 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
     DistFunc.kFactor
     DistFunc.kFactorPooled
     DistFunc.logdBinomial
     DistFunc.logdHypergeometric
-    DistFunc.logdPoisson
-    DistFunc.pHypergeometric
-    DistFunc.pPearsonCorrelation
-    DistFunc.dNormal
     DistFunc.logdNormal
-    DistFunc.pNormal
+    DistFunc.logdPoisson
     DistFunc.logpNormal
+    DistFunc.pBeta
+    DistFunc.pDickeyFullerConstant
+    DistFunc.pDickeyFullerNoConstant
+    DistFunc.pDickeyFullerTrend
+    DistFunc.pGamma
+    DistFunc.pHypergeometric
+    DistFunc.pKolmogorov
+    DistFunc.pNonCentralChiSquare
+    DistFunc.pNonCentralStudent
+    DistFunc.pNormal
+    DistFunc.pNormal2D
+    DistFunc.pNormal3D
+    DistFunc.pPearsonCorrelation
+    DistFunc.pSpearmanCorrelation
+    DistFunc.pStudent
+    DistFunc.qBeta
+    DistFunc.qDickeyFullerConstant
+    DistFunc.qDickeyFullerNoConstant
+    DistFunc.qDickeyFullerTrend
+    DistFunc.qGamma
     DistFunc.qNormal
+    DistFunc.qPoisson
+    DistFunc.qStudent
+    DistFunc.rBeta
     DistFunc.rBinomial
     DistFunc.rDiscrete
+    DistFunc.rGamma
     DistFunc.rHypergeometric
+    DistFunc.rNonCentralChiSquare
+    DistFunc.rNonCentralStudent
     DistFunc.rNormal
     DistFunc.rPoisson
+    DistFunc.rStudent
     DistFunc.rUniformSegment
     DistFunc.rUniformTriangle
     DistFunc.rUniformTetrahedron

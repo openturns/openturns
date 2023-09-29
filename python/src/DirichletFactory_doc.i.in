@@ -1,9 +1,6 @@
 %feature("docstring") OT::DirichletFactory
 "Dirichlet factory.
 
-Available constructor:
-    DirichletFactory()
-
 Notes
 -----
 The estimation is done by maximizing the likelihood of the sample,
@@ -15,10 +12,12 @@ DistributionFactory, Dirichlet"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsDirichlet_doc
-"Build the Dirichlet distribution.
+%feature("docstring") OT::DirichletFactory::buildAsDirichlet
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsDirichlet()
 
     buildAsDirichlet(*sample*)
 
@@ -28,14 +27,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Dirichlet`.
 
 Returns
 -------
 dist : :class:`~openturns.Dirichlet`
-    The built distribution."
-%enddef
-%feature("docstring") OT::DirichletFactory::buildAsDirichlet
-OT_DistributionFactory_buildAsDirichlet_doc
+    The estimated distribution as a Dirichlet.
+    
+    In the first usage, the default Dirichlet distribution is built."
 

@@ -1,6 +1,9 @@
 %feature("docstring") OT::LogNormal
 "Lognormal distribution.
 
+Available constructors:
+    LogNormal(*muLog=0.0, sigmaLog=1.0, gamma=0.0*)
+
 Parameters
 ----------
 muLog : float

@@ -1,6 +1,9 @@
 %feature("docstring") OT::Beta
 "Beta distribution.
 
+Available constructors:
+    Beta(*alpha=2.0, beta=2.0, a = -1.0, b = 1.0*)
+
 Parameters
 ----------
 alpha : float
@@ -172,3 +175,18 @@ mu : float
     Mean.
 sigma : float, :math:`\sigma > 0`
     Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::isElliptical
+"Test whether the distribution is elliptical.
+
+Returns
+-------
+test : bool
+    Answer.
+    
+Notes
+-----
+The Beta distribution is elliptical if :math:`\alpha = \beta`.
+"

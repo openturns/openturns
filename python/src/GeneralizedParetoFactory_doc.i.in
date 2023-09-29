@@ -3,7 +3,7 @@
 
 Notes
 -----
-Several estimators are available to build a GeneralizedPareto distribution
+Several estimators are available to build a :class:`~openturns.GeneralizedPareto` distribution
 from a scalar sample (see [matthys2003]_ for the theory).
 
 The chosen algorithm depends on the size of the sample compared to the
@@ -146,8 +146,8 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.GeneralizedPareto`.
 
 Returns
 -------
@@ -182,14 +182,15 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-param : sequence of float
-    A vector of parameters of the distribution.
+param : sequence of float,
+    A vector of parameters of the :class:`~openturns.GeneralizedPareto`.
 
 Returns
 -------
 dist : :class:`~openturns.GeneralizedPareto`
-    The built distribution.
-"
+    The estimated distribution as a GeneralizedPareto.
+    
+    In the first usage, the default GeneralizedPareto distribution is built."
 
 // ---------------------------------------------------------------------
 

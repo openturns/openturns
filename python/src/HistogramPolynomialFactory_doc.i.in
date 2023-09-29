@@ -40,3 +40,30 @@ Examples
 -2.56273 + 1.13899 * X
 7.80593 - 7.42767 * X + 1.5268 * X^2
 "
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::HistogramPolynomialFactory::getFirst
+"Accessor to the distribution lower bound.
+
+Returns
+-------
+first : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::HistogramPolynomialFactory::getWidth
+"Accessor to the sequence of width of the classes.
+
+Returns
+-------
+width : positive sequence of float
+    Sequence of width of the classes."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::HistogramPolynomialFactory::getHeight
+"Accessor to the sequence of frequency of the classes.
+
+Returns
+-------
+height : positive sequence of float
+    Sequence of frequency of the classes."

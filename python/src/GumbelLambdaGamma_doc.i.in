@@ -1,6 +1,9 @@
 %feature("docstring") OT::GumbelLambdaGamma
 "Gumbel rate/location parametrization.
 
+Available constructors:
+    GumbelLambdaGamma(*lambda=0.0, gamma=1.0*)
+
 Parameters
 ----------
 lambda : float

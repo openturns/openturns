@@ -1,9 +1,8 @@
 %feature("docstring") OT::TriangularFactory
 "Triangular factory.
 
-Available constructor:
-    TriangularFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -21,10 +20,12 @@ DistributionFactory, Triangular"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsTriangular_doc
-"Build the Triangular distribution.
+%feature("docstring") OT::TriangularFactory::buildAsTriangular
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsTriangular()
 
     buildAsTriangular(*sample*)
 
@@ -33,15 +34,14 @@ DistributionFactory, Triangular"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Triangular`.
 
 Returns
 -------
 dist : :class:`~openturns.Triangular`
-    The built distribution."
-%enddef
-%feature("docstring") OT::TriangularFactory::buildAsTriangular
-OT_DistributionFactory_buildAsTriangular_doc
+    The estimated distribution as a Triangular.
+    
+    In the first usage, the default Triangular distribution is built."
 

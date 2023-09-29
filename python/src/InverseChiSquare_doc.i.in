@@ -4,7 +4,7 @@
 Helper class for defining the Inverse ChiSquare distribution which is the inverse of a :math:`\chi^2` distribution.
 
 Available constructors:
-    InverseChiSquare(*nu*)
+    InverseChiSquare(*nu=1.0*)
 
 Parameters
 ----------

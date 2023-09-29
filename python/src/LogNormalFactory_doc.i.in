@@ -1,9 +1,6 @@
 %feature("docstring") OT::LogNormalFactory
 "Lognormal factory distribution.
 
-Available constructors:
-    LogNormalFactory()
-
 See also
 --------
 DistributionFactory, LogNormal
@@ -11,7 +8,7 @@ DistributionFactory, LogNormal
 Notes
 -----
 Several estimators to build a LogNormal distribution from a scalar sample
-are proposed.
+are proposed. The default strategy is using the local likelihood maximum estimator.
 
 **Moments based estimator:**
 
@@ -165,6 +162,8 @@ method : integer
     - 2 : Method of moment estimator
     - 3 : Least squares method.
 
+    The default value is 0. It is stored in :class:`~openturns.ResourceMap`, key *LogNormalFactory-EstimationMethod*. 
+
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
@@ -175,7 +174,7 @@ dist : :class:`~openturns.Distribution`
 
 Notes
 -----
-See the *buildAsLogNormal* method.
+See the :meth:`buildAsLogNormal` method.
 "
 
 // ---------------------------------------------------------------------
@@ -199,19 +198,20 @@ sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
-    - 0 : Local likelihood maximum estimator (default)
+
+    - 0 : Local likelihood maximum estimator
     - 1 : Modified moment estimator
     - 2 : Method of moment estimator
     - 3 : Least squares method.
 
-    The default value is from the :class:`~openturns.ResourceMap` key `LogNormalFactory-EstimationMethod`. 
+    The default value is 0. It is stored in  :class:`~openturns.ResourceMap`, key *LogNormalFactory-EstimationMethod*. 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
 Returns
 -------
 dist : :class:`~openturns.LogNormal`
-    The built distribution.
+    The estimated distribution as a LogNormal.
 
 Notes
 -----

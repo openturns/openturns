@@ -1,6 +1,9 @@
 %feature("docstring") OT::UniformMuSigma
 "Uniform distribution parameters.
 
+Available constructors:
+    UniformMuSigma(*mu=0, sigma=0.57735*)
+    
 Parameters
 ----------
 mu : float

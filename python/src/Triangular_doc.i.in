@@ -53,7 +53,7 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Triangular::getA
-"Accessor to the distribution's lower bound.
+"Accessor to the distribution lower bound.
 
 Returns
 -------
@@ -63,7 +63,7 @@ a : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Triangular::getB
-"Accessor to the distribution's upper bound.
+"Accessor to the distribution upper bound.
 
 Returns
 -------
@@ -73,7 +73,7 @@ b : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Triangular::getM
-"Accessor to the distribution's mode.
+"Accessor to the distribution  mode.
 
 Returns
 -------
@@ -83,7 +83,7 @@ m : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Triangular::setAMB
-"Accessor to the distribution's parameters.
+"Accessor to the distribution parameters.
 
 Parameters
 ----------

@@ -1,6 +1,9 @@
 %feature("docstring") OT::Pareto
 "Pareto distribution.
 
+Available constructors:
+    Pareto(*beta=1.0, alpha=1.0, gamma=0.0*)
+
 Parameters
 ----------
 beta : float

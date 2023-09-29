@@ -1,6 +1,10 @@
 %feature("docstring") OT::MeixnerDistribution
 "Meixner distribution.
 
+Available constructors:
+    MeixnerDistribution(*beta=1.0, alpha=0.0, delta=1.0, gamma=0.0*)
+
+
 Parameters
 ----------
 beta : float, :math:`\beta > 0`

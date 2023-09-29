@@ -1,13 +1,12 @@
 %feature("docstring") OT::NormalFactory
 "Normal factory.
 
-Available constructors:
-    NormalFactory(*robust=False*)
-
 Parameters
 ----------
 robust : bool, optional
-    Flag to select robust estimators of the parameters
+    Flag to select robust estimators of the parameters.
+    
+    By default, robust is False.
 
 Notes
 -----    
@@ -46,12 +45,25 @@ are estimated from a sample.
 %feature("docstring") OT::NormalFactory::buildAsNormal
 "Estimate the distribution as native distribution.
 
+
+**Available usages**:
+
+    buildAsNormal()
+
+    buildAsNormal(*sample*)
+
+    buildAsNormal(*param*)
+
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Normal`.
 
 Returns
 -------
 distribution : :class:`~openturns.Normal`
-    The estimated distribution"
+    The estimated distribution as a Normal.
+    
+    In the first usage, the default Normal distribution is built."

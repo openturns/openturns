@@ -1,6 +1,9 @@
 %feature("docstring") OT::LogNormalMuSigmaOverMu
 "LogNormal distribution parameters.
 
+Available constructors:
+    LogNormalMuSigmaOverMu(*mu=1.64872, sigmaOverMu=1.31083, gamma=0.0*)
+    
 Parameters
 ----------
 mu : float

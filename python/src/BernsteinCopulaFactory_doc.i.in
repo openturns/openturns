@@ -1,7 +1,9 @@
 %feature("docstring") OT::BernsteinCopulaFactory
 "BernsteinCopula copula factory.
 
-This class allows one to estimate a copula in a nonparametric way as an :class:`~openturns.EmpiricalBernsteinCopula`.
+Notes
+-----
+This class provides a non parametric estimator of a copula: the :class:`~openturns.EmpiricalBernsteinCopula`.
 
 See also
 --------
@@ -24,11 +26,11 @@ DistributionFactory, EmpiricalBernsteinCopula"
 
 Parameters
 ----------
-sample : 2-d sequence of float, of dimension *d*
+sample : 2-d sequence of float, of dimension *d*,
     The sample of size :math:`n>0` from which the copula is estimated.
-method : str
+method : str,
     The name of the bin number selection method. Possible choices are *AMISE*, *LogLikelihood* and *PenalizedCsiszarDivergence*. Default is *LogLikelihood*, given by the *'BernsteinCopulaFactory-BinNumberSelection'* entry of :class:`~openturns.ResourceMap`.
-m : int
+m : int,
     The number of sub-intervals in which all the edges of the unit cube
     :math:`[0, 1]^d` are regularly partitioned.
 

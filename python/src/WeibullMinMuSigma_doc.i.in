@@ -1,6 +1,9 @@
 %feature("docstring") OT::WeibullMinMuSigma
 "WeibullMin distribution parameters.
 
+Available constructors:
+    WeibullMinMuSigma(*mu=1, sigma=1, gamma=0*)
+
 Parameters
 ----------
 mu : float

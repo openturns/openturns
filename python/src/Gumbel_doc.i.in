@@ -1,6 +1,9 @@
 %feature("docstring") OT::Gumbel
 "Gumbel distribution.
 
+Available constructors:
+    Gumbel(*beta=1.0, gamma=0.0*)
+
 Parameters
 ----------
 beta : float

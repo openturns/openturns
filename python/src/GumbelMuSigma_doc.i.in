@@ -1,6 +1,9 @@
 %feature("docstring") OT::GumbelMuSigma
 "Gumbel distribution parameters.
 
+Available constructors:
+    GumbelMuSigma(*mu=0.577216, sigma=1.28255*)
+
 Parameters
 ----------
 mu : float

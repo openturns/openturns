@@ -1,6 +1,9 @@
 %feature("docstring") OT::Laplace
 "Laplace distribution.
 
+Available constructors:
+    Laplace(*mu=0.0, lambda=1.0*)
+
 Parameters
 ----------
 mu : float

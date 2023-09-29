@@ -18,21 +18,25 @@ OT_DistributionFactory_doc
 
 **Available usages**:
 
+    build()
+
     build(*sample*)
 
     build(*param*)
 
 Parameters
 ----------
-sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+sample : 2-d sequence of float,
+    Data.
+param : sequence of float,
+    The parameters of the distribution.
 
 Returns
 -------
-dist : :class:`~openturns.Distribution`
-    The built distribution."
+dist : :class:`~openturns.Distribution`,
+    The estimated distribution.
+    
+    In the first usage, the default native distribution is built."
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::build
 OT_DistributionFactory_build_doc
@@ -44,8 +48,8 @@ OT_DistributionFactory_build_doc
 
 Parameters
 ----------
-sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
+sample : 2-d sequence of float,
+    Data.
 parameters : :class:`~openturns.DistributionParameters`
     Optional, the parametrization.
 
@@ -79,7 +83,7 @@ OT_DistributionFactory_buildEstimator_doc
 
 Returns
 -------
-size : integer
+size : integer,
     Size of the bootstrap."
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::getBootstrapSize
@@ -92,8 +96,8 @@ OT_DistributionFactory_getBootstrapSize_doc
 
 Parameters
 ----------
-size : integer
-    Size of the bootstrap."
+size : integer,
+    The size of the bootstrap."
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::setBootstrapSize
 OT_DistributionFactory_setBootstrapSize_doc

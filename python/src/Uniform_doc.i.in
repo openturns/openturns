@@ -1,6 +1,9 @@
 %feature("docstring") OT::Uniform
 "Uniform distribution.
 
+Available constructors:
+    Uniform(*a=-1.0, b=1.0*)
+
 Parameters
 ----------
 a : float

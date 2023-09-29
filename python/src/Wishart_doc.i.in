@@ -1,6 +1,9 @@
 %feature("docstring") OT::Wishart
 "Wishart distribution.
 
+Available constructors:
+    Wishart(*V=[[1.0]], nu=1.0*)
+
 Parameters
 ----------
 V : 2-d sequence of float

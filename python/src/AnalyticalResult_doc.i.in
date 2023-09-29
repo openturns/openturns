@@ -197,12 +197,21 @@ limitStateVariable : :class:`~openturns.RandomVector`
 Returns
 -------
 meanPoint : :class:`~openturns.Point`
-    Mean point of the standard space distribution restricted to the event
-    domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
-    where :math:`E_1` is the spheric univariate distribution of the standard
-    space and :math:`\beta` the reliability index."
+    Mean point in the event.
 
+Notes
+-----
+The mean  point of the elliptical standard space distribution restricted to the event
+domain is defined by the vector: 
+
+.. math::
+
+    \displaystyle \frac{1}{E(-\beta)}\int_{\beta}^{\infty} \vect{u} p( \vect{u})\di{ \vect{u}}
+
+
+where :math:`E` is the univariate standard CDF of the elliptical distribution in the standard space
+and :math:`\beta` the reliability index."
+    
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::AnalyticalResult::setMeanPointInStandardEventDomain
@@ -210,12 +219,9 @@ meanPoint : :class:`~openturns.Point`
 
 Parameters
 ----------
-meanPoint : sequence of float
-    Mean point of the standard space distribution restricted to the event
-    domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
-    where :math:`E_1` is the spheric univariate distribution of the standard
-    space and :math:`\beta` the reliability index."
+meanPoint : sequence of float,
+    The mean point of the standard space distribution restricted to the event
+    domain."
 
 // ---------------------------------------------------------------------
 

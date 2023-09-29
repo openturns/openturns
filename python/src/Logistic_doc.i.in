@@ -1,6 +1,9 @@
 %feature("docstring") OT::Logistic
 "Logistic distribution.
 
+Available constructors:
+    Logistic(*mu=1.0, beta=1.0*)
+
 Parameters
 ----------
 mu : float

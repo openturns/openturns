@@ -1,6 +1,9 @@
 %feature("docstring") OT::Rayleigh
 "Rayleigh distribution.
 
+Available constructors:
+    Rayleigh(*beta=1.0, gamma=0.0*)
+
 Parameters
 ----------
 beta : float, :math:`\beta > 0`

@@ -378,35 +378,33 @@ OT_Distribution_computeDDF_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeDensityGenerator_doc
-"Compute the probability density function of the characteristic generator.
-
-PDF of the characteristic generator of the elliptical distribution.
+"Compute the density generator.
 
 Parameters
 ----------
-beta2 : float
-    Density generator input.
+y : float,
+    Input.
 
 Returns
 -------
 p : float
-    Density generator value at input :math:`X`.
+    Value :math:`\varphi(y)`.
 
 Notes
 -----
-This is the function :math:`\phi` such that the probability density function
-rewrites:
+The density generator is the function :math:`\varphi` such that the probability density function
+of the elliptical distribution rewrites:
 
 .. math::
 
     f_{\vect{X}}(\vect{x}) =
-        \phi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}
+        \varphi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}
                       \mat{\Sigma}^{-1}
                       \left(\vect{x} - \vect{\mu}\right)
             \right),
         \quad \vect{x} \in \supp{\vect{X}}
 
-This function only exists for elliptical distributions.
+The density generator only exists for elliptical distributions.
 
 See Also
 --------
@@ -414,6 +412,8 @@ isElliptical, computePDF"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeDensityGenerator
 OT_Distribution_computeDensityGenerator_doc
+
+// ---------------------------------------------------------------------
 
 // ---------------------------------------------------------------------
 
@@ -430,7 +430,7 @@ beta2 : float
 Returns
 -------
 p : float
-    Density generator first-order derivative value at input :math:`X`.
+    Value :math:`\dfrac{d\varphi}{d\,t}(y)`.
 
 Notes
 -----
@@ -458,7 +458,7 @@ beta2 : float
 Returns
 -------
 p : float
-    Density generator second-order derivative value at input :math:`X`.
+    Value :math:`\dfrac{d^2\varphi}{d\,t^2}(y)`.
 
 Notes
 -----
@@ -1891,7 +1891,23 @@ OT_Distribution_getCopula_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getCorrelation_doc
-"**(ditch me?)**"
+" Accessor to the correlation matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    The correlation matrix of the distribution.
+
+Notes
+-----
+
+.. math::
+
+   R_{ij} = \dfrac{C_{ij}}{\sigma_i\sigma_j}
+
+where the :math:`(\sigma_i)` are the margin standard deviations
+and :math:`(C_{ij})` the covariance coefficients.
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCorrelation
 OT_Distribution_getCorrelation_doc

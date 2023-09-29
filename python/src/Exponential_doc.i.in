@@ -1,6 +1,9 @@
 %feature("docstring") OT::Exponential
 "Exponential distribution.
 
+Available constructors:
+    Exponential(*lambda=1.0, gamma=0.0*)
+
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`

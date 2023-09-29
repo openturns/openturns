@@ -94,14 +94,14 @@ TruncatedDistribution"
 
 Parameters
 ----------
-sample : 2-d sequence of float
+sample : 2-d sequence of float,
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`
+bandwidth : :class:`~openturns.Point`,
     Contains the bandwidth in each direction.
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`
+fittdDist : :class:`~openturns.KernelMixture`,
     The fitted distribution.
 
 Notes
@@ -123,9 +123,9 @@ Examples
 
 Parameters
 ----------
-sample : 2-d sequence of float
+sample : 2-d sequence of float,
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`
+bandwidth : :class:`~openturns.Point`,
     Contains the bandwidth in each direction.
 
 Returns
@@ -148,23 +148,19 @@ Examples
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::buildAsTruncatedDistribution
-"Fit a kernel smoothing distribution on data.
+"Estimate the distribution as TruncatedDistribution distribution.
 
 Parameters
 ----------
-sample : 2-d sequence of float
+sample : 2-d sequence of float,
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`
+bandwidth : :class:`~openturns.Point`,
     Contains the bandwidth in each direction.
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`
-    The fitted distribution.
-
-Notes
------
-It builds a :math:`~openturns.TruncatedDistribution` using the given bandwidth and the given data regardless of the boundary treatment flags. A binning is done if asked for and if the sample size is greater than the bin number. Then, the corresponding :class:`~openturns.KernelMixture` if no binning, :class:`~openturns.Mixture` otherwise, is truncated to the range of the sample.
+fittdDist : :class:`~openturns.TruncatedDistribution`
+    The estimated distribution as a TruncatedDistribution.
 
 Examples
 --------

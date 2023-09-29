@@ -1,6 +1,9 @@
 %feature("docstring") OT::InverseNormal
 "Inverse normal distribution.
 
+Available constructors:
+    InverseNormal(*mu=1.0, lambda=1.0*)
+
 Parameters
 ----------
 mu : float, :math:`\mu > 0`

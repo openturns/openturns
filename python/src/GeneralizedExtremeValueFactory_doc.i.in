@@ -6,7 +6,13 @@ according to the BIC criterion.
 
 See also
 --------
-DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory"
+DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory
+
+Notes
+-----
+Several estimators to build a GeneralizedExtremeValueFactory distribution from a scalar sample
+are proposed. The details are given in the methods documentation.
+"
 
 // ---------------------------------------------------------------------
 
@@ -22,10 +28,10 @@ DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, Wei
 
 Parameters
 ----------
-sample : 2-d sequence of float, of dimension 1
-    Data.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+sample : 2-d sequence of float
+    The block maxima sample of dimension 1.
+param : sequence of float
+   The parameters of the :class:`~openturns.GeneralizedExtremeValue`.
 
 Returns
 -------
@@ -39,27 +45,37 @@ Then the three models are classified with respect to the BIC criterion. The best
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValueFactory
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue
 "Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsGeneralizedExtremeValue()
+
+    buildAsGeneralizedExtremeValue(*sample*)
+
+    buildAsGeneralizedExtremeValue(*param*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.GeneralizedExtremeValue`.
 
 Returns
 -------
-distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
-    The estimated distribution"
+distribution : :class:`~openturns.GeneralizedExtremeValue`
+    The estimated distribution as a GeneralizedExtremeValue.
+    
+    In the first usage, the default GeneralizedExtremeValue distribution is built."
 
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximization
 "Estimate the distribution with maximum likelihood method.
 
-The parameters are estimated thanks to a numerical optimization of the likelihood.
-
-If :math:`\xi \neq 0`, then
+The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a nested numerical optimization of the log-likelihood:
 
 .. math::
 
@@ -71,7 +87,13 @@ If :math:`\xi = 0` then
 
 .. math::
 
-    \ell (\mu, \sigma) = -m \log{\sigma} - \sum_{i=1}^m \left( \frac{z_i - \mu}{\sigma} \right) - \sum_{i=1}^m \exp \left\{ \frac{z_i - \mu}{\sigma} \right\}
+    \begin{align*}
+    \hat{\xi} & =  \argmax_{\xi} \ell_p(\xi)\\
+    (\hat{\mu}, \hat{\sigma}) & =  \argmax_{(\mu, \sigma)} \ell(\mu, \sigma, \hat{\xi})
+    \end{align*}
+
+
+The starting point of the optimization is initialized from the probability weighted moments method, see [diebolt2008]_.
 
 Parameters
 ----------
@@ -80,8 +102,9 @@ sample : :class:`~openturns.Sample`
 
 Returns
 -------
-distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
-    The estimated distribution"
+distribution : :class:`~openturns.GeneralizedExtremeValue`
+    The estimated distribution.
+"
 
 // ----------------------------------------------------------------------------
 

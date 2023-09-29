@@ -1,9 +1,11 @@
 %feature("docstring") OT::AliMikhailHaqCopulaFactory
 "AliMikhailHaq copula factory.
 
+Notes
+-----
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
-The parameter :math:`\Hat{\theta}_n` is solution of
+The parameter :math:`\Hat{\theta}_n` is solution of:
 
 .. math::
 
@@ -12,3 +14,31 @@ The parameter :math:`\Hat{\theta}_n` is solution of
 See also
 --------
 DistributionFactory, AliMikhailHaqCopula"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsAliMikhailHaqCopula()
+
+    buildAsAliMikhailHaqCopula(*sample*)
+
+    buildAsAliMikhailHaqCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float of size 1
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.AliMikhailHaqCopula`
+    The estimated copula as a AliMikhailHaq copula.
+    
+    In the first usage, the default AliMikhailHaq copula is built."

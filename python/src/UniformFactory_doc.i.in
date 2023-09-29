@@ -1,9 +1,8 @@
 %feature("docstring") OT::UniformFactory
 "Uniform factory.
 
-Available constructor:
-    UniformFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,12 @@ DistributionFactory, Uniform"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsUniform_doc
-"Build the Uniform distribution.
+%feature("docstring") OT::UniformFactory::buildAsUniform
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsUniform()
 
     buildAsUniform(*sample*)
 
@@ -32,15 +33,14 @@ DistributionFactory, Uniform"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Uniform`.
 
 Returns
 -------
 dist : :class:`~openturns.Uniform`
-    The built distribution."
-%enddef
-%feature("docstring") OT::UniformFactory::buildAsUniform
-OT_DistributionFactory_buildAsUniform_doc
+    The estimated distribution as a Uniform.
+    
+    In the first usage, the default Uniform distribution is built."
 

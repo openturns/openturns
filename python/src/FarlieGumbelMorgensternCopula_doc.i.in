@@ -30,3 +30,24 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FarlieGumbelMorgensternCopula::getTheta
+"Accessor to the :math:`theta` parameter.
+
+Returns
+-------
+theta : float
+    The :math:`\theta` parameter ."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FarlieGumbelMorgensternCopula::setTheta
+"Accessor to the :math:`theta` parameter.
+
+Parameters
+----------
+theta : float
+    The :math:`\theta` parameter, :math:`-1 \leq \theta \leq 1`."
+

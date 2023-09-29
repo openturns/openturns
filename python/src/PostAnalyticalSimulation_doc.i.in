@@ -28,3 +28,24 @@ Returns
 result : :class:`~openturns.AnalyticalResult`
     Result of the analytical study which has been performed just before the 
     simulation study centered around the importance factor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PostAnalyticalSimulation::getControlProbability
+"Accessor to the control probability.
+
+Returns
+-------
+p : float,
+    The probability of the analytical result.
+
+Notes
+-----
+The control probability :math:`p` is deduced from the corresponding analytical result:
+
+.. math::
+
+    p = E(-\beta_{HL})
+
+where the :math:`\beta_{HL}` is the Hasofer reliability index and :math:`E`
+the univariate standard CDF of the elliptical distribution in the standard space."

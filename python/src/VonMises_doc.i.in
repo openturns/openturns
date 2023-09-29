@@ -1,6 +1,9 @@
 %feature("docstring") OT::VonMises
 "von Mises distribution.
 
+Available constructors:
+    VonMises(*mu=0.0, kappa=1.0*)
+
 Parameters
 ----------
 mu : float

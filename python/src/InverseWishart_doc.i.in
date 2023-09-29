@@ -1,6 +1,9 @@
 %feature("docstring") OT::InverseWishart
 "Inverse-Wishart distribution.
 
+Available constructors:
+    Arcsine(*V=1.0, nu=1.0*)
+
 Parameters
 ----------
 V : 2-d sequence of float
