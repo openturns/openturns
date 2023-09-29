@@ -107,14 +107,14 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   // if last value or buffer full then write to dataset
   if ((index == dsetSize - 1) || ((index % BufferSize == 0) && (index > 0)))
   {
-    String dataSetName = XML::GetAttributeByName(node, "id");
+    const String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5<CPP_Type>(dataSetName);
   }
 
   // if last value then add XML node
   if (index == dsetSize - 1)
   {
-    String dataSetName = XML::GetAttributeByName(node, "id");
+    const String dataSetName = XML::GetAttributeByName(node, "id");
     const size_t idx = h5FileName_.find_last_of(Os::GetDirectorySeparator());
     const FileName h5FileNameRel = h5FileName_.substr(idx + 1);
     XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileNameRel + ":/" + dataSetName);
