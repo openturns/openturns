@@ -427,8 +427,6 @@ ot_add_python_module(optim optim_module.i
                       OptimizationAlgorithm.i OptimizationAlgorithm_doc.i.in
                       OptimizationResult.i OptimizationResult_doc.i.in
                       OptimizationAlgorithmImplementation.i OptimizationAlgorithmImplementation_doc.i.in
-                      NearestPointCheckerResult.i
-                      NearestPointChecker.i
                       AbdoRackwitz.i AbdoRackwitz_doc.i.in
                       Bonmin.i Bonmin_doc.i.in
                       Ceres.i Ceres_doc.i.in

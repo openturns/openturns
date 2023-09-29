@@ -56,8 +56,6 @@ OT::Ceres::Initialize();
 %include OptimizationResult.i
 %include OptimizationAlgorithmImplementation.i
 %include OptimizationAlgorithm.i
-%include NearestPointCheckerResult.i
-%include NearestPointChecker.i
 %include AbdoRackwitz.i
 %include Bonmin.i
 %include Ceres.i
