@@ -24,5 +24,36 @@ The sparse least squares approaches may be employed instead. Eventually a sparse
 PC representation is obtained, that is an approximation which only contains a
 small number of active basis functions.
 
-This class is not usable as is because it has sense only whithin the
-:class:`~openturns.FunctionalChaosAlgorithm`."
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> # Create the orthogonal basis
+>>> polynomialCollection = ot.PolynomialFamilyCollection(im.dim)
+>>> for i in range(im.dim):
+...    polynomialCollection[i] = ot.OrthogonalUniVariatePolynomialFamily(
+...        ot.LegendreFactory()
+...    )
+>>> enumerateFunction = ot.LinearEnumerateFunction(im.dim)
+>>> productBasis = ot.OrthogonalBasis(
+...    ot.OrthogonalProductPolynomialFactory(polynomialCollection, enumerateFunction)
+...)
+>>> # experimental design
+>>> samplingSize = 75
+>>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), im.distributionX, samplingSize)
+>>> # generate sample
+>>> x = experiment.generate()
+>>> y = im.model(x)
+>>> # iso transfo
+>>> xToU = ot.DistributionTransformation(im.distributionX, productBasis.getMeasure())
+>>> u = xToU(x)
+>>> # build basis
+>>> degree = 10
+>>> basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
+>>> basis = [productBasis.build(i) for i in range(basisSize)]
+>>> # run algorithm
+>>> factory = ot.BasisSequenceFactory(ot.LARS())
+>>> factory.setVerbose(True)
+>>> seq = factory.build(u, y, basis, list(range(basisSize)))
+"

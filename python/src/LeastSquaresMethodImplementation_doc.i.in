@@ -30,6 +30,16 @@ Solve the least-squares problem:
 .. math::
 
     \vect{a} = \argmin_{\vect{b} \in \Rset^P} ||y - \vect{b}^{\intercal} \vect{\Psi}(\vect{U})||^2
+
+Examples
+--------
+>>> import openturns as ot
+>>> A = ot.Matrix([[1, 1], [1, 2], [1, 3], [1, 4]])
+>>> y = [6, 5, 7, 10]
+>>> method = ot.LeastSquaresMethod(A)
+>>> x = method.solve(y)
+>>> print(x)
+[3.5,1.4]
 "
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation
