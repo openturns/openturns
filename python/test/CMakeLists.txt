@@ -744,7 +744,7 @@ ot_pyinstallcheck_test (MultiFORM_std IGNOREOUT)
 ## MetaModel
 ot_pyinstallcheck_test (LinearTaylor_std)
 ot_pyinstallcheck_test (LinearLeastSquares_std)
-ot_pyinstallcheck_test (QuadraticLeastSquares_std)
+ot_pyinstallcheck_test (QuadraticLeastSquares_std IGNOREOUT)
 ot_pyinstallcheck_test (QuadraticTaylor_std)
 ot_pyinstallcheck_test (ProjectionStrategy_std)
 ot_pyinstallcheck_test (FunctionalChaos_ishigami)

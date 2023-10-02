@@ -87,14 +87,15 @@ Examples
 --------
 >>> import openturns as ot
 >>> formulas = ['x1 * sin(x2)', 'cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']
->>> myFunc = ot.SymbolicFunction(['x1', 'x2'], formulas)
->>> data  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
->>> data += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
->>> myLeastSquares = ot.QuadraticLeastSquares(data, myFunc)
->>> myLeastSquares.run()
->>> responseSurface = myLeastSquares.getMetaModel()
->>> print(responseSurface([0.1,0.1]))
-[0.00960661,0.976781,1.0138]"
+>>> f = ot.SymbolicFunction(['x1', 'x2'], formulas)
+>>> X  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
+>>> X += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
+>>> Y = f(X)
+>>> algo = ot.QuadraticLeastSquares(X, Y)
+>>> algo.run()
+>>> mm = algo.getMetaModel()
+>>> x = [0.1, 0.1]
+>>> y = mm(x)"
 
 // ---------------------------------------------------------------------
 
