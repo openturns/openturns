@@ -154,6 +154,9 @@ Point SklarCopula::computeDDF(const Point & point) const
 Scalar SklarCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension " << dimension << ", here dimension=" << point.getDimension();
+
   // Early exit for the independent case
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -178,6 +181,9 @@ Scalar SklarCopula::computePDF(const Point & point) const
 Scalar SklarCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension " << dimension << ", here dimension=" << point.getDimension();
+
   // Early exit for the independent case
   if (distribution_.hasIndependentCopula()) return IndependentCopula(dimension).computeCDF(point);
   Point u(dimension);
