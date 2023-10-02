@@ -131,7 +131,7 @@ void QuadraticLeastSquares::run()
       /* Then, the off-diagonal terms */
       for(UnsignedInteger componentIndexTranspose = componentIndex + 1; componentIndexTranspose < inputDimension; ++componentIndexTranspose)
       {
-        componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex] * currentSample[componentIndexTranspose];
+        componentMatrix(sampleIndex, rowIndex) = 0.5 * currentSample[componentIndex] * currentSample[componentIndexTranspose];
         ++rowIndex;
       } // off-diagonal terms
     } // quadratic term
