@@ -269,16 +269,17 @@ for i in range(im.dim):
 # %%
 partOfVariance = chaosSI.getPartOfVariance()
 chaosResult = chaosSI.getFunctionalChaosResult()
+coefficients = chaosResult.getCoefficients()
 orthogonalBasis = chaosResult.getOrthogonalBasis()
 enumerateFunction = orthogonalBasis.getEnumerateFunction()
 indices = chaosResult.getIndices()
 basisSize = indices.getSize()
-print("Index, global index, multi-index, coefficient")
+print("Index, global index, multi-index, coefficient, part of variance")
 for i in range(basisSize):
     globalIndex = indices[i]
     multiIndex = enumerateFunction(globalIndex)
     if partOfVariance[i] > 1.0e-3:
-        print("%d, %d, %s, %.4f" % (i, globalIndex, multiIndex, partOfVariance[i]))
+        print("%d, %d, %s, %.4f, %.4f" % (i, globalIndex, multiIndex, coefficients[i], partOfVariance[i]))
 
 # %%
 view.show()
