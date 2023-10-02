@@ -66,6 +66,7 @@
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 
 /* Uncertainty/Distribution */
+%include StudentCopula.i
 %include UniformOverMesh.i
 
 // duplicate helpers
