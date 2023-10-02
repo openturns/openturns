@@ -69,16 +69,6 @@ int main(int, char *[])
     point[1] = 0.25;
     data[8] = point;
     {
-      LinearLeastSquares myLeastSquares(data, myFunc);
-      myLeastSquares.run();
-      Function responseSurface(myLeastSquares.getMetaModel());
-      fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
-      fullprint << "responseSurface=" << responseSurface << std::endl;
-      Point in(myFunc.getInputDimension(), 0.1);
-      fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
-      fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
-    }
-    {
       Sample dataOut(myFunc(data));
       LinearLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();

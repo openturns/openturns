@@ -23,6 +23,7 @@
  * Deprecated Pagmo.setGenerationNumber for setMaximumIterationNumber
  * Deprecated NLopt.SetSeed for setSeed
  * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
+ * Deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
 
 === Documentation ===
 
