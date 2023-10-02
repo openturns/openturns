@@ -44,7 +44,7 @@ public:
   /** Default constructor */
   QuadraticLeastSquares();
 
-  /** Constructor with parameters */
+  /** @deprecated Constructor with parameters */
   QuadraticLeastSquares(const Sample & dataIn,
                         const Function & inputFunction);
 
@@ -71,9 +71,6 @@ public:
   /** Quadratic accessor */
   SymmetricTensor getQuadratic() const;
 
-  /** Input function accessor */
-  Function getInputFunction() const;
-
   /** Metamodel accessor */
   Function getMetaModel() const;
 
@@ -94,7 +91,6 @@ protected:
 private:
   Sample dataIn_;
   Sample dataOut_;
-  Function inputFunction_;
   Function responseSurface_;
   Point constant_;
   Matrix linear_;

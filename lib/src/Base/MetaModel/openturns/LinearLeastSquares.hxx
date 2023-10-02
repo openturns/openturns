@@ -44,7 +44,7 @@ public:
   /** Default constructor */
   LinearLeastSquares();
 
-  /** Constructor with parameters */
+  /** @deprecated Constructor with parameters */
   LinearLeastSquares(const Sample & dataIn,
                      const Function & inputFunction);
 
@@ -68,9 +68,6 @@ public:
   /** Linear accessor */
   Matrix getLinear() const;
 
-  /** Input function accessor */
-  Function getInputFunction() const;
-
   /** Metamodel accessor */
   Function getMetaModel() const;
 
@@ -90,8 +87,7 @@ protected:
 
 private:
   Sample dataIn_;
-  mutable Sample dataOut_;
-  Function inputFunction_;
+  Sample dataOut_;
   Function responseSurface_;
   Point constant_;
   Matrix linear_;

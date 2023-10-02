@@ -1,17 +1,10 @@
 %feature("docstring") OT::QuadraticLeastSquares
 "Second order polynomial response surface by least squares.
 
-Available constructors:
-    QuadraticLeastSquares(*dataIn, function*)
-
-    QuadraticLeastSquares(*dataIn, dataOut*)
-
 Parameters
 ----------
 dataIn : 2-d sequence of float
     Input data.
-function : :class:`~openturns.Function`
-    Function :math:`h` to be approximated.
 dataOut : 2-d sequence of float
     Output data. If not specified, this sample is computed such as:
     :math:`dataOut = h(dataIn)`.
@@ -137,16 +130,6 @@ Parameters
 ----------
 dataOut : 2-d sequence of float
     Output data."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::QuadraticLeastSquares::getInputFunction
-"Get the function.
-
-Returns
--------
-function : :class:`~openturns.Function`
-    Function :math:`h` to be approximated."
 
 // ---------------------------------------------------------------------
 
