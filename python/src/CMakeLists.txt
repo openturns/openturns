@@ -735,7 +735,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       SquaredNormal.i SquaredNormal_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
-                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                       Trapezoidal.i Trapezoidal_doc.i.in
                       TrapezoidalFactory.i TrapezoidalFactory_doc.i.in
                       Triangular.i Triangular_doc.i.in
@@ -1026,6 +1025,7 @@ ot_add_python_module(experimental experimental_module.i
                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
+                     StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      UniformOverMesh.i UniformOverMesh_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in

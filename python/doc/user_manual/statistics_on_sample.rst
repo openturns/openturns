@@ -139,6 +139,10 @@ Building copulas from samples
     NormalCopulaFactory
     PlackettCopulaFactory
 
+    :template: class.rst_t
+
+    experimental.StudentCopulaFactory
+
 Sensitivity Analysis
 ====================
 

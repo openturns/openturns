@@ -160,6 +160,7 @@
 #include "openturns/SquaredNormal.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/StudentCopula.hxx"
+#include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/Trapezoidal.hxx"

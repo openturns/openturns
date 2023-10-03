@@ -1251,6 +1251,17 @@ void ResourceMap::loadDefaultConfiguration()
   // StudentFactory parameters //
   addAsScalar("StudentFactory-NuMax", 1.0e3);
 
+  // MaximumLikelihoodFactory parameters //
+  addAsScalar("StudentCopulaFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-NuMin", 2.0);
+  addAsScalar("StudentCopulaFactory-NuMax", 1e2);
+  addAsScalar("StudentCopulaFactory-NuStart", 5.0);
+  addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber", 1000);
+
   // NonCentralStudent parameters //
   addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
 

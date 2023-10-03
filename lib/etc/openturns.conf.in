@@ -626,6 +626,17 @@
   <!-- OT::StudentFactory parameters -->
   <StudentFactory-NuMax value_scalar="1.0e3" />
 
+  <!-- OT::MaximumLikelihoodFactory parameters -->
+  <StudentCopulaFactory-MaximumAbsoluteError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumConstraintError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumObjectiveError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumRelativeError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-NuMin value_scalar="2.0" />
+  <StudentCopulaFactory-NuMax value_scalar="1e2" />
+  <StudentCopulaFactory-NuStart value_scalar="5.0" />
+  <StudentCopulaFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
+  <StudentCopulaFactory-MaximumEvaluationNumber value_int="1000" />
+  
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value_int="0" />
   
