@@ -340,7 +340,7 @@ Interval MethodOfMomentsFactory::getOptimizationBounds() const
 void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+  if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Indices and values size must match";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;

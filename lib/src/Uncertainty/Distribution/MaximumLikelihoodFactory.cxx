@@ -400,7 +400,8 @@ OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationAlgorithm() const
 void MaximumLikelihoodFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
+  if (values.getSize() != indices.getSize())
+    throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }

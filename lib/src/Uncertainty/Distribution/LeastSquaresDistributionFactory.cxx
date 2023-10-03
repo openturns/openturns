@@ -385,7 +385,7 @@ OptimizationAlgorithm LeastSquaresDistributionFactory::getOptimizationAlgorithm(
 void LeastSquaresDistributionFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+  if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
   if (!indices.check(distribution_.getParameter().getSize()))
     throw InvalidArgumentException(HERE) << "Know parameters indices must be < parameter dimension";
