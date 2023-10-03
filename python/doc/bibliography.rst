@@ -291,6 +291,9 @@ Bibliography
 .. [pelamatti2020] Pelamatti, J., Brevault, L., Balesdent, M., Talbi, E. G., & Guerin, Y. (2020).
     *Overview and comparison of gaussian process-based surrogate models for mixed continuous and discrete variables: Application on aerospace design problems.*
     High-Performance Simulation-Based Optimization, 189-224.
+.. [peng2014] L. Peng, R. Wang, *Interval Estimation for Bivariate t-Copulas via Kendall's Tau*
+    Casualty Actuarial Society, Volume 8/Issue 1, 2014.
+    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014PW(Variance).pdf>`__
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.

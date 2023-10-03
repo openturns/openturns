@@ -80,13 +80,18 @@ Point StudentCopula::getParameter() const
 
 void StudentCopula::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 1 + (getDimension() * (getDimension() - 1)) / 2)
-    throw InvalidArgumentException(HERE) << "Invalid number of parameters";
-  Point fullParameter(1 + 2 * getDimension() + (getDimension() * (getDimension() - 1)) / 2);
-  fullParameter[0] = parameter[0];
-  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
-    fullParameter[1 + 2 * i + 1] = 1.0; // sigma
-  std::copy(parameter.begin() + 1, parameter.end(), fullParameter.begin() + 1 + 2 * getDimension());
+  // N = 1 + ((d-1)*d)/2
+  const UnsignedInteger size = parameter.getSize();
+  Scalar dimReal = 0.5 + 0.5 * std::sqrt(8.0 * size - 7.0);
+  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for StudentCopula";
+  const UnsignedInteger dimension = dimReal;
+
+  // full parameters of the Student include mu, sigma vectors, N = 1 + 2*d + ((d-1)*d)/2
+  Point fullParameter(1 + 2 * dimension + (dimension * (dimension - 1)) / 2);
+  fullParameter[0] = parameter[0]; // nu
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    fullParameter[1 + 2 * i + 1] = 1.0; // sigma=1 (mu=0)
+  std::copy(parameter.begin() + 1, parameter.end(), fullParameter.begin() + 1 + 2 * dimension); // R
   SklarCopula::setParameter(fullParameter);
 }
 

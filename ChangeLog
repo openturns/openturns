@@ -9,6 +9,7 @@
 ==== New classes ====
  * LatentVariableModel (openturns.experimental)
  * StudentCopula (openturns.experimental)
+ * StudentCopulaFactory (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method

@@ -38,7 +38,6 @@
 %include SquaredNormal.i
 %include Student.i
 %include StudentFactory.i
-%include StudentCopulaFactory.i
 %include Trapezoidal.i
 %include TrapezoidalFactory.i
 %include Triangular.i

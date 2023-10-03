@@ -67,6 +67,7 @@
 
 /* Uncertainty/Distribution */
 %include StudentCopula.i
+%include StudentCopulaFactory.i
 %include UniformOverMesh.i
 
 // duplicate helpers
