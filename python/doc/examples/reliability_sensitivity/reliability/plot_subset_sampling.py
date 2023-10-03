@@ -82,7 +82,7 @@ algo = ot.SubsetSampling(myEvent)
 # In order to get all the inputs and outputs that realize the event, you have to mention it now:
 
 # %%
-algo.setKeepEventSample(True)
+algo.setKeepSample(True)
 
 # %%
 # Now you can run the algorithm!
@@ -232,11 +232,13 @@ _ = View(graph)
 # %%
 # Get all the input and output points that realized the event
 # -----------------------------------------------------------
-# The following lines are possible only if you have mentioned that you wanted to keep the points that realize the event with the method *algo.setKeepEventSample(True)*
+# The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
 
 # %%
-inputEventSample = algo.getEventInputSample()
-outputEventSample = algo.getEventOutputSample()
+select = ot.SubsetSampling.EVENT1  # points that realize the event
+step = Ns - 1  # get the working sample from last iteration
+inputEventSample = algo.getInputSample(step, select)
+outputEventSample = algo.getOutputSample(step, select)
 print("Number of event realizations = ", inputEventSample.getSize())
 
 # %%
@@ -247,7 +249,7 @@ graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 cloud = ot.Cloud(inputEventSample)
-cloud.setPointStyle("dot")
+cloud.setPointStyle("bullet")
 graph.add(cloud)
 gIsoLines = g.draw([-3] * 2, [5] * 2, [1000] * 2)
 dr = gIsoLines.getDrawable(0)
@@ -255,3 +257,5 @@ dr.setLevels([0.0])
 dr.setColor("red")
 graph.add(dr)
 _ = View(graph)
+
+View.ShowAll()

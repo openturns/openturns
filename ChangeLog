@@ -24,6 +24,7 @@
  * Deprecated NLopt.SetSeed for setSeed
  * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
  * Deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
+ * Deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
 
 === Documentation ===
 
@@ -32,6 +33,7 @@
 === Miscellaneous ===
  * Added IterativeThresholdExceedance::getRatio
  * Added FunctionalChaosResult::drawSelectionHistory to plot LARS coefs paths
+ * New API in SubsetSampling to get samples at each iteration
 
 
 == 1.21 release (2023-06-20) == #release-1.21
