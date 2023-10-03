@@ -101,33 +101,55 @@ prob : float
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::setKeepEventSample
+%feature("docstring") OT::SubsetSampling::setKeepSample
 "Sample storage accessor.
 
 Parameters
 ----------
-keepEventsample : bool
-    Whether to keep the samples that realized the event."
+keepsample : bool
+    Whether to keep the working samples at each iteration."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getEventInputSample
+%feature("docstring") OT::SubsetSampling::getInputSample
 "Input sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
 
 Returns
 -------
 inputSample : :class:`~openturns.Sample`
-    Input sample that realized the event."
+    Input sample."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getEventOutputSample
+%feature("docstring") OT::SubsetSampling::getOutputSample
 "Output sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
 
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-    Output sample that realized the event."
+    Output sample."
 
 // ---------------------------------------------------------------------------
 

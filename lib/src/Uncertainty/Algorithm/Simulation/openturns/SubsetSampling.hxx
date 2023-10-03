@@ -56,7 +56,7 @@ public:
   Scalar getMinimumProbability() const;
 
   /** Accessor to the achieved number of steps */
-  UnsignedInteger getStepsNumber();
+  UnsignedInteger getStepsNumber() const;
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
@@ -64,12 +64,20 @@ public:
   Point getCoefficientOfVariationPerStep() const;
   Point getProbabilityEstimatePerStep() const;
 
-  /** Keep event sample */
+  /** @deprecated Keep event sample */
   void setKeepEventSample(bool keepEventSample);
 
-  /** Event input/output sample accessor */
+  /** @deprecated Event input/output sample accessor */
   Sample getEventInputSample() const;
   Sample getEventOutputSample() const;
+
+  /** Keep event sample */
+  void setKeepSample(const Bool keepSample);
+
+  /** Input/output sample accessor according to select flag */
+  enum SelectSample {EVENT0, EVENT1, BOTH};
+  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** i-subset */
   void setISubset(Bool iSubset);
@@ -106,29 +114,34 @@ private:
   /** Generate new points in the conditional failure domain */
   void generatePoints(Scalar threshold);
 
+  /** Select sample indices according to status */
+  Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
+
   // some parameters
-  Scalar proposalRange_;// width of the proposal pdf
-  Scalar conditionalProbability_;// target probability at each subset
-  Bool iSubset_;// conditional pre-sampling
-  Scalar betaMin_;// pre-sampling hypersphere exclusion radius
-  Bool keepEventSample_;// do we keep the event sample ?
-  Scalar minimumProbability_;// limit on the smallest probability
+  Scalar proposalRange_ = 0.0;// width of the proposal pdf
+  Scalar conditionalProbability_ = 0.0;// target probability at each subset
+  Bool iSubset_ = false;// conditional pre-sampling
+  Scalar betaMin_ = 0.0;// pre-sampling hypersphere exclusion radius
+  Scalar minimumProbability_ = 0.0;// limit on the smallest probability
 
   // some results
-  UnsignedInteger numberOfSteps_;// number of subset steps
+  UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds
   Point gammaPerStep_;// intermediate gammas
   Point coefficientOfVariationPerStep_;// intermediate COVS
   Point probabilityEstimatePerStep_;// intermediate PFs
-  Sample eventInputSample_;// event input sample
-  Sample eventOutputSample_;// event output sample
 
   // attributes used for conveniency, not to be saved/loaded
   StandardEvent standardEvent_;// the algorithm happens in U
   UnsignedInteger dimension_;// input dimension
   Sample currentPointSample_;// X
   Sample currentLevelSample_;//f(X)
-  UnsignedInteger seedNumber_;// number of seed points
+  UnsignedInteger seedNumber_ = 0;// number of seed points
+
+  // keep samples generated at each step
+  Bool keepSample_ = false;
+  PersistentCollection<Sample> inputSample_;
+  PersistentCollection<Sample> outputSample_;
 
 } ; /* class SubsetSampling */
 

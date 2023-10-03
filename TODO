@@ -2,3 +2,4 @@ Remove Pagmo.setGenerationNumber
 Remove NLopt.SetSeed
 Remove IterativeThresholdExceedance(dimension, threshold) ctor
 Remove Linear|QuadraticLeastSquares(Sample, Function) constructor
+Remove SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample

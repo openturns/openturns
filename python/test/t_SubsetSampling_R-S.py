@@ -50,7 +50,7 @@ myMC.run()
 mySS = ot.SubsetSampling(myEvent)
 mySS.setMaximumOuterSampling(10000 // bs)
 mySS.setBlockSize(bs)
-mySS.setKeepEventSample(True)
+mySS.setKeepSample(True)
 mySS.run()
 
 #
@@ -105,8 +105,9 @@ print("Limit state calls =", N_SS)
 
 
 # check that the event sample is right
-inputEventSample = mySS.getEventInputSample()
-outputEventSample = mySS.getEventOutputSample()
+stepsNumber = mySS.getStepsNumber()
+inputEventSample = mySS.getInputSample(stepsNumber - 1, mySS.EVENT1)
+outputEventSample = mySS.getOutputSample(stepsNumber - 1, mySS.EVENT1)
 outputG = limitState(inputEventSample)
 diffSample = outputG - outputEventSample
 ott.assert_almost_equal(diffSample.computeMean(), [0.0])
