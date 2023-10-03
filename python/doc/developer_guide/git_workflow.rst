@@ -32,7 +32,8 @@ Here are the steps required to propose a modification with git:
     git checkout -b branch_name master
 
 
-5. Commit your changes, split your work in as much commits as needed to ease reviewing::
+5. Commit your changes, split your work in several commits if needed to ease reviewing.
+   You want to avoid including several unrelated tasks into a single commit.::
 
     git add <files> # Add current state of files to commit
     git commit
@@ -42,8 +43,16 @@ Here are the steps required to propose a modification with git:
 
 To write a nice commit message, keep a short commit title (less than 50 characters),
 leave a blank line, then add a more detailed description.
+It can be useful to prefix the title with the class or area in the library
+concerned by the commit.
 If the commit fixes an issue, add `Closes #NNN` to the message body that
 way it will be closed automatically on merge.
+For example::
+
+    QuadraticLeastSquares: Fix quadratic term
+
+    Closes #2412
+
 Also update the ChangeLog file accordingly.
 
 6. Push the new branch to your personal repository::
@@ -81,10 +90,9 @@ before starting new developments.
     git fetch upstream
 
 
-3. Merge upstream master branch to your local personal master branch::
+3. Create a new branch from the main repository master branch::
 
-    git checkout master
-    git merge upstream/master
+    git checkout -b new_branch_name upstream/master
 
 
 You may also want to synchronize your current topic branch with the main repository:
