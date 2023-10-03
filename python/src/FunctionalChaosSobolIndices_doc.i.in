@@ -49,7 +49,7 @@ If a multi-indice has a part of variance which is lower than some
 threshold, it is not printed.
 This threshold can be customized using the
 `FunctionalChaosSobolIndices-VariancePartThreshold` key of the
-`~openturns.ResourceMap`.
+:class:`~openturns.ResourceMap`.
 
 Examples
 --------
