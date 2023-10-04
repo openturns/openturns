@@ -66,6 +66,9 @@ public:
   /** Algorithm associated with the method of modified moments */
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const Sample & sample) const;
 
+  /** Mean residual life plot */
+  Graph drawMeanResidualLife(const Sample & sample) const;
+
 private:
 
   /** Optimization solver */

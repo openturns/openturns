@@ -23,6 +23,8 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -270,11 +272,54 @@ void GeneralizedParetoFactory::setOptimizationAlgorithm(const OptimizationAlgori
   solver_ = solver;
 }
 
-
 OptimizationAlgorithm GeneralizedParetoFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
+Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) const
+{
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Can only draw mean residual life from a sample of dimension 1, here dimension=" << sample.getDimension();
+
+  const Scalar uMin = sample.getMin()[0];
+  const Scalar uMax = sample.getMax()[0] - 1.0;
+  const UnsignedInteger pointsNumber = ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber");
+  Sample u(pointsNumber, 1);
+  Sample mrl(pointsNumber, 1);
+  Sample ciLow(pointsNumber, 1);
+  Sample ciUp(pointsNumber, 1);
+  const Scalar level = ResourceMap::GetAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel");
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+  const Sample sortedSample(sample.sort(0));
+  for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
+  {
+    u(i, 0) = uMin + i * (uMax - uMin) / (pointsNumber - 1);
+
+    // rebuild the sample Xi|Xi>u (no sorting)
+    Sample xu(0, 1);
+    for (UnsignedInteger j = 0; j < sample.getSize(); ++ j)
+      if (sample(j, 0) > u(i, 0))
+        xu.add(sample[j]);
+
+    const UnsignedInteger n = xu.getSize();
+    mrl(i, 0) = xu.computeMean()[0] - u(i, 0);
+    const Scalar variance = xu.computeCovariance()(0, 0);
+    const Scalar ciLength2 = xq * std::sqrt(variance / n);
+    ciLow(i, 0) = mrl(i, 0) - ciLength2;
+    ciUp(i, 0) = mrl(i, 0) + ciLength2;
+  }
+  Curve curveMrl(u, mrl, "mrl");
+  curveMrl.setColor("red");
+  Curve curveCILow(u, ciLow, "CI low");
+  curveCILow.setLineStyle("dashed");
+  Curve curveCIUp(u, ciUp, "CI up");
+  curveCIUp.setLineStyle("dashed");
+  Graph result("Mean residual life plot", "Threshold", "Mean excess", true, "topleft");
+  result.add(curveMrl);
+  result.add(curveCILow);
+  result.add(curveCIUp);
+  return result;
+}
 
 END_NAMESPACE_OPENTURNS
