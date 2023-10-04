@@ -232,3 +232,46 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::drawMeanResidualLife
+"Draw the mean residual life plot.
+
+Let :math:`X` a random variable defined so the excess of a threshold :math:`u_s`
+follow a Generalized Pareto distribution :math:`GPD(\xi, \sigma_s)`.
+The mean of excesses of :math:`X` for :math:`u>u_s` is
+
+.. math::
+
+    M_n(u) = \Expect{X-u|X>u} = \frac{\sigma_s+\xi_u}{1-\xi}
+
+So for all :math:`u>u_s` M_n(u) is linear wrt. :math:`u`.
+The threshold :math:`u_s` is the smallest value of :math:`u` for which the curve is linear.
+
+The quantity :math:`M_n(u)` is estimater par the empirical estimator of the mean:
+
+.. math::
+
+    m_n(u) = \frac{1}{n} \sum_{i=1}^n (X_i - u) 1_{X_i \ge u} = \frac{1}{n} \sum_{i=1}^n X_i 1_{X_i \ge u} - u
+
+The quantity :math:`M_n(u)` is asymptotically Gaussian with mean :math:`m_n(u)`
+and variance :math:`m_n(u) (1 - m_n(u))/n`
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of :math:`m_n(u)` and its confidence interval.
+    
+Notes
+-----
+The confidence level can be set using the :class:`~openturns.ResourceMap` key
+`GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel`
+The number of threshold points in the graph can be set with the key
+`GeneralizedParetoFactory-MeanResidualLifePointNumber`.
+"
