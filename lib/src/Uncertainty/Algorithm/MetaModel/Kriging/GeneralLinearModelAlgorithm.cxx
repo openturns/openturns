@@ -353,21 +353,22 @@ void GeneralLinearModelAlgorithm::run()
   Collection<Function> marginalCollections(basis_.getSize());
   Collection<Function> marginalFunctions(outputDimension);
   Point beta_k(basis_.getSize());
-  for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
-  {
-    for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
-    {
-      marginalCollections[k] = basis_[k].getMarginal(outputMarginal);
-      beta_k[k] = beta_[k * outputDimension + outputMarginal];
-    }
-    LinearCombinationFunction marginalFunction(marginalCollections, beta_k);
-    marginalFunctions[outputMarginal] = marginalFunction;
-  }
 
   Function metaModel;
 
   if (basis_.getSize() > 0)
   {
+    for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+    {
+      for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
+      {
+        marginalCollections[k] = basis_[k].getMarginal(outputMarginal);
+        beta_k[k] = beta_[k * outputDimension + outputMarginal];
+      }
+      LinearCombinationFunction marginalFunction(marginalCollections, beta_k);
+      marginalFunctions[outputMarginal] = marginalFunction;
+    }
+
     // Care ! collection should be non empty
     metaModel = AggregatedFunction(marginalFunctions);
   }
