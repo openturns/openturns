@@ -11,10 +11,9 @@ Use Markdown to format results
 # Then we show how this can be used within a uncertainty quantification
 # study.
 #
-from IPython.display import Markdown
+from IPython.display import Markdown, HTML
 import openturns as ot
 from openturns.usecases import stressed_beam
-from IPython.display import display, HTML
 
 # %%
 # Use the Markdown function
@@ -41,7 +40,7 @@ print(markdown)
 
 # %%
 # Pretty-print
-display(Markdown(markdown))
+Markdown(markdown)
 
 # %%
 # Format a reliability study
@@ -134,7 +133,7 @@ print(markdown)
 
 # %%
 # Pretty-print
-display(Markdown(markdown))
+Markdown(markdown)
 
 # %%
 # HTML
