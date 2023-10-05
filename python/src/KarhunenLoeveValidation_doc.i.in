@@ -34,7 +34,7 @@ Examples
 "Plot a model vs metamodel graph for visual validation.
 
 For each marginal of the fields in the sample, we draw the value of the observed field depending on
-the value of the Karhunen-Loève reduced field (built from the real field thanks to the projection and lift functions) at each
+the value of the Karhunen-Loève reduced field (built from the observed field thanks to the projection and lift functions) at each
 node of the mesh. One graph is drawn for each marginal of the field.
 
 Returns
