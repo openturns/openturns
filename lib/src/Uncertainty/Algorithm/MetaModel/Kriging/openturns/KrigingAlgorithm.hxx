@@ -51,7 +51,7 @@ public:
   KrigingAlgorithm (const Sample & inputSample,
                     const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
-                    const Basis & basis);
+                    const Basis & basis = Basis());
 
   /** Virtual constructor */
   KrigingAlgorithm * clone() const override;
