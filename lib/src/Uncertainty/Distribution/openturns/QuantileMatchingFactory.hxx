@@ -39,9 +39,9 @@ public:
   QuantileMatchingFactory();
 
   /** Parameters constructor */
-  explicit QuantileMatchingFactory(const Distribution & distribution,
-                                   const Point & probabilities = Point(),
-                                   const Interval & optimizationBounds = Interval());
+  QuantileMatchingFactory(const Distribution & distribution,
+                          const Point & probabilities,
+                          const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
   QuantileMatchingFactory * clone() const override;

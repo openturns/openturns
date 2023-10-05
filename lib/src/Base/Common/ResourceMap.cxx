@@ -1242,7 +1242,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
-  addAsScalar("QuantileMatchingFactory-QuantileEpsilon", 1.0e-2);
   addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
 
   // Student parameters //

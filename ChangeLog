@@ -25,6 +25,7 @@
  * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
  * Deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
  * Deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
+ * QuantileMatchingFactory probabilities argument is no longer optional
 
 === Documentation ===
 
