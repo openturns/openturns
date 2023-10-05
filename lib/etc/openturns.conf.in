@@ -617,7 +617,6 @@
   <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <QuantileMatchingFactory-QuantileEpsilon         value_float="1.0e-2"        />
   <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
 
   <!-- OT::Student parameters -->

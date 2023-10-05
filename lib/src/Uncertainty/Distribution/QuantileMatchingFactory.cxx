@@ -54,21 +54,7 @@ QuantileMatchingFactory::QuantileMatchingFactory(const Distribution & distributi
   , probabilities_(probabilities)
   , optimizationBounds_(optimizationBounds)
 {
-  // default values for fractiles
-  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-  if (!probabilities.getSize() && effectiveParameterSize)
-  {
-    const Scalar epsilon = ResourceMap::GetAsScalar("QuantileMatchingFactory-QuantileEpsilon");
-    if (!(epsilon > 0.0)) throw InternalException(HERE) << "Error: the value of epsilon must be non negative.";
-    if (!(epsilon <= 0.5)) throw InternalException(HERE) << "Error: the value of epsilon must be lower or equal to 0.5.";
-    probabilities_.resize(effectiveParameterSize);
-    for (UnsignedInteger i = 0; i < effectiveParameterSize; ++ i)
-    {
-      const Scalar rho = i * 1.0 / (effectiveParameterSize - 1.0);
-      probabilities_[i] = (1 - rho) * epsilon + rho * (1 - epsilon);
-    }
-  }
-
+  setProbabilities(probabilities);
   LeastSquaresProblem problem(SymbolicFunction("x", "x^2"));
   if (optimizationBounds.getDimension())
     problem.setBounds(Interval(1));
@@ -120,8 +106,8 @@ public:
     , knownParameterIndices_(knownParameterIndices)
   {
     // build the unknown indices
-    const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
-    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+    const UnsignedInteger parameterDimension = distribution.getParameter().getSize();
+    for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
     {
       if (!knownParameterIndices_.contains(j))
         unknownParameterIndices_.add(j);
@@ -135,12 +121,12 @@ public:
 
   UnsignedInteger getInputDimension() const
   {
-    return distribution_.getParameterDimension() - knownParameterValues_.getSize();
+    return probabilities_.getSize();
   }
 
   UnsignedInteger getOutputDimension() const
   {
-    return distribution_.getParameterDimension();
+    return getInputDimension();
   }
 
   Description getInputDescription() const
@@ -162,7 +148,7 @@ public:
 
   Point operator() (const Point & parameter) const
   {
-    UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+    const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
     Point effectiveParameter(parameterDimension);
     // set unknown values
     const UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
@@ -184,9 +170,10 @@ public:
     }
 
     // compute deltas between quantiles
-    Point result(parameterDimension);
-    for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
-      result[j] = refQuantiles_[j] - distribution.computeQuantile(probabilities_[j])[0];
+    const UnsignedInteger estimatedParameterSize = probabilities_.getSize();
+    Point result(estimatedParameterSize);
+    for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
+      result[j] = refQuantiles_[j] - distribution.computeScalarQuantile(probabilities_[j]);
     return result;
   }
 
@@ -225,15 +212,10 @@ Distribution QuantileMatchingFactory::build(const Sample & sample) const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
+  const UnsignedInteger estimatedParameterSize = probabilities_.getSize();
 
-  if (!knownParameterIndices_.check(effectiveParameterSize))
-    throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
-    throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
-
-  Point refQuantiles(effectiveParameterSize);
-  for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+  Point refQuantiles(estimatedParameterSize);
+  for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
     refQuantiles[j] = sample.computeQuantile(probabilities_[j])[0];
 
   Distribution result(buildFromQuantiles(refQuantiles));
@@ -244,9 +226,21 @@ Distribution QuantileMatchingFactory::build(const Sample & sample) const
 /** Build a distribution from its moments */
 Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles) const
 {
-  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-  if (quantiles.getSize() < effectiveParameterSize)
-    throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " quantiles to build distribution";
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (quantiles.getSize() + knownParameterValues_.getSize() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Expected " << parameterDimension - knownParameterValues_.getSize()
+                                         << " quantiles to estimate the distribution";
+
+  if (!quantiles.isIncreasing())
+    throw InvalidArgumentException(HERE) << "Provided quantiles are not increasing";
+
+  if (probabilities_.getSize() + knownParameterValues_.getSize() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "The total of known parameters size (" << parameterDimension << ") "
+      << "and probability levels size (" << probabilities_.getSize() << ") match the model parameter dimension ("
+      << parameterDimension << ")";
+
+  if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != probabilities_.getSize()))
+    throw InvalidArgumentException(HERE) << "The bounds dimension must match the probabilities size (" << probabilities_.getSize() << ")";
 
   // Define evaluation
   const QuantileMatchingEvaluation quantileMatchingWrapper(quantiles, distribution_, probabilities_, knownParameterValues_, knownParameterIndices_);
@@ -256,28 +250,47 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
   LeastSquaresProblem problem(quantilesObjective);
   problem.setBounds(optimizationBounds_);
   OptimizationAlgorithm solver(solver_);
-  if (solver.getStartingPoint().getDimension() != quantilesObjective.getInputDimension())
-  {
-    Point effectiveParameter(distribution_.getParameter());
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << quantilesObjective.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
-    // extract unknown values
-    Point parameter;
-    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
-    {
-      if (!knownParameterIndices_.contains(j))
-        parameter.add(effectiveParameter[j]);
-    }
-    solver.setStartingPoint(parameter);
+  // define starting point
+  Point effectiveParameter(distribution_.getParameter());
+  Point parameter;
+  for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
+  {
+    if (!knownParameterIndices_.contains(j))
+      parameter.add(effectiveParameter[j]);
   }
+
+  // clip starting point
+  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(parameter))
+  {
+    const Point lb(optimizationBounds_.getLowerBound());
+    const Point ub(optimizationBounds_.getUpperBound());
+    const Interval::BoolCollection finiteLowerBound(optimizationBounds_.getFiniteLowerBound());
+    const Interval::BoolCollection finiteUpperBound(optimizationBounds_.getFiniteUpperBound());
+    for (UnsignedInteger j = 0; j < parameter.getDimension(); ++ j)
+    {
+      if (finiteLowerBound[j])
+        parameter[j] = std::max(parameter[j], lb[j]);
+      if (finiteUpperBound[j])
+        parameter[j] = std::min(parameter[j], ub[j]);
+    }
+  }
+
+  solver.setStartingPoint(parameter);
+
   solver.setProblem(problem);
   solver.setVerbose(Log::HasInfo());
   solver.run();
-  Point effectiveParameter(effectiveParameterSize);
+
+  const OptimizationResult result(solver.getResult());
+  const Scalar residual = result.getOptimalValue()[0];
+  if (!(residual <= solver.getMaximumConstraintError()))
+    throw InternalException(HERE) << "Quantile residual too high (" << residual << "), should be lower than " << solver.getMaximumConstraintError();
+
   // set unknown values
-  Point parameter(solver.getResult().getOptimalPoint());
+  parameter = result.getOptimalPoint();
   UnsignedInteger index = 0;
-  for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+  for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
   {
     if (!knownParameterIndices_.contains(j))
     {
@@ -285,14 +298,15 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
       ++ index;
     }
   }
+
   // set known values
   const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
 
-  Distribution result(distribution_);
-  result.setParameter(effectiveParameter);
-  return result;
+  Distribution distribution(distribution_);
+  distribution.setParameter(effectiveParameter);
+  return distribution;
 }
 
 void QuantileMatchingFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
@@ -319,8 +333,11 @@ Interval QuantileMatchingFactory::getOptimizationBounds() const
 void QuantileMatchingFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+  if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Indices and values size must match";
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (!indices.check(parameterDimension))
+    throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }
@@ -337,9 +354,14 @@ Point QuantileMatchingFactory::getKnownParameterValues() const
 
 void QuantileMatchingFactory::setProbabilities(const Point & probabilities)
 {
-  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-  if (probabilities_.getSize() != effectiveParameterSize)
-    throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " probabilities";
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (probabilities.getSize() > parameterDimension)
+    throw InvalidArgumentException(HERE) << "At most " << parameterDimension << " probability levels must be provided, but " << probabilities.getSize() << " were provided";
+  if (!probabilities.isIncreasing())
+    throw InvalidArgumentException(HERE) << "Provided probabilities are not increasing";
+  for (UnsignedInteger i = 0; i < probabilities.getSize(); ++ i)
+    if (!(probabilities[i] >= 0.0) || !(probabilities[i] <= 1.0))
+      throw InvalidArgumentException(HERE) << "Probability levels must be in [0, 1], but probabilities[" << i <<"] = " << probabilities[i];
   probabilities_ = probabilities;
 }
 

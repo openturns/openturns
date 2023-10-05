@@ -8,17 +8,10 @@ Parameters
 distribution : :class:`~openturns.Distribution`
     The distribution defining the parametric model to be adjusted to data.
     Its parameters define the starting point of the algorithm.
-probabilities : sequence of float, optional
+probabilities : increasing sequence of float in [0, 1]
     The probabilities :math:`p_i \in [0,1]` corresponding to the quantiles.
-    The default value of the list of probabilities defined as follows.
-    We define the interval :math:`[\epsilon, 1 - \epsilon]` where the value of
-    :math:`\epsilon` is defined by the `QuantileMatchingFactory-QuantileEpsilon` key of the
-    :class:`~openturns.ResourceMap`.
-    A regular grid :math:`\{p_i\}_{i = 1, ..., K}` of probabilities is defined in the interval
-    :math:`[\epsilon, 1 - \epsilon]`,
-    where :math:`K` is the number of parameters of the distribution.
-    The grid is defined by the equation :math:`p_i = (1 - \rho_i) \epsilon + \rho_i (1 - \epsilon)`
-    where :math:`\rho_i = \frac{i - 1}{K - 1}` for :math:`i = 1, \dots, K`.
+    At most :math:`K` values can be given.
+    It is possible to provide less than :math:`K` values if :meth:`setKnownParameter` is used
 bounds : :class:`~openturns.Interval`, optional
     Parameter bounds. The default bounds is an empty interval, which implies that the optimization problem is unbounded.
 
@@ -64,16 +57,35 @@ Here, both quantiles are estimated from a given sample.
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> sample = ot.Normal(0.9, 1.7).getSample(100)
+>>> sample = ot.Normal(0.9, 1.7).getSample(10)
+>>> factory = ot.QuantileMatchingFactory(ot.Normal(), [0.01, 0.99])
+>>> inf_distribution = factory.build(sample)
+>>> print(inf_distribution)
+Normal(mu = 0.267484, sigma = 1.32218)
+>>> print(factory.getProbabilities())
+[0.01,0.99]
+
+We see that the default value of the :math:`\epsilon` parameter is so that we consider the 1% and 99% percentile ranks.
+
+Use 5% and 95% percentile ranks:
+
 >>> probabilities = [0.05, 0.95]
 >>> factory = ot.QuantileMatchingFactory(ot.Normal(), probabilities)
 >>> inf_distribution = factory.build(sample)
 
 We can also make the optimization problem easier by specifying bounds to the parameters:
 
->>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
->>> factory = ot.QuantileMatchingFactory(ot.Normal())
->>> factory.setOptimizationBounds(bounds)
+>>> bounds = ot.Interval([-0.1, 0.0], [1.0, 2.0])
+>>> factory = ot.QuantileMatchingFactory(ot.Normal(), probabilities, bounds)
+>>> inf_distribution = factory.build(sample)
+
+An example with 4 parameters:
+
+>>> # A distribution with 4 parameters
+>>> distribution = ot.Beta(2.0, 3.0, 4.0, 5.0)
+>>> sample = distribution.getSample(10)
+>>> distribution = ot.Beta()
+>>> factory = ot.QuantileMatchingFactory(distribution, [0.01, 1/3, 2/3, 0.99])
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
@@ -121,6 +133,12 @@ bounds : :class:`~openturns.Interval`
 %feature("docstring") OT::QuantileMatchingFactory::setKnownParameter
 "Accessor to the known parameters.
 
+Notes
+-----
+Using this method may cause the class to ignore some values of the given probabilities (or the default ones)
+as the underlying least squares problem is solved in dimension :math:`K` minus
+the number of known parameters.
+
 Parameters
 ----------
 values : sequence of float
@@ -134,8 +152,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 >>> sample = distribution.getSample(10)
->>> probabilities = [0.05, 0.25, 0.75, 0.95]
->>> factory = ot.QuantileMatchingFactory(ot.Beta(), probabilities)
+>>> factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
 >>> # set (a,b) out of (r, t, a, b)
 >>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
 >>> inf_distribution = factory.build(sample)"
@@ -167,7 +184,7 @@ indices : :class:`~openturns.Indices`
 
 Parameters
 ----------
-quantiles : sequence of float
+quantiles : increasing sequence of float
     The quantiles of the distribution, matching the probabilities provided to the constructor.
 
 Returns
