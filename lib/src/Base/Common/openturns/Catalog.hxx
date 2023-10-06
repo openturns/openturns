@@ -89,13 +89,14 @@ private:
   friend struct Catalog_init; /* friendship for static member initialization */
 }; /* end class Catalog */
 
+#ifndef SWIG
 /** This class initializes all static members of Catalog */
 struct OT_API Catalog_init
 {
   Catalog_init();
   ~Catalog_init();
 }; /* end struct Catalog_init */
-
+#endif
 
 
 END_NAMESPACE_OPENTURNS

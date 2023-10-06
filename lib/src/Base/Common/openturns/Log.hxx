@@ -229,14 +229,14 @@ private:
 }; /* end class Log */
 
 
-
+#ifndef SWIG
 /** This struct initializes all static members of Log */
 struct OT_API Log_init
 {
   Log_init();
   ~Log_init();
 }; /* end struct Log_init */
-
+#endif
 
 END_NAMESPACE_OPENTURNS
 
