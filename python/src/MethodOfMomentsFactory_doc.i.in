@@ -5,6 +5,8 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     The distribution defining the parametric model to be adjusted to data.
+momentsOrder : sequence of int
+    The orders of moments to estimate (1 for mean, 2 for variance, etc)
 bounds : :class:`~openturns.Interval`, optional
     Parameter bounds
 
@@ -40,13 +42,14 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
->>> factory = ot.MethodOfMomentsFactory(ot.Normal())
+>>> orders = [1, 2]  # mean, variance
+>>> factory = ot.MethodOfMomentsFactory(ot.Normal(), orders)
 >>> inf_distribution = factory.build(sample)
 
 With parameter bounds:
 
 >>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
->>> factory = ot.MethodOfMomentsFactory(ot.Normal(), bounds)
+>>> factory = ot.MethodOfMomentsFactory(ot.Normal(), orders, bounds)
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
@@ -107,7 +110,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 >>> sample = distribution.getSample(10)
->>> factory = ot.MethodOfMomentsFactory(ot.Beta())
+>>> orders = [3, 4]  # skewness, kurtosis
+>>> factory = ot.MethodOfMomentsFactory(ot.Beta(), orders)
 >>> # set (a,b) out of (r, t, a, b)
 >>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
 >>> inf_distribution = factory.build(sample)"
@@ -157,8 +161,27 @@ Examples
 --------
 >>> import openturns as ot
 >>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
->>> factory = ot.MethodOfMomentsFactory(ot.Beta())
+>>> factory = ot.MethodOfMomentsFactory(ot.Beta(), [1, 2, 3, 4])
 >>> cm = [distribution.getCentralMoment(i + 2)[0] for i in range(3)]
 >>> moments = [distribution.getMean()[0]] + cm
 >>> inf_distribution = factory.buildFromMoments(moments)"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::setMomentOrders
+"Accessor to the moment orders.
+
+Parameters
+----------
+momentsOrder : sequence of int
+    The orders of moments to estimate (1 for mean, 2 for variance, etc)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::getMomentOrders
+"Accessor to the moment orders.
+
+Returns
+-------
+momentsOrder : sequence of int
+    The orders of moments to estimate (1 for mean, 2 for variance, etc)"

@@ -75,15 +75,12 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
   // Create a method of moments
-  MethodOfMomentsFactory factory(buildAsTruncatedNormal());
+  const Indices momentOrders = {1, 2}; // mean, variance
+  MethodOfMomentsFactory factory(buildAsTruncatedNormal(), momentOrders);
 
   // Set the bounds as known parameters
-  Point knownParameterValues(2);
-  knownParameterValues[0] = a;
-  knownParameterValues[1] = b;
-  Indices knownParameterIndices(2);
-  knownParameterIndices[0] = 2;
-  knownParameterIndices[1] = 3;
+  const Point knownParameterValues = {a, b};
+  const Indices knownParameterIndices = {2, 3};
   factory.setKnownParameter(knownParameterValues, knownParameterIndices);
 
   // Compute the mean and std and set it as initial values
