@@ -24,8 +24,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /** Class DlibGradient to ensure interface between OT::Gradient and dlib functions **/
 
-DlibGradient::DlibGradient(const Gradient & gradient)
+DlibGradient::DlibGradient(const Gradient & gradient, const Bool minimization)
   : Gradient(gradient)
+  , minimization_(minimization)
 {
   // Nothing to do
 }
@@ -50,7 +51,7 @@ DlibMatrix DlibGradient::operator() (const DlibMatrix & inP) const
   DlibMatrix gradientAsDlibMatrix(inputDimension, 1);
   std::copy(gradientAsCollection.begin(), gradientAsCollection.end(), gradientAsDlibMatrix.begin());
 
-  return gradientAsDlibMatrix;
+  return minimization_ ? gradientAsDlibMatrix : -gradientAsDlibMatrix;
 }
 
 // Operator () for use with DlibFunction
@@ -77,7 +78,7 @@ DlibMatrix DlibGradient::operator() (const UnsignedInteger i,
             &(gradientAsOTMatrix(0, i)) + gradientInputDimension,
             gradientAsDlibMatrix.begin());
 
-  return gradientAsDlibMatrix;
+  return minimization_ ? gradientAsDlibMatrix : -gradientAsDlibMatrix;
 }
 
 /**  Class DlibHessian to ensure interface between OT::Hessian and dlib functions  **/
@@ -116,10 +117,11 @@ DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
 
 CLASSNAMEINIT(DlibFunction)
 
-DlibFunction::DlibFunction(const Function & function)
+DlibFunction::DlibFunction(const Function & function, const Bool minimization)
   : Function(function)
-  , inputHistory_( Sample(0, getInputDimension()) )
-  , outputHistory_( Sample(0, getOutputDimension()) )
+  , inputHistory_(0, getInputDimension())
+  , outputHistory_(0, getOutputDimension())
+  , minimization_(minimization)
 {
   // Nothing to do
 }
@@ -145,7 +147,7 @@ double DlibFunction::operator() (const DlibMatrix & inP) const
   outputHistory_.add(outPoint);
 
   // Return scalar value
-  return outPoint[0];
+  return minimization_ ? outPoint[0] : -outPoint[0];
 }
 
 double DlibFunction::operator() (const UnsignedInteger i,
@@ -175,32 +177,30 @@ double DlibFunction::operator() (const UnsignedInteger i,
   }
 
   // Return scalar value
-  return outPoint[i];
+  return minimization_ ? outPoint[i] : -outPoint[i];
 }
 
 /* Accessors to gradient */
-// As a DlibGradient
-DlibGradient DlibFunction::getGradient() const
+DlibGradient DlibFunction::asDlibGradient() const
 {
-  return DlibGradient(getImplementation()->getGradient());
+  return DlibGradient(getImplementation()->getGradient(), minimization_);
 }
 
 // Compute at point
 DlibMatrix DlibFunction::gradient(const DlibMatrix & inP) const
 {
-  return getGradient()(inP);
+  return asDlibGradient()(inP);
 }
 
 // Compute at point
 DlibMatrix DlibFunction::gradient(const UnsignedInteger i,
                                   const DlibMatrix & inP) const
 {
-  return getGradient()(i, inP);
+  return asDlibGradient()(i, inP);
 }
 
 /* Accessor to hessian */
-// As a DlibHessian
-DlibHessian DlibFunction::getHessian() const
+DlibHessian DlibFunction::asDlibHessian() const
 {
   return DlibHessian(getImplementation()->getHessian());
 }
@@ -208,7 +208,7 @@ DlibHessian DlibFunction::getHessian() const
 // Compute at point
 DlibMatrix DlibFunction::hessian(const DlibMatrix & inP) const
 {
-  return getHessian()(inP);
+  return asDlibHessian()(inP);
 }
 
 void DlibFunction::get_derivative_and_hessian(const column_vector x,

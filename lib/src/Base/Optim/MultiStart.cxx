@@ -94,12 +94,11 @@ void MultiStart::run()
   // run the solver with each starting point
   OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
-  Scalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
   const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   UnsignedInteger evaluationNumber = 0;
   UnsignedInteger successNumber = 0;
-  UnsignedInteger improvementNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingSample_[i]);
@@ -112,7 +111,7 @@ void MultiStart::run()
     try
     {
       solver.run();
-      ++successNumber;
+      ++ successNumber;
     }
     catch (const Exception & ex)
     {
@@ -122,15 +121,10 @@ void MultiStart::run()
 
     const OptimizationResult result(solver.getResult());
     if (keepResults_) resultCollection_.add(result);
-    Scalar currentValue = result.getOptimalValue()[0];
-    if ((getProblem().isMinimization() && (currentValue < bestValue))
-        || (!getProblem().isMinimization() && (currentValue > bestValue)))
-    {
-      bestValue = currentValue;
-      setResult(result);
-      LOGINFO(OSS() << "Best initial point so far=" << result.getOptimalPoint() << " value=" << result.getOptimalValue());
-      ++improvementNumber;
-    }
+
+    result_.store(result.getOptimalPoint(), result.getOptimalValue(),
+                  result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
+                  solver.getMaximumConstraintError());
 
     evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
     LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
@@ -154,12 +148,10 @@ void MultiStart::run()
       }
     }
   }
-  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded, " << improvementNumber << " improvements");
-
   if (!(successNumber > 0))
-  {
     throw InternalException(HERE) << "None of the local searches succeeded.";
-  }
+  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
+  result_.setEvaluationNumber(evaluationNumber);
 }
 
 

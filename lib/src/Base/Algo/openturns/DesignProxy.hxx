@@ -65,7 +65,7 @@ public:
   FunctionCollection getBasis(const Indices & indices) const;
 
   /** Compute the design matrix with the provided basis terms indices */
-  MatrixImplementation computeDesign(const Indices & indices) const;
+  Matrix computeDesign(const Indices & indices) const;
 
   /** Row filter accessor */
   void setRowFilter(const Indices & rowFilter);

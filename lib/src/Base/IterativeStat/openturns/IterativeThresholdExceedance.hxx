@@ -23,6 +23,8 @@
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/Greater.hxx"
+#include "openturns/ComparisonOperator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,9 +34,13 @@ class OT_API IterativeThresholdExceedance
   CLASSNAME
 
 public:
+  /** @deprecated */
+  IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar threshold);
 
   /** Constructor */
-  explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1, const Scalar thresholdValue = 0.0);
+  explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1,
+                               const ComparisonOperator & op = Greater(),
+                               const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   IterativeThresholdExceedance * clone() const override;
@@ -54,7 +60,8 @@ public:
   inline
   Bool operator ==(const IterativeThresholdExceedance & other) const
   {
-    return (dimension_ == other.dimension_) && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
+    return (dimension_ == other.dimension_) && (operator_ == other.operator_)
+    && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
   }
 
   /**
@@ -81,6 +88,9 @@ public:
   /** Accessor to the value exceeding the threshold value */
   Point getThresholdExceedance() const;
 
+  /** Accessor to the ratio */
+  Point getRatio() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -88,6 +98,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  ComparisonOperator operator_;
   Scalar thresholdValue_;
   Point data_;
 };

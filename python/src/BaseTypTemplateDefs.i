@@ -1,10 +1,10 @@
 // SWIG file BaseTypTemplateDefs.i
 
-%template(SampleImplementationPointer) OT::Pointer<OT::SampleImplementation>;
-%template(MatrixImplementationPointer) OT::Pointer<OT::MatrixImplementation>;
-%template(PointPointer) OT::Pointer<OT::Point>;
-%template(TensorImplementationPointer) OT::Pointer<OT::TensorImplementation>;
-%template(ComplexMatrixImplementationPointer) OT::Pointer<OT::ComplexMatrixImplementation>;
+%template(_SampleImplementationPointer) OT::Pointer<OT::SampleImplementation>;
+%template(_MatrixImplementationPointer) OT::Pointer<OT::MatrixImplementation>;
+%template(_PointPointer) OT::Pointer<OT::Point>;
+%template(_TensorImplementationPointer) OT::Pointer<OT::TensorImplementation>;
+%template(_ComplexMatrixImplementationPointer) OT::Pointer<OT::ComplexMatrixImplementation>;
 
 %template(HermitianMatrixCollection) OT::Collection<OT::HermitianMatrix>;
-%template(ComplexTensorImplementationPointer) OT::Pointer<OT::ComplexTensorImplementation>;
+%template(_ComplexTensorImplementationPointer) OT::Pointer<OT::ComplexTensorImplementation>;

@@ -43,7 +43,7 @@ class DlibGradient
 {
 public:
   // Constructor
-  explicit DlibGradient(const Gradient & gradient);
+  explicit DlibGradient(const Gradient & gradient, const Bool minimization = true);
 
   // Operator () for use with DlibFunction
   DlibMatrix operator() (const DlibMatrix & inP) const;
@@ -51,7 +51,8 @@ public:
   // Operator () for use with residual DlibFunction
   DlibMatrix operator() (const UnsignedInteger i,
                          const DlibMatrix & inP) const;
-
+private:
+  Bool minimization_ = true;
 } ;
 
 /**  Class DlibHessian to ensure interface between OT::Hessian and dlib functions  **/
@@ -64,6 +65,7 @@ public:
 
   // Operator ()
   DlibMatrix operator() (const DlibMatrix & inP) const;
+
 } ;
 
 /** Class DlibFunction to ensure interface between OT::Function and dlib functions **/
@@ -78,7 +80,7 @@ class DlibFunction
 
 public:
   // Constructor
-  explicit DlibFunction(const Function & function);
+  DlibFunction(const Function & function, const Bool minimization = true);
 
   // Operator ()
   double operator() (const DlibMatrix & inP) const;
@@ -89,7 +91,7 @@ public:
 
   /* Accessors to gradient */
   // As a DlibGradient
-  DlibGradient getGradient() const;
+  DlibGradient asDlibGradient() const;
 
   // Compute at point
   DlibMatrix gradient(const DlibMatrix & inP) const;
@@ -99,7 +101,7 @@ public:
 
   /* Accessor to hessian */
   // As a DlibHessian
-  DlibHessian getHessian() const;
+  DlibHessian asDlibHessian() const;
 
   // Compute at point
   DlibMatrix hessian(const DlibMatrix & inP) const;
@@ -117,6 +119,8 @@ public:
 protected:
   mutable Sample inputHistory_;
   mutable Sample outputHistory_;
+private:
+  Bool minimization_ = true;
 } ;
 
 END_NAMESPACE_OPENTURNS

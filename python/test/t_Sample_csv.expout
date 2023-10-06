@@ -8,6 +8,8 @@ aSample= class=Sample name=a good coma separated sample implementation=class=Sam
 -1.0000000000000001e-01;3.2000000000000002e+00;5.0999999999999996e+00;7.5000000000000000e+00
 
 import with quotes: class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
+import with spaces: class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=1 dimension=10 description=[nos,sbef,saft,sbeaf,mid,qnos,qsbef,qsaft,qsbeaf,mid mid] data=[[1,2,3,4,5,6,7,8,9,10]]
+import with spaces semicolon: class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=1 dimension=10 description=[nos,sbef,saft,sbeaf,mid mid,qnos,qsbef,qsaft,qsbeaf,mid mid] data=[[1,2,3,4,5,6,7,8,9,10]]
 aSample= class=Sample name=a good sample with spaces implementation=class=SampleImplementation name=a good sample with spaces size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
 aSample with bad entries (see log)= class=Sample name=a sample with bad entries implementation=class=SampleImplementation name=a sample with bad entries size=2 dimension=4 description=[data_0,data_1,data_2,data_3] data=[[-1.2,2.3,3.4,-4.5],[0.9,9.8,8.4,5.4]]
 aSample with bad entries (see log)= class=Sample name=a sample with bad entries implementation=class=SampleImplementation name=a sample with bad entries size=2 dimension=4 description=[data_0,data_1,data_2,data_3] data=[[-1.2,2.3,3.4,-4.5],[0.9,9.8,8.4,5.4]]

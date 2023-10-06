@@ -70,7 +70,7 @@ typedef enum
  * use cobyla_rc_string[rc - COBYLA_MINRC] to get the message associated with
  * return code rc.
  */
-extern char *cobyla_rc_string[6];
+extern const char *cobyla_rc_string[6];
 
 /*
  * A function as required by cobyla

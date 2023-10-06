@@ -140,6 +140,9 @@
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />
 
+  <!-- OT::NLopt parameters -->
+  <NLopt-InitialSeed value_int="0" />
+
   <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value_float="0.0"           />
   <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value_float="1.0e-5"        />
@@ -150,6 +153,7 @@
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
 
   <!-- OT::Pagmo parameters -->
+  <Pagmo-InitialSeed value_int="0" />
   <Pagmo-UnconstrainMethod value_str="death penalty" />
   <Pagmo-memory value_bool="false" />
   <!-- gaco -->

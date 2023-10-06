@@ -51,7 +51,7 @@
 /*
  * Return code strings
  */
-char *cobyla_rc_string[6] =
+const char *cobyla_rc_string[6] =
   {
     "N<0 or M<0",
     "Memory allocation failed",

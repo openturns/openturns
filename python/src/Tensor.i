@@ -6,7 +6,7 @@
 
 %include Tensor_doc.i
 
-%template(TensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::TensorImplementation>;
+%template(_TensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::TensorImplementation>;
 %apply const ScalarCollection & { const OT::Tensor::ScalarCollection & };
 
 %rename(__baseaddress__) OT::Tensor::data;

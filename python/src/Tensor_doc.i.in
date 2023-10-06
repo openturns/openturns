@@ -1,18 +1,221 @@
-// Tensor docstrings are defined in TensorImplementation_doc.i.in
+%define OT_Tensor_doc
+"Tensor.
 
+Available constructors:
+    Tensor(*n_rows, n_columns, n_sheets*)
+
+    Tensor(*n_rows, n_columns, n_sheets, values*)
+
+    Tensor(*sequence*)
+
+Parameters
+----------
+n_rows : int, :math:`n_r > 0`
+    Number of rows.
+n_columns : int, :math:`n_c > 0`
+    Number of columns.
+n_sheets : int, :math:`n_s > 0`
+    Number of sheets.
+values : sequence of float with size :math:`n_r \times n_c \times n_s`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    If not mentioned, a zero tensor is created.
+sequence : sequence of float
+    Values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Tensor(2, 2, 2, [1]))
+sheet #0
+[[ 1 0 ]
+ [ 0 0 ]]
+sheet #1
+[[ 0 0 ]
+ [ 0 0 ]]
+>>> T = ot.Tensor(2, 2, 3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  0  2 ]
+ [  1  3 ]]
+sheet #1
+[[  4  6 ]
+ [  5  7 ]]
+sheet #2
+[[  8 10 ]
+ [  9 11 ]]
+
+Get or set terms:
+
+>>> print(T[0, 0, 0])
+0.0
+>>> T[0, 0, 0] = 1.
+>>> print(T[0, 0, 0])
+1.0
+
+Create an openturns tensor from a sequence:
+
+>>> T = ot.Tensor([[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], [[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]]])
+>>> print(T)
+sheet #0
+[[  1  4 ]
+ [  7 10 ]]
+sheet #1
+[[  2  5 ]
+ [  8 11 ]]
+sheet #2
+[[  3  6 ]
+ [  9 12 ]]"
+%enddef
 %feature("docstring") OT::Tensor
 OT_Tensor_doc
-%feature("docstring") OT::Tensor::getNbColumns
-OT_Tensor_getNbColumns_doc
-%feature("docstring") OT::Tensor::getNbRows
-OT_Tensor_getNbRows_doc
-%feature("docstring") OT::Tensor::getNbSheets
-OT_Tensor_getNbSheets_doc
-%feature("docstring") OT::Tensor::getSheet
-OT_Tensor_getSheet_doc
-%feature("docstring") OT::Tensor::setSheet
-OT_Tensor_setSheet_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_clean_doc
+"Set elements smaller than a threshold to zero.
+
+Parameters
+----------
+threshold : float
+    Threshold for zeroing elements.
+
+Returns
+-------
+cleaned_tensor : :class:`~openturns.Tensor`
+    Input tensor with elements smaller than the threshold set to zero."
+%enddef
 %feature("docstring") OT::Tensor::clean
 OT_Tensor_clean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_getNbColumns_doc
+"Accessor to the number of columns.
+
+Returns
+-------
+n_columns : int"
+%enddef
+%feature("docstring") OT::Tensor::getNbColumns
+OT_Tensor_getNbColumns_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_getNbRows_doc
+"Accessor to the number of rows.
+
+Returns
+-------
+n_rows : int"
+%enddef
+%feature("docstring") OT::Tensor::getNbRows
+OT_Tensor_getNbRows_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_getNbSheets_doc
+"Accessor to the number of sheets.
+
+Returns
+-------
+n_sheets : int
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.Tensor(2, 2, 3, range(2*2*3))
+>>> print(T.getNbSheets())
+3"
+%enddef
+%feature("docstring") OT::Tensor::getNbSheets
+OT_Tensor_getNbSheets_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_getSheet_doc
+"Get a sheet of the tensor.
+
+Parameters
+----------
+sheet : int
+    Index of sheet element.
+
+Returns
+-------
+M : :class:`~openturns.Matrix`
+    The sheet element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.Tensor(2, 2, 3, range(2*2*3))
+>>> print(T.getSheet(1))
+[[ 4 6 ]
+ [ 5 7 ]]"
+%enddef
+%feature("docstring") OT::Tensor::getSheet
+OT_Tensor_getSheet_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_setSheet_doc
+"Set a matrix as a sheet of the complex tensor.
+
+Parameters
+----------
+sheet : int
+    Index of sheet element.
+
+M : :class:`~openturns.Matrix`
+    The matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.Tensor(2, 2, 3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  0  2 ]
+ [  1  3 ]]
+sheet #1
+[[  4  6 ]
+ [  5  7 ]]
+sheet #2
+[[  8 10 ]
+ [  9 11 ]]
+>>> M = ot.Matrix([[1, 2],[3, 4]])
+>>> T.setSheet(0, M)
+>>> print(T)
+sheet #0
+[[  1  2 ]
+ [  3  4 ]]
+sheet #1
+[[  4  6 ]
+ [  5  7 ]]
+sheet #2
+[[  8 10 ]
+ [  9 11 ]]"
+%enddef
+%feature("docstring") OT::Tensor::setSheet
+OT_Tensor_setSheet_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Tensor_isEmpty_doc
+"Tell if the tensor is empty.
+
+Returns
+-------
+is_empty : bool
+    *True* if the tensor contains no element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.Tensor()
+>>> T.isEmpty()
+True"
+%enddef
 %feature("docstring") OT::Tensor::isEmpty
 OT_Tensor_isEmpty_doc

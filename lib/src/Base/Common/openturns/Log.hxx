@@ -183,10 +183,10 @@ public:
 #ifndef SWIG
   struct OT_API Entry
   {
-    Severity sev_;
+    Severity sev_ = Log::NONE;
     String msg_;
     Entry(Severity sev, String msg) : sev_(sev), msg_(msg) {}
-    Entry() : sev_(0), msg_() {}
+    Entry() {}
     Bool operator== (const Entry & other) const
     {
       return (this->sev_ == other.sev_) && (this->msg_ == other.msg_);
@@ -218,11 +218,11 @@ private:
   void initSeverityFromEnvironment();
 
   /** The file where to write messages */
-  std::ostream * p_file_;
+  std::ostream * p_file_ = nullptr;
 
   /** Remember the previous message */
   mutable Entry previousMessage_;
-  mutable UnsignedInteger count_;
+  mutable UnsignedInteger count_ = 0;
   mutable AtomicInt repeat_;
 
   friend struct Log_init; /* friendship for static member initialization */

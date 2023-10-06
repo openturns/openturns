@@ -180,7 +180,7 @@ void SparseMethod::trashDecomposition()
 {
 }
 
-MatrixImplementation SparseMethod::computeWeightedDesign(const Bool whole) const
+Matrix SparseMethod::computeWeightedDesign(const Bool whole) const
 {
   return method_.getImplementation()->computeWeightedDesign(whole);
 }

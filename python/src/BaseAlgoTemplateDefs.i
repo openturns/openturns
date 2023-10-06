@@ -1,4 +1,4 @@
 // SWIG file BaseAlgoTemplateDefs.i
 
-%template(ApproximationAlgorithmImplementationPointer) OT::Pointer<OT::ApproximationAlgorithmImplementation>;
-%template(FFTImplementationPointer) OT::Pointer<OT::FFTImplementation>;
+%template(_ApproximationAlgorithmImplementationPointer) OT::Pointer<OT::ApproximationAlgorithmImplementation>;
+%template(_FFTImplementationPointer) OT::Pointer<OT::FFTImplementation>;

@@ -765,6 +765,9 @@ void ResourceMap::loadDefaultConfiguration()
   // MultiStart parameters //
   addAsBool("MultiStart-KeepResults", true);
 
+  // NLopt parameters
+  addAsUnsignedInteger("NLopt-InitialSeed", 0);
+
   // OptimizationAlgorithm parameters //
   addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);
@@ -775,6 +778,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
   // Pagmo parameters //
+  addAsUnsignedInteger("Pagmo-InitialSeed", 0);
   addAsString("Pagmo-UnconstrainMethod", "death penalty");
   addAsBool("Pagmo-memory", false);
   // gaco
