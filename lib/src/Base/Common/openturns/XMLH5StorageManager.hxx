@@ -66,9 +66,6 @@ public:
   XMLH5StorageManager * clone() const override;
 
 #ifndef SWIG
-  void checkStorageManager() override;
-  void setStorageManager() override;
-
   void initialize(const SaveAction caller) override;
 
   void initialize(const LoadAction caller) override;
@@ -82,6 +79,9 @@ public:
 #endif /* SWIG */
 
 private:
+  void checkStorageManager() override;
+  void setStorageManager() override;
+  
   Pointer<XMLH5StorageManagerImplementation> p_implementation_;
 
 }; /* class H5StorageManager */

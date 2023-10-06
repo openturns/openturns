@@ -112,12 +112,6 @@ public:
    */
   void read() override;
 
-  /** Set/Check which storage manager is being used
-   * @internal
-   */
-  virtual void setStorageManager();
-  virtual void checkStorageManager();
-
   /** Write the internal representation
    * @internal
    */
@@ -209,6 +203,11 @@ public:
 
 
 protected:
+  /** Set/Check which storage manager is being used
+   * @internal
+   */
+  virtual void setStorageManager();
+  virtual void checkStorageManager();
 
   /** Query the manager if the version is correct */
   Bool canManageVersion(UnsignedInteger version) const override;
