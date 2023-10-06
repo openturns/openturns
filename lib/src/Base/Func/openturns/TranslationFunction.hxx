@@ -44,7 +44,7 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  explicit TranslationFunction(const Point & constant);
+  explicit TranslationFunction(const Point & constant = Point(1));
 
 
   /** Comparison operator */
