@@ -155,16 +155,16 @@ String ProjectionStrategyImplementation::__str__(const String &) const
 String ProjectionStrategyImplementation::__repr_markdown__() const
 {
   OSS oss(false);
-  oss << GetClassName() << Os::GetEndOfLine()
-      << "- coefficients: " << alpha_k_p_.getDimension() << Os::GetEndOfLine()
-      << "- residual: " << residual_p_ << Os::GetEndOfLine()
-      << "- relative error: " << relativeError_p_ << Os::GetEndOfLine()
-      << "- measure: " << measure_.getClassName() << Os::GetEndOfLine()
-      << "- weighted experiment: " << weightedExperiment_.getClassName() << Os::GetEndOfLine()
-      << "- input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << Os::GetEndOfLine()
-      << "- output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << Os::GetEndOfLine()
-      << "- weights: dimension= " << weights_.getDimension() << Os::GetEndOfLine()
-      << "- design: size= " << proxy_.getSampleSize() << Os::GetEndOfLine();
+  oss << GetClassName() << "\n"
+      << "- coefficients: " << alpha_k_p_.getDimension() << "\n"
+      << "- residual: " << residual_p_ << "\n"
+      << "- relative error: " << relativeError_p_ << "\n"
+      << "- measure: " << measure_.getClassName() << "\n"
+      << "- weighted experiment: " << weightedExperiment_.getClassName() << "\n"
+      << "- input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << "\n"
+      << "- output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << "\n"
+      << "- weights: dimension= " << weights_.getDimension() << "\n"
+      << "- design: size= " << proxy_.getSampleSize() << "\n";
   return oss;
 }
 
