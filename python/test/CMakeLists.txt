@@ -894,6 +894,7 @@ if (NOT SWIG_VERSION VERSION_LESS 4)
   ot_pyinstallcheck_test (None IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (docstring_missing IGNOREOUT)
+ot_pyinstallcheck_test (sphinx_missing IGNOREOUT)
 
 
 
