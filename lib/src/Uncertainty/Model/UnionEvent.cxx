@@ -136,7 +136,7 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
       // ThresholdEvent
       if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId)
         throw NotYetImplementedException(HERE) << "Root cause not found";
-      //composedEvent_ = composedEvent_.join(collection[i]);
+      composedEvent_ = composedEvent_.join(collection[i]);
     }
   }
   eventCollection_ = collection;
@@ -165,11 +165,11 @@ Point UnionEvent::getFixedValue(const Point & fixedValue) const
   return realization;
 }
 
-/* Sample accessor */
-Sample UnionEvent::getSample(const UnsignedInteger size) const
-{
-  return composedEvent_.getSample(size);
-}
+// /* Sample accessor */
+// Sample UnionEvent::getSample(const UnsignedInteger size) const
+// {
+//   return composedEvent_.getSample(size);
+// }
 
 Bool UnionEvent::isEvent() const
 {
