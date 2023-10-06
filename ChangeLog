@@ -26,6 +26,7 @@
  * Deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
  * Deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
  * QuantileMatchingFactory probabilities argument is no longer optional
+ * Add a new moment order argument to MethodOfMomentsFactory
 
 === Documentation ===
 
