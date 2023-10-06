@@ -52,7 +52,7 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVecto
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
 
 
-  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
 /* Virtual constructor */
@@ -93,7 +93,7 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 
 
 // Reset auxiliary distribution parameters
-void CrossEntropyImportanceSampling::resetAuxiliaryDistribution() 
+void CrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::resetAuxiliaryDistribution()";
 }
@@ -104,7 +104,7 @@ void CrossEntropyImportanceSampling::run()
 
   // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
   resetAuxiliaryDistribution();
-  
+
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
@@ -117,7 +117,7 @@ void CrossEntropyImportanceSampling::run()
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
   Point auxiliaryDistributionParameters;
-  
+
   const ComparisonOperator comparator(getEvent().getOperator());
   const Scalar threshold = getEvent().getThreshold();
 

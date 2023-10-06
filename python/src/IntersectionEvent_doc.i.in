@@ -80,9 +80,30 @@ events : :class:`~openturns.RandomVectorCollection`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IntersectionEvent::getComposedEvent
-"Accessor to the composed event.
+"Accessor to the composed event, if it has been built.
 
 Returns
 -------
 composed : :class:`~openturns.RandomVector`
-    Composed event."
+    Composed event.
+
+See also
+--------
+buildComposedEvent"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::buildComposedEvent
+"If the event can be described as a composed event,
+this method builds it and returns True.
+Otherwise returns False.
+If True, then the method :meth:`getComposedEvent` can be called.
+
+Returns
+-------
+hasComposedEvent : bool
+    Whether this event has been built as a composed event.
+
+See also
+--------
+getComposedEvent"

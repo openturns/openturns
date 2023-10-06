@@ -95,6 +95,7 @@ public:
   void load(Advocate & adv) override;
 
   RandomVector getComposedEvent() const;
+  Bool buildComposedEvent();
 
 private:
 
@@ -104,6 +105,7 @@ private:
   /** The antecedent is defined here as the root cause */
   RandomVector antecedent_;
 
+  Bool hasComposedEvent_ = false;
   RandomVector composedEvent_;
 
 }; /* class UnionEvent */

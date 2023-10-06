@@ -51,7 +51,7 @@ DirectionalSampling::DirectionalSampling(const RandomVector & event)
   : EventSimulation(event)
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
-  standardEvent_ = StandardEvent(event);
+  standardEvent_ = StandardEvent(getEvent());
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   samplingStrategy_ = SamplingStrategy(inputDistribution_.getDimension());
@@ -65,7 +65,7 @@ DirectionalSampling::DirectionalSampling(const RandomVector & event,
   , rootStrategy_(rootStrategy)
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
-  standardEvent_ = StandardEvent(event);
+  standardEvent_ = StandardEvent(getEvent());
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   setSamplingStrategy(samplingStrategy);

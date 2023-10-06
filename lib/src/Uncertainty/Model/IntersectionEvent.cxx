@@ -76,72 +76,88 @@ void IntersectionEvent::setEventCollection(const RandomVectorCollection & collec
   const UnsignedInteger size = collection.getSize();
   if (!size) throw InvalidArgumentException(HERE) << "Empty collection";
 
-  // Explore the deepest leftmost node of the tree which is not Intersection/Union to get the root cause
-  // Also we initialize composedEvent_ if Intersection/Union use getComposedEvent from top node else take the ThresholdEvent
-  if (!collection[0].isEvent())
-    throw InvalidArgumentException(HERE) << "Element 0 is not an event";
-  UnsignedInteger depth = 0;
-  RandomVector current = collection[0];
-  String implementationName = current.getImplementation()->getClassName();
-  while ((implementationName == "IntersectionEvent") || (implementationName == "UnionEvent"))
-  {
-    Collection<RandomVector> children;
-    if (implementationName == "IntersectionEvent")
-    {
-      IntersectionEvent *intersectionEvent = static_cast<IntersectionEvent*>(current.getImplementation().get());
-      if (depth == 0)
-        composedEvent_ = intersectionEvent->getComposedEvent();
-      children = intersectionEvent->getEventCollection();
-    }
-    else if (implementationName == "UnionEvent")
-    {
-      UnionEvent *unionEvent = static_cast<UnionEvent*>(current.getImplementation().get());
-      if (depth == 0)
-        composedEvent_ = unionEvent->getComposedEvent();
-      children = unionEvent->getEventCollection();
-    }
-    current = children[0];
-    ++ depth;
-    implementationName = current.getImplementation()->getClassName();
-  }
-  // store root cause
-  antecedent_ = current.getAntecedent();
-  const UnsignedInteger rootCauseId = antecedent_.getImplementation()->getId();
-  if (depth == 0) // no IntersectionEvent/Union was found, take the first node
-    composedEvent_ = collection[0];
-
-  // Explore the tree, check root cause, compose top-nodes
-  for (UnsignedInteger i = 1; i < size; ++ i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     if (!collection[i].isEvent())
       throw InvalidArgumentException(HERE) << "Element " << i << " is not an event";
-    if (collection[i].getImplementation()->getClassName() == "IntersectionEvent")
+  }
+
+  antecedent_ = collection[0].getAntecedent();
+  const UnsignedInteger rootCauseId = antecedent_.getImplementation()->getId();
+
+  // Explore the tree, check root cause
+  for (UnsignedInteger i = 1; i < size; ++ i)
+  {
+    if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId)
+      throw NotYetImplementedException(HERE) << "Root cause not found";
+  }
+  eventCollection_ = collection;
+  setDescription(collection[0].getDescription());
+}
+
+Bool IntersectionEvent::buildComposedEvent()
+{
+  // Short way out if we know composedEvent_ has already been set.
+  if (hasComposedEvent_) return true;
+
+  const UnsignedInteger size = eventCollection_.getSize();
+  if (!size) throw InvalidArgumentException(HERE) << "Empty eventCollection_, please call setEventCollection first.";
+
+  RandomVector composedEvent;
+
+  // Initialize composedEvent with the first event in eventCollection_
+  if (eventCollection_[0].getImplementation()->getClassName() == "IntersectionEvent")
+  {
+    // IntersectionEvent
+    IntersectionEvent *intersectionEvent = static_cast<IntersectionEvent*>(eventCollection_[0].getImplementation().get());
+    const Bool hasComposedEvent = intersectionEvent->buildComposedEvent();
+    if (!hasComposedEvent) return false;
+    composedEvent = intersectionEvent->getComposedEvent();
+  }
+  else if (eventCollection_[0].getImplementation()->getClassName() == "UnionEvent")
+  {
+    // UnionEvent
+    UnionEvent *unionEvent = static_cast<UnionEvent*>(eventCollection_[0].getImplementation().get());
+    const Bool hasComposedEvent = unionEvent->buildComposedEvent();
+    if (!hasComposedEvent) return false;
+    composedEvent = unionEvent->getComposedEvent();
+  }
+  else
+  {
+    // ThresholdEvent
+    composedEvent = eventCollection_[0];
+  }
+
+  // Further build composedEvent by composing with the other events in the eventCollection_
+  for (UnsignedInteger i = 1; i < size; ++ i)
+  {
+    if (eventCollection_[i].getImplementation()->getClassName() == "IntersectionEvent")
     {
       // IntersectionEvent
-      IntersectionEvent* intersectionEvent = static_cast<IntersectionEvent*>(collection[i].getImplementation().get());
-      if (intersectionEvent->getAntecedent().getImplementation()->getId() != rootCauseId)
-        throw InvalidArgumentException(HERE) << "Different root cause";
-      composedEvent_ = composedEvent_.intersect(intersectionEvent->getComposedEvent());
+      IntersectionEvent* intersectionEvent = static_cast<IntersectionEvent*>(eventCollection_[i].getImplementation().get());
+      const Bool hasComposedEvent = intersectionEvent->buildComposedEvent();
+      if (!hasComposedEvent) return false;
+      composedEvent = composedEvent.intersect(intersectionEvent->getComposedEvent());
     }
-    else if (collection[i].getImplementation()->getClassName() == "UnionEvent")
+    else if (eventCollection_[i].getImplementation()->getClassName() == "UnionEvent")
     {
       // UnionEvent
-      UnionEvent* unionEvent = static_cast<UnionEvent*>(collection[i].getImplementation().get());
-      if (unionEvent->getAntecedent().getImplementation()->getId() != rootCauseId)
-        throw InvalidArgumentException(HERE) << "Different root cause";
-      composedEvent_ = composedEvent_.intersect(unionEvent->getComposedEvent());
+      UnionEvent* unionEvent = static_cast<UnionEvent*>(eventCollection_[i].getImplementation().get());
+      const Bool hasComposedEvent = unionEvent->buildComposedEvent();
+      if (!hasComposedEvent) return false;
+      composedEvent = composedEvent.intersect(unionEvent->getComposedEvent());
     }
     else
     {
       // ThresholdEvent
-      if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId)
-        throw NotYetImplementedException(HERE) << "Root cause not found";
-      composedEvent_ = composedEvent_.intersect(collection[i]);
+      composedEvent = composedEvent.intersect(eventCollection_[i]);
     }
   }
-  eventCollection_ = collection;
-  setDescription(composedEvent_.getDescription());
+  composedEvent_ = composedEvent;
+  hasComposedEvent_ = true;
+  return true;
 }
+
 
 /* Realization accessor */
 Point IntersectionEvent::getRealization() const
@@ -224,7 +240,9 @@ void IntersectionEvent::load(Advocate & adv)
 
 RandomVector IntersectionEvent::getComposedEvent() const
 {
-  return composedEvent_;
+  if (hasComposedEvent_)
+    return composedEvent_;
+  throw NotYetImplementedException(HERE) << "Please call buildComposedEvent before getComposedEvent.";
 }
 
 END_NAMESPACE_OPENTURNS
