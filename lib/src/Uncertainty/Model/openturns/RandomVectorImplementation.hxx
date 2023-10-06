@@ -74,7 +74,7 @@ public:
   virtual Point getRealization() const;
 
   /** Fixed value accessor */
-  virtual Point getFixedValue(const Point & fixedValue) const;
+  virtual Point getFrozenRealization(const Point & fixedValue) const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;

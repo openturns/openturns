@@ -127,9 +127,9 @@ Point RandomVector::getRealization() const
 }
 
 /* Fixed value accessor */
-Point RandomVector::getFixedValue(const Point & fixedValue) const
+Point RandomVector::getFrozenRealization(const Point & fixedValue) const
 {
-  return getImplementation()->getFixedValue(fixedValue);
+  return getImplementation()->getFrozenRealization(fixedValue);
 }
 
 /* Numerical sample accessor */

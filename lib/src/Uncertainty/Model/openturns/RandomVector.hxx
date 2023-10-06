@@ -77,7 +77,7 @@ public:
   Point getRealization() const;
 
   /** Fixed value accessor */
-  Point getFixedValue(const Point & fixedValue) const;
+  Point getFrozenRealization(const Point & fixedValue) const;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const;

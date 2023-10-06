@@ -90,9 +90,9 @@ Point CompositeRandomVector::getRealization() const
 }
 
 /* Realization accessor */
-Point CompositeRandomVector::getFixedValue(const Point & fixedValue) const
+Point CompositeRandomVector::getFrozenRealization(const Point & fixedValue) const
 {
-  return function_(antecedent_.getFixedValue(fixedValue));
+  return function_(antecedent_.getFrozenRealization(fixedValue));
 }
 
 /* Numerical sample accessor */

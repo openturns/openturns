@@ -65,7 +65,7 @@ public:
   Point getRealization() const override;
 
   /** Fixed value accessor */
-  Point getFixedValue(const Point & fixedValue) const override;
+  Point getFrozenRealization(const Point & fixedValue) const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;

@@ -90,7 +90,7 @@ Point RandomVectorImplementation::getRealization() const
 }
 
 /* Fixed value accessor */
-Point RandomVectorImplementation::getFixedValue(const Point & fixedValue) const
+Point RandomVectorImplementation::getFrozenRealization(const Point & fixedValue) const
 {
   return fixedValue;
 }

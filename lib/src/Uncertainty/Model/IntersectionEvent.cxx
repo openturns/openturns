@@ -162,17 +162,17 @@ Bool IntersectionEvent::buildComposedEvent()
 /* Realization accessor */
 Point IntersectionEvent::getRealization() const
 {
-  return getFixedValue(antecedent_.getRealization());
+  return getFrozenRealization(antecedent_.getRealization());
 }
 
 /* Fixed value accessor */
-Point IntersectionEvent::getFixedValue(const Point & fixedValue) const
+Point IntersectionEvent::getFrozenRealization(const Point & fixedValue) const
 {
   LOGINFO(OSS() << "antecedent value = " << fixedValue);
   Point realization(1);
   for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
   {
-    if (eventCollection_[i].getFixedValue(fixedValue)[0] == 0.0)
+    if (eventCollection_[i].getFrozenRealization(fixedValue)[0] == 0.0)
     {
       return realization;
     }
