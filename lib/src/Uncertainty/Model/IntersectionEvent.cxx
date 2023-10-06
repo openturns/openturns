@@ -181,12 +181,6 @@ Point IntersectionEvent::getFrozenRealization(const Point & fixedValue) const
   return realization;
 }
 
-// /* Sample accessor */
-// Sample IntersectionEvent::getSample(const UnsignedInteger size) const
-// {
-//   return composedEvent_.getSample(size);
-// }
-
 Bool IntersectionEvent::isEvent() const
 {
   return true;

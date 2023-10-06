@@ -246,7 +246,7 @@ fixedValue : :class:`~openturns.Point`
 Returns
 -------
 realization : :class:`~openturns.Point`
-    The realization corresponding to the root chosen root cause.
+    The realization corresponding to the chosen root cause.
 
 See also
 --------
