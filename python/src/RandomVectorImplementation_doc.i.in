@@ -230,6 +230,47 @@ OT_RandomVector_getSample_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_RandomVector_getFixedValue_doc
+"Compute realizations of the RandomVector.
+
+In the case of a :class:`~openturns.CompositeRandomVector`
+or an event of some kind, this method returns
+the value taken by the random vector if the root cause
+takes the value given as argument.
+
+Parameters
+----------
+fixedValue : :class:`~openturns.Point`
+    Point chosen as the root cause of the random vector.
+
+Returns
+-------
+realization : :class:`~openturns.Point`
+    The realization corresponding to the root chosen root cause.
+
+See also
+--------
+getRealization
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> randomVector = ot.RandomVector(distribution)
+>>> f = ot.SymbolicFunction('x', 'x')
+>>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
+>>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
+>>> ot.RandomGenerator.SetSeed(0)
+>>> print(event.getFixedValue([0.2]))
+[0]
+>>> print(event.getFixedValue([-0.1]))
+[1]"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getFixedValue
+OT_RandomVector_getFixedValue_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_RandomVector_getOperator_doc
 "Accessor to the comparaison operator of the Event.
 
