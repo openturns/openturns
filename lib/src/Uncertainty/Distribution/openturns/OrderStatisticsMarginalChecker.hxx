@@ -41,7 +41,7 @@ public:
   typedef Collection<Distribution> DistributionCollection;
 
   /** Parameters constructor */
-  OrderStatisticsMarginalChecker(const DistributionCollection & collection);
+  explicit OrderStatisticsMarginalChecker(const DistributionCollection & collection = DistributionCollection());
 
   /** Is the collection of marginals compatible ? */
   Bool isCompatible() const;
