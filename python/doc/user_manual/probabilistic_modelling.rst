@@ -141,6 +141,7 @@ Parametrized distributions
     GumbelMuSigma
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
+    LogNormalMuErrorFactor
     UniformMuSigma
     WeibullMaxMuSigma
     WeibullMinMuSigma
