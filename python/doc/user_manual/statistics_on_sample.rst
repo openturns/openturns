@@ -227,6 +227,7 @@ Graphical tests
     VisualTest.DrawKendallPlot
     VisualTest.DrawLinearModel
     VisualTest.DrawLinearModelResidual
+    VisualTest.DrawPPplot
     VisualTest.DrawQQplot
     VisualTest.DrawCDFplot
     VisualTest.DrawUpperTailDependenceFunction
