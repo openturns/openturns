@@ -9,7 +9,7 @@
 %template(_ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
 %template(ComplexCollection)                   OT::Collection<OT::Complex>;
-%template(ComplexPersistenCollection)          OT::PersistentCollection<OT::Complex>;
+%template(_ComplexPersistentCollection)          OT::PersistentCollection<OT::Complex>;
 
 %typemap(in) const ComplexCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {

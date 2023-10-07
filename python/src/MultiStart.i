@@ -30,7 +30,7 @@ namespace OT {
 
 %include MultiStart_doc.i
 
-%template(OptimizationResultCollection) OT::Collection<OT::OptimizationResult>;
+%template(_OptimizationResultCollection) OT::Collection<OT::OptimizationResult>;
 
 %include openturns/MultiStart.hxx
 namespace OT{ %extend MultiStart { MultiStart(const MultiStart & other) { return new OT::MultiStart(other); } } }

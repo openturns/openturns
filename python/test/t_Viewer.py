@@ -188,7 +188,7 @@ view.ShowAll(block=True)
 # PolygonArray
 generator = ot.Normal(2)
 size = 5
-array = ot.PolygonCollection(size)
+array = [None] * size
 palette = ot.Drawable.BuildDefaultPalette(size)
 palette[0] = "blue"
 for i in range(size):

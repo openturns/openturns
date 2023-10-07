@@ -29,8 +29,8 @@ namespace OT {
 %include CovarianceMatrix_doc.i
 
 %apply const ScalarCollection & { const OT::CovarianceMatrix::ScalarCollection & };
-%template(CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
-%template(CovarianceMatrixPersistentCollection) OT::PersistentCollection<OT::CovarianceMatrix>;
+%template(_CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
+%template(_CovarianceMatrixPersistentCollection) OT::PersistentCollection<OT::CovarianceMatrix>;
 
 %typemap(in) const CovarianceMatrix & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {

@@ -30,7 +30,7 @@ namespace OT {
 
 %include MultiFORMResult_doc.i
 
-%template(FORMResultCollection) OT::Collection<OT::FORMResult>;
+%template(_FORMResultCollection) OT::Collection<OT::FORMResult>;
 
 %include openturns/MultiFORMResult.hxx
 
