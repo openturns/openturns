@@ -71,6 +71,6 @@ PointWithDescription(PyObject * pyObj)
 }
 }
 
-%template(PointWithDescriptionCollection) OT::Collection<OT::PointWithDescription>;
-%template(PointWithDescriptionPersistentCollection) OT::PersistentCollection<OT::PointWithDescription>;
+%template(_PointWithDescriptionCollection) OT::Collection<OT::PointWithDescription>;
+%template(_PointWithDescriptionPersistentCollection) OT::PersistentCollection<OT::PointWithDescription>;
 

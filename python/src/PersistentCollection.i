@@ -6,4 +6,4 @@
 
 %include openturns/PersistentCollection.hxx
 
-%template(UnsignedIntegerPersistentCollection) OT::PersistentCollection<OT::UnsignedInteger>;
+%template(_UnsignedIntegerPersistentCollection) OT::PersistentCollection<OT::UnsignedInteger>;

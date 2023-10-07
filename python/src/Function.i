@@ -37,7 +37,7 @@ OTTypedInterfaceObjectHelper(Function)
 %apply const FunctionCollection & { const OT::Collection<OT::Function> & };
 
 %template(FunctionCollection) OT::Collection<OT::Function>;
-%template(FunctionPersistentCollection) OT::PersistentCollection<OT::Function>;
+%template(_FunctionPersistentCollection) OT::PersistentCollection<OT::Function>;
 
 
 %include Function_doc.i

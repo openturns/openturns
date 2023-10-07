@@ -53,7 +53,7 @@ namespace OT {
 
 %include IntersectionEvent_doc.i
 
-%template(RandomVectorCollection) OT::Collection<OT::RandomVector>;
+%template(_RandomVectorCollection) OT::Collection<OT::RandomVector>;
 
 %typemap(in) const RandomVectorCollection & (OT::Pointer<OT::Collection<OT::RandomVector > > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {

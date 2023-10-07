@@ -31,7 +31,7 @@ namespace OT {
 %include ARMACoefficients_doc.i
 
 %template(SquareMatrixCollection) OT::Collection<OT::SquareMatrix>;
-%template(SquareMatrixPersistentCollection) OT::PersistentCollection<OT::SquareMatrix>;
+%template(_SquareMatrixPersistentCollection) OT::PersistentCollection<OT::SquareMatrix>;
 
 %include openturns/ARMACoefficients.hxx
 

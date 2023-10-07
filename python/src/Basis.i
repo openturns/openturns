@@ -30,7 +30,7 @@
 %apply const BasisCollection & { const OT::Collection<OT::Basis> & };
 
 %template(BasisCollection) OT::Collection<OT::Basis>;
-%template(BasisPersistentCollection) OT::PersistentCollection<OT::Basis>;
+%template(_BasisPersistentCollection) OT::PersistentCollection<OT::Basis>;
 
 %include Basis_doc.i
 
