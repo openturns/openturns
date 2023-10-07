@@ -18,7 +18,7 @@ jobs:
           name: Publish documentation
           command: ./.circleci/upload_github_io.sh
       - store_artifacts:
-          path: ~/.local/share/openturns/doc/html
+          path: ~/.local/share/doc/openturns/html
           destination: html
 
   build_mingw:
