@@ -170,7 +170,6 @@ private:
   /** Build a C1 interpolation of the exponential factors in the PDF */
   void interpolateExponentialFactors();
 
-public:
   /** Compute the exponential factor */
   Scalar computeExponentialFactor(const UnsignedInteger k,
                                   const Scalar u,
@@ -180,7 +179,7 @@ public:
   Scalar computeFactor(const UnsignedInteger k,
                        const Scalar u,
                        const Scalar v) const;
-private:
+
   /** The main parameter set of the distribution */
   DistributionPersistentCollection distributionCollection_;
 
