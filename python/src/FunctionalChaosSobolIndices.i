@@ -10,8 +10,6 @@
 namespace OT { %extend FunctionalChaosSobolIndices { FunctionalChaosSobolIndices(const FunctionalChaosSobolIndices & other) { return new OT::FunctionalChaosSobolIndices(other); } } }
 
 %pythoncode %{
-from math import sqrt
-
 def __FunctionalChaosSobolIndices_repr_html(self):
     """Get HTML representation."""
     chaosResult = self.getFunctionalChaosResult()
@@ -32,7 +30,7 @@ def __FunctionalChaosSobolIndices_repr_html(self):
     covarianceMatrix = randomVector.getCovariance()
     stdDev = openturns.Point(outputDimension)
     for i in range(outputDimension):
-        stdDev[i] = sqrt(covarianceMatrix[i, i])
+        stdDev[i] = covarianceMatrix[i, i] ** 0.5
 
     # quick summary
     basisSize = chaosResult.getReducedBasis().getSize()
