@@ -134,7 +134,7 @@ public:
     algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
     // gradient
-    if (jacobians)
+    if ((jacobians != nullptr) && (jacobians[0] != nullptr))
     {
       const Matrix gradient(problem.getResidualFunction().gradient(inP));
       std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
@@ -237,7 +237,7 @@ void Ceres::run()
     // Build the problem.
     ceres::Problem problem;
     ceres::CostFunction* cost_function = new CostFunctionInterface(*this);
-    problem.AddResidualBlock(cost_function, NULL, &x[0]);
+    problem.AddResidualBlock(cost_function, nullptr, const_cast<double*>(x.data()));
 
     if (getProblem().hasBounds())
     {
@@ -269,6 +269,7 @@ void Ceres::run()
     options.max_num_iterations = getMaximumIterationNumber();
     options.function_tolerance = getMaximumResidualError();
     options.parameter_tolerance = getMaximumRelativeError();
+    options.gradient_tolerance = getMaximumConstraintError();
 
     // Set remaining options from ResourceMap
     if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
@@ -396,6 +397,7 @@ void Ceres::run()
     options.max_num_iterations = getMaximumIterationNumber();
     options.function_tolerance = getMaximumResidualError();
     options.parameter_tolerance = getMaximumRelativeError();
+    options.gradient_tolerance = getMaximumConstraintError();
 
     // Set remaining options from ResourceMap
     if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
@@ -470,6 +472,7 @@ String Ceres::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
+      << " algorithm=" << getAlgorithmName()
       << " " << OptimizationAlgorithmImplementation::__repr__();
   return oss;
 }
@@ -478,7 +481,7 @@ String Ceres::__repr__() const
 String Ceres::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << "class=" << getClassName();
+  oss << "class=" << getClassName() << " algorithm=" << getAlgorithmName();
   return oss;
 }
 
