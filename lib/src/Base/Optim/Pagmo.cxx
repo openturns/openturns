@@ -710,6 +710,7 @@ String Pagmo::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
+      << " algorithm=" << getAlgorithmName()
       << " " << OptimizationAlgorithmImplementation::__repr__()
       << " startingSample=" << startingSample_;
   return oss;
