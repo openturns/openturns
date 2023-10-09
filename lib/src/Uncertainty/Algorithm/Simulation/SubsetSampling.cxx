@@ -29,6 +29,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,14 +53,15 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
   : EventSimulation(event.getImplementation()->asComposedEvent())
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
-  , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
+  , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
   UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension=" << outputDimension;
+  setInitialExperiment(MonteCarloExperiment());
 }
 
 
@@ -109,18 +111,20 @@ void SubsetSampling::run()
   currentPointSample_ = Sample(N, dimension_);
   currentLevelSample_ = Sample(N, getEvent().getFunction().getOutputDimension());
 
+  // blockSize may have changed
+  initialExperiment_.setSize(blockSize);
+
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
     Sample inputSample;
     if (!iSubset_)
     {
-      // crude MC
-      inputSample = standardEvent_.getAntecedent().getDistribution().getSample(blockSize);
+      inputSample = initialExperiment_.generate();
     }
     else
     {
-      // conditional sampling
+      // @deprecated: conditional sampling
       TruncatedDistribution truncatedChiSquare(Chi(dimension_), betaMin_, TruncatedDistribution::LOWER);
       Normal normal(dimension_);
       inputSample = Sample(0, dimension_);
@@ -574,15 +578,31 @@ Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool 
 
 void SubsetSampling::setISubset(Bool iSubset)
 {
+  LOGWARN(OSS() << "SubsetSampling.setISubset is deprecated");
   iSubset_ = iSubset;
 }
 
 void SubsetSampling::setBetaMin(Scalar betaMin)
 {
+  LOGWARN(OSS() << "SubsetSampling.setBetaMin is deprecated");
   if (!(betaMin > 0.0)) throw InvalidArgumentException(HERE) << "Beta min should be positive";
   betaMin_ = betaMin;
 }
 
+/* Experiment for first step */
+void SubsetSampling::setInitialExperiment(const WeightedExperiment & initialExperiment)
+{
+  if (!initialExperiment.hasUniformWeights())
+    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlyng weighted experiment must have uniform weights";
+  initialExperiment_ = initialExperiment;
+  initialExperiment_.setSize(getBlockSize());
+  initialExperiment_.setDistribution(StandardEvent(getEvent()).getAntecedent().getDistribution());
+}
+
+WeightedExperiment SubsetSampling::getInitialExperiment() const
+{
+  return initialExperiment_;
+}
 
 /* String converter */
 String SubsetSampling::__repr__() const
@@ -606,6 +626,7 @@ void SubsetSampling::save(Advocate & adv) const
   adv.saveAttribute("iSubset_", iSubset_);
   adv.saveAttribute("betaMin_", betaMin_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
+  adv.saveAttribute("initialExperiment_", initialExperiment_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
@@ -628,6 +649,8 @@ void SubsetSampling::load(Advocate & adv)
   adv.loadAttribute("iSubset_", iSubset_);
   adv.loadAttribute("betaMin_", betaMin_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);
+  if (adv.hasAttribute("initialExperiment_"))
+    adv.loadAttribute("initialExperiment_", initialExperiment_);
 
   adv.loadAttribute("numberOfSteps_", numberOfSteps_);
   adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);

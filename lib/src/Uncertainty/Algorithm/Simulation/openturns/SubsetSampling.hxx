@@ -23,6 +23,7 @@
 
 #include "openturns/EventSimulation.hxx"
 #include "openturns/StandardEvent.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,10 +80,14 @@ public:
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
-  /** i-subset */
+  /** @deprecated i-subset */
   void setISubset(Bool iSubset);
   void setBetaMin(Scalar betaMin);
 
+  /** Experiment for first step */
+  void setInitialExperiment(const WeightedExperiment & initialExperiment);
+  WeightedExperiment getInitialExperiment() const;
+  
   /** Performs the actual computation. */
   void run() override;
 
@@ -120,9 +125,12 @@ private:
   // some parameters
   Scalar proposalRange_ = 0.0;// width of the proposal pdf
   Scalar conditionalProbability_ = 0.0;// target probability at each subset
+  Scalar minimumProbability_ = 0.0;// limit on the smallest probability
+  WeightedExperiment initialExperiment_; // experiment for first step
+
+  // @deprecated
   Bool iSubset_ = false;// conditional pre-sampling
   Scalar betaMin_ = 0.0;// pre-sampling hypersphere exclusion radius
-  Scalar minimumProbability_ = 0.0;// limit on the smallest probability
 
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
@@ -131,7 +139,7 @@ private:
   Point coefficientOfVariationPerStep_;// intermediate COVS
   Point probabilityEstimatePerStep_;// intermediate PFs
 
-  // attributes used for conveniency, not to be saved/loaded
+  // attributes used for convenience, not to be saved/loaded
   StandardEvent standardEvent_;// the algorithm happens in U
   UnsignedInteger dimension_;// input dimension
   Sample currentPointSample_;// X
