@@ -93,11 +93,8 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
   if (!problem.hasResidualFunction() && (algoName_ == "LEVENBERG_MARQUARDT" || algoName_ == "DOGLEG"))
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " trust-region algorithms do not support general optimization";
 
-  if (problem.hasInequalityConstraint())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints";
-
-  if (problem.hasEqualityConstraint())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support equality constraints";
+  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support constraints";
 
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
@@ -128,16 +125,30 @@ public:
     std::copy(x, x + n, inP.begin());
 
     // evaluation
-    const Point outP(problem.getResidualFunction()(inP));
-    std::copy(outP.begin(), outP.end(), residuals);
-    algorithm_.evaluationInputHistory_.add(inP);
-    algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
+    try
+    {
+      const Point outP(problem.getResidualFunction()(inP));
+      std::copy(outP.begin(), outP.end(), residuals);
+      algorithm_.evaluationInputHistory_.add(inP);
+      algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
+    }
+    catch (Exception &)
+    {
+      return false;
+    }
 
     // gradient
     if ((jacobians != nullptr) && (jacobians[0] != nullptr))
     {
-      const Matrix gradient(problem.getResidualFunction().gradient(inP));
-      std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
+      try
+      {
+        const Matrix gradient(problem.getResidualFunction().gradient(inP));
+        std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
+      }
+      catch (Exception &)
+      {
+        return false;
+      }
     }
     return true;
   }
@@ -169,20 +180,34 @@ public:
     std::copy(x, x + n, inP.begin());
 
     // evaluation
-    const Point outP(problem.getObjective()(inP));
-    *cost = problem.isMinimization() ? outP[0] : -outP[0];
-    algorithm_.evaluationInputHistory_.add(inP);
-    algorithm_.evaluationOutputHistory_.add(outP);
+    try
+    {
+      const Point outP(problem.getObjective()(inP));
+      *cost = problem.isMinimization() ? outP[0] : -outP[0];
+      algorithm_.evaluationInputHistory_.add(inP);
+      algorithm_.evaluationOutputHistory_.add(outP);
 
-    // update result
-    algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
-    algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+      // update result
+      algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+    }
+    catch (Exception &)
+    {
+      return false;
+    }
 
     // gradient
-    if (jacobian)
+    if (jacobian != nullptr)
     {
-      const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      std::copy(gradient.data(), gradient.data() + n, jacobian);
+      try
+      {
+        const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
+        std::copy(gradient.data(), gradient.data() + n, jacobian);
+      }
+      catch (Exception &)
+      {
+        return false;
+      }
     }
     return true;
   }
