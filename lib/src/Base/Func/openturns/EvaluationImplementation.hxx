@@ -60,10 +60,8 @@ public:
   EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
-protected:
-  using PersistentObject::operator ==;
-public:
   Bool operator ==(const EvaluationImplementation & other) const;
+  using PersistentObject::operator ==;
 
   /** String converter */
   String __repr__() const override;
