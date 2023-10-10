@@ -2,6 +2,23 @@ import openturns as ot
 import openturns.testing as ott
 import math as m
 
+# comparison via implementation
+assert ot.Triangular() == ot.Triangular(), "Triangular==Triangular"
+assert not ot.Rice() != ot.Rice(), "Rice!=Rice"
+assert ot.Arcsine() != ot.Gumbel(), "Arcsine!=Gumbel"
+assert ot.Gumbel() != ot.Arcsine(), "Arcsine!=Gumbel"
+assert not ot.Gumbel() == ot.Arcsine(), "Arcsine==Gumbel"
+assert ot.Exponential(2.5) != ot.Exponential(3.0), "Exponential(2.5)!=Exponential(3.0)"
+assert not ot.Exponential(2.5) == ot.Exponential(3.0), "Exponential(2.5)==Exponential(3.0)"
+assert ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(2), "Normal(2)==Composed(2N)"
+assert not ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(2), "Normal(2)!=Composed(2N)"
+assert ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(3), "Composed(2N)!=Normal(3)"
+assert not ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(3), "!Composed(2N)==Normal(3)"
+assert ot.Normal(2) == ot.ComposedDistribution([ot.Normal()] * 2), "Normal(2)==Composed(2N)"
+assert not ot.Normal(3) == ot.ComposedDistribution([ot.Normal()] * 2), "Normal(3)==Composed(2N)"
+assert ot.Normal(3) != ot.ComposedDistribution([ot.Normal()] * 2), "Normal(3)!=Composed(2N)"
+assert ot.Normal(2) != ot.Student(3.0, 2), "Normal(2)!=Student(2)"
+assert not ot.Student(3.0, 2) == ot.Normal(2), "!Student(2)==Normal(2)"
 
 for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     distribution = factory.build()
@@ -11,9 +28,11 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     print(distribution, distribution2)
     assert distribution == distribution2, "=="
     assert not distribution != distribution2, "!="
-    distribution3 = ot.Dirac(42.0)
-    assert distribution != distribution3, "==Dirac"
-    assert not distribution == distribution3, "!=Dirac"
+    assert distribution2 == distribution, "=="
+    assert not distribution2 != distribution, "!="
+    dirac = ot.Dirac(42.0)
+    assert distribution != dirac, "==Dirac"
+    assert not distribution == dirac, "!=Dirac"
 
     # avoid flat pdfs
     if distribution.getName() == "Dirichlet":
