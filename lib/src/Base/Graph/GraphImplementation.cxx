@@ -155,7 +155,10 @@ String GraphImplementation::__repr__() const
 /* Adds a drawable instance to the collection of drawables contained in GraphImplementation */
 void GraphImplementation::add(const Drawable & aDrawable)
 {
+  UnsignedInteger drawableCount = drawablesCollection_.getSize();
   drawablesCollection_.add(aDrawable);
+  Drawable& drawable = drawablesCollection_[drawableCount];
+  if (!drawable.getIsColorExplicitlySet()) drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount+1)[drawableCount]);
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
@@ -167,7 +170,7 @@ void GraphImplementation::erase(const UnsignedInteger i)
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
 void GraphImplementation::add(const DrawableCollection & drawableCollection)
 {
-  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) drawablesCollection_.add(drawableCollection[i]);
+  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) add(drawableCollection[i]);
 }
 
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
@@ -186,6 +189,10 @@ GraphImplementation::DrawableCollection GraphImplementation::getDrawables() cons
 void GraphImplementation::setDrawables(const DrawableCollection & drawableCollection)
 {
   drawablesCollection_ = drawableCollection;
+  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) {
+    Drawable drawable = drawablesCollection_[i];
+    if (!drawable.getIsColorExplicitlySet()) drawable.setColor(DrawableImplementation::BuildDefaultPalette(i + 1)[i]);
+  }
 }
 
 /* Individual drawable accessor */

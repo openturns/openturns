@@ -1045,11 +1045,12 @@ DrawableImplementation::DrawableImplementation()
   : PersistentObject()
   , legend_("")
   , data_()
-  , color_(ResourceMap::GetAsString("Drawable-DefaultColor"))
+  , color_(BuildDefaultPalette(1)[0])
   , fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle"))
   , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
   , lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
+  , isColorExplicitlySet_(false)
 {
   // Nothing to do
 }
@@ -1060,11 +1061,12 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
   : PersistentObject(),
     legend_(legend),
     data_(data),
-    color_(ResourceMap::GetAsString("Drawable-DefaultColor")),
+    color_(BuildDefaultPalette(1)[0]),
     fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
+    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth")),
+    isColorExplicitlySet_(false)
 {
   setName(legend);
   if(IsFirstInitialization)
@@ -1298,12 +1300,19 @@ void DrawableImplementation::setColor(const String & color)
   if(!IsValidColor(color)) throw InvalidArgumentException(HERE) << "Given color = " << color << " is incorrect";
 
   color_ = color;
+  isColorExplicitlySet_ = true;
 }
 
 /* Accessor for edge color */
 String DrawableImplementation::getEdgeColor() const
 {
   throw NotDefinedException(HERE) << "Error: no edge color in " << getClassName();
+}
+
+/* Accessor for explicit color validation flag*/
+Bool DrawableImplementation::getIsColorExplicitlySet() const
+{
+  return isColorExplicitlySet_;
 }
 
 /* Accessor for line style */

@@ -79,6 +79,9 @@ public:
   virtual void setColor(const String & color);
   virtual String getEdgeColor() const;
 
+  /** Explicit color validation flag accessor */
+  virtual Bool getIsColorExplicitlySet() const;
+
   /** Point style accessor */
   virtual String getPointStyle() const;
   virtual void setPointStyle(const String & pointStyle);
@@ -296,6 +299,9 @@ protected:
 
   /** Line width of the curve */
   Scalar lineWidth_;
+
+  /** Explicit color validation flag */
+  Bool isColorExplicitlySet_;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

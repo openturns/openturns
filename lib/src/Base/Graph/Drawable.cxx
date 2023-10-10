@@ -139,6 +139,12 @@ String Drawable::getEdgeColor() const
   return getImplementation()->getEdgeColor();
 }
 
+/* Accessor for explicit color validation flag*/
+Bool Drawable::getIsColorExplicitlySet() const
+{
+  return getImplementation()->getIsColorExplicitlySet();
+}
+
 /* Accessor for line width */
 Scalar Drawable::getLineWidth() const
 {

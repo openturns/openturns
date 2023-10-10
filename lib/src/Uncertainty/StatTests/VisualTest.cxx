@@ -289,7 +289,8 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
+      Cloud cloud(sample.getMarginal(indices));
+      cloud.setPointStyle(ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -472,7 +473,6 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     cobWeb.add(filament);
   }
   // Draw the vertical lines associated with the input variables
-  const Description palette(Curve::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
@@ -482,7 +482,6 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     Curve bar(data);
     if (i < inputDimension)
     {
-      bar.setColor(palette[i]);
       bar.setLegend(inputSample.getDescription()[i]);
     }
     else

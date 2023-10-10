@@ -231,7 +231,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Drawable().getColor())
-blue
+#1f77b4
 
 See Also
 --------
@@ -280,7 +280,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Drawable().getColorCode())
-#0000FF
+#1f77b4
 
 See Also
 --------
