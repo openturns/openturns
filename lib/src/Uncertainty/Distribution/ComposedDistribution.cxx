@@ -102,8 +102,12 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 {
   if (this == &other) return true;
   // The copula...
-  if (hasIndependentCopula() != other.hasIndependentCopula()) return false;
-  if (!(copula_ == other.getCopula())) return false;
+  // Store the result of hasIndependentCopula() as it may be costly.
+  const Bool hasIndependent = hasIndependentCopula();
+  // One of the copulas is the independent one, not the other
+  if (!hasIndependent == other.hasIndependentCopula()) return false;
+  // None of the copulas is the independent one, and the two copulas are different
+  if (!hasIndependent && !(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -124,8 +128,12 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
   // Third, check by properties
   // We coud go there eg. when comparing a ComposedDistribution([Normal()]*2) with a Normal(2)
   // The copula...
-  if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
-  if (!(copula_ == other.getCopula())) return false;
+  // Store the result of hasIndependentCopula() as it may be costly.
+  const Bool hasIndependent = hasIndependentCopula();
+  // One of the copulas is the independent one, not the other
+  if (!hasIndependent == other.hasIndependentCopula()) return false;
+  // None of the copulas is the independent one, and the two copulas are different
+  if (!hasIndependent && !(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
