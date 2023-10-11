@@ -66,16 +66,6 @@ N : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Multinomial::getP
-"Accessor to the component probabilities parameter :math:`\vect{p}`.
-
-Returns
--------
-P : :class:`~openturns.Point`
-    Component probabilities :math:`\vect{p}`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Multinomial::setN
 "Accessor to the number of experiments parameter :math:`N`.
 
@@ -86,6 +76,16 @@ N : int, :math:`\sum_{i = 1}^n x_i \leq N`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Multinomial::getP
+"Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Returns
+-------
+P : :class:`~openturns.Point`
+    Component probabilities :math:`\vect{p}`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Multinomial::setP
 "Accessor to the component probabilities parameter :math:`\vect{p}`.
 
@@ -93,3 +93,71 @@ Parameters
 ----------
 P : sequence of float, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
     Component probabilities (all positive with sum less than unity)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getSmallA
+"Accessor to the threshold in generating function computation.
+
+Returns
+-------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setSmallA
+"Accessor to the threshold in generating function computation.
+
+Parameters
+----------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."
