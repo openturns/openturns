@@ -489,10 +489,15 @@
   <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
   <GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber value_int="100" />
   <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
+  <GeneralizedExtremeValueFactory-MaximumAbsoluteError    value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumConstraintError  value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumObjectiveError   value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumRelativeError    value_float="1.0e-5"        />
   <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
   <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
   <GeneralizedExtremeValueFactory-InitializationMethod value_string="Gumbel" />
   <GeneralizedExtremeValueFactory-NormalizationMethod value_string="MinMax" />
+  <GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
 
   <!-- OT::ProfileLikelihoodResult parameters -->
   <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />

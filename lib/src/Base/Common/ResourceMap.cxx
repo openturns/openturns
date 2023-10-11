@@ -1114,10 +1114,15 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber", 10000);
   addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
   addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumAbsoluteError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
   addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
   addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);

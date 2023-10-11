@@ -28,6 +28,7 @@
 #include "openturns/Basis.hxx"
 #include "openturns/TimeVaryingResult.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -83,6 +84,13 @@ public:
   /** Return level via profiled likelihood */
   ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
   GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
+
+  /** Solver accessor */
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+
+private:
+  OptimizationAlgorithm solver_;
 
 }; /* class GeneralizedExtremeValueFactory */
 
