@@ -1,7 +1,6 @@
 %feature("docstring") OT::GeneralizedExtremeValueFactory
 "GeneralizedExtremeValue factory.
 
-
 See also
 --------
 DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory
@@ -10,6 +9,15 @@ Notes
 -----
 Several estimators to build a GeneralizedExtremeValueFactory distribution from a scalar sample
 are proposed. The details are given in the methods documentation.
+The following :class:`~openturns.ResourceMap` entries can be used to tweak
+the parameters of the optimization solver involved in the different estimators:
+
+- `GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm`
+- `GeneralizedExtremeValueFactory-MaximumEvaluationNumber`
+- `GeneralizedExtremeValueFactory-MaximumAbsoluteError`
+- `GeneralizedExtremeValueFactory-MaximumRelativeError`
+- `GeneralizedExtremeValueFactory-MaximumObjectiveError`
+- `GeneralizedExtremeValueFactory-MaximumConstraintError`
 "
 
 // ---------------------------------------------------------------------
@@ -442,3 +450,23 @@ distribution : :class:`~openturns.Normal`
 Notes
 -----
 The starting point of the optimization is initialized from the regular maximum likelihood method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::setOptimizationAlgorithm
+"Accessor to the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the moments."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::getOptimizationAlgorithm
+"Accessor to the solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the moments."
