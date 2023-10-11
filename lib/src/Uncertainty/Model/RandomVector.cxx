@@ -31,6 +31,8 @@
 #include "openturns/SymbolicFunction.hxx"
 #endif
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/IntersectionEvent.hxx"
+#include "openturns/UnionEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -294,10 +296,10 @@ RandomVector RandomVector::join(const RandomVector & other)
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
     if (!levelSet)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join";
     d1 = *levelSet;
   }
 
@@ -322,6 +324,62 @@ RandomVector RandomVector::join(const RandomVector & other)
   LevelSet d3(d1.join(d2));
   CompositeRandomVector composite(d3.getFunction(), getAntecedent());
   return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
+}
+
+
+RandomVector RandomVector::getComposedEvent() const
+{
+  if (!isEvent())
+    throw InvalidArgumentException(HERE) << "Not an event.";
+
+  const Bool isIntersection = (getImplementation()->getClassName() == "IntersectionEvent");
+  const Bool isUnion = (getImplementation()->getClassName() == "UnionEvent");
+
+  IntersectionEvent* intersectionEvent;
+  UnionEvent* unionEvent;
+  RandomVectorCollection eventCollection;
+  if(isIntersection)
+  {
+    // IntersectionEvent: we build the composedEvent from an event collection
+    intersectionEvent = static_cast<IntersectionEvent*>(getImplementation().get());
+    eventCollection = intersectionEvent->getEventCollection();
+  }
+  else if(isUnion)
+  {
+    // UnionEvent: we build the composedEvent from an event collection
+    unionEvent = static_cast<UnionEvent*>(getImplementation().get());
+    eventCollection = unionEvent->getEventCollection();
+  }
+  else
+  {
+    // Neither an intersection nor a union: we simply return the event itself.
+    return RandomVector(getImplementation());
+  }
+
+  // From this point onwards, RandomVector necessarily interfaces an IntersectionEvent or a UnionEvent
+  const UnsignedInteger size = eventCollection.getSize();
+  if (!size) throw InvalidArgumentException(HERE) << "Union or intersection has been improperly initialized: event collection is empty";
+
+  RandomVector composedEvent(eventCollection[0].getComposedEvent());
+
+  // Further build composedEvent by composing with the other events in the eventCollection
+  if(isIntersection)
+  {
+    // Intersection
+    for (UnsignedInteger i = 1; i < size; ++ i)
+    {
+      composedEvent = composedEvent.intersect(eventCollection[i]);
+    }
+  }
+  else
+  {
+    // Union
+    for (UnsignedInteger i = 1; i < size; ++ i)
+    {
+      composedEvent = composedEvent.join(eventCollection[i]);
+    }
+  }
+  return composedEvent;
 }
 
 END_NAMESPACE_OPENTURNS

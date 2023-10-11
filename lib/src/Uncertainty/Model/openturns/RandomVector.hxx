@@ -38,6 +38,7 @@ class OT_API RandomVector
   CLASSNAME
 
 public:
+  typedef Collection<RandomVector> RandomVectorCollection;
 
   /** Default constructor */
   RandomVector();
@@ -125,6 +126,9 @@ public:
   /** Intersection operator */
   RandomVector intersect(const RandomVector & other);
   RandomVector join(const RandomVector & other);
+
+  /** Composed event accessor */
+  RandomVector getComposedEvent() const;
 
 protected:
 

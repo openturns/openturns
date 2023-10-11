@@ -95,70 +95,6 @@ void IntersectionEvent::setEventCollection(const RandomVectorCollection & collec
   setDescription(collection[0].getDescription());
 }
 
-Bool IntersectionEvent::buildComposedEvent()
-{
-  // Short way out if we know composedEvent_ has already been set.
-  if (hasComposedEvent_) return true;
-
-  const UnsignedInteger size = eventCollection_.getSize();
-  if (!size) throw InvalidArgumentException(HERE) << "Empty eventCollection_, please call setEventCollection first.";
-
-  RandomVector composedEvent;
-
-  // Initialize composedEvent with the first event in eventCollection_
-  if (eventCollection_[0].getImplementation()->getClassName() == "IntersectionEvent")
-  {
-    // IntersectionEvent
-    IntersectionEvent *intersectionEvent = static_cast<IntersectionEvent*>(eventCollection_[0].getImplementation().get());
-    const Bool hasComposedEvent = intersectionEvent->buildComposedEvent();
-    if (!hasComposedEvent) return false;
-    composedEvent = intersectionEvent->getComposedEvent();
-  }
-  else if (eventCollection_[0].getImplementation()->getClassName() == "UnionEvent")
-  {
-    // UnionEvent
-    UnionEvent *unionEvent = static_cast<UnionEvent*>(eventCollection_[0].getImplementation().get());
-    const Bool hasComposedEvent = unionEvent->buildComposedEvent();
-    if (!hasComposedEvent) return false;
-    composedEvent = unionEvent->getComposedEvent();
-  }
-  else
-  {
-    // ThresholdEvent
-    composedEvent = eventCollection_[0];
-  }
-
-  // Further build composedEvent by composing with the other events in the eventCollection_
-  for (UnsignedInteger i = 1; i < size; ++ i)
-  {
-    if (eventCollection_[i].getImplementation()->getClassName() == "IntersectionEvent")
-    {
-      // IntersectionEvent
-      IntersectionEvent* intersectionEvent = static_cast<IntersectionEvent*>(eventCollection_[i].getImplementation().get());
-      const Bool hasComposedEvent = intersectionEvent->buildComposedEvent();
-      if (!hasComposedEvent) return false;
-      composedEvent = composedEvent.intersect(intersectionEvent->getComposedEvent());
-    }
-    else if (eventCollection_[i].getImplementation()->getClassName() == "UnionEvent")
-    {
-      // UnionEvent
-      UnionEvent* unionEvent = static_cast<UnionEvent*>(eventCollection_[i].getImplementation().get());
-      const Bool hasComposedEvent = unionEvent->buildComposedEvent();
-      if (!hasComposedEvent) return false;
-      composedEvent = composedEvent.intersect(unionEvent->getComposedEvent());
-    }
-    else
-    {
-      // ThresholdEvent
-      composedEvent = composedEvent.intersect(eventCollection_[i]);
-    }
-  }
-  composedEvent_ = composedEvent;
-  hasComposedEvent_ = true;
-  return true;
-}
-
-
 /* Realization accessor */
 Point IntersectionEvent::getRealization() const
 {
@@ -230,13 +166,6 @@ void IntersectionEvent::load(Advocate & adv)
   RandomVectorPersistentCollection eventCollection;
   adv.loadAttribute( "eventCollection_", eventCollection );
   setEventCollection(eventCollection);
-}
-
-RandomVector IntersectionEvent::getComposedEvent() const
-{
-  if (hasComposedEvent_)
-    return composedEvent_;
-  throw NotYetImplementedException(HERE) << "Please call buildComposedEvent before getComposedEvent.";
 }
 
 END_NAMESPACE_OPENTURNS

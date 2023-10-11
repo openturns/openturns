@@ -94,9 +94,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  RandomVector getComposedEvent() const;
-  Bool buildComposedEvent();
-
 private:
 
   /** The process of the eventProcess */

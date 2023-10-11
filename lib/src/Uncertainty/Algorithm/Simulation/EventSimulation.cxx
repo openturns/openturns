@@ -78,23 +78,8 @@ RandomVector EventSimulation::getEvent() const
 {
   // For an Intersection/UnionEvent, we get its composedEvent if it can be built.
   // This allows access to the level function for derived classes which use them (SubsetSampling for example).
-  // For other events, and Intersection/UnionEvents which cannot be described as a composedEvent,
-  // we default to returning the event_ attribute.
-  if (event_.getImplementation()->getClassName() == "IntersectionEvent")
-  {
-    IntersectionEvent *intersectionEvent = static_cast<IntersectionEvent*>(event_.getImplementation().get());
-    const Bool hasComposedEvent = intersectionEvent->buildComposedEvent();
-    if (hasComposedEvent)
-      return intersectionEvent->getComposedEvent();
-  }
-  if (event_.getImplementation()->getClassName() == "UnionEvent")
-  {
-    UnionEvent *unionEvent = static_cast<UnionEvent*>(event_.getImplementation().get());
-    const Bool hasComposedEvent = unionEvent->buildComposedEvent();
-    if (hasComposedEvent)
-      return unionEvent->getComposedEvent();
-  }
-  return event_;
+  // For other events, getComposedEvent simply returns the event itself.
+  return event_.getComposedEvent();
 }
 
 /* Result accessor */
