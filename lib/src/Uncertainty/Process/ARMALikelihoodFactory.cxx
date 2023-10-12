@@ -46,18 +46,6 @@ static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
 /* Default constructor */
 ARMALikelihoodFactory::ARMALikelihoodFactory()
   : ARMAFactoryImplementation()
-  , currentG_(0)
-  , w_()
-  , dimension_(1)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
@@ -70,18 +58,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_(0)
-  , w_()
   , dimension_(dimension)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   if (dimension == 0)
@@ -107,18 +84,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_(0)
-  , w_()
   , dimension_(dimension)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   if (dimension == 0)
@@ -524,12 +490,13 @@ String ARMALikelihoodFactory::__str__(const String & ) const
 /* Verbosity accessor */
 Bool ARMALikelihoodFactory::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("ARMALikelihoodFactory::getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
-void ARMALikelihoodFactory::setVerbose(const Bool verbose)
+void ARMALikelihoodFactory::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("ARMALikelihoodFactory::setVerbose is deprecated");
 }
 
 /* Build method */

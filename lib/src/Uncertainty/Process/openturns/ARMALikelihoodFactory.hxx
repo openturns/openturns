@@ -77,7 +77,7 @@ public:
   ARMA build(const TimeSeries & timeSeries) const override;
   ARMA build(const ProcessSample & sample) const override;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
@@ -90,13 +90,13 @@ public:
 private :
 
   /** Parameter g is the maximum of p and q */
-  mutable UnsignedInteger currentG_;
+  mutable UnsignedInteger currentG_ = 0;
 
   /** TimeSeries used to pass data */
   mutable TimeSeries w_;
 
   /** Dimension parameter - only used to pass data */
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 1;
 
   /** only used to pass data to be used in computeLogLikelihood */
   mutable CovarianceMatrix covarianceMatrix_;
@@ -120,15 +120,12 @@ private :
   mutable Matrix blockPhiTThetaTMatrix_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable Scalar sigma2_;
+  mutable Scalar sigma2_ = 1.0;
 
   /** Bool variables */
-  mutable Bool hasInitializedARCoefficients_;
-  mutable Bool hasInitializedMACoefficients_;
-  mutable Bool hasInitializedCovarianceMatrix_;
-
-  /** Verbosity control */
-  Bool verbose_;
+  mutable Bool hasInitializedARCoefficients_ = false;
+  mutable Bool hasInitializedMACoefficients_ = false;
+  mutable Bool hasInitializedCovarianceMatrix_ = false;
 
   /** Method that initialize the size of matrices and vectors depending on the used couple (p, q) */
   void initialize();
@@ -191,7 +188,7 @@ private :
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  mutable OptimizationAlgorithm solver_;
 
 }; /* class ARMALikelihoodFactory */
 

@@ -12,3 +12,4 @@ Remove BasisSequenceFactory.setVerbose/getVerbose
 Remove SimulationAlgorithm.setVerbose/getVerbose
 Remove WhittleFactory.setVerbose/getVerbose
 Remove CLassifier.setVerbose/getVerbose
+Remove ARMALLHF.setVerbose/getVerbose

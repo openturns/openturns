@@ -88,28 +88,6 @@ myARMA : :class:`~openturns.ARMA`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ARMALikelihoodFactory::setVerbose
-"Accessor to the verbose mode.
-
-Parameters
-----------
-verboseMode : bool
-    Set the verbose mode while both the exploration of the possible models and the optimization steps.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::ARMALikelihoodFactory::getVerbose
-"Accessor to the verbose mode.
-
-Returns
--------
-verboseMode : bool
-    Get the verbose mode while both the exploration of the possible models and the optimization steps.
-"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::ARMALikelihoodFactory::getInitialARCoefficients
 "Accessor to the initial AR coefficients.
 
