@@ -87,11 +87,13 @@ def sim_event(ev):
 
 
 ott.assert_almost_equal(sim_event(e5), 0.25, 1e-2, 1e-2)
-
 ott.assert_almost_equal(sim_event(e6), 0.75, 1e-2, 1e-2)
-
 ott.assert_almost_equal(sim_event(e7), 0.25, 1e-2, 1e-2)
-
+ott.assert_almost_equal(sim_event(e8), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e9), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e10), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e11), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e12), 0.25, 1e-2, 1e-2)
 
 def subset_event(ev):
     algo = ot.SubsetSampling(ev)
@@ -106,6 +108,11 @@ ott.assert_almost_equal(subset_event(e3), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e5), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e6), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e7), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e8), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e9), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e10), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e11), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e12), 0.25, 1e-2, 1e-2)
 
 
 # check that f2 is not called when not needed

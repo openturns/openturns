@@ -132,25 +132,25 @@ RandomVector UnionEvent::getAntecedent() const
   return antecedent_;
 }
 
-Function UnionEvent::getFunction() const
-{
-  return composedEvent_.getFunction();
-}
+// Function UnionEvent::getFunction() const
+// {
+//   return composedEvent_.getFunction();
+// }
 
-Domain UnionEvent::getDomain() const
-{
-  return composedEvent_.getDomain();
-}
+// Domain UnionEvent::getDomain() const
+// {
+//   return composedEvent_.getDomain();
+// }
 
-ComparisonOperator UnionEvent::getOperator() const
-{
-  return composedEvent_.getOperator();
-}
+// ComparisonOperator UnionEvent::getOperator() const
+// {
+//   return composedEvent_.getOperator();
+// }
 
-Scalar UnionEvent::getThreshold() const
-{
-  return composedEvent_.getThreshold();
-}
+// Scalar UnionEvent::getThreshold() const
+// {
+//   return composedEvent_.getThreshold();
+// }
 
 /* Method save() stores the object through the StorageManager */
 void UnionEvent::save(Advocate & adv) const

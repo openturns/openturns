@@ -132,25 +132,25 @@ RandomVector IntersectionEvent::getAntecedent() const
   return antecedent_;
 }
 
-Function IntersectionEvent::getFunction() const
-{
-  return composedEvent_.getFunction();
-}
+// Function IntersectionEvent::getFunction() const
+// {
+//   return composedEvent_.getFunction();
+// }
 
-Domain IntersectionEvent::getDomain() const
-{
-  return composedEvent_.getDomain();
-}
+// Domain IntersectionEvent::getDomain() const
+// {
+//   return composedEvent_.getDomain();
+// }
 
-ComparisonOperator IntersectionEvent::getOperator() const
-{
-  return composedEvent_.getOperator();
-}
+// ComparisonOperator IntersectionEvent::getOperator() const
+// {
+//   return composedEvent_.getOperator();
+// }
 
-Scalar IntersectionEvent::getThreshold() const
-{
-  return composedEvent_.getThreshold();
-}
+// Scalar IntersectionEvent::getThreshold() const
+// {
+//   return composedEvent_.getThreshold();
+// }
 
 /* Method save() stores the object through the StorageManager */
 void IntersectionEvent::save(Advocate & adv) const

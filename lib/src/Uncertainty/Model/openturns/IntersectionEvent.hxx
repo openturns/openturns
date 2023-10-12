@@ -76,17 +76,17 @@ public:
   /** Antecedent accessor */
   RandomVector getAntecedent() const override;
 
-  /** Function accessor */
-  Function getFunction() const override;
+  // /** Function accessor */
+  // Function getFunction() const override;
 
-  /** Domain accessor */
-  Domain getDomain() const override;
+  // /** Domain accessor */
+  // Domain getDomain() const override;
 
-  /** Operator accessor */
-  ComparisonOperator getOperator() const override;
+  // /** Operator accessor */
+  // ComparisonOperator getOperator() const override;
 
-  /** Threshold accessor */
-  Scalar getThreshold() const override;
+  // /** Threshold accessor */
+  // Scalar getThreshold() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -101,9 +101,6 @@ private:
 
   /** The antecedent is defined here as the root cause */
   RandomVector antecedent_;
-
-  Bool hasComposedEvent_ = false;
-  RandomVector composedEvent_;
 
 }; /* class IntersectionEvent */
 
