@@ -26,6 +26,8 @@ graph = dist.drawPDF()
 view = viewer.View(graph)
 
 # %%
+
+
 def linearSample(xmin, xmax, npoints):
     """Returns a sample created from a regular grid
     from xmin to xmax with npoints points."""
@@ -67,11 +69,15 @@ def fillWithColorInBetween(x, yLower, yUpper, color):
     """
     n_points = x.getDimension()
     if yLower.getDimension() != n_points:
-        raise ValueError(f"The number of Y lower bounds is equal to {yLower.getDimension()} "
-                            f"but the number of X coordinates is {n_points}")
+        raise ValueError(
+            f"The number of Y lower bounds is equal to {yLower.getDimension()} "
+            f"but the number of X coordinates is {n_points}"
+        )
     if yUpper.getDimension() != n_points:
-        raise ValueError(f"The number of Y upper bounds is equal to {yUpper.getDimension()} "
-                            f"but the number of X coordinates is {n_points}")
+        raise ValueError(
+            f"The number of Y upper bounds is equal to {yUpper.getDimension()} "
+            f"but the number of X coordinates is {n_points}"
+        )
     n_points = x.getDimension()
     polyData = []
     # Add the lower bound, forward
