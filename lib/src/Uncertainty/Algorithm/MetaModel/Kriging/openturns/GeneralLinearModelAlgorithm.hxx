@@ -211,7 +211,7 @@ private:
   mutable CovarianceModel reducedCovarianceModel_;
 
   // The optimization algorithm used for the meta-parameters estimation
-  mutable OptimizationAlgorithm solver_;
+  OptimizationAlgorithm solver_;
 
   // Bounds used for parameter optimization
   Interval optimizationBounds_;
