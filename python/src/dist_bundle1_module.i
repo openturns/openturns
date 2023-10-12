@@ -60,6 +60,9 @@
 %include GammaMuSigma.i
 %include Pareto.i
 %include ParetoFactory.i
+%include DistributionFactoryLikelihoodResult.i
+%include ProfileLikelihoodResult.i
+%include TimeVaryingResult.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i
@@ -69,9 +72,6 @@
 %include WeibullMaxFactory.i
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
-%include DistributionFactoryLikelihoodResult.i
-%include ProfileLikelihoodResult.i
-%include TimeVaryingResult.i
 %include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
 %include GumbelLambdaGamma.i
