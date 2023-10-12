@@ -578,14 +578,15 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   OptimizationProblem problem(getLogLikelihoodFunction());
   problem.setMinimization(false);
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(beta);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(beta);
 
   // run Optimization problem
-  solver_.run();
+  solver.run();
 
   // optimal point
-  const Point optpoint(solver_.getResult().getOptimalPoint());
+  const Point optpoint(solver.getResult().getOptimalPoint());
   beta = optpoint;
 
   // Return result
