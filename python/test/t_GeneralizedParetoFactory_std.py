@@ -62,3 +62,10 @@ if not ot.PlatformInfo.HasFeature("bison"):
 # mean residual life
 sample = coles.Coles().rain
 graph = factory.drawMeanResidualLife(sample)
+
+# MLE
+estimator_mle = factory.buildMethodOfLikelihoodMaximizationEstimator(sample, 30.0)
+print("MLE estimator=", estimator_mle)
+inf_dist = estimator_mle.getDistribution()
+print("GPD from MLE=", inf_dist)
+ott.assert_almost_equal(inf_dist.getParameter(), [7.44573, 0.184112, 30.0], 1e-2, 1e-2)
