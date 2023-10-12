@@ -36,6 +36,7 @@
  * Deprecated BasisSequenceFactory.setVerbose/getVerbose
  * Deprecated SimulationAlgorithm.setVerbose/getVerbose
  * Deprecated WhittleFactory.setVerbose
+ * Deprecated Classifier.setVerbose/getVerbose
 
 === Documentation ===
 

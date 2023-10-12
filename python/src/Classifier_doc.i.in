@@ -10,10 +10,6 @@ OT_Classifier_classify_doc
 OT_Classifier_grade_doc
 %feature("docstring") OT::Classifier::getDimension
 OT_Classifier_getDimension_doc
-%feature("docstring") OT::Classifier::getVerbose
-OT_Classifier_getVerbose_doc
-%feature("docstring") OT::Classifier::setVerbose
-OT_Classifier_setVerbose_doc
 %feature("docstring") OT::Classifier::isParallel
 OT_Classifier_isParallel_doc
 %feature("docstring") OT::Classifier::setParallel
