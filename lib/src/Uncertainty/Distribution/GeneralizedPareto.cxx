@@ -346,11 +346,7 @@ void GeneralizedPareto::computeCovariance() const
 /* Parameters value  accessor */
 Point GeneralizedPareto::getParameter() const
 {
-  Point point(3);
-  point[0] = sigma_;
-  point[1] = xi_;
-  point[2] = u_;
-  return point;
+  return {sigma_, xi_, u_};
 }
 
 void GeneralizedPareto::setParameter(const Point & parameter)
@@ -364,11 +360,7 @@ void GeneralizedPareto::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description GeneralizedPareto::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "sigma";
-  description[1] = "xi";
-  description[2] = "location";
-  return description;
+  return {"sigma", "xi", "u"};
 }
 
 /* Sigma accessor */
