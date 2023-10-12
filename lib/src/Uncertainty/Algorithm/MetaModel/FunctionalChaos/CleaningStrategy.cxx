@@ -42,10 +42,6 @@ static const Factory<CleaningStrategy> Factory_CleaningStrategy;
 /* Default constructor */
 CleaningStrategy::CleaningStrategy()
   : AdaptiveStrategyImplementation()
-  , currentVectorIndex_(0)
-  , maximumSize_(0)
-  , significanceFactor_(0.0)
-  , verbose_(false)
 {
   // Nothing to do
 }
@@ -53,13 +49,10 @@ CleaningStrategy::CleaningStrategy()
 
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
-                                   const UnsignedInteger maximumDimension,
-                                   const Bool verbose)
+                                   const UnsignedInteger maximumDimension)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
-  , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" ))
   , significanceFactor_(ResourceMap::GetAsScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
-  , verbose_(verbose)
 {
   // Nothing to do
 }
@@ -69,13 +62,10 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const UnsignedInteger maximumSize,
-                                   const Scalar significanceFactor,
-                                   const Bool verbose)
+                                   const Scalar significanceFactor)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
-  , currentVectorIndex_(0)
   , maximumSize_(maximumSize)
   , significanceFactor_(significanceFactor)
-  , verbose_(verbose)
 {
   // Nothing to do
 }
@@ -101,20 +91,17 @@ void CleaningStrategy::computeInitialBasis()
 /* Update the basis for the next iteration of approximation */
 void CleaningStrategy::updateBasis(const Point & alpha_k,
                                    const Scalar,
-                                   const Scalar )
+                                   const Scalar)
 {
   // The dimension will be adapted, so it is not const
   UnsignedInteger dimension = alpha_k.getSize();
   ScalarCollection coefficients(alpha_k.getCollection());
-  if (verbose_)
-  {
-    LOGINFO(OSS() << "initial state:");
-    LOGINFO(OSS() << "  vector index=" << currentVectorIndex_);
-    LOGINFO(OSS() << "  coeffs  size=" << coefficients.getSize());
-    LOGINFO(OSS() << "  coeffs      =" << coefficients);
-    LOGINFO(OSS() << "  I_p     size=" << I_p_.getSize());
-    LOGINFO(OSS() << "  I_p         =" << I_p_);
-  }
+  LOGDEBUG(OSS() << "initial state:");
+  LOGDEBUG(OSS() << "  vector index=" << currentVectorIndex_);
+  LOGDEBUG(OSS() << "  coeffs  size=" << coefficients.getSize());
+  LOGDEBUG(OSS() << "  coeffs      =" << coefficients);
+  LOGDEBUG(OSS() << "  I_p     size=" << I_p_.getSize());
+  LOGDEBUG(OSS() << "  I_p         =" << I_p_);
   removedPsi_k_ranks_ = Indices(0);
   conservedPsi_k_ranks_ = Indices(I_p_.getSize());
   conservedPsi_k_ranks_.fill();
@@ -147,20 +134,17 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
       // Add the smallest element to the removed list
       removedPsi_k_ranks_.add(rankSmallest);
 
-      if (verbose_) removedCoefficients.add(coefficients[rankSmallest]);
+      removedCoefficients.add(coefficients[rankSmallest]);
       // Compact Psi_k_p_ and I_p_
       Psi_k_p_.erase(Psi_k_p_.begin() + rankSmallest);
       I_p_.erase(I_p_.begin() + rankSmallest);
       coefficients.erase(coefficients.begin() + rankSmallest);
-      if (verbose_)
-      {
-        LOGINFO(OSS() << "intermediate state:");
-        LOGINFO(OSS() << "  coeffs  size=" << coefficients.getSize());
-        LOGINFO(OSS() << "  coeffs      =" << coefficients);
-        LOGINFO(OSS() << "  rem coeffs  =" << removedCoefficients);
-        LOGINFO(OSS() << "  I_p     size=" << I_p_.getSize());
-        LOGINFO(OSS() << "  I_p         =" << I_p_);
-      }
+      LOGDEBUG(OSS() << "intermediate state:");
+      LOGDEBUG(OSS() << "  coeffs  size=" << coefficients.getSize());
+      LOGDEBUG(OSS() << "  coeffs      =" << coefficients);
+      LOGDEBUG(OSS() << "  rem coeffs  =" << removedCoefficients);
+      LOGDEBUG(OSS() << "  I_p     size=" << I_p_.getSize());
+      LOGDEBUG(OSS() << "  I_p         =" << I_p_);
       // The smallest remaining element is now the second smallest one
       smallest = secondSmallest;
       dimension = maximumSize_;
@@ -178,7 +162,7 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
         {
           Psi_k_p_[currentIndex] = Psi_k_p_[i];
           I_p_[currentIndex] = I_p_[i];
-          if (verbose_) coefficients[currentIndex] = coefficients[i];
+          coefficients[currentIndex] = coefficients[i];
           ++currentIndex;
         } // Keep the current vector
         else
@@ -196,12 +180,12 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
             // Else take the shift into account
             else removedPsi_k_ranks_.add(i + shift);
           }
-          if (verbose_) removedCoefficients.add(coefficients[i]);
+          removedCoefficients.add(coefficients[i]);
         } // Remove the vector
       } // Loop over the coefficients
       Psi_k_p_.resize(currentIndex);
       I_p_.resize(currentIndex);
-      if (verbose_) coefficients.resize(currentIndex);
+      coefficients.resize(currentIndex);
     } // Cleaning step
     // At this step, I_p_ stores all the indices that are common between the previous partial basis and the one being built
     // Remove the ranks of the deleted vectors from the list of conserved vectors
@@ -224,16 +208,13 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
   {
     addedPsi_k_ranks_ = Indices(0);
   } // No more vector to add
-  if (verbose_)
-  {
-    LOGINFO(OSS() << "final state:");
-    LOGINFO(OSS() << "  vector index=" << currentVectorIndex_ << " / " << maximumDimension_ << " (" << 0.1 * int((1000.0 * currentVectorIndex_) / maximumDimension_) << "%)");
-    LOGINFO(OSS() << "  coeffs  size=" << coefficients.getSize());
-    LOGINFO(OSS() << "  coeffs      =" << coefficients);
-    LOGINFO(OSS() << "  rem coeffs  =" << removedCoefficients);
-    LOGINFO(OSS() << "  I_p     size=" << I_p_.getSize());
-    LOGINFO(OSS() << "  I_p         =" << I_p_);
-  }
+  LOGDEBUG(OSS() << "final state:");
+  LOGDEBUG(OSS() << "  vector index=" << currentVectorIndex_ << " / " << maximumDimension_ << " (" << 0.1 * int((1000.0 * currentVectorIndex_) / maximumDimension_) << "%)");
+  LOGDEBUG(OSS() << "  coeffs  size=" << coefficients.getSize());
+  LOGDEBUG(OSS() << "  coeffs      =" << coefficients);
+  LOGDEBUG(OSS() << "  rem coeffs  =" << removedCoefficients);
+  LOGDEBUG(OSS() << "  I_p     size=" << I_p_.getSize());
+  LOGDEBUG(OSS() << "  I_p         =" << I_p_);
 }
 
 
@@ -285,12 +266,13 @@ void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
 /* Verbosity accessor */
 Bool CleaningStrategy::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("CleaningStrategy::getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
-void CleaningStrategy::setVerbose(const Bool verbose)
+void CleaningStrategy::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("CleaningStrategy::setVerbose is deprecated");
 }
 
 

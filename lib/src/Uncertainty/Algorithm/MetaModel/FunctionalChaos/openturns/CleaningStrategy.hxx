@@ -44,15 +44,13 @@ public:
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
-                   const UnsignedInteger maximumDimension,
-                   const Bool verbose = false);
+                   const UnsignedInteger maximumDimension);
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
                    const UnsignedInteger maximumDimension,
                    const UnsignedInteger maximumSize,
-                   const Scalar significanceFactor,
-                   const Bool verbose = false);
+                   const Scalar significanceFactor);
 
   /** Virtual constructor */
   CleaningStrategy * clone() const override;
@@ -79,7 +77,7 @@ public:
   Scalar getSignificanceFactor() const;
   void setSignificanceFactor(const Scalar significanceFactor);
 
-  /** Verbose accessor */
+  /** @deprecated Verbose accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
@@ -91,16 +89,13 @@ public:
 
 private:
   // Index of the next vector to be generated
-  UnsignedInteger currentVectorIndex_;
+  UnsignedInteger currentVectorIndex_ = 0;
 
   // Maximum size of the current basis
-  UnsignedInteger maximumSize_;
+  UnsignedInteger maximumSize_ = 0;
 
   // Relative significance factor of a vector
-  Scalar significanceFactor_;
-
-  // Verbose
-  Bool verbose_;
+  Scalar significanceFactor_ = 0.0;
 
 } ; /* class CleaningStrategy */
 

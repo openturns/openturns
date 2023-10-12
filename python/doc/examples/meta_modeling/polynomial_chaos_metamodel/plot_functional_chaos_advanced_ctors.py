@@ -161,7 +161,7 @@ maximumConsideredTerms = 500
 mostSignificant = 50
 significanceFactor = 1.0e-4
 truncatureBasisStrategy_2 = ot.CleaningStrategy(
-    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor, True
+    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor
 )
 
 # %%

@@ -87,7 +87,7 @@ int main(int, char *[])
     UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
     UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
     Scalar threshold = 1.0e-6;
-    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
+    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
     //

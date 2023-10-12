@@ -57,7 +57,7 @@ indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
 basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
-    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold, False)
+    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(
