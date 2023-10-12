@@ -171,8 +171,7 @@ String OptimizationAlgorithmImplementation::__repr__() const
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_
-      << " verbose=" << verbose_;
+      << " maximumConstraintError=" << maximumConstraintError_;
   return oss;
 }
 
@@ -209,13 +208,14 @@ OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone
 /* Verbose accessor */
 Bool OptimizationAlgorithmImplementation::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("OptimizationAlgorithm.getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
 /* Verbose accessor */
-void OptimizationAlgorithmImplementation::setVerbose(const Bool verbose)
+void OptimizationAlgorithmImplementation::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("OptimizationAlgorithm.setVerbose is deprecated, use Log.Show(Log.Trace)");
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -230,7 +230,6 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
-  adv.saveAttribute( "verbose_", verbose_);
 }
 
 
@@ -246,7 +245,6 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
-  adv.loadAttribute( "verbose_", verbose_);
 }
 
 

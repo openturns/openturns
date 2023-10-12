@@ -60,7 +60,6 @@ LeastSquaresDistributionFactory::LeastSquaresDistributionFactory(const Distribut
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
   solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
-  solver_.setVerbose(Log::HasInfo());
 }
 
 /* Virtual constructor */
@@ -214,7 +213,6 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   solver.run();
 
   Point effectiveParameter(effectiveParameterSize);

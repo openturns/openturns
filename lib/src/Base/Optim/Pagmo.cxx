@@ -606,7 +606,7 @@ void Pagmo::run()
   }
   else
     throw NotYetImplementedException(HERE) << algoName_;
-  algo.set_verbosity(getVerbose());
+  algo.set_verbosity(Log::HasDebug());
   algo.set_seed(seed_);
   PagmoProblem::evaluationNumber_ = 0;
   pop = algo.evolve(pop);

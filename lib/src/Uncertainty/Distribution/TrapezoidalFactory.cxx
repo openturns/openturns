@@ -95,7 +95,6 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   startingPoint[3] = max - delta;// d
   solver.setStartingPoint(startingPoint);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint

@@ -30,6 +30,7 @@
  * Add a new moment order argument to MethodOfMomentsFactory
  * Removed Drawable.getPointCode
  * Deprecated LHS in favor of ProbabilitySimulationAlgorithm+LHSExperiment
+ * Deprecated OptimizationAlgorithm.setVerbose/getVerbose
 
 === Documentation ===
 

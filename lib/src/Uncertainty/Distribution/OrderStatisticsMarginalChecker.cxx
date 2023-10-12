@@ -117,7 +117,6 @@ void OrderStatisticsMarginalChecker::check() const
       problem.setBounds(Interval(xMin, xMax));
       solver_.setStartingPoint(Point(1, xMiddle));
       solver_.setProblem(problem);
-      solver_.setVerbose(Log::HasInfo());
       solver_.run();
       const Point minimizer(solver_.getResult().getOptimalPoint());
       const Scalar minValue = solver_.getResult().getOptimalValue()[0];

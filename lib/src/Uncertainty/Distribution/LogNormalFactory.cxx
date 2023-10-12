@@ -395,7 +395,6 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample) con
   LeastSquaresProblem problem(residualFunction);
   OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
   solver.setStartingPoint(Point(1, gamma));
-  solver.setVerbose(Log::HasInfo());
   solver.run();
   gamma = solver.getResult().getOptimalPoint()[0];
   return buildMethodOfLeastSquares(sample, gamma);

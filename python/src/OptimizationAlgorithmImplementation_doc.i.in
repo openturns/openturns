@@ -301,32 +301,6 @@ OT_OptimizationAlgorithm_setStartingPoint_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationAlgorithm_setVerbose_doc
-"Accessor to the verbosity flag.
-
-Parameters
-----------
-verbose : bool
-    Verbosity flag state."
-%enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::setVerbose
-OT_OptimizationAlgorithm_setVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_OptimizationAlgorithm_getVerbose_doc
-"Accessor to the verbosity flag.
-
-Returns
--------
-verbose : bool
-    Verbosity flag state."
-%enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
-OT_OptimizationAlgorithm_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_OptimizationAlgorithm_setProgressCallback_doc
 "Set up a progress callback.
 

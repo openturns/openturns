@@ -102,7 +102,7 @@ void Cobyla::run()
 
   Scalar rhoEnd = getMaximumAbsoluteError();
   int maxFun = getMaximumEvaluationNumber();
-  cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
+  cobyla_message message = (Log::HasDebug() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE);
 
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);

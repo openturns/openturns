@@ -100,7 +100,6 @@ FisherSnedecor FisherSnedecorFactory::buildMethodOfLikelihoodMaximization(const 
   // Configure starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(parametersFromMoments);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // Configure bounds

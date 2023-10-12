@@ -279,7 +279,6 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
   solver.setStartingPoint(parameter);
 
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   solver.run();
 
   const OptimizationResult result(solver.getResult());
