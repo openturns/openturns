@@ -355,7 +355,7 @@ Point GeneralizedPareto::getParameter() const
 
 void GeneralizedPareto::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const Scalar w = getWeight();
   *this = GeneralizedPareto(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
