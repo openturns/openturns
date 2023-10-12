@@ -275,3 +275,69 @@ The confidence level can be set using the :class:`~openturns.ResourceMap` key
 The number of threshold points in the graph can be set with the key
 `GeneralizedParetoFactory-MeanResidualLifePointNumber`.
 "
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfLikelihoodMaximization
+"Estimate the distribution with the maximum likelihood method.
+
+Let :math:`u` a given threshold, we define the excesses values
+
+.. math::
+
+    z_i = x_i - u, for all :math:`1 \leq i \leq n` such as z_i > 0
+
+The estimator of :math:`(\sigma, \xi)` maximizes  the log-likelihood defined as:
+
+If :math:`\xi \neq 0`, then:
+
+.. math::
+    :label: llgpdR1
+
+    \ell(\sigma, \xi) = -n \log \sigma - \sum_{i=1}^n  \log \left(1 + \xi \frac{z_i}{\sigma}\right)
+
+defined on :math:`(\sigma, \xi)` such that :math:`1+\xi \left( \frac{z_i - u}{\sigma} \right) > 0` for all :math:`1 \leq i \leq n`.
+
+If :math:`\xi = 0`, then:
+
+.. math::
+    :label: llgpdR2
+
+    \ell(\sigma, \xi) = -n \log \sigma - \sigma^{-1} \sum_{i=1}^n \exp z_i
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
+u : float
+    Given threshold value
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValue`
+    The estimated distribution."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimator
+"Estimate the distribution and the parameter distribution with the maximum likelihood method.
+
+The estimators are defined using the profile log-likelihood  as detailed in
+:meth:`buildMethodOfLikelihoodMaximization`.
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{\sigma}, \hat{\xi}, u)`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample
+u : float
+    Given threshold value
+
+Returns
+-------
+result : :class:`~openturns.DistributionFactoryLikelihoodResult`
+    The result class."

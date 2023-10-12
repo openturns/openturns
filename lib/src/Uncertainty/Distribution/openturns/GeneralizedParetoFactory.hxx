@@ -25,6 +25,7 @@
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/DistributionFactoryLikelihoodResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -68,6 +69,10 @@ public:
 
   /** Mean residual life plot */
   Graph drawMeanResidualLife(const Sample & sample) const;
+
+  /** Maximum likelihood */
+  DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const Scalar u) const;
+  GeneralizedPareto buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const;
 
 private:
 

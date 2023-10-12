@@ -25,6 +25,11 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/ParametricFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/Cobyla.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,6 +48,9 @@ GeneralizedParetoFactory::GeneralizedParetoFactory()
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumObjectiveError"));
   solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumConstraintError"));
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  if (cobyla)
+    cobyla->setIgnoreFailure(true);
 }
 
 /* Virtual constructor */
@@ -112,7 +120,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Point
   }
   catch (const InvalidArgumentException &)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from the given parameters";
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from the given parameters: " << parameters;
   }
 }
 
@@ -320,6 +328,141 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   result.add(curveCILow);
   result.add(curveCIUp);
   return result;
+}
+
+class GeneralizedParetoLikelihoodEvaluation : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoLikelihoodEvaluation(const Sample & sample, const Scalar u)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , m_(sample.getSize())
+    , u_(u)
+  {
+    // Nothing to do
+  }
+
+  GeneralizedParetoLikelihoodEvaluation * clone() const override
+  {
+    return new GeneralizedParetoLikelihoodEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 2;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator() (const Point & parameter) const override
+  {
+    const Scalar sigma = parameter[0];
+    const Scalar xi = parameter[1];
+    Point value(1);
+    if (sigma <= 0.0)
+    {
+      value[0] = -std::log(SpecFunc::MaxScalar);
+      return value;
+    }
+    Scalar ll = 0.0;
+    UnsignedInteger n = 0;// count the number of x>u
+    for (UnsignedInteger i = 0; i < m_; ++ i)
+    {
+      const Scalar zi = sample_(i, 0) - u_;
+      if (zi > 0.0)
+      {
+        if (std::abs(xi) < SpecFunc::Precision)
+        {
+          ll += - 1.0 * zi / sigma;
+        }
+        else
+        {
+          const Scalar c1 = xi * zi / sigma;
+          if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
+          {
+            ll += -std::log(SpecFunc::MaxScalar);
+            continue;
+          }
+          ll += (-1.0 / xi - 1.0) * std::log1p(c1);
+        }
+        ++ n;
+      }
+    }
+    ll += - 1.0 * n * std::log(sigma);
+    value[0] = ll;
+    return value;
+  }
+
+private:
+  Sample sample_;
+  UnsignedInteger m_ = 0;
+  Scalar u_ = 0.0;
+};
+
+
+
+DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample,
+    const Scalar u) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of size>=2, here size=" << sample.getSize();
+
+  const Function objective(new GeneralizedParetoLikelihoodEvaluation(sample, u));
+  OptimizationProblem problem(objective);
+  problem.setMinimization(false);
+
+  // sigma > 0
+  const Point lowerBound({SpecFunc::Precision, -SpecFunc::MaxScalar});
+  const Point upperBound(2, SpecFunc::MaxScalar);
+  const Interval::BoolCollection finiteLowerBound({true, false});
+  const Interval::BoolCollection finiteUpperBound(2, false);
+  problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+
+  // 1+xi(zi-mu)/sigma > 0 for all order statistics taken into account
+  const Scalar zMin = sample.getMin()[0];
+  const Scalar zMax = sample.getMax()[0];
+
+  Description formulas(2);
+  formulas[0] = OSS() << "sigma + xi * (" << zMax << " - " << u <<")";
+  formulas[1] = OSS() << "sigma + xi * (" << zMin << " - " << u <<")";
+  const SymbolicFunction constraint(Description({"sigma", "xi"}), formulas);
+  problem.setInequalityConstraint(constraint);
+
+  Sample xu(0, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (sample(i, 0) > u)
+      xu.add(sample[i]);
+  if (xu.getSize() < 10)
+    throw InvalidArgumentException(HERE) << "Not enough points, lower the threshold u";
+
+  // starting point: initialize sigma as Gumbel parametrization, xi is arbitrary (see ismev package)
+  const Scalar sigma0 = std::sqrt(6.0 * xu.computeCovariance()(0, 0)) / M_PI;
+  const Scalar xi0 = 0.1;
+  const Point x0({sigma0, xi0});
+
+  // solve optimization problem
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(x0);
+  solver.run();
+  Point optimalParameter(solver.getResult().getOptimalPoint()); // sigma, xi
+  optimalParameter.add(u);
+
+  const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
+  const Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
+  DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
+  return result;
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const
+{
+  const Distribution distribution(buildMethodOfLikelihoodMaximizationEstimator(sample, u).getDistribution());
+  return buildAsGeneralizedPareto(distribution.getParameter());
 }
 
 END_NAMESPACE_OPENTURNS
