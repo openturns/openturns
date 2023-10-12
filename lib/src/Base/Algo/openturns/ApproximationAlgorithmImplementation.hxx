@@ -94,7 +94,7 @@ public:
 
   Scalar getRelativeError();
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
@@ -125,27 +125,23 @@ protected:
   Point weight_;
 
   /** Flag to tell if the weights are uniform */
-  Bool hasUniformWeight_;
+  Bool hasUniformWeight_ = false;
 
   /** Basis */
   FunctionPersistentCollection psi_;
   Indices currentIndices_;
 
-  mutable Bool isAlreadyComputedCoefficients_;
+  mutable Bool isAlreadyComputedCoefficients_ = false;
 
   /** Regression coefficients */
   Point coefficients_;
 
 private:
   /** Residual */
-  Scalar residual_;
+  Scalar residual_ = 0.0;
 
   /** Relative error */
-  Scalar relativeError_;
-
-  /** Verbosity flag */
-  Bool verbose_;
-
+  Scalar relativeError_ = 0.0;
 
 }; /* class ApproximationAlgorithmImplementation */
 

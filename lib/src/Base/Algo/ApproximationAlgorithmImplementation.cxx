@@ -31,11 +31,6 @@ static const Factory<ApproximationAlgorithmImplementation> Factory_Approximation
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   : PersistentObject()
-  , hasUniformWeight_(true)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   // Nothing to do
 }
@@ -52,10 +47,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , hasUniformWeight_(true)
   , psi_(psi)
   , currentIndices_(indices)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -73,13 +64,8 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , x_(x)
   , y_(y)
   , weight_()
-  , hasUniformWeight_(false)
   , psi_(psi)
   , currentIndices_(indices)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -153,8 +139,7 @@ String ApproximationAlgorithmImplementation::__repr__() const
          << " x=" << x_
          << " y=" << y_
          << " weight=" << weight_
-         << " psi=" << psi_
-         << " verbose=" << verbose_ ;
+         << " psi=" << psi_;
 }
 
 
@@ -201,14 +186,15 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
 }
 
 /* Verbosity accessor */
-void ApproximationAlgorithmImplementation::setVerbose(const Bool verbose)
+void ApproximationAlgorithmImplementation::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("ApproximationAlgorithm::setVerbose is deprecated");
 }
 
 Bool ApproximationAlgorithmImplementation::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("ApproximationAlgorithm::getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -220,7 +206,6 @@ void ApproximationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute("weight_", weight_);
   adv.saveAttribute("psi_", psi_);
   adv.saveAttribute("currentIndices_", currentIndices_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 
@@ -234,7 +219,6 @@ void ApproximationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute("weight_", weight);
   adv.loadAttribute("psi_", psi_);
   adv.loadAttribute("currentIndices_", currentIndices_);
-  adv.loadAttribute("verbose_", verbose_);
   setWeight(weight);
 }
 

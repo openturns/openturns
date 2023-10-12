@@ -39,6 +39,7 @@
  * Deprecated Classifier.setVerbose/getVerbose
  * Deprecated ARMAlikelihoodFactory.setVerbose/getVerbose
  * Deprecated CleaningStrategy.setVerbose/getVerbose
+ * Deprecated ApproximationAlgorithm.setVerbose/getVerbose
 
 === Documentation ===
 
