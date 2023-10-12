@@ -449,19 +449,20 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
-  solver_.setProblem(problem);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
   try
   {
     // If the solver is single start, we can use its setStartingPoint method
-    solver_.setStartingPoint(initialParameters);
+    solver.setStartingPoint(initialParameters);
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     // Nothing to do if setStartingPoint is not defined
   }
-  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
-  solver_.run();
-  const OptimizationAlgorithm::Result result(solver_.getResult());
+  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
+  solver.run();
+  const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
   const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
