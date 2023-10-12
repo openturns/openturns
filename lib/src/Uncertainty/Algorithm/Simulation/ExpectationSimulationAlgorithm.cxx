@@ -44,7 +44,6 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
-//   setVerbose(verbose);
 }
 
 /* Constructor with parameters */
@@ -54,7 +53,6 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm(const RandomVecto
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
-//   setVerbose(verbose);
 }
 
 /* Virtual constructor */
@@ -154,7 +152,7 @@ void ExpectationSimulationAlgorithm::run()
     result_.setOuterSampling(outerSampling);
 
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
 
     // compute criterion on standard deviation
     Point standardDeviation(result_.getStandardDeviation());

@@ -36,9 +36,8 @@ CLASSNAMEINIT(ProbabilitySimulationAlgorithm)
 
 static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbose,
-    const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(verbose, convergenceStrategy)
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy)
+  : EventSimulation(convergenceStrategy)
   , isExperimentProvided_(false)
 {
   // Nothing to do
@@ -46,9 +45,8 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbos
 
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
-    const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, verbose, convergenceStrategy)
+  : EventSimulation(event, convergenceStrategy)
   , isExperimentProvided_(false)
 {
   // Nothing to do
@@ -57,9 +55,8 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVecto
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const WeightedExperiment & experiment,
-    const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, verbose, convergenceStrategy)
+  : EventSimulation(event, convergenceStrategy)
   , isExperimentProvided_(true)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";

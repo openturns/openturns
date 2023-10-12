@@ -45,7 +45,6 @@ public:
 
   /** Constructor with parameters */
   explicit EventSimulation(const RandomVector & event,
-                           const Bool verbose = true,
                            const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
@@ -81,8 +80,7 @@ protected:
   virtual Sample computeBlockSample();
 
   /** For save/load mechanism*/
-  EventSimulation(const Bool verbose = true,
-                  const HistoryStrategy & convergenceStrategy = Compact());
+  EventSimulation(const HistoryStrategy & convergenceStrategy = Compact());
 
   friend class Factory<EventSimulation>;
 

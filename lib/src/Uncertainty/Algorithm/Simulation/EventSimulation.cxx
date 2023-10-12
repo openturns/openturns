@@ -44,24 +44,21 @@ CLASSNAMEINIT(EventSimulation)
 static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
-EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
+EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
-  setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Constructor with parameters */
 EventSimulation::EventSimulation(const RandomVector & event,
-                                 const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(event)
   , result_()
 {
-  setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
   if (!event.isEvent())
     throw InvalidArgumentException(HERE) << "Not an event";
@@ -161,7 +158,7 @@ void EventSimulation::run()
     result_.setVarianceEstimate(reducedVarianceEstimate);
     result_.setOuterSampling(outerSampling);
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
     // Get the coefficient of variation back
     // We use the result to compute these quantities in order to
     // delegate the treatment of the degenerate cases (i.e. the

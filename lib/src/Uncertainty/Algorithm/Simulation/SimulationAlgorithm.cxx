@@ -46,7 +46,6 @@ SimulationAlgorithm::SimulationAlgorithm()
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling" ))
   , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation" ))
   , maximumStandardDeviation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation" ))
-  , verbose_(false)
 {
   // Nothing to do
 }
@@ -109,15 +108,16 @@ UnsignedInteger SimulationAlgorithm::getBlockSize() const
 }
 
 /* Verbosity accessor */
-void SimulationAlgorithm::setVerbose(const Bool verbose)
+void SimulationAlgorithm::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("SimulationAlgorithm.setVerbose is deprecated");
 }
 
 /* Verbosity accessor */
 Bool SimulationAlgorithm::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("SimulationAlgorithm.getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
 /* String converter */
@@ -160,7 +160,6 @@ void SimulationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
   adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -172,7 +171,6 @@ void SimulationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
   adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
-  adv.loadAttribute("verbose_", verbose_);
 }
 
 

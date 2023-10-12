@@ -59,7 +59,7 @@ public:
   virtual void setBlockSize(const UnsignedInteger blockSize);
   UnsignedInteger getBlockSize() const;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
@@ -108,9 +108,6 @@ private:
 
   // Maximum standard deviation allowed for convergence
   Scalar maximumStandardDeviation_;
-
-  // Do we have to echo all the intermediate results?
-  Bool verbose_;
 
 } ; /* class SimulationAlgorithm */
 
