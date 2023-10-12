@@ -257,7 +257,7 @@ void SobolSimulationAlgorithm::run()
     LOGINFO(OSS() << "SobolSimulationAlgorithm::run: FO=" << firstOrderIndicesDistribution);
 
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
 
     Bool converged = true;
     for (UnsignedInteger j = 0; (j < dimension) && converged; ++ j)

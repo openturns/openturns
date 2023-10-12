@@ -1,16 +1,11 @@
 %feature("docstring") OT::EventSimulation
 "Base class for sampling methods.
 
-Available constructor:
-    EventSimulation(*event, verbose=True, convergenceStrategy=ot.Compact()*)
-
 Parameters
 ----------
 event : :class:`~openturns.RandomVector`
     The event we are computing the probability of.
-verbose : bool
-    If *True*, make the computation verbose.
-convergenceStrategy : :class:`~openturns.HistoryStrategy`
+convergenceStrategy : :class:`~openturns.HistoryStrategy`, optional
     Storage strategy used to store the values of the probability estimator and
     its variance during the simulation algorithm.
 

@@ -37,18 +37,15 @@ class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
   CLASSNAME
 public:
   /** Default constructor */
-  ProbabilitySimulationAlgorithm(const Bool verbose = true,
-                                 const HistoryStrategy & convergenceStrategy = Compact());
+  ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const RandomVector & event,
-                                 const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const WeightedExperiment & experiment,
-                                 const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */

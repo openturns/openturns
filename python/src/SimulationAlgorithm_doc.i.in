@@ -96,26 +96,6 @@ sigma : float, :math:`\sigma > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SimulationAlgorithm::getVerbose
-"Accessor to verbosity.
-
-Returns
--------
-verbosity_enabled : bool
-    If *True*, the computation is verbose. By default it is verbose."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::SimulationAlgorithm::setVerbose
-"Accessor to verbosity.
-
-Parameters
-----------
-verbosity_enabled : bool
-    If *True*, make the computation verbose. By default it is verbose."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SimulationAlgorithm::run
 "Launch simulation.
 
