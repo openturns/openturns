@@ -88,32 +88,6 @@ OT_Classifier_getDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Classifier_getVerbose_doc
-"Accessor to the verbosity.
-
-Returns
--------
-verb : bool
-    Logical value telling if the verbose mode has been activated."
-%enddef
-%feature("docstring") OT::ClassifierImplementation::getVerbose
-OT_Classifier_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Classifier_setVerbose_doc
-"Accessor to the verbosity.
-
-Parameters
-----------
-verb : bool
-    Logical value telling if the verbose mode has been activated."
-%enddef
-%feature("docstring") OT::ClassifierImplementation::setVerbose
-OT_Classifier_setVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Classifier_setParallel_doc
 "Accessor to the parallel flag.
 

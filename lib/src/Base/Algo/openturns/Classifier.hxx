@@ -73,7 +73,7 @@ public:
   /** Input space dimension */
   UnsignedInteger getDimension() const;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 

@@ -34,7 +34,6 @@ ClassifierImplementation::ClassifierImplementation()
   : PersistentObject()
   , inputSample_(0, 0)
   , classes_(0)
-  , verbose_(false)
   , isParallel_(ResourceMap::GetAsBool("Classifier-Parallel"))
 {
   // Nothing to do
@@ -46,7 +45,6 @@ ClassifierImplementation::ClassifierImplementation(const Sample & inputSample,
   : PersistentObject()
   , inputSample_(inputSample)
   , classes_(classes)
-  , verbose_(false)
   , isParallel_(ResourceMap::GetAsBool("Classifier-Parallel"))
 {
   // Nothing to do
@@ -180,8 +178,7 @@ String ClassifierImplementation::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
          << " x=" << inputSample_
-         << " y=" << classes_
-         << " verbose=" << verbose_ ;
+         << " y=" << classes_;
 }
 
 
@@ -191,14 +188,15 @@ String ClassifierImplementation::__str__(const String & ) const
 }
 
 /* Verbosity accessor */
-void ClassifierImplementation::setVerbose(const Bool verbose)
+void ClassifierImplementation::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("ClassifierImplementation::setVerbose is deprecated");
 }
 
 Bool ClassifierImplementation::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("ClassifierImplementation::getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
 /* Input space dimension accessor */
@@ -213,7 +211,6 @@ void ClassifierImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "classes_", classes_ );
-  adv.saveAttribute( "verbose_", verbose_ );
 }
 
 
@@ -223,7 +220,6 @@ void ClassifierImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "classes_", classes_ );
-  adv.loadAttribute( "verbose_", verbose_ );
 }
 
 

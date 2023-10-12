@@ -70,7 +70,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
@@ -96,11 +96,8 @@ protected:
   Indices classes_;
 
 private:
-  /** Verbosity flag */
-  Bool verbose_;
-
   /** Flag to tell if parallelization must be used */
-  Bool isParallel_;
+  Bool isParallel_ = false;
 
 }; /* class ClassifierImplementation */
 
