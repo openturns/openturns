@@ -304,7 +304,6 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 {
   const Function residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
   LeastSquaresProblem problem(residualFunction);
-  algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
   try
   {

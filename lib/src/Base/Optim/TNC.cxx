@@ -137,7 +137,7 @@ void TNC::run()
     if (!finiteUp[i]) up[i] = HUGE_VAL;
   }
 
-  tnc_message message((getVerbose() ? TNC_MSG_ALL : TNC_MSG_NONE));
+  tnc_message message = (Log::HasDebug() ? TNC_MSG_ALL : TNC_MSG_NONE);
   Point scale(getScale());
   Point offset(getOffset());
   double *refScale(scale.getDimension() == 0 ? NULL : &scale[0]);

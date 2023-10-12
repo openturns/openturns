@@ -94,7 +94,7 @@ public:
   Scalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const Scalar maximumConstraintError);
 
-  /* Verbose accessor */
+  /* @deprecated Verbose accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 

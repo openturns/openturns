@@ -385,7 +385,6 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, parameterMean, parameterInverseCholesky, errorInverseCholesky);
   const Function residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
-  algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
   try
   {

@@ -306,7 +306,6 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
   }
 
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   try
   {
     solver.run();

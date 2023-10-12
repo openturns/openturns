@@ -109,7 +109,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Verbose accessor */
+  /** @deprecated Verbose accessor */
   virtual Bool getVerbose() const;
   virtual void setVerbose(const Bool verbose);
 
@@ -150,7 +150,6 @@ private:
   Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
-  Bool verbose_ = false;
 
 } ; /* class OptimizationAlgorithmImplementation */
 

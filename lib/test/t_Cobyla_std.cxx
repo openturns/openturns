@@ -41,10 +41,9 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-
   try
   {
-
+    Log::Show(Log::NONE);
     // Test function operator ()
     Description input(4);
     input[0] = "x1";

@@ -117,7 +117,7 @@ Scalar AbdoRackwitz::computeLineSearch()
     currentStepLevelValue = levelFunction(currentStepPoint)[0];
 
     currentStepTheta = 0.5 * currentStepPoint.normSquare() + currentSigma_ * std::abs(currentStepLevelValue - levelValue);
-    if (getVerbose()) LOGINFO(OSS() << "line search step=" << step << " currentStepPoint=" << currentStepPoint << " currentStepLevelValue=" << currentStepLevelValue << " currentStepTheta=" << currentStepTheta);
+    LOGDEBUG(OSS() << "line search step=" << step << " currentStepPoint=" << currentStepPoint << " currentStepLevelValue=" << currentStepLevelValue << " currentStepTheta=" << currentStepTheta);
     step *= tau_;
   }
   while ((step >= minStep) && ( currentStepTheta > currentTheta + step * levelIncrement));
@@ -165,7 +165,7 @@ void AbdoRackwitz::run()
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
-    if (getVerbose()) LOGINFO(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
+    LOGDEBUG(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */

@@ -132,7 +132,6 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   problem.setMinimization(false);
   TNC solver(problem);
   solver.setStartingPoint((bounds.getLowerBound() + bounds.getUpperBound()) * 0.5);
-  solver.setVerbose(Log::HasInfo());
   solver.run();
   const Scalar nu = solver.getResult().getOptimalPoint()[0];
   const Point sigma(stdev * std::sqrt(1.0 - 2.0 / nu));

@@ -91,7 +91,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   // Configure starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // Estimate
@@ -139,7 +138,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
