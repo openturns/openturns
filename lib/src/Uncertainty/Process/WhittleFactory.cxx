@@ -50,7 +50,6 @@ WhittleFactory::WhittleFactory()
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -71,7 +70,6 @@ WhittleFactory::WhittleFactory(const UnsignedInteger p,
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -94,7 +92,6 @@ WhittleFactory::WhittleFactory(const Indices & p,
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -299,12 +296,13 @@ WelchFactory WhittleFactory::getSpectralModelFactory() const
 /* Verbosity accessor */
 Bool WhittleFactory::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("WhittleFactory::getVerbose is deprecated"); 
+  return Log::HasDebug();
 }
 
-void WhittleFactory::setVerbose(const Bool verbose)
+void WhittleFactory::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("WhittleFactory::setVerbose is deprecated");
 }
 
 /* Enable or disable the estimation history */
@@ -415,7 +413,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
     {
       currentQ_ = q_[qIndex];
 
-      if (verbose_) LOGINFO(OSS() << "Current parameters p=" << currentP_ << ", q=" << currentQ_);
+      LOGDEBUG(OSS() << "Current parameters p=" << currentP_ << ", q=" << currentQ_);
 
 
       // Dimension of the optimization problem
@@ -462,7 +460,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       currentInformationCriteria[1] = -2.0 * logLikelihood + 2.0 * (n + 1);
       // Third, the BIC
       currentInformationCriteria[2] = -2.0 * logLikelihood + 2.0 * (n + 1) * log(1.0 * m_);
-      if (verbose_) LOGINFO(OSS(false) << "Current estimate: theta=" << theta << ", sigma2=" << sigma2_ << ", Current information criteria=" << currentInformationCriteria);
+      LOGDEBUG(OSS(false) << "Current estimate: theta=" << theta << ", sigma2=" << sigma2_ << ", Current information criteria=" << currentInformationCriteria);
       if (isHistoryEnabled_) history_.add(WhittleFactoryState(currentP_, theta, sigma2_, currentInformationCriteria, timeGrid_));
       // Keep the best model according to the first criteria
       if (currentInformationCriteria[0] < bestInformationCriteria[0])
@@ -473,7 +471,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
         bestP = currentP_;
         bestQ = currentQ_;
       }
-      if (verbose_) LOGINFO(OSS(false) << "Best so far: p=" << bestP << ", q=" << bestQ << ", theta=" << bestTheta << ", sigma2=" << bestSigma2 << ", information criteria=" << bestInformationCriteria);
+      LOGDEBUG(OSS(false) << "Best so far: p=" << bestP << ", q=" << bestQ << ", theta=" << bestTheta << ", sigma2=" << bestSigma2 << ", information criteria=" << bestInformationCriteria);
       ++pointIndex;
     } // Loop over q
   } // Loop over p
@@ -545,7 +543,6 @@ void WhittleFactory::save(Advocate & adv) const
 {
   ARMAFactoryImplementation::save(adv);
   adv.saveAttribute( "spectralFactory_", spectralFactory_);
-  adv.saveAttribute( "verbose_", verbose_);
   adv.saveAttribute( "isHistoryEnabled_", isHistoryEnabled_);
   adv.saveAttribute( "history_", history_);
   adv.saveAttribute( "startingPoints_", startingPoints_);
@@ -556,7 +553,6 @@ void WhittleFactory::load(Advocate & adv)
 {
   ARMAFactoryImplementation::load(adv);
   adv.loadAttribute( "spectralFactory_", spectralFactory_);
-  adv.loadAttribute( "verbose_", verbose_);
   adv.loadAttribute( "isHistoryEnabled_", isHistoryEnabled_);
   adv.loadAttribute( "history_", history_);
   adv.loadAttribute( "startingPoints_", startingPoints_);

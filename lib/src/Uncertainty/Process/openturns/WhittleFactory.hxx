@@ -72,7 +72,7 @@ public:
   ARMA buildWithCriteria(const ProcessSample & sample,
                          Point & informationCriteriaOut) const;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
@@ -128,9 +128,6 @@ private :
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable Scalar sigma2_;
-
-  /** Verbosity control */
-  Bool verbose_;
 
   /** History flag */
   mutable Bool isHistoryEnabled_;

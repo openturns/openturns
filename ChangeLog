@@ -35,6 +35,7 @@
  * Deprecated MetropolisHastings.setVerbose/getVerbose
  * Deprecated BasisSequenceFactory.setVerbose/getVerbose
  * Deprecated SimulationAlgorithm.setVerbose/getVerbose
+ * Deprecated WhittleFactory.setVerbose
 
 === Documentation ===
 

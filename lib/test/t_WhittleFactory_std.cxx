@@ -56,7 +56,6 @@ int main(int, char *[])
     /* First, build an ARMA based on a given order using the WhittleFactory */
     {
       WhittleFactory factory(p, q);
-      // factory.setVerbose(true);
       fullprint << "factory=" << factory << std::endl;
       Point informationCriteria;
       Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
@@ -75,7 +74,6 @@ int main(int, char *[])
     Indices qIndices(q + 1);
     qIndices.fill();
     WhittleFactory factory(pIndices, qIndices);
-    // factory.setVerbose(true);
     fullprint << "factory=" << factory << std::endl;
     Point informationCriteria;
     Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
