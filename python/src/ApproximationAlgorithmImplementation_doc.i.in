@@ -21,32 +21,6 @@ OT_ApproximationAlgorithm_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_ApproximationAlgorithm_getVerbose_doc
-"Accessor to the verbosity flag.
-
-Returns
--------
-v : bool.
-    Verbosity"
-%enddef
-%feature("docstring") OT::ApproximationAlgorithmImplementation::getVerbose
-OT_ApproximationAlgorithm_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_ApproximationAlgorithm_setVerbose_doc
-"Accessor to the verbosity flag.
-
-Parameters
-----------
-v : bool
-    Enable or disable the verbosity."
-%enddef
-%feature("docstring") OT::ApproximationAlgorithmImplementation::setVerbose
-OT_ApproximationAlgorithm_setVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_ApproximationAlgorithm_getCoefficients_doc
 "Accessor to the coefficients.
 
