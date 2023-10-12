@@ -141,7 +141,8 @@ We define the series
 :math:`M_i^{(R)} = (z_i^{(1)}, \hdots, z_i^{(R)})` for :math:`1 \leq i \leq n` where the values are sorted
 in decreasing order.
 
-The estimator of :math:`(\mu, \sigma, \xi)` maximizes  the log-likelihood built from the :math:`r` largest order statisctics, with :math:`1 \leq r \leq R` defined as:
+The estimator of :math:`(\mu, \sigma, \xi)` maximizes  the log-likelihood built from the :math:`r` largest order statistics,
+with :math:`1 \leq r \leq R` defined as:
 
 If :math:`\xi \neq 0`, then:
 
@@ -151,7 +152,8 @@ If :math:`\xi \neq 0`, then:
     \ell(\mu, \sigma, \xi) = -nr \log \sigma - \sum_{i=1}^n   \biggl[ 1 + \xi \Bigl( \frac{z_i^{(r)} - \mu }{\sigma} \Bigr) \biggr]^{-1/\xi}  -\left(\dfrac{1}{\xi} +1 \right)  \sum_{i=1}^n \sum_{k=1}^r  \log \biggl[ 1 + \xi \Bigl( \frac{z_i^{(k)} - \mu }{\sigma} \Bigr) \biggr] 
 
 
-defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_i^{(k)} - \mu}{\sigma} \right) > 0` for all :math:`1 \leq i \leq m` and :math:`1 \leq k \leq r`.
+defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_i^{(k)} - \mu}{\sigma} \right) > 0`
+for all :math:`1 \leq i \leq m` and :math:`1 \leq k \leq r`.
 
 If :math:`\xi = 0`, then:
 
