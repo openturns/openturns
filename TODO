@@ -6,3 +6,4 @@ Remove SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSam
 Remove SubsetSampling.setISubset, setBetaMin
 Remove LHS
 Remove OptimizationAlgorithm.set/getVerbose
+Remove DickeyFullerTest.setVerbose/getVerbose

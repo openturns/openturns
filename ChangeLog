@@ -31,6 +31,7 @@
  * Removed Drawable.getPointCode
  * Deprecated LHS in favor of ProbabilitySimulationAlgorithm+LHSExperiment
  * Deprecated OptimizationAlgorithm.setVerbose/getVerbose
+ * Deprecated DickeyFullerTest.setVerbose/getVerbose
 
 === Documentation ===
 

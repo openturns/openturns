@@ -3,10 +3,12 @@
 
 Refer to :ref:`dickey_fuller`.
 
-Notes
------
 The Dickey-Fuller test checks the stationarity of a scalar time series using one time series.
 
+Parameters
+----------
+series : `~openturns.TimeSeries`
+    Time series to consider
 
 Examples
 --------
