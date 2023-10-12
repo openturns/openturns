@@ -517,7 +517,6 @@ def compute_cleaning_PCE(
         maximumConsideredTerms,
         mostSignificant,
         significanceFactor,
-        True,
     )
     chaosalgo = ot.FunctionalChaosAlgorithm(
         X, W, Y, im.distributionX, adaptiveStrategy, projectionStrategy
