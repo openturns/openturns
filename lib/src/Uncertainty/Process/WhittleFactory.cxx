@@ -436,14 +436,15 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
         // use attributes to pass the data
         nbInequalityConstraint_ = m;
         problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-        solver_.setProblem(problem);
-        solver_.setStartingPoint(startingPoints_[pointIndex]);
+        OptimizationAlgorithm solver(solver_);
+	solver.setProblem(problem);
+        solver.setStartingPoint(startingPoints_[pointIndex]);
 
         // run Optimization problem
-        solver_.run();
+        solver.run();
 
         // optimal point
-        const Point optpoint(solver_.getResult().getOptimalPoint());
+        const Point optpoint(solver.getResult().getOptimalPoint());
         theta = optpoint;
       }
       // Compute the information criteria

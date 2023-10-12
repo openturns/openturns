@@ -160,7 +160,7 @@ private :
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class WhittleFactory */
 
