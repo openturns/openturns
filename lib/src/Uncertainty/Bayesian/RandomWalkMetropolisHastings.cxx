@@ -105,8 +105,7 @@ Point RandomWalkMetropolisHastings::getCandidate() const
     // reset the counter
     acceptedNumberAdaptation_ = 0;
 
-    if (getVerbose())
-      LOGTRACE(OSS() << "rho=" << rho << " delta=" << adaptationFactor_);
+    LOGDEBUG(OSS() << "rho=" << rho << " delta=" << adaptationFactor_);
   }
 
   Point prop(proposal_.getRealization());

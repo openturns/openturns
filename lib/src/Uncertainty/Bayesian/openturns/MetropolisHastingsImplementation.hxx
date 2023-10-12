@@ -110,7 +110,7 @@ public:
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
@@ -160,9 +160,6 @@ private:
   Function linkFunction_;
   Sample covariates_;
   Sample observations_;
-
-  // verbosity flag
-  Bool verbose_ = false;
 
   // unnormalized log-posterior density of the current state
   mutable Scalar currentLogPosterior_ = 0.0;

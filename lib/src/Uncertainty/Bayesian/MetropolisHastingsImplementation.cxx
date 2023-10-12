@@ -326,15 +326,16 @@ Sample MetropolisHastingsImplementation::getCovariates() const
 }
 
 
-void MetropolisHastingsImplementation::setVerbose(const Bool verbose)
+void MetropolisHastingsImplementation::setVerbose(const Bool /*verbose*/)
 {
-  verbose_ = verbose;
+  LOGWARN("MetropolisHastings.setVerbose is deprecated");
 }
 
 
 Bool MetropolisHastingsImplementation::getVerbose() const
 {
-  return verbose_;
+  LOGWARN("MetropolisHastings.getVerbose is deprecated");
+  return Log::HasDebug();
 }
 
 
@@ -381,7 +382,6 @@ void MetropolisHastingsImplementation::save(Advocate & adv) const
   adv.saveAttribute("linkFunction_", linkFunction_);
   adv.saveAttribute("covariates_", covariates_);
   adv.saveAttribute("observations_", observations_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -401,7 +401,6 @@ void MetropolisHastingsImplementation::load(Advocate & adv)
   adv.loadAttribute("linkFunction_", linkFunction_);
   adv.loadAttribute("covariates_", covariates_);
   adv.loadAttribute("observations_", observations_);
-  adv.loadAttribute("verbose_", verbose_);
 }
 
 END_NAMESPACE_OPENTURNS
