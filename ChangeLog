@@ -37,6 +37,7 @@
  * Deprecated SimulationAlgorithm.setVerbose/getVerbose
  * Deprecated WhittleFactory.setVerbose
  * Deprecated Classifier.setVerbose/getVerbose
+ * Deprecated ARMAlikelihoodFactory.setVerbose/getVerbose
 
 === Documentation ===
 
