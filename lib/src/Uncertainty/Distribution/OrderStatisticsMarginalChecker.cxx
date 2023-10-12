@@ -115,13 +115,14 @@ void OrderStatisticsMarginalChecker::check() const
       // Define Optimization problem
       OptimizationProblem problem(f);
       problem.setBounds(Interval(xMin, xMax));
-      solver_.setStartingPoint(Point(1, xMiddle));
-      solver_.setProblem(problem);
-      solver_.run();
-      const Point minimizer(solver_.getResult().getOptimalPoint());
-      const Scalar minValue = solver_.getResult().getOptimalValue()[0];
+      OptimizationAlgorithm solver(solver_);
+      solver.setStartingPoint(Point(1, xMiddle));
+      solver.setProblem(problem);
+      solver.run();
+      const Point minimizer(solver.getResult().getOptimalPoint());
+      const Scalar minValue = solver.getResult().getOptimalValue()[0];
 
-      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver_.getResult());
+      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver.getResult());
       if (minValue < epsilon) throw InvalidArgumentException(HERE) << "margins are not compatible: the CDF at x=" << minimizer[0] << " of margin " << i << " is not enough larger than the CDF of margin " << i + 1 << ". Gap is " << minValue << ".";
     } // k
   } // i

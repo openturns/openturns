@@ -59,7 +59,7 @@ public:
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 private:
   DistributionCollection collection_;
