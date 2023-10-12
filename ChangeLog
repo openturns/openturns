@@ -33,6 +33,7 @@
  * Deprecated OptimizationAlgorithm.setVerbose/getVerbose
  * Deprecated DickeyFullerTest.setVerbose/getVerbose
  * Deprecated MetropolisHastings.setVerbose/getVerbose
+ * Deprecated BasisSequenceFactory.setVerbose/getVerbose
 
 === Documentation ===
 

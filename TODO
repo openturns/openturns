@@ -8,3 +8,5 @@ Remove LHS
 Remove OptimizationAlgorithm.set/getVerbose
 Remove DickeyFullerTest.setVerbose/getVerbose
 Remove MetropolisHasting.setVerbose/getVerbose
+Remove BasisSequenceFactory.setVerbose/getVerbose
+

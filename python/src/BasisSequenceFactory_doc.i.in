@@ -4,11 +4,7 @@
 OT_BasisSequenceFactory_doc
 %feature("docstring") OT::BasisSequenceFactory::getMaximumRelativeConvergence
 OT_BasisSequenceFactory_getMaximumRelativeConvergence_doc
-%feature("docstring") OT::BasisSequenceFactory::getVerbose
-OT_BasisSequenceFactory_getVerbose_doc
 %feature("docstring") OT::BasisSequenceFactory::setMaximumRelativeConvergence
 OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
-%feature("docstring") OT::BasisSequenceFactory::setVerbose
-OT_BasisSequenceFactory_setVerbose_doc
 %feature("docstring") OT::BasisSequenceFactory::build
 OT_BasisSequenceFactory_build_doc
