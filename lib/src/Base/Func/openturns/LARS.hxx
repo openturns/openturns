@@ -40,7 +40,7 @@ public:
 
 
   /** Default constructor */
-  explicit LARS(const Bool verbose = false);
+  LARS();
 
   /** Virtual constructor */
   LARS * clone() const override;

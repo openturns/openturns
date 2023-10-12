@@ -55,7 +55,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 

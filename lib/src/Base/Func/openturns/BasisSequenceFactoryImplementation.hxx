@@ -46,12 +46,12 @@ public:
   typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
-  explicit BasisSequenceFactoryImplementation(const Bool verbose = false);
+  BasisSequenceFactoryImplementation();
 
   /** Virtual constructor */
   BasisSequenceFactoryImplementation * clone() const override;
 
-  /** Verbosity accessor */
+  /** @deprecated Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
@@ -93,11 +93,8 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
 
 protected:
-  /** Verbosity flag */
-  Bool verbose_;
-
   /** Stopping criterion on the L1-norm of the coefficients */
-  Scalar maximumRelativeConvergence_;
+  Scalar maximumRelativeConvergence_ = 0.0;
 
   /** The collection of indices of the vectors in the partial basis with respect to the orthogonal basis */
   Indices currentIndices_;

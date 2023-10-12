@@ -78,7 +78,6 @@ basis = [productBasis.build(i) for i in range(basisSize)]
 
 # run algorithm
 factory = ot.BasisSequenceFactory(ot.LARS())
-factory.setVerbose(True)
 print("factory = ", factory)
 
 seq = factory.build(u, y, basis, list(range(basisSize)))

@@ -111,7 +111,6 @@ int main(int, char *[])
 
   // run algorithm
   LARS factory;
-  factory.setVerbose(true);
   fullprint << "factory = " << factory << std::endl;
 
   BasisSequence seq = factory.build( u, y, coll, indices);
