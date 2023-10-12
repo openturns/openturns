@@ -386,24 +386,25 @@ void MeixnerDistribution::update()
   problem1.setMinimization(false);
   problem1.setObjective(fB);
   problem1.setBounds(getRange());
-  solver_.setStartingPoint(getMean());
-  solver_.setProblem(problem1);
-  solver_.run();
-  b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
+  OptimizationAlgorithm solver(solver_);
+  solver.setStartingPoint(getMean());
+  solver.setProblem(problem1);
+  solver.run();
+  b_ = std::sqrt(solver.getResult().getOptimalValue()[0]);
 
   // Define Optimization problem2 : minimization fCD
   OptimizationProblem problem2(fCD);
   problem2.setMinimization(true);
-  solver_.setProblem(problem2);
-  solver_.run();
-  c_ = solver_.getResult().getOptimalValue()[0];
+  solver.setProblem(problem2);
+  solver.run();
+  c_ = solver.getResult().getOptimalValue()[0];
 
   // Define Optimization problem3 : maximization fCD
   OptimizationProblem problem3(fCD);
   problem3.setMinimization(false);
-  solver_.setProblem(problem3);
-  solver_.run();
-  dc_ = solver_.getResult().getOptimalValue()[0] - c_;
+  solver.setProblem(problem3);
+  solver.run();
+  dc_ = solver.getResult().getOptimalValue()[0] - c_;
 }
 
 /* Get one realization of the distribution

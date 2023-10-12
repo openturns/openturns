@@ -145,7 +145,7 @@ public:
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 private:
   /** Initialize optimization solver parameter using the ResourceMap */
