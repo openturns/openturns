@@ -623,7 +623,8 @@ class View:
             legend_kw = legend_kw_default
 
             # set legend position
-            legendPositionDict = {
+            loc = graph.getLegendPosition()
+            rPositionDict = {
                 "bottomright": "lower right",
                 "bottom": "lower center",
                 "bottomleft": "lower left",
@@ -632,15 +633,11 @@ class View:
                 "top": "upper center",
                 "topright": "upper right",
                 "right": "center right",
-                "center": "center",
             }
-            try:
-                loc = legendPositionDict[graph.getLegendPosition()]
-                legend_kw.setdefault("loc", loc)
-            except KeyError:
-                warnings.warn(
-                    "-- Unknown legend position: " + graph.getLegendPosition()
-                )
+            # we still accept old R strings
+            if loc in rPositionDict:
+                loc = rPositionDict[loc]
+            legend_kw.setdefault("loc", loc)
 
             # set legend bbox
             if len(graph.getLegendCorner()) == 2:

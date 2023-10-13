@@ -52,6 +52,19 @@ void GraphImplementation::InitializeValidLegendPositions()
 {
   ValidLegendPositions.setName("ValidLegendPositions");
   ValidLegendPositions.add("");
+  // matplotlib strings
+  ValidLegendPositions.add("best");
+  ValidLegendPositions.add("upper right");
+  ValidLegendPositions.add("upper left");
+  ValidLegendPositions.add("lower right");
+  ValidLegendPositions.add("lower left");
+  ValidLegendPositions.add("center right");
+  ValidLegendPositions.add("center left");
+  ValidLegendPositions.add("lower center");
+  ValidLegendPositions.add("upper center");
+  ValidLegendPositions.add("upper center");
+  ValidLegendPositions.add("center");
+  // R strings
   ValidLegendPositions.add("bottomright");
   ValidLegendPositions.add("bottom");
   ValidLegendPositions.add("bottomleft");
@@ -60,7 +73,6 @@ void GraphImplementation::InitializeValidLegendPositions()
   ValidLegendPositions.add("top");
   ValidLegendPositions.add("topright");
   ValidLegendPositions.add("right");
-  ValidLegendPositions.add("center");
 }
 
 /* Default constructor */

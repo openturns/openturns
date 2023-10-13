@@ -262,7 +262,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Graph.GetValidLegendPositions())
-[,bottomright,bottom,bottomleft,left,topleft,top,topright,right,center]#10"
+[,best,upper right,upper left,lower right,lower left,center right,..."
 %enddef
 %feature("docstring") OT::GraphImplementation::GetValidLegendPositions
 OT_Graph_GetValidLegendPositions_doc
@@ -304,7 +304,7 @@ OT_Graph_IsValidLegendPosition_doc
 
 Parameters
 ----------
-corner : sequence of float or size 2
+corner : sequence of float
     Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
     The position of the legend relatively to this point will depend on the orientation
     given by the :meth:`getLegendPosition` value.
@@ -318,7 +318,7 @@ Examples
 
 Notes
 -----
-This allows to place the legend outside the graph.
+This enables the legend to be located outside the graph.
 "
 %enddef
 %feature("docstring") OT::GraphImplementation::setLegendCorner
@@ -331,7 +331,7 @@ OT_Graph_setLegendCorner_doc
 
 Returns
 -------
-corner : sequence of float or size 2
+corner : :class:`~openturns.Point`
     Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
     The position of the legend relatively to this point will depend on the orientation
     given by the :meth:`getLegendPosition` value.
