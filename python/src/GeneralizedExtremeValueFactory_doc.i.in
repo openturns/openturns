@@ -23,7 +23,7 @@ the parameters of the optimization solver involved in the different estimators:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::build
-"Estimate the distribution as a :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` or :class:`~openturns.WeibullMax` distribution.
+"Estimate the distribution via maximum likelihood.
 
 **Available usages**:
 
@@ -41,11 +41,7 @@ param : sequence of float
 Returns
 -------
 distribution : :class:`~openturns.GeneralizedExtremeValue`
-    The estimated distribution.
-
-Notes
------
-The strategy consists in fitting the three models :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` and :class:`~openturns.WeibullMax` on the data. Then, the three models are classified with respect to the BIC criterion. The best one is returned."
+    The estimated distribution."
 
 // ----------------------------------------------------------------------------
 

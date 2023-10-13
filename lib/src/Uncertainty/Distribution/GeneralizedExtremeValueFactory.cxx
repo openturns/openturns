@@ -20,11 +20,7 @@
  */
 #include "openturns/GeneralizedExtremeValueFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/FrechetFactory.hxx"
-#include "openturns/WeibullMaxFactory.hxx"
-#include "openturns/GumbelFactory.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/FittingTest.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -92,15 +88,7 @@ DistributionFactoryResult GeneralizedExtremeValueFactory::buildEstimator(const S
 
 GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from an empty sample";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-
-  Collection<DistributionFactory> factoryCollection;
-  factoryCollection.add(FrechetFactory());
-  factoryCollection.add(GumbelFactory());
-  factoryCollection.add(WeibullMaxFactory());
-  Scalar bic = -1.0;
-  return FittingTest::BestModelBIC(sample, factoryCollection, bic);
+  return buildMethodOfLikelihoodMaximization(sample);
 }
 
 
