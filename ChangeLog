@@ -1,5 +1,9 @@
 = New Features =
 
+== 1.21.2 release (2023-12-01) == #release-1.21.2
+
+ * Fix build with libxml2>=2.12
+
 == 1.21.1 release (2023-10-17) == #release-1.21.1
 
  * Fix distribution comparison operator
