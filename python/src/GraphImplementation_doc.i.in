@@ -299,6 +299,49 @@ OT_Graph_IsValidLegendPosition_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Graph_setLegendCorner_doc
+"Accessor to the legend's corner.
+
+Parameters
+----------
+corner : sequence of float or size 2
+    Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
+    The position of the legend relatively to this point will depend on the orientation
+    given by the :meth:`getLegendPosition` value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> position = 'topleft'  # the legend's topleft corner with be set below
+>>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
+>>> graph.setLegendCorner([1.0, 1.0])  # legend will begin in top right corner
+
+Notes
+-----
+This allows to place the legend outside the graph.
+"
+%enddef
+%feature("docstring") OT::GraphImplementation::setLegendCorner
+OT_Graph_setLegendCorner_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLegendCorner_doc
+"Accessor to the legend's corner.
+
+Returns
+-------
+corner : sequence of float or size 2
+    Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
+    The position of the legend relatively to this point will depend on the orientation
+    given by the :meth:`getLegendPosition` value.
+"
+%enddef
+%feature("docstring") OT::GraphImplementation::getLegendCorner
+OT_Graph_getLegendCorner_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Graph_getAxes_doc
 "Accessor to the indication of axes' presence on the Graph.
 

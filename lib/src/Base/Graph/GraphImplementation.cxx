@@ -509,6 +509,19 @@ Bool GraphImplementation::IsValidLegendPosition(const String & position)
   return (it != ValidLegendPositions.end());
 }
 
+/* Legend bounding box accessor */
+Point GraphImplementation::getLegendCorner() const
+{
+  return legendCorner_;
+}
+
+void GraphImplementation::setLegendCorner(const Point & corner)
+{
+  if (corner.getDimension() && (corner.getDimension() != 2))
+    throw InvalidArgumentException(HERE) << "Error: the given point must have a dimension equal to 2, but dimension=" << corner.getDimension();
+  legendCorner_ = corner;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GraphImplementation::save(Advocate & adv) const
 {
@@ -516,6 +529,7 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "title_", title_ );
   adv.saveAttribute( "legendPosition_", legendPosition_ );
   adv.saveAttribute( "legendFontSize_", legendFontSize_ );
+  adv.saveAttribute( "legendCorner_", legendCorner_ );
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
@@ -539,6 +553,8 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "title_", title_ );
   adv.loadAttribute( "legendPosition_", legendPosition_ );
   adv.loadAttribute( "legendFontSize_", legendFontSize_ );
+  if (adv.hasAttribute("legendCorner_"))
+    adv.loadAttribute("legendCorner_", legendCorner_);
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );

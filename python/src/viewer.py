@@ -623,24 +623,29 @@ class View:
             legend_kw = legend_kw_default
 
             # set legend position
-            if "loc" not in legend_kw:
-                try:
-                    legendPositionDict = {
-                        "bottomright": "lower right",
-                        "bottom": "lower center",
-                        "bottomleft": "lower left",
-                        "left": "center left",
-                        "topleft": "upper left",
-                        "top": "upper center",
-                        "topright": "upper right",
-                        "right": "center right",
-                        "center": "center",
-                    }
-                    legend_kw["loc"] = legendPositionDict[graph.getLegendPosition()]
-                except KeyError:
-                    warnings.warn(
-                        "-- Unknown legend position: " + graph.getLegendPosition()
-                    )
+            legendPositionDict = {
+                "bottomright": "lower right",
+                "bottom": "lower center",
+                "bottomleft": "lower left",
+                "left": "center left",
+                "topleft": "upper left",
+                "top": "upper center",
+                "topright": "upper right",
+                "right": "center right",
+                "center": "center",
+            }
+            try:
+                loc = legendPositionDict[graph.getLegendPosition()]
+                legend_kw.setdefault("loc", loc)
+            except KeyError:
+                warnings.warn(
+                    "-- Unknown legend position: " + graph.getLegendPosition()
+                )
+
+            # set legend bbox
+            if len(graph.getLegendCorner()) == 2:
+                x0, y0 = graph.getLegendCorner()
+                legend_kw.setdefault("bbox_to_anchor", (x0, y0))
 
             # set a single legend point
             legend_kw.setdefault("numpoints", 1)
@@ -659,13 +664,13 @@ class View:
             else:
                 self._ax[0].legend(**legend_kw)
 
+            # re-adjust bbox if legend was set outside graph
+            if "bbox_to_anchor" in legend_kw:
+                self._fig.tight_layout()
+
         # Make squares look like squares
         if square_axes:
-            try:
-                self._ax[0].axis("square")
-            except ValueError:
-                warnings.warn("axis square keyword not supported")
-                plt.gca().set_aspect("equal", adjustable="box")
+            self._ax[0].axis("square")
 
     def show(self, **kwargs):
         """
