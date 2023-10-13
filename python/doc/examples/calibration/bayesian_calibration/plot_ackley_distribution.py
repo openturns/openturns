@@ -181,8 +181,9 @@ legends = contour.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 contour.setLegends(legends)
 graph.add(contour)
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)
 
 # %%
 # Let us compare the histogram to the unnormalized PDF
@@ -218,8 +219,9 @@ legends = contour.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 contour.setLegends(legends)
 graph.add(contour)
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)
 
 scaling = ot.SymbolicFunction("x", "3.1e-10 * x")
 scaled_ackley_pdf = ot.ComposedFunction(scaling, ackley_pdf)
@@ -274,6 +276,6 @@ graph.add(ot.Cloud(sample, "black", "plus"))
 legends = graph.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 graph.setLegends(legends)
-graph.setLegendPosition("topright")
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)

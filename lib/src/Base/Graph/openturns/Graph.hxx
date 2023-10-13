@@ -167,6 +167,10 @@ public:
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
 
+  /** Legend bounding box accessor */
+  void setLegendCorner(const Point & corner);
+  Point getLegendCorner() const;
+
 }; /* class Graph */
 
 
