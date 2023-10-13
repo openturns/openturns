@@ -52,7 +52,7 @@ ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2
 )
 
-estimated_prof_mle = factory.buildMethodOfProfileLikelihoodMaximization(sample)
+estimated_prof_mle = factory.buildMethodOfXiProfileLikelihood(sample)
 print("Estimated GeneralizedExtremeValue (profile MLE)=", estimated_prof_mle)
 ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2
@@ -87,7 +87,7 @@ assert (
     == "Normal"
 )
 
-estimator_prof_mle = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
+estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
 assert (
     estimator_prof_mle.getParameterDistribution().getImplementation().__class__.__name__
     == "Normal"
@@ -173,7 +173,7 @@ print("zm=", zm.getMean())
 ott.assert_almost_equal(zm.getMean(), [1.73377], 1e-2, 1e-2)
 
 # specific check for return level via profile likelihood
-estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(
+estimator_prof_rl = factory.buildReturnLevelXiProfileLikelihoodEstimator(
     fremantle[:, 1], 10.0
 )
 print(estimator_prof_rl)
