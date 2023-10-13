@@ -324,7 +324,7 @@ private:
 };
 
 
-ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLikelihoodMaximizationEstimator(const Sample & sample) const
+ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
@@ -385,10 +385,10 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
   return result;
 }
 
-GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildMethodOfProfileLikelihoodMaximization(const Sample & sample) const
+GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihood(const Sample & sample) const
 {
-	const Distribution distribution(buildMethodOfProfileLikelihoodMaximizationEstimator(sample).getDistribution());
-	return buildAsGeneralizedExtremeValue(distribution.getParameter());
+  const Distribution distribution(buildMethodOfXiProfileLikelihoodEstimator(sample).getDistribution());
+  return buildAsGeneralizedExtremeValue(distribution.getParameter());
 }
 
 
@@ -903,7 +903,7 @@ private:
   OptimizationAlgorithm solver_;
 };
 
-ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const
+ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
@@ -993,9 +993,9 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   return result;
 }
 
-GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const
+GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihood(const Sample & sample, const Scalar m) const
 {
-  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, m).getDistribution());
+  const Distribution distribution(buildReturnLevelXiProfileLikelihoodEstimator(sample, m).getDistribution());
   return buildAsGeneralizedExtremeValue(distribution.getParameter());
 }
 

@@ -118,7 +118,7 @@ view = otv.View(graph)
 # **Stationary GEV modeling via the profile log-likelihood function**
 #
 # Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GEV.
-result_PLL = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
+result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
 
 # %%
 # The following graph allows one to get the profile log-likelihood plot.
@@ -173,7 +173,7 @@ print(f"CI={return_level_ci100}")
 #
 # We can estimate the :math:`m`-block return level :math:`z_m` directly from the data using the profile
 # likelihood with respect to :math:`z_m`.
-result_zm_10_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, 10.0)
+result_zm_10_PLL = factory.buildReturnLevelXiProfileLikelihoodEstimator(sample, 10.0)
 zm_10_PLL = result_zm_10_PLL.getParameter()
 print(f"10 years return level (profile)={zm_10_PLL}")
 

@@ -63,8 +63,8 @@ public:
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue() const;
 
   /** Profiled maximum likelihood */
-  ProfileLikelihoodResult buildMethodOfProfileLikelihoodMaximizationEstimator(const Sample & sample) const;
-  GeneralizedExtremeValue buildMethodOfProfileLikelihoodMaximization(const Sample & sample) const;
+  ProfileLikelihoodResult buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample) const;
+  GeneralizedExtremeValue buildMethodOfXiProfileLikelihood(const Sample & sample) const;
 
   /** Maximum likelihood r largest order statistics */
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const UnsignedInteger r = 0) const;
@@ -82,8 +82,8 @@ public:
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;
 
   /** Return level via profiled likelihood */
-  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
-  GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
+  ProfileLikelihoodResult buildReturnLevelXiProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
+  GeneralizedExtremeValue buildReturnLevelXiProfileLikelihood(const Sample & sample, const Scalar m) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
