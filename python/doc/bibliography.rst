@@ -266,9 +266,6 @@ Bibliography
     `pdf <http://www.itl.nist.gov/div898/handbook/>`__
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     `pdf <http://ab-initio.mit.edu/nlopt>`__
-.. [park1990] Byeong U. Park and J. S. Marron.
-    *Comparison of data-driven bandwidth selectors.*
-    Journal of the American Statistical Association, 85(409) :66–72, 1990.
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.

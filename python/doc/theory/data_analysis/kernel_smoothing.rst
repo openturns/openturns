@@ -6,7 +6,7 @@ Kernel smoothing
 Kernel smoothing is a non parametric estimation method of the probability density function of a distribution.
 
 In dimension 1, the kernel smoothed probability density function :math:`\hat{p}` has the following expression,
-where *K* is the univariate kernel, *n* the sample size and :math:`(X_1, \cdots, X_n) \in \Rset^n`
+where :math:`K` is the univariate kernel, *n* the sample size and :math:`(X_1, \cdots, X_n) \in \Rset^n`
 the univariate random sample with :math:`\forall i, \, \, X_i \in \Rset`:
 
 .. math::
@@ -14,8 +14,8 @@ the univariate random sample with :math:`\forall i, \, \, X_i \in \Rset`:
 
     \hat{p}(x) = \displaystyle \frac{1}{nh}\sum_{i=1}^{n} K\left(\frac{x-X_i}{h}\right)
 
-The kernel *K* is a function satisfying :math:`\int K(x)\, dx=1`.
-Usually *K* is chosen to be a unimodal probability density function that is symmetric about 0.
+The kernel :math:`K` is a function satisfying :math:`\int K(x)\, dx=1`.
+Usually :math:`K` is chosen to be a unimodal probability density function that is symmetric about 0.
 The parameter *h* is called the *bandwidth*.
 
 
@@ -75,7 +75,7 @@ Several methods exist to  evaluate the optimal bandwidth :math:`h_{AMISE}(K)` ba
 Silverman's rule (dimension 1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the case where the density *p* is normal with standard deviation :math:`\sigma`,
+In the case where the density :math:`p` is normal with standard deviation :math:`\sigma`,
 then the term :math:`\Phi_4` can be exactly evaluated.
 In that particular case,  the optimal bandwidth of relation :eq:`AMISE` with respect to the AMISE criteria writes as follows:
 
@@ -92,7 +92,7 @@ evaluated from the sample :math:`(X_1, \dots, X_n)`:
 
     \hat{h}^{p = normal}_{AMISE}(K) = \displaystyle \left[ \frac{8\sqrt{\pi} R(K)}{3\mu_2(K)^2}\right]^{\frac{1}{5}}\hat{\sigma}^n n^{-\frac{1}{5}}
 
-The Silverman rule consists in considering :math:`\hat{h}^{p = normal}_{AMISE}(K)` of relation :eq:`Estimpnormal` even if the density *p* is not normal:
+The Silverman rule consists in considering :math:`\hat{h}^{p = normal}_{AMISE}(K)` of relation :eq:`Estimpnormal` even if the density :math:`p` is not normal:
 
 .. math::
   :label: Silverman
@@ -196,7 +196,7 @@ Given that preliminary results, the solve-the-equation plug-in method  proceeds 
       \right.
 
 - In order to evaluate :math:`\Phi_6` and :math:`\Phi_8`,
-  we suppose that the density *p* is normal with a variance :math:`\sigma^2`
+  we suppose that the density :math:`p` is normal with a variance :math:`\sigma^2`
   which is approximated by the empirical variance of the sample, which leads to:
 
   .. math::
@@ -224,12 +224,12 @@ Scott rule (dimension d)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Scott rule is a simplification of the Silverman rule generalized to the
-dimension *d* which is optimal when the density *p* is normal with independent components.
-In all the other cases, it gives an empirical rule that gives good result when the density *p* is not *far* from the normal one.
-For examples, the Scott bandwidth may appear too large when *p* presents several maximum.
+dimension *d* which is optimal when the density :math:`p` is normal with independent components.
+In all the other cases, it gives an empirical rule that gives good result when the density :math:`p` is not *far* from the normal one.
+For examples, the Scott bandwidth may appear too large when :math:`p` presents several maximum.
 
 The Silverman rule given in dimension 1 in relation :eq:`Silverman` can be generalized in dimension *d* as follows:
-if we suppose  that the density *p* is normal with independent components,
+if we suppose  that the density :math:`p` is normal with independent components,
 in dimension *d* and that we use the normal kernel :math:`N(0,1)` to estimate it,
 then the optimal bandwidth vector :math:`\vect{h}` with respect to the AMISE criteria writes as follows:
 
@@ -239,7 +239,7 @@ then the optimal bandwidth vector :math:`\vect{h}` with respect to the AMISE cri
     \vect{h}^{Silver}(N) = \left(\left(\frac{4}{d+2}\right)^{1/(d+4)}\hat{\sigma}_i^n n^{-1/(d+4)}\right)_i
 
 where :math:`\hat{\sigma}_i^n` is the standard deviation of the *i*-th component of the sample
-:math:`(\vect{X}_1, \cdots, \vect{X}_n)`, and :math:`\sigma_K` the standard deviation of the 1D kernel *K*.
+:math:`(\vect{X}_1, \cdots, \vect{X}_n)`, and :math:`\sigma_K` the standard deviation of the 1D kernel :math:`K`.
 
 Scott' method is  a simplification of Silverman's rule, based on the fact that the coefficient
 :math:`\left(\frac{4}{d+2}\right)^{1/(d+4)}` remains in :math:`[0.924, 1.059]` when the dimension *d* varies.
@@ -264,7 +264,7 @@ Furthermore, in the general case, we have from relation (\ref{AMISE1}) :
 
     \frac{h_{AMISE}(K_1)}{h_{AMISE}(K_2)}=\frac{\sigma_{K_2}}{\sigma_{K_1}}\left[\frac{\sigma_{K_1}R(K_1)}{\sigma_{K_2}R(K_2)}\right]^{1/5}
 
-Considering that :math:`\sigma_{K}R(K) \simeq 1` whatever the kernel *K*, relation :eq:`ChangeBandwidth` simplifies in:
+Considering that :math:`\sigma_{K}R(K) \simeq 1` whatever the kernel :math:`K`, relation :eq:`ChangeBandwidth` simplifies in:
 
 .. math::
   :label: SimplifiedChangeBandwidth

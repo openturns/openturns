@@ -49,7 +49,7 @@ Get the bandwidth:
 >>> print(bandwidth)
 [0.862207]
 
-The bandwidth was guessed by the :meth:`build` method.
+The bandwidth was evaluated by the :meth:`build` method.
 It could also have been provided by the user.
 
 >>> bandwidth = [0.9]
