@@ -8,7 +8,7 @@
 
 %include Sample_doc.i
 
-%template(SampleImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::SampleImplementation>;
+%template(_SampleImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::SampleImplementation>;
 %template(SampleCollection)            OT::Collection<OT::Sample>;
 
 #define OT_TYPECHECK_NUMERICALSAMPLE 5

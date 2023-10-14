@@ -166,7 +166,11 @@ startingSample : 2-d sequence of float
 Parameters
 ----------
 seed : int
-    Seed."
+    Seed.
+
+Notes
+-----
+The default is set by the `Pagmo-InitialSeed` ResourceMap entry."
 
 // ---------------------------------------------------------------------
 

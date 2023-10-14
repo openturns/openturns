@@ -16,9 +16,8 @@ jobs:
         pip3 install matplotlib "numpy<1.25" scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
-        git clone -b 1.8.1 https://github.com/jeromerobert/hmat-oss.git hmat-oss
+        git clone -b 1.9.0 https://github.com/jeromerobert/hmat-oss.git hmat-oss
         cd hmat-oss/
-        git cherry-pick dd1b8daf
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |
@@ -37,22 +36,22 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniforge-version: latest
       - name: Install
         shell: cmd
         run: |
-          curl -LO https://github.com/xianyi/OpenBLAS/releases/download/v0.3.17/OpenBLAS-0.3.17-x64.zip
-          mkdir -p C:\Libraries\openblas
-          7z x OpenBLAS-0.3.17-x64.zip -oC:\Libraries\openblas > nul
-          choco install winflexbison3
+          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel hmat-oss cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib scipy pandas matplotlib-base dill
+      - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
         run: |
-          mkdir build && cd build
-          cmake -LAH -DCMAKE_INSTALL_PREFIX=%cd:\=/%/install -DLAPACK_LIBRARIES=C:/Libraries/openblas/lib/libopenblas.dll.a  -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DSWIG_COMPILE_FLAGS="/bigobj" ..
-          cmake --build . --config Release --target install
-          xcopy install\bin\OT.dll install\Lib\site-packages\openturns
-          xcopy C:\Libraries\openblas\bin\libopenblas.dll install\Lib\site-packages\openturns
-          ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Sample_computation|InverseBox|Hypergeometric" -j2 --repeat after-timeout:2 --schedule-random
+          set "LIB=C:\Miniconda3\Library\lib;%LIB%"
+          set "INCLUDE=C:\Miniconda3\Library\include;%INCLUDE%"
+          cmake -G Ninja -B . -LAH -DCMAKE_INSTALL_PREFIX="C:/Miniconda3/Library" -DLAPACK_LIBRARIES="C:/Miniconda3/Library/lib/lapack.lib" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DCMAKE_PREFIX_PATH="C:/Miniconda3/Library" -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Miniconda3"
+          cmake --build . --target install --parallel 2
+          ctest --output-on-failure --timeout 100 -E cppcheck -j2 --repeat after-timeout:2 --schedule-random
 
   aarch64:
     runs-on: ubuntu-latest

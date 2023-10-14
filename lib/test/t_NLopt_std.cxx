@@ -70,7 +70,6 @@ int main(int, char *[])
                 problem.setBounds(bounds);
               try
               {
-                NLopt::SetSeed(0);
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
                 algo.setMaximumEvaluationNumber(1000);

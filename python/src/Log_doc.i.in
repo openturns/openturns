@@ -132,7 +132,11 @@ Examples
 Write warnings in a file:
 
 >>> import openturns as ot
->>> ot.Log.SetFile('Warnings.log')"
+>>> ot.Log.SetFile('Warnings.log')
+
+Set to an empty string to stop redirection:
+
+>>> ot.Log.SetFile('')"
 
 // ---------------------------------------------------------------------
 

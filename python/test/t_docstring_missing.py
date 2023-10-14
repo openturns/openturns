@@ -10,7 +10,7 @@ instanciables = []
 for name, obj in inspect.getmembers(ot):
     if inspect.isclass(obj):
         cn = obj.__name__
-        if "_" in cn or "Interface" in cn or "Pointer" in cn:
+        if "_" in cn:
             continue
         try:
             instance = obj()
@@ -44,5 +44,5 @@ print(
 print(
     f"-- undocumented methods: {count_methods_undoc} ({100.0 * count_methods_undoc / count_methods:.2f}%) --"
 )
-if count_class_undoc + count_methods_undoc > 400:
+if count_class_undoc + count_methods_undoc > 260:
     raise ValueError("too much undocumented class/methods")

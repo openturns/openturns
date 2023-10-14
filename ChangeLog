@@ -16,12 +16,15 @@
  * Removed deprecated Basis::getDimension method
  * Removed deprecated HSICStat ctors relying on weight matrix
  * Deprecated Pagmo.setGenerationNumber for setMaximumIterationNumber
+ * Deprecated NLopt.SetSeed for setSeed
+ * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
 
 === Documentation ===
 
 === Python module ===
 
 === Miscellaneous ===
+ * Added IterativeThresholdExceedance::getRatio
 
 
 == 1.21 release (2023-06-20) == #release-1.21

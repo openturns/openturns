@@ -34,17 +34,14 @@
 %include Matrix.i
 %include SquareMatrix.i
 %include SymmetricMatrix.i
-%include TensorImplementation.i
 %include Tensor.i
 %include SymmetricTensor.i
 %include Cache.i
-%include ComplexMatrixImplementation.i
 %include ComplexMatrix.i
 %include SquareComplexMatrix.i
 %include HermitianMatrix.i
 %include TriangularMatrix.i
 %include TriangularComplexMatrix.i
-%include ComplexTensorImplementation.i
 %include ComplexTensor.i
 %include CovarianceMatrix.i
 %include CorrelationMatrix.i 

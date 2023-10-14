@@ -59,7 +59,6 @@ for algoName in algoNames:
                         )
                     if bound:
                         problem.setBounds(bounds)
-                    ot.NLopt.SetSeed(0)
                     try:
                         algo.setProblem(problem)
                     except Exception:

@@ -6,7 +6,7 @@
 
 %include SplitterImplementation_doc.i
 
-%template(SplitterImplementationdInterfaceObject)           OT::TypedInterfaceObject<OT::SplitterImplementation>;
+%template(_SplitterImplementationdInterfaceObject)           OT::TypedInterfaceObject<OT::SplitterImplementation>;
 
 %ignore OT::SplitterImplementation::reset;
 %ignore OT::SplitterImplementation::generate;

@@ -255,6 +255,7 @@ static const Factory<Pagmo> Factory_Pagmo;
 /* Default constructor */
 Pagmo::Pagmo(const String & algoName)
   : OptimizationAlgorithmImplementation()
+  , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
 {
   setAlgorithmName(algoName);
 }
@@ -266,6 +267,7 @@ Pagmo::Pagmo(const OptimizationProblem & problem,
              const Sample & startingSample)
   : OptimizationAlgorithmImplementation()
   , startingSample_(startingSample)
+  , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
 {
   setAlgorithmName(algoName);
   setProblem(problem);

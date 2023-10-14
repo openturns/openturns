@@ -432,6 +432,7 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
   UnsignedInteger start = 0;
   UnsignedInteger len = 0;
   Bool escaped = false;
+  UnsignedInteger nTrailingSpace = 0;
 
   for (UnsignedInteger i = 0; i < line.size(); ++ i)
   {
@@ -443,22 +444,37 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
     }
     else if ((line[i] == separator) && !escaped)
     {
-      String field(line.substr(start, len));
+      const String field(line.substr(start, len - nTrailingSpace));
       if (field.empty())
       {
-        LOGINFO(OSS() << "empty component, description is ignored");
-        return false;
+        if (separator != ' ')
+        {
+          LOGINFO(OSS() << "empty component, description is ignored");
+          return false;
+        }
       }
-      description.add(field);
+      else
+        description.add(field);
       start = i + 1;
       len = 0;
     }
+    else if ((separator != ' ') && (line[i] == ' '))
+    {
+      if (start == i)
+        ++ start;
+      else
+        ++ len;
+      ++ nTrailingSpace;
+    }
     else
+    {
       ++ len;
+      nTrailingSpace = 0;
+    }
   }
   if (len > 0)
   {
-    String field(line.substr(start, len));
+    const String field(line.substr(start, len));
     if (field.empty())
     {
       LOGINFO(OSS() << "empty component, description is ignored");
