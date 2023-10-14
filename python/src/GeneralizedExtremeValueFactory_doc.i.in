@@ -83,14 +83,15 @@ The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a ne
 
 provided that :math:`1+\xi \left( \frac{z_i - \mu}{\sigma} \right) > 0 \forall i`.
 
-If :math:`\xi = 0` then
+If :math:`\xi = 0` then:
 
 .. math::
+    :nowrap:
 
-    \begin{align*}
+    \begin{align}
     \hat{\xi} & =  \argmax_{\xi} \ell_p(\xi)\\
     (\hat{\mu}, \hat{\sigma}) & =  \argmax_{(\mu, \sigma)} \ell(\mu, \sigma, \hat{\xi})
-    \end{align*}
+    \end{align}
 
 
 The starting point of the optimization is initialized from the probability weighted moments method, see [diebolt2008]_.
