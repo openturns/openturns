@@ -62,9 +62,6 @@ public:
   using PersistentObject::operator ==;
   Bool operator == (const DrawableImplementation & other) const;
 
-  /** Code for point style accessor */
-  virtual UnsignedInteger getPointCode(const String & key) const;
-
   /** Legend accessor */
   virtual String getLegend() const;
   virtual void setLegend(const String & legend);
@@ -259,9 +256,6 @@ protected:
   /** Check validity of pattern parameter */
   static Bool IsValidPattern(const String & pattern);
 
-  /** A map matching keys with R codes for point symbols */
-  static std::map<String, UnsignedInteger> SymbolCodes;
-
   /** A map matching keys with HTML definition for R colors */
   static std::map<String, String> ColorCodes;
 
@@ -270,6 +264,9 @@ protected:
 
   /** Valid fill styles */
   static Description ValidFillStyles;
+
+  /** Valid point styles */
+  static Description ValidPointStyles;
 
   /** Data accessor */
   virtual void setData(const Sample & data);

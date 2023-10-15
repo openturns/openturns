@@ -139,9 +139,6 @@ public:
   /** Accessor for data */
   Sample getData() const;
 
-  /** Get R point code from key */
-  UnsignedInteger getPointCode(const String key) const;
-
   /** Give the colors name */
   static Description GetValidColors();
 

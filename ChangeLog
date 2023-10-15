@@ -28,6 +28,7 @@
  * Deprecated SubsetSampling.setISubset, setBetaMin
  * QuantileMatchingFactory probabilities argument is no longer optional
  * Add a new moment order argument to MethodOfMomentsFactory
+ * Removed Drawable.getPointCode
 
 === Documentation ===
 

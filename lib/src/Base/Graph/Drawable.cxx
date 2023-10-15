@@ -319,12 +319,6 @@ Sample Drawable::getData() const
   return getImplementation()->getData();
 }
 
-/* Get R point code from key */
-UnsignedInteger Drawable::getPointCode(const String key) const
-{
-  return getImplementation()->getPointCode(key);
-}
-
 /* Give the colors name */
 Description Drawable::GetValidColors()
 {
