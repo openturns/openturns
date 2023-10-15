@@ -351,30 +351,6 @@ class View:
                 if ("color" not in text_kw_default) and ("c" not in text_kw_default):
                     text_kw["color"] = drawable.getColorCode()
 
-            # set marker
-            pointStyleDict = {
-                "square": "s",
-                "circle": "o",
-                "triangleup": "^",
-                "plus": "+",
-                "times": "x",
-                "diamond": "d",
-                "triangledown": "v",
-                "star": "*",
-                "fsquare": "s",
-                "fcircle": "o",
-                "ftriangleup": "^",
-                "fdiamond": "d",
-                "bullet": ".",
-                "dot": ",",
-                "none": "None",
-            }
-            if "marker" not in scatter_kw_default:
-                try:
-                    scatter_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
-                except KeyError:
-                    warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
-
             # set line style
             lineStyleDict = {
                 "solid": "-",
@@ -459,8 +435,32 @@ class View:
                     xi += x[i]
 
             elif drawableKind == "Cloud":
+                # set marker
+                marker = drawable.getPointStyle()
+                rPointStyleDict = {
+                    "square": "s",
+                    "circle": "o",
+                    "triangleup": "^",
+                    "plus": "+",
+                    "times": "x",
+                    "diamond": "d",
+                    "triangledown": "v",
+                    "star": "*",
+                    "fsquare": "s",
+                    "fcircle": "o",
+                    "ftriangleup": "^",
+                    "fdiamond": "d",
+                    "bullet": ".",
+                    "dot": ",",
+                    "none": "None",
+                }
+                # we still accept R markers
+                if marker in rPointStyleDict:
+                    marker = rPointStyleDict[marker]
+                scatter_kw.setdefault("marker", marker)
+
                 # https://github.com/matplotlib/matplotlib/issues/11460
-                if "marker" in scatter_kw and scatter_kw["marker"] in [",", "pixel"]:
+                if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
                 lines = self._ax[0].scatter(x, y, **scatter_kw)

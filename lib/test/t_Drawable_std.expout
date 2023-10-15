@@ -13,7 +13,7 @@ RGB (44.0/255.0, 160.0/255.0, 72.0/255.0) to HSV=class=Point name=Unnamed dimens
 RGB (44.0/255.0, 72.0/255.0, 160.0/255.0) to HSV=class=Point name=Unnamed dimension=3 values=[225.517,0.725,0.627451]
 RGB (160.0/255.0, 44.0/255.0, 72.0/255.0) to HSV=class=Point name=Unnamed dimension=3 values=[345.517,0.725,0.627451]
 Line styles=[blank,solid,dashed,dotted,dotdash,longdash,twodash]
-Point styles=[bullet,circle,diamond,dot,fcircle,fdiamond,fsquare,ftriangleup,none,plus,square,star,times,triangledown,triangleup]
+Point styles=[square,circle,triangleup,plus,times,diamond,triangledown,star,fsquare,fcircle,ftriangleup,fdiamond,bullet,dot,none,.,,,o,v,^,<,>,1,2,3,4,8,s,p,P,*,h,H,+,x,X,d,D,|,_,, ,None]
 Fill styles=[solid,shaded]
 BuildDefaultPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf]
 BuildRainbowPalette=[#ff0000,#ff8b00,#e8ff00,#5dff00,#00ff2e,#00ffb9,#00b9ff,#002eff,#5d00ff,#e800ff]

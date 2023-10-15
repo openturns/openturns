@@ -5,5 +5,5 @@ BuildTableauPalette= [#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7
 BuildDefaultPalette= [#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]#20
 BuildTableauPalette= [#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]#20
 Line styles= [blank,solid,dashed,dotted,dotdash,longdash,twodash]
-Point styles= [bullet,circle,diamond,dot,fcircle,fdiamond,fsquare,ftriangleup,none,plus,square,star,times,triangledown,triangleup]#15
+Point styles= [square,circle,triangleup,plus,times,diamond,triangledown,star,fsquare,fcircle,ftriangleup,fdiamond,bullet,dot,none,.,,,o,v,^,<,>,1,2,3,4,8,s,p,P,*,h,H,+,x,X,d,D,|,_,, ,None]#43
 Fill styles= [solid,shaded]

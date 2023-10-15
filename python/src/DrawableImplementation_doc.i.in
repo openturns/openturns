@@ -501,29 +501,11 @@ validPointStyles : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().GetValidPointStyles()[:5])
-[bullet,circle,diamond,dot,fcircle]"
+>>> print(ot.Drawable().GetValidPointStyles())
+[square,circle,triangleup,plus,times,..."
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidPointStyles
 OT_Drawable_GetValidPointStyles_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Drawable_getPointCode_doc
-"Accessor to the code of the points style.
-
-Parameters
-----------
-pointStyle : str
-    Style point to be changed in code.
-
-Returns
--------
-code : int
-    Code of the style of the points within the drawable element."
-%enddef
-%feature("docstring") OT::DrawableImplementation::getPointCode
-OT_Drawable_getPointCode_doc
 
 // ---------------------------------------------------------------------
 

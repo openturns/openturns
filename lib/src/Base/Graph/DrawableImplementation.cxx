@@ -40,10 +40,10 @@ static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
-/* A map  matching keys with R codes for point symbols */
-std::map<String, UnsignedInteger> DrawableImplementation::SymbolCodes;
-/* A map  matching keys with R codes for point symbols */
+/* Accepted point styles */
+Description DrawableImplementation::ValidPointStyles;
 
+/* A map  matching keys with R codes for colors */
 std::map<String, String> DrawableImplementation::ColorCodes;
 
 /* Accepted line styles */
@@ -54,22 +54,52 @@ Description DrawableImplementation::ValidFillStyles;
 
 void DrawableImplementation::InitializeValidParameterList()
 {
-  /* A map  matching keys with R codes for point symbols */
-  SymbolCodes["square"]       = 0;
-  SymbolCodes["circle"]       = 1;
-  SymbolCodes["triangleup"]   = 2;
-  SymbolCodes["plus"]         = 3;
-  SymbolCodes["times"]        = 4;
-  SymbolCodes["diamond"]      = 5;
-  SymbolCodes["triangledown"] = 6;
-  SymbolCodes["star"]         = 8;
-  SymbolCodes["fsquare"]      = 15;
-  SymbolCodes["fcircle"]      = 16;
-  SymbolCodes["ftriangleup"]  = 17;
-  SymbolCodes["fdiamond"]     = 18;
-  SymbolCodes["bullet"]       = 20;
-  SymbolCodes["dot"]          = 127;
-  SymbolCodes["none"]         = 256;
+  /* Accepted point symbols */
+  ValidPointStyles.setName("ValidPointStyles");
+  ValidPointStyles.add("square");
+  ValidPointStyles.add("circle");
+  ValidPointStyles.add("triangleup");
+  ValidPointStyles.add("plus");
+  ValidPointStyles.add("times");
+  ValidPointStyles.add("diamond");
+  ValidPointStyles.add("triangledown");
+  ValidPointStyles.add("star");
+  ValidPointStyles.add("fsquare");
+  ValidPointStyles.add("fcircle");
+  ValidPointStyles.add("ftriangleup");
+  ValidPointStyles.add("fdiamond");
+  ValidPointStyles.add("bullet");
+  ValidPointStyles.add("dot");
+  ValidPointStyles.add("none");
+  // https://matplotlib.org/stable/api/markers_api.html
+  ValidPointStyles.add(".");
+  ValidPointStyles.add(",");
+  ValidPointStyles.add("o");
+  ValidPointStyles.add("v");
+  ValidPointStyles.add("^");
+  ValidPointStyles.add("<");
+  ValidPointStyles.add(">");
+  ValidPointStyles.add("1");
+  ValidPointStyles.add("2");
+  ValidPointStyles.add("3");
+  ValidPointStyles.add("4");
+  ValidPointStyles.add("8");
+  ValidPointStyles.add("s");
+  ValidPointStyles.add("p");
+  ValidPointStyles.add("P");
+  ValidPointStyles.add("*");
+  ValidPointStyles.add("h");
+  ValidPointStyles.add("H");
+  ValidPointStyles.add("+");
+  ValidPointStyles.add("x");
+  ValidPointStyles.add("X");
+  ValidPointStyles.add("d");
+  ValidPointStyles.add("D");
+  ValidPointStyles.add("|");
+  ValidPointStyles.add("_");
+  ValidPointStyles.add("");
+  ValidPointStyles.add(" ");
+  ValidPointStyles.add("None");
 
   /* Accepted colors */
   ColorCodes["white"]                = "#FFFFFF";
@@ -797,10 +827,7 @@ Description DrawableImplementation::GetValidPointStyles()
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  Description validPointStyle;
-  std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.begin());
-  for (it = SymbolCodes.begin(); it != SymbolCodes.end(); ++it) validPointStyle.add(it->first);
-  return validPointStyle;
+  return ValidPointStyles;
 }
 
 
@@ -1100,16 +1127,6 @@ void DrawableImplementation::setLegend(const String & legend)
   legend_ = legend;
 }
 
-/* Point code accessor */
-UnsignedInteger DrawableImplementation::getPointCode(const String & key) const
-{
-  const std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.find(key));
-  UnsignedInteger pointCode = 0;
-  if(it != SymbolCodes.end()) pointCode = it->second;
-
-  return pointCode;
-}
-
 /* Check validity of color */
 Bool DrawableImplementation::IsValidColorName(const String & key)
 {
@@ -1195,9 +1212,9 @@ Bool DrawableImplementation::IsValidPointStyle(const String & key)
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  const std::map<String, UnsignedInteger>::iterator it(SymbolCodes.find(key));
+  const Description::const_iterator it = std::find(ValidPointStyles.begin(), ValidPointStyles.end(), key);
 
-  return (it != SymbolCodes.end());
+  return (it != ValidPointStyles.end());
 }
 
 /* Check validity of fill style */
