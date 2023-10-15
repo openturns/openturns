@@ -36,6 +36,10 @@ Bibliography
 .. [blatman2011] Blatman, G., and Sudret, B..
     *Adaptive sparse polynomial chaos expansion based on least angle regression.*
     Journal of Computational Physics 230 (2011) 2345–2367.
+.. [borgonovo2017] Borgonovo, E. (2017).
+    *Sensitivity analysis.*
+    *An Introduction for the Management Scientist.* International Series in
+    Operations Research and Management Science. Cham, Switzerland : Springer.
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
