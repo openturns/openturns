@@ -95,6 +95,7 @@ ott.assert_almost_equal(sim_event(e10), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(sim_event(e11), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(sim_event(e12), 0.25, 1e-2, 1e-2)
 
+
 def subset_event(ev):
     algo = ot.SubsetSampling(ev)
     algo.setMaximumOuterSampling(2500)

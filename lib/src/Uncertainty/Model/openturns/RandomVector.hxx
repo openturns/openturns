@@ -38,7 +38,6 @@ class OT_API RandomVector
   CLASSNAME
 
 public:
-  typedef Collection<RandomVector> RandomVectorCollection;
 
   /** Default constructor */
   RandomVector();

@@ -126,6 +126,9 @@ public:
   /** Whether it is an event */
   virtual Bool isEvent() const;
 
+  /** Composed event accessor */
+  virtual RandomVector getComposedEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

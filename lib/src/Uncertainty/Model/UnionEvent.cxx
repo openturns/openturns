@@ -132,25 +132,18 @@ RandomVector UnionEvent::getAntecedent() const
   return antecedent_;
 }
 
-// Function UnionEvent::getFunction() const
-// {
-//   return composedEvent_.getFunction();
-// }
+RandomVector UnionEvent::getComposedEvent() const
+{
+  const UnsignedInteger size = eventCollection_.getSize();
+  if (!size) throw InvalidArgumentException(HERE) << "Union has been improperly initialized: event collection is empty";
 
-// Domain UnionEvent::getDomain() const
-// {
-//   return composedEvent_.getDomain();
-// }
+  RandomVector composedEvent(eventCollection_[0].getComposedEvent());
 
-// ComparisonOperator UnionEvent::getOperator() const
-// {
-//   return composedEvent_.getOperator();
-// }
-
-// Scalar UnionEvent::getThreshold() const
-// {
-//   return composedEvent_.getThreshold();
-// }
+  // Further build composedEvent by composing with the other events in the eventCollection_
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    composedEvent = composedEvent.join(eventCollection_[i]);
+  return composedEvent;
+}
 
 /* Method save() stores the object through the StorageManager */
 void UnionEvent::save(Advocate & adv) const

@@ -58,7 +58,7 @@ EventSimulation::EventSimulation(const RandomVector & event,
                                  const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , event_(event)
+  , event_(event.getComposedEvent()) // for an Intersection/UnionEvent, we get its composedEvent if it can be built.
   , result_()
 {
   setVerbose(verbose);
@@ -76,10 +76,7 @@ EventSimulation * EventSimulation::clone() const
 /*  Event accessor */
 RandomVector EventSimulation::getEvent() const
 {
-  // For an Intersection/UnionEvent, we get its composedEvent if it can be built.
-  // This allows access to the level function for derived classes which use them (SubsetSampling for example).
-  // For other events, getComposedEvent simply returns the event itself.
-  return event_.getComposedEvent();
+  return event_;
 }
 
 /* Result accessor */

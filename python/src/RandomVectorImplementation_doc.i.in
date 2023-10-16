@@ -466,3 +466,19 @@ event : :class:`~openturns.RandomVector`
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::join
 OT_RandomVector_join_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getComposedEvent_doc
+"If the random vector can be viewed as the composition of several :class:`~openturns.ThresholdEvent` objects,
+this method builds and returns the composition.
+If it is a different kind of event, returns the event itself.
+Throws if it is no event.
+
+Returns
+-------
+composed : :class:`~openturns.RandomVector`
+    Composed event."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getComposedEvent
+OT_RandomVector_getComposedEvent_doc
