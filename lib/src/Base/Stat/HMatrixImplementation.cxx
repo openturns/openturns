@@ -286,6 +286,8 @@ void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
                                      char symmetry)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   int sym = 0;
   switch (symmetry)
   {
@@ -341,6 +343,8 @@ void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
 void HMatrixImplementation::addIdentity(Scalar alpha)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->add_identity(static_cast<hmat_matrix_t *>(hmat_), &alpha);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
@@ -378,6 +382,8 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction &f,
                                      char symmetry)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   int sym = 0;
   switch (symmetry)
   {
@@ -462,6 +468,8 @@ Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar e
 void HMatrixImplementation::factorize(const String& method)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   hmat_settings_t settings;
   hmat_get_parameters(&settings);
   hmat_factorization_t fact_method = hmat_factorization_lu;
@@ -528,6 +536,8 @@ void HMatrixImplementation::factorize(const String& method)
 void HMatrixImplementation::scale(Scalar alpha)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -537,6 +547,8 @@ void HMatrixImplementation::scale(Scalar alpha)
 void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   // gemv() below reorders x indices, thus x is not constant.
   Point xcopy(x);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
@@ -548,6 +560,8 @@ void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scala
 void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta)
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -557,6 +571,8 @@ void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const H
 void HMatrixImplementation::transpose()
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->transpose(static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -566,6 +582,8 @@ void HMatrixImplementation::transpose()
 Scalar HMatrixImplementation::norm() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   return static_cast<hmat_interface_t*>(hmatInterface_.get())->norm(static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -575,6 +593,8 @@ Scalar HMatrixImplementation::norm() const
 Point HMatrixImplementation::getDiagonal() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   Point diag(hmatClusterTree_.get()->getSize());
   static_cast<hmat_interface_t*>(hmatInterface_.get())->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
   return diag;
@@ -587,6 +607,8 @@ Point HMatrixImplementation::solve(const Point& b, Bool trans) const
 {
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
@@ -599,6 +621,8 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
 {
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   Matrix result(m);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result(0, 0), result.getNbColumns());
   return result;
@@ -610,6 +634,8 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
 Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   int t = trans;
   Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
@@ -622,6 +648,8 @@ Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
 Matrix HMatrixImplementation::solveLower(const Matrix& m, Bool trans) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   int t = trans;
   Matrix result(m);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result(0, 0), result.getNbColumns());
@@ -634,6 +662,8 @@ Matrix HMatrixImplementation::solveLower(const Matrix& m, Bool trans) const
 std::pair<size_t, size_t> HMatrixImplementation::compressionRatio() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   hmat_info_t mat_info;
   static_cast<hmat_interface_t*>(hmatInterface_.get())->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.compressed_size, mat_info.uncompressed_size);
@@ -645,6 +675,8 @@ std::pair<size_t, size_t> HMatrixImplementation::compressionRatio() const
 std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   hmat_info_t mat_info;
   static_cast<hmat_interface_t*>(hmatInterface_.get())->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.full_size, mat_info.uncompressed_size - mat_info.full_size);
@@ -656,6 +688,8 @@ std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
 void HMatrixImplementation::dump(const String & name) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
