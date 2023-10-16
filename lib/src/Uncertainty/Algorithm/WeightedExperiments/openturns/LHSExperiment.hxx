@@ -80,6 +80,9 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution) override;
 
+  /** Size accessor */
+  void setSize(const UnsignedInteger size) override;
+
   /** AlwaysShuffle accessor */
   Bool getAlwaysShuffle() const;
   void setAlwaysShuffle(const Bool alwaysShuffle);
@@ -102,13 +105,13 @@ private:
   mutable Matrix shuffle_;
 
   // Flag to avoid redundant computation of the shuffle
-  mutable Bool isAlreadyComputedShuffle_;
+  mutable Bool isAlreadyComputedShuffle_ = false;
 
   // Initialization flag
-  Bool alwaysShuffle_;
+  Bool alwaysShuffle_ = false;
 
   // Random shift flag
-  Bool randomShift_;
+  Bool randomShift_ = true;
 
   // Transformation from uniform space to distribution space
   MarginalTransformationEvaluation transformation_;

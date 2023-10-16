@@ -38,9 +38,6 @@ LHSExperiment::LHSExperiment()
   : WeightedExperimentImplementation()
   , marginals_(1, distribution_)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
-  , alwaysShuffle_(false)
-  , randomShift_(true)
 {
   // Check if the distribution has an independent copula and build the transformation
   setDistribution(distribution_);
@@ -53,7 +50,6 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
   : WeightedExperimentImplementation(size)
   , marginals_(1, distribution_)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
@@ -69,7 +65,6 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
   : WeightedExperimentImplementation(distribution, size)
   , marginals_(0)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
@@ -180,6 +175,12 @@ void LHSExperiment::setDistribution(const Distribution & distribution)
   // Build the iso-probabilistic transformation
   transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
   WeightedExperimentImplementation::setDistribution(distribution);
+}
+
+void LHSExperiment::setSize(const UnsignedInteger size)
+{
+  WeightedExperimentImplementation::setSize(size);
+  isAlreadyComputedShuffle_ = false;
 }
 
 /* AlwaysShuffle accessor */

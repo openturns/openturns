@@ -24,3 +24,9 @@ print("sample2 = ", experiment.generate())
 experiment = ot.LHSExperiment(size)
 print("sample  = ", experiment.generate())
 print("sample2 = ", experiment.generate())
+
+# variable size
+experiment = ot.LHSExperiment(ot.Normal(4), 10)
+for size in [215, 464]:
+    experiment.setSize(size)
+    X = experiment.generate()
