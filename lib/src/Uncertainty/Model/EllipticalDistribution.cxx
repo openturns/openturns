@@ -501,17 +501,23 @@ void EllipticalDistribution::update()
   isAlreadyComputedMean_ = true;
 }
 
-/* Mean point accessor */
-void EllipticalDistribution::setMean(const Point & mean)
+/* Mu accessor */
+void EllipticalDistribution::setMu(const Point & mu)
 {
-  if (mean.getDimension() != getDimension())
+  if (mu.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
-        << "Mean point dimension (" << mean.getDimension()
+        << "Mean point dimension (" << mu.getDimension()
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct EllipticalDistribution distribution object.";
-  mean_ = mean;
+  mean_ = mu;
   isAlreadyComputedMean_ = true;
   computeRange();
+}
+
+void EllipticalDistribution::setMean(const Point & mean)
+{
+  LOGWARN("EllipticalDistribution.setMean is deprecated, use setMu");
+  setMu(mean);
 }
 
 /* Mean computation */
@@ -691,7 +697,7 @@ Distribution EllipticalDistribution::getStandardDistribution() const
 {
   EllipticalDistribution * p_standardDistribution(clone());
   const UnsignedInteger dimension = getDimension();
-  p_standardDistribution->setMean(Point(dimension, 0.0));
+  p_standardDistribution->setMu(Point(dimension, 0.0));
   p_standardDistribution->setSigma(Point(dimension, 1.0));
   p_standardDistribution->setR(CorrelationMatrix(dimension));
   return p_standardDistribution;

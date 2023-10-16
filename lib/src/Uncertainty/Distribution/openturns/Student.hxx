@@ -162,7 +162,6 @@ public:
   Scalar getNu() const;
 
   /** Mu accessor */
-  void setMu(const Scalar mu);
   Scalar getMu() const;
 
   /** Compute the density generator of the ellipticalal generator, i.e.

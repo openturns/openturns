@@ -6,7 +6,7 @@ ot.TESTPREAMBLE()
 
 
 distribution = ot.Normal(4)
-distribution.setMean([5.0] * 4)
+distribution.setMu([5.0] * 4)
 size = 16
 experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size)
 print("experiment = ", experiment)

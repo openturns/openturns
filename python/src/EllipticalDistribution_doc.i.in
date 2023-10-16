@@ -132,7 +132,7 @@ scale parameter :math:`\vect{\sigma}` as in :eq:`shapeMatrix2`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EllipticalDistribution::setMean
+%feature("docstring") OT::EllipticalDistribution::setMu
 "Accessor to the location parameter :math:`\vect{\mu}`.
 
 Parameters

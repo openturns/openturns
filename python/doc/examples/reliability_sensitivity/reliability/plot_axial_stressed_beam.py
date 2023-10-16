@@ -243,7 +243,7 @@ dimension
 
 # %%
 myImportance = ot.Normal(dimension)
-myImportance.setMean(standardSpaceDesignPoint)
+myImportance.setMu(standardSpaceDesignPoint)
 myImportance
 
 # %%

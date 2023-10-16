@@ -99,7 +99,10 @@ public:
   /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 
-  /** Mean point accessor */
+  /** Mu accessor */
+  void setMu(const Point & mu);
+
+  // @depreated
   void setMean(const Point & mean);
 
   /** Sigma vector accessor */

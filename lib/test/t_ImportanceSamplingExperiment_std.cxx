@@ -34,7 +34,7 @@ int main(int, char *[])
   {
     Normal distribution(4);
     Normal weightingDistribution(distribution);
-    weightingDistribution.setMean(Point(4, 1.0));
+    weightingDistribution.setMu(Point(4, 1.0));
     UnsignedInteger size = 10;
     ImportanceSamplingExperiment experiment(distribution, weightingDistribution, size);
     fullprint << "experiment = " << experiment << std::endl;

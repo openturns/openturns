@@ -41,6 +41,7 @@
  * Deprecated CleaningStrategy.setVerbose/getVerbose
  * Deprecated ApproximationAlgorithm.setVerbose/getVerbose
  * Deprecated EllipticalDistribution.setCorrelation/getCorrelation
+ * Deprecated EllipticalDistribution.setMean
 
 === Documentation ===
 
