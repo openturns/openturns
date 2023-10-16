@@ -88,7 +88,7 @@ The scale parameter :math:`\vect{\sigma}` is defined in :eq:`shapeMatrix2`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EllipticalDistribution::setCorrelation
+%feature("docstring") OT::EllipticalDistribution::setR
 "Accessor to the :math:`\mat{R}` matrix.
 
 Parameters
@@ -102,7 +102,7 @@ The :math:`\mat{R}` matrix is defined in :eq:`shapeMatrix2`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EllipticalDistribution::getCorrelation
+%feature("docstring") OT::EllipticalDistribution::getR
 "Accessor to the :math:`\mat{R}` matrix.
 
 Returns

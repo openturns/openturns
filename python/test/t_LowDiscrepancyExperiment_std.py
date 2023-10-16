@@ -42,6 +42,6 @@ print("sample = ", experiment.generate())
 R = ot.CorrelationMatrix(4)
 for i in range(1, 4):
     R[i - 1, i] = 0.5
-distribution.setCorrelation(R)
+distribution.setR(R)
 experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size, False)
 print("sample = ", experiment.generate())

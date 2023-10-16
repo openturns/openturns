@@ -200,7 +200,7 @@ int main(int, char *[])
       fullprint << "kurtosis=" << kurtosis << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance=" << covariance << std::endl;
-      CovarianceMatrix correlation = distribution.getCorrelation();
+      CovarianceMatrix correlation = distribution.getR();
       fullprint << "correlation=" << correlation << std::endl;
       CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
       fullprint << "spearman=" << spearman << std::endl;

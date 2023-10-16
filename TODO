@@ -15,3 +15,4 @@ Remove CLassifier.setVerbose/getVerbose
 Remove ARMALLHF.setVerbose/getVerbose
 Remove CleaningStrategy.setVerbose/getVerbose
 Remove ApproximationAlgorithm.setVerbose/getVerbose
+Remove EllipticalDistribution.setCorrelation/getCorrelation

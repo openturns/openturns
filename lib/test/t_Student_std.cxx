@@ -122,22 +122,22 @@ int main(int, char *[])
         Point PDFgr = distribution.computePDFGradient( point );
         fullprint << "pdf gradient     =" << PDFgr << std::endl;
         Point PDFgrFD(3);
-        PDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
-                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
-        PDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
-                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
-        PDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computePDF(point) -
-                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
+        PDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getR()).computePDF(point) -
+                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getR()).computePDF(point)) / (2.0 * eps);
+        PDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getR()).computePDF(point) -
+                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getR()).computePDF(point)) / (2.0 * eps);
+        PDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getR()).computePDF(point) -
+                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getR()).computePDF(point)) / (2.0 * eps);
         fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
         Point CDFgr = distribution.computeCDFGradient( point );
         fullprint << "cdf gradient     =" << CDFgr << std::endl;
         Point CDFgrFD(3);
-        CDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
-                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
-        CDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
-                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
-        CDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computeCDF(point) -
-                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
+        CDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getR()).computeCDF(point) -
+                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getR()).computeCDF(point)) / (2.0 * eps);
+        CDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getR()).computeCDF(point) -
+                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getR()).computeCDF(point)) / (2.0 * eps);
+        CDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getR()).computeCDF(point) -
+                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getR()).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
       Point quantile = distribution.computeQuantile( 0.95 );
@@ -169,7 +169,7 @@ int main(int, char *[])
       fullprint << "kurtosis=" << kurtosis << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance=" << covariance << std::endl;
-      CovarianceMatrix correlation = distribution.getCorrelation();
+      CovarianceMatrix correlation = distribution.getR();
       fullprint << "correlation=" << correlation << std::endl;
       // Useless if dim==1 and too costly for dim>1
       // CovarianceMatrix spearman = distribution.getSpearmanCorrelation();

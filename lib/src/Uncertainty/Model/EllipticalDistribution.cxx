@@ -565,7 +565,7 @@ Point EllipticalDistribution::getStandardDeviation() const
 }
 
 /* Correlation matrix accessor */
-void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
+void EllipticalDistribution::setR(const CorrelationMatrix & R)
 {
   if (R.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
@@ -588,9 +588,22 @@ void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
 }
 
 /* Correlation matrix accessor */
-CorrelationMatrix EllipticalDistribution::getCorrelation() const
+CorrelationMatrix EllipticalDistribution::getR() const
 {
   return R_;
+}
+
+/** Correlation matrix accessor */
+void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
+{
+  LOGWARN("EllipticalDistribution.setCorrelation is deprecated, use setR");
+  setR(R);
+}
+
+CorrelationMatrix EllipticalDistribution::getCorrelation() const
+{
+  LOGWARN("EllipticalDistribution.getCorrelation is deprecated, use getR");
+  return getR();
 }
 
 /* Cholesky factor of the correlation matrix accessor */
@@ -680,7 +693,7 @@ Distribution EllipticalDistribution::getStandardDistribution() const
   const UnsignedInteger dimension = getDimension();
   p_standardDistribution->setMean(Point(dimension, 0.0));
   p_standardDistribution->setSigma(Point(dimension, 1.0));
-  p_standardDistribution->setCorrelation(CorrelationMatrix(dimension));
+  p_standardDistribution->setR(CorrelationMatrix(dimension));
   return p_standardDistribution;
 }
 

@@ -55,7 +55,7 @@ int main(int, char *[])
 
       // We try to set an erroneous covariance matrix (wrong dimension) into distribution
       CorrelationMatrix newR(2);
-      distribution.setCorrelation(newR);
+      distribution.setR(newR);
 
       // Normally, we should never go here
       throw TestFailed("Exception has NOT been thrown or caught !");
