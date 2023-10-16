@@ -342,15 +342,15 @@ public:
   /** Get the PDF singularities inside of the range - 1D only */
   Point getSingularities() const;
 
-  /** Compute the density generator of the elliptical generator, i.e.
+  /** @deprecated Compute the density generator of the elliptical generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
   virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
 
-  /** Compute the derivative of the density generator */
+  /** @deprecated Compute the derivative of the density generator */
   virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
-  /** Compute the seconde derivative of the density generator */
+  /** @deprecated Compute the seconde derivative of the density generator */
   virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the radial distribution CDF */

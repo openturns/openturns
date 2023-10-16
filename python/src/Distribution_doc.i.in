@@ -28,12 +28,6 @@ OT_Distribution_computeSequentialConditionalPDF_doc
 OT_Distribution_computeSequentialConditionalQuantile_doc
 %feature("docstring") OT::Distribution::computeDDF
 OT_Distribution_computeDDF_doc
-%feature("docstring") OT::Distribution::computeDensityGenerator
-OT_Distribution_computeDensityGenerator_doc
-%feature("docstring") OT::Distribution::computeDensityGeneratorDerivative
-OT_Distribution_computeDensityGeneratorDerivative_doc
-%feature("docstring") OT::Distribution::computeDensityGeneratorSecondDerivative
-OT_Distribution_computeDensityGeneratorSecondDerivative_doc
 %feature("docstring") OT::Distribution::computeEntropy
 OT_Distribution_computeEntropy_doc
 %feature("docstring") OT::Distribution::computeGeneratingFunction
