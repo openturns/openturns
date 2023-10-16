@@ -101,6 +101,7 @@ public:
 
   /** Mu accessor */
   void setMu(const Point & mu);
+  Point getMu() const;
 
   // @depreated
   void setMean(const Point & mean);
