@@ -16,7 +16,7 @@ Bibliography
     *New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test.*, 1998.
 .. [acklam2017] Acklam P.J.
     *Acklam's algorithm for the inverse normal cdf*, 2017.
-     https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
+    https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
