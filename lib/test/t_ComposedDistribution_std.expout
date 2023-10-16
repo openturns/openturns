@@ -14,7 +14,7 @@ ComposedDistribution
 |     1 |      Two | Normal(mu = 2, sigma = 3) |
 |     2 |    Three | Normal(mu = 3, sigma = 4) |
 
-Parameters [[mean_0_marginal_0 : 1, standard_deviation_0_marginal_0 : 2],[mean_0_marginal_1 : 2, standard_deviation_0_marginal_1 : 3],[mean_0_marginal_2 : 3, standard_deviation_0_marginal_2 : 4],[]]
+Parameters [[mu_0_marginal_0 : 1, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 3, sigma_0_marginal_2 : 4],[]]
 entropy=7.43487
 entropy (MC)=7.43644
 Mean class=Point name=Unnamed dimension=3 values=[1,2,3]
@@ -60,7 +60,7 @@ sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.193334
 sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738]
 sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
 Distribution class=ComposedDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Parameters [[mean_0_marginal_0 : 1, standard_deviation_0_marginal_0 : 2],[mean_0_marginal_1 : 2, standard_deviation_0_marginal_1 : 3],[mean_0_marginal_2 : 3, standard_deviation_0_marginal_2 : 4],[R_2_1_copula : 0.25, R_3_1_copula : 0, R_3_2_copula : 0.25]]
+Parameters [[mu_0_marginal_0 : 1, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 3, sigma_0_marginal_2 : 4],[R_2_1_copula : 0.25, R_3_1_copula : 0, R_3_2_copula : 0.25]]
 PDF      =0.00175369
 PDF (ref)=0.00175369
 CDF      =0.033495

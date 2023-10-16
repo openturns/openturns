@@ -45,7 +45,7 @@ covariance= [[ 3.72933 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
-parameters= [[mean_0 : 0, standard_deviation_0 : 1]]
+parameters= [[mu_0 : 0, sigma_0 : 1]]
 Standard representative= CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]
 antecedent= Normal(mu = 0, sigma = 1)
 function= [x]->[x^2 + 2 * sin(x)]
