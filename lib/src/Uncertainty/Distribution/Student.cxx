@@ -123,8 +123,8 @@ String Student::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << getClassName();
-  if (getDimension() == 1) oss << "(nu = " << nu_ << ", mu = " << getMu() << ", sigma = " << getSigma()[0] << ")";
-  else oss << "(nu = " << nu_ << ", mu = " << mean_.__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
+  if (getDimension() == 1) oss << "(nu = " << nu_ << ", mu = " << getMu()[0] << ", sigma = " << getSigma()[0] << ")";
+  else oss << "(nu = " << nu_ << ", mu = " << mean_.__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getR().__str__(offset) << ")";
   return oss;
 }
 
@@ -580,13 +580,6 @@ Scalar Student::computeRadialDistributionCDF(const Scalar radius,
 {
   const Scalar r2 = radius * radius;
   return DistFunc::pBeta(0.5 * getDimension(), 0.5 * nu_, r2 / (nu_ + r2), tail);
-}
-
-/* Mu accessor */
-Scalar Student::getMu() const
-{
-  if (getDimension() == 1) return mean_[0];
-  throw InvalidArgumentException(HERE) << "Error: cannot call this method if dimension > 1.";
 }
 
 /* Get the mean of the distribution */

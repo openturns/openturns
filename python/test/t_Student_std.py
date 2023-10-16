@@ -107,36 +107,36 @@ for distribution in allDistributions:
         PDFgrFD[0] = (
             ot.Student(
                 distribution.getNu() + eps,
-                distribution.getMu(),
+                distribution.getMu()[0],
                 distribution.getSigma()[0],
             ).computePDF(point)
             - ot.Student(
                 distribution.getNu() - eps,
-                distribution.getMu(),
+                distribution.getMu()[0],
                 distribution.getSigma()[0],
             ).computePDF(point)
         ) / (2.0 * eps)
         PDFgrFD[1] = (
             ot.Student(
                 distribution.getNu(),
-                distribution.getMu() + eps,
+                distribution.getMu()[0] + eps,
                 distribution.getSigma()[0],
             ).computePDF(point)
             - ot.Student(
                 distribution.getNu(),
-                distribution.getMu() - eps,
+                distribution.getMu()[0] - eps,
                 distribution.getSigma()[0],
             ).computePDF(point)
         ) / (2.0 * eps)
         PDFgrFD[2] = (
             ot.Student(
                 distribution.getNu(),
-                distribution.getMu(),
+                distribution.getMu()[0],
                 distribution.getSigma()[0] + eps,
             ).computePDF(point)
             - ot.Student(
                 distribution.getNu(),
-                distribution.getMu(),
+                distribution.getMu()[0],
                 distribution.getSigma()[0] - eps,
             ).computePDF(point)
         ) / (2.0 * eps)

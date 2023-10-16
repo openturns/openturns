@@ -514,6 +514,11 @@ void EllipticalDistribution::setMu(const Point & mu)
   computeRange();
 }
 
+Point EllipticalDistribution::getMu() const
+{
+  return mean_;
+}
+
 void EllipticalDistribution::setMean(const Point & mean)
 {
   LOGWARN("EllipticalDistribution.setMean is deprecated, use setMu");

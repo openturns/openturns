@@ -42,6 +42,7 @@
  * Deprecated ApproximationAlgorithm.setVerbose/getVerbose
  * Deprecated EllipticalDistribution.setCorrelation/getCorrelation
  * Deprecated EllipticalDistribution.setMean
+ * Student.setMu/getMu now operate on Point
 
 === Documentation ===
 

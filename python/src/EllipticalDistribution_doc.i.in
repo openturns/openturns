@@ -129,7 +129,6 @@ Notes
 The shape matrix is computed from the :math:`\mat{R}` matrix and the
 scale parameter :math:`\vect{\sigma}` as in :eq:`shapeMatrix2`."
 
-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::EllipticalDistribution::setMu
@@ -137,5 +136,15 @@ scale parameter :math:`\vect{\sigma}` as in :eq:`shapeMatrix2`."
 
 Parameters
 ----------
-mu : float or sequence of positive float
+mu : sequence of float
+    The location parameter :math:`\vect{\mu}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EllipticalDistribution::getMu
+"Accessor to the location parameter :math:`\vect{\mu}`.
+
+Parameters
+----------
+mu : sequence of float
     The location parameter :math:`\vect{\mu}`."
