@@ -83,7 +83,7 @@ kurtosis      =class=Point name=Unnamed dimension=1 values=[3]
 kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[3]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9]
-parameters=[[Normal_mean_0 : -1, Normal_standard_deviation_0 : 3]]
+parameters=[[Normal_mu_0 : -1, Normal_sigma_0 : 3]]
 Standard representative=RandomMixture(Normal(mu = -1, sigma = 3))
 blockMin=5
 blockMax=20

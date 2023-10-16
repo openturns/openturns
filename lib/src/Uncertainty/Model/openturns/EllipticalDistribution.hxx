@@ -44,7 +44,7 @@ public:
   EllipticalDistribution();
 
   /** Parameter constructor */
-  EllipticalDistribution(const Point & mean,
+  EllipticalDistribution(const Point & mu,
                          const Point & sigma,
                          const CorrelationMatrix & R,
                          const Scalar covarianceNormalizationFactor);
