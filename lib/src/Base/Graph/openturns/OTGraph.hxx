@@ -34,7 +34,6 @@
 #include "openturns/Pie.hxx"
 #include "openturns/Polygon.hxx"
 #include "openturns/PolygonArray.hxx"
-#include "openturns/Rfunctions.hxx"
 #include "openturns/Staircase.hxx"
 #include "openturns/Text.hxx"
 

@@ -22,7 +22,6 @@
 #include <fstream>
 
 #include "openturns/GraphImplementation.hxx"
-#include "openturns/Rfunctions.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
