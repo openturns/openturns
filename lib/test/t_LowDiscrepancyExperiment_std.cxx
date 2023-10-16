@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     Normal distribution(4);
-    distribution.setMean(Point(4, 5.0));
+    distribution.setMu(Point(4, 5.0));
     UnsignedInteger size = 16;
     LowDiscrepancyExperiment experiment(HaltonSequence(), distribution, size);
     fullprint << "experiment = " << experiment << std::endl;

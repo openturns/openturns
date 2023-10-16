@@ -336,12 +336,12 @@ void GaussianNonLinearCalibration::run()
   const Function residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
   const Point residuals(residualFunction(thetaStar));
   if (globalErrorCovariance_)
-    error.setMean(residuals);
+    error.setMu(residuals);
   else
   {
     SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
     residualsAsSample.setData(residuals);
-    error.setMean(residualsAsSample.computeMean());
+    error.setMu(residualsAsSample.computeMean());
   }
   // Compute the posterior distribution
   Distribution parameterPosterior;

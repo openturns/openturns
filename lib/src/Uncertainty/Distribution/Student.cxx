@@ -583,12 +583,6 @@ Scalar Student::computeRadialDistributionCDF(const Scalar radius,
 }
 
 /* Mu accessor */
-void Student::setMu(const Scalar mu)
-{
-  if (getDimension() == 1) mean_ = Point(1, mu);
-  computeRange();
-}
-
 Scalar Student::getMu() const
 {
   if (getDimension() == 1) return mean_[0];
