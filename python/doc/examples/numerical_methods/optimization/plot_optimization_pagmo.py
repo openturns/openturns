@@ -32,7 +32,7 @@ pop0 = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2).getSample(100)
 # %%
 # We create the algorithm that should evolve over 10 generations
 algo = ot.Pagmo(zdt1, "nsga2", pop0)
-algo.setGenerationNumber(10)
+algo.setMaximumIterationNumber(10)
 
 # %%
 # Benefit from parallel evaluations if the function allows it
@@ -70,7 +70,7 @@ _ = View(graph)
 fronts = []
 for gen in range(5):
     algo = ot.Pagmo(zdt1, "nsga2", pop0)
-    algo.setGenerationNumber(gen)
+    algo.setMaximumIterationNumber(gen)
     algo.run()
     front0 = algo.getResult().getParetoFrontsIndices()[0]
     fronts.append(algo.getResult().getFinalValues().select(front0))

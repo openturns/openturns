@@ -133,7 +133,7 @@ public:
     , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? p_right->computePDF(0.0) : 0.0)
   {
     // Nothing to do
-  };
+  }
 
   PDFKernelProductDistribution * clone() const
   {
@@ -159,7 +159,7 @@ public:
       return value * 0.5 * (p_right_->computePDF(x_ / epsilon) + p_right_->computePDF(-x_ / epsilon)) / epsilon;
     }
     return value * p_right_->computePDF(x_ / u) / absU;
-  };
+  }
 
 private:
   const Pointer<DistributionImplementation> p_left_;
@@ -186,7 +186,7 @@ public:
     , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
   {
     // Nothing to do
-  };
+  }
 
   CDFKernelProductDistribution * clone() const
   {
@@ -201,7 +201,7 @@ public:
     if (isZero_) return value * cdf0_;
     if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
     return value * p_right_->computeCDF(x_ / u);
-  };
+  }
 
 private:
   const Pointer<DistributionImplementation> p_left_;
@@ -228,7 +228,7 @@ public:
     , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
   {
     // Nothing to do
-  };
+  }
 
   ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
   {
@@ -243,7 +243,7 @@ public:
     if (isZero_) return value * ccdf0_;
     if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
     return value * p_right_->computeComplementaryCDF(x_ / u);
-  };
+  }
 
 private:
   const Pointer<DistributionImplementation> p_left_;

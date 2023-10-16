@@ -130,7 +130,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   if (penalizationFactor_ == 0.0)
   {
     // First, get the data as if the weights were uniform
-    basisMatrix = proxy.computeDesign(currentIndices_);
+    basisMatrix = *proxy.computeDesign(currentIndices_).getImplementation();
     rightHandSide = y_.getImplementation()->getData();
     // If the weights are not uniform some additional work is needed
     if (!hasUniformWeight_)
@@ -159,7 +159,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     // First, get the data as if the weights were uniform
     const UnsignedInteger newNbRows = sampleSize + basisDimension;
     basisMatrix = MatrixImplementation(newNbRows, basisDimension);
-    const MatrixImplementation Phi(proxy.computeDesign(currentIndices_));
+    const MatrixImplementation Phi(*proxy.computeDesign(currentIndices_).getImplementation());
     rightHandSide = y_.getImplementation()->getData();
     rightHandSide.resize(newNbRows);
     // Extend the right-hand side with zeros

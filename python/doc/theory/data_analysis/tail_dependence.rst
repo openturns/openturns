@@ -3,47 +3,73 @@
 Tail dependence coefficients
 ----------------------------
 
-The tail dependence coefficients helps to assess the asymptotic dependency of a bivariate random variables.
+The tail dependence coefficients helps to assess the asymptotic dependency of a bivariate random variables. We
+detail here the following ones:
 
-Let :math:`X` a bivariate random variable which components :math:`X_i` follow the
-cumulative distribution fonctions :math:`F_i` and copula :math:`C`.
+- the upper tail dependence coefficient denoted by :math:`\lambda_U` (which is the notation of the probability
+  community) as well as :math:`\chi` (which is the notation of the extreme value community),
+- the upper extremal dependence coefficient denoted by :math:`\bar{\chi}`,
+- the lower tail dependence coefficient denoted by :math:`\lambda_L`,
+- the upper extremal dependence coefficient denoted by :math:`\bar{\chi}_L`.
+
+Readers should refer to [beirlant2004]_ to get more details.
+
+Let :math:`\vect{X} = (X_1, X_2)` be a bivariate random vector with marginal distribution functions
+:math:`F_1` and :math:`F_2`, and copula :math:`C`.
 
 **Upper tail dependence coefficient**
 
-We note :math:`\chi` the upper tail dependence coefficient:
+We denote by :math:`\lambda_U` or :math:`\chi` the upper tail dependence coefficient:
 
 .. math::
 
-    \lambda_U = \chi = \lim_{u \to 1} \Pset[F_2(X_2) > u | F1(X_1) > u]
+    \lambda_U = \chi = \lim_{u \to 1} \Pset[F_2(X_2) > u | F_1(X_1) > u]
 
-The :math:`\chi` coefficient represents the tendency for one variable to take extreme high values
-knowing the other variable is extremely high.
+provided that the limit exists.
 
-The variables :math:`(X_1, X_2)` are:
+The :math:`\chi` coefficient can be interpreted as the tendency for one variable to take extreme high values
+given that the other variable is extremely high.
 
-- asymptotically independent if :math:`\chi=0`
-- asymptotically dependent if :math:`0 \leq \chi \leq 1`
+The variables :math:`(X_1, X_2)` are said to be:
 
-Let the function :math:`\chi(u)` defined by:
+- asymptotically independent if and only if :math:`\chi=0`,
+- asymptotically dependent if and only if :math:`0 <\chi \leq 1`.
+
+Now, we define the function :math:`\chi(u)` defined by:
 
 .. math::
 
     \chi(u) = 2 - \frac{\log C(u,u)}{\log u}, \forall u \in [0,1]
 
-When :math:`u` is close to :math:`1` then:
+We can see the tail dependence coefficient as the limit of the function :math:`\chi(u)` when :math:`u` tends
+to :math:`1`. As a matter of fact, when :math:`u` is close to :math:`1`, we have:
 
 .. math::
 
     \chi(u) = 2 - \frac{1-C(u,u)}{1-u} + o(1) = \Pset[F_2(X_2) > u | F1(X_1) > u] + o(1)
 
-which proves:
+which proves that:
 
 .. math::
 
     \lim_{u \to 1} \chi(u) = \lambda_U = \chi
 
-The :math:`\chi(u)` function also gives information on the dependence structure between the variables
-at quantiles levels less than :math:`1`: The larger :math:`|\chi(u)|` the more correlated are the variables.
+Next to providing the limit :math:`\chi`, the function :math:`\chi(u)` also provides some insight in the
+dependence structure of the variables at lower quantile levels: the larger :math:`|\chi(u)|` the more
+correlated are the variables.
+
+The function :math:`\chi(u)` is estimated on data for several :math:`u` which must not be too high because
+of a problem of lack of data greater than :math:`u`. Condifence intervals can be estimated on each
+:math:`\chi(u)`. If the confidence interval contains the zero value when :math:`u` tends to :math:`1`, then we can assume that :math:`\chi=0`.
+
+Within the class of asymptotically dependent variables, the value of  :math:`\chi` increases with increasing degree of dependence at extreme levels.
+
+We illustrate two cases where the variables are:
+
+- asymptotically independent: we generated a sample of size :math:`10^3` from a Frank copula which has a
+  zero upper tail coefficient whatever the parameter,
+- asymptotically dependent: we generated a sample of size :math:`10^3` from a Gumbel copula parametrized
+  by :math:`\theta = 2.0` which has a positive upper tail coefficient.
 
 .. plot::
 
@@ -51,14 +77,23 @@ at quantiles levels less than :math:`1`: The larger :math:`|\chi(u)|` the more c
     from openturns.viewer import View
 
     ot.RandomGenerator.SetSeed(0)
-    copula = ot.FrankCopula()
-    data = copula.getSample(1000)
-    graph1 = ot.VisualTest.DrawUpperTailDependenceFunction(data)
-    View(graph1)
+    copula1 = ot.FrankCopula()
+    data1 = copula1.getSample(1000)
+    copula2 = ot.GumbelCopula(2.0)
+    data2 = copula2.getSample(1000)
+    graph1 = ot.VisualTest.DrawUpperTailDependenceFunction(data1)
+    graph1.setTitle('Upper tail dependence function: Frank')
+    graph2 = ot.VisualTest.DrawUpperTailDependenceFunction(data2)
+    graph2.setTitle('Upper tail dependence function: Gumbel(2.0)')
+    grid = ot.GridLayout(1,2)
+    grid.setGraph(0,0,graph1)
+    grid.setGraph(0,1,graph2)
+    View(grid)
 
 **Upper extremal dependence coefficient**
 
-Let the function :math:`\chi(u)` defined by:
+Within the class of asymptotically independent variables, the degrees of relative strength of dependence is
+given by the function :math:`\chi(u)` defined by:
 
 .. math::
 
@@ -68,24 +103,27 @@ We show that:
 
 .. math::
 
-    \bar{\chi}(u) = \frac{2 \log 1-u}{\log C(u,u)} - 1, \forall u \in [0,1]
+    \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
-And we define the asymtotic independence coefficient
+where :math:`\bar{C}` is the copula survivor function defined by:
+
+.. math::
+
+    \bar{C}(u_1, u_2) =  \Pset [U_1 > u_1, U_2 > u_2] = 1-u_1-u_2+C(u_1, u_2), \forall u \in [0,1]
+
+And we can define the upper extremal dependence coefficient by:
 
 .. math::
 
     \bar{\chi} = \lim_{u \to 1} \bar{\chi}(u)
 
-We show that :math:`\bar{\chi} \in [0,1]` and
+We show that :math:`-1 \leq \bar{\chi} \leq 1` and that if the variables are asymptotically dependent, then :math:`\bar{\chi} =1`:
 
 .. math::
 
     \chi > 0 \Rightarrow \lim_{u \to 1} \bar{\chi}(u) = 1
 
-The variables :math:`(X_1,X_2)` are:
-
-- asymptotically dependent in the high values if :math:`\chi > 0` (and :math:`\bar{\chi}=1`) and :math:`\chi` is the measure of the dependence strength
-- asymptotically independent if :math:`\chi = 0` and :math:`\bar{\chi} \in [0,1]` gives the measure of the vanishing dependency
+We illustrate the function :math:`\bar{\chi}(u)` for both previous cases.
 
 .. plot::
 
@@ -93,40 +131,64 @@ The variables :math:`(X_1,X_2)` are:
     from openturns.viewer import View
 
     ot.RandomGenerator.SetSeed(0)
-    copula = ot.FrankCopula()
-    data = copula.getSample(1000)
-    graph2 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data)
-    View(graph2)
+    copula1 = ot.FrankCopula()
+    data1 = copula1.getSample(1000)
+    copula2 = ot.GumbelCopula(2.0)
+    data2 = copula2.getSample(1000)
+    graph1 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data1)
+    graph1.setTitle('Upper extremal dependence function: Frank')
+    graph2 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data2)
+    graph2.setTitle('Upper extremal dependence function: Gumbel(2.0)')
+    grid2 = ot.GridLayout(1,2)
+    grid2.setGraph(0,0,graph1)
+    grid2.setGraph(0,1,graph2)
+    View(grid2)
+
+As a result, the pair :math:`(\chi, \bar{\chi})` can be used as a summary of extremal dependence of
+:math:`\vect{X} = (X_1, X_2)` as follows:
+
+- if :math:`0 < \chi \leq 1` (and then :math:`\bar{\chi}=1`), then :math:`X_1` and :math:`X_2` are
+  asymptotically dependent in extreme high values and :math:`\chi` is a measure for strength of dependence,
+- if :math:`\chi = 0` and :math:`-1 \leq \bar{\chi} < 1`, then :math:`X_1` and :math:`X_2` are asymptotically
+  independent in extreme high values and :math:`\bar{\chi}` is a measure for strength of dependence. If
+  :math:`\bar{\chi} >0`, there is a positive association: simultanueous extreme high values occur more frequently
+  than under exact independence. If :math:`\bar{\chi} <0`, there is a negative association: simultanueous
+  extreme high values occur less frequently than under exact independence.
 
 **Lower tail dependence coefficient**
 
-The lower tail dependence coefficient is defined by:
+We denote by :math:`\lambda_L` the lower tail dependence coefficient:
 
 .. math::
 
-    \lambda_L = \lim_{u \to 0} [F_2(X_2) < u, F1(X_1) < u]
+    \lambda_L = \lim_{u \to 0} [F_2(X_2) < u| F_1(X_1) < u]
 
-The :math:`\lambda_L` coefficient gives the tendency for one variable to take extreme low values
-knowing the other one is extreme low.
+provided that the limit exists.
 
-The variables :math:`(X_1, X_2)` are:
+The :math:`\lambda_L` coefficient can be interpreted as the tendency for one variable to take extreme low values
+given that the other variable is extremely low.
 
-- asymptotically independent if :math:`\lambda_L=0`
-- asymptotically dependent if :math:`0 < \lambda_L \leq 1`
+The variables :math:`(X_1, X_2)` are said to be:
 
-Similarly to what is proposed for the upper tail coefficient we can define:
+- asymptotically independent if and only if :math:`\lambda_L=0`,
+- asymptotically dependent if and only if :math:`0 < \lambda_L \leq 1`.
+
+Similarly to what is proposed for the upper tail coefficient, we can define the function :math:`\chi_L(u)` by:
 
 .. math::
 
     \chi_L(u) = \frac{\log (1 - C(u,u))}{\log (1-u)}, \forall u \in [0,1]
 
-When :math:`u` is close to :math:`0` then:
+
+
+We can see the tail dependence coefficient as the limit of the function :math:`\chi(u)` when :math:`u` tends
+to :math:`0`. As a matter of fact, when :math:`u` is close to :math:`0`, we have:
 
 .. math::
 
-    \chi_L(u) = \frac{C(u,u)}{u} + o(1) = \Pset[F_2(X_2) < u | F1(X_1) < u] + o(1)
+    \chi_L(u) = \frac{C(u,u)}{u} + o(1) = \Pset[F_2(X_2) < u | F_1(X_1) < u] + o(1)
 
-which proves:
+which proves that:
 
 .. math::
 
@@ -134,49 +196,76 @@ which proves:
 
 We show that :math:`0 \leq \chi_L(u) \leq 1`.
 
+Next to providing the limit :math:`\lambda_L`, the function :math:`\chi_L(u)` also provides some insight in
+the dependence structure of the variables at upper quantile levels: The larger :math:`|\chi_L(u)|` the more
+correlated are the variables.
+
+The function :math:`\chi_L(u)` is estimated on data for several :math:`u` which must not be too low because
+of a problem of lack of data lesser than :math:`u`. Condifence intervals can be estimated on each
+:math:`\chi_L(u)`. If the confidence interval contains the zero value when :math:`u` tends to :math:`0`, then
+we can assume that :math:`\lambda_L=0`.
+
+Within the class of asymptotically dependent variables, the value of  :math:`\chi_L` increases with increasing
+degree of dependence at extreme levels.
+
+We illustrate two cases where the variables are:
+
+- asymptotically independent: we generated a sample of size :math:`10^3` from a Frank copula which has a zero
+  lower tail coefficient whatever the parameter,
+- asymptotically dependent: we generated a sample of size :math:`10^3` from a Clayton copula parametrized by
+  :math:`\theta = 2.0` which has a positive lower tail coefficient.
+
+
 .. plot::
 
     import openturns as ot
     from openturns.viewer import View
 
     ot.RandomGenerator.SetSeed(0)
-    copula = ot.FrankCopula()
-    data = copula.getSample(1000)
-    graph3 = ot.VisualTest.DrawLowerTailDependenceFunction(data)
-    View(graph3)
+    copula1 = ot.FrankCopula()
+    data1 = copula1.getSample(1000)
+    copula2 = ot.ClaytonCopula(2.0)
+    data2 = copula2.getSample(1000)
+    graph1 = ot.VisualTest.DrawLowerTailDependenceFunction(data1)
+    graph1.setTitle('Lower tail dependence function:Frank :')
+    graph2 = ot.VisualTest.DrawLowerTailDependenceFunction(data2)
+    graph2.setTitle('Lower tail dependence function: Gumbel(2.0)')
+    grid3 = ot.GridLayout(1,2)
+    grid3.setGraph(0,0,graph1)
+    grid3.setGraph(0,1,graph2)
+    View(grid3)
 
 **Lower extremal dependence coefficient**
 
-Similarly we can introduce another function based on the comparison between the survival function
-of the copula :math:`C` and the one assuming independence, defined by:
+Within the class of asymptotically independent variables, the degrees of relative strength of dependence is
+given by the function :math:`\chi_L(u)` defined by:
 
 .. math::
-    \begin{array}{lcl}
-      \bar{\chi}_L(u) & = & \frac{\log (\Pset [F_1(X_1) < u] \Pset [F_2(X_2) < u])}{\log \Pset [F_1(X_1) < u, F_2(X_2) < u]} - 1\\
-      & = & \frac{\log u^2}{\log C(u,u)} - 1\\
-      & = & \frac{2 \log u}{\log C(u,u)} - 1
-    \end{array}
 
-We define the lower extremal coefficient :math:`\bar{\chi}_L` by:
+      \bar{\chi}_L(u) = \frac{\log (\Pset [F_1(X_1) < u] \Pset [F_2(X_2) < u])}{\log \Pset [F_1(X_1) < u, F_2(X_2) < u]} - 1, \forall u \in [0,1]
+
+We show that:
+
+.. math::
+
+    \bar{\chi}_L(u) = \frac{2 \log u}{\log C(u,u)} - 1, \forall u \in [0,1]
+
+
+And we can define the lower extremal dependence coefficient by:
 
 .. math::
 
     \bar{\chi}_L = \lim_{u \to 0} \bar{\chi}_L(u)
 
-We show that :math:`-1 \leq \bar{\chi}_L \leq 1` and
+We show that :math:`-1 \leq \bar{\chi}_L \leq 1` and that if the variables are asymptotically dependent, then :math:`\bar{\chi}_L=1`:
 
 .. math::
 
     \lambda_L > 0 \Rightarrow \lim_{u \to 0} \bar{\chi}_L(u) = 1
 
-For asymptotically independent variables (:math:`\chi_L = 0`), :math:`\bar{\chi}_L` gives the strength of the vanishing dependency.
-
-We define the following rules:
-
-- if :math:`\lambda_L > 0` (and :math:`\bar{\chi}_L = 1`): the variables are asymptotically dependent in the low values
-  and :math:`\bar{\chi}_L` gives a measure of the strength of the dependence.
-- if :math:`\lambda_L = 0`: the variables are asymptotically independent in the low values
-  and :math:`\bar{\chi}_L` gives the strength of the vanishing dependency.
+We illustrate the function :math:`\bar{\chi}_L(u)` for both previous cases: the Frank copula
+:math:`\bar{\chi}(u)` function is on the left and the Clayton copula :math:`\bar{\chi}(u)` function is on
+the right.
 
 .. plot::
 
@@ -184,10 +273,29 @@ We define the following rules:
     from openturns.viewer import View
 
     ot.RandomGenerator.SetSeed(0)
-    copula = ot.FrankCopula()
-    data = copula.getSample(1000)
-    graph4 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data)
-    View(graph4)
+    copula1 = ot.FrankCopula()
+    data1 = copula1.getSample(1000)
+    copula2 = ot.ClaytonCopula(2.0)
+    data2 = copula2.getSample(1000)
+    graph1 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data1)
+    graph1.setTitle('Lower extremal dependence function for the Frank copula')
+    graph2 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data2)
+    graph2.setTitle('Lower extremal dependence function for the Clayton(2.0) copula')
+    grid4 = ot.GridLayout(1,2)
+    grid4.setGraph(0,0,graph1)
+    grid4.setGraph(0,1,graph2)
+    View(grid4)
+
+As a result, the pair :math:`(\chi_L, \bar{\chi}_L)` can be used as a summary of extremal dependence of
+:math:`\vect{X} = (X_1, X_2)` as follows:
+
+- if :math:`0 < \chi_L \leq 1` (and then :math:`\bar{\chi}_L=1`), then :math:`X_1` and :math:`X_2` are
+  asymptotically dependent in extreme low values and :math:`\chi` is a measure for strength of dependence,
+- if :math:`\chi_L = 0` and :math:`-1 \leq \bar{\chi}_L < 1`, then :math:`X_1` and :math:`X_2` are
+  asymptotically independent in extreme low values and :math:`\bar{\chi}` is a measure for strength of dependence.
+  If :math:`\bar{\chi}_L >0`, there is a positive association: simultaneous extreme low values occur more
+  frequently than under exact independence. If :math:`\bar{\chi}_L <0`, there is a negative association:
+  simultaneous extreme low values occur less frequently than under exact independence.
 
 .. topic:: API:
 

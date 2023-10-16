@@ -35,17 +35,25 @@ static const Factory<ProfileLikelihoodResult> Factory_ProfileLikelihoodResult;
 
 ProfileLikelihoodResult::ProfileLikelihoodResult()
   : DistributionFactoryLikelihoodResult()
-{}
+{
+  // Nothing to do
+}
 
 ProfileLikelihoodResult::ProfileLikelihoodResult(const Distribution & distribution,
     const Distribution & parameterDistribution,
     const Scalar logLikelihood,
     const Function & profileLikelihoodFunction,
-    const Scalar parameter)
+    const Scalar parameter,
+    const Scalar xMin,
+    const Scalar xMax)
   : DistributionFactoryLikelihoodResult(distribution, parameterDistribution, logLikelihood)
   , profileLikelihoodFunction_(profileLikelihoodFunction)
   , parameter_(parameter)
-{}
+  , xMin_(xMin)
+  , xMax_(xMax)
+{
+  // Nothing to do
+}
 
 ProfileLikelihoodResult * ProfileLikelihoodResult::clone() const
 {
@@ -81,6 +89,7 @@ Scalar ProfileLikelihoodResult::getThreshold() const
   return threshold;
 }
 
+// Throw if the confidence interval is too large, ie is not within [xiMin, xiMax]
 Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
 {
   const Scalar x = parameter_;
@@ -92,7 +101,7 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   Scalar lb = x - epsilon;
   Scalar flb = profileLikelihoodFunction_(Point({lb}))[0];
   Scalar scaling = epsilon;
-  while ((flb - threshold <= 0.0) == (fx - threshold <= 0.0))
+  while (((flb - threshold <= 0.0) == (fx - threshold <= 0.0)) && (lb > xMin_))
   {
     if (!SpecFunc::IsNormal(flb))
       throw InvalidArgumentException(HERE) << "inf @" << lb;
@@ -100,6 +109,8 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
     lb -= scaling;
     flb = profileLikelihoodFunction_(Point({lb}))[0];
   }
+  if (lb <= xMin_) throw InvalidArgumentException(HERE) << "No sign change on [" << xMin_ << ", " << x << "]";
+
   scaling = epsilon;
   Scalar ub = x + epsilon;
   Scalar fub = profileLikelihoodFunction_(Point({ub}))[0];
@@ -111,8 +122,9 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
     ub += scaling;
     fub = profileLikelihoodFunction_(Point({ub}))[0];
   }
+  if (ub >= xMax_) throw InvalidArgumentException(HERE) << "No sign change on [" << x << ", " << xMax_ << "]";
 
-  // now look for the intersection with the threshold (with controlled precision this time)
+  // Look for the intersection with the threshold (with controlled precision this time)
   Brent solver(ResourceMap::GetAsScalar("ProfileLikelihoodResult-AbsolutePrecision"),
                ResourceMap::GetAsScalar("ProfileLikelihoodResult-RelativePrecision"));
   const Scalar xl = solver.solve(profileLikelihoodFunction_, threshold, lb, x, flb, fx);
@@ -120,25 +132,57 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   return Interval(xl, xu);
 }
 
+// Try to compute the confidence interval. If it throws an exception, don't draw it (as it is not available) and add an entry in the legend
 Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 {
-  const Interval ci(getParameterConfidenceInterval());
-  const Scalar delta = ci.getVolume();
-  const Scalar ciMargin = ResourceMap::GetAsScalar("ProfileLikelihoodResult-ConfidenceIntervalMargin");
-  const Scalar xMin = ci.getLowerBound()[0] - ciMargin * delta;
-  const Scalar xMax = ci.getUpperBound()[0] + ciMargin * delta;
+  Interval ci(xMin_, xMax_);
+  Bool drawCI = true;
+  try
+  {
+    ci = getParameterConfidenceInterval();
+  }
+  catch (const Exception &)
+  {
+    drawCI = false;
+  }
   const Scalar threshold = getThreshold();
   const Scalar x = parameter_;
   const Scalar fx = getLogLikelihood();
 
+  Scalar xMin = xMin_;
+  Scalar xMax = xMax_;
+  if (drawCI)
+  {
+    const Scalar delta = ci.getVolume();
+    const Scalar ciMargin = ResourceMap::GetAsScalar("ProfileLikelihoodResult-ConfidenceIntervalMargin");
+    xMin = std::max(xMin, ci.getLowerBound()[0] - ciMargin * delta);
+    xMax = std::min(xMax, ci.getUpperBound()[0] + ciMargin * delta);
+  }
   Graph result(profileLikelihoodFunction_.draw(xMin, xMax));
+  // Keep only the relevant data
+  Sample dataIni(result.getDrawable(0).getData());
+  Sample filteredData(0, 2);
+  for (UnsignedInteger i = 0; i < dataIni.getSize(); ++i)
+    if (dataIni(i, 1) > 2.0 * threshold - fx) filteredData.add(dataIni[i]);
+  if (filteredData.getSize() < dataIni.getSize())
+  {
+    xMin = filteredData.getMin()[0];
+    xMax = filteredData.getMax()[0];
+    result = profileLikelihoodFunction_.draw(xMin, xMax);
+  }
   result.setLegends({"likelihood"});
   String inputVar(profileLikelihoodFunction_.getInputDescription()[0]);
   // use latex syntax
+  String base(inputVar);
+  String suffix("");
   if (inputVar == "xi")
-    inputVar = "\\xi";
+    base = "\\xi";
   else if (inputVar == "zm")
-    inputVar = "z_m";
+  {
+    base = "z";
+    suffix = "_m";
+  }
+  inputVar = base + suffix;
   result.setXTitle("$" + inputVar + "$");
   result.setYTitle("profile log-likelihood value");
   result.setTitle("profile likelihood");
@@ -172,51 +216,61 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 
   dataX = {xMin};
   dataY = {fx + dy};
-  elt = Text(dataX, dataY, {OSS() << "$L(\\hat{" + inputVar + "})$=" << fx}, "right");
+  elt = Text(dataX, dataY, {OSS() << "$L(\\hat{" + base + "}" + suffix + ")$=" << fx}, "right");
   elt.setColor("black");
   result.add(elt);
 
-  // add lower bound vertical line
-  dataX = {ci.getLowerBound()[0], ci.getLowerBound()[0]};
-  dataY = {bbox.getLowerBound()[1], bbox.getUpperBound()[1]};
-  hLine = Curve(dataX, dataY, OSS() << "CI @ " << getConfidenceLevel());
-  hLine.setColor("red");
-  hLine.setLineStyle("dashed");
-  result.add(hLine);
+  if (drawCI)
+  {
+    // add lower bound vertical line
+    dataX = {ci.getLowerBound()[0], ci.getLowerBound()[0]};
+    dataY = {bbox.getLowerBound()[1], bbox.getUpperBound()[1]};
+    Curve vLine(dataX, dataY, OSS() << "CI @ " << getConfidenceLevel());
+    vLine.setColor("red");
+    vLine.setLineStyle("dashed");
+    result.add(vLine);
 
-  dataX = {ci.getLowerBound()[0] + dx};
-  dataY = {bbox.getLowerBound()[1]};
-  elt = Text(dataX, dataY, {OSS() << "lb=" << ci.getLowerBound()[0]}, "right");
-  elt.setColor("red");
-  elt.setRotation(90.0);
-  result.add(elt);
+    dataX = {ci.getLowerBound()[0] + dx};
+    dataY = {bbox.getLowerBound()[1]};
+    elt = Text(dataX, dataY, {OSS() << "lb=" << ci.getLowerBound()[0]}, "right");
+    elt.setColor("red");
+    elt.setRotation(90.0);
+    result.add(elt);
 
-  // add upper bound vertical line
-  dataX = {ci.getUpperBound()[0], ci.getUpperBound()[0]};
-  dataY = {bbox.getLowerBound()[1], bbox.getUpperBound()[1]};
-  hLine = Curve(dataX, dataY);
-  hLine.setColor("red");
-  hLine.setLineStyle("dashed");
-  result.add(hLine);
+    // add upper bound vertical line
+    dataX = {ci.getUpperBound()[0], ci.getUpperBound()[0]};
+    dataY = {bbox.getLowerBound()[1], bbox.getUpperBound()[1]};
+    vLine = Curve(dataX, dataY);
+    vLine.setColor("red");
+    vLine.setLineStyle("dashed");
+    result.add(vLine);
 
-  dataX = {ci.getUpperBound()[0] + dx};
-  dataY = {bbox.getLowerBound()[1]};
-  elt = Text(dataX, dataY, {OSS() << "ub=" << ci.getUpperBound()[0]}, "right");
-  elt.setColor("red");
-  elt.setRotation(90.0);
-  result.add(elt);
-
+    dataX = {ci.getUpperBound()[0] + dx};
+    dataY = {bbox.getLowerBound()[1]};
+    elt = Text(dataX, dataY, {OSS() << "ub=" << ci.getUpperBound()[0]}, "right");
+    elt.setColor("red");
+    elt.setRotation(90.0);
+    result.add(elt);
+  }
+  else
+  {
+    dataX = {x, x};
+    dataY = {bbox.getLowerBound()[1], bbox.getLowerBound()[1]};
+    Curve curve(dataX, dataY, String(OSS() << "No CI @ " << getConfidenceLevel()));
+    curve.setLineWidth(0.0);
+    result.add(curve);
+  }
   // add x vertical line
   dataX = {x, x};
   dataY = {bbox.getLowerBound()[1], bbox.getUpperBound()[1]};
-  hLine = Curve(dataX, dataY);
-  hLine.setColor("black");
-  hLine.setLineStyle("dashed");
-  result.add(hLine);
+  Curve vLine(dataX, dataY);
+  vLine.setColor("black");
+  vLine.setLineStyle("dashed");
+  result.add(vLine);
 
   dataX = {x + dx};
   dataY = {bbox.getLowerBound()[1]};
-  elt = Text(dataX, dataY, {OSS() << "$\\hat{" + inputVar + "}$=" << ci.getUpperBound()[0]}, "right");
+  elt = Text(dataX, dataY, {OSS() << "$\\hat{" + base + "}" + suffix + "$=" << x}, "right");
   elt.setColor("black");
   elt.setRotation(90.0);
   result.add(elt);

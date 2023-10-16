@@ -30,14 +30,18 @@ static const Factory<DistributionFactoryLikelihoodResult> Factory_DistributionFa
 
 DistributionFactoryLikelihoodResult::DistributionFactoryLikelihoodResult()
   : DistributionFactoryResult()
-{}
+{
+  // Nothing to do
+}
 
 DistributionFactoryLikelihoodResult::DistributionFactoryLikelihoodResult(const Distribution & distribution,
     const Distribution & parameterDistribution,
     const Scalar logLikelihood)
   : DistributionFactoryResult(distribution, parameterDistribution)
   , logLikelihood_(logLikelihood)
-{}
+{
+  // Nothing to do
+}
 
 
 DistributionFactoryLikelihoodResult * DistributionFactoryLikelihoodResult::clone() const

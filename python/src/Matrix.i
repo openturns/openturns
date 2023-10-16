@@ -21,7 +21,7 @@
 %rename(__elementsize__) OT::Matrix::elementSize;
 %rename(__stride__) OT::Matrix::stride;
 
-%template(MatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::MatrixImplementation>;
+%template(_MatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::MatrixImplementation>;
 %apply const ScalarCollection & { const OT::Matrix::ScalarCollection & };
 
 %define OTMatrixGetAccessor(baseType, elementType, pythonElementType)

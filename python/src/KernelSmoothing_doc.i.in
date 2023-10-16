@@ -19,7 +19,9 @@ Notes
 -----
 The binning mechanism creates a regular grid of *binNumber* intervals in each
 dimension, then the unit weight of each point is linearly affected to the vertices
-of the bin containing the point. See [wand1994]_ for the details.
+of the bin containing the point (see [wand1994]_ appendix D, page 182).
+The `KernelSmoothing-BinNumber` key defines the default value of the 
+number of bins used in the _binning_ algorithm to improve the evaluation speed.
 
 The boundary correction is available only in one dimension, and it is done using
 the mirroring technique. See the notes of the :meth:`setBoundingOption` method for
@@ -342,7 +344,13 @@ automaticUpperBound : bool
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwidth which components are evaluated according to the Silverman rule assuming a normal distribution. The bandwidth uses a robust estimate of the sample standard deviation, based on the interquartile range (rather than the standard deviation of the distribution and the sample). This method can manage a multivariate sample and produces a multivariate bandwidth.
+    Bandwidth which components are evaluated according to the Silverman rule
+    assuming a normal distribution.
+    The bandwidth uses a robust estimate of the
+    sample standard deviation, based on the interquartile range introduced
+    in :ref:`kernel_smoothing` (rather than the sample standard deviation).
+    This method can manage a multivariate sample and produces a
+    multivariate bandwidth.
 "
 
 // ---------------------------------------------------------------------
@@ -356,18 +364,39 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-This plug-in method is based on the solve-the-equation rule from (Sheather, Jones, 1991).
+This plug-in method is based on the *solve-the-equation* rule from [sheather1991]_.
 This method can take a lot of time for large samples, as the cost is  quadratic with the sample size.
 
-The `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns.ResourceMap` controls
+Several keys of the :class:`~openturns.ResourceMap` are used by the [sheather1991]_ method.
+
+- The key `KernelSmoothing-AbsolutePrecision` is used in the Sheather-Jones algorithm
+  to estimate the bandwidth.
+  It defines the absolute tolerance used by the solver
+  to solve the nonlinear equation.
+
+- The `KernelSmoothing-MaximumIteration` key defines the maximum number of iterations
+  used by the solver.
+
+- The `KernelSmoothing-RelativePrecision` key defines the relative tolerance.
+
+- The `KernelSmoothing-AbsolutePrecision` key defines the absolute tolerance. 
+
+- The `KernelSmoothing-ResidualPrecision` key defines the absolute
+  tolerance on the residual.
+
+- The `KernelSmoothing-CutOffPlugin` key is the cut-off value
+  introduced in :ref:`kernel_smoothing`.
+
+More precisely, the `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns.ResourceMap` controls
 the accuracy of the approximation used to estimate the rugosity of the
 second derivative of the distribution.
 The default value ensures that terms in the sum which weight are lower than
-4.e-6 are ignored, which can reduce the calculation in some situations.
+:math:`4 \times 10^{-6}` are ignored, which can reduce the calculation in some situations.
 The properties of the standard gaussian density are so that,
 in order to make the computation exact, the value of the
 `KernelSmoothing-CutOffPlugin` must be set to 39, but this may increase the
-computation time."
+computation time.
+"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeMixedBandwidth
@@ -379,6 +408,18 @@ bandwidth : :class:`~openturns.Point`
     Bandwidth which components are evaluated according to a mixed rule.
 
 Notes
------ 
-Use the plugin rule for small sample, estimate the ratio between the plugin rule and the Silverman rule on this small sample, and finally scale the Silverman bandwidth computed on the full sample with this ratio. The size of the small sample is based on the `KernelSmoothing-SmallSize` key of the `ResourceMap`.
+-----
+This method uses the *mixed* rule introduced in :ref:`kernel_smoothing`.
+Its goal is to provide an accurate estimator of the bandwidth 
+when the sample size is large.
+
+Let :math:`n` be the sample size.
+The estimator depends on the threshold sample size :math:`n_t` defined in the
+`KernelSmoothing-SmallSize` key of the :class:`~openturns.ResourceMap`.
+
+
+- If :math:`n \leq n_t`, i.e. for a small sample, we use the plugin solve-the-equation
+  method.
+
+- Otherwise, the *mixed* rule is used.
 "

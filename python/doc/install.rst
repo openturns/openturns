@@ -63,49 +63,25 @@ Installation options include pip and conda.
 Debian/Ubuntu
 -------------
 
-We support the following Debian-based distributions:
-
-.. table::
-
-    +-------------------------------------+----------------------------------------------------------+
-    | Distribution name                   | Repository address                                       |
-    +=====================================+==========================================================+
-    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main    |
-    +-------------------------------------+----------------------------------------------------------+
-    | Ubuntu 22.04 LTS 'Jammy Jellyfish'  | deb https://openturns.github.io/apt/ubuntu jammy main    |
-    +-------------------------------------+----------------------------------------------------------+
-    | Debian 11.0 'Bullseye'              | deb https://openturns.github.io/apt/debian bullseye main |
-    +-------------------------------------+----------------------------------------------------------+
-
-Add the mirror signature::
-
-    curl -s https://openturns.github.io/apt/public.key | sudo apt-key add -
-
-To be able to retrieve packages, you must add the appropriate
-repository address to your sources list. To do so, you may either use the
-graphical user interface of aptitude or you can edit the sources-list file
-(`/etc/apt/sources.list`).
-
-For instance, assuming you are running Ubuntu 22.04,
-add the following source to your sources list::
+First create an entry in the apt configuration matching your distribution family and codename
+if available in one of the following commands::
 
     echo deb https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/ubuntu focal main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
-    Use the bash command `lsb_release -c` in order to determine the codename of
-    your distribution.
+    Use the bash command `lsb_release -a` in order to determine the codename of your distribution.
 
-You may want to enable apt https support to be able to fetch from github.io::
+Then add the mirror signature, enable apt https support and update the package database::
 
+    curl -s https://openturns.github.io/apt/public.key | sudo apt-key add -
     sudo apt install apt-transport-https
-
-After editing aptitude's sources-list, you must update your packages database
-using either the graphical interface or by issuing the following command::
-
     sudo apt update
 
-The following packages are available:
+At this point the following new packages should be available via the package manager:
 
 .. table::
 
@@ -127,17 +103,19 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_38/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_38/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_37/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/15.4/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_38/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_38/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_37/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/15.4/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
 The following packages are available:
 

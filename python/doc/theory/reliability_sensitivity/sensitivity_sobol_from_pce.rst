@@ -109,9 +109,13 @@ If the polynomial basis is orthonormal, therefore:
 Hence, in the methods presented below, each Sobol' index is defined
 by its corresponding set of multi-indices.
 
-Classical Sobol' indices of a single variable
+.. _sensitivity_sobol_from_pce_first_order_variable:
+
+First order Sobol' index of a single variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+See :ref:`reliability_sensitivity_first_order_variable` for the
+mathematical definition of this sensitivity index.
 Let :math:`i \in \{0, ..., n_X - 1\}` the index of an input
 variable.
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
@@ -129,6 +133,13 @@ Therefore, the first order Sobol' index :math:`S_i` of the variable
 .. math::
     S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
 
+.. _sensitivity_sobol_from_pce_total_variable:
+
+Total Sobol' index of a single variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`reliability_sensitivity_total_variable` for the
+mathematical definition of this sensitivity index.
 Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
 :math:`\alpha_i > 0` (see [legratiet2017]_ eq. 38.45 page 1301):
 
@@ -137,14 +148,18 @@ Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
     =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{n_X - 1}) \in \mathcal{J}_P, \quad
     \alpha_i > 0 \right\}.
 
-Therefore, the total index :math:`S^T_i` is:
+Therefore, the total Sobol' index :math:`S^T_i` is:
 
 .. math::
     S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
 
-Interaction Sobol' indices of a group of variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _sensitivity_sobol_from_pce_interaction_group:
 
+Interaction Sobol' index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`reliability_sensitivity_interaction_group` for the
+mathematical definition of this sensitivity index.
 Let :math:`\bdu \subseteq \{0, ..., n_X - 1\}` the list of variable indices
 in the group.
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
@@ -162,7 +177,13 @@ Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is:
 .. math::
     S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
 
+.. _sensitivity_sobol_from_pce_total_interaction_group:
 
+Total interaction Sobol' index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`reliability_sensitivity_total_interaction_group` for the
+mathematical definition of this sensitivity index.
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
@@ -176,9 +197,13 @@ Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is:
 .. math::
     S_\bdu^{T, i} = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{T, i}\right).
 
-Closed first order and total Sobol' indices of a group of variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _sensitivity_sobol_from_pce_first_order_closed_group:
 
+Closed first order Sobol' index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`reliability_sensitivity_first_closed_group` for the
+mathematical definition of this sensitivity index.
 Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that
 each component of :math:`\idx` is contained in the group :math:`\bdu`:
 
@@ -196,6 +221,13 @@ is:
     S^{\operatorname{cl}}_\bdu
     = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{S, \operatorname{cl}}\right).
 
+.. _sensitivity_sobol_from_pce_total_group:
+
+Total Sobol' index of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`reliability_sensitivity_total_group` for the
+mathematical definition of this sensitivity index.
 Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 
 .. math::

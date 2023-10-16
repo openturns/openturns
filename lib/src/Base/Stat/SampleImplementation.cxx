@@ -432,6 +432,7 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
   UnsignedInteger start = 0;
   UnsignedInteger len = 0;
   Bool escaped = false;
+  UnsignedInteger nTrailingSpace = 0;
 
   for (UnsignedInteger i = 0; i < line.size(); ++ i)
   {
@@ -443,22 +444,37 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
     }
     else if ((line[i] == separator) && !escaped)
     {
-      String field(line.substr(start, len));
+      const String field(line.substr(start, len - nTrailingSpace));
       if (field.empty())
       {
-        LOGINFO(OSS() << "empty component, description is ignored");
-        return false;
+        if (separator != ' ')
+        {
+          LOGINFO(OSS() << "empty component, description is ignored");
+          return false;
+        }
       }
-      description.add(field);
+      else
+        description.add(field);
       start = i + 1;
       len = 0;
     }
+    else if ((separator != ' ') && (line[i] == ' '))
+    {
+      if (start == i)
+        ++ start;
+      else
+        ++ len;
+      ++ nTrailingSpace;
+    }
     else
+    {
       ++ len;
+      nTrailingSpace = 0;
+    }
   }
   if (len > 0)
   {
-    String field(line.substr(start, len));
+    const String field(line.substr(start, len));
     if (field.empty())
     {
       LOGINFO(OSS() << "empty component, description is ignored");
@@ -1031,18 +1047,16 @@ SampleImplementation & SampleImplementation::add(const Point & point)
 
 
 /* Appends another sample to the collection */
-SampleImplementation & SampleImplementation::add(const SampleImplementation & sample)
+SampleImplementation & SampleImplementation::add(const SampleImplementation & other)
 {
-  if (sample.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "Sample has invalid dimension ("
-                                         << sample.getDimension()
-                                         << ") expected : "
-                                         << getDimension();
-  //const UnsignedInteger oldSize = size_;
-  size_ += sample.getSize();
+  if (other.getDimension() != dimension_)
+    throw InvalidArgumentException(HERE) << "Sample has invalid dimension (" << other.getDimension()
+                                         << ") expected : " << getDimension();
+  // save original size in case other=this
+  const UnsignedInteger otherSize = other.getSize();
+  size_ += otherSize;
   data_.resize(size_ * dimension_);
-//   memmove( &data_[oldSize * dimension_], &(sample.data_[0]), sample.getSize() * dimension_ * sizeof(Scalar) );
-  std::copy_backward(sample.begin(), sample.end(), end());
+  std::copy_backward(other.begin(), other.begin() + otherSize, end());
   return *this;
 }
 

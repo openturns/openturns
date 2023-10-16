@@ -765,6 +765,9 @@ void ResourceMap::loadDefaultConfiguration()
   // MultiStart parameters //
   addAsBool("MultiStart-KeepResults", true);
 
+  // NLopt parameters
+  addAsUnsignedInteger("NLopt-InitialSeed", 0);
+
   // OptimizationAlgorithm parameters //
   addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);
@@ -775,6 +778,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
   // Pagmo parameters //
+  addAsUnsignedInteger("Pagmo-InitialSeed", 0);
   addAsString("Pagmo-UnconstrainMethod", "death penalty");
   addAsBool("Pagmo-memory", false);
   // gaco
@@ -976,6 +980,7 @@ void ResourceMap::loadDefaultConfiguration()
   // HSIC parameters //
   addAsBool("HSICEstimator-ParallelPValues", true);
   addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
+  addAsUnsignedInteger("HSICEstimator-InputCovarianceMatrixCacheSizeMb", 1000); // 1 Gb
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);
@@ -1105,6 +1110,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
+  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
+  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);

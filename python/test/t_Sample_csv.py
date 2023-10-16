@@ -36,6 +36,18 @@ with open("sample.csv") as f:
 aSample = ot.Sample.ImportFromTextFile("sample.csv", ";")
 print("import with quotes:", repr(aSample))
 
+# spaces in description
+with open("sample.csv", "w") as f:
+    f.write("nos sbef saft  sbeaf  mid \"qnos\"  \"qsbef\" \"qsaft\"  \"qsbeaf\"  \"mid mid\" \n1 2 3 4 5 6 7 8 9 10\n")
+aSample = ot.Sample.ImportFromTextFile("sample.csv")
+print("import with spaces:", repr(aSample))
+
+# spaces in description / semicolon
+with open("sample.csv", "w") as f:
+    f.write("nos; sbef;saft ; sbeaf ;mid mid;\"qnos\"; \"qsbef\";\"qsaft\"; \"qsbeaf\" ;\"mid mid\"\n1;2;3;4;5;6;7;8;9;10\n")
+aSample = ot.Sample.ImportFromTextFile("sample.csv", ";")
+print("import with spaces semicolon:", repr(aSample))
+
 # 3rd sample
 with open("sample.csv", "w") as f:
     f.write("X1 X2 X3 X4\n-1.2 2.3 3.4 -4.5\n5.6 -6.7 7.8 8.9\n-0.1 3.2 5.1 7.5\n")

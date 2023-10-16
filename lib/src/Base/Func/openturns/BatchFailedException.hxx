@@ -36,7 +36,7 @@ public:
                        const Description & errorDescription,
                        const Indices & succeededIndices,
                        const Sample & outputSample)
-    : Exception(point),
+    : Exception(point, "BatchFailedException"),
       failedIndices_(failedIndices),
       errorDescription_(errorDescription),
       succeededIndices_(succeededIndices),

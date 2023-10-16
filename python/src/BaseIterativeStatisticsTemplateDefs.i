@@ -1,3 +1,3 @@
 // SWIG file BaseIterativeStatisticsTemplateDefs.i
 
-%template(IterativeAlgorithmImplementationPointer)  OT::Pointer<OT::IterativeAlgorithmImplementation>;
+%template(_IterativeAlgorithmImplementationPointer)  OT::Pointer<OT::IterativeAlgorithmImplementation>;

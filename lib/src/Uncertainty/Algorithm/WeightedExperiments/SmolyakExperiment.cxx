@@ -147,7 +147,7 @@ public:
     , relativeEpsilon_(relativeEpsilon)
   {
     // Nothing to do
-  };
+  }
 
   /* Compare two points, according to lexicographic order
   * Returns true if x < y, false otherwise.

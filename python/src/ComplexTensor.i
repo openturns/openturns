@@ -6,7 +6,7 @@
 
 %include ComplexTensor_doc.i
 
-%template(ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
+%template(_ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
 %apply const ComplexCollection & { const OT::ComplexTensor::ComplexCollection & };
 
 %rename(__baseaddress__) OT::ComplexTensor::data;

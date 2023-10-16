@@ -26,14 +26,14 @@ mkdir build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DCMAKE_C_FLAGS="-Wall -Wextra -Werror" -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" \
-      -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter" \
+      -DCMAKE_C_FLAGS="-Wall -Wextra -Werror" -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wshadow -Werror -D_GLIBCXX_ASSERTIONS -fuse-ld=mold" \
+      -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" \
       -DSPHINX_FLAGS="-W -T -j4" \
       ${source_dir}
 make install
 if test -n "${uid}" -a -n "${gid}"
 then
-  cp -r ~/.local/share/openturns/doc/html .
+  cp -r ~/.local/share/doc/openturns/html .
   zip -r openturns-doc.zip html/*
   sudo chown ${uid}:${gid} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
 fi

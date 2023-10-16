@@ -8,7 +8,7 @@
 
 %define TypedInterfaceObjectImplementationHelper(Namespace, Interface, ParentImplementation)
 
-%template(ParentImplementation ## TypedInterfaceObject) OT::TypedInterfaceObject<Namespace::ParentImplementation>;
+%template(_ ## ParentImplementation ## TypedInterfaceObject) OT::TypedInterfaceObject<Namespace::ParentImplementation>;
 
 %typemap(in) const Namespace::Interface & ($1_basetype temp) {
   void * ptr = 0;

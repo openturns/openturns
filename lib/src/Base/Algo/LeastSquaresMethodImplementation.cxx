@@ -146,7 +146,7 @@ CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
 
 SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 {
-  MatrixImplementation psiAk(computeWeightedDesign());
+  const MatrixImplementation psiAk(*computeWeightedDesign().getImplementation());
   // H = Psi.G^{-1}.Psi^T
   return getGramInverse().getImplementation()->symProd(psiAk, 'R').genProd(psiAk, false, true);
 }
@@ -212,15 +212,15 @@ Sample LeastSquaresMethodImplementation::getInputSample() const
   return proxy_.getInputSample();
 }
 
-MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole) const
+Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole) const
 {
   if (whole) return computeWeightedDesign(initialIndices_);
   return computeWeightedDesign(currentIndices_);
 }
 
-MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
+Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
 {
-  MatrixImplementation design(proxy_.computeDesign(indices));
+  MatrixImplementation design(*proxy_.computeDesign(indices).getImplementation());
   if (hasUniformWeight_) return design;
   // Here we take the weights into account
   UnsignedInteger flatIndex = 0;

@@ -167,7 +167,6 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 
     if (toDoSize > 0)
     {
-      Sample result;
       try
       {
         const Sample result(evaluation_.operator()(toDo));

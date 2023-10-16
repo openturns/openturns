@@ -140,6 +140,9 @@
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />
 
+  <!-- OT::NLopt parameters -->
+  <NLopt-InitialSeed value_int="0" />
+
   <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value_float="0.0"           />
   <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value_float="1.0e-5"        />
@@ -150,6 +153,7 @@
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
 
   <!-- OT::Pagmo parameters -->
+  <Pagmo-InitialSeed value_int="0" />
   <Pagmo-UnconstrainMethod value_str="death penalty" />
   <Pagmo-memory value_bool="false" />
   <!-- gaco -->
@@ -351,6 +355,7 @@
   <!-- OT::HSICEstimator parameters -->
   <HSICEstimator-ParallelPValues value_bool="true" />
   <HSICEstimator-PermutationSize value_int="100" />
+  <HSICEstimator-InputCovarianceMatrixCacheSizeMb value_int="1000" />
 
   <!-- OT::RandomGenerator parameters -->
   <RandomGenerator-InitialSeed value_int="0" />
@@ -480,6 +485,8 @@
   <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
   <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
   <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
+  <GeneralizedExtremeValueFactory-InitializationMethod value_string="Gumbel" />
+  <GeneralizedExtremeValueFactory-NormalizationMethod value_string="MinMax" />
 
   <!-- OT::ProfileLikelihoodResult parameters -->
   <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />

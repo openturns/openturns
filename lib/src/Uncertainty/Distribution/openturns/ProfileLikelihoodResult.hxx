@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryLikelihoodResult.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,9 @@ public:
                           const Distribution & parameterDistribution,
                           const Scalar logLikelihood,
                           const Function & profileLikelihood,
-                          const Scalar parameter);
+                          const Scalar parameter,
+                          const Scalar xMin,
+                          const Scalar xMax);
 
   ProfileLikelihoodResult * clone() const override;
 
@@ -70,6 +73,8 @@ private:
   Function profileLikelihoodFunction_;
   Scalar confidenceLevel_ = 0.95;
   Scalar parameter_ = 0.0;
+  Scalar xMin_ = -SpecFunc::MaxScalar;
+  Scalar xMax_ = SpecFunc::MaxScalar;
 };
 
 END_NAMESPACE_OPENTURNS

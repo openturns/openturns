@@ -236,6 +236,7 @@ OT_OptimizationAlgorithm_getMaximumRelativeError_doc
 
 Parameters
 ----------
+maximumResidualError : float
     Maximum allowed residual error, where the residual error is defined by
     :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}`
     if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`."

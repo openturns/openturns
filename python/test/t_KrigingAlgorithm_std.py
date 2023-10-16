@@ -199,8 +199,24 @@ def test_stationary_fun():
     ), "wrong output description"
 
 
+def test_stationary_no_basis():
+    # fix https://github.com/openturns/openturns/issues/2403
+    ot.RandomGenerator.SetSeed(0)
+    model = ot.AbsoluteExponential()
+    size = 15
+    x = ot.Normal().getSample(size)
+    y = x + ot.Normal(0, 0.01).getSample(size)
+
+    algo = ot.KrigingAlgorithm(x, y, model)
+    algo.run()
+    result = algo.getResult()
+    variance = result.getConditionalMarginalVariance(x)
+    ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-15, 1e-15)
+
+
 if __name__ == "__main__":
     test_one_input_one_output()
     test_two_inputs_one_output()
     test_two_outputs()
     test_stationary_fun()
+    test_stationary_no_basis()

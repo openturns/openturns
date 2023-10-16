@@ -14,11 +14,9 @@ A quick start guide to graphs
 # The simplest way to create a graphics is to use the `draw` method. The `Normal` distribution for example provides a method to draw the density function of the gaussian distribution.
 
 # %%
-import openturns.viewer as otv
-import pylab as pl
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import matplotlib.pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -234,11 +232,11 @@ myCDF = n.drawCDF()
 # The title is finally configured with `suptitle`.
 
 # %%
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
-_ = otv.View(myPDF, figure=fig, axes=[ax_pdf])
+_ = viewer.View(myPDF, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
-_ = otv.View(myCDF, figure=fig, axes=[ax_cdf])
+_ = viewer.View(myCDF, figure=fig, axes=[ax_cdf])
 _ = fig.suptitle("The gaussian")
 
 # %%
@@ -253,7 +251,7 @@ _ = fig.suptitle("The gaussian")
 # %%
 n = ot.Normal()
 graph = n.drawPDF()
-view = otv.View(graph)
+view = viewer.View(graph)
 view.save("normal.png")
 
 # %%
@@ -279,7 +277,7 @@ graph = n.drawPDF()
 # The `figure_kw` keyword argument sets the optional arguments of the figure. In the following statement, we set the figure size in inches
 
 # %%
-view = otv.View(graph, figure_kw={"figsize": (12, 8)})
+view = viewer.View(graph, figure_kw={"figsize": (12, 8)})
 
 # %%
 # The `getFigure` method returns the current figure. This allows one to configure it as any other Matplotlib figure. In the following example, we configure the `suptitle`.
@@ -293,5 +291,5 @@ fig
 # The `plot_kw` optional argument sets the arguments of the plot. In the following example, we set the color of the plot in blue.
 
 # %%
-view = otv.View(graph, plot_kw={"color": "blue"})
+view = viewer.View(graph, plot_kw={"color": "blue"})
 plt.show()

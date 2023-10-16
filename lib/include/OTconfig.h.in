@@ -45,9 +45,6 @@
 /* Define to 1 if you have the `dlib` library. */
 #cmakedefine OPENTURNS_HAVE_DLIB
 
-/* Define to 1 if you have the `dlib` with global optimization support. */
-#cmakedefine OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
-
 /* Define to 1 if you have 'spectra' library */
 #cmakedefine OPENTURNS_HAVE_SPECTRA
 
@@ -78,12 +75,6 @@
 
 /* Define to 1 if you have the NLopt library. */
 #cmakedefine OPENTURNS_HAVE_NLOPT
-
-/* Define to 1 if NLopt has STOGO. */
-#cmakedefine OPENTURNS_NLOPT_HAVE_STOGO
-
-/* Define to 1 if NLopt has AGS. */
-#cmakedefine OPENTURNS_NLOPT_HAVE_AGS
 
 /* Define to 1 if you have the Ceres library. */
 #cmakedefine OPENTURNS_HAVE_CERES
@@ -195,9 +186,7 @@
 #cmakedefine size_t
 
 /* Define to 1 if big endian system */
-#ifndef __BIG_ENDIAN__
-#cmakedefine __BIG_ENDIAN__
-#endif
+#cmakedefine DSFMT_BIG_ENDIAN
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64

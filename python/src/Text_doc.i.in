@@ -38,7 +38,7 @@ Examples
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::Text::setTextRotation
+%feature("docstring") OT::Text::setRotation
 "Text rotation accessor.
 
 Parameters
@@ -48,7 +48,7 @@ rotation : float
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::Text::getTextRotation
+%feature("docstring") OT::Text::getRotation
 "Text rotation accessor.
 
 Returns

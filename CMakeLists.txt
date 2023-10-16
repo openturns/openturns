@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 
-project (OpenTURNS)
+project (openturns)
 
 option (USE_BISON                    "Looks for Bison if true and then build parser"                         ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
@@ -99,34 +99,15 @@ endif ()
 
 set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME)
 
-if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
-  set (CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
-endif ()
+include (GNUInstallDirs)
 
-set (OPENTURNS_LIBRARY_PATH
-      ${CMAKE_INSTALL_LIBDIR}
-      CACHE PATH "The directory where the library is installed"
-   )
-set (OPENTURNS_INCLUDE_PATH
-      include
-      CACHE PATH "The directory where the header files are installed"
-   )
-set (OPENTURNS_CONFIG_CMAKE_PATH
-      ${CMAKE_INSTALL_LIBDIR}/cmake/openturns
-      CACHE PATH "The directory where the CMake files are installed"
-   )
-set (OPENTURNS_SYSCONFIG_PATH
-      etc
-      CACHE PATH "The directory where the configuration file is installed"
-   )
-set (OPENTURNS_DATA_PATH
-      share
-      CACHE PATH "The directory where the common files are installed"
-   )
-set (OPENTURNS_DOC_PATH
-      share/openturns/doc
-      CACHE PATH "The directory where the license files are installed"
-   )
+set (OPENTURNS_LIBRARY_PATH ${CMAKE_INSTALL_LIBDIR} CACHE PATH "The directory where the library is installed")
+set (OPENTURNS_BIN_PATH ${CMAKE_INSTALL_BINDIR} CACHE PATH "Binary install path")
+set (OPENTURNS_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "The directory where the header files are installed")
+set (OPENTURNS_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/openturns CACHE PATH "The directory where the CMake files are installed")
+set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR} CACHE PATH "The directory where the configuration file is installed")
+set (OPENTURNS_DATA_PATH ${CMAKE_INSTALL_DATAROOTDIR} CACHE PATH "The directory where the common files are installed")
+set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DOCDIR} CACHE PATH "The directory where the license files are installed")
 
 if (WIN32)
   set (DEFAULT_TMP TEMP)
@@ -307,7 +288,7 @@ if (USE_BOOST)
 endif ()
 
 if (USE_NLOPT)
-  find_package (NLopt CONFIG QUIET)
+  find_package (NLopt 2.6 CONFIG QUIET)
   if (NLopt_FOUND)
     message(STATUS "Found NLopt: ${NLopt_DIR}  (found version \"${NLopt_VERSION}\")")
   else ()
@@ -320,40 +301,14 @@ if (USE_NLOPT)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${NLOPT_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${NLOPT_LIBRARIES})
     list (APPEND OPENTURNS_ENABLED_FEATURES "nlopt")
-
-    try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-    if (_NLOPT_STOGO_BUILDS)
-      if (_NLOPT_STOGO_RUNS EQUAL 0)
-        set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
-      else ()
-        message (STATUS "nlopt::GD_STOGO: fails to run")
-      endif ()
-    else ()
-      message (STATUS "nlopt::GD_STOGO: fails to build")
-    endif ()
-
-    try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-    if (_NLOPT_AGS_BUILDS)
-      if (_NLOPT_AGS_RUNS EQUAL 0)
-        set (OPENTURNS_NLOPT_HAVE_AGS TRUE)
-      else ()
-        message (STATUS "nlopt::GN_AGS: fails to run")
-      endif ()
-    else ()
-      message (STATUS "nlopt::GN_AGS: fails to build")
-    endif ()
-
   endif ()
 endif ()
 
 if (USE_DLIB)
-  find_package (dlib CONFIG)
+  find_package (dlib 19.8 CONFIG)
   if (dlib_FOUND)
     set (OPENTURNS_HAVE_DLIB TRUE)
     message (STATUS "Found dlib: ${dlib_DIR} (found version ${dlib_VERSION})")
-    if (dlib_VERSION VERSION_GREATER 19.7)
-      set (OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION TRUE)
-    endif ()
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES dlib::dlib)
     list (APPEND OPENTURNS_ENABLED_FEATURES "dlib")
   endif ()
@@ -427,26 +382,23 @@ if (USE_OPENMP)
   find_package (OpenMP)
   if (OPENMP_FOUND)
     set (OPENTURNS_HAVE_OPENMP TRUE)
-    if (TARGET OpenMP::OpenMP_CXX)
-      list (APPEND OPENTURNS_PRIVATE_LIBRARIES OpenMP::OpenMP_CXX)
-    else ()
-      set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
-      set (CMAKE_SHARED_LINKER_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
-    endif ()
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES OpenMP::OpenMP_CXX)
   endif ()
 endif ()
 
 if (MSVC)
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
+  # for exprtk, boost, swig
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif ()
 
 if (CMAKE_VERSION VERSION_LESS 3.20)
   include (TestBigEndian)
-  test_big_endian (__BIG_ENDIAN__)
+  test_big_endian (DSFMT_BIG_ENDIAN)
 else ()
-  if ("${CMAKE_CXX_BYTE_ORDER}" STREQUAL "BIG_ENDIAN")
-    set (__BIG_ENDIAN__ 1)
+  if (CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+    set (DSFMT_BIG_ENDIAN 1)
   endif ()
 endif ()
 
@@ -621,9 +573,9 @@ if (BUILD_PYTHON)
   endif ()
 
   if (CMAKE_VERSION VERSION_LESS 3.24)
-    find_package (Python 3.5 COMPONENTS Interpreter Development)
+    find_package (Python 3.6 COMPONENTS Interpreter Development)
   else ()
-    find_package (Python 3.5 COMPONENTS Interpreter Development.Module)
+    find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
   endif ()
 
   if (NOT TARGET Python::Module)

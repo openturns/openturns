@@ -3255,14 +3255,31 @@ OT_Distribution_drawMarginal2DSurvivalFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeUpperTailDependenceMatrix_doc
-"Compute upper tail dependence coefficients.
+"Compute the upper tail dependence coefficients.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is :math:`d`-dimensional, with :math:`d \geq 2` and that its copula is
+denoted by :math:`C`.
+The upper tail dependence matrix is :math:`(\chi^{ij})_{1 \leq i, j \leq d}` where :math:`\chi^{ij}` is
+the upper tail dependence coefficient of the bivariate distribution :math:`(X_i, X_j)`.
+It is defined by:
+
+.. math::
+
+    \chi^{ij} = \lim_{u \to 1} \chi^{ij}(u)
+
+where  :math:`u \mapsto \chi^{ij}(u)` is the upper tail dependence function of the bivariate distribution
+:math:`(X_i, X_j)` defined by:
+
+.. math::
+
+    \chi(u) = 2 - \frac{\log C(u,u)}{\log u}, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 dep : :class:`~openturns.CorrelationMatrix`
-    The dependence matrix
+    The dependence matrix.
 
 Examples
 --------
@@ -3276,14 +3293,32 @@ OT_Distribution_computeUpperTailDependenceMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeUpperExtremalDependenceMatrix_doc
-"Compute upper extremal dependence coefficients..
+"Compute the upper extremal dependence coefficients.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is :math:`d`-dimensional, with :math:`d \geq 2` and that its copula is
+denoted by :math:`C`.
+The upper extremal dependence matrix is :math:`(\bar{\chi}^{ij})_{1 \leq i, j \leq d}` where
+:math:`\bar{\chi}^{ij}` is the upper extremal dependence coefficient of the bivariate distribution
+:math:`(X_i, X_j)`.
+It is defined by:
+
+.. math::
+
+    \bar{\chi}^{ij} = \lim_{u \to 1} \bar{\chi}^{ij}(u)
+
+where  :math:`u \mapsto \bar{\chi}^{ij}(u)` is the upper extremal dependence function of the bivariate
+distribution :math:`(X_i, X_j)` defined by:
+
+.. math::
+
+    \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 dep : :class:`~openturns.CorrelationMatrix`
-    The dependence matrix
+    The dependence matrix.
 
 Examples
 --------
@@ -3297,14 +3332,32 @@ OT_Distribution_computeUpperExtremalDependenceMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeLowerTailDependenceMatrix_doc
-"Compute lower tail dependence coefficients..
+"Compute the lower tail dependence coefficients.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is :math:`d`-dimensional, with :math:`d \geq 2` and that
+its copula is denoted by :math:`C`.
+The lower tail dependence matrix is :math:`(\chi_L^{ij})_{1 \leq i, j \leq d}` where
+:math:`\chi_L^{ij}` is the lower tail dependence coefficient of the bivariate distribution
+:math:`(X_i, X_j)`.
+It is defined by:
+
+.. math::
+
+    \chi_L^{ij} = \lim_{u \to 0} \chi_L^{ij}(u)
+
+where  :math:`u \mapsto \chi_L^{ij}(u)` is the lower tail dependence function of the bivariate
+distribution :math:`(X_i, X_j)` defined by:
+
+.. math::
+
+    \chi_L(u) = \frac{\log (1 - C(u,u))}{\log (1-u)}, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 dep : :class:`~openturns.CorrelationMatrix`
-    The dependence matrix
+    The dependence matrix.
 
 Examples
 --------
@@ -3318,14 +3371,32 @@ OT_Distribution_computeLowerTailDependenceMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeLowerExtremalDependenceMatrix_doc
-"Compute lower extremal dependence coefficients..
+"Compute the lower extremal dependence coefficients.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is :math:`d`-dimensional, with :math:`d \geq 2` and that
+its copula is denoted by :math:`C`.
+The lower extremal dependence matrix is :math:`(\bar{\chi}_L^{ij})_{1 \leq i, j \leq d}` where
+:math:`\\bar{\chi}_L^{ij}` is the lower extremal dependence coefficient of the bivariate distribution
+:math:`(X_i, X_j)`.
+It is defined by:
+
+.. math::
+
+    \bar{\chi}_L^{ij} = \lim_{u \to 0} \bar{\chi}_L^{ij}(u)
+
+where  :math:`u \mapsto \bar{\chi}_L^{ij}(u)` is the lower extremal dependence function
+of the bivariate distribution :math:`(X_i, X_j)` defined by:
+
+.. math::
+    
+    \bar{\chi}_L(u) = \frac{2 \log u}{\log C(u,u)} - 1, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 dep : :class:`~openturns.CorrelationMatrix`
-    The dependence matrix
+    The dependence matrix.
 
 Examples
 --------
@@ -3339,14 +3410,21 @@ OT_Distribution_computeLowerExtremalDependenceMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_drawUpperTailDependenceFunction_doc
-"Draw upper tail dependence.
+"Draw the upper tail dependence function.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is bivariate and that its copula is denoted by :math:`C`.
+The upper tail dependence function :math:`u \mapsto \chi(u)` is defined by:
+
+.. math::
+
+    \chi(u) = 2 - \frac{\log C(u,u)}{\log u}, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    Graph of the function :math:`u \mapsto \chi(u)`.
 
 Examples
 --------
@@ -3360,14 +3438,21 @@ OT_Distribution_drawUpperTailDependenceFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_drawUpperExtremalDependenceFunction_doc
-"Draw upper extremal dependence.
+"Draw the upper extremal dependence function.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is bivariate and that its copula is denoted by :math:`C`.
+The upper extremal dependence function :math:`u \mapsto \bar{\chi}(u)` is defined by:
+
+.. math::
+
+    \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    Graph of the function :math:`u \mapsto \bar{\chi}(u)`.
 
 Examples
 --------
@@ -3381,14 +3466,21 @@ OT_Distribution_drawUpperExtremalDependenceFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_drawLowerTailDependenceFunction_doc
-"Draw lower tail dependence.
+"Draw the lower tail dependence function.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is bivariate and that its copula is denoted by :math:`C`.
+The lower tail dependence  function :math:`u \mapsto \chi_L(u)` is defined by:
+
+.. math::
+
+    \chi_L(u) = \frac{\log (1 - C(u,u))}{\log (1-u)}, \forall u \in [0,1]
+
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    Graph of the function :math:`u \mapsto \chi_L(u)`.
 
 Examples
 --------
@@ -3402,14 +3494,21 @@ OT_Distribution_drawLowerTailDependenceFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_drawLowerExtremalDependenceFunction_doc
-"Draw lower extremal dependence.
+"Draw the lower extremal dependence function.
 
-Refer to :ref:`tail_dependence`.
+We assume that the distribution is bivariate and that its copula is denoted by :math:`C`.
+The lower extremal dependence function :math:`u \mapsto \bar{\chi}(u)` is defined by:
+
+.. math::
+    
+    \bar{\chi}_L(u) = \frac{2 \log u}{\log C(u,u)} - 1, \forall u \in [0,1]
+    
+Refer to :ref:`tail_dependence` to get more details.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph object
+    The graph of the function :math:`u \mapsto \bar{\chi}_L(u)`.
 
 Examples
 --------

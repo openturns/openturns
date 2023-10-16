@@ -55,7 +55,9 @@ public:
   FieldToPointFunctionImplementation * clone() const override;
 
   /** Comparison operator */
+protected:
   using PersistentObject::operator ==;
+public:
   Bool operator ==(const FieldToPointFunctionImplementation & other) const;
 
   /** String converter */

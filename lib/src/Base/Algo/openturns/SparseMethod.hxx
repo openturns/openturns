@@ -85,7 +85,7 @@ public:
   void trashDecomposition() override;
 
   /** Build the weighted design matrix */
-  MatrixImplementation computeWeightedDesign(const Bool whole = false) const override;
+  Matrix computeWeightedDesign(const Bool whole = false) const override;
 
 public:
 

@@ -76,7 +76,7 @@ private:
       qN_(qN), weight_(weight)
     {
       // Nothing to do
-    };
+    }
 
     // This method allows one to compute <qN, qN>
     Point kernelSym(const Point & point) const
@@ -87,7 +87,7 @@ private:
       Point result(1);
       result[0] = qNX * qNX * pdf;
       return result;
-    };
+    }
 
     // This method allows one to compute <qN, qN> and <x.qN, qN>
     Point kernelGen(const Point & point) const
@@ -100,7 +100,7 @@ private:
       result[0] = qNX * qNX * pdf;
       result[1] = xQNX * qNX * pdf;
       return result;
-    };
+    }
 
     const OrthogonalUniVariatePolynomial & qN_;
     const Distribution & weight_;

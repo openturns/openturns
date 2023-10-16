@@ -19,7 +19,10 @@
 %include OTtypes.i
 %include OTexceptions.i
 %include std_vector.i
-%include simulation_module.i
+
+/* Base/Type */
+%include BaseTypCollection.i
+%import typ_module.i
 
 %include BaseFuncCollection.i
 %import base_module.i
@@ -36,9 +39,10 @@
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 
-/* Uncertainty/Model */
+/* Uncertainty */
 %import bayesian_module.i
 %import metamodel_module.i
+%include simulation_module.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include UserDefinedMetropolisHastings.i

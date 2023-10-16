@@ -117,7 +117,7 @@ struct PagmoProblem
     // callbacks
     if (algorithm_->progressCallback_.first)
     {
-      algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getGenerationNumber()), algorithm_->progressCallback_.second);
+      algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
     }
     if (algorithm_->stopCallback_.first)
     {
@@ -202,7 +202,7 @@ struct PagmoProblem
       // callbacks
       if (algorithm_->progressCallback_.first)
       {
-        algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getGenerationNumber()), algorithm_->progressCallback_.second);
+        algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
       }
       if (algorithm_->stopCallback_.first)
       {
@@ -255,6 +255,7 @@ static const Factory<Pagmo> Factory_Pagmo;
 /* Default constructor */
 Pagmo::Pagmo(const String & algoName)
   : OptimizationAlgorithmImplementation()
+  , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
 {
   setAlgorithmName(algoName);
 }
@@ -266,6 +267,7 @@ Pagmo::Pagmo(const OptimizationProblem & problem,
              const Sample & startingSample)
   : OptimizationAlgorithmImplementation()
   , startingSample_(startingSample)
+  , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
 {
   setAlgorithmName(algoName);
   setProblem(problem);
@@ -398,7 +400,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::gaco algorithm_impl(generationNumber_, ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumEvaluationNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -409,7 +411,7 @@ void Pagmo::run()
     const Scalar F = ResourceMap::GetAsScalar("Pagmo-de-F");
     const Scalar CR = ResourceMap::GetAsScalar("Pagmo-de-CR");
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-de-variant");
-    algo = pagmo::de(generationNumber_, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
+    algo = pagmo::de(getMaximumIterationNumber(), F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
   }
   else if (algoName_ == "sade")
   {
@@ -417,19 +419,19 @@ void Pagmo::run()
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-sade-variant");
     const UnsignedInteger variant_adptv = ResourceMap::GetAsUnsignedInteger("Pagmo-sade-variant_adptv");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::sade(generationNumber_, variant, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
+    algo = pagmo::sade(getMaximumIterationNumber(), variant, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
   }
   else if (algoName_ == "de1220")
   {
     // de1220(unsigned gen = 1u, std::vector<unsigned> allowed_variants = de1220_statics<void>::allowed_variants, unsigned variant_adptv = 1u, double ftol = 1e-6, double xtol = 1e-6, bool memory = false, unsigned seed = pagmo::random_device::next())
     const UnsignedInteger variant_adptv = ResourceMap::GetAsUnsignedInteger("Pagmo-de1220-variant_adptv");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::de1220(generationNumber_, pagmo::de1220_statics<void>::allowed_variants, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
+    algo = pagmo::de1220(getMaximumIterationNumber(), pagmo::de1220_statics<void>::allowed_variants, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
   }
   else if (algoName_ == "gwo")
   {
     // gwo(unsigned gen = 1u, unsigned seed = pagmo::random_device::next())
-    algo = pagmo::gwo(generationNumber_);
+    algo = pagmo::gwo(getMaximumIterationNumber());
   }
   else if (algoName_ == "ihs")
   {
@@ -439,7 +441,7 @@ void Pagmo::run()
     const Scalar ppar_max = ResourceMap::GetAsScalar("Pagmo-ihs-ppar_max");
     const Scalar bw_min = ResourceMap::GetAsScalar("Pagmo-ihs-bw_min");
     const Scalar bw_max = ResourceMap::GetAsScalar("Pagmo-ihs-bw_max");
-    algo = pagmo::ihs(generationNumber_, phmcr, ppar_min, ppar_max, bw_min, bw_max);
+    algo = pagmo::ihs(getMaximumIterationNumber(), phmcr, ppar_min, ppar_max, bw_min, bw_max);
   }
   else if (algoName_ == "pso")
   {
@@ -452,7 +454,7 @@ void Pagmo::run()
     const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_type");
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::pso(generationNumber_, omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+    algo = pagmo::pso(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
   }
   else if (algoName_ == "pso_gen")
   {
@@ -465,7 +467,7 @@ void Pagmo::run()
     const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_type");
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    pagmo::pso_gen algorithm_impl(generationNumber_, omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+    pagmo::pso_gen algorithm_impl(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -473,7 +475,7 @@ void Pagmo::run()
   else if (algoName_ == "sea")
   {
     // sea(unsigned gen = 1u, unsigned seed = pagmo::random_device::next())
-    algo = pagmo::sea(generationNumber_);
+    algo = pagmo::sea(getMaximumIterationNumber());
   }
   else if (algoName_ == "sga")
   {
@@ -486,7 +488,7 @@ void Pagmo::run()
     const String crossover = ResourceMap::GetAsString("Pagmo-sga-crossover");
     const String mutation = ResourceMap::GetAsString("Pagmo-sga-mutation");
     const String selection = ResourceMap::GetAsString("Pagmo-sga-selection");
-    algo = pagmo::sga(generationNumber_, cr, eta_c, m, param_m, param_s, crossover, mutation, selection);
+    algo = pagmo::sga(getMaximumIterationNumber(), cr, eta_c, m, param_m, param_s, crossover, mutation, selection);
   }
   else if (algoName_ == "simulated_annealing")
   {
@@ -503,7 +505,7 @@ void Pagmo::run()
   {
     // bee_colony(unsigned gen = 1u, unsigned limit = 20u, unsigned seed = pagmo::random_device::next())
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-bee_colony-limit");
-    algo = pagmo::bee_colony(generationNumber_, limit);
+    algo = pagmo::bee_colony(getMaximumIterationNumber(), limit);
   }
 #ifdef PAGMO_WITH_EIGEN3
   else if (algoName_ == "cmaes")
@@ -515,7 +517,7 @@ void Pagmo::run()
     const Scalar cmu = ResourceMap::GetAsScalar("Pagmo-cmaes-cmu");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-cmaes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::cmaes(generationNumber_, cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    algo = pagmo::cmaes(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
   }
   else if (algoName_ == "xnes")
   {
@@ -525,7 +527,7 @@ void Pagmo::run()
     const Scalar eta_b = ResourceMap::GetAsScalar("Pagmo-xnes-eta_b");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-xnes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::xnes(generationNumber_, eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
   }
 #endif
   else if (algoName_ == "nsga2")
@@ -535,7 +537,7 @@ void Pagmo::run()
     const Scalar eta_c = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_c");
     const Scalar m = ResourceMap::GetAsScalar("Pagmo-nsga2-m");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_m");
-    pagmo::nsga2 algorithm_impl(generationNumber_, cr, eta_c, m, eta_m);
+    pagmo::nsga2 algorithm_impl(getMaximumIterationNumber(), cr, eta_c, m, eta_m);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -552,7 +554,7 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    algo = pagmo::moead(generationNumber_, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    algo = pagmo::moead(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
   }
 #if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
   else if (algoName_ == "moead_gen")
@@ -567,7 +569,7 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    algo = pagmo::moead_gen(generationNumber_, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    algo = pagmo::moead_gen(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
   }
 #endif
   else if (algoName_ == "mhaco")
@@ -581,7 +583,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::maco algorithm_impl(generationNumber_, ker, q, threshold, n_gen_mark, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumEvaluationNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -597,7 +599,7 @@ void Pagmo::run()
     const UnsignedInteger leader_selection_range = ResourceMap::GetAsUnsignedInteger("Pagmo-nspso-leader_selection_range");
     const String diversity_mechanism = ResourceMap::GetAsString("Pagmo-nspso-diversity_mechanism");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    pagmo::nspso algorithm_impl(generationNumber_, omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
+    pagmo::nspso algorithm_impl(getMaximumIterationNumber(), omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -610,8 +612,8 @@ void Pagmo::run()
   pop = algo.evolve(pop);
   result_ = OptimizationResult(getProblem());
   result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
+  result_.setIterationNumber(getMaximumIterationNumber());
   Scalar optimalValue = 0.0;
-  Point optimalPoint;
   Sample finalPoints(0, getProblem().getDimension());
 
   // retrieve final population
@@ -772,12 +774,14 @@ String Pagmo::getAlgorithmName() const
 /* Number of generations to evolve */
 void Pagmo::setGenerationNumber(const UnsignedInteger generationNumber)
 {
-  generationNumber_ = generationNumber;
+  LOGWARN(OSS() << "Pagmo.setGenerationNumber is deprecated in favor of setMaximumIterationNumber");
+  setMaximumIterationNumber(generationNumber);
 }
 
 UnsignedInteger Pagmo::getGenerationNumber() const
 {
-  return generationNumber_;
+  LOGWARN(OSS() << "Pagmo.getGenerationNumber is deprecated in favor of getMaximumIterationNumber");
+  return getMaximumIterationNumber();
 }
 
 /* Random generator seed accessor */
@@ -808,7 +812,6 @@ void Pagmo::save(Advocate & adv) const
   OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algoName_", algoName_);
   adv.saveAttribute("startingSample_", startingSample_);
-  adv.saveAttribute("generationNumber_", generationNumber_);
   adv.saveAttribute("seed_", seed_);
   adv.saveAttribute("blockSize_", blockSize_);
 }
@@ -819,7 +822,12 @@ void Pagmo::load(Advocate & adv)
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algoName_", algoName_);
   adv.loadAttribute("startingSample_", startingSample_);
-  adv.loadAttribute("generationNumber_", generationNumber_);
+  if (adv.hasAttribute("generationNumber_")) // OT<=1.21
+  {
+    UnsignedInteger generationNumber = 0;
+    adv.loadAttribute("generationNumber_", generationNumber);
+    setMaximumIterationNumber(generationNumber);
+  }
   adv.loadAttribute("seed_", seed_);
   adv.loadAttribute("blockSize_", blockSize_);
 }

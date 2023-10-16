@@ -33,15 +33,9 @@ int main(int, char *[])
   {
     /* We create three points */
     const UnsignedInteger dimension = 2;
-    Point point1(dimension);
-    point1[0] = 10.0;
-    point1[1] = 20.0;
-    Point point2(dimension);
-    point2[0] = 11.0;
-    point2[1] = 21.0;
-    Point point3(dimension);
-    point3[0] = 12.0;
-    point3[1] = 22.0;
+    Point point1 = {10, 20};
+    Point point2 = {11, 21};
+    Point point3 = {12, 22};
 
     /* We create a Sample */
     Sample sample1(0, 2);
@@ -53,7 +47,7 @@ int main(int, char *[])
     referencethreshold[1] = 3.0;
 
     /* Iterative threshold, one point at a time */
-    IterativeThresholdExceedance iterthresholdPoint(dimension, 15.0);
+    IterativeThresholdExceedance iterthresholdPoint(dimension, Greater(), 15.0);
     iterthresholdPoint.increment(point1);
     iterthresholdPoint.increment(point2);
     iterthresholdPoint.increment(point3);
@@ -65,7 +59,7 @@ int main(int, char *[])
     assert_equal(iteration, expectedIteration1);
 
     /* Iterative threshold, one single sample */
-    IterativeThresholdExceedance iterthresholdSample(dimension, 15.0);
+    IterativeThresholdExceedance iterthresholdSample(dimension, Greater(), 15.0);
     iterthresholdSample.increment(sample1);
     computedthreshold = iterthresholdSample.getThresholdExceedance();
     assert_almost_equal(referencethreshold, computedthreshold, rtol);

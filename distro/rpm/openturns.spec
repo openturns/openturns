@@ -7,20 +7,16 @@
 %endif
 
 %define __cmake %{_bindir}/cmake
-%define _cmake_lib_suffix64 -DLIB_SUFFIX=64
 %define cmake \
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
 CXXFLAGS="${CXXFLAGS:-%optflags} -fno-lto" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 %__cmake \\\
 -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \\\
-%if "%{?_lib}" == "lib64" \
-%{?_cmake_lib_suffix64} \\\
-%endif \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.21rc1
+Version:        1.21
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -110,7 +106,7 @@ make
 
 %install
 make install DESTDIR=%{buildroot}
-rm -r %{buildroot}%{_datadir}/%{name}/doc
+rm -r %{buildroot}%{_datadir}/doc/%{name}
 
 %check
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on-failure %{?_smp_mflags} -E "cppcheck|ChaosSobol|Kriging" --timeout 1000 --schedule-random || echo "fail"

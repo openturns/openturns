@@ -84,7 +84,9 @@ OT_API TestResultCollection FullSpearman(const Sample & firstSample,
     const Scalar level = 0.05);
 
 /** Model selection test between two imbricated models M0 and M1 estimated by likelihood maximization */
-OT_API TestResult LikelihoodRatioTest(const Scalar model0LogLikelihood,
+OT_API TestResult LikelihoodRatioTest(const UnsignedInteger model0NbParameters,
+                                      const Scalar model0LogLikelihood,
+                                      const UnsignedInteger model1NbParameters,
                                       const Scalar model1LogLikelihood,
                                       const Scalar level = 0.05);
 

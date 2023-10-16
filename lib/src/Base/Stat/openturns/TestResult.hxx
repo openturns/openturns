@@ -57,7 +57,7 @@ public:
   /** Virtual constructor */
   TestResult * clone() const override;
 
-  /** Description Accessor */
+  /** Description accessor */
   void setDescription(const Description & description);
   Description getDescription() const;
 

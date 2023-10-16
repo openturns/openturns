@@ -1,14 +1,17 @@
 """
-Choose the trend basis of a kriging metamodel
-=============================================
+Kriging: choose a polynomial trend on the beam model
+====================================================
 """
 # %%
 # The goal of this example is to show how to configure the trend in a Kriging metamodel.
-# This is why this example focuses on the three available trends:
+# This example focuses on three polynomial trends:
 #
-# * `ConstantBasisFactory`,
-# * `LinearBasisFactory`,
-# * `QuadraticBasisFactory`.
+# * :class:`~openturns.ConstantBasisFactory`,
+# * :class:`~openturns.LinearBasisFactory`,
+# * :class:`~openturns.QuadraticBasisFactory`.
+#
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_chose_trend` example,
+# we give another example of this procedure.
 #
 # For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 
@@ -43,7 +46,7 @@ myDistribution = cb.distribution
 
 # %%
 # We consider a simple Monte-Carlo sampling as a design of experiments.
-# This is why we generate an input sample using the `getSample` method of the distribution.
+# This is why we generate an input sample using the :meth:`~openturns.Distribution.getSample` method of the distribution.
 # Then we evaluate the output using the `model` function.
 
 # %%

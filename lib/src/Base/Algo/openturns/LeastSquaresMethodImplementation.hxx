@@ -110,9 +110,9 @@ public:
   virtual void trashDecomposition();
 
   /** Build the weighted design matrix */
-  virtual MatrixImplementation computeWeightedDesign(const Bool whole = false) const;
+  virtual Matrix computeWeightedDesign(const Bool whole = false) const;
 protected:
-  virtual MatrixImplementation computeWeightedDesign(const Indices & indices) const;
+  virtual Matrix computeWeightedDesign(const Indices & indices) const;
 public:
 
   /** Method save() stores the object through the StorageManager */

@@ -32,7 +32,7 @@ ot.RandomGenerator.SetSeed(os.getpid())
 # %%
 # Example 2: using the time in milliseconds
 # -----------------------------------------
-ot.RandomGenerator.SetSeed(int(1000 * time.time()))
+ot.RandomGenerator.SetSeed(int(1000 * time.time() % 1e9))
 
 # %%
 # Example 3: using a previously saved generator state

@@ -8,11 +8,11 @@ theta : float
 
 Notes
 -----
-The FarlieGumbelMorgenstern copula is defined by :
+The FarlieGumbelMorgenstern copula is defined by:
 
 .. math::
 
-    C(u_1, u_2) = u_1 u_2 (1- \theta (1 - u_1)(1 - u_2))
+    C(u_1, u_2) = u_1 u_2 (1 + \theta (1 - u_1)(1 - u_2))
 
 for :math:`(u_1, u_2) \in [0, 1]^2`
 

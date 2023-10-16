@@ -23,7 +23,6 @@
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
-#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

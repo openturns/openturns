@@ -89,7 +89,7 @@ typedef enum
  * return code rc.
  */
 
-extern char *tnc_rc_string[11];
+extern const char *tnc_rc_string[11];
 
 /*
  * A function as required by tnc

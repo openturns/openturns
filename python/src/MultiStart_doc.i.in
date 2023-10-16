@@ -14,16 +14,18 @@ startingSample : 2-d sequence of float
 
 Notes
 -----
-A global number of evaluations can be explicitly set,
+The starting point of the internal solver is ignored.
+If you want to use it, add it to *startingSample*.
+
+Stopping criteria used are the ones set in the internal solver.
+
+A global number of evaluations can be set,
 in that case all starting points might not be used depending on the number
 of evaluations allocated to the internal solver.
 
-The starting point of *solver* is ignored.
-If you want to use it, add it to *startingSample*.
-
 Starting points provided through the *startingSample* parameter
 should be within the bounds of the
-:class:`~openturns.OptimizationProblem`, but this is not checked.
+:class:`~openturns.OptimizationProblem`, but this is not enforced.
 
 Examples
 --------

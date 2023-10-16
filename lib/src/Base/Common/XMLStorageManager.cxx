@@ -311,6 +311,12 @@ void toStringConverter(const String & value, String & st)
   st = value;
 }
 
+static inline
+void toStringConverter(const Bool & value, String & st)
+{
+  st = (OSS() << value);
+}
+
 template <typename _Tp>
 static inline
 void toStringConverter(const _Tp & value, String & st)

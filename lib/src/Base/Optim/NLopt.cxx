@@ -49,13 +49,10 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-#ifdef OPENTURNS_NLOPT_HAVE_STOGO
-  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
-  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
-#endif
+  // GD_STOGO/GD_STOGO_RAND: https://github.com/stevengj/nlopt/issues/529
   // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
-  AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
+  // LN_PRAXIS: https://github.com/stevengj/nlopt/issues/528
   AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
   AlgorithmNames_["LD_VAR2"] = nlopt::LD_VAR2;
   AlgorithmNames_["LD_TNEWTON"] = nlopt::LD_TNEWTON;
@@ -70,8 +67,7 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_MMA"] = nlopt::LD_MMA;
   AlgorithmNames_["LN_COBYLA"] = nlopt::LN_COBYLA;
   AlgorithmNames_["LN_NEWUOA"] = nlopt::LN_NEWUOA;
-  // https://github.com/stevengj/nlopt/issues/511
-  //AlgorithmNames_["LN_NEWUOA_BOUND"] = nlopt::LN_NEWUOA_BOUND;
+  // LN_NEWUOA_BOUND: https://github.com/stevengj/nlopt/issues/511
   AlgorithmNames_["LN_NELDERMEAD"] = nlopt::LN_NELDERMEAD;
   AlgorithmNames_["LN_SBPLX"] = nlopt::LN_SBPLX;
   AlgorithmNames_["LN_AUGLAG"] = nlopt::LN_AUGLAG;
@@ -87,9 +83,7 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_SLSQP"] = nlopt::LD_SLSQP;
   AlgorithmNames_["LD_CCSAQ"] = nlopt::LD_CCSAQ;
   AlgorithmNames_["GN_ESCH"] = nlopt::GN_ESCH;
-#ifdef OPENTURNS_NLOPT_HAVE_AGS
-  AlgorithmNames_["GN_AGS"] = nlopt::GN_AGS;
-#endif
+  // GN_AGS only supports 1-d constraint
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
@@ -114,9 +108,19 @@ UnsignedInteger NLopt::GetAlgorithmCode(const String & name)
   return it->second;
 }
 
+void NLopt::setSeed(const UnsignedInteger seed)
+{
+  seed_ = seed;
+}
+
+UnsignedInteger NLopt::getSeed() const
+{
+  return seed_;
+}
 
 void NLopt::SetSeed(const UnsignedInteger seed)
 {
+  LOGWARN(OSS() << "NLopt.SetSeed is deprecated in favor of setSeed");
 #ifdef OPENTURNS_HAVE_NLOPT
   nlopt::srand(seed);
 #else
@@ -125,11 +129,11 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 #endif
 }
 
-
 /* Default constructor */
 NLopt::NLopt(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
+  , seed_(ResourceMap::GetAsUnsignedInteger("NLopt-InitialSeed"))
 {
   GetAlgorithmCode(algoName);
 }
@@ -138,6 +142,7 @@ NLopt::NLopt(const OptimizationProblem & problem,
              const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
   , algoName_(algoName)
+  , seed_(ResourceMap::GetAsUnsignedInteger("NLopt-InitialSeed"))
 {
   checkProblem(problem);
 }
@@ -311,6 +316,9 @@ void NLopt::run()
   std::vector<double> x(startingPoint.toStdVector());
   double optimalValue = 0.0;
 
+  // the default seed is non-deterministic
+  nlopt::srand(seed_);
+
   try
   {
     // The C++ interface of NLopt does not return a code for failures cases.
@@ -373,6 +381,7 @@ void NLopt::save(Advocate & adv) const
   adv.saveAttribute("initialStep_", initialStep_);
   if (!p_localSolver_.isNull())
     adv.saveAttribute("localSolver_", *p_localSolver_);
+  adv.saveAttribute("seed_", seed_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -387,6 +396,8 @@ void NLopt::load(Advocate & adv)
     adv.loadAttribute("localSolver_", localSolver);
     p_localSolver_ = localSolver.clone();
   }
+  if (adv.hasAttribute("seed_"))
+    adv.loadAttribute("seed_", seed_);
 }
 
 void NLopt::setAlgorithmName(const String algoName)
