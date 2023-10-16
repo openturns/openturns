@@ -40,6 +40,7 @@
  * Deprecated ARMAlikelihoodFactory.setVerbose/getVerbose
  * Deprecated CleaningStrategy.setVerbose/getVerbose
  * Deprecated ApproximationAlgorithm.setVerbose/getVerbose
+ * Deprecated EllipticalDistribution.setCorrelation/getCorrelation
 
 === Documentation ===
 

@@ -71,7 +71,7 @@ int main(int, char *[])
     CorrelationMatrix R(4);
     for (UnsignedInteger i = 1; i < 4; ++i)
       R(i - 1, i) = 0.5;
-    distribution.setCorrelation(R);
+    distribution.setR(R);
     experiment = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
     fullprint << "sample = " << experiment.generate() << std::endl;
   }

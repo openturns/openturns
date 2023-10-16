@@ -112,9 +112,11 @@ public:
   Point getStandardDeviation() const override;
 
   /** Correlation matrix accessor */
-  void setCorrelation(const CorrelationMatrix & R);
+  void setR(const CorrelationMatrix & R);
+  CorrelationMatrix getR() const;
 
-  /** Correlation matrix accessor */
+  /** @deprecated Correlation matrix accessor */
+  void setCorrelation(const CorrelationMatrix & R);
   CorrelationMatrix getCorrelation() const;
 
 protected:
