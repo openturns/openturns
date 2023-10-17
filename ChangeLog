@@ -1,5 +1,15 @@
 = New Features =
 
+== 1.21.1 release (2023-10-17) == #release-1.21.1
+
+ * Fix distribution comparison operator
+ * Fix optimization first point acceptation
+ * #2347 (Build error of /usr/include/tbb/machine/gcc_generic.h:39:20: error: operator '||' has no left operand in s390x on Fedora)
+ * #2412 (The class QuadraticLeastSquares returns a wrong quadratic term)
+ * #2403 (KrigingAlgorithm fails if basis is empty)
+ * Ceres 2.2.0 build fix
+ * XMLStorageManager permission check fix
+
 == 1.21 release (2023-06-20) == #release-1.21
 
 === Library ===
