@@ -121,8 +121,8 @@ Sample DomainEvent::getFrozenSample(const Sample & fixedSample) const
   // First, compute the sample of the event antecedent that fits fixedSample
   const Sample returnSample(CompositeRandomVector::getFrozenSample(fixedSample));
   // Then, we loop over the sample to check each point in sequence
-  Sample result(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Sample result(fixedSample.getSize(), 1);
+  for (UnsignedInteger i = 0; i < fixedSample.getSize(); ++i)
     result(i, 0) = domain_.contains(returnSample[i]);
   result.setName("DomainEvent sample");
   result.setDescription(getDescription());
