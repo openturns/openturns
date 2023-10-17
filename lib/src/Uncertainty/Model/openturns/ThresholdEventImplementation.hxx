@@ -80,12 +80,11 @@ public:
 
   /** Realization accessor */
   Point getRealization() const override;
-
-  /** Fixed value accessor */
-  Point getFrozenRealization(const Point & fixedValue) const override;
+  Point getFrozenRealization(const Point & fixedPoint) const override;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
+  Sample getFrozenSample(const Sample & fixedSample) const override;
 
   /** Parameters value accessor */
   Point getParameter() const override;

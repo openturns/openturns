@@ -129,15 +129,21 @@ Point RandomVector::getRealization() const
 }
 
 /* Fixed value accessor */
-Point RandomVector::getFrozenRealization(const Point & fixedValue) const
+Point RandomVector::getFrozenRealization(const Point & fixedPoint) const
 {
-  return getImplementation()->getFrozenRealization(fixedValue);
+  return getImplementation()->getFrozenRealization(fixedPoint);
 }
 
 /* Numerical sample accessor */
 Sample RandomVector::getSample(UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
+}
+
+/* Fixed sample accessor */
+Sample RandomVector::getFrozenSample(const Sample & fixedSample) const
+{
+  return getImplementation()->getFrozenSample(fixedSample);
 }
 
 /* Mean accessor */

@@ -102,19 +102,48 @@ Point IntersectionEvent::getRealization() const
 }
 
 /* Fixed value accessor */
-Point IntersectionEvent::getFrozenRealization(const Point & fixedValue) const
+Point IntersectionEvent::getFrozenRealization(const Point & fixedPoint) const
 {
-  LOGINFO(OSS() << "antecedent value = " << fixedValue);
+  LOGINFO(OSS() << "antecedent value = " << fixedPoint);
   Point realization(1);
   for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
   {
-    if (eventCollection_[i].getFrozenRealization(fixedValue)[0] == 0.0)
+    if (eventCollection_[i].getFrozenRealization(fixedPoint)[0] == 0.0)
     {
       return realization;
     }
   }
   realization[0] = 1.0;
   return realization;
+}
+
+/* Sample accessor */
+Sample IntersectionEvent::getSample(const UnsignedInteger size) const
+{
+  return getFrozenSample(antecedent_.getSample(size));
+}
+
+/* Fixed sample accessor */
+Sample IntersectionEvent::getFrozenSample(const Sample & fixedSample) const
+{
+  Indices stillInIntersection(fixedSample.getSize());
+  stillInIntersection.fill();
+  Indices noLongerInIntersection(0);
+
+  for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
+  {
+    const Sample currentEventSample(eventCollection_[i].getFrozenSample(fixedSample.select(stillInIntersection)));
+    for (UnsignedInteger j = 0; j < stillInIntersection.getSize(); ++ j)
+    {
+      if (currentEventSample(j, 0) == 0.0) noLongerInIntersection.add(stillInIntersection[j]);
+    }
+    stillInIntersection = noLongerInIntersection.complement(fixedSample.getSize());
+  }
+
+  Sample sample(fixedSample.getSize(), 1);
+  for (UnsignedInteger j = 0; j < stillInIntersection.getSize(); ++ j)
+    sample(stillInIntersection[j], 0) = 1.0;
+  return sample;
 }
 
 Bool IntersectionEvent::isEvent() const

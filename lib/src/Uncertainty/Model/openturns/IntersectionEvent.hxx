@@ -65,7 +65,13 @@ public:
   Point getRealization() const override;
 
   /** Fixed value accessor */
-  Point getFrozenRealization(const Point & fixedValue) const override;
+  Point getFrozenRealization(const Point & fixedPoint) const override;
+
+  /** Sample accessor */
+  Sample getSample(const UnsignedInteger size) const override;
+
+  /** Fixed sample accessor */
+  Sample getFrozenSample(const Sample & fixedSample) const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;

@@ -97,10 +97,9 @@ Point DomainEvent::getRealization() const
   return Point(1, domain_.contains(CompositeRandomVector::getRealization()));
 }
 
-/* Fixed value accessor */
-Point DomainEvent::getFrozenRealization(const Point & fixedValue) const
+Point DomainEvent::getFrozenRealization(const Point & fixedPoint) const
 {
-  return Point(1, domain_.contains(CompositeRandomVector::getFrozenRealization(fixedValue)));
+  return Point(1, domain_.contains(CompositeRandomVector::getFrozenRealization(fixedPoint)));
 }
 
 /* Numerical sample accessor */
@@ -108,6 +107,19 @@ Sample DomainEvent::getSample(const UnsignedInteger size) const
 {
   // First, compute a sample of the event antecedent
   const Sample returnSample(CompositeRandomVector::getSample(size));
+  // Then, we loop over the sample to check each point in sequence
+  Sample result(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result(i, 0) = domain_.contains(returnSample[i]);
+  result.setName("DomainEvent sample");
+  result.setDescription(getDescription());
+  return result;
+}
+
+Sample DomainEvent::getFrozenSample(const Sample & fixedSample) const
+{
+  // First, compute the sample of the event antecedent that fits fixedSample
+  const Sample returnSample(CompositeRandomVector::getFrozenSample(fixedSample));
   // Then, we loop over the sample to check each point in sequence
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)

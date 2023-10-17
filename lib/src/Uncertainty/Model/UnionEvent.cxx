@@ -102,19 +102,46 @@ Point UnionEvent::getRealization() const
 }
 
 /* Fixed value accessor */
-Point UnionEvent::getFrozenRealization(const Point & fixedValue) const
+Point UnionEvent::getFrozenRealization(const Point & fixedPoint) const
 {
-  LOGINFO(OSS() << "antecedent value = " << fixedValue);
+  LOGINFO(OSS() << "antecedent value = " << fixedPoint);
   Point realization(1);
   for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
   {
-    if (eventCollection_[i].getFrozenRealization(fixedValue)[0] == 1.0)
+    if (eventCollection_[i].getFrozenRealization(fixedPoint)[0] == 1.0)
     {
       realization[0] = 1.0;
       return realization;
     }
   }
   return realization;
+}
+
+/* Sample accessor */
+Sample UnionEvent::getSample(const UnsignedInteger size) const
+{
+  return getFrozenSample(antecedent_.getSample(size));
+}
+
+/* Fixed sample accessor */
+Sample UnionEvent::getFrozenSample(const Sample & fixedSample) const
+{
+  Indices notYetInUnion(fixedSample.getSize());
+  notYetInUnion.fill();
+  Indices alreadyInUnion(0);
+
+  for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
+  {
+    const Sample currentEventSample(eventCollection_[i].getFrozenSample(fixedSample.select(notYetInUnion)));
+    for (UnsignedInteger j = 0; j < notYetInUnion.getSize(); ++ j)
+      if (currentEventSample(j, 0) == 1.0) alreadyInUnion.add(notYetInUnion[j]);
+    notYetInUnion = alreadyInUnion.complement(fixedSample.getSize());
+  }
+
+  Sample sample(fixedSample.getSize(), 1);
+  for (UnsignedInteger k = 0; k < alreadyInUnion.getSize(); ++ k)
+    sample(alreadyInUnion[k], 0) = 1.0;
+  return sample;
 }
 
 Bool UnionEvent::isEvent() const

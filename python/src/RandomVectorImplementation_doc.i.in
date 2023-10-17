@@ -240,7 +240,7 @@ takes the value given as argument.
 
 Parameters
 ----------
-fixedValue : :class:`~openturns.Point`
+fixedPoint : :class:`~openturns.Point`
     Point chosen as the root cause of the random vector.
 
 Returns
@@ -251,6 +251,7 @@ realization : :class:`~openturns.Point`
 See also
 --------
 getRealization
+getFrozenSample
 
 Examples
 --------
@@ -268,6 +269,47 @@ Examples
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getFrozenRealization
 OT_RandomVector_getFrozenRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getFrozenSample_doc
+"Compute realizations of the RandomVector.
+
+In the case of a :class:`~openturns.CompositeRandomVector`
+or an event of some kind, this method returns
+the different values taken by the random vector when the root cause
+takes the values given as argument.
+
+Parameters
+----------
+fixedSample : :class:`~openturns.Sample`
+    Sample of root causes of the random vector.
+
+Returns
+-------
+sample : :class:`~openturns.Point`
+    Sample of the realizations corresponding to the chosen root causes.
+
+See also
+--------
+getSample
+getFrozenRealization
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> randomVector = ot.RandomVector(distribution)
+>>> f = ot.SymbolicFunction('x', 'x')
+>>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
+>>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
+>>> ot.RandomGenerator.SetSeed(0)
+>>> print(event.getFrozenSample([[0.2], [-0.1]]))
+0 : [ 0 ]
+1 : [ 1 ]"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getFrozenSample
+OT_RandomVector_getFrozenSample_doc
 
 // ---------------------------------------------------------------------
 

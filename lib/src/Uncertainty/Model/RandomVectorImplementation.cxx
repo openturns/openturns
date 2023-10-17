@@ -90,9 +90,9 @@ Point RandomVectorImplementation::getRealization() const
 }
 
 /* Fixed value accessor */
-Point RandomVectorImplementation::getFrozenRealization(const Point & fixedValue) const
+Point RandomVectorImplementation::getFrozenRealization(const Point & fixedPoint) const
 {
-  return fixedValue;
+  return fixedPoint;
 }
 
 /* Numerical sample accessor */
@@ -102,6 +102,12 @@ Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization();
   result.setDescription(getDescription());
   return result;
+}
+
+/* Fixed sample accessor */
+Sample RandomVectorImplementation::getFrozenSample(const Sample & fixedSample) const
+{
+  return fixedSample;
 }
 
 /* Mean accessor */

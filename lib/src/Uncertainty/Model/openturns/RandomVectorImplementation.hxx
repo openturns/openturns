@@ -74,10 +74,13 @@ public:
   virtual Point getRealization() const;
 
   /** Fixed value accessor */
-  virtual Point getFrozenRealization(const Point & fixedValue) const;
+  virtual Point getFrozenRealization(const Point & fixedPoint) const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
+
+  /** Fixed sample accessor */
+  virtual Sample getFrozenSample(const Sample & fixedSample) const;
 
   /** Mean accessor */
   virtual Point getMean() const;
