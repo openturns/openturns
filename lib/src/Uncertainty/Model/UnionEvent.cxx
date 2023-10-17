@@ -168,7 +168,18 @@ RandomVector UnionEvent::getComposedEvent() const
 
   // Further build composedEvent by composing with the other events in the eventCollection_
   for (UnsignedInteger i = 1; i < size; ++ i)
-    composedEvent = composedEvent.join(eventCollection_[i]);
+  {
+    try
+    {
+      // We try to compose with the next event in the collection.
+      composedEvent = composedEvent.join(eventCollection_[i].getComposedEvent());
+    }
+    catch (const NotYetImplementedException &)
+    {
+      // If no composition is possible, we default to the generic implementation.
+      return RandomVectorImplementation::getComposedEvent();
+    }
+  }
   return composedEvent;
 }
 
