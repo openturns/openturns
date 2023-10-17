@@ -261,7 +261,6 @@ Examples
 >>> f = ot.SymbolicFunction('x', 'x')
 >>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
 >>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
->>> ot.RandomGenerator.SetSeed(0)
 >>> print(event.getFrozenRealization([0.2]))
 [0]
 >>> print(event.getFrozenRealization([-0.1]))
@@ -287,7 +286,7 @@ fixedSample : :class:`~openturns.Sample`
 
 Returns
 -------
-sample : :class:`~openturns.Point`
+sample : :class:`~openturns.Sample`
     Sample of the realizations corresponding to the chosen root causes.
 
 See also
@@ -303,10 +302,10 @@ Examples
 >>> f = ot.SymbolicFunction('x', 'x')
 >>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
 >>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
->>> ot.RandomGenerator.SetSeed(0)
 >>> print(event.getFrozenSample([[0.2], [-0.1]]))
-0 : [ 0 ]
-1 : [ 1 ]"
+    [ y0 ]
+0 : [ 0  ]
+1 : [ 1  ]"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getFrozenSample
 OT_RandomVector_getFrozenSample_doc
