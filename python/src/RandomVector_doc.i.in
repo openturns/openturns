@@ -18,8 +18,8 @@ OT_RandomVector_getDimension_doc
 OT_RandomVector_getMarginal_doc
 %feature("docstring") OT::RandomVector::getSample
 OT_RandomVector_getSample_doc
-%feature("docstring") OT::RandomVector::getFrozenRealization
-OT_RandomVector_getFrozenRealization_doc
+%feature("docstring") OT::RandomVector::getFrozenSample
+OT_RandomVector_getFrozenSample_doc
 %feature("docstring") OT::RandomVector::getOperator
 OT_RandomVector_getOperator_doc
 %feature("docstring") OT::RandomVector::getThreshold
@@ -32,6 +32,8 @@ OT_RandomVector_getDescription_doc
 OT_RandomVector_setDescription_doc
 %feature("docstring") OT::RandomVector::getRealization
 OT_RandomVector_getRealization_doc
+%feature("docstring") OT::RandomVector::getFrozenRealization
+OT_RandomVector_getFrozenRealization_doc
 %feature("docstring") OT::RandomVector::getDomain
 OT_RandomVector_getDomain_doc
 %feature("docstring") OT::RandomVector::setParameter
