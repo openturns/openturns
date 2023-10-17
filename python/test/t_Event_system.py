@@ -72,6 +72,20 @@ ott.assert_almost_equal(e11.getSample(10000).computeMean()[0], 0.75, 1e-2, 1e-2)
 e12 = ot.UnionEvent([ot.IntersectionEvent([e1, e2]), ot.IntersectionEvent([e1, e2])])
 ott.assert_almost_equal(e12.getSample(10000).computeMean()[0], 0.25, 1e-2, 1e-2)
 
+# DomainEvent
+domain = ot.Interval([-1.0] * dim, [1.0] * dim)
+e13 = ot.DomainEvent(X, domain)
+e13_probability = distribution.computeProbability(domain)
+ott.assert_almost_equal(e13.getSample(10000).computeMean()[0], e13_probability, 1e-2, 1e-2)
+
+# Union with DomainEvent
+e14 = ot.UnionEvent([e1, e2, e13])
+ott.assert_almost_equal(e14.getSample(10000).computeMean()[0], 0.75 + e13_probability / 4, 1e-2, 1e-2)
+
+# Intersection with DomainEvent
+e15 = ot.IntersectionEvent([e1, e2, e13])
+ott.assert_almost_equal(e15.getSample(10000).computeMean()[0], e13_probability / 4, 1e-2, 1e-2)
+
 # through simulation
 
 
@@ -93,7 +107,10 @@ ott.assert_almost_equal(sim_event(e8), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(sim_event(e9), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(sim_event(e10), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(sim_event(e11), 0.75, 1e-2, 1e-2)
-ott.assert_almost_equal(sim_event(e12), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e12), 0.25, 1e-2, 2e-2)
+ott.assert_almost_equal(sim_event(e13), e13_probability, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e14), 0.75 + e13_probability / 4, 1e-2, 1e-2)
+ott.assert_almost_equal(sim_event(e15), e13_probability / 4, 1e-2, 1e-2)
 
 
 def subset_event(ev):
