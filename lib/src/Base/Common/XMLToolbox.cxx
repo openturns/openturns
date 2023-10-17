@@ -62,16 +62,18 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
   // Nothing to do
 }
 
-XMLDoc::XMLDoc(const FileName & pathToFile) : doc_(0)
+XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
-  doc_ = xmlParseFile( pathToFile.c_str() );
-  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing wrapper file " << pathToFile;
+  if (!std::ifstream(fileName).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
+  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
 
 XMLDoc::XMLDoc(const char * buffer, int size) : doc_(0)
 {
-  doc_ = xmlParseMemory( buffer, size );
-  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing buffer";
+  doc_ = xmlParseMemory(buffer, size);
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML";
 }
 
 XMLDoc::~XMLDoc()
@@ -95,9 +97,13 @@ XMLDoc::operator xmlDocPtr() const
   return doc_;
 }
 
-void XMLDoc::save( const FileName & fileName ) const
+void XMLDoc::save(const FileName & fileName) const
 {
-  xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
+  if (!std::ofstream(fileName).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
+  int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
+  if (rc < 0)
+    throw InternalException(HERE) << "Could not save XML";
 }
 
 void XMLDoc::setCompressionLevel( const UnsignedInteger compressionLevel )
