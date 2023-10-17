@@ -94,7 +94,7 @@ Examples
 >>> myLeastSquares.run()
 >>> responseSurface = myLeastSquares.getMetaModel()
 >>> print(responseSurface([0.1,0.1]))
-[0.00960661,0.976781,1.0138]"
+[0.0192132,0.967552,1.00531]"
 
 // ---------------------------------------------------------------------
 
