@@ -107,12 +107,8 @@ Point IntersectionEvent::getFrozenRealization(const Point & fixedPoint) const
   LOGINFO(OSS() << "antecedent value = " << fixedPoint);
   Point realization(1);
   for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
-  {
     if (eventCollection_[i].getFrozenRealization(fixedPoint)[0] == 0.0)
-    {
       return realization;
-    }
-  }
   realization[0] = 1.0;
   return realization;
 }
@@ -134,9 +130,7 @@ Sample IntersectionEvent::getFrozenSample(const Sample & fixedSample) const
   {
     const Sample currentEventSample(eventCollection_[i].getFrozenSample(fixedSample.select(stillInIntersection)));
     for (UnsignedInteger j = 0; j < stillInIntersection.getSize(); ++ j)
-    {
       if (currentEventSample(j, 0) == 0.0) noLongerInIntersection.add(stillInIntersection[j]);
-    }
     stillInIntersection = noLongerInIntersection.complement(fixedSample.getSize());
   }
 
