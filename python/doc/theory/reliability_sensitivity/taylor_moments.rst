@@ -16,7 +16,8 @@ In the remainder, we denote by :math:`\Cov \uX`  the covariance matrix of :math:
 .. math::
 
     \Cov \uX = (c_{ij})_{ij}
-    
+
+
 where:
 
 .. math::
@@ -33,7 +34,8 @@ The second order Taylor expansion of :math:`h` around :math:`\ux = \vect{\mu}` i
 .. math::
 
     Y = h(\vect{\mu}) + \sum_{i = 1}^d \left( \frac{\partial h}{\partial x_i }\right)_{\ux = \vect{\mu}}(X_i-\mu_i)
-    + \frac{1}{2} \sum_{i,j = 1}^d \left(\frac{\partial^2 h}{\partial x_i \partial x_j}\right)_{\ux = \vect{\mu}}(X_i-\mu_i)(X_j-\mu_j) + o(||\uX||^2)
+    + \frac{1}{2} \sum_{i,j = 1}^d \left(\frac{\partial^2 h}{\partial x_i \partial x_j}\right)_{\ux = \vect{\mu}}
+    (X_i-\mu_i)(X_j-\mu_j) + o(||\uX||^2)
 
 
 If we use the first order expansion, we get:
