@@ -15,6 +15,18 @@ distParams.append(ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5))
 distParams.append(ot.UniformMuSigma(8.4, 2.25))
 distParams.append(ot.WeibullMaxMuSigma(1.3, 1.23, 3.1))
 distParams.append(ot.WeibullMinMuSigma(1.3, 1.23, -0.5))
+# defaults
+distParams.append(ot.ArcsineMuSigma())
+distParams.append(ot.BetaMuSigma())
+distParams.append(ot.GammaMuSigma())
+distParams.append(ot.GumbelLambdaGamma())
+distParams.append(ot.GumbelMuSigma())
+distParams.append(ot.LogNormalMuErrorFactor())
+distParams.append(ot.LogNormalMuSigma())
+distParams.append(ot.LogNormalMuSigmaOverMu())
+distParams.append(ot.UniformMuSigma())
+distParams.append(ot.WeibullMaxMuSigma())
+distParams.append(ot.WeibullMinMuSigma())
 
 for distParam in distParams:
 
