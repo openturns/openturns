@@ -183,7 +183,7 @@ Description PlatformInfo::GetFeatures()
 
   Description keys;
   for (std::map<String, Bool>::iterator it = Features_.begin(); it != Features_.end(); ++ it)
-    keys.add(it->second);
+    keys.add(it->first);
   return keys;
 }
 
