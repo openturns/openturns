@@ -1,17 +1,20 @@
 %feature("docstring") OT::SmoothedUniform
 "SmoothedUniform distribution.
 
-Available constructors:
-    SmoothedUniform(*a=-1.0, b=1.0, sigma=1.0*)
-
 Parameters
 ----------
 a : float
     Lower bound of the :class:`~openturns.Uniform` component.
+
+    Default value is -1.0.
 b : float, :math:`b > a`
     Upper bound of the :class:`~openturns.Uniform` component.
+
+    Default value is 1.0.
 sigma : float, :math:`\sigma > 0`
     Standard deviation of the :class:`~openturns.Normal` component.
+
+    Default value is 1.0.
 
 Notes
 -----

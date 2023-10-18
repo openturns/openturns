@@ -1,19 +1,24 @@
 %feature("docstring") OT::Beta
 "Beta distribution.
 
-Available constructors:
-    Beta(*alpha=2.0, beta=2.0, a = -1.0, b = 1.0*)
-
 Parameters
 ----------
 alpha : float
-    Shape parameter :math:`\alpha > 0`
+    Shape parameter :math:`\alpha > 0`.
+    
+    Default value is 2.0.
 beta : float
-    Shape parameter :math:`\beta > 0`
+    Shape parameter :math:`\beta > 0`.
+    
+    Default value is 2.0.
 a : float
-    Lower bound
+    Lower bound.
+    
+    Default value is -1.0.
 b : float, :math:`b > a`
-    Upper bound
+    Upper bound.
+    
+    Default value is 1.0.
 
 Notes
 -----

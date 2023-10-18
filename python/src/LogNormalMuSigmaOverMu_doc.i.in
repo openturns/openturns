@@ -1,17 +1,20 @@
 %feature("docstring") OT::LogNormalMuSigmaOverMu
 "LogNormal distribution parameters.
-
-Available constructors:
-    LogNormalMuSigmaOverMu(*mu=1.64872, sigmaOverMu=1.31083, gamma=0.0*)
     
 Parameters
 ----------
 mu : float
     Mean :math:`\mu > 0`.
+
+    Default value is 1.64872.
 delta : float
     Variation coefficient :math:`\delta = \frac{\sigma}{\mu}`.
+
+    Default value is 1.31083.
 gamma : float, optional
     Location parameter.
+
+    Default value is 0.0.
 
 Notes
 -----

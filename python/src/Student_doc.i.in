@@ -2,7 +2,7 @@
 "Student distribution.
 
 Available constructors:
-    Student(*nu=3.0, d=1*)
+    Student()
 
     Student(*nu, mu, sigma*)
 
@@ -13,23 +13,27 @@ Parameters
 d : int, :math:`d \geq 1`
     Dimension.
 
+    Default value is 1.
+
 nu : float, :math:`\nu > 0`
     Generalized number degrees of freedom.
+
+    Default value is 3.0.
 
 mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     Location parameter.
 
-    Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+    Default is 0.0.
 
 sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
+    Default is 1.0.
 
 R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
     Shape matrix.
 
-    By default the identity matrix.
+    Default is the identity matrix.
 
 Notes
 -----

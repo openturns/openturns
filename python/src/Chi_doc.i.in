@@ -1,13 +1,12 @@
 %feature("docstring") OT::Chi
 ":math:`\chi` distribution.
 
-Available constructors:
-    Chi(*nu=1.0*)
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
     Degrees of freedom.
+    
+    Default value is 1.0.
 
 Notes
 -----

@@ -1,19 +1,24 @@
 %feature("docstring") OT::BetaMuSigma
 "Beta distribution parameters.
 
-Available constructors:
-    BetaMuSigma(*mu=0.5, sigma=0.223607, a=0.0, b=1.0*)
-
 Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 0.5.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
+
+    Default value is 0.223607.
 a : float
     Lower bound.
+
+    Default value is 0.0.
 b : float, :math:`b > a`
     Upper bound.
+
+    Default value is 1.0
 
 Notes
 -----

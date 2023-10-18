@@ -1,17 +1,20 @@
 %feature("docstring") OT::LogNormalMuSigma
 "LogNormal distribution parameters.
 
-Available constructors:
-    LogNormalMuSigma(*mu=1.64872, sigma=2.1612, gamma=0*)
-
 Parameters
 ----------
 mu : float
     The mean of the log-normal random variable.
+
+    Default value is 1.64872.
 sigma : float
     The standard deviation of the log-normal random variable, with :math:`\sigma > 0`.
+
+    Default value is 2.1612.
 gamma : float, optional
     Location parameter.
+
+    Default value is 0.0.
 
 Notes
 -----

@@ -3,27 +3,28 @@
 
 Helper class for defining the distribution of the random vector :math:`(X,Y)` where :math:`Y` follows the distribution :math:`\Gamma(\alpha, \beta)` with :math:`\alpha>0` and :math:`\beta>0`, :math:`X|Y` follows the distribution :math:`\mathcal{N}\left(\mu, \dfrac{1}{\sqrt{\kappa Y}}\right)`.
 
-Available constructor:
-   NormalGamma(*mu, kappa, alpha, beta*)
-
 Parameters
 ----------
 
-mu : float :math:`\mu`,
+mu : float :math:`\mu`
      Mean of the conditioned Normal distribution of :math:`X|Y`.
-     Default is :math:`\mu=0.`
+     
+     Default value is 0.00.
 
-kappa : float  :math:`\kappa >0`,
+kappa : float  :math:`\kappa >0`
      Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`.
-     Default is :math:`\kappa=1.`
 
-alpha : float  :math:`\alpha >0`,
+     Default value is 1.0.
+
+alpha : float  :math:`\alpha >0`
      Shape parameter of the conditioning Gamma distribution of :math:`Y`.
-     Default is :math:`\alpha=1.`
 
-beta : float  :math:`\beta >0`,
+     Default value is 1.0.
+
+beta : float  :math:`\beta >0`
      Rate parameter of the conditioning Gamma distribution of :math:`Y`.
-     Default is :math:`\beta=1.`
+
+     Default value 1.0.
 
 
 Notes

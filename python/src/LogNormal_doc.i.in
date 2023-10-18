@@ -1,17 +1,21 @@
 %feature("docstring") OT::LogNormal
 "Lognormal distribution.
 
-Available constructors:
-    LogNormal(*muLog=0.0, sigmaLog=1.0, gamma=0.0*)
 
 Parameters
 ----------
 muLog : float
     Location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
+    
+    Default value is 0.0.
 sigmaLog : float, :math:`\sigma_\ell > 0`
     Scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
+    
+    Default value is 1.0.
 gamma : float, optional
     Location parameter :math:`\gamma < \mu`.
+    
+    Default value is 0.0.
 
 Notes
 -----

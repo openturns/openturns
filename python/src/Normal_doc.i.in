@@ -2,7 +2,7 @@
 "Normal distribution.
 
 Available constructors:
-    Normal(*d=1*)
+    Normal()
 
     Normal(*mu, sigma*)
 
@@ -14,27 +14,31 @@ Parameters
 ----------
 d : int, :math:`d \geq 1`
     Dimension.
+    
+    Default value is 1.
 
 mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     Mean.
 
-    Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+    Default value is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
 
 sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
+    Default value is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
 
 R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
     Correlation matrix.
 
-    By default the identity matrix.
+    Default value is the identity matrix.
 
 Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \times d}(\Rset)`
     Covariance matrix.
 
 Notes
 -----
+In the first usage, a scalar centered and unit-variance normal distribution is built.
+
 Its probability density function is defined as:
 
 .. math::

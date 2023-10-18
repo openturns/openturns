@@ -96,14 +96,14 @@ TruncatedDistribution"
 
 Parameters
 ----------
-sample : 2-d sequence of float,
+sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`,
+bandwidth : :class:`~openturns.Point`
     Contains the bandwidth in each direction.
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`,
+fittdDist : :class:`~openturns.KernelMixture`
     The fitted distribution.
 
 Notes
@@ -125,9 +125,9 @@ Examples
 
 Parameters
 ----------
-sample : 2-d sequence of float,
+sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`,
+bandwidth : :class:`~openturns.Point`
     Contains the bandwidth in each direction.
 
 Returns
@@ -150,19 +150,19 @@ Examples
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::buildAsTruncatedDistribution
-"Estimate the distribution as TruncatedDistribution distribution.
+"Estimate the distribution as :class:`~openturns.TruncatedDistribution`.
 
 Parameters
 ----------
-sample : 2-d sequence of float,
+sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`,
+bandwidth : :class:`~openturns.Point`
     Contains the bandwidth in each direction.
 
 Returns
 -------
 fittdDist : :class:`~openturns.TruncatedDistribution`
-    The estimated distribution as a TruncatedDistribution.
+    The estimated distribution as a :class:`~openturns.TruncatedDistribution`.
 
 Examples
 --------

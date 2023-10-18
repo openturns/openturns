@@ -1,15 +1,16 @@
 %feature("docstring") OT::Logistic
 "Logistic distribution.
 
-Available constructors:
-    Logistic(*mu=1.0, beta=1.0*)
-
 Parameters
 ----------
 mu : float
     Mean parameter :math:`\mu`.
+    
+    Default value is 1.0.
 beta : float, :math:`\beta > 0`
     Scale parameter :math:`\beta`.
+    
+    Default value is 1.0.
 
 Notes
 -----

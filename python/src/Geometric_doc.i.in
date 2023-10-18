@@ -1,13 +1,12 @@
 %feature("docstring") OT::Geometric
 "Geometric distribution.
 
-Available constructors:
-    Geometric(*p=0.5*)
-
 Parameters
 ----------
 p : float, :math:`0 < p \leq 1`
     Success probability of the Bernoulli trial.
+
+    Default value is 0.5.
 
 Notes
 -----

@@ -5,7 +5,7 @@ Notes
 -----
 The range is :math:`[\min(data), \max(data)]`. 
 
-See the :meth:`computeBandwidth` method for the bandwidth selection. 
+See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the bandwidth selection. 
 
 Examples
 --------

@@ -1,15 +1,17 @@
 %feature("docstring") OT::Rice
 "Rice distribution.
 
-Available constructors:
-    Rice(*beta=1.0, nu=1.0*)
 
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
     Scale parameter.
+
+    Default value is 1.0.
 nu : float, :math:`\nu \geq 0`
     Location parameter.
+
+    Default value is 1.0.
 
 Notes
 -----

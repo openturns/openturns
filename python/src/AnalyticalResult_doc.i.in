@@ -202,7 +202,7 @@ domain is defined by the vector:
 
 .. math::
 
-    \displaystyle \frac{1}{E(-\beta)}\int_{\beta}^{\infty} \vect{u} p( \vect{u})\di{ \vect{u}}
+    \frac{1}{E(-\beta)}\int_{\beta}^{\infty} \vect{u} p( \vect{u})\di{ \vect{u}}
 
 
 where :math:`E` is the univariate standard CDF of the elliptical distribution in the standard space

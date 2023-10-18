@@ -45,9 +45,9 @@ DistributionFactory, FarlieGumbelMorgensternCopula"
 
 Parameters
 ----------
-sample : 2-d sequence of float,
+sample : 2-d sequence of float
     Data of dimension 2.
-param : sequence of float of size 1,
+param : sequence of float
    The parameter :math:`\theta`.
 
 Returns

@@ -1,15 +1,16 @@
 %feature("docstring") OT::NonCentralChiSquare
 "NonCentralChiSquare distribution.
 
-Available constructors:
-    NonCentralChiSquare(*nu=5.0, lambda=0.*)
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
     Generalised number degree of freedom.
+    
+    Default value is 5.0.
 lambda : float, :math:`\lambda \geq 0`
     Non-centrality parameter :math:`\lambda`.
+    
+    Default value is 0.0.
 
 Notes
 -----

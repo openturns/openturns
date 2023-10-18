@@ -2,7 +2,7 @@
 "Histogram distribution.
 
 Available constructors:
-    Histogram(**)
+    Histogram()
     
     Histogram(*first, width, height*)
 

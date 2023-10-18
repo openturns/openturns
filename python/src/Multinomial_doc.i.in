@@ -1,15 +1,17 @@
 %feature("docstring") OT::Multinomial
 "Multinomial distribution.
 
-Available constructors:
-    Multinomial(*N=1, P=[0.5]*)
 
 Parameters
 ----------
 N : int
     Number of trials.
+
+    Default value is 1.
 P : sequence of float, :math:`p_i \geq 0, i = 1, \ldots, d` and :math:`\sum_{i = 1}^d p_i \leq 1`
     Component probabilities.
+
+    Default value is :math:`[0.5]`.
 
 Notes
 -----

@@ -1,16 +1,17 @@
 %feature("docstring") OT::Skellam
 "Skellam distribution.
 
-Available constructors:
-    Skellam(*lambda1=1.0, lambda2=1.0*)
-
 Parameters
 ----------
 lambda1 : float, :math:`\lambda_1 > 0`
     First :class:`~openturns.Poisson` distribution's parameter.
 
+    Default value is 1.0.
+
 lambda2 : float, :math:`\lambda_2 > 0`
     Second :class:`~openturns.Poisson` distribution's parameter.
+
+    Default value is 1.0.
 
 Notes
 -----

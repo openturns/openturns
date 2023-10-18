@@ -1,21 +1,20 @@
 %feature("docstring") OT::NonCentralStudent
 "NonCentralStudent distribution.
 
-Available constructors:
-    NonCentralStudent(*nu=5.0, delta=0.0, gamma=0.0*)
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
     Generalised number degree of freedom.
+    
+    Default value is 5.0.
 delta : float
     Non-centrality parameter :math:`\delta`.
 
-    Default value is zero.
+    Default value is 0.0.
 gamma : float
     Position parameter :math:`\gamma`.
 
-    Default value is zero.
+    Default value is 0.0.
 
 Notes
 -----

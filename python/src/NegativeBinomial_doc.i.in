@@ -1,16 +1,18 @@
 %feature("docstring") OT::NegativeBinomial
 "NegativeBinomial distribution.
 
-Available constructors:
-    NegativeBinomial(*r=1.0, p=0.5*)
 
 Parameters
 ----------
 r : float, :math:`r > 0`
     Number of failures until the Bernoulli trial is stopped.
 
+    Default value is 1.0.
+
 p : float, :math:`0 < p < 1`
     Success probability of the Bernoulli trial.
+
+    Default value is 0.5.
 
 Notes
 -----

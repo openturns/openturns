@@ -1,17 +1,21 @@
 %feature("docstring") OT::WeibullMin
 "WeibullMin distribution.
 
-Available constructors:
-    WeibullMin(*beta=1.0, alpha=1.0, gamma=0.0*)
 
 Parameters
 ----------
 beta : float
     scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
 alpha : float
     shape parameter :math:`\alpha > 0`.
+
+    Default value is 1.0.
 gamma : float, optional
     Location parameter.
+
+    Default value is 0.0.
 
 Notes
 -----

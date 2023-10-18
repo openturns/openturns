@@ -9,7 +9,9 @@ Available constructor:
 Parameters
 ----------
 n : int, :math:`n \geq 1`
-    Dimension of the copula. Default is :math:`n=2` and the shape matrix is Identity.
+    Dimension of the copula.
+    
+    Default value is :math:`n=2` and the shape matrix is Identity.
 R : :class:`~openturns.CorrelationMatrix`
     Shape matrix :math:`\mat{R}` of the copula, ie the correlation matrix of
     any normal distribution with this copula (it is not the Kendall nor the

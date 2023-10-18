@@ -279,9 +279,12 @@ The sequential conditional derivative density function is defined as follows:
 
 .. math::
 
-    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, 
+    X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
 
-ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of the first component at :math:`x_1`."
+ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,
+\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of 
+the first component at :math:`x_1`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalDDF
@@ -339,7 +342,9 @@ The sequential conditional quantile function is defined as follows:
 
     Q^{seq}_{X_1,\ldots,X_d}(q_1,\ldots,q_d) = \left(F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1}\right)_{i=1,\ldots,d}
 
-where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already computed conditional quantiles."
+where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,
+\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already 
+computed conditional quantiles."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
@@ -382,7 +387,7 @@ OT_Distribution_computeDDF_doc
 
 Parameters
 ----------
-y : float,
+y : float
     Input.
 
 Returns

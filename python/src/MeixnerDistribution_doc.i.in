@@ -1,20 +1,25 @@
 %feature("docstring") OT::MeixnerDistribution
 "Meixner distribution.
 
-Available constructors:
-    MeixnerDistribution(*beta=1.0, alpha=0.0, delta=1.0, gamma=0.0*)
-
 
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
     Scale parameter.
+    
+    Default value is 1.0.
 alpha : float, :math:`\alpha \in [-\pi; \pi]`
     Skewness parameter.
+    
+    Default value is 0.0.
 delta : float, :math:`\delta > 0`
     Shape parameter.
+    
+    Default value is 1.0.
 gamma : float
     Position parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
 Notes
 -----

@@ -1,17 +1,20 @@
 %feature("docstring") OT::Frechet
 "Frechet distribution.
 
-Available constructors:
-    Frechet(*beta=1.0, alpha=1.0, gamma = 0.0*)
-
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
-    Scale parameter
+    Scale parameter.
+    
+    Default value is 1.0.
 alpha : float, :math:`\alpha > 0`
-    Shape parameter
+    Shape parameter.
+    
+    Default value is 1.0.
 gamma : float, optional
-    Location parameter
+    Location parameter.
+    
+    Default value is 0.0.
 
 Notes
 -----

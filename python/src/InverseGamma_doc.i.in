@@ -5,10 +5,14 @@ Helper class for defining the Inverse Gamma distribution which is the inverse of
 
 Parameters
 ----------
-lambda : float, :math:`\lambda > 0`.
-    Rate parameter. By default, :math:`\lambda=1`.
-k : float, :math:`k > 0`,
-    Shape parameter. By default, :math:`k=1`.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter.
+    
+    Default value is 1.0.
+k : float, :math:`k > 0`
+    Shape parameter.
+    
+    Default value is 1.0.
 
 Notes
 -----

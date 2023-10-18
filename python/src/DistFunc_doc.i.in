@@ -4,9 +4,9 @@
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 k : int
     The number of success.
 
@@ -34,9 +34,9 @@ Examples
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 k : int
     The number of success.
 
@@ -64,9 +64,9 @@ Examples
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 size : int
     The number of realizations to generate.
 
@@ -124,13 +124,13 @@ Examples
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The population size.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the population.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 
 Returns
 -------
@@ -156,13 +156,13 @@ Examples
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The population size.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the population.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 
 Returns
 -------
@@ -188,17 +188,17 @@ Examples
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The population size.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the population.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 tail : bool
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
@@ -226,11 +226,11 @@ Examples
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The population size.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the population.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 size : int
     The number of realizations to generate.
 
@@ -258,11 +258,12 @@ Examples
 Parameters
 ----------
 x : float or sequence of floats
-    Location
+    Location.
 
 Returns
 -------
 pdf : float or sequence of floats
+    The PDF at :math:`x`.
 
 Examples
 --------
@@ -278,11 +279,12 @@ Examples
 Parameters
 ----------
 x : float
-    Location
+    Location.
 
 Returns
 -------
 logPdf : float
+    The log-PDF at :math:`x`.
 
 Examples
 --------
@@ -296,17 +298,17 @@ Examples
 
 Parameters
 ----------
-x : float,
+x : float
     Location.
 tail : bool, default=False.
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float,
-    The cdf or the complementary cdf at the point :math:`x`.
+p: float
+    The CDF or the complementary CDF at point :math:`x`.
 
 Examples
 --------
@@ -319,21 +321,21 @@ Examples
 
 Parameters
 ----------
-x1 : float,
+x1 : float
     First component of :math:`\vect{x}`.
-x2 : float, :math:`\sigma >0`,
+x2 : float, :math:`\sigma >0`
     Second component of :math:`\vect{x}`.
-rho : float,
+rho : float
     Correlation between the first and second margin.
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float,
-    The cdf or the complementary cdf at the point
+p: float
+    The CDF or the complementary CDF at point
     :math:`\vect{x} = (x_1, x_2)`.
 
 Notes
@@ -352,27 +354,27 @@ Examples
 
 Parameters
 ----------
-x1 : float,
+x1 : float
     First component of :math:`\vect{x}`.
-x2 : float, :math:`\sigma >0`,
+x2 : float, :math:`\sigma >0`
     Second component of :math:`\vect{x}`.
-x3 : float,
+x3 : float
     Third component of :math:`\vect{x}`.
-rho12 : float,
+rho12 : float
     Correlation between the first and second margin.
-rho13 : float,
+rho13 : float
     Correlation between the first and third margin.
-rho23 : float,
+rho23 : float
     Correlation between the second and third margin.
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float,
-    The cdf or the complementary cdf at the point
+p: float
+    The CDF or the complementary CDF at point
     :math:`\vect{x} = (x_1, x_2, x_3)`.
 
 Notes
@@ -393,15 +395,17 @@ Examples
 Parameters
 ----------
 x : float
-    Location
+    Location.
 tail : bool, default=False
     Tail flag.
 
-    If True, the log-complementary cdf is computed.
+    If True, the log-complementary CDF is computed.
 
 Returns
 -------
 logCdf : float
+    The log-CDF or the log-complementary CDF at :math:`x`.
+    
 
 Examples
 --------
@@ -415,7 +419,7 @@ Examples
 
 Parameters
 ----------
-p: float, in :math:`[0,1]`.
+p: float, in :math:`[0,1]`
    The probability.
 
 Returns
@@ -455,16 +459,16 @@ Examples
 Parameters
 ----------
 n : int
-    The size of the population
+    The size of the population.
 
 m : int
-    The size of the pool
+    The size of the pool.
 
-p : float :math:`0<p<1`,
-    The probability level of the covering interval
+p : float :math:`0<p<1`
+    The probability level of the covering interval.
 
 alpha : float :math:`0<\alpha<1`
-    The confidence level of the covering interval
+    The confidence level of the covering interval.
 
 Returns
 -------
@@ -519,18 +523,18 @@ Examples
 Parameters
 ----------
 n : int
-    The size of the population
+    The size of the population.
 
 p : float :math:`0<p<1`
-    The probability level of the covering interval
+    The probability level of the covering interval.
 
 alpha : float :math:`0<\alpha<1`
-    The confidence level of the covering interval
+    The confidence level of the covering interval.
 
 Returns
 -------
 k : float
-    The margin factor
+    The margin factor.
 
 Notes
 -----
@@ -555,18 +559,18 @@ Parameters
 n : int
     The size of the samples.
 
-rho : float :math:`-1<rho<1`,
+rho : float :math:`-1<rho<1`
     The location.
 
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
 p: float
-    The cdf or its complementary of the Pearson statistics distribution.
+    The CDF or its complementary of the Pearson statistics distribution.
 
 Notes
 -----
@@ -574,8 +578,8 @@ This method enables to test whether an observed value of the Pearson correlation
 is significantly different from zero. It implements the distribution of the statistics under the
 null hypothesis where the Pearson correlation is assumed to be not significantly different from 0.
 
-The cdf value is the probability that the statistics is less or equal
-than the value calculated from :math:`\rho`. The complementary cdf value is the p-value.
+The CDF value is the probability that the statistics is less or equal
+than the value calculated from :math:`\rho`. The complementary CDF value is the p-value.
 
 We use the Student asymptotic approximation of the statistics distribution.
 
@@ -592,7 +596,7 @@ Examples
 Parameters
 ----------
 lambda : float, :math:`\lambda \geq 0`
-    The intensity of the Poisson distribution
+    The intensity of the Poisson distribution.
 k : int
     The number of success.
 
@@ -620,7 +624,7 @@ Examples
 Parameters
 ----------
 lambda : float, :math:`\lambda \geq 0`
-    The intensity of the Poisson distribution
+    The intensity of the Poisson distribution.
 k : int
     The number of success.
 
@@ -648,7 +652,7 @@ Examples
 Parameters
 ----------
 lambda : float, :math:`\lambda \geq 0`
-    The intensity of the Poisson distribution
+    The intensity of the Poisson distribution.
 size : int
     The number of realizations to generate.
 
@@ -679,18 +683,18 @@ Examples
 
 Parameters
 ----------
-lambda: float, :math:`\lambda\geq 0`,
-    The intensity of the Poisson distribution
-p : float, in :math:`[0,1]`,
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution.
+p : float, in :math:`[0,1]`
     The probability.
-tail : bool, default=False,
+tail : bool, default=False
     Tail flag.
 
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -709,18 +713,18 @@ Examples
 
 Parameters
 ----------
-lambda : float, :math:`\lambda \geq 0`,
-    The intensity of the Poisson distribution
-p : float, in :math:`[0,1]`,
+lambda : float, :math:`\lambda \geq 0`
+    The intensity of the Poisson distribution.
+p : float, in :math:`[0,1]`
     The probability.
-tail : bool, default=False,
+tail : bool, default=False
     Tail flag.
 
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -739,11 +743,11 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-lambda : float, :math:`\lambda \geq 0`,
+lambda : float, :math:`\lambda \geq 0`
     The :math:`\lambda` parameter.
-x : float,
+x : float
     The location.
 precision : float, optional
     The precision of the algorithm.
@@ -758,8 +762,8 @@ maximum_iteration : int, optional
 
 Returns
 -------
-d : float,
-    The pdf at :math:`x`.
+d : float
+    The PDF at :math:`x`.
 
 Notes
 -----
@@ -792,9 +796,9 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-lambda : float, :math:`\lambda \geq 0`,
+lambda : float, :math:`\lambda \geq 0`
     The :math:`\lambda` parameter.
 size : int,
     The number of realizations (optional).
@@ -833,25 +837,25 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-lambda : float, :math:`\lambda \geq 0`,
+lambda : float, :math:`\lambda \geq 0`
     The :math:`\lambda` parameter.
-x : float, 
+x : float
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
-precision: float,
+    If True, the complementary CDF is computed.
+precision: float
     The precision of the evaluation.
-maxInter : int,
+maxInter : int
     The maximum number of iterations of the algorithm.
 
 Returns
 -------
-p: float,
-    The cdf or the complementary cdf at x.
+p: float
+    The CDF or the complementary CDF at :math:`x`.
 
 Notes
 -----
@@ -882,16 +886,16 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-delta : float, :math:`\delta > 0`,
+delta : float, :math:`\delta > 0`
     The :math:`\nu` parameter.
 x : float
 
 Returns
 -------
-p : float,
-    The pdf at point :math:`x`.
+p : float
+    The PDF at point :math:`x`.
 
 Notes
 -----
@@ -927,9 +931,9 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-delta : float, :math:`\delta > 0`,
+delta : float, :math:`\delta > 0`
     The :math:`\delta` parameter.
 size : int,
     The number of realizations (optional).
@@ -975,21 +979,21 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-delta : float, :math:`\delta > 0`,
+delta : float, :math:`\delta > 0`
     The :math:`\nu` parameter.
 x : float, 
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
 p: float,
-    The cdf or the complementary cdf at x.
+    The CDF or the complementary CDF at x.
 
 Notes
 -----
@@ -1027,18 +1031,18 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-p : float, in :math:`[0,1]`,
+p : float, in :math:`[0,1]`
     The probability.
-tail : bool, default=False,
+tail : bool, default=False
     Tail flag.
 
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -1064,19 +1068,19 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
 x : float or sequence of floats
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float or sequence of float,
-    The cdf or the complementary cdf at x or at each :math:`x[i]`.
+p: float or sequence of float
+    The CDF or the complementary CDF at x or at each :math:`x[i]`.
 
 Notes
 -----
@@ -1101,9 +1105,9 @@ Examples
 
 Parameters
 ----------
-nu : float, :math:`\nu > 0`,
+nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-size : int,
+size : int
     The number of realizations (optional).
     
     By default, size is equal to 1.
@@ -1140,7 +1144,8 @@ n : int
 
 Returns
 -------
-mu : float"
+mu : float
+    The mean value of the min of n independent standard normal random variables."
 
 // ---------------------------------------------------------------------
 
@@ -1287,21 +1292,21 @@ Examples
 
 Parameters
 ----------
-alpha : float, :math:`\alpha > 0`,
+alpha : float, :math:`\alpha > 0`
     Parameter :math:`\alpha`.
-beta : float, :math:`\beta > 0`,
+beta : float, :math:`\beta > 0`
     Parameter :math:`\beta`.
 x : float, 
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
 p: float,
-    The cdf or the complementary cdf at x.
+    The CDF or the complementary CDF at :math:`x`.
 
 Notes
 -----
@@ -1325,11 +1330,11 @@ Examples
 
 Parameters
 ----------
-alpha : float, :math:`\alpha > 0`,
+alpha : float, :math:`\alpha > 0`
     Parameter :math:`\alpha`.
-beta : float, :math:`\beta > 0`,
+beta : float, :math:`\beta > 0`
     Parameter :math:`\beta`.
-p : float, in :math:`[0,1]`,
+p : float, in :math:`[0,1]`
     The probability.
 tail : bool, default=False
     Tail flag.
@@ -1364,9 +1369,9 @@ Examples
 
 Parameters
 ----------
-alpha : float, :math:`\alpha > 0`,
+alpha : float, :math:`\alpha > 0`
     Parameter :math:`\alpha`.
-beta : float, :math:`\beta > 0`,
+beta : float, :math:`\beta > 0`
     Parameter :math:`\beta`.
 
 Returns
@@ -1401,17 +1406,17 @@ Parameters
 ----------
 k : float
     Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
-x : float, 
+x : float
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float,
-    The cdf or the complementary cdf at x.
+p: float
+    The CDF or the complementary CDF at x.
 
 Notes
 -----
@@ -1440,8 +1445,8 @@ Parameters
 ----------
 k : float
     Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
-x : float, 
-p : float, in :math:`[0,1]`.
+x : float
+p : float, in :math:`[0,1]`
     The probability.
 tail : bool, default=False
     Tail flag.
@@ -1450,7 +1455,7 @@ tail : bool, default=False
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -1519,19 +1524,19 @@ Examples
 
 Parameters
 ----------
-n : int,
+n : int
     The number of the iid observations.
-x : float, 
+x : float
     Location.
 tail : bool, default=False
     Tail flag.
     
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p : float,
-    The cdf or the complementary cdf at x.
+p : float
+    The CDF or the complementary CDF at x.
 
 Notes
 -----
@@ -1556,17 +1561,17 @@ Parameters
 ----------
 n : int
     The number of distinct ranks.
-rho : float, 
+rho : float
     Location.
 tail : bool, default=False
-    Tail flag. If True, the complementary cdf is computed.
+    Tail flag. If True, the complementary CDF is computed.
 ties : bool, default=False
     Indicates whether ties in the samples are taken into account.
 
 Returns
 -------
-p : float,
-    The cdf or its complementary of the Spearman statistics distribution.
+p : float
+    The CDF or its complementary of the Spearman statistics distribution.
 
 Notes
 -----
@@ -1574,8 +1579,8 @@ This method enables to test whether an observed value of the Spearman correlatio
 is significantly different from zero. It implements the distribution of the statistics under the
 null hypothesis where the Spearmann correlation is assumed to be not significantly different from 0.
 
-The cdf value is the probability that the statistics is less or equal
-than the value calculated from :math:`\rho`. The complementary cdf value is the p-value.
+The CDF value is the probability that the statistics is less or equal
+than the value calculated from :math:`\rho`. The complementary CDF value is the p-value.
 
 When there is no ties, we use the tabulated exact distribution of the statistics for small sample
 size thanks to the values given in [luke]_ and the Edgeworth
@@ -1595,7 +1600,7 @@ Examples
 
 Parameters
 ----------
-p : float,
+p : float
     The probability.
 tail : bool, default=False
     Tail flag.
@@ -1604,7 +1609,7 @@ tail : bool, default=False
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -1658,7 +1663,7 @@ Examples
 
 Parameters
 ----------
-p : float,
+p : float
     The probability.
 tail : bool, default=False
     Tail flag.
@@ -1667,7 +1672,7 @@ tail : bool, default=False
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -1722,9 +1727,9 @@ Examples
 
 Parameters
 ----------
-p : float,
+p : float
     The probability.
-x : float, 
+x : float
 tail : bool, default=False
     Tail flag.
 
@@ -1732,7 +1737,7 @@ tail : bool, default=False
 
 Returns
 -------
-q : float,
+q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
 Notes
@@ -1786,17 +1791,17 @@ Examples
 
 Parameters
 ----------
-x : float,
+x : float
     The location.
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p : float,
-    The cdf or its complementary at :math:`x`.
+p : float
+    The CDF or its complementary at :math:`x`.
 
 Notes
 -----
@@ -1851,17 +1856,17 @@ Examples
 
 Parameters
 ----------
-x : float,
+x : float
     The location.
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p : float,
-    The cdf or its complementary at :math:`x`.
+p : float
+    The CDF or its complementary at :math:`x`.
 
 Notes
 -----
@@ -1915,17 +1920,17 @@ Examples
 
 Parameters
 ----------
-x : float,
+x : float
     The location.
 tail : bool, default=False
     Tail flag.
 
-    If True, the complementary cdf is computed.
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-p : float,
-    The cdf or its complementary at :math:`x`.
+p : float
+    The CDF or its complementary at :math:`x`.
 
 Notes
 -----

@@ -4,11 +4,17 @@
 Parameters
 ----------
 sample : :class:`~openturns.Sample`
-    The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted. Default is *sample=[[0.0], [0.0]]*.
+    The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted.
+    
+    Default value is :math:`[[0.0], [0.0]]`.
 binNumber : int, :math:`0<binNumber\leq N`
-    The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample. Default is *binNumber=1*.
+    The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample.
+    
+    Default value is 1.
 isCopulaSample : bool
-    Flag to tell if the given sample is already an empirical copula sample. Default is *isCopulaSample=False*.
+    Flag to tell if the given sample is already an empirical copula sample.
+    
+    Default value is False.
 
 Notes
 -----

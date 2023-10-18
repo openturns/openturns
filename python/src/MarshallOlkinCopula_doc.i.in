@@ -4,10 +4,14 @@
 Parameters
 ----------
 alpha : float
-    Parameter :math:`\alpha`, :math:`0 \leq \alpha \leq 1`. Default is :math:`\alpha=0.5`.
+    Parameter :math:`\alpha`, :math:`0 \leq \alpha \leq 1`.
+    
+    Default value is 0.5.
 
 beta : float
-    Parameter :math:`\beta`, :math:`0 \leq \beta \leq 1`. Default is :math:`\beta=0.5`.
+    Parameter :math:`\beta`, :math:`0 \leq \beta \leq 1`.
+    
+    Default value is 0.5.
 
 Notes
 -----

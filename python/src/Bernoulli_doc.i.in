@@ -1,13 +1,12 @@
 %feature("docstring") OT::Bernoulli
 "Bernoulli distribution.
 
-Available constructors:
-    Bernoulli(*p=0.5*)
-
 Parameters
 ----------
 p : float, :math:`0 \leq p \leq 1`
     Success probability.
+
+    Default value is 0.5.
 
 Notes
 -----

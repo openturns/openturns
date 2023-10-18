@@ -1,15 +1,16 @@
 %feature("docstring") OT::GumbelMuSigma
 "Gumbel distribution parameters.
 
-Available constructors:
-    GumbelMuSigma(*mu=0.577216, sigma=1.28255*)
-
 Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 0.577216.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
+
+    Default value is 1.28255.
 
 Notes
 -----
