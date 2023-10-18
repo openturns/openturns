@@ -38,8 +38,7 @@ Then it should be ready to install packages::
     conda install -y openturns
 
 Note that conda can be slow or fail at resolving complex environments with many packages
-so when a full upgrade is needed our advice is to create a new environment from scratch
-(see also `Mamba <https://github.com/mamba-org/mamba/>`_).
+so when a full upgrade is needed our advice is to create a new environment from scratch.
 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
