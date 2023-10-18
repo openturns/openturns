@@ -25,7 +25,7 @@ where:
     c_{ij} = \Expect{\left(X_i - \Expect{X_i}\right)\left(X_j - \Expect{X_j} \right)}
 
 
-whith :math:`c_{ii} = \sigma_i^2`.
+with :math:`c_{ii} = \sigma_i^2`.
 
 **Case 1:** :math:`Y \in \Rset` , :math:`q=1`:
 
