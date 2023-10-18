@@ -7,14 +7,15 @@ One way to evaluate the central dispersion (expectation and variance) of the var
 is to use the Taylor expansion of the function :math:`h: \Rset^d \rightarrow \Rset^q` at
 the mean point :math:`\vect{\mu} = \Expect{\uX}`.
 
-Depending on the order of the Taylor expansion (classically first or second order), we get different approximations of the mean and variance of :math:`Y`.
+Depending on the order of the Taylor expansion (classically first or second order), we get different approximations
+of the mean and variance of :math:`Y`.
 
 
 In the remainder, we denote by :math:`\Cov \uX`  the covariance matrix of :math:`\uX`, defined by:
 
 .. math::
 
-    \Cov \uX= (c_{ij})_{ij}
+    \Cov \uX = (c_{ij})_{ij}
     
 where:
 
