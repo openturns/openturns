@@ -34,12 +34,12 @@ Create a sparse chaos by integration
 # .. math::
 #
 #   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
 #
 # where :math:`\boldsymbol{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`
 # is a multiindex, :math:`a_{\boldsymbol{\alpha}} \in \mathbb{R}` is the
 # coefficient,  :math:`\psi_{\boldsymbol{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}`
-# is a multivariate polynomial and :math:`\epsilon` is a random variable.
+# is a multivariate polynomial.
 
 # %%
 #
@@ -71,7 +71,7 @@ Create a sparse chaos by integration
 # .. math::
 #
 #   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon.
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
 #
 # In order to ensure a low error, we may choose a large value of the
 # parameter :math:`P`. This, however, leads to a large number of
@@ -106,7 +106,7 @@ Create a sparse chaos by integration
 #
 #   \mathcal{A}^{d,j} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p
 #   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d, \;
-#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}.
+#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}
 #
 # Therefore, the rank-`j` polynomial chaos expansion is:
 #
@@ -114,7 +114,7 @@ Create a sparse chaos by integration
 #
 #   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in
 #   \mathcal{A}^{d,j}} a_{\boldsymbol{\alpha}}
-#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon.
+#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
 #
 # The rank is now a hyperparameter of the model: [blatman2009]_ suggests
 # to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol'
@@ -141,7 +141,6 @@ Create a sparse chaos by integration
 #
 #   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}}
 #   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
-#   + \epsilon.
 #
 # An enumeration rule is a function from the set of integers :math:`k` to
 # the corresponding set of multiindices :math:`\boldsymbol{\alpha}`. More
