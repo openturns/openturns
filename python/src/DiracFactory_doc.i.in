@@ -31,7 +31,7 @@ param : sequence of float
 Returns
 -------
 distribution : :class:`~openturns.Dirac`
-    The estimated distribution as a Dirac.
+    The estimated distribution as a :class:`openturns.Dirac`.
     
     In the first usage, the default Dirac distribution is built."
 
