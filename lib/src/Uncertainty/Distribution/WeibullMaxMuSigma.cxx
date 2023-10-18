@@ -35,9 +35,9 @@ static const Factory<WeibullMaxMuSigma> Factory_WeibullMaxMuSigma;
 /* Default constructor */
 WeibullMaxMuSigma::WeibullMaxMuSigma()
   : DistributionParametersImplementation()
-  , mu_(1.0)
+  , mu_(-1.0)
   , sigma_(1.0)
-  , gamma_(0.)
+  , gamma_(0.0)
 {
   // Nothing to do
 }
@@ -68,13 +68,7 @@ Bool WeibullMaxMuSigma::operator ==(const WeibullMaxMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution WeibullMaxMuSigma::getDistribution() const
 {
-  Point newParameters(3);
-  newParameters[0] = mu_;
-  newParameters[1] = sigma_;
-  newParameters[2] = gamma_;
-
-  Point nativeParameters(operator()(newParameters));
-
+  const Point nativeParameters(operator()(getValues()));
   return WeibullMaxFactory().build(nativeParameters);
 }
 
@@ -82,11 +76,6 @@ Distribution WeibullMaxMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix WeibullMaxMuSigma::gradient() const
 {
-  Point newParameters(3);
-  newParameters[0] = mu_;
-  newParameters[1] = sigma_;
-  newParameters[2] = gamma_;
-
   Matrix nativeParametersGradient(WeibullMinMuSigma(-mu_, sigma_, -gamma_).gradient());
   nativeParametersGradient(0, 0) *= -1.0;//dbeta/dmu
   nativeParametersGradient(0, 1) *= -1.0;//dalpha/dmu
@@ -130,11 +119,7 @@ void WeibullMaxMuSigma::setValues(const Point & inP)
 
 Point WeibullMaxMuSigma::getValues() const
 {
-  Point point(3);
-  point[0] = mu_;
-  point[1] = sigma_;
-  point[2] = gamma_;
-  return point;
+  return {mu_, sigma_, gamma_};
 }
 
 Description WeibullMaxMuSigma::getDescription() const
