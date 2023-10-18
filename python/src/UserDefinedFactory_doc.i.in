@@ -34,4 +34,4 @@ Returns
 dist : :class:`~openturns.UserDefined`
     The estimated distribution as a UserDefined.
     
-    In the first usage, the default UserDefined distribution is built."
+    In the first usage, the default :class:`openturns.UserDefined` distribution is built."
