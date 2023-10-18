@@ -40,7 +40,7 @@ param : sequence of float
 Returns
 -------
 dist : :class:`~openturns.Uniform`
-    The estimated distribution as a Uniform.
+    The estimated distribution as a :class:`openturns.Uniform`.
     
     In the first usage, the default Uniform distribution is built."
 
