@@ -341,3 +341,68 @@ Returns
 -------
 result : :class:`~openturns.DistributionFactoryLikelihoodResult`
     The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfXiProfileLikelihood
+"Estimate the distribution with the profile likelihood.
+
+
+The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a nested numerical optimization of the log-likelihood:
+
+.. math::
+
+    \ell_p (\xi) = \max_{(\sigma)} \ell (\sigma, \xi, u)
+
+where :math:`\ell (\sigma, \xi, u)` is detailed in equations :eq:`llgpdR1` and :eq:`llgpdR2`.
+
+The estimator is given by:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+    \hat{\xi} & =  \argmax_{\xi} \ell_p(\xi)\\
+    \hat{\sigma} & = \argmax_{\sigma} \ell(\sigma, \hat{\xi}, u)
+    \end{align*}
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima sample of dimension 1.
+u : float
+    Given threshold value
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedPareto`
+    The estimated distribution.
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfXiProfileLikelihoodEstimator
+"Estimate the distribution and the parameter distribution with the profile likelihood.
+
+
+The estimators are defined in :meth:`buildMethodOfXiProfileLikelihood`.
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the profile log-likelihood function :math:`\xi \mapsto \ell_p(\xi)`,
+- the optimal profile log-likelihood value :math:`\ell_p(\hat{\xi})`,
+- confidence intervals of level :math:`(1-\alpha)` of :math:`\xi`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima sample of dimension 1.
+u : float
+    Given threshold value
+
+Returns
+-------
+result : :class:`~openturns.ProfileLikelihoodResult`
+    The result class."

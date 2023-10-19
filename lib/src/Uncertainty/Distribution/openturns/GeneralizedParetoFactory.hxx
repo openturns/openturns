@@ -26,6 +26,7 @@
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/DistributionFactoryLikelihoodResult.hxx"
+#include "openturns/ProfileLikelihoodResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,6 +74,10 @@ public:
   /** Maximum likelihood */
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const Scalar u) const;
   GeneralizedPareto buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const;
+
+  /** Profiled maximum likelihood */
+  ProfileLikelihoodResult buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample, const Scalar u) const;
+  GeneralizedPareto buildMethodOfXiProfileLikelihood(const Sample & sample, const Scalar u) const;
 
 private:
 

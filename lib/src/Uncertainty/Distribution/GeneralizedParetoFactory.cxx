@@ -465,4 +465,171 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfLikelihoodMaximization(
   return buildAsGeneralizedPareto(distribution.getParameter());
 }
 
+
+class GeneralizedParetoProfileLikelihoodEvaluation : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoProfileLikelihoodEvaluation(const Sample & sample,
+      const Scalar zMin,
+      const Scalar zMax,
+      const OptimizationAlgorithm & solver,
+      const Scalar u)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , solver_(solver)
+    , u_(u)
+  {
+    zMin_ = zMin;
+    zMax_ = zMax;
+  }
+
+  GeneralizedParetoProfileLikelihoodEvaluation * clone() const override
+  {
+    return new GeneralizedParetoProfileLikelihoodEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const override
+  {
+    return {"xi"};
+  }
+
+  Point operator() (const Point & parameter) const override
+  {
+    const Scalar xi0 = parameter[0];
+
+    const Function likelihood(GeneralizedParetoLikelihoodEvaluation(sample_, u_).clone());
+    // only sigma remains to be optimized out of (sigma, xi, u)
+    const ParametricFunction objective(likelihood, {1}, {xi0});
+    OptimizationProblem problem(objective);
+    problem.setMinimization(false);
+
+    // sigma > 0
+    const Point lowerBound({SpecFunc::Precision});
+    const Point upperBound({SpecFunc::MaxScalar});
+    const Interval::BoolCollection finiteLowerBound({true});
+    const Interval::BoolCollection finiteUpperBound({false});
+    problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+
+    // 1+xi*zi/sigma > 0
+    Description formulas(2);
+    formulas[0] = OSS() << "sigma + "<<xi0<<" * (" << zMax_ << " - " << u_ << ")";
+    formulas[1] = OSS() << "sigma + "<<xi0<<" * (" << zMin_ << " - " << u_ << ")";
+    const SymbolicFunction constraint(Description({"sigma"}), formulas);
+    problem.setInequalityConstraint(constraint);
+
+    Sample z(0, 1);
+    for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
+      if (sample_(i, 0) > u_)
+        z.add(Point(1, sample_(i, 0) - u_));
+
+    if (z.getSize() < 2)
+      return Point(1, -std::log(SpecFunc::MaxScalar));
+
+    const Scalar sigma0 = std::sqrt(6.0 * z.computeCovariance()(0, 0)) / M_PI;
+
+    // solve optimization problem
+    OptimizationAlgorithm solver(solver_);
+    solver.setProblem(problem);
+    solver.setStartingPoint({sigma0});
+    try
+    {
+      solver.run();
+      optimalPoint_ = solver.getResult().getOptimalPoint();
+      const Point optimalValue(solver.getResult().getOptimalValue());
+      return optimalValue;
+    }
+    catch (const Exception & ex)
+    {
+      return Point(1, -std::log(SpecFunc::MaxScalar));
+    }
+  }
+
+  Point getOptimalPoint() const
+  {
+    return optimalPoint_;
+  }
+
+private:
+  Sample sample_;
+  Scalar zMin_ = 0.0;
+  Scalar zMax_ = 0.0;
+  mutable Point optimalPoint_;
+  OptimizationAlgorithm solver_;
+  Scalar u_ = 0.0;
+};
+
+
+ProfileLikelihoodResult GeneralizedParetoFactory::buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample, const Scalar u) const
+{
+  if (sample.getSize() < 3)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 3";
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+
+  const Scalar zMin = sample.getMin()[0];
+  const Scalar zMax = sample.getMax()[0];
+  const Scalar xi0 = 0.1;
+
+  const GeneralizedParetoProfileLikelihoodEvaluation profileLikelihoodEvaluation(sample, zMin, zMax, solver_, u);
+  const Function objective(profileLikelihoodEvaluation.clone());
+  OptimizationProblem problem(objective);
+  problem.setMinimization(false);
+
+  // solve optimization problem
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint({xi0});
+  solver.run();
+
+  // rerun once to get optimal sigma at optimal xi
+  const Scalar xi = solver.getResult().getOptimalPoint()[0];
+  profileLikelihoodEvaluation(solver.getResult().getOptimalPoint());
+  Point optimalParameter(profileLikelihoodEvaluation.getOptimalPoint()); // sigma
+  optimalParameter.add(xi);
+  optimalParameter.add(u);
+
+  const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
+//   Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+//   parameterDistribution.setDescription({"sigma", "xi", "u"});
+  Distribution parameterDistribution(Normal(3));
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
+  // Compute the extreme possible values for xi given the sample and (mu, sigma)
+  /*
+  const Scalar mu = optimalParameter[0];
+  const Scalar sigma = optimalParameter[1];
+  Scalar xiMin;
+  if (zMax > mu)
+    xiMin = -sigma / (zMax - mu);
+  else
+    xiMin = -SpecFunc::MaxScalar;
+  Scalar xiMax;
+  if (zMin < mu)
+    xiMax = sigma / (mu - zMin);
+  else
+    xiMax = SpecFunc::MaxScalar;
+  */
+//   const Scalar uMin = 30-zMin;
+//   const Scalar uMax = 2*zMax+30;
+  const Scalar xiMin = -SpecFunc::MaxScalar;
+  const Scalar xiMax = SpecFunc::MaxScalar;
+  ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, xi, xiMin, xiMax);
+  return result;
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfXiProfileLikelihood(const Sample & sample, const Scalar u) const
+{
+  const Distribution distribution(buildMethodOfXiProfileLikelihoodEstimator(sample, u).getDistribution());
+  return buildAsGeneralizedPareto(distribution.getParameter());
+}
+
 END_NAMESPACE_OPENTURNS

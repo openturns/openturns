@@ -70,4 +70,30 @@ for i in range(3):
     print(desc[i] + ":", ci)
 
 # %%
+# **Stationary GPD modeling via the profile log-likelihood function**
+#
+# Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GPD.
+result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
+
+# %%
+# The following graph allows one to get the profile log-likelihood plot.
+# It also indicates the optimal value of :math:`\xi`, the maximum profile log-likelihood and
+# the confidence interval for :math:`\xi` of order 0.95 (which is the default value).
+order = 0.95
+result_PLL.setConfidenceLevel(order)
+view = otv.View(result_PLL.drawProfileLikelihoodFunction())
+
+# %%
+# We can get the numerical values of the confidence interval: it appears to be a bit smaller
+# with the interval obtained from the profile log-likelihood function than with the log-likelihood
+# function.
+# Note that if the order requested is too high, the confidence interval might not be calculated because
+# one of its bound is out of the definition domain of the log-likelihood function.
+try:
+    print("Confidence interval for xi = ", result_PLL.getParameterConfidenceInterval())
+except Exception as ex:
+    print(type(ex))
+    pass
+
+# %%
 otv.View.ShowAll()
