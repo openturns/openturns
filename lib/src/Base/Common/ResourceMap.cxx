@@ -734,6 +734,9 @@ void ResourceMap::loadDefaultConfiguration()
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);
 
+  // LevelSetMesher parameters //
+  addAsBool("LevelSetMesher-SolveEquation", true);
+
   // PointToPointEvaluation parameters //
   addAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);
 

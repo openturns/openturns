@@ -166,8 +166,8 @@ void Mesh::checkValidity() const
     if (simplex.getSize() != getDimension() + 1)
       throw InvalidArgumentException(HERE) << "Error: mesh has dimension " << getDimension() << " but simplex #" << i << " has size" << simplex.getSize();
 
-    if (!simplex.check(getVerticesNumber()))
-      throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " refers to an unknown vertex";
+    if (*std::max_element(simplex.begin(), simplex.end()) >= getVerticesNumber())
+      throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " = " << simplex << " refers to an unknown vertex";
   }
   // Check that no ball can be included into the intersection of two simplices
   // One it has been checked everything is ok

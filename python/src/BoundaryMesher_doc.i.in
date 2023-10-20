@@ -1,0 +1,53 @@
+%feature("docstring") OT::BoundaryMesher
+"Creation of the boundary mesh of a given mesh.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Notes
+-----
+The boundary extraction is based on the remark that a :math:`(d-1)` face of a
+:math:`d` dimensional simplex of a mesh is a boundary face if and only if this
+face is not shared by any other simplex of the mesh. By convention, a face is
+represented as a *flat* simplex, by repeating the :math:`d` th vertex so the
+two last indices of the simplex are equal.
+A *thick* version of the boundary can also be built, where each face is replaced
+by a simplex with a last vertex at distance *offset* from the face hyperplane.
+If *offset* is positive, this new vertex is in the open half-space not containing
+the simplex associated to the face, otherwise it is in the open half-space
+containing the simplex.
+
+Examples
+--------
+Create a mesh:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> mesher = ot.LevelSetMesher([5, 10])
+>>> level = 1.0
+>>> function = ot.SymbolicFunction(['x0', 'x1'], ['x0^2+x1^2'])
+>>> levelSet = ot.LevelSet(function, ot.LessOrEqual(), level)
+>>> mesh = mesher.build(levelSet, ot.Interval([-2.0]*2, [2.0]*2))
+>>> boundaryFactory = otexp.BoundaryMesher()
+>>> boundaryMesh = boundaryFactory.build(mesh)
+>>> thickBoundaryMeshOutside = boundaryFactory.build(mesh, 1e-5)
+>>> thickBoundaryMeshInside = boundaryFactory.build(mesh, -1e-5)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoundaryMesher::build
+"Build the boundary of the given mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    The mesh from which the boundary is extracted.
+offset : float
+    The thickness of the boundary to be generated, see Notes.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh built."

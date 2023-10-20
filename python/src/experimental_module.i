@@ -27,6 +27,9 @@
 %include BaseFuncCollection.i
 %import base_module.i
 
+/* Base/Geom */
+%include BoundaryMesher.i
+
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i
@@ -43,6 +46,7 @@
 %import bayesian_module.i
 %import metamodel_module.i
 %include simulation_module.i
+
 
 /* Uncertainty/Algorithm/Metamodel */
 %include UserDefinedMetropolisHastings.i

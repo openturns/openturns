@@ -29,6 +29,7 @@
 #include "openturns/LevelSetMesher.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
+#include "openturns/BoundaryMesher.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/DomainComplement.hxx"
 #include "openturns/DomainIntersection.hxx"
