@@ -141,14 +141,6 @@ String SymbolicFunction::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-/* String converter */
-String SymbolicFunction::__repr_html__() const
-{
-  OSS oss;
-  oss << getImplementation()->__repr_html__();
-  return oss;
-}
-
 /* Accessor to the formulas */
 Description SymbolicFunction::getFormulas() const
 {

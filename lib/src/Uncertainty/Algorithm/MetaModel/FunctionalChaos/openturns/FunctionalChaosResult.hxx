@@ -98,7 +98,7 @@ public:
   virtual FunctionCollection getReducedBasis() const;
 
   /** Composed meta model accessor */
-  virtual DualLinearCombinationFunction getComposedMetaModel() const;
+  virtual Function getComposedMetaModel() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -137,7 +137,7 @@ private:
   FunctionPersistentCollection Psi_k_;
 
   /** Composed meta model */
-  DualLinearCombinationFunction composedMetaModel_;
+  Function composedMetaModel_;
 
   /** Selection history */
   Collection<Indices> indicesHistory_;

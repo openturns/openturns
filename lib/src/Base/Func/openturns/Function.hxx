@@ -86,7 +86,7 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
-  /** String converter */
+  /** html converter */
   String __repr_html__() const override;
 
   /** Function implementation accessors */

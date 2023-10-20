@@ -64,9 +64,4 @@ String DualLinearCombinationFunction::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-String DualLinearCombinationFunction::__repr_html__() const
-{
-  return getImplementation()->__repr_html__();
-}
-
 END_NAMESPACE_OPENTURNS

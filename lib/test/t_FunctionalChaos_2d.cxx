@@ -81,7 +81,7 @@ int main(int, char *[])
     fullprint << projectionStrategy << std::endl;
     std::cout << "ProjectionStrategy (str)= " << std::endl;
     std::cout << projectionStrategy << std::endl;
-    DualLinearCombinationFunction composedMetamodel(result.getComposedMetaModel());
+    Function composedMetamodel(result.getComposedMetaModel());
     fullprint << "ComposedMetamodel, ClassName= " << composedMetamodel.getClassName() << std::endl;
     fullprint << "ComposedMetamodel (repr)= " << std::endl;
     fullprint << composedMetamodel << std::endl;
