@@ -102,6 +102,51 @@ int main(int, char *[])
     //std::cout << "acceptance rate=" << rwmh.getAcceptanceRate() << std::endl;
     assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0); // Empirical acceptance rate observed when executing the code
 
+
+    // Trick RandomWalkMetropolisHastings into being a simple random walk
+    // with Uniform(-1, 1) step: every "proposal" is automatically accepted.
+    const SymbolicFunction logdensity("x", "1");
+    Interval support(1);
+    support.setFiniteLowerBound({false});
+    support.setFiniteUpperBound({false});
+    const Uniform proposal(-1.0, 1.0);
+    RandomWalkMetropolisHastings rw(logdensity, support, {0.0}, proposal);
+
+    // The acceptance rate is 1 in this trivial case,
+    // so every adaptation step will multiply the adaptation factor
+    // by the expansion factor.
+    rw.setAdaptationExpansionFactor(2.0);
+    rw.setAdaptationPeriod(10);
+    rw.getSample(100);
+    assert_almost_equal(rw.getAdaptationFactor(), 1024.0, 0.0, 0.0);
+
+    // Check that the adaptation factor is really taken into account.
+    // We lengthen the adaptation period to get a longer period witout adaptation.
+    // We then compare the standard deviation of the step lengths with
+    // their theoretical standard deviation considering the 1024 adaptation factor.
+    rw.setAdaptationPeriod(100);
+    const Sample constantAdapationFactorSample(rw.getSample(99));
+    Indices notTaken(1);
+    const Indices up(notTaken.complement(99)); // [1, 2, ..., 98]
+    notTaken[0] = 98;
+    const Indices down(notTaken.complement(99)); // [0, 1, ..., 97]
+    const Sample steps(constantAdapationFactorSample.select(up) - constantAdapationFactorSample.select(down));
+    const Point ref_std = Uniform(-1024.0, 1024.0).getStandardDeviation();
+    assert_almost_equal(steps.computeStandardDeviation(), ref_std, 0.1, 0.0);
+
+    // At the next realization, once again the adaptation factor is multiplied by 2.
+    rw.getRealization();
+
+    // We now change the adaptation range
+    // to an interval with lower bound larger than 1 (the acceptance rate)
+    // This way, every adaptation step will multiply the adaptation factor
+    // by the shrink factor.
+    rw.setAdaptationRange(Interval(1.1, 1.2));
+    rw.setAdaptationPeriod(10);
+    rw.setAdaptationShrinkFactor(0.5);
+    const Sample decreasing_step_sample(rw.getSample(100));
+    assert_almost_equal(rw.getAdaptationFactor(), 2.0, 0.0, 0.0);
+
   }
   catch (TestFailed & ex)
   {
