@@ -187,8 +187,7 @@ Sample Normal::getSample(const UnsignedInteger size) const
     result.getImplementation()->setData(sigma_[0] * DistFunc::rNormal(size));
   else
   {
-    for (UnsignedInteger i = 0; i < size; ++i)
-      for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
+    result.getImplementation()->setData(DistFunc::rNormal(size * dimension));
     if (hasIndependentCopula_) result *= sigma_;
     else
     {
