@@ -308,7 +308,9 @@ void OptimizationResult::store(const Point & x,
     const Bool objectiveImproved = (!getOptimalValue().getDimension())
       || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
 
-    if ((objectiveImproved && (constraintError <= maximumConstraintError))
+    const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
+
+    if ((objectiveImproved && insideBounds && (constraintError <= maximumConstraintError))
       || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
     {
       // update values
