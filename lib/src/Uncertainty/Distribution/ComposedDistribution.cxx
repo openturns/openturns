@@ -354,7 +354,7 @@ Point ComposedDistribution::getRealization() const
   }
   // General case
   const Point realization(copula_.getRealization());
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = distributionCollection_[i].computeQuantile(realization[i])[0];
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = distributionCollection_[i].computeScalarQuantile(realization[i]);
   return result;
 }
 
