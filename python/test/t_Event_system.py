@@ -17,10 +17,10 @@ f1 = ot.SymbolicFunction(["x" + str(i) for i in range(dim)], ["x0"])
 f2 = ot.SymbolicFunction(["x" + str(i) for i in range(dim)], ["x1"])
 
 Y1 = ot.CompositeRandomVector(f1, X)
-Y2 = ot.CompositeRandomVector(f2, X)
+l2 = ot.LevelSet(f2, ot.Greater(), 0.0)
 
 e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
-e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
+e2 = ot.DomainEvent(X, l2)
 
 e3 = e1.intersect(e2)
 # print('e3=', e3)

@@ -134,6 +134,14 @@ Bool DomainEvent::isEvent() const
   return true;
 }
 
+RandomVector DomainEvent::asComposedEvent() const
+{
+  if (domain_.getImplementation()->getClassName() != "LevelSet")
+    throw NotYetImplementedException(HERE) << "DomainEvent is not based on a LevelSet.";
+
+  return RandomVector(clone());
+}
+
 /* Method save() stores the object through the StorageManager */
 void DomainEvent::save(Advocate & adv) const
 {

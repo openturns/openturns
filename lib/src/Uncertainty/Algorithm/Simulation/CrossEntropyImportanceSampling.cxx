@@ -42,8 +42,8 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
     const Scalar quantileLevel)
-  : EventSimulation(event)
-  , initialDistribution_(event.getAntecedent().getDistribution())
+  : EventSimulation(event.getImplementation()->asComposedEvent())
+  , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
   if (quantileLevel > 1.)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";

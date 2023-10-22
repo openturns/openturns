@@ -82,7 +82,7 @@ public:
   /** Antecedent accessor */
   RandomVector getAntecedent() const override;
 
-  RandomVector getComposedEvent() const override;
+  RandomVector asComposedEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

@@ -58,7 +58,7 @@ EventSimulation::EventSimulation(const RandomVector & event,
                                  const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , event_(event.getComposedEvent()) // for an Intersection/UnionEvent, we get its composedEvent if it can be built.
+  , event_(event)
   , result_()
 {
   setVerbose(verbose);

@@ -155,12 +155,21 @@ RandomVector IntersectionEvent::getAntecedent() const
   return antecedent_;
 }
 
-RandomVector IntersectionEvent::getComposedEvent() const
+RandomVector IntersectionEvent::asComposedEvent() const
 {
   const UnsignedInteger size = eventCollection_.getSize();
   if (!size) throw InvalidArgumentException(HERE) << "Intersection has been improperly initialized: event collection is empty";
 
-  RandomVector composedEvent(eventCollection_[0].getComposedEvent());
+  RandomVector composedEvent;
+  try
+  {
+    // We get the first event in the collection as a composed event if possible.
+    composedEvent = eventCollection_[0].getImplementation()->asComposedEvent();
+  }
+  catch (const NotYetImplementedException &)
+  {
+    throw NotYetImplementedException(HERE) << "Event #0 could not be rebuilt as a ThresholdEvent.";
+  }
 
   // Further build composedEvent by composing with the other events in the eventCollection_
   for (UnsignedInteger i = 1; i < size; ++ i)
@@ -168,12 +177,11 @@ RandomVector IntersectionEvent::getComposedEvent() const
     try
     {
       // We try to compose with the next event in the collection.
-      composedEvent = composedEvent.intersect(eventCollection_[i].getComposedEvent());
+      composedEvent = composedEvent.intersect(eventCollection_[i].getImplementation()->asComposedEvent());
     }
     catch (const NotYetImplementedException &)
     {
-      // If no composition is possible, we default to the generic implementation.
-      return RandomVectorImplementation::getComposedEvent();
+      throw NotYetImplementedException(HERE) << "Event #" << i << " could not be rebuilt as a ThresholdEvent.";
     }
   }
   return composedEvent;

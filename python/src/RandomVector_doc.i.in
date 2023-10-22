@@ -48,5 +48,3 @@ OT_RandomVector_isEvent_doc
 OT_RandomVector_intersect_doc
 %feature("docstring") OT::RandomVector::join
 OT_RandomVector_join_doc
-%feature("docstring") OT::RandomVector::getComposedEvent
-OT_RandomVector_getComposedEvent_doc

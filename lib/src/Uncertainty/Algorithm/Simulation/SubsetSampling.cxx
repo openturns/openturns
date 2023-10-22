@@ -56,7 +56,7 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulation(event)
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , iSubset_(false)

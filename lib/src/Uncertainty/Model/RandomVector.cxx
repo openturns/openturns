@@ -256,7 +256,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d1 = *levelSet;
   }
 
-  const RandomVector otherAsComposed(other.getComposedEvent());
+  const RandomVector otherAsComposed(other.getImplementation()->asComposedEvent());
   LevelSet d2;
   try
   {
@@ -310,7 +310,7 @@ RandomVector RandomVector::join(const RandomVector & other)
     d1 = *levelSet;
   }
 
-  const RandomVector otherAsComposed(other.getComposedEvent());
+  const RandomVector otherAsComposed(other.getImplementation()->asComposedEvent());
   LevelSet d2;
   try
   {
@@ -334,10 +334,5 @@ RandomVector RandomVector::join(const RandomVector & other)
   return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
-
-RandomVector RandomVector::getComposedEvent() const
-{
-  return getImplementation()->getComposedEvent();
-}
 
 END_NAMESPACE_OPENTURNS

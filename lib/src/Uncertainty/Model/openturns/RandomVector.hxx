@@ -125,9 +125,6 @@ public:
   RandomVector intersect(const RandomVector & other);
   RandomVector join(const RandomVector & other);
 
-  /** Composed event accessor */
-  RandomVector getComposedEvent() const;
-
 protected:
 
 }; /* class RandomVector */

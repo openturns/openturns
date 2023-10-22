@@ -196,11 +196,9 @@ Bool RandomVectorImplementation::isEvent() const
   return false;
 }
 
-RandomVector RandomVectorImplementation::getComposedEvent() const
+RandomVector RandomVectorImplementation::asComposedEvent() const
 {
-  if (!isEvent())
-    throw InvalidArgumentException(HERE) << "Not an event.";
-  return RandomVector(clone());
+  throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::asComposedEvent";
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -266,6 +266,11 @@ Bool ThresholdEventImplementation::isEvent() const
   return true;
 }
 
+RandomVector ThresholdEventImplementation::asComposedEvent() const
+{
+  return RandomVector(clone());
+}
+
 /* Method save() stores the object through the StorageManager */
 void ThresholdEventImplementation::save(Advocate & adv) const
 {
