@@ -113,7 +113,18 @@ String ProductPolynomialEvaluation::__str__(const String & offset) const
       if (degree > 0)
       {
         if (!first) oss << " * ";
-        oss << "(" << polynomials_[i].__str__(description[i], "") << ")";
+        // We count the number of non zeros coefficients
+        const Point marginalCoefficeints = polynomials_[i].getCoefficients();
+        UnsignedInteger numberOfNonZeros = 0;
+        for (UnsignedInteger j = 0; j < marginalCoefficeints.getDimension(); ++j)
+          if (marginalCoefficeints[j] != 0.0)
+            numberOfNonZeros += 1;
+        // We need parentheses if there are two non zero coefficients or more
+        const Bool isNeedForParentheses = (numberOfNonZeros > 1);
+        if (isNeedForParentheses)
+          oss << "(" << polynomials_[i].__str__(description[i], "") << ")";
+        else
+          oss << polynomials_[i].__str__(description[i], "");
         first = false;
       }
     } // Loop over the factors
@@ -165,8 +176,8 @@ String ProductPolynomialEvaluation::__repr_html__() const
       if (degree > 0)
       {
         if (!first) oss << " <span>&#215;</span> ";        
-        const Point marginalCoefficeints = polynomials_[i].getCoefficients();
         // We count the number of non zeros coefficients
+        const Point marginalCoefficeints = polynomials_[i].getCoefficients();
         UnsignedInteger numberOfNonZeros = 0;
         for (UnsignedInteger j = 0; j < marginalCoefficeints.getDimension(); ++j)
           if (marginalCoefficeints[j] != 0.0)

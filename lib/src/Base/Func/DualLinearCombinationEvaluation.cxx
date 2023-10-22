@@ -151,6 +151,7 @@ String DualLinearCombinationEvaluation::__repr_html__() const
 {
   OSS oss(false);
   const UnsignedInteger size = functionsCollection_.getSize();
+  oss << getClassName() << "\n";
   oss << "<ul>\n";
   oss << "  <li> " << "Input dimension = " << getInputDimension() << "  </li>\n";
   oss << "  <li> " << "Input description = " << getInputDescription() << "  </li>\n";
