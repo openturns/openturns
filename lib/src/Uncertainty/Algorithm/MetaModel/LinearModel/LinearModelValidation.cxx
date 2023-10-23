@@ -67,7 +67,7 @@ LinearModelValidation::LinearModelValidation(const LinearModelResult & linearMod
       << " which is larger than the sample size =" << sampleSize;
   kParameter_ = kParameter;
   if (ResourceMap::GetAsBool("LinearModelValidation-NoModelSelection") && \
-    linearModelResult.getIsModelSelection())
+    linearModelResult.isModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a linear model involving model selection";
 }

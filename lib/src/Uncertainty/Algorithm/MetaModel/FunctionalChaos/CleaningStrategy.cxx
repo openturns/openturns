@@ -30,14 +30,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(CleaningStrategy)
 
 typedef Collection<Scalar> ScalarCollection;
 
 static const Factory<CleaningStrategy> Factory_CleaningStrategy;
-
 
 /* Default constructor */
 CleaningStrategy::CleaningStrategy()
@@ -51,7 +48,7 @@ CleaningStrategy::CleaningStrategy()
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension)
                                    const Bool verbose)
-  : AdaptiveStrategyImplementation(basis, maximumDimension, true)
+  : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" ))
   , significanceFactor_(ResourceMap::GetAsScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
@@ -59,21 +56,19 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
   // Nothing to do
 }
 
-
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const UnsignedInteger maximumSize,
                                    const Scalar significanceFactor,
                                    const Bool verbose)
-  : AdaptiveStrategyImplementation(basis, maximumDimension, true)
+  : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(maximumSize)
   , significanceFactor_(significanceFactor)
 {
   // Nothing to do
 }
-
 
 /* Compute initial basis for the approximation */
 void CleaningStrategy::computeInitialBasis()
@@ -221,13 +216,11 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
   LOGDEBUG(OSS() << "  I_p         =" << I_p_);
 }
 
-
 /* Virtual constructor */
 CleaningStrategy * CleaningStrategy::clone() const
 {
   return new CleaningStrategy(*this);
 }
-
 
 /* String converter */
 String CleaningStrategy::__repr__() const
@@ -237,7 +230,6 @@ String CleaningStrategy::__repr__() const
          << " significance factor=" << significanceFactor_
          << " derived from " << AdaptiveStrategyImplementation::__repr__();
 }
-
 
 /* Current vector index accessor */
 UnsignedInteger CleaningStrategy::getCurrentVectorIndex() const
@@ -267,19 +259,33 @@ void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
   significanceFactor_ = significanceFactor;
 }
 
+/* Verbosity accessor */
+Bool CleaningStrategy::getVerbose() const
+{
+  return verbose_;
+}
+
+void CleaningStrategy::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
+}
+
+/* isModelSelection accessor */
+Bool CleaningStrategy::isModelSelection() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void CleaningStrategy::save(Advocate & adv) const
 {
   AdaptiveStrategyImplementation::save(adv);
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void CleaningStrategy::load(Advocate & adv)
 {
   AdaptiveStrategyImplementation::load(adv);
 }
-
-
 
 END_NAMESPACE_OPENTURNS

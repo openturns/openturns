@@ -175,9 +175,9 @@ void IntegrationExpansion::run()
     relativeErrors[j] = empiricalError / marginalOutputSample.computeVariance()[0];
   }
   // Build the result
-  const Bool isLeastSquares = false;
-  const Bool isModelSelection = false;
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors, isLeastSquares, isModelSelection);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors);
+  result_.setIsLeastSquares(false);
+  result_.setIsModelSelection(false);
 }
 
 /* Method to get/set the active functions */

@@ -32,10 +32,6 @@ residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
 relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
     The relative error is the empirical error divided by the 
     sample variance of the output.
-isLeastSquares : bool
-    True if the expansion is computed using least squares.
-isModelSelection : bool
-    True if the expansion is computed using model selection.
 
 Notes
 -----
@@ -250,7 +246,7 @@ Parameters
 errorHistory : sequence of float
     The error history"
 
-%feature("docstring") OT::FunctionalChaosResult::getIsLeastSquares
+%feature("docstring") OT::FunctionalChaosResult::isLeastSquares
 "Get the least squares flag.
 
 Returns
@@ -260,7 +256,7 @@ isLeastSquares : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosResult::getIsModelSelection
+%feature("docstring") OT::FunctionalChaosResult::isModelSelection
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -269,6 +265,30 @@ Model selection can lead to a sparse functional chaos expansion.
 
 Returns
 -------
+isModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setIsLeastSquares
+"Set the least squares flag.
+
+Parameters
+----------
+isLeastSquares : bool
+    True if the coefficients were estimated from least squares."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setIsModelSelection
+"Set the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which allows one to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Parameters
+----------
 isModelSelection: bool
     True if the method involves a model selection method."
 

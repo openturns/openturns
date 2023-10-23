@@ -33,8 +33,8 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
 # First, the most efficient (but more complex!) strategy
 listAdaptiveStrategy = list()
 degree = 6
-indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
-basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
+indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
     ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
@@ -81,11 +81,11 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()
         print("relativeErrors=", relativeErrors)
-        print("isLeastSquares= ", result.getIsLeastSquares())
-        assert result.getIsLeastSquares()
-        print("isModelSelection= ", result.getIsModelSelection())
+        print("isLeastSquares= ", result.isLeastSquares())
+        assert result.isLeastSquares()
+        print("isModelSelection= ", result.isModelSelection())
         modelSelectionReference = adaptiveStrategy.getClassName() == "CleaningStrategy"
-        assert result.getIsModelSelection() == modelSelectionReference
+        assert result.isModelSelection() == modelSelectionReference
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)

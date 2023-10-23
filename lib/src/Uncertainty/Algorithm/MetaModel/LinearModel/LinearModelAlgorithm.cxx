@@ -161,9 +161,8 @@ void LinearModelAlgorithm::run()
 
   result_ = LinearModelResult(inputSample_, basis_, fX, outputSample_, metaModel,
                               coefficients, basis_.__str__(), coefficientsNames, residualSample,
-                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2,
-                              false);
-
+                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2);
+  result_.setIsModelSelection(false);
   hasRun_ = true;
 }
 

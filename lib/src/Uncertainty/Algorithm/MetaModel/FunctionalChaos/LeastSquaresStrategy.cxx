@@ -38,14 +38,13 @@ LeastSquaresStrategy::LeastSquaresStrategy(const ApproximationAlgorithmImplement
   : ProjectionStrategyImplementation()
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
-  isLeastSquares_ = true;
-  isModelSelection_ = p_approximationAlgorithmImplementationFactory_.getImplementation()->getIsModelSelection();
+  // Nothing to do
 }
 
 /* Parameter constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(measure, true, false)
+  : ProjectionStrategyImplementation(measure)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -54,7 +53,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
 /* Parameter constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(weightedExperiment, true, false)
+  : ProjectionStrategyImplementation(weightedExperiment)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -64,7 +63,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const WeightedExperiment & weightedEx
 LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
     const WeightedExperiment & weightedExperiment,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(measure, weightedExperiment, true, false)
+  : ProjectionStrategyImplementation(measure, weightedExperiment)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -75,7 +74,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
     const Point & weights,
     const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, weights, outputSample, true, false)
+  : ProjectionStrategyImplementation(inputSample, weights, outputSample)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -85,7 +84,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
 LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
     const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, true, false)
+  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -179,10 +178,16 @@ Point LeastSquaresStrategy::getErrorHistory() const
   return errorHistory_;
 }
 
-/* isModelSelection accessor */
-Bool LeastSquaresStrategy::getIsModelSelection() const
+/* isLeastSquares accessor */
+Bool LeastSquaresStrategy::isLeastSquares() const
 {
-  return isModelSelection_;
+  return true;
+}
+
+/* isModelSelection accessor */
+Bool LeastSquaresStrategy::isModelSelection() const
+{
+  return p_approximationAlgorithmImplementationFactory_.getImplementation()->isModelSelection();
 }
 
 END_NAMESPACE_OPENTURNS

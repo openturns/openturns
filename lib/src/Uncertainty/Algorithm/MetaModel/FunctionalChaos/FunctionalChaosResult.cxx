@@ -45,7 +45,6 @@ FunctionalChaosResult::FunctionalChaosResult()
   , I_(0)
   , alpha_k_(0, 0)
   , Psi_k_(0)
-  , isLeastSquares_(true)
 {
   // Nothing to do
 }
@@ -62,9 +61,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const Sample & alpha_k,
     const FunctionCollection & Psi_k,
     const Point & residuals,
-    const Point & relativeErrors,
-    const Bool isLeastSquares,
-    const Bool isModelSelection)
+    const Point & relativeErrors)
   : MetaModelResult(inputSample, outputSample, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
@@ -73,8 +70,6 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , I_(I)
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
-  , isLeastSquares_(isLeastSquares)
-  , isModelSelection_(isModelSelection)
 {
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
@@ -108,7 +103,9 @@ String FunctionalChaosResult::__repr__() const
          << " residuals=" << residuals_
          << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
-         << " metaModel=" << metaModel_;
+         << " metaModel=" << metaModel_
+         << " isLeastSquares=" << isLeastSquares_
+         << " isModelSelection=" << isModelSelection_;
 }
 
 String FunctionalChaosResult::__str__(const String & /*offset*/) const
@@ -131,8 +128,10 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
       << "- indices size=" << indicesSize << "\n"
-      << "- relative errors=" << relativeErrors_ << "\n"
+      << "- relative errors=" << relativeErrors_ << "\n";
       << "- residuals=" << residuals_ << "\n";
+      << "- isLeastSquares=" << isLeastSquares_ << "\n";
+      << "- isModelSelection=" << isModelSelection_ << "\n";
   oss << "\n";
 
   const UnsignedInteger ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
@@ -287,15 +286,27 @@ Sample FunctionalChaosResult::getSampleResiduals() const
 }
 
 /* isLeastSquares accessor */
-Bool FunctionalChaosResult::getIsLeastSquares() const
+Bool FunctionalChaosResult::isLeastSquares() const
 {
   return isLeastSquares_;
 }
 
 /* isModelSelection accessor */
-Bool FunctionalChaosResult::getIsModelSelection() const
+Bool FunctionalChaosResult::isModelSelection() const
 {
   return isModelSelection_;
+}
+
+/* isLeastSquares accessor */
+void FunctionalChaosResult::setIsLeastSquares(const Bool isLeastSquares)
+{
+  isLeastSquares_ = isLeastSquares;
+}
+
+/* isModelSelection accessor */
+void FunctionalChaosResult::setIsModelSelection(const Bool isModelSelection)
+{
+  isModelSelection_ = isModelSelection;
 }
 
 /* Method save() stores the object through the StorageManager */

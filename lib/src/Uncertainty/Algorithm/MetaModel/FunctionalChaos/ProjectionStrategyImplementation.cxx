@@ -44,8 +44,6 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation()
   , inputSample_(0, 0)
   , weights_(0)
   , outputSample_(0, 0)
-  , isLeastSquares_(false)
-  , isModelSelection_(false)
 {
   // The ProjectionStrategyImplementation imposes its distribution to the weighted experiment
   weightedExperiment_.setDistribution(measure_);
@@ -53,7 +51,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation()
 
 
 /* Parameter constructor */
-ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distribution & measure, const Bool isLeastSquares, const Bool isModelSelection)
+ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distribution & measure)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -62,8 +60,6 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distrib
   , inputSample_(0, 0)
   , weights_(0)
   , outputSample_(0, 0)
-  , isLeastSquares_(isLeastSquares)
-  , isModelSelection_(isModelSelection)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
   weightedExperiment_.setDistribution(measure_);
@@ -71,7 +67,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distrib
 
 
 /* Parameter constructor */
-ProjectionStrategyImplementation::ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment, const Bool isLeastSquares, const Bool isModelSelection)
+ProjectionStrategyImplementation::ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -81,8 +77,6 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
   , inputSample_(0, 0)
   , weights_(0)
   , outputSample_(0, 0)
-  , isLeastSquares_(isLeastSquares)
-  , isModelSelection_(isModelSelection)
 {
   // Nothing to do
 }
@@ -90,7 +84,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample & inputSample,
     const Point & weights,
-    const Sample & outputSample, const Bool isLeastSquares, const Bool isModelSelection)
+    const Sample & outputSample)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -99,8 +93,6 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample 
   , inputSample_(0, 0)
   , weights_(0)
   , outputSample_(0, 0)
-  , isLeastSquares_(isLeastSquares)
-  , isModelSelection_(isModelSelection)
 {
   if (inputSample.getSize() != weights.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a ProjectionStrategyImplementation with an input sample and weights of different size. Here, input sample size=" << inputSample.getSize() << ", weights size=" << weights.getSize();
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a ProjectionStrategyImplementation with samples of different size. Here, input sample size=" << inputSample.getSize() << ", output sample size=" << outputSample.getSize();
@@ -113,7 +105,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample 
 
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distribution & measure,
-    const WeightedExperiment & weightedExperiment, const Bool isLeastSquares, const Bool isModelSelection)
+    const WeightedExperiment & weightedExperiment)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -123,8 +115,6 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distrib
   , inputSample_(0, 0)
   , weights_(0)
   , outputSample_(0, 0)
-  , isLeastSquares_(isLeastSquares)
-  , isModelSelection_(isModelSelection)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
   weightedExperiment_.setDistribution(measure_);
@@ -287,12 +277,6 @@ DesignProxy ProjectionStrategyImplementation::getDesignProxy() const
   return proxy_;
 }
 
-/* isLeastSquares accessor */
-Bool ProjectionStrategyImplementation::getIsLeastSquares() const
-{
-  return isLeastSquares_;
-}
-
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategyImplementation::computeCoefficients(const Function &,
     const FunctionCollection &,
@@ -303,12 +287,6 @@ void ProjectionStrategyImplementation::computeCoefficients(const Function &,
     const UnsignedInteger )
 {
   throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const FunctionCollection & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
-}
-
-/* isLeastSquares accessor */
-Bool ProjectionStrategyImplementation::getIsLeastSquares() const
-{
-  return isLeastSquares_;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -333,10 +311,16 @@ Point ProjectionStrategyImplementation::getErrorHistory() const
   throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getErrorHistory";
 }
 
-/* IsModelSelection accessor */
-Bool ProjectionStrategyImplementation::getIsModelSelection() const
+/* isLeastSquares accessor */
+Bool ProjectionStrategyImplementation::isLeastSquares() const
 {
-  throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getIsModelSelection";
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::isLeastSquares()";
+}
+
+/* isModelSelection accessor */
+Bool ProjectionStrategyImplementation::isModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::isModelSelection()";
 }
 
 END_NAMESPACE_OPENTURNS

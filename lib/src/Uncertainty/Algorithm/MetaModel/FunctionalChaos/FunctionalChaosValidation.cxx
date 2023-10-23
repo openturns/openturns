@@ -61,10 +61,10 @@ FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult
       << " which is larger than the sample size =" << sampleSize;
   kParameter_ = kParameter;
   if (ResourceMap::GetAsBool("FunctionalChaosValidation-NoModelSelection") && \
-    functionalChaosResult_.getIsModelSelection())
+    functionalChaosResult_.isModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a polynomial chaos expansion involving model selection";
-  if (!functionalChaosResult.getIsLeastSquares())
+  if (!functionalChaosResult.isLeastSquares())
     throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from regression.";  
 }
 

@@ -50,7 +50,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation(x, y, psi, indices, true)
+  : ApproximationAlgorithmImplementation(x, y, psi, indices)
   , basisSequenceFactory_(basisSequenceFactory)
   , fittingAlgorithm_(fittingAlgorithm)
 
@@ -66,13 +66,12 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation(x, y, weight, psi, indices, true)
+  : ApproximationAlgorithmImplementation(x, y, weight, psi, indices)
   , basisSequenceFactory_(basisSequenceFactory)
   , fittingAlgorithm_(fittingAlgorithm)
 {
   // Nothing to do
 }
-
 
 /* Virtual constructor */
 LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelection::clone() const
@@ -101,7 +100,6 @@ FittingAlgorithm LeastSquaresMetaModelSelection::getFittingAlgorithm() const
 {
   return fittingAlgorithm_;
 }
-
 
 /* String converter */
 String LeastSquaresMetaModelSelection::__repr__() const
@@ -202,7 +200,6 @@ void LeastSquaresMetaModelSelection::save(Advocate & adv) const
   adv.saveAttribute( "fittingAlgorithm_", fittingAlgorithm_ );
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void LeastSquaresMetaModelSelection::load(Advocate & adv)
 {
@@ -219,6 +216,11 @@ Collection<Indices> LeastSquaresMetaModelSelection::getSelectionHistory(Collecti
 Point LeastSquaresMetaModelSelection::getErrorHistory() const
 {
   return errorHistory_;
+}
+
+Bool LeastSquaresMetaModelSelection::isModelSelection() const
+{
+  return true;
 }
 
 END_NAMESPACE_OPENTURNS

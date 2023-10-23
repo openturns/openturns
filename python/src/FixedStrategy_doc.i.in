@@ -63,3 +63,21 @@ Examples
 >>> # We keep all the polynomials of degree <= 4
 >>> # which corresponds to the 5 first ones
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FixedStrategy::updateBasis
+"Update the basis for the next iteration of approximation.
+
+No changes are made to the basis in the fixed strategy.
+Hence, the number of functions in the basis is equal to *dimension*,
+whatever the number of calls to the *updateBasis* method.
+
+Parameters
+----------
+alpha_k: sequence of floats
+    The coefficients of the expansion at this step.
+residual: float
+    The current value of the residual.
+relativeError: float
+    The relative error."

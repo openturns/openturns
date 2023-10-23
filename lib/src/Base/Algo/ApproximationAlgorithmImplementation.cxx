@@ -36,7 +36,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   , residual_(0.0)
   , relativeError_(0.0)
   , verbose_(false)
-  , isModelSelection_(false)
 {
   // Nothing to do
 }
@@ -45,8 +44,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
     const Sample & y,
     const FunctionCollection & psi,
-    const Indices & indices,
-    const Bool isModelSelection)
+    const Indices & indices)
   : PersistentObject()
   , x_(x)
   , y_(y)
@@ -58,7 +56,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , residual_(0.0)
   , relativeError_(0.0)
   , verbose_(false)
-  , isModelSelection_(isModelSelection)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -71,8 +68,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
     const Sample & y,
     const Point & weight,
     const FunctionCollection & psi,
-    const Indices & indices,
-    const Bool isModelSelection)
+    const Indices & indices)
   : PersistentObject()
   , x_(x)
   , y_(y)
@@ -83,7 +79,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , residual_(0.0)
   , relativeError_(0.0)
   , verbose_(false)
-  , isModelSelection_(isModelSelection)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -160,19 +155,16 @@ String ApproximationAlgorithmImplementation::__repr__() const
          << " psi=" << psi_;
 }
 
-
 String ApproximationAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
-
 
 void ApproximationAlgorithmImplementation::setCoefficients(const Point & coefficients)
 {
   coefficients_ = coefficients;
   isAlreadyComputedCoefficients_ = true;
 }
-
 
 Point ApproximationAlgorithmImplementation::getCoefficients()
 {
@@ -214,9 +206,9 @@ Bool ApproximationAlgorithmImplementation::getVerbose() const
   return verbose_;
 }
 
-Bool ApproximationAlgorithmImplementation::getIsModelSelection() const
+Bool ApproximationAlgorithmImplementation::isModelSelection() const
 {
-  return isModelSelection_;
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::isModelSelection()";
 }
 
 /* Method save() stores the object through the StorageManager */

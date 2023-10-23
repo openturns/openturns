@@ -32,7 +32,7 @@ static const Factory<PenalizedLeastSquaresAlgorithmFactory> Factory_PenalizedLea
 
 /* Default constructor */
 PenalizedLeastSquaresAlgorithmFactory::PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal)
-  : ApproximationAlgorithmImplementationFactory(false)
+  : ApproximationAlgorithmImplementationFactory()
   , useNormal_(useNormal)
 {
   // Nothing to do
@@ -59,6 +59,12 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
     const Indices & indices) const
 {
   return new PenalizedLeastSquaresAlgorithm(x, y, weight, psi, indices, 0.0, useNormal_);
+}
+
+/* isModelSelection accessor */
+Bool PenalizedLeastSquaresAlgorithmFactory::isModelSelection() const
+{
+  return false;
 }
 
 /* Method save() stores the object through the StorageManager */

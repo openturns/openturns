@@ -65,9 +65,7 @@ public:
                         const Sample & alpha_k,
                         const FunctionCollection & Psi_k,
                         const Point & residuals,
-                        const Point & relativeErrors,
-                        const Bool isLeastSquares,
-                        const Bool isModelSelection
+                        const Point & relativeErrors
                        );
 
   /** Virtual constructor */
@@ -110,6 +108,12 @@ public:
 
   /** isModelSelection accessor */
   virtual Bool isModelSelection() const;
+
+  /** isLeastSquares_ accessor */
+  virtual void setIsLeastSquares(const Bool isLeastSquares);
+
+  /** isModelSelection accessor */
+  virtual void setIsModelSelection(const Bool isModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

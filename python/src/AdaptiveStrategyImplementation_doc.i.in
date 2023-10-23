@@ -84,7 +84,11 @@ OT_AdaptiveStrategy_getMaximumDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_AdaptiveStrategy_getPsi_doc
-"Accessor to the orthogonal polynomials of the basis.
+"Accessor to the selected orthogonal polynomials in the basis.
+
+The value returned by this method depends on the specific
+choice of adaptive strategy and the previous calls to the
+:meth:`~openturns.AdaptiveStrategy.updateBasis` method.
 
 Returns
 -------
@@ -115,7 +119,7 @@ OT_AdaptiveStrategy_getPsi_doc
 
 Parameters
 ----------
-P : integer
+maximumDimension : integer
     Maximum dimension of the truncated basis."
 
 %enddef
@@ -127,10 +131,33 @@ OT_AdaptiveStrategy_setMaximumDimension_doc
 %define OT_AdaptiveStrategy_updateBasis_doc
 "Update the basis for the next iteration of approximation.
 
-Notes
------
-No changes are made to the basis in the fixed strategy."
+Parameters
+----------
+alpha_k: sequence of floats
+    The coefficients of the expansion at this step.
+residual: float
+    The current value of the residual.
+relativeError: float
+    The relative error."
 
 %enddef
 %feature("docstring") OT::AdaptiveStrategyImplementation::updateBasis
 OT_AdaptiveStrategy_updateBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_isModelSelection_doc
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which allows one to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Returns
+-------
+isModelSelection: bool
+    True if the method involves a model selection method."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::isModelSelection
+OT_AdaptiveStrategy_isModelSelection_doc

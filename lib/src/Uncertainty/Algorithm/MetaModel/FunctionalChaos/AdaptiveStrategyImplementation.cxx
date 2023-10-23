@@ -41,16 +41,14 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation()
     addedPsi_k_ranks_(0),
     conservedPsi_k_ranks_(0),
     removedPsi_k_ranks_(0),
-    Psi_k_p_(0),
-    isModelSelection_(false)
+    Psi_k_p_(0)
 {
   // Nothing to do
 }
 
 /* Constructor from an orthogonal basis */
 AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalBasis & basis,
-    const UnsignedInteger maximumDimension,
-    const Bool isModelSelection)
+    const UnsignedInteger maximumDimension)
   : PersistentObject(),
     basis_(basis),
     maximumDimension_(maximumDimension),
@@ -58,19 +56,16 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalB
     addedPsi_k_ranks_(0),
     conservedPsi_k_ranks_(0),
     removedPsi_k_ranks_(0),
-    Psi_k_p_(0),
-    isModelSelection_(isModelSelection)
+    Psi_k_p_(0)
 {
   // Nothing to do
 }
-
 
 /* Virtual constructor */
 AdaptiveStrategyImplementation * AdaptiveStrategyImplementation::clone() const
 {
   return new AdaptiveStrategyImplementation(*this);
 }
-
 
 /* String converter */
 String AdaptiveStrategyImplementation::__repr__() const
@@ -79,13 +74,11 @@ String AdaptiveStrategyImplementation::__repr__() const
          << " maximumDimension=" << maximumDimension_;
 }
 
-
 /* Basis accessor */
 OrthogonalBasis AdaptiveStrategyImplementation::getBasis() const
 {
   return basis_;
 }
-
 
 /* Maximum dimension accessor */
 void AdaptiveStrategyImplementation::setMaximumDimension(const UnsignedInteger maximumDimension)
@@ -97,7 +90,6 @@ UnsignedInteger AdaptiveStrategyImplementation::getMaximumDimension() const
 {
   return maximumDimension_;
 }
-
 
 /* Compute initial basis for the approximation */
 void AdaptiveStrategyImplementation::computeInitialBasis()
@@ -120,9 +112,9 @@ AdaptiveStrategyImplementation::FunctionCollection AdaptiveStrategyImplementatio
 }
 
 /* isModelSelection accessor */
-Bool AdaptiveStrategyImplementation::getIsModelSelection() const
+Bool AdaptiveStrategyImplementation::isModelSelection() const
 {
-  return isModelSelection_;
+  throw NotYetImplementedException(HERE) << "in AdaptiveStrategyImplementation::isModelSelection";
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -132,14 +124,11 @@ void AdaptiveStrategyImplementation::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void AdaptiveStrategyImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "basis_", basis_ );
 }
-
-
 
 END_NAMESPACE_OPENTURNS

@@ -80,9 +80,12 @@ public:
 
   Point getErrorHistory() const override;
 
-  /** IsModelSelection accessor */
-  Bool getIsModelSelection() const override;
-
+  /** isLeastSquares accessor */
+  Bool isLeastSquares() const override;
+  
+  /** isModelSelection accessor */
+  Bool isModelSelection() const override;
+  
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,

@@ -120,7 +120,7 @@ OT_ApproximationAlgorithm_run_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_ApproximationAlgorithm_getIsModelSelection_doc
+%define OT_ApproximationAlgorithm_isModelSelection_doc
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -132,6 +132,6 @@ Returns
 isModelSelection: bool
     True if the method involves a model selection method."
 %enddef
-%feature("docstring") OT::ApproximationAlgorithmImplementation::getIsModelSelection
-OT_ApproximationAlgorithm_getIsModelSelection_doc
+%feature("docstring") OT::ApproximationAlgorithmImplementation::isModelSelection
+OT_ApproximationAlgorithm_isModelSelection_doc
 

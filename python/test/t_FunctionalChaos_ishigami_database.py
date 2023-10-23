@@ -84,32 +84,32 @@ listAdaptiveStrategy.append(
 
 # Check LeastSquaresStrategy
 projectionStrategy = ot.LeastSquaresStrategy()
-assert projectionStrategy.getIsLeastSquares()
-assert not projectionStrategy.getIsModelSelection()
+assert projectionStrategy.isLeastSquares()
+assert not projectionStrategy.isModelSelection()
 
 # Check LeastSquaresMetaModelSelectionFactory
 projectionStrategy = ot.LeastSquaresStrategy(
     ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
 )
-assert projectionStrategy.getIsLeastSquares()
-assert projectionStrategy.getIsModelSelection()
+assert projectionStrategy.isLeastSquares()
+assert projectionStrategy.isModelSelection()
 
 # Check IntegrationStrategy
 projectionStrategy = ot.IntegrationStrategy()
-assert not projectionStrategy.getIsLeastSquares()
-assert not projectionStrategy.getIsModelSelection()
+assert not projectionStrategy.isLeastSquares()
+assert not projectionStrategy.isModelSelection()
 
 # Check CleaningStrategy
 adaptiveStrategy = ot.CleaningStrategy(
     productBasis, indexMax, basisDimension, threshold, False
 )
-assert adaptiveStrategy.getIsModelSelection()
+assert adaptiveStrategy.isModelSelection()
 
 # Check FixedStrategy
 adaptiveStrategy = ot.FixedStrategy(
     productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
 )
-assert not adaptiveStrategy.getIsModelSelection()
+assert not adaptiveStrategy.isModelSelection()
 
 for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
     adaptiveStrategy = listAdaptiveStrategy[adaptiveStrategyIndex]
@@ -137,17 +137,17 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()
         print("relativeErrors=", relativeErrors)
-        print("isLeastSquares= ", result.getIsLeastSquares())
+        print("isLeastSquares= ", result.isLeastSquares())
         isLeastSquaresReference = (
             projectionStrategy.getClassName() == "LeastSquaresStrategy"
         )
-        assert result.getIsLeastSquares() == isLeastSquaresReference
-        print("isModelSelection= ", result.getIsModelSelection())
+        assert result.isLeastSquares() == isLeastSquaresReference
+        print("isModelSelection= ", result.isModelSelection())
         modelSelectionReference = (
-            projectionStrategy.getIsModelSelection()
-            or adaptiveStrategy.getIsModelSelection()
+            projectionStrategy.isModelSelection()
+            or adaptiveStrategy.isModelSelection()
         )
-        assert result.getIsModelSelection() == modelSelectionReference
+        assert result.isModelSelection() == modelSelectionReference
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)

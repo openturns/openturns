@@ -37,8 +37,8 @@ ProjectionStrategy::ProjectionStrategy()
 
 
 /* Parameter constructor */
-ProjectionStrategy::ProjectionStrategy(const Distribution & measure, const Bool isLeastSquares, const Bool isModelSelection)
-  : TypedInterfaceObject<ProjectionStrategyImplementation>(new ProjectionStrategyImplementation(measure, isLeastSquares, isModelSelection))
+ProjectionStrategy::ProjectionStrategy(const Distribution & measure)
+  : TypedInterfaceObject<ProjectionStrategyImplementation>(new ProjectionStrategyImplementation(measure))
 {
   // Nothing to do
 }
@@ -137,9 +137,15 @@ DesignProxy ProjectionStrategy::getDesignProxy() const
 }
 
 /* isLeastSquares accessor */
-Bool ProjectionStrategy::getIsLeastSquares() const
+Bool ProjectionStrategy::isLeastSquares() const
 {
-  return getImplementation()->getIsLeastSquares();
+  return getImplementation()->isLeastSquares();
+}
+
+/* isModelSelection accessor */
+Bool ProjectionStrategy::isModelSelection() const
+{
+  return getImplementation()->isModelSelection();
 }
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

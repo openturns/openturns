@@ -38,14 +38,14 @@ int main(int, char *[])
     // Makes so that k does not divide the sample size.
     // In this case, we must take into account for the different weight of
     // each fold.
-    const UnsignedInteger samplingSize = foldRootSize * kFoldParameter + 1;
-    fullprint << "samplingSize = " << samplingSize << std::endl;
+    const UnsignedInteger sampleSize = foldRootSize * kFoldParameter + 1;
+    fullprint << "sampleSize = " << sampleSize << std::endl;
     ComposedDistribution::DistributionCollection aCollection;
     Uniform marginal1(-1.0, 1.0);
     aCollection.add( marginal1 );
     aCollection.add( marginal1 );
     ComposedDistribution distribution(aCollection);
-    Sample inputSample(distribution.getSample(samplingSize));
+    Sample inputSample(distribution.getSample(sampleSize));
     fullprint << "inputSample=" << inputSample << std::endl;
     Description inputVariables(2);
     inputVariables[0] = "x1";
@@ -55,7 +55,7 @@ int main(int, char *[])
     SymbolicFunction g(inputVariables, formula);
     fullprint << "g=" << g << std::endl;
     Normal noise(0.0, 0.5);
-    Sample outputSample(g(inputSample) + noise.getSample(samplingSize));
+    Sample outputSample(g(inputSample) + noise.getSample(sampleSize));
     fullprint << "outputSample=" << outputSample << std::endl;
     LinearModelAlgorithm lmAlgo(inputSample, outputSample);
     LinearModelResult result(lmAlgo.getResult());
@@ -71,10 +71,10 @@ int main(int, char *[])
     fullprint << "Analytical LOO MSE = " << mseLOOAnalytical << std::endl;
 
     // Compute naive leave-one-out
-    Point residualsLOO(samplingSize);
-    for (UnsignedInteger j = 0; j < samplingSize; ++j)
+    Point residualsLOO(sampleSize);
+    for (UnsignedInteger j = 0; j < sampleSize; ++j)
     {
-      Indices indicesLOO(samplingSize);
+      Indices indicesLOO(sampleSize);
       indicesLOO.fill();
       indicesLOO.erase(indicesLOO.begin() + j, indicesLOO.begin() + j + 1);
       const Sample inputSampleTrainLOO(inputSample.select(indicesLOO));
@@ -88,7 +88,7 @@ int main(int, char *[])
       const Point residualsLOOTest(predictionLOOTest - outputPointLOOTest);
       residualsLOO[j] = residualsLOOTest[0];
     }
-    Scalar mseLOOnaive = residualsLOO.normSquare() / samplingSize;
+    Scalar mseLOOnaive = residualsLOO.normSquare() / sampleSize;
     fullprint << "Naive LOO MSE = " << mseLOOnaive << std::endl;
     
     // Test
@@ -119,8 +119,8 @@ int main(int, char *[])
     fullprint << "Analytical KFold MSE=" << mseKFoldAnalytical << std::endl;
 
     // Naive KFold
-    Point residualsKFold(samplingSize);
-    KFoldSplitter splitter(samplingSize, kFoldParameter);
+    Point residualsKFold(sampleSize);
+    KFoldSplitter splitter(sampleSize, kFoldParameter);
     for (UnsignedInteger foldIndex = 0; foldIndex < kFoldParameter; ++foldIndex)
     {
       Indices indicesTest;
@@ -138,7 +138,7 @@ int main(int, char *[])
       for (UnsignedInteger localIndex = 0; localIndex < foldSize; ++localIndex)
         residualsKFold[indicesTest[localIndex]] = residualsKFoldTest[localIndex];
     }
-    Scalar mseKFoldnaive(residualsKFold.normSquare() / samplingSize);
+    Scalar mseKFoldnaive(residualsKFold.normSquare() / sampleSize);
     fullprint << "Naive KFold MSE = " << mseKFoldnaive << std::endl;
     
     // Test

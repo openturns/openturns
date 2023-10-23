@@ -66,9 +66,8 @@ listFittingAlgorithm.append(ot.CorrectedLeaveOneOut())
 for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     fittingAlgorithm = listFittingAlgorithm[fittingAlgorithmIndex]
     adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
-    projectionStrategy = ot.LeastSquaresStrategy(
-        ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
-    )
+    lsSelectionFactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
+    projectionStrategy = ot.LeastSquaresStrategy(lsSelectionFactory)
     experiment = ot.LowDiscrepancyExperiment(
         ot.SobolSequence(), distribution, samplingSize
     )
@@ -84,7 +83,7 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     print("coeffs = ", result.getCoefficients())
     print("residuals = ", result.getResiduals())
     print("relative errors = ", result.getRelativeErrors())
-    print("isLeastSquares= ", result.getIsLeastSquares())
-    assert result.getIsLeastSquares()
-    print("isModelSelection= ", result.getIsModelSelection())
-    assert result.getIsModelSelection()
+    print("isLeastSquares= ", result.isLeastSquares())
+    assert result.isLeastSquares()
+    print("isModelSelection= ", result.isModelSelection())
+    assert result.isModelSelection()

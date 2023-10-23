@@ -36,19 +36,19 @@ static const Factory<IntegrationStrategy> Factory_IntegrationStrategy;
 IntegrationStrategy::IntegrationStrategy()
   : ProjectionStrategyImplementation()
 {
-  isLeastSquares_ = false;
+  // Nothing to do
 }
 
 /* Parameter constructor */
 IntegrationStrategy::IntegrationStrategy(const Distribution & measure)
-  : ProjectionStrategyImplementation(measure, false, false)
+  : ProjectionStrategyImplementation(measure)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 IntegrationStrategy::IntegrationStrategy(const WeightedExperiment & weightedExperiment)
-  : ProjectionStrategyImplementation(weightedExperiment, false, false)
+  : ProjectionStrategyImplementation(weightedExperiment)
 {
   // Nothing to do
 }
@@ -56,7 +56,7 @@ IntegrationStrategy::IntegrationStrategy(const WeightedExperiment & weightedExpe
 /* Parameter constructor */
 IntegrationStrategy::IntegrationStrategy(const Distribution & measure,
     const WeightedExperiment & weightedExperiment)
-  : ProjectionStrategyImplementation(measure, weightedExperiment, false, false)
+  : ProjectionStrategyImplementation(measure, weightedExperiment)
 {
   // Nothing to do
 }
@@ -65,7 +65,7 @@ IntegrationStrategy::IntegrationStrategy(const Distribution & measure,
 IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
     const Point & weights,
     const Sample & outputSample)
-  : ProjectionStrategyImplementation(inputSample, weights, outputSample, false, false)
+  : ProjectionStrategyImplementation(inputSample, weights, outputSample)
 {
   // Nothing to do
 }
@@ -73,7 +73,7 @@ IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
 /* Parameter constructor */
 IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
     const Sample & outputSample)
-  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, false, false)
+  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
 {
   // Nothing to do
 }
@@ -186,7 +186,6 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;
   relativeError_p_ = 0.0;
-  isLeastSquares_ = false;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -214,10 +213,16 @@ Point IntegrationStrategy::getErrorHistory() const
   return Point();
 }
 
-/* isModelSelection accessor */
-Bool IntegrationStrategy::getIsModelSelection() const
+/* isLeastSquares accessor */
+Bool IntegrationStrategy::isLeastSquares() const
 {
-  return isModelSelection_;
+  return false;
+}
+
+/* isModelSelection accessor */
+Bool IntegrationStrategy::isModelSelection() const
+{
+  return false;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -39,20 +39,11 @@ ApproximationAlgorithmImplementationFactory::ApproximationAlgorithmImplementatio
   // Nothing to do
 }
 
-/* Default constructor */
-ApproximationAlgorithmImplementationFactory::ApproximationAlgorithmImplementationFactory(const Bool isModelSelection)
-  : PersistentObject(),
-  isModelSelection_(isModelSelection)
-{
-  // Nothing to do
-}
-
 ApproximationAlgorithmImplementationFactory * ApproximationAlgorithmImplementationFactory::clone() const
 
 {
   return new ApproximationAlgorithmImplementationFactory( *this );
 }
-
 
 ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & x,
     const Sample & y,
@@ -91,9 +82,9 @@ void ApproximationAlgorithmImplementationFactory::load(Advocate & adv)
 }
 
 /* isModelSelection accessor */
-Bool ApproximationAlgorithmImplementationFactory::getIsModelSelection() const
+Bool ApproximationAlgorithmImplementationFactory::isModelSelection() const
 {
-  return isModelSelection_;
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::isModelSelection()";
 }
 
 END_NAMESPACE_OPENTURNS

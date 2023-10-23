@@ -31,8 +31,6 @@ cookDistances : sequence of float
     The cook's distances.
 sigma2 : float
     The unbiased noise variance.
-isModelSelection : bool
-    True if the model is computed using model selection.
 
 See Also
 --------
@@ -227,7 +225,7 @@ projectionMatrix: :class:`~openturns.SymmetricMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelResult::getIsModelSelection
+%feature("docstring") OT::LinearModelResult::isModelSelection
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -236,5 +234,19 @@ Model selection can lead to a sparse model.
 
 Returns
 -------
+isModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::setIsModelSelection
+"Set the model selection flag.
+
+A model selection method can be used to select the coefficients
+which allows one to best predict the output.
+Model selection can lead to a sparse model.
+
+Parameters
+----------
 isModelSelection: bool
     True if the method involves a model selection method."

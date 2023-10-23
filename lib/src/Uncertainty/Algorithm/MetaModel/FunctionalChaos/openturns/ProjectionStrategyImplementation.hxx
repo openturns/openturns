@@ -34,8 +34,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
  * @class ProjectionStrategyImplementation
  *
@@ -60,27 +58,19 @@ public:
   ProjectionStrategyImplementation();
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const Distribution & measure, 
-                                   const Bool isLeastSquares,
-                                   const Bool isModelSelection);
+  ProjectionStrategyImplementation(const Distribution & measure);
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment, 
-                                   const Bool isLeastSquares,
-                                   const Bool isModelSelection);
+  ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
   ProjectionStrategyImplementation(const Distribution & measure,
-                                   const WeightedExperiment & weightedExperiment, 
-                                   const Bool isLeastSquares,
-                                   const Bool isModelSelection);
+                                   const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
   ProjectionStrategyImplementation(const Sample & inputSample,
                                    const Point & weights,
-                                   const Sample & outputSample, 
-                                   const Bool isLeastSquares,
-                                   const Bool isModelSelection);
+                                   const Sample & outputSample);
 
   /** Virtual constructor */
   ProjectionStrategyImplementation * clone() const override;
@@ -122,9 +112,6 @@ public:
   /** Design proxy accessor */
   virtual DesignProxy getDesignProxy() const;
 
-  /** isLeastSquares accessor */
-  virtual Bool isLeastSquares() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -134,8 +121,11 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
 
+  /** isLeastSquares accessor */
+  virtual Bool isLeastSquares() const;
+
   /** isModelSelection accessor */
-  virtual Bool getIsModelSelection() const;
+  virtual Bool isModelSelection() const;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
@@ -173,12 +163,6 @@ protected:
 
   // Proxy to speed up evaluations of the basis over the input sample
   DesignProxy proxy_;
-
-  // isLeastSquares_ is true if the projection is a regression
-  Bool isLeastSquares_;
-
-  // isModelSelection flag
-  Bool isModelSelection_ = false;
 private:
 
 } ; /* class ProjectionStrategyImplementation */

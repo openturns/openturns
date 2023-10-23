@@ -11,18 +11,18 @@ foldRootSize = 3
 # Makes so that k does not divide the sample size.
 # In this case, we must take into account for the different weight of
 # each fold.
-samplingSize = foldRootSize * kFoldParameter + 1
-print("samplingSize = ", samplingSize)
+sampleSize = foldRootSize * kFoldParameter + 1
+print("sampleSize = ", sampleSize)
 aCollection = []
 marginal1 = ot.Uniform(-1.0, 1.0)
 aCollection.append(marginal1)
 aCollection.append(marginal1)
 distribution = ot.ComposedDistribution(aCollection)
-inputSample = distribution.getSample(samplingSize)
+inputSample = distribution.getSample(sampleSize)
 print("inputSample=", inputSample)
 g = ot.SymbolicFunction(["x1", "x2"], ["3 - 2 * x1 + x2"])
 noise = ot.Normal(0.0, 0.5)
-outputSample = g(inputSample) + noise.getSample(samplingSize)
+outputSample = g(inputSample) + noise.getSample(sampleSize)
 print("outputSample=", outputSample)
 lmAlgo = ot.LinearModelAlgorithm(inputSample, outputSample)
 result = lmAlgo.getResult()
@@ -35,12 +35,12 @@ assert validationLOO.getMethod() == ot.LinearModelValidation.LEAVEONEOUT
 # Compute analytical LOO MSE
 print("Compute Analytical LOO MSE")
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
-print("Analytical LOO MSE = ", mseLOOAnalytical)
+print("Analytical LOO MSE =", mseLOOAnalytical[0])
 
 # Compute naive leave-one-out
-residualsLOO = ot.Point(samplingSize)
-for j in range(samplingSize):
-    indicesLOO = list(range(samplingSize))
+residualsLOO = ot.Point(sampleSize)
+for j in range(sampleSize):
+    indicesLOO = list(range(sampleSize))
     indicesLOO.pop(j)
     inputSampleTrainLOO = inputSample.select(indicesLOO)
     outputSampleTrainLOO = outputSample.select(indicesLOO)
@@ -53,8 +53,8 @@ for j in range(samplingSize):
     residualsLOOTest = predictionLOOTest - outputPointLOOTest
     residualsLOO[j] = residualsLOOTest[0]
 
-mseLOOnaive = residualsLOO.normSquare() / samplingSize
-print("Naive LOO MSE = ", mseLOOnaive)
+mseLOOnaive = residualsLOO.normSquare() / sampleSize
+print("Naive LOO MSE      =", mseLOOnaive)
 
 # Test
 rtolLOO = 1.0e-12
@@ -63,11 +63,10 @@ assert_almost_equal(mseLOOAnalytical[0], mseLOOnaive, rtolLOO, atolLOO)
 
 # Check LOO R2
 r2ScoreLOO = validationLOO.computeR2Score()
-print("Analytical LOO R2 score = ", r2ScoreLOO)
+print("Analytical LOO R2 score = ", r2ScoreLOO[0])
 sampleVariance = outputSample.computeCentralMoment(2)
-print("sampleVariance = ", sampleVariance)
 r2ScoreReference = 1.0 - mseLOOAnalytical[0] / sampleVariance[0]
-print("Computed R2 score = ", r2ScoreReference)
+print("Computed R2 score       = ", r2ScoreReference)
 rtolLOO = 1.0e-12
 atolLOO = 0.0
 assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
@@ -82,11 +81,11 @@ assert validationKFold.getMethod() == ot.LinearModelValidation.KFOLD
 
 # Compute analytical KFold MSE
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
-print("Analytical KFold MSE=", mseKFoldAnalytical)
+print("Analytical KFold MSE =", mseKFoldAnalytical[0])
 
 # Naive KFold
-residualsKFold = ot.Sample(kFoldParameter, 1)
-splitter = ot.KFoldSplitter(samplingSize, kFoldParameter)
+residualsKFold = ot.Point(sampleSize)
+splitter = ot.KFoldSplitter(sampleSize, kFoldParameter)
 foldIndex = 0
 for indicesTrain, indicesTest in splitter:
     inputSampleKFoldTrain = inputSample[indicesTrain]
@@ -99,22 +98,23 @@ for indicesTrain, indicesTest in splitter:
     predictionKFoldTest = metamodelKFold(inputSampleKFoldTest)
     residualsKFoldTest = predictionKFoldTest.asPoint() - outputSampleKFoldTest.asPoint()
     foldSize = indicesTest.getSize()
-    residualsKFold[foldIndex, 0] = residualsKFoldTest.normSquare() / foldSize
+    for k in range(foldSize):
+        residualsKFold[indicesTest[k]] = residualsKFoldTest[k]
     foldIndex += 1
 
-mseKFoldnaive = residualsKFold.computeMean()
-print("Naive KFold MSE = ", mseKFoldnaive)
+mseKFoldnaive = residualsKFold.normSquare() / sampleSize
+print("Naive KFold MSE      =", mseKFoldnaive)
 
 # Test
 rtolKFold = 1.0e-7
 atolKFold = 0.0
-assert_almost_equal(mseKFoldAnalytical, mseKFoldnaive, rtolKFold, atolKFold)
+assert_almost_equal(mseKFoldAnalytical[0], mseKFoldnaive, rtolKFold, atolKFold)
 
 # Check K-Fold R2
 r2ScoreKFold = validationKFold.computeR2Score()
-print("Analytical K-Fold R2 score = ", r2ScoreKFold)
+print("Analytical K-Fold R2 score =", r2ScoreKFold[0])
 r2ScoreReference = 1.0 - mseKFoldAnalytical[0] / sampleVariance[0]
-print("Computed R2 score = ", r2ScoreReference)
+print("Computed R2 score          =", r2ScoreReference)
 rtolKFold = 1.0e-12
 atolKFold = 0.0
 assert_almost_equal(r2ScoreReference, r2ScoreKFold[0], rtolLOO, atolLOO)

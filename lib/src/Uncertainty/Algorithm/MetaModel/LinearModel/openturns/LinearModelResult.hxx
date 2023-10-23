@@ -60,8 +60,7 @@ public:
                     const Point & diagonalGramInverse,
                     const Point & leverages,
                     const Point & cookDistances,
-                    const Scalar sigma2,
-                    const Bool isModelSelection);
+                    const Scalar sigma2);
 
   /** Virtual constructor */
   LinearModelResult * clone() const override;
@@ -119,7 +118,10 @@ public:
   virtual SymmetricMatrix computeProjectionMatrix() const;
   
   /** isModelSelection accessor */
-  virtual Bool getIsModelSelection() const;
+  virtual Bool isModelSelection() const;
+
+  /** isModelSelection accessor */
+  virtual void setIsModelSelection(const Bool isModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

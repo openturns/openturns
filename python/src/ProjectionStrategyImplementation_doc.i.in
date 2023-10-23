@@ -263,7 +263,7 @@ designProxy : :class:`~openturns.DesignProxy`
 %feature("docstring") OT::ProjectionStrategyImplementation::getDesignProxy
 OT_ProjectionStrategy_getDesignProxy_doc
 
-%define OT_ProjectionStrategy_getIsLeastSquares_doc
+%define OT_ProjectionStrategy_isLeastSquares_doc
 "Get the least squares flag.
 
 There are two methods to compute the coefficients: integration
@@ -274,12 +274,12 @@ Returns
 isLeastSquares: bool
     True if the coefficients are estimated from least squares."
 %enddef
-%feature("docstring") OT::ProjectionStrategyImplementation::getIsLeastSquares
-OT_ProjectionStrategy_getIsLeastSquares_doc
+%feature("docstring") OT::ProjectionStrategyImplementation::isLeastSquares
+OT_ProjectionStrategy_isLeastSquares_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_ProjectionStrategy_getIsModelSelection_doc
+%define OT_ProjectionStrategy_isModelSelection_doc
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -291,5 +291,5 @@ Returns
 isModelSelection: bool
     True if the method involves a model selection method."
 %enddef
-%feature("docstring") OT::ProjectionStrategyImplementation::getIsModelSelection
-OT_ProjectionStrategy_getIsModelSelection_doc
+%feature("docstring") OT::ProjectionStrategyImplementation::isModelSelection
+OT_ProjectionStrategy_isModelSelection_doc

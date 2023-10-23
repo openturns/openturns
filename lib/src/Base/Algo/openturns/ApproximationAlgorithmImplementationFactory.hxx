@@ -46,9 +46,6 @@ public:
   /** Default constructor */
   ApproximationAlgorithmImplementationFactory();
 
-  /** Default constructor */
-  ApproximationAlgorithmImplementationFactory(const Bool isModelSelection);
-
   /** Virtual constructor */
   ApproximationAlgorithmImplementationFactory * clone() const override;
 
@@ -74,12 +71,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** IsModelSelection accessor */
-  Bool getIsModelSelection() const;
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
 
-private:
-  /** isModelSelection flag */
-  Bool isModelSelection_;
 }; /* class ApproximationAlgorithmImplementationFactory */
 
 

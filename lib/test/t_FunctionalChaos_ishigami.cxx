@@ -141,7 +141,7 @@ int main(int, char *[])
           Point relativeErrors(result.getRelativeErrors());
           fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
-          if (result.getIsLeastSquares() && not result.getIsModelSelection())
+          if (result.isLeastSquares() && not result.isModelSelection())
           {
             FunctionalChaosValidation validationLOO(result, FunctionalChaosValidation::LEAVEONEOUT);
             const Point r2ScoreLOO(validationLOO.computeR2Score());

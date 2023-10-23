@@ -99,11 +99,11 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()
         print("relative errors=", relativeErrors)
-        print("isLeastSquares= ", result.getIsLeastSquares())
-        assert result.getIsLeastSquares()
-        print("isModelSelection= ", result.getIsModelSelection())
+        print("isLeastSquares= ", result.isLeastSquares())
+        assert result.isLeastSquares()
+        print("isModelSelection= ", result.isModelSelection())
         modelSelectionReference = adaptiveStrategy.getClassName() == "CleaningStrategy"
-        assert result.getIsModelSelection() == modelSelectionReference
+        assert result.isModelSelection() == modelSelectionReference
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)

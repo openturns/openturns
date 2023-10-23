@@ -8,6 +8,8 @@ FunctionalChaosResult
 - indices size=36
 - relative errors=[0.0107646,0.0196501]
 - residuals=[0.00527094,0.0324338]
+- isLeastSquares=true
+- isModelSelection=true
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
@@ -58,6 +60,8 @@ FunctionalChaosResult
 - indices size=36
 - relative errors=[0.0107646,0.0196501]
 - residuals=[0.00527094,0.0324338]
+- isLeastSquares=true
+- isModelSelection=true
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
@@ -118,6 +122,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.00708265,0.0115021]
 - residuals=[0.0042755,0.0248145]
+- isLeastSquares=true
+- isModelSelection=false
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
@@ -216,6 +222,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.00708265,0.0115021]
 - residuals=[0.0042755,0.0248145]
+- isLeastSquares=true
+- isModelSelection=false
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
