@@ -87,11 +87,11 @@ void OrderStatisticsMarginalChecker::check() const
   for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
   {
     const Scalar prob = (k + 1.0) / (quantileIteration + 1.0);
-    Scalar qIm1 = collection_[0].computeQuantile(prob)[0];
+    Scalar qIm1 = collection_[0].computeScalarQuantile(prob);
     quantiles(0, k) = qIm1;
     for (UnsignedInteger i = 1; i < size; ++ i)
     {
-      const Scalar qI = collection_[i].computeQuantile(prob)[0];
+      const Scalar qI = collection_[i].computeScalarQuantile(prob);
       if (qIm1 >= qI) throw InvalidArgumentException(HERE) << "margins are not compatible: the quantile=" << qIm1 << " of margin " << i - 1 << " is greater than the quantile=" << qI << " of margin " << i << " at level " << prob;
       quantiles(i, k) = qI;
       qIm1 = qI;

@@ -2540,7 +2540,7 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     // !tail && alpha > 0: p
     // !tail && alpha <= 0: 1-p
     // ->1-p iff tail != (alpha <= 0) (xor)
-    const Scalar q = distributionCollection_[0].computeQuantile(prob, tail != (alpha <= 0.0))[0];
+    const Scalar q = distributionCollection_[0].computeScalarQuantile(prob, tail != (alpha <= 0.0));
     return q * alpha + constant_[0];
   }
   if (isContinuous())

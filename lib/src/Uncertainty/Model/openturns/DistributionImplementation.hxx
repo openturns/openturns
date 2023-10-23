@@ -1128,7 +1128,7 @@ protected:
     Point diagonalToSpace(const Scalar tau) const
     {
       Point x(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeScalarQuantile(tau);
       LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
@@ -1212,7 +1212,7 @@ protected:
     Point diagonalToSpace(const Scalar tau) const
     {
       Point x(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau, true)[0];
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeScalarQuantile(tau, true);
       LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
