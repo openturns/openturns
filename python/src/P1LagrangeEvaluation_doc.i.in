@@ -36,6 +36,7 @@ Create a P1 Lagrange evaluation:
 >>> evaluation = ot.P1LagrangeEvaluation(field)
 >>> print(evaluation([2.3]))
 [0.55]"
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::P1LagrangeEvaluation::getField
@@ -55,3 +56,84 @@ Parameters
 ----------
 field : :class:`~openturns.Field`
     The field defining the function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::getEnclosingSimplexAlgorithm
+"Accessor to the algorithm used to find the simplex containing a given point.
+
+Returns
+-------
+algo : :class:`~openturns.EnclosingSimplexAlgorithm`
+    The algorithm used to find the simplex containing a given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::setEnclosingSimplexAlgorithm
+"Accessor to the algorithm used to find the simplex containing a given point.
+
+Parameters
+----------
+algo : :class:`~openturns.EnclosingSimplexAlgorithm`
+    The algorithm used to find the simplex containing a given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::getNearestNeighbourAlgorithm
+"Accessor to the algorithm used to find the vertex nearest to a given point.
+
+Returns
+-------
+algo : :class:`~openturns.NearestNeighbourAlgorithm`
+    The algorithm used to find the vertex nearest to a given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::setNearestNeighbourAlgorithm
+"Accessor to the algorithm used to find the vertex nearest to a given point.
+
+Parameters
+----------
+algo : :class:`~openturns.NearestNeighbourAlgorithm`
+    The algorithm used to find the vertex nearest to a given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::getMesh
+"Accessor to the mesh over which the interpolation is defined.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh over which the interpolation is defined."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::setMesh
+"Accessor to the mesh over which the interpolation is defined.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    The mesh over which the interpolation is defined."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::getValues
+"Accessor to the values in which the interpolation is done.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The values in which the interpolation is done."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::setValues
+"Accessor to the values in which the interpolation is done.
+
+Parameters
+----------
+mesh : 2-d sequence of floats
+    The values in which the interpolation is done."
+    

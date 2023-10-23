@@ -97,3 +97,25 @@ nu : float, :math:`\nu > 0`
     Generalised number degrees of freedom :math:`\nu`.
 lambda : float
     Non-centrality parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getMaximumIteration
+"Accessor to the maximum iteration number for PDF and CDF computation.
+
+Returns
+-------
+maximumIteration : int
+    Maximum iteration number for :class:`~openturns.DistFunc.dNonCentralChiSquare` and
+    :class:`~openturns.DistFunc.pNonCentralChiSquare`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setMaximumIteration
+"Accessor to the maximum iteration number for PDF and CDF computation.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum iteration number for :class:`~openturns.DistFunc.dNonCentralChiSquare` and
+    :class:`~openturns.DistFunc.pNonCentralChiSquare`."
