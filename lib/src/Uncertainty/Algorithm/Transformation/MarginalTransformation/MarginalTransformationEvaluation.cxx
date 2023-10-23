@@ -105,10 +105,10 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
-          const Scalar q25Input = inputDistribution.computeQuantile(0.25)[0];
-          const Scalar q75Input = inputDistribution.computeQuantile(0.75)[0];
-          const Scalar q25Output = outputDistribution.computeQuantile(0.25)[0];
-          const Scalar q75Output = outputDistribution.computeQuantile(0.75)[0];
+          const Scalar q25Input = inputDistribution.computeScalarQuantile(0.25);
+          const Scalar q75Input = inputDistribution.computeScalarQuantile(0.75);
+          const Scalar q25Output = outputDistribution.computeScalarQuantile(0.25);
+          const Scalar q75Output = outputDistribution.computeScalarQuantile(0.75);
           const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
           const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);

@@ -135,7 +135,7 @@ void FAST::run() const
           for (UnsignedInteger i = 0; i < nbIn; ++ i)
           {
             const Scalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
-            inputBlock(blockIndex, i) = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
+            inputBlock(blockIndex, i) = inputsDistribution_.getMarginal(i).computeScalarQuantile(ui_s);
           }
         }
         output.add(model_(inputBlock));

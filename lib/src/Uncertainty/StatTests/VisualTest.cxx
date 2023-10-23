@@ -90,7 +90,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   {
     data(i, 0) = sortedSample(i, 0);
     const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
-    data(i, 1) = dist.computeQuantile(p)[0];
+    data(i, 1) = dist.computeScalarQuantile(p);
   }
   Cloud cloudQQplot(data, "Data");
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));

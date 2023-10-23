@@ -500,7 +500,7 @@ Scalar Multinomial::computeSurvivalFunction(const Point & point) const
 Scalar Multinomial::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  return Binomial(n_, p_[0]).computeQuantile(prob, tail)[0];
+  return Binomial(n_, p_[0]).computeScalarQuantile(prob, tail);
 } // computeScalarQuantile
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
