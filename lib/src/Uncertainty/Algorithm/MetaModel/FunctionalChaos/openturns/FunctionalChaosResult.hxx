@@ -106,10 +106,10 @@ public:
   virtual Sample getSampleResiduals() const;
 
   /** isLeastSquares_ accessor */
-  virtual Bool getIsLeastSquares() const;
+  virtual Bool isLeastSquares() const;
 
   /** isModelSelection accessor */
-  virtual Bool getIsModelSelection() const;
+  virtual Bool isModelSelection() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

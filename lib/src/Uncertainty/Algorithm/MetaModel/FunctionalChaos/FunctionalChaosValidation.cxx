@@ -46,8 +46,8 @@ FunctionalChaosValidation::FunctionalChaosValidation()
 FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult & functionalChaosResult,
                                                      const CrossValidationMethod cvMethod, 
                                                      const UnsignedInteger & kParameter)
-  : MetaModelValidation(functionalChaosResult.getOutputSample(), 
-      ComputeMetamodelCrossValidationPredictions(functionalChaosResult, cvMethod, kParameter))
+  : MetaModelValidation(functionalChaosResult.getOutputSample()
+      , ComputeMetamodelCrossValidationPredictions(functionalChaosResult, cvMethod, kParameter))
   , functionalChaosResult_(functionalChaosResult)
 {
   if ((cvMethod != LEAVEONEOUT) && (cvMethod != KFOLD))
@@ -143,9 +143,9 @@ Sample FunctionalChaosValidation::ComputeMetamodelCrossValidationPredictions(
     const SymmetricMatrix projectionMatrix(leastSquaresMethod.getH());
     // Compute K-Fold error
     KFoldSplitter splitter(sampleSize, kParameter);
+    Indices indicesTest;
     for (UnsignedInteger foldIndex = 0; foldIndex < kParameter; ++foldIndex)
     {
-      Indices indicesTest;
       const Indices indicesTrain(splitter.generate(indicesTest));
       const UnsignedInteger foldSize = indicesTest.getSize();
       SymmetricMatrix projectionKFoldMatrix(foldSize);

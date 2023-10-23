@@ -123,7 +123,7 @@ public:
   virtual DesignProxy getDesignProxy() const;
 
   /** isLeastSquares accessor */
-  virtual Bool getIsLeastSquares() const;
+  virtual Bool isLeastSquares() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -178,7 +178,7 @@ protected:
   Bool isLeastSquares_;
 
   // isModelSelection flag
-  Bool isModelSelection_;
+  Bool isModelSelection_ = false;
 private:
 
 } ; /* class ProjectionStrategyImplementation */

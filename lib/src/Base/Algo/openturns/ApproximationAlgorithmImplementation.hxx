@@ -148,8 +148,6 @@ private:
   /** Verbosity flag */
   Bool verbose_;
 
-  /** isModelSelection flag */
-  Bool isModelSelection_;
 
 }; /* class ApproximationAlgorithmImplementation */
 

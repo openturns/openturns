@@ -88,7 +88,7 @@ public:
   virtual DesignProxy getDesignProxy() const;
 
   /** isLeastSquares accessor */
-  virtual Bool getIsLeastSquares() const;
+  virtual Bool isLeastSquares() const;
 
   /** String converter */
   String __repr__() const override;

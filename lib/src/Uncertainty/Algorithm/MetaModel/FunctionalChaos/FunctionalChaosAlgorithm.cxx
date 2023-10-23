@@ -340,10 +340,7 @@ void FunctionalChaosAlgorithm::run()
   // Build the result
   const Bool isLeastSquares = projectionStrategy_.getIsLeastSquares();
   Bool isModelSelection = false;
-  if (adaptiveStrategy_.getImplementation()->getIsModelSelection())
-    isModelSelection = true;
-  else if (projectionStrategy_.getImplementation()->getIsModelSelection())
-    isModelSelection = true;
+  const Bool isModelSelection = adaptiveStrategy_.getImplementation()->getIsModelSelection() || projectionStrategy_.getImplementation()->getIsModelSelection();
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_,
                                   inverseTransformation_, basis, I_k, alpha_k, Psi_k,
                                   residuals, relativeErrors, isLeastSquares, isModelSelection);
