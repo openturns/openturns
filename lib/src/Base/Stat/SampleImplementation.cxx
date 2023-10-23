@@ -1291,19 +1291,17 @@ struct Comparison
   const SampleImplementation & nsi_;
   // Sorting permutation
   Indices permutation_;
-  // True if sample has ties
-  mutable Bool hasTies_;
 
   Comparison(UnsignedInteger first,
              const SampleImplementation & nsi)
-    : first_(first), second_(first), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
+    : first_(first), second_(first), nsi_(nsi), permutation_(nsi_.getSize())
   {
     permutation_.fill();
   }
 
   Comparison(UnsignedInteger first, UnsignedInteger second,
              const SampleImplementation & nsi)
-    : first_(first), second_(second), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
+    : first_(first), second_(second), nsi_(nsi), permutation_(nsi_.getSize())
   {
     permutation_.fill();
   }
@@ -1314,7 +1312,6 @@ struct Comparison
     const Scalar xJ = nsi_( permutation_[j], first_  );
     const Scalar yI = nsi_( permutation_[i], second_ );
     const Scalar yJ = nsi_( permutation_[j], second_ );
-    hasTies_ |= (xI == xJ);
     return ( (xI < xJ) || ((xI == xJ) && (yI < yJ)) );
   }
 }; // struct Comparison
