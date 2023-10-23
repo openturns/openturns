@@ -239,14 +239,15 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                 shiftFunction.setConstant(currentVertex);
                 ComposedFunction levelFunction(function, shiftFunction);
                 problem.setLevelFunction(levelFunction);
-                solver_.setStartingPoint(delta);
-                solver_.setProblem(problem);
+                OptimizationAlgorithm solver(solver_);
+		solver.setStartingPoint(delta);
+                solver.setProblem(problem);
                 OptimizationResult result;
                 // Here we have to catch exceptions raised by the gradient
                 try
                 {
-                  solver_.run();
-                  result = solver_.getResult();
+                  solver.run();
+                  result = solver.getResult();
                 }
                 catch(...)
                 {
@@ -255,21 +256,21 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                   const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
                   levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
                   problem.setLevelFunction(levelFunction);
-                  solver_.setProblem(problem);
+                  solver.setProblem(problem);
                   // Try with the new gradients
                   try
                   {
-                    solver_.run();
-                    result = solver_.getResult();
+                    solver.run();
+                    result = solver.getResult();
                   }
                   catch(...)
                   {
                     // There is definitely a problem with this vertex. Try a gradient-free solver
-                    Cobyla solver(solver_.getProblem());
-                    solver.setStartingPoint(solver_.getStartingPoint());
-                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
-                    solver.run();
-                    result = solver.getResult();
+                    Cobyla solver2(solver.getProblem());
+                    solver2.setStartingPoint(solver.getStartingPoint());
+                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << solver2);
+                    solver2.run();
+                    result = solver2.getResult();
                   } // Even finite differences gradient failed?
                 } // Gradient failed ?
                 movedVertices.add(currentVertex + result.getOptimalPoint());

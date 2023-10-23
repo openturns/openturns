@@ -78,7 +78,7 @@ private:
   Indices discretization_;
 
   /* Optimization solver used to project the vertices */
-  mutable OptimizationAlgorithm solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class LevelSetMesher */
 
