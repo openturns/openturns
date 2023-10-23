@@ -79,8 +79,6 @@ algo : :class:`~openturns.EnclosingSimplexAlgorithm`
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::P1LagrangeEvaluation::getNearestNeighbourAlgorithm
 "Accessor to the algorithm used to find the vertex nearest to a given point.
 
