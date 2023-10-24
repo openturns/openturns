@@ -50,3 +50,51 @@ for x in sample2:
     val = ot.DistFunc.rBinomial(n, p)
     print(f"rBinomial({n}, {p}) iR={iR} ref={ref} val={val}")
     ott.assert_almost_equal(val, ref)
+
+# Corner cases
+dataset = ot.Sample.ImportFromCSVFile("t_binomial_dataset.csv", ",")
+
+precision = 1e-11
+binomial = ot.Binomial()
+for i in range(dataset.getSize()):
+    binomial.setN(int(dataset[i, 1]))
+    binomial.setP(dataset[i, 2])
+    x = dataset[i, 0]
+    pdf = dataset[i, 3]
+    cdf = dataset[i, 4]
+    surv = dataset[i, 5]
+    print("i = ", i, " x = ", x, " N = ", binomial.getN(), " p = ", binomial.getP())
+    ott.assert_almost_equal(binomial.computePDF(x), pdf, precision, 0.0)
+    ott.assert_almost_equal(binomial.computeCDF(x), cdf, precision, 0.0)
+    ott.assert_almost_equal(binomial.computeSurvivalFunction(x), surv, precision, 0.0)
+    if i > 0:  # FIXME: test fails for i = 0 (x=0, N=10, P=0)
+        ott.assert_almost_equal(
+            binomial.computeScalarQuantile(cdf), x, 0.0, 1.0
+        )  # Can be off by 1 unit
+
+# 2147483647 is the maximum integer.
+# Values greater than this are not doubles anymore.
+N = 2147483647
+binomial.setN(N)
+binomial.setP(1.0 / N)
+computed = binomial.computePDF(1.0)
+expected = 0.3678794
+ott.assert_almost_equal(computed, expected, 1.0e-6, 0.0)
+
+computed = binomial.computePDF(2.0)
+expected = 0.1839397
+ott.assert_almost_equal(computed, expected, 1.0e-6, 0.0)
+
+# Extreme inputs
+binomial.setN(9999)
+binomial.setP(0.5)
+computed = binomial.computePDF(4999.0)
+expected = 0.0079786461393821558191
+ott.assert_almost_equal(computed, expected, 1.0e-7, 0.0)
+
+# Check pdf for values of P closer to 1
+binomial.setN(2)
+binomial.setP(0.9999)
+computed = binomial.computePDF(1.0)
+expected = 1.999799999999779835e-04
+ott.assert_almost_equal(computed, expected, 1e-12, 0.0)

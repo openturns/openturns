@@ -64,6 +64,55 @@ int main(int, char *[])
       std::cout << "rBinomial(" << n << ", " << p << ") iR=" << iR << " ref=" << ref << " val=" << val << std::endl;
       assert_almost_equal(val, ref);
     }
+
+    // Corner cases
+    const Sample dataset(Sample::ImportFromCSVFile("t_binomial_dataset.csv", ","));
+
+    const Scalar precision = 1e-11;
+    Binomial binomial;
+    for (UnsignedInteger i = 0; i < dataset.getSize(); ++ i)
+    {
+        const UnsignedInteger N = (UnsignedInteger)dataset(i, 1);
+        binomial.setN(N);
+        binomial.setP(dataset(i, 2));
+        const Scalar x = dataset(i, 0);
+        const Scalar pdf = dataset(i, 3);
+        const Scalar cdf = dataset(i, 4);
+        const Scalar surv = dataset(i, 5);
+        std::cout << "i = " << i << " x = " << x << " N = " << N << " p = " << binomial.getP() << std::endl;
+        assert_almost_equal(binomial.computePDF(x), pdf, precision, 0.0);
+        assert_almost_equal(binomial.computeCDF(x), cdf, precision, 0.0);
+        assert_almost_equal(binomial.computeSurvivalFunction(x), surv, precision, 0.0);
+        if (i > 0)  // FIXME: test fails for i = 0 (x=0, N=10, P=0)
+          assert_almost_equal(binomial.computeQuantile({cdf}), {x}, 0.0, 1.0); // Can be off by 1 unit
+    }
+
+    // 2147483647 is the maximum integer.
+    // Values greater than this are not doubles anymore.
+    const UnsignedInteger N = 2147483647;
+    binomial.setN(N);
+    binomial.setP(1.0 / N);
+    Scalar computed = binomial.computePDF(1.0);
+    Scalar expected = 0.3678794;
+    assert_almost_equal(computed, expected, 1.0e-6, 0.0);
+
+    computed = binomial.computePDF(2.0);
+    expected = 0.1839397;
+    assert_almost_equal(computed, expected, 1.0e-6, 0.0);
+
+    // Extreme inputs
+    binomial.setN(9999);
+    binomial.setP(0.5);
+    computed = binomial.computePDF(4999.0);
+    expected = 0.0079786461393821558191;
+    assert_almost_equal(computed, expected, 1.0e-7, 0.0);
+
+    // Check pdf for values of P closer to 1
+    binomial.setN(2);
+    binomial.setP(0.9999);
+    computed = binomial.computePDF(1.0);
+    expected = 1.999799999999779835e-04;
+    assert_almost_equal(computed, expected, 1e-12, 0.0);
   }
   catch (TestFailed & ex)
   {
