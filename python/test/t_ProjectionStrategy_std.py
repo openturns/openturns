@@ -11,7 +11,7 @@ sampleSize = 500
 totalDegree = 7
 
 #
-print("+ Compute flood model by regression")
+print("+ Compute flood model using least squares")
 fm = flood_model.FloodModel()
 inputDescription = fm.model.getInputDescription()
 marginals = [fm.distribution.getMarginal(i) for i in range(fm.dim)]
