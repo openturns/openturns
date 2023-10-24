@@ -34,6 +34,13 @@ graph = factory.drawMeanResidualLife(sample)
 view = otv.View(graph)
 
 # %%
+# Draw the parameter stability plots
+# The perturbations appear small relative to sampling errors and a smaller threshold can be chosen :math:`u_s=60`.
+u_range = ot.Interval(0.5, 50.0)
+graph = factory.drawParameterThresholdStability(sample, u_range)
+view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
+
+# %%
 # **Stationary GPD modeling via the log-likelihood function**
 #
 # We first assume that the dependence through time is negligible, so we first model the data as

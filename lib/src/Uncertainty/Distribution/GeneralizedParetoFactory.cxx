@@ -632,4 +632,87 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfXiProfileLikelihood(con
   return buildAsGeneralizedPareto(distribution.getParameter());
 }
 
+
+GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sample & sample, const Interval & thresholdRange) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Can only parameter threshold stability from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (thresholdRange.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Threshold range should be of dimension 1, here dimension=" << thresholdRange.getDimension();
+  if (size < 20)
+    throw InvalidArgumentException(HERE) << "Size must be at least 20, here size=" << size;
+
+  const Scalar uMin = thresholdRange.getLowerBound()[0];
+  const Scalar uMax = thresholdRange.getUpperBound()[0];
+  const UnsignedInteger pointsNumber = ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber");
+  const Scalar level = ResourceMap::GetAsScalar("GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel");
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+
+  Sample uS(pointsNumber, 1);
+  Sample xiS(pointsNumber, 1);
+  Sample xiCILow(pointsNumber, 1);
+  Sample xiCIUp(pointsNumber, 1);
+
+  Sample scaleS(pointsNumber, 1);
+  Sample scaleCILow(pointsNumber, 1);
+  Sample scaleCIUp(pointsNumber, 1);
+
+  for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
+  {
+    const Scalar u = uMin + i * (uMax - uMin) / (pointsNumber - 1);
+    uS(i, 0) = u;
+    const DistributionFactoryLikelihoodResult resultI(buildMethodOfLikelihoodMaximizationEstimator(sample, u));
+    const Point parameter(resultI.getDistribution().getParameter());
+    const Scalar sigma = parameter[0];
+    const Scalar xi = parameter[1];
+
+    // modified scale parameter: scale=sigma-xi*u
+    const Scalar scale = sigma - xi * u;
+    scaleS(i, 0) = scale;
+    const CovarianceMatrix paramCov(resultI.getParameterDistribution().getCovariance());
+    const Scalar varSigma = paramCov(0, 0);
+    const Scalar stddevXi = std::sqrt(paramCov(1, 1));
+    const Scalar covSigmaXi = paramCov(0, 1);
+    const Scalar scaleStddev = std::sqrt(varSigma - 2.0 * u * covSigmaXi + std::pow(u * stddevXi, 2.0));
+    scaleCILow(i, 0) = scale - scaleStddev * xq;
+    scaleCIUp(i, 0) = scale + scaleStddev * xq;
+
+    // shape parameter xi
+    xiS(i, 0) = xi;
+    const Interval xiCI(resultI.getParameterDistribution().getMarginal(1).computeBilateralConfidenceInterval(level));
+    xiCILow(i, 0) = xiCI.getLowerBound()[0];
+    xiCIUp(i, 0) = xiCI.getUpperBound()[0];
+  }
+
+  // scale
+  Curve curveScale(uS, scaleS, "scale");
+  curveScale.setColor("red");
+  Curve curveScaleCILow(uS, scaleCILow, "CI low");
+  curveScaleCILow.setLineStyle("dashed");
+  Curve curveScaleCIUp(uS, scaleCIUp, "CI up");
+  curveScaleCIUp.setLineStyle("dashed");
+  Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter", true, "topleft");
+  scaleGraph.add(curveScale);
+  scaleGraph.add(curveScaleCILow);
+  scaleGraph.add(curveScaleCIUp);
+
+  // shape
+  Curve curveXi(uS, xiS, "xi");
+  curveXi.setColor("red");
+  Curve curveXiCILow(uS, xiCILow, "CI low");
+  curveXiCILow.setLineStyle("dashed");
+  Curve curveXiCIUp(uS, xiCIUp, "CI up");
+  curveXiCIUp.setLineStyle("dashed");
+  Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter", true, "topleft");
+  shapeGraph.add(curveXi);
+  shapeGraph.add(curveXiCILow);
+  shapeGraph.add(curveXiCIUp);
+
+  GridLayout grid(2, 1);
+  grid.setGraph(0, 0, scaleGraph);
+  grid.setGraph(1, 0, shapeGraph);
+  return grid;
+}
+
 END_NAMESPACE_OPENTURNS

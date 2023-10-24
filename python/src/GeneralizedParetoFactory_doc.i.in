@@ -406,3 +406,54 @@ Returns
 -------
 result : :class:`~openturns.ProfileLikelihoodResult`
     The result class."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::drawParameterThresholdStability
+"Draw the parameter threshold stability.
+
+This method is complementary to :meth:`drawMeanResidualLife` as a method of threshold
+selection by fitting the GPD over a range of thresholds and seeks to look stability of
+parameters estimates.
+
+Let :math:`X` a random variable defined so the excess of a threshold :math:`u_s`
+follow a Generalized Pareto distribution :math:`GPD(\xi, \sigma_s)`.
+
+Then the excesses of :math:`X`above :math:`u>u_s`, ie the distribution :math:`X-u|X>u`
+also follow a GPD :math:`GPD(\xi, \sigma_u)` where:
+
+.. math::
+
+    \sigma_u = \sigma_s + \xi (u - u_s)
+
+We reparametrize the scale parameter with a modified standard deviation that does not depend on :math:`u`:
+
+.. math::
+
+    \sigma_u^{\ast} = \sigma_u - \xi u
+
+This means estimates of :math:`(\xi, \sigma_u)` should be constant
+(or stable accounting for sampling variability) for valid thresholds above :math:`u>u_s`.
+
+The methodology suggested here is to plot :math:`\hat{\sigma_u}^{\ast}` and :math:`\hat{\xi}` (and their confidence intervals) against :math:`u` and retain the lowest value of u for which
+the estimates remain near-constant.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+uRange : :class:`~openturns.Interval`
+    The range of the threshold :math:`u`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graphs of :math:`\hat{\sigma_u}^{\ast}` and :math:`\hat{\xi}` versus :math:`u` and their confidence interval.
+
+Notes
+-----
+The confidence level can be set using the :class:`~openturns.ResourceMap` key
+`GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel`
+The number of threshold points in the graph can be set with the key
+`GeneralizedParetoFactory-ThresholdStabilityPointNumber`.
+"
