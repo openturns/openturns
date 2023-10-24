@@ -79,14 +79,8 @@ def fillWithColorInBetween(x, yLower, yUpper, color):
             f"but the number of X coordinates is {n_points}"
         )
     n_points = x.getDimension()
-    polyData = []
-    # Add the lower bound, forward
-    for i in range(n_points):
-        polyData.append([x[i], yLower[i]])
-    # Add the upper bound, backward
-    for i in range(n_points - 1, -1, -1):
-        polyData.append([x[i], yUpper[i]])
-
+    polyData = [[x[i], yLower[i]] for i in range(n_points)] + \
+            [[x[i], yUpper[i]] for i in range(n_points-1, -1, -1)]
     polygon = ot.Polygon(polyData, color, color)
     return polygon
 
