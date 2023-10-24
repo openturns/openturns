@@ -80,7 +80,7 @@ def fillWithColorInBetween(x, yLower, yUpper, color):
         )
     n_points = x.getDimension()
     polyData = [[x[i], yLower[i]] for i in range(n_points)] + \
-            [[x[i], yUpper[i]] for i in range(n_points-1, -1, -1)]
+        [[x[i], yUpper[i]] for i in range(n_points - 1, -1, -1)]
     polygon = ot.Polygon(polyData, color, color)
     return polygon
 
