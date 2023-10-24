@@ -511,7 +511,11 @@
   <GeneralizedParetoFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel   value_float="0.95" />
+  <GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel value_float="0.95" />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
+  <GeneralizedParetoFactory-MeanResidualLifePointNumber   value_int="100" />
+  <GeneralizedParetoFactory-ThresholdStabilityPointNumber value_int="100" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
   <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
 

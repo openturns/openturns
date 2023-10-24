@@ -27,6 +27,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/DistributionFactoryLikelihoodResult.hxx"
 #include "openturns/ProfileLikelihoodResult.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,6 +79,9 @@ public:
   /** Profiled maximum likelihood */
   ProfileLikelihoodResult buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample, const Scalar u) const;
   GeneralizedPareto buildMethodOfXiProfileLikelihood(const Sample & sample, const Scalar u) const;
+
+  /** Parameter stability plot*/
+  GridLayout drawParameterThresholdStability(const Sample & sample, const Interval & thresholdRange) const;
 
 private:
 

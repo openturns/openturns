@@ -69,13 +69,14 @@ estimator_mle = factory.buildMethodOfLikelihoodMaximizationEstimator(sample, u)
 print("MLE estimator=", estimator_mle)
 inf_dist = estimator_mle.getDistribution()
 print("GPD from MLE=", inf_dist)
-ott.assert_almost_equal(inf_dist.getParameter(), [7.44573, 0.184112, 30.0], 1e-2, 1e-2)
+pref_mle = [7.44573, 0.184112, 30.0]
+ott.assert_almost_equal(inf_dist.getParameter(), pref_mle, 1e-2, 1e-2)
 
 # profile MLE (xi)
 estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
 inf_dist = estimator_prof_mle.getDistribution()
 print("Estimated GPD (profile MLE)=", inf_dist)
-ott.assert_almost_equal(inf_dist.getParameter(), [7.44573, 0.184112, 30.0], 1e-2, 1e-2)
+ott.assert_almost_equal(inf_dist.getParameter(), pref_mle, 1e-2, 1e-2)
 
 # specific check for profile likelihood
 xi = estimator_prof_mle.getParameter()
@@ -83,3 +84,7 @@ ci = estimator_prof_mle.getParameterConfidenceInterval()
 print("profile MLE estimator xi=", xi, ci)
 assert [xi] in ci, "xi should be inside confidence interval"
 graph = estimator_prof_mle.drawProfileLikelihoodFunction()
+
+# parameter stability
+u_range = ot.Interval(0.5, 50.0)
+graph = factory.drawParameterThresholdStability(sample, u_range)
