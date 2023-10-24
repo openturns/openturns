@@ -3,7 +3,7 @@
 Taylor expansion moments
 ------------------------
 
-One way to evaluate the central dispersion (expectation and variance) of the variable :math:`Y=h(\uX)`
+One way to evaluate the central dispersion (expectation and variance) of the variable :math:`\uY=h(\uX)`
 is to use the Taylor expansion of the function :math:`h: \Rset^d \rightarrow \Rset^q` at
 the mean point :math:`\vect{\mu} = \Expect{\uX}`.
 
@@ -33,8 +33,8 @@ The second order Taylor expansion of :math:`h` around :math:`\ux = \vect{\mu}` i
 
 .. math::
 
-    Y = h(\vect{\mu}) + \sum_{i = 1}^d \left( \frac{\partial h}{\partial x_i }\right)_{\ux = \vect{\mu}}(X_i-\mu_i)
-    + \frac{1}{2} \sum_{i,j = 1}^d \left(\frac{\partial^2 h}{\partial x_i \partial x_j}\right)_{\ux = \vect{\mu}}
+    Y = h(\vect{\mu}) + \sum_{i = 1}^d \left( \frac{\partial h}{\partial x_i }\right)(\vect{\mu})(X_i-\mu_i)
+    + \frac{1}{2} \sum_{i,j = 1}^d \left(\frac{\partial^2 h}{\partial x_i \partial x_j}\right)(\vect{\mu})
     (X_i-\mu_i)(X_j-\mu_j) + o(||\uX||^2)
 
 
@@ -45,7 +45,7 @@ If we use the first order expansion, we get:
        \begin{array}{lcl}
             \Expect{Y} & \simeq & h(\vect{\mu})\\
             \Var{Y} & \simeq & \sum_{i=1}^{d} \sigma_i^2 \left[\left(\frac{\partial h}{\partial x_i}
-            \right)_{\ux = \vect{\mu}} \right]^2
+            \right)(\vect{\mu}) \right]^2
        \end{array}
 
 
@@ -54,7 +54,7 @@ If we use the second order expansion, we get:
   .. math::
 
        \Expect{Y}  \simeq h (\vect{\mu}) + \frac{1}{2} \sum_{i,j=1}^{d} c_{ij}\left(\frac{\partial^2 h}
-       {\partial x_i \partial x_j}\right)_{\ux = \vect{\mu}}
+       {\partial x_i \partial x_j}\right)(\vect{\mu})
 
 
 The second order approximation of the variance  is not implemented because it requires both the knowledge of higher
@@ -70,9 +70,9 @@ for each marginal function :math:`h_k` as:
 
 .. math::
 
-      Y_k = h_k(\vect{\mu}) + \sum_{i = 1}^d \left( \frac{\partial h_k}{\partial x_i }\right)_{\ux = \vect{\mu}}
+      Y_k = h_k(\vect{\mu}) + \sum_{i = 1}^d \left( \frac{\partial h_k}{\partial x_i }\right)(\vect{\mu})
       (X_i-\mu_i)+ \frac{1}{2} \sum_{i,j = 1}^d \left( \frac{\partial^2 h_k}{\partial x_i \partial
-      x_j}\right)_{\ux = \vect{\mu}}(X_i-\mu_i)(X_j-\mu_j) + o(||\uX||^2)
+      x_j}\right)(\vect{\mu})(X_i-\mu_i)(X_j-\mu_j) + o(||\uX||^2)
 
 
 where :math:`1\leq k \leq q`.
@@ -85,7 +85,7 @@ If we use the first order expansion, we get:
        \begin{array}{lcl}
          \Expect{\uY} & \simeq &  h(\vect{\mu})\\
          \Cov \uY & \simeq & \left( \sum_{i,j=1}^{d} c_{ij}  \left( \frac{\partial h_k}{\partial x_i }
-         \right)_{\ux = \vect{\mu}}\left( \frac{\partial h_l}{\partial x_j }\right)_{\ux = \vect{\mu}}\right)_{k,l}
+         \right)(\vect{\mu})\left( \frac{\partial h_l}{\partial x_j }\right)(\vect{\mu})\right)_{k,l}
        \end{array}
 
 

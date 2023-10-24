@@ -7,34 +7,35 @@ The importance factors derived from a Taylor expansion are
 defined to rank the sensitivity of the inputs to
 the output for central dispersion analysis.
 
-Let us denote by :math:`\uX` the input random vector.
-Assume that the marginals of :math:`\uX` are independent.
+We denote by :math:`\uX` the input random vector. We assume that the marginals of :math:`\uX` are independent.
 
-We note :math:`Y = h(\ux)` with :math:`h: \Rset^d \rightarrow \Rset`.
+We note :math:`Y = h(\ux)` with :math:`h: \Rset^d \rightarrow \Rset` a scalar function.
 
-Refer to :ref:`taylor_expansion_moments` to get details on the expressions of the approximations:
+Refer to :ref:`taylor_expansion_moments` to get details on the expressions of the approximations.
 
-The first order  Taylor expansion of :math:`h` around :math:`\ux = \mu = \Expect{\uY}` yields to the first order approximation of :math:`\Expect{Y}`:
+The first order  Taylor expansion of :math:`h` around :math:`\vect{\mu} = \Expect{\uX}` yields to the first order approximation of :math:`\Expect{Y}`:
 
 .. math::
-    \Expect{Z} = h(\muX).
+    \Expect{Y} = h(\vect{\mu}).
 
 The independence of the marginals implies that:
 
 .. math::
-    \Var Y = \sum_{i=1}^{d} \left(\frac{\partial h}{\partial x_i} (\mu)\right)^2 \Var X_i
+    \Var Y = \sum_{i=1}^{d} \left(\frac{\partial h}{\partial x_i}(\vect{\mu})\right)^2 \sigma_i^2
+
+where :math:`\sigma_i^2 = \mbox{Var}[X_i]`.
 
 We note :math:`\eta_i` the importance factor of :math:`X_i`, defined by:
 
 .. math::
 
-    \eta_i = \frac{ \left(\frac{\partial h}{\partial x_i} (\mu)\right)^2 \Var X_i}{\Var Z}.
+    \eta_i = \frac{ \left(\frac{\partial h}{\partial x_i}(\vect{\mu})\right)^2 \sigma_i^2}{\Var Y}.
 
 Therefore, the importance factors sum to one:
 
 .. math::
 
-    \eta_1 + \eta_2 + \ldots + \eta_{n_X} = 1
+    \eta_1 + \eta_2 + \ldots + \eta_{d} = 1
 
 These importance factors are also called *importance factors derived from perturbation methods*.
 

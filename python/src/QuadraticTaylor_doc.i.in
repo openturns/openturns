@@ -7,50 +7,34 @@ Available constructors:
 Parameters
 ----------
 center : sequence of float
-    Point :math:`\vect{x}_0` where the Taylor expansion of the function
-    :math:`h` is performed.
+    Point :math:`\ux_0`.
 function : :class:`~openturns.Function`
-    Function :math:`h` to be approximated.
+    Function :math:`h` to be approximated around :math:`\ux_0`.
 
 Notes
 -----
-The approximation of the model response :math:`\vect{y} = h(\vect{x})` around a
-specific set :math:`\vect{x}_0 = (x_{0,1},\dots,x_{0,n_{X}})` of input
-parameters may be of interest. One may then substitute :math:`h` for its Taylor
-expansion at point :math:`\vect{x}_0`. Hence :math:`h` is replaced with a first
-or second-order polynomial :math:`\widehat{h}` whose evaluation is inexpensive,
-allowing the analyst to apply the uncertainty anaysis methods.
+We denote by :math:`h: \Rset^d \rightarrow \Rset^q` the function to be approximated and :math:`\uy=h(\ux)`.
 
-We consider here the second order Taylor expansion around :math:`\ux=\vect{x}_0`.
+The quadratic Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function :math:`\hat{h}: \Rset^d \rightarrow \Rset^q` defined  by:
 
 .. math::
 
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \, = \,
-     h(\vect{x}_0) \, + \, \sum_{i=1}^{n_{X}} \;
-      \frac{\partial h}{\partial x_i}(\vect{x}_0).\left(x_i - x_{0,i} \right) \, +
-     \, \frac{1}{2} \; \sum_{i,j=1}^{n_X} \;
-      \frac{\partial^2 h}{\partial x_i \partial x_j}(\vect{x}_0).\left(x_i - x_{0,i} \right).\left(x_j - x_{0,j} \right)
+    \hat{h}(\ux) = h(\ux_0) + \mat{L} (\ux-\ux_0) +  \frac{1}{2}  \left\langle \left\langle\mat{Q}, \ux-\ux_0 \right \rangle, \ux-\ux_0 \right \rangle
 
-Introducing a vector notation, the previous equation rewrites:
+
+where :math:`\mat{L} = (L_{ij})_{1 \leq i \leq q, 1\leq j \leq d}` is the Jacobian matrix evaluated at :math:`\ux_0`:
 
 .. math::
 
-    \vect{y} \, \approx \,
-     \vect{y}_0 \, +
-     \, \vect{\vect{L}} \: \left(\vect{x}-\vect{x}_0\right) \, +
-     \, \frac{1}{2} \; \left\langle \left\langle\vect{\vect{\vect{Q}}}\:,
-                                                      \vect{x}-\vect{x}_0 \right\rangle,
-                                                \:\vect{x}-\vect{x}_0 \right\rangle
+    L_{ij} = \left(\frac{\partial h_i}{\partial x_i}\right)(\ux_0)
 
-where
 
-- :math:`\vect{y_0} = (y_{0,1} , \dots, y_{0,n_Y})^{\textsf{T}} = h(\vect{x}_0)`
-  is the vector model response evaluated at :math:`\vect{x}_0` ;
-- :math:`\vect{x}` is the current set of input parameters ;
-- :math:`\vect{\vect{L}} = \left( \frac{\partial y_{0,j}}{\partial x_i} \,,\, i=1,\ldots, n_X \,,\, j=1,\ldots, n_Y \right)`
-  is the transposed Jacobian matrix evaluated at :math:`\vect{x}_0` ;
-- :math:`\vect{\vect{Q}} = \left\{ \frac{\partial^2 y_{0,k}}{\partial x_i \partial x_j} \, \, , \, \, i,j=1,\ldots, n_X \, \, , \, \, k=1, \ldots, n_Y \right\}`
-  is the transposed Hessian matrix.
+and :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq d, 1\leq k \leq q}` is the Hessian tensor of dimension 3 evaluated at :math:`\ux_0`:
+
+.. math::
+
+    Q_{ijk} = \left(\frac{\partial^2 h_k}{\partial x_i\partial x_j}\right)(\ux_0)
+
 
 See also
 --------
@@ -75,7 +59,7 @@ Examples
 Returns
 -------
 center : :class:`~openturns.Point`
-    Point :math:`\vect{x}_0` where the Taylor expansion of the function is
+    Point :math:`\ux_0` where the Taylor expansion of the function is
     performed."
 
 // ---------------------------------------------------------------------
@@ -86,28 +70,27 @@ center : :class:`~openturns.Point`
 Returns
 -------
 constantVector : :class:`~openturns.Point`
-    Constant vector of the approximation, equal to :math:`h(x_0)`."
+    Point :math:`h(\ux_0)`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticTaylor::getLinear
-"Get the gradient of the function at :math:`\vect{x}_0`.
+"Get the gradient of the function at :math:`\ux_0`.
 
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    Gradient of the function :math:`h` at the point :math:`\vect{x}_0` (the
-    transposition of the jacobian matrix)."
+    The matrix :math:`\mat{L}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticTaylor::getQuadratic
-"Get the hessian of the function at :math:`\vect{x}_0`.
+"Get the hessian of the function at :math:`\ux_0`.
 
 Returns
 -------
 tensor : :class:`~openturns.SymmetricTensor`
-    Hessian of the function :math:`h` at the point :math:`\vect{x}_0`."
+    The tensor :math:`\mat{Q}`."
 
 // ---------------------------------------------------------------------
 
@@ -127,10 +110,9 @@ function : :class:`~openturns.Function`
 Returns
 -------
 approximation : :class:`~openturns.Function`
-    An approximation of the function :math:`h` by a Quadratic Taylor expansion
-    at the point :math:`\vect{x}_0`."
+    The quadratic Taylor expansin of :math:`h` at :math:`\ux_0`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticTaylor::run
-"Perform the Quadratic Taylor expansion around :math:`\vect{x}_0`."
+"Perform the Quadratic Taylor expansion around :math:`\ux_0`."
