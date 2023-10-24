@@ -64,7 +64,7 @@ def fillWithColorInBetween(x, yLower, yUpper, color):
 
     Return
     ------
-    polygonArray : ot.PolygonArray()
+    polygon: ot.Polygon()
         The colored area.
     """
     n_points = x.getDimension()
@@ -87,12 +87,8 @@ def fillWithColorInBetween(x, yLower, yUpper, color):
     for i in range(n_points - 1, -1, -1):
         polyData.append([x[i], yUpper[i]])
 
-    polyData = ot.Sample(polyData)
-    polygonList = [
-        ot.Polygon(polyData, color, color)
-    ]
-    polygonArray = ot.PolygonArray(polygonList)
-    return polygonArray
+    polygon = ot.Polygon(polyData, color, color)
+    return polygon
 
 
 # %%
