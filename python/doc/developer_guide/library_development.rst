@@ -20,37 +20,35 @@ Download openturns
 ~~~~~~~~~~~~~~~~~~
 
 You can retrieve the development master branch through the git
-repository by issuing the following command:
-
-::
+repository by issuing the following commands::
 
     git clone https://github.com/openturns/openturns.git
     cd openturns
 
-Or, you can pick up a stable version tarball:
+Or, you can pick up a stable version::
 
-::
-
-    curl -L https://github.com/openturns/openturns/archive/v1.15.tar.gz | tar xz
-    cd openturns-1.12
+    git clone -b v1.22 https://github.com/openturns/openturns.git
+    cd openturns
 
 Build openturns
 ~~~~~~~~~~~~~~~
 
-::
+CMake presets can be used on Linux, which sets debug build mode, warning flags, build dir, install prefix, etc::
 
-    mkdir build
-    cd build
-    cmake -DCMAKE_INSTALL_PREFIX=$PWD/install ..
-    make install -j4
+    cmake --preset=linux-debug
+    cmake --build build --target install --parallel 4
 
 Run tests
 ~~~~~~~~~
 
-::
+Python tests can be run once the bindings are finished compiled::
 
-    make tests
-    ctest -j4
+    ctest --test-dir build -j4 -R pyinstallcheck
+
+C++ tests must be built prior to be launched::
+
+    cmake --build build --target tests --parallel 4
+    ctest --test-dir build -j4 -R cppcheck
 
 and all the tests should be successful else check the log file
 Testing/Temporary/LastTest.log.
