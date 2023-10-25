@@ -84,6 +84,9 @@ public:
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
 
+  /** Design proxy accessor */
+  virtual DesignProxy getDesignProxy() const;
+
   /** String converter */
   String __repr__() const override;
 

@@ -37,6 +37,7 @@ def __FunctionalChaosSobolIndices_repr_html(self):
     # quick summary
     basisSize = chaosResult.getReducedBasis().getSize()
     html = ""
+    html += f"{self.getClassName()}\n"
     html += "<ul>\n"
     html += f"  <li>input dimension: {inputDimension}</li>\n"
     html += f"  <li>output dimension: {outputDimension}</li>\n"

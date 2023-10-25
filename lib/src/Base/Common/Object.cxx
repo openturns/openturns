@@ -45,6 +45,12 @@ String Object::__str__(const String & ) const
   return __repr__();
 }
 
+/* Markdown string converter */
+String Object::__repr_markdown__() const
+{
+  return __repr__();
+}
+
 /* Output stream converter */
 std::ostream & operator <<(std::ostream & os, const Object & obj)
 {

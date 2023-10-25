@@ -92,6 +92,16 @@ public:
    */
   virtual String __str__(const String & offset = "") const;
 
+  /**
+   * Markdown string converter
+   *
+   * This method shows Markdown information on the
+   * internal state of an object. It is used for printing the object
+   * and should only show relevant information.
+   *
+   * @return A Markdown string
+   */
+  virtual String __repr_markdown__() const;
 
 protected:
 

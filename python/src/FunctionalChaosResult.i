@@ -15,6 +15,7 @@ namespace OT{ %extend FunctionalChaosResult { FunctionalChaosResult(const Functi
 def __FunctionalChaosResult_repr_html(self):
     """Get HTML representation."""
     html = ""
+    html += f"{self.getClassName()}\n"
     coefficients = self.getCoefficients()
     basis = self.getOrthogonalBasis()
     enumerateFunction = basis.getEnumerateFunction()

@@ -151,6 +151,13 @@ public:
     return OSS() << offset << __repr__();
   }
 
+  /* Markdown converter */
+  inline
+  String __repr_markdown__() const override
+  {
+    return __repr__();
+  }
+
 
   /**
    * Id accessor

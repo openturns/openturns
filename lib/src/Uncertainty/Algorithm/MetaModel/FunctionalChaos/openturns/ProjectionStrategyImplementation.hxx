@@ -79,6 +79,8 @@ public:
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
+  String __repr_markdown__() const override;
 
   /** Measure accessor */
   virtual void setMeasure(const Distribution & measure);
@@ -102,12 +104,14 @@ public:
   virtual Scalar getRelativeError() const;
 
   /** Relative error accessor */
-//   virtual void setCoefficients(const Point & alpha_k);
   virtual Point getCoefficients() const;
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
+
+  /** Design proxy accessor */
+  virtual DesignProxy getDesignProxy() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
