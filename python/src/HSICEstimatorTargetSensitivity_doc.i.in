@@ -29,6 +29,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from math import pi
+>>> ot.RandomGenerator.SetSeed(0)
 
 Generate input and output samples.
 
@@ -68,7 +69,7 @@ Build and use the HSIC estimator for target sensitivity analysis.
 
 >>> hsic = ot.HSICEstimatorTargetSensitivity(covarianceModelCollection, X, Y, estimatorType, filter)
 >>> print(hsic.getR2HSICIndices())
-[0.184124,-0.00585434,0.0339537]"
+[0.238014,0.00167123,0.000377241]"
 
 // ---------------------------------------------------------------------
 
