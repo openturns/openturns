@@ -304,10 +304,10 @@ int main(int, char *[])
     {
       for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
       {
-        MatrixImplementation B(*A4.getImplementation());
+        MatrixImplementation B4(*A4.getImplementation());
         fullprint << "----------" << newRow << "x" << newCol << std::endl;
-        B.resize(newRow, newCol);
-        fullprint << B.__str__() << std::endl;
+        B4.resize(newRow, newCol);
+        fullprint << B4.__str__() << std::endl;
       }
     }
   }

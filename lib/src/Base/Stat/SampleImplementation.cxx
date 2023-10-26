@@ -2384,7 +2384,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
       // manually replace decimal separator
       ss.str("");
       ss << data_[index];
-      std::string str(ss.str());
+      str = ss.str();
       if (numSeparator == ",")
         str = regex_replace(str, std::regex("\\."), ",");
       csvFile << csvSeparator << str;
