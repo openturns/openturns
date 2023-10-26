@@ -30,7 +30,6 @@
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
-#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
