@@ -110,9 +110,9 @@ String Function::__str__(const String & offset) const
 }
 
 /* String converter */
-String Function::__repr_html__() const
+String Function::_repr_html_() const
 {
-  return getImplementation()->__repr_html__();
+  return getImplementation()->_repr_html_();
 }
 
 /* Description Accessor */

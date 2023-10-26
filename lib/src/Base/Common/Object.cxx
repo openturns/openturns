@@ -39,7 +39,7 @@ String Object::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
-String Object::__repr_html__() const
+String Object::_repr_html_() const
 {
   return __repr__();
 }

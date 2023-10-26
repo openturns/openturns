@@ -132,13 +132,13 @@ String ProductPolynomialEvaluation::__str__(const String & offset) const
   return oss;
 }
 
-String ProductPolynomialEvaluation::__repr_html__() const
+String ProductPolynomialEvaluation::_repr_html_() const
 {
   OSS oss(false);
   const UnsignedInteger size = polynomials_.getSize();
   if (size == 0) return oss;
   const Description description(getInputDescription());
-  if (size == 1) return (oss << polynomials_[0].__repr_html__(description[0]));
+  if (size == 1) return (oss << polynomials_[0]._repr_html_(description[0]));
   Bool allScalar = true;
   Scalar scalarValue = 1.0;
   Bool onlyOneNotScalar = false;
@@ -161,7 +161,7 @@ String ProductPolynomialEvaluation::__repr_html__() const
   // Scalar polynomial
   if (allScalar) oss << scalarValue;
   // Only one no unit polynomial in the product
-  else if (onlyOneNotScalar) oss << (polynomials_[indexNotScalar] * scalarValue).__repr_html__(description[indexNotScalar]);
+  else if (onlyOneNotScalar) oss << (polynomials_[indexNotScalar] * scalarValue)._repr_html_(description[indexNotScalar]);
   // At least two non-scalar factors
   else
   {
@@ -185,9 +185,9 @@ String ProductPolynomialEvaluation::__repr_html__() const
         // We need parentheses if there are two non zero coefficients or more
         const Bool isNeedForParentheses = (numberOfNonZeros > 1);
         if (isNeedForParentheses)
-          oss << "(" << polynomials_[i].__repr_html__(description[i]) << ")";
+          oss << "(" << polynomials_[i]._repr_html_(description[i]) << ")";
         else
-          oss << polynomials_[i].__repr_html__(description[i]);
+          oss << polynomials_[i]._repr_html_(description[i]);
         first = false;
       }
     } // Loop over the factors

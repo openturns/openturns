@@ -113,9 +113,9 @@ String FunctionImplementation::__str__(const String & offset) const
 }
 
 /* String converter */
-String FunctionImplementation::__repr_html__() const
+String FunctionImplementation::_repr_html_() const
 {
-  return evaluation_.__repr_html__();
+  return evaluation_._repr_html_();
 }
 
 /* Description Accessor */

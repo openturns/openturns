@@ -82,7 +82,7 @@ String EvaluationImplementation::__str__(const String & ) const
 }
 
 /* String converter */
-String EvaluationImplementation::__repr_html__() const
+String EvaluationImplementation::_repr_html_() const
 {
   OSS oss(true);
   oss << "<ul>\n";

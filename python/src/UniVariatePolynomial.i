@@ -43,11 +43,3 @@ UniVariatePolynomial(PyObject * pyObj)
 }
 
 }
-
-%pythoncode %{
-def __UniVariatePolynomial_repr_html(self):
-    """Get HTML representation."""
-    return self.__repr_html__()
-
-UniVariatePolynomial._repr_html_ = __UniVariatePolynomial_repr_html
-%}

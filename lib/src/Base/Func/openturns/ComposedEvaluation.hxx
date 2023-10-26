@@ -53,7 +53,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-  String __repr_html__() const override;
+  String _repr_html_() const override;
 
   /** Operator () */
   using EvaluationImplementation::operator();

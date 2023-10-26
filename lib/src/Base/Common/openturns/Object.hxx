@@ -88,7 +88,7 @@ public:
    *
    * @return A string fully describing the object
    */
-  virtual String __repr_html__() const;
+  virtual String _repr_html_() const;
 
 
   /**

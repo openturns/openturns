@@ -147,7 +147,7 @@ String DualLinearCombinationEvaluation::__str__(const String & ) const
   return oss;
 }
 
-String DualLinearCombinationEvaluation::__repr_html__() const
+String DualLinearCombinationEvaluation::_repr_html_() const
 {
   OSS oss(false);
   const UnsignedInteger size = functionsCollection_.getSize();
@@ -168,7 +168,7 @@ String DualLinearCombinationEvaluation::__repr_html__() const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Evaluation evaluation(functionsCollection_[i].getEvaluation().getMarginal(0));
-    const String expr(evaluation.getImplementation()->__repr_html__());
+    const String expr(evaluation.getImplementation()->_repr_html_());
     oss << "  <tr>\n";
     oss << "    <td>" << coefficients_[i] << "</td>\n";
     oss << "    <td>" << expr << "</td>\n";

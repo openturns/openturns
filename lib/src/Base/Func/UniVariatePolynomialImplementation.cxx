@@ -121,12 +121,12 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
   return oss;
 }
 
-String UniVariatePolynomialImplementation::__repr_html__() const
+String UniVariatePolynomialImplementation::_repr_html_() const
 {
-  return __repr_html__("X");
+  return _repr_html_("X");
 }
 
-String UniVariatePolynomialImplementation::__repr_html__(const String & variableName) const
+String UniVariatePolynomialImplementation::_repr_html_(const String & variableName) const
 {
   OSS oss(false);
   const UnsignedInteger size = coefficients_.getSize();

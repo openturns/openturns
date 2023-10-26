@@ -118,7 +118,7 @@ String SymbolicEvaluation::__str__(const String & ) const
 }
 
 /* String converter */
-String SymbolicEvaluation::__repr_html__() const
+String SymbolicEvaluation::_repr_html_() const
 {
   OSS oss(true);
   oss << getInputDescription() << "->" << formulas_;

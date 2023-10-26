@@ -17,4 +17,4 @@ for i in range(20):
     p = productBasis.build(i)
     print("type = ", type(p))
     print(p)
-    print(p.__repr_html__())
+    print(p._repr_html_())

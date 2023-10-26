@@ -435,6 +435,4 @@ class PythonFunction(Function):
             instance.isVariableLinear = variablesLinearity
                           
         return Function(instance)
-
-Function._repr_html_ = Function.__repr_html__
 %}

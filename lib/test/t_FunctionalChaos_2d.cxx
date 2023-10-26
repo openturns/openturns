@@ -88,7 +88,7 @@ int main(int, char *[])
     std::cout << "ComposedMetamodel (str)= " << std::endl;
     std::cout << composedMetamodel << std::endl;
     std::cout << "ComposedMetamodel (html)= " << std::endl;
-    std::cout << composedMetamodel.__repr_html__() << std::endl;
+    std::cout << composedMetamodel._repr_html_() << std::endl;
     
   } // try
   catch (TestFailed & ex)

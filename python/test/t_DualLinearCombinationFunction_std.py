@@ -32,4 +32,4 @@ print("Marginal (0,2)=", myFunction.getMarginal([0, 2]))
 print("Marginal (1,2)=", myFunction.getMarginal([1, 2]))
 
 print("myFunction (HTML)=")
-print(myFunction.__repr_html__())
+print(myFunction._repr_html_())

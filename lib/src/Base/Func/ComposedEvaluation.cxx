@@ -90,7 +90,7 @@ String ComposedEvaluation::__str__(const String & offset) const
   return oss;
 }
 
-String ComposedEvaluation::__repr_html__() const
+String ComposedEvaluation::_repr_html_() const
 {
   return __str__();
 }
