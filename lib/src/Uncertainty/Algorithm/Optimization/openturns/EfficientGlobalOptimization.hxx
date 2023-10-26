@@ -115,25 +115,25 @@ private:
   OptimizationAlgorithm solver_;
 
   // whether the solver was set
-  mutable Bool useDefaultSolver_;
+  Bool useDefaultSolver_ = true;
 
   // Size of the design to draw starting points
-  UnsignedInteger multiStartExperimentSize_;
+  UnsignedInteger multiStartExperimentSize_ = 0;
 
   // number of starting points for criterion optim
-  UnsignedInteger multiStartNumber_;
+  UnsignedInteger multiStartNumber_ = 0;
 
   // relearn kriging parameters every X iterations
-  UnsignedInteger parameterEstimationPeriod_;
+  UnsignedInteger parameterEstimationPeriod_ = 0;
 
   // improvement stopping criterion factor
-  Scalar improvementFactor_;
+  Scalar improvementFactor_ = 0.0;
 
   // correlation length stopping criterion factor
-  Scalar correlationLengthFactor_;
+  Scalar correlationLengthFactor_ = 0.0;
 
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
-  Scalar aeiTradeoff_;
+  Scalar aeiTradeoff_ = 0.0;
 
   // noise model called at design points
   Function metamodelNoise_;
@@ -141,7 +141,7 @@ private:
   // optional noise model for improvement optimization only
   Function noiseModel_;
 
-  mutable Sample expectedImprovement_;
+  Sample expectedImprovement_;
 
 } ; /* class EfficientGlobalOptimization */
 
