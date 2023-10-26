@@ -178,8 +178,16 @@ basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-algo.setMaximumEvaluationNumber(2)
+algo.setMaximumEvaluationNumber(10)
 algo.run()
 result = algo.getResult()
+
+# check maximization
+problem.setMinimization(False)
+algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo.setMaximumEvaluationNumber(10)
+algo.run()
+result = algo.getResult()
+assert result.getOptimalValue()[0] >= 650.0
 
 print("OK")

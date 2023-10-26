@@ -78,11 +78,13 @@ class ExpectedImprovementEvaluation : public EvaluationImplementation
 public:
   ExpectedImprovementEvaluation (const Scalar optimalValue,
                                  const KrigingResult & metaModelResult,
-                                 const Function & noiseModel)
+                                 const Function & noiseModel,
+                                 const Bool isMinimization)
     : EvaluationImplementation()
     , optimalValue_(optimalValue)
     , metaModelResult_(metaModelResult)
     , noiseModel_(noiseModel)
+    , isMinimization_(isMinimization)
   {
   }
 
@@ -94,10 +96,11 @@ public:
   Point operator()(const Point & x) const
   {
     const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
-    const Scalar fmMk = optimalValue_ - mx;
+    const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
     const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return Point(1, SpecFunc::LowestScalar);
+    if (!SpecFunc::IsNormal(sk))
+      return Point(1, SpecFunc::LowestScalar);
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -142,6 +145,9 @@ protected:
   Scalar optimalValue_;
   KrigingResult metaModelResult_;
   Function noiseModel_;
+
+  // whether the global problem is a miminization (the improvement criterion is always maximized)
+  Bool isMinimization_ = true;
 };
 
 
@@ -254,7 +260,7 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
+    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_, problem.isMinimization()));
 
     // use multi-start to optimize the improvement criterion when using the default solver
     if (useDefaultSolver_ && problem.hasBounds())
