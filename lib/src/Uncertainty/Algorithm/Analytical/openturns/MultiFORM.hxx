@@ -34,8 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MultiFORM
   : public FORM
 {
-
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

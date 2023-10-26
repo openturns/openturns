@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MultiFORMResult
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<FORMResult> FORMResultCollection;
   typedef PersistentCollection<FORMResult> FORMResultPersistentCollection;

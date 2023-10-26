@@ -156,7 +156,7 @@ Buffer_repr(Buffer * self)
 
   if (s)
   {
-    snprintf(s, 100, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
+    snprintf(s, 100, "<read-only buffer at %p shape=(%s)>", (void*)self->bufferview.data, r);
     free(r);
 
     result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
