@@ -16,7 +16,7 @@ ARCH=i686
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PYMAJMIN=310
 PREFIX=${PWD}/install
-CXXFLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake \
+CXXFLAGS="-Wall -Wextra -Wpedantic -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake \
   -DSWIG_COMPILE_FLAGS="-O0 -Wno-unused-parameter" \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=${PREFIX}/lib \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \

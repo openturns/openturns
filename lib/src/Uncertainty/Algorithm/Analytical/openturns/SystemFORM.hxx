@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
   */
 class OT_API SystemFORM : public Analytical
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

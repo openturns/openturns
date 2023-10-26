@@ -91,14 +91,16 @@ int main(int, char *[])
         fullprint << "algo=" << algo.__str__() << std::endl;
         algo.run();
         // Check the coefficients
-        FunctionalChaosResult result(algo.getResult());
-        Point coeffs(result.getCoefficients().asPoint());
-        Point ref(coeffs.getSize());
-        std::copy(expectedCoefficientsLinear.begin(), expectedCoefficientsLinear.begin() + coeffs.getSize(), ref.begin());
-        Scalar err = (coeffs - ref).norm();
-        const Scalar rtol = 5.0e-2;
-        const Scalar atol = 5.0e-2;
-        assert_almost_equal(err, 0.0, rtol, atol);
+        {
+          FunctionalChaosResult result(algo.getResult());
+          Point coeffs(result.getCoefficients().asPoint());
+          Point ref(coeffs.getSize());
+          std::copy(expectedCoefficientsLinear.begin(), expectedCoefficientsLinear.begin() + coeffs.getSize(), ref.begin());
+          Scalar err = (coeffs - ref).norm();
+          const Scalar rtol = 5.0e-2;
+          const Scalar atol = 5.0e-2;
+          assert_almost_equal(err, 0.0, rtol, atol);
+        }
         // Check the function restriction
         algo.setActiveFunctions(condensedIndices);
         fullprint << "algo=" << algo.__str__() << std::endl;

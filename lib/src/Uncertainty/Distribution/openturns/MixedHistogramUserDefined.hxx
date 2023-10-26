@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MixedHistogramUserDefined
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<DistributionImplementation>   Implementation;

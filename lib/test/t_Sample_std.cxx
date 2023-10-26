@@ -97,7 +97,7 @@ void test_argsort()
   Sample nodesSorted(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger index(order[i]);
+    index = order[i];
     weightsSorted[i] = weightsShuffled[index];
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {

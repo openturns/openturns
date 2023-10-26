@@ -298,13 +298,13 @@ int main(int, char *[])
   coll.add(A3);
   for (UnsignedInteger i = 0; i < 3; ++ i)
   {
-    const Matrix A(coll[i]);
-    fullprint << "A = " << A.__str__() << std::endl;
+    const Matrix A4(coll[i]);
+    fullprint << "A = " << A4.__str__() << std::endl;
     for(UnsignedInteger newRow = 1; newRow < 6; ++ newRow)
     {
       for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
       {
-        MatrixImplementation B(*A.getImplementation());
+        MatrixImplementation B(*A4.getImplementation());
         fullprint << "----------" << newRow << "x" << newCol << std::endl;
         B.resize(newRow, newCol);
         fullprint << B.__str__() << std::endl;

@@ -264,11 +264,14 @@ int main(int, char *[])
     ChiSquare chiSquare(1.5);
     study.add("chiSquare", chiSquare);
 
-    UnsignedInteger dim = 2;
-    Point theta(dim + 1);
-    for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
-    Dirichlet dirichlet(theta);
-    study.add("dirichlet", dirichlet);
+    Dirichlet dirichlet;
+    {
+      UnsignedInteger dim = 2;
+      Point theta(dim + 1);
+      for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
+      dirichlet = Dirichlet(theta);
+      study.add("dirichlet", dirichlet);
+    }
 
     Exponential exponential(3.0, -2.0);
     study.add("exponential", exponential);
@@ -335,27 +338,33 @@ int main(int, char *[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    Sample x(3, 1);
-    x[0][0] = 1.0;
-    x[1][0] = 2.0;
-    x[2][0] = 3.0;
-    Point p(3);
-    p[0] = 0.3;
-    p[1] = 0.1;
-    p[2] = 0.6;
-    UserDefined userDefined(x, p);
-    study.add("userDefined", userDefined);
+    UserDefined userDefined;
+    {
+      Sample x(3, 1);
+      x[0][0] = 1.0;
+      x[1][0] = 2.0;
+      x[2][0] = 3.0;
+      Point p(3);
+      p[0] = 0.3;
+      p[1] = 0.1;
+      p[2] = 0.6;
+      userDefined = UserDefined(x, p);
+      study.add("userDefined", userDefined);
+    }
 
     // Create a WeibullMin distribution
     WeibullMin weibull(2.0, 1.5, -0.5);
     study.add("weibullMin", weibull);
 
     // Create a NormalCopula distribution
-    CorrelationMatrix R(3);
-    R(0, 1) = 0.5;
-    R(1, 2) = 0.5;
-    NormalCopula normalCopula(R);
-    study.add("normalCopula", normalCopula);
+    NormalCopula normalCopula;
+    {
+      CorrelationMatrix R(3);
+      R(0, 1) = 0.5;
+      R(1, 2) = 0.5;
+      normalCopula = NormalCopula(R);
+      study.add("normalCopula", normalCopula);
+    }
 
     // Create a Uniform distribution
     Uniform uniform(-1.5, 2.0);
@@ -370,29 +379,32 @@ int main(int, char *[])
     study.add("composedDistribution", composedDistribution);
 
     // Create an analytical Function
-    Description input(3);
-    input[0] = "a";
-    input[1] = "b";
-    input[2] = "c";
-    Description output(3);
-    output[0] = "squaresum";
-    output[1] = "prod";
-    output[2] = "complex";
-    Description formulas(output.getSize());
-    formulas[0] = "a+b+c";
-    formulas[1] = "a-b*c";
-    formulas[2] = "(a+2*b^2+3*c^3)/6";
-    SymbolicFunction analytical(input, formulas);
-    analytical.setName("analytical");
-    study.add("analytical", analytical);
+    SymbolicFunction analytical;
+    {
+      Description input(3);
+      input[0] = "a";
+      input[1] = "b";
+      input[2] = "c";
+      Description output(3);
+      output[0] = "squaresum";
+      output[1] = "prod";
+      output[2] = "complex";
+      Description formulas(output.getSize());
+      formulas[0] = "a+b+c";
+      formulas[1] = "a-b*c";
+      formulas[2] = "(a+2*b^2+3*c^3)/6";
+      analytical  = SymbolicFunction(input, formulas);
+      analytical.setName("analytical");
+      study.add("analytical", analytical);
+    }
 
     // Create an Event Object
     ThresholdEvent event;
     {
       const Point mu = {101, 202, 303};
       RandomVector vect(Normal(mu, Point(3, 1e-6), CorrelationMatrix(3)));
-      CompositeRandomVector output(analytical.getMarginal(0), vect);
-      event = ThresholdEvent(output, Less(), 50);
+      CompositeRandomVector output2(analytical.getMarginal(0), vect);
+      event = ThresholdEvent(output2, Less(), 50);
     }
     study.add("randomVector", event);
 
@@ -489,18 +501,18 @@ int main(int, char *[])
       input3.setName("input");
       CompositeRandomVector output3(model, input3);
       output3.setName("output");
-      ThresholdEvent event(output3, Greater(), 1.0);
+      ThresholdEvent event2(output3, Greater(), 1.0);
       event.setName("failureEvent");
       Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
-      formResult = FORMResult(Point(2, 1.0), event, false);
+      formResult = FORMResult(Point(2, 1.0), event2, false);
       formResult.setName("formResult");
       formResult.getImportanceFactors();
       formResult.getImportanceFactors(AnalyticalResult::CLASSICAL);
       formResult.getImportanceFactors(AnalyticalResult::PHYSICAL);
       formResult.getEventProbabilitySensitivity();
 
-      sormResult = SORMResult (Point(2, 1.0), event, false);
+      sormResult = SORMResult (Point(2, 1.0), event2, false);
       sormResult.setName("sormResult");
       sormResult.getEventProbabilityBreitung();
       sormResult.getEventProbabilityHohenbichler();
@@ -515,8 +527,8 @@ int main(int, char *[])
     // Create an ARMACoefficients
     ARMACoefficients armaCoefficients;
     {
-      const UnsignedInteger dim = 2;
-      SquareMatrix squareMatrix1(dim);
+      const UnsignedInteger dim2 = 2;
+      SquareMatrix squareMatrix1(dim2);
       squareMatrix1(0, 0) = 1.;
       squareMatrix1(1, 0) = 2.;
       squareMatrix1(0, 1) = 3.;
@@ -526,7 +538,7 @@ int main(int, char *[])
       double t = 1.5;
       SquareMatrix squareMatrix3 = squareMatrix1.operator / (t) ;
       const UnsignedInteger size = 3;
-      armaCoefficients = ARMACoefficients(size, dim);
+      armaCoefficients = ARMACoefficients(size, dim2);
       armaCoefficients[0] = squareMatrix1 ;
       armaCoefficients[1] = squareMatrix2 ;
       armaCoefficients[2] = squareMatrix3 ;
@@ -541,13 +553,13 @@ int main(int, char *[])
       const UnsignedInteger q = 4;
       Sample valuesX(p, dim);
       Sample valuesEpsilon(q, dim);
-      for(UnsignedInteger j = 0 ; j < dim ; ++j)
+      for(UnsignedInteger j = 0 ; j < dim ; ++ j)
       {
-        for(UnsignedInteger i = 0 ; i < p ; ++i)
+        for(UnsignedInteger i = 0 ; i < p ; ++ i)
         {
           valuesX[i][j] = 2.0 * i + 3.0 * j + 1.0;
         }
-        for(UnsignedInteger i = 0 ; i < q ; ++i)
+        for(UnsignedInteger i = 0 ; i < q; ++ i)
         {
           valuesEpsilon[i][j] = RandomGenerator::Generate() ;
         }
@@ -580,13 +592,8 @@ int main(int, char *[])
     }
     study.add("whiteNoise", whiteNoise);
 
-    // Create an WhittleFactory
-    WhittleFactory whittleFactory;
-    {
-      const UnsignedInteger p = 1;
-      const UnsignedInteger q = 2;
-      whittleFactory = WhittleFactory( p, q );
-    }
+    // Create a WhittleFactory
+    WhittleFactory whittleFactory(1, 2);
     study.add("whittleFactory", whittleFactory);
 
     // Create an ARMA
@@ -598,7 +605,7 @@ int main(int, char *[])
       squareMatrix1(1, 0) = 0.3 ;
       squareMatrix1(0, 1) = 0.7 ;
       squareMatrix1(1, 1) = 0.4 ;
-      SquareMatrix squareMatrix2(dim) ;
+      SquareMatrix squareMatrix2(dim);
       squareMatrix2(0, 0) = 0.1;
       squareMatrix2(1, 0) = 0.0;
       squareMatrix2(0, 1) = 0.0;
@@ -738,8 +745,7 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < dim; ++i) inVars[i] = OSS() << "x" << i;
       SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
-      Interval domain(dim);
-      eventDomain = DomainEvent(Y, domain);
+      eventDomain = DomainEvent(Y, Interval(dim));
     }
     study.add("domainEvent", eventDomain);
 
@@ -750,8 +756,7 @@ int main(int, char *[])
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
-      Interval domain(dim);
-      eventProcess = ProcessEvent(X, domain);
+      eventProcess = ProcessEvent(X, Interval(dim));
     }
     study.add("processEvent", eventProcess);
 
@@ -773,14 +778,14 @@ int main(int, char *[])
     FunctionalBasisProcess functionalBasisProcess;
     {
       UnsignedInteger basisDimension = 10;
-      Collection<Function> basis(basisDimension);
+      Collection<Function> basis2(basisDimension);
       Collection<Distribution> coefficients(basisDimension);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
-        basis[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
+        basis2[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
         coefficients[i] = Normal(0.0, (1.0 + i));
       }
-      functionalBasisProcess = FunctionalBasisProcess(ComposedDistribution(coefficients), basis);
+      functionalBasisProcess = FunctionalBasisProcess(ComposedDistribution(coefficients), basis2);
     }
     study.add("functionalBasisProcess", functionalBasisProcess);
 
@@ -1149,20 +1154,20 @@ int main(int, char *[])
 
     // Create a Study Object by giving its name
     {
-      Study study(fileName);
-      study.setStorageManager(XMLH5StorageManager(fileName));
+      Study study3(fileName);
+      study3.setStorageManager(XMLH5StorageManager(fileName));
       Point point(4);
       point[0] = std::numeric_limits<Scalar>::quiet_NaN();
       point[1] = sqrt(-1.0);
       point[2] = std::numeric_limits<Scalar>::infinity();
       point[3] = -std::numeric_limits<Scalar>::infinity();
-      study.add("point", point);
-      study.save();
-      Study study2(fileName);
-      study2.setStorageManager(XMLH5StorageManager(fileName));
-      study2.load();
+      study3.add("point", point);
+      study3.save();
+      Study study4(fileName);
+      study4.setStorageManager(XMLH5StorageManager(fileName));
+      study4.load();
       Point point2;
-      study2.fillObject("point", point2);
+      study3.fillObject("point", point2);
       for (UnsignedInteger j = 0; j < point2.getDimension(); ++ j)
       {
         std::cout << "j=" << j;
