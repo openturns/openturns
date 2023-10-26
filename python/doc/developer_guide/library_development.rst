@@ -114,6 +114,8 @@ First, add the class to the C++ library
 #. Create a test file ``t_MyClass_std.cxx`` in the directory lib/test.
    This test file must use the standard functionalities of the class
    MyClass.
+   Keep in mind there are over a thousand unit tests, so they should be
+   reasonably quick to run, lasting preferably less than 10 seconds.
 
 #. Create an expected output file ``t_MyClass_std.expout`` that contains
    a verbatim copy of the expected output (copy-paste the *validated*
@@ -199,9 +201,11 @@ Second, add your class to the Python interface
        Examples
        --------
        >>> import openturns as ot
+       >>> ot.RandomGenerator.SetSeed(0)
        >>> dp = ot.Normal().getRealization()
        >>> inst = ot.MyClass(dp, 4.8)
-       >>> print(inst)"
+       >>> print(inst)
+       >>> 4.5677..."
 
        // ---------------------------------------------------------------------
 
@@ -209,9 +213,11 @@ Second, add your class to the Python interface
        "...
        "
 
-       // ---------------------------------------------------------------------
-
-       ...
+   Beware that docstring tests run from the Examples section share the same environment
+   and they can be affected by global settings such as RandomGenerator seed or ResourceMap entries,
+   so for example here we reset the RNG seed prior to sampling to avoid affecting the expected result.
+   Also, these examples must be very quick because they are run as batches per module,
+   more expensive tests can be run in the dedicated unit tests.
 
 #. Modify the CMakeLists.txt file in python/src: add MyClass.i,
    MyClass\_doc.i.in to the relevant ``ot_add_python_module`` clause.
@@ -225,6 +231,8 @@ Second, add your class to the Python interface
 #. Create a test file ``t_MyClass_std.py`` in the directory python/test.
    This test implements the same tests than ``t_MyClass_std.cxx``, but
    using python.
+   Keep in mind there are over a thousand unit tests, so they should be
+   reasonably quick to run, lasting preferably less than 10 seconds.
 
 #. Modify the CMakeLists.txt file in python/test:
 
