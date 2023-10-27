@@ -23,7 +23,7 @@ for all :math:`x+\alpha_i >0`.
 
 |
 
-BoxCox transformation could alse be performed in the case of the estimation of a general linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
+BoxCox transformation could also be performed in the case of the estimation of a general linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
 The objective is to estimate the most likely surrogate model (general linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the general linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 "
 
@@ -237,7 +237,7 @@ Substituting these expressions in the likelihood equation and taking the :math:`
       \left(\lambda - 1 \right) \sum_{k=0}^{N-1} \log(x_i)\,,%\qquad mbox{where :math:`C` is a constant.}
     \end{array}
 
-The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)`.
+The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)`.
 
 In the case of surrogate model estimate, we note :math:`(x_0, \dots, x_{N-1})` the input sample of :math:`X`, :math:`(y_0, \dots, y_{N-1})` the input sample of :math:`Y`.
 We suppose the general linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}` with :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`:
@@ -266,7 +266,7 @@ The likelihood function to be maximized writes as follows:
     \end{array}
 
 where :math:`C^{\lambda}_{\vect{\sigma}, \vect{\theta}}` is the matrix resulted from the discretization of the covariance model over :math:`X`.
-The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell_{glm}(\lambda)`.
+The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell_{glm}(\lambda)`.
 
 Examples
 --------

@@ -1,5 +1,5 @@
 %feature("docstring") OT::AdaptiveDirectionalStratification
-"Adaptative directional simulation.
+"Adaptive directional simulation.
 
 Parameters
 ----------

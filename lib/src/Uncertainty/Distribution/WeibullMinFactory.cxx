@@ -80,7 +80,7 @@ WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
 
 WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
-  LOGINFO("in WeibullMinFactory, using likelihood maximisation");
+  LOGINFO("in WeibullMinFactory, using likelihood maximization");
   const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
   return buildAsWeibullMin(factory.build(sample).getParameter());
 }

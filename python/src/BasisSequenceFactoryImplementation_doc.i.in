@@ -15,7 +15,7 @@ LARS
 Notes
 -----
 BasisSequenceFactory is the interface of the BasisSequenceFactoryImplementation.
-This class is not usable because it has sense only whithin the
+This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::BasisSequenceFactoryImplementation

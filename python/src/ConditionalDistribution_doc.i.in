@@ -51,7 +51,7 @@ by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
 :math:`g` the linking function.
 
 With the default constructor, the resulting random variable :math:`X` follows a
-trapezoidal distribution parametered by :math:`(-1, 0, 1, 2)`.
+trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 
 Note that a :class:`~openturns.ConditionalDistribution` can be obtained as the
 first marginal distribution of a :class:`~openturns.BayesDistribution`.

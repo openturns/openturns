@@ -87,7 +87,7 @@ distribution : :class:`~openturns.WeibullMin`
 
 Notes
 -----
-The maximisation of the likelihood is initialized with the value of the estimator calculated with the method of moments.
+The maximization of the likelihood is initialized with the value of the estimator calculated with the method of moments.
 "
 // ----------------------------------------------------------------------------
 

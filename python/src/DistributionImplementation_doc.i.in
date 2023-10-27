@@ -130,7 +130,7 @@ Parameters
 Xn : float, sequence of float
     Conditional CDF input (last component).
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -163,7 +163,7 @@ Parameters
 Xn : float
     Conditional DDF input (last component).
 Xcond : sequence of float with dimension :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -189,7 +189,7 @@ Parameters
 Xn : float, sequence of float
     Conditional PDF input (last component).
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -215,7 +215,7 @@ Parameters
 p : float, sequence of float, :math:`0 < p < 1`
     Conditional quantile function input.
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------

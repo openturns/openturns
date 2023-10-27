@@ -27,7 +27,7 @@ lhs.setAlwaysShuffle(True)  # randomized
 space_filling = ot.SpaceFillingC2()
 # Defining a temperature profile
 temperatureProfile = ot.GeometricProfile()
-# Pre conditionning : generate an optimal design with MC
+# Pre conditioning : generate an optimal design with MC
 nSimu = 100
 algo = ot.MonteCarloLHS(lhs, nSimu, space_filling)
 initialDesign = algo.generate()

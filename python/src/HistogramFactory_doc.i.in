@@ -149,7 +149,7 @@ known as Scott's rule (see [scott2015]_ eq. 3.16 page 59):
 
     h = \sigma_n \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
 
-where :math:`\sigma_n^2` is the unbiaised variance of the data. 
+where :math:`\sigma_n^2` is the unbiased variance of the data.
 This estimator is optimal for the gaussian distribution (see [scott1992]_). 
 In this case, the AMISE is :math:`O(n^{-2/3})`. 
 

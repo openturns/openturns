@@ -119,7 +119,7 @@ OT_ComplexMatrix_getNbRows_doc
 Returns
 -------
 imat : :class:`~openturns.Matrix`
-    A real matix :math:`\mat{A}` of size :math:`n_r \times n_c` such 
+    A real matrix :math:`\mat{A}` of size :math:`n_r \times n_c` such
     :math:`A_{i, j} = \mathrm{Im} (M_{i, j})`."
 %enddef
 %feature("docstring") OT::ComplexMatrix::imag
@@ -146,7 +146,7 @@ OT_ComplexMatrix_isEmpty_doc
 Returns
 -------
 rmat : :class:`~openturns.Matrix`
-    A real matix :math:`\mat{A}` of size :math:`n_r \times n_c` such 
+    A real matrix :math:`\mat{A}` of size :math:`n_r \times n_c` such
     :math:`A_{i, j} = \mathrm{Re} (M_{i, j})`."
 %enddef
 %feature("docstring") OT::ComplexMatrix::real
