@@ -3728,7 +3728,6 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " PDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -3855,7 +3854,6 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
-      cloud.setColor("red");
       graph.add(cloud);
     }
     return graph;
@@ -3905,7 +3903,6 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
     data[2]    = Point(2, 1.0);
     data(3, 1) = 1.0;
     Curve square(data);
-    square.setColor("blue");
     graph.setDrawable(square, 0);
     graph.add(drawable);
   }
@@ -3979,7 +3976,6 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   Graph graphLogPDF(logPdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphLogPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << "log PDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4106,7 +4102,6 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
-      cloud.setColor("red");
       graph.add(cloud);
     }
     return graph;
@@ -4162,7 +4157,6 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
     data(3, 1) = 1.0;
     data[4] = data[0];
     Curve square(data);
-    square.setColor("blue");
     graph.setDrawable(square, 0);
     graph.add(drawable);
   }
@@ -4242,7 +4236,6 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   Graph graphCDF(cdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphCDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " CDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4417,7 +4410,6 @@ Graph DistributionImplementation::drawSurvivalFunction(const Scalar xMin,
   Graph graphSurvivalFunction(survivalWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphSurvivalFunction.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " SurvivalFunction");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4565,7 +4557,6 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
   Graph graphQuantile(quantileWrapper.draw(qMin, qMax, pointNumber, scale));
   Drawable drawable(graphQuantile.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " Quantile");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4587,7 +4578,6 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   const String title(OSS() << getDescription() << " Quantile");
   const Sample data(computeQuantile(qMin, qMax, pointNumber));
   Curve curveQuantile(data);
-  curveQuantile.setColor("red");
   curveQuantile.setLegend(title);
   curveQuantile.setLineStyle("solid");
   curveQuantile.setLineWidth(2);

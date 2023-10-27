@@ -36,7 +36,11 @@ static const Factory<Pie> Factory_Pie;
 Pie::Pie()
   : DrawableImplementation()
   , radius_(1.0)
-{}
+{
+  //Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
+}
 
 /* Default constructor */
 Pie::Pie(const Point & data)
@@ -46,6 +50,9 @@ Pie::Pie(const Point & data)
   , center_(2, 0.0)
   , labels_(0)
 {
+  //Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
   // Check data validity
   setData(data);
   buildDefaultPalette();
@@ -61,6 +68,9 @@ Pie::Pie(const Point & data,
   , center_(2, 0.0)
   , labels_(labels)
 {
+  //Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
   // Check data validity
   setData(data);
   buildDefaultPalette();
@@ -78,6 +88,9 @@ Pie::Pie(const Point & data,
   , center_(center)
   , labels_(labels)
 {
+  //Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
   if(!IsValidColorPalette(palette)) throw InvalidArgumentException(HERE) << "Given color palette = " << palette << " is incorrect";
   // Check data validity
   setData(data);

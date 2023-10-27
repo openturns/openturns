@@ -416,7 +416,8 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
     data(k, 1) = values[k];
   }
 
-  Cloud cloud(data, "red", "circle", "");
+  Cloud cloud(data);
+  cloud.setPointStyle("circle");
   graph.add(cloud);
 
   /* Min & max indices values */

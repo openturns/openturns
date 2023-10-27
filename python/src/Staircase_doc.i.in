@@ -16,7 +16,7 @@ data : 2-d sequence of float
 legend : str
     Legend of the Staircase.
 color : str
-    Color of the curve. If not specified, by default it is 'blue'.
+    Color of the curve. If not specified, the default color is one of the default palette colors.
 lineStyle : str
     Style of the curve. If not specified, by default it is 'solid'.
 lineWidth : float 

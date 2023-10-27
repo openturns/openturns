@@ -69,7 +69,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphQQplot.add(bisector);
   // Then the QQ plot
@@ -103,7 +102,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphQQplot.add(bisector);
   // Then the QQ plot
@@ -136,7 +134,6 @@ Graph VisualTest::DrawPPplot(const Sample & sample1,
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graph.add(bisector);
   // Then the PP plot
@@ -170,7 +167,6 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graph.add(bisector);
   // Then the PP plot
@@ -196,7 +192,6 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphCDFplot.add(bisector);
   // Then the CDF plot
@@ -222,7 +217,6 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphCDFplot.add(bisector);
   // Then the CDF plot
@@ -257,7 +251,6 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   henryLinePoints(1, 0) = sortedSample(size - 1, 0); // sample.getMax()[0];
   henryLinePoints(1, 1) = (henryLinePoints(1, 0) - mu) / sigma;
   Curve henryLine(henryLinePoints, "Henry line");
-  henryLine.setColor("red");
   henryLine.setLineStyle("dashed");
   graphHenry.add(henryLine);
 
@@ -290,7 +283,6 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     {
       const Indices indices = {j, i};
       Cloud cloud(sample.getMarginal(indices));
-      cloud.setPointStyle(ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -355,7 +347,6 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
   curveLinearModelTest.setLegend("regression");
-  curveLinearModelTest.setColor("red");
   Cloud cloudLinearModelTest(sample1, sample2);
   cloudLinearModelTest.setPointStyle("fsquare");
   cloudLinearModelTest.setLegend("sample");
@@ -395,7 +386,8 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample &
 
   OSS oss;
   oss << sample1.getDescription()[0] << " LinearModel residual Test";
-  const Cloud cloudLinearModelRTest(data, "red", "fsquare", oss);
+  Cloud cloudLinearModelRTest(data, oss);
+  cloudLinearModelRTest.setPointStyle("fsquare");
 
   Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
@@ -579,7 +571,6 @@ Graph VisualTest::DrawKendallPlot(const Sample & data,
   dataDiagonal.add(Point(2, 0.0));
   dataDiagonal.add(Point(2, 1.0));
   Curve diagonal(dataDiagonal);
-  diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
   graph.add(diagonal);
   // Draw the Kendall curve
@@ -603,7 +594,6 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   data.add(Point(2, 0.0));
   data.add(Point(2, 1.0));
   Curve diagonal(data);
-  diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
   graph.add(diagonal);
   // Draw the Kendall curve
@@ -675,7 +665,6 @@ static Graph VisualTestDrawDependenceFunction(const Sample & data,
 
   // estimate
   Curve curveXu(valuesU, valuesXu);
-  curveXu.setColor("red");
   curveXu.setLegend(legend);
   graph.add(curveXu);
   // confidence lower bound

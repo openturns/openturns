@@ -1156,7 +1156,6 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
     Curve curve(data);
     curve.setLineWidth(2);
-    curve.setColor("red");
     graph.add(curve);
     return graph;
   } // asStationary && isStationary()

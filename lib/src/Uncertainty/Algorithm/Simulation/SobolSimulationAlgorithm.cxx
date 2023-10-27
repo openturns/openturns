@@ -384,7 +384,8 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
       dataUpperBound.add(pt);
     }
   }
-  const Curve estimateCurve(dataEstimate, "red", "solid", 2, "index estimate");
+  Curve estimateCurve(dataEstimate, "index estimate");
+  estimateCurve.setLineWidth(2);
   OSS oss;
   oss << label << " order index convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");

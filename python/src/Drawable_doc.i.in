@@ -22,6 +22,8 @@ OT_Drawable_BuildTableauPalette_doc
 OT_Drawable_getColor_doc
 %feature("docstring") OT::Drawable::setColor
 OT_Drawable_setColor_doc
+%feature("docstring") OT::Drawable::isColorExplicitlySet
+OT_Drawable_isColorExplicitlySet_doc
 %feature("docstring") OT::Drawable::getColorCode
 OT_Drawable_getColorCode_doc
 %feature("docstring") OT::Drawable::GetValidColors

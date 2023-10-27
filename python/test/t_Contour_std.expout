@@ -1,4 +1,4 @@
-contour= Contour(name=Unnamed, color=red, fill=solid, line=solid, point=plus, width=1, data=
+contour= Contour(name=Unnamed, legend=, color=red, isColorExplicitlySet=true, fill=solid, line=solid, point=plus, width=1, data=
        [ y0       ]
    0 : [ 1.14151  ]
    1 : [ 0.398118 ]

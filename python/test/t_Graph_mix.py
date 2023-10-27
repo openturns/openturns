@@ -99,9 +99,9 @@ myGraph.add(myPie)
 
 # Add drawables with default colors
 secondGraph = ot.Graph("temporary graph", "x", "y", True, "topright")
-myCurve = ot.Curve(ot.Point([0.0,1.0,2.0]), ot.Point([1.0,3.0,2.0]));
-secondGraph.add(myCurve);
-secondGraph.add(ot.DrawableCollection([myCurve, myCloud]));
+myCurve = ot.Curve(ot.Point([0.0, 1.0, 2.0]), ot.Point([1.0, 3.0, 2.0]))
+secondGraph.add(myCurve)
+secondGraph.add(ot.DrawableCollection([myCurve, myCloud]))
 
 # Set new colors
 myGraph.setColors(["red", "green", "#120345"])

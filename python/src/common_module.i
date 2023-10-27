@@ -1,16 +1,5 @@
 // SWIG file common_module.i
 
-%pythonbegin %{
-from sys import version_info as _python_version_info
-if _python_version_info >= (3, 8, 0):
-    import os
-    for p in os.environ["PATH"].split(';'):
-        try:
-            os.add_dll_directory(p)
-        except:
-            continue
-%}
-
 %module(package="openturns", docstring="Utility classes.") common
 //%feature("autodoc","1");
 

@@ -19,7 +19,7 @@ dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of fl
 legend : str
     Legend of the Cloud.
 color : str
-    Color of the points. If not specified, by default it is 'blue'.
+    Color of the points. If not specified, the default color is one of the default palette colors.
 pointStyle : str
     Style of the points. If not specified, by default it is 'plus'.
 dataComplex : :class:`~openturns.ComplexCollection`

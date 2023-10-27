@@ -80,7 +80,7 @@ public:
   virtual String getEdgeColor() const;
 
   /** Explicit color validation flag accessor */
-  virtual Bool getIsColorExplicitlySet() const;
+  virtual Bool isColorExplicitlySet() const;
 
   /** Point style accessor */
   virtual String getPointStyle() const;

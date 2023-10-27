@@ -83,7 +83,6 @@
   <!-- OT::DrawableImplementation parameters -->
   <Drawable-DefaultLineWidth    value_float="1.0"          />
   <Drawable-AlternativePattern  value_str="S"              />
-  <Drawable-DefaultColor        value_str="blue"           />
   <Drawable-DefaultFillStyle    value_str="solid"          />
   <Drawable-DefaultLineStyle    value_str="solid"          />
   <Drawable-DefaultPaletteName  value_str="Tableau"        />

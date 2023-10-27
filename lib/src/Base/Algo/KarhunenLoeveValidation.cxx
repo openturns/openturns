@@ -130,7 +130,6 @@ GridLayout KarhunenLoeveValidation::drawValidation() const
     diagonalPoints(1, 0) = maxS[j];
     diagonalPoints(1, 1) = diagonalPoints(1, 0);
     Curve diagonal(diagonalPoints);
-    diagonal.setColor("red");
     graph.add(diagonal);
 
     const Cloud cloud(fieldSample.getMarginal(j), reducedFieldSample.getMarginal(j));
