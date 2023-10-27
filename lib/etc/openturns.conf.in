@@ -255,6 +255,7 @@
   <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_int="100" />
   <EfficientGlobalOptimization-DefaultMultiStartNumber          value_int="20"  />
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
+  <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />

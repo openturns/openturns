@@ -887,6 +887,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
+  addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
