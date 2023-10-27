@@ -364,7 +364,7 @@ n_parameters : int, :math:`0 \leq k`, optional
 Returns
 -------
 fitted_dist : :class:`~openturns.Distribution`
-    Estilmated distribution (if model is of type :class:`~openturns.DistributionFactory`).
+    Estimated distribution (if model is of type :class:`~openturns.DistributionFactory`).
 test_result : :class:`~openturns.TestResult`
     Test result.
 

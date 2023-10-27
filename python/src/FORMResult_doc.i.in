@@ -57,12 +57,12 @@ probability : positive float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FORMResult::getEventProbabilitySensitivity
-"Accessor to the sentivities of the FORM failure probability :math:`P_f`.
+"Accessor to the sensitivities of the FORM failure probability :math:`P_f`.
 
 Returns
 -------
-sentivities : :class:`~openturns.Point`
-    Sentivities of the FORM failure probability with regards to the parameters
+sensitivities : :class:`~openturns.Point`
+    Sensitivities of the FORM failure probability with regards to the parameters
     of the probabilistic input vector and to parameters of the dependence
     structure of the probabilistic input vector."
 

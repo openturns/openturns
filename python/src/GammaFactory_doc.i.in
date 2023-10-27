@@ -62,7 +62,7 @@ Get the asymptotic parameters distribution:
 
 Determine the confidence interval al level 0.9 with minimum volume:
 
->>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVomuleLevelSetSamplingSize', 100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 100)
 >>> confInt, level = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
 
 Determine the bilateral confidence interval al level 0.9:

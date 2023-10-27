@@ -46,7 +46,7 @@ distributions : list of distributions
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::BlockIndependentDistribution::setDistributionCollection
-"Accessor to the list of the codistributionspulas.
+"Accessor to the list of the distributions.
 
 Parameters
 ----------

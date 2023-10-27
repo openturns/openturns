@@ -8,7 +8,7 @@ The estimation is done by maximizing the likelihood of the sample.
 | We initialize the value of :math:`(n,p_n)` to
   :math:`\displaystyle\left(\left\lceil\frac{\Hat{x}_n^2}{\Hat{x}_n-\Hat{\sigma}_n^2}\right\rceil, \frac{\Hat{x}_n}{n}\right)`
   where :math:`\Hat{x}_n` is the empirical mean of the sample
-  :math:`(x_1, \hdots, x_n)`, and :math:`\Hat{\sigma}_n^2` its unbiaised
+  :math:`(x_1, \hdots, x_n)`, and :math:`\Hat{\sigma}_n^2` its unbiased
   empirical variance.
 | Then, we evaluate the likelihood of the sample with respect to the
   Binomial distribution parameterized with
