@@ -144,6 +144,9 @@ Bibliography
 .. [halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
     *An algorithm for the principal component analysis of large data sets*,
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
+.. [hastie2009] Hastie, T., Tibshirani, R., Friedman, J. H., & Friedman, J. H. (2009).
+    *The elements of statistical learning: data mining, inference, and prediction.*
+    New York: springer.
 .. [helton2003] Helton, J.C., and Davis, F. J.,
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
@@ -372,6 +375,8 @@ Bibliography
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [sen1997] Sen, A., & Srivastava, M. (1997).
+    *Regression analysis: theory, methods, and applications.* Springer Science & Business Media.
 .. [shao1993] Shao, J. (1993). *Linear model selection by cross-validation.*
     Journal of the American statistical Association. 88 (422), 486-494.
 .. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).

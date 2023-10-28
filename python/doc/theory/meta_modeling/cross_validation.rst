@@ -14,7 +14,7 @@ model is trained using only a subset of the available data.
 As a consequence, the estimated error can be pessimistic.
 In cross-validation, the roles of the train and test samples are exchanged.
 Hence, more of the available data is used, resulting in an improved
-accuracy of the error of the metamodel.
+accuracy of the estimated error of the metamodel.
 One of the problems of cross-validation is that we have to train
 the surrogate model several times which can be time consuming.
 In this case, the fast methods that we present below can be useful.
@@ -24,7 +24,7 @@ model where :math:`\set{X} \subseteq \Rset^{n_x}`
 is the domain of the input parameters :math:`\vect{x}`.
 Let :math:`\metamodel` be a surrogate model of :math:`\physicalmodel`, i.e.
 an approximation of the function.
-Once a polynomial response surface :math:`\metamodel`
+Once a metamodel :math:`\metamodel`
 of the original numerical model :math:`\physicalmodel` has been
 built up, we may estimate the mean squared error, i.e. the
 discrepancy between the response surface and the true model response
@@ -56,8 +56,8 @@ The coefficient of determination is:
     R^2 & = 1 - \operatorname{FVU} \\
     & = 1 - \frac{\operatorname{MSE}\left(\metamodel\right)}{\Var{Y}}
 
-Naive cross-validation
-~~~~~~~~~~~~~~~~~~~~~~
+Simple validation
+~~~~~~~~~~~~~~~~~
 
 In the ordinary or naive validation method, we divide the data sample (i.e.
 the experimental design) into two independent sub-samples:
@@ -91,7 +91,7 @@ observations of the random vector :math:`\vect{X}`:
 and consider the corresponding outputs of the model:
 
 .. math::
-    \left\{y_1, ..., y_n  \in \Rset\right\}
+    \left\{y^{(1)}, ..., y^{(n)}  \in \Rset\right\}
 
 where:
 
@@ -103,24 +103,20 @@ The Monte-Carlo estimator of the mean squared error is:
 
 .. math::
     \widehat{\operatorname{MSE}}\left(\metamodel\right)
-    = \frac{1}{n} \sum_{j = 1}^n \left[ \physicalmodel\left(\vect{x}^{(j)}\right) - \metamodel \left(\vect{x}^{(j)}\right) \right]^2
+    = \frac{1}{n} \sum_{j = 1}^n \left( y^{(j)} - \metamodel \left(\vect{x}^{(j)}\right) \right)^2
 
-If the test set :math:`\set{D}` is not independent from the training set
-(the set used to calibrate the metamodel), then the previous estimator
-may underestimate the true value of the mean squared error.
-In order to create a test set independent from the training set, a
-simple method is to split the data set into two parts.
-The drawback of this method is that this reduces the size of the training
-set, so that the mean squared error evaluated on the test set can be pessimistic.
-The leave-one-out and K-Fold cross validation methods
-use all the data available.
+The previous equation can be equivalently expressed depending on
+the model since :math:`y^{(j)} = \physicalmodel\left(\vect{x}^{(j)}\right)`.
+It seems, however, more consistent to use :math:`y^{(j)}` because the
+true model :math:`g` is unknown (otherwise we would not use a
+surrogate).
 
 The sample relative mean squared error is:
 
   .. math::
 
-      \widehat{\varepsilon}_{MSE}
-      = \frac{\widehat{\operatorname{MSE}}}{\widehat{\sigma}^2(Y)}
+      \widehat{\varepsilon}_{MSE}\left(\metamodel\right)
+      = \frac{\widehat{\operatorname{MSE}}\left(\metamodel\right)}{\widehat{\sigma}^2(Y)}
 
 where :math:`\widehat{\sigma}^2(Y)` is the sample variance of the random output:
 
@@ -135,20 +131,40 @@ where :math:`\bar{y}` is the sample mean of the output:
 
     \bar{y} = \frac{1}{n} \sum_{j = 1}^n y^{(j)}.
 
+If the test set :math:`\set{D}` is not independent from the training set
+(the set used to calibrate the metamodel), then the previous estimator
+may underestimate the true value of the mean squared error.
+In order to create a test set independent from the training set, a
+simple method is to split the data set into two parts.
+The drawback of this method is that this reduces the size of the training
+set, so that the mean squared error evaluated on the test set can be pessimistic.
+The leave-one-out (LOO) and K-Fold cross validation methods presented in the next sections
+use all the data available.
+
 Naive and fast cross-validation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The simplest method splits the data into a training set and a test set.
-This has several drawbacks. Two other estimators are the leave-one-out and
-K-Fold estimators. When implemented naively, this may required to build many
-surrogate models. Fortunately, there are *shortcuts* for many surrogate models
-including linear least squares regression, splines (and others).
-For a linear least squares regression model, we can use the
-Sherman-Morrisson-Woodbury formula to get updates of the inverse Gram matrix.
-In this document, we present the fast leave-one-out and K-Fold estimators.
+As seen in the previous section, the simplest method splits the data
+into a training set and a test set.
+Moreover, provided these two sets are independent, then the estimate
+of the error is unbiased.
+In order to use all the available data instead of a subset of it,
+two other estimators have been set up:
+the leave-one-out and K-Fold estimators, which are the topic of the next
+sections.
 
-Leave-one-out error
-~~~~~~~~~~~~~~~~~~~
+When implemented naively, these methods may require to build many surrogate models,
+which can be time-consuming.
+Fortunately, there are *shortcuts* for many surrogate models
+including linear least squares and splines (and others).
+For a linear least squares model, some methods uses the
+Sherman-Morrisson-Woodbury formula to get updates of the inverse Gram matrix,
+as we are going to see later in this document.
+This makes it possible to evaluate easily the meta model errors
+of a linear least squares model.
+
+Leave-one-out cross-validation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we present the naive leave-one-out error estimator,
 also known as jackknife in statistics.
@@ -159,14 +175,15 @@ This is the experimental design where the :math:`j`-th observation
 The corresponding set of observation indices is:
 
 .. math::
-    \set{S}_j = \{1, ..., j - 1, j + 1, ..., n\},
+    \set{S}_{-j} = \{1, ..., j - 1, j + 1, ..., n\},
 
 the corresponding input observations are:
 
 .. math::
     \set{D} \setminus \{\vect{x}^{(j)}\}
     = \left\{\vect{x}^{(1)}, ..., \vect{x}^{(j - 1)},
-    \vect{x}^{(j + 1)}, ..., \vect{x}^{(n)}\right\}.
+    \vect{x}^{(j + 1)}, ..., \vect{x}^{(n)}\right\}
+    = \left\{\vect{x}^{(j)}, \; j \in \set{S}_{-j}\right\}.
 
 and the corresponding output observations are:
 
@@ -174,12 +191,13 @@ and the corresponding output observations are:
     \left\{y^{(1)}, ..., y^{(j - 1)}, y^{(j + 1)}, ..., y^{(n)}\right\}.
 
 The leave-one-out residual is defined as the difference between the model evaluation at
-:math:`\vect{x}^{(j)}` and its leave-one-out prediction :math:`\metamodel^{(-j)}`:
+:math:`\vect{x}^{(j)}` and its leave-one-out prediction (see [blatman2009]_
+eq. 4.26 page 85):
 
 .. math::
 
     \Delta^{(j)}
-    = \physicalmodel\left(\vect{x}^{(j)}\right) - \metamodel^{(-j)}\left(\vect{x}^{(j)}\right)
+    = y^{(j)} - \metamodel^{(-j)}\left(\vect{x}^{(j)}\right)
 
 We repeat this process for all observations in the experimental
 design and obtain the predicted residuals
@@ -189,43 +207,57 @@ Finally, the LOO mean squared error estimator is:
 .. math::
 
     \widehat{\operatorname{MSE}}_{LOO}
-    & =  \frac{1}{n} \sum_{j = 1}^n \left[ \Delta^{(j)} \right]^2 \\
-    & =  \frac{1}{n} \sum_{j = 1}^n \left[ \physicalmodel\left(\vect{x}^{(j)}\right) - \metamodel^{(-j)}\left(\vect{x}^{(j)}\right) \right]^2
+    & =  \frac{1}{n} \sum_{j = 1}^n \left( \Delta^{(j)} \right)^2
 
 One of the drawbacks of the naive method is that it may require
 to estimate :math:`n` different surrogate models.
 If :math:`n` is large or if training each surrogate model is costly,
 then the leave-one-out method can be impractical.
-If, however, the surrogate model is based on linear least squares
-regression, then the leave-one-out error may be computed much more efficiently, as
+If, however, the surrogate model is based on the linear least squares method,
+then the leave-one-out error may be computed much more efficiently, as
 shown in the next section.
 
-Fast leave-one-out
-~~~~~~~~~~~~~~~~~~
+Fast leave-one-out cross-validation of a linear model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we present the fast leave-one-out error estimator
-of a linear regression least squares model.
-In the special case of of a linear regression model, [stone1974]_ (eq. 3.13 page 121)
+of a linear least squares model.
+In the special case of of a linear least squares model, [stone1974]_ (eq. 3.13 page 121)
 showed that the leave-one-out residuals have an expression which depends on the diagonal
 of the projection matrix.
 In this case, the evaluation of the leave-one-out mean squared error involves the
 multiplication of the raw residuals by a correction which involves the leverages
 of the model.
 This method makes it possible to evaluation directly the mean squared error without
-necessarily estimating the coefficients of $n$ different leave-one-out regression model.
+necessarily estimating the coefficients of :math:`n` different leave-one-out
+least squares models.
 It is then much faster than the naive leave-one-out method.
 
-Let :math:`m \in \Nset` be an integer representing the number of
-parameters in the model.
-Assume that the physical model is linear:
+Assume that the model is linear:
 
 .. math::
 
-    \physicalmodel(\vect{x}) = \boldsymbol{D} \vect{a}
+    \physicalmodel(\vect{x}) = a_0 + \sum_{i=1}^{n_x} a_i x_i
 
-for any :math:`\vect{x} \in \set{X}`
-where :math:`\vect{a} \in \Rset^m` is the vector of parameters
-and :math:`\boldsymbol{D} \in \Rset^{n \times m}` is the
+
+for any :math:`\vect{x} \in \set{X}` where :math:`\vect{a} \in \Rset^{n_x + 1}`
+is the vector of parameters.
+Let :math:`\vect{y} \in \Rset^n` be the vector of output observations:
+
+.. math::
+    \vect{y} = \left(y^{(1)}, ..., y^{(n)} \right)^T.
+
+
+The goal of the least squares method is to estimate the coefficients
+:math:`\vect{a}` using the vector of observations :math:`\vect{y}`.
+The output vector from the linear model is:
+
+.. math::
+
+    \vect{y} =  \boldsymbol{D} \vect{a}
+
+for any :math:`\vect{x} \in \set{X}` where
+:math:`\boldsymbol{D} \in \Rset^{n \times (n_x + 1)}` is the
 design matrix.
 For a linear model, the columns of the design matrix correspond
 to the input parameters and the rows correspond to the observations:
@@ -237,8 +269,7 @@ to the input parameters and the rows correspond to the observations:
     1      & x_1^{(1)} & \ldots  & x_{n_x}^{(1)} \\
     \vdots &           &         & \vdots \\
     1      & x_1^{(n)} & \ldots  & x_{n_x}^{(n)}
-    \end{pmatrix}
-    \in \Rset^{n \times {(n_x + 1)}}.
+    \end{pmatrix}.
 
 In the previous equation, notice that the design matrix depends on the
 experimental design :math:`\set{D}`.
@@ -251,49 +282,75 @@ given by the normal equations ([Bjorck1996]_ eq. 1.1.15 page 6):
 
     \widehat{\vect{a}} = \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T \vect{y}.
 
-Consider the linear surrogate model:
+The linear surrogate model is the linear model with estimated coefficients:
 
 .. math::
 
-    \metamodel(\vect{x}) = \boldsymbol{D} \widehat{\vect{a}}
+    \metamodel(\vect{x}) = \hat{a}_0 + \sum_{i=1}^{n_x} \hat{a}_i x_i.
+
+The vector of predictions from the surrogate model is:
+
+.. math::
+
+    \widehat{\vect{y}} = \boldsymbol{D} \widehat{\vect{a}}
 
 for any :math:`\vect{x} \in \set{X}` where :math:`\widehat{\vect{a}}` is the
 estimate from linear least squares.
 We substitute the estimator in the previous equation and
-get the value of the surrogate linear regression model:
+get the value of the surrogate linear model:
 
 .. math::
 
-    \metamodel(\vect{x})
+    \widehat{\vect{y}}
     = \boldsymbol{D} \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T \vect{y}
 
-Let :math:`\boldsymbol{H}` be the projection ("hat") matrix ([wang2012]_ eq. 16.8 page 472):
+Let :math:`\boldsymbol{H} \in \Rset^{n \times n}` be the projection ("hat") matrix ([wang2012]_ eq. 16.8 page 472):
 
 .. math::
 
     \boldsymbol{H}
-    = \boldsymbol{D} \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T
-    \in \Rset^{n \times n}.
+    = \boldsymbol{D} \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T.
 
 
-Hence, the value of the linear regression model is the matrix-vector product:
+Hence, the value of the linear model is the matrix-vector product:
 
 .. math::
 
-    \widehat{\vect{y}} = \metamodel(\vect{x}) = \boldsymbol{H} \vect{y}.
+    \widehat{\vect{y}} = \boldsymbol{H} \vect{y}.
 
 We can prove that the LOO residual is:
 
 .. math::
+    :label: predictionCorrection
 
-    y^{(j)} - \widehat{g}^{(-j)}(\vect{x}^{(j)})
-    = \frac{y^{(j)} - \widehat{g}(\vect{x}^{(j)})}{1 - h_{jj}}
+    y^{(j)} - \widehat{g}^{(-j)}\left(\vect{x}^{(j)}\right)
+    = \frac{y^{(j)} - \widehat{g}\left(\vect{x}^{(j)}\right)}{1 - h_{jj}}
 
-where :math:`h_{jj}` is the :math:`j`-th diagonal term of the hat matrix,
-also known as the *leverage*.
-In other words, the residual error of the LOO surrogate model is equal to the
+where :math:`h_{jj}` is the :math:`j`-th diagonal term of the hat matrix.
+In other words, the residual of the LOO surrogate model is equal to the
 residual of the full surrogate model corrected by :math:`1 - h_{jj}`.
-This avoids to actually build the LOO surrogate.
+
+The number :math:`h_{jj}` is the *leverage* of the :math:`j`-th
+observation.
+It can be proved (see [sen1997]_ page 157) that:
+
+.. math::
+    \frac{1}{n} \leq h_{jj} \leq 1.
+
+Moreover (see [sen1997]_ eq. 5.10 page 106):
+
+.. math::
+    \sum_{j = 1}^{n} h_{jj}  = \operatorname{Tr}(H) = n_x + 1
+
+where :math:`\operatorname{Tr}(H)` is the trace of the hat matrix.
+The leverage describes how far away the individual data point is from the centroid
+of all data points (see [sen1997]_ page 155).
+The equation :eq:`predictionCorrection` implies that if :math:`h_{jj}` is
+large (i.e. close to 1), then removing the :math:`j`-th observation
+from the training sample changes the residual of the leave-one-out
+surrogate model significantly.
+
+Using the equation :eq:`predictionCorrection` avoids to actually build the LOO surrogate.
 We substitute the previous expression in the definition of the leave-one-out
 mean squared error estimator and get the fast leave-one-out cross validation
 error ([wang2012]_ eq. 16.25 page 487):
@@ -301,32 +358,33 @@ error ([wang2012]_ eq. 16.25 page 487):
 .. math::
     \widehat{\operatorname{MSE}}_{LOO}
     = \frac{1}{n} \sum_ {j = 1}^n \left( \frac{y^{(j)} -
-          \widehat{g}(\vect{x}^{(j)})}{1 - h_{jj}} \right)^2
+          \widehat{g}\left(\vect{x}^{(j)}\right)}{1 - h_{jj}} \right)^2
 
 Corrected leave-one-out
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 A penalized variant of the leave-one-out mean squared error may be used in order to
-increase its robustness with respect to overfitting, i.e. to penalize a
-large coefficients in the surrogate model compared to the size of the
+increase its robustness with respect to overfitting.
+This is done using a criteria which takes into account for the
+number of coefficients compared to the size of the
 experimental design.
 The corrected leave-one-out error is ([chapelle2002]_, [blatman2009]_ eq. 4.38 page 86):
 
 .. math::
     \widehat{\operatorname{MSE}}_{LOO}^{*}
-    = \widehat{\operatorname{MSE}}_{LOO} T(m, n)
+    = \widehat{\operatorname{MSE}}_{LOO} T(n_x, n)
 
 where the penalty factor is:
 
 .. math::
-    T(m, n)
-    = \frac{n}{n - m}  \left(1 + \frac{\operatorname{Tr} \left( \boldsymbol{C}_{emp}^{-1}  \right) }{n} \right)
+    T(n_x, n)
+    = \frac{n}{n - (n_x + 1)}  \left(1 + \frac{\operatorname{Tr} \left( \boldsymbol{C}_{emp}^{-1}  \right) }{n} \right)
 
 where :math:`\boldsymbol{C}_{emp}` is the matrix:
 
 .. math::
 
-    \boldsymbol{C}_{emp} = \frac{1}{n}\boldsymbol{\Psi}^{\textsf{T}}\boldsymbol{\Psi}
+    \boldsymbol{C}_{emp} = \frac{1}{n}\boldsymbol{D}^{\textsf{T}}\boldsymbol{D}
 
 and :math:`\operatorname{Tr}` is the trace operator.
 
@@ -362,19 +420,31 @@ The next figure presents this type of cross validation.
     *Figure 2.* K-Fold cross-validation.
 
 The :math:`k` folds are generally chosen so that they are of
-approximately equal size.
+approximately equal sizes.
 If the sample size :math:`n` is a multiple of :math:`k`, then the
-folds can have exactly the same size, but this is not necessarily true.
+folds can have exactly the same size.
 
 For any :math:`\ell \in \{1, ..., k\}`, let :math:`\metamodel^{(-\set{D}_{\ell})}`
 be the surrogate model estimated on the K-fold sample
 :math:`\set{D} \setminus \set{D}_{\ell}`.
+Let :math:`\Delta^{(\ell, j)}` be defined as the K-Fold residual:
+
+.. math::
+
+    \Delta^{(\ell, j)}
+    = y^{(j)} - \widehat{g}^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)
+
+for :math:`\ell = 1, ..., k` and :math:`j \in \set{S}_{\ell}`.
+In the previous equation, the *predicted residual*
+:math:`y^{(j)} - \metamodel^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)`
+is the difference between the
+evaluation of :math:`\physicalmodel` and the value of the K-Fold surrogate
+:math:`\metamodel^{(-\set{D}_{\ell})}` at the point :math:`\vect{x}^{(j)}`.
 The local approximation error is estimated on the sample :math:`\set{D}_{\ell}`:
 
 .. math::
    \widehat{\operatorname{MSE}}^{(\ell)}
-   = \frac{1}{n_\ell}  \sum_{j \in \set{S}_\ell}
-   \left[ \physicalmodel\left(\vect{x}^{(j)}\right) - \metamodel^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right) \right]^2.
+   = \frac{1}{n_\ell}  \sum_{j \in \set{S}_\ell} \left( \Delta^{(\ell, j)} \right)^2.
 
 where :math:`n_\ell` is the number of observations in
 the sub-sample :math:`\set{D}_{\ell}`:
@@ -383,11 +453,6 @@ the sub-sample :math:`\set{D}_{\ell}`:
 
     n_{\ell} = \operatorname{card}\left(\set{D}_{\ell} \right).
 
-In the previous equation, the *predicted residual*
-:math:`\physicalmodel\left(\vect{x}^{(j)}\right) - \metamodel^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)`
-is the difference between the
-evaluation of :math:`\physicalmodel` and the value of the K-Fold surrogate
-:math:`\metamodel^{(-\set{D}_{\ell})}` at the point :math:`\vect{x}^{(j)}`.
 
 For any :math:`\ell \in \{ 1, \dots, k\}`, the K-Fold mean square error :math:`\widehat{\operatorname{MSE}}^{(\ell)}` is estimated using
 the training set :math:`\set{D} \setminus \set{D}_{\ell}` and
@@ -406,7 +471,7 @@ more observations weighs more in the estimator.
 The K-Fold error estimate can be obtained
 with a single split of the data :math:`\set{D}` into :math:`k` folds.
 The *leave-one-out* (LOO) cross-validation is a special case of
-K-Fold cross-validation where the number of folds :math:`k` is
+the K-Fold cross-validation where the number of folds :math:`k` is
 equal to :math:`n`, the sample size of the experimental design
 :math:`\set{D}`.
 
@@ -416,7 +481,7 @@ We substitute the previous equation in the definition of the K-Fold MSE and get:
 
     \widehat{\operatorname{MSE}}_{KFold}
     & = \sum_{\ell = 1}^k \frac{n_{\ell}}{n} \frac{1}{n_{\ell}} \sum_{j \in \set{S}_{\ell}}
-    \left[y^{(j)} - \widehat{g}^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)\right]^2.
+    \left(\Delta^{(\ell, j)}\right)^2.
 
 This implies:
 
@@ -424,31 +489,10 @@ This implies:
 
     \widehat{\operatorname{MSE}}_{KFold}
     & = \frac{1}{n} \sum_{\ell = 1}^k \sum_{j \in \set{S}_{\ell}}
-    \left[y^{(j)} - \widehat{g}^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)\right]^2.
+    \left(\Delta^{(\ell, j)}\right)^2.
 
-Let :math:`\Delta^{(\ell, j)}` be defined as the K-Fold residual:
-
-.. math::
-
-    \Delta^{(\ell, j)}
-    = y^{(j)} - \widehat{g}^{(-\set{D}_{\ell})} \left(\vect{x}^{(j)}\right)
-
-for :math:`\ell = 1, ..., k` and :math:`j \in \set{S}_{\ell}`. Hence:
-
-.. math::
-
-    \widehat{\operatorname{MSE}}_{KFold}
-    & = \frac{1}{n} \sum_{\ell = 1}^k \sum_{j \in \set{S}_{\ell}} \left(\Delta^{(\ell, j)}\right)^2 \\
-    & = \frac{1}{n} \sum_{j = 1}^n \left(\Delta^{(\ell, j)}\right)^2
-
-where :math:`\ell` is the index of the fold containing the :math:`j`-th observation.
-The previous equation holds because the subsets :math:`\mathcal{S}_1, ..., \mathcal{S}_k` are, by hypothesis, a disjoint
-partition of the full set of indices.
 The previous equation states that the K-Fold mean squared error is the
 sample mean of the corrected K-Fold squared residuals.
-
-If the folds have equal sizes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Assume that the number of folds divides the sample size.
 Mathematically, this means that :math:`k` divides :math:`n`.
@@ -459,12 +503,7 @@ In this special case, each fold has the same number of observations:
     n_\ell = \frac{n}{k}
 
 for :math:`\ell = 1, ..., k`. Hence all local K-Fold MSE have the
-same weight:
-
-.. math::
-
-    \frac{n_\ell}{n} = \frac{1}{k}
-
+same weight and we have :math:`\frac{n_\ell}{n} = \frac{1}{k}`
 for :math:`\ell = 1, ..., k`.
 This implies that the K-Fold mean squared error has a  particularly simple expression
 ([deisenroth2020]_ eq. 8.13 page 264):
@@ -473,15 +512,13 @@ This implies that the K-Fold mean squared error has a  particularly simple expre
   :label: kfoldMeanEqual
 
    \widehat{\operatorname{MSE}}_{KFold}
-   = \frac{1}{k} \sum_{\ell = 1}^{k} \widehat{\operatorname{MSE}}^{(\ell)}
-
-for :math:`\ell = 1, ..., k`.
+   = \frac{1}{k} \sum_{\ell = 1}^{k} \widehat{\operatorname{MSE}}^{(\ell)}.
 
 Fast K-Fold cross-validation of a linear model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we present a fast version of the K-Fold cross-validation
-that can be used for a linear regression model.
+that can be used for a linear model.
 While evaluating the mean squared error with the fast LOO formula involves the division by :math:`1 - h_{jj}`,
 using the fast K-Fold method involves the resolution of a linear system of equations.
 The equations introduced by [shao1993]_ are presented in [suzuki2020]_ (proposition 14 page 71).
@@ -541,7 +578,7 @@ where :math:`\boldsymbol{I}_{n_{\ell}} \in \Rset^{n_{\ell} \times n_{\ell}}` is 
 .. math::
 
     \boldsymbol{y}_{\ell}
-    = \left(y^{(j)}\right)^T_{j \in \set{S}_{\ell}},
+    = \left(y^{(j)}\right)^T_{j \in \set{S}_{\ell}}
 
 and :math:`\widehat{\boldsymbol{y}}_{\ell} \in \Rset^{n_{\ell}}` is the corresponding
 vector of output predictions from the linear least squares surrogate model:
@@ -561,6 +598,27 @@ Then the mean squared error of the :math:`\ell`-th fold is:
 
 Then the K-Fold mean squared error is evaluated from equation :eq:`kfoldMean`.
 
+Cross-validation and model selection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a model selection method is used (such as :class:`LARS`), then the fast cross-validation (CV)
+method can produce an optimistic estimated error i.e. the true error can
+be greater that the estimated error (see [hastie2009]_ section 7.10.2 page 245).
+This is because the fast CV does not take into account for the model selection.
+
+The reason for this behavior is that the model selection produces a set
+of predictors which fits particularly well to the data.
+If a model selection method is involved, only the simple validation
+method can produce an unbiased estimator, because the model selection
+is then involved each time a new surrogate model is trained i.e. each
+time its coefficients are estimated.
+The fast method, on the other hand, only considers the basis which is the
+result of a single training step.
+
+Notice, however, that the order of magnitude of the error estimated
+using the fast method with a surrogate model involving a model selection may be satisfactory
+in some cases.
+
 Conclusion
 ~~~~~~~~~~
 
@@ -574,7 +632,7 @@ The generic cross-validation method can be implemented using the following class
   to split the data set.
 
 Since the :class:`~openturns.LinearModelResult` is based on linear least
-squares regression, fast methods are implemented in the :class:`~openturns.LinearModelValidation`.
+squares, fast methods are implemented in the :class:`~openturns.LinearModelValidation`.
 
 See :ref:`pce_cross_validation` for specific methods for the the cross-validation
 of a polynomial chaos expansion.
@@ -591,8 +649,10 @@ of a polynomial chaos expansion.
     - [blatman2009]_
     - [chapelle2002]_
     - [deisenroth2020]_
-    - [stone1974]_
+    - [hastie2009]_
+    - [sen1997]_
     - [shao1993]_
+    - [stone1974]_
     - [suzuki2020]_
     - [wang2012]_
 
