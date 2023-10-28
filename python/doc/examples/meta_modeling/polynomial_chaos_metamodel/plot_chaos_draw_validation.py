@@ -79,7 +79,8 @@ metamodel = result.getMetaModel()
 n_valid = 1000
 inputTest = im.distributionX.getSample(n_valid)
 outputTest = im.model(inputTest)
-val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+metamodelPredictions = metamodel(inputTest)
+val = ot.MetaModelValidation(outputTest, metamodelPredictions)
 r2Score = val.computeR2Score()[0]
 r2Score
 

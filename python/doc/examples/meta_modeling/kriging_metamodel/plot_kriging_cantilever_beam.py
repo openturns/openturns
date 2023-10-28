@@ -136,7 +136,8 @@ Y_test = model(X_test)
 # To create it, we use the validation samples and the metamodel.
 
 # %%
-val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
+metamodelPredictions = krigingMetamodel(X_test)
+val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 
 # %%
 # The :meth:`~openturns.MetaModelValidation.computeR2Score` method computes the

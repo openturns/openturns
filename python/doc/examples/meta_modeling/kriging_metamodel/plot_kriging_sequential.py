@@ -116,7 +116,8 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
-    mmv = ot.MetaModelValidation(xGrid, yFunction, meta)
+    metamodelPredictions = meta(xGrid)
+    mmv = ot.MetaModelValidation(yFunction, metamodelPredictions)
     r2Score = mmv.computeR2Score()[0]
     # Plot the function
     graphFonction = ot.Curve(xGrid, yFunction)

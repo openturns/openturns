@@ -146,7 +146,8 @@ def compute_R2_score_by_splitting(
         distribution,
     )
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputSampleTest, outputSampleTest, metamodel)
+    metamodelPredictions = metamodel(inputSampleTest)
+    val = ot.MetaModelValidation(outputSampleTest, metamodelPredictions)
     r2Score = val.computeR2Score()
     return r2Score
 
@@ -328,7 +329,8 @@ metamodel = result.getMetaModel()
 test_sample_size = 200  # Size of the validation design of experiments
 inputTest = im.distributionX.getSample(test_sample_size)
 outputTest = im.model(inputTest)
-validation = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+metamodelPredictions = metamodel(inputTest)
+validation = ot.MetaModelValidation(outputTest, metamodelPredictions)
 r2Score = validation.computeR2Score()[0]
 graph = validation.drawValidation()
 graph.setTitle("R2=%.2f, n=%d" % (r2Score, test_sample_size))

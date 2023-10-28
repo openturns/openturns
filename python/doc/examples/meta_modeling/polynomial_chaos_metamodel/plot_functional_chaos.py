@@ -48,18 +48,19 @@ ot.Log.Show(ot.Log.NONE)
 # We first create the function `model`.
 
 # %%
-ot.RandomGenerator.SetSeed(2)
-dimension = 2
+ot.RandomGenerator.SetSeed(0)
 input_names = ["x1", "x2"]
 formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)
+inputDimension = model.getInputDimension()
+outputDimension = model.getOutputDimension()
 
 # %%
 # Then we create a sample `inputSample` and compute the corresponding output
 # sample `outputSample`.
 
 # %%
-distribution = ot.Normal(dimension)
+distribution = ot.Normal(inputDimension)
 samplesize = 80
 inputSample = distribution.getSample(samplesize)
 outputSample = model(inputSample)
@@ -143,7 +144,8 @@ outputTest = model(inputTest)
 # Plot the corresponding validation graphics.
 
 # %%
-val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+metamodelPredictions = metamodel(inputTest)
+val = ot.MetaModelValidation(outputTest, metamodelPredictions)
 r2Score = val.computeR2Score()
 graph = val.drawValidation()
 graph.setTitle("Metamodel validation R2=" + str(r2Score))
@@ -178,8 +180,8 @@ chaosSI
 
 # %%
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
-first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(dimension)]
-total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(dimension)]
+first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(inputDimension)]
+total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(inputDimension)]
 
 # %%
 input_names = model.getInputDescription()
@@ -211,11 +213,12 @@ view = viewer.View(graph)
 ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree")
 
 # %%
-# This is why we explore the values from 1 to 15.
+# This is why we explore the values from 1 to 14.
 
 # %%
-degrees = range(5, 12)
-r2Score = ot.Sample(len(degrees), 2)
+maximumDegree = 15
+degrees = range(1, maximumDegree)
+r2Score = ot.Sample(len(degrees), outputDimension)
 for maximumDegree in degrees:
     ot.ResourceMap.SetAsUnsignedInteger(
         "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree
@@ -225,13 +228,11 @@ for maximumDegree in degrees:
     algo.run()
     result = algo.getResult()
     metamodel = result.getMetaModel()
-    for outputIndex in range(2):
-        val = ot.MetaModelValidation(
-            inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex)
-        )
-        r2Score[maximumDegree - degrees[0], outputIndex] = min(
-            1.0, max(0.0, val.computeR2Score()[0])
-        )  # Get lucky.
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
+    r2ScoreLocal = val.computeR2Score()
+    r2ScoreLocal = [max(0.0, r2ScoreLocal[i]) for i in range(outputDimension)]
+    r2Score[maximumDegree - degrees[0]] = r2ScoreLocal
 
 # %%
 graph = ot.Graph("Predictivity", "Total degree", "R2", True)
@@ -241,20 +242,21 @@ cloud.setPointStyle("bullet")
 graph.add(cloud)
 cloud = ot.Cloud([[d] for d in degrees], r2Score[:, 1])
 cloud.setLegend("Output #1")
-cloud.setColor("red")
-cloud.setPointStyle("bullet")
+cloud.setPointStyle("diamond")
 graph.add(cloud)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (6.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.7)
-
 plt.show()
 
 # %%
-# We see that a total degree lower than 9 is not sufficient to describe the
+# We see that a low total degree is not sufficient to describe the
 # first output with good R2 score.
-# However, the coefficient of determination drops when the total degree gets
-# greater than 12.
+# However, the coefficient of determination can drop when the total degree increases.
 # The R2 score of the second output seems to be much less satisfactory:
 # a little more work would be required to improve the metamodel.
 #

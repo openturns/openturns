@@ -155,7 +155,8 @@ int main(int, char *[])
             const Sample inputSampleTest(distribution.getSample(testSampleSize));
             const Sample outputSampleTest(model(inputSampleTest));
             const Function metamodel(result.getMetaModel());
-            MetaModelValidation validation(inputSampleTest, outputSampleTest, metamodel);
+            const Sample metamodelPredictions(metamodel(inputSampleTest));
+            MetaModelValidation validation(outputSampleTest, metamodelPredictions);
             const Point r2Score(validation.computeR2Score());
             fullprint << "Cross-validation R2 score = " << r2Score << std::endl;
           }

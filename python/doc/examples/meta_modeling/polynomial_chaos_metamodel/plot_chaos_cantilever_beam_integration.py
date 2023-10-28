@@ -115,7 +115,8 @@ Y_test = g(X_test)
 # %%
 # The :class:`~openturns.MetaModelValidation` class validates the metamodel
 # based on a validation sample.
-val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+metamodelPredictions = metamodel(X_test)
+val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 
 # %%
 # Compute the :math:`R^2` coefficient of determination.
@@ -142,7 +143,8 @@ def draw_validation(experiment):
     metamodel = result.getMetaModel()
     X_test = distribution.getSample(n_valid)
     Y_test = g(X_test)
-    val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+    metamodelPredictions = metamodel(X_test)
+    val = ot.MetaModelValidation(Y_test, metamodelPredictions)
     r2Score = val.computeR2Score()[0]
     graph = val.drawValidation()
     graph.setTitle(

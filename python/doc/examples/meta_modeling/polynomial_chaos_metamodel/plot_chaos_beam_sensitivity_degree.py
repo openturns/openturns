@@ -138,7 +138,8 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 def computeR2Chaos(chaosResult, inputTest, outputTest):
     """Compute the R2 of a chaos."""
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
     r2Score = val.computeR2Score()[0]
     r2Score = max(r2Score, 0.0)  # We are not lucky every day.
     return r2Score
@@ -150,7 +151,8 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
     sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
     r2Score = computeR2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
     graph = val.drawValidation().getGraph(0, 0)
     legend1 = "D=%d, R2=%.2f%%" % (totalDegree, 100 * r2Score)
     graph.setLegends(["", legend1])

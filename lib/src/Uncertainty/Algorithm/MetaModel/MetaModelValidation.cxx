@@ -61,6 +61,7 @@ MetaModelValidation::MetaModelValidation(const Sample & inputSample,
   if (outputSample_.getDimension() != metaModel.getOutputDimension())
     throw InvalidArgumentException(HERE) << "Metamodel output dimension (" << metaModel.getOutputDimension() << ")"
                                          <<  " should match output sample dimension (" << outputSample_.getDimension() << ")";
+  LOGWARN(OSS() << "MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)");
   initialize();
 }
 

@@ -119,7 +119,8 @@ Y_test = g(X_test)
 # %%
 # The MetaModelValidation class allows one to validate the metamodel on a test sample.
 # Plot the observed versus the predicted outputs.
-val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+metamodelPredictions = metamodel(X_test)
+val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 graph = val.drawValidation()
 r2Score = val.computeR2Score()[0]
 graph.setTitle(f"Chaos validation - R2={r2Score * 100.0:.2f}%")

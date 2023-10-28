@@ -2,7 +2,6 @@
 "Score a metamodel and perform validation.
 
 Available constructors:
-    MetaModelValidation(*inputValidationSample, outputValidationSample, metaModel*)
     MetaModelValidation(*outputValidationSample, outputPredictionSample*)
 
 
@@ -43,7 +42,8 @@ Examples
 >>> x = dist.getSample(10)
 >>> y = model(x)
 >>> # Validation of the model
->>> val = ot.MetaModelValidation(x, y, metaModel)
+>>> metamodelPredictions = metaModel(x)
+>>> val = ot.MetaModelValidation(y, metamodelPredictions)
 >>> # Compute the R2 score
 >>> r2Score = val.computeR2Score()
 >>> # Get the residual

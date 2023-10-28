@@ -298,7 +298,8 @@ def compute_polynomial_chaos_R2(
     metamodel = polynomialchaos_result.getMetaModel()
     inputTest = input_distribution.getSample(n_valid)
     outputTest = g_function(inputTest)
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
     r2Score = val.computeR2Score()[0]
     return r2Score
 
@@ -339,7 +340,8 @@ def draw_polynomial_chaos_validation(
     metamodel = polynomialchaos_result.getMetaModel()
     inputTest = input_distribution.getSample(n_valid)
     outputTest = g_function(inputTest)
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
     r2Score = val.computeR2Score()[0]
     graph = val.drawValidation()
     graph.setTitle("R2=%.2f%%" % (r2Score * 100))

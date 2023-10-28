@@ -113,7 +113,8 @@ outputKriging = krigingMetamodel(inputTestSet)
 
 # %%
 # Then, we use the :class:`~openturns.MetaModelValidation` class to validate the metamodel.
-val = ot.MetaModelValidation(inputTestSet, outputTestSet, krigingMetamodel)
+metamodelPredictions = krigingMetamodel(inputTestSet)
+val = ot.MetaModelValidation(outputTestSet, metamodelPredictions)
 
 r2Score = val.computeR2Score()
 

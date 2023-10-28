@@ -69,6 +69,7 @@
  * SimplicialCubature (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)
  * Deprecated MetaModelValidation::computePredictivityFactor method, use computeR2Score
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
  * Removed deprecated (Non)GaussianLinearCalibration::getCandidate method
