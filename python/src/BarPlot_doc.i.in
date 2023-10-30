@@ -18,7 +18,7 @@ origin : float
 legend : str
     Legend of the BarPlot.
 color : str
-    Color of the curve. If not specified, the default color is one of the default palette colors.
+    Color of the curve. If not specified, the default color is the first color in the default palette.
 fillStyle : str
     Fill style of the surfaces. If not specified, by default it is 'solid'.
 lineStyle : str

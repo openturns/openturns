@@ -256,7 +256,7 @@ color : str
     the PDF and PNG formats, for the other format the color is fully
     transparent as soon as its alpha channel is less than 255 (or 1.0).
     Use :meth:`GetValidColors` for a list of available values.
-    A call to :meth:`setColor` set the boolean flag isColorExplicitlySet to *True*.
+    A call to :meth:`setColor` sets the boolean flag isColorExplicitlySet to *True*.
 
 See Also
 --------
@@ -273,7 +273,7 @@ OT_Drawable_setColor_doc
 Returns
 -------
 is color explicitly set : bool
-    *True* if the color has been explioitly set by a call to :meth:`setColor` or *False* otherwise.
+    *True* if the color has been explicitly set by a call to :meth:`setColor` or *False* otherwise.
 
 See Also
 --------
