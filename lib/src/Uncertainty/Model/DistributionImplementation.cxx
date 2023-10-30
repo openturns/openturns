@@ -442,6 +442,35 @@ String DistributionImplementation::__str__(const String & ) const
   return __repr__();
 }
 
+String DistributionImplementation::_repr_html_() const
+{
+  OSS oss(false);
+  oss << getClassName() << "\n";
+  oss << "<ul>\n";
+  oss << "  <li>name=" << getName() << "</li>\n";
+  oss << "  <li>dimension=" << dimension_ << "</li>\n";
+  oss << "  <li>weight=" << weight_ << "</li>\n";
+  oss << "  <li>range=" << range_ << "</li>\n";
+  oss << "  <li>description=" << description_ << "</li>\n";
+  oss << "  <li>isParallel=" << isParallel_ << "</li>\n";
+  oss << "  <li>isCopula=" << isCopula_ << "</li>\n";
+  oss << "</ul>\n";
+  return oss;
+}
+
+String DistributionImplementation::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << getClassName() << "\n";
+  oss << "- name=" << getName() << "\n";
+  oss << "- dimension=" << dimension_ << "\n";
+  oss << "- weight=" << weight_ << "\n";
+  oss << "- range=" << range_ << "\n";
+  oss << "- description=" << description_ << "\n";
+  oss << "- isParallel=" << isParallel_ << "\n";
+  oss << "- isCopula=" << isCopula_ << "\n";
+  return oss;
+}
 
 /* Weight accessor */
 void DistributionImplementation::setWeight(const Scalar w)

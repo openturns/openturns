@@ -1,0 +1,232 @@
+Arcsine(a = -1, b = 1) Arcsine(a = -1, b = 1)
+Distribution = 
+Arcsine(a = -1, b = 1)
+Distribution (Markdown) = 
+class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+Distribution (HTML) = 
+class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+Beta(alpha = 2, beta = 2, a = -1, b = 1) Beta(alpha = 2, beta = 2, a = -1, b = 1)
+Distribution = 
+Beta(alpha = 2, beta = 2, a = -1, b = 1)
+Distribution (Markdown) = 
+class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Distribution (HTML) = 
+class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Burr(c = 1, k = 1) Burr(c = 1, k = 1)
+Distribution = 
+Burr(c = 1, k = 1)
+Distribution (Markdown) = 
+class=Burr name=Burr dimension=1 c=1 k=1
+Distribution (HTML) = 
+class=Burr name=Burr dimension=1 c=1 k=1
+Chi(nu = 1) Chi(nu = 1)
+Distribution = 
+Chi(nu = 1)
+Distribution (Markdown) = 
+class=Chi name=Chi dimension=1 nu=1
+Distribution (HTML) = 
+class=Chi name=Chi dimension=1 nu=1
+ChiSquare(nu = 1) ChiSquare(nu = 1)
+Distribution = 
+ChiSquare(nu = 1)
+Distribution (Markdown) = 
+class=ChiSquare name=ChiSquare dimension=1 nu=1
+Distribution (HTML) = 
+class=ChiSquare name=ChiSquare dimension=1 nu=1
+Dirichlet(theta = [1,1]) Dirichlet(theta = [1,1])
+Distribution = 
+Dirichlet(theta = [2,6])
+Distribution (Markdown) = 
+class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[2,6]
+Distribution (HTML) = 
+class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[2,6]
+Exponential(lambda = 1, gamma = 0) Exponential(lambda = 1, gamma = 0)
+Distribution = 
+Exponential(lambda = 1, gamma = 0)
+Distribution (Markdown) = 
+class=Exponential name=Exponential dimension=1 lambda=1 gamma=0
+Distribution (HTML) = 
+class=Exponential name=Exponential dimension=1 lambda=1 gamma=0
+FisherSnedecor(d1 = 1, d2 = 5) FisherSnedecor(d1 = 1, d2 = 5)
+Distribution = 
+FisherSnedecor(d1 = 1, d2 = 5)
+Distribution (Markdown) = 
+class=FisherSnedecor name=FisherSnedecor dimension=1 d1=1 d2=5
+Distribution (HTML) = 
+class=FisherSnedecor name=FisherSnedecor dimension=1 d1=1 d2=5
+Frechet(beta = 1, alpha = 1, gamma = 0) Frechet(beta = 1, alpha = 1, gamma = 0)
+Distribution = 
+Frechet(beta = 1, alpha = 1, gamma = 0)
+Distribution (Markdown) = 
+class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Distribution (HTML) = 
+class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Gamma(k = 1, lambda = 1, gamma = 0) Gamma(k = 1, lambda = 1, gamma = 0)
+Distribution = 
+Gamma(k = 1, lambda = 1, gamma = 0)
+Distribution (Markdown) = 
+class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0
+Distribution (HTML) = 
+class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0
+GeneralizedPareto(sigma = 1, xi=0, u=0) GeneralizedPareto(sigma = 1, xi=0, u=0)
+Distribution = 
+GeneralizedPareto(sigma = 1, xi=0, u=0)
+Distribution (Markdown) = 
+class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+Distribution (HTML) = 
+class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+Gumbel(beta = 1, gamma = 0) Gumbel(beta = 1, gamma = 0)
+Distribution = 
+Gumbel(beta = 1, gamma = 0)
+Distribution (Markdown) = 
+class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Distribution (HTML) = 
+class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Histogram(origin = 0, {w0 = 1, h0 = 1}) Histogram(origin = 0, {w0 = 1, h0 = 1})
+Distribution = 
+Histogram(origin = -1, {w0 = 1.5, h0 = 0.3}, {w1 = 0.5, h1 = 0.8}, {w2 = 1, h2 = 0.15})
+Distribution (Markdown) = 
+class=Histogram name=Histogram dimension=1 first=-1 width=class=Point name=Unnamed dimension=3 values=[1.5,0.5,1] height=class=Point name=Unnamed dimension=3 values=[0.3,0.8,0.15]
+Distribution (HTML) = 
+class=Histogram name=Histogram dimension=1 first=-1 width=class=Point name=Unnamed dimension=3 values=[1.5,0.5,1] height=class=Point name=Unnamed dimension=3 values=[0.3,0.8,0.15]
+InverseNormal(mu = 1, lambda = 1) InverseNormal(mu = 1, lambda = 1)
+Distribution = 
+InverseNormal(mu = 1, lambda = 1)
+Distribution (Markdown) = 
+class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+Distribution (HTML) = 
+class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+Laplace(mu = 0, lambda = 1) Laplace(mu = 0, lambda = 1)
+Distribution = 
+Laplace(mu = 0, lambda = 1)
+Distribution (Markdown) = 
+class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Distribution (HTML) = 
+class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Logistic(mu = 0, beta = 1) Logistic(mu = 0, beta = 1)
+Distribution = 
+Logistic(mu = 0, beta = 1)
+Distribution (Markdown) = 
+class=Logistic name=Logistic dimension=1 mu=0 beta=1
+Distribution (HTML) = 
+class=Logistic name=Logistic dimension=1 mu=0 beta=1
+LogNormal(muLog = 0, sigmaLog = 1, gamma = 0) LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
+Distribution = 
+LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
+Distribution (Markdown) = 
+class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+Distribution (HTML) = 
+class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+LogUniform(aLog = -1, bLog = 1) LogUniform(aLog = -1, bLog = 1)
+Distribution = 
+LogUniform(aLog = -1, bLog = 1)
+Distribution (Markdown) = 
+class=LogUniform name=LogUniform dimension=1 aLog=-1 bLog=1 a=0.367879 b=2.71828
+Distribution (HTML) = 
+class=LogUniform name=LogUniform dimension=1 aLog=-1 bLog=1 a=0.367879 b=2.71828
+MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0) MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0)
+Distribution = 
+MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0)
+Distribution (Markdown) = 
+class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+Distribution (HTML) = 
+class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+Normal(mu = 0, sigma = 1) Normal(mu = 0, sigma = 1)
+Distribution = 
+Normal(mu = 0, sigma = 1)
+Distribution (Markdown) = 
+class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution (HTML) = 
+class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Pareto(beta = 1, alpha=1, gamma=0) Pareto(beta = 1, alpha=1, gamma=0)
+Distribution = 
+Pareto(beta = 1, alpha=1, gamma=0)
+Distribution (Markdown) = 
+class=Pareto name=Pareto dimension=1 beta=1 alpha=1 gamma=0
+Distribution (HTML) = 
+class=Pareto name=Pareto dimension=1 beta=1 alpha=1 gamma=0
+Rayleigh(beta = 1, gamma = 0) Rayleigh(beta = 1, gamma = 0)
+Distribution = 
+Rayleigh(beta = 1, gamma = 0)
+Distribution (Markdown) = 
+class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0
+Distribution (HTML) = 
+class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0
+Rice(beta = 1, nu = 0) Rice(beta = 1, nu = 0)
+Distribution = 
+Rice(beta = 1, nu = 0)
+Distribution (Markdown) = 
+class=Rice name=Rice dimension=1 beta=1 nu=0
+Distribution (HTML) = 
+class=Rice name=Rice dimension=1 beta=1 nu=0
+Student(nu = 3, mu = 0, sigma = 1) Student(nu = 3, mu = 0, sigma = 1)
+Distribution = 
+Student(nu = 3, mu = 0, sigma = 1)
+Distribution (Markdown) = 
+class=Student name=Student dimension=1 nu=3 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution (HTML) = 
+class=Student name=Student dimension=1 nu=3 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Trapezoidal(a = -2, b = -1, c = 1, d = 2) Trapezoidal(a = -2, b = -1, c = 1, d = 2)
+Distribution = 
+Trapezoidal(a = -2, b = -1, c = 1, d = 2)
+Distribution (Markdown) = 
+class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1 c=1 d=2 h=0.333333
+Distribution (HTML) = 
+class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1 c=1 d=2 h=0.333333
+Triangular(a = -1, m = 0, b = 1) Triangular(a = -1, m = 0, b = 1)
+Distribution = 
+Triangular(a = -1, m = 0, b = 1)
+Distribution (Markdown) = 
+class=Triangular name=Triangular dimension=1 a=-1 m=0 b=1
+Distribution (HTML) = 
+class=Triangular name=Triangular dimension=1 a=-1 m=0 b=1
+TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1) TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
+Distribution = 
+TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
+Distribution (Markdown) = 
+class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
+Distribution (HTML) = 
+class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
+Uniform(a = -1, b = 1) Uniform(a = -1, b = 1)
+Distribution = 
+Uniform(a = -1, b = 1)
+Distribution (Markdown) = 
+class=Uniform name=Uniform dimension=1 a=-1 b=1
+Distribution (HTML) = 
+class=Uniform name=Uniform dimension=1 a=-1 b=1
+VonMises(mu = 0, kappa=1) VonMises(mu = 0, kappa=1)
+Distribution = 
+VonMises(mu = 0, kappa=1)
+Distribution (Markdown) = 
+class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+Distribution (HTML) = 
+class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+WeibullMax(beta = 1, alpha = 1, gamma = 0) WeibullMax(beta = 1, alpha = 1, gamma = 0)
+Distribution = 
+WeibullMax(beta = 1, alpha = 1, gamma = 0)
+Distribution (Markdown) = 
+class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=1 gamma=0
+Distribution (HTML) = 
+class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=1 gamma=0
+WeibullMin(beta = 1, alpha = 1, gamma = 0) WeibullMin(beta = 1, alpha = 1, gamma = 0)
+Distribution = 
+WeibullMin(beta = 1, alpha = 1, gamma = 0)
+Distribution (Markdown) = 
+class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
+Distribution (HTML) = 
+class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
+AliMikhailHaqCopula(theta = 0.5) 2
+chi= 0.0 chib= 0.0 chiL= 0.0 chiLb= 0.012702239616659394
+ClaytonCopula(theta = 2) 2
+chi= 0.0 chib= 0.0 chiL= 0.7071067811865476 chiLb= 0.9752249188023969
+FarlieGumbelMorgensternCopula(theta = 0.5) 2
+chi= 0.0 chib= 0.0 chiL= 0.0 chiLb= 0.00739136725925893
+FrankCopula(theta = 2) 2
+chi= 0.0 chib= 0.53319880976528 chiL= 0.0 chiLb= 0.015408066773295648
+GumbelCopula(theta = 2) 2
+chi= 0.5857864376269049 chib= 0.962022569587575 chiL= 0.0 chiLb= 0.41421356237309515
+NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]) 2
+chi= 0.0 chib= 1.911142577526448e-09 chiL= 0.0 chiLb= -1.1102230246251565e-16
+PlackettCopula(theta = 2) 2
+chi= 0.00022204951604298806 chib= 0.53319880976528 chiL= 0.0 chiLb= 0.0
