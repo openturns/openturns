@@ -51,6 +51,7 @@ LHS::LHS(const RandomVector & event)
   , dimension_(event.getImplementation()->getAntecedent().getDimension())
   , blockIndex_(0)
 {
+  LOGWARN(OSS() << "LHS is deprecated in favor of ProbabilitySimulationAlgorithm+LHSExperiment");
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "LHS requires a composite event";
   // Check if the distribution associated to the antecedent of the antecedent of the event has independent components
   if(!event.getImplementation()->getAntecedent().getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";

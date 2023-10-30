@@ -103,6 +103,7 @@ view = viewer.View(graph)
 # Using LHS simulation
 # --------------------
 experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
 algo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 algo.setMaximumOuterSampling(NbSim)
 algo.setBlockSize(1)

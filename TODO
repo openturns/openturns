@@ -4,3 +4,4 @@ Remove IterativeThresholdExceedance(dimension, threshold) ctor
 Remove Linear|QuadraticLeastSquares(Sample, Function) constructor
 Remove SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
 Remove SubsetSampling.setISubset, setBetaMin
+Remove LHS

@@ -13,14 +13,14 @@ Examples
 >>> limitState = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3.*E*I)'])
 >>> # Enable the history mechanism in order to use the getImportanceFactors method
 >>> limitState = ot.MemoizeFunction(limitState)
->>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
->>> output = ot.CompositeRandomVector(limitState, ot.RandomVector(myDistribution))
->>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
->>> myLHS = ot.LHS(myEvent)
->>> myLHS.run()
->>> SimulationLHSResult = myLHS.getResult()
->>> print(SimulationLHSResult.getImportanceFactors())
-[X0 : 0.000722617, X1 : 0.635094, X2 : 0.275692, X3 : 0.0884917]"
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> output = ot.CompositeRandomVector(limitState, ot.RandomVector(distribution))
+>>> event = ot.ThresholdEvent(output, ot.Less(), -3.0)
+>>> experiment = ot.MonteCarloExperiment()
+>>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> importanceFactors = result.getImportanceFactors()"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult
 OT_SimulationResult_doc

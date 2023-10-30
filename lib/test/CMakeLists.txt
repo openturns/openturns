@@ -676,7 +676,6 @@ ot_check_test (HSICEstimatorTargetSensitivity_std IGNOREOUT)
 
 # Simulation
 ot_check_test (DirectionalSampling_std)
-ot_check_test (LHS_std)
 ot_check_test (ProbabilitySimulationAlgorithm_std)
 ot_check_test (ProbabilitySimulationAlgorithm_draw)
 ot_check_test (ProbabilitySimulationAlgorithm_sensitivity)

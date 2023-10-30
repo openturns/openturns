@@ -103,7 +103,7 @@ myMC.run()
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, ot.LHSExperiment())
 myLHS.setMaximumOuterSampling(8000)
 myLHS.setBlockSize(1)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
