@@ -783,16 +783,12 @@ ot_pyinstallcheck_test (HSICEstimatorConditionalSensitivity_std IGNOREOUT)
 ot_pyinstallcheck_test (HSICEstimatorTargetSensitivity_std IGNOREOUT)
 ot_pyinstallcheck_test (HSICEstimatorGlobalSensitivity_std IGNOREOUT)
 
-
-
-
 ## Simulation
 ot_pyinstallcheck_test (Wilks_std)
 ot_pyinstallcheck_test (SimulationSensitivityAnalysis_std)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_std)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_draw)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_sensitivity)
-ot_pyinstallcheck_test (LHS_std)
 ot_pyinstallcheck_test (DirectionalSampling_std)
 ot_pyinstallcheck_test (PostAnalyticalControlledImportanceSampling_std)
 ot_pyinstallcheck_test (SubsetSampling_R-S)

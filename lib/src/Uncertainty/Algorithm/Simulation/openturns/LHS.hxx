@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class LHS
+ * @deprecated @class LHS
  */
 
 class OT_API LHS: public EventSimulation

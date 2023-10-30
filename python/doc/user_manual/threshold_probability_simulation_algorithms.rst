@@ -16,7 +16,6 @@ Simulations methods
     EventSimulation
     ProbabilitySimulationAlgorithm
     DirectionalSampling
-    LHS
     PostAnalyticalSimulation
     PostAnalyticalControlledImportanceSampling
     PostAnalyticalImportanceSampling
