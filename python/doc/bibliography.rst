@@ -64,6 +64,12 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [deRocquigny2006] De Rocquigny, É. (2006).
+    *La maîtrise des incertitudes dans un contexte industriel.
+    1re partie: une approche méthodologique globale basée sur des exemples.*
+    Journal de la Société française de statistique, 147 (3), 33-71.
+.. [deRocquigny2012] De Rocquigny, E. (2012).
+    *Modelling under risk and uncertainty.* John Wiley & Sons.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -193,6 +199,10 @@ Bibliography
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
+.. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
+    *Uncertainty analysis using evidence theory–confronting level-1 and
+    level-2 approaches with data availability and computational constraints.*
+    Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
 .. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse

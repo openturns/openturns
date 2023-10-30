@@ -421,7 +421,7 @@ view = otv.View(graph)
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8, bottom=0.2)
@@ -573,10 +573,10 @@ print(
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # The two distributions are different, which shows that the calibration is
@@ -671,10 +671,10 @@ print(
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # The two distributions are very different, with a spiky posterior distribution.
@@ -725,10 +725,10 @@ calibrationResult = algo.getResult()
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # As we can see, this does not change much the posterior distribution, which remains spiky.
