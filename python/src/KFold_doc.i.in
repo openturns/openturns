@@ -26,7 +26,7 @@ Examples
 >>> w = [1.0] * size
 >>> f = ot.SymbolicFunction(['x'], ['2.0 * x'])
 >>> basis = [f]
->>> indices = list(range(len(basis)))
+>>> indices = [0]
 >>> fittingAlgo = ot.KFold()
 >>> result = fittingAlgo.run(x, y, w, basis, indices)
 "
