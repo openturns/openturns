@@ -2,219 +2,777 @@ Arcsine(a = -1, b = 1) Arcsine(a = -1, b = 1)
 Distribution = 
 Arcsine(a = -1, b = 1)
 Distribution (Markdown) = 
-class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+Arcsine
+- name=Arcsine
+- dimension=1
+- weight=1
+- range=[-1, 1]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+Arcsine
+<ul>
+  <li>name=Arcsine</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Beta(alpha = 2, beta = 2, a = -1, b = 1) Beta(alpha = 2, beta = 2, a = -1, b = 1)
 Distribution = 
 Beta(alpha = 2, beta = 2, a = -1, b = 1)
 Distribution (Markdown) = 
-class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Beta
+- name=Beta
+- dimension=1
+- weight=1
+- range=[-1, 1]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Beta
+<ul>
+  <li>name=Beta</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Burr(c = 1, k = 1) Burr(c = 1, k = 1)
 Distribution = 
 Burr(c = 1, k = 1)
 Distribution (Markdown) = 
-class=Burr name=Burr dimension=1 c=1 k=1
+Burr
+- name=Burr
+- dimension=1
+- weight=1
+- range=[0, (1e+14) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Burr name=Burr dimension=1 c=1 k=1
+Burr
+<ul>
+  <li>name=Burr</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (1e+14) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Chi(nu = 1) Chi(nu = 1)
 Distribution = 
 Chi(nu = 1)
 Distribution (Markdown) = 
-class=Chi name=Chi dimension=1 nu=1
+Chi
+- name=Chi
+- dimension=1
+- weight=1
+- range=[0, (7.73926) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Chi name=Chi dimension=1 nu=1
+Chi
+<ul>
+  <li>name=Chi</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (7.73926) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 ChiSquare(nu = 1) ChiSquare(nu = 1)
 Distribution = 
 ChiSquare(nu = 1)
 Distribution (Markdown) = 
-class=ChiSquare name=ChiSquare dimension=1 nu=1
+ChiSquare
+- name=ChiSquare
+- dimension=1
+- weight=1
+- range=[0, (59.8961) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=ChiSquare name=ChiSquare dimension=1 nu=1
+ChiSquare
+<ul>
+  <li>name=ChiSquare</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (59.8961) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Dirichlet(theta = [1,1]) Dirichlet(theta = [1,1])
 Distribution = 
 Dirichlet(theta = [2,6])
 Distribution (Markdown) = 
-class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[2,6]
+Dirichlet
+- name=Dirichlet
+- dimension=1
+- weight=1
+- range=[0, 1]
+- description=[X0]
+- isParallel=false
+- isCopula=false
+
 Distribution (HTML) = 
-class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[2,6]
+Dirichlet
+<ul>
+  <li>name=Dirichlet</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=false</li>
+  <li>isCopula=false</li>
+</ul>
+
 Exponential(lambda = 1, gamma = 0) Exponential(lambda = 1, gamma = 0)
 Distribution = 
 Exponential(lambda = 1, gamma = 0)
 Distribution (Markdown) = 
-class=Exponential name=Exponential dimension=1 lambda=1 gamma=0
+Exponential
+- name=Exponential
+- dimension=1
+- weight=1
+- range=[0, (32.2362) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Exponential name=Exponential dimension=1 lambda=1 gamma=0
+Exponential
+<ul>
+  <li>name=Exponential</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (32.2362) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 FisherSnedecor(d1 = 1, d2 = 5) FisherSnedecor(d1 = 1, d2 = 5)
 Distribution = 
 FisherSnedecor(d1 = 1, d2 = 5)
 Distribution (Markdown) = 
-class=FisherSnedecor name=FisherSnedecor dimension=1 d1=1 d2=5
+FisherSnedecor
+- name=FisherSnedecor
+- dimension=1
+- weight=1
+- range=[0, (2.09715e+06) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=FisherSnedecor name=FisherSnedecor dimension=1 d1=1 d2=5
+FisherSnedecor
+<ul>
+  <li>name=FisherSnedecor</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (2.09715e+06) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Frechet(beta = 1, alpha = 1, gamma = 0) Frechet(beta = 1, alpha = 1, gamma = 0)
 Distribution = 
 Frechet(beta = 1, alpha = 1, gamma = 0)
 Distribution (Markdown) = 
-class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Frechet
+- name=Frechet
+- dimension=1
+- weight=1
+- range=[0, (1.0008e+14) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Frechet
+<ul>
+  <li>name=Frechet</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (1.0008e+14) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Gamma(k = 1, lambda = 1, gamma = 0) Gamma(k = 1, lambda = 1, gamma = 0)
 Distribution = 
 Gamma(k = 1, lambda = 1, gamma = 0)
 Distribution (Markdown) = 
-class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0
+Gamma
+- name=Gamma
+- dimension=1
+- weight=1
+- range=[0, (32.2362) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0
+Gamma
+<ul>
+  <li>name=Gamma</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (32.2362) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 GeneralizedPareto(sigma = 1, xi=0, u=0) GeneralizedPareto(sigma = 1, xi=0, u=0)
 Distribution = 
 GeneralizedPareto(sigma = 1, xi=0, u=0)
 Distribution (Markdown) = 
-class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+GeneralizedPareto
+- name=GeneralizedPareto
+- dimension=1
+- weight=1
+- range=[0, (36.0437) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+GeneralizedPareto
+<ul>
+  <li>name=GeneralizedPareto</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (36.0437) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Gumbel(beta = 1, gamma = 0) Gumbel(beta = 1, gamma = 0)
 Distribution = 
 Gumbel(beta = 1, gamma = 0)
 Distribution (Markdown) = 
-class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Gumbel
+- name=Gumbel
+- dimension=1
+- weight=1
+- range=]-inf (-3.47309), (32.2362) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Gumbel
+<ul>
+  <li>name=Gumbel</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-3.47309), (32.2362) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Histogram(origin = 0, {w0 = 1, h0 = 1}) Histogram(origin = 0, {w0 = 1, h0 = 1})
 Distribution = 
 Histogram(origin = -1, {w0 = 1.5, h0 = 0.3}, {w1 = 0.5, h1 = 0.8}, {w2 = 1, h2 = 0.15})
 Distribution (Markdown) = 
-class=Histogram name=Histogram dimension=1 first=-1 width=class=Point name=Unnamed dimension=3 values=[1.5,0.5,1] height=class=Point name=Unnamed dimension=3 values=[0.3,0.8,0.15]
+Histogram
+- name=Histogram
+- dimension=1
+- weight=1
+- range=[-1, 2]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Histogram name=Histogram dimension=1 first=-1 width=class=Point name=Unnamed dimension=3 values=[1.5,0.5,1] height=class=Point name=Unnamed dimension=3 values=[0.3,0.8,0.15]
+Histogram
+<ul>
+  <li>name=Histogram</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 2]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 InverseNormal(mu = 1, lambda = 1) InverseNormal(mu = 1, lambda = 1)
 Distribution = 
 InverseNormal(mu = 1, lambda = 1)
 Distribution (Markdown) = 
-class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+InverseNormal
+- name=InverseNormal
+- dimension=1
+- weight=1
+- range=[0, (60.5156) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+InverseNormal
+<ul>
+  <li>name=InverseNormal</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (60.5156) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Laplace(mu = 0, lambda = 1) Laplace(mu = 0, lambda = 1)
 Distribution = 
 Laplace(mu = 0, lambda = 1)
 Distribution (Markdown) = 
-class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Laplace
+- name=Laplace
+- dimension=1
+- weight=1
+- range=]-inf (-31.5438), (31.5438) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Laplace
+<ul>
+  <li>name=Laplace</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-31.5438), (31.5438) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Logistic(mu = 0, beta = 1) Logistic(mu = 0, beta = 1)
 Distribution = 
 Logistic(mu = 0, beta = 1)
 Distribution (Markdown) = 
-class=Logistic name=Logistic dimension=1 mu=0 beta=1
+Logistic
+- name=Logistic
+- dimension=1
+- weight=1
+- range=]-inf (-32.2362), (32.2362) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Logistic name=Logistic dimension=1 mu=0 beta=1
+Logistic
+<ul>
+  <li>name=Logistic</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-32.2362), (32.2362) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 LogNormal(muLog = 0, sigmaLog = 1, gamma = 0) LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
 Distribution = 
 LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
 Distribution (Markdown) = 
-class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+LogNormal
+- name=LogNormal
+- dimension=1
+- weight=1
+- range=[0, (2101.97) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+LogNormal
+<ul>
+  <li>name=LogNormal</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (2101.97) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 LogUniform(aLog = -1, bLog = 1) LogUniform(aLog = -1, bLog = 1)
 Distribution = 
 LogUniform(aLog = -1, bLog = 1)
 Distribution (Markdown) = 
-class=LogUniform name=LogUniform dimension=1 aLog=-1 bLog=1 a=0.367879 b=2.71828
+LogUniform
+- name=LogUniform
+- dimension=1
+- weight=1
+- range=[0.367879, 2.71828]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=LogUniform name=LogUniform dimension=1 aLog=-1 bLog=1 a=0.367879 b=2.71828
+LogUniform
+<ul>
+  <li>name=LogUniform</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0.367879, 2.71828]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0) MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0)
 Distribution = 
 MeixnerDistribution(beta = 1, alpha = 0, delta = 1, gamma = 0)
 Distribution (Markdown) = 
-class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+MeixnerDistribution
+- name=MeixnerDistribution
+- dimension=1
+- weight=1
+- range=]-inf (-12.0208), (12.0208) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+MeixnerDistribution
+<ul>
+  <li>name=MeixnerDistribution</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-12.0208), (12.0208) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Normal(mu = 0, sigma = 1) Normal(mu = 0, sigma = 1)
 Distribution = 
 Normal(mu = 0, sigma = 1)
 Distribution (Markdown) = 
-class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Normal
+- name=Normal
+- dimension=1
+- weight=1
+- range=]-inf (-7.65063), (7.65063) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Normal
+<ul>
+  <li>name=Normal</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-7.65063), (7.65063) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Pareto(beta = 1, alpha=1, gamma=0) Pareto(beta = 1, alpha=1, gamma=0)
 Distribution = 
 Pareto(beta = 1, alpha=1, gamma=0)
 Distribution (Markdown) = 
-class=Pareto name=Pareto dimension=1 beta=1 alpha=1 gamma=0
+Pareto
+- name=Pareto
+- dimension=1
+- weight=1
+- range=[1, (4.5036e+15) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Pareto name=Pareto dimension=1 beta=1 alpha=1 gamma=0
+Pareto
+<ul>
+  <li>name=Pareto</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[1, (4.5036e+15) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Rayleigh(beta = 1, gamma = 0) Rayleigh(beta = 1, gamma = 0)
 Distribution = 
 Rayleigh(beta = 1, gamma = 0)
 Distribution (Markdown) = 
-class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0
+Rayleigh
+- name=Rayleigh
+- dimension=1
+- weight=1
+- range=[0, (8.02947) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0
+Rayleigh
+<ul>
+  <li>name=Rayleigh</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (8.02947) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Rice(beta = 1, nu = 0) Rice(beta = 1, nu = 0)
 Distribution = 
 Rice(beta = 1, nu = 0)
 Distribution (Markdown) = 
-class=Rice name=Rice dimension=1 beta=1 nu=0
+Rice
+- name=Rice
+- dimension=1
+- weight=1
+- range=[0, (15) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Rice name=Rice dimension=1 beta=1 nu=0
+Rice
+<ul>
+  <li>name=Rice</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (15) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Student(nu = 3, mu = 0, sigma = 1) Student(nu = 3, mu = 0, sigma = 1)
 Distribution = 
 Student(nu = 3, mu = 0, sigma = 1)
 Distribution (Markdown) = 
-class=Student name=Student dimension=1 nu=3 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Student
+- name=Student
+- dimension=1
+- weight=1
+- range=]-inf (-47952.8), (47952.8) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Student name=Student dimension=1 nu=3 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Student
+<ul>
+  <li>name=Student</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-47952.8), (47952.8) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Trapezoidal(a = -2, b = -1, c = 1, d = 2) Trapezoidal(a = -2, b = -1, c = 1, d = 2)
 Distribution = 
 Trapezoidal(a = -2, b = -1, c = 1, d = 2)
 Distribution (Markdown) = 
-class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1 c=1 d=2 h=0.333333
+Trapezoidal
+- name=Trapezoidal
+- dimension=1
+- weight=1
+- range=[-2, 2]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1 c=1 d=2 h=0.333333
+Trapezoidal
+<ul>
+  <li>name=Trapezoidal</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-2, 2]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Triangular(a = -1, m = 0, b = 1) Triangular(a = -1, m = 0, b = 1)
 Distribution = 
 Triangular(a = -1, m = 0, b = 1)
 Distribution (Markdown) = 
-class=Triangular name=Triangular dimension=1 a=-1 m=0 b=1
+Triangular
+- name=Triangular
+- dimension=1
+- weight=1
+- range=[-1, 1]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Triangular name=Triangular dimension=1 a=-1 m=0 b=1
+Triangular
+<ul>
+  <li>name=Triangular</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1) TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
 Distribution = 
 TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
 Distribution (Markdown) = 
-class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
+TruncatedNormal
+- name=TruncatedNormal
+- dimension=1
+- weight=1
+- range=[-1, 1]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
+TruncatedNormal
+<ul>
+  <li>name=TruncatedNormal</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 Uniform(a = -1, b = 1) Uniform(a = -1, b = 1)
 Distribution = 
 Uniform(a = -1, b = 1)
 Distribution (Markdown) = 
-class=Uniform name=Uniform dimension=1 a=-1 b=1
+Uniform
+- name=Uniform
+- dimension=1
+- weight=1
+- range=[-1, 1]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=Uniform name=Uniform dimension=1 a=-1 b=1
+Uniform
+<ul>
+  <li>name=Uniform</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-1, 1]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 VonMises(mu = 0, kappa=1) VonMises(mu = 0, kappa=1)
 Distribution = 
 VonMises(mu = 0, kappa=1)
 Distribution (Markdown) = 
-class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+VonMises
+- name=VonMises
+- dimension=1
+- weight=1
+- range=[-3.14159, 3.14159]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+VonMises
+<ul>
+  <li>name=VonMises</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-3.14159, 3.14159]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 WeibullMax(beta = 1, alpha = 1, gamma = 0) WeibullMax(beta = 1, alpha = 1, gamma = 0)
 Distribution = 
 WeibullMax(beta = 1, alpha = 1, gamma = 0)
 Distribution (Markdown) = 
-class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=1 gamma=0
+WeibullMax
+- name=WeibullMax
+- dimension=1
+- weight=1
+- range=]-inf (-32.2362), 0]
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=1 gamma=0
+WeibullMax
+<ul>
+  <li>name=WeibullMax</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=]-inf (-32.2362), 0]</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 WeibullMin(beta = 1, alpha = 1, gamma = 0) WeibullMin(beta = 1, alpha = 1, gamma = 0)
 Distribution = 
 WeibullMin(beta = 1, alpha = 1, gamma = 0)
 Distribution (Markdown) = 
-class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
+WeibullMin
+- name=WeibullMin
+- dimension=1
+- weight=1
+- range=[0, (32.2362) +inf[
+- description=[X0]
+- isParallel=true
+- isCopula=false
+
 Distribution (HTML) = 
-class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
+WeibullMin
+<ul>
+  <li>name=WeibullMin</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[0, (32.2362) +inf[</li>
+  <li>description=[X0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
+</ul>
+
 AliMikhailHaqCopula(theta = 0.5) 2
 chi= 0.0 chib= 0.0 chiL= 0.0 chiLb= 0.012702239616659394
 ClaytonCopula(theta = 2) 2
