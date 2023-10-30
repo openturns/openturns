@@ -41,13 +41,7 @@ int main(int, char *[])
   const Scalar exactL2Norm = std::sqrt(cov);
   // Create the centered Ishigami function
   fullprint << "Create the centered Ishigami function" << std::endl;
-  Description inputVariables(3 + dimension);
-  inputVariables[0] = "xi1";
-  inputVariables[1] = "xi2";
-  inputVariables[2] = "xi3";
-  inputVariables[3] = "a";
-  inputVariables[4] = "b";
-  inputVariables[5] = "mean";
+  const Description inputVariables = {"xi1", "xi2", "xi3", "a", "b", "mean"};
   Description formula(1);
   formula[0] = (OSS() << "sin(xi1) + a * (sin(xi2)) ^ 2 + b * xi3^4 * sin(xi1) - mean");
   const SymbolicFunction centeredIshigamiParam(inputVariables, formula);
@@ -57,10 +51,7 @@ int main(int, char *[])
   const ParametricFunction centeredIshigami(centeredIshigamiParam, {3, 4, 5}, parameters2);
   // Create the input distribution
   fullprint << "Create the input distribution" << std::endl;
-  Collection<Distribution> marginals(dimension);
-  marginals[0] = Uniform(-M_PI, M_PI);
-  marginals[1] = Uniform(-M_PI, M_PI);
-  marginals[2] = Uniform(-M_PI, M_PI);
+  const Collection<Distribution> marginals(dimension, Uniform(-M_PI, M_PI));
   const ComposedDistribution distributionIshigami(marginals);
 
   const UnsignedInteger sampleSize = 1000000;

@@ -247,7 +247,7 @@ This function returns the functional chaos expansion of:
 
 for any :math:`\physicalInputObservation_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 
-*Mathematical analysis*
+**Mathematical analysis**
 
 The mathematical derivation is better described in the standard space
 :math:`\standardInputSpace` than in the physical space :math:`\physicalInputSpace` and 
@@ -332,12 +332,12 @@ where :math:`\widehat{\psi}_{\vect{\alpha}}` is the orthogonal polynomial define
 
 Parameters
 ----------
-conditioningIndices: sequence of int in [0, inputDimension - 1]
+conditioningIndices : sequence of int in [0, inputDimension - 1]
     The indices :math:`\vect{u}` of the input random vector to condition.
 
 Returns
 -------
-conditionalPCE: FunctionalChaosResult
+conditionalPCE : :class:`~openturns.FunctionalChaosResult`
     The functional chaos result of the conditional expectation.
     Its input dimension is :math:`\operatorname{card}(\vect{u})` and its output dimension
     is :math:`\physicalOutputDimension` (i.e. the output dimension is unchanged)."

@@ -23,9 +23,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SymbolicFunction.hxx"
-#include "openturns/DualLinearCombinationFunction.hxx"
-#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -282,17 +282,9 @@ Function FunctionalChaosResult::getComposedMetaModel() const
 /* Conditional expectation accessor */
 FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Indices & conditioningIndices) const
 {
-  // Compute active dimension
+  // Get marginal input sample and distribution
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-  const UnsignedInteger activeDimension = conditioningIndices.getSize();
-  for (UnsignedInteger conditioningIndex = 0; conditioningIndex < activeDimension; ++ conditioningIndex)
-  {
-    const UnsignedInteger variableIndex = conditioningIndices[conditioningIndex];
-    if (variableIndex >= inputDimension)
-      throw InvalidArgumentException(HERE) << "Active indice" << variableIndex 
-        << "in conditioningIndices is not consistent with input dimension"
-        << inputDimension;
-  }
+  conditioningIndices.check(inputDimension);
   const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
   const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
 
@@ -317,6 +309,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   const EnumerateFunctionImplementation enumerateFunctionImplementation(enumerateFunction.getImplementation());
   const String enumerateName(enumerateFunction.getImplementation()->getClassName());
   EnumerateFunction enumerateFunctionMarginal;
+  const UnsignedInteger activeDimension = conditioningIndices.getSize();
   if (enumerateName == "LinearEnumerateFunction")
   {
     enumerateFunctionMarginal = LinearEnumerateFunction(activeDimension);
