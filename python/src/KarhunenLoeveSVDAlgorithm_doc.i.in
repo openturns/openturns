@@ -46,12 +46,13 @@ through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: 
 
 It consists in :
 
-    - approximating :math:`\mat{C}` by its empirical estimator
-      :math:`\dfrac{1}{\tilde{K}} \tilde{\mat{X}}\, \Tr{\tilde{\mat{X}}}` where
-      :math:`\tilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K`
-      if the process is centered and :math:`\tilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})`:math:`\tilde{K}=K-1`
-      otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
-    - taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
+- approximating :math:`\mat{C}` by its empirical estimator
+  :math:`\dfrac{1}{\widetilde{K}} \widetilde{\mat{X}}\, \Tr{\widetilde{\mat{X}}}` where
+  :math:`\widetilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\widetilde{K}=K`
+  if the process is centered and :math:`\widetilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})` 
+  and :math:`\widetilde{K}=K-1`
+  otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
+- taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
 
 We suppose now that :math:`K < Ld`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
 
@@ -61,39 +62,39 @@ approaches are equivalent and both lead to the following singular value problem 
 .. math::
     :label: QuadCollDim1_ter
 
-     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \tilde{K} \lambda_k \mat{\Psi}_k
+     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \widetilde{K} \lambda_k \mat{\Psi}_k.
 
-The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{dL,\tilde{K}}(\Rset)` writes:
+The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{Ld,\widetilde{K}}(\Rset)` is:
 
 .. math::
 
     \mat{Y} = \mat{U}\, \mat{\Sigma} \, \Tr{\mat{V}}
 
-where  we have :math:`\mat{U} \in \mathcal{M}_{Ld, \tilde{K}}(\Rset)`, 
-:math:`\mat{\Sigma}\in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)`, :math:`\mat{V} \in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)` such that :
+where  the matrices :math:`\mat{U} \in \mathcal{M}_{Ld, \widetilde{K}}(\Rset)`, 
+:math:`\mat{\Sigma}\in \mathcal{M}_{\widetilde{K},\widetilde{K}}(\Rset)`, 
+:math:`\mat{V} \in \mathcal{M}_{\widetilde{K},\widetilde{K}}(\Rset)` are such that :
 
-    - :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\tilde{K}}`,  
-    - :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\tilde{K}}` ,
-    - :math:`\mat{\Sigma} = \diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
+- :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\widetilde{K}}`,  
+- :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\widetilde{K}}` ,
+- :math:`\mat{\Sigma} = \diag(\sigma_1, \dots, \sigma_{\widetilde{K}})`.
 
 Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}`
 associated to the eigenvalues :math:`\sigma_k^2`.
 
-We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \tilde{K}`:
+We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \widetilde{K}`:
 
 .. math::
 
-    \begin{align*}
-      \mat{\Phi}_k = \dfrac{1}{\lambda_k} \sqrt{\mat{W}}\, \mat{U}_k
-      \lambda_k = \dfrac{\sigma_k^2}{\tilde{K}}
-    \end{align*}
+      \mat{\Phi}_k & = \dfrac{1}{\lambda_k} \sqrt{\mat{W}}\, \mat{U}_k \\
+      \lambda_k & = \dfrac{\sigma_k^2}{\widetilde{K}}.
 
 We have:
 
 .. math::
 
-    \tilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} \quad \mbox{pour} \quad k \leq \tilde{K}
+    \widetilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} 
 
+for :math:`k \leq \widetilde{K}`.
 The most computationally intensive part of the algorithm is the computation of the
 SVD decomposition. By default, it is done using LAPACK dgesdd routine. While being
 very accurate and reasonably fast for small to medium sized problems, it becomes
@@ -103,19 +104,19 @@ computed has to be fixed a priori.
 The following keys of :class:`~openturns.ResourceMap` allow one to select and tune
 these algorithms:
 
-    - 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random
-      algorithm. By default, it is set to *False* and LAPACK is used.
-    - 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
-      singular values to compute. By default it is set to 1000.	
-    - 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
-      'halko2010' for [halko2010]_ (the default) or 'halko2011' for [halko2011]_.
-      These two algorithms have very similar structures, the first one being based
-      on a random compression of both the rows and columns of :math:`\mat{Y}`, the
-      second one being based on an iterative compressed sampling of the columns of
-      :math:`\mat{Y}`.
-    - 'KarhunenLoeveSVDAlgorithm-halko2011Margin' and
-      'KarhunenLoeveSVDAlgorithm-halko2011Iterations' to fix the parameters of the
-      'halko2011' variant. See [halko2011]_ for the details.
+- 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random
+  algorithm. By default, it is set to *False* and LAPACK is used.
+- 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
+  singular values to compute. By default it is set to 1000.	
+- 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
+  'halko2010' for [halko2010]_ (the default) or 'halko2011' for [halko2011]_.
+  These two algorithms have very similar structures, the first one being based
+  on a random compression of both the rows and columns of :math:`\mat{Y}`, the
+  second one being based on an iterative compressed sampling of the columns of
+  :math:`\mat{Y}`.
+- 'KarhunenLoeveSVDAlgorithm-halko2011Margin' and
+  'KarhunenLoeveSVDAlgorithm-halko2011Iterations' to fix the parameters of the
+  'halko2011' variant. See [halko2011]_ for the details.
 
       
 Examples
