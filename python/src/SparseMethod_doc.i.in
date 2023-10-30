@@ -24,12 +24,8 @@ Examples
 >>> import openturns as ot
 >>> basisSize = 3
 >>> sampleSize = 5
->>> X = ot.Sample(sampleSize, 1)
->>> for i in range(sampleSize):
-...     X[i, 0] = i + 1.0
->>> phis = []
->>> for j in range(basisSize):
-...     phis.append(ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]))
+>>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+>>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
 >>> basis = ot.Basis(phis)
 >>> proxy = ot.DesignProxy(X, phis)
 >>> full = range(basisSize)
