@@ -23,7 +23,7 @@ This class is used in order to create a linear model from an input sample
 and an output sample.
 Let :math:`n` be the sample size and let :math:`n_x` be the input
 sample dimension.
-This class considers the linear regression model between the scalar
+This class fits a linear regression model between the scalar
 variable :math:`Y` and the :math:`n_x`-dimensional vector :math:`\vect{X} = (X_i)_{1 \leq i \leq n_x}`.
 The linear model can be estimated with or without a functional basis.
 
@@ -58,10 +58,11 @@ The algorithm estimates the coefficients
 :math:`a_1, ..., a_p` of the linear model.
 Moreover, the method estimates the variance :math:`\sigma^2`.
 
-The coefficients :math:`a_i` are evaluated using a linear least squares method.
-Default method is `QR`. User might also choose `SVD` or `Cholesky` by
+The coefficients :math:`a_i` are evaluated using a linear least squares method,
+by default the `QR` method.
+User might also choose `SVD` or `Cholesky` by
 setting the `LinearModelAlgorithm-DecompositionMethod` key of the :class:`~openturns.ResourceMap`.
-This choice can be based depending on the following parameters.
+Here are a few guidelines to choose the appropriate decomposition method:
 
 - The Cholesky can be safely used if the functional basis is orthogonal
   and the sample is drawn from the corresponding distribution,
