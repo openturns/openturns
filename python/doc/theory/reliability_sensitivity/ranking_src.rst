@@ -18,12 +18,12 @@ variable :math:`Y` to the :math:`n_x` variables
 
     Y = a_0 + \sum_{i=1}^{n_X} a_i X_i + \varepsilon,
 
-where :math:`(a_i)_{i = 0, 1, ..., n_X}` are constant parameters,
+where :math:`(a_i)_{i = 0, 1, ..., n_X}` are constant parameters and
 :math:`\varepsilon` is a random variable with zero mean
 and standard deviation :math:`\sigma_{\varepsilon}` independent of the
 input variables :math:`X_i`. If the random variables
 :math:`X_1,\ldots,X_{n_X}` are independent and with finite variance
-:math:`\Var{X_i} = \sigma_i^2`, the variance of :math:`Y` can be
+:math:`\Var{X_i}`, the variance of :math:`Y` can be
 estimated as follows:
 
 .. math::
@@ -41,7 +41,7 @@ The estimators for the regression coefficients
 :math:`a_0,\ldots,a_{n_X}`, and the standard deviation
 :math:`\sigma` are obtained from a sample of
 :math:`(Y,X_1,\ldots,X_{n_X})`.
-The SRC coefficients are defined as the estimators :math:`\widehat{C}_i`
+The SRC coefficients are defined as the estimators :math:`\widehat{\operatorname{SRC}}_i`
 of the coefficients :math:`SRC_i`:
 
 .. math::
@@ -92,7 +92,7 @@ If the input random variables :math:`(X_i)_{i = 1, ..., n_X}` are dependent,
 then the SRC is not a valid importance measure anymore (see [daveiga2022]_ remark 4
 page 33).
 In this case, the partial correlation coefficient (PCC) has been suggested, but
-this index is more a measure of the linear relationship between the input and the
+this index is rather a measure of the linear relationship between the input and the
 output.
 Other indices such as the Lindeman-Merenda-Gold (LMG) have been suggested in the
 dependent case (see [daveiga2022]_ page 33).
