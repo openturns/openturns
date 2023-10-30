@@ -24,7 +24,7 @@ centeredSample : bool, default=False
     
 Notes
 -----
-The Karhunen-Loeve SVD algorithm solves the Fredholm problem  associated to the
+The Karhunen-Loeve SVD algorithm solves the Fredholm problem associated to the
 covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm`
 to get the notations.
 If the mesh is regular, then this decomposition is equivalent to the principal
