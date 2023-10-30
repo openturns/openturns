@@ -171,14 +171,46 @@ String ComposedDistribution::__str__(const String & ) const
   return oss;
 }
 
+String ComposedDistribution::_repr_html_() const
+{
+  OSS oss(false);
+  oss << getClassName() << "\n";
+  oss << "<ul>\n";
+  oss << "  <li>name=" << getName() << "</li>\n";
+  oss << "  <li>dimension: "<< getDimension() << "</li>\n";
+  oss << "  <li>description=" << description_ << "\n";
+  if (getDimension() > 1) oss << "  <li>copula: " << copula_.__str__() << "</li>\n";
+  oss << "</ul>\n";
+  oss << "\n";
+  // Table of marginals
+  oss << "<table>\n";
+  // Header
+  oss << "  <tr>\n";
+  oss << "    <th>Index</th>\n";
+  oss << "    <th>Variable</th>\n";
+  oss << "    <th>Distribution</th>\n";
+  oss << "  </tr>\n";
+  // Content
+  for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
+  {
+      oss << "  <tr>\n";
+      oss << "    <td>" << i << "</td>\n";
+      oss << "    <td>" << description_[i] << "</td>\n";
+      oss << "    <td>" << distributionCollection_[i].__str__() << "</td>\n";
+      oss << "  </tr>\n";
+  }
+  oss << "</table>\n";
+  return oss;
+}
+
 String ComposedDistribution::__repr_markdown__() const
 {
   OSS oss(false);
-  oss << getClassName() << Os::GetEndOfLine();
-  oss << "- name=" << getName() << Os::GetEndOfLine();
-  oss << "- dimension=" << getDimension() << Os::GetEndOfLine();
-  oss << "- description=" << description_ << Os::GetEndOfLine();
-  if (getDimension() > 1) oss << "- copula=" << copula_.__str__() << Os::GetEndOfLine();
+  oss << getClassName() << "\n";
+  oss << "- name=" << getName() << "\n";
+  oss << "- dimension=" << getDimension() << "\n";
+  oss << "- description=" << description_ << "\n";
+  if (getDimension() > 1) oss << "- copula=" << copula_.__str__() << "\n";
   // Compute maximum distribution's column width
   String intermediateString;
   UnsignedInteger maximumColumnWidth = 0;
@@ -192,16 +224,16 @@ String ComposedDistribution::__repr_markdown__() const
   if (intermediateString.size() > maximumColumnWidth)
     maximumColumnWidth = intermediateString.size();
   // Format the table
-  oss << Os::GetEndOfLine();
+  oss << "\n";
   oss << "| Index | Variable |"
-      << OSS::PadString(" Distribution ", maximumColumnWidth) << "|" << Os::GetEndOfLine();
-  oss << "|-------|----------|" << String(maximumColumnWidth, '-') << "|" << Os::GetEndOfLine();
+      << OSS::PadString(" Distribution ", maximumColumnWidth) << "|" << "\n";
+  oss << "|-------|----------|" << String(maximumColumnWidth, '-') << "|" << "\n";
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
     oss << "| " << std::setw(5) << i << " |"
         << " " << std::setw(8) << description_[i] << " |";
     intermediateString = OSS() << " " << distributionCollection_[i].__str__() << " ";
-    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << Os::GetEndOfLine();
+    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << "\n";
   }
   return oss;
 }

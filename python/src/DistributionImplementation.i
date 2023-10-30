@@ -92,3 +92,11 @@ Distribution __rmul__(Scalar s)
 
 
 } }
+
+%pythoncode %{
+def __DistributionImplementation_repr_markdown(self):
+    """Get Markdown representation."""
+    return self.__repr_markdown__()
+
+DistributionImplementation._repr_markdown_ = __DistributionImplementation_repr_markdown
+%}

@@ -427,7 +427,6 @@ Distribution maximum(const DistributionImplementation & left,
   return new MaximumDistribution(coll);
 }
 
-
 /* String converter */
 String DistributionImplementation::__repr__() const
 {

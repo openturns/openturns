@@ -26,5 +26,9 @@ for sd in src:
 sample = ot.Sample(
     [[0], [142.857], [285.714], [428.571], [571.429], [714.286], [857.143], [1000.0]]
 )
-d = ot.MetaModelAlgorithm.BuildDistribution(sample)
-print(d)
+distribution = ot.MetaModelAlgorithm.BuildDistribution(sample)
+print(distribution)
+print("distribution (HTML)")
+print(distribution._repr_html_())
+print("distribution (Markdown)")
+print(distribution._repr_markdown_())

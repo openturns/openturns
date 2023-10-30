@@ -133,7 +133,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-
+  
   /** Weight accessor */
   void setWeight(Scalar w);
   Scalar getWeight() const;

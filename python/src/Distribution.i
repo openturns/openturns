@@ -342,3 +342,11 @@ class ChaospyDistribution(PythonDistribution):
         q = self._dist.inv(p).flatten()
         return q
 %}
+
+%pythoncode %{
+def __Distribution_repr_markdown(self):
+    """Get Markdown representation."""
+    return self.__repr_markdown__()
+
+Distribution._repr_markdown_ = __Distribution_repr_markdown
+%}
