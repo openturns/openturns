@@ -1,7 +1,7 @@
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 21
+- coefficients: dimension=21
 - residual: 0.032434
 - relative error: 0.0196503
 - measure: Distribution
@@ -56,7 +56,7 @@ Sobol total index  [0,1,2]  =0.00014 absolute error=1.42405e-04
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 84
+- coefficients: dimension=84
 - residual: 0.0248146
 - relative error: 0.0115022
 - measure: Distribution

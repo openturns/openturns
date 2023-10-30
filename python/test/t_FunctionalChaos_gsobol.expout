@@ -1,7 +1,7 @@
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=10 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 11
+- coefficients: dimension=11
 - residual: 0.00906333
 - relative error: 0.0344988
 - measure: Distribution
@@ -25,7 +25,7 @@ Sobol index [0,1,2] =0.00056580 absolute error=0.00568420
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=10 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 11
+- coefficients: dimension=11
 - residual: 0.00959568
 - relative error: 0.0356757
 - measure: Distribution
@@ -49,7 +49,7 @@ Sobol index [0,1,2] =0.00000000 absolute error=0.00625000
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=10 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 11
+- coefficients: dimension=11
 - residual: 0.00971889
 - relative error: 0.0390684
 - measure: Distribution
@@ -73,7 +73,7 @@ Sobol index [0,1,2] =0.00000000 absolute error=0.00625000
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 35
+- coefficients: dimension=35
 - residual: 0.00851458
 - relative error: 0.0304478
 - measure: Distribution
@@ -97,7 +97,7 @@ Sobol index [0,1,2] =0.00175343 absolute error=0.00449657
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 35
+- coefficients: dimension=35
 - residual: 0.00881056
 - relative error: 0.0300766
 - measure: Distribution
@@ -121,7 +121,7 @@ Sobol index [0,1,2] =0.00053997 absolute error=0.00571003
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=35
 ProjectionStrategyImplementation
-- coefficients: 35
+- coefficients: dimension=35
 - residual: 0.00936606
 - relative error: 0.0362832
 - measure: Distribution
