@@ -30,15 +30,9 @@ Examples
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
 >>> # Create the orthogonal basis
->>> polynomialCollection = ot.PolynomialFamilyCollection(im.dim)
->>> for i in range(im.dim):
-...    polynomialCollection[i] = ot.OrthogonalUniVariatePolynomialFamily(
-...        ot.LegendreFactory()
-...    )
+>>> polynomialCollection = [ot.LegendreFactory()] * im.dim
 >>> enumerateFunction = ot.LinearEnumerateFunction(im.dim)
->>> productBasis = ot.OrthogonalBasis(
-...    ot.OrthogonalProductPolynomialFactory(polynomialCollection, enumerateFunction)
-...)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polynomialCollection, enumerateFunction)
 >>> # experimental design
 >>> samplingSize = 75
 >>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), im.distributionX, samplingSize)
