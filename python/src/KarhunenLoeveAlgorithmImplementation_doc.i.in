@@ -12,8 +12,8 @@ s : float, :math:`\geq0`
 Notes
 -----
 The Karhunen-Loeve decomposition enables to build some finite approximations
-of stochastic processes which are optimal with respect to the norm
-:math:`L^2` (see [sullivan2015]_ page 223).
+of stochastic processes which are optimal with respect to the :math:`L^2` norm
+(see [sullivan2015]_ page 223).
 
 We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
 

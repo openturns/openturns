@@ -53,9 +53,9 @@ It consists in :
       otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
     - taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
 
-We suppose now that :math:`K < dL`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
+We suppose now that :math:`K < Ld`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
 
-As the matrix :math:`\mat{\Theta} = \mat{C}` is invertible, the Galerkin and collocation
+As the matrix :math:`\mat{\Theta} = \mat{C}` is nonsingular, the Galerkin and collocation
 approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
 
 .. math::
@@ -69,12 +69,12 @@ The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{dL,\tilde{K}}(\Rset)` wr
 
     \mat{Y} = \mat{U}\, \mat{\Sigma} \, \Tr{\mat{V}}
 
-where  we have :math:`\mat{U} \in \mathcal{M}_{dL,\tilde{K}}(\Rset)`, 
+where  we have :math:`\mat{U} \in \mathcal{M}_{Ld, \tilde{K}}(\Rset)`, 
 :math:`\mat{\Sigma}\in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)`, :math:`\mat{V} \in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)` such that :
 
     - :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\tilde{K}}`,  
     - :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\tilde{K}}` ,
-    - :math:`\mat{\Sigma} = diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
+    - :math:`\mat{\Sigma} = \diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
 
 Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}`
 associated to the eigenvalues :math:`\sigma_k^2`.
