@@ -100,6 +100,42 @@ graph.setLogScale(ot.GraphImplementation.LOGX)
 view = viewer.View(graph)
 
 # %%
+# Using LHS simulation
+# --------------------
+experiment = ot.LHSExperiment()
+algo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
+algo.setMaximumOuterSampling(NbSim)
+algo.setBlockSize(1)
+algo.setMaximumCoefficientOfVariation(cv)
+
+# %%
+# For statistics about the algorithm
+initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
+
+# %%
+# Perform the analysis.
+
+# %%
+algo.run()
+
+# %%
+resultLHS = algo.getResult()
+
+numberOfFunctionEvaluationsLHS = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+probabilityLHS = result.getProbabilityEstimate()
+print("Number of calls to the limit state =", numberOfFunctionEvaluationsLHS)
+print("Pf = ", probabilityLHS)
+print("CV =", result.getCoefficientOfVariation())
+
+# %%
+graph = algo.drawProbabilityConvergence()
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = viewer.View(graph)
+
+
+# %%
 # Using FORM analysis
 # -------------------
 
@@ -287,6 +323,7 @@ def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
 printMethodSummary(
     "Monte-Carlo", probabilityMonteCarlo, numberOfFunctionEvaluationsMonteCarlo
 )
+printMethodSummary("LHS", probabilityLHS, numberOfFunctionEvaluationsLHS)
 printMethodSummary("FORM", probabilityFORM, numberOfFunctionEvaluationsFORM)
 printMethodSummary(
     "DirectionalSampling",

@@ -91,7 +91,7 @@ Sampling’.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_lhs`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_axial_stressed_beam`
 
 
 .. topic:: References:
