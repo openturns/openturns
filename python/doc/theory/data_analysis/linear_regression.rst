@@ -222,11 +222,13 @@ be abandoned, or at least used very cautiously.
     graph.setTitle('')
     View(graph)
 
+The analysis of a linear regression model is presented in :ref:`regression_analysis`.
 
 .. topic:: API:
 
     - See :class:`~openturns.LinearModelAlgorithm` to build a linear model
     - See :class:`~openturns.LinearModelResult` for the associated results
+    - See :class:`~openturns.LinearModelAnalysis` for the analysis
     - See :py:func:`~openturns.VisualTest.DrawLinearModel` to draw a linear model
     - See :py:func:`~openturns.VisualTest.DrawLinearModelResidual` to draw the residual
     - See :py:func:`~openturns.LinearModelTest.LinearModelFisher` to assess the nullity of the coefficients
