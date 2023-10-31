@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an weightedExperiment plane
+ *  @brief Abstract top-level view of an WeightedExperiment
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -23,13 +23,15 @@
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WeightedExperimentImplementation)
 
 static const Factory<WeightedExperimentImplementation> Factory_WeightedExperimentImplementation;
-
 
 /* Default constructor */
 WeightedExperimentImplementation::WeightedExperimentImplementation()
