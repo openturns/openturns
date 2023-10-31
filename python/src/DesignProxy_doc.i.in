@@ -20,6 +20,19 @@ Notes
 Helps to cache evaluations of the design matrix. Can be useful for an iterative
 least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
 to select the algorithm used for the resolution of linear least-squares problems.
+
+Examples
+--------
+>>> import openturns as ot
+>>> basisSize = 3
+>>> sampleSize = 5
+>>> X = ot.Sample(sampleSize, 1)
+>>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+>>> phis = []
+>>> for j in range(basisSize):
+...     phis.append(ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]))
+>>> basis = ot.Basis(phis)
+>>> proxy = ot.DesignProxy(X, phis)
 "
 
 // ---------------------------------------------------------------------
