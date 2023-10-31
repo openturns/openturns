@@ -130,12 +130,12 @@ this method computes the Sobol' interaction indice between :math:`i` and :math:`
 
 The second order Sobol' index :math:`S_{i,j}`  measures the part of
 the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
-Hence, the closed Sobol' indice of the group :math:`\{i, j\}` is:
+Hence, the closed Sobol' index of the group :math:`\{i, j\}` is:
 
 .. math::
     S_{\{i, j\}}^{\operatorname{cl}} = S_i + S_j + S_{\{i, j\}}.
 
-Inversely, if the closed Sobol' indice :math:`S_{\{i, j\}}^{\operatorname{cl}}` is known,
+Conversely, if the closed Sobol' index :math:`S_{\{i, j\}}^{\operatorname{cl}}` is known,
 then the interaction Sobol' indice can be computed from the equation:
 
 .. math::
