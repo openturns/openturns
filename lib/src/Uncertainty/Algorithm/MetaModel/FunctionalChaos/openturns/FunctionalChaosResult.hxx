@@ -30,6 +30,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
+#include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -114,6 +115,9 @@ public:
 
   /** involvesModelSelection accessor */
   virtual void setInvolvesModelSelection(const Bool involvesModelSelection);
+
+  /** Linear model accessor */
+  virtual LinearModelResult getLinearModelResult(const UnsignedInteger & marginalOutputIndex = 0) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

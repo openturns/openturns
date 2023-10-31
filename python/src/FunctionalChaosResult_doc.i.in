@@ -302,3 +302,17 @@ Returns
 residualsSample : :class:`~openturns.Sample`
     The sample of residuals :math:`r_{ji} = y_{ji} - \metamodel_i(\vect{x^{(j)}})`
     for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`."
+
+%feature("docstring") OT::FunctionalChaosResult::getLinearModelResult
+"Get the linear model result.
+
+Parameters
+----------
+marginalOutputIndex: int
+    The index of the marginal output.
+    The default value is `marginalOutputIndex = 0`.
+
+Returns
+-------
+lmResult : :class:`~openturns.LinearModelResult`
+    The linear model."

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -220,3 +221,10 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                 )
         # Print summary
         print(sensitivity)
+
+        # Convert to LinearModelResult
+        lmResult = result.getLinearModelResult()
+        coefficientsPCE = result.getCoefficients().getMarginal(0).asPoint()
+        coefficientsLM = lmResult.getCoefficients()
+        rtol = 1.0e-15
+        ott.assert_almost_equal(coefficientsPCE, coefficientsLM, rtol)

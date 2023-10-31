@@ -203,6 +203,25 @@ int main(int, char *[])
           // Print summary
           fullprint << "Summary" << std::endl;
           fullprint << sensitivity.__str__() << std::endl;
+
+          // Convert to LinearModelResult
+          const LinearModelResult lmResult(result.getLinearModelResult());
+          // Check the coefficients
+          const Point coefficientsPCE(result.getCoefficients().getMarginal(0).asPoint());
+          const Point coefficientsLM(lmResult.getCoefficients());
+          const Scalar rtol = 1.e-15;
+          assert_almost_equal(coefficientsPCE, coefficientsLM, rtol);
+          // Check the metamodel
+          const Function metamodelPCE(result.getMetaModel());
+          const Sample Xtest(experiment.generate());
+          const Sample YtestPCE(metamodelPCE(Xtest));
+          const Function metamodelLM(lmResult.getMetaModel());
+          const Function transformation(result.getTransformation());
+          const Sample Ztest(transformation(Xtest));
+          const Sample YtestLM(metamodelLM(Ztest));
+          const Sample YDiff(YtestPCE - YtestLM);
+          assert_almost_equal(YtestPCE, YtestLM, rtol);
+          
         }
       }
     }

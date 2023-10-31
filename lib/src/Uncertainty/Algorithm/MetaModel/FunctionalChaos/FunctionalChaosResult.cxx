@@ -27,6 +27,9 @@
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/Curve.hxx"
 #include <unordered_map>
+#include "openturns/DesignProxy.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -305,6 +308,78 @@ void FunctionalChaosResult::setIsLeastSquares(const Bool isLeastSquares)
 void FunctionalChaosResult::setInvolvesModelSelection(const Bool involvesModelSelection)
 {
   involvesModelSelection_ = involvesModelSelection;
+}
+
+/* Linear model accessor */
+LinearModelResult FunctionalChaosResult::getLinearModelResult(const UnsignedInteger & marginalOutputIndex) const
+{
+  // Get the Design matrix
+  const Sample standardInputSample(transformation_(inputSample_));
+  const DesignProxy designProxy(standardInputSample, Psi_k_);
+  const UnsignedInteger reducedBasisSize = Psi_k_.getSize();
+  Indices allIndices(reducedBasisSize);
+  allIndices.fill();
+  const Matrix designMatrix(designProxy.computeDesign(allIndices));
+  const String methodName(ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
+  LeastSquaresMethod leastSquaresMethod(LeastSquaresMethod::Build(methodName, designProxy, allIndices));
+  leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
+  
+  // TODO: factor the code below this point into LinearModelResult and re-factor LinearModelAlgorithm
+  // Create the coefficients names
+  const Point marginalCoefficients(alpha_k_.getMarginal(marginalOutputIndex).asPoint());
+  const String basisFormula = orthogonalBasis_.__str__();
+  Description coefficientsNames(0);
+  for (UnsignedInteger k = 0; k < reducedBasisSize; ++ k)
+    coefficientsNames.add(Psi_k_[k].__str__());
+  
+  // Select the output marginal
+  const Sample marginalOutputSample(outputSample_.getMarginal(marginalOutputIndex));
+  const Function marginalComposedMetamodel(composedMetaModel_.getMarginal(marginalOutputIndex));
+  const Sample marginalResidualSample(marginalOutputSample - marginalComposedMetamodel(standardInputSample));
+  
+  // Compute leverages and sigma2
+  const Point leverages(leastSquaresMethod.getHDiag());
+  const UnsignedInteger sampleSize = inputSample_.getSize();
+  const Scalar sigma2 = (reducedBasisSize >= sampleSize) ? 0.0 : sampleSize * marginalResidualSample.computeRawMoment(2)[0] / (sampleSize - reducedBasisSize);
+  
+  // Create standardized residuals (same as in LinearModelAlgorithm.run())
+  Sample standardizedResiduals(sampleSize, 1);
+  for (UnsignedInteger i = 0; i < sampleSize; ++ i)
+  {
+      const Scalar factorOneMinusLeverageI = sigma2 * (1.0 - leverages[i]);
+      if (!(factorOneMinusLeverageI > 0))
+        standardizedResiduals(i, 0) = SpecFunc::MaxScalar;
+      else
+        standardizedResiduals(i, 0) = marginalResidualSample(i, 0) / std::sqrt(factorOneMinusLeverageI);
+  }
+  
+  const Point diagonalGramInverse(leastSquaresMethod.getGramInverseDiag());
+  
+  // Cook's distances (same as in LinearModelAlgorithm.run())
+  Point cookDistances(sampleSize);
+  for (UnsignedInteger i = 0; i < sampleSize; ++ i)
+    cookDistances[i] = (1.0 / reducedBasisSize) * standardizedResiduals(i, 0) * standardizedResiduals(i, 0) * (leverages[i] / (1.0 - leverages[i]));
+  
+  // Convert orthogonal basis to basis
+  const Basis reducedBasis(Psi_k_);
+  
+  const LinearModelResult lmResult(
+    standardInputSample,
+    reducedBasis,
+    designMatrix,
+    marginalOutputSample,
+    marginalComposedMetamodel,
+    marginalCoefficients,
+    basisFormula,
+    coefficientsNames,
+    marginalResidualSample,
+    standardizedResiduals,
+    diagonalGramInverse,
+    leverages,
+    cookDistances,
+    sigma2
+    );
+  return lmResult;
 }
 
 /* Method save() stores the object through the StorageManager */
