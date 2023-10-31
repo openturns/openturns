@@ -9,6 +9,7 @@ import openturns as ot
 from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
+ot.TBB.Disable()
 
 # Prevent from using unittest.TestLoader.loadTestsFromTestCase
 # so as not to get the test execution duration
