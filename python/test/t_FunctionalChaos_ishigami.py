@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -11,13 +12,13 @@ a = 7.0
 b = 0.1
 # Reference analytical values
 meanTh = a / 2
-covTh = (b ** 2 * m.pi ** 8) / 18.0 + (b * m.pi ** 4) / 5.0 + (a ** 2) / 8.0 + 1.0 / 2.0
+covTh = (b**2 * m.pi**8) / 18.0 + (b * m.pi**4) / 5.0 + (a**2) / 8.0 + 1.0 / 2.0
 sob_1 = [
-    (b * m.pi ** 4 / 5.0 + b ** 2 * m.pi ** 8 / 50.0 + 1.0 / 2.0) / covTh,
-    (a ** 2 / 8.0) / covTh,
+    (b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0) / covTh,
+    (a**2 / 8.0) / covTh,
     0.0,
 ]
-sob_2 = [0.0, (b ** 2 * m.pi ** 8 / 18.0 - b ** 2 * m.pi ** 8 / 50.0) / covTh, 0.0]
+sob_2 = [0.0, (b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0) / covTh, 0.0]
 sob_3 = [0.0]
 sob_T1 = [
     sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0],
@@ -215,3 +216,10 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                 )
         # Print summary
         print(sensitivity)
+
+        # Convert to LinearModelResult
+        lmResult = result.getLinearModelResult()
+        coefficientsPCE = result.getCoefficients().getMarginal(0).asPoint()
+        coefficientsLM = lmResult.getCoefficients()
+        rtol = 1.0e-15
+        ott.assert_almost_equal(coefficientsPCE, coefficientsLM, rtol)
