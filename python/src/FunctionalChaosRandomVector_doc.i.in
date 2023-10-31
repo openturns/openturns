@@ -29,34 +29,34 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 %feature("docstring") OT::FunctionalChaosRandomVector::getMean
 "Accessor to the mean of the functional chaos expansion.
 
-Let :math:`n_X \in \Nset` be the dimension of the input random vector, 
-let :math:`n_Y \in \Nset` be the dimension of the output random vector.
+Let :math:`\physicalInputDimension \in \Nset` be the dimension of the input random vector, 
+let :math:`\physicalOutputDimension \in \Nset` be the dimension of the output random vector.
 and let :math:`P \in \Nset` be the number of coefficients in the basis.
 We consider the following functional chaos expansion:
 
 .. math::
 
-      \widetilde{\vect{Y}} = \sum_{k = 0}^P \vect{a}_k \psi_k(\vect{Z})
+      \widetilde{\physicalOutputRandomVector} = \sum_{k = 0}^P \vect{a}_k \psi_k(\vect{Z})
 
-where :math:`\widetilde{\vect{Y}} \in \Rset^{n_Y}` is the approximation of the output 
-random variable :math:`\vect{Y}` by the expansion, 
-:math:`\left\{\vect{a}_k \in \Rset^{n_Y}\right\}_{k = 0, ..., P}` are the coefficients, 
-:math:`\left\{\psi_k: \Rset^{n_X} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
+where :math:`\widetilde{\physicalOutputRandomVector} \in \Rset^{\physicalOutputDimension}` is the approximation of the output 
+random variable :math:`\physicalOutputRandomVector` by the expansion, 
+:math:`\left\{\vect{a}_k \in \Rset^{\physicalOutputDimension}\right\}_{k = 0, ..., P}` are the coefficients, 
+:math:`\left\{\psi_k: \Rset^{\physicalInputDimension} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
 orthonormal functions in the basis, 
-and :math:`\vect{Z} \in \Rset^{n_X}` is the standardized random input vector.
+and :math:`\vect{Z} \in \Rset^{\physicalInputDimension}` is the standardized random input vector.
 The previous equation can be equivalently written as follows:
 
 .. math::
 
       \widetilde{Y}_i = \sum_{k = 0}^P a_{ki} \psi_k(\vect{Z})
 
-for :math:`i = 1, ..., n_Y`
+for :math:`i = 1, ..., \physicalOutputDimension`
 where :math:`a_{ki} \in \Rset` is the :math:`i`-th component of the
 :math:`k`-th coefficient in the expansion:
 
 .. math::
 
-      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, n_Y} \end{pmatrix}.
+      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, \physicalOutputDimension} \end{pmatrix}.
 
 The mean of the functional chaos expansion is the first coefficient
 in the expansion:
@@ -65,11 +65,11 @@ in the expansion:
 
       \Expect{\widetilde{Y}_i} = a_{i,0}
 
-for :math:`i = 1, ..., n_Y`.
+for :math:`i = 1, ..., \physicalOutputDimension`.
 
 Returns
 -------
-mean : :class:`~openturns.Point`, dimension :math:`n_Y`
+mean : :class:`~openturns.Point`, dimension :math:`\physicalOutputDimension`
     The mean of the functional chaos expansion.
 
 Examples
@@ -103,45 +103,45 @@ mean= 3.50..."
 %feature("docstring") OT::FunctionalChaosRandomVector::getCovariance
 "Accessor to the covariance of the functional chaos expansion.
 
-Let :math:`n_X \in \Nset` be the dimension of the input random vector, 
-let :math:`n_Y \in \Nset` be the dimension of the output random vector.
+Let :math:`\physicalInputDimension \in \Nset` be the dimension of the input random vector, 
+let :math:`\physicalOutputDimension \in \Nset` be the dimension of the output random vector.
 and let :math:`P \in \Nset` be the number of coefficients in the basis.
 We consider the following functional chaos expansion:
 
 .. math::
 
-      \widetilde{\vect{Y}} = \sum_{k = 0}^P \vect{a}_k \psi_k(\vect{Z})
+      \widetilde{\physicalOutputRandomVector} = \sum_{k = 0}^P \vect{a}_k \psi_k(\vect{Z})
 
 where
-:math:`\widetilde{\vect{Y}} \in \Rset^{n_Y}` is the approximation of the output 
-random variable :math:`\vect{Y}` by the expansion, 
-:math:`\left\{\vect{a}_k \in \Rset^{n_Y}\right\}_{k = 0, ..., P}` are the coefficients, 
-:math:`\left\{\psi_k: \Rset^{n_X} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
+:math:`\widetilde{\physicalOutputRandomVector} \in \Rset^{\physicalOutputDimension}` is the approximation of the output 
+random variable :math:`\physicalOutputRandomVector` by the expansion, 
+:math:`\left\{\vect{a}_k \in \Rset^{\physicalOutputDimension}\right\}_{k = 0, ..., P}` are the coefficients, 
+:math:`\left\{\psi_k: \Rset^{\physicalInputDimension} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
 orthonormal functions in the basis, 
-and :math:`\vect{Z} \in \Rset^{n_X}` is the standardized random input vector.
+and :math:`\vect{Z} \in \Rset^{\physicalInputDimension}` is the standardized random input vector.
 The previous equation can be equivalently written as follows:
 
 .. math::
 
       \widetilde{Y}_i = \sum_{k = 0}^P a_{ki} \psi_k(\vect{Z})
 
-for :math:`i = 1, ..., n_Y`
+for :math:`i = 1, ..., \physicalOutputDimension`
 where :math:`a_{ki} \in \Rset` is the :math:`i`-th component of the
 :math:`k`-th coefficient in the expansion:
 
 .. math::
 
-      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, n_Y} \end{pmatrix}.
+      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, \physicalOutputDimension} \end{pmatrix}.
 
 The covariance matrix of the functional chaos expansion is
-the matrix :math:`\matcov \in \Rset^{n_Y \times n_Y}`, where each
+the matrix :math:`\matcov \in \Rset^{\physicalOutputDimension \times \physicalOutputDimension}`, where each
 component is:
 
 .. math::
 
       c_{ij} = \Cov{\widetilde{Y}_i, \tilde{Y}_j}
 
-for :math:`i,j = 1, ..., n_Y`.
+for :math:`i,j = 1, ..., \physicalOutputDimension`.
 The covariance can be computed using the coefficients of the 
 expansion:
 
@@ -149,7 +149,7 @@ expansion:
 
       \Cov{\widetilde{Y}_i, \tilde{Y}_j} = \sum_{k = 1}^P a_{ki} a_{jk}
 
-for :math:`i,j = 1, ..., n_Y`.
+for :math:`i,j = 1, ..., \physicalOutputDimension`.
 This covariance involves all the coefficients, except the first one.
 The diagonal of the covariance matrix is the marginal variance:
 
@@ -157,11 +157,11 @@ The diagonal of the covariance matrix is the marginal variance:
 
       \Var{\widetilde{Y}_i} = \sum_{k = 1}^P a_{ki}^2
 
-for :math:`i,j = 1, ..., n_Y`.
+for :math:`i,j = 1, ..., \physicalOutputDimension`.
 
 Returns
 -------
-covariance : :class:`~openturns.CovarianceMatrix`, dimension :math:`n_Y \times n_Y`
+covariance : :class:`~openturns.CovarianceMatrix`, dimension :math:`\physicalOutputDimension \times \physicalOutputDimension`
     The covariance of the functional chaos expansion.
 
 Examples

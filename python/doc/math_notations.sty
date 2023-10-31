@@ -4,8 +4,53 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+% A random variable is upcase.
+% An observation of a random variable (or a real number) is downcase.
+% A random vector is in latin, upcase, letter.
+% A vector is in latin, downcase, letter.
+% A set is in latin, caligraphic, upcase, letter.
+
+% The set of physical input random observations
+\newcommand{\physicalInputSpace}{\mathcal{X}}
+
+% The physical input random vector or observation
+\newcommand{\physicalInputRandomVector}{\vect{X}}
+\newcommand{\physicalInputObservation}{\vect{x}}
+
+% The dimension of the physical input random vector
+\newcommand{\physicalInputDimension}{{n_x}}
+
+% The set of physical output random observations
+\newcommand{\physicalOutputSpace}{\mathcal{Y}}
+
+% The physical output random vector or observation
+\newcommand{\physicalOutputRandomVector}{\vect{Y}}
+\newcommand{\physicalOutputObservation}{\vect{y}}
+
+% The dimension of the physical output random vector
+\newcommand{\physicalOutputDimension}{{n_y}}
+
 % The physical model
 \newcommand{\model}{g}
+
+% The surrogate model
+\newcommand{\surrogateModel}{\tilde{g}}
+
+% The measure of the input random vector
+\newcommand{\inputMeasure}{\mu}
+
+% The probability density function of the input random vector
+\newcommand{\inputProbabilityDensityFunction}{f}
+
+% The set of standard input random observations
+\newcommand{\standardInputSpace}{\mathcal{Z}}
+
+% The standard input random vector
+\newcommand{\standardInputRandomVector}{\vect{Z}}
+\newcommand{\standardInputObservation}{\vect{z}}
+
+% The sample size
+\newcommand{\sampleSize}{n}
 
 % For matrixes and vectors
 \newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}
