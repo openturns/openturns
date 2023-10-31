@@ -131,6 +131,6 @@ with open("sample.csv", "w") as f:
 aSample = ot.Sample.ImportFromTextFile("sample.csv")
 print("aSample with nan/inf (text)=", repr(aSample))
 aSample = ot.Sample.ImportFromCSVFile("sample.csv")
-print("aSample with nan/inf  (csv)=", repr(aSample))
+print("aSample with nan/inf  (csv)=", repr(aSample).replace("(ind)", ""))
 
 os.remove("sample.csv")
