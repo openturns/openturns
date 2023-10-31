@@ -50,7 +50,7 @@ GeneralizedParetoFactory::GeneralizedParetoFactory()
   solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumConstraintError"));
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla)
-    cobyla->setIgnoreFailure(true);
+    cobyla->setCheckStatus(false);
 }
 
 /* Virtual constructor */
