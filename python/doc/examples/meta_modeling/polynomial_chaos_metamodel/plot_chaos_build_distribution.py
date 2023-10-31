@@ -5,7 +5,7 @@ Fit a distribution from an input sample
 # %%
 #
 # In this example we show how to use the
-# :class:`~openturns.BuildDistribution` function to fit a distribution to an
+# :meth:`~openturns.MetaModelAlgorithm.BuildDistribution` function to fit a distribution to an
 # input sample.
 # This function is used by the :class:`~openturns.FunctionalChaosAlgorithm`
 # class when we want to create a polynomial chaos metamodel and we have a
@@ -41,7 +41,7 @@ outputSample = model(inputSample)
 
 # %%
 # Create a functional chaos model.
-# The algorithm used by :class:`~openturns.BuildDistribution`
+# The algorithm used by :meth:`~openturns.MetaModelAlgorithm.BuildDistribution`
 # fits a distribution on the input sample.
 # This is done with the Lilliefors test.
 # Please read :ref:`kolmogorov_smirnov_test` for more details on this topic.
@@ -59,7 +59,7 @@ outputSample = model(inputSample)
 ot.ResourceMap.GetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize")
 
 # %%
-# In order to speed this example, let us reduce this value.
+# In order to speed this example up, let us reduce this value.
 
 # %%
 ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100)
@@ -75,7 +75,7 @@ distribution = ot.FunctionalChaosAlgorithm.BuildDistribution(inputSample)
 distribution
 
 # %%
-# We can also analyse its properties in more details.
+# We can also analyse its properties in more detail.
 
 # %%
 for i in range(dimension):
@@ -85,7 +85,7 @@ for i in range(dimension):
 distribution.getCopula()
 
 # %%
-# The previous call to `BuildDistribution` is what is done internally by the
+# The previous call to :meth:`~openturns.MetaModelAlgorithm.BuildDistribution` is what is done internally by the
 # following constructor of `FunctionalChaosAlgorithm`.
 
 # %%
@@ -96,5 +96,4 @@ algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
 # :doc:`Create a polynomial chaos metamodel from a data set </auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos>`.
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+ot.ResourceMap.Reload() # reset default settings
