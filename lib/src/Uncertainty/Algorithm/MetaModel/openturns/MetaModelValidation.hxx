@@ -44,7 +44,7 @@ public:
   /** Default constructor */
   MetaModelValidation();
 
-  /** Constructor with parameters */
+  /** @deprecated Constructor with parameters */
   MetaModelValidation(const Sample & inputSample,
                       const Sample & outputSample,
                       const Function & metaModel);
