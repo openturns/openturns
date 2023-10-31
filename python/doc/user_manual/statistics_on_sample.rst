@@ -26,6 +26,7 @@ Building distributions from samples
     DistributionFactoryResult
     DistributionFactoryLikelihoodResult
     ProfileLikelihoodResult
+    CovariatesResult
     TimeVaryingResult
 
     :template: DistributionFactory.rst_t

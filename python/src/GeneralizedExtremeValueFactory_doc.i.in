@@ -213,8 +213,140 @@ result : :class:`~openturns.DistributionFactoryLikelihoodResult`
 
 // ----------------------------------------------------------------------------
 
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildCovariates
+"Estimate a non stationary GEV from covariates data.
+
+We consider a non stationary GEV model to describe the distribution of :math:`Z_y`:
+
+.. math::
+
+    Z_y \sim \mbox{GEV}(\mu(y), \sigma(y), \xi(y))
+
+We have the values of :math:`Z_y` for each of the covariates :math:`(y_1, \dots, y_n)`.
+
+For numerical reasons, it is recommended to normalize the covariates.
+The following mapping is applied:
+
+.. math::
+
+    y^v = \dfrac{y-c}{d}
+
+and with three ways of defining :math:`(c,d)`:
+
+- the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n y_i` is the covariate mean
+  and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the covariates;
+- the *MinMax* method where :math:`c = y_1` is the first covariate and :math:`d = y_n-y_1` the range of the covariates;
+- the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
+
+
+Each of :math:`\mu(y), \sigma(y), \xi(y)`  has an expression in terms of a parameter vector and covariates:
+
+.. math::
+
+    \theta(y)  = h\left(\sum_{i=1}^{d_{\theta}} \beta_i^{\theta} \varphi_i^{\theta}(y^v)\right)
+
+where:
+
+- :math:`h: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function*. The function :math:`\theta(y)` denotes
+  either :math:`\mu(y)`, :math:`\sigma(y)` or :math:`\xi(y)`,
+- each :math:`\varphi_i^{\theta}` is a scalar function :math:`\Rset \mapsto \Rset`,
+- each :math:`\beta_i^{j} \in \Rset`.
+
+
+We denote by :math:`d_{\mu}`, :math:`d_{\sigma}` and :math:`d_{\xi}` the number of covariates involded in
+:math:`\mu`, :math:`\sigma` and :math:`\xi` respectively. We denote by
+:math:`\vect{\beta} = (\beta_1^{\mu}, \dots, \beta_{d_{\mu}}^{\mu}, \beta_1^{\sigma}, \dots, \beta_{d_{\sigma}}^{\sigma}, \beta_1^{\xi}, \dots, \beta_{d_{\xi}}^{\xi})`
+the complete vector of parameters.
+
+The estimator of  :math:`\vect{\beta}` maximizes  the likelihood of the non stationary model which is defined by:
+
+.. math::
+
+    L(\vect{\beta}) = \prod_{i=1}^{n} g(z_{y_i};\mu(y_i), \sigma(y_i), \xi(y_i))
+
+where :math:`g(z_{y};\mu(y), \sigma(y), \xi(y))` denotes the GEV density function with parameters
+:math:`\mu(y), \sigma(y), \xi(y)` evaluated at :math:`z_y`.
+
+Then, if none of the :math:`\xi(y)` is zero, the log-likelihood is defined by:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{i=1}^{n} \left\{ \log(\sigma(y_i)) + (1 + 1 / \xi(y_i) ) \log\left[ 1+\xi(y_i) \left( \frac{z_{y_i} - \mu(y_i)}{\sigma(y_i)}\right) \right] + \left[ 1 + \xi(y_i) \left( \frac{z_t- \mu(y_i)}{\sigma(y_i)} \right) \right]^{-1 / \xi(y_i)} \right\}
+
+defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_{y_i} - \mu}{\sigma} \right) > 0`
+for all :math:`y_i`.
+
+And if any of the :math:`\xi(y_i)` is equal to 0, the log-likelihood is defined as:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{i=1}^{n} \left\{ \log(\sigma(y_i)) + \frac{z_t - \mu(y_i)}{\sigma(y_i)} + \exp \left\{ - \frac{z_{y_i} - \mu(y_i)}{\sigma(y_i)} \right\} \right\}
+
+The initialization of the optimization problem is crucial.
+Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
+
+- the *Gumbel* initial point: in that case, we assume that the GEV is a stationary Gumbel distribution and we deduce
+  :math:`(\mu_0, \sigma_0)` from the mean :math:`\hat{M}` and standard variation :math:`\hat{\sigma}` of the data:
+  :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma \sigma_0` where
+  :math:`\gamma` is Euler's constant;
+- the *Static* initial point: in that case, we assume that the GEV is stationary and :math:`(\mu_0, \sigma_0, \xi_0)`
+  is the maximum likelihood estimate resulting from that assumption.
+
+
+The result class produced by the method provides:
+
+- the estimator :math:`\hat{\vect{\beta}}`,
+- the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
+- the parameter functions :math:`y \mapsto \vect{\theta}(y)`,
+- the normalizing function :math:`y \mapsto y^v`,
+- the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
+- the GEV distribution at covariate :math:`y`,
+- the quantile functions of order :math:`p`: :math:`y \mapsto q_p(\mbox{GEV}(\hat{\mu}(y), \hat{\sigma}(y), \hat{\xi}(y))`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima grouped in a sample of size :math:`m` and one dimension.
+covariates : 2-d sequence of float
+    Covariates sample
+    A constant column is automatically added if none is not provided
+muIndices : sequence of int, optional
+    Indices of covariates considered for parameter :math:`\mu`
+    It defaults to an empty sequence, and the index of the constant covariate is added
+    if empty or if the covariates do not initially contain a constant column.
+sigmaIndices : sequence of int, optional
+    Indices of covariates considered for parameter :math:`\sigma`
+    It defaults to an empty sequence, and the index of the constant covariate is added
+    if empty or if the covariates do not initially contain a constant column.
+xiIndices : sequence of int, optional
+    Indices of covariates considered for parameter :math:`\xi`
+    It defaults to an empty sequence, and the index of the constant covariate is added
+    if empty or if the covariates do not initially contain a constant column.
+muLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\mu}` function.
+    By default it is chosen as the identity function.
+sigmaLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\sigma}` function.
+    By default it is chosen as the identity function.
+xiLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\xi}` function.
+    By default it is chosen as the identity function.
+initializationMethod : str, optional
+    The initialization method for the optimization problem: *Gumbel* or *Static*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+normalizationMethod : str, optional
+    The data normalization method: *CenterReduce*, *MinMax* or *None*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+
+Returns
+-------
+result : :class:`~openturns.CovariatesResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildTimeVarying
-"Estimate a non stationary GEV.
+"Estimate a non stationary GEV from a time-dependent parametric model.
 
 We consider a non stationary GEV model to describe the distribution of :math:`Z_t`:
 
@@ -224,7 +356,8 @@ We consider a non stationary GEV model to describe the distribution of :math:`Z_
 
 We have the values of :math:`Z_t` on the time stamps :math:`(t_1, \dots, t_n)`.
 
-For numerical reasons, it is recommended to normalize the time stamps. OpenTURNS applies the following mapping:
+For numerical reasons, it is recommended to normalize the time stamps.
+The following mapping is applied:
 
 .. math::
 
@@ -281,9 +414,10 @@ And if any of the :math:`\xi(t)` is equal to 0, the log-likelihood is defined as
 
     \ell (\vect{\beta}) = -\sum_{t=1}^{n} \left\{ \log(\sigma(t)) + \frac{z_t - \mu(t)}{\sigma(t)} + \exp \left\{ - \frac{z_t - \mu(t)}{\sigma(t)} \right\} \right\}
 
-The initialization of the optimization problem is crucial. OpenTURNS proposes two initial points :math:`(\mu_0, \sigma_0, \xi_0)`:
+The initialization of the optimization problem is crucial.
+Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
 
-- the *Gumbel* initial point: in that case, we assume that the GEV is a stationary Gumbel distribution and we deduce 
+- the *Gumbel* initial point: in that case, we assume that the GEV is a stationary Gumbel distribution and we deduce
   :math:`(\mu_0, \sigma_0)` from the mean :math:`\hat{M}` and standard variation :math:`\hat{\sigma}` of the data:
   :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma \sigma_0` where
   :math:`\gamma` is Euler's constant;
@@ -299,7 +433,7 @@ The result class produced by the method provides:
 - the normalizing function :math:`t \mapsto \tau(t)`,
 - the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
 - the GEV distribution at time :math:`t`,
-- the quantile functions of order :math:`p`:  :math:`t \mapsto q_p(\mbox{GEV}(\hat{\mu}(t), \hat{\sigma}(t), \hat{\xi}(t))`.
+- the quantile functions of order :math:`p`: :math:`t \mapsto q_p(\mbox{GEV}(\hat{\mu}(t), \hat{\sigma}(t), \hat{\xi}(t))`.
 
 
 Parameters
@@ -308,18 +442,29 @@ sample : 2-d sequence of float
     The block maxima grouped in a sample of size :math:`m` and one dimension.
 timeStamps : 2-d sequence of float
     Values of :math:`t`.
-basisCollection : sequence of class:`~openturns.Basis`
-    Collection of three functional basis respectively for :math:`\mu(t)`, :math:`\sigma(t)` and :math:`\xi(t)`.
-inverseLinkFunction : :class:`~openturns.Function`, optional
-    The :math:`h` function.
+basis : :class:`~openturns.Basis`
+    Functional basis respectively for :math:`\mu(t)`, :math:`\sigma(t)` and :math:`\xi(t)`.
+muIndices : sequence of int, optional
+    Indices of basis terms considered for parameter :math:`\mu`
+sigmaIndices : sequence of int, optional
+    Indices of basis terms considered for parameter :math:`\sigma`
+xiIndices : sequence of int, optional
+    Indices of basis terms considered for parameter :math:`\xi`
+muLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\mu}` function.
+    By default it is chosen as the identity function.
+sigmaLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\sigma}` function.
+    By default it is chosen as the identity function.
+xiLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\xi}` function.
+    By default it is chosen as the identity function.
 initializationMethod : str, optional
     The initialization method for the optimization problem: *Gumbel* or *Static*.
-
-    By default, the *Gumbel* initial point is used.
+    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
-
-    By default, the *MinMax* method is used.
+    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
 
 Returns
 -------
