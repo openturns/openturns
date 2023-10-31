@@ -26,6 +26,7 @@
 #include "openturns/GeneralizedExtremeValue.hxx"
 #include "openturns/ProfileLikelihoodResult.hxx"
 #include "openturns/Basis.hxx"
+#include "openturns/CovariatesResult.hxx"
 #include "openturns/TimeVaryingResult.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
@@ -70,11 +71,28 @@ public:
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const UnsignedInteger r = 0) const;
   GeneralizedExtremeValue buildMethodOfLikelihoodMaximization(const Sample & sample, const UnsignedInteger r = 0) const;
 
+  /** Covariates */
+  CovariatesResult buildCovariates(const Sample & sample,
+                                   const Sample & covariates,
+                                   const Indices & muIndices = Indices(),
+                                   const Indices & sigmaIndices = Indices(),
+                                   const Indices & xiIndices = Indices(),
+                                   const Function & muLink = Function(),
+                                   const Function & sigmaLink = Function(),
+                                   const Function & xiLink = Function(),
+                                   const String & initializationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-InitializationMethod"),
+                                   const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-NormalizationMethod")) const;
+
   /** Time-varying */
   TimeVaryingResult buildTimeVarying(const Sample & sample,
                                      const Sample & timeStamps,
-                                     const BasisCollection & basisCollection,
-                                     const Function & inverseLinkFunction = Function(),
+                                     const Basis & basis,
+                                     const Indices & muIndices = Indices(),
+                                     const Indices & sigmaIndices = Indices(),
+                                     const Indices & xiIndices = Indices(),
+                                     const Function & muLink = Function(),
+                                     const Function & sigmaLink = Function(),
+                                     const Function & xiLink = Function(),
                                      const String & initializationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-InitializationMethod"),
                                      const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedExtremeValueFactory-NormalizationMethod")) const;
 

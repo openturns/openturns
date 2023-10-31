@@ -486,7 +486,7 @@
   <GeneralizedExtremeValue-MMax value_float="1.0e3" />
 
   <!-- OT::GeneralizedExtremeValueFactory parameters -->
-  <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
+  <GeneralizedExtremeValueFactory-MaximumCallsNumber value_int="10000" />
   <GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber value_int="100" />
   <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
   <GeneralizedExtremeValueFactory-MaximumAbsoluteError    value_float="1.0e-5"        />

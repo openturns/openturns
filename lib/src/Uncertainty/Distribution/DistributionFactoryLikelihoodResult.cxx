@@ -62,7 +62,7 @@ Scalar DistributionFactoryLikelihoodResult::getLogLikelihood() const
 String DistributionFactoryLikelihoodResult::__repr__() const
 {
   return OSS() << DistributionFactoryResult::__repr__()
-         << " logLikelihood_=" << logLikelihood_;
+               << " logLikelihood=" << logLikelihood_;
 }
 
 /* Method save() stores the object through the StorageManager */

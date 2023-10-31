@@ -57,17 +57,15 @@ TimeVaryingResult::TimeVaryingResult(const DistributionFactory & factory,
   , logLikelihood_(logLikelihood)
 {
   if (data.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "the data should be of dimension 1";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the data should be of dimension 1";
   if (data.getSize() != timeGrid.getSize())
-    throw InvalidArgumentException(HERE) << "the time grid size must match the data size";
-  if (data.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "the data should be of dimension 1";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid size must match the data size";
   if (timeGrid.getDimension() != normalizationFunction.getInputDimension())
-    throw InvalidArgumentException(HERE) << "the time grid dimension must match the normalization function input dimension";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid dimension must match the normalization function input dimension";
   if (normalizationFunction.getInputDimension() != normalizationFunction.getOutputDimension())
-    throw InvalidArgumentException(HERE) << "the normalization function must have the same input and output dimensions";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the normalization function must have the same input and output dimensions";
   if (parameterDistribution.getDimension() != parameterFunction.getParameter().getDimension())
-    throw InvalidArgumentException(HERE) << "the parameter distribution dimension must match the parameter function parameter dimension";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the parameter distribution dimension must match the parameter function parameter dimension";
 }
 
 TimeVaryingResult * TimeVaryingResult::clone() const

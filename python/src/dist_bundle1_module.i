@@ -63,6 +63,7 @@
 %include DistributionFactoryLikelihoodResult.i
 %include ProfileLikelihoodResult.i
 %include TimeVaryingResult.i
+%include CovariatesResult.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i

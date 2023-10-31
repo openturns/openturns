@@ -24,7 +24,6 @@ print(mean(lowestoft))
 print(sd(lowestoft))
 z <- gevrFit(as.matrix(lowestoft[, 1:10]))
 print(z)
-print()
 gevrSeqTests(lowestoft, method = "ed")
 
 # return level via profile likelihood
