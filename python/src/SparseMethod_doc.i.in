@@ -31,8 +31,7 @@ Examples
 >>> full = range(basisSize)
 >>> design = ot.Matrix(proxy.computeDesign(full))
 >>> method = ot.SparseMethod(ot.QRMethod(proxy, full))
->>> y = ot.Normal(
-...     [1.0] * sampleSize, [0.1] * sampleSize,
-... ).getRealization()
+>>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
+>>> y = normal.getRealization()
 >>> yAt = design.transpose() * y
 >>> x = method.solve(y)"
