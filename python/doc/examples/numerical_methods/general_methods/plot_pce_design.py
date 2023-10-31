@@ -178,7 +178,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # .. math::
 #
-#     \boldsymbol{\Psi}_{ik} = \psi_k\left(\vect{x}^{(j)}\right)
+#     \boldsymbol{\Psi}_{jk} = \psi_k\left(\vect{x}^{(j)}\right)
 #
 # for :math:`j = 1, ..., n` and :math:`k = 1, ..., m`.
 # The matrix :math:`\boldsymbol{\Psi}` is mathematically equal to the
