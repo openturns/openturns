@@ -122,7 +122,7 @@ OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
 Notes
 -----
 Let :math:`n_X \in \Nset` be the input dimension of the random vector.
-For any pair of indices :math:`i, j \in \{1, ..., n_x\}`,
+For any pair of indices :math:`i, j \in \{1, ..., n_x\}` such that :math:`i \neq j`,
 this method computes the Sobol' interaction indice between :math:`i` and :math:`j`:
 
 .. math::
