@@ -37,10 +37,23 @@ where:
 
 Examples
 --------
+In the next example, we create the linear function :math:`f(x) = 2x + 3` 
+for any :math:`x \in \Rset`.
+
 >>> import openturns as ot
 >>> center = [0.0]
 >>> constant = [3.0]
 >>> linear = ot.Matrix([[2.0]])
 >>> f = ot.LinearFunction(center, constant, linear)
 >>> print(f([1.0]))
-[5]"
+[5]
+
+In the next example, we create the linear function :math:`f(x, y) = 2x - y + 3` 
+for any :math:`x \in \Rset`.
+
+>>> centerCoefficient = [0.0, 0.0]
+>>> constantCoefficient = [3.0]
+>>> linearCoefficient = ot.Matrix([[2.0, -1.0]])
+>>> f = ot.LinearFunction(centerCoefficient, constantCoefficient, linearCoefficient)
+>>> print(f([1.0, 2.0]))
+[3]"

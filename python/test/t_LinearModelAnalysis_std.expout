@@ -21,7 +21,7 @@ Normality test       | p-value    |
 Anderson-Darling     | 0.00258386 |
 Cramer-Von Mises     | 0.00392808 |
 Chi-Squared          | 0.157724   |
-Kolmogorov-Smirnov   | 0.17747    |
+Kolmogorov-Smirnov   | 0.218773   |
 -----------------------------------
 
 confidence intervals with level=0.95 : [2.99229, 3.03106]
@@ -53,7 +53,7 @@ Normality test       | p-value  |
 Anderson-Darling     | 0.57332  |
 Cramer-Von Mises     | 0.535457 |
 Chi-Squared          | 0.783691 |
-Kolmogorov-Smirnov   | 0.821849 |
+Kolmogorov-Smirnov   | 0.870327 |
 ---------------------------------
 
 confidence intervals with level=0.95 : [0.920867, 1.03712]
