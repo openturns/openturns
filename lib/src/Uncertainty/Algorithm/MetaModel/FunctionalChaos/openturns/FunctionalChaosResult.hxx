@@ -100,6 +100,9 @@ public:
   /** Composed meta model accessor */
   virtual Function getComposedMetaModel() const;
 
+  /** Conditional expectation accessor */
+  virtual FunctionalChaosResult getConditionalExpectation(const Indices & conditioningIndices) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
