@@ -9,11 +9,13 @@ func = ot.SymbolicFunction(
 dimension = 3
 
 distribution = ot.ComposedDistribution([ot.Normal()] * dimension)
-inputSample = distribution.getSample(50)
+sampleSize = 50
+inputSample = distribution.getSample(sampleSize)
 outputSample = func(inputSample)
 algo = ot.LinearModelAlgorithm(inputSample, outputSample)
 algo.run()
 result = algo.getResult()
-validation = ot.LinearModelValidation(result, ot.LinearModelValidation.LEAVEONEOUT)
+splitter = ot.LeaveOneOutSplitter(sampleSize)
+validation = ot.LinearModelValidation(result, splitter)
 graph = validation.drawValidation()
 View(graph)

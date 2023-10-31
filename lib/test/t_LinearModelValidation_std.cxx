@@ -42,8 +42,8 @@ int main(int, char *[])
     fullprint << "sampleSize = " << sampleSize << std::endl;
     ComposedDistribution::DistributionCollection aCollection;
     Uniform marginal1(-1.0, 1.0);
-    aCollection.add( marginal1 );
-    aCollection.add( marginal1 );
+    aCollection.add(marginal1);
+    aCollection.add(marginal1);
     ComposedDistribution distribution(aCollection);
     Sample inputSample(distribution.getSample(sampleSize));
     fullprint << "inputSample=" << inputSample << std::endl;
@@ -61,9 +61,10 @@ int main(int, char *[])
     LinearModelResult result(lmAlgo.getResult());
     
     // Create LOO validation
-    LinearModelValidation validationLOO(result, LinearModelValidation::LEAVEONEOUT);
+    LeaveOneOutSplitter splitterLOO(sampleSize);
+    LinearModelValidation validationLOO(result, splitterLOO);
     fullprint << validationLOO.__str__() << std::endl;
-    assert_equal(validationLOO.getMethod(), UnsignedInteger(LinearModelValidation::LEAVEONEOUT));
+    assert(validationLOO.getSplitter() == splitterLOO);
 
     // Compute analytical LOO MSE
     fullprint << "Compute Analytical LOO MSE" << std::endl;
@@ -72,20 +73,19 @@ int main(int, char *[])
 
     // Compute naive leave-one-out
     Point residualsLOO(sampleSize);
+    Indices indicesLOOTest;
     for (UnsignedInteger j = 0; j < sampleSize; ++j)
     {
-      Indices indicesLOO(sampleSize);
-      indicesLOO.fill();
-      indicesLOO.erase(indicesLOO.begin() + j, indicesLOO.begin() + j + 1);
-      const Sample inputSampleTrainLOO(inputSample.select(indicesLOO));
-      const Sample outputSampleTrainLOO(outputSample.select(indicesLOO));
-      const Point inputPointLOOTest(inputSample[j]);
-      const Point outputPointLOOTest(outputSample[j]);
+      const Indices indicesLOOTrain(splitterLOO.generate(indicesLOOTest));
+      const Sample inputSampleTrainLOO(inputSample.select(indicesLOOTrain));
+      const Sample outputSampleTrainLOO(outputSample.select(indicesLOOTrain));
+      const Sample inputSampleLOOTest(inputSample.select(indicesLOOTest));
+      const Sample outputSampleLOOTest(outputSample.select(indicesLOOTest));
       LinearModelAlgorithm lmAlgoLOO(inputSampleTrainLOO, outputSampleTrainLOO);
       LinearModelResult resultLOO(lmAlgoLOO.getResult());
       const Function metamodelLOO = resultLOO.getMetaModel();
-      const Point predictionLOOTest = metamodelLOO(inputPointLOOTest);
-      const Point residualsLOOTest(predictionLOOTest - outputPointLOOTest);
+      const Sample predictionLOOTest = metamodelLOO(inputSampleLOOTest);
+      const Point residualsLOOTest(predictionLOOTest.asPoint() - outputSampleLOOTest.asPoint());
       residualsLOO[j] = residualsLOOTest[0];
     }
     Scalar mseLOOnaive = residualsLOO.normSquare() / sampleSize;
@@ -109,10 +109,10 @@ int main(int, char *[])
     assert_almost_equal(r2ScoreReference, r2ScoreLOO, rtolLOO, atolLOO);
 
     // Create KFold validation
-    LinearModelValidation validationKFold(result, LinearModelValidation::KFOLD, kFoldParameter);
+    KFoldSplitter splitterKF(sampleSize, kFoldParameter);
+    LinearModelValidation validationKFold(result, splitterKF);
     fullprint << validationKFold.__str__() << std::endl;
-    assert_equal(validationKFold.getKParameter(), kFoldParameter);
-    assert_equal(validationKFold.getMethod(), UnsignedInteger(LinearModelValidation::KFOLD));
+    assert(validationKFold.getSplitter() == splitterKF);
 
     // Compute analytical KFold MSE
     const Point mseKFoldAnalytical(validationKFold.computeMeanSquaredError());
@@ -121,22 +121,22 @@ int main(int, char *[])
     // Naive KFold
     Point residualsKFold(sampleSize);
     KFoldSplitter splitter(sampleSize, kFoldParameter);
+    Indices indicesKFoldTest;
     for (UnsignedInteger foldIndex = 0; foldIndex < kFoldParameter; ++foldIndex)
     {
-      Indices indicesTest;
-      const Indices indicesTrain(splitter.generate(indicesTest));
-      const Sample inputSampleKFoldTrain(inputSample.select(indicesTrain));
-      const Sample outputSampleKFoldTrain(outputSample.select(indicesTrain));
-      const Sample inputSampleKFoldTest(inputSample.select(indicesTest));
-      const Sample outputSampleKFoldTest(outputSample.select(indicesTest));
+      const Indices indicesKFoldTrain(splitter.generate(indicesKFoldTest));
+      const Sample inputSampleKFoldTrain(inputSample.select(indicesKFoldTrain));
+      const Sample outputSampleKFoldTrain(outputSample.select(indicesKFoldTrain));
+      const Sample inputSampleKFoldTest(inputSample.select(indicesKFoldTest));
+      const Sample outputSampleKFoldTest(outputSample.select(indicesKFoldTest));
       LinearModelAlgorithm lmAlgoKFold(inputSampleKFoldTrain, outputSampleKFoldTrain);
       LinearModelResult resultKFold(lmAlgoKFold.getResult());
       const Function metamodelKFold(resultKFold.getMetaModel());
       const Sample predictionKFoldTest(metamodelKFold(inputSampleKFoldTest));
       const Point residualsKFoldTest(predictionKFoldTest.asPoint() - outputSampleKFoldTest.asPoint());
-      const UnsignedInteger foldSize = indicesTest.getSize();
+      const UnsignedInteger foldSize = indicesKFoldTest.getSize();
       for (UnsignedInteger localIndex = 0; localIndex < foldSize; ++localIndex)
-        residualsKFold[indicesTest[localIndex]] = residualsKFoldTest[localIndex];
+        residualsKFold[indicesKFoldTest[localIndex]] = residualsKFoldTest[localIndex];
     }
     Scalar mseKFoldnaive(residualsKFold.normSquare() / sampleSize);
     fullprint << "Naive KFold MSE = " << mseKFoldnaive << std::endl;

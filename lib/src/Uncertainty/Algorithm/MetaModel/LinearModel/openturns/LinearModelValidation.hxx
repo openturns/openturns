@@ -24,6 +24,9 @@
 #include "openturns/Sample.hxx"
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/MetaModelValidation.hxx"
+#include "openturns/SplitterImplementation.hxx"
+#include "openturns/LeaveOneOutSplitter.hxx"
+#include "openturns/KFoldSplitter.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,15 +42,19 @@ class OT_API LinearModelValidation :
   CLASSNAME
 
 public:
-  enum CrossValidationMethod {LEAVEONEOUT = 0, KFOLD = 1};
-
   /** Default constructor */
   LinearModelValidation();
 
-  /** Parameter constructor */
+  /** Parameter constructor based on result */
+  explicit LinearModelValidation(const LinearModelResult & linearModelResult);
+
+  /** Parameter constructor based on result and leave-one-out */
   explicit LinearModelValidation(const LinearModelResult & linearModelResult,
-                                 const CrossValidationMethod cvMethod, 
-                                 const UnsignedInteger & kParameter = ResourceMap::GetAsUnsignedInteger("LinearModelValidation-DefaultKFoldParameter"));
+                                 const LeaveOneOutSplitter & splitter);
+
+  /** Parameter constructor based on result and K-Fold */
+  explicit LinearModelValidation(const LinearModelResult & linearModelResult,
+                                 const KFoldSplitter & splitter);
 
   /** Virtual constructor */
   LinearModelValidation * clone() const override;
@@ -58,11 +65,8 @@ public:
   /** Linear model accessor */
   LinearModelResult getLinearModelResult() const;
 
-  /** Get the K parameter */
-  UnsignedInteger getKParameter() const;
-
-  /** Get the CV Method */
-  UnsignedInteger getMethod() const;
+  /** Get the splitter */
+  SplitterImplementation getSplitter() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -78,16 +82,16 @@ private:
   /** linear model result */
   LinearModelResult linearModelResult_;
 
-  /** K-parameter */
-  UnsignedInteger kParameter_;
-
-  /** Cross-validation method */
-  CrossValidationMethod cvMethod_;
+  /** Splitter parameter */
+  SplitterImplementation splitter_;
   
-  /** Compute cross-validation predictions */
-  static Sample ComputeMetamodelCrossValidationPredictions(const LinearModelResult & linearModelResult, 
-                                                           const CrossValidationMethod cvMethod, 
-                                                           const UnsignedInteger & kParameter);
+  /** Compute cross-validation leave-one-out predictions */
+  static Sample ComputeMetamodelLeaveOneOutPredictions(const LinearModelResult & linearModelResult, 
+                                                       const LeaveOneOutSplitter & splitter);
+
+  /** Compute cross-validation K-Fold predictions */
+  static Sample ComputeMetamodelKFoldPredictions(const LinearModelResult & linearModelResult, 
+                                                 const KFoldSplitter & splitter);
 }; /* class LinearModelValidation */
 
 END_NAMESPACE_OPENTURNS

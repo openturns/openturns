@@ -28,9 +28,10 @@ lmAlgo = ot.LinearModelAlgorithm(inputSample, outputSample)
 result = lmAlgo.getResult()
 
 # Create LOO validation
-validationLOO = ot.LinearModelValidation(result, ot.LinearModelValidation.LEAVEONEOUT)
+splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
+validationLOO = ot.LinearModelValidation(result, splitterLOO)
 print(validationLOO)
-assert validationLOO.getMethod() == ot.LinearModelValidation.LEAVEONEOUT
+assert validationLOO.getSplitter() == splitterLOO
 
 # Compute analytical LOO MSE
 print("Compute Analytical LOO MSE")
@@ -39,19 +40,19 @@ print("Analytical LOO MSE =", mseLOOAnalytical[0])
 
 # Compute naive leave-one-out
 residualsLOO = ot.Point(sampleSize)
-for j in range(sampleSize):
-    indicesLOO = list(range(sampleSize))
-    indicesLOO.pop(j)
-    inputSampleTrainLOO = inputSample.select(indicesLOO)
-    outputSampleTrainLOO = outputSample.select(indicesLOO)
-    inputPointLOOTest = inputSample[j]
-    outputPointLOOTest = outputSample[j]
+j = 0
+for indicesTrain, indicesTest in splitterLOO:
+    inputSampleTrainLOO = inputSample[indicesTrain]
+    inputSampleLOOTest = inputSample[indicesTest]
+    outputSampleTrainLOO = outputSample[indicesTrain]
+    outputSampleLOOTest = outputSample[indicesTest]
     lmAlgoLOO = ot.LinearModelAlgorithm(inputSampleTrainLOO, outputSampleTrainLOO)
     resultLOO = lmAlgoLOO.getResult()
     metamodelLOO = resultLOO.getMetaModel()
-    predictionLOOTest = metamodelLOO(inputPointLOOTest)
-    residualsLOOTest = predictionLOOTest - outputPointLOOTest
+    predictionLOOTest = metamodelLOO(inputSampleLOOTest)
+    residualsLOOTest = predictionLOOTest.asPoint() - outputSampleLOOTest.asPoint()
     residualsLOO[j] = residualsLOOTest[0]
+    j += 1
 
 mseLOOnaive = residualsLOO.normSquare() / sampleSize
 print("Naive LOO MSE      =", mseLOOnaive)
@@ -72,12 +73,12 @@ atolLOO = 0.0
 assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 
 # Create KFold validation
+splitterKFold = ot.KFoldSplitter(sampleSize, kFoldParameter)
 validationKFold = ot.LinearModelValidation(
-    result, ot.LinearModelValidation.KFOLD, kFoldParameter
+    result, splitterKFold
 )
 print(validationKFold)
-assert validationKFold.getKParameter() == kFoldParameter
-assert validationKFold.getMethod() == ot.LinearModelValidation.KFOLD
+assert validationKFold.getSplitter() == splitterKFold
 
 # Compute analytical KFold MSE
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
@@ -85,9 +86,8 @@ print("Analytical KFold MSE =", mseKFoldAnalytical[0])
 
 # Naive KFold
 residualsKFold = ot.Point(sampleSize)
-splitter = ot.KFoldSplitter(sampleSize, kFoldParameter)
 foldIndex = 0
-for indicesTrain, indicesTest in splitter:
+for indicesTrain, indicesTest in splitterKFold:
     inputSampleKFoldTrain = inputSample[indicesTrain]
     outputSampleKFoldTrain = outputSample[indicesTrain]
     inputSampleKFoldTest = inputSample[indicesTest]

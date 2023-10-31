@@ -81,7 +81,7 @@ int main(int, char *[])
     FunctionalChaosValidation validationLOO(chaosResult, FunctionalChaosValidation::LEAVEONEOUT);
     const Point mseLOOAnalytical(validationLOO.computeMeanSquaredError());
     fullprint << "Analytical LOO MSE = " << mseLOOAnalytical << std::endl;
-    assert_equal(validationLOO.getMethod(), UnsignedInteger(LinearModelValidation::LEAVEONEOUT));
+    assert_equal(validationLOO.getMethod(), UnsignedInteger(FunctionalChaosValidation::LEAVEONEOUT));
     
     // Naive leave-one-out
     Point residualsLOO(samplingSize);
@@ -127,7 +127,7 @@ int main(int, char *[])
     FunctionalChaosValidation validationKFold(chaosResult, FunctionalChaosValidation::KFOLD, kFoldParameter);
     fullprint << "KFold with K = " << kFoldParameter << std::endl;
     assert_equal(validationKFold.getKParameter(), kFoldParameter);
-    assert_equal(validationKFold.getMethod(), UnsignedInteger(LinearModelValidation::KFOLD));
+    assert_equal(validationKFold.getMethod(), UnsignedInteger(FunctionalChaosValidation::KFOLD));
 
     // Compute mean squared error
     const Point mseKFoldAnalytical(validationKFold.computeMeanSquaredError());

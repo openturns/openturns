@@ -174,7 +174,7 @@ validationLOO = ot.FunctionalChaosValidation(
 )
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
-assert validationLOO.getMethod() == ot.LinearModelValidation.LEAVEONEOUT
+assert validationLOO.getMethod() == ot.FunctionalChaosValidation.LEAVEONEOUT
 
 # Naive leave-one-out
 mseLOOnaive = computeMSENaiveLOO(
@@ -209,7 +209,7 @@ validationKFold = ot.FunctionalChaosValidation(
 )
 print("KFold with K = ", kFoldParameter)
 assert validationKFold.getKParameter() == kFoldParameter
-assert validationKFold.getMethod() == ot.LinearModelValidation.KFOLD
+assert validationKFold.getMethod() == ot.FunctionalChaosValidation.KFOLD
 
 # Compute mean squared error
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
