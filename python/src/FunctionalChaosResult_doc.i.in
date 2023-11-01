@@ -238,12 +238,14 @@ be a set of marginal indices.
 Let :math:`\physicalInputRandomVector_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
 corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
 is the number of input variables in the group.
+Let :math:`\surrogateModel(\physicalInputRandomVector)` be the polynomial chaos
+expansion of the physical model :math:`\model`.
 This function returns the functional chaos expansion of:
 
 .. math::
 
-    \widehat{g}\left(\physicalInputObservation_{\vect{u}}\right) 
-    = \Expect{Y | \physicalInputRandomVector_{\vect{u}} = \physicalInputObservation_{\vect{u}}}
+    \surrogateModel_{\vect{u}}\left(\physicalInputObservation_{\vect{u}}\right) 
+    = \Expect{\surrogateModel(\physicalInputRandomVector) | \physicalInputRandomVector_{\vect{u}} = \physicalInputObservation_{\vect{u}}}
 
 for any :math:`\physicalInputObservation_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 
@@ -264,11 +266,11 @@ for any :math:`\vect{\alpha} \in \mathcal{J}^P` and any
 :math:`\standardInputObservation \in \standardInputSpace` where 
 :math:`\left\{\pi_k^{(i)}\right\}_{k \geq 0}` is the set of orthonormal  
 polynomials of degree :math:`k` for the :math:`i`-th input marginal. 
-Assume that the PCE to order :math:`P` is exact:
+Assume that the PCE to order :math:`P` is:
 
 .. math::
 
-    h(\standardInputObservation) 
+    \widetilde{h}(\standardInputObservation) 
     = \sum_{\vect{\alpha} \in \mathcal{J}^P} 
     a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\standardInputObservation)
 
@@ -286,18 +288,18 @@ i.e. assume that:
 
 where :math:`\standardInputSpace_{\vect{u}} \subseteq \Rset^{|\vect{u}|}` 
 and :math:`\standardInputSpace_{\overline{\vect{u}}} \subseteq \Rset^{|\overline{\vect{u}}|}`. 
-We consider the conditional expectation of the function :math:`h` 
+Let :math:`\widetilde{h}_{\vect{u}}^{\operatorname{ce}}` be the conditional expectation of the function :math:`\widetilde{h}` 
 given :math:`\standardInputObservation_{\vect{u}}`:
 
 .. math::
 
-    \widehat{h}(\standardInputObservation_{\vect{u}})
+    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardInputObservation_{\vect{u}})
     = \mathbb{E}_{\standardInputRandomVector_{\overline{\vect{u}}}} 
-    \left[h\left(\standardInputRandomVector\right) | \standardInputRandomVector_{\vect{u}} 
+    \left[\widetilde{h}\left(\standardInputRandomVector\right) | \standardInputRandomVector_{\vect{u}} 
     = \standardInputObservation_{\vect{u}}\right]
 
 for any :math:`\standardInputObservation_{\vect{u}} \in \standardInputSpace_{\vect{u}}`. 
-Let :math:`\mathcal{J}_{\vect{u}} \subseteq \mathcal{J}^P` be the 
+Let :math:`\mathcal{J}_{\vect{u}}^{\operatorname{ce}} \subseteq \mathcal{J}^P` be the 
 set of multi-indices having zero components when the marginal multi-index 
 is not in :math:`\vect{u}`:
 
@@ -309,26 +311,38 @@ is not in :math:`\vect{u}`:
 
 This set of multi-indices defines the functions that depends on the
 variables in the group :math:`\vect{u}` and *only* them.
-Therefore :
+For any :math:`\vect{\alpha} \in \mathcal{J}_{\vect{u}}^{\operatorname{ce}}`, let 
+:math:`\psi_{\vect{\alpha}}^{\operatorname{ce}}` be the orthogonal polynomial defined by :
 
 .. math::
 
-    \widehat{h}(\standardInputObservation_{\vect{u}})
-    = \sum_{\vect{\alpha} \in \mathcal{J}_{\vect{u}}^{\operatorname{ce}}}
-    a_{\vect{\alpha}} \widehat{\psi}_{\vect{\alpha}}(\standardInputObservation_{\vect{u}})
-
-for any :math:`\standardInputObservation_{\vect{u}} \in \standardInputSpace_{\vect{u}}` 
-where :math:`\widehat{\psi}_{\vect{\alpha}}` is the orthogonal polynomial defined by :
-
-.. math::
-
-    \widehat{\psi}_{\vect{\alpha}}(\standardInputObservation_{\vect{u}})
+    \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardInputObservation_{\vect{u}})
     = 
     \begin{cases}
     \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\physicalInputDimension \pi_{\alpha_i}^{(i)} (z_i) & \textrm{if } \alpha_i = 0 \textrm{ for any } i \not \in \vect{u},. \\
     1 & \textrm{if } \alpha_i = 0 \textrm{ for } i = 1, ..., \physicalInputDimension, \\
     0 & \textrm{otherwise}.
     \end{cases}
+
+Therefore :
+
+.. math::
+
+    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardInputObservation_{\vect{u}})
+    = \sum_{\vect{\alpha} \in \mathcal{J}_{\vect{u}}^{\operatorname{ce}}}
+    a_{\vect{\alpha}} \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardInputObservation_{\vect{u}})
+
+for any :math:`\standardInputObservation_{\vect{u}} \in \standardInputSpace_{\vect{u}}`.
+Finally, the conditional expectation of the surrogate model is:
+
+.. math::
+  
+  \surrogateModel_{\vect{u}}\left(\physicalInputObservation_{\vect{u}}\right)
+  = \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(T_{\vect{u}}\left(\physicalInputObservation_{\vect{u}}\right))
+
+where :math:`\standardInputRandomVector_{\vect{u}} = T_{\vect{u}}(\physicalInputRandomVector_{\vect{u}})`
+is the corresponding marginal mapping of the iso-probabilistic mapping
+:math:`\standardInputRandomVector = T(\physicalInputRandomVector)`.
 
 Parameters
 ----------
