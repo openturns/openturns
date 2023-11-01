@@ -57,7 +57,7 @@ metamodel = result.getMetaModel()
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI)
+chaosSI
 
 # %%
 # We compute the first order indice of the group [0,1].

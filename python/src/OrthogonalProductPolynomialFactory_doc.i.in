@@ -43,12 +43,12 @@ Examples
 >>> myModel = ot.SymbolicFunction(['x1','x2','x3'], ['1+x1*x2 + 2*x3^2'])
 >>> # Create a distribution of dimension 3
 >>> Xdist = ot.JointDistribution([ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0)])
->>> # Construct the multivariate orthonormal basis
+>>> # Create the multivariate orthonormal basis
 >>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory(2.75)]
 >>> enumerateFunction = ot.LinearEnumerateFunction(3)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
->>> # Easier way to construct the same multivariate orthonormal basis
+>>> # Easier way to create the same multivariate orthonormal basis
 >>> marginals = [Xdist.getMarginal(i) for i in range(Xdist.getDimension())]
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(marginals)"
 
@@ -69,7 +69,7 @@ polynomialFamily : list of :class:`~openturns.OrthogonalUniVariatePolynomialFami
 
 Parameters
 ----------
-degrees : list of positiv int (:math:`k_1, \dots, k_n`)
+degrees : list of positive int (:math:`k_1, \dots, k_n`)
     List of :math:`n` polynomial orders associated with the :math:`n`
     univariate polynomials of the basis.
 
