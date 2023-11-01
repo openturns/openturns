@@ -104,10 +104,4 @@ def __FunctionalChaosSobolIndices_repr_html(self):
     return html
 
 FunctionalChaosSobolIndices._repr_html_ = __FunctionalChaosSobolIndices_repr_html
-
-def __FunctionalChaosSobolIndices_repr_markdown(self):
-    """Get Markdown representation."""
-    return self.__repr_markdown__()
-
-FunctionalChaosSobolIndices._repr_markdown_ = __FunctionalChaosSobolIndices_repr_markdown
 %}

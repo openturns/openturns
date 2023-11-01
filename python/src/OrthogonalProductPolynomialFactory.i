@@ -60,10 +60,4 @@ def __OrthogonalProductPolynomialFactory_repr_html(self):
     return html
 
 OrthogonalProductPolynomialFactory._repr_html_ = __OrthogonalProductPolynomialFactory_repr_html
-
-def __OrthogonalProductPolynomialFactory_repr_markdown(self):
-    """Get Markdown representation."""
-    return self.__repr_markdown__()
-
-OrthogonalProductPolynomialFactory._repr_markdown_ = __OrthogonalProductPolynomialFactory_repr_markdown
 %}
