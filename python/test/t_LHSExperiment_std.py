@@ -30,3 +30,13 @@ experiment = ot.LHSExperiment(ot.Normal(4), 10)
 for size in [215, 464]:
     experiment.setSize(size)
     X = experiment.generate()
+
+# with correlation
+dimension = 3
+mu = ot.Point(dimension)
+sigma = ot.CovarianceMatrix(dimension)
+sigma[0, 2] = -0.5
+distribution = ot.Normal(mu, sigma)
+sampleSize = 5
+experiment = ot.LHSExperiment(distribution, sampleSize)
+sample = experiment.generate()
