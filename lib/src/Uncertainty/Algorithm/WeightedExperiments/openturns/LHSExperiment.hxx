@@ -24,7 +24,6 @@
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/MarginalTransformationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -114,7 +113,7 @@ private:
   Bool randomShift_ = true;
 
   // Transformation from uniform space to distribution space
-  MarginalTransformationEvaluation transformation_;
+  Function transformation_;
 
 }; /* class LHSExperiment */
 
