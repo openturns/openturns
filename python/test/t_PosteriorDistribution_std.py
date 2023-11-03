@@ -57,7 +57,7 @@ for conditioning in conditioningDistributionCollection:
     #       print("anotherSample covariance=", anotherSample.computeCovariance())
 
     # Define a point
-    zero = [0.0] * dim
+    zero = [1e-3] * dim
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)

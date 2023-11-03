@@ -22,7 +22,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= [0.714382,1.75489]
-Zero point=  [0.0, 0.0]  pdf= 0.0  cdf= 0.0
+Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
 Quantile= [0.974679,1.97468]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
@@ -68,7 +68,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= [0,2]
-Zero point=  [0.0, 0.0]  pdf= 0.0  cdf= 0.0
+Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
 Quantile= [0,1.95]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
