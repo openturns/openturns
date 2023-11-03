@@ -25,7 +25,7 @@ ImportanceSamplingExperiment is a random weighted design of experiments to get a
 :math:`(\physicalInputObservation_i)_{1 \leq i \leq \sampleSize}`
 based on independent observations from the distribution :math:`\inputMeasure` ([hammersley1961]_ page 57, 
 [lemieux2009]_ page 11). 
-The importance sampling is a variance reduction method i.e. it aims at 
+Importance sampling is a variance reduction method i.e. it aims at 
 reducing the variance of the estimator of the weighted integral.
 The sample is generated from the importance distribution :math:`p` and each realization is weighted by   
 :math:`w_i = \frac{\inputProbabilityDensityFunction(\physicalInputObservation_i)}{p(\physicalInputObservation_i)}` where
