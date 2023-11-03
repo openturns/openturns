@@ -101,7 +101,7 @@ int main(int, char *[])
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      Point zero(dim, 0.0);
+      Point zero(dim, 1e-3);
 
       // Show PDF and CDF of zero point
       Scalar zeroPDF = distribution.computePDF(zero);

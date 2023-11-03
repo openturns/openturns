@@ -791,13 +791,15 @@ void EllipticalDistribution::setParameter(const Point & parameters)
   Scalar dimReal = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for EllipticalDistribution";
   const UnsignedInteger dimension = dimReal;
-  mean_ = Point(dimension);
-  sigma_ = Point(dimension);
-  R_ = CorrelationMatrix(dimension);
+  Point mean(dimension);
+  Point sigma(dimension);
+  CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    mean_[i] = parameters[2 * i];
-    sigma_[i] = parameters[2 * i + 1];
+    mean[i] = parameters[2 * i];
+    sigma[i] = parameters[2 * i + 1];
+    if (!(sigma[i] > 0.0))
+      throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   }
   if (dimension > 1)
   {
@@ -806,12 +808,17 @@ void EllipticalDistribution::setParameter(const Point & parameters)
     {
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
-        R_(i, j) = parameters[index];
+        R(i, j) = parameters[index];
         ++ index;
       }
     }
-    if (!R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+    if (!R.isPositiveDefinite())
+      throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   }
+  // commit all changes at once
+  mean_ = mean;
+  sigma_ = sigma;
+  R_ = R;
   update();
   computeRange();
   isAlreadyComputedCovariance_ = false;
