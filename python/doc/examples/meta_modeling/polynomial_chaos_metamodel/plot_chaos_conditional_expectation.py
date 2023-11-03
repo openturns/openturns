@@ -108,7 +108,7 @@ Conditional expectation of a polynomial chaos expansion
 #
 # i.e. the groups :math:`\vect{u}` and :math:`\overline{\vect{u}}` create a disjoint partition
 # of the set :math:`\{1, ..., \physicalInputDimension\}`.
-# Let :math:`|\vect{u}| \in \mathbb{N}` be the number of elements
+# Let :math:`|\vect{u}| \in \Nset` be the number of elements
 # in the group :math:`\vect{u}`.
 # Hence, we have :math:`|\vect{u}| + |\overline{\vect{u}}| = \physicalInputDimension`.
 
@@ -136,14 +136,14 @@ Conditional expectation of a polynomial chaos expansion
 # where :math:`\pi_{\alpha_i}^{(i)}` is the polynomial of degree
 # :math:`\alpha_i` of the :math:`i`-th input standard variable.
 #
-# Let :math:`(u_i)_{i = 1, ..., |\vect{u}|}` denote the components of the
+# Let :math:`\vect{u} = (u_i)_{i = 1, ..., |\vect{u}|}` denote the components of the
 # group :math:`\vect{u}` where :math:`|\vect{u}|` is the number of elements in the group.
-# Similarly, let :math:`(\overline{\vect{u}}_i)_{i = 1, ..., |\overline{\vect{u}}|}` denote the
+# Similarly, let :math:`\overline{\vect{u}} = (\overline{u}_i)_{i = 1, ..., |\overline{\vect{u}}|}` denote the
 # components of the complementary group :math:`\overline{\vect{u}}`.
 # The components of :math:`\standardInputObservation \in \Rset^{\physicalInputDimension}`
 # which are in the group :math:`\vect{u}` are :math:`\left(z_{u_i}^{(0)}\right)_{i = 1, ..., |\vect{u}|}`
 # and the complementary components are
-# :math:`\left(z_{\overline{\vect{u}}_i}\right)_{i = 1, ..., |\overline{\vect{u}}|}`.
+# :math:`\left(z_{\overline{u}_i}\right)_{i = 1, ..., |\overline{\vect{u}}|}`.
 
 # %%
 # Let :math:`\overline{\psi}_{\overline{\vect{\alpha}}}` be the reduced polynomial:
@@ -153,16 +153,16 @@ Conditional expectation of a polynomial chaos expansion
 #
 #     \overline{\psi}_{\overline{\vect{\alpha}}}(z_{\overline{\vect{u}}})
 #     = \left(\prod_{i = 1}^{|\overline{\vect{u}}|}
-#        \pi_{\alpha_{\overline{\vect{u}}_i}}^{(\overline{\vect{u}}_i)}
+#        \pi_{\alpha_{\overline{u}_i}}^{(\overline{u}_i)}
 #        \left(\standardInputObservation_{\overline{u}_i}\right) \right)
 #
-# where :math:`\overline{\vect{\alpha}} \in \mathbb{N}^{|\vect{u}|}` is the reduced multi-index
-# defined from the multi-index :math:`\boldsymbol{\alpha}\in \mathbb{N}^{\physicalInputDimension}`
+# where :math:`\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}` is the reduced multi-index
+# defined from the multi-index :math:`\boldsymbol{\alpha}\in \Nset^{\physicalInputDimension}`
 # by the equation:
 #
 # .. math::
 #
-#     \overline{\vect{\alpha}}_i = \alpha_{\overline{\vect{u}}_i}
+#     \overline{\alpha}_i = \alpha_{\overline{u}_i}
 #
 # for :math:`i = 1, ..., |\overline{\vect{u}}|`.
 # The components of the reduced multi-index :math:`\overline{\vect{\alpha}}` which corresponds
@@ -170,26 +170,29 @@ Conditional expectation of a polynomial chaos expansion
 
 # %%
 # We must then gather the reduced multi-indices.
-# Let :math:`\overline{\cJ}` be the set of unique reduced multi-indices:
+# Let :math:`\cJ^P \subseteq \Nset^{\physicalInputDimension}` be the set of
+# multi-indices corresponding to the truncated polynomial chaos expansion
+# up to the :math:`P`-th coefficient.
+# Let :math:`\overline{\cJ}^P` be the set of unique reduced multi-indices:
 #
 # .. math::
 #    :label: PCE_CE_2
 #
-#     \overline{\cJ} = \left\{\overline{\vect{\alpha}} \in \mathbb{N}^{|\vect{u}|}
-#     \; | \; \alpha \in \cJ^P\right\}.
+#     \overline{\cJ}^P = \left\{\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}
+#     \; | \; \vect{\alpha} \in \cJ^P\right\}.
 #
-# For any reduced multi-index :math:`\overline{\vect{\alpha}} \in \overline{\cJ}`
+# For any reduced multi-index :math:`\overline{\vect{\alpha}} \in \overline{\cJ}^P`
 # of dimension :math:`|\overline{\vect{u}}|`,
-# we note :math:`\cJ_{\overline{\vect{\alpha}}}`
+# we note :math:`\cJ_{\overline{\vect{\alpha}}}^P`
 # the set of corresponding (un-reduced) multi-indices of
 # dimension :math:`\physicalInputDimension`:
 #
 # .. math::
 #    :label: PCE_CE_3
 #
-#     \cJ_{\overline{\vect{\alpha}}}
-#     = \left\{\alpha \in \cJ^P \; |\; \overline{\vect{\alpha}}_i
-#     = \alpha_{\overline{\vect{u}}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
+#     \cJ_{\overline{\vect{\alpha}}}^P
+#     = \left\{\alpha \in \cJ^P \; |\; \overline{\alpha}_i
+#     = \alpha_{\overline{u}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
 #
 # Each aggregated coefficient :math:`\overline{a}_{\overline{\vect{\alpha}}} \in \Rset`
 # is defined by the equation:
@@ -208,7 +211,7 @@ Conditional expectation of a polynomial chaos expansion
 #    :label: PCE_CE_4
 #
 #     \widehat{h}(\standardInputObservation_{\overline{\vect{u}}})
-#     = \sum_{\overline{\boldsymbol{\alpha}} \in \overline{\cJ}}
+#     = \sum_{\overline{\boldsymbol{\alpha}} \in \overline{\cJ}^P}
 #     \overline{a}_{\overline{\vect{\alpha}}}
 #     \overline{\psi}(z_{\overline{\vect{u}}})
 #
