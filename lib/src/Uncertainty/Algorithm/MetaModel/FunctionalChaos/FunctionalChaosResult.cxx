@@ -293,7 +293,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   const String basicClassName(orthogonalBasis_.getImplementation()->getClassName());
   if (basicClassName != "OrthogonalProductPolynomialFactory")
     throw InvalidArgumentException(HERE) << "This class can only manage an OrthogonalProductPolynomialFactory "
-          << "but current basis is" << orthogonalBasis_.getClassName();
+          << "but current basis is" << basicClassName;
   const OrthogonalProductPolynomialFactory* p_basis = dynamic_cast<const OrthogonalProductPolynomialFactory*>(orthogonalBasis_.getImplementation().get());
   const OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialCollection(p_basis->getPolynomialFamilyCollection());
 
