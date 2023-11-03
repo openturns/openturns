@@ -17,7 +17,7 @@ ExperimentIntegration
 
 Notes
 -----
-WeightedExperiment is used to generate the notes and the weights 
+This class is used to generate nodes and their associated weights 
 to approximate the weighted integral of a physical model (see [sullivan2015]_ chapter 9
 page 165).
 
@@ -65,7 +65,7 @@ which are distributed in three groups:
 
 1. The random patterns, where the set of input
    data is generated from the joint distribution of the input random vector,
-   according to these sampling techniques e.g. 
+   e.g. 
    :class:`Monte Carlo <openturns.MonteCarloExperiment>`.
    In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `True`.
 
