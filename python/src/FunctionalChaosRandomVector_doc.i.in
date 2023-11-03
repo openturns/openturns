@@ -30,8 +30,8 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 "Accessor to the mean of the functional chaos expansion.
 
 Let :math:`\physicalInputDimension \in \Nset` be the dimension of the input random vector, 
-let :math:`\physicalOutputDimension \in \Nset` be the dimension of the output random vector.
-and let :math:`P \in \Nset` be the number of coefficients in the basis.
+let :math:`\physicalOutputDimension \in \Nset` be the dimension of the output random vector,
+and let :math:`P \in \Nset` be the size of the basis.
 We consider the following functional chaos expansion:
 
 .. math::
@@ -63,9 +63,8 @@ in the expansion:
 
 .. math::
 
-      \Expect{\widetilde{Y}_i} = a_{i,0}
+      \Expect{\widetilde{\physicalOutputRandomVector}} = \vect{a}_0.
 
-for :math:`i = 1, ..., \physicalOutputDimension`.
 
 Returns
 -------
@@ -123,7 +122,7 @@ The previous equation can be equivalently written as follows:
 
 .. math::
 
-      \widetilde{Y}_i = \sum_{k = 0}^P a_{ki} \psi_k(\vect{Z})
+      \widetilde{Y}_i = \sum_{k = 0}^P a_{k, i} \psi_k(\vect{Z})
 
 for :math:`i = 1, ..., \physicalOutputDimension`
 where :math:`a_{ki} \in \Rset` is the :math:`i`-th component of the
