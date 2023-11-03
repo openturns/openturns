@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an WeightedExperiment
+ *  @brief Abstract top-level view of a WeightedExperiment
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *

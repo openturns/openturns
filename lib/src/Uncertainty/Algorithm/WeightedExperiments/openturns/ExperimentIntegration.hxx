@@ -43,7 +43,7 @@ public:
   ExperimentIntegration();
 
   /** Constructor from an implementation */
-  ExperimentIntegration(const WeightedExperiment & weightedExperiment);
+  explicit ExperimentIntegration(const WeightedExperiment & weightedExperiment);
 
   /** Virtual constructor */
   ExperimentIntegration * clone() const override;

@@ -78,12 +78,12 @@ Conditional expectation of a polynomial chaos expansion
 # Parametric PCE
 # ~~~~~~~~~~~~~~
 #
-# If the physical model is a PCE, then the associated parametric model is also
+# If the physical model is a PCE, then the associated parametric model is also a
 # PCE.
 # Its coefficients and the associated functional basis can be computed from
 # the original PCE.
 # A significant fact, however, is that the coefficients of the parametric
-# PCE are *not* the one of the original PCE: the coefficients of the parametric
+# PCE are *not* the ones of the original PCE: the coefficients of the parametric
 # PCE have to be multiplied by factors which depend on the
 # value of the discarded basis functions on the parameter vector.
 # This feature is not currently available in the library.
@@ -136,9 +136,9 @@ Conditional expectation of a polynomial chaos expansion
 # where :math:`\pi_{\alpha_i}^{(i)}` is the polynomial of degree
 # :math:`\alpha_i` of the :math:`i`-th input standard variable.
 #
-# We denote :math:`(u_i)_{i = 1, ..., |\vect{u}|}` the components of the
+# Let :math:`(u_i)_{i = 1, ..., |\vect{u}|}` denote the components of the
 # group :math:`\vect{u}` where :math:`|\vect{u}|` is the number of elements in the group.
-# Similarly, we denote :math:`(\overline{\vect{u}}_i)_{i = 1, ..., |\overline{\vect{u}}|}` the
+# Similarly, let :math:`(\overline{\vect{u}}_i)_{i = 1, ..., |\overline{\vect{u}}|}` denote the
 # components of the complementary group :math:`\overline{\vect{u}}`.
 # The components of :math:`\standardInputObservation \in \Rset^{\physicalInputDimension}`
 # which are in the group :math:`\vect{u}` are :math:`\left(z_{u_i}^{(0)}\right)_{i = 1, ..., |\vect{u}|}`
@@ -154,7 +154,7 @@ Conditional expectation of a polynomial chaos expansion
 #     \overline{\psi}_{\overline{\vect{\alpha}}}(z_{\overline{\vect{u}}})
 #     = \left(\prod_{i = 1}^{|\overline{\vect{u}}|}
 #        \pi_{\alpha_{\overline{\vect{u}}_i}}^{(\overline{\vect{u}}_i)}
-#        \left(\standardInputObservation_{\overline{u}_i}\right) \right).
+#        \left(\standardInputObservation_{\overline{u}_i}\right) \right)
 #
 # where :math:`\overline{\vect{\alpha}} \in \mathbb{N}^{|\vect{u}|}` is the reduced multi-index
 # defined from the multi-index :math:`\boldsymbol{\alpha}\in \mathbb{N}^{\physicalInputDimension}`
@@ -241,7 +241,7 @@ Conditional expectation of a polynomial chaos expansion
 # for any :math:`\physicalInputObservation_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 # In general, there is no dedicated method to create such a conditional expectation
 # in the library.
-# We can, however, compute efficiently the conditional expectation of a polynomial
+# We can, however, efficiently compute the conditional expectation of a polynomial
 # chaos expansion.
 # In turn, this conditional chaos expansion (PCE) is a polynomial chaos expansion
 # which can be computed using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`
