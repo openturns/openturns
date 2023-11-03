@@ -17,9 +17,9 @@ ExperimentIntegration
 
 Notes
 -----
-This class is used to generate nodes and their associated weights 
-to approximate the weighted integral of a physical model (see [sullivan2015]_ chapter 9
-page 165).
+This class is used to generate nodes and their associated weights
+to approximate the weighted integral of a physical model with respect
+to a distribution (see [sullivan2015]_ chapter 9 page 165).
 
 Let :math:`\model : \physicalInputSpace \rightarrow \physicalOutputSpace` 
 be a function where :math:`\physicalInputSpace \subseteq \Rset^{\physicalInputDimension}` 
@@ -61,7 +61,7 @@ that all nodes are non negative, but not all rules have that
 property.
 
 A `WeightedExperiment` object can be created only through its derived classes
-which are distributed in three groups:
+which are in three groups:
 
 1. The random patterns, where the set of input
    data is generated from the joint distribution of the input random vector,
@@ -78,7 +78,7 @@ which are distributed in three groups:
    :class:`Gauss product <openturns.GaussProductExperiment>`.
    In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
 
-In order to actually use a quadrature rule on a particular function,
+In order to estimate the expectation of the model using the nodes and weights,
 we suggest to use the :class:`~openturns.ExperimentIntegration` class."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation
