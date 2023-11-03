@@ -139,7 +139,7 @@ component is:
 
 .. math::
 
-      c_{ij} = \Cov{\widetilde{Y}_i, \tilde{Y}_j}
+      c_{ij} = \Cov{\widetilde{Y}_i, \widetilde{Y}_j}
 
 for :math:`i,j = 1, ..., \physicalOutputDimension`.
 The covariance can be computed using the coefficients of the 
@@ -147,7 +147,7 @@ expansion:
 
 .. math::
 
-      \Cov{\widetilde{Y}_i, \tilde{Y}_j} = \sum_{k = 1}^P a_{ki} a_{jk}
+      \Cov{\widetilde{Y}_i, \widetilde{Y}_j} = \sum_{k = 1}^P a_{k, i} a_{k, j}
 
 for :math:`i,j = 1, ..., \physicalOutputDimension`.
 This covariance involves all the coefficients, except the first one.
@@ -155,9 +155,9 @@ The diagonal of the covariance matrix is the marginal variance:
 
 .. math::
 
-      \Var{\widetilde{Y}_i} = \sum_{k = 1}^P a_{ki}^2
+      \Var{\widetilde{Y}_i} = \sum_{k = 1}^P a_{k, i}^2
 
-for :math:`i,j = 1, ..., \physicalOutputDimension`.
+for :math:`i = 1, ..., \physicalOutputDimension`.
 
 Returns
 -------

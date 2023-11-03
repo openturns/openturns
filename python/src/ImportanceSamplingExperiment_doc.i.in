@@ -21,7 +21,7 @@ importanceDistribution : :class:`~openturns.Distribution`
 
 Notes
 -----
-ImportanceSamplingExperiment is a random weighted design of experiments to get a sample 
+ImportanceSamplingExperiment is a random weighted design of experiments used to generate a sample 
 :math:`(\physicalInputObservation_i)_{1 \leq i \leq \sampleSize}`
 based on independent observations from the distribution :math:`\inputMeasure` ([hammersley1961]_ page 57, 
 [lemieux2009]_ page 11). 
@@ -37,7 +37,7 @@ which must be specified by the user.
 In the specific case of rare event estimation, [morio2015]_ page 53 provide 
 different methods to compute the instrumental distribution, 
 including simple changes of measure and exponential twisting.
-The :class:`~openturns.PostAnalyticalImportanceSampling` combines the :class:`~openturns.FORM` 
+The :class:`~openturns.PostAnalyticalImportanceSampling` class combines the :class:`~openturns.FORM` class
 and importance sampling to estimate a probability.
 
 The `ImportanceSamplingExperiment` class is nonadaptive, i.e. the parameters of the instrumental distribution are 
