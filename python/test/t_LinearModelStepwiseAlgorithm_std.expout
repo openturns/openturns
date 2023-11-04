@@ -24,7 +24,7 @@ Normality test       | p-value     |
 Anderson-Darling     | 0.000429122 |
 Cramer-Von Mises     | 0.000431104 |
 Chi-Squared          | 0.0553713   |
-Kolmogorov-Smirnov   | 0.0481525   |
+Kolmogorov-Smirnov   | 0.0487912   |
 ------------------------------------
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +55,7 @@ Normality test       | p-value    |
 Anderson-Darling     | 0.00124009 |
 Cramer-Von Mises     | 0.00130302 |
 Chi-Squared          | 0.063153   |
-Kolmogorov-Smirnov   | 0.338063   |
+Kolmogorov-Smirnov   | 0.304448   |
 -----------------------------------
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +84,7 @@ Normality test       | p-value     |
 Anderson-Darling     | 0.000429122 |
 Cramer-Von Mises     | 0.000431104 |
 Chi-Squared          | 0.0553713   |
-Kolmogorov-Smirnov   | 0.0481525   |
+Kolmogorov-Smirnov   | 0.0487912   |
 ------------------------------------
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,7 +113,7 @@ Normality test       | p-value     |
 Anderson-Darling     | 0.000429122 |
 Cramer-Von Mises     | 0.000431104 |
 Chi-Squared          | 0.0553713   |
-Kolmogorov-Smirnov   | 0.0481525   |
+Kolmogorov-Smirnov   | 0.0487912   |
 ------------------------------------
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,7 +142,7 @@ Normality test       | p-value    |
 Anderson-Darling     | 0.00130208 |
 Cramer-Von Mises     | 0.00117207 |
 Chi-Squared          | 0.0719171  |
-Kolmogorov-Smirnov   | 0.121207   |
+Kolmogorov-Smirnov   | 0.124958   |
 -----------------------------------
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,6 +171,6 @@ Normality test       | p-value     |
 Anderson-Darling     | 0.000429122 |
 Cramer-Von Mises     | 0.000431104 |
 Chi-Squared          | 0.0553713   |
-Kolmogorov-Smirnov   | 0.0481525   |
+Kolmogorov-Smirnov   | 0.0487912   |
 ------------------------------------
 

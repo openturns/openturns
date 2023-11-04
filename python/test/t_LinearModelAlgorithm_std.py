@@ -42,6 +42,8 @@ for i in range(size):
     )
 test = ot.LinearModelAlgorithm(X, Y)
 result = test.getResult()
+print("result = ")
+print(result)
 print("trend coefficients = ", result.getCoefficients())
 
 # Test various attributes

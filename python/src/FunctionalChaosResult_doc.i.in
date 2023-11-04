@@ -128,7 +128,7 @@ indices : :class:`~openturns.Indices`
 Returns
 -------
 invTransf : :class:`~openturns.Function`
-     :math:`T^{-1}` such that :math:`T(\vect{X}) = \vect{Z}`."
+     :math:`T^{-1}` such that :math:`T^{-1}(\vect{Z}) = \vect{X}`."
 
 // ---------------------------------------------------------------------
 
@@ -212,3 +212,18 @@ coefficientsHistory : 2-d sequence of float
     The coefficients values selection history
     Must be of same size as indicesHistory."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getLinearModelResult
+"Get the linear model result.
+
+Parameters
+----------
+marginalOutputIndex: int
+    The index of the marginal output.
+    The default value is `marginalOutputIndex = 0`.
+
+Returns
+-------
+lmResult : :class:`~openturns.LinearModelResult`
+    The linear model."

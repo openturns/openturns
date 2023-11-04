@@ -21,6 +21,7 @@
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DatabaseFunction.hxx"
+#include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -44,7 +45,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Matrix & design,
                                      const Sample & outputSample,
                                      const Function & metaModel,
-                                     const Point & trendCoefficients,
+                                     const Point & coefficients,
                                      const String & formula,
                                      const Description & coefficientsNames,
                                      const Sample & sampleResiduals,
@@ -56,7 +57,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   : MetaModelResult(inputSample, outputSample, metaModel, Point(1, 0.0), Point(1, 0.0))
   , basis_(basis)
   , design_(design)
-  , beta_(trendCoefficients)
+  , coefficients_(coefficients)
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
   , sampleResiduals_(sampleResiduals)
@@ -74,7 +75,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   const SignedInteger degreesOfFreedom = getDegreesOfFreedom();
   if (degreesOfFreedom < 0)
     throw InvalidArgumentException(HERE) << "Degrees of freedom is less than 0. Data size = " << outputSample.getSize()
-                                         << ", basis size = " << beta_.getSize()
+                                         << ", basis size = " << coefficients_.getSize()
                                          << ", degrees of freedom = " << degreesOfFreedom;
   checkIntercept();
 }
@@ -118,16 +119,49 @@ Bool LinearModelResult::hasIntercept() const
 }
 
 /* String converter */
+String LinearModelResult::__str__(const String & /*offset*/) const
+{
+  return __repr_markdown__();
+}
+
+String LinearModelResult::__repr_markdown__() const
+{
+  OSS oss(false);
+  const UnsignedInteger inputDimension = basis_[0].getInputDimension();
+  oss << getClassName() << Os::GetEndOfLine()
+      << "- input dimension=" << inputDimension << Os::GetEndOfLine()
+      << "- basis size=" << basis_.getSize() << Os::GetEndOfLine()
+      << "- design matrix=" << design_.getNbRows() << " x " << design_.getNbColumns() << Os::GetEndOfLine()
+      << "- coefficients=" << coefficients_.getDimension() << Os::GetEndOfLine()
+      << "- formula=" << condensedFormula_ << Os::GetEndOfLine()
+      << "- coefficients names=" << coefficientsNames_ << Os::GetEndOfLine()
+      << "- residuals size=" << sampleResiduals_.getSize() << Os::GetEndOfLine()
+      << "- standard residuals size=" << standardizedResiduals_.getSize() << Os::GetEndOfLine()
+      << "- inverse Gram diagonal=" << diagonalGramInverse_ << Os::GetEndOfLine()
+      << "- leverages size=" << leverages_.getSize() << Os::GetEndOfLine()
+      << "- Cook's distances size=" << cookDistances_.getSize() << Os::GetEndOfLine()
+      << "- variance=" << sigma2_ << Os::GetEndOfLine()
+      << "- has intercept=" << hasIntercept_ << Os::GetEndOfLine();
+  oss << Os::GetEndOfLine();
+  return oss;
+}
+
+/* String converter */
 String LinearModelResult::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-         << " beta=" << beta_
+         << " beta=" << coefficients_
          << " formula=" << condensedFormula_;
 }
 
 Basis LinearModelResult::getBasis() const
 {
   return basis_;
+}
+
+Matrix LinearModelResult::getDesign() const
+{
+  return design_;
 }
 
 /* Fitted sample accessor */
@@ -139,7 +173,7 @@ Sample LinearModelResult::getFittedSample() const
 /* Formula accessor */
 Point LinearModelResult::getCoefficients() const
 {
-  return beta_;
+  return coefficients_;
 }
 
 /* Formula accessor */
@@ -162,7 +196,7 @@ Sample LinearModelResult::getSampleResiduals() const
 SignedInteger LinearModelResult::getDegreesOfFreedom() const
 {
   const UnsignedInteger size = inputSample_.getSize();
-  const UnsignedInteger basisSize = beta_.getSize();
+  const UnsignedInteger basisSize = coefficients_.getSize();
   return size - basisSize;
 }
 
@@ -196,6 +230,11 @@ Point LinearModelResult::getCookDistances() const
   return cookDistances_;
 }
 
+Scalar LinearModelResult::getSigma2() const
+{
+  return sigma2_;
+}
+
 /* R-squared test */
 Scalar LinearModelResult::getRSquared() const
 {
@@ -204,7 +243,8 @@ Scalar LinearModelResult::getRSquared() const
   const Scalar RSS = residuals.computeRawMoment(2)[0];
   // get outputSample and SYY
   // See https://stats.stackexchange.com/questions/26176/removal-of-statistically-significant-intercept-term-increases-r2-in-linear-mo
-  // In case there is no intercept convention for R^2 is to have the ration between sum of squared predicted over sum of squared real
+  // In case there is no intercept convention for R^2 is to have the ratio 
+  // between sum of squared predicted over sum of squared real
   // values.
   const Sample outputSample(getOutputSample());
   Scalar SYY = 1.0;
@@ -251,7 +291,7 @@ void LinearModelResult::save(Advocate & adv) const
   MetaModelResult::save(adv);
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "design_", design_ );
-  adv.saveAttribute( "beta_", beta_ );
+  adv.saveAttribute( "coefficients_", coefficients_ );
   adv.saveAttribute( "condensedFormula_", condensedFormula_ );
   adv.saveAttribute( "coefficientsNames_", coefficientsNames_ );
   adv.saveAttribute( "sampleResiduals_", sampleResiduals_ );
@@ -269,7 +309,7 @@ void LinearModelResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "design_", design_ );
-  adv.loadAttribute( "beta_", beta_ );
+  adv.loadAttribute( "coefficients_", coefficients_ );
   adv.loadAttribute( "condensedFormula_", condensedFormula_ );
   adv.loadAttribute( "coefficientsNames_", coefficientsNames_ );
   adv.loadAttribute( "sampleResiduals_", sampleResiduals_ );
