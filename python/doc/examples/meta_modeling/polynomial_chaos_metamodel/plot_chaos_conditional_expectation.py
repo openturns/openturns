@@ -266,7 +266,7 @@ import matplotlib.pyplot as plt
 
 
 # %%
-def MeanParametricPCE(chaosResult, indices):
+def meanParametricPCE(chaosResult, indices):
     """
     Return the parametric PCE of Y with given input marginals set to the mean.
 
@@ -476,7 +476,7 @@ plt.subplots_adjust(wspace=0.4, bottom=0.25)
 # and the other variables are set to their mean values.
 # We can show that a parametric PCE is, again, a PCE.
 # The library does not currently implement this feature.
-# In the next cell, we create it from the `MeanParametricPCE` we defined
+# In the next cell, we create it from the `meanParametricPCE` we defined
 # previously.
 
 # %%
@@ -486,12 +486,12 @@ plt.subplots_adjust(wspace=0.4, bottom=0.25)
 # set to their mean values.
 pceFunction = chaosResult.getMetaModel()
 indices = [1, 2]
-parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+parametricPCEFunction = meanParametricPCE(chaosResult, indices)
 print(parametricPCEFunction.getInputDimension())
 
 
 # %%
-# Now that we know how the `MeanParametricPCE` works, we loop over
+# Now that we know how the `meanParametricPCE` works, we loop over
 # the input marginal indices and consider the three functions
 # :math:`\widehat{\model}_1(\physicalInputObservation_1)`,
 # :math:`\widehat{\model}_2(\physicalInputObservation_2)` and
@@ -526,7 +526,7 @@ for i in range(inputDimension):
     # Set all indices except i
     indices = list(range(inputDimension))
     indices.pop(i)
-    parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+    parametricPCEFunction = meanParametricPCE(chaosResult, indices)
     xiMin = inputLowerBound[i]
     xiMax = inputUpperBound[i]
     curve = parametricPCEFunction.draw(xiMin, xiMax, npPoints).getDrawable(0)
@@ -614,7 +614,7 @@ for i in range(inputDimension):
     # Set all indices except i to the mean
     indices = list(range(inputDimension))
     indices.pop(i)
-    parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+    parametricPCEFunction = meanParametricPCE(chaosResult, indices)
     # Draw the parametric function
     curve = parametricPCEFunction.draw(xiMin, xiMax, npPoints).getDrawable(0)
     curve.setLineWidth(2.0)
