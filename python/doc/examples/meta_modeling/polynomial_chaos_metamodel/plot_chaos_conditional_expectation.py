@@ -303,7 +303,7 @@ def meanParametricPCE(chaosResult, indices):
     # Create the parametric function
     pceFunction = chaosResult.getMetaModel()
     xMean = inputDistribution.getMean()
-    referencePoint = [xMean[i] for i in indices]
+    referencePoint = xMean[indices]
     parametricPCEFunction = ot.ParametricFunction(pceFunction, indices, referencePoint)
     return parametricPCEFunction
 
@@ -313,7 +313,7 @@ def meanParametricPCE(chaosResult, indices):
 
 
 # %%
-def ComputeSparseLeastSquaresFunctionalChaos(
+def computeSparseLeastSquaresFunctionalChaos(
     inputTrain,
     outputTrain,
     multivariateBasis,
@@ -445,7 +445,7 @@ print("Basis size = ", basisSize)
 # algorithm.
 
 # %%
-chaosResult = ComputeSparseLeastSquaresFunctionalChaos(
+chaosResult = computeSparseLeastSquaresFunctionalChaos(
     inputSample,
     outputSample,
     multivariateBasis,
@@ -484,7 +484,6 @@ plt.subplots_adjust(wspace=0.4, bottom=0.25)
 # In the next cell, we create the parametric PCE function
 # where :math:`X_1` is active while :math:`X_2` and :math:`X_3` are
 # set to their mean values.
-pceFunction = chaosResult.getMetaModel()
 indices = [1, 2]
 parametricPCEFunction = meanParametricPCE(chaosResult, indices)
 print(parametricPCEFunction.getInputDimension())
