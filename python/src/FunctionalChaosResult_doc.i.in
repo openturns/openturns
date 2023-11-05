@@ -6,16 +6,16 @@ Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosA
 Parameters
 ----------
 sampleX : 2-d sequence of float
-    Input sample of :math:`\physicalInputRandomVector \in \Rset^{\physicalInputDimension}`.
+    Input sample :math:`\physicalInputRandomVector \in \Rset^{\physicalInputDimension}`.
 sampleY : 2-d sequence of float
-    Output sample of :math:`\physicalOutputRandomVector \in \Rset^{\physicalOutputDimension}`.
+    Output sample :math:`\physicalOutputRandomVector \in \Rset^{\physicalOutputDimension}`.
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\physicalInputRandomVector`
 transformation : :class:`~openturns.Function`
     The function that maps the physical input :math:`\physicalInputRandomVector` to the 
     standardized input :math:`\standardInputRandomVector`.
 inverseTransformation : :class:`~openturns.Function`
-    The function that maps standardized input :math:`\standardInputRandomVector` to the 
+    The function that maps the standardized input :math:`\standardInputRandomVector` to
     the physical input :math:`\physicalInputRandomVector`.
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
     The multivariate orthogonal basis.
