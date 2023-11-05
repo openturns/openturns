@@ -90,7 +90,7 @@ Then we can define :math:`\tilde{h} = \surrogateModel \circ T^{-1}` and:
 
     \widetilde{Y} = \tilde{h}(\standardInputObservation)
 
-For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
+For more details on this topic, see :class:`~openturns.FunctionalChaosRandomVector`.
 
 The functional chaos decomposition can be used to build a meta model of :math:`\model`, 
 which writes:
@@ -118,12 +118,12 @@ The univariate bases may be:
 - *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
   Note that it is possible to build the polynomial family orthonormal to any univariate 
   distribution :math:`\mu_i` under some conditions. 
-  For more details, see :class:`~openturns.StandardDistributionPolynomialFactory`;
+  For more details on this topic, see :class:`~openturns.StandardDistributionPolynomialFactory`;
 
 - Haar wavelets: they enable to approximate functions with discontinuities.
-  For more details, see :class:`~openturns.HaarWaveletFactory`,;
+  For more details on this topic, see :class:`~openturns.HaarWaveletFactory`,;
 
-- Fourier series: for more details, see :class:`~openturns.FourierSeriesFactory`.
+- Fourier series: for more details on this topic, see :class:`~openturns.FourierSeriesFactory`.
 
 Furthermore, the numerotation of the multivariate orthonormal basis :math:`(\psi_k(\standardInputObservation))_k` 
 is given by an enumerate function which defines a regular way to generate the collection of degres 
