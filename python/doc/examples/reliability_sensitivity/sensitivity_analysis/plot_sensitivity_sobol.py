@@ -67,7 +67,7 @@ ot.Log.Show(ot.Log.NONE)
 im = ishigami_function.IshigamiModel()
 
 # %%
-# The `IshigamiModel` data class contains the input distribution
+# The :class:`~openturns.usecases.ishigami_function.IshigamiModel` data class contains the input distribution
 # :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami
 # function in `im.model`.
 # We also have access to the input variable names with:
