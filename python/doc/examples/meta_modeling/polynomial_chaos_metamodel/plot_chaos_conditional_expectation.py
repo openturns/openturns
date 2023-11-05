@@ -588,7 +588,6 @@ conditionalPCE
 # In the next cell, we compare the parametric PCE and the conditional
 # expectation of the PCE.
 
-# %%
 # sphinx_gallery_thumbnail_number = 3
 inputDimension = im.distributionX.getDimension()
 npPoints = 100

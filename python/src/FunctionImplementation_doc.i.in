@@ -151,11 +151,9 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 >>> print(myFunction2([1, 2, 3]))
 [25,35]
 
-If the input and output dimensions of two function are equal
-then we can perform some arithmetic operations on these functions
+If the input and output dimensions of two functions are equal
+then we can perform arithmetic operations on these functions
 using the '+', '-' and '*' operators.
-This can be handy when we want to see the sum or difference
-of two functions.
 
 >>> g1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                          ['x1 + 2 * x2 + x3'])

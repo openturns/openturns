@@ -63,7 +63,7 @@ Let :math:`h` be the composed model:
 Then :math:`h \in L_{\mu}^2(\Rset^{\physicalInputDimension}, \Rset)`.
 Let :math:`(\psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
 :math:`L^2_{\mu}(\Rset^{\physicalInputDimension},\Rset)`.
-Then the functional chaos decomposition of :math:`\model` writes:
+Then the functional chaos decomposition of :math:`\model` can be written:
 
 .. math::
 
@@ -84,7 +84,7 @@ which leads to the subset :math:`\mathcal{J}^P_s \subseteq \mathcal{J}^P`.
 
 The surrogate model :math:`\surrogateModel` can be used to build an efficient random 
 generator of :math:`Y` based on the random vector :math:`\standardInputObservation`. 
-It writes:
+Then we can define :math:`\tilde{h} = \surrogateModel \circ T^{-1}` and:
 
 .. math::
 
@@ -100,7 +100,7 @@ which writes:
     \surrogateModel(\physicalInputRandomVector) = \left(\tilde{h} \circ T \right)(\physicalInputRandomVector)
 
 If the basis :math:`(\psi_k)_{k \in \Nset}` has been obtained by tensorisation of
-univariate orthonormal basis, then the distribution :math:`\mu` writes  
+univariate orthonormal basis, then the distribution :math:`\mu` is
 :math:`\mu = \prod_{i=1}^d \mu_i`. In that case only, the Sobol indices can
 easily be deduced from the coefficients :math:`a_k`.
 
@@ -156,11 +156,11 @@ or
 
 where the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
 
-Relation :eq:`quadEr` means that the coefficients :math:`(a_k)_{k \in K}`
+Equation :eq:`quadEr` means that the coefficients :math:`(a_k)_{k \in K}`
 minimize the quadratic error between the model and the polynomial approximation.
 For more details, see :class:`~openturns.LeastSquaresStrategy`.
 
-Relation  :eq:`scalProd` means that :math:`a_k` is the scalar product of the
+Equation  :eq:`scalProd` means that :math:`a_k` is the scalar product of the
 model with the *k-th* element of the orthonormal basis :math:`(\psi_k)_{k \in \Nset}`.
 For more details, see :class:`~openturns.IntegrationStrategy`.
 

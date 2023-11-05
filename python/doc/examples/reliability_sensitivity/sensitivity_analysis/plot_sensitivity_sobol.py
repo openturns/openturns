@@ -68,7 +68,7 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 # The :class:`~openturns.usecases.ishigami_function.IshigamiModel` data class contains the input distribution
-# :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami
+# :math:`\vect{X}=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami
 # function in `im.model`.
 # We also have access to the input variable names with:
 input_names = im.distributionX.getDescription()
@@ -167,8 +167,7 @@ outputDesign = im.model(inputDesign)
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 # %%
-# The `getFirstOrderIndices` and `getTotalOrderIndices` method respectively
-# return estimates of all first order and total Sobol' indices.
+# Let us estimate first order and total Sobol' indices.
 
 # %%
 sensitivityAnalysis.getFirstOrderIndices()
@@ -177,7 +176,7 @@ sensitivityAnalysis.getFirstOrderIndices()
 sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
-# The `draw` method produces the following graph. The vertical bars represent
+# In the following graph, the vertical bars represent
 # the 95% confidence intervals of the estimates.
 
 # %%
