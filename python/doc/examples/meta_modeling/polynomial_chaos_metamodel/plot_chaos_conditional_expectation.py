@@ -191,7 +191,7 @@ Conditional expectation of a polynomial chaos expansion
 #    :label: PCE_CE_3
 #
 #     \cJ_{\overline{\vect{\alpha}}}^P
-#     = \left\{\alpha \in \cJ^P \; |\; \overline{\alpha}_i
+#     = \left\{\vect{\alpha} \in \cJ^P \; |\; \overline{\alpha}_i
 #     = \alpha_{\overline{u}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
 #
 # Each aggregated coefficient :math:`\overline{a}_{\overline{\vect{\alpha}}} \in \Rset`
