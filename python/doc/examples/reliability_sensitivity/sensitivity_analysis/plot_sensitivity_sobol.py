@@ -191,7 +191,7 @@ view = viewer.View(graph)
 #   alone produce almost 30% (0.6 - 0.3) of the total variance.
 # - The variable :math:`X_2` has the highest first order index: approximately 0.4.
 #   However, it has little interaction with other variables since its total
-#   order indice is close to its first order index.
+#   order index is close to its first order index.
 # - The variable :math:`X_3` has a first order index close to zero.
 #   However, it has an impact to the total variance thanks to its interactions
 #   with :math:`X_1`.
@@ -224,7 +224,7 @@ sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign,
 second_order = sensitivityAnalysis.getSecondOrderIndices()
 for i in range(im.dim):
     for j in range(i):
-        print("2nd order indice (%d,%d)=%g" % (i, j, second_order[i, j]))
+        print("2nd order index (%d,%d)=%g" % (i, j, second_order[i, j]))
 
 # %%
 # This shows that the only significant interaction is the one between :math:`X_1`
