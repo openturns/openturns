@@ -92,6 +92,9 @@ Conditional expectation of a polynomial chaos expansion
 # differently from the corresponding parametric PCE.
 
 # %%
+# Let :math:`\cJ^P \subseteq \Nset^{\physicalInputDimension}` be the set of
+# multi-indices corresponding to the truncated polynomial chaos expansion
+# up to the :math:`P`-th coefficient.
 # Let :math:`h` be the PCE in the standard space:
 #
 # .. math::
@@ -170,9 +173,6 @@ Conditional expectation of a polynomial chaos expansion
 
 # %%
 # We must then gather the reduced multi-indices.
-# Let :math:`\cJ^P \subseteq \Nset^{\physicalInputDimension}` be the set of
-# multi-indices corresponding to the truncated polynomial chaos expansion
-# up to the :math:`P`-th coefficient.
 # Let :math:`\overline{\cJ}^P` be the set of unique reduced multi-indices:
 #
 # .. math::
