@@ -325,6 +325,9 @@ if (USE_CERES)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${CERES_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CERES_LIBRARIES})
     list (APPEND OPENTURNS_ENABLED_FEATURES "ceres")
+  else ()
+    # https://github.com/ceres-solver/ceres-solver/issues/1024
+    list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
   endif ()
 endif ()
 
