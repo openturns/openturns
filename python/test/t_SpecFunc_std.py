@@ -40,9 +40,7 @@ print(
 )
 
 x = [1.0, 2.0 ** 53, -(2.0 ** 53)]
-s1 = sum(x)
 s2 = ot.SpecFunc.AccurateSum(x)
-assert s1 == 0.0, "sum(x) nonzero"
 assert s2 == 1.0, "accurate sum(x) not 1"
 
 # Clip01
