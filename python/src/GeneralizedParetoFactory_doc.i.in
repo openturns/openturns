@@ -30,9 +30,9 @@ Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n, \hat{u}_n)` using:
     :label: gpd_moment_estimator
 
     \begin{eqnarray*}
-        \hat{\xi}_n &= -\dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
-        \hat{\sigma}_n &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right) \\
-        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}
+        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n} \\
+        \hat{\xi}_n &= -\dfrac{1}{2}\left(\dfrac{(\overline{x}_n - \hat{u}_n)^2}{s_n^2}-1\right) \\
+        \hat{\sigma}_n &= \dfrac{(\overline{x}_n- \hat{u}_n)}{2}\left(\dfrac{(\overline{x}_n- \hat{u}_n)^2}{s_n^2}+1\right)
     \end{eqnarray*}
 
 This estimator is well-defined only if :math:`\hat{\xi}>-1/4`, otherwise the second moment does not exist.
@@ -52,9 +52,9 @@ Then we estimate :math:`(\hat{\sigma}, \hat{\xi}, \hat{u})` using:
     :label: gpd_probability_weighted_moment_estimator
 
     \begin{eqnarray*}
+        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}\\
         \hat{\xi}_n &= \dfrac{1-4\rho}{1-2\rho} \\
-        \hat{\sigma}_n &= \dfrac{2\overline{x}_n}{1-2\rho} \\
-        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}
+        \hat{\sigma}_n &= \dfrac{2(\overline{x}_n- \hat{u}_n)}{1-2\rho}
     \end{eqnarray*}
 
 This estimator is well-defined only if :math:`\hat{\xi}_n>-1/2`, otherwise the first moment does not exist.
@@ -93,7 +93,7 @@ using:
     :label: gpd_exponential_estimator
 
     \hat{\xi} &= \xi^* \\
-    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho} \\
+    \hat{\sigma} &= \dfrac{2(\overline{x}_n- \hat{u}_n)}{1-2\rho} \\
     \hat{u} &= x_{(1)} - \frac{x_{(1)}}{2 + n}
 
 Where :math:`\xi^*` maximizes:
