@@ -378,7 +378,7 @@ This is only available with :class:`~openturns.LARS`, and when the output dimens
 Returns
 -------
 coefficientsHistory : 2-d sequence of float
-    The coefficients values selection history, for each iteration.
+    The history of the selected coefficients, for each iteration.
     Each inner list gives the coefficients values of the basis terms at i-th iteration."
 
 // ---------------------------------------------------------------------

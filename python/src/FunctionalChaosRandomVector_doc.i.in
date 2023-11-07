@@ -104,7 +104,7 @@ mean= 3.50..."
 
 Let :math:`\physicalInputDimension \in \Nset` be the dimension of the input random vector, 
 let :math:`\physicalOutputDimension \in \Nset` be the dimension of the output random vector.
-and let :math:`P \in \Nset` be the number of coefficients in the basis.
+and let :math:`P \in \Nset` be the size of the basis.
 We consider the following functional chaos expansion:
 
 .. math::
