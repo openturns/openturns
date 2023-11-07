@@ -187,7 +187,6 @@ cloud = ot.Cloud(Qobs, Hobs)
 cloud.setLegend("Observations")
 graph.add(cloud)
 #
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
 view = otv.View(graph)
 

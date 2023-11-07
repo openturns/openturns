@@ -345,7 +345,6 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
         ++ coefId;
         uniqueBasisIndices.add(indicesHistory_[i][j]);
       }
-  const Description colors(Drawable::BuildDefaultPalette(coefId));
   Sample valuesY(size + 1, coefId);
   Sample valuesX(size + 1, 1);
   for (UnsignedInteger i = 0; i < size + 1; ++ i)
@@ -357,7 +356,6 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
-    curve.setColor(colors[i]);
     curve.setLegend(OSS() << "Coef. #" << uniqueBasisIndices[i]);
     result.add(curve);
   }

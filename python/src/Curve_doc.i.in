@@ -17,7 +17,7 @@ dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of fl
 legend : str
     Legend of the Curve.
 color : str
-    Color of the curve. If not specified, by default it is 'blue'.
+    Color of the curve. If not specified, by default it is the first color of the default palette.
 lineStyle : str
     Style of the curve. If not specified, by default it is 'solid'.
 lineWidth : float
