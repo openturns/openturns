@@ -107,7 +107,7 @@ public:
   /** Variable types accessors */
   void setVariablesType(const Indices & variableType);
   Indices getVariablesType() const;
-  bool isContinuous() const;
+  Bool isContinuous() const;
 
   /** String converter */
   String __repr__() const override;

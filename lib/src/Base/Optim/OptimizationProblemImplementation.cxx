@@ -251,7 +251,7 @@ Indices OptimizationProblemImplementation::getVariablesType() const
   return variablesType_;
 }
 
-bool OptimizationProblemImplementation::isContinuous() const
+Bool OptimizationProblemImplementation::isContinuous() const
 {
   if (dimension_ == 0)
     return true;

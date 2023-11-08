@@ -114,7 +114,7 @@ void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
   isIndependent_ = true;
-  bool parallel = true;
+  Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (!coll[i].isCopula())

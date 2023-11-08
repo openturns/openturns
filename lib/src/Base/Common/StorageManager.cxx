@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StorageManager)
 
 
-Pointer<Advocate> StorageManager::registerObject(const PersistentObject &, bool )
+Pointer<Advocate> StorageManager::registerObject(const PersistentObject &, const Bool)
 {
   return new Advocate(*this, getState(), "object");
 }
@@ -376,7 +376,7 @@ void StorageManager::cleanSavedObjects() const
  *
  * @todo implement StorageManager::save method
  */
-void StorageManager::save(const PersistentObject & obj, const String & label, bool fromStudy)
+void StorageManager::save(const PersistentObject & obj, const String & label, const Bool fromStudy)
 {
 #ifdef SAVELOAD_CHECKING
   try

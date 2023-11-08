@@ -152,7 +152,7 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
       while ((it != candidates_.end()) && (it->second < nextNorm)) ++ it;
 
       // check if the same indice was already added
-      bool duplicate( false );
+      Bool duplicate = false;
       while ((it != candidates_.end()) && (it->second == nextNorm))
       {
         if (it->first == nextIndices)

@@ -257,12 +257,12 @@ public:
   /** Method save() stores the object through the StorageManager
    * @internal
    */
-  void save(StorageManager & mgr, const String & label, bool fromStudy = false) const;
+  void save(StorageManager & mgr, const String & label, const Bool fromStudy = false) const;
 
   /** Method save() stores the object through the StorageManager
    * @internal
    */
-  void save(StorageManager & mgr, bool fromStudy = false) const;
+  void save(StorageManager & mgr, const Bool fromStudy = false) const;
 
   /** Method save() stores the object through the StorageManager
    *

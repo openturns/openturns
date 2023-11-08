@@ -66,7 +66,7 @@ public:
   Point getProbabilityEstimatePerStep() const;
 
   /** @deprecated Keep event sample */
-  void setKeepEventSample(bool keepEventSample);
+  void setKeepEventSample(const Bool keepEventSample);
 
   /** @deprecated Event input/output sample accessor */
   Sample getEventInputSample() const;
