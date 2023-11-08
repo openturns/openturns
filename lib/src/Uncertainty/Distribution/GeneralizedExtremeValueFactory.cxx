@@ -712,7 +712,7 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
   {
     thetaFunction.setParameter(optimalParameter);
     Point param(thetaFunction(timeStamps[i]));
-    const Scalar pdfIRef = buildAsGeneralizedExtremeValue(param).computePDF(sample[i]);
+    const Scalar pdfIRef = buildAsGeneralizedExtremeValue(param).computeLogPDF(sample[i]);
 
     // evaluate dpdf/dbeta by finite-differences
     Matrix dpdfi(nP, 1);
@@ -721,15 +721,14 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
       Point betaIj(optimalParameter);
       betaIj[j] += epsilon;
       thetaFunction.setParameter(betaIj);
-      const Scalar pdfIj = buildAsGeneralizedExtremeValue(thetaFunction(timeStamps[i])).computePDF(sample[i]);
+      const Scalar pdfIj = buildAsGeneralizedExtremeValue(thetaFunction(timeStamps[i])).computeLogPDF(sample[i]);
       dpdfi(j, 0) = (pdfIj - pdfIRef) / epsilon;
     }
-    dpdfi = dpdfi / pdfIRef;
-    fisher = fisher + dpdfi * dpdfi.transpose() / size;
+    fisher = fisher + dpdfi.computeGram(false);
   }
   thetaFunction.setParameter(optimalParameter); // reset before return
 
-  const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / size).getImplementation());
+  const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP)).getImplementation());
   const Normal parameterDistribution(optimalParameter, covariance);
   const TimeVaryingResult result(*this, sample, thetaFunction, timeStamps, parameterDistribution, normalizationFunction, logLikelihood);
   return result;
