@@ -1,5 +1,9 @@
-distribution= Beta(alpha = 2.3, beta = 2.2, a = -1, b = 1)
-estimated distribution= Beta(alpha = 2.12, beta = 2.18, a = -0.989, b = 1.01)
-estimated distribution with bounds= Beta(alpha = 2.15, beta = 2.16, a = -1, b = 1)
+distribution=Beta(alpha = 2.3, beta = 2.2, a = -1, b = 1)
+estimated distribution=Beta(alpha = 2.12, beta = 2.18, a = -0.989, b = 1.01)
+estimated distribution with bounds=Beta(alpha = 2.15, beta = 2.16, a = -1, b = 1)
 Exponential(lambda = 1, gamma = 0.1)
 Exponential(lambda = 3, gamma = 0.1)
+estimator(isRegular=True): Normal(mu = [0.524,-0.483], sigma = [0.0131,0.018], R = [[ 1     0.255 ]
+ [ 0.255 1     ]])
+estimator(isRegular=False): KernelMixture(kernel = Normal(mu = 0, sigma = 1), bandwidth = [0.00906,0.00709], sample = 
+ 0 : [  0

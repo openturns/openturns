@@ -443,15 +443,15 @@ Distribution MaximumLikelihoodFactory::BuildGaussianEstimator (
   const UnsignedInteger size = sample.getSize();
   const UnsignedInteger parameterDimension = distribution.getParameterDimension();
   Matrix theta(parameterDimension, parameterDimension);
-  const Sample pdf(distribution.computePDF(sample));
-  const Sample dpdf(distribution.computePDFGradient(sample));
+  const Point dpdf(distribution.computeLogPDFGradient(sample).getImplementation()->getData());
+  UnsignedInteger offset = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
-    dpdfi = dpdfi / pdf(i, 0);
-    theta = theta + dpdfi * dpdfi.transpose() / size;
+    const Matrix dpdfi(parameterDimension, 1, dpdf.begin() + offset, dpdf.begin() + offset + parameterDimension);
+    offset += parameterDimension;
+    theta = theta + dpdfi.computeGram(false);
   }
-  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
+  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension)).getImplementation());
   return Normal(distribution.getParameter(), covariance);
 }
 
