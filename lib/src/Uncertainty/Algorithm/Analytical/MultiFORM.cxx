@@ -147,7 +147,7 @@ void MultiFORM::run()
     const Scalar radius = gamma * beta;
     const Scalar radius2 = radius * radius;
     const Matrix gradient(standardEvent.getImplementation()->getFunction().gradient(standardSpaceDesignPoint));
-    const Scalar gradientNorm = std::sqrt((gradient.transpose() * gradient)(0, 0));
+    const Scalar gradientNorm = std::sqrt(gradient.computeGram()(0, 0));
     Scalar height = delta * beta * gradientNorm / ((gamma2 - delta2) * (gamma2 - delta2) * beta2 * beta2);
     height *= radius2; //NOTE: cause' our bulge is normalized (max height=1.0)
 
