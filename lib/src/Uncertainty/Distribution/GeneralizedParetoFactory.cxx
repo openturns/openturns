@@ -30,6 +30,8 @@
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/BlockIndependentDistribution.hxx"
+#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -453,7 +455,11 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   optimalParameter.add(u);
 
   const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
-  const Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
+  Distribution fullParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
+  fullParameterDistribution.setDescription({"sigma", "xi", "u"}); // prevents warnings from BlockIndependentDistribution
+
+  // keep only sigma/xi parameters distributions as u is fixed
+  const BlockIndependentDistribution parameterDistribution({fullParameterDistribution.getMarginal({0, 1}), Dirac(u)});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
   DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
   return result;

@@ -71,6 +71,12 @@ inf_dist = estimator_mle.getDistribution()
 print("GPD from MLE=", inf_dist)
 pref_mle = [7.44573, 0.184112, 30.0]
 ott.assert_almost_equal(inf_dist.getParameter(), pref_mle, 1e-2, 1e-2)
+print("parameter dist=", estimator_mle.getParameterDistribution())
+print(estimator_mle.getParameterDistribution().getCovariance())
+cov_ref = [[0.995799, -0.084775, 0],
+           [-0.084775, 0.0146052, 0],
+           [0, 0, 0]]
+ott.assert_almost_equal(ot.Matrix(estimator_mle.getParameterDistribution().getCovariance()), ot.Matrix(cov_ref), 2e-3, 1e-5)
 
 # profile MLE (xi)
 estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
