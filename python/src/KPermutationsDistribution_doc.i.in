@@ -6,6 +6,10 @@ Parameters
 k : int, :math:`k > 0`
 n : int, :math:`n > 0`
 
+See also
+--------
+KPermutations
+
 Notes
 -----
 :class:`~openturns.KPermutationsDistribution` is the discrete uniform
