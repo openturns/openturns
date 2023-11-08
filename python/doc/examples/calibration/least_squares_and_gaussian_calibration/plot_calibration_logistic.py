@@ -82,7 +82,7 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 curve = ot.Curve(timeObservations, populationObservations)
-curve.setColor(graph.getDrawable(0).getColor());
+curve.setColor(graph.getDrawable(0).getColor())
 curve.setLegend("")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
