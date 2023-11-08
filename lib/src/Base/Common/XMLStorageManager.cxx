@@ -187,7 +187,7 @@ void XMLStorageManager::write()
 /*
  * This method saves the PersistentObject onto the medium
  */
-void XMLStorageManager::save(const PersistentObject & obj, const String & label, bool fromStudy)
+void XMLStorageManager::save(const PersistentObject & obj, const String & label, const Bool fromStudy)
 {
 #ifdef SAVELOAD_CHECKING
   try

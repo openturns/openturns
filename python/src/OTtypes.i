@@ -36,9 +36,9 @@
 %ignore *::clone() const;
 %ignore *::load(Advocate & adv);
 %ignore *::save(Advocate & adv) const;
-%ignore *::save(StorageManager & mgr, const String & label, bool fromStudy) const;
+%ignore *::save(StorageManager & mgr, const String & label, const Bool fromStudy) const;
 %ignore *::save(StorageManager & mgr, const String & label) const;
-%ignore *::save(StorageManager & mgr, bool fromStudy) const;
+%ignore *::save(StorageManager & mgr, const Bool fromStudy) const;
 %ignore *::save(StorageManager & mgr) const;
 
 %define OTAutodoc(PythonClass)

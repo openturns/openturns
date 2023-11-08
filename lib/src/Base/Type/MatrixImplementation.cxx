@@ -711,7 +711,7 @@ void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
 /* Check if the matrix values belong to (-1;1) */
 Bool MatrixImplementation::hasUnitRange() const
 {
-  bool unitRange = true;
+  Bool unitRange = true;
   for (UnsignedInteger i = 0; i < nbRows_; ++i)
     for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     {

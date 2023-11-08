@@ -85,7 +85,7 @@ public:
   };
 
   virtual
-  Pointer<Advocate> registerObject(const PersistentObject & obj, bool fromStudy = false);
+  Pointer<Advocate> registerObject(const PersistentObject & obj, const Bool fromStudy = false);
 
   virtual
   Advocate readObject();
@@ -109,7 +109,7 @@ public:
    * @param obj The object to be saved
    * @param fromStudy Tell if the object was explicitly put in the study or not
    */
-  virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
+  virtual void save(const PersistentObject & obj, const String & label, const Bool fromStudy = false);
 
   /**
    * This method reloads the whole study from the medium

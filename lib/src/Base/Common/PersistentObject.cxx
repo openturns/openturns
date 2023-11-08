@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(PersistentObject)
 
 /* Method save() stores the object through the StorageManager */
-void PersistentObject::save(StorageManager & mgr, const String & label, bool fromStudy) const
+void PersistentObject::save(StorageManager & mgr, const String & label, const Bool fromStudy) const
 {
   if (! mgr.isSavedObject(getId()))
   {
@@ -41,7 +41,7 @@ void PersistentObject::save(StorageManager & mgr, const String & label, bool fro
 }
 
 /* Method save() stores the object through the StorageManager */
-void PersistentObject::save(StorageManager & mgr, bool fromStudy) const
+void PersistentObject::save(StorageManager & mgr, const Bool fromStudy) const
 {
   if (! mgr.isSavedObject(getId()))
   {

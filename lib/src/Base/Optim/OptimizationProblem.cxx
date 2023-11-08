@@ -208,7 +208,7 @@ Indices OptimizationProblem::getVariablesType() const
   return getImplementation()->getVariablesType();
 }
 
-bool OptimizationProblem::isContinuous() const
+Bool OptimizationProblem::isContinuous() const
 {
   return getImplementation()->isContinuous();
 }

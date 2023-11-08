@@ -86,7 +86,7 @@ public:
   /**
    * This method saves the PersistentObject onto the medium
    */
-  void save(const PersistentObject & obj, const String & label, bool fromStudy = false) override;
+  void save(const PersistentObject & obj, const String & label, const Bool fromStudy = false) override;
 
   /**
    * This method reloads the PersistentObject from the medium

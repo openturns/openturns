@@ -515,7 +515,7 @@ Point SubsetSampling::getThresholdPerStep() const
 }
 
 
-void SubsetSampling::setKeepEventSample(bool keepEventSample)
+void SubsetSampling::setKeepEventSample(const Bool keepEventSample)
 {
   LOGWARN(OSS() << "SubsetSampling.setKeepEventSample is deprecated");
   setKeepSample(keepEventSample);

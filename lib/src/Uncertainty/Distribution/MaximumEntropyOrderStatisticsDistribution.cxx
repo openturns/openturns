@@ -913,7 +913,7 @@ Distribution MaximumEntropyOrderStatisticsDistribution::getCopula() const
 }
 
 /* Flag to tell if we use approximation for the exponential term */
-void MaximumEntropyOrderStatisticsDistribution::useApproximation(const bool flag)
+void MaximumEntropyOrderStatisticsDistribution::useApproximation(const Bool flag)
 {
   if (flag != useApproximation_)
   {

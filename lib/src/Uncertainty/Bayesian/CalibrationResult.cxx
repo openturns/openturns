@@ -251,7 +251,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   const Point initialPoint(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    const bool upperRightGraph = (j == dimension - 1);
+    const Bool upperRightGraph = (j == dimension - 1);
     Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
     if (j == 0)
     {
@@ -371,7 +371,7 @@ GridLayout CalibrationResult::drawResiduals() const
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    const bool upperRightGraph = (j == outputDimension - 1);
+    const Bool upperRightGraph = (j == outputDimension - 1);
     Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
 
     // Get the distributions
@@ -462,7 +462,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
-      const bool upperRightGraph = (i == 0 && j == inputDimension - 1);
+      const Bool upperRightGraph = (i == 0 && j == inputDimension - 1);
       // Only the last row
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
@@ -518,7 +518,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
-    const bool upperRightGraph = (j == outputDimension - 1);
+    const Bool upperRightGraph = (j == outputDimension - 1);
     // observation diagonal
     Sample diagonalPoints(2, 2);
     diagonalPoints(0, 0) = outputObservations_j.getMin()[0];

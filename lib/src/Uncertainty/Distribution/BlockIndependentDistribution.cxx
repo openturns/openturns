@@ -107,7 +107,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
   Description description(0);
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
-  bool parallel = true;
+  Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger distributionDimension = coll[i].getDimension();

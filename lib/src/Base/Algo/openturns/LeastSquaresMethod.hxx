@@ -109,7 +109,7 @@ public:
               const Bool row = false);
 
   /** Build the Gram matrix */
-  Matrix computeWeightedDesign(bool whole = false) const;
+  Matrix computeWeightedDesign(const Bool whole = false) const;
 
   /** Build a method instance from its name */
   static LeastSquaresMethod Build(const String name,
