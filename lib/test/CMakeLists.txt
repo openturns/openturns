@@ -25,55 +25,37 @@ endif ()
 
 set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${PROJECT_BINARY_DIR}/lib/etc")
 
-# This macro compiles on the fly and run the corresponding pre-installation test
-# It can have two optional arguments PRE and POST followed by some shell command to be run
-# before or after the test if needed
-# PRE and POST options cn be repeated many times: the arguments will be run one after the other
-# in the order of appearence. If one fails, the whole command fails.
+# This macro compiles and runs a C++ test
 set (CHECK_TO_BE_RUN)
 macro (ot_check_test TESTNAME)
-  set (TESTNAME_TGT t_${TESTNAME})
-  set (TESTNAME_SRC ${TESTNAME_TGT}.cxx)
-  set (TESTNAME_SRCS ${TESTNAME_SRC})
-  add_executable (${TESTNAME_TGT} EXCLUDE_FROM_ALL ${TESTNAME_SRCS})
-  add_dependencies(tests ${TESTNAME_TGT}) 
-  target_link_libraries (${TESTNAME_TGT} PRIVATE OT)
+  set (TEST_TARGET t_${TESTNAME})
+  add_executable (${TEST_TARGET} EXCLUDE_FROM_ALL ${TEST_TARGET}.cxx)
+  add_dependencies(tests ${TEST_TARGET})
+  target_link_libraries (${TEST_TARGET} PRIVATE OT)
   if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
-    target_link_libraries (${TESTNAME_TGT} PRIVATE CRT_fp8)
+    target_link_libraries (${TEST_TARGET} PRIVATE CRT_fp8)
   endif ()
-  set_target_properties (${TESTNAME_TGT} PROPERTIES
+  set_target_properties (${TEST_TARGET} PROPERTIES
                          UNITY_BUILD OFF
-			 INSTALL_RPATH "${PROJECT_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
-  set (TESTNAME_LOC ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}${CMAKE_EXECUTABLE_SUFFIX})
-
-  set (_CMD)
-  set (_PARAMS)
+                         INSTALL_RPATH "${PROJECT_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
   set (_IGNOREOUT OFF)
   foreach (_ARG ${ARGN})
-    string (TOUPPER ${_ARG} ARG)
-    if (${ARG} MATCHES PARAMS)
-      set (_CMD PARAMS)
-    elseif (${ARG} MATCHES IGNOREOUT)
+    if (${_ARG} MATCHES IGNOREOUT)
       set (_IGNOREOUT ON)
-    else ()
-      if (${_CMD} MATCHES PARAMS)
-        set (_PARAMS "${_PARAMS} ${_ARG}")
-      endif ()
-      set (_CMD)
     endif ()
   endforeach ()
 
   if (_IGNOREOUT)
-    set (COMMAND "(${CMAKE_CROSSCOMPILING_EMULATOR} ${TESTNAME_LOC} ${_PARAMS} > /dev/null)")
-  else (_IGNOREOUT)
-    set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
-    set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
-    set (COMMAND "(${CMAKE_CROSSCOMPILING_EMULATOR} ${TESTNAME_LOC} ${_PARAMS} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u --strip-trailing-cr ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
+    add_test (NAME cppcheck_${TESTNAME} COMMAND ${TEST_TARGET})
+  else ()
+    set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_TARGET}.expout)
+    if (NOT EXISTS ${OUTFILE_LOC})
+      message (SEND_ERROR "Missing file ${OUTFILE_LOC}")
+    endif ()
+    add_test (NAME cppcheck_${TESTNAME} COMMAND "sh" "-c" "(${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TEST_TARGET}> > ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARGET}.out) && diff -u --strip-trailing-cr ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARGET}.out")
   endif ()
-
-  add_test (cppcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
   set_tests_properties (cppcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${CHECK_ENVIRONMENT}")
-  list (APPEND CHECK_TO_BE_RUN ${TESTNAME_TGT})
+  list (APPEND CHECK_TO_BE_RUN ${TEST_TARGET})
 endmacro ()
 
 
@@ -738,9 +720,7 @@ ot_check_test (LinearLeastSquares_std)
 # ot_check_test (Waarts_system_series)
 
 
-add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^cppcheck_"
+add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} --build-config ${CMAKE_BUILD_TYPE} --tests-regex "^cppcheck_"
                     DEPENDS ${CHECK_TO_BE_RUN}
                     COMMENT "Run C++ pre-installation tests")
 add_dependencies (check cppcheck)
-
-

@@ -4,47 +4,31 @@ set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCO
                                  "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}" "MPLBACKEND=agg"
    )
 
-# This macro compiles on the fly and run the corresponding post-installation test
-# It can have two optional arguments PRE and POST followed by some shell command to be run
-# before or after the test if needed
-# PRE and POST options cn be repeated many times: the arguments will be run one after the other
-# in the order of appearance. If one fails, the whole command fails.
+# This macro runs a Python test
 macro (ot_pyinstallcheck_test TESTNAME)
-  set (TESTNAME_TGT t_${TESTNAME})
-  set (TESTNAME_SRC ${TESTNAME_TGT}.py)
-  set (TESTNAME_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_SRC})
-  set (_CMD)
-  set (_PARAMS)
+  set (TEST_TARGET t_${TESTNAME})
+  set (TESTNAME_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_TARGET}.py)
+
   set (_IGNOREOUT OFF)
   foreach (_ARG ${ARGN})
-    string (TOUPPER ${_ARG} ARG)
-    if (${ARG} MATCHES PARAMS)
-      set (_CMD PARAMS)
-    elseif (${ARG} MATCHES IGNOREOUT)
+    if (${_ARG} MATCHES IGNOREOUT)
       set (_IGNOREOUT ON)
-    else ()
-      if (${_CMD} MATCHES PARAMS)
-        set (_PARAMS "${_PARAMS} ${_ARG}")
-      endif ()
-      set (_CMD)
     endif ()
   endforeach ()
 
   if (_IGNOREOUT)
-    set (COMMAND "(${Python_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} > /dev/null)")
-  else (_IGNOREOUT)
-    set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
-    get_source_file_property (OUTFILE_LOC ${TESTNAME_OUT} LOCATION)
-    set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
-    set (COMMAND "(${Python_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u --strip-trailing-cr ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
+    add_test (NAME pyinstallcheck_${TESTNAME} COMMAND ${Python_EXECUTABLE} ${TESTNAME_LOC})
+  else ()
+    set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_TARGET}.expout)
+    if (NOT EXISTS ${OUTFILE_LOC})
+      message (SEND_ERROR "Missing file ${OUTFILE_LOC}")
+    endif ()
+    add_test (NAME pyinstallcheck_${TESTNAME} COMMAND "sh" "-c" "(${Python_EXECUTABLE} ${TESTNAME_LOC} > ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARGET}.out) && diff -u --strip-trailing-cr ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARGET}.out")
   endif ()
 
-  add_test (pyinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
   set_tests_properties (pyinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
 endmacro ()
 
-
-## Python post-installation tests
 
 # Use cases
 ot_pyinstallcheck_test (ackley_function IGNOREOUT)
@@ -914,6 +898,6 @@ if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
   endif ()
 endif ()
 
-add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
+add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} --build-config ${CMAKE_BUILD_TYPE} --tests-regex "^pyinstallcheck_"
                     COMMENT "Run Python post-installation tests")
 add_dependencies (installcheck pyinstallcheck)
