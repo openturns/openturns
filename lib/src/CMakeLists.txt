@@ -76,7 +76,7 @@ foreach (built_source ${BUILT_SOURCEFILES})
   set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)
 endforeach (built_source)
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
-add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
+add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES} ${HEADERFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 if (BUILD_SHARED_LIBS)
