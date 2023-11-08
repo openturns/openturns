@@ -129,13 +129,13 @@ int main(int, char *[])
     {
       StandardEvent myStandardEvent3(output3, Less(), 1.0);
     }
-    catch(InvalidArgumentException &ex)
+    catch (const InvalidArgumentException &)
     {
       fullprint << "(This error is on purpose) Error trying to build myStandardEvent3" << std::endl;
     }
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

@@ -144,7 +144,7 @@ int main(int, char *[])
       aSample = Sample::ImportFromCSVFile("nosample.csv");
       throw TestFailed( "ERROR: test should have failed. Found CSV file 'nosample.csv' though it should not have been there" );
     }
-    catch (FileNotFoundException & ex)
+    catch (const FileNotFoundException &)
     {
       // Nothing to do
     }

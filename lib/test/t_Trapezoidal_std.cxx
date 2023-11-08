@@ -151,7 +151,7 @@ int main(int, char *[])
                       Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
-      catch (NotDefinedException & ex)
+      catch (const NotDefinedException &)
       {
       }
       Point quantile = distribution.computeQuantile( 0.95 );
@@ -197,7 +197,7 @@ int main(int, char *[])
       fullprint << "roughness=" << roughness << std::endl;
     }
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
