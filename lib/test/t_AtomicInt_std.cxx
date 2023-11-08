@@ -74,7 +74,7 @@ int main(int, char *[])
       {
         threads[i] = std::thread(threadFunc, (void*) &atom);
       }
-      catch (const std::exception & exc)
+      catch (const std::exception &)
       {
         throw TestFailed("OT::AtomicInt Threads creation failed!");
       }
@@ -86,7 +86,7 @@ int main(int, char *[])
       {
         threads[i].join();
       }
-      catch (const std::exception & exc)
+      catch (const std::exception &)
       {
         throw TestFailed("OT::AtomicInt Threads join failed!");
       }

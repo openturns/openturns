@@ -62,13 +62,13 @@ int main(int, char *[])
 
 
     }
-    catch (InvalidArgumentException & ex)
+    catch (const InvalidArgumentException &)
     {
       // Nothing to do
     }
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

@@ -241,7 +241,7 @@ int main(int, char *[])
       throw TestFailed("Exception has NOT been thrown or caught !");
 
     }
-    catch (OutOfBoundException & ex)
+    catch (const OutOfBoundException &)
     {
       // Nothing to do
     }
@@ -255,7 +255,7 @@ int main(int, char *[])
     fullprint << "sample5.stack(sample5)=" << sample5 << std::endl;
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

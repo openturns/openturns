@@ -127,7 +127,7 @@ int main(int, char *[])
                       Triangular(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
-      catch(NotDefinedException & ex)
+      catch(const NotDefinedException &)
       {
       }
       Point quantile = distribution.computeQuantile( 0.25 );
@@ -183,7 +183,7 @@ int main(int, char *[])
                       Triangular(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
-      catch(NotDefinedException & ex)
+      catch(const NotDefinedException &)
       {
       }
       quantile = distribution.computeQuantile( 0.95 );
@@ -213,7 +213,7 @@ int main(int, char *[])
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     }
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
