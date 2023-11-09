@@ -1091,7 +1091,7 @@ String DrawableImplementation::__repr__() const
       << " legend=" << legend_
       << " data=" << data_
       << " color=" << color_
-	  << " isColorExplicitlySet=" << isColorExplicitlySet_
+      << " isColorExplicitlySet=" << isColorExplicitlySet_
       << " fillStyle=" << fillStyle_
       << " lineStyle=" << lineStyle_
       << " pointStyle=" << pointStyle_
