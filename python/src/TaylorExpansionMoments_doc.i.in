@@ -1,5 +1,5 @@
 %feature("docstring") OT::TaylorExpansionMoments
-"First and second order Taylor expansion formulas.
+"Moments approximations from Taylor expansions.
 
 
 Parameters
@@ -10,13 +10,14 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Notes
 -----
-Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently regular,
-the Taylor expansion method is used to approximate the mean and variance of the random variable :math:`\uY = h(\uX)`.
+Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently smooth,
+some Taylor expansions of the function :math:`h` are used to approximate the mean and variance
+of the random vector :math:`\uY = h(\uX)`.
 
 Refer to :ref:`taylor_expansion_moments` to get details on the expressions of the approximations:
 
-- The one order  expansion of :math:`h` yields to an approximation of the mean and the variance of :math:`\uY`.
-- The second order  expansion of :math:`h` yields to an approximation of the mean :math:`\uY`.
+- The first-order  expansion of :math:`h` yields to an approximation of the mean and the variance of :math:`\uY`;
+- The second-order  expansion of :math:`h` yields to an approximation of the mean :math:`\uY`.
 
 
 Examples
@@ -41,23 +42,23 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TaylorExpansionMoments::getCovariance
-"Get the approximation at the first order of the covariance matrix.
+"Get the approximation of the covariance matrix.
 
 Returns
 -------
 covariance : :class:`~openturns.CovarianceMatrix`
-    Approximation at the first order of the covariance matrix of the random
-    vector."
+    Approximation of the covariance matrix from 
+    the first-order Taylor expansion."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TaylorExpansionMoments::getGradientAtMean
-"Get the gradient of the function.
+"Get the gradient of the function at the mean point.
 
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    Gradient of the Function which defines the random vector at
+    Gradient of :math:`h` at
     the mean point of the input random vector."
 
 // ---------------------------------------------------------------------
@@ -89,39 +90,39 @@ factors : :class:`~openturns.Point`
 Returns
 -------
 limitStateVariable : :class:`~openturns.RandomVector`
-    Limit state variable."
+    The :math:`Y` output random vector."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TaylorExpansionMoments::getMeanFirstOrder
-"Get the approximation at the first order of the mean.
+"Get the first-order approximation of the mean.
 
 Returns
 -------
 mean : :class:`~openturns.Point`
-    Approximation at the first order of the mean of the random vector."
+    Approximation of :math:`\Expect{Y}` 
+    from the first-order Taylor expansion."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TaylorExpansionMoments::getMeanSecondOrder
-"Get the approximation at the second order of the mean.
+"Get the second-order approximation of the mean.
 
 Returns
 -------
 mean : :class:`~openturns.Point`
-    Approximation at the second order of the mean of the random vector
-    (it requires that the hessian of the Function has been defined)."
+    Approximation of :math:`\Expect{Y}` 
+    from the second-order Taylor expansion."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TaylorExpansionMoments::getValueAtMean
-"Get the value of the function.
+"Get the value of the function at the mean point.
 
 Returns
 -------
 value : :class:`~openturns.Point`
-    Value of the Function which defines the random vector at
-    the mean point of the input random vector."
+    Value :math:`h(\Expect{\uX})`."
 
 // ---------------------------------------------------------------------
 
@@ -131,5 +132,4 @@ value : :class:`~openturns.Point`
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Graph containing the pie corresponding to the importance factors of the
-    probabilistic variables."
+    Pie graph of the importance factors."

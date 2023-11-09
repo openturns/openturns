@@ -1,40 +1,16 @@
 %feature("docstring") OT::QuadraticTaylor
-"Second order polynomial response surface by Taylor expansion.
-
-Available constructors:
-    QuadraticTaylor(*center, function*)
+"Second-order Taylor expansion.
 
 Parameters
 ----------
 center : sequence of float
     Point :math:`\ux_0`.
 function : :class:`~openturns.Function`
-    Function :math:`h` to be approximated around :math:`\ux_0`.
+    Function :math:`h` to be approximated at the point :math:`\ux_0`.
 
 Notes
 -----
-We denote by :math:`h: \Rset^d \rightarrow \Rset^q` the function to be approximated and :math:`\uy=h(\ux)`.
-
-The quadratic Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function :math:`\hat{h}: \Rset^d \rightarrow \Rset^q` defined  by:
-
-.. math::
-
-    \hat{h}(\ux) = h(\ux_0) + \mat{L} (\ux-\ux_0) +  \frac{1}{2}  \left\langle \left\langle\mat{Q}, \ux-\ux_0 \right \rangle, \ux-\ux_0 \right \rangle
-
-
-where :math:`\mat{L} = (L_{ij})_{1 \leq i \leq q, 1\leq j \leq d}` is the Jacobian matrix evaluated at :math:`\ux_0`:
-
-.. math::
-
-    L_{ij} = \left(\frac{\partial h_i}{\partial x_i}\right)(\ux_0)
-
-
-and :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq d, 1\leq k \leq q}` is the Hessian tensor of dimension 3 evaluated at :math:`\ux_0`:
-
-.. math::
-
-    Q_{ijk} = \left(\frac{\partial^2 h_k}{\partial x_i\partial x_j}\right)(\ux_0)
-
+The response surface is the second-order Taylor expansion of the funtion :math:`h` at the point :math:`\ux_0`. Refer to :ref:`taylor_expansion` to get details.
 
 See also
 --------
@@ -105,14 +81,14 @@ function : :class:`~openturns.Function`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticTaylor::getMetaModel
-"Get an approximation of the function.
+"Get the polynomial approximation of the function.
 
 Returns
 -------
 approximation : :class:`~openturns.Function`
-    The quadratic Taylor expansin of :math:`h` at :math:`\ux_0`."
+    The second-order Taylor expansion of :math:`h` at :math:`\ux_0`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticTaylor::run
-"Perform the Quadratic Taylor expansion around :math:`\ux_0`."
+"Perform the second-order Taylor expansion around :math:`\ux_0`."
