@@ -1106,7 +1106,7 @@ String DrawableImplementation::__str__(const String & offset) const
       << "(name=" << getName()
       << ", legend=" << legend_
       << ", color=" << color_
-	  << ", isColorExplicitlySet=" << isColorExplicitlySet_
+      << ", isColorExplicitlySet=" << isColorExplicitlySet_
       << ", fill=" << fillStyle_
       << ", line=" << lineStyle_
       << ", point=" << pointStyle_
