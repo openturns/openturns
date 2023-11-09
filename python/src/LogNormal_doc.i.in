@@ -19,9 +19,9 @@ gamma : float, optional
 
 Notes
 -----
-The :math:`\mu_\ell` (resp. :math:`\sigma_\ell`) parameter is 
-the mean (resp. the standard deviation) of the associated  
-gaussian random variable. 
+If :math:`X` follows a LogNormal distribution parametered by :math:`(\mu_\ell, \sigma_\ell)`, then
+:math:`\log X` follows a normal distribution whose mean is :math:`\mu_\ell` and whose variance is
+:math:`\sigma_\ell^2`.
 
 Its probability density function is defined as:
 
