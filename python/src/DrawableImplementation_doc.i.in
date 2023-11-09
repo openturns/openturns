@@ -272,7 +272,7 @@ OT_Drawable_setColor_doc
 
 Returns
 -------
-is color explicitly set : bool
+isColorExplicitlySet : bool
     *True* if the color has been explicitly set by a call to :meth:`setColor` or *False* otherwise.
 
 See Also

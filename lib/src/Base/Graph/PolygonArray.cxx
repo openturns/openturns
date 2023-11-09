@@ -35,7 +35,7 @@ PolygonArray::PolygonArray(const String & legend)
   , verticesNumber_(2)
   , palette_(0)
 {
-  //Force unused default color
+  // Force unused default color
   color_ = "blue";
   isColorExplicitlySet_ = true;
 }
@@ -47,7 +47,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   , verticesNumber_(2)
   , palette_(0)
 {
-  //Force unused default color
+  // Force unused default color
   color_ = "blue";
   isColorExplicitlySet_ = true;
   // Convert the collection of polygons into a valid (coordinates, verticesNumber) pair

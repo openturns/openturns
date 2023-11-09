@@ -234,9 +234,10 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
   oss << getClassName() << " convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
   convergenceGraph.add(estimateCurve);
-  const Curve lowerBoundCurve(dataLowerBound, "green", "solid", 1, "bounds");
-  const Curve upperBoundCurve(dataUpperBound, "green", "solid", 1, "");
+  const Curve lowerBoundCurve(dataLowerBound, "bounds");
+  Curve upperBoundCurve(dataUpperBound);
   convergenceGraph.add(lowerBoundCurve);
+  upperBoundCurve.setColor(convergenceGraph.getDrawable(1).getColor());
   convergenceGraph.add(upperBoundCurve);
   return convergenceGraph;
 }
