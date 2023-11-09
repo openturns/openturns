@@ -23,8 +23,7 @@ The :math:`\mu_\ell` (resp. :math:`\sigma_\ell`) parameter is
 the mean (resp. the standard deviation) of the associated  
 gaussian random variable. 
 
-The probability density function of the log-normal 
-distribution is defined as:
+Its probability density function is defined as:
 
 .. math::
 

@@ -16,7 +16,7 @@ p : float, :math:`0 < p < 1`
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

@@ -1,9 +1,6 @@
 %feature("docstring") OT::AnalyticalResult
 "Analytical result.
 
-Available constructors:
-    AnalyticalResult(*designPoint, limitStateVariable, isInFailureSpace*)
-
 Notes
 -----
 Structure created by the method run() of the :class:`~openturns.Analytical`
@@ -215,7 +212,7 @@ and :math:`\beta` the reliability index."
 
 Parameters
 ----------
-meanPoint : sequence of float,
+meanPoint : sequence of float
     The mean point of the standard space distribution restricted to the event
     domain."
 

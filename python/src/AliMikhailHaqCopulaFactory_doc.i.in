@@ -39,6 +39,6 @@ param : sequence of float of size 1
 Returns
 -------
 copula : :class:`~openturns.AliMikhailHaqCopula`
-    The estimated copula as a AliMikhailHaq copula.
+    The estimated copula as an AliMikhailHaq copula.
     
     In the first usage, the default AliMikhailHaq copula is built."

@@ -2,8 +2,6 @@
 "Student distribution.
 
 Available constructors:
-    Student()
-
     Student(*nu, mu, sigma*)
 
     Student(*nu, mu, sigma, R*)
@@ -16,24 +14,24 @@ d : int, :math:`d \geq 1`
     Default value is 1.
 
 nu : float, :math:`\nu > 0`
-    Generalized number degrees of freedom.
+    Generalized number of degrees of freedom.
 
     Default value is 3.0.
 
 mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     Location parameter.
 
-    Default is 0.0.
+    Default value  is 0.0.
 
 sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is 1.0.
+    Default value  is 1.0.
 
 R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
     Shape matrix.
 
-    Default is the identity matrix.
+    Default value is the identity matrix.
 
 Notes
 -----
@@ -112,7 +110,7 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Student::getNu
-"Accessor to the generalized number degrees of freedom.
+"Accessor to the generalized number of degrees of freedom.
 
 Returns
 -------
@@ -122,12 +120,12 @@ nu : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Student::setNu
-"Accessor to the generalized number degrees of freedom.
+"Accessor to the generalized number of degrees of freedom.
 
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
-    Generalized number degrees of freedom."
+    The :math:`\nu` parameter."
 
 // ---------------------------------------------------------------------
 

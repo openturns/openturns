@@ -24,7 +24,7 @@ GeneralizedExtremeValueFactory"
 The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the fitted model density.
 
 
-If :math:`(z_{(1)} \leq z_{(2)} \leq \dots \leq z_{(n)})` denotes the ordered block maximum data and :math:`\hat{G}` the cumulated density function of the GEV distribution fitted on the data, the graphs are defined as follows.
+If :math:`(z_{(1)} \leq z_{(2)} \leq \dots \leq z_{(n)})` denotes the ordered block maximum data and :math:`\hat{G}` the cumulative distribution function of the GEV distribution fitted on the data, the graphs are defined as follows.
 
 The *probability-probability* plot consists of the points:
 

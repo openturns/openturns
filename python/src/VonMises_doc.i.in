@@ -1,5 +1,5 @@
 %feature("docstring") OT::VonMises
-"von Mises distribution.
+"Von Mises distribution.
 
 Parameters
 ----------

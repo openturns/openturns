@@ -19,6 +19,7 @@ sigma : float, :math:`\sigma > 0`
 Notes
 -----
 This distribution is the distribution of the sum of a uniform random variable and an independent normal random variable.
+
 Its probability density function is defined as:
 
 .. math::

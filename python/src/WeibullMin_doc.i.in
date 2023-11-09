@@ -132,5 +132,5 @@ beta : float, :math:`\beta > 0`
 
 Parameters
 ----------
-gamma : float,
+gamma : float
     Location parameter :math:`\gamma`."

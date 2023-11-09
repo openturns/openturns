@@ -47,5 +47,5 @@ The control probability :math:`p` is deduced from the corresponding analytical r
 
     p = E(-\beta_{HL})
 
-where the :math:`\beta_{HL}` is the Hasofer reliability index and :math:`E`
+where :math:`\beta_{HL}` denotes the Hasofer reliability index and :math:`E`
 the univariate standard CDF of the elliptical distribution in the standard space."

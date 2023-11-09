@@ -24,7 +24,7 @@ bounds : :class:`~openturns.Interval`, optional
 
 Notes
 -----
-We consider a parametric model which cumulative density function :math:`F_{\vect{\theta}}`
+We consider a parametric model whose cumulative distribution function :math:`F_{\vect{\theta}}`
 is parametrized by :math:`\vect{\theta} \in \Rset^K`.
 
 Given a set of probabilities :math:`p_1, ..., p_K \in [0, 1]`
@@ -69,7 +69,7 @@ Here, both quantiles are estimated from a given sample.
 >>> factory = ot.QuantileMatchingFactory(ot.Normal(), probabilities)
 >>> inf_distribution = factory.build(sample)
 
-We can also help the optimization problem by specifying bounds to the parameters:
+We can also make the optimization problem easier by specifying bounds to the parameters:
 
 >>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
 >>> factory = ot.QuantileMatchingFactory(ot.Normal())
@@ -148,7 +148,7 @@ Examples
 Returns
 -------
 values : :class:`~openturns.Point`
-    The values of fixed parameters."
+    The values of the fixed parameters."
 
 // ---------------------------------------------------------------------
 
@@ -158,7 +158,7 @@ values : :class:`~openturns.Point`
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    The indices of fixed parameters."
+    The indices of the fixed parameters."
 
 // ---------------------------------------------------------------------
 

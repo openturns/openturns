@@ -14,7 +14,7 @@ gamma : float
 
 Notes
 -----
-Its cumulative and probability density functions are defined as:
+Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
     :nowrap:

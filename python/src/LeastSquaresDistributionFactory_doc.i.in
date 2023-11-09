@@ -11,10 +11,10 @@ Notes
 The method fits a scalar distribution to data of dimension 1, using a least-squares minimization method.
 
 Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`F_{\vect{\theta}}`
-the  cumulative density function we want to fit to the sample,
+the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^p`  its parameter vector.
 
-We denote :math:`\hat{F}` the empirical cumulated density function built from the sample.
+let :math:`\hat{F}` denote the empirical cumulative distribution function built from the sample.
 
 
 The estimator :math:`\hat{\theta}` minimizes the mean square error between

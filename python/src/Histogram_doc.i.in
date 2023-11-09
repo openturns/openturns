@@ -2,8 +2,6 @@
 "Histogram distribution.
 
 Available constructors:
-    Histogram()
-    
     Histogram(*first, width, height*)
 
     Histogram(*ticks, frequencies*)
@@ -26,7 +24,7 @@ height : positive sequence of float
 ticks : increasing sequence of float
     :math:`t_0` is the lower bound of the first class and :math:`t_i` is the upper bound of the class :math:`i` for :math:`1 \leq i \leq n`
     
-    Default value is :math:`(00.0, 1.0)`.
+    Default value is (0.0, 1.0).
 frequencies : positive sequence of float
     :math:`f_i` is the probability of the class :math:`i` for :math:`1 \leq i \leq n`.
     The :math:`f_i` are automatically normalized such that :math:`\sum_{i=1}^n f_i=1`.
@@ -35,7 +33,7 @@ frequencies : positive sequence of float
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

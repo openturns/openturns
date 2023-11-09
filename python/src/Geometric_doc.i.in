@@ -4,13 +4,13 @@
 Parameters
 ----------
 p : float, :math:`0 < p \leq 1`
-    Success probability of the Bernoulli trial.
+    Success probability of the associated Bernoulli trial.
 
     Default value is 0.5.
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

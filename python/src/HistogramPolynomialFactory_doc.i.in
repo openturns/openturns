@@ -1,10 +1,6 @@
 %feature("docstring") OT::HistogramPolynomialFactory
 "Histogram specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Histogram` distribution.
-
-Available constructor:
-    HistogramPolynomialFactory(*first, width, height*)
 
 Parameters
 ----------
@@ -24,7 +20,9 @@ three consecutive polynomials as follows:
 
     P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
 
-The recurrence coefficients for the HistogramPolynomial polynomials are computed from the recurrence of the associated monic polynomials (see :class:`~openturns.AdaptiveStieltjesAlgorithm`) but with an exact evaluation of the dot-products.
+The recurrence coefficients for the HistogramPolynomial polynomials are computed from the recurrence of 
+the associated monic polynomials (see :class:`~openturns.AdaptiveStieltjesAlgorithm`) but with an exact
+evaluation of the dot-products.
 
 See also
 --------
@@ -52,12 +50,12 @@ first : float
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::HistogramPolynomialFactory::getWidth
-"Accessor to the sequence of width of the classes.
+"Accessor to the width sequence of the classes.
 
 Returns
 -------
 width : positive sequence of float
-    Sequence of width of the classes."
+    Width sequence of the classes."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::HistogramPolynomialFactory::getHeight

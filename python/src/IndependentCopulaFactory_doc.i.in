@@ -21,9 +21,9 @@ DistributionFactory, IndependentCopula"
 
 Parameters
 ----------
-sample : 2-d sequence of float, of dimension :math:`d`,
+sample : 2-d sequence of float, of dimension :math:`d`
     The sample of size :math:`n>0` from which the copula is estimated.
-param : sequence of float,
+param : sequence of float
     The dimension of the IndependentCopula.
 
 Returns

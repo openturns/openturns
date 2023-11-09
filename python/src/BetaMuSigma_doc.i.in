@@ -18,7 +18,7 @@ a : float
 b : float, :math:`b > a`
     Upper bound.
 
-    Default value is 1.0
+    Default value is 1.0.
 
 Notes
 -----

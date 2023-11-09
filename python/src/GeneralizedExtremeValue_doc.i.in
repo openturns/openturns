@@ -2,7 +2,7 @@
 "Generalized ExtremeValue distribution.
 
 Available constructors:
-    GeneralizedExtremeValue()
+    GeneralizedExtremeValue(*mu, sigma, xi*)
 
     GeneralizedExtremeValue(*distribution*)
 
@@ -25,7 +25,7 @@ distribution : :class:`~openturns.WeibullMax`, :class:`~openturns.Frechet` or :c
 
 Notes
 -----
-Its cumulative and probability distribution functions are defined as:
+Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
     :nowrap:

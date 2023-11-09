@@ -1,8 +1,6 @@
 %feature("docstring") OT::InverseChiSquare
 "InverseChiSquare distribution.
 
-Helper class for defining the Inverse ChiSquare distribution which is the inverse of a :math:`\chi^2` distribution.
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`

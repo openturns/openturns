@@ -12,16 +12,16 @@ Parameters
 points : 2-d sequence of float
     List of :math:`n` points of dimension :math:`d` :math:`\vect{x}_i`, :math:`i = 1, \ldots, n`.
     
-    Default value is :math:`[1]`.
+    Default value is [1].
 weights : sequence of float
     List of :math:`n` weights :math:`p_i`, :math:`i = 1, \ldots, n`.
     If :math:`\sum_{i=1}^n p_i \neq 1`, the weights are normalized.
     
-    Default value is :math:`[1]`.
+    Default value is [1].
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

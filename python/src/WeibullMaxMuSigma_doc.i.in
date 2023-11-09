@@ -1,9 +1,6 @@
 %feature("docstring") OT::WeibullMaxMuSigma
 "WeibullMax distribution parameters.
 
-Available constructors:
-    WeibullMaxMuSigma(*mu=1, sigma=1, gamma=0*)
-
 Parameters
 ----------
 mu : float

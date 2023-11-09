@@ -11,7 +11,7 @@ x : float, sequence of float, :math:`\vect{x} \in \Rset^n`
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 
@@ -29,7 +29,7 @@ Its first moments are:
         \Var{X_i} & = & 0, \quad i = 1, \ldots, n
     \end{eqnarray*}
 
-A possible usage is the modelling of deterministic parameters.
+This distribution can be used to model deterministic parameters.
 
 Examples
 --------

@@ -6,7 +6,7 @@ Parameters
 sample : :class:`~openturns.Sample`
     The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted.
     
-    Default value is :math:`[[0.0], [0.0]]`.
+    Default value is [[0.0], [0.0]].
 binNumber : int, :math:`0<binNumber\leq N`
     The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample.
     

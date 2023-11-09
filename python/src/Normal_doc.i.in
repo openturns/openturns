@@ -2,8 +2,6 @@
 "Normal distribution.
 
 Available constructors:
-    Normal()
-
     Normal(*mu, sigma*)
 
     Normal(*mu, sigma, R*)
@@ -20,12 +18,12 @@ d : int, :math:`d \geq 1`
 mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     Mean.
 
-    Default value is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+    Default value is 0.0.
 
 sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default value is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
+    Default value is 1.0.
 
 R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
     Correlation matrix.

@@ -1,7 +1,6 @@
 %feature("docstring") OT::InverseGamma
 "InverseGamma distribution.
 
-Helper class for defining the Inverse Gamma distribution which is the inverse of a :math:`\Gamma` distribution.
 
 Parameters
 ----------

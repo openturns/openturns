@@ -9,7 +9,7 @@ Parameters
 mu : float :math:`\mu`
      Mean of the conditioned Normal distribution of :math:`X|Y`.
      
-     Default value is 0.00.
+     Default value is 0.0.
 
 kappa : float  :math:`\kappa >0`
      Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`.

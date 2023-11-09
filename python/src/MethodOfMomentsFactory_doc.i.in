@@ -12,16 +12,15 @@ Notes
 -----
 This method fits a scalar distribution to data of dimension 1, using the method of moments.
 
-Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`F_{\vect{\theta}}`
-the  cumulative density function we want to fit to the sample,
+Let :math:`(\vect{x}_1, \dots, \vect{x}_n)` denote the sample, :math:`F_{\vect{\theta}}`
+the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^p`  its parameter vector.
 
-We denote :math:`K` the number of parameters of the distribution and we assume that 
+Let :math:`K` denote the number of parameters of the distribution and we assume that 
 the :math:`K` first moments of the distribution exist.
 
-We denote :math:`(\mu_1, \dots, \mu_K)` and
-:math:`(m_1, \dots, m_K)` the :math:`K` first central moments of the sample and the
-parametric model.
+Let :math:`(\mu_1, \dots, \mu_K)` denote the :math:`K` first central moments of the sample and
+and :math:`(m_1, \dots, m_K)` those of the parametric model.
 
 The estimator :math:`\hat{\theta}` minimizes the sum of slacks between
 :math:`(\mu_1, \dots, \mu_K)` and :math:`(m_1, \dots, m_K)`. It is defined by:

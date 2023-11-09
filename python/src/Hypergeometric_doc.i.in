@@ -18,7 +18,7 @@ m : int, :math:`0 \leq m \leq n`
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

@@ -219,12 +219,12 @@ Refer to :ref:`copula`.
 
     AliMikhailHaqCopula
     ClaytonCopula
+    EmpiricalBernsteinCopula
     FarlieGumbelMorgensternCopula
     FrankCopula
     GumbelCopula
     IndependentCopula
     PlackettCopula
-    EmpiricalBernsteinCopula
     ExtremeValueCopula
     JoeCopula
     GalambosCopula
