@@ -39,7 +39,16 @@ myGraph.add(myCurve1)
 # Create the second curve
 myCurve2 = ot.Curve(data2, "red", "solid", 2, "polynomial function")
 
-# Add it to the graph and draw everything
+# Add it to the graph
 myGraph.add(myCurve2)
+
+# fill below the start of the second curve
+polygon = ot.Curve.FillBetween([[data2[i][0]] for i in range(10)],
+                               [[data2[0][1]] for i in range(10)],
+                               [[data2[i][1]] for i in range(10)])
+polygon.setColor("green")
+myGraph.add(polygon)
+
+# Draw everything
 for i in range(4):
     myGraph.setLogScale(i)

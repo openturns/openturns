@@ -67,12 +67,27 @@ int main(int, char *[])
     // Create the second cloud
     Curve myCurve2(data2, "red", "solid", 2, "polynomial function");
 
-    // Add it to the graph and draw everything
+    // Add it to the graph
     myGraph.add(myCurve2);
+
+    // fill below the start of the second curve
+    size = 10;
+    Sample y1(size, 1), y2(size, 1), x(size, 1);
+    for (UnsignedInteger i = 0; i < size; i++)
+    {
+      x[i][0] = data2[i][0];
+      y1[i][0] = data2[0][1];
+      y2[i][0] = data2[i][1];
+    }
+    Polygon polygon = Curve::FillBetween(x, y1, y2);
+    myGraph.add(polygon);
+
+    // Draw everything
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       myGraph.setLogScale(static_cast<GraphImplementation::LogScale>(i));
     }
+
   }
   catch (TestFailed & ex)
   {
