@@ -157,7 +157,7 @@ void GraphImplementation::add(const Drawable & aDrawable)
 {
   UnsignedInteger drawableCount = drawablesCollection_.getSize();
   drawablesCollection_.add(aDrawable);
-  Drawable& drawable = drawablesCollection_[drawableCount];
+  Drawable drawable = drawablesCollection_[drawableCount];
   if (!drawable.isColorExplicitlySet())
     drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount+1)[drawableCount]);
 }
