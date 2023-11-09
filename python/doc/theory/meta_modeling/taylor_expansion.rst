@@ -42,7 +42,7 @@ The second-order Taylor expansion of :math:`h` at the point :math:`\ux_0` is the
 .. math::
 
    \widehat{h}_k(\ux) = h_k(\ux_0) + \sum_{i=1}^{d}  \left(\frac{\partial h_k}{\partial x_i}\right)(\ux_0)
-   \left(x_i - x_{0,i} \right) +  \frac{1}{2} \sum_{i,j = 1}^d \left( \frac{\partial^2 h_k}{\partial x_i 
+   \left(x_i - x_{0,i} \right) +  \frac{1}{2} \sum_{i,j = 1}^d \left( \frac{\partial^2 h_k}{\partial x_i
    \partial x_j}\right)(\ux_0)(x_i-x_{0,i})(x_j-x_{0,j})
 
 

@@ -7,7 +7,7 @@ The importance factors derived from a Taylor expansion are
 defined to rank the sensitivity of the output to
 the inputs for central dispersion analysis.
 
-We consider the Taylor expansion of a function. We use the notations introduced in 
+We consider the Taylor expansion of a function. We use the notations introduced in
 :ref:`Taylor Expansion <taylor_expansion>`. Let :math:`\uX` be the input random vector. We assume that
 the marginals of :math:`\uX` are independent. Let :math:`Y = h(\ux)` with
 :math:`h: \Rset^d \rightarrow \Rset` be a function whith a scalar output.

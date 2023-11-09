@@ -10,7 +10,7 @@ is to use the Taylor expansion of the function :math:`h: \Rset^d \rightarrow \Rs
 the mean point :math:`\vect{\mu} = \Expect{\uX}`. Depending on the order of the Taylor expansion (classically first or second order), we get different approximations
 of the mean and variance of :math:`Y`.
 
-We use the notations introduced in :ref:`taylor_expansion`. 
+We use the notations introduced in :ref:`taylor_expansion`.
 
 In the remainder, let :math:`\Cov \uX` be the covariance matrix of :math:`\uX`, defined by:
 
@@ -82,7 +82,7 @@ The expectation and covariance matrix of the first-order expansion are:
 
 
   .. math::
-  
+
          \Expect{\uY} & \approx &  h(\vect{\mu})\\
          \Cov \uY & \approx & \left( \sum_{i,j=1}^{d} c_{ij}  \left( \frac{\partial h_k}{\partial x_i }
          \right)(\vect{\mu})\left( \frac{\partial h_\ell}{\partial x_j }\right)(\vect{\mu})\right)_{k,
@@ -97,7 +97,7 @@ The expectation of the second-order expansion is:
     \frac{\partial^2 h_k}{\partial x_i \partial x_j}\right)(\vect{\mu})
 
 
-The second-order approximation of the variance  is not implemented because it requires both the 
+The second-order approximation of the variance  is not implemented because it requires both the
 knowledge of higher order derivatives of :math:`h` and the knowledge of moments of order strictly greater
 than 2 of the probability density function.
 
