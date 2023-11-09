@@ -159,7 +159,7 @@ void GraphImplementation::add(const Drawable & aDrawable)
   drawablesCollection_.add(aDrawable);
   Drawable drawable = drawablesCollection_[drawableCount];
   if (!drawable.isColorExplicitlySet())
-    drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount+1)[drawableCount]);
+    drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount + 1)[drawableCount]);
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
