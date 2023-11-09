@@ -68,25 +68,10 @@ x = linearSample(a, b, nplot)
 y = distX.computePDF(x)
 
 
-def drawInTheBounds(vLow, vUp, n_test):
-    """
-    Draw the area within the bounds.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[0]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
-
-
-vLow = [[x[i, 0], 0.0] for i in range(nplot)]
-vUp = [[x[i, 0], y[i, 0]] for i in range(nplot)]
+vLow = [[0.0] for i in range(nplot)]
+vUp = [[y[i, 0]] for i in range(nplot)]
 area = distX.computeCDF(b) - distX.computeCDF(a)
-boundsPoly = drawInTheBounds(vLow, vUp, nplot)
+boundsPoly = ot.Curve.FillBetween(x, vLow, vUp)
 
 # %%
 # We add the colored area to the PDF graph.

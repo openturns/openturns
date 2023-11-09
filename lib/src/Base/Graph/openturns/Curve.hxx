@@ -23,6 +23,7 @@
 
 #include "openturns/DrawableImplementation.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Polygon.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,8 +79,11 @@ public:
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Builds a polygon wich fills the area between two curves */
+  static Polygon FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2);
+
 protected:
-  /** Check fo data validity */
+  /** Check for data validity */
   void checkData(const Sample & data) const override;
 
 private:

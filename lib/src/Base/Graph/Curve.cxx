@@ -163,4 +163,22 @@ void Curve::load(Advocate & adv)
   DrawableImplementation::load(adv);
 }
 
+/* Builds a polygon wich fills the area between two curves */
+Polygon Curve::FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2) {
+    const UnsignedInteger size = dataX.getSize();
+    if ((dataY1.getSize() != size) || (dataY2.getSize() != size)) throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on numerical samples with different size.";
+    if ((dataX.getDimension() != 1) || (dataY1.getDimension() != 1) || (dataY2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on numerical samples of dimension greater than 1.";
+    Sample dataFull(size * 2, 2);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+        dataFull(i, 0) = dataX(i, 0);
+        dataFull(i, 1) = dataY1(i, 0);
+        dataFull(i + size, 0) = dataX(size - i - 1, 0);
+        dataFull(i + size, 1) = dataY2(size - i - 1, 0);
+    }
+    Polygon polygon = Polygon(dataFull);
+    polygon.setLineWidth(0); //To only draw between the curves
+    return polygon;
+}
+
 END_NAMESPACE_OPENTURNS

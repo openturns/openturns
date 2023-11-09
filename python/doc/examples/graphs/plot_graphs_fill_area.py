@@ -10,7 +10,7 @@ How to fill an area
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+from openturns import viewer
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -46,37 +46,18 @@ y = dist.computePDF(x)
 
 
 # %%
-# The following function uses the `PolygonArray` class to create a area filled with a given color.
+# Compute the bounds to fill: the lower vertical bound is 0 and the upper vertical bound is the PDF.
 
 
 # %%
-def drawInTheBounds(vLow, vUp, n_test):
-    """
-    Draw the area within the bounds.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
-
-
-# %%
-# Compute the bounds to fill: the lower vertical bound is zero and the upper vertical bound is the PDF.
-
-# %%
-vLow = [[x[i, 0], 0.0] for i in range(nplot)]
-vUp = [[x[i, 0], y[i, 0]] for i in range(nplot)]
+vLow = [[0.0] for i in range(nplot)]
+vUp = [[y[i, 0]] for i in range(nplot)]
 
 # %%
 area = dist.computeCDF(b) - dist.computeCDF(a)
 
 # %%
-boundsPoly = drawInTheBounds(vLow, vUp, nplot)
+boundsPoly = ot.Curve.FillBetween(x, vLow, vUp)
 graph = dist.drawPDF()
 graph.add(boundsPoly)
 graph.setTitle("Area = %.3f" % (area))

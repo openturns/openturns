@@ -14,7 +14,7 @@ Sequentially adding new points to a kriging
 import openturns as ot
 from openturns.viewer import View
 import numpy as np
-import openturns.viewer as viewer
+from openturns import viewer
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -76,24 +76,6 @@ def linearSample(xmin, xmax, npoints):
 
 
 # %%
-def plot_kriging_bounds(vLow, vUp, n_test):
-    """
-    From two lists containing the lower and upper bounds of the region,
-    create a PolygonArray.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    boundsPoly.setLegend("95% bounds")
-    return boundsPoly
-
-
-# %%
 # The following `sqrt` function will be used later to compute the standard deviation from the variance.
 
 # %%
@@ -125,16 +107,14 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     # Graphics of the bounds
     epsilon = 1.0e-8
     dataLower = [
-        yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
+        [yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0]] for i in range(nbpoints)
     ]
     dataUpper = [
-        yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
+        [yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0]] for i in range(nbpoints)
     ]
-    # Coordinates of the vertices of the Polygons
-    vLow = [[xGrid[i, 0], dataLower[i]] for i in range(nbpoints)]
-    vUp = [[xGrid[i, 0], dataUpper[i]] for i in range(nbpoints)]
     # Compute the Polygon graphics
-    boundsPoly = plot_kriging_bounds(vLow, vUp, nbpoints)
+    boundsPoly = ot.Curve.FillBetween(xGrid, dataLower, dataUpper)
+    boundsPoly.setColor(ot.Drawable.BuildDefaultPalette(2)[1])
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
     mmv = ot.MetaModelValidation(xGrid, yFunction, meta)
@@ -203,7 +183,6 @@ def getNewPoint(xMin, xMax, krigResult):
 
 # %%
 xNew = getNewPoint(xMin, xMax, krigResult)
-xNew
 
 # %%
 # Then we evaluate the function on the new point and add it to the training design of experiments.

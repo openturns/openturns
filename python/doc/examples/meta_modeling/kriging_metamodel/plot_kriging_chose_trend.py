@@ -65,12 +65,10 @@ xmax = 10.0
 ot.RandomGenerator.SetSeed(0)
 nTrain = 8
 Xtrain = ot.Uniform(xmin, xmax).getSample(nTrain).sort()
-Xtrain
 
 # %%
 # The values of the exact model are also needed for training.
 Ytrain = model(Xtrain)
-Ytrain
 
 # %%
 # We shall test the model on a set of points based on a regular grid.
@@ -132,7 +130,6 @@ myTransform = ot.ParametricFunction(tf, [0, 1], [mean, stdDev])
 # %%
 # Scale the input training sample.
 scaledXtrain = myTransform(Xtrain)
-scaledXtrain
 
 
 # %%
@@ -248,13 +245,8 @@ def plotKrigingConfidenceBounds(krigingResult, x_test, myTransform, color, alpha
     dataUpper = [
         [y_test[i, 0] + quantileAlpha * conditionalSigma[i, 0]] for i in range(n_test)
     ]
-    dataLower = ot.Sample(dataLower)
-    dataUpper = ot.Sample(dataUpper)
-    vLow = [[x_test[i, 0], dataLower[i, 0]] for i in range(n_test)]
-    vUp = [[x_test[i, 0], dataUpper[i, 0]] for i in range(n_test)]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [ot.Polygon(polyData[i], color, color) for i in range(n_test - 1)]
-    boundsPoly = ot.PolygonArray(polygonList)
+    boundsPoly = ot.Curve.FillBetween(x_test, dataLower, dataUpper)
+    boundsPoly.setColor(color)
     boundsPoly.setLegend("%d%% C.I." % ((1.0 - alpha) * 100))
     return boundsPoly
 
