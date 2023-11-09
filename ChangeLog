@@ -7,7 +7,6 @@
 ==== Major changes ====
 
 ==== New classes ====
- * LatentVariableModel (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
@@ -44,6 +43,7 @@
  * GeneralizedExtremeValueValidation (openturns.experimental)
  * Coles (openturns.usecases.coles)
  * Linthurst (openturns.usescases.linthurst)
+ * LatentVariableModel (openturns.experimental)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -2877,4 +2877,3 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
-
