@@ -65,7 +65,7 @@ for :math:`i, j \in \{1, ..., d\}` and :math:`k \in \{1, ..., q\}`.
 
 The first and second order Taylor expansions are used in the following cases:
 
-- to evaluate the importance factors of the input point on the ouput: refer to :ref:`taylor_importance_factors`,
+- to evaluate the importance factors of the input point on the output: refer to :ref:`taylor_importance_factors`,
 
 - to get an approximation of the mean and the variance of the output: refer to :ref:`taylor_expansion_moments`.
 

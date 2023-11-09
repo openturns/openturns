@@ -10,7 +10,7 @@ the inputs for central dispersion analysis.
 We consider the Taylor expansion of a function. We use the notations introduced in
 :ref:`Taylor Expansion <taylor_expansion>`. Let :math:`\uX` be the input random vector. We assume that
 the marginals of :math:`\uX` are independent. Let :math:`Y = h(\ux)` with
-:math:`h: \Rset^d \rightarrow \Rset` be a function whith a scalar output.
+:math:`h: \Rset^d \rightarrow \Rset` be a function with a scalar output.
 
 Refer to :ref:`taylor_expansion` for details on the expressions of the first-order and second-order
 Taylor expansions and to :ref:`taylor_expansion_moments` for details on the approximations of the mean
