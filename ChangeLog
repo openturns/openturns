@@ -97,8 +97,6 @@
  * Enable Pagmo.moead_gen with pagmo>=2.19
  * Enable Bonmin.Ecp/iFP algorithms with bonmin>=1.8.9
  * BoxCoxFactory handles linear model
-=======
->>>>>>> 6873d3bc6 (corrected changelog)
 
 === Bug fixes ===
  * #2045 ([Debian] NLopt issues during tests on arm64, ppc64el, s390x)
