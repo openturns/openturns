@@ -131,7 +131,6 @@
  * #2327 (A sign mistake in FGM document)
  * #2328 (Sample.add weird behaviour)
  * #2338 (HSIC with large amount of data makes crash)
-=======
  * #2297 (Legend location with grid layout)
  * #2299 (Allow openturns as subproject)
  * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
