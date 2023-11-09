@@ -205,7 +205,6 @@ By symmetry in the standard space, the mean point in the standard event domain i
 .. math::
 
     \Expect{\vect{U}|\vect{U} \in \cD} = \Expect{\|\vect{U}\| | \|\vect{U}\| \geq \beta_{HL}}   \vect{u}^* =  \frac{1}{E(-\beta_{HL})} \left(\int_{\beta}^{+\infty} u e(u)\, \di{u} \right)\vect{u}^*
-          \end{array}
 
 
 "
