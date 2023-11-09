@@ -59,9 +59,9 @@ width : positive sequence of float
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::HistogramPolynomialFactory::getHeight
-"Accessor to the sequence of frequency of the classes.
+"Accessor to the frequency sequence of the classes.
 
 Returns
 -------
 height : positive sequence of float
-    Sequence of frequency of the classes."
+    Frequency sequence of the classes."

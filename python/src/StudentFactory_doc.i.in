@@ -3,7 +3,8 @@
 
 Notes
 -----
-The parameters are estimated by a mixed method of moments and the maximum likelihood method:
+Some parameters are estimated by the method of moments and others by the maximum reduced 
+likelihood method:
 
 .. math::
     :nowrap:

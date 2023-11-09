@@ -6,7 +6,6 @@ Parameters
 n : int, :math:`n \in \Nset`
     The number of Bernoulli trials.
 
-
     Default value is 1.
 p : float, :math:`0 \leq p \leq 1`
     The success probability of the Bernoulli trial.
