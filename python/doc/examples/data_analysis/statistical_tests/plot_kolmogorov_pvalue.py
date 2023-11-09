@@ -32,7 +32,6 @@ result = ot.FittingTest.Kolmogorov(sample, testdistribution, 0.01)
 
 # %%
 pvalue = result.getPValue()
-pvalue
 
 # %%
 KSstat = result.getStatistic()
