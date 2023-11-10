@@ -10,14 +10,14 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Notes
 -----
-Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently smooth,
-some Taylor expansions of the function :math:`h` are used to approximate the mean and variance
+Assuming that :math:`\uX` has its two finite first moments and that :math:`h` is sufficiently smooth,
+a Taylor expansion of the function :math:`h` is used to approximate the mean and variance
 of the random vector :math:`\uY = h(\uX)`.
 
 Refer to Refer to :ref:`Taylor Expansion Moments <taylor_expansion_moments>` for details on the expressions of the approximations:
 
-- The first-order  expansion of :math:`h` yields to an approximation of the mean and the variance of :math:`\uY`;
-- The second-order  expansion of :math:`h` yields to an approximation of the mean :math:`\uY`.
+- the first-order  expansion of :math:`h` yields an approximation of the mean and the variance of :math:`\uY`;
+- the second-order  expansion of :math:`h` yields an approximation of the mean :math:`\uY`.
 
 Refer to :ref:`Taylor Importance Factors <taylor_importance_factors>` for details on the importance factors of each input on the output.
 
