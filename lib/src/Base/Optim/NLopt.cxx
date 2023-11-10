@@ -324,7 +324,9 @@ void NLopt::run()
     // The C++ interface of NLopt does not return a code for failures cases.
     // It is either positive (termination criterion) or an exception is thrown.
     p_opt_ = &opt;
-    opt.optimize(x, optimalValue);
+    const int rc = opt.optimize(x, optimalValue);
+    if (rc == nlopt::MAXEVAL_REACHED)
+      LOGDEBUG("NLopt rc=MAXEVAL_REACHED");
   }
   catch (const nlopt::roundoff_limited &)
   {
