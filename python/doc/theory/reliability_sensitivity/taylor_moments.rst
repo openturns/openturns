@@ -4,13 +4,12 @@ Taylor expansion moments
 ------------------------
 
 In this page, we consider the Taylor expansion of a function.
-We use the notations introduced in :ref:`taylor_expansion`.
 One way to evaluate the central dispersion (expectation and variance) of the variable :math:`\uY=h(\uX)`
 is to use the Taylor expansion of the function :math:`h: \Rset^d \rightarrow \Rset^q` at
 the mean point :math:`\vect{\mu} = \Expect{\uX}`. Depending on the order of the Taylor expansion (classically first or second order), we get different approximations
 of the mean and variance of :math:`Y`.
 
-We use the notations introduced in :ref:`taylor_expansion`.
+We use the notations introduced in :ref:`Taylor Expansion <taylor_expansion>`.
 
 In the remainder, let :math:`\Cov \uX` be the covariance matrix of :math:`\uX`, defined by:
 

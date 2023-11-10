@@ -1,7 +1,7 @@
 .. _taylor_importance_factors:
 
-Taylor decomposition importance factors
----------------------------------------
+Taylor importance factors
+-------------------------
 
 The importance factors derived from a Taylor expansion are
 defined to rank the sensitivity of the output to
@@ -12,9 +12,10 @@ We consider the Taylor expansion of a function. We use the notations introduced 
 the marginals of :math:`\uX` are independent. Let :math:`Y = h(\ux)` with
 :math:`h: \Rset^d \rightarrow \Rset` be a function with a scalar output.
 
-Refer to :ref:`taylor_expansion` for details on the expressions of the first-order and second-order
-Taylor expansions and to :ref:`taylor_expansion_moments` for details on the approximations of the mean
-and the variance of :math:`Y`.
+Refer to :ref:`Taylor Expansion <taylor_expansion>` for details on the expressions
+of the first-order and second-order Taylor expansions and to
+:ref:`Taylor Expansion Moments <taylor_expansion_moments>` for
+details on the approximations of the mean and the variance of :math:`Y`.
 
 The importance factor of :math:`X_i` is defined by:
 

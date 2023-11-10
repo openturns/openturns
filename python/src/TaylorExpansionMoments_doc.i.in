@@ -14,11 +14,12 @@ Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is
 some Taylor expansions of the function :math:`h` are used to approximate the mean and variance
 of the random vector :math:`\uY = h(\uX)`.
 
-Refer to :ref:`taylor_expansion_moments` to get details on the expressions of the approximations:
+Refer to Refer to :ref:`Taylor Expansion Moments <taylor_expansion_moments>` for details on the expressions of the approximations:
 
 - The first-order  expansion of :math:`h` yields to an approximation of the mean and the variance of :math:`\uY`;
 - The second-order  expansion of :math:`h` yields to an approximation of the mean :math:`\uY`.
 
+Refer to :ref:`Taylor Importance Factors <taylor_importance_factors>` for details on the importance factors of each input on the output.
 
 Examples
 --------
