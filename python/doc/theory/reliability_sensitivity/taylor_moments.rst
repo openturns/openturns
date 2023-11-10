@@ -44,8 +44,8 @@ The expectation and variance of the first-order expansion are:
 
   .. math::
 
-            \Expect{Y} & \approx & h(\vect{\mu})\\
-            \Var{Y} & \approx & \sum_{i=1}^{d} \sigma_i^2 \left(\left(\frac{\partial h}{\partial x_i}
+            \Expect{Y} \approx h(\vect{\mu})\\
+            \Var{Y} \approx \sum_{i=1}^{d} \sigma_i^2 \left(\left(\frac{\partial h}{\partial x_i}
             \right)(\vect{\mu}) \right)^2
 
 
@@ -82,8 +82,8 @@ The expectation and covariance matrix of the first-order expansion are:
 
   .. math::
 
-         \Expect{\uY} & \approx &  h(\vect{\mu})\\
-         \Cov \uY & \approx & \left( \sum_{i,j=1}^{d} c_{ij}  \left( \frac{\partial h_k}{\partial x_i }
+         \Expect{\uY} \approx  h(\vect{\mu})\\
+         \Cov \uY \approx \left( \sum_{i,j=1}^{d} c_{ij}  \left( \frac{\partial h_k}{\partial x_i }
          \right)(\vect{\mu})\left( \frac{\partial h_\ell}{\partial x_j }\right)(\vect{\mu})\right)_{k,
          \ell}
 
