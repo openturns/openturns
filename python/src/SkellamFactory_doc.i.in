@@ -1,9 +1,8 @@
 %feature("docstring") OT::SkellamFactory
 "Skellam factory.
 
-Available constructor:
-    SkellamFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -17,3 +16,30 @@ The parameters are estimated by method of moments:
 See also
 --------
 DistributionFactory, Skellam"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SkellamFactory::buildAsSkellam
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsSkellam()
+
+    buildAsSkellam(*sample*)
+
+    buildAsSkellam(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Skellam`.
+
+Returns
+-------
+dist : :class:`~openturns.Skellam`
+    The estimated distribution as a Skellam.
+    
+    In the first usage, the default Skellam distribution is built."

@@ -1,15 +1,16 @@
 %feature("docstring") OT::Arcsine
 "Arcsine distribution.
 
-Available constructors:
-    Arcsine(*a=-1.0, b=1.0*)
-
 Parameters
 ----------
 a : float
     lower bound.
+    
+    Default value is -1.0.
 b : float
-    upper bound, :math:`b > a`
+    upper bound, :math:`b > a`.
+    
+    Default value is 1.0.
 
 Notes
 -----

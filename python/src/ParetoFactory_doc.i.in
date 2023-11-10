@@ -1,14 +1,11 @@
 %feature("docstring") OT::ParetoFactory
 "Pareto factory.
 
-See also
---------
-DistributionFactory, Pareto
 
 Notes
 -----
 Several estimators to build a Pareto distribution from a scalar sample
-are proposed.
+are proposed. The default strategy is to use the least squares estimator.
 
 **Moments based estimator:**
 
@@ -115,7 +112,10 @@ And the remaining parameters are estimated with:
     \hat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
     \hat{\alpha} &= -a_1
 
-The default strategy is to use the least squares estimator."
+
+See also
+--------
+DistributionFactory, Normal"
 
 // ----------------------------------------------------------------------------
 
@@ -126,8 +126,8 @@ Refer to :class:`~openturns.MaximumLikelihoodFactory`.
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
@@ -142,8 +142,8 @@ distribution : :class:`~openturns.Pareto`
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
@@ -155,46 +155,46 @@ distribution : :class:`~openturns.Pareto`
 %feature("docstring") OT::ParetoFactory::buildMethodOfLeastSquares
 "Method of least-squares.
 
+Notes
+-----
 Refer to :class:`~openturns.LeastSquaresFactory`.
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 gamma : float, optional
     Gamma parameter.
 
 Returns
 -------
 distribution : :class:`~openturns.Pareto`
-    The estimated distribution"
+    The estimated distribution."
 
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::ParetoFactory::buildAsPareto
 "Estimate the distribution as native distribution.
 
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Data
+**Available usages**:
 
-Returns
--------
-distribution : :class:`~openturns.Pareto`
-    The estimated distribution"
+    buildAsPareto()
 
-// ----------------------------------------------------------------------------
+    buildAsPareto(*sample*)
 
-%feature("docstring") OT::ParetoFactory::build
-"Estimate the distribution using the default strategy.
+    buildAsPareto(*param*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
+param : sequence of float,
+    The parameters of the :class:`~openturns.Pareto`.
 
 Returns
 -------
-distribution : :class:`~openturns.Distribution`
-    The estimated distribution"
+dist : :class:`~openturns.Pareto`
+    The estimated distribution as a Pareto.
+    
+    In the first usage, the default Pareto distribution is built."
+

@@ -5,8 +5,12 @@ Parameters
 ----------
 lambda : float
     Rate parameter :math:`\lambda > 0`.
+
+    Default value is 0.0.
 gamma : float
     Location parameter.
+
+    Default value is 1.0.
 
 Notes
 -----

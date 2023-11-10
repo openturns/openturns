@@ -424,8 +424,6 @@ ot_add_python_module(optim optim_module.i
                       OptimizationAlgorithm.i OptimizationAlgorithm_doc.i.in
                       OptimizationResult.i OptimizationResult_doc.i.in
                       OptimizationAlgorithmImplementation.i OptimizationAlgorithmImplementation_doc.i.in
-                      NearestPointCheckerResult.i
-                      NearestPointChecker.i
                       AbdoRackwitz.i AbdoRackwitz_doc.i.in
                       Bonmin.i Bonmin_doc.i.in
                       Ceres.i Ceres_doc.i.in
@@ -542,7 +540,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
                       DistributionParameters.i DistributionParameters_doc.i.in
                       ContinuousDistribution.i
-                      EllipticalDistribution.i
+                      EllipticalDistribution.i EllipticalDistribution_doc.i.in
                       DiscreteDistribution.i DiscreteDistribution_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in

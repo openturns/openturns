@@ -41,13 +41,3 @@ Optimization solvers
     Pagmo
     SQP
     TNC
-
-Nearest point assessment
-========================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    NearestPointChecker
-    NearestPointCheckerResult

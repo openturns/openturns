@@ -1,6 +1,8 @@
 %feature("docstring") OT::FarlieGumbelMorgensternCopulaFactory
 "Farlie Gumbel Morgenstern Copula factory.
 
+Notes
+-----
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample
 and :math:`\Hat{\rho}_n` its Spearman correlation coefficient.
 
@@ -26,3 +28,31 @@ Otherwise, the estimation is not possible.
 See also
 --------
 DistributionFactory, FarlieGumbelMorgensternCopula"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsFarlieGumbelMorgensternCopula()
+
+    buildAsFarlieGumbelMorgensternCopula(*sample*)
+
+    buildAsFarlieGumbelMorgensternCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.FarlieGumbelMorgensternCopula`
+    The estimated copula as a FarlieGumbelMorgenstern copula.
+    
+    In the first usage, the default FarlieGumbelMorgenstern copula is built."

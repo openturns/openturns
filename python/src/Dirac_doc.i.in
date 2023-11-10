@@ -1,19 +1,17 @@
 %feature("docstring") OT::Dirac
 "Dirac distribution.
 
-A possible usage is the modelling of deterministic parameters.
-
-Available constructors:
-    Dirac(*x=0.*)
 
 Parameters
 ----------
 x : float, sequence of float, :math:`\vect{x} \in \Rset^n`
     The deterministic value.
 
+    Default is 0.0.
+
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 
@@ -30,6 +28,8 @@ Its first moments are:
         \Expect{\vect{X}} & = & \vect{x} \\
         \Var{X_i} & = & 0, \quad i = 1, \ldots, n
     \end{eqnarray*}
+
+This distribution can be used to model deterministic parameters.
 
 Examples
 --------

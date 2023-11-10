@@ -1,9 +1,8 @@
 %feature("docstring") OT::ChiFactory
 "Chi factory.
 
-Available constructor:
-    ChiFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -19,10 +18,12 @@ DistributionFactory, Chi"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsChi_doc
-"Build the Chi distribution.
+%feature("docstring") OT::ChiFactory::buildAsChi
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsChi()
 
     buildAsChi(*sample*)
 
@@ -32,14 +33,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Chi`.
 
 Returns
 -------
 dist : :class:`~openturns.Chi`
-    The built distribution."
-%enddef
-%feature("docstring") OT::ChiFactory::buildAsChi
-OT_DistributionFactory_buildAsChi_doc
+    The estimated distribution as a Chi.
+    
+    In the first usage, the default Chi distribution is built."
 

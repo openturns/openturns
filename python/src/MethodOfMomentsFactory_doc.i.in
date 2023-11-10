@@ -1,8 +1,6 @@
 %feature("docstring") OT::MethodOfMomentsFactory
 "Estimation by method of moments.
 
-Implements generic estimation by method of moments.
-
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
@@ -12,15 +10,25 @@ bounds : :class:`~openturns.Interval`, optional
 
 Notes
 -----
-The underlying optimization problem seeks to minimize the sum of slacks between the
-central moments of the sample and the central moments of the parametric model:
+This method fits a scalar distribution to data of dimension 1, using the method of moments.
+
+Let :math:`(\vect{x}_1, \dots, \vect{x}_n)` denote the sample, :math:`F_{\vect{\theta}}`
+the  cumulative distribution function we want to fit to the sample,
+and :math:`\vect{\theta} \in  \Theta \subset\Rset^p`  its parameter vector.
+
+Let :math:`K` denote the number of parameters of the distribution and we assume that 
+the :math:`K` first moments of the distribution exist.
+
+Let :math:`(\mu_1, \dots, \mu_K)` denote the :math:`K` first central moments of the sample and
+and :math:`(m_1, \dots, m_K)` those of the parametric model.
+
+The estimator :math:`\hat{\theta}` minimizes the sum of slacks between
+:math:`(\mu_1, \dots, \mu_K)` and :math:`(m_1, \dots, m_K)`. It is defined by:
 
 .. math::
 
-    \Delta = \argmin_{\vect{\theta} \in \Rset^K} [ |\mu_1-m_1|/\sigma ]^2 + \sum_{i=2}^K[ (|\mu_i|^{1/i}-|m_i|^{1/i})/\sigma ]^2
+    \Delta = \argmin_{\vect{\theta} \in \Rset^K} \left[ \dfrac{|\mu_1-m_1|}{\sigma} \right]^2 + \sum_{i=2}^K \left[ \dfrac{|\mu_i|^{1/i}-|m_i|^{1/i}}{\sigma} \right]^2
 
-with :math:`K` the number of parameters of the distribution, :math:`\mu_i` and
-:math:`m_i` the central moments of the sample and the parametric model.
 
 See also
 --------

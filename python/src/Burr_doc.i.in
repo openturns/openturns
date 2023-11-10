@@ -1,13 +1,14 @@
 %feature("docstring") OT::Burr
 "Burr distribution.
 
-Available constructors:
-    Burr(*c=1.0, k=1.0*)
-
 Parameters
 ----------
 c : float, :math:`c > 0`
+    
+    Default value is 1.0.
 k : float, :math:`k > 0`
+    
+    Default value is 1.0.
 
 Notes
 -----

@@ -1,19 +1,24 @@
 %feature("docstring") OT::Trapezoidal
 "Trapezoidal distribution.
 
-Available constructors:
-    Trapezoidal(*a=-2.0, b=-1.0, c=1.0, d=2.0*)
-
 Parameters
 ----------
 a : float, :math:`a < d`
     Lower bound.
+
+    Default value is -2.0.
 b : float, :math:`a \leq b < c`
     Level start.
+
+    Default value is -1.0.
 c : float, :math:`b < c \leq d`
     Level end.
+
+    Default value is is 1.0.
 d : float, :math:`c \leq d`
     Upper bound.
+
+    Default value is 2.0.
 
 Notes
 -----

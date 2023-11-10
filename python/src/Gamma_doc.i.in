@@ -5,10 +5,16 @@ Parameters
 ----------
 k : float
     Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+    
+    Default value is 1.0.
 lambda : float
     Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+    
+    Default value is 1.0.
 gamma : float, optional
     Location parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
 Notes
 -----
