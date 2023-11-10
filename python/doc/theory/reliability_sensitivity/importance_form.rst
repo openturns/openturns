@@ -23,7 +23,7 @@ input components with respect to the realization of the event. They are often se
 of the impact of modeling the
 input components as random variables rather than fixed values. FORM importance factors are defined as follows.
 
-The :ref:`isoprobabilistic transformation <isoprobabilistic_transformation>` :math:`T` used in the FORM and
+The :ref:`isoprobabilistic transformation <isoprobabilistic_transformations>` :math:`T` used in the FORM and
 SORM approximation is a diffeomorphism from
 :math:`\supp{\vect{X}}` into :math:`\Rset^n`, such that the
 distribution of the random vector :math:`\vect{U}=T(\vect{X})` has the
