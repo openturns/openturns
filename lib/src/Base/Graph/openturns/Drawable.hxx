@@ -83,9 +83,6 @@ public:
   void setColor(const String & color);
   String getEdgeColor() const;
 
-  /** Explicit color validation flag accessor */
-  virtual Bool isColorExplicitlySet() const;
-
   /** Accessor for pattern */
   String getPattern() const;
   void setPattern(const String style);

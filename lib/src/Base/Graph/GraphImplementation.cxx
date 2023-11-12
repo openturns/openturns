@@ -158,7 +158,7 @@ void GraphImplementation::add(const Drawable & aDrawable)
   UnsignedInteger drawableCount = drawablesCollection_.getSize();
   drawablesCollection_.add(aDrawable);
   Drawable&drawable = drawablesCollection_[drawableCount];
-  if (!drawable.isColorExplicitlySet())
+  if (!drawable.getImplementation()->isColorExplicitlySet())
     drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount + 1)[drawableCount]);
 }
 
@@ -192,8 +192,8 @@ void GraphImplementation::setDrawables(const DrawableCollection & drawableCollec
   drawablesCollection_ = drawableCollection;
   for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i)
   {
-    Drawable drawable = drawablesCollection_[i];
-    if (!drawable.isColorExplicitlySet())
+    Drawable&drawable = drawablesCollection_[i];
+    if (!drawable.getImplementation()->isColorExplicitlySet())
       drawable.setColor(DrawableImplementation::BuildDefaultPalette(i + 1)[i]);
   }
 }

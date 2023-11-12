@@ -79,9 +79,6 @@ public:
   virtual void setColor(const String & color);
   virtual String getEdgeColor() const;
 
-  /** Explicit color validation flag accessor */
-  virtual Bool isColorExplicitlySet() const;
-
   /** Point style accessor */
   virtual String getPointStyle() const;
   virtual void setPointStyle(const String & pointStyle);
@@ -278,6 +275,9 @@ protected:
   /** Check data */
   virtual void checkData(const Sample & data) const;
   virtual void checkData(const Point & data) const;
+
+  /** Explicit color validation flag accessor */
+  virtual Bool isColorExplicitlySet() const;
 
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;

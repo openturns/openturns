@@ -1631,9 +1631,9 @@ void DrawableImplementation::load(Advocate & adv)
   adv.loadAttribute( "data_", data_ );
   adv.loadAttribute( "color_", color_ );
   if (adv.hasAttribute("isColorExplicitlySet_"))
-      adv.loadAttribute("isColorExplicitlySet_", isColorExplicitlySet_);
+    adv.loadAttribute("isColorExplicitlySet_", isColorExplicitlySet_);
   else
-	isColorExplicitlySet_ = true;
+    isColorExplicitlySet_ = true;
   adv.loadAttribute( "fillStyle_", fillStyle_ );
   adv.loadAttribute( "lineStyle_", lineStyle_ );
   adv.loadAttribute( "pointStyle_", pointStyle_ );
