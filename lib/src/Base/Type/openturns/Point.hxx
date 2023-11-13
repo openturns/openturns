@@ -70,7 +70,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Set small elements to zero */
+  /** @deprecated See small elements to zero */
   Point clean(const Scalar threshold) const;
 
   /** Check if the components are in increasing order */

@@ -74,6 +74,7 @@ Point * Point::clone() const
 /* Set small elements to zero */
 Point Point::clean(const Scalar threshold) const
 {
+  LOGWARN("Point.clean is deprecated");
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
   const UnsignedInteger size = getSize();
