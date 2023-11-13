@@ -45,6 +45,7 @@
  * Student.setMu/getMu now operate on Point
  * Deprecated Distribution.computeDensityGenerator methods
  * Deprecated Point.clean
+ * Deprecated (Inverse)Gamma.setKLambda
 
 === Documentation ===
 

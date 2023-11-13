@@ -137,20 +137,6 @@ lambda : float, :math:`\lambda > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gamma::setKLambda
-"Set the distribution's parameters.
-
-For rate parameter :math:`\lambda` and shape parameter :math:`k`.
-
-Parameters
-----------
-k : float, :math:`k > 0`
-    Shape parameter :math:`k`.
-lambda : float, :math:`\lambda > 0`
-    Rate parameter :math:`\lambda`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Gamma::setGamma
 "Accessor to the distribution's location parameter :math:`\gamma`.
 
