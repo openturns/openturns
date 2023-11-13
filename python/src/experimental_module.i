@@ -30,6 +30,9 @@
 /* Base/Geom */
 %include BoundaryMesher.i
 
+/* Base/Stat */
+%include LatentVariableModel.i
+
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i

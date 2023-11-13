@@ -288,6 +288,9 @@ Bibliography
 .. [park1990] Byeong U. Park and J. S. Marron.
     *Comparison of data-driven bandwidth selectors.*
     Journal of the American Statistical Association, 85(409) :66–72, 1990.
+.. [pelamatti2020] Pelamatti, J., Brevault, L., Balesdent, M., Talbi, E. G., & Guerin, Y. (2020).
+    *Overview and comparison of gaussian process-based surrogate models for mixed continuous and discrete variables: Application on aerospace design problems.*
+    High-Performance Simulation-Based Optimization, 189-224.
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.
@@ -387,3 +390,5 @@ Bibliography
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 .. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012
+.. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*
+    Technometrics 62.3 (2020): 291-302.
