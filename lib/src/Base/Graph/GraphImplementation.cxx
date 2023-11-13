@@ -191,11 +191,12 @@ GraphImplementation::DrawableCollection GraphImplementation::getDrawables() cons
 void GraphImplementation::setDrawables(const DrawableCollection & drawableCollection)
 {
   drawablesCollection_ = drawableCollection;
+  Description palette = DrawableImplementation::BuildDefaultPalette(drawableCollection.getSize());
   for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i)
   {
     Drawable&drawable = drawablesCollection_[i];
     if (!drawable.getImplementation()->isColorExplicitlySet())
-      drawable.setColor(DrawableImplementation::BuildDefaultPalette(i + 1)[i]);
+      drawable.setColor(palette[i]);
   }
 }
 
