@@ -119,7 +119,6 @@ Evaluation functions
 
     EvaluationImplementation
     AggregatedEvaluation
-    SymbolicEvaluation
     ComposedEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
@@ -127,7 +126,9 @@ Evaluation functions
     IndicatorEvaluation
     LinearCombinationEvaluation
     LinearEvaluation
+    MarginalEvaluation
     MarginalTransformationEvaluation
+    MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
     PiecewiseHermiteEvaluation
@@ -136,7 +137,8 @@ Evaluation functions
     ProductEvaluation
     ProductPolynomialEvaluation
     QuadraticEvaluation
-    MarginalEvaluation
+    SymbolicEvaluation
+    TranslationEvaluation
 
 Gradient functions
 ==================
