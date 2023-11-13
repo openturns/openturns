@@ -59,7 +59,7 @@ density generator derivative (FD)=-0.17603
 density generator second derivative     =0.088016
 density generator second derivative (FD)=0.088016
 Radial CDF(2)=0.9545
-conditional PDF=0.27833
+conditional PDF=0.33322
 conditional CDF=0.72575
 conditional quantile=0.25335
 sequential conditional PDF=class=Point name=Unnamed dimension=1 values=[0.129518]

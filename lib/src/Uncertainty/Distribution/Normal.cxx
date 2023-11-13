@@ -549,9 +549,8 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
     const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
-    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z)
-    // With x = \sqrt{2} z, we use the Gaussian density function
-    return DistFunc::dNormal(z * std::sqrt(2.0)) / sigma_[conditioningDimension];
+    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z/2)
+    return DistFunc::dNormal(z) / sigma_[conditioningDimension];
   }
   // General case
   Scalar meanRos = 0.0;
