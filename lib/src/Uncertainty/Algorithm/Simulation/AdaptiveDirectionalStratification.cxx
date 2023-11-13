@@ -40,8 +40,8 @@ AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulation(event)
-  , standardEvent_(StandardEvent(event))
+  : EventSimulation(event.getImplementation()->asComposedEvent())
+  , standardEvent_(StandardEvent(getEvent()))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
   , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultGamma"))

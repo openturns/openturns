@@ -56,7 +56,7 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulation(event)
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , iSubset_(false)
@@ -68,7 +68,7 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
-  UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
+  UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension=" << outputDimension;
 }
