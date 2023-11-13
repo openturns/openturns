@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * LatentVariableModel (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
@@ -43,7 +44,6 @@
  * GeneralizedExtremeValueValidation (openturns.experimental)
  * Coles (openturns.usecases.coles)
  * Linthurst (openturns.usescases.linthurst)
- * LatentVariableModel (openturns.experimental)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -131,9 +131,6 @@
  * #2327 (A sign mistake in FGM document)
  * #2328 (Sample.add weird behaviour)
  * #2338 (HSIC with large amount of data makes crash)
- * #2297 (Legend location with grid layout)
- * #2299 (Allow openturns as subproject)
- * #2306 (Dirichlet::computeConditionalPDF can produce NaNs and Infs)
 
 
 == 1.20 release (2022-11-08) == #release-1.20
