@@ -130,7 +130,7 @@ public:
   void setLambda(const Scalar lambda);
   Scalar getLambda() const;
 
-  /** K and lambda accessor */
+  /** @deprecated K and lambda accessor */
   void setKLambda(const Scalar k,
                   const Scalar lambda);
 

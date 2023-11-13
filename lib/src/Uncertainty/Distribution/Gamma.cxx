@@ -379,11 +379,7 @@ void Gamma::computeCovariance() const
 /* Parameters value accessor */
 Point Gamma::getParameter() const
 {
-  Point point(3);
-  point[0] = k_;
-  point[1] = lambda_;
-  point[2] = gamma_;
-  return point;
+  return {k_, lambda_, gamma_};
 }
 
 void Gamma::setParameter(const Point & parameter)
@@ -397,11 +393,7 @@ void Gamma::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Gamma::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "k";
-  description[1] = "lambda";
-  description[2] = "gamma";
-  return description;
+  return {"k", "lambda", "gamma"};
 }
 
 /* Method save() stores the object through the StorageManager */
