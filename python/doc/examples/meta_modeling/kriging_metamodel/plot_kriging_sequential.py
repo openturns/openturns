@@ -183,6 +183,7 @@ def getNewPoint(xMin, xMax, krigResult):
 
 # %%
 xNew = getNewPoint(xMin, xMax, krigResult)
+xNew
 
 # %%
 # Then we evaluate the function on the new point and add it to the training design of experiments.

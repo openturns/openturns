@@ -49,6 +49,8 @@ polygon = ot.Curve.FillBetween([[data2[i][0]] for i in range(10)],
 polygon.setColor("green")
 myGraph.add(polygon)
 
+print("myGraph = ",myGraph)
+
 # Draw everything
 for i in range(4):
     myGraph.setLogScale(i)

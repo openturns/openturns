@@ -65,10 +65,12 @@ xmax = 10.0
 ot.RandomGenerator.SetSeed(0)
 nTrain = 8
 Xtrain = ot.Uniform(xmin, xmax).getSample(nTrain).sort()
+Xtrain
 
 # %%
 # The values of the exact model are also needed for training.
 Ytrain = model(Xtrain)
+Ytrain
 
 # %%
 # We shall test the model on a set of points based on a regular grid.
@@ -130,6 +132,7 @@ myTransform = ot.ParametricFunction(tf, [0, 1], [mean, stdDev])
 # %%
 # Scale the input training sample.
 scaledXtrain = myTransform(Xtrain)
+scaledXtrain
 
 
 # %%

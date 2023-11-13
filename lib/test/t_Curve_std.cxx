@@ -88,6 +88,7 @@ int main(int, char *[])
       myGraph.setLogScale(static_cast<GraphImplementation::LogScale>(i));
     }
 
+    fullprint << "myGraph=" << myGraph << std::endl;
   }
   catch (TestFailed & ex)
   {

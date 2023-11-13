@@ -32,9 +32,11 @@ result = ot.FittingTest.Kolmogorov(sample, testdistribution, 0.01)
 
 # %%
 pvalue = result.getPValue()
+pvalue
 
 # %%
 KSstat = result.getStatistic()
+KSstat
 
 # %%
 # Compute exact Kolmogorov PDF.
@@ -104,7 +106,7 @@ x = linearSample(KSstat, 0.6, nplot)
 # Compute the bounds to fill: the lower vertical bound is 0 and the upper vertical bound is the KS PDF.
 
 # %%
-vLow = [[0.0] for i in range(nplot)]
+vLow = [[0.0]] * nplot
 vUp = [[pKolmogorov.gradient(x[i])[0, 0]] for i in range(nplot)]
 
 # %%

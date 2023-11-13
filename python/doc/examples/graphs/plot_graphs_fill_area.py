@@ -50,7 +50,7 @@ y = dist.computePDF(x)
 
 
 # %%
-vLow = [[0.0] for i in range(nplot)]
+vLow = [[0.0]] * nplot
 vUp = [[y[i, 0]] for i in range(nplot)]
 
 # %%
