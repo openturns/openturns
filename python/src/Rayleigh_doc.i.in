@@ -45,7 +45,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rayleigh::getSigma
+%feature("docstring") OT::Rayleigh::getBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
@@ -65,7 +65,7 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rayleigh::setSigma
+%feature("docstring") OT::Rayleigh::setBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
