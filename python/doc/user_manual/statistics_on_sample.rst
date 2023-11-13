@@ -208,6 +208,7 @@ Goodness-of-fit metrics & tests
     FittingTest.AICC
     FittingTest.BIC
     FittingTest.ChiSquared
+    FittingTest.ComputeKolmogorovStatistics
     FittingTest.Kolmogorov
     FittingTest.Lilliefors
     NormalityTest.AndersonDarlingNormal
