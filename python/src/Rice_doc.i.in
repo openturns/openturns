@@ -53,7 +53,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rice::getSigma
+%feature("docstring") OT::Rice::getBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
@@ -73,7 +73,7 @@ nu : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rice::setSigma
+%feature("docstring") OT::Rice::setBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
