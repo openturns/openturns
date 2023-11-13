@@ -31,11 +31,11 @@ CLASSNAMEINIT(GeneralizedParetoFactory)
 static const Factory<GeneralizedParetoFactory> Factory_GeneralizedParetoFactory;
 
 /* Default constructor */
-GeneralizedParetoFactory::GeneralizedParetoFactory(const OptimizationAlgorithm & solver)
+GeneralizedParetoFactory::GeneralizedParetoFactory()
   : DistributionFactoryImplementation()
-  , solver_(solver)
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
+  solver_ = OptimizationAlgorithm::Build(ResourceMap::GetAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm"));
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));
@@ -215,16 +215,13 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   Point parametersUpperBound(dimension,  1.0);
   problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0)));
 
-  solver_.setProblem(problem);
-  solver_.setVerbose(Log::HasInfo());
-  solver_.setStartingPoint(Point(dimension, 0.0));
-
-  // run Optimization problem
-  solver_.run();
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(Point(dimension, 0.0));
+  solver.run();
 
   // optimal point
-  const Scalar xi = solver_.getResult().getOptimalPoint()[0];
-
+  const Scalar xi = solver.getResult().getOptimalPoint()[0];
   const Scalar mean = sample.computeMean()[0] - u;
   // Compute the first probability weighted moment
   Scalar m = 0.0;

@@ -505,6 +505,7 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+  <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="TNC" />
 
   <!-- OT::Gibbs parameters -->
   <Gibbs-DefaultUpdatingMethod       value_int="0"     />

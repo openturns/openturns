@@ -1,6 +1,10 @@
 %feature("docstring") OT::GeneralizedParetoFactory
 "Generalized Pareto factory.
 
+See also
+--------
+DistributionFactory, GeneralizedPareto
+
 Notes
 -----
 Several estimators are available to build a :class:`~openturns.GeneralizedPareto` distribution
@@ -105,9 +109,16 @@ Where :math:`\xi^*` maximizes:
 
 under the constraint :math:`-1 \leq \xi \leq 1`.
 
-See also
---------
-DistributionFactory, GeneralizedPareto"
+The following :class:`~openturns.ResourceMap` entries can be used to tweak
+the parameters of the optimization solver involved in the different estimators:
+
+- `GeneralizedParetoFactory-DefaultOptimizationAlgorithm`
+- `GeneralizedParetoFactory-MaximumEvaluationNumber`
+- `GeneralizedParetoFactory-MaximumAbsoluteError`
+- `GeneralizedParetoFactory-MaximumRelativeError`
+- `GeneralizedParetoFactory-MaximumObjectiveError`
+- `GeneralizedParetoFactory-MaximumConstraintError`
+"
 
 // ---------------------------------------------------------------------
 

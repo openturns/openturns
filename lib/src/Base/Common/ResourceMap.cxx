@@ -1130,6 +1130,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
+  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "TNC");
 
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
