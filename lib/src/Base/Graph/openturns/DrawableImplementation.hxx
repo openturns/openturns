@@ -301,7 +301,7 @@ protected:
   Scalar lineWidth_;
 
   /** Explicit color validation flag */
-  Bool isColorExplicitlySet_;
+  Bool isColorExplicitlySet_ = false;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

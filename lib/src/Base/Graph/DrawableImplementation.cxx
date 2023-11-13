@@ -1050,7 +1050,6 @@ DrawableImplementation::DrawableImplementation()
   , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
   , lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
-  , isColorExplicitlySet_(false)
 {
   // Nothing to do
 }
@@ -1065,8 +1064,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
     fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth")),
-    isColorExplicitlySet_(false)
+    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
 {
   setName(legend);
   if(IsFirstInitialization)
