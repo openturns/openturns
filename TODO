@@ -18,3 +18,4 @@ Remove ApproximationAlgorithm.setVerbose/getVerbose
 Remove EllipticalDistribution.setCorrelation/getCorrelation
 Remove EllipticalDistribution.setMean
 Remove Distribution.computeDensityGenerator
+Remove Point.clean
