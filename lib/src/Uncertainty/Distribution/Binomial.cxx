@@ -142,7 +142,7 @@ Scalar Binomial::computeComplementaryCDF(const Point & point) const
 
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
-  if (k > n_ + supportEpsilon_) return 0.0;
+  if (k > n_ - supportEpsilon_) return 0.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
   Scalar value = DistFunc::pBeta(floor(k) + 1, n_ - floor(k), p_);
   return value;
