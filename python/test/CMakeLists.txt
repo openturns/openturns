@@ -716,6 +716,7 @@ ot_pyinstallcheck_test (OrthogonalBasis_std)
 ot_pyinstallcheck_test (OrthogonalUniVariatePolynomialFunctionFactory_std)
 ot_pyinstallcheck_test (FourierSeriesFactory_std)
 ot_pyinstallcheck_test (HaarWaveletFactory_std)
+ot_pyinstallcheck_test (OrthogonalProductPolynomialFactory_std)
 
 ## Algorithm
 ot_pyinstallcheck_test (TaylorExpansionMoments_std)

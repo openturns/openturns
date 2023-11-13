@@ -86,6 +86,9 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** html converter */
+  String _repr_html_() const override;
+
   /** Function implementation accessors */
   void setEvaluation(const Evaluation & evaluation);
   Evaluation getEvaluation() const;

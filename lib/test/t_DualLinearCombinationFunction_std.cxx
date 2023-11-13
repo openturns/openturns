@@ -60,6 +60,8 @@ int main(int, char *[])
     inPoint[1] = 2.3;
     inPoint[2] = 3.4;
     fullprint << "myFunction=" << myFunction << std::endl;
+    fullprint << "myFunction (HTML)=" << std::endl;
+    fullprint << myFunction._repr_html_() << std::endl;
     fullprint << "Value at " << inPoint << "=" << myFunction(inPoint) << std::endl;
     fullprint << "Gradient at " << inPoint << "=" << myFunction.gradient(inPoint) << std::endl;
     PlatformInfo::SetNumericalPrecision(5);

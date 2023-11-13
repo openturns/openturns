@@ -68,6 +68,9 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** String converter */
+  String _repr_html_() const override;
+
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);
   Description getDescription() const;

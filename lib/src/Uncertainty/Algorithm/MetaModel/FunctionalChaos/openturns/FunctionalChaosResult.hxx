@@ -31,7 +31,6 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
 
 

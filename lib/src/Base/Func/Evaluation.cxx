@@ -72,6 +72,12 @@ String Evaluation::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* String converter */
+String Evaluation::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
+}
+
 /* Description Accessor */
 void Evaluation::setDescription(const Description & description)
 {
