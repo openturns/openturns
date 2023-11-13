@@ -43,3 +43,12 @@ Create an openturns matrix from a **square** numpy 2d-array (or matrix, or
 and back
 
 >>> np_matrix = np.matrix(ot_matrix)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareComplexMatrix::getDimension
+"Accessor to the dimension (the number of rows).
+
+Returns
+-------
+dimension : int"
