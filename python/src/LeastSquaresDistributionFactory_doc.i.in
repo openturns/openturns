@@ -8,19 +8,21 @@ distribution : :class:`~openturns.Distribution`
 
 Notes
 -----
-Implements generic least-squares estimation.
+The method fits a scalar distribution to data of dimension 1, using a least-squares minimization method.
 
-Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`p_{\vect{\theta}}`
-the particular distribution of probability density function we want to fit to the sample,
-and :math:`\vect{\theta} \in \Theta \in \Rset^p` its the parameter vector.
+Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`F_{\vect{\theta}}`
+the  cumulative distribution function we want to fit to the sample,
+and :math:`\vect{\theta} \in  \Theta \subset\Rset^p`  its parameter vector.
+
+let :math:`\hat{F}` denote the empirical cumulative distribution function built from the sample.
 
 
-The parameters :math:`\vect{\theta}` are numerically optimized so as the
-parametric :math:`CDF_{\vect{\theta}}` gets close enough to the empirical :math:`\hat{CDF}`:
+The estimator :math:`\hat{\theta}` minimizes the mean square error between
+:math:`F_{\vect{\theta}}` and :math:`\hat{F}` on the empirical quantiles.It is defined as:
 
 .. math::
 
-    \min_{\vect{\theta} \in \Rset} \sum_{i=1}^{n} \left( CDF_{\vect{\theta}}(\vect{x}_i) - \hat{CDF}(\vect{x}_i) \right) ^2
+    \hat{\theta} = \argmin_{\vect{\theta} \in \Theta} \sum_{i=1}^{n} \left( F_{\vect{\theta}}(\vect{x}_i) - F_{\hat{\vect{\theta}}}(\vect{x}_i) \right) ^2
 
 See also
 --------

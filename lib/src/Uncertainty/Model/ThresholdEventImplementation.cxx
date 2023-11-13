@@ -199,6 +199,11 @@ Point ThresholdEventImplementation::getRealization() const
   return Point(1, operator_(CompositeRandomVector::getRealization()[0], threshold_));
 }
 
+Point ThresholdEventImplementation::getFrozenRealization(const Point & fixedPoint) const
+{
+  return Point(1, operator_(CompositeRandomVector::getFrozenRealization(fixedPoint)[0], threshold_));
+}
+
 /* Numerical sample accessor */
 Sample ThresholdEventImplementation::getSample(const UnsignedInteger size) const
 {
@@ -210,6 +215,22 @@ Sample ThresholdEventImplementation::getSample(const UnsignedInteger size) const
   // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
   // in place of the realizations of the antecedent
   for (UnsignedInteger i = 0; i < size; ++i) returnSample(i, 0) = operator_(returnSample(i, 0), threshold_);
+  returnSample.setName("ThresholdEventImplementation sample");
+  returnSample.setDescription(getDescription());
+  return returnSample;
+}
+
+Sample ThresholdEventImplementation::getFrozenSample(const Sample & fixedSample) const
+{
+  // We don't build the return sample element by element because it doesn't
+  // use the potential distribution of the computation. As the returned
+  // sample can be huge, we use it twice in place
+  // First, it stores the sample of its antecedent obtained with the values
+  // of the root cause stored in fixedSample.
+  Sample returnSample(CompositeRandomVector::getFrozenSample(fixedSample));
+  // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
+  // in place of the realizations of the antecedent
+  for (UnsignedInteger i = 0; i < fixedSample.getSize(); ++i) returnSample(i, 0) = operator_(returnSample(i, 0), threshold_);
   returnSample.setName("ThresholdEventImplementation sample");
   returnSample.setDescription(getDescription());
   return returnSample;
@@ -243,6 +264,11 @@ Description ThresholdEventImplementation::getParameterDescription() const
 Bool ThresholdEventImplementation::isEvent() const
 {
   return true;
+}
+
+RandomVector ThresholdEventImplementation::asComposedEvent() const
+{
+  return RandomVector(clone());
 }
 
 /* Method save() stores the object through the StorageManager */

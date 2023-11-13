@@ -57,10 +57,10 @@ Examples
 -1.11803 + 3.3541 * x0^2
 >>> termBasis = productBasis.build(5)
 >>> print(termBasis.getEvaluation())
-(1.73205 * x0) * (-1 + x1)
+1.73205 * x0 * (-1 + x1)
 >>> termBasis2 = productBasis.build([1,1,0])
 >>> print(termBasis2.getEvaluation())
-(1.73205 * x0) * (-1 + x1)"
+1.73205 * x0 * (-1 + x1)"
 %enddef
 %feature("docstring") OT::OrthogonalFunctionFactory::build
 OT_OrthogonalBasis_build_doc

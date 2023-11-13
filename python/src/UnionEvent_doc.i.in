@@ -86,13 +86,3 @@ Returns
 -------
 events : :class:`~openturns.RandomVectorCollection`
     List of sub events."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::UnionEvent::getComposedEvent
-"Accessor to the composed event.
-
-Returns
--------
-composed : :class:`~openturns.RandomVector`
-    Composed event."

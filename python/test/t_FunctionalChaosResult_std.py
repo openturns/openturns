@@ -69,3 +69,11 @@ chaosResult = chaosAlgo.getResult()
 print(chaosResult)
 print(chaosResult._repr_html_())
 print(chaosResult._repr_markdown_())
+
+composedMetamodel = chaosResult.getComposedMetaModel()
+print("Composed metamodel =")
+print(composedMetamodel._repr_html_())
+
+metamodel = chaosResult.getMetaModel()
+print("Metamodel =")
+print(metamodel._repr_html_())

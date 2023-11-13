@@ -1,12 +1,12 @@
 %feature("docstring") OT::DistFunc::logdBinomial
-"Logarithm of the probability function of a binomial distribution.
+"Logarithm of the probability distribution function of a binomial distribution.
 
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 k : int
     The number of success.
 
@@ -29,14 +29,14 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::dBinomial
-"Probability function of a binomial distribution.
+"probability distribution function of a binomial distribution.
 
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 k : int
     The number of success.
 
@@ -64,16 +64,16 @@ Examples
 Parameters
 ----------
 n : int, :math:`n>0`
-    The number of trials
+    The number of trials.
 p : float, :math:`0\leq p\leq 1`
-    The success probability of each trial
+    The success probability of each trial.
 size : int
     The number of realizations to generate.
 
 Returns
 -------
 realizations : int or :class:`~openturns.Indices`
-    The realizations of the discrete disctribution.
+    The realizations of the distribution.
 
 Notes
 -----
@@ -93,16 +93,15 @@ Examples
 
 Parameters
 ----------
-probabilities : sequence of float
-    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`,
-    where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
+probabilities : sequence of float, :math:`(p_1, \dots, p_n)\in[0,1]` with :math:`\sum_{k=1}^n p_k=1`,
+    The probabilities of the discrete distribution.
 size : int
     The number of realizations to generate.
 
 Returns
 -------
 realizations : int or :class:`~openturns.Indices`
-    The realizations of the discrete disctribution.
+    The realizations of the distribution.
 
 Notes
 -----
@@ -120,18 +119,18 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::logdHypergeometric
-"Logarithm of the probability function of an hypergeometric distribution.
+"Logarithm of the probability distribution function of an hypergeometric distribution.
 
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The size of the sample.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the sample.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 
 Returns
 -------
@@ -152,18 +151,18 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::dHypergeometric
-"The probability function of an hypergeometric distribution.
+"The probability distribution function of an hypergeometric distribution.
 
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The  size of the sample.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the sample.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 
 Returns
 -------
@@ -184,20 +183,22 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pHypergeometric
-"The cumulative probability function of an hypergeometric distribution.
+"Cumulative distribution function of an hypergeometric distribution.
 
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The size of the sample.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the sample.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 x : int, :math:`x\geq 0`
-    The number of candidates in a draw
+    The number of candidates in a draw.
 tail : bool
-    Flag to tell if it is the CDF or its complement which is evaluated
+    Tail flag.
+
+    If True, the complementary CDF is computed.
 
 Returns
 -------
@@ -206,7 +207,7 @@ p : float
 
 Notes
 -----
-This method is based on a summation of the probability function toward the upper
+This method is based on a summation of the probability distribution function towards the upper
 bound or the lower bound of the range depending on the position of :math:`x` wrt
 the mode :math:`\left\lfloor\dfrac{(k+1)(m+1)}{n+2}\right\rfloor` of the
 distribution, then take the complement if needed.
@@ -225,18 +226,18 @@ Examples
 Parameters
 ----------
 n : int, :math:`n\geq 0`
-    The population size
+    The size of the sample.
 k : int, :math:`0\leq k\leq n`
-    The number of candidates in the population
+    The number of candidates in the sample.
 m : int, :math:`0\leq m\leq n`
-    The number of individuals in a draw
+    The number of individuals in a draw.
 size : int
     The number of realizations to generate.
 
 Returns
 -------
 realizations : int or :class:`~openturns.Indices`
-    The realizations of the discrete disctribution.
+    The realizations of the distribution.
 
 Notes
 -----
@@ -252,16 +253,17 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::dNormal
-"PDF of an unit-variance centered Normal distribution.
+"PDF of a unit-variance centered Normal distribution.
 
 Parameters
 ----------
 x : float or sequence of floats
-    Location
+    Location.
 
 Returns
 -------
 pdf : float or sequence of floats
+    The PDF at :math:`x`.
 
 Examples
 --------
@@ -272,16 +274,17 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::logdNormal
-"log-PDF of an unit-variance centered Normal distribution.
+"Log-PDF of a unit-variance centered Normal distribution.
 
 Parameters
 ----------
 x : float
-    Location
+    Location.
 
 Returns
 -------
 logPdf : float
+    The log-PDF at :math:`x`.
 
 Examples
 --------
@@ -291,39 +294,126 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pNormal
-"CDF of an unit-variance centered Normal distribution.
+"Cumulative distribution function of a unit-variance centered Normal distribution.
 
 Parameters
 ----------
 x : float
-    Location
-tail : bool, default=False
-    Tail flag
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-cdf : float
+p: float
+    The CDF or the complementary CDF at point :math:`x`.
 
 Examples
 --------
 >>> import openturns as ot
 >>> cdf = ot.DistFunc.pNormal(0.9)"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNormal2D
+"Cumulative distribution function  of an 2D standard Normal distribution.
+
+Parameters
+----------
+x1 : float
+    First component of :math:`\vect{x}`.
+x2 : float, :math:`\sigma >0`
+    Second component of :math:`\vect{x}`.
+rho : float
+    Correlation between the first and second margin.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at point
+    :math:`\vect{x} = (x_1, x_2)`.
+
+Notes
+-----
+The Normal distribution is bidimensional, centered and with a unit-variance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pNormal2D(1.0, 1.0, 0.9)
+>>> cdf = ot.DistFunc.pNormal2D(1.0, 1.0, 0.9, True)"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNormal3D
+"Cumulative distribution function of a 3D Normal distribution.
+
+Parameters
+----------
+x1 : float
+    First component of :math:`\vect{x}`.
+x2 : float, :math:`\sigma >0`
+    Second component of :math:`\vect{x}`.
+x3 : float
+    Third component of :math:`\vect{x}`.
+rho12 : float
+    Correlation between the first and second margin.
+rho13 : float
+    Correlation between the first and third margin.
+rho23 : float
+    Correlation between the second and third margin.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at point
+    :math:`\vect{x} = (x_1, x_2, x_3)`.
+
+Notes
+-----
+The Normal distribution is tridimensional, centered and with a unit-variance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pNormal3D(1.0, 0.5, 2.5, 0.5, 0.2, 0.0)
+>>> cdf = ot.DistFunc.pNormal3D(1.0, 0.5, 2.5, 0.5, 0.2, 0.0, True)"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::logpNormal
-"log-CDF of an unit-variance centered Normal distribution.
+"Log-CDF of a unit-variance centered Normal distribution.
 
 Parameters
 ----------
 x : float
-    Location
-tail : bool, default=False
-    Tail flag
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the log-complementary CDF is computed.
 
 Returns
 -------
 logCdf : float
+    The log-CDF or the log-complementary CDF at :math:`x`.
+    
 
 Examples
 --------
@@ -333,15 +423,21 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::qNormal
-"Quantile of an unit-variance centered Normal distribution.
+"Quantile of a unit-variance centered Normal distribution.
 
 Parameters
 ----------
-prob : float
+p: float, in :math:`[0,1]`
+   The probability.
 
 Returns
 -------
 q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+This method is based on Peter John Acklam's algorithm, described in [acklam2017]_.
 
 Examples
 --------
@@ -351,11 +447,18 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::rNormal
-"Realization of an unit-variance centered Normal distribution.
+"Realization of a unit-variance centered Normal distribution.
 
+
+Parameters
+----------
+size : int
+    The number of realizations to generate.
+    
 Returns
 -------
-realization : float
+realizations : float or sequence of float
+    The realizations of the distribution.
 
 Examples
 --------
@@ -366,21 +469,21 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::kFactorPooled
-"Exact margin factor for bilateral covering interval of pooled Normal populations.
+"Exact margin factor for bilateral covering interval of pooled Normal samples.
 
 Parameters
 ----------
 n : int
-    The size of the population
+    The size of the sample.
 
 m : int
-    The size of the pool
+    The size of the pool.
 
 p : float :math:`0<p<1`
-    The probability level of the covering interval
+    The probability level of the covering interval.
 
 alpha : float :math:`0<\alpha<1`
-    The confidence level of the covering interval
+    The confidence level of the covering interval.
 
 Returns
 -------
@@ -390,11 +493,11 @@ k : float
 Notes
 -----
 This method allows one to compute the *exact* margin factor :math:`k` of a
-pool of :math:`m` Normal populations of size :math:`n` with unknown
+pool of :math:`m` Normal samples of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`.
 This implements the standard NF ISO 16269-6. 
 Let :math:`m_i=\dfrac{1}{n}\sum_{j=1}^nX_{ij}` be the empirical mean
-of the ith population :math:`(X_{i1},\dots,X_{in})` and
+of the ith sample :math:`(X_{i1},\dots,X_{in})` and
 :math:`\sigma^2_{mn}=\dfrac{}{}\sum_{i=1}^m\sum_{j=1}^n(X_{ij}-m_i)^2`
 the empirical *pooled* variance. The covering factor :math:`k` is such
 that the intervals :math:`[m_i-k\sigma_{mn},m_i+k\sigma_{mn}]` satisfy:
@@ -430,28 +533,28 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::kFactor
-"Exact margin factor for bilateral covering interval of a Normal population.
+"Exact margin factor for bilateral covering interval of a Normal sample.
 
 Parameters
 ----------
 n : int
-    The size of the population
+    The size of the sample.
 
 p : float :math:`0<p<1`
-    The probability level of the covering interval
+    The probability level of the covering interval.
 
 alpha : float :math:`0<\alpha<1`
-    The confidence level of the covering interval
+    The confidence level of the covering interval.
 
 Returns
 -------
 k : float
-    The margin factor
+    The margin factor.
 
 Notes
 -----
 This method allows one to compute the *exact* margin factor :math:`k` of a
-Normal population of size :math:`n` with unknown
+Normal sample of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
 This implements the standard NF ISO 16269-6. 
@@ -464,32 +567,38 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pPearsonCorrelation
-"Asymptotic probability function for the Pearson :math:`\rho` correlation.
+"Cumulative distribution function  of the Pearson statistic distribution.
 
 Parameters
 ----------
 n : int
-    The size of the population
+    The size of the samples.
 
-rho : float :math:`-1<rho<1`
-    The Pearson correlation coefficient
+rho : float, :math:`-1<rho<1`
+    The Pearson correlation coefficient.
 
 tail : bool
-    Tells if we consider to be in the critical region (tTrue)
-    Default value is False
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
 
 Returns
 -------
-pvalue : float
-    The probability to be in the region of interest
+p: float
+    The CDF or its complementary of the Pearson statistic distribution.
 
 Notes
 -----
-This method allows one to compute the *asymptotic* distribution of the
-`Pearson` correlation coefficient issued from two univariate samples
-of size `n`. Basically, we want to measure how coefficient is significatly
-different from `0`. If `tail` is True, the issued value measures probability
-to be in the critical region.
+This method enables to test whether an observed value of the Pearson correlation :math:`\rho`
+is significantly different from zero. It implements the distribution of the statistic under the
+null hypothesis where the Pearson correlation is assumed to be not significantly different from 0.
+
+The CDF value is the probability that the statistic is lower than or equal
+to the value calculated from :math:`\rho`. The complementary CDF value is the p-value.
+
+We use the Student asymptotic approximation of the statistic distribution.
 
 Examples
 --------
@@ -499,12 +608,12 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::logdPoisson
-"Logarithm of the probability function of a Poisson distribution.
+"Logarithm of the probability distribution function of a Poisson distribution.
 
 Parameters
 ----------
-lambda: float, :math:`\lambda\geq 0`
-    The intensity of the Poisson distribution
+lambda : float, :math:`\lambda \geq 0`
+    The intensity of the Poisson distribution.
 k : int
     The number of success.
 
@@ -527,12 +636,12 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::dPoisson
-"Probability function of a Poisson distribution.
+"probability distribution function of a Poisson distribution.
 
 Parameters
 ----------
-lambda: float, :math:`\lambda\geq 0`
-    The intensity of the Poisson distribution
+lambda : float, :math:`\lambda \geq 0`
+    The intensity of the Poisson distribution.
 k : int
     The number of success.
 
@@ -559,15 +668,15 @@ Examples
 
 Parameters
 ----------
-lambda: float, :math:`\lambda\geq 0`
-    The intensity of the Poisson distribution
+lambda : float, :math:`\lambda \geq 0`
+    The intensity of the Poisson distribution.
 size : int
     The number of realizations to generate.
 
 Returns
 -------
 realizations : int or :class:`~openturns.Indices`
-    The realizations of the discrete disctribution.
+    The realizations of the distribution.
 
 Notes
 -----
@@ -583,42 +692,483 @@ Examples
 >>> r = ot.DistFunc.rPoisson(5.0)
 >>> r = ot.DistFunc.rPoisson(5.0, 10)"
 
+
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DistFunc::dNonCentralChiSquare
-"Probability function of a NonCentralChiSquare distribution.
+%feature("docstring") OT::DistFunc::qPoisson
+"Quantile of a Poisson distribution.
 
 Parameters
 ----------
-nu : float
-lambda : float
-x : float
-precision : float, optional
-maximum_iteration : int, optional
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
 -------
-p : float"
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+This method is based on Mikes Giles' algorithm, described in [giles2013]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qPoisson(2.0, 0.95)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qPoisson
+"Quantile of a Poisson distribution.
+
+Parameters
+----------
+lambda : float, :math:`\lambda \geq 0`
+    The intensity of the Poisson distribution.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+This method is based on Mikes Giles' algorithm, described in [giles2013]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qPoisson(2.0, 0.95)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dNonCentralChiSquare
+"Probability density function of a NonCentralChiSquare distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+lambda : float, :math:`\lambda \geq 0`
+    The :math:`\lambda` parameter.
+x : float
+    The location.
+precision : float, optional
+    The precision of the algorithm.
+    
+    Default value is fixed in the  :class:`~openturns.ResourceMap`,
+    key (scalar) *DistFunc-Precision*.
+maximum_iteration : int, optional
+    The max number of iterations of the algorithm.
+    
+    Default value is fixed in the  :class:`~openturns.ResourceMap`,
+    key (integer) *DistFunc-MaximumIteration*.
+
+Returns
+-------
+d : float
+    The PDF at :math:`x`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \sum_{j=0}^{\infty} e^{-\lambda}
+                                 \frac{\lambda^j}{j!}p_{\chi^2(\nu + 2j)}(x),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(q)}` is the probability density function of a
+:math:`\chi^2(q)` random variate.
+
+We use the algorithms described in [benton2003]_
+and Johnson and al algorithm described in [johnson1995]_.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.dNonCentralChiSquare(2.5, 0.5, 1.0)
+>>> r = ot.DistFunc.dNonCentralChiSquare(2.5, 0.5, 10, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rNonCentralChiSquare
+"Realization of a NonCentralChiSquare distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+lambda : float, :math:`\lambda \geq 0`
+    The :math:`\lambda` parameter.
+size : int
+    The number of realizations (optional).
+    
+    Default value is 1.
+
+Returns
+-------
+realizations : float or sequence of float
+    The realizations of the distribution.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \sum_{j=0}^{\infty} e^{-\lambda}
+                                 \frac{\lambda^j}{j!}p_{\chi^2(\nu + 2j)}(x),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(q)}` is the probability density function of a
+:math:`\chi^2(q)` random variate.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rNonCentralChiSquare(2.5, 0.5)
+>>> r = ot.DistFunc.rNonCentralChiSquare(2.5, 0.5, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNonCentralChiSquare
+"Cumulative distribution function  of a NonCentralChiSquare.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+lambda : float, :math:`\lambda \geq 0`
+    The :math:`\lambda` parameter.
+x : float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+precision: float
+    The precision of the evaluation.
+maxInter : int
+    The maximum number of iterations of the algorithm.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at :math:`x`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \sum_{j=0}^{\infty} e^{-\lambda}
+                                 \frac{\lambda^j}{j!}p_{\chi^2(\nu + 2j)}(x),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(q)}` is the probability density function of a
+:math:`\chi^2(q)` random variate.
+
+We use Benton and Krishnamoorthy's algorithm described in [benton2003]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pNonCentralChiSquare(2.5, 2.7, 3.0, True, 0.001, 100)
+>>> cdf = ot.DistFunc.pNonCentralChiSquare(2.5, 2.7, 3.0, False, 0.001, 100)"
+
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::dNonCentralStudent
-"Probability function of a NonCentralStudent distribution.
+"Probability density function of a NonCentralStudent distribution.
 
 Parameters
 ----------
-nu : float
-delta : float
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+delta : float, :math:`\delta > 0`
+    The :math:`\nu` parameter.
 x : float
 
 Returns
 -------
-p : float"
+p : float
+    The PDF at point :math:`x`.
+
+Notes
+-----
+The position parameter  :math:`\gamma` is equal to zero.
+
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{exp \left(-\delta^2 / 2 \right)}
+                  {\sqrt{\nu\pi} \Gamma \left(\frac{\nu}{2} \right)}
+             \left(\frac{\nu}{\nu + x^2}\right) ^ {\frac{\nu + 1}{2}}
+             \sum_{j=0}^{\infty}
+             \frac{\Gamma \left(\frac{\nu + j + 1}{2}\right)}{\Gamma(j + 1)}
+             \left(\delta(x - \gamma)
+             \sqrt{\frac{2}{\nu + x^2}}\right) ^ j,
+             \quad x \in \Rset
+
+With :math:`\Gamma` denotes Euler's Gamma function
+:meth:`~openturns.SpecFunc.Gamma`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.dNonCentralStudent(2.5, 0.5, 4.0)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rNonCentralStudent
+"Realization of a scalar NonCentralStudent distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+delta : float, :math:`\delta > 0`
+    The :math:`\delta` parameter.
+size : int
+    The number of realizations (optional).
+    
+    Default value is 1.
+
+Returns
+-------
+realizations : float or a sequence of float
+    The realizations of the distribution.
+
+Notes
+-----
+The position parameter  :math:`\gamma` is equal to zero.
+
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{exp \left(-\delta^2 / 2 \right)}
+                  {\sqrt{\nu\pi} \Gamma \left(\frac{\nu}{2} \right)}
+             \left(\frac{\nu}{\nu + x^2}\right) ^ {\frac{\nu + 1}{2}}
+             \sum_{j=0}^{\infty}
+             \frac{\Gamma \left(\frac{\nu + j + 1}{2}\right)}{\Gamma(j + 1)}
+             \left(\delta(x - \gamma)
+             \sqrt{\frac{2}{\nu + x^2}}\right) ^ j,
+             \quad x \in \Rset
+
+With :math:`\Gamma` denotes Euler's Gamma function
+:meth:`~openturns.SpecFunc.Gamma`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rNonCentralStudent(2.5, 0.5)
+>>> r = ot.DistFunc.rNonCentralStudent(2.5, 0.5, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNonCentralStudent
+"Cumulative distribution function  of a NonCentralStudent distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+delta : float, :math:`\delta > 0`
+    The :math:`\nu` parameter.
+x : float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at x.
+
+Notes
+-----
+The position parameter  :math:`\gamma` is equal to zero.
+
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{exp \left(-\delta^2 / 2 \right)}
+                  {\sqrt{\nu\pi} \Gamma \left(\frac{\nu}{2} \right)}
+             \left(\frac{\nu}{\nu + x^2}\right) ^ {\frac{\nu + 1}{2}}
+             \sum_{j=0}^{\infty}
+             \frac{\Gamma \left(\frac{\nu + j + 1}{2}\right)}{\Gamma(j + 1)}
+             \left(\delta(x - \gamma)
+             \sqrt{\frac{2}{\nu + x^2}}\right) ^ j,
+             \quad x \in \Rset
+
+With :math:`\Gamma` denotes Euler's Gamma function
+:meth:`~openturns.SpecFunc.Gamma`.
+
+We use Viktor Witkovsky's algorithm described in [witkovsky2003]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pNonCentralStudent(2.5, 3.5, 9.5)
+>>> cdf = ot.DistFunc.pNonCentralStudent(2.5, 3.5, 9.5, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qStudent
+"Quantile of a scalar Student distribution.
+
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{\sqrt{\nu}B(1/2, \nu/2)} \left(1+ \dfrac{x^2}{\nu}\right)^{-\dfrac{\nu+1}{2}} \quad x \in \Rset
+
+with :math:`\nu > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qStudent(2.0, 0.95)"
+
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pStudent
+"Cumulative distribution function  of a scalar Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+x : float or sequence of float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float or sequence of float
+    The CDF or the complementary CDF at x or at each :math:`x[i]`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{\sqrt{\nu}B(1/2, \nu/2)} \left(1+ \dfrac{x^2}{\nu}\right)^{-\dfrac{\nu+1}{2}} \quad x \in \Rset
+
+with :math:`\nu > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pStudent(2.5, 0.9)
+>>> cdf = ot.DistFunc.pStudent(2.5, 0.9, True)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rStudent
+"Realization of a scalar Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+size : int
+    The number of realizations (optional).
+    
+    Default value is 1.
+
+Returns
+-------
+realization : float or a sequence of float
+    The realizations of the  distribution.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{\sqrt{\nu}B(1/2, \nu/2)} \left(1+ \dfrac{x^2}{\nu}\right)^{-\dfrac{\nu+1}{2}} \quad x \in \Rset
+
+with :math:`\nu > 0`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rStudent(2.5)
+>>> r = ot.DistFunc.rStudent(2.5, 10)"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::eZ1
-"Expectation of the min of n independent standard normal random variables.
+"Expectation of the min of *n* independent standard normal random variables.
 
 Parameters
 ----------
@@ -626,7 +1176,8 @@ n : int
 
 Returns
 -------
-mu : float"
+mu : float
+    The mean value of the min of *n* independent standard normal random variables."
 
 // ---------------------------------------------------------------------
 
@@ -648,8 +1199,8 @@ This method samples the barycentric coordinates, allowing to work in any dimensi
 
 Returns
 -------
-realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    The realizations of the uniform disctribution.
+realizations : float or sequence of float
+    The realizations of the  distribution.
 
 Examples
 --------
@@ -682,8 +1233,8 @@ This method samples the barycentric coordinates, allowing to work in any dimensi
 
 Returns
 -------
-realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    The realizations of the uniform disctribution.
+realizations : float or sequence of float
+    The realizations of the distribution.
 
 Examples
 --------
@@ -719,8 +1270,8 @@ This method samples the barycentric coordinates, allowing to work in any dimensi
 
 Returns
 -------
-realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    The realizations of the uniform disctribution.
+realizations : float or sequence of float
+    The realizations of the  distribution.
 
 Examples
 --------
@@ -751,8 +1302,8 @@ This method samples the barycentric coordinates, allowing to work in any dimensi
 
 Returns
 -------
-realizations : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    The realizations of the uniform disctribution.
+realizations : float or sequence of float
+    The realizations of the  distribution.
 
 Examples
 --------
@@ -765,3 +1316,738 @@ Examples
 ...             [1, 3, 1, 4, 1, 5]]
 >>> r = ot.DistFunc.rUniformSimplex(vertices)
 >>> r = ot.DistFunc.rUniformSimplex(vertices, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pBeta
+"Cumulative distribution function  of a Beta distribution on :math:`[0,1]`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Parameter :math:`\beta`.
+x : float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at :math:`x`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{B(\alpha, \beta)}x^{(\alpha-1)}(1-x)^{(\beta-1)} \quad x \in [0,1]
+    
+with :math:`\alpha, \beta > 0` and where :math:`\rm B` denotes
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pBeta(2.5, 3.5, 0.9)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qBeta
+"Quantile of a Beta distribution on :math:`[0,1]`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Parameter :math:`\beta`.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{B(\alpha, \beta)}x^{(\alpha-1)}(1-x)^{(\beta-1)} \quad x \in [0,1]
+    
+with :math:`\alpha, \beta > 0` and where :math:`\rm B` denotes
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qBeta(2.5, 3.5, 0.95)
+>>> q = ot.DistFunc.qBeta(2.5, 3.5, 0.95, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rBeta
+"Realization of a Beta distribution on :math:`[0,1]`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Parameter :math:`\beta`.
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : float or sequence of float
+    The realizations of the  distribution.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{B(\alpha, \beta)}x^{(\alpha-1)}(1-x)^{(\beta-1)} \quad x \in [0,1]
+    
+with :math:`\alpha, \beta > 0` and where :math:`\rm B` denotes
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
+
+This method is based on Cheng's algorithm (1978) and Johnk, Atkinson and Whittaker's algorithm (1979)
+described in [devroye1986]_ with the important errata [devroye1986b]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rBeta(2.5, 3.5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pGamma
+"Cumulative distribution function  of a Gamma distribution on :math:`[0,+\infty[`.
+
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+x : float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p: float
+    The CDF or the complementary CDF at x.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{\Gamma(k)}
+             \left(x )\right)^{k - 1}
+             \exp\left(- x)\right),
+             \quad x \in [0; +\infty[
+
+with :math:`k, \lambda > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pGamma(2.5, 0.9)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qGamma
+"Quantile of a Gamma distribution on :math:`[0,+\infty[`.
+
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+x : float
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+The probability density function is defined as:
+
+
+.. math::
+
+    f_X(x) = \frac{1}{\Gamma(k)}
+             \left(x )\right)^{k - 1}
+             \exp\left(- x)\right),
+             \quad x \in [0; +\infty[
+
+with :math:`k, \lambda > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qGamma(2.5, 0.95)
+>>> q = ot.DistFunc.qGamma(2.5, 0.95, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rGamma
+"Realization of a Gamma distribution on :math:`[0,+\infty[`.
+
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : float or sequence of float
+    The realizations of the  distribution.
+
+Notes
+-----
+The probability density function is defined as:
+
+
+.. math::
+
+    f_X(x) = \frac{1}{\Gamma(k)}
+             \left(x )\right)^{k - 1}
+             \exp\left(- x)\right),
+             \quad x \in [0; +\infty[
+
+This method is based on the algorithm (1979) described in [marsaglia2000]_ with a small
+optimization on the :math:`\beta` parameter that appears in the squeezing
+function :math:`(1 + beta * x^4)*exp(-x^2/2)`. We also add the special treatment of
+the case :math:`k < 1`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rGamma(2.5)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pKolmogorov
+"Cumulative distribution function  of a Kolmogorov distribution.
+
+Parameters
+----------
+n : int
+    The number of the iid observations.
+x : float
+    Location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or the complementary CDF at x.
+
+Notes
+-----
+The Kolmogorov distribution is the distribution of :math:`D_n = \sup_y \|F(y) - F_n(y) \|`
+where :math:`F_n` is the empirical cumulative distribution built from :math:`n` independent and identically
+distributed observations and :math:`F` the cumulative distribution  to be tested.
+
+We use the algorithm and the selection  strategy is described in [simard2011]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pKolmogorov(100, 0.1)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pSpearmanCorrelation
+"Cumulative distribution function  of a the Spearman correlation distribution.
+
+Parameters
+----------
+n : int
+    The number of distinct ranks.
+rho : float
+    Location.
+tail : bool
+    Tail flag. 
+
+    Default value is False.
+    
+    If True, the complementary CDF is computed.
+ties : bool
+    Indicates whether ties in the samples are taken into account.
+
+    Default value is False.
+
+Returns
+-------
+p : float
+    The CDF or its complementary of the Spearman statistic distribution.
+
+Notes
+-----
+This method enables to test whether an observed value of the Spearman correlation :math:`\rho`
+is significantly different from zero. It implements the distribution of the statistic under the
+null hypothesis where the Spearmann correlation is assumed to be not significantly different from 0.
+
+The CDF value is the probability that the statistic is lower than or equal
+to the value calculated from :math:`\rho`. The complementary CDF value is the p-value.
+
+When there is no tie, we use the tabulated exact distribution of the statistic for small sample
+size thanks to the values given in [luke]_ and the Edgeworth
+expansion for the other sample sizes.
+
+When there are ties, we use the Student asymptotic approximation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pSpearmanCorrelation(100, 0.1)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qDickeyFullerTrend
+"Quantile of the Dickey-Fuller statistic.
+
+Parameters
+----------
+p : float
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with drift and trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the  null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r) \di{W(r)}}{\int_{1}^{0} W^{b}(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qDickeyFullerTrend(0.01)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qDickeyFullerConstant
+"Quantile of the Dickey-Fuller statistic.
+
+Parameters
+----------
+p : float
+    The probability.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with drift but no trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the  null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) \di{W(r)}}{\int_{1}^{0} W^{a}(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qDickeyFullerConstant(0.01)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qDickeyFullerNoConstant
+"Quantile of the Dickey-Fuller statistic.
+
+Parameters
+----------
+p : float
+    The probability.
+x : float
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with no drift nor trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the  null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W(r) \di{W(r)}}{\int_{1}^{0} W(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qDickeyFullerNoConstant(0.01)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pDickeyFullerTrend
+"Cumulative distribution function of the Dickey-Fuller statistic.
+
+Parameters
+----------
+x : float
+    The location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or its complementary at :math:`x`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with drift and trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the  null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r) \di{W(r)}}{\int_{1}^{0} W^{b}(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.pDickeyFullerTrend(5.4)
+>>> q = ot.DistFunc.pDickeyFullerTrend(5.4, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pDickeyFullerConstant
+"Cumulative distribution function of the Dickey-Fuller statistic.
+
+Parameters
+----------
+x : float
+    The location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or its complementary at :math:`x`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with drift but no trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the  null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) \di{W(r)}}{\int_{1}^{0} W^{a}(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.pDickeyFullerConstant(5.4)
+>>> q = ot.DistFunc.pDickeyFullerConstant(5.4, True)"
+
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DistFunc::pDickeyFullerNoConstant
+"Cumulative distribution function of the Dickey-Fuller statistic.
+
+Parameters
+----------
+x : float
+    The location.
+tail : bool
+    Tail flag.
+
+    Default value is False.
+
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or its complementary at :math:`x`.
+
+Notes
+-----
+
+Refer to :ref:`dickey_fuller`.
+
+
+Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
+:math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+
+The Dickey-Fuller statistic is the asymptotic distribution of the Student statistic used to test the model with no drift nor trend in a time series: 
+
+.. math::
+
+    \boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}
+
+We test:
+
+.. math::
+
+    \left\{
+    \begin{array}{lr}
+      \cH_0: & \rho = 1 \\
+      \cH_1: & \rho < 1
+    \end{array}
+    \right.
+
+thanks to the Student statistic defined by:
+
+.. math::
+
+    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+
+where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`. Under
+the null hypothesis :math:`\cH_0`, :math:`t_{\rho=1}` converges towards the Dickey-Fuller distribution:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W(r) \di{W(r)}}{\int_{1}^{0} W(r)^2 \di{r}}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.pDickeyFullerNoConstant(5.4)
+>>> q = ot.DistFunc.pDickeyFullerNoConstant(5.4, True)"

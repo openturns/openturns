@@ -63,6 +63,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String _repr_html_() const override;
 
   /** Evaluation operator */
   Point operator () (const Point & inP) const override;

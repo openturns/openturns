@@ -1,6 +1,8 @@
 %feature("docstring") OT::FrankCopulaFactory
 "Frank Copula factory.
 
+Notes
+-----
 The parameters are estimated using the following equations:
 
 :math:`\Hat{\theta}_n` is solution of
@@ -18,3 +20,31 @@ where :math:`D` is the Debye function defined as
 See also
 --------
 DistributionFactory, FrankCopula"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FrankCopulaFactory::buildAsFrankCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsFrankCopula()
+
+    buildAsFrankCopula(*sample*)
+
+    buildAsFrankCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float of size 1
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.FrankCopula`
+    The estimated copula as a Frank copula.
+    
+    In the first usage, the default Frank copula is built."

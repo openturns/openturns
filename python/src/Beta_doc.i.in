@@ -4,13 +4,21 @@
 Parameters
 ----------
 alpha : float
-    Shape parameter :math:`\alpha > 0`
+    Shape parameter :math:`\alpha > 0`.
+    
+    Default value is 2.0.
 beta : float
-    Shape parameter :math:`\beta > 0`
+    Shape parameter :math:`\beta > 0`.
+    
+    Default value is 2.0.
 a : float
-    Lower bound
+    Lower bound.
+    
+    Default value is -1.0.
 b : float, :math:`b > a`
-    Upper bound
+    Upper bound.
+    
+    Default value is 1.0.
 
 Notes
 -----
@@ -172,3 +180,18 @@ mu : float
     Mean.
 sigma : float, :math:`\sigma > 0`
     Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::isElliptical
+"Test whether the distribution is elliptical.
+
+Returns
+-------
+test : bool
+    Answer.
+    
+Notes
+-----
+The Beta distribution is elliptical if :math:`\alpha = \beta`.
+"

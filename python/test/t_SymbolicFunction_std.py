@@ -243,3 +243,14 @@ f3 = f.getMarginal(2)
 assert f3.getOutputDimension() == 1
 y3 = f3(x)
 assert y3 == [3.0]
+
+# test print
+f = ot.SymbolicFunction(
+    ["x1", "x2", "x3"], ["x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)"]
+)
+print("print:")
+print(f)
+print("repr:")
+print(f.__repr__())
+print("HTML:")
+print(f._repr_html_())

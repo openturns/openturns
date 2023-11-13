@@ -1,0 +1,71 @@
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=2
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | HermiteFactory  |
+
+print() :
+type =  <class 'openturns.func.Function'>
+1
+1
+type =  <class 'openturns.func.Function'>
+1.73205 * x0
+1.73205 <span>&#215;</span> x0
+type =  <class 'openturns.func.Function'>
+x1
+x1
+type =  <class 'openturns.func.Function'>
+-1.11803 + 3.3541 * x0^2
+-1.11803 + 3.3541 <span>&#215;</span> x0<sup>2</sup>
+type =  <class 'openturns.func.Function'>
+1.73205 * x0 * x1
+1.73205 <span>&#215;</span> x0 <span>&#215;</span> x1
+type =  <class 'openturns.func.Function'>
+-0.707107 + 0.707107 * x1^2
+-0.707107 + 0.707107 <span>&#215;</span> x1<sup>2</sup>
+type =  <class 'openturns.func.Function'>
+-3.96863 * x0 + 6.61438 * x0^3
+-3.96863 <span>&#215;</span> x0 + 6.61438 <span>&#215;</span> x0<sup>3</sup>
+type =  <class 'openturns.func.Function'>
+(-1.11803 + 3.3541 * x0^2) * x1
+(-1.11803 + 3.3541 <span>&#215;</span> x0<sup>2</sup>) <span>&#215;</span> x1
+type =  <class 'openturns.func.Function'>
+1.73205 * x0 * (-0.707107 + 0.707107 * x1^2)
+1.73205 <span>&#215;</span> x0 <span>&#215;</span> (-0.707107 + 0.707107 <span>&#215;</span> x1<sup>2</sup>)
+type =  <class 'openturns.func.Function'>
+-1.22474 * x1 + 0.408248 * x1^3
+-1.22474 <span>&#215;</span> x1 + 0.408248 <span>&#215;</span> x1<sup>3</sup>
+type =  <class 'openturns.func.Function'>
+1.125 - 11.25 * x0^2 + 13.125 * x0^4
+1.125 - 11.25 <span>&#215;</span> x0<sup>2</sup> + 13.125 <span>&#215;</span> x0<sup>4</sup>
+type =  <class 'openturns.func.Function'>
+(-3.96863 * x0 + 6.61438 * x0^3) * x1
+(-3.96863 <span>&#215;</span> x0 + 6.61438 <span>&#215;</span> x0<sup>3</sup>) <span>&#215;</span> x1
+type =  <class 'openturns.func.Function'>
+(-1.11803 + 3.3541 * x0^2) * (-0.707107 + 0.707107 * x1^2)
+(-1.11803 + 3.3541 <span>&#215;</span> x0<sup>2</sup>) <span>&#215;</span> (-0.707107 + 0.707107 <span>&#215;</span> x1<sup>2</sup>)
+type =  <class 'openturns.func.Function'>
+1.73205 * x0 * (-1.22474 * x1 + 0.408248 * x1^3)
+1.73205 <span>&#215;</span> x0 <span>&#215;</span> (-1.22474 <span>&#215;</span> x1 + 0.408248 <span>&#215;</span> x1<sup>3</sup>)
+type =  <class 'openturns.func.Function'>
+0.612372 - 1.22474 * x1^2 + 0.204124 * x1^4
+0.612372 - 1.22474 <span>&#215;</span> x1<sup>2</sup> + 0.204124 <span>&#215;</span> x1<sup>4</sup>
+type =  <class 'openturns.func.Function'>
+6.21867 * x0 - 29.0205 * x0^3 + 26.1184 * x0^5
+6.21867 <span>&#215;</span> x0 - 29.0205 <span>&#215;</span> x0<sup>3</sup> + 26.1184 <span>&#215;</span> x0<sup>5</sup>
+type =  <class 'openturns.func.Function'>
+(1.125 - 11.25 * x0^2 + 13.125 * x0^4) * x1
+(1.125 - 11.25 <span>&#215;</span> x0<sup>2</sup> + 13.125 <span>&#215;</span> x0<sup>4</sup>) <span>&#215;</span> x1
+type =  <class 'openturns.func.Function'>
+(-3.96863 * x0 + 6.61438 * x0^3) * (-0.707107 + 0.707107 * x1^2)
+(-3.96863 <span>&#215;</span> x0 + 6.61438 <span>&#215;</span> x0<sup>3</sup>) <span>&#215;</span> (-0.707107 + 0.707107 <span>&#215;</span> x1<sup>2</sup>)
+type =  <class 'openturns.func.Function'>
+(-1.11803 + 3.3541 * x0^2) * (-1.22474 * x1 + 0.408248 * x1^3)
+(-1.11803 + 3.3541 <span>&#215;</span> x0<sup>2</sup>) <span>&#215;</span> (-1.22474 <span>&#215;</span> x1 + 0.408248 <span>&#215;</span> x1<sup>3</sup>)
+type =  <class 'openturns.func.Function'>
+1.73205 * x0 * (0.612372 - 1.22474 * x1^2 + 0.204124 * x1^4)
+1.73205 <span>&#215;</span> x0 <span>&#215;</span> (0.612372 - 1.22474 <span>&#215;</span> x1<sup>2</sup> + 0.204124 <span>&#215;</span> x1<sup>4</sup>)

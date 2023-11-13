@@ -59,6 +59,15 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     NonStationaryCovarianceModelFactory
     StationaryCovarianceModelFactory
 
+Categorical variables
+=====================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.LatentVariableModel
+
 Spectral information
 ====================
 
@@ -163,7 +172,6 @@ Others
     DiscreteMarkovChain
     RandomWalk
     WhiteNoise
-
 
 Check hypothesis on time series
 ===============================

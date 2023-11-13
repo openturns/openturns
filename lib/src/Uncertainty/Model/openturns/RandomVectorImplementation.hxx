@@ -73,8 +73,14 @@ public:
   /** Realization accessor */
   virtual Point getRealization() const;
 
+  /** Fixed value accessor */
+  virtual Point getFrozenRealization(const Point & fixedPoint) const;
+
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
+
+  /** Fixed sample accessor */
+  virtual Sample getFrozenSample(const Sample & fixedSample) const;
 
   /** Mean accessor */
   virtual Point getMean() const;
@@ -123,6 +129,9 @@ public:
   /** Whether it is an event */
   virtual Bool isEvent() const;
 
+  /** Composed event accessor */
+  virtual RandomVector asComposedEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -130,7 +139,6 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-
 
 private:
 

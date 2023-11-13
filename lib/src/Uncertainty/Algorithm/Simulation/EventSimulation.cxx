@@ -30,6 +30,8 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/CompositeRandomVector.hxx"
+#include "openturns/IntersectionEvent.hxx"
+#include "openturns/UnionEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

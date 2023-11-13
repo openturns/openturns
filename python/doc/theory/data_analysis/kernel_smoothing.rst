@@ -28,7 +28,6 @@ The kernel *K* is a function satisfying:
 
     \int K(x)\, dx=1.
 
-Usually, the kernel *K* is chosen to be a unimodal probability density function that is symmetric about 0.
 The parameter *h* is called the *bandwidth*.
 
 Multivariate kernels

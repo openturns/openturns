@@ -1,10 +1,9 @@
 %feature("docstring") OT::BurrFactory
 "Burr factory.
 
-Available constructor:
-    BurrFactory()
-
-:math:`\Hat{c}_n` is the solution of the non linear equation
+Notes
+-----
+The parameter :math:`\Hat{c}_n` is the solution of the following non linear equation:
 
 .. math::
 
@@ -29,10 +28,12 @@ DistributionFactory, Burr"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsBurr_doc
-"Build the Burr distribution.
+%feature("docstring") OT::BurrFactory::buildAsBurr
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsBurr()
 
     buildAsBurr(*sample*)
 
@@ -41,15 +42,14 @@ DistributionFactory, Burr"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Burr`.
 
 Returns
 -------
 dist : :class:`~openturns.Burr`
-    The built distribution."
-%enddef
-%feature("docstring") OT::BurrFactory::buildAsBurr
-OT_DistributionFactory_buildAsBurr_doc
+    The estimated distribution as a Burr.
+    
+    In the first usage, the default Burr distribution is built."
 

@@ -7,7 +7,7 @@ SoizeGhanem(2)=1.73205 * x1
 SoizeGhanem(2)([0.5,0.5]=[0.866025]
 SoizeGhanem(3)=-0.707107 + 0.707107 * x0^2
 SoizeGhanem(3)([0.5,0.5]=[-0.53033]
-SoizeGhanem(4)=(x0) * (1.73205 * x1)
+SoizeGhanem(4)=x0 * 1.73205 * x1
 SoizeGhanem(4)([0.5,0.5]=[0.433013]
 M=
 5x5
@@ -29,7 +29,7 @@ SoizeGhanem(2)([0.5,0.5]=[0.763813]
 SoizeGhanem(3)=(-0.707107 + 0.707107 * x0^2) * (([X0,X1]->1/sqrt(ComposedDistribution(Normal(mu = 0, sigma = 1), Uniform(a = -1, b = 1), NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]])).computePDF(X0, X1))
 SoizeGhanem(3)([0.5,0.5]=[-0.467738]
-SoizeGhanem(4)=((x0) * (1.73205 * x1)) * (([X0,X1]->1/sqrt(ComposedDistribution(Normal(mu = 0, sigma = 1), Uniform(a = -1, b = 1), NormalCopula(R = [[ 1   0.5 ]
+SoizeGhanem(4)=(x0 * 1.73205 * x1) * (([X0,X1]->1/sqrt(ComposedDistribution(Normal(mu = 0, sigma = 1), Uniform(a = -1, b = 1), NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]])).computePDF(X0, X1))
 SoizeGhanem(4)([0.5,0.5]=[0.381907]
 M=
@@ -52,7 +52,7 @@ SoizeGhanem(2)([0.5,0.5]=[0.763813]
 SoizeGhanem(3)=(-0.707107 + 0.707107 * x0^2) * (([X0,X1]->1/sqrt(NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]).computePDF(Normal(mu = 0, sigma = 1).computeCDF(X0), Uniform(a = -1, b = 1).computeCDF(X1)))
 SoizeGhanem(3)([0.5,0.5]=[-0.467738]
-SoizeGhanem(4)=((x0) * (1.73205 * x1)) * (([X0,X1]->1/sqrt(NormalCopula(R = [[ 1   0.5 ]
+SoizeGhanem(4)=(x0 * 1.73205 * x1) * (([X0,X1]->1/sqrt(NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]).computePDF(Normal(mu = 0, sigma = 1).computeCDF(X0), Uniform(a = -1, b = 1).computeCDF(X1)))
 SoizeGhanem(4)([0.5,0.5]=[0.381907]
 M=

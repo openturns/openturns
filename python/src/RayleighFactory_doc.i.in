@@ -1,9 +1,8 @@
 %feature("docstring") OT::RayleighFactory
 "Rayleigh factory.
 
-Available constructor:
-    RayleighFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,12 @@ DistributionFactory, Rayleigh"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsRayleigh_doc
-"Build the Rayleigh distribution.
+%feature("docstring") OT::RayleighFactory::buildAsRayleigh
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsRayleigh()
 
     buildAsRayleigh(*sample*)
 
@@ -32,15 +33,14 @@ DistributionFactory, Rayleigh"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float,
+    The parameters of the :class:`~openturns.Rayleigh`.
 
 Returns
 -------
 dist : :class:`~openturns.Rayleigh`
-    The built distribution."
-%enddef
-%feature("docstring") OT::RayleighFactory::buildAsRayleigh
-OT_DistributionFactory_buildAsRayleigh_doc
+    The estimated distribution as a Rayleigh.
+    
+    In the first usage, the default Rayleigh distribution is built."
 

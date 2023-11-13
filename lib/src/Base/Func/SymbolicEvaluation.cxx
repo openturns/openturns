@@ -117,6 +117,14 @@ String SymbolicEvaluation::__str__(const String & ) const
   return oss;
 }
 
+/* String converter */
+String SymbolicEvaluation::_repr_html_() const
+{
+  OSS oss(true);
+  oss << getInputDescription() << "->" << formulas_;
+  return oss;
+}
+
 
 
 /* Operator () */

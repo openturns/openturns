@@ -1,9 +1,8 @@
 %feature("docstring") OT::BetaFactory
 "Beta factory.
 
-Available constructor:
-    BetaFactory()
-
+Notes
+-----
 Let :math:`n` be the sample sample size. 
 Let :math:`x_{(1)}` be the sample minimum and :math:`x_{(n)}` be the sample maximum.
 Let :math:`\delta` be the sample range:
@@ -55,12 +54,15 @@ are estimated from a sample.
 >>> factory = ot.BetaFactory()
 >>> estimated_dist = factory.build(sample)
 >>> estimated_beta = factory.buildAsBeta(sample)"
+
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsBeta_doc
-"Build the Beta distribution.
+%feature("docstring") OT::BetaFactory::buildAsBeta
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsBeta()
 
     buildAsBeta(*sample*)
 
@@ -70,16 +72,15 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Beta`.
 
 Returns
 -------
 dist : :class:`~openturns.Beta`
-    The built distribution."
-%enddef
-%feature("docstring") OT::BetaFactory::buildAsBeta
-OT_DistributionFactory_buildAsBeta_doc
+    The estimated distribution as a Beta.
+    
+    In the first usage, the default Bernoulli distribution is built."
 
 // ---------------------------------------------------------------------
 

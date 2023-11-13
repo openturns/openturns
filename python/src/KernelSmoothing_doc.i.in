@@ -51,7 +51,7 @@ Get the bandwidth:
 >>> print(bandwidth)
 [0.862207]
 
-The bandwidth was guessed by the :meth:`build` method.
+The bandwidth was evaluated by the :meth:`build` method.
 It could also have been provided by the user.
 
 >>> bandwidth = [0.9]
@@ -150,7 +150,7 @@ Examples
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::buildAsTruncatedDistribution
-"Fit a kernel smoothing distribution on data.
+"Estimate the distribution as :class:`~openturns.TruncatedDistribution`.
 
 Parameters
 ----------
@@ -161,12 +161,8 @@ bandwidth : :class:`~openturns.Point`
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`
-    The fitted distribution.
-
-Notes
------
-It builds a :math:`~openturns.TruncatedDistribution` using the given bandwidth and the given data regardless of the boundary treatment flags. A binning is done if asked for and if the sample size is greater than the bin number. Then, the corresponding :class:`~openturns.KernelMixture` if no binning, :class:`~openturns.Mixture` otherwise, is truncated to the range of the sample.
+fittdDist : :class:`~openturns.TruncatedDistribution`
+    The estimated distribution as a :class:`~openturns.TruncatedDistribution`.
 
 Examples
 --------

@@ -1,11 +1,37 @@
 %feature("docstring") OT::UserDefinedFactory
 "UserDefined factory.
 
-Available constructor:
-    UserDefinedFactory()
-
-It is estimated from an Uniform distribution over the sample.
+Notes
+-----
+The distribution is estimated by an Uniform distribution over the sample.
 
 See also
 --------
 DistributionFactory, UserDefined"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BurrFactory::buildAsUserDefined
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsUserDefined()
+
+    buildAsUserDefined(*sample*)
+
+    buildAsUserDefined(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.UserDefined`.
+
+Returns
+-------
+dist : :class:`~openturns.UserDefined`
+    The estimated distribution as a UserDefined.
+    
+    In the first usage, the default :class:`openturns.UserDefined` distribution is built."

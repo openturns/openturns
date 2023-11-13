@@ -10,20 +10,30 @@ Parameters
 ----------
 first : float
     Lower bound of the range.
+    
+    Default value is zero.
 width : positive sequence of float
     :math:`w_i` is the width of the class :math:`i` for :math:`1 \leq i \leq n`.
+    
+    Default value is 1.
 height : positive sequence of float
     :math:`h_i` is the density of the class :math:`i` for :math:`1 \leq i \leq n`.
     The :math:`h_i` are automatically normalized such that :math:`\sum_{i=1}^n h_iw_i=1`.
+    
+    Default value is 1.
 ticks : increasing sequence of float
     :math:`t_0` is the lower bound of the first class and :math:`t_i` is the upper bound of the class :math:`i` for :math:`1 \leq i \leq n`
+    
+    Default value is (0.0, 1.0).
 frequencies : positive sequence of float
     :math:`f_i` is the probability of the class :math:`i` for :math:`1 \leq i \leq n`.
     The :math:`f_i` are automatically normalized such that :math:`\sum_{i=1}^n f_i=1`.
+    
+    Default value is 1.0.
 
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

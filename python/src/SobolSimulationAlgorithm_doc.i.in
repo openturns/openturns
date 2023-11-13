@@ -25,7 +25,7 @@ The algorithm can operate on a multivariate model :math:`f`, in this case it ope
 Several estimators are available (Saltelli, Jansen, ...).
 
 Let us denote by :math:`n_X` the number of input variables. 
-For any :math:`j = 1, \ldots, n_X`, let us denote by :math:`\Phi_j^F` (resp. :math:`\Phi_j^T`) the cumulated distribution 
+For any :math:`j = 1, \ldots, n_X`, let us denote by :math:`\Phi_j^F` (resp. :math:`\Phi_j^T`) the cumulative distribution 
 function of the gaussian asymptotic distribution of the estimator 
 of the Sobol' first (resp. total) order indice.
 Let :math:`\alpha\in[0,1]` be the level of the confidence interval and :math:`\epsilon\in(0,1]` the 

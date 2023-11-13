@@ -1,15 +1,16 @@
 %feature("docstring") OT::FisherSnedecor
 "Fisher-Snedecor distribution.
 
-Available constructors:
-    FisherSnedecor(*d1=1.0, d2=5.0*)
-
 Parameters
 ----------
 d1 : float, :math:`d_1 > 0`
     First :class:`~openturns.ChiSquare` degrees of freedom (numerator).
+    
+    Default value is 1.0.
 d2 : float, :math:`d_2 > 0`
     Second :class:`~openturns.ChiSquare` degrees of freedom (denominator).
+    
+    Default value is 5.0.
 
 Notes
 -----

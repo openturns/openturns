@@ -1,23 +1,43 @@
 %feature("docstring") OT::LogNormalMuSigmaOverMu
 "LogNormal distribution parameters.
-
+    
 Parameters
 ----------
 mu : float
     Mean :math:`\mu > 0`.
+
+    Default value is :math:`e^{0.5}`.
 delta : float
     Variation coefficient :math:`\delta = \frac{\sigma}{\mu}`.
+
+    Default value is :math:`(\sqrt{e^{2}-e})e^{-0.5}`.
 gamma : float, optional
     Location parameter.
 
+    Default value is 0.0.
+
 Notes
 -----
-The native parameters are defined as follows:
+
+Let :math:`X` be a random variable that follows a LogNormal distribution
+such that:
+
+.. math::
+
+    \Expect{X} &= \mu \\
+    \Var{X} &= \sigma^2
+
+The native parameters of :math:`X` are :math:`\mu_\ell`
+and :math:`\sigma_\ell`, which are such that :math:`\log X` follows a normal distribution
+whose mean is :math:`\mu_\ell` and whose variance is :math:`\sigma_\ell^2`. Then we have:
 
 .. math::
 
     \sigma_l &= \sqrt{\log{ \left(1+\frac{(\delta \mu)^2}{(\mu-\gamma)^2} \right)}}\\
     \mu_l &= \log{(\mu-\gamma)} - \frac{\sigma_l^2}{2}
+
+The default values of :math:`(\mu, \delta, \gamma)` are defined so that the associated native parameters
+have the default values: :math:`(\mu_\ell, \sigma_\ell, \gamma_\ell) = (0.0, 1.0, 0.0)`.
 
 See also
 --------

@@ -1,12 +1,16 @@
 %feature("docstring") OT::UniformMuSigma
 "Uniform distribution parameters.
-
+    
 Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 0.0.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
+
+    Default value is 0.57735.
 
 Notes
 -----

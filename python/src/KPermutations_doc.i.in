@@ -11,9 +11,9 @@ Available constructors:
 Parameters
 ----------
 k : integer
-    The cardinal of the origin set
+    The cardinal of the origin set.
 n : integer
-    The cardinal of the goal set
+    The cardinal of the goal set.
 
 See also
 --------

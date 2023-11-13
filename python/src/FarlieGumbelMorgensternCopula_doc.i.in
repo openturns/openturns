@@ -4,7 +4,9 @@
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`. Default is :math:`\theta=0.5`.
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
+
+    Default value is 0.5.
 
 Notes
 -----
@@ -30,3 +32,24 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FarlieGumbelMorgensternCopula::getTheta
+"Accessor to the :math:`theta` parameter.
+
+Returns
+-------
+theta : float
+    The :math:`\theta` parameter ."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FarlieGumbelMorgensternCopula::setTheta
+"Accessor to the :math:`theta` parameter.
+
+Parameters
+----------
+theta : float
+    The :math:`\theta` parameter, :math:`-1 \leq \theta \leq 1`."
+

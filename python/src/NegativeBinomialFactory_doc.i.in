@@ -1,9 +1,8 @@
 %feature("docstring") OT::NegativeBinomialFactory
 "Negative Binomial factory.
 
-Available constructor:
-    NegativeBinomialFactory()
-
+Notes
+-----
 We use the following estimator:
 
 .. math::
@@ -19,3 +18,32 @@ We use the following estimator:
 See also
 --------
 DistributionFactory, NegativeBinomial"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NegativeBinomialFactory::buildAsNegativeBinomial
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsNegativeBinomial()
+
+    buildAsNegativeBinomial(*sample*)
+
+    buildAsNegativeBinomial(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+   The parameters of the :class:`~openturns.NegativeBinomial`.
+
+Returns
+-------
+distribution : :class:`~openturns.NegativeBinomial`
+    The estimated distribution as a NegativeBinomial.
+    
+    In the first usage, the default NegativeBinomial distribution is built."
+

@@ -42,7 +42,7 @@ of the standard space does not belong to the failure domain:
 
       P_{Breitung} = E(-\beta_{HL})\prod_{i=1}^{n-1} \frac{1}{\sqrt{1 + \beta_{HL}\kappa_i}}
 
-  :math:`E` the marginal cumulative density function of the spherical
+  :math:`E` the marginal cumulative distribution function of the spherical
   distributions in the standard space and :math:`\beta_{HL}` is the Hasofer-Lind
   reliability index, defined as the distance of the design point
   :math:`\vect{u}^*` to the origin of the standard space.

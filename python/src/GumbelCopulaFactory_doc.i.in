@@ -1,6 +1,8 @@
 %feature("docstring") OT::GumbelCopulaFactory
 "Gumbel Copula factory.
 
+Notes
+-----
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
 We use the following estimator:
@@ -15,3 +17,30 @@ We use the following estimator:
 See also
 --------
 DistributionFactory, GumbelCopula"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GumbelCopulaFactory::buildAsGumbelCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsGumbelCopula()
+
+    buildAsGumbelCopula(*sample*)
+
+    buildAsGumbelCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float,
+    Data of dimension 2.
+param : sequence of float of size 1,
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.GumbelCopula`
+    The estimated copula as a Gumbel copula.
+    
+    In the first usage, the default Gumbel copula is built."

@@ -1,17 +1,20 @@
 %feature("docstring") OT::GammaMuSigma
 "Gamma distribution parameters.
 
-Available constructors:
-    GammaMuSigma(*mu=1.0, sigma=1.0, gamma=0.0*)
-
 Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 1.0.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
+
+    Default value is 1.0.
 gamma : float, optional
     Shift parameter.
+
+    Default value is 0.0.
 
 Notes
 -----

@@ -75,9 +75,11 @@ public:
 
   /** Realization accessor */
   Point getRealization() const;
+  Point getFrozenRealization(const Point & fixedPoint) const;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const;
+  Sample getFrozenSample(const Sample & fixedSample) const;
 
   /** Get the random vector corresponding to the i-th marginal component */
   RandomVector getMarginal(const UnsignedInteger i) const;

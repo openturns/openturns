@@ -1,6 +1,8 @@
 %feature("docstring") OT::MultinomialFactory
 "Multinomial factory.
 
+Notes
+-----
 The parameters :math:`N` and :math:`p=(p_1,\dots,p_d)` are estimated using their
 maximum likelihood estimators:
 
@@ -19,3 +21,32 @@ Remember that the OpenTURNS multinomial distribution is such that
 See also
 --------
 DistributionFactory, Multinomial"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultinomialFactory::buildAsMultinomial
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsMultinomial()
+
+    buildAsMultinomial(*sample*)
+
+    buildAsMultinomial(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+   The parameters of the :class:`~openturns.Multinomial`.
+
+Returns
+-------
+distribution : :class:`~openturns.Multinomial`
+    The estimated distribution as a Multinomial.
+    
+    In the first usage, the default Multinomial distribution is built."
+

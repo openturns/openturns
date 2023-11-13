@@ -1,21 +1,24 @@
 %feature("docstring") OT::Hypergeometric
 "Hypergeometric distribution.
 
-Available constructors:
-    Hypergeometric(*n=0, k=0, m=0*)
-
 Parameters
 ----------
 n : int, :math:`n \in \Nset`
     Population size.
+
+    Default value is 0.
 k : int, :math:`0 \leq k \leq n`
     Number of candidates in the population.
+
+    Default value is 1.
 m : int, :math:`0 \leq m \leq n`
     Size of the sample drawn in the population.
 
+    Default value is 0.
+
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

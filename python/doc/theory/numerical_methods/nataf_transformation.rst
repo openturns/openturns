@@ -135,7 +135,7 @@ the standard normal distribution with independent components.
 
 .. topic:: API:
 
-    - See the available :ref:`Nataf transformations <isoprobabilistic_transformations>`.
+    - See the available :ref:`Nataf transformations <isoprobabilistic_transformation>`.
 
 .. topic:: References:
 

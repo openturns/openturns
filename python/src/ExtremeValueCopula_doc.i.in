@@ -4,7 +4,9 @@
 Parameters
 ----------
 pickandFunction : :class:`~openturns.Function`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula. Default is the constant function equal to 1.
+    Parameter :math:`A`, the Pickand function defining the extreme value copula.
+    
+    Default value is the constant function equal to 1.
 
 Notes
 -----

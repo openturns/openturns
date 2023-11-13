@@ -61,7 +61,9 @@ public:
   String __str__(const String & offset = "") const override;
   virtual String __str__(const String & variableName,
                          const String & offset) const;
-
+  virtual String _repr_html_() const override;
+  virtual String _repr_html_(const String & variableName) const;
+    
   /** UniVariatePolynomialImplementation are evaluated as functors */
   Scalar operator() (const Scalar x) const override;
   Complex operator() (const Complex z) const;

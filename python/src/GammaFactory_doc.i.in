@@ -1,9 +1,8 @@
 %feature("docstring") OT::GammaFactory
 "Gamma factory.
 
-Available constructor:
-    GammaFactory()
-
+Notes
+-----
 The parameters are estimated by maximum likelihood:
 
 .. math::
@@ -81,10 +80,12 @@ Determine the left unilateral confidence interval al level 0.9:
 "
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsGamma_doc
-"Build the Gamma distribution.
+%feature("docstring") OT::GammaFactory::buildAsGamma
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsGamma()
 
     buildAsGamma(*sample*)
 
@@ -94,14 +95,14 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Gamma`.
 
 Returns
 -------
-dist : :class:`~openturns.Gamma`
-    The built distribution."
-%enddef
-%feature("docstring") OT::GammaFactory::buildAsGamma
-OT_DistributionFactory_buildAsGamma_doc
+distribution : :class:`~openturns.Gamma`
+    The estimated distribution as a Gamma.
+    
+    In the first usage, the default Gamma distribution is built."
+
 

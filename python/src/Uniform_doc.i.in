@@ -5,8 +5,12 @@ Parameters
 ----------
 a : float
     Lower bound.
+
+    Default value is -1.0.
 b : float, :math:`b > a`
     Upper bound.
+
+    Default value is 1.0.
 
 Notes
 -----

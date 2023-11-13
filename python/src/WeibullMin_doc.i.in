@@ -1,14 +1,21 @@
 %feature("docstring") OT::WeibullMin
 "WeibullMin distribution.
 
+
 Parameters
 ----------
 beta : float
     scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
 alpha : float
     shape parameter :math:`\alpha > 0`.
+
+    Default value is 1.0.
 gamma : float, optional
     Location parameter.
+
+    Default value is 0.0.
 
 Notes
 -----
@@ -71,7 +78,7 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::getAlpha
-"Accessor to the distribution's shape parameter :math:`\alpha`.
+"Accessor to the distribution shape parameter :math:`\alpha`.
 
 Returns
 -------
@@ -81,7 +88,7 @@ alpha : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::getBeta
-"Accessor to the distribution's scale parameter :math:`\beta`.
+"Accessor to the distribution scale parameter :math:`\beta`.
 
 Returns
 -------
@@ -91,7 +98,7 @@ beta : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::getGamma
-"Accessor to the distribution's location parameter :math:`\gamma`.
+"Accessor to the distribution location parameter :math:`\gamma`.
 
 Returns
 -------
@@ -101,7 +108,7 @@ gamma : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::setAlpha
-"Accessor to the distribution's shape parameter :math:`\alpha`.
+"Accessor to the distribution shape parameter :math:`\alpha`.
 
 Parameters
 ----------
@@ -111,7 +118,7 @@ alpha : float, :math:`\alpha > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::setBeta
-"Accessor to the distribution's scale parameter :math:`\beta`.
+"Accessor to the distribution scale parameter :math:`\beta`.
 
 Parameters
 ----------
@@ -121,7 +128,7 @@ beta : float, :math:`\beta > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMin::setGamma
-"Accessor to the distribution's location parameter :math:`\gamma`.
+"Accessor to the distribution location parameter :math:`\gamma`.
 
 Parameters
 ----------

@@ -1,10 +1,9 @@
 %feature("docstring") OT::TrapezoidalFactory
 "Trapezoidal factory.
 
-Available constructor:
-    TrapezoidalFactory()
-
-The parameters are estimated by numerical maximum likelihood estimation.
+Notes
+-----
+The parameters are estimated by the maximum likelihood method.
 
 See also
 --------
@@ -12,10 +11,12 @@ DistributionFactory, Trapezoidal"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsTrapezoidal_doc
-"Build the Trapezoidal distribution.
+%feature("docstring") OT::TrapezoidalFactory::buildAsTrapezoidal
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsTrapezoidal()
 
     buildAsTrapezoidal(*sample*)
 
@@ -24,15 +25,13 @@ DistributionFactory, Trapezoidal"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Trapezoidal`.
 
 Returns
 -------
 dist : :class:`~openturns.Trapezoidal`
-    The built distribution."
-%enddef
-%feature("docstring") OT::TrapezoidalFactory::buildAsTrapezoidal
-OT_DistributionFactory_buildAsTrapezoidal_doc
-
+    The estimated distribution as a Trapezoidal.
+    
+    In the first usage, the default Trapezoidal distribution is built."

@@ -42,10 +42,12 @@ DistributionFactory, VonMises"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsVonMises_doc
-"Build the VonMises distribution.
+%feature("docstring") OT::VonMisesFactory::buildAsVonMises
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsVonMises()
 
     buildAsVonMises(*sample*)
 
@@ -54,15 +56,14 @@ DistributionFactory, VonMises"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.VonMises`.
 
 Returns
 -------
 dist : :class:`~openturns.VonMises`
-    The built distribution."
-%enddef
-%feature("docstring") OT::VonMisesFactory::buildAsVonMises
-OT_DistributionFactory_buildAsVonMises_doc
+    The estimated distribution as a VonMises.
+    
+    In the first usage, the default VonMises distribution is built."
 

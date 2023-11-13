@@ -1,13 +1,10 @@
 %feature("docstring") OT::TruncatedNormalFactory
 "Truncated Normal factory.
 
-Available constructor:
-    TruncatedNormalFactory()
-
 Notes
 -----
 Several estimators to build a TruncatedNormal distribution from a scalar sample
-are available.
+are available. The default strategy is using the maximum likelihood estimators with scaling.
 
 **Maximum likelihood estimator:**
 
@@ -140,13 +137,13 @@ are estimated from a sample.
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
 distribution : :class:`~openturns.TruncatedNormal`
-    The estimated distribution"
+    The estimated distribution."
 
 // ----------------------------------------------------------------------------
 
@@ -155,8 +152,8 @@ distribution : :class:`~openturns.TruncatedNormal`
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
@@ -168,31 +165,24 @@ distribution : :class:`~openturns.TruncatedNormal`
 %feature("docstring") OT::TruncatedNormalFactory::buildAsTruncatedNormal
 "Estimate the distribution as native distribution.
 
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Data
+**Available usages**:
 
-Returns
--------
-distribution : :class:`~openturns.TruncatedNormal`
-    The estimated distribution"
+    buildAsTruncatedNormal()
 
-// ----------------------------------------------------------------------------
+    buildAsTruncatedNormal(*sample*)
 
-%feature("docstring") OT::TruncatedNormalFactory::build
-"Estimate the distribution using the default strategy.
+    buildAsTruncatedNormal(*param*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.TruncatedNormal`.
 
 Returns
 -------
-distribution : :class:`~openturns.Distribution`
-    The estimated distribution
-
-Notes
------
-The default strategy is using the maximum likelihood estimators with scaling."
+dist : :class:`~openturns.TruncatedNormal`
+    The estimated distribution as a TruncatedNormal.
+    
+    In the first usage, the default TruncatedNormal distribution is built."

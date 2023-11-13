@@ -2,18 +2,22 @@
 "Normal copula.
 
 Available constructor:
-    NormalCopula(*n=1*)
+    NormalCopula(*n*)
 
     NormalCopula(*R*)
 
 Parameters
 ----------
 n : int, :math:`n \geq 1`
-    Dimension of the copula. Default is :math:`n=2`.
+    Dimension of the copula.
+    
+    Default value is 2.
 R : :class:`~openturns.CorrelationMatrix`
     Shape matrix :math:`\mat{R}` of the copula, ie the correlation matrix of
     any normal distribution with this copula (it is not the Kendall nor the
     Spearman rank correlation matrix of the distribution).
+    
+    Default value is the identity matrix.
 
 Notes
 -----

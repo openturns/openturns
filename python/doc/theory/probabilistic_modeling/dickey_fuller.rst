@@ -107,7 +107,7 @@ The quantiles of the Dickey-Fuller statistics for the model with drift and linea
 
     \left\{
     \begin{array}{ll}
-        \alpha = 0.01, & C_{\alpha} = -3.96 \\
+        \alpha = 0.01, & C_{\alpha} = -4.96 \\
         \alpha = 0.05, & C_{\alpha} = -3.41 \\
         \alpha = 0.10, & C_{\alpha} = -3.13
     \end{array}

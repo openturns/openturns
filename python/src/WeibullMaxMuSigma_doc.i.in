@@ -5,10 +5,16 @@ Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 1.0.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
+
+    Default value is 1.0.
 gamma : float, optional
     Shift parameter :math:`\gamma > \mu`.
+
+    Default value is 0.0.
 
 Notes
 -----

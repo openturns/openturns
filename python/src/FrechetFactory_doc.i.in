@@ -1,9 +1,8 @@
 %feature("docstring") OT::FrechetFactory
 "Frechet factory.
 
-Available constructor:
-    FrechetFactory()
-
+Notes
+-----
 The parameters are estimated by likelihood maximization. The starting point is obtained from the estimation of a Gumbel distribution based on the logarithm of the shifted observations:
 
 .. math::
@@ -23,10 +22,12 @@ DistributionFactory, Frechet"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsFrechet_doc
+%feature("docstring") OT::FrechetFactory::buildAsFrechet
 "Build the Frechet distribution.
 
 **Available usages**:
+
+    buildAsFrechet()
 
     buildAsFrechet(*sample*)
 
@@ -36,14 +37,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Frechet`.
 
 Returns
 -------
 dist : :class:`~openturns.Frechet`
-    The built distribution."
-%enddef
-%feature("docstring") OT::FrechetFactory::buildAsFrechet
-OT_DistributionFactory_buildAsFrechet_doc
+    The estimated distribution as a Frechet.
+    
+    In the first usage, the default Frechet distribution is built."
 

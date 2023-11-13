@@ -34,8 +34,8 @@ ott.assert_almost_equal(
 probabilities = [0.01, 1 / 3, 2 / 3, 0.99]
 factory = ot.QuantileMatchingFactory(ot.Beta(), probabilities)
 quantiles = [distribution.computeQuantile(pi)[0] for pi in probabilities]
-inf_distribution = factory.buildFromQuantiles(quantiles)
+est_distribution = factory.buildFromQuantiles(quantiles)
 print("estimated distribution (quantiles)=", inf_distribution)
 ott.assert_almost_equal(
-    distribution.getParameter(), inf_distribution.getParameter(), 1e-2, 1e-2
+    distribution.getParameter(), est_distribution.getParameter(), 1e-2, 1e-2
 )

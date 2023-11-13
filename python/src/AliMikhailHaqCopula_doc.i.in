@@ -4,7 +4,9 @@
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`. Default is :math:`\theta=0.5`.
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
+    
+    Default value is 0.5.
 
 Notes
 -----

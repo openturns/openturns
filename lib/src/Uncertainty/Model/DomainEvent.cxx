@@ -97,6 +97,11 @@ Point DomainEvent::getRealization() const
   return Point(1, domain_.contains(CompositeRandomVector::getRealization()));
 }
 
+Point DomainEvent::getFrozenRealization(const Point & fixedPoint) const
+{
+  return Point(1, domain_.contains(CompositeRandomVector::getFrozenRealization(fixedPoint)));
+}
+
 /* Numerical sample accessor */
 Sample DomainEvent::getSample(const UnsignedInteger size) const
 {
@@ -111,9 +116,30 @@ Sample DomainEvent::getSample(const UnsignedInteger size) const
   return result;
 }
 
+Sample DomainEvent::getFrozenSample(const Sample & fixedSample) const
+{
+  // First, compute the sample of the event antecedent that fits fixedSample
+  const Sample returnSample(CompositeRandomVector::getFrozenSample(fixedSample));
+  // Then, we loop over the sample to check each point in sequence
+  Sample result(fixedSample.getSize(), 1);
+  for (UnsignedInteger i = 0; i < fixedSample.getSize(); ++i)
+    result(i, 0) = domain_.contains(returnSample[i]);
+  result.setName("DomainEvent sample");
+  result.setDescription(getDescription());
+  return result;
+}
+
 Bool DomainEvent::isEvent() const
 {
   return true;
+}
+
+RandomVector DomainEvent::asComposedEvent() const
+{
+  if (domain_.getImplementation()->getClassName() != "LevelSet")
+    throw NotYetImplementedException(HERE) << "DomainEvent is not based on a LevelSet.";
+
+  return RandomVector(clone());
 }
 
 /* Method save() stores the object through the StorageManager */

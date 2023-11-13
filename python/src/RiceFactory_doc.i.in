@@ -1,9 +1,8 @@
 %feature("docstring") OT::RiceFactory
 "Rice factory.
 
-Available constructor:
-    RiceFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments, according to [koay2006]_.
 
 See also
@@ -12,10 +11,12 @@ DistributionFactory, Rice"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsRice_doc
-"Build the Rice distribution.
+%feature("docstring") OT::RiceFactory::buildAsRice
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsRice()
 
     buildAsRice(*sample*)
 
@@ -24,15 +25,14 @@ DistributionFactory, Rice"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Rice`.
 
 Returns
 -------
 dist : :class:`~openturns.Rice`
-    The built distribution."
-%enddef
-%feature("docstring") OT::RiceFactory::buildAsRice
-OT_DistributionFactory_buildAsRice_doc
+    The estimated distribution as a Rice.
+    
+    In the first usage, the default Rice distribution is built."
 

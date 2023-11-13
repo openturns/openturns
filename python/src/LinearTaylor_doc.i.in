@@ -7,41 +7,13 @@ Available constructors:
 Parameters
 ----------
 center : sequence of float
-    Point :math:`\vect{x}_0` where the Taylor expansion of the function
-    :math:`h` is performed.
+    Point :math:`\ux_0`.
 function : :class:`~openturns.Function`
-    Function :math:`h` to be approximated.
+    Function :math:`h` to be approximated at the point :math:`\ux_0`.
 
 Notes
 -----
-The approximation of the model response :math:`\vect{y} = h(\vect{x})` around a
-specific set :math:`\vect{x}_0 = (x_{0,1},\dots,x_{0,n_{X}})` of input
-parameters may be of interest. One may then substitute :math:`h` for its Taylor
-expansion at point :math:`\vect{x}_0`. Hence :math:`h` is replaced with a first
-or second-order polynomial :math:`\widehat{h}` whose evaluation is inexpensive,
-allowing the analyst to apply the uncertainty anaysis methods.
-
-We consider here the first order Taylor expansion around :math:`\ux=\vect{x}_0`.
-
-.. math::
-
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
-      = \, h(\vect{x}_0) \, +
-        \, \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\vect{x}_0).\left(x_i - x_{0,i} \right)
-
-Introducing a vector notation, the previous equation rewrites:
-
-.. math::
-
-    \vect{y} \, \approx \, \vect{y}_0 \, + \, \vect{\vect{L}} \: \left(\vect{x}-\vect{x}_0\right)
-
-where:
-
-- :math:`\vect{y_0} = (y_{0,1} , \dots, y_{0,n_Y})^{\textsf{T}} = h(\vect{x}_0)`
-  is the vector model response evaluated at :math:`\vect{x}_0`;
-- :math:`\vect{x}` is the current set of input parameters;
-- :math:`\vect{\vect{L}} = \left( \frac{\partial y_{0,j}}{\partial x_i} \,,\, i=1,\ldots, n_X \,,\, j=1,\ldots, n_Y \right)`
-  is the transposed Jacobian matrix evaluated at :math:`\vect{x}_0`.
+The response surface is the first-order Taylor expansion of the function :math:`h` at the point :math:`\ux_0`. Refer to :ref:`Taylor Expansion <taylor_expansion>` for details.
 
 See also
 --------
@@ -66,7 +38,7 @@ Examples
 Returns
 -------
 center : :class:`~openturns.Point`
-    Point :math:`\vect{x}_0` where the Taylor expansion of the function is
+    Point :math:`\ux_0` where the Taylor expansion of the function is
     performed."
 
 // ---------------------------------------------------------------------
@@ -77,18 +49,17 @@ center : :class:`~openturns.Point`
 Returns
 -------
 constantVector : :class:`~openturns.Point`
-    Constant vector of the approximation, equal to :math:`h(x_0)`."
+    Point :math:`h(\ux_0)`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearTaylor::getLinear
-"Get the gradient of the function at :math:`\vect{x}_0`.
+"Get the gradient of the function at :math:`\ux_0`.
 
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    Gradient of the function :math:`h` at the point :math:`\vect{x}_0` (the
-    transposition of the jacobian matrix)."
+    The matrix :math:`\mat{L}`."
 
 // ---------------------------------------------------------------------
 
@@ -103,15 +74,14 @@ function : :class:`~openturns.Function`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearTaylor::getMetaModel
-"Get an approximation of the function.
+"Get the polynomial approximation of the function.
 
 Returns
 -------
 approximation : :class:`~openturns.Function`
-    An approximation of the function :math:`h` by a Linear Taylor expansion at
-    the point :math:`\vect{x}_0`."
+    The first-order Taylor expansiosn of :math:`h` at :math:`\ux_0`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearTaylor::run
-"Perform the Linear Taylor expansion around :math:`\vect{x}_0`."
+"Perform the first-order Taylor expansion around :math:`\ux_0`."

@@ -1,6 +1,8 @@
 %feature("docstring") OT::GumbelFactory
 "Gumbel factory.
 
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -19,10 +21,12 @@ DistributionFactory, Gumbel"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsGumbel_doc
-"Build the Gumbel distribution.
+%feature("docstring") OT::GumbelFactory::buildAsGumbel
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsGumbel()
 
     buildAsGumbel(*sample*)
 
@@ -32,14 +36,14 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Gumbel`.
 
 Returns
 -------
-dist : :class:`~openturns.Gumbel`
-    The built distribution."
-%enddef
-%feature("docstring") OT::GumbelFactory::buildAsGumbel
-OT_DistributionFactory_buildAsGumbel_doc
+distribution : :class:`~openturns.Gumbel`
+    The estimated distribution as a Gumbel.
+    
+    In the first usage, the default Gumbel distribution is built."
+
 

@@ -64,7 +64,7 @@ OT_Basis_build_doc
 Returns
 -------
 inDim : int
-    Input dimension of the Basis."
+    Input dimension of the functions."
 %enddef
 %feature("docstring") OT::BasisImplementation::getInputDimension
 OT_Basis_getInputDimension_doc
@@ -77,7 +77,7 @@ OT_Basis_getInputDimension_doc
 Returns
 -------
 outDim : int
-    Output dimension of the Basis."
+    Output dimension of the functions."
 %enddef
 %feature("docstring") OT::BasisImplementation::getOutputDimension
 OT_Basis_getOutputDimension_doc
@@ -151,3 +151,16 @@ isOrthogonal : bool
 %enddef
 %feature("docstring") OT::BasisImplementation::isOrthogonal
 OT_Basis_isOrthogonal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_add_doc
+"Add a function.
+
+Parameters
+----------
+function : a :class:`~openturns.Function`
+    Function to be added."
+%enddef
+%feature("docstring") OT::BasisImplementation::add
+OT_Basis_add_doc

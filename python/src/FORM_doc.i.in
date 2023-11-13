@@ -43,7 +43,7 @@ to the rotation invariance of the standard distribution :math:`f_{\vect{U}}` :
 
 where :math:`\beta_{HL}` is the Hasofer-Lind reliability index, defined as the
 distance of the design point :math:`\vect{u}^*` to the origin of the standard
-space and :math:`E` the marginal cumulative density function of the spherical
+space and :math:`E` the marginal cumulative distribution function of the spherical
 distributions in the standard space.
 
 The evaluation of the failure probability is stored in the data structure

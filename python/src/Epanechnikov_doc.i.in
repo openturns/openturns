@@ -1,9 +1,6 @@
 %feature("docstring") OT::Epanechnikov
 "Epanechnikov distribution.
 
-Available constructor:
-    Epanechnikov()
-
 Notes
 -----
 

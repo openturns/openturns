@@ -1,6 +1,8 @@
 %feature("docstring") OT::PlackettCopulaFactory
 "Plackett Copula factory.
 
+Notes
+-----
 The parameter is estimated using the following equation:
 
 :math:`\Hat{\theta}_n` is solution of
@@ -14,3 +16,29 @@ where :math:`m_n` is the value of the empirical CDF :math:`F_n` at the median po
 See also
 --------
 DistributionFactory, PlackettCopula"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlackettCopulaFactory::buildAsPlackettCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsPlackettCopula()
+
+    buildAsPlackettCopula(*sample*)
+
+    buildAsPlackettCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float of size 1
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.PlackettCopula`
+    The estimated copula as a Plackett copula.
+    
+    In the first usage, the default Plackett copula is built."

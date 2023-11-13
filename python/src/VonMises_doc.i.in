@@ -1,12 +1,16 @@
 %feature("docstring") OT::VonMises
-"von Mises distribution.
+"Von Mises distribution.
 
 Parameters
 ----------
 mu : float
-    Mean parameter
+    Mean parameter.
+
+    Default value is 0.0.
 kappa : float, :math:`\kappa > 0`
-    Concentration parameter
+    Concentration parameter.
+
+    Default value is 1.0.
 
 Notes
 -----

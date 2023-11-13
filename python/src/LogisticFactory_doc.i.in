@@ -1,9 +1,8 @@
 %feature("docstring") OT::LogisticFactory
 "Logistic factory.
 
-Available constructor:
-    LogisticFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,13 @@ DistributionFactory, Logistic"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsLogistic_doc
-"Build the Logistic distribution.
+%feature("docstring") OT::LogisticFactory::buildAsLogistic
+"Estimate the distribution as native distribution.
+
 
 **Available usages**:
+
+    buildAsLogistic()
 
     buildAsLogistic(*sample*)
 
@@ -33,14 +35,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Logistic`.
 
 Returns
 -------
-dist : :class:`~openturns.Logistic`
-    The built distribution."
-%enddef
-%feature("docstring") OT::LogisticFactory::buildAsLogistic
-OT_DistributionFactory_buildAsLogistic_doc
+distribution : :class:`~openturns.Logistic`
+    The estimated distribution as a Logistic.
+    
+    In the first usage, the default Logistic distribution is built."
 

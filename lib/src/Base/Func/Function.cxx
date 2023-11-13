@@ -109,6 +109,12 @@ String Function::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* String converter */
+String Function::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
+}
+
 /* Description Accessor */
 void Function::setDescription(const Description & description)
 {

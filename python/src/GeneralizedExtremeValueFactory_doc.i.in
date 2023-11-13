@@ -4,7 +4,13 @@
 
 See also
 --------
-DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory"
+DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory
+
+Notes
+-----
+Several estimators to build a GeneralizedExtremeValueFactory distribution from a scalar sample
+are proposed. The details are given in the methods documentation.
+"
 
 // ---------------------------------------------------------------------
 
@@ -21,8 +27,8 @@ Parameters
 ----------
 sample : 2-d sequence of float
     The block maxima sample of dimension 1.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.GeneralizedExtremeValue`.
 
 Returns
 -------
@@ -36,16 +42,34 @@ The strategy consists in fitting the three models :class:`~openturns.Frechet`, :
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue
-"Estimate the distribution as a :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` or :class:`~openturns.WeibullMax` distribution.
+"Estimate the distribution as native distribution.
 
-Same as :meth:`build`.
-"
+**Available usages**:
+
+    buildAsGeneralizedExtremeValue()
+
+    buildAsGeneralizedExtremeValue(*sample*)
+
+    buildAsGeneralizedExtremeValue(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.GeneralizedExtremeValue`.
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValue`
+    The estimated distribution as a GeneralizedExtremeValue.
+    
+    In the first usage, the default GeneralizedExtremeValue distribution is built."
 
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildMethodOfProfileLikelihoodMaximization
 "Estimate the distribution with the profile likelihood.
-
 
 The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a nested numerical optimization of the log-likelihood:
 
@@ -55,16 +79,19 @@ The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a ne
 
 where :math:`\ell (\mu, \sigma, \xi)` is detailed in equations :eq:`llR1` and :eq:`llR2` with :math:`r=1`.
 
-The estimator  is given by:
+If :math:`\xi = 0` then:
 
 .. math::
     :nowrap:
 
-    \begin{align*}
+    \begin{align}
     \hat{\xi} & =  \argmax_{\xi} \ell_p(\xi)\\
     (\hat{\mu}, \hat{\sigma}) & =  \argmax_{(\mu, \sigma)} \ell(\mu, \sigma, \hat{\xi})
-    \end{align*}
-    
+    \end{align}
+
+
+The starting point of the optimization is initialized from the probability weighted moments method, see [diebolt2008]_.
+
 Parameters
 ----------
 sample : 2-d sequence of float
@@ -74,10 +101,7 @@ Returns
 -------
 distribution : :class:`~openturns.GeneralizedExtremeValue`
     The estimated distribution.
-
-Notes
------
-The starting point of the optimization is initialized from the probability weighted moments method, see [diebolt2008]_."
+"
 
 // ----------------------------------------------------------------------------
 

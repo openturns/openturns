@@ -89,10 +89,26 @@ Point CompositeRandomVector::getRealization() const
   return function_(antecedent_.getRealization());
 }
 
+Point CompositeRandomVector::getFrozenRealization(const Point & fixedPoint) const
+{
+  return function_(antecedent_.getFrozenRealization(fixedPoint));
+}
+
 /* Numerical sample accessor */
 Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {
   Sample sample(function_(antecedent_.getSample(size)));
+  const Description description(getDescription());
+  // It may append that the description has been overloaded by a child class
+  // FIXME: change this ugly hack to something reasonable
+  if (description.getSize() == sample.getDimension()) sample.setDescription(description);
+  else sample.setDescription(function_.getOutputDescription());
+  return sample;
+}
+
+Sample CompositeRandomVector::getFrozenSample(const Sample & fixedSample) const
+{
+  Sample sample(function_(antecedent_.getFrozenSample(fixedSample)));
   const Description description(getDescription());
   // It may append that the description has been overloaded by a child class
   // FIXME: change this ugly hack to something reasonable

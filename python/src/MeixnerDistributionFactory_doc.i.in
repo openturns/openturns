@@ -1,9 +1,8 @@
 %feature("docstring") OT::MeixnerDistributionFactory
 "Meixner Distribution factory.
 
-Available constructor:
-    MeixnerDistributionFactory()
-
+Notes
+-----
 The parameters are estimated using the following moments estimators:
 
 .. math::
@@ -25,10 +24,13 @@ DistributionFactory, MeixnerDistribution"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsMeixnerDistribution_doc
-"Build the MeixnerDistribution distribution.
+%feature("docstring") OT::MeixnerDistributionFactory::buildAsMeixnerDistribution
+"Estimate the distribution as native distribution.
+
 
 **Available usages**:
+
+    buildAsMeixnerDistribution()
 
     buildAsMeixnerDistribution(*sample*)
 
@@ -38,14 +40,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.MeixnerDistribution`.
 
 Returns
 -------
-dist : :class:`~openturns.MeixnerDistribution`
-    The built distribution."
-%enddef
-%feature("docstring") OT::MeixnerDistributionFactory::buildAsMeixnerDistribution
-OT_DistributionFactory_buildAsMeixnerDistribution_doc
+distribution : :class:`~openturns.MeixnerDistribution`
+    The estimated distribution as a MeixnerDistribution.
+    
+    In the first usage, the default MeixnerDistribution distribution is built."
 

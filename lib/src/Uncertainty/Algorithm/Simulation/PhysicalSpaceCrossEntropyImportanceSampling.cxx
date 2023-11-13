@@ -54,7 +54,7 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
   , solver_(NLopt("LD_LBFGS"))
 {
   auxiliaryDistribution_ = auxiliaryDistribution;
-  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
   bounds_ = bounds;
   initialAuxiliaryDistributionParameters_ = initialAuxiliaryDistributionParameters;
 
