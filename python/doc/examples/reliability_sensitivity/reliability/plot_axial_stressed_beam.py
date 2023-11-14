@@ -297,6 +297,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 # The following function computes the number of correct base-10 digits in the computed result compared to the exact result.
 
+
 # %%
 def computeLogRelativeError(exact, computed):
     logRelativeError = -np.log10(abs(exact - computed) / abs(exact))
@@ -305,6 +306,7 @@ def computeLogRelativeError(exact, computed):
 
 # %%
 # The following function prints the results.
+
 
 # %%
 def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):

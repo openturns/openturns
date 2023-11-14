@@ -76,15 +76,21 @@ ott.assert_almost_equal(e12.getSample(10000).computeMean()[0], 0.25, 1e-2, 1e-2)
 domain = ot.Interval([-1.0] * dim, [1.0] * dim)
 e13 = ot.DomainEvent(X, domain)
 e13_probability = distribution.computeProbability(domain)
-ott.assert_almost_equal(e13.getSample(10000).computeMean()[0], e13_probability, 1e-2, 1e-2)
+ott.assert_almost_equal(
+    e13.getSample(10000).computeMean()[0], e13_probability, 1e-2, 1e-2
+)
 
 # Union with DomainEvent
 e14 = ot.UnionEvent([e1, e2, e13])
-ott.assert_almost_equal(e14.getSample(10000).computeMean()[0], 0.75 + e13_probability / 4, 1e-2, 1e-2)
+ott.assert_almost_equal(
+    e14.getSample(10000).computeMean()[0], 0.75 + e13_probability / 4, 1e-2, 1e-2
+)
 
 # Intersection with DomainEvent
 e15 = ot.IntersectionEvent([e1, e2, e13])
-ott.assert_almost_equal(e15.getSample(10000).computeMean()[0], e13_probability / 4, 1e-2, 1e-2)
+ott.assert_almost_equal(
+    e15.getSample(10000).computeMean()[0], e13_probability / 4, 1e-2, 1e-2
+)
 
 # through simulation
 

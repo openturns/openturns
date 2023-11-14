@@ -50,7 +50,9 @@ dist = ot.ComposedDistribution(
 
 # %%
 latDim = 1  # Dimension of the latent space
-activeCoord = 1 + latDim * (numberOfZLevels - 2)  # Nb of active coordinates in the latent space
+activeCoord = 1 + latDim * (
+    numberOfZLevels - 2
+)  # Nb of active coordinates in the latent space
 kx = ot.SquaredExponential(1)
 kz = otexp.LatentVariableModel(numberOfZLevels, latDim)
 kLV = ot.ProductCovarianceModel([kx, kz])
@@ -193,13 +195,13 @@ def h(x1, x2, x3, x4):
     y = (
         53.3108
         + 0.184901 * x1
-        - 5.02914 * x1 ** 3 * 1e-6
-        + 7.72522 * x1 ** 4 * 1e-8
+        - 5.02914 * x1**3 * 1e-6
+        + 7.72522 * x1**4 * 1e-8
         - 0.0870775 * x2
         - 0.106959 * x3
-        + 7.98772 * x3 ** 3 * 1e-6
+        + 7.98772 * x3**3 * 1e-6
         + 0.00242482 * x4
-        + 1.32851 * x4 ** 3 * 1e-6 * 0.00146393 * x1 * x2
+        + 1.32851 * x4**3 * 1e-6 * 0.00146393 * x1 * x2
         - 0.00301588 * x1 * x3
         - 0.00272291 * x1 * x4
         + 0.0017004 * x2 * x3

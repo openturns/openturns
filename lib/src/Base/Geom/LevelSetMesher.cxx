@@ -240,7 +240,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                 ComposedFunction levelFunction(function, shiftFunction);
                 problem.setLevelFunction(levelFunction);
                 OptimizationAlgorithm solver(solver_);
-		solver.setStartingPoint(delta);
+                solver.setStartingPoint(delta);
                 solver.setProblem(problem);
                 OptimizationResult result;
                 // Here we have to catch exceptions raised by the gradient

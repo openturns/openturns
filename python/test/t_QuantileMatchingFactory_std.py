@@ -6,7 +6,9 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 # need a proper LS solver
-if not ot.PlatformInfo.HasFeature("cminpack") or not ot.PlatformInfo.HasFeature("ceres"):
+if not ot.PlatformInfo.HasFeature("cminpack") or not ot.PlatformInfo.HasFeature(
+    "ceres"
+):
     exit(0)
 
 size = 10000
@@ -67,4 +69,6 @@ print("distribution=", distribution)
 sample = distribution.getSample(size)
 factory = ot.QuantileMatchingFactory(ot.Normal(), [0.01, 0.99])
 inf_dist = factory.build(sample)
-ott.assert_almost_equal(inf_dist.getParameter(), distribution.getParameter(), 1e-2, 1e-2)
+ott.assert_almost_equal(
+    inf_dist.getParameter(), distribution.getParameter(), 1e-2, 1e-2
+)

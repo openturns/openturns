@@ -46,7 +46,7 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 
 /* Parameters constructor */
 MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
-                                               const Indices & momentOrders,
+    const Indices & momentOrders,
     const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
@@ -264,8 +264,8 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
 
   if (momentOrders_.getSize() + knownParameterValues_.getSize() != parameterDimension)
     throw InvalidArgumentException(HERE) << "The total of known parameters size (" << parameterDimension << ") "
-      << "and moment orders size (" << momentOrders_.getSize() << ") match the model parameter dimension ("
-      << parameterDimension << ")";
+                                         << "and moment orders size (" << momentOrders_.getSize() << ") match the model parameter dimension ("
+                                         << parameterDimension << ")";
 
   if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != momentOrders_.getSize()))
     throw InvalidArgumentException(HERE) << "The bounds dimension must match the moments order size (" << momentOrders_.getSize() << ")";

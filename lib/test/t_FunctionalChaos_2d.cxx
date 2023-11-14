@@ -63,7 +63,7 @@ int main(int, char *[])
     const UnsignedInteger degree = 4;
     const UnsignedInteger basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree);
     const AdaptiveStrategy adaptiveStrategy(FixedStrategy(productBasis, basisSize));
-    
+
 
     // Create the projection strategy
     UnsignedInteger samplingSize = 100;
@@ -89,7 +89,7 @@ int main(int, char *[])
     std::cout << composedMetamodel << std::endl;
     std::cout << "ComposedMetamodel (html)= " << std::endl;
     std::cout << composedMetamodel._repr_html_() << std::endl;
-    
+
   } // try
   catch (TestFailed & ex)
   {

@@ -19,7 +19,9 @@ ott.assert_almost_equal(mm.gradient([0.0])[0, 0], -5.55)
 ott.assert_almost_equal(mm.hessian([0.0])[0, 0, 0], 2.5)
 
 # 2-d
-f = ot.SymbolicFunction(["x1", "x2"], ["9*x1^2 + 6*x2^2 + 0.1*x1 * x2 + 4*x1 + 7*x2 + 5.0"])
+f = ot.SymbolicFunction(
+    ["x1", "x2"], ["9*x1^2 + 6*x2^2 + 0.1*x1 * x2 + 4*x1 + 7*x2 + 5.0"]
+)
 X = ot.Normal([2.0, 3.0], [1.0, 1.0]).getSample(1000)
 Y = f(X)
 algo = ot.QuadraticLeastSquares(X, Y)

@@ -24,6 +24,8 @@ print(factory.build([3, 0]))
 distribution = ot.Gumbel(0.5, -0.5)
 sample = distribution.getSample(1000)
 for isRegular in [True, False]:
-    fResult = ot.MaximumLikelihoodFactory.BuildEstimator(ot.GumbelFactory(), sample, isRegular)
+    fResult = ot.MaximumLikelihoodFactory.BuildEstimator(
+        ot.GumbelFactory(), sample, isRegular
+    )
     paramDist = fResult.getParameterDistribution()
     print(f"estimator(isRegular={isRegular}): {str(paramDist)[:100]}")

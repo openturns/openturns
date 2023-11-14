@@ -63,7 +63,6 @@ startingPoint = [0.0] * dim
 bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
 
 for minimization in [True, False]:
-
     problem = ot.OptimizationProblem(linear, ot.Function(), ot.Function(), bounds)
     problem.setMinimization(minimization)
     algo = ot.Cobyla(problem)

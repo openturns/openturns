@@ -24,7 +24,7 @@ ot.Log.Show(ot.Log.NONE)
 # Create the function with all parameters d(E, F, L, I)
 def d_func(X):
     E, F, L, II = X
-    d = -F * L ** 3 / (3.0 * E * II)
+    d = -F * L**3 / (3.0 * E * II)
     return [d]
 
 

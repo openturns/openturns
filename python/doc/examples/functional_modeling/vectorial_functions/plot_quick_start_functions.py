@@ -87,6 +87,7 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 # * `x`: the input of the function, a vector with `nbInputs` dimensions,
 # * `y`: the output of the function, a vector with `nbOutputs` dimensions.
 
+
 # %%
 def mySimulator(x):
     y0 = x[0] + x[1] + x[2]

@@ -176,20 +176,20 @@ struct ComputeNormalPolicy
       boundarySimplices_(i, dimension_) = newVertexIndex;
       // Fix the simplex orientation
       for (UnsignedInteger j = 0; j <= dimension_; ++j)
-        {
-          const UnsignedInteger vertexJ = boundarySimplices_(i, j);
-          for (UnsignedInteger k = 0; k < dimension_; ++k) simplexMatrix(k, j) = boundaryVertices_(vertexJ, k);
-          simplexMatrix(dimension_, j) = 1.0;
-        }
+      {
+        const UnsignedInteger vertexJ = boundarySimplices_(i, j);
+        for (UnsignedInteger k = 0; k < dimension_; ++k) simplexMatrix(k, j) = boundaryVertices_(vertexJ, k);
+        simplexMatrix(dimension_, j) = 1.0;
+      }
       Scalar sign = 0.0;
       (void) simplexMatrix.computeLogAbsoluteDeterminant(sign, false);
       // In odd dimension the positive orientation is for a negative determinant of
       // the simplex matrix
       if ((sign > 0.0) != (dimension_ % 2 == 1))
-        {
-          IndicesCollection::iterator cit = boundarySimplices_.begin_at(i);
-          std::swap(*cit, *(cit + 1));
-        }
+      {
+        IndicesCollection::iterator cit = boundarySimplices_.begin_at(i);
+        std::swap(*cit, *(cit + 1));
+      }
     } // i
   } // operator ()
 };  // struct ComputeNormalPolicy
@@ -216,7 +216,7 @@ struct ComputeNormalPolicy
       offset>0)
 */
 Mesh BoundaryMesher::build(const Mesh & mesh,
-                                const Scalar offset) const
+                           const Scalar offset) const
 {
   const UnsignedInteger dimension = mesh.getDimension();
   // I. build the list of unique faces
@@ -278,26 +278,26 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
     const UnsignedInteger nbVertices = vertices.getSize();
     Indices oldToNewIndices(nbVertices, nbVertices);
     for (UnsignedInteger i = 0; i < boundaryFaces.getSize(); ++i)
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j)
-          {
-            // Get the old vertex index of the jth vertex of the ith boundary face
-            const UnsignedInteger oldVertexIndex = boundaryFaces[i][j];
-            // If the vertex has not been seen so far, insert it into the sample of boundary vertices
-            if (oldToNewIndices[oldVertexIndex] == nbVertices)
-              {
-                boundaryFaces[i][j] = newVertexIndex;
-                for (UnsignedInteger k = 0; k < dimension; ++k)
-                  boundaryVertices(newVertexIndex, k) = vertices(oldVertexIndex, k);
-                oldToNewIndices[oldVertexIndex] = newVertexIndex;
-                ++newVertexIndex;
-              }
-            else
-              {
-                boundaryFaces[i][j] = oldToNewIndices[oldVertexIndex];
-              } // if
-          } //j
-      } // i
+        // Get the old vertex index of the jth vertex of the ith boundary face
+        const UnsignedInteger oldVertexIndex = boundaryFaces[i][j];
+        // If the vertex has not been seen so far, insert it into the sample of boundary vertices
+        if (oldToNewIndices[oldVertexIndex] == nbVertices)
+        {
+          boundaryFaces[i][j] = newVertexIndex;
+          for (UnsignedInteger k = 0; k < dimension; ++k)
+            boundaryVertices(newVertexIndex, k) = vertices(oldVertexIndex, k);
+          oldToNewIndices[oldVertexIndex] = newVertexIndex;
+          ++newVertexIndex;
+        }
+        else
+        {
+          boundaryFaces[i][j] = oldToNewIndices[oldVertexIndex];
+        } // if
+      } //j
+    } // i
   } // In a dedicated scope to allow for the liberation of oldToNewIndices
   // Resize the boundary vertices
   boundaryVertices.erase(boundaryVertices.getImplementation()->begin() + newVertexIndex + boundaryVerticesReserve, boundaryVertices.getImplementation()->end());

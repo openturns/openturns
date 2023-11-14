@@ -180,9 +180,10 @@ Point TruncatedOverMesh::getRealization() const
     x = DistFunc::rUniformSimplex(simplexVertices);
 
     // draw y in [0, pdfsup]
-    y = RandomGenerator::Generate() * pdfSup_[index];    
+    y = RandomGenerator::Generate() * pdfSup_[index];
 
-  } while (y > distribution_.computePDF(x));
+  }
+  while (y > distribution_.computePDF(x));
 
   return x;
 }

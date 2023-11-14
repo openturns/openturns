@@ -44,6 +44,7 @@ print(
 # %%
 # The geometric interpretation is simply the area under the PDF of the standard normal distribution for :math:`x \in [-1,1]` which we draw thereafter.
 
+
 # %%
 def linearSample(xmin, xmax, npoints):
     """

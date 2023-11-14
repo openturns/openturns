@@ -59,6 +59,7 @@ view = otv.View(graph)
 # %%
 # This seems a nice, smooth function to approximate with polynomials.
 
+
 # %%
 def linearSample(xmin, xmax, npoints):
     """Returns a sample created from a regular grid
@@ -221,6 +222,7 @@ view = otv.View(graph)
 # %%
 # We gather the previous computation in two different functions. The `myPolynomialDataFitting` function computes the least squares solution and `myPolynomialCurveFittingGraph` plots the results.
 
+
 # %%
 def myPolynomialDataFitting(total_degree, x_train, y_train):
     """Computes the polynomial curve fitting
@@ -323,6 +325,7 @@ responseSurface, basis = myPolynomialDataFitting(total_degree, x_train, y_train)
 # %%
 # Then we create a test set, with the same method as before.
 
+
 # %%
 def createDataset(n):
     x = linearSample(0, 1, n)
@@ -359,6 +362,7 @@ RMSE
 
 # %%
 # The following function gathers the RMSE computation to make the experiment easier.
+
 
 # %%
 def computeRMSE(responseSurface, basis, x, y):

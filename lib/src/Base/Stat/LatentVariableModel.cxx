@@ -32,7 +32,7 @@ static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 
 /** Parameters constructor */
 LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
-                                         const UnsignedInteger latentDim)
+    const UnsignedInteger latentDim)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
   , latentDim_(latentDim)
   , nLevels_(nLevels)
@@ -64,7 +64,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
   const bool isLevelz2 = (z2 >= 0 && z2 < nLevels_ && (z2 - floor(z2)) == 0);
 
   if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << z1
-  << ", and/or " << z2 << " are not among the known levels. They should both present integer values between 0 and l-1.";
+        << ", and/or " << z2 << " are not among the known levels. They should both present integer values between 0 and l-1.";
 
   Scalar cov = latentCovarianceMatrix_(z1, z2);
 
@@ -79,7 +79,7 @@ Scalar LatentVariableModel::computeAsScalar(const Point & z1, const Point & z2) 
 
 /* Computation of the covariance  function */
 Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iterator & z1_begin,
-                                            const Collection<Scalar>::const_iterator & z2_begin) const
+    const Collection<Scalar>::const_iterator & z2_begin) const
 {
 
   Collection<Scalar>::const_iterator z1_it = z1_begin;
@@ -193,7 +193,7 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
   // Set the full sample of latent coordinates
   // Fix the coordinates of the first two latent variables
   fullLatentVariables_ = Sample(nLevels_, latentDim_);
-  fullLatentVariables_(1,0) = latentVariablesCoordinates[0];
+  fullLatentVariables_(1, 0) = latentVariablesCoordinates[0];
 
   UnsignedInteger count = 1;
   // Fix the coordinates of the remaining latent variables
@@ -201,7 +201,7 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
   {
     for (UnsignedInteger j = 0; j < latentDim_; ++j)
     {
-      fullLatentVariables_(i,j) = latentVariablesCoordinates[count];
+      fullLatentVariables_(i, j) = latentVariablesCoordinates[count];
       count++;
     }
   }
@@ -274,12 +274,12 @@ void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 
 /* Drawing method */
 Graph LatentVariableModel::draw(const UnsignedInteger /*rowIndex*/,
-    const UnsignedInteger /*columnIndex*/,
-    const Scalar /*zMin*/,
-    const Scalar /*zMax*/,
-    const UnsignedInteger /*pointNumber*/,
-    const Bool /*asStationary*/,
-    const Bool /*correlationFlag*/) const
+                                const UnsignedInteger /*columnIndex*/,
+                                const Scalar /*zMin*/,
+                                const Scalar /*zMax*/,
+                                const UnsignedInteger /*pointNumber*/,
+                                const Bool /*asStationary*/,
+                                const Bool /*correlationFlag*/) const
 {
   throw NotYetImplementedException(HERE) << "The latentVariableModel class does not possess a draw method.";
 }

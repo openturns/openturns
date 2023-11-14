@@ -39,8 +39,8 @@ public:
 
   /** Constructor */
   explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1,
-                               const ComparisonOperator & op = Greater(),
-                               const Scalar threshold = 0.0);
+                                        const ComparisonOperator & op = Greater(),
+                                        const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   IterativeThresholdExceedance * clone() const override;
@@ -61,7 +61,7 @@ public:
   Bool operator ==(const IterativeThresholdExceedance & other) const
   {
     return (dimension_ == other.dimension_) && (operator_ == other.operator_)
-    && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
+           && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
   }
 
   /**

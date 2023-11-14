@@ -328,13 +328,13 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample &
   return PartialSpearman(firstSample, secondSample, selection, level);
 }
 
-TestResult HypothesisTest::LikelihoodRatioTest(const UnsignedInteger model0NbParameters, 
-                                               const Scalar model0LogLikelihood,
+TestResult HypothesisTest::LikelihoodRatioTest(const UnsignedInteger model0NbParameters,
+    const Scalar model0LogLikelihood,
     const UnsignedInteger model1NbParameters,
     const Scalar model1LogLikelihood,
     const Scalar level)
 {
-    if (model0NbParameters >= model1NbParameters) throw InvalidArgumentException(HERE) << "Error: Model 0 must be embedded into Model 1. Here Model 0 has " << model0NbParameters << " parameters and Model 1 has " << model1NbParameters << " parameters";
+  if (model0NbParameters >= model1NbParameters) throw InvalidArgumentException(HERE) << "Error: Model 0 must be embedded into Model 1. Here Model 0 has " << model0NbParameters << " parameters and Model 1 has " << model1NbParameters << " parameters";
   const Scalar dp = 2.0 * (model1LogLikelihood - model0LogLikelihood);
 
   // The p-value is the complementary CDF of a ChiSquare(1) at dp

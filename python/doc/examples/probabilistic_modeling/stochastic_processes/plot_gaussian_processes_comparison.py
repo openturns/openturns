@@ -93,6 +93,7 @@ view = viewer.View(graph)
 # %%
 # In order to make the next examples easier, we define a function which plots a given number of trajectories from a gaussian process based on a covariance model.
 
+
 # %%
 def plotCovarianceModel(myCovarianceModel, myTimeGrid, nbTrajectories):
     """Plots the given number of trajectories with given covariance model."""

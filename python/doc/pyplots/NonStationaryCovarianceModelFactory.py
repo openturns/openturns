@@ -36,7 +36,7 @@ for i in range(alld.getSize()):
 # Create the time grid
 # for iN in range(2, 11):
 #  t_00 = time()
-N = 2 ** 5
+N = 2**5
 dt = (tmax - t0) / N
 myMesh = ot.RegularGrid(t0, dt, N)
 
@@ -59,7 +59,7 @@ myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, covariance)
 myProcess = ot.GaussianProcess(myCovarianceModel, myMesh)
 
 # Create a  sample of fields
-size = 10 ** 4
+size = 10**4
 myFieldSample = myProcess.getSample(size)
 
 # Build a covariance model factory

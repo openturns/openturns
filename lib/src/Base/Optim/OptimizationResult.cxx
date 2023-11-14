@@ -306,12 +306,12 @@ void OptimizationResult::store(const Point & x,
   if (getProblem().getObjective().getOutputDimension() <= 1)
   {
     const Bool objectiveImproved = (!getOptimalValue().getDimension())
-      || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
+                                   || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
 
     const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
 
     if ((objectiveImproved && insideBounds && (constraintError <= maximumConstraintError))
-      || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
+        || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
     {
       // update values
       absoluteError_ = absoluteError;

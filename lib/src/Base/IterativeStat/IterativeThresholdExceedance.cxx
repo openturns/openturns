@@ -33,7 +33,7 @@ static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExc
 
 /* Default constructor */
 IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
-                                                           const Scalar threshold)
+    const Scalar threshold)
   : IterativeAlgorithmImplementation(dimension)
   , operator_(Greater())
   , thresholdValue_(threshold)
@@ -44,8 +44,8 @@ IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger
 
 /* Default constructor */
 IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
-                                                           const ComparisonOperator & op,
-                                                           const Scalar threshold)
+    const ComparisonOperator & op,
+    const Scalar threshold)
   : IterativeAlgorithmImplementation(dimension)
   , operator_(op)
   , thresholdValue_(threshold)

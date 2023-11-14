@@ -8,7 +8,9 @@ import re
 ot.TESTPREAMBLE()
 
 # find all rst files
-rst_files = Path(__file__).parents[1].joinpath("doc").joinpath("user_manual").rglob('*.rst')
+rst_files = (
+    Path(__file__).parents[1].joinpath("doc").joinpath("user_manual").rglob("*.rst")
+)
 rst_lines = []
 for rst_file in rst_files:
     with open(rst_file) as f:
@@ -19,7 +21,11 @@ instanciables = []
 for name, obj in inspect.getmembers(ot):
     if inspect.isclass(obj):
         cn = obj.__name__
-        if cn.startswith("_") or cn.endswith("Collection") or cn.endswith("Implementation"):
+        if (
+            cn.startswith("_")
+            or cn.endswith("Collection")
+            or cn.endswith("Implementation")
+        ):
             continue
         try:
             instance = obj()
@@ -38,7 +44,7 @@ for class_ in instanciables:
     count_class += 1
     found = False
     for line in rst_lines:
-        if re.search(fr"{cn}", line) is not None:
+        if re.search(rf"{cn}", line) is not None:
             found = True
             break
     if not found:
@@ -64,7 +70,7 @@ for name, mod in inspect.getmembers(ot):
                 count_methods += 1
                 found = False
                 for line in rst_lines:
-                    if re.search(fr"\b{symboln}\b", line) is not None:
+                    if re.search(rf"\b{symboln}\b", line) is not None:
                         found = True
                         break
                 if not found:

@@ -49,6 +49,7 @@ view = viewer.View(graph)
 # Create the algorithms
 # ---------------------
 
+
 # %%
 def createMyBasicKriging(X, Y):
     """
@@ -178,6 +179,7 @@ view = viewer.View(graph)
 
 # %%
 # The following function is the building block of the algorithm. It returns a new point which maximizes the conditional variance.
+
 
 # %%
 def getNewPoint(xMin, xMax, krigResult):

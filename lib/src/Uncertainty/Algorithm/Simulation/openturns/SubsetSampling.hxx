@@ -87,7 +87,7 @@ public:
   /** Experiment for first step */
   void setInitialExperiment(const WeightedExperiment & initialExperiment);
   WeightedExperiment getInitialExperiment() const;
-  
+
   /** Performs the actual computation. */
   void run() override;
 

@@ -56,7 +56,6 @@ for dim in [3, 5, 8][1:2]:
         composite = ot.CompositeRandomVector(function, randomVector)
 
         for pft in [1e-4, 1e-6, 1e-8][1:2]:
-
             k = ot.Normal().computeQuantile(pft)[0] * ot.Point(linears[ih]).norm()
             event = ot.ThresholdEvent(composite, ot.Less(), k)
 

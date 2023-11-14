@@ -180,22 +180,22 @@ Complex Triangular::computeCharacteristicFunction(const Scalar x) const
   const Scalar factor = (a4 + a3 * b_ + a3 * m_ + a2 * b2 + a2 * b_ * m_ + a2 * m2 + a_ * b3 + a_ * b2 * m_ + a_ * b_ * m2 + a_ * m3 + b4 + b3 * m_ + b2 * m2 + b_ * m3 + m4) * x4 / 360.0;
   Complex value;
   if (std::abs(factor) < SpecFunc::ScalarEpsilon)
-    {
-      value = Complex(1.0 - x2 * (a2 + a_ * m_ + m2 + b_ * m_ + b2 + a_ * b_) / 12.0 + factor, (a_ + b_ + m_) * x / 3.0 + ((a_ + m_ + b_) * (a2 + m2 + b2) + a_ * m_ * b_) * x3 / 60.0);
-    }
+  {
+    value = Complex(1.0 - x2 * (a2 + a_ * m_ + m2 + b_ * m_ + b2 + a_ * b_) / 12.0 + factor, (a_ + b_ + m_) * x / 3.0 + ((a_ + m_ + b_) * (a2 + m2 + b2) + a_ * m_ * b_) * x3 / 60.0);
+  }
   else
-    {
-      const Scalar ba = b_ - a_;
-      const Scalar bm = b_ - m_;
-      const Scalar ma = m_ - a_;
-      const Scalar epsilon = SpecFunc::Precision * ba;
-      const Scalar twoOverX2 = 2.0 / x2;
-      const Complex expIAX = std::exp(Complex(0.0, a_ * x));
-      const Complex expIBX = std::exp(Complex(0.0, b_ * x));
-      if (ma < epsilon) value = twoOverX2 * (expIAX * Complex(1.0 / ba,  x) - expIBX / ba) / ba;
-      else if (bm < epsilon) value = twoOverX2 * (expIBX * Complex(1.0 / ba, -x) - expIAX / ba) / ba;
-      else value = twoOverX2 * (-expIAX / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - expIBX / (ba * bm));
-    }
+  {
+    const Scalar ba = b_ - a_;
+    const Scalar bm = b_ - m_;
+    const Scalar ma = m_ - a_;
+    const Scalar epsilon = SpecFunc::Precision * ba;
+    const Scalar twoOverX2 = 2.0 / x2;
+    const Complex expIAX = std::exp(Complex(0.0, a_ * x));
+    const Complex expIBX = std::exp(Complex(0.0, b_ * x));
+    if (ma < epsilon) value = twoOverX2 * (expIAX * Complex(1.0 / ba,  x) - expIBX / ba) / ba;
+    else if (bm < epsilon) value = twoOverX2 * (expIBX * Complex(1.0 / ba, -x) - expIAX / ba) / ba;
+    else value = twoOverX2 * (-expIAX / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - expIBX / (ba * bm));
+  }
   return value;
 }
 

@@ -52,7 +52,7 @@ dim_output = 1  # dimension of the output
 
 def function_beam(X):
     E, F, L, II = X
-    Y = F * L ** 3 / (3 * E * II)
+    Y = F * L**3 / (3 * E * II)
     return [Y]
 
 
@@ -62,6 +62,7 @@ g.setInputDescription(myDistribution.getDescription())
 
 # %%
 # The following function creates a sparse polynomial chaos with a given total degree.
+
 
 # %%
 def ComputeSparseLeastSquaresChaos(
@@ -113,6 +114,7 @@ def ComputeSparseLeastSquaresChaos(
 # The sparsity rate is the complement of the ratio between the number of coefficients
 # selected from LARS and the total number of coefficients in the full polynomial basis.
 
+
 # %%
 def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     """Compute the sparsity rate, assuming a FixedStrategy."""
@@ -129,6 +131,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 
 # %%
 # The following functions compute and plot the Q2 predictivity coefficients within the validation plot.
+
 
 # %%
 def computeQ2Chaos(chaosResult, inputTest, outputTest):
@@ -237,6 +240,7 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
 
 # %%
 # The following function uses a boxplot to see the distribution of the Q2 coefficients.
+
 
 # %%
 def plotQ2Boxplots(Q2sample, N):

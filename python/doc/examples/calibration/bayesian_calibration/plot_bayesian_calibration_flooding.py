@@ -187,6 +187,7 @@ view = viewer.View(graph)
 # here :math:`\vect z=(\mu, \sigma)` with :math:`\mu = G(Q, K_s, Z_v, Z_m)`
 # and :math:`\sigma = 0.5`.
 
+
 # %%
 def fullModelPy(X):
     Q, K_s, Z_v, Z_m = X

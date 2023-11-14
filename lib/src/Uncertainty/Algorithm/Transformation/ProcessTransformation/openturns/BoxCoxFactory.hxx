@@ -66,8 +66,8 @@ public:
                         const Point & shift) const;
 
   BoxCoxTransform buildWithGraph(const Field & timeSeries,
-                        const Point & shift,
-                        Graph & graph) const;
+                                 const Point & shift,
+                                 Graph & graph) const;
 
   BoxCoxTransform build(const Sample & sample) const;
 
@@ -75,33 +75,33 @@ public:
                         const Point & shift) const;
 
   BoxCoxTransform buildWithGraph(const Sample & sample,
-                        const Point & shift,
-                        Graph & graph) const;
+                                 const Point & shift,
+                                 Graph & graph) const;
 
   /** Build the factory from data by estimating the best generalized linear model */
   BoxCoxTransform buildWithGLM(const Sample &inputSample,
-                        const Sample &outputSample,
-                        const CovarianceModel &covarianceModel,
-                        const Basis &basis,
-                        const Point &shift,
-                        GeneralLinearModelResult &generalLinearModelResult);
+                               const Sample &outputSample,
+                               const CovarianceModel &covarianceModel,
+                               const Basis &basis,
+                               const Point &shift,
+                               GeneralLinearModelResult &generalLinearModelResult);
 
   BoxCoxTransform buildWithGLM(const Sample & inputSample,
-                        const Sample & outputSample,
-                        const CovarianceModel & covarianceModel,
-                        const Point & shift,
-                        GeneralLinearModelResult & generalLinearModelResult);
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const Point & shift,
+                               GeneralLinearModelResult & generalLinearModelResult);
 
   BoxCoxTransform buildWithLM(const Sample &inputSample,
-                        const Sample &outputSample,
-                        const Basis &basis,
-                        const Point &shift,
-                        LinearModelResult &linearModelResult);
+                              const Sample &outputSample,
+                              const Basis &basis,
+                              const Point &shift,
+                              LinearModelResult &linearModelResult);
 
   BoxCoxTransform buildWithLM(const Sample &inputSample,
-                        const Sample &outputSample,
-                        const Point &shift,
-                        LinearModelResult &linearModelResult);
+                              const Sample &outputSample,
+                              const Point &shift,
+                              LinearModelResult &linearModelResult);
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

@@ -17,14 +17,21 @@ for i in range(3):
     estimatedDistribution = factory.build(sample)
     print("Distribution          =", distribution)
     print("Estimated distribution=", estimatedDistribution)
-    ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1)
+    ott.assert_almost_equal(
+        estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1
+    )
     estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(sample)
     print("GeneralizedPareto          =", distribution)
     print("Estimated generalizedPareto=", estimatedGeneralizedPareto)
     try:
         estimatedDistribution = factory.buildMethodOfMoments(sample)
         print("GeneralizedPareto from moments=", estimatedDistribution)
-        ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1)
+        ott.assert_almost_equal(
+            estimatedDistribution.getParameter(),
+            distribution.getParameter(),
+            1e-1,
+            1e-1,
+        )
     except TypeError:
         # the method is invalid for some range of xsi
         pass
@@ -41,7 +48,9 @@ estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(
     distribution.getParameter()
 )
 print("GeneralizedPareto from parameters=", estimatedGeneralizedPareto)
-ott.assert_almost_equal(estimatedGeneralizedPareto.getParameter(), distribution.getParameter())
+ott.assert_almost_equal(
+    estimatedGeneralizedPareto.getParameter(), distribution.getParameter()
+)
 
 # mean residual life
 sample = coles.Coles().rain

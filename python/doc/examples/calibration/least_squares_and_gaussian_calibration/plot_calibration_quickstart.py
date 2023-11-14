@@ -79,10 +79,11 @@ fm.data
 # - `Q` : the flowrate of the river,
 # - `a`, `b` : the parameters.
 
+
 # %%
 def functionSimpleFlooding(X):
     Q, a, b = X
-    H = a * Q ** b
+    H = a * Q**b
     return [H]
 
 

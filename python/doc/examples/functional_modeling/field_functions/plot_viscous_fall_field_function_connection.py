@@ -48,6 +48,7 @@ dimension
 # %%
 # Then we define the Python function which computes the altitude at each time value. This function has 5 inputs: `z0`, `v0`, `m`, `c` and `zmin`.
 
+
 # %%
 def AltiFunc(X):
     g = 9.81

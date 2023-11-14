@@ -80,6 +80,7 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following functions which plots the data.
 
+
 # %%
 def plot_data_train(x_train, y_train):
     """Plot the data (x_train,y_train) as a Cloud, in red"""
@@ -132,6 +133,7 @@ y_test_MM = krigeageMM(x_test)
 
 # %%
 # The following function plots the kriging data.
+
 
 # %%
 def plot_data_kriging(x_test, y_test_MM):

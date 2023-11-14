@@ -187,7 +187,6 @@ my_labels = {
 }
 for i in range(distribution.getDimension()):
     for j in range(i):
-
         crossCutIndices = []
         crossCutReferencePoint = []
         for k in range(distribution.getDimension()):
@@ -331,7 +330,6 @@ my_labels = {
 
 for i in range(distribution.getDimension()):
     for j in range(i):
-
         crossCutIndices = []
         crossCutReferencePoint = []
         for k in range(distribution.getDimension()):

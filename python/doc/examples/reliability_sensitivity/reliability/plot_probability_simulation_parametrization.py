@@ -82,6 +82,7 @@ algo.setConvergenceStrategy(ot.Compact(N))
 # %%
 # Use a callback to display the progress every 10%.
 
+
 # %%
 def progress(p):
     if p >= progress.t:
@@ -96,6 +97,7 @@ algo.setProgressCallback(progress)
 
 # %%
 # Use a callback to stop the simulation.
+
 
 # %%
 def stop():

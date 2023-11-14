@@ -603,9 +603,9 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
 
 /* Draw dependence functions */
 static Graph VisualTestDrawDependenceFunction(const Sample & data,
-                                       const String & linkFormula,
-                                       const String & legend,
-                                       const Bool survival = false)
+    const String & linkFormula,
+    const String & legend,
+    const Bool survival = false)
 {
   if (!data.getSize())
     throw InvalidArgumentException(HERE) << "The sample must not be empty";

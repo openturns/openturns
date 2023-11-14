@@ -81,7 +81,7 @@ public:
 private:
   void checkStorageManager() override;
   void setStorageManager() override;
-  
+
   Pointer<XMLH5StorageManagerImplementation> p_implementation_;
 
 }; /* class H5StorageManager */

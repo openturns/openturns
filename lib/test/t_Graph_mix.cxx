@@ -137,7 +137,7 @@ int main(int, char *[])
     firstGraph.add(secondGraph.getDrawables()[0]);
 
     // Add drawables with default colors
-    Curve myCurve(Point({ 0.0,1.0,2.0 }), Point({ 1.0,3.0,2.0 }));
+    Curve myCurve(Point({ 0.0, 1.0, 2.0 }), Point({ 1.0, 3.0, 2.0 }));
     firstGraph.add(myCurve);
     secondGraph.add(Graph::DrawableCollection({ myCurve, myCloud }));
 

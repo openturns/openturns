@@ -103,7 +103,7 @@ private:
 
   /** Build the sample of vertices for i-th simplex */
   Sample getSimplexVertices(const UnsignedInteger index) const;
-  
+
   Distribution distribution_;
 
   /** The main parameter set of the distribution */
@@ -114,7 +114,7 @@ private:
 
   /** Probabilities associated to the simplices selection */
   Point probabilities_;
-  
+
   /** Upper bound of pdf for each simplex */
   Point pdfSup_;
 

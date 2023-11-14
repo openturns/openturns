@@ -146,7 +146,6 @@ class View:
         square_axes=False,
         **kwargs
     ):
-
         if not (
             isinstance(graph, ot.Graph)
             or isinstance(graph, ot.GraphImplementation)
@@ -475,7 +474,6 @@ class View:
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Polygon":
-
                 if ("facecolor" not in polygon_kw_default) and (
                     "fc" not in polygon_kw_default
                 ):
@@ -490,7 +488,6 @@ class View:
                 self._ax[0].add_patch(matplotlib.patches.Polygon(data, **polygon_kw))
 
             elif drawableKind == "PolygonArray":
-
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
                 if (

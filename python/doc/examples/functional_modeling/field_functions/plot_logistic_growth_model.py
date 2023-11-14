@@ -40,6 +40,7 @@ distX = lm.distX
 # %%
 # We define the model :
 
+
 # %%
 class Popu(ot.OpenTURNSPythonPointToFieldFunction):
     def __init__(self, t0=1790.0, tfinal=2000.0, nt=1000):

@@ -236,8 +236,8 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
 
   if (probabilities_.getSize() + knownParameterValues_.getSize() != parameterDimension)
     throw InvalidArgumentException(HERE) << "The total of known parameters size (" << parameterDimension << ") "
-      << "and probability levels size (" << probabilities_.getSize() << ") match the model parameter dimension ("
-      << parameterDimension << ")";
+                                         << "and probability levels size (" << probabilities_.getSize() << ") match the model parameter dimension ("
+                                         << parameterDimension << ")";
 
   if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != probabilities_.getSize()))
     throw InvalidArgumentException(HERE) << "The bounds dimension must match the probabilities size (" << probabilities_.getSize() << ")";
@@ -360,7 +360,7 @@ void QuantileMatchingFactory::setProbabilities(const Point & probabilities)
     throw InvalidArgumentException(HERE) << "Provided probabilities are not increasing";
   for (UnsignedInteger i = 0; i < probabilities.getSize(); ++ i)
     if (!(probabilities[i] >= 0.0) || !(probabilities[i] <= 1.0))
-      throw InvalidArgumentException(HERE) << "Probability levels must be in [0, 1], but probabilities[" << i <<"] = " << probabilities[i];
+      throw InvalidArgumentException(HERE) << "Probability levels must be in [0, 1], but probabilities[" << i << "] = " << probabilities[i];
   probabilities_ = probabilities;
 }
 
