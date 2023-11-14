@@ -731,7 +731,6 @@
   <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
 
   <!-- OT::SubsetSampling parameters -->
-  <SubsetSampling-DefaultBetaMin                value_float="2.0"             />
   <SubsetSampling-DefaultConditionalProbability value_float="0.1"             />
   <SubsetSampling-DefaultProposalRange          value_float="2.0"             />
   <SubsetSampling-DefaultMaximumOuterSampling   value_int="10000" />

@@ -55,10 +55,6 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Method to create new BasisSequence objects */
   BasisSequence build(const Sample & x,
                       const Sample & y,

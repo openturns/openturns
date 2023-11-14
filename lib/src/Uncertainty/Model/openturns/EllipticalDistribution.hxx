@@ -83,14 +83,14 @@ public:
   /** Compute the density generator of the elliptical distribution, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^{-1}(x-mu))                      */
-  Scalar computeDensityGenerator(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
   virtual Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the second derivative of the density generator */
-  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
@@ -102,9 +102,6 @@ public:
   /** Mu accessor */
   void setMu(const Point & mu);
   Point getMu() const;
-
-  // @depreated
-  void setMean(const Point & mean);
 
   /** Sigma vector accessor */
   void setSigma(const Point & sigma);
@@ -118,10 +115,6 @@ public:
   /** Correlation matrix accessor */
   void setR(const CorrelationMatrix & R);
   CorrelationMatrix getR() const;
-
-  /** @deprecated Correlation matrix accessor */
-  void setCorrelation(const CorrelationMatrix & R);
-  CorrelationMatrix getCorrelation() const;
 
 protected:
   /** Compute the mean of the distribution */

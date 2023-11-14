@@ -94,10 +94,6 @@ public:
   Scalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const Scalar maximumConstraintError);
 
-  /* @deprecated Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   void setProgressCallback(ProgressCallback callBack, void * state = 0);

@@ -77,10 +77,6 @@ public:
   ARMA build(const TimeSeries & timeSeries) const override;
   ARMA build(const ProcessSample & sample) const override;
 
-  /** @deprecated Verbosity accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

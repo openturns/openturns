@@ -48,11 +48,6 @@ public:
   static const char * GetDirectoryListSeparator();
 
   /**
-   * @deprecated Return the end of line in text files
-   */
-  static const char * GetEndOfLine();
-
-  /**
    * Return the command that permit one to snub the output of a command.
    */
   static String GetDeleteCommandOutput();

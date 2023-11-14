@@ -57,19 +57,6 @@ String BasisSequenceFactoryImplementation::__str__(const String & ) const
   return OSS(false) << __repr__();
 }
 
-
-/* Verbosity accessor */
-void BasisSequenceFactoryImplementation::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("BasisSequenceFactory.setVerbose is deprecated");
-}
-
-Bool BasisSequenceFactoryImplementation::getVerbose() const
-{
-  LOGWARN("BasisSequenceFactory.getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
 /* Method to create new BasisSequence objects */
 BasisSequence BasisSequenceFactoryImplementation::build(const Sample & x,
     const Sample & y,

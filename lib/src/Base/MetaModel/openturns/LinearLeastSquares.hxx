@@ -44,14 +44,9 @@ public:
   /** Default constructor */
   LinearLeastSquares();
 
-  /** @deprecated Constructor with parameters */
-  LinearLeastSquares(const Sample & dataIn,
-                     const Function & inputFunction);
-
   /** Constructor with parameters */
   LinearLeastSquares(const Sample & dataIn,
                      const Sample & dataOut);
-
 
   /** Virtual constructor */
   LinearLeastSquares * clone() const override;

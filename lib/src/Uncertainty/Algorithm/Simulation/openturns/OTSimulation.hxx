@@ -32,7 +32,6 @@
 #include "openturns/SamplingStrategyImplementation.hxx"
 #include "openturns/RandomDirection.hxx"
 #include "openturns/OrthogonalDirection.hxx"
-#include "openturns/LHS.hxx"
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
 #include "openturns/PostAnalyticalSimulation.hxx"

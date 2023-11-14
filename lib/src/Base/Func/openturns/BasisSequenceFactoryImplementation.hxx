@@ -51,10 +51,6 @@ public:
   /** Virtual constructor */
   BasisSequenceFactoryImplementation * clone() const override;
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Method to create new BasisSequence objects */
   virtual BasisSequence build(const Sample & x,
                               const Sample & y,

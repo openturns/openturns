@@ -68,7 +68,7 @@ int main(int, char *[])
     assert_equal(iteration, expectedIteration2);
 
     /* Iterative threshold, one single sample, then one point at a time */
-    IterativeThresholdExceedance iterthresholdMixed(dimension, 15.0);
+    IterativeThresholdExceedance iterthresholdMixed(dimension, Greater(), 15.0);
     iterthresholdMixed.increment(sample1);
     iterthresholdMixed.increment(point1);
     iterthresholdMixed.increment(point2);

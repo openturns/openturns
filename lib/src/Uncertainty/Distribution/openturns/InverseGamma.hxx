@@ -126,10 +126,6 @@ public:
   void setLambda(const Scalar lambda);
   Scalar getLambda() const;
 
-  /** @deprecated K and lambda accessor */
-  void setKLambda(const Scalar k,
-                  const Scalar lambda);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -138,7 +134,9 @@ public:
 
 
 protected:
-
+  /** K and lambda accessor */
+  void setKLambda(const Scalar k,
+                  const Scalar lambda);
 
 private:
 

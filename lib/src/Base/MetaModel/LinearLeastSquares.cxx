@@ -42,14 +42,6 @@ LinearLeastSquares::LinearLeastSquares()
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
-                                       const Function & inputFunction)
-  : LinearLeastSquares(dataIn, inputFunction(dataIn))
-{
-  LOGWARN(OSS() << "LinearLeastSquares(Sample, Function) is deprecated");
-}
-
-/* Constructor with parameters */
-LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
                                        const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),

@@ -109,10 +109,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** @deprecated Verbose accessor */
-  virtual Bool getVerbose() const;
-  virtual void setVerbose(const Bool verbose);
-
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   virtual void setProgressCallback(ProgressCallback callBack, void * state = 0);

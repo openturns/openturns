@@ -53,18 +53,6 @@ String BasisSequenceFactory::__str__(const String & offset) const
   return getImplementation()->__str__( offset );
 }
 
-/* Verbosity accessor */
-void BasisSequenceFactory::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose( verbose );
-}
-
-Bool BasisSequenceFactory::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
 /* Method to create new BasisSequence objects */
 BasisSequence BasisSequenceFactory::build(const Sample & x,
     const Sample & y,

@@ -487,18 +487,6 @@ String ARMALikelihoodFactory::__str__(const String & ) const
   return this->__repr__();
 }
 
-/* Verbosity accessor */
-Bool ARMALikelihoodFactory::getVerbose() const
-{
-  LOGWARN("ARMALikelihoodFactory::getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
-void ARMALikelihoodFactory::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("ARMALikelihoodFactory::setVerbose is deprecated");
-}
-
 /* Build method */
 ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 {

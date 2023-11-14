@@ -9,6 +9,29 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated Pagmo.setGenerationNumber
+ * Removed deprecated NLopt.SetSeed
+ * Removed deprecated IterativeThresholdExceedance(dimension, threshold) ctor
+ * Removed deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
+ * Removed deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
+ * Removed deprecated SubsetSampling.setISubset, setBetaMin
+ * Removed deprecated LHS
+ * Removed deprecated OptimizationAlgorithm.set/getVerbose
+ * Removed deprecated DickeyFullerTest.setVerbose/getVerbose
+ * Removed deprecated MetropolisHasting.setVerbose/getVerbose
+ * Removed deprecated BasisSequenceFactory.setVerbose/getVerbose
+ * Removed deprecated SimulationAlgorithm.setVerbose/getVerbose
+ * Removed deprecated WhittleFactory.setVerbose/getVerbose
+ * Removed deprecated CLassifier.setVerbose/getVerbose
+ * Removed deprecated ARMALLHF.setVerbose/getVerbose
+ * Removed deprecated CleaningStrategy.setVerbose/getVerbose
+ * Removed deprecated ApproximationAlgorithm.setVerbose/getVerbose
+ * Removed deprecated EllipticalDistribution.setCorrelation/getCorrelation
+ * Removed deprecated EllipticalDistribution.setMean
+ * Removed deprecated Distribution.computeDensityGenerator
+ * Removed deprecated Point.clean
+ * Removed deprecated (Inverse)Gamma.setKLambda
+ * Removed deprecated Os::GetEndOfLine
 
 === Documentation ===
 

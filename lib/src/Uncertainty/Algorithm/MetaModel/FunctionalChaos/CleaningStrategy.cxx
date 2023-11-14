@@ -263,19 +263,6 @@ void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
   significanceFactor_ = significanceFactor;
 }
 
-/* Verbosity accessor */
-Bool CleaningStrategy::getVerbose() const
-{
-  LOGWARN("CleaningStrategy::getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
-void CleaningStrategy::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("CleaningStrategy::setVerbose is deprecated");
-}
-
-
 /* Method save() stores the object through the StorageManager */
 void CleaningStrategy::save(Advocate & adv) const
 {

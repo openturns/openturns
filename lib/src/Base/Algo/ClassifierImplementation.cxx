@@ -187,18 +187,6 @@ String ClassifierImplementation::__str__(const String & ) const
   return __repr__();
 }
 
-/* Verbosity accessor */
-void ClassifierImplementation::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("ClassifierImplementation::setVerbose is deprecated");
-}
-
-Bool ClassifierImplementation::getVerbose() const
-{
-  LOGWARN("ClassifierImplementation::getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
 /* Input space dimension accessor */
 UnsignedInteger ClassifierImplementation::getDimension() const
 {

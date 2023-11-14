@@ -44,10 +44,6 @@ public:
   /** Default constructor */
   QuadraticLeastSquares();
 
-  /** @deprecated Constructor with parameters */
-  QuadraticLeastSquares(const Sample & dataIn,
-                        const Function & inputFunction);
-
   /** Constructor with parameters */
   QuadraticLeastSquares(const Sample & dataIn,
                         const Sample & dataOut);

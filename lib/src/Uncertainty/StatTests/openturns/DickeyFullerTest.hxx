@@ -72,10 +72,6 @@ public:
   /** Test the nullity of drift coefficient with assumption that there is no unit root */
   TestResult testNoUnitRootAndNoDriftInDriftModel(const Scalar level = 0.05);
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

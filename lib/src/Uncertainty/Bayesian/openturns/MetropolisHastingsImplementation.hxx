@@ -110,10 +110,6 @@ public:
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Acceptance rate accessor*/
   Scalar getAcceptanceRate() const;
 

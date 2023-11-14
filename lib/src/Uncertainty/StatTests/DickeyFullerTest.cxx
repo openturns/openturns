@@ -587,19 +587,6 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoDriftInDriftModel(const Scalar l
 
 }
 
-/* Verbosity set accessor */
-void DickeyFullerTest::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("DickeyFullerTest.setVerbose is deprecated");
-}
-
-/* Verbosity get accessor */
-Bool DickeyFullerTest::getVerbose() const
-{
-  LOGWARN("DickeyFullerTest.getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
 /* Method save() stores the object through the StorageManager */
 void DickeyFullerTest::save(Advocate & adv) const
 {

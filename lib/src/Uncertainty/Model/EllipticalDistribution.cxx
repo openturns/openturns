@@ -519,12 +519,6 @@ Point EllipticalDistribution::getMu() const
   return mean_;
 }
 
-void EllipticalDistribution::setMean(const Point & mean)
-{
-  LOGWARN("EllipticalDistribution.setMean is deprecated, use setMu");
-  setMu(mean);
-}
-
 /* Mean computation */
 void EllipticalDistribution::computeMean() const
 {
@@ -602,19 +596,6 @@ void EllipticalDistribution::setR(const CorrelationMatrix & R)
 CorrelationMatrix EllipticalDistribution::getR() const
 {
   return R_;
-}
-
-/** Correlation matrix accessor */
-void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
-{
-  LOGWARN("EllipticalDistribution.setCorrelation is deprecated, use setR");
-  setR(R);
-}
-
-CorrelationMatrix EllipticalDistribution::getCorrelation() const
-{
-  LOGWARN("EllipticalDistribution.getCorrelation is deprecated, use getR");
-  return getR();
 }
 
 /* Cholesky factor of the correlation matrix accessor */

@@ -154,7 +154,7 @@ public:
   Distribution getStandardRepresentative() const override;
 
   /** Correlation matrix accessor */
-  void setCorrelation(const CorrelationMatrix & R);
+  void setR(const CorrelationMatrix & R);
 
   /** Get the copula of a distribution */
   Distribution getCopula() const override;

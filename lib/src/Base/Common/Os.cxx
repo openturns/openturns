@@ -82,11 +82,6 @@ const char * Os::GetDirectoryListSeparator()
 #endif
 }
 
-const char * Os::GetEndOfLine()
-{
-  return "\n";
-}
-
 String Os::GetDeleteCommandOutput()
 {
 #ifndef _WIN32
