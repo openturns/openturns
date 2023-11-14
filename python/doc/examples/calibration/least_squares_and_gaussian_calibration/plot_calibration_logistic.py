@@ -74,7 +74,6 @@ populationObservations = observedSample[:, 1]
 populationObservations[0:5]
 
 # %%
-palette = ot.Drawable.BuildDefaultPalette(1)
 graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "topleft")
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
@@ -83,10 +82,10 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 curve = ot.Curve(timeObservations, populationObservations)
+curve.setColor(graph.getDrawable(0).getColor())
 curve.setLegend("")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
-graph.setColors([palette[0]] * 2)
 view = otv.View(graph)
 
 # %%
@@ -213,7 +212,6 @@ cloud = ot.Cloud(timeObservations.asPoint(), populationPredicted)
 cloud.setLegend("Predictions")
 cloud.setPointStyle(ot.ResourceMap.GetAsString("CalibrationResult-PriorPointStyle"))
 graph.add(cloud)
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph)
 
 # %%

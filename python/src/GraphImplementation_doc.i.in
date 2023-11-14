@@ -58,7 +58,12 @@ OT_Graph_getDrawables_doc
 Parameters
 ----------
 drawables : list of :class:`~openturns.Drawable`
-    Drawables included in the Graph."
+    Drawables included in the Graph.
+	
+Notes
+-----
+Drawables that do not have an explicitly set color will be assigned the
+default palette color corresponding to their rank in the graph."
 %enddef
 %feature("docstring") OT::GraphImplementation::setDrawables
 OT_Graph_setDrawables_doc
@@ -91,7 +96,12 @@ Parameters
 drawable : :class:`~openturns.Drawable`
     Drawable included in the Graph.
 index : int
-    Position of the Drawable."
+    Position of the Drawable.
+	
+Notes
+-----
+If the drawable does not have an explicitly set color, it will be assigned
+the default palette color corresponding to its rank in the graph."
 %enddef
 %feature("docstring") OT::GraphImplementation::setDrawable
 OT_Graph_setDrawable_doc
@@ -790,6 +800,9 @@ Notes
 It adds the new drawables or graph inside the first one, with their legend.
 It keeps the graphical context of the first graph. Each drawable keeps
 its graphical context.
+Drawables that do not have an explicitly set color will be assigned the default
+palette color corresponding to their rank in the graph.
+
 
 .. warning::
     Different drawables might be colored the same..."

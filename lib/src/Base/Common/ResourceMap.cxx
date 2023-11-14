@@ -708,7 +708,6 @@ void ResourceMap::loadDefaultConfiguration()
   // DrawableImplementation parameters //
   addAsScalar("Drawable-DefaultLineWidth", 1.0);
   addAsString("Drawable-AlternativePattern", "S");
-  addAsString("Drawable-DefaultColor", "blue");
   addAsString("Drawable-DefaultFillStyle", "solid");
   addAsString("Drawable-DefaultLineStyle", "solid");
   addAsString("Drawable-DefaultPaletteName", "Tableau");

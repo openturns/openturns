@@ -164,12 +164,9 @@ for i in range(obsSize):
 functionnalModel = ot.ParametricFunction(fullModel, [1, 2, 3], thetaTrue)
 graphModel = functionnalModel.getMarginal(0).draw(xmin, xmax)
 observations = ot.Cloud(x_obs, y_obs)
-observations = ot.Cloud(x_obs, y_obs)
 graphModel.add(observations)
 graphModel.setLegends(["Model", "Observations"])
 graphModel.setLegendPosition("topleft")
-palette = ot.Drawable.BuildDefaultPalette(2)
-graphModel.setColors(palette)
 view = viewer.View(graphModel)
 
 # %%

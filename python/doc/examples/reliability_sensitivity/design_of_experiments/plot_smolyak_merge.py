@@ -110,8 +110,6 @@ for epsilon in epsilon_array:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
-palette = ot.Drawable.BuildDefaultPalette(number_of_epsilons)
-graph.setColors(palette)
 graph.setLegendPosition("upper left")
 graph.setLegendCorner([1.0, 1.0])
 view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
@@ -147,8 +145,6 @@ for level in level_list:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
-palette = ot.Drawable.BuildDefaultPalette(number_of_epsilons)
-graph.setColors(palette)
 graph.setLegendPosition("upper left")
 graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setLegendCorner([1.0, 1.0])

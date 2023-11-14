@@ -276,6 +276,9 @@ protected:
   virtual void checkData(const Sample & data) const;
   virtual void checkData(const Point & data) const;
 
+  /** Explicit color validation flag accessor */
+  virtual Bool isColorExplicitlySet() const;
+
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;
 
@@ -296,6 +299,9 @@ protected:
 
   /** Line width of the curve */
   Scalar lineWidth_;
+
+  /** Explicit color validation flag */
+  Bool isColorExplicitlySet_ = false;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

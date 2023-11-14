@@ -500,7 +500,9 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(0, 1) = 0.0;
     data(1, 0) = xMax;
     data(1, 1) = 0.0;
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
+    Curve curve(data, title);
+    curve.setLineWidth(2);
+    graphPDF.add(curve);
     return graphPDF;
   }
   // Find the index of the left bar to draw
@@ -514,7 +516,9 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(0, 1) = height_[indexLeft];
     data(1, 0) = xMax;
     data(1, 1) = height_[indexLeft];
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
+    Curve curve(data, title);
+    curve.setLineWidth(2);
+    graphPDF.add(curve);
     return graphPDF;
   }
   // Find the index of the right bar to draw
@@ -588,8 +592,8 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(2, 1) = height_[indexRight];
     dataFull.add(data);
   }
-  Curve curve(dataFull, "red", "solid", 2, "");
-  curve.setLegend(title);
+  Curve curve(dataFull, title);
+  curve.setLineWidth(2);
   graphPDF.add(curve);
   return graphPDF;
 }

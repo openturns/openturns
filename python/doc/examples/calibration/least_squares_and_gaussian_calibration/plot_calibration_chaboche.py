@@ -178,7 +178,6 @@ cloud.setPointStyle(
     ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
 )
 graph.add(cloud)
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
 view = otv.View(graph)
 

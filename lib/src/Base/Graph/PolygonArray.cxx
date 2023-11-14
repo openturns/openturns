@@ -35,7 +35,9 @@ PolygonArray::PolygonArray(const String & legend)
   , verticesNumber_(2)
   , palette_(0)
 {
-  // Nothing to do
+  // Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
 }
 
 /* Default constructor */
@@ -45,6 +47,9 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   , verticesNumber_(2)
   , palette_(0)
 {
+  // Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
   // Convert the collection of polygons into a valid (coordinates, verticesNumber) pair
   const UnsignedInteger size = polygons.getSize();
   if (size > 0)
@@ -78,6 +83,9 @@ PolygonArray::PolygonArray(const Sample & coordinates,
   , verticesNumber_(0)
   , palette_(palette)
 {
+  //Force unused default color
+  color_ = "blue";
+  isColorExplicitlySet_ = true;
   // First, set the coordinates and the verticesNumber
   setCoordinatesAndVerticesNumber(coordinates, verticesNumber);
   // Second, set the palette as the check is done wrt the previous data

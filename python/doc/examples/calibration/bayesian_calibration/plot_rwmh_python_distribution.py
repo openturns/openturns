@@ -242,7 +242,6 @@ grid = ot.GridLayout(1, 2)
 grid.setTitle("Bayesian inference (with log-pdf)")
 for parameter_index in range(2):
     graph = posterior.getMarginal(parameter_index).drawPDF()
-    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
     graph.setLegends(["Posterior"])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)

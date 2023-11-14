@@ -19,7 +19,7 @@ dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of fl
 legend : str
     Legend of the polygon.
 color, edgeColor : two str
-    Fill color and the edge color. If not specified, by default it is 'blue'.
+    Fill color and the edge color. If not specified, the default color is the first color in the default palette.
 
 Examples
 --------

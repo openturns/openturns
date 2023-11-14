@@ -1045,7 +1045,7 @@ DrawableImplementation::DrawableImplementation()
   : PersistentObject()
   , legend_("")
   , data_()
-  , color_(ResourceMap::GetAsString("Drawable-DefaultColor"))
+  , color_(BuildDefaultPalette(1)[0])
   , fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle"))
   , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
@@ -1060,7 +1060,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
   : PersistentObject(),
     legend_(legend),
     data_(data),
-    color_(ResourceMap::GetAsString("Drawable-DefaultColor")),
+    color_(BuildDefaultPalette(1)[0]),
     fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
@@ -1089,6 +1089,7 @@ String DrawableImplementation::__repr__() const
       << " legend=" << legend_
       << " data=" << data_
       << " color=" << color_
+      << " isColorExplicitlySet=" << isColorExplicitlySet_
       << " fillStyle=" << fillStyle_
       << " lineStyle=" << lineStyle_
       << " pointStyle=" << pointStyle_
@@ -1101,7 +1102,9 @@ String DrawableImplementation::__str__(const String & offset) const
   OSS oss(false);
   oss << getClassName()
       << "(name=" << getName()
+      << ", legend=" << legend_
       << ", color=" << color_
+      << ", isColorExplicitlySet=" << isColorExplicitlySet_
       << ", fill=" << fillStyle_
       << ", line=" << lineStyle_
       << ", point=" << pointStyle_
@@ -1298,12 +1301,19 @@ void DrawableImplementation::setColor(const String & color)
   if(!IsValidColor(color)) throw InvalidArgumentException(HERE) << "Given color = " << color << " is incorrect";
 
   color_ = color;
+  isColorExplicitlySet_ = true;
 }
 
 /* Accessor for edge color */
 String DrawableImplementation::getEdgeColor() const
 {
   throw NotDefinedException(HERE) << "Error: no edge color in " << getClassName();
+}
+
+/* Accessor for explicit color validation flag*/
+Bool DrawableImplementation::isColorExplicitlySet() const
+{
+  return isColorExplicitlySet_;
 }
 
 /* Accessor for line style */
@@ -1604,6 +1614,7 @@ void DrawableImplementation::save(Advocate & adv) const
   adv.saveAttribute( "legend_", legend_ );
   adv.saveAttribute( "data_", data_ );
   adv.saveAttribute( "color_", color_ );
+  adv.saveAttribute( "isColorExplicitlySet_", isColorExplicitlySet_ );
   adv.saveAttribute( "fillStyle_", fillStyle_ );
   adv.saveAttribute( "lineStyle_", lineStyle_ );
   adv.saveAttribute( "pointStyle_", pointStyle_ );
@@ -1617,6 +1628,10 @@ void DrawableImplementation::load(Advocate & adv)
   adv.loadAttribute( "legend_", legend_ );
   adv.loadAttribute( "data_", data_ );
   adv.loadAttribute( "color_", color_ );
+  if (adv.hasAttribute("isColorExplicitlySet_"))
+    adv.loadAttribute("isColorExplicitlySet_", isColorExplicitlySet_);
+  else
+    isColorExplicitlySet_ = true;
   adv.loadAttribute( "fillStyle_", fillStyle_ );
   adv.loadAttribute( "lineStyle_", lineStyle_ );
   adv.loadAttribute( "pointStyle_", pointStyle_ );

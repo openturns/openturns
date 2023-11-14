@@ -318,11 +318,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     internalX = static_cast<Scalar>(good) / size;
   }
   Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
-  const Description colors(Drawable::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
     Curve curve(dataCollection[j]);
-    curve.setColor(colors[j]);
     curve.setLegend(inputSample_.getDescription()[j]);
     graph.add(curve);
   }

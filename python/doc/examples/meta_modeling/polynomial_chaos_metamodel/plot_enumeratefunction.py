@@ -69,8 +69,6 @@ def draw_stratas(enum_func):
         cloud.setLegend(str(strata_index))
         cloud.setPointStyle("circle")
         graph.add(cloud)
-    palette = ot.DrawableImplementation.BuildDefaultPalette(maximum_strata_index)
-    graph.setColors(palette)
     graph.setIntegerXTick(True)
     graph.setIntegerYTick(True)
     graph.setLegendPosition("topright")
@@ -94,7 +92,6 @@ graph = ot.Graph(
 degree_maximum = 10
 list_of_dimensions = [1, 5, 10, 15, 20]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
 for i in range(len(list_of_dimensions)):
     dimension = list_of_dimensions[i]
     number_of_coeff_array = ot.Sample(degree_maximum, 2)
@@ -104,7 +101,6 @@ for i in range(len(list_of_dimensions)):
     cloud = ot.Cloud(number_of_coeff_array)
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"dim.={dimension}")
-    cloud.setColor(palette[i])
     graph.add(cloud)
 graph.setLegendPosition("topleft")
 graph.setIntegerXTick(True)
@@ -178,7 +174,6 @@ graph = ot.Graph(
 degree_maximum = 10
 q_list = [0.2, 0.4, 0.6, 0.8, 1.0]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
 for i in range(len(q_list)):
     q = q_list[i]
     enum_func = ot.HyperbolicAnisotropicEnumerateFunction(dim, q)
@@ -189,7 +184,6 @@ for i in range(len(q_list)):
     cloud = ot.Cloud(number_of_coeff_array)
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"$q={q}$")
-    cloud.setColor(palette[i])
     graph.add(cloud)
 graph.setLegendPosition("topleft")
 graph.setIntegerXTick(True)

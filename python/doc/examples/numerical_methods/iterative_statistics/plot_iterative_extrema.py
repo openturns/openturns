@@ -47,14 +47,11 @@ for i in range(size):
 # %%
 # We display the evolution of the minimum (in blue) and the maximum (orange).
 iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
-palette = ot.Drawable().BuildDefaultPalette(2)
 #
 curveMin = ot.Curve(iterationSample, minEvolution)
-curveMin.setColor(palette[0])
 curveMin.setLegend("min.")
 #
 curveMax = ot.Curve(iterationSample, maxEvolution)
-curveMax.setColor(palette[1])
 curveMax.setLegend("max.")
 #
 graph = ot.Graph("Evolution of the min/max", "iteration nb", "min/max", True)

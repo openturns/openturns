@@ -330,7 +330,6 @@ Graph GeneralizedExtremeValue::drawReturnLevel() const
   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
   Graph graph(wrapper.draw(xMin, xMax, pointNumber, GraphImplementation::LOGX));
   Drawable drawable(graph.getDrawable(0));
-  drawable.setColor("red");
   drawable.setLegend("GEV return level");
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);

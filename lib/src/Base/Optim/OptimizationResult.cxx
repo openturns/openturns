@@ -348,7 +348,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve absoluteErrorCurve( data, "absolute error" );
     absoluteErrorCurve.setLegend("absolute error");
-    absoluteErrorCurve.setColor("red");
     result.add( absoluteErrorCurve );
   }
 // Relative error
@@ -357,7 +356,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve relativeErrorCurve( data, "relative error" );
     relativeErrorCurve.setLegend("relative error");
-    relativeErrorCurve.setColor("blue");
     result.add( relativeErrorCurve );
   }
 // Residual error
@@ -366,7 +364,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve residualErrorCurve( data, "residual error" );
     residualErrorCurve.setLegend("residual error");
-    residualErrorCurve.setColor("green");
     result.add( residualErrorCurve );
   }
 // Constraint error
@@ -375,7 +372,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
-    constraintErrorCurve.setColor("magenta");
     result.add( constraintErrorCurve );
   }
   result.setYMargin(0.0);// tighten the Y axis
@@ -404,7 +400,6 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   }
   Curve optimalValueCurve(data, "optimal value");
   optimalValueCurve.setLegend("optimal value");
-  optimalValueCurve.setColor("red");
   result.add(optimalValueCurve);
   result.setIntegerXTick(true);
   return result;

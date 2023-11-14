@@ -135,7 +135,6 @@ graph.add(curve)
 graph.add(cloud_sim)
 graph.add(cloud_obs)
 graph.setLegends(["Trend", "$Y^{sim}$", "$Y^{obs}$"])
-graph.setColors(ot.Drawable.BuildDefaultPalette(3))
 _ = View(graph)
 
 

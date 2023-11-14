@@ -193,7 +193,6 @@ UnsignedInteger LHSResult::findDescription(const char *text) const
 Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
 {
   Curve curve(data);
-  curve.setColor("red");
   curve.setLegend(title);
   curve.setLineStyle("solid");
   curve.setLineWidth(2);
@@ -291,7 +290,6 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   if (drawTitle.empty()) drawTitle = String(OSS() << "Probability history of restart number=" << restart);
 
   Cloud cloud(data);
-  cloud.setColor("red");
   cloud.setLegend(drawTitle);
   cloud.setLineStyle("solid");
   cloud.setLineWidth(2);

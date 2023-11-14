@@ -75,15 +75,12 @@ view = otv.View(graph)
 # The following plot shows that the probability of exceeding the threshold converges.
 
 # %%
-palette = ot.Drawable().BuildDefaultPalette(2)
 iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
 curve = ot.Curve(iterationSample, probabilityEstimateSample)
 curve.setLegend("Prob. of exceeding the threshold")
-curve.setColor(palette[0])
 #
 exactCurve = ot.Curve([1, size], [exactProbability, exactProbability])
 exactCurve.setLegend("Exact")
-exactCurve.setColor(palette[1])
 #
 graph = ot.Graph(
     "Evolution of the sample probability",
