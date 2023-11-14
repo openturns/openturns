@@ -189,7 +189,7 @@ cloud.setPointStyle(
     ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
 )
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

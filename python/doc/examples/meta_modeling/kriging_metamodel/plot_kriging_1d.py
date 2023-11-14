@@ -113,7 +113,7 @@ graph.add(plot_data_train(x_train, y_train))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -160,7 +160,7 @@ graph.add(plot_data_kriging(x_test, y_test_MM))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -304,7 +304,7 @@ for idx, v in enumerate(alphas):
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

@@ -49,7 +49,7 @@ myGraph = ot.Graph(
     "User Defined Spectral Model", "Frequency", "Spectral density value", True
 )
 myGraph.add(myCurve)
-myGraph.setLegendPosition("topright")
+myGraph.setLegendPosition("upper right")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)

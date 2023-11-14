@@ -173,7 +173,7 @@ title = "Ackley PDF (up to a constant factor) and $X_1 = 1.5$ cross-section"
 graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 line = ot.Curve([[-3, 1.5], [3, 1.5]], "black", "dashed", 2)
 graph.add(line)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2)
 reversed_colors = [color for color in reversed(contour.getColors())]
 contour.setColors(reversed_colors)
@@ -211,7 +211,7 @@ title = "Ackley PDF (up to a constant factor) and $X_0 = 0.5$ cross-section"
 graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 line = ot.Curve([[0.5, -3], [0.5, 3]], "black", "dashed", 2)
 graph.add(line)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2)
 reversed_colors = [color for color in reversed(contour.getColors())]
 contour.setColors(reversed_colors)

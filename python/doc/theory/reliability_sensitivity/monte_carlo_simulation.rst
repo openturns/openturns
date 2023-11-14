@@ -99,7 +99,7 @@ with :math:`N>10^2`, the asymptotic nature of the Central Limit Theorem is not p
 
     graph.setTitle('Monte Carlo simulation (Pf=0.048, N=1000)')
     graph.setLegends(['domain Df', 'simulations'])
-    graph.setLegendPosition('topright')
+    graph.setLegendPosition('upper right')
     View(graph)
 
 The method is also referred to as Direct sampling, Crude Monte Carlo method, Classical Monte Carlo integration.

@@ -106,7 +106,7 @@ graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True,
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
@@ -192,7 +192,7 @@ graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True,
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 

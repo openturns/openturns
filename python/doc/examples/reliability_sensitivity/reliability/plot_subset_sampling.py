@@ -141,7 +141,7 @@ graph.setGrid(True)
 graph.setTitle("Subset sampling: samples")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
-graph.setLegendPosition("bottomleft")
+graph.setLegendPosition("lower left")
 
 # %%
 # Add all the subset samples:
@@ -190,7 +190,7 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 graph.setColors(col)
-graph.setLegendPosition("bottomleft")
+graph.setLegendPosition("lower left")
 graph.setTitle("Subset sampling: thresholds")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")

@@ -66,7 +66,7 @@ graph.setYTitle("")
 graph.setTitle("")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegends(["Y1", "Y2"])
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 _ = viewer.View(graph)
 
 # %%
@@ -142,7 +142,7 @@ graph.setYTitle("")
 graph.setTitle("")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegends(["Y1", "Y2"])
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 _ = viewer.View(graph)
 
 # %%

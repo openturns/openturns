@@ -84,7 +84,7 @@ quantileScale = False
 graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 view = viewer.View(graph)
 
 # %%
@@ -99,7 +99,7 @@ quantileScale = False
 graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 view = viewer.View(graph)
 
 # %%
@@ -121,7 +121,7 @@ quantileScale = True
 graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 view = viewer.View(graph)
 
 # %%
@@ -168,7 +168,7 @@ quantileScale = True
 graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

@@ -70,6 +70,6 @@ curve = ot.Curve(x, "User Model")
 # Create the graph
 myGraph = ot.Graph("User covariance model", "Time", "Covariance function", True)
 myGraph.add(curve)
-myGraph.setLegendPosition("topright")
+myGraph.setLegendPosition("upper right")
 view = viewer.View(myGraph)
 plt.show()

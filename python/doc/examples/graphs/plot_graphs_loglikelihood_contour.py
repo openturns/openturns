@@ -42,7 +42,7 @@ zeros = ot.Sample(sample.getSize(), 1)
 cloud = ot.Cloud(sample, zeros)
 cloud.setLegend("Sample")
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = viewer.View(graph)
 
 

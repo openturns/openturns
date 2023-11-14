@@ -29,7 +29,7 @@ The different drawable elements are:
 Examples
 --------
 >>> import openturns as ot
->>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'topright')
+>>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'upper right')
 >>> sample = ot.Normal([0.0,0.0], [1.0,1.0], ot.CorrelationMatrix(2)).getSample(10)
 >>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
 >>> myGraph.add(myCloud)"

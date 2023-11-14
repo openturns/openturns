@@ -198,7 +198,7 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 #
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -379,7 +379,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -404,7 +404,7 @@ print(observationError)
 
 # sphinx_gallery_thumbnail_number = 5
 graph = calibrationResult.drawResiduals()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -522,7 +522,7 @@ print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -538,7 +538,7 @@ view = otv.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -622,7 +622,7 @@ print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

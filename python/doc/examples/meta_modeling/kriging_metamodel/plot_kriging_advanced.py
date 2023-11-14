@@ -53,7 +53,7 @@ cloud.setColor("red")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
 graph.setLegends(["Function", "Data"])
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setTitle("Sample size = %d" % (n_pt))
 view = viewer.View(graph)
 
@@ -124,7 +124,7 @@ cloud = ot.Cloud(x, y)
 cloud.setColor("red")
 cloud.setLegend("Data")
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 View(graph, axes=[ax1])
 
 # On the right, the conditional kriging variance

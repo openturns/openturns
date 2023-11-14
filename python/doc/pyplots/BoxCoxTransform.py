@@ -12,7 +12,7 @@ for i in range(len(lambdas)):
 
 graph.setColors(["red", "blue", "black", "green"])
 graph.setLegends(["lambda = " + str(lam) for lam in lambdas])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)

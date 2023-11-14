@@ -35,7 +35,7 @@ print("Initial distribution:", distribution)
 
 # %%
 g = axialBeam.model
-graph = ot.Graph("Simple stress beam", "R", "F", True, "topright")
+graph = ot.Graph("Simple stress beam", "R", "F", True, "upper right")
 drawfunction = g.draw([1.8e6, 600], [4e6, 950.0], [100] * 2)
 graph.add(drawfunction)
 view = otv.View(graph)
@@ -138,7 +138,7 @@ auxiliaryInputSamplesPhysicalSpace = (
 
 
 # %%
-graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
+graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "upper right")
 # Generation of samples with initial distribution
 initialSamples = ot.Cloud(
     distribution.getSample(1000), "blue", "plus", "Initial samples"
@@ -257,7 +257,7 @@ print("Coefficient of variation:", physicalSpaceISResult2.getCoefficientOfVariat
 # for the first simulation and black for the second simulation).
 
 # %%
-graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
+graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "upper right")
 auxiliarySamples1 = ot.Cloud(
     physicalSpaceISResult1.getAuxiliaryInputSample(),
     "orange",
@@ -321,7 +321,7 @@ print("Coefficient of variation: ", physicalSpaceISResult3.getCoefficientOfVaria
 # Finally, we plot the new auxiliary samples in black.
 
 # %%
-graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
+graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "upper right")
 auxiliarySamples1 = ot.Cloud(
     physicalSpaceISResult1.getAuxiliaryInputSample(),
     "orange",

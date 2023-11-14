@@ -327,7 +327,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
         if parameter_index > 0:
             graph.setYTitle("")
         graph.setColors(palette)
-        graph.setLegendPosition("topright")
+        graph.setLegendPosition("upper right")
         grid.setGraph(0, parameter_index, graph)
     grid.setTitle("Bayesian calibration")
     return grid

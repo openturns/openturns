@@ -325,7 +325,7 @@ n_max = 11
 curve = drawTensorizedGaussQuadrature(n_max)
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 palette = ot.Drawable.BuildDefaultPalette(4)
 graph.setColors(palette)
 view = otv.View(

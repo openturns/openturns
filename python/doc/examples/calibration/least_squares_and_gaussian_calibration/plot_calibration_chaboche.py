@@ -178,7 +178,7 @@ cloud.setPointStyle(
     ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
 )
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -287,7 +287,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -506,7 +506,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -681,7 +681,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -813,7 +813,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

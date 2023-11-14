@@ -248,7 +248,7 @@ graph.setLegends(["Sample"])
 graphDistribution = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
 graphDistribution.setLegends(["GPD"])
 graph.add(graphDistribution)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setTitle("GPD against the sample - n=%d" % (sample.getSize()))
 view = viewer.View(graph)
 # graph

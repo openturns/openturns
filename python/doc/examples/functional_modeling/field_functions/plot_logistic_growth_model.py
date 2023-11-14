@@ -93,7 +93,7 @@ cloud = ot.Cloud(ustime, uspop)
 cloud.setPointStyle("circle")
 cloud.setLegend("Data")
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = viewer.View(graph)
 plt.show()
 

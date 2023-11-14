@@ -77,8 +77,8 @@ rankCloud = ot.Cloud(rankSample, "blue", "plus", "sample")
 
 # %%
 # We can plot the graph with rank sample and estimated copula :
-myGraph = ot.Graph("Parametric estimation of the copula", "X", "Y", True, "topleft")
-myGraph.setLegendPosition("bottomright")
+myGraph = ot.Graph("Parametric estimation of the copula", "X", "Y", True, "upper left")
+myGraph.setLegendPosition("lower right")
 myGraph.add(rankCloud)
 
 # %%

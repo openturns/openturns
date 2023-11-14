@@ -74,7 +74,7 @@ g = ot.PythonFunction(2, 1, fourBranch)
 # Draw the function :math:`g` to help to understand the shape of the limit state function:
 
 # %%
-graph = ot.Graph("Four Branch function", "x1", "x2", True, "topright")
+graph = ot.Graph("Four Branch function", "x1", "x2", True, "upper right")
 drawfunction = g.draw([-8] * 2, [8] * 2, [100] * 2)
 graph.add(drawfunction)
 view = View(graph)
@@ -188,7 +188,7 @@ levels.append(threshold)
 # The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-graph = ot.Graph("NAIS samples", "x1", "x2", True, "bottomleft")
+graph = ot.Graph("NAIS samples", "x1", "x2", True, "lower left")
 graph.setGrid(True)
 
 # %%
@@ -225,7 +225,7 @@ view = View(graph)
 # The following graph enables to understand the progression of the algorithm from the mean value of the initial distribution to the limit state function:
 
 # %%
-graph = ot.Graph("NAIS thresholds", "x1", "x2", True, "bottomleft")
+graph = ot.Graph("NAIS thresholds", "x1", "x2", True, "lower left")
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
 for i, lv in enumerate(levels):

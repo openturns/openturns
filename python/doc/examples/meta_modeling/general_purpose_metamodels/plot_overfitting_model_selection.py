@@ -47,7 +47,7 @@ ot.RandomGenerator.SetSeed(0)
 g = ot.SymbolicFunction(["x"], ["sin(2*pi_*x)"])
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -92,7 +92,7 @@ noiseSample = noise.getSample(n_train)
 y_train = g(x_train) + noiseSample
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -170,7 +170,7 @@ x_test = linearSample(0, 1, n_test)
 y_test = responseSurface(basis(x_test))
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -195,7 +195,7 @@ graph = ot.Graph(
     "x",
     "y",
     True,
-    "topright",
+    "upper right",
 )
 # Training set observations
 cloud = ot.Cloud(x_train, y_train)
@@ -248,7 +248,7 @@ def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
     x_test = linearSample(0, 1, n_test)
     ypredicted_test = responseSurface(basis(x_test))
     # Graphics
-    graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+    graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
     # The "unknown" function
     curve = g.draw(0, 1)
     curve.setColors(["green"])
@@ -383,7 +383,7 @@ for total_degree in range(maximum_degree):
 
 # %%
 degreeSample = ot.Sample([[i] for i in range(maximum_degree)])
-graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "topright")
+graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "upper right")
 # Train
 cloud = ot.Curve(degreeSample, RMSE_train)
 cloud.setColor("blue")

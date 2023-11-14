@@ -86,7 +86,7 @@ curve = (
 curve.setLegend("Taylor")
 curve.setLineStyle("dashed")
 graph.add(curve)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = viewer.View(graph)
 
@@ -132,7 +132,7 @@ curve = (
 curve.setLegend("Taylor")
 curve.setLineStyle("dashed")
 graph.add(curve)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = viewer.View(graph)
 plt.show()

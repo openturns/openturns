@@ -67,7 +67,7 @@ graphMetamodel = ot.ParametricFunction(responseSurface, [0], [x1value]).draw(xmi
 graphMetamodel.setColors(["blue"])
 parametricModelGraph.add(graphMetamodel)
 parametricModelGraph.setLegends(["Model", "Meta-Model"])
-parametricModelGraph.setLegendPosition("topright")
+parametricModelGraph.setLegendPosition("upper right")
 view = viewer.View(parametricModelGraph)
 plt.show()
 

@@ -71,7 +71,7 @@ def computeKSStatisticsIndex(sample, distribution):
 
 # %%
 def drawKSDistance(sample, distribution, observation, D, distFactory):
-    graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF", True, "topleft")
+    graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF", True, "upper left")
     # Thick vertical line at point x
     ECDF_x_plus = sample.computeEmpiricalCDF(observation)
     ECDF_x_minus = ECDF_x_plus - 1.0 / sample.getSize()

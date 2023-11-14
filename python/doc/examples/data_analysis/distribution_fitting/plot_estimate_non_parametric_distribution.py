@@ -42,7 +42,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 kernel_plot.setColor("blue")
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -65,7 +65,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 kernel_plot.setColor("blue")
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS-Silverman"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -199,7 +199,7 @@ graph.add(kernelMB_plot)
 # %%
 graph.setLegends(["original", "KS-Silverman", "KS-Plugin", "KS-Mixed"])
 graph.setColors(["red", "blue", "green", "black"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -259,7 +259,7 @@ graph.add(kernel2_plot)
 
 
 graph.setLegends(["original", "KS", "KS with boundary correction"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

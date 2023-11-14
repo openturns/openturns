@@ -88,7 +88,7 @@ simplicies = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 mesh2D = ot.Mesh(vertices, simplicies)
 graph2 = mesh2D.draw()
 graph2.setTitle("Bidimensional mesh")
-graph2.setLegendPosition("bottomright")
+graph2.setLegendPosition("lower right")
 view = viewer.View(graph2)
 
 # %%
