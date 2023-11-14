@@ -27,9 +27,9 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.974228
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0257723,0.0257723] upper bound=class=Point name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974228
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.297132,0.297132,0.0833333]
-correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3.56558,3.56558,1]
-spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3.56558,3.56558,1]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.024761,0.024761,0.0833333]
+correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.297132,0.297132,1]
+spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.297132,0.297132,1]
 kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.300338,0.300338,1]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1

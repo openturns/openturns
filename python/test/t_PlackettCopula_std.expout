@@ -1,7 +1,7 @@
 Copula  class=PlackettCopula name=PlackettCopula dimension=2 theta=2.5
 Copula  PlackettCopula(theta = 2.5)
 Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
-Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.297132,0.297132,0.0833333]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.024761,0.024761,0.0833333]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False

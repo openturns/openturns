@@ -308,7 +308,7 @@ void PlackettCopula::computeCovariance() const
   else if (std::abs(thetaMinus1_) < 1.0e-7)
     covariance_(1, 0) = thetaMinus1_ * (1.0 - 0.5 * thetaMinus1_) / 3.0;
   else
-    covariance_(1, 0) = ((theta_ + 1) - 2.0 * theta_ * std::log(theta_) / thetaMinus1_) / thetaMinus1_;
+    covariance_(1, 0) = (((theta_ + 1) - 2.0 * theta_ * std::log(theta_) / thetaMinus1_) / thetaMinus1_) / 12.0;
   isAlreadyComputedCovariance_ = true;
 }
 
