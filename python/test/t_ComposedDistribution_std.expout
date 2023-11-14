@@ -18,9 +18,12 @@ ComposedDistribution
 |     2 |    Three | Normal(mu = 3, sigma = 4) |
 
 Distribution (HTML) = 
+ComposedDistribution
 <ul>
+  <li>name=myDist</li>
   <li>dimension: 3</li>
-  <li>copula: Independent copula</li>
+  <li>description=[One,Two,Three]
+  <li>copula: IndependentCopula(dimension = 3)</li>
 </ul>
 
 <table>
@@ -169,9 +172,12 @@ ComposedDistribution
 |     2 |       X2 | Normal(mu = 0, sigma = 1)                                           |
 
 Distribution (HTML) = 
+ComposedDistribution
 <ul>
+  <li>name=ComposedDistribution</li>
   <li>dimension: 3</li>
-  <li>copula: IndependentCopula</li>
+  <li>description=[X0,X1,X2]
+  <li>copula: IndependentCopula(dimension = 3)</li>
 </ul>
 
 <table>

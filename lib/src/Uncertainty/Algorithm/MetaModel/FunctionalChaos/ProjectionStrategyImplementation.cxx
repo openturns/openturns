@@ -152,11 +152,30 @@ String ProjectionStrategyImplementation::__str__(const String &) const
 }
 
 /* String converter */
+String ProjectionStrategyImplementation::_repr_html_() const
+{
+  OSS oss(false);
+  oss << GetClassName() << "\n"
+      << "<ul>\n"
+      << "  <li>coefficients: dimension=" << alpha_k_p_.getDimension() << "</li>\n"
+      << "  <li>residual: " << residual_p_ << "</li>\n"
+      << "  <li>relative error: " << relativeError_p_ << "</li>\n"
+      << "  <li>measure: " << measure_.getClassName() << "</li>\n"
+      << "  <li>weighted experiment: " << weightedExperiment_.getClassName() << "</li>\n"
+      << "  <li>input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << "</li>\n"
+      << "  <li>output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << "</li>\n"
+      << "  <li>weights: dimension= " << weights_.getDimension() << "</li>\n"
+      << "  <li>design: size= " << proxy_.getSampleSize() << "</li>\n"
+      << "<ul>\n";
+  return oss;
+}
+
+/* String converter */
 String ProjectionStrategyImplementation::__repr_markdown__() const
 {
   OSS oss(false);
   oss << GetClassName() << "\n"
-      << "- coefficients: " << alpha_k_p_.getDimension() << "\n"
+      << "- coefficients: dimension=" << alpha_k_p_.getDimension() << "\n"
       << "- residual: " << residual_p_ << "\n"
       << "- relative error: " << relativeError_p_ << "\n"
       << "- measure: " << measure_.getClassName() << "\n"

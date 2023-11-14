@@ -158,6 +158,12 @@ public:
     return __repr__();
   }
 
+  /* Html converter */
+  inline
+  String _repr_html_() const override
+  {
+    return __repr__();
+  }
 
   /**
    * Id accessor

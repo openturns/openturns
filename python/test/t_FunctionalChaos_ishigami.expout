@@ -1,7 +1,7 @@
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 21
+- coefficients: dimension=21
 - residual: 0.0313673
 - relative error: 0.0178023
 - measure: Distribution
@@ -72,7 +72,7 @@ FunctionalChaosSobolIndices
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 21
+- coefficients: dimension=21
 - residual: 0.032434
 - relative error: 0.0196503
 - measure: Distribution
@@ -144,7 +144,7 @@ FunctionalChaosSobolIndices
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 21
+- coefficients: dimension=21
 - residual: 0.0290505
 - relative error: 0.0154051
 - measure: Distribution
@@ -216,7 +216,7 @@ FunctionalChaosSobolIndices
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 84
+- coefficients: dimension=84
 - residual: 0.0241084
 - relative error: 0.0105163
 - measure: Distribution
@@ -295,7 +295,7 @@ FunctionalChaosSobolIndices
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 84
+- coefficients: dimension=84
 - residual: 0.0248146
 - relative error: 0.0115022
 - measure: Distribution
@@ -374,7 +374,7 @@ FunctionalChaosSobolIndices
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 ProjectionStrategyImplementation
-- coefficients: 84
+- coefficients: dimension=84
 - residual: 0.024718
 - relative error: 0.0111528
 - measure: Distribution

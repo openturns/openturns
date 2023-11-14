@@ -101,10 +101,4 @@ def __FunctionalChaosResult_repr_html(self):
     return html
 
 FunctionalChaosResult._repr_html_ = __FunctionalChaosResult_repr_html
-
-def __FunctionalChaosResult_repr_markdown(self):
-    """Get Markdown representation."""
-    return self.__repr_markdown__()
-
-FunctionalChaosResult._repr_markdown_ = __FunctionalChaosResult_repr_markdown
 %}

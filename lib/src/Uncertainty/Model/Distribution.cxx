@@ -239,6 +239,17 @@ String Distribution::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* String html converter */
+String Distribution::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
+}
+
+/* String markdown converter */
+String Distribution::__repr_markdown__() const
+{
+  return getImplementation()->__repr_markdown__();
+}
 
 /* Weight accessor */
 void Distribution::setWeight(const Scalar w)

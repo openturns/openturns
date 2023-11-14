@@ -81,6 +81,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
   String __repr_markdown__() const override;
+  String _repr_html_() const override;
 
   /** Measure accessor */
   virtual void setMeasure(const Distribution & measure);

@@ -148,7 +148,6 @@ void ProjectionStrategy::computeCoefficients(const Function & function,
   getImplementation()->computeCoefficients(function, basis, indices, addedRanks, conservedRanks, removedRanks, marginalIndex);
 }
 
-
 /* String converter */
 String ProjectionStrategy::__repr__() const
 {
@@ -156,13 +155,15 @@ String ProjectionStrategy::__repr__() const
          << " implementation=" << getImplementation()->__repr__();
 }
 
-
 /* String converter */
 String ProjectionStrategy::__str__(const String & offset) const
 {
   return OSS() << getImplementation()->__str__(offset);
 }
-
-
+/* String converter */
+String ProjectionStrategy::_repr_html_() const
+{
+  return OSS() << getImplementation()->_repr_html_();
+}
 
 END_NAMESPACE_OPENTURNS

@@ -173,6 +173,10 @@ for factory in factories:
         assert len(pc) == 1, "len(pc)"
         assert len(p) == len(pc[0]), "len p/pc"
 
+    # print
+    print(distribution.__repr_markdown__())
+    print(distribution._repr_html_())
+
 # negative proba bug
 Torque = ot.LogNormal(0.0, 0.25)
 Angle = ot.Normal(0.0, 2.0)

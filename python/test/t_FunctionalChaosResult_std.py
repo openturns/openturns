@@ -28,7 +28,7 @@ algo.run()
 chaosResult = algo.getResult()
 print(chaosResult)
 print(chaosResult._repr_html_())
-print(chaosResult._repr_markdown_())
+print(chaosResult.__repr_markdown__())
 
 
 class RepeatedFloodOutputDimensionFunction(ot.OpenTURNSPythonFunction):

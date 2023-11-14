@@ -1,7 +1,7 @@
 + Compute flood model using least squares
 leastSquaresStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -14,19 +14,22 @@ ProjectionStrategyImplementation
 leastSquaresStrategy (repr)
 class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
 leastSquaresStrategy (html)
-<p>ProjectionStrategyImplementation<br>
-- coefficients: 0<br>
-- residual: 0<br>
-- relative error: 0<br>
-- measure: Distribution<br>
-- weighted experiment: WeightedExperiment<br>
-- input sample: size= 0 x dimension= 0<br>
-- output sample: size= 0 x dimension= 0<br>
-- weights: dimension= 0<br>
-- design: size= 0</p>
+ProjectionStrategyImplementation
+<ul>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
+  <li>input sample: size= 0 x dimension= 0</li>
+  <li>output sample: size= 0 x dimension= 0</li>
+  <li>weights: dimension= 0</li>
+  <li>design: size= 0</li>
+<ul>
+
 projectionStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -39,24 +42,23 @@ ProjectionStrategyImplementation
 projectionStrategy (repr)
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=FixedExperiment name=Unnamed sample=class=Sample name=ComposedDistribution implementation=class=SampleImplementation name=ComposedDistribution size=500 dimension=8 description=[Q (m3/s),Ks,Zv (m),...,L (m),Zb (m),Hd (m)] data=[[1443.6,30.1566,49.1171,...,5002.72,55.5801,2.08154],[2174.89,34.6789,50.7649,...,5002.74,55.5136,3.59624],[626.102,35.7535,50.0302,...,5007.26,55.6321,3.34553],...,[836.836,23.3944,49.5782,...,4996.53,55.6402,2.05131],[1106.6,24.1196,49.2248,...,5000.34,55.4947,2.28622],[254.926,32.4175,50.7184,...,5000.25,55.3506,3.59815]] weights=class=Point name=Unnamed dimension=500 values=[0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002]
 projectionStrategy (html)
-ProjectionStrategy
+ProjectionStrategyImplementation
 <ul>
-  <li>implementation: LeastSquaresStrategy</li>
-  <li>coefficients: dimension= 0</li>
-  <li>residual: 0.0</li>
-  <li>relative error: 0.0</li>
-  <li>measure: ComposedDistribution</li>
-  <li>experiment: WeightedExperiment</li>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
   <li>input sample: size= 500 x dimension= 8</li>
   <li>output sample: size= 500 x dimension= 3</li>
   <li>weights: dimension= 500</li>
   <li>design: size= 0</li>
-</ul>
+<ul>
 
 + Compute flood model by integration
 integrationStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -69,19 +71,22 @@ ProjectionStrategyImplementation
 integrationStrategy (repr)
 class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
 integrationStrategy (html)
-<p>ProjectionStrategyImplementation<br>
-- coefficients: 0<br>
-- residual: 0<br>
-- relative error: 0<br>
-- measure: Distribution<br>
-- weighted experiment: WeightedExperiment<br>
-- input sample: size= 0 x dimension= 0<br>
-- output sample: size= 0 x dimension= 0<br>
-- weights: dimension= 0<br>
-- design: size= 0</p>
+ProjectionStrategyImplementation
+<ul>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
+  <li>input sample: size= 0 x dimension= 0</li>
+  <li>output sample: size= 0 x dimension= 0</li>
+  <li>weights: dimension= 0</li>
+  <li>design: size= 0</li>
+<ul>
+
 projectionStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -94,24 +99,23 @@ ProjectionStrategyImplementation
 projectionStrategy (repr)
 class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=FixedExperiment name=Unnamed sample=class=Sample name=ComposedDistribution implementation=class=SampleImplementation name=ComposedDistribution size=500 dimension=8 description=[Q (m3/s),Ks,Zv (m),...,L (m),Zb (m),Hd (m)] data=[[1443.6,30.1566,49.1171,...,5002.72,55.5801,2.08154],[2174.89,34.6789,50.7649,...,5002.74,55.5136,3.59624],[626.102,35.7535,50.0302,...,5007.26,55.6321,3.34553],...,[836.836,23.3944,49.5782,...,4996.53,55.6402,2.05131],[1106.6,24.1196,49.2248,...,5000.34,55.4947,2.28622],[254.926,32.4175,50.7184,...,5000.25,55.3506,3.59815]] weights=class=Point name=Unnamed dimension=500 values=[0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002]
 projectionStrategy (html)
-ProjectionStrategy
+ProjectionStrategyImplementation
 <ul>
-  <li>implementation: IntegrationStrategy</li>
-  <li>coefficients: dimension= 0</li>
-  <li>residual: 0.0</li>
-  <li>relative error: 0.0</li>
-  <li>measure: ComposedDistribution</li>
-  <li>experiment: WeightedExperiment</li>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
   <li>input sample: size= 500 x dimension= 8</li>
   <li>output sample: size= 500 x dimension= 3</li>
   <li>weights: dimension= 500</li>
   <li>design: size= 0</li>
-</ul>
+<ul>
 
 + Compute flood model with large output dimension
 leastSquaresStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -123,19 +127,22 @@ ProjectionStrategyImplementation
 
 leastSquaresStrategy (repr)
 class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-<p>ProjectionStrategyImplementation<br>
-- coefficients: 0<br>
-- residual: 0<br>
-- relative error: 0<br>
-- measure: Distribution<br>
-- weighted experiment: WeightedExperiment<br>
-- input sample: size= 0 x dimension= 0<br>
-- output sample: size= 0 x dimension= 0<br>
-- weights: dimension= 0<br>
-- design: size= 0</p>
+ProjectionStrategyImplementation
+<ul>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
+  <li>input sample: size= 0 x dimension= 0</li>
+  <li>output sample: size= 0 x dimension= 0</li>
+  <li>weights: dimension= 0</li>
+  <li>design: size= 0</li>
+<ul>
+
 projectionStrategy
 ProjectionStrategyImplementation
-- coefficients: 0
+- coefficients: dimension=0
 - residual: 0
 - relative error: 0
 - measure: Distribution
@@ -148,17 +155,16 @@ ProjectionStrategyImplementation
 projectionStrategy (repr)
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=FixedExperiment name=Unnamed sample=class=Sample name=ComposedDistribution implementation=class=SampleImplementation name=ComposedDistribution size=500 dimension=8 description=[Q (m3/s),Ks,Zv (m),...,L (m),Zb (m),Hd (m)] data=[[820.271,23.2,50.4528,...,4994.89,55.4783,3.05292],[540.375,42.75,49.9978,...,4996.9,55.382,2.13825],[935.563,42.9997,49.154,...,4999.73,55.4223,3.81733],...,[897.745,19.5361,49.8581,...,4998.49,55.2181,2.47724],[1821.55,37.4041,49.9464,...,4998.83,55.465,2.63402],[1878.15,34.5136,50.0565,...,5006.41,55.6371,2.29336]] weights=class=Point name=Unnamed dimension=500 values=[0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002]
 projectionStrategy (html)
-ProjectionStrategy
+ProjectionStrategyImplementation
 <ul>
-  <li>implementation: LeastSquaresStrategy</li>
-  <li>coefficients: dimension= 0</li>
-  <li>residual: 0.0</li>
-  <li>relative error: 0.0</li>
-  <li>measure: ComposedDistribution</li>
-  <li>experiment: WeightedExperiment</li>
+  <li>coefficients: dimension=0</li>
+  <li>residual: 0</li>
+  <li>relative error: 0</li>
+  <li>measure: Distribution</li>
+  <li>weighted experiment: WeightedExperiment</li>
   <li>input sample: size= 500 x dimension= 8</li>
   <li>output sample: size= 500 x dimension= 60</li>
   <li>weights: dimension= 500</li>
   <li>design: size= 0</li>
-</ul>
+<ul>
 

@@ -93,6 +93,9 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** String converter */
+  String _repr_html_() const override;
+
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
