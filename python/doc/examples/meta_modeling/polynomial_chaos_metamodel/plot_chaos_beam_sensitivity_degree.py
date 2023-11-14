@@ -153,7 +153,7 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
     graph = val.drawValidation().getGraph(0, 0)
     legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
     graph.setLegends(["", legend1])
-    graph.setLegendPosition("topleft")
+    graph.setLegendPosition("upper left")
     print(
         "Degree=%d, Q2=%.2f%%, Sparsity=%.2f%%"
         % (totalDegree, 100 * Q2, 100 * sparsityRate)

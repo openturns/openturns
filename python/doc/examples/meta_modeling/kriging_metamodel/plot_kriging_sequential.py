@@ -155,7 +155,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     graph.add(graphFonction)
     graph.add(cloudDOE)
     graph.add(graphKriging)
-    graph.setLegendPosition("bottomright")
+    graph.setLegendPosition("lower right")
     graph.setAxes(True)
     graph.setGrid(True)
     graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100 * Q2))

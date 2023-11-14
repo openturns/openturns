@@ -41,7 +41,7 @@ Examples
 ...     index = int(floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
 ...     data[index, 1] += 1
 >>> # Create an empty graph
->>> myGraph = ot.Graph('A barplot', 'Realizations', 'Frequency', True, 'topright')
+>>> myGraph = ot.Graph('A barplot', 'Realizations', 'Frequency', True, 'upper right')
 >>> # Create the barplot
 >>> myBarPlot = ot.BarPlot(data, data.getMin()[0], 'red', 'shaded', 'dashed', 'Normal histogram')
 >>> myGraph.add(myBarPlot)"

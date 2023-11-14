@@ -166,7 +166,7 @@ graphModel = functionnalModel.getMarginal(0).draw(xmin, xmax)
 observations = ot.Cloud(x_obs, y_obs)
 graphModel.add(observations)
 graphModel.setLegends(["Model", "Observations"])
-graphModel.setLegendPosition("topleft")
+graphModel.setLegendPosition("upper left")
 view = viewer.View(graphModel)
 
 # %%
@@ -300,7 +300,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
         if parameter_index > 0:
             graph.setYTitle("")
         graph.setColors(palette)
-        graph.setLegendPosition("topright")
+        graph.setLegendPosition("upper right")
         grid.setGraph(0, parameter_index, graph)
     grid.setTitle("Bayesian calibration")
     return grid

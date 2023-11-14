@@ -57,7 +57,7 @@ curveMax.setLegend("max.")
 graph = ot.Graph("Evolution of the min/max", "iteration nb", "min/max", True)
 graph.add(curveMin)
 graph.add(curveMax)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
 

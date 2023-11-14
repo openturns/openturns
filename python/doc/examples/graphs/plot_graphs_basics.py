@@ -202,7 +202,7 @@ def createHSVColor(indexCurve, maximumNumberOfCurves):
 pofa = ot.HermiteFactory()
 
 # %%
-graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "bottomright")
+graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "lower right")
 degreemax = 5
 for k in range(degreemax):
     pk = pofa.build(k)

@@ -20,7 +20,7 @@ for i in range(2000):
 
 # Create an empty graph
 graph = ot.Graph(
-    "Sample histogram example", "Realizations", "Frequency", True, "topright"
+    "Sample histogram example", "Realizations", "Frequency", True, "upper right"
 )
 
 # Create the barplot

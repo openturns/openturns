@@ -140,7 +140,7 @@ graph = ot.Graph(
     "KS-Statistics",
     "PDF",
     True,
-    "topright",
+    "upper right",
 )
 graph.setLegends(["Empirical distribution"])
 graph.add(curve)

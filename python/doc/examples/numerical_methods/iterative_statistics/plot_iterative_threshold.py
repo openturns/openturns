@@ -68,7 +68,7 @@ graph = ot.Graph(
 )
 graph.add(curve)
 graph.setLegends(["number of exceedances"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 view = otv.View(graph)
 
 # %%
@@ -90,7 +90,7 @@ graph = ot.Graph(
 )
 graph.add(curve)
 graph.add(exactCurve)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
 

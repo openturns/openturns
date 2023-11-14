@@ -97,7 +97,7 @@ Estimate the trend function from the field:
 >>> graph.add(ot.Cloud(myYField.getMesh().getVertices(), myYField.getValues()))
 >>> graph.setColors(['red', 'blue', 'black'])
 >>> graph.setLegends(['estimated trend', 'actual trend', 'sample'])
->>> graph.setLegendPosition('topleft')
+>>> graph.setLegendPosition('upper left')
 >>> graph.setTitle('Trend estimation from a field')
 >>> graph.setYTitle('values')
 

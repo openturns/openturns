@@ -74,7 +74,7 @@ populationObservations = observedSample[:, 1]
 populationObservations[0:5]
 
 # %%
-graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "topleft")
+graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "upper left")
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
 cloud.setPointStyle(
@@ -198,7 +198,7 @@ print(populationPredicted[:5])
 
 # %%
 graph = ot.Graph(
-    "Before calibration", "Time (years)", "Population (Millions)", True, "topleft"
+    "Before calibration", "Time (years)", "Population (Millions)", True, "upper left"
 )
 # Observations
 cloud = ot.Cloud(timeObservations, populationObservations)
@@ -320,7 +320,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

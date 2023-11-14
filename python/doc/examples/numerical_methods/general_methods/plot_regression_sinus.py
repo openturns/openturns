@@ -58,7 +58,7 @@ def plotFunction(g, color, lineStyle="dotted"):
     return curve
 
 
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 graph.add(plotFunction(g, palette[0]))
 view = otv.View(graph)
@@ -113,7 +113,7 @@ def plotData(xTrain, yTrain, color, pointStyle="circle"):
     return cloud
 
 
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 graph.add(plotFunction(g, palette[0]))
 # Training set
@@ -214,7 +214,7 @@ def plotPredictions(xTest, yHatTest, totalDegree, color):
     return curve
 
 
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 graph.add(plotFunction(g, palette[0]))
 # Training set
@@ -356,7 +356,7 @@ def plotConfidenceInterval(
     return graph
 
 
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 graph.add(plotFunction(g, palette[0]))
 # Training set
@@ -402,7 +402,7 @@ confidenceIntervalObservations = computeRegressionConfidenceInterval(
 # C.I. of the mean and the C.I. of the observations.
 
 # sphinx_gallery_thumbnail_number = 5
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 graph.add(plotFunction(g, palette[0]))
 # Training set

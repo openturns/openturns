@@ -43,7 +43,7 @@ Examples
 ...     c1 = count / 200.0
 ...     data[i] = [c0, c1]
 >>> # Create an empty graph
->>> myGraph = ot.Graph('A staircase', 'x1', 'x2', True, 'topleft')
+>>> myGraph = ot.Graph('A staircase', 'x1', 'x2', True, 'upper left')
 >>> # Create the staircase
 >>> myStaircase = ot.Staircase(data, 'blue', 'solid', 's', 'Normal CDF')
 >>> myGraph.add(myStaircase)"

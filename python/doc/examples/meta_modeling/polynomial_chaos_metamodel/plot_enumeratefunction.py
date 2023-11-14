@@ -71,7 +71,7 @@ def draw_stratas(enum_func):
         graph.add(cloud)
     graph.setIntegerXTick(True)
     graph.setIntegerYTick(True)
-    graph.setLegendPosition("topright")
+    graph.setLegendPosition("upper right")
     return graph
 
 
@@ -100,7 +100,7 @@ for i in range(len(list_of_dimensions)):
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"dim.={dimension}")
     graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setIntegerXTick(True)
 graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(graph, figure_kw={"figsize": (5, 4)})
@@ -183,7 +183,7 @@ for i in range(len(q_list)):
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"$q={q}$")
     graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setIntegerXTick(True)
 graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(graph, figure_kw={"figsize": (5, 4)})

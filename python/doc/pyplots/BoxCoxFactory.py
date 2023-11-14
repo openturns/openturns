@@ -48,7 +48,7 @@ graphMarginal2 = ot.KernelSmoothing().build(transform(field).getValues()).drawPD
 graphMarginal2.setXTitle("T_lambda(X)")
 graphMarginal2.setLegendPosition("")
 
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 
 fig = plt.figure(figsize=(12, 4))
 axis = fig.add_subplot(131)

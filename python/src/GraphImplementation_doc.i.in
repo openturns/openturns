@@ -209,7 +209,7 @@ Examples
 >>> import openturns as ot
 >>> fontSize = 1.0
 >>> # Create an empty graph
->>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'topright', fontSize, 0)
+>>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'upper right', fontSize, 0)
 >>> myGraph.setLegendFontSize(1.5)
 >>> print(myGraph.getLegendFontSize())
 1.5"
@@ -248,12 +248,12 @@ position : str
 Examples
 --------
 >>> import openturns as ot
->>> position = 'topright'
+>>> position = 'upper right'
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
->>> myGraph.setLegendPosition('bottomleft')
+>>> myGraph.setLegendPosition('lower left')
 >>> print(myGraph.getLegendPosition())
-bottomleft"
+lower left"
 %enddef
 %feature("docstring") OT::GraphImplementation::setLegendPosition
 OT_Graph_setLegendPosition_doc
@@ -301,7 +301,7 @@ Examples
 >>> import openturns as ot
 >>> print(ot.Graph.IsValidLegendPosition('lefttop'))
 False
->>> print(ot.Graph.IsValidLegendPosition('topleft'))
+>>> print(ot.Graph.IsValidLegendPosition('upper left'))
 True"
 %enddef
 %feature("docstring") OT::GraphImplementation::IsValidLegendPosition
@@ -322,7 +322,7 @@ corner : sequence of float
 Examples
 --------
 >>> import openturns as ot
->>> position = 'topleft'  # the legend's topleft corner with be set below
+>>> position = 'upper left'  # the legend's upper left corner with be set below
 >>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
 >>> graph.setLegendCorner([1.0, 1.0])  # legend will begin in top right corner
 

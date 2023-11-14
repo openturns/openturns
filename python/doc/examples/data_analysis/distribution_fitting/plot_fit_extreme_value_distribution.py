@@ -73,7 +73,7 @@ graph = myDistribution.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setColors(["black", "red"])
 graph.setLegends(["GEV fitting", "histogram"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 
 view = viewer.View(graph)
 axes = view.getAxes()
@@ -114,7 +114,7 @@ graph.setLegends(
         "WeibullMax fitting",
     ]
 )
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 axes = view.getAxes()  # axes is a matplotlib object
 _ = axes[0].set_xlim(-20.0, 20.0)
@@ -162,7 +162,7 @@ graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
 graph.setColors(["black", "red"])
 graph.setLegends(["GPD fitting", "histogram"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 
 view = viewer.View(graph)
 axes = view.getAxes()
@@ -193,7 +193,7 @@ graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
 graph.setColors(["black", "red"])
 graph.setLegends(["GPD fitting", "histogram"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 
 view = viewer.View(graph)
 axes = view.getAxes()

@@ -241,7 +241,7 @@ def drawLevelSetContour2D(
         ot.Interval([X1min, X2min], [X1max, X2max]),
     ).generate()
     data = distribution.computePDF(xy)
-    graph = ot.Graph("", "X1", "X2", True, "topright")
+    graph = ot.Graph("", "X1", "X2", True, "upper right")
     labels = ["%.2f%%" % (100 * alpha)]
     contour = ot.Contour(xx, yy, data, [threshold], labels)
     contour.setColor("black")

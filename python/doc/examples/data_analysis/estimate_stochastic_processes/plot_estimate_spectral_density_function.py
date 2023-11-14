@@ -83,7 +83,7 @@ graph = ot.Graph(
     "Frequency",
     "Spectral density function",
     True,
-    "topright",
+    "upper right",
     1.0,
     ot.GraphImplementation.LOGY,
 )

@@ -152,7 +152,7 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 #
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
