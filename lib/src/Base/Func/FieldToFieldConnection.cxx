@@ -120,7 +120,7 @@ String FieldToFieldConnection::__repr__() const
 String FieldToFieldConnection::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   if (isFieldFunctionComposition_)
   {
     oss << "(" << leftFieldFunction_.__str__(offset) << ")o(";

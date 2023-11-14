@@ -591,7 +591,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   const String name(getName());
-  if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << "\n" << offset;
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
   UnsignedInteger length = 0;
@@ -603,8 +603,8 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
     if (inputDistributionCollection_.getSize() > 1) oss << "| " << std::setw(length) << outputDescription[i] << " = ";
-    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << Os::GetEndOfLine() << offset;
-    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << Os::GetEndOfLine() << offset;
+    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << "\n" << offset;
+    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << "\n" << offset;
   }
   return oss;
 }

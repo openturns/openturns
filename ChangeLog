@@ -46,6 +46,7 @@
  * Deprecated Distribution.computeDensityGenerator methods
  * Deprecated Point.clean
  * Deprecated (Inverse)Gamma.setKLambda
+ * Deprecated Os::GetEndOfLine
 
 === Documentation ===
 

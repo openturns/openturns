@@ -91,7 +91,7 @@ String ARMACoefficients::__repr__() const
 String ARMACoefficients::__str__(const String & offset) const
 {
   OSS oss(false);
-  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << "shift = " << i << Os::GetEndOfLine() << offset << (*this)[i].__str__(offset) << Os::GetEndOfLine() << offset;
+  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << "shift = " << i << "\n" << offset << (*this)[i].__str__(offset) << "\n" << offset;
   return oss;
 }
 

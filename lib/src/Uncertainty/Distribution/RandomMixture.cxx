@@ -457,7 +457,7 @@ String RandomMixture::__str__(const String & offset) const
       oss << distributionCollection_[i];
     }
     // skip to new line
-    if (dimension_ > 1) oss << Os::GetEndOfLine() << offset;
+    if (dimension_ > 1) oss << "\n" << offset;
   }
   oss << ")";
   return oss;

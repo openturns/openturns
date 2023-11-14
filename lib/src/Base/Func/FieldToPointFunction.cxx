@@ -79,7 +79,7 @@ String FieldToPointFunction::__repr__() const
 /* String converter */
 String FieldToPointFunction::__str__(const String & offset) const
 {
-  return OSS(false) << getClassName() << " :" << Os::GetEndOfLine() << offset << "  " << getImplementation()->__str__( offset + "  ");
+  return OSS(false) << getClassName() << " :" << "\n" << offset << "  " << getImplementation()->__str__( offset + "  ");
 }
 
 /* Get the i-th marginal function */

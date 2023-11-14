@@ -116,7 +116,7 @@ String KernelMixture::__repr__() const
 String KernelMixture::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(kernel = " << p_kernel_->__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << Os::GetEndOfLine() << offset << sample_.__str__(offset);
+  oss << getClassName() << "(kernel = " << p_kernel_->__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << "\n" << offset << sample_.__str__(offset);
   return oss;
 }
 

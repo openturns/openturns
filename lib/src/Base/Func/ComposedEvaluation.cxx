@@ -84,7 +84,7 @@ String ComposedEvaluation::__repr__() const
 String ComposedEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   oss << "(" << leftFunction_.__str__(offset) << ")o(";
   oss << rightFunction_.__str__(offset) << ")";
   return oss;

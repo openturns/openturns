@@ -1109,7 +1109,7 @@ String DrawableImplementation::__str__(const String & offset) const
       << ", line=" << lineStyle_
       << ", point=" << pointStyle_
       << ", width=" << lineWidth_
-      << ", data=" << Os::GetEndOfLine() << offset << data_.__str__(offset);
+      << ", data=" << "\n" << offset << data_.__str__(offset);
   return oss;
 }
 

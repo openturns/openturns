@@ -98,7 +98,7 @@ String MatrixImplementation::__str__(const String & offset) const
 
   if ( (nbRows_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) ||
        (nbColumns_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) )
-    oss << nbRows_ << "x" << nbColumns_ << Os::GetEndOfLine();
+    oss << nbRows_ << "x" << nbColumns_ << "\n";
 
   size_t lwidth(0);
   size_t rwidth(0);
@@ -114,7 +114,7 @@ String MatrixImplementation::__str__(const String & offset) const
   const char * bracket("[");
   const char * newline("");
   const char * noffset("");
-  for ( UnsignedInteger i = 0; i < nbRows_; ++i, newline = Os::GetEndOfLine(), noffset = offset.c_str(), bracket = " " )
+  for ( UnsignedInteger i = 0; i < nbRows_; ++i, newline = "\n", noffset = offset.c_str(), bracket = " " )
   {
     oss << newline << noffset << bracket << "[ ";
     const char * sep("");
