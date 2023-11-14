@@ -356,30 +356,30 @@ String SORMResult::__str__(const String & offset) const
   OSS oss;
   try
   {
-    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << "\n" << offset;
+    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << "\n" << offset;
   }
   try
   {
-    oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << "\n" << offset;
+    oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << "\n" << offset;
   }
   try
   {
-    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << "\n" << offset;
+    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << "\n" << offset;
   }
   return oss;
 }

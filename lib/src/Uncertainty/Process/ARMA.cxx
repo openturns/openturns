@@ -137,7 +137,7 @@ String ARMA::__str__(const String & offset) const
   //  ARMA process
   for (UnsignedInteger d = 0; d < getOutputDimension() ; ++d)
   {
-    if (d > 0) oss << Os::GetEndOfLine() << offset;
+    if (d > 0) oss << "\n" << offset;
     // Writing d-th the marginal process
     oss << "X_{" << d << ",t}" ;
     // decomposition by number of elements

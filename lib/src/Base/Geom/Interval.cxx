@@ -481,7 +481,7 @@ String Interval::__str__(const String & offset) const
   OSS oss(false);
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
-    if (i > 0) oss << Os::GetEndOfLine() << offset;
+    if (i > 0) oss << "\n" << offset;
     if (finiteLowerBound_[i]) oss << "[" << lowerBound_[i] << ", ";
     else oss << "]-inf (" << lowerBound_[i] << "), ";
     if (finiteUpperBound_[i]) oss << upperBound_[i] << "]";

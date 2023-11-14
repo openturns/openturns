@@ -101,8 +101,8 @@ String TensorImplementation::__str__(const String & offset) const
   OSS oss(false);
   for (UnsignedInteger k = 0; k < getNbSheets(); ++k)
   {
-    oss << (k == 0 ? "" : Os::GetEndOfLine()) << offset << "sheet " << k << ":" << Os::GetEndOfLine() << offset;
-    oss << getSheet(k).__str__(offset) << Os::GetEndOfLine();
+    oss << (k == 0 ? "" : "\n") << offset << "sheet " << k << ":" << "\n" << offset;
+    oss << getSheet(k).__str__(offset) << "\n";
   }
   return oss;
 }

@@ -418,7 +418,7 @@ String LevelSet::__repr__() const
 String LevelSet::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << Os::GetEndOfLine() << offset << function_.__str__(offset);
+  oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << "\n" << offset << function_.__str__(offset);
   return oss;
 }
 

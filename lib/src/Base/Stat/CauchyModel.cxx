@@ -105,7 +105,7 @@ String CauchyModel::__str__(const String & offset) const
   oss << " amplitude=" << amplitude_
       << " scale=" << scale_;
   if (!isDiagonal_)
-    oss << " spatial correlation=" << Os::GetEndOfLine() << offset << outputCorrelation_.__str__(offset);
+    oss << " spatial correlation=" << "\n" << offset << outputCorrelation_.__str__(offset);
   else
     oss << " no spatial correlation";
   return oss;

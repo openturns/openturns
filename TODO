@@ -20,3 +20,4 @@ Remove EllipticalDistribution.setMean
 Remove Distribution.computeDensityGenerator
 Remove Point.clean
 Remove (Inverse)Gamma.setKLambda
+Remove Os::GetEndOfLine

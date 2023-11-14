@@ -72,7 +72,7 @@ String ConstantGradient::__str__(const String & offset) const
   OSS oss(false);
   const UnsignedInteger inputDimension = getInputDimension();
   const Description description(Description::BuildDefault(inputDimension, "x"));
-  if (hasVisibleName()) oss << getName() << ":" << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << getName() << ":" << "\n" << offset;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     if (i == 0) oss << "  (";
@@ -80,7 +80,7 @@ String ConstantGradient::__str__(const String & offset) const
     if (i == inputDimension - 1) oss << ")";
     else oss << ", ";
   }
-  oss << " ->" << Os::GetEndOfLine() << offset << "  ";
+  oss << " ->" << "\n" << offset << "  ";
   oss << constant_.__str__(offset + "  ");
   return oss;
 }

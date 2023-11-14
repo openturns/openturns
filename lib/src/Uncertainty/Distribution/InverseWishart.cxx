@@ -87,7 +87,7 @@ String InverseWishart::__repr__() const
 String InverseWishart::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << getClassName() << "(V = " << Os::GetEndOfLine() << offset << getV() << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(V = " << "\n" << offset << getV() << ", nu = " << nu_ << ")";
   return oss;
 }
 

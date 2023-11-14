@@ -91,7 +91,7 @@ String ExpertMixture::__repr__() const
 
 String ExpertMixture::__str__(const String & offset) const
 {
-  return OSS(false) << "experts=" << experts_.__str__(offset) << Os::GetEndOfLine() << offset
+  return OSS(false) << "experts=" << experts_.__str__(offset) << "\n" << offset
          << "classifier=" << classifier_.__str__(offset);
 }
 

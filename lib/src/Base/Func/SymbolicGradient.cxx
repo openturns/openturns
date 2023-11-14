@@ -101,7 +101,7 @@ String SymbolicGradient::__str__(const String & offset) const
     initialize();
     if (isAnalytical_)
     {
-      oss << Os::GetEndOfLine() << offset;
+      oss << "\n" << offset;
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
       const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
@@ -118,7 +118,7 @@ String SymbolicGradient::__str__(const String & offset) const
       {
         for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          oss << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << Os::GetEndOfLine() << offset;
+          oss << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << "\n" << offset;
         }
       }
     } // isAnalytical

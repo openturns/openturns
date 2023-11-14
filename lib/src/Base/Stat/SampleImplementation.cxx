@@ -985,17 +985,17 @@ String SampleImplementation::__str__(const String & offset) const
       }
       oss << sep << (*p_description_)[j] << String( twidth - (*p_description_)[j].size(), ' ' );
     }
-    oss << " ]" << Os::GetEndOfLine() << offset;
+    oss << " ]" << "\n" << offset;
   }
 
   const char * newline = "";
-  for( UnsignedInteger i = 0; i < size_; ++i, newline = Os::GetEndOfLine() )
+  for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
   {
     if (ellipsis && (size_ > 2 * printEllipsisSize))
     {
       if (i == printEllipsisSize)
       {
-        oss << Os::GetEndOfLine() << offset <<  "...";
+        oss << "\n" << offset <<  "...";
       }
       if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
       {

@@ -118,17 +118,17 @@ String FunctionalChaosResult::__repr_markdown__() const
   const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
-  oss << getClassName() << Os::GetEndOfLine()
-      << "- input dimension=" << inputDimension << Os::GetEndOfLine()
-      << "- output dimension=" << outputDimension << Os::GetEndOfLine()
-      << "- distribution dimension=" << distribution_.getDimension() << Os::GetEndOfLine()
-      << "- transformation=" << transformation_.getInputDimension() << " -> " << transformation_.getOutputDimension() << Os::GetEndOfLine()
-      << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << Os::GetEndOfLine()
-      << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << Os::GetEndOfLine()
-      << "- indices size=" << indicesSize << Os::GetEndOfLine()
-      << "- relative errors=" << relativeErrors_ << Os::GetEndOfLine()
-      << "- residuals=" << residuals_ << Os::GetEndOfLine();
-  oss << Os::GetEndOfLine();
+  oss << getClassName() << "\n"
+      << "- input dimension=" << inputDimension << "\n"
+      << "- output dimension=" << outputDimension << "\n"
+      << "- distribution dimension=" << distribution_.getDimension() << "\n"
+      << "- transformation=" << transformation_.getInputDimension() << " -> " << transformation_.getOutputDimension() << "\n"
+      << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
+      << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
+      << "- indices size=" << indicesSize << "\n"
+      << "- relative errors=" << relativeErrors_ << "\n"
+      << "- residuals=" << residuals_ << "\n";
+  oss << "\n";
 
   const Scalar ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
   const UnsignedInteger ell_size = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize");
@@ -151,12 +151,12 @@ String FunctionalChaosResult::__repr_markdown__() const
       intermediateString = OSS() << " Coeff. #" << j;
       oss << OSS::PadString(intermediateString, columnWidth) << "|";
     }
-    oss << Os::GetEndOfLine();
+    oss << "\n";
   }
   else
   {
     if (outputDimension == 1)
-      oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << Os::GetEndOfLine();
+      oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << "\n";
     else
     {
       for (UnsignedInteger j = 0 ; j < outputDimension; ++ j)
@@ -164,15 +164,15 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " Coeff. #" << j;
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     }
   }
   // Print dashes
   String dashesSeparator = String(columnWidth, '-') + "|";
   oss << "|-------|" << dashesSeparator;
-  if (isEllipsisEnabled) oss << OSS::RepeatString(1 + 2 * ell_size, dashesSeparator) << Os::GetEndOfLine();
-  else if (outputDimension == 1) oss << dashesSeparator << Os::GetEndOfLine();
-  else oss << OSS::RepeatString(outputDimension, dashesSeparator) << Os::GetEndOfLine();
+  if (isEllipsisEnabled) oss << OSS::RepeatString(1 + 2 * ell_size, dashesSeparator) << "\n";
+  else if (outputDimension == 1) oss << dashesSeparator << "\n";
+  else oss << OSS::RepeatString(outputDimension, dashesSeparator) << "\n";
   // Print table content: multi-indices
   for (UnsignedInteger i = 0; i < indicesSize; ++ i)
   {
@@ -184,7 +184,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         const String blankColumn(String(columnWidth, ' ') + "|");
         oss << OSS::RepeatString(1 + ell_size, blankColumn)
             << OSS::PadString(" ... ", columnWidth) << "|"
-            << OSS::RepeatString(ell_size, blankColumn) << Os::GetEndOfLine();
+            << OSS::RepeatString(ell_size, blankColumn) << "\n";
         continue;
       }
       else if (i > ell_size && i < indicesSize - ell_size) continue;
@@ -210,7 +210,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " " << alpha_k_[i][j];
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     }
     else
     {
@@ -219,7 +219,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " " << alpha_k_[i][j];
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     } // If isEllipsisEnabled
   } // For i in indices size
   return oss;

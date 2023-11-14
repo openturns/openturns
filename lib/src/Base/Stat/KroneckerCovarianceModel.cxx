@@ -464,7 +464,7 @@ String KroneckerCovarianceModel::__str__(const String & offset) const
   oss << "(rho=" << rho_.__str__(offset)
       << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
-    oss << ", spatial correlation=" << Os::GetEndOfLine() << offset << getOutputCorrelation().__str__(offset);
+    oss << ", spatial correlation=" << "\n" << offset << getOutputCorrelation().__str__(offset);
   else
     oss << ", no spatial correlation";
   oss << ")";

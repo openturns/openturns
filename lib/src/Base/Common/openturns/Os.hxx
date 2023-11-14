@@ -48,7 +48,7 @@ public:
   static const char * GetDirectoryListSeparator();
 
   /**
-   * Return the end of line in text files
+   * @deprecated Return the end of line in text files
    */
   static const char * GetEndOfLine();
 

@@ -118,7 +118,7 @@ String PointToFieldConnection::__repr__() const
 String PointToFieldConnection::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   if (startByPointToFieldFunction_)
   {
     oss << "(" << pointToFieldFunction_ << ")o(";
