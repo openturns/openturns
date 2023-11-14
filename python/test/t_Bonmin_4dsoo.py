@@ -26,7 +26,7 @@ def fourdsoo(x):
     x1, x2, disc_b, logic = x
     # minimum : f([-5,-3,1,1]) = -18
     if round(disc_b) == 0.0:
-        result = x1 ** 2 + x2 ** 2 + 10 * round(logic)
+        result = x1**2 + x2**2 + 10 * round(logic)
     else:
         result = x1 + x2 - 10 * round(logic)
     return [result]

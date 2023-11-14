@@ -70,7 +70,7 @@ protected:
 
   /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
   void resetAuxiliaryDistribution() override;
-  
+
   Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
 
 private:
@@ -80,7 +80,7 @@ private:
 
   // Initial auxiliary distribution parameters
   Point initialAuxiliaryDistributionParameters_;
-  
+
   // bounds for optimization algorithm
   Interval bounds_;
 

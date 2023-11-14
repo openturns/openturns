@@ -55,7 +55,6 @@ marginals[0] = testDistributions[0].getMarginal(0)
 marginals[1] = testDistributions[0].getMarginal(1)
 testDistributions[1] = ot.ComposedDistribution(marginals, ot.NormalCopula(R))
 for i in range(1):
-
     myDistribution = testDistributions[i]
     # We name the components of the distribution
     componentDescription = ot.Description(dim)

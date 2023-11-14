@@ -19,12 +19,15 @@ q, totalDegree = 0.4, 5
 enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(P, q)
 productBasis = ot.OrthogonalProductPolynomialFactory(marginals, enumerateFunction)
 approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
-    ot.LARS(), ot.CorrectedLeaveOneOut())
+    ot.LARS(), ot.CorrectedLeaveOneOut()
+)
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(totalDegree))
+    productBasis, enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+)
 projectionStrategy = ot.LeastSquaresStrategy(approximationAlgorithm)
 algo = ot.FunctionalChaosAlgorithm(
-    x, y, im.distributionX, adaptiveStrategy, projectionStrategy)
+    x, y, im.distributionX, adaptiveStrategy, projectionStrategy
+)
 algo.run()
 result = algo.getResult()
 graph = result.drawSelectionHistory()

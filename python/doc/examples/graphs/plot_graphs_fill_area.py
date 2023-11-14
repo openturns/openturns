@@ -48,6 +48,7 @@ y = dist.computePDF(x)
 # %%
 # The following function uses the `PolygonArray` class to create a area filled with a given color.
 
+
 # %%
 def drawInTheBounds(vLow, vUp, n_test):
     """

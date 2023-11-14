@@ -61,6 +61,7 @@ view = viewer.View(graph)
 # the `computeMean` method on the log-PDF sample, then multiply by the sample size.
 # This is much faster than using a `for` loop.
 
+
 # %%
 def logLikelihood(X):
     """

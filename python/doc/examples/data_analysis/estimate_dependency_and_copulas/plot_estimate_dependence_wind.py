@@ -17,7 +17,11 @@ data = coles.Coles().wind[:, 1:]
 print(data[:5])
 
 graph = ot.Graph(
-    "Annual maximum wind speeds at Albany (NY) and Hartford (CT)", "spped at Albany (knot)", "speed at Hartford (knot)", True, ""
+    "Annual maximum wind speeds at Albany (NY) and Hartford (CT)",
+    "spped at Albany (knot)",
+    "speed at Hartford (knot)",
+    True,
+    "",
 )
 cloud = ot.Cloud(data)
 cloud.setColor("red")

@@ -272,15 +272,15 @@ public:
     // Adapt mu
     const Point cv(constraint(x0));
     if (xi0 < 0.0)
-      {
-        if (cv[0] <= 0.0)
-          x0[0] = zMax_;
-      }
+    {
+      if (cv[0] <= 0.0)
+        x0[0] = zMax_;
+    }
     else
-      {
-        if (cv[1] <= 0.0)
-          x0[0] = zMin_;
-      }
+    {
+      if (cv[1] <= 0.0)
+        x0[0] = zMin_;
+    }
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
@@ -963,7 +963,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   Normal parameterDistribution(optimalParameter, CovarianceMatrix(covZm.getImplementation()));
   parameterDistribution.setDescription({"zm", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  
+
   // Compute the extreme possible values for zm given the sample and (mu, sigma)
   // As the function xi->zm(xi;mu,sigma,m) is increasing for all m>=2, we get
   // zmMin = mu + sigma * (exp(-xiMin * log(-log(1-1/m))) - 1) / xiMin

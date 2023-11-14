@@ -97,7 +97,6 @@ def test_active_amplitude_parameter():
 
 
 def test_parameters_iso():
-
     scale = []
     amplitude = 1.0
     extraParameter = []

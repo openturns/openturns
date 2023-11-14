@@ -485,7 +485,7 @@ sigmaH = 0.5  # (m^2)
 # %%
 # Define the covariance matrix of the output Y of the model.
 errorCovariance = ot.CovarianceMatrix(1)
-errorCovariance[0, 0] = sigmaH ** 2
+errorCovariance[0, 0] = sigmaH**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -494,9 +494,9 @@ sigmaZv = 1.0
 sigmaZm = 1.0
 #
 sigma = ot.CovarianceMatrix(3)
-sigma[0, 0] = sigmaKs ** 2
-sigma[1, 1] = sigmaZv ** 2
-sigma[2, 2] = sigmaZm ** 2
+sigma[0, 0] = sigmaKs**2
+sigma[1, 1] = sigmaZv**2
+sigma[2, 2] = sigmaZm**2
 print(sigma)
 
 # %%

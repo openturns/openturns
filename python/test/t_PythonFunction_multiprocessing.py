@@ -9,12 +9,11 @@ ot.TESTPREAMBLE()
 
 def myfunPython(x):
     n = x[0]
-    y = [1.0 / (2.0 ** n)]
+    y = [1.0 / (2.0**n)]
     return y
 
 
 if __name__ == "__main__":
-
     n_cpus = multiprocessing.cpu_count()
     nsim = 1000
     myfun = ot.PythonFunction(1, 1, myfunPython, n_cpus=n_cpus)

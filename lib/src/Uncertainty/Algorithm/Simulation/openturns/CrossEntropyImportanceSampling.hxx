@@ -74,7 +74,7 @@ protected:
 
   /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
   virtual void resetAuxiliaryDistribution();
-  
+
   // Initial distribution
   Distribution initialDistribution_;
 

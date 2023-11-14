@@ -41,7 +41,7 @@ int main(int, char *[])
       String sum = "x0";
       for (UnsignedInteger i = 1; i < n; ++ i)
         sum += (OSS() << "+x" << i);
-      SymbolicFunction f(Description::BuildDefault(n, "x"), Description({"exp("+sum+")"}));
+      SymbolicFunction f(Description::BuildDefault(n, "x"), Description({"exp(" + sum + ")"}));
       fullprint << "f=" << f.__str__() << std::endl;
       Sample vertices(1, n);
       for (UnsignedInteger j = 0; j < n; ++ j)
@@ -60,7 +60,7 @@ int main(int, char *[])
         algo.setRule(k);
         // fullprint << "Algo=" << algo << std::endl;
         const Scalar value = algo.integrate(f, canonicalSimplex)[0];
-        fullprint << "n=" << n << " k="<<k<<" value=" << std::setprecision(16)<<value << std::endl;
+        fullprint << "n=" << n << " k=" << k << " value=" << std::setprecision(16) << value << std::endl;
         assert_almost_equal(value, ref[n]);
       }
     }

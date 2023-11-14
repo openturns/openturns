@@ -44,13 +44,18 @@ import openturns as ot
 def buidProjSymbolic(p, i):
     # R^p --> R
     # (x1, ..., xp) --> xi
-    inputVar = ot.Description.BuildDefault(p, 'x')
+    inputVar = ot.Description.BuildDefault(p, "x")
     return ot.SymbolicFunction(inputVar, [inputVar[i]])
 
 
 d = 2
 all_projections = [buidProjSymbolic(d, i) for i in range(d)]
-print('Input dimension = ', all_projections[0].getInputDimension(), 'Output dimension = ', all_projections[0].getOutputDimension())
+print(
+    "Input dimension = ",
+    all_projections[0].getInputDimension(),
+    "Output dimension = ",
+    all_projections[0].getOutputDimension(),
+)
 
 # %%
 # **Method 2**: We use the :class:`~openturns.LinearFunction` class.
@@ -82,8 +87,8 @@ all_projections = [buildProjLinear(d, i) for i in range(d)]
 #
 # We use the :class:`~openturns.ComposedFunction` class.
 
-f1 = ot.SymbolicFunction(['x1'], ['x1^2'])
-f2 = ot.SymbolicFunction(['x2'], ['3*x2'])
+f1 = ot.SymbolicFunction(["x1"], ["x1^2"])
+f2 = ot.SymbolicFunction(["x2"], ["3*x2"])
 fi_list = [f1, f2]
 all_g = [ot.ComposedFunction(f, proj) for (f, proj) in zip(fi_list, all_projections)]
 print(all_g[0].getInputDimension(), all_g[0].getOutputDimension())
@@ -110,9 +115,9 @@ def tensorProduct(factors):
 
 
 f = tensorProduct(all_g)
-print('input dimension =', f.getInputDimension())
-print('output dimension =', f.getOutputDimension())
-print('f([1.0, 2.0]) = ', f([1.0, 2.0]))
+print("input dimension =", f.getInputDimension())
+print("output dimension =", f.getOutputDimension())
+print("f([1.0, 2.0]) = ", f([1.0, 2.0]))
 
 # %%
 # Case 2: Sum
@@ -128,5 +133,5 @@ print('f([1.0, 2.0]) = ', f([1.0, 2.0]))
 
 coef = [1.0, 1.0]
 f = ot.LinearCombinationFunction(all_g, [1.0] * len(all_g))
-print('input dimension =', f.getInputDimension())
-print('output dimension =', f.getOutputDimension())
+print("input dimension =", f.getInputDimension())
+print("output dimension =", f.getOutputDimension())

@@ -296,7 +296,7 @@ WelchFactory WhittleFactory::getSpectralModelFactory() const
 /* Verbosity accessor */
 Bool WhittleFactory::getVerbose() const
 {
-  LOGWARN("WhittleFactory::getVerbose is deprecated"); 
+  LOGWARN("WhittleFactory::getVerbose is deprecated");
   return Log::HasDebug();
 }
 
@@ -437,7 +437,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
         nbInequalityConstraint_ = m;
         problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
         OptimizationAlgorithm solver(solver_);
-	solver.setProblem(problem);
+        solver.setProblem(problem);
         solver.setStartingPoint(startingPoints_[pointIndex]);
 
         // run Optimization problem

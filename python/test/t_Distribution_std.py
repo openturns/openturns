@@ -9,14 +9,30 @@ assert ot.Arcsine() != ot.Gumbel(), "Arcsine!=Gumbel"
 assert ot.Gumbel() != ot.Arcsine(), "Arcsine!=Gumbel"
 assert not ot.Gumbel() == ot.Arcsine(), "Arcsine==Gumbel"
 assert ot.Exponential(2.5) != ot.Exponential(3.0), "Exponential(2.5)!=Exponential(3.0)"
-assert not ot.Exponential(2.5) == ot.Exponential(3.0), "Exponential(2.5)==Exponential(3.0)"
-assert ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(2), "Normal(2)==Composed(2N)"
-assert not ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(2), "Normal(2)!=Composed(2N)"
-assert ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(3), "Composed(2N)!=Normal(3)"
-assert not ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(3), "!Composed(2N)==Normal(3)"
-assert ot.Normal(2) == ot.ComposedDistribution([ot.Normal()] * 2), "Normal(2)==Composed(2N)"
-assert not ot.Normal(3) == ot.ComposedDistribution([ot.Normal()] * 2), "Normal(3)==Composed(2N)"
-assert ot.Normal(3) != ot.ComposedDistribution([ot.Normal()] * 2), "Normal(3)!=Composed(2N)"
+assert not ot.Exponential(2.5) == ot.Exponential(
+    3.0
+), "Exponential(2.5)==Exponential(3.0)"
+assert ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(
+    2
+), "Normal(2)==Composed(2N)"
+assert not ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(
+    2
+), "Normal(2)!=Composed(2N)"
+assert ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(
+    3
+), "Composed(2N)!=Normal(3)"
+assert not ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(
+    3
+), "!Composed(2N)==Normal(3)"
+assert ot.Normal(2) == ot.ComposedDistribution(
+    [ot.Normal()] * 2
+), "Normal(2)==Composed(2N)"
+assert not ot.Normal(3) == ot.ComposedDistribution(
+    [ot.Normal()] * 2
+), "Normal(3)==Composed(2N)"
+assert ot.Normal(3) != ot.ComposedDistribution(
+    [ot.Normal()] * 2
+), "Normal(3)!=Composed(2N)"
 assert ot.Normal(2) != ot.Student(3.0, 2), "Normal(2)!=Student(2)"
 assert not ot.Student(3.0, 2) == ot.Normal(2), "!Student(2)==Normal(2)"
 
@@ -52,9 +68,9 @@ for factory in factories:
             epsilon = ot.ResourceMap.GetAsScalar(
                 "CenteredFiniteDifferenceGradient-DefaultEpsilon"
             )
-            pdfepsilon = ot.ResourceMap.GetAsScalar("Distribution-DefaultPDFEpsilon") ** (
-                1.0 / 3.0
-            )
+            pdfepsilon = ot.ResourceMap.GetAsScalar(
+                "Distribution-DefaultPDFEpsilon"
+            ) ** (1.0 / 3.0)
 
             # logpdf
             logPDF1 = [y[0] for y in distribution.computeLogPDF(sample)]
@@ -106,7 +122,11 @@ for factory in factories:
                 str(distribution),
             )
             ott.assert_almost_equal(
-                distribution.computeProbability(interval), 1.0, 1e-5, 1e-5, str(distribution)
+                distribution.computeProbability(interval),
+                1.0,
+                1e-5,
+                1e-5,
+                str(distribution),
             )
 
             # MinimumVolumeInterval
@@ -123,16 +143,20 @@ for factory in factories:
 
             # MinimumVolumeLevelSet
             probability = 0.9
-            levelSet, threshold = distribution.computeMinimumVolumeLevelSetWithThreshold(
-                probability
-            )
+            (
+                levelSet,
+                threshold,
+            ) = distribution.computeMinimumVolumeLevelSetWithThreshold(probability)
             event = ot.DomainEvent(ot.RandomVector(distribution), levelSet)
             algo = ot.ProbabilitySimulationAlgorithm(event)
             algo.setBlockSize(int(1e6))
             algo.setMaximumOuterSampling(1)
             algo.run()
             p = algo.getResult().getProbabilityEstimate()
-            if distribution.getName() != "Histogram" and "Bernstein" not in distribution.getName():
+            if (
+                distribution.getName() != "Histogram"
+                and "Bernstein" not in distribution.getName()
+            ):
                 ott.assert_almost_equal(p, probability, 1e-3, 1e-3, str(distribution))
 
         else:

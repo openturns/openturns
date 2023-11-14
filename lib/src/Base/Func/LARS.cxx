@@ -68,7 +68,7 @@ void LARS::initialize()
   predictors_.clear();
   inPredictors_.clear();
   mPsiX_ = Matrix();
-  
+
   indicesHistory_.clear();
   coefficientsHistory_.clear();
 }
@@ -209,7 +209,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     }
     indicesHistory_.add(indicesSelection);
     coefficientsHistory_.add(coefficientsSelection);
-    
+
     LOGDEBUG(OSS() << "End of iteration " << iterations << " over " << maximumNumberOfIterations - 1 << " iteration(s)" << ", relative convergence=" << relativeConvergence_ << " for a target=" << maximumRelativeConvergence_);
   }
 }

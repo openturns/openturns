@@ -29,7 +29,6 @@ distParams.append(ot.WeibullMaxMuSigma())
 distParams.append(ot.WeibullMinMuSigma())
 
 for distParam in distParams:
-
     print("Distribution Parameters ", repr(distParam))
     print("Distribution Parameters ", distParam)
 

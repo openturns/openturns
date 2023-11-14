@@ -494,7 +494,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // Only diagonal of the discretization Matrix
     // First set sigmaXX
     const Point defaultPoint(inputDimension);
-    const Point sigma2(1, covarianceModel_.computeAsScalar(defaultPoint,defaultPoint));
+    const Point sigma2(1, covarianceModel_.computeAsScalar(defaultPoint, defaultPoint));
     Sample result(sampleSize, sigma2);
 
 

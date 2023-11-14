@@ -306,7 +306,7 @@ IndicesCollection FunctionalChaosResult::getIndicesHistory() const
 {
   if (metaModel_.getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
-      << "but the current output dimension is " << metaModel_.getOutputDimension();
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
   return IndicesCollection(indicesHistory_);
 }
 
@@ -314,7 +314,7 @@ Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
 {
   if (metaModel_.getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
-      << "but the current output dimension is " << metaModel_.getOutputDimension();
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
   return coefficientsHistory_;
 }
 
@@ -328,7 +328,7 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
 {
   if (metaModel_.getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "drawSelectionHistory is only available for 1-d output dimension"
-      << "but the current output dimension is " << metaModel_.getOutputDimension();
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
   const UnsignedInteger size = indicesHistory_.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No selection history available";

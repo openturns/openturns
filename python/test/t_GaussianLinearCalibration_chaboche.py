@@ -96,7 +96,7 @@ sigmaStress = 10.0  # (Pa)
 
 # Define the covariance matrix of the output Y of the model.
 localErrorCovariance = ot.CovarianceMatrix(1)
-localErrorCovariance[0, 0] = sigmaStress ** 2
+localErrorCovariance[0, 0] = sigmaStress**2
 
 # Define the covariance matrix of the parameters $\theta$ to calibrate.
 sigmaR = 0.1 * R
@@ -104,9 +104,9 @@ sigmaC = 0.1 * C
 sigmaGamma = 0.1 * Gamma
 
 priorCovariance = ot.CovarianceMatrix(3)
-priorCovariance[0, 0] = sigmaR ** 2
-priorCovariance[1, 1] = sigmaC ** 2
-priorCovariance[2, 2] = sigmaGamma ** 2
+priorCovariance[0, 0] = sigmaR**2
+priorCovariance[1, 1] = sigmaC**2
+priorCovariance[2, 2] = sigmaGamma**2
 
 methods = ["SVD", "QR", "Cholesky"]
 for method in methods:

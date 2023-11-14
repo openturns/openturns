@@ -31,19 +31,19 @@ int main(int, char *[])
   RandomGenerator::SetSeed(0);
   try
   {
-	LatentVariableModel k = LatentVariableModel(4, 3);
-	k.setLatentVariables(Point({0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.4}));
-	k.setScale(Point({1.5}));
-	k.setAmplitude(Point({2.0}));
+    LatentVariableModel k = LatentVariableModel(4, 3);
+    k.setLatentVariables(Point({0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.4}));
+    k.setScale(Point({1.5}));
+    k.setAmplitude(Point({2.0}));
 
-	// We define a squared exponential kernel in the latent space as a reference
+    // We define a squared exponential kernel in the latent space as a reference
     SquaredExponential kRef = SquaredExponential(3);
     kRef.setScale(Point(3, 1.5));
-	kRef.setAmplitude(Point(1, 2.0));
+    kRef.setAmplitude(Point(1, 2.0));
 
-	assert_almost_equal(k(1, 1)(0, 0), kRef(Point({0.1, 0.0, 0.0}),Point({0.1, 0.0, 0.0}))(0,0));
-	assert_almost_equal(k(1, 2)(0, 0), kRef(Point({0.1, 0.0, 0.0}),Point({0.2, 0.3, -0.1}))(0,0));
-	assert_almost_equal(k(0, 3)(0, 0), kRef(Point({0.0, 0.0, 0.0}),Point({-0.2, -0.3, 0.4}))(0,0));
+    assert_almost_equal(k(1, 1)(0, 0), kRef(Point({0.1, 0.0, 0.0}), Point({0.1, 0.0, 0.0}))(0, 0));
+    assert_almost_equal(k(1, 2)(0, 0), kRef(Point({0.1, 0.0, 0.0}), Point({0.2, 0.3, -0.1}))(0, 0));
+    assert_almost_equal(k(0, 3)(0, 0), kRef(Point({0.0, 0.0, 0.0}), Point({-0.2, -0.3, 0.4}))(0, 0));
   }
   catch (TestFailed & ex)
   {

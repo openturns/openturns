@@ -72,7 +72,7 @@ beta = 0.90
 
 # %%
 # Get a sample of the variable
-N = 10 ** 4
+N = 10**4
 sample = output.getSample(N)
 graph = ot.UserDefined(sample).drawCDF()
 view = viewer.View(graph)

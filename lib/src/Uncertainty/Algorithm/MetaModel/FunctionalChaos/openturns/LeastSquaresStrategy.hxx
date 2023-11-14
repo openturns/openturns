@@ -81,7 +81,7 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-  
+
   /** Selection history accessor */
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
 

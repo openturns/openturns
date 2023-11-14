@@ -228,6 +228,7 @@ view = viewer.View(graph)
 # The only required method is `computeCDF`. Since the PDF is easy to define in our example, we implement it as well.
 # Here, the distribution is defined on the interval :math:`[-1,1]`, so that we define the `getRange` method.
 
+
 # %%
 class Quartic(ot.PythonDistribution):
     """
@@ -254,7 +255,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u ** 2) ** 2
+            y = self.c * (1 - u**2) ** 2
         return y
 
     def getRange(self):

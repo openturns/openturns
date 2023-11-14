@@ -175,7 +175,7 @@ String ProductPolynomialEvaluation::_repr_html_() const
       // All the degree 0 factors have already been taken into account
       if (degree > 0)
       {
-        if (!first) oss << " <span>&#215;</span> ";        
+        if (!first) oss << " <span>&#215;</span> ";
         // We count the number of non zeros coefficients
         const Point marginalCoefficeints = polynomials_[i].getCoefficients();
         UnsignedInteger numberOfNonZeros = 0;

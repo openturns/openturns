@@ -6,7 +6,9 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 # need a proper LS solver
-if not ot.PlatformInfo.HasFeature("cminpack") or not ot.PlatformInfo.HasFeature("ceres"):
+if not ot.PlatformInfo.HasFeature("cminpack") or not ot.PlatformInfo.HasFeature(
+    "ceres"
+):
     exit(0)
 
 size = 10000

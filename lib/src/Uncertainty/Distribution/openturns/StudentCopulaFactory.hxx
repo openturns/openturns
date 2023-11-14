@@ -57,7 +57,7 @@ public:
   /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
-  
+
 protected:
   /* Solver for log-likelihood maximization */
   OptimizationAlgorithm solver_;

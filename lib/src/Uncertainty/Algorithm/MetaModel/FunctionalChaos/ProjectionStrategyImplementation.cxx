@@ -162,8 +162,8 @@ String ProjectionStrategyImplementation::_repr_html_() const
       << "  <li>relative error: " << relativeError_p_ << "</li>\n"
       << "  <li>measure: " << measure_.getClassName() << "</li>\n"
       << "  <li>weighted experiment: " << weightedExperiment_.getClassName() << "</li>\n"
-      << "  <li>input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << "</li>\n"
-      << "  <li>output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << "</li>\n"
+      << "  <li>input sample: size= " << inputSample_.getSize() << " x dimension= " << inputSample_.getDimension() << "</li>\n"
+      << "  <li>output sample: size= " << outputSample_.getSize() << " x dimension= " << outputSample_.getDimension() << "</li>\n"
       << "  <li>weights: dimension= " << weights_.getDimension() << "</li>\n"
       << "  <li>design: size= " << proxy_.getSampleSize() << "</li>\n"
       << "<ul>\n";
@@ -180,8 +180,8 @@ String ProjectionStrategyImplementation::__repr_markdown__() const
       << "- relative error: " << relativeError_p_ << "\n"
       << "- measure: " << measure_.getClassName() << "\n"
       << "- weighted experiment: " << weightedExperiment_.getClassName() << "\n"
-      << "- input sample: size= " << inputSample_.getSize() <<" x dimension= " << inputSample_.getDimension() << "\n"
-      << "- output sample: size= " << outputSample_.getSize() <<" x dimension= " << outputSample_.getDimension() << "\n"
+      << "- input sample: size= " << inputSample_.getSize() << " x dimension= " << inputSample_.getDimension() << "\n"
+      << "- output sample: size= " << outputSample_.getSize() << " x dimension= " << outputSample_.getDimension() << "\n"
       << "- weights: dimension= " << weights_.getDimension() << "\n"
       << "- design: size= " << proxy_.getSampleSize() << "\n";
   return oss;

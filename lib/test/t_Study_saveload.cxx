@@ -230,7 +230,7 @@ int main(int, char *[])
 
     ChiSquare chiSquare(1.5);
     study.add("chiSquare", chiSquare);
-    
+
     Dirichlet dirichlet;
     {
       UnsignedInteger dim = 2;

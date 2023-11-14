@@ -173,7 +173,7 @@ initialState = [a_beta / b_beta, 0.5 * (alpha_max - alpha_min)]
 # %%
 
 proposal = []
-proposal.append(ot.Normal(0.0, 0.1 * np.sqrt(a_beta / b_beta ** 2)))
+proposal.append(ot.Normal(0.0, 0.1 * np.sqrt(a_beta / b_beta**2)))
 proposal.append(ot.Normal(0.0, 0.1 * (alpha_max - alpha_min)))
 proposal = ot.ComposedDistribution(proposal)
 

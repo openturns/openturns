@@ -108,6 +108,7 @@ ot.Log.Show(ot.Log.NONE)
 # This would create a simpler, but less interesting example: this is a trade off
 # that we accept in order to better understand the algorithm.)
 
+
 # %%
 def weibullQ(argument):
     """

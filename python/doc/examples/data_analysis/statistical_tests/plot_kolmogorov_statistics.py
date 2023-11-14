@@ -68,6 +68,7 @@ def computeKSStatisticsIndex(sample, distribution):
 # where :math:`n` is the sample size.
 #
 
+
 # %%
 def drawKSDistance(sample, distribution, observation, D, distFactory):
     graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF", True, "topleft")

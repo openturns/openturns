@@ -52,6 +52,7 @@ estimated_marginals
 # %%
 # Find connected components of a graph defined from its adjacency matrix
 
+
 # %%
 def find_neighbours(head, covariance, to_visit, visited):
     visited[head] = 1

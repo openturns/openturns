@@ -92,7 +92,7 @@ def ackley(X):
     c = 2.0 * m.pi
     d = len(X)
     f = (
-        -a * m.exp(-b * m.sqrt(sum(x ** 2 for x in X) / d))
+        -a * m.exp(-b * m.sqrt(sum(x**2 for x in X) / d))
         - m.exp(sum(m.cos(c * x) for x in X) / d)
         + a
         + m.exp(1.0)

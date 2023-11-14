@@ -42,7 +42,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u ** 2) ** 2
+            y = self.c * (1 - u**2) ** 2
         return y
 
     def getRange(self):

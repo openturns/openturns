@@ -97,7 +97,7 @@ def roundSample(sample, numberOfDigits):
     """
     size = sample.getSize()
     dimension = sample.getDimension()
-    factor = 10.0 ** numberOfDigits
+    factor = 10.0**numberOfDigits
     for i in range(size):
         for j in range(dimension):
             rounded = (int)(factor * sample[i, j])

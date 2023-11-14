@@ -177,7 +177,7 @@ String ComposedDistribution::_repr_html_() const
   oss << getClassName() << "\n";
   oss << "<ul>\n";
   oss << "  <li>name=" << getName() << "</li>\n";
-  oss << "  <li>dimension: "<< getDimension() << "</li>\n";
+  oss << "  <li>dimension: " << getDimension() << "</li>\n";
   oss << "  <li>description=" << description_ << "\n";
   if (getDimension() > 1) oss << "  <li>copula: " << copula_.__str__() << "</li>\n";
   oss << "</ul>\n";
@@ -193,11 +193,11 @@ String ComposedDistribution::_repr_html_() const
   // Content
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-      oss << "  <tr>\n";
-      oss << "    <td>" << i << "</td>\n";
-      oss << "    <td>" << description_[i] << "</td>\n";
-      oss << "    <td>" << distributionCollection_[i].__str__() << "</td>\n";
-      oss << "  </tr>\n";
+    oss << "  <tr>\n";
+    oss << "    <td>" << i << "</td>\n";
+    oss << "    <td>" << description_[i] << "</td>\n";
+    oss << "    <td>" << distributionCollection_[i].__str__() << "</td>\n";
+    oss << "  </tr>\n";
   }
   oss << "</table>\n";
   return oss;

@@ -20,11 +20,11 @@ def functionWingWeight(x):
     return [
         (
             0.036
-            * Sw ** 0.758
-            * Wfw ** 0.0035
+            * Sw**0.758
+            * Wfw**0.0035
             * (A / m.cos(m.pi / 180 * Lambda) ** 2) ** 0.6
-            * q ** 0.006
-            * ll ** 0.04
+            * q**0.006
+            * ll**0.04
             * (100 * tc / m.cos(m.pi / 180 * Lambda)) ** (-0.3)
             * (Nz * Wdg) ** 0.49
             + Sw * Wp

@@ -548,7 +548,7 @@ Sample SubsetSampling::getInputSample(const UnsignedInteger step, const Unsigned
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
   if (step >= getStepsNumber())
-    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step<< ") should be < " << getStepsNumber();
+    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step << ") should be < " << getStepsNumber();
   if (select > 2)
     throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
@@ -559,7 +559,7 @@ Sample SubsetSampling::getOutputSample(const UnsignedInteger step, const Unsigne
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
   if (step >= getStepsNumber())
-    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step<< ") should be < " << getStepsNumber();
+    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step << ") should be < " << getStepsNumber();
   if (select > 2)
     throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));

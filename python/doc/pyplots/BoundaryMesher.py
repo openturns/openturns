@@ -41,7 +41,13 @@ View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("A 2D mesh with its boundary, its inside thick boundary and its outside thick boundary", "", "", True, "bottomright")
+graph = ot.Graph(
+    "A 2D mesh with its boundary, its inside thick boundary and its outside thick boundary",
+    "",
+    "",
+    True,
+    "bottomright",
+)
 graph.add(mesh2DBoundaryOutside.draw())
 # Then, draw it
 axis = fig.add_subplot(144)

@@ -57,6 +57,7 @@ dimension
 # convert the vertices into a `numpy` `array` and use the `numpy` function
 # `exp` and `maximum`: this increases the evaluation performance of the script.
 
+
 # %%
 def AltiFunc(X):
     g = 9.81

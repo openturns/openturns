@@ -54,6 +54,7 @@ view = viewer.View(graph)
 # The following function is for teaching purposes only: use `FittingTest`
 # for real applications.
 
+
 # %%
 def computeKSStatistics(sample, distribution):
     sample = sample.sort()
@@ -81,6 +82,7 @@ computeKSStatistics(sample, dist)
 # %%
 # The following function generates a sample of K.S. distances when the tested distribution is the `Uniform(0,1)` distribution.
 
+
 # %%
 def generateKSSampleKnownParameters(nrepeat, samplesize):
     """
@@ -105,6 +107,7 @@ sampleD = generateKSSampleKnownParameters(nrepeat, samplesize)
 
 # %%
 # Compute exact Kolmogorov CDF.
+
 
 # %%
 def pKolmogorovPy(x):
@@ -166,6 +169,7 @@ view = viewer.View(graph)
 # The following function generates a sample of K.S. distances when the tested
 # distribution is the `Uniform(a,b)` distribution, where the `a` and `b`
 # parameters are estimated from the sample.
+
 
 # %%
 def generateKSSampleEstimatedParameters(nrepeat, samplesize):

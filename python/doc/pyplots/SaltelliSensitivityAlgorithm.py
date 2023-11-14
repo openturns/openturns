@@ -13,7 +13,7 @@ def flooding(X):
     Zd = Zb + Hd
     Q, Ks, Zv, Zm = X
     alpha = (Zm - Zv) / L
-    H = (Q / (Ks * B * alpha ** 0.5)) ** 0.6
+    H = (Q / (Ks * B * alpha**0.5)) ** 0.6
     Zc = H + Zv
     S = Zc - Zd
     return [S]

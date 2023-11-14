@@ -279,7 +279,10 @@ for i in range(basisSize):
     globalIndex = indices[i]
     multiIndex = enumerateFunction(globalIndex)
     if partOfVariance[i] > 1.0e-3:
-        print("%d, %d, %s, %.4f, %.4f" % (i, globalIndex, multiIndex, coefficients[i, 0], partOfVariance[i]))
+        print(
+            "%d, %d, %s, %.4f, %.4f"
+            % (i, globalIndex, multiIndex, coefficients[i, 0], partOfVariance[i])
+        )
 
 # %%
 view.show()

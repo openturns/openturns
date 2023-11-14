@@ -135,7 +135,7 @@ public:
   String __str__(const String & offset = "") const override;
   String _repr_html_() const override;
   String __repr_markdown__() const override;
-  
+
   /** Weight accessor */
   void setWeight(Scalar w);
   Scalar getWeight() const;

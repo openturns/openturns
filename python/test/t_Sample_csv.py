@@ -38,13 +38,17 @@ print("import with quotes:", repr(aSample))
 
 # spaces in description
 with open("sample.csv", "w") as f:
-    f.write("nos sbef saft  sbeaf  mid \"qnos\"  \"qsbef\" \"qsaft\"  \"qsbeaf\"  \"mid mid\" \n1 2 3 4 5 6 7 8 9 10\n")
+    f.write(
+        'nos sbef saft  sbeaf  mid "qnos"  "qsbef" "qsaft"  "qsbeaf"  "mid mid" \n1 2 3 4 5 6 7 8 9 10\n'
+    )
 aSample = ot.Sample.ImportFromTextFile("sample.csv")
 print("import with spaces:", repr(aSample))
 
 # spaces in description / semicolon
 with open("sample.csv", "w") as f:
-    f.write("nos; sbef;saft ; sbeaf ;mid mid;\"qnos\"; \"qsbef\";\"qsaft\"; \"qsbeaf\" ;\"mid mid\"\n1;2;3;4;5;6;7;8;9;10\n")
+    f.write(
+        'nos; sbef;saft ; sbeaf ;mid mid;"qnos"; "qsbef";"qsaft"; "qsbeaf" ;"mid mid"\n1;2;3;4;5;6;7;8;9;10\n'
+    )
 aSample = ot.Sample.ImportFromTextFile("sample.csv", ";")
 print("import with spaces semicolon:", repr(aSample))
 

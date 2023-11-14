@@ -669,7 +669,7 @@ void Dlib::run()
                       (inputHistory[i] - inputHistory[i - 1]).norm() / Point(inputHistory[i]).norm(),
                       (outputHistory[i] - outputHistory[i - 1]).norm(),
                       0.0);
-    
+
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, globalOptimResult.y));
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());

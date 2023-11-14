@@ -52,8 +52,8 @@ public:
   // Integration rule accessor
   void setRule(const UnsignedInteger rule);
   UnsignedInteger getRule() const;
-  
-  
+
+
   /** Maximum absolute error accessor */
   void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
   Scalar getMaximumAbsoluteError() const;
@@ -61,11 +61,11 @@ public:
   /** Maximum relative error accessor */
   void setMaximumRelativeError(const Scalar maximumRelativeError);
   Scalar getMaximumRelativeError() const;
-  
+
   /** Maximum evaluations number accessor */
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   UnsignedInteger getMaximumEvaluationNumber() const;
-  
+
   /** String converter */
   String __repr__() const override;
 
