@@ -2,7 +2,7 @@
 /**
  *  @brief ARMAState class enables to set a State before a simulation
  * of an ARMA process and / or t get the State
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

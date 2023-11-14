@@ -7,7 +7,7 @@
 #  COIN_<COMPONENT>_LIBRARIES  - Libraries to link for each component.
 #
 #=============================================================================
-# Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -18,9 +18,8 @@
 #=============================================================================
 # (To distributed this file outside of CMake, substitute the full
 #  License text for the above reference.)
-#
+
 # Find the path based on a required header file
-#
 find_path (COIN_INCLUDE_DIR NAMES CbcModel.hpp IpNLP.hpp
   PATH_SUFFIXES coin coin-or
   HINTS "${COIN_ROOT_DIR}/include/coin" "${COIN_ROOT_DIR}/include/coin-or"
