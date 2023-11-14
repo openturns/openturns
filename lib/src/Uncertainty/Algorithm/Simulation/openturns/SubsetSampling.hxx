@@ -65,13 +65,6 @@ public:
   Point getCoefficientOfVariationPerStep() const;
   Point getProbabilityEstimatePerStep() const;
 
-  /** @deprecated Keep event sample */
-  void setKeepEventSample(const Bool keepEventSample);
-
-  /** @deprecated Event input/output sample accessor */
-  Sample getEventInputSample() const;
-  Sample getEventOutputSample() const;
-
   /** Keep event sample */
   void setKeepSample(const Bool keepSample);
 
@@ -79,10 +72,6 @@ public:
   enum SelectSample {EVENT0, EVENT1, BOTH};
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
-
-  /** @deprecated i-subset */
-  void setISubset(Bool iSubset);
-  void setBetaMin(Scalar betaMin);
 
   /** Experiment for first step */
   void setInitialExperiment(const WeightedExperiment & initialExperiment);
@@ -127,10 +116,6 @@ private:
   Scalar conditionalProbability_ = 0.0;// target probability at each subset
   Scalar minimumProbability_ = 0.0;// limit on the smallest probability
   WeightedExperiment initialExperiment_; // experiment for first step
-
-  // @deprecated
-  Bool iSubset_ = false;// conditional pre-sampling
-  Scalar betaMin_ = 0.0;// pre-sampling hypersphere exclusion radius
 
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps

@@ -69,18 +69,6 @@ Basis ApproximationAlgorithm::getPsi() const
   return getImplementation()->getPsi();
 }
 
-/* Verbosity accessor */
-void ApproximationAlgorithm::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
-}
-
-Bool ApproximationAlgorithm::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
 /* String converter */
 String ApproximationAlgorithm::__repr__() const
 {

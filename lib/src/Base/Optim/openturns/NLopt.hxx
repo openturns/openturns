@@ -68,9 +68,6 @@ public:
   void setSeed(const UnsignedInteger seed);
   UnsignedInteger getSeed() const;
 
-  /** @deprecated */
-  static void SetSeed(const UnsignedInteger seed);
-
   /** String converter */
   String __repr__() const override;
 

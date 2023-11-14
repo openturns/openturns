@@ -118,17 +118,6 @@ UnsignedInteger NLopt::getSeed() const
   return seed_;
 }
 
-void NLopt::SetSeed(const UnsignedInteger seed)
-{
-  LOGWARN(OSS() << "NLopt.SetSeed is deprecated in favor of setSeed");
-#ifdef OPENTURNS_HAVE_NLOPT
-  nlopt::srand(seed);
-#else
-  (void)seed;
-  throw NotYetImplementedException(HERE) << "No NLopt support";
-#endif
-}
-
 /* Default constructor */
 NLopt::NLopt(const String & algoName)
   : OptimizationAlgorithmImplementation()

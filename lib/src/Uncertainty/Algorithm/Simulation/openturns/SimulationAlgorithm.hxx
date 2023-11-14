@@ -59,10 +59,6 @@ public:
   virtual void setBlockSize(const UnsignedInteger blockSize);
   UnsignedInteger getBlockSize() const;
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** String converter */
   String __repr__() const override;
 

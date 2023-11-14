@@ -54,7 +54,6 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
-  , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
@@ -117,30 +116,8 @@ void SubsetSampling::run()
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
-    Sample inputSample;
-    if (!iSubset_)
-    {
-      inputSample = initialExperiment_.generate();
-    }
-    else
-    {
-      // @deprecated: conditional sampling
-      TruncatedDistribution truncatedChiSquare(Chi(dimension_), betaMin_, TruncatedDistribution::LOWER);
-      Normal normal(dimension_);
-      inputSample = Sample(0, dimension_);
-      for (UnsignedInteger j = 0; j < blockSize; ++ j)
-      {
-        Point direction(normal.getRealization());
-        Scalar norm = direction.norm();
-        Scalar radius = truncatedChiSquare.getRealization()[0];
-        if (norm != 0.0)
-        {
-          radius *= 1.0 / norm;
-        }
-        inputSample.add(direction * radius);
-      }
-    }
-    Sample blockSample(standardEvent_.getFunction()(inputSample));
+    const Sample inputSample(initialExperiment_.generate());
+    const Sample blockSample(standardEvent_.getFunction()(inputSample));
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
       currentPointSample_[i * blockSize + j] = inputSample[j];
@@ -168,12 +145,6 @@ void SubsetSampling::run()
 
   // cannot determine next subset domain if no variance
   stop = stop || (std::abs(varianceEstimate) < epsilon);
-
-  if (iSubset_)
-  {
-    Scalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent().getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
-    probabilityEstimate *= correction;
-  }
 
   // if there is no subset step ...
   if (stop)
@@ -515,27 +486,6 @@ Point SubsetSampling::getThresholdPerStep() const
 }
 
 
-void SubsetSampling::setKeepEventSample(const Bool keepEventSample)
-{
-  LOGWARN(OSS() << "SubsetSampling.setKeepEventSample is deprecated");
-  setKeepSample(keepEventSample);
-}
-
-
-Sample SubsetSampling::getEventInputSample() const
-{
-  LOGWARN(OSS() << "SubsetSampling.getEventInputSample is deprecated");
-  return getInputSample(getStepsNumber() - 1, 1);
-}
-
-
-Sample SubsetSampling::getEventOutputSample() const
-{
-  LOGWARN(OSS() << "SubsetSampling.getEventOutputSample is deprecated");
-  return getOutputSample(getStepsNumber() - 1, 1);
-}
-
-
 /* Keep event sample */
 void SubsetSampling::setKeepSample(const Bool keepSample)
 {
@@ -576,19 +526,6 @@ Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool 
   return result;
 }
 
-void SubsetSampling::setISubset(Bool iSubset)
-{
-  LOGWARN(OSS() << "SubsetSampling.setISubset is deprecated");
-  iSubset_ = iSubset;
-}
-
-void SubsetSampling::setBetaMin(Scalar betaMin)
-{
-  LOGWARN(OSS() << "SubsetSampling.setBetaMin is deprecated");
-  if (!(betaMin > 0.0)) throw InvalidArgumentException(HERE) << "Beta min should be positive";
-  betaMin_ = betaMin;
-}
-
 /* Experiment for first step */
 void SubsetSampling::setInitialExperiment(const WeightedExperiment & initialExperiment)
 {
@@ -623,8 +560,6 @@ void SubsetSampling::save(Advocate & adv) const
   EventSimulation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
-  adv.saveAttribute("iSubset_", iSubset_);
-  adv.saveAttribute("betaMin_", betaMin_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
   adv.saveAttribute("initialExperiment_", initialExperiment_);
 
@@ -646,8 +581,6 @@ void SubsetSampling::load(Advocate & adv)
   EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
-  adv.loadAttribute("iSubset_", iSubset_);
-  adv.loadAttribute("betaMin_", betaMin_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);
   if (adv.hasAttribute("initialExperiment_"))
     adv.loadAttribute("initialExperiment_", initialExperiment_);

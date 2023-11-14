@@ -107,19 +107,6 @@ UnsignedInteger SimulationAlgorithm::getBlockSize() const
   return blockSize_;
 }
 
-/* Verbosity accessor */
-void SimulationAlgorithm::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("SimulationAlgorithm.setVerbose is deprecated");
-}
-
-/* Verbosity accessor */
-Bool SimulationAlgorithm::getVerbose() const
-{
-  LOGWARN("SimulationAlgorithm.getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
 /* String converter */
 String SimulationAlgorithm::__repr__() const
 {

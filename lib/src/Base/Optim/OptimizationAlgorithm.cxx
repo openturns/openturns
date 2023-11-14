@@ -179,19 +179,6 @@ void OptimizationAlgorithm::setMaximumConstraintError(const Scalar maximumConstr
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
-/* Verbose accessor */
-Bool OptimizationAlgorithm::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
-/* Verbose accessor */
-void OptimizationAlgorithm::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
-}
-
 /* String converter */
 String OptimizationAlgorithm::__repr__() const
 {

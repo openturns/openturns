@@ -72,10 +72,6 @@ public:
   ARMA buildWithCriteria(const ProcessSample & sample,
                          Point & informationCriteriaOut) const;
 
-  /** @deprecated Verbosity accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Enable or disable the estimation history */
   void enableHistory() const;
   void disableHistory() const;

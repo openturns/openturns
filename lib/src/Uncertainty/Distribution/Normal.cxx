@@ -749,11 +749,11 @@ Scalar Normal::computeRadialDistributionCDF(const Scalar radius,
 }
 
 /* Correlation matrix accessor */
-void Normal::setCorrelation(const CorrelationMatrix & R)
+void Normal::setR(const CorrelationMatrix & R)
 {
   // Perform checks at the upper level
   // This call set also the range
-  EllipticalDistribution::setCorrelation(R);
+  EllipticalDistribution::setR(R);
   // Then check for independence
   checkIndependentCopula();
 }

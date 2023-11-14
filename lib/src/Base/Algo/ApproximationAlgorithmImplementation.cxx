@@ -185,18 +185,6 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
   return relativeError_;
 }
 
-/* Verbosity accessor */
-void ApproximationAlgorithmImplementation::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("ApproximationAlgorithm::setVerbose is deprecated");
-}
-
-Bool ApproximationAlgorithmImplementation::getVerbose() const
-{
-  LOGWARN("ApproximationAlgorithm::getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
 /* Method save() stores the object through the StorageManager */
 void ApproximationAlgorithmImplementation::save(Advocate & adv) const
 {

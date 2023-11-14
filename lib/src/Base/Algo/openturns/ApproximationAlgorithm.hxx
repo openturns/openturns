@@ -61,10 +61,6 @@ public:
   /** Basis accessor */
   Basis getPsi() const;
 
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

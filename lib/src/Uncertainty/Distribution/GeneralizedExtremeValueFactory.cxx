@@ -284,7 +284,6 @@ public:
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
-    solver.setVerbose(Log::HasDebug());
     solver.setProblem(problem);
     solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
     solver.setStartingPoint(x0);
@@ -343,7 +342,6 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
@@ -450,7 +448,6 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
@@ -695,7 +692,6 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
 
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
@@ -873,7 +869,6 @@ public:
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
-    solver.setVerbose(Log::HasDebug());
     solver.setProblem(problem);
     solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
     solver.setStartingPoint(x0);
@@ -931,7 +926,6 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);

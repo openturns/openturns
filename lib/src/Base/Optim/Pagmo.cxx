@@ -772,19 +772,6 @@ String Pagmo::getAlgorithmName() const
   return algoName_;
 }
 
-/* Number of generations to evolve */
-void Pagmo::setGenerationNumber(const UnsignedInteger generationNumber)
-{
-  LOGWARN(OSS() << "Pagmo.setGenerationNumber is deprecated in favor of setMaximumIterationNumber");
-  setMaximumIterationNumber(generationNumber);
-}
-
-UnsignedInteger Pagmo::getGenerationNumber() const
-{
-  LOGWARN(OSS() << "Pagmo.getGenerationNumber is deprecated in favor of getMaximumIterationNumber");
-  return getMaximumIterationNumber();
-}
-
 /* Random generator seed accessor */
 void Pagmo::setSeed(const UnsignedInteger seed)
 {

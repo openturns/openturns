@@ -205,19 +205,6 @@ OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone
   return new OptimizationAlgorithmImplementation(*this);
 }
 
-/* Verbose accessor */
-Bool OptimizationAlgorithmImplementation::getVerbose() const
-{
-  LOGWARN("OptimizationAlgorithm.getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
-/* Verbose accessor */
-void OptimizationAlgorithmImplementation::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("OptimizationAlgorithm.setVerbose is deprecated, use Log.Show(Log.Trace)");
-}
-
 /* Method save() stores the object through the StorageManager */
 void OptimizationAlgorithmImplementation::save(Advocate & adv) const
 {

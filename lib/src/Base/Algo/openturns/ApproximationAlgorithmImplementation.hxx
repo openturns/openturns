@@ -94,10 +94,6 @@ public:
 
   Scalar getRelativeError();
 
-  /** @deprecated Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

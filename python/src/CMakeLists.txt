@@ -949,7 +949,6 @@ ot_add_python_module(simulation simulation_module.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i.in
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
                       Wilks.i Wilks_doc.i.in
-                      LHS.i LHS_doc.i.in
                       PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i.in
                       PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i.in
                       RootStrategyImplementation.i RootStrategyImplementation_doc.i.in

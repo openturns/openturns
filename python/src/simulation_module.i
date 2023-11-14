@@ -56,7 +56,6 @@
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i
 %include Wilks.i
-%include LHS.i
 %include PostAnalyticalControlledImportanceSampling.i
 %include PostAnalyticalImportanceSampling.i
 %include RootStrategyImplementation.i

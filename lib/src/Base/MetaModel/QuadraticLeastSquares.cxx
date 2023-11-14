@@ -25,9 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(QuadraticLeastSquares)
 
 static const Factory<QuadraticLeastSquares> Factory_QuadraticLeastSquares;
@@ -37,14 +34,6 @@ QuadraticLeastSquares::QuadraticLeastSquares()
   : PersistentObject()
 {
   // Nothing to do
-}
-
-/* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
-    const Function & inputFunction)
-  : QuadraticLeastSquares(dataIn, inputFunction(dataIn))
-{
-  LOGWARN(OSS() << "QuadraticLeastSquares(Sample, Function) is deprecated");
 }
 
 /* Constructor with parameters */

@@ -114,15 +114,6 @@ myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
 
 #
-# LHS
-CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
-myLHS.setMaximumOuterSampling(1000000)
-myLHS.setBlockSize(1)
-myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
-myLHS.run()
-
-#
 # Results
 #
 #
@@ -180,16 +171,6 @@ PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
 length90MC = ResultMC.getConfidenceLength(0.90)
-
-#
-# LHS
-ResultLHS = myLHS.getResult()
-PFLHS = ResultLHS.getProbabilityEstimate()
-CVLHS = ResultLHS.getCoefficientOfVariation()
-Variance_PF_LHS = ResultLHS.getVarianceEstimate()
-length90LHS = ResultLHS.getConfidenceLength(0.90)
-
-#
 
 #
 # Outputs
@@ -401,29 +382,6 @@ print(
     "CI at 90% =[",
     "%.5e" % (PFMC - 0.5 * length90MC),
     "; %.5e" % (PFMC + 0.5 * length90MC),
-    "]",
-)
-print(
-    "************************************************************************************************"
-)
-print("")
-print(
-    "************************************************************************************************"
-)
-print(
-    "******************************************* L H S **********************************************"
-)
-print(
-    "************************************************************************************************"
-)
-print("Pf estimation = %.5e" % PFLHS)
-print("Pf Variance estimation = %.5e" % Variance_PF_LHS)
-print("CoV = %.5f" % CVLHS)
-print("90% Confidence Interval =", "%.5e" % length90LHS)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFLHS - 0.5 * length90LHS),
-    "; %.5e" % (PFLHS + 0.5 * length90LHS),
     "]",
 )
 print(

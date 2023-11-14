@@ -65,10 +65,6 @@ public:
   void setAlgorithmName(const String & algoName);
   String getAlgorithmName() const;
 
-  /** @deprecated Number of generations to evolve */
-  void setGenerationNumber(const UnsignedInteger generationNumber);
-  UnsignedInteger getGenerationNumber() const;
-
   /** Random generator seed accessor */
   void setSeed(const UnsignedInteger seed);
   UnsignedInteger getSeed() const;

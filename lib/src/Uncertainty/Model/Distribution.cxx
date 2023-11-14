@@ -788,29 +788,6 @@ Point Distribution::getSingularities() const
   return getImplementation()->getSingularities();
 }
 
-/* Compute the density generator of the elliptical generator, i.e.
- *  the function phi such that the density of the distribution can
- *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-Scalar Distribution::computeDensityGenerator(const Scalar betaSquare) const
-{
-  LOGWARN("Distribution.computeDensityGenerator is deprecated");
-  return getImplementation()->computeDensityGenerator(betaSquare);
-}
-
-/* Compute the derivative of the density generator */
-Scalar Distribution::computeDensityGeneratorDerivative(const Scalar betaSquare) const
-{
-  LOGWARN("Distribution.computeDensityGeneratorDerivative is deprecated");
-  return getImplementation()->computeDensityGeneratorDerivative(betaSquare);
-}
-
-/* Compute the seconde derivative of the density generator */
-Scalar Distribution::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
-{
-  LOGWARN("Distribution.computeDensityGeneratorSecondDerivative is deprecated");
-  return getImplementation()->computeDensityGeneratorSecondDerivative(betaSquare);
-}
-
 /* Compute the radial distribution CDF */
 Scalar Distribution::computeRadialDistributionCDF (const Scalar radius,
     const Bool tail) const

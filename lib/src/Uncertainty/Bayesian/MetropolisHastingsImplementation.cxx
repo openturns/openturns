@@ -326,19 +326,6 @@ Sample MetropolisHastingsImplementation::getCovariates() const
 }
 
 
-void MetropolisHastingsImplementation::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("MetropolisHastings.setVerbose is deprecated");
-}
-
-
-Bool MetropolisHastingsImplementation::getVerbose() const
-{
-  LOGWARN("MetropolisHastings.getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
-
 void MetropolisHastingsImplementation::setHistory(const HistoryStrategy & history)
 {
   history_ = history;

@@ -34,9 +34,6 @@ class OT_API IterativeThresholdExceedance
   CLASSNAME
 
 public:
-  /** @deprecated */
-  IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar threshold);
-
   /** Constructor */
   explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1,
                                         const ComparisonOperator & op = Greater(),

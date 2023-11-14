@@ -293,18 +293,6 @@ WelchFactory WhittleFactory::getSpectralModelFactory() const
   return spectralFactory_;
 }
 
-/* Verbosity accessor */
-Bool WhittleFactory::getVerbose() const
-{
-  LOGWARN("WhittleFactory::getVerbose is deprecated");
-  return Log::HasDebug();
-}
-
-void WhittleFactory::setVerbose(const Bool /*verbose*/)
-{
-  LOGWARN("WhittleFactory::setVerbose is deprecated");
-}
-
 /* Enable or disable the estimation history */
 void WhittleFactory::enableHistory() const
 {

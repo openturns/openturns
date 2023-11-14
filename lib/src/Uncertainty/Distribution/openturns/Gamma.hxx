@@ -130,10 +130,6 @@ public:
   void setLambda(const Scalar lambda);
   Scalar getLambda() const;
 
-  /** @deprecated K and lambda accessor */
-  void setKLambda(const Scalar k,
-                  const Scalar lambda);
-
   /** Gamma accessor */
   void setGamma(const Scalar gamma);
   Scalar getGamma() const;
@@ -146,7 +142,9 @@ public:
 
 
 protected:
-
+  /** K and lambda accessor */
+  void setKLambda(const Scalar k,
+                  const Scalar lambda);
 
 private:
 

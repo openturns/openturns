@@ -77,10 +77,6 @@ public:
   Scalar getSignificanceFactor() const;
   void setSignificanceFactor(const Scalar significanceFactor);
 
-  /** @deprecated Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

@@ -33,17 +33,6 @@ static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExc
 
 /* Default constructor */
 IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
-    const Scalar threshold)
-  : IterativeAlgorithmImplementation(dimension)
-  , operator_(Greater())
-  , thresholdValue_(threshold)
-  , data_(dimension_, 0.0)
-{
-  LOGWARN(OSS() << "IterativeThresholdExceedance(dimension, threshold) is deprecated in favor of IterativeThresholdExceedance(dimension, ComparisonOperator, threshold)");
-}
-
-/* Default constructor */
-IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
     const ComparisonOperator & op,
     const Scalar threshold)
   : IterativeAlgorithmImplementation(dimension)

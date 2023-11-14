@@ -827,13 +827,6 @@ int main(int, char *[])
     HermitianMatrix hermitianMatrix(2);
     study.add("hermitianMatrix", hermitianMatrix);
 
-    // Create a LHS
-    LHS lhs(event);
-    lhs.setMaximumOuterSampling(250);
-    lhs.setBlockSize(4);
-    lhs.setMaximumCoefficientOfVariation(0.1);
-    study.add("lhs", lhs);
-
     // Create a Mixture
     Mixture mixture;
     {
@@ -1075,7 +1068,6 @@ int main(int, char *[])
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
-    compare<LHS>(lhs, study2, "lhs");
     compare<ProbabilitySimulationResult >( simulationResult, study2 );
 
     // Analytical

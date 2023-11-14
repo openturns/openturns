@@ -3544,27 +3544,6 @@ Point DistributionImplementation::getSingularities() const
   return Point(0);
 }
 
-/* Compute the density generator of the elliptical generator, i.e.
- *  the function phi such that the density of the distribution can
- *  be written as p(x) = phi(t(x-mu)R(x-mu))
- */
-Scalar DistributionImplementation::computeDensityGenerator(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGenerator(const Scalar betaSquare) const";
-}
-
-/* Compute the derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorDerivative(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorDerivative(const Scalar betaSquare) const";
-}
-
-/* Compute the seconde derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const";
-}
-
 /* Get the i-th marginal distribution */
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {

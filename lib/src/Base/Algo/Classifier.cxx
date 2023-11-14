@@ -83,18 +83,6 @@ Point Classifier::grade(const Sample & inS, const Indices & hClass) const
   return getImplementation()->grade(inS, hClass);
 }
 
-/* Verbosity accessor */
-void Classifier::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
-}
-
-Bool Classifier::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
 /** Parallelization flag accessor */
 void Classifier::setParallel(const Bool flag)
 {
