@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 @author: Michaël Baudin (EDF), Antoine Dumas (Phiméca)
 
@@ -9,7 +8,6 @@ sample size.
 """
 
 
-from __future__ import print_function
 import openturns as ot
 from gsobollib import gsobolDistribution, gsobol
 from ishigamilib import (

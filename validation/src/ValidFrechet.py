@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from sympy import *
 
 x, gamma_, beta_, alpha_ = symbols('x gamma_ beta_ alpha_')
