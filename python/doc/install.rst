@@ -25,7 +25,6 @@ channel are not compatible with ones from the default channel, openturns package
 are not working on top of Anaconda.
 Instead, we recommend installing conda from `Miniforge <https://github.com/conda-forge/miniforge>`_
 where conda is configured to prioritize packages from conda-forge out of the box.
-This can also be achieved with Miniconda with extra steps.
 On Windows just download the matching miniforge exe and follow the instructions,
 on Linux you can install it from command-line in one go::
 
@@ -42,9 +41,6 @@ so when a full upgrade is needed our advice is to create a new environment from 
 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
-Note that pre-releases are published on conda-forge like regular releases, so
-if you want to stick to the stable version you will have to explicitly specify
-the required version, eg :code:`conda install openturns=1.20`.
 
 Windows
 -------
@@ -61,7 +57,6 @@ Installation options include pip and conda.
 
 Debian/Ubuntu
 -------------
-
 First create an entry in the apt configuration matching your distribution family and codename
 if available in one of the following commands::
 
@@ -104,17 +99,17 @@ Add the repository corresponding to your operating system::
 
     curl https://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Fedora_38/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_37/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/15.4/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_39/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/15.5/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Mageia_9/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import https://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_38/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_37/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/15.4/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_39/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/15.5/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_9/repodata/repomd.xml.key
 
 The following packages are available:
 
@@ -151,19 +146,10 @@ Development version
 
 From source
 -----------
-Install the required :ref:`dependencies` and build the development branch::
-
-    git clone https://github.com/openturns/openturns.git
-    cd openturns
-    cmake -DCMAKE_INSTALL_PREFIX=~/.local .
-    make install
-
-.. note::
-
-    When installing into `~/.local` you don't need to set PYTHONPATH environment variable for Python to be able to import openturns
+Refer to the :ref:`library_development` section.
 
 Weekly builds
 -------------
-Weekly built Python binaries are also available with the latest bugfixes and features, but also with new bugs and API changes, use at your own risk::
+Weekly built Python binaries are also available with the latest bugfixes and features, use at your own risk::
 
     pip3 install --pre --extra-index-url https://pypi.anaconda.org/openturns-wheels-nightly/simple --upgrade --force-reinstall openturns
