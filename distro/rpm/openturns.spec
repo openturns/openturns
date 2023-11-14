@@ -16,7 +16,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.21
+Version:        1.22rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -120,7 +120,6 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on
 %dir %{_sysconfdir}/%{name}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
-%dir %{_datadir}/%{name}
 %{_datadir}/gdb/
 
 %files devel
@@ -137,10 +136,13 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Tue Nov 14 2023 Julien Schueller <schueller at phimeca dot com> 1.22-1
+- New upstream release
+
 * Tue May 16 2023 Julien Schueller <schueller at phimeca dot com> 1.21-1
 - New upstream release
 
-* Mon Nov 02 2022 Julien Schueller <schueller at phimeca dot com> 1.20-1
+* Wed Nov 02 2022 Julien Schueller <schueller at phimeca dot com> 1.20-1
 - New upstream release
 
 * Tue Apr 12 2022 Julien Schueller <schueller at phimeca dot com> 1.19-1
