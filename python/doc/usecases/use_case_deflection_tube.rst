@@ -34,7 +34,8 @@ The following figure presents the internal and external diameter of the tube:
 
     Tube diameters
 
-The area moment of inertia of the cross section about the neutral axis of a round tube (i.e. perpendicular to the section) with external and internal diameters :math:`D` and :math:`d` are:
+The area moment of inertia of the cross section about the neutral axis of a round tube (i.e. perpendicular to the section)
+with external and internal diameters :math:`D` and :math:`d` are:
 
 .. math::
 

@@ -3,7 +3,8 @@ Composite random vector
 =======================
 """
 # %%
-# In this example we are going to create a random variable :math:`\underline{Y}` which realizations are the images of the realizations of another random vector :math:`\underline{X}` by a function.
+# In this example we are going to create a random variable :math:`\underline{Y}` which realizations are the images
+# of the realizations of another random vector :math:`\underline{X}` by a function.
 #
 # .. math::
 #     \underline{Y} = f(\underline{X})

@@ -10,7 +10,8 @@ Polynomial chaos is sensitive to the degree
 # In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial.
 # More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
 #
-# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule and the family of orthogonal polynomials corresponding to each input variable.
+# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule
+# and the family of orthogonal polynomials corresponding to each input variable.
 
 # %%
 import openturns as ot

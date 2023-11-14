@@ -46,7 +46,7 @@ Posterior sampling using a PythonDistribution
 # - Initial values :math:`\vect{\theta}_0` of the parameters.
 # - An proposal distribution used to update parameters.
 #
-# Additionnaly we want to define the likelihood term defined by these objects:
+# Additionally we want to define the likelihood term defined by these objects:
 #
 # - The conditional density :math:`p(t_{1:n}|f_{1:n}, \alpha, \beta)` will be defined as a :class:`~openturns.PythonDistribution`.
 # - The sample of observations acting as the parameters of the conditional density
@@ -55,13 +55,11 @@ Posterior sampling using a PythonDistribution
 #
 # Set up the PythonDistribution
 # -----------------------------
-#
-#
-# The censured Weibuill likelihood is outside the usual catalog of probability distributions in OpenTURNS, hence we need to define it using the :class:`~openturns.PythonDistribution` class.
+# The censured Weibull likelihood is outside the usual catalog of probability distributions,
+# hence we need to define it using the :class:`~openturns.PythonDistribution` class.
 
 
 # %%
-
 import numpy as np
 import openturns as ot
 from openturns.viewer import View
@@ -78,7 +76,8 @@ ot.RandomGenerator.SetSeed(123)
 #
 # .. note::
 #    We formally define a bivariate distribution on the :math:`(t_i, f_i)` couple, even though :math:`f_i` has no distribution (it is simply a covariate).
-#    This is not an issue, since the sole purpose of this :class:`~openturns.PythonDistribution` object is to pass the likelihood calculation over to :class:`~openturns.RandomWalkMetropolisHastings`.
+#    This is not an issue, since the sole purpose of this :class:`~openturns.PythonDistribution` object is to pass
+#    the likelihood calculation over to :class:`~openturns.RandomWalkMetropolisHastings`.
 
 # %%
 

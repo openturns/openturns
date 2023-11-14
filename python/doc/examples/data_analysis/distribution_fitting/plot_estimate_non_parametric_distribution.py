@@ -3,7 +3,8 @@ Fit a non parametric distribution
 =================================
 """
 # %%
-# In this example we are going to estimate a non parametric distribution using the kernel smoothing method. After a short introductory example we focus on a few basic features of the API :
+# In this example we are going to estimate a non parametric distribution using the kernel smoothing method.
+# After a short introductory example we focus on a few basic features of the API:
 #
 # - kernel selection
 # - bandwidth estimation

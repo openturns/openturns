@@ -97,7 +97,9 @@ fm = flood_model.FloodModel()
 # %%
 # We define the model :math:`g` which has 4 inputs and one output H.
 #
-# The nonlinear least squares does not take into account for bounds in the parameters. Therefore, we ensure that the output is computed whatever the inputs. The model fails into two situations:
+# The nonlinear least squares does not take into account for bounds in the parameters.
+# Therefore, we ensure that the output is computed whatever the inputs.
+# The model fails into two situations:
 #
 # * if :math:`K_s<0`,
 # * if :math:`Z_v-Z_m<0`.

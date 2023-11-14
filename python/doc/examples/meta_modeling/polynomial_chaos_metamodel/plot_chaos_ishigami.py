@@ -211,7 +211,8 @@ chaosSI = ot.FunctionalChaosSobolIndices(chaosResult)
 chaosSI
 
 # %%
-# We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance. Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.
+# We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance.
+# Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.
 
 # %%
 # Draw Sobol' indices.
@@ -261,7 +262,8 @@ for i in range(im.dim):
     )
 
 # %%
-# We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations. This shows the good performance of the polynomial chaos in this case.
+# We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations.
+# This shows the good performance of the polynomial chaos in this case.
 
 # %%
 # We can compute the part of the variance of the output explained by each multi-index.

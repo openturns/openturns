@@ -73,7 +73,8 @@ univariateFactory = ot.LegendreFactory()
 univariateFactory.getMeasure()
 
 # %%
-# This interval does not correspond to the interval on which the input marginals are defined (we will come back to this topic later), but this will, anyway, create a consistent trend for the kriging.
+# This interval does not correspond to the interval on which the input marginals are defined (we will come back to this topic later),
+# but this will, anyway, create a consistent trend for the kriging.
 
 # %%
 polyColl = [univariateFactory] * dimension

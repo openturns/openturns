@@ -22,7 +22,8 @@ As mentioned previously, :math:`C_2` criterion can be computed efficiently when 
 This specific method is compared to the DiceDesign's ones: absolute error is less or equal to :math:`10^{-10}`.
 
 Note that for :math:`\phi_p` criterion, DiceDesign computes the new value after a permutation without taking into account the oldest criterion.
-In this module, criterion update has been implemented, but is used only when parameter :math:`p \geq 5`. Indeed, numerical experiments have shown instability of the update when p becomes large.
+In this module, criterion update has been implemented, but is used only when parameter :math:`p \geq 5`.
+Indeed, numerical experiments have shown instability of the update when p becomes large.
 
 
 Validation of Monte Carlo algorithm

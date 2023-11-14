@@ -199,7 +199,8 @@ view = viewer.View(graph)
 #
 # Another possibility is to define our own `distribution`.
 #
-# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_),
+# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel,
+# see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_),
 # which is sometimes used in the context of kernel smoothing.
 # The PDF of the kernel is defined by:
 #

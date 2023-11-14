@@ -220,7 +220,8 @@ view = otv.View(graph)
 # The least squares method minimizes the sum of the squared errors i.e. the sum of the squares of the lengths of the vertical segments.
 
 # %%
-# We gather the previous computation in two different functions. The `myPolynomialDataFitting` function computes the least squares solution and `myPolynomialCurveFittingGraph` plots the results.
+# We gather the previous computation in two different functions. The `myPolynomialDataFitting` function computes
+# the least squares solution and `myPolynomialCurveFittingGraph` plots the results.
 
 
 # %%

@@ -15,7 +15,8 @@ where :math:`\rho > 0` and where :math:`a` or :math:`b` or both :math:`(a,b)` ca
 
 The Dickey-Fuller test checks whether the random perturbation at time :math:`t` vanishes with time.
 
-When :math:`a \neq 0` and :math:`b=0`, the model :eq:`DFmodel` is said to have a *drift*. When :math:`a = 0` and :math:`b \neq 0`, the model :eq:`DFmodel` is said to have a *linear trend*.
+When :math:`a \neq 0` and :math:`b=0`, the model :eq:`DFmodel` is said to have a *drift*.
+When :math:`a = 0` and :math:`b \neq 0`, the model :eq:`DFmodel` is said to have a *linear trend*.
 
 In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have :math:`\rho = 1` (if :math:`\rho > 1`,
 then the process diverges with time which is readily seen in the data).

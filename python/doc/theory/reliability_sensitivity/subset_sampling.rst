@@ -91,7 +91,8 @@ The underlying mechanism of the SS is illustrated on a two-dimensional example i
 
 In the first figure (top left), the true, but unknown, *limit state surface* (LSS) is sketched. Then, one considers successive intermediate nested failure domains
 which adaptively evolve towards the true failure LSS (first, second and third intermediate failure domains).
-Thus, the rare event estimation problem can be split into a sequence of :math:`m` subproblems with larger probabilities to estimate. For the first level :math:`s=1`, the probability reads :
+Thus, the rare event estimation problem can be split into a sequence of :math:`m` subproblems with larger probabilities to estimate.
+For the first level :math:`s=1`, the probability reads:
 
 .. math::
    p_1 = \mathbb{P}(E_1) = \mathbb{E}_{\Phi_d} [ \mathbf{1}_{ \mathcal{F}_{u,1}  }(U) ]

@@ -161,7 +161,8 @@ view = viewer.View(graph)
 #   This model can be derivated :math:`k` times only if :math:`k<\nu`.
 #   In other words, when :math:`\nu` increases, then the trajectories are more and more regular.
 #   The particular case :math:`\nu=1/2` is the exponential model.
-#   The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity, in between the squared exponential and the exponential models.
+#   The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity,
+#   in between the squared exponential and the exponential models.
 # * `ExponentialModel`. The associated process is continuous, but not differentiable.
 #
 

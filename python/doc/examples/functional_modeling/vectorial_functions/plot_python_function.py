@@ -88,7 +88,8 @@ print("xs=", xs, "\nf(xs)=", functionSample(xs))
 print("x=", x, "f(x)=", functionSample(x))
 
 # %%
-# The most efficient solution is to provide evaluations both on Point and Sample.  This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
+# The most efficient solution is to provide evaluations both on Point and Sample.
+# This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
 
 # %%
 functionFast = ot.PythonFunction(3, 2, func=regularFunc, func_sample=regularFuncSample)
