@@ -53,12 +53,6 @@ g = ot.SymbolicFunction(["x1", "x2"], ["20-(x1-x2)^2-8*(x1+x2-4)^3"])
 print("function g: ", g)
 
 # %%
-# In order to be able to get the subset samples used in the algorithm, it is necessary to transform the *SymbolicFunction* into a *MemoizeFunction*:
-
-# %%
-g = ot.MemoizeFunction(g)
-
-# %%
 # Create the output random vector :math:`Y = g(X)`:
 
 # %%
@@ -125,43 +119,17 @@ print("Levels of g = ", levels)
 # %%
 # Draw the subset samples used by the algorithm
 # ---------------------------------------------
-#
-# The following manipulations are possible onfly if you have created a *MemoizeFunction* that enables to store all the inputs and output of the function :math:`g`.
-#
-# Get all the inputs where :math:`g` were evaluated:
-
-# %%
-inputSampleSubset = g.getInputHistory()
-nTotal = inputSampleSubset.getSize()
-print("Number of evaluations of g = ", nTotal)
-
-# %%
-# Within each step of the algorithm, a sample of size :math:`N` is created, where:
-
-# %%
-N = algo.getMaximumOuterSampling() * algo.getBlockSize()
-print("Size of each subset = ", N)
 
 # %%
 # You can get the number :math:`N_s` of steps with:
-
-# %%
 Ns = algo.getStepsNumber()
 print("Number of steps= ", Ns)
 
 # %%
-# and you can verify that :math:`N_s` is equal to :math:`\frac{nTotal}{N}`:
-
-# %%
-print("nTotal / N = ", int(nTotal / N))
-
-# %%
-# Now, we can split the initial sample into subset samples of size :math:`N_s`:
-
-# %%
+# Get all the inputs where :math:`g` was evaluated at each step
 list_subSamples = list()
-for i in range(Ns):
-    list_subSamples.append(inputSampleSubset[i * N: i * N + N])
+for step in range(Ns):
+    list_subSamples.append(algo.getInputSample(step))
 
 # %%
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
