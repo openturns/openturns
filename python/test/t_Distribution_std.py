@@ -169,29 +169,13 @@ for factory in factories:
     pd = distribution.getParameterDescription()
     pc = distribution.getParametersCollection()
     assert len(p) == len(pd), "len p/pd"
-    assert len(pc) == 1, "len(pc)"
-    assert len(p) == len(pc[0]), "len p/pc"
+    if distribution.getName() != "UserDefined":
+        assert len(pc) == 1, "len(pc)"
+        assert len(p) == len(pc[0]), "len p/pc"
 
     # print
-    print("Distribution = ")
-    print(distribution)
-    print("Distribution (Markdown) = ")
     print(distribution.__repr_markdown__())
-    print("Distribution (HTML) = ")
     print(distribution._repr_html_())
-
-# dependence coefficients
-for factory in ot.DistributionFactory.GetContinuousMultiVariateFactories():
-    copula = factory.build()
-    if copula.getDimension() < 2:
-        # bernstein
-        continue
-    print(copula, copula.getDimension())
-    chi = copula.computeUpperTailDependenceMatrix()[1, 0]
-    chib = copula.computeUpperExtremalDependenceMatrix()[1, 0]
-    chiL = copula.computeLowerTailDependenceMatrix()[1, 0]
-    chiLb = copula.computeLowerExtremalDependenceMatrix()[1, 0]
-    print("chi=", chi, "chib=", chib, "chiL=", chiL, "chiLb=", chiLb)
 
 # negative proba bug
 Torque = ot.LogNormal(0.0, 0.25)

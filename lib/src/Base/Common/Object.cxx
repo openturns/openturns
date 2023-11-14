@@ -56,12 +56,6 @@ String Object::__repr_markdown__() const
   return __repr__();
 }
 
-/* Html string converter */
-String Object::_repr_html_() const
-{
-  return __repr__();
-}
-
 /* Output stream converter */
 std::ostream & operator <<(std::ostream & os, const Object & obj)
 {

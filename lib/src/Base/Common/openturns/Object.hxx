@@ -113,17 +113,6 @@ public:
    */
   virtual String __repr_markdown__() const;
 
-  /**
-   * Html string converter
-   *
-   * This method shows Html information on the
-   * internal state of an object. It is used for printing the object
-   * and should only show relevant information.
-   *
-   * @return A Html string
-   */
-  virtual String _repr_html_() const;
-
 protected:
 
 private:
