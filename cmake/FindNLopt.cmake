@@ -9,6 +9,19 @@
 #  NLOPT_LIBRARY - where to find the nlopt library
 #  NLOPT_LIBRARIES - aditional libraries
 #  NLOPT_ROOT_DIR - root dir (ex. /usr/local)
+#
+#=============================================================================
+# Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file Copyright.txt for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+# (To distributed this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
 # set NLOPT_INCLUDE_DIR
 find_path (NLOPT_INCLUDE_DIR
