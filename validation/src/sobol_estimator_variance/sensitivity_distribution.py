@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 @author: Michaël Baudin (EDF), Antoine Dumas (Phiméca)
 
@@ -52,7 +51,6 @@ library using a single sample and the distribution estimated by repetition.
 """
 
 
-from __future__ import print_function
 import matplotlib as mpl
 
 import openturns as ot

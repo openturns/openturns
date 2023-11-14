@@ -1,4 +1,3 @@
-from __future__ import print_function
 from sympy import *
 
 x, a,b,a_, b_, point, gamma_, expX, beta_, alpha_, mu, sigma = symbols('x a b a_ b_ point gamma_ expX beta_ alpha_ mu sigma')
