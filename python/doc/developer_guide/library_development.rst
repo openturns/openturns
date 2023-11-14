@@ -1,3 +1,5 @@
+.. _library_development:
+
 Library development
 ===================
 
