@@ -71,7 +71,8 @@ If the new design is better than the previous one, it is kept.
 If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile T which decreases over time.
 This means that jumping away from local extrema becomes less probable over time.
 
-It is important to highlight here that this specific permutation has been chosen in this algorithm because it allows highly efficient computations of criterion during simulated annealing process.
+It is important to highlight here that this specific permutation has been chosen in this algorithm
+because it allows highly efficient computations of criterion during simulated annealing process.
 he naive criterion evaluation, as is done in Monte Carlo algorithm, has a complexity of :math:`\mathcal{O}(d\times N^2)` for :math:`C_2` and :math:`\phi_p` criteria.
 
 

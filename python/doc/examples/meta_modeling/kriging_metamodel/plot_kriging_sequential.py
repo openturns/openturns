@@ -3,7 +3,8 @@ Sequentially adding new points to a kriging
 ===========================================
 """
 # %%
-# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel. In order to create simple graphics, we consider a 1D function.
+# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel.
+# In order to create simple graphics, we consider a 1D function.
 
 # %%
 # Create the function and the design of experiments

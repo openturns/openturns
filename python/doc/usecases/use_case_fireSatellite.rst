@@ -3,7 +3,8 @@
 The Fire Satellite model
 ========================
 
-The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. [wertz1999]_.
+The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control.
+This usecase has been firstly proposed by Wertz et al. [wertz1999]_.
 
 The model deals with the design of a realistic satellite, the goal of which is to detect and monitor forest fires from Earth's orbit, through the use of optical sensors.
 Three disciplines are needed to design this satellite.

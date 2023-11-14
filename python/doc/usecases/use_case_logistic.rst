@@ -135,7 +135,8 @@ References
 
 [2] Cleve Moler. Numerical Computing with Matlab. Society for Industrial Applied Mathematics, 2004.
 
-[3] Raymond Pearl and Lowell Reed. On the rate of growth of the population of the united states since 1790 and its mathematical representation. Proceedings of the National Academy of Sciences, 1920.
+[3] Raymond Pearl and Lowell Reed. On the rate of growth of the population of the united states since 1790 and its mathematical representation.
+Proceedings of the National Academy of Sciences, 1920.
 
 API documentation
 -----------------

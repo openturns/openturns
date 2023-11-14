@@ -361,7 +361,8 @@ printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model
 # ----------------------------------------
 
 # %%
-# The following example checks the robustness of the optimization of the kriging algorithm with respect to the optimization of the likelihood function in the covariance model parameters estimation.
+# The following example checks the robustness of the optimization of the kriging algorithm with respect to
+# the optimization of the likelihood function in the covariance model parameters estimation.
 # We use a `MultiStart` algorithm in order to avoid to be trapped by a local minimum.
 # Furthermore, we generate the design of experiments using a `LHSExperiments`, which guarantees that the points will fill the space.
 

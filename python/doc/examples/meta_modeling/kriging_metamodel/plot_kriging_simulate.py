@@ -111,7 +111,8 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model. This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
+# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model.
+# This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
 dimension = 1
