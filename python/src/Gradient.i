@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(Gradient)
 
+%copyctor OT::Gradient;
+
 %include openturns/Gradient.hxx
-namespace OT{ %extend Gradient { Gradient(const Gradient & other) { return new OT::Gradient(other); } } }

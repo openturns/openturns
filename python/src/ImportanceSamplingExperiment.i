@@ -6,5 +6,6 @@
 
 %include ImportanceSamplingExperiment_doc.i
 
+%copyctor OT::ImportanceSamplingExperiment;
+
 %include openturns/ImportanceSamplingExperiment.hxx
-namespace OT { %extend ImportanceSamplingExperiment { ImportanceSamplingExperiment(const ImportanceSamplingExperiment & other) { return new OT::ImportanceSamplingExperiment(other); } } }

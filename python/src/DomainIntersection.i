@@ -6,5 +6,6 @@
 
 %include DomainIntersection_doc.i
 
+%copyctor OT::DomainIntersection;
+
 %include openturns/DomainIntersection.hxx
-namespace OT { %extend DomainIntersection { DomainIntersection(const DomainIntersection & other) { return new OT::DomainIntersection(other); } } }

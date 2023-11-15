@@ -6,5 +6,6 @@
 
 %include JoeCopula_doc.i
 
+%copyctor OT::JoeCopula;
+
 %include openturns/JoeCopula.hxx
-namespace OT { %extend JoeCopula { JoeCopula(const JoeCopula & other) { return new OT::JoeCopula(other); } } }

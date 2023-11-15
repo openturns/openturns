@@ -6,5 +6,6 @@
 
 %include MemoizeFunction_doc.i
 
+%copyctor OT::MemoizeFunction;
+
 %include openturns/MemoizeFunction.hxx
-namespace OT{ %extend MemoizeFunction { MemoizeFunction(const MemoizeFunction & other) { return new OT::MemoizeFunction(other); } } }

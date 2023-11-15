@@ -6,5 +6,6 @@
 
 %include Contour_doc.i
 
+%copyctor OT::Contour;
+
 %include openturns/Contour.hxx
-namespace OT { %extend Contour { Contour(const Contour & other) { return new OT::Contour(other); } } }

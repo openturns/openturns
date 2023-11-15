@@ -6,5 +6,6 @@
 
 %include  BoxCoxTransform_doc.i
 
+%copyctor OT::BoxCoxTransform;
+
 %include openturns/BoxCoxTransform.hxx
-namespace OT { %extend BoxCoxTransform { BoxCoxTransform(const BoxCoxTransform & other) { return new OT::BoxCoxTransform(other); } } }

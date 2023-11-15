@@ -6,5 +6,6 @@
 
 %include AnalyticalResult_doc.i
 
+%copyctor OT::AnalyticalResult;
+
 %include openturns/AnalyticalResult.hxx
-namespace OT{ %extend AnalyticalResult { AnalyticalResult(const AnalyticalResult & other) { return new OT::AnalyticalResult(other); } } }

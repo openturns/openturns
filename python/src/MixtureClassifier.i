@@ -6,5 +6,6 @@
 
 %include MixtureClassifier_doc.i
 
+%copyctor OT::MixtureClassifier;
+
 %include openturns/MixtureClassifier.hxx
-namespace OT { %extend MixtureClassifier { MixtureClassifier(const MixtureClassifier & other) { return new OT::MixtureClassifier(other); } } }

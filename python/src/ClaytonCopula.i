@@ -6,5 +6,6 @@
 
 %include ClaytonCopula_doc.i
 
+%copyctor OT::ClaytonCopula;
+
 %include openturns/ClaytonCopula.hxx
-namespace OT { %extend ClaytonCopula { ClaytonCopula(const ClaytonCopula & other) { return new OT::ClaytonCopula(other); } } }

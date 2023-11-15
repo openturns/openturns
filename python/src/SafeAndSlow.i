@@ -6,5 +6,6 @@
 
 %include SafeAndSlow_doc.i
 
+%copyctor OT::SafeAndSlow;
+
 %include openturns/SafeAndSlow.hxx
-namespace OT{ %extend SafeAndSlow { SafeAndSlow(const SafeAndSlow & other) { return new OT::SafeAndSlow(other); } } }

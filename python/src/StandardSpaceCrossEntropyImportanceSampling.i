@@ -6,5 +6,6 @@
 
 %include StandardSpaceCrossEntropyImportanceSampling_doc.i
 
+%copyctor OT::StandardSpaceCrossEntropyImportanceSampling;
+
 %include openturns/StandardSpaceCrossEntropyImportanceSampling.hxx
-namespace OT { %extend StandardSpaceCrossEntropyImportanceSampling { StandardSpaceCrossEntropyImportanceSampling(const StandardSpaceCrossEntropyImportanceSampling & other) { return new OT::StandardSpaceCrossEntropyImportanceSampling(other); } } }

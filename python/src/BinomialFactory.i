@@ -6,5 +6,6 @@
 
 %include BinomialFactory_doc.i
 
+%copyctor OT::BinomialFactory;
+
 %include openturns/BinomialFactory.hxx
-namespace OT { %extend BinomialFactory { BinomialFactory(const BinomialFactory & other) { return new OT::BinomialFactory(other); } } }

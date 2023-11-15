@@ -6,5 +6,6 @@
 
 %include ConditionalDistribution_doc.i
 
+%copyctor OT::ConditionalDistribution;
+
 %include openturns/ConditionalDistribution.hxx
-namespace OT { %extend ConditionalDistribution { ConditionalDistribution(const ConditionalDistribution & other) { return new OT::ConditionalDistribution(other); } } }

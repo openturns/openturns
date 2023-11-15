@@ -6,5 +6,6 @@ OTAutodoc(InverseTrendEvaluation)
 #include "openturns/InverseTrendEvaluation.hxx"
 %}
 
+%copyctor OT::InverseTrendEvaluation;
+
 %include openturns/InverseTrendEvaluation.hxx
-namespace OT { %extend InverseTrendEvaluation { InverseTrendEvaluation(const InverseTrendEvaluation & other) { return new OT::InverseTrendEvaluation(other); } } }

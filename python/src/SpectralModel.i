@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(SpectralModel)
 
+%copyctor OT::SpectralModel;
+
 %include openturns/SpectralModel.hxx
-namespace OT{ %extend SpectralModel { SpectralModel(const SpectralModel & other) { return new OT::SpectralModel(other); } } }

@@ -6,5 +6,6 @@
 
 %include NormalCopula_doc.i
 
+%copyctor OT::NormalCopula;
+
 %include openturns/NormalCopula.hxx
-namespace OT { %extend NormalCopula { NormalCopula(const NormalCopula & other) { return new OT::NormalCopula(other); } } }

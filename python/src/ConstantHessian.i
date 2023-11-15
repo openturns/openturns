@@ -6,5 +6,6 @@ OTAutodoc(ConstantHessian)
 #include "openturns/ConstantHessian.hxx"
 %}
 
+%copyctor OT::ConstantHessian;
+
 %include openturns/ConstantHessian.hxx
-namespace OT { %extend ConstantHessian { ConstantHessian(const ConstantHessian & other) { return new OT::ConstantHessian(other); } } }

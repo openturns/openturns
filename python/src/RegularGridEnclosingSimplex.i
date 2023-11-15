@@ -6,5 +6,6 @@
 
 %include RegularGridEnclosingSimplex_doc.i
 
+%copyctor OT::RegularGridEnclosingSimplex;
+
 %include openturns/RegularGridEnclosingSimplex.hxx
-namespace OT { %extend RegularGridEnclosingSimplex { RegularGridEnclosingSimplex(const RegularGridEnclosingSimplex & other) { return new OT::RegularGridEnclosingSimplex(other); } } }

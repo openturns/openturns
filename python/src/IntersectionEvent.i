@@ -76,5 +76,6 @@ namespace OT {
 %apply const RandomVectorCollection & { const OT::IntersectionEvent::RandomVectorCollection & };
 
 
+%copyctor OT::IntersectionEvent;
+
 %include openturns/IntersectionEvent.hxx
-namespace OT { %extend IntersectionEvent { IntersectionEvent(const IntersectionEvent & other) { return new OT::IntersectionEvent(other); } } }

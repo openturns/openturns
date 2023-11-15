@@ -10,9 +10,9 @@ OTTypedInterfaceObjectHelper(Domain)
 OTTypedCollectionInterfaceObjectHelper(Domain)
 OTDefaultCollectionConvertFunctions(Domain)
 
-%include openturns/Domain.hxx
+%copyctor OT::Domain;
 
-namespace OT { %extend Domain { Domain (const Domain & other) { return new OT::Domain(other); } } }
+%include openturns/Domain.hxx
 
 %pythoncode %{
 Domain.__contains__ = Domain.contains

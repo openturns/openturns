@@ -6,5 +6,6 @@
 
 %include ConstantBasisFactory_doc.i 
 
+%copyctor OT::ConstantBasisFactory;
+
 %include openturns/ConstantBasisFactory.hxx
-namespace OT { %extend ConstantBasisFactory { ConstantBasisFactory(const ConstantBasisFactory & other) { return new OT::ConstantBasisFactory(other); } } }

@@ -6,6 +6,7 @@
 
 %include Pagmo_doc.i
 
+%copyctor OT::Pagmo;
+
 %include openturns/Pagmo.hxx
-namespace OT{ %extend Pagmo { Pagmo(const Pagmo & other) { return new OT::Pagmo(other); } } }
 

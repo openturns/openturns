@@ -10,5 +10,6 @@
 
 %include SimplicialCubature_doc.i
 
+%copyctor OT::SimplicialCubature;
+
 %include openturns/SimplicialCubature.hxx
-namespace OT { %extend SimplicialCubature { SimplicialCubature(const SimplicialCubature & other) { return new OT::SimplicialCubature(other); } } }

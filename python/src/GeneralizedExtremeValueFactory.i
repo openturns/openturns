@@ -10,5 +10,6 @@
 
 %include GeneralizedExtremeValueFactory_doc.i
 
+%copyctor OT::GeneralizedExtremeValueFactory;
+
 %include openturns/GeneralizedExtremeValueFactory.hxx
-namespace OT { %extend GeneralizedExtremeValueFactory { GeneralizedExtremeValueFactory(const GeneralizedExtremeValueFactory & other) { return new OT::GeneralizedExtremeValueFactory(other); } } }

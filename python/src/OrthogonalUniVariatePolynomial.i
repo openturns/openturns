@@ -6,5 +6,6 @@
 
 %include OrthogonalUniVariatePolynomial_doc.i
 
+%copyctor OT::OrthogonalUniVariatePolynomial;
+
 %include openturns/OrthogonalUniVariatePolynomial.hxx
-namespace OT { %extend OrthogonalUniVariatePolynomial { OrthogonalUniVariatePolynomial(const OrthogonalUniVariatePolynomial & other) { return new OT::OrthogonalUniVariatePolynomial(other); } } }

@@ -6,5 +6,6 @@
 
 %include ExperimentImplementation_doc.i
 
+%copyctor OT::ExperimentImplementation;
+
 %include openturns/ExperimentImplementation.hxx
-namespace OT { %extend ExperimentImplementation { ExperimentImplementation(const ExperimentImplementation & other) { return new OT::ExperimentImplementation(other); } } }

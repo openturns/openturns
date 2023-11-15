@@ -6,5 +6,6 @@
 
 %include InverseNormalFactory_doc.i
 
+%copyctor OT::InverseNormalFactory;
+
 %include openturns/InverseNormalFactory.hxx
-namespace OT { %extend InverseNormalFactory { InverseNormalFactory(const InverseNormalFactory & other) { return new OT::InverseNormalFactory(other); } } }

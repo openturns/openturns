@@ -6,5 +6,6 @@
 
 %include ClaytonCopulaFactory_doc.i
 
+%copyctor OT::ClaytonCopulaFactory;
+
 %include openturns/ClaytonCopulaFactory.hxx
-namespace OT { %extend ClaytonCopulaFactory { ClaytonCopulaFactory(const ClaytonCopulaFactory & other) { return new OT::ClaytonCopulaFactory(other); } } }

@@ -6,5 +6,6 @@
 
 %include CleaningStrategy_doc.i
 
+%copyctor OT::CleaningStrategy;
+
 %include openturns/CleaningStrategy.hxx
-namespace OT{ %extend CleaningStrategy { CleaningStrategy(const CleaningStrategy & other) { return new OT::CleaningStrategy(other); } } }

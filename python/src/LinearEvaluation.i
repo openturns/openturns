@@ -6,5 +6,6 @@
 
 %include LinearEvaluation_doc.i
 
+%copyctor OT::LinearEvaluation;
+
 %include openturns/LinearEvaluation.hxx
-namespace OT { %extend LinearEvaluation { LinearEvaluation(const LinearEvaluation & other) { return new OT::LinearEvaluation(other); } } }

@@ -10,5 +10,6 @@
 
 %include GaussLegendre_doc.i
 
+%copyctor OT::GaussLegendre;
+
 %include openturns/GaussLegendre.hxx
-namespace OT { %extend GaussLegendre { GaussLegendre(const GaussLegendre & other) { return new OT::GaussLegendre(other); } } }

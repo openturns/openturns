@@ -8,5 +8,6 @@
 
 %ignore OT::OptimizationResult::store;
 
+%copyctor OT::OptimizationResult;
+
 %include openturns/OptimizationResult.hxx
-namespace OT{ %extend OptimizationResult { OptimizationResult(const OptimizationResult & other) { return new OT::OptimizationResult(other); } } }

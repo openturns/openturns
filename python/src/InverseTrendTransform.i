@@ -6,5 +6,6 @@
 
 %include InverseTrendTransform_doc.i
 
+%copyctor OT::InverseTrendTransform;
+
 %include openturns/InverseTrendTransform.hxx
-namespace OT { %extend InverseTrendTransform { InverseTrendTransform(const InverseTrendTransform & other) { return new OT::InverseTrendTransform(other); } } }

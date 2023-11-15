@@ -6,5 +6,6 @@
 
 %include NormInfEnumerateFunction_doc.i
 
+%copyctor OT::NormInfEnumerateFunction;
+
 %include openturns/NormInfEnumerateFunction.hxx
-namespace OT { %extend NormInfEnumerateFunction { NormInfEnumerateFunction(const NormInfEnumerateFunction & other) { return new OT::NormInfEnumerateFunction(other); } } }

@@ -6,5 +6,6 @@
 
 %include InverseWishart_doc.i
 
+%copyctor OT::InverseWishart;
+
 %include openturns/InverseWishart.hxx
-namespace OT { %extend InverseWishart { InverseWishart(const InverseWishart & other) { return new OT::InverseWishart(other); } } }

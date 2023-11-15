@@ -6,5 +6,6 @@
 
 %include GeneralizedParetoFactory_doc.i
 
+%copyctor OT::GeneralizedParetoFactory;
+
 %include openturns/GeneralizedParetoFactory.hxx
-namespace OT { %extend GeneralizedParetoFactory { GeneralizedParetoFactory(const GeneralizedParetoFactory & other) { return new OT::GeneralizedParetoFactory(other); } } }

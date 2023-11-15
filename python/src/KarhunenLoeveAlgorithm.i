@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(KarhunenLoeveAlgorithm)
 
+%copyctor OT::KarhunenLoeveAlgorithm;
+
 %include openturns/KarhunenLoeveAlgorithm.hxx
-namespace OT { %extend KarhunenLoeveAlgorithm { KarhunenLoeveAlgorithm(const KarhunenLoeveAlgorithm & other) { return new OT::KarhunenLoeveAlgorithm(other); } } }

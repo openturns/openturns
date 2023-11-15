@@ -10,5 +10,6 @@
 
 %include WeightedExperimentImplementation_doc.i
 
+%copyctor OT::WeightedExperimentImplementation;
+
 %include openturns/WeightedExperimentImplementation.hxx
-namespace OT { %extend WeightedExperimentImplementation { WeightedExperimentImplementation(const WeightedExperimentImplementation & other) { return new OT::WeightedExperimentImplementation(other); } } }

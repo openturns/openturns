@@ -6,9 +6,9 @@
 
 %include FunctionalChaosResult_doc.i
 
-%include openturns/FunctionalChaosResult.hxx
+%copyctor OT::FunctionalChaosResult;
 
-namespace OT{ %extend FunctionalChaosResult { FunctionalChaosResult(const FunctionalChaosResult & other) { return new OT::FunctionalChaosResult(other); } } }
+%include openturns/FunctionalChaosResult.hxx
 
 
 %pythoncode %{

@@ -6,5 +6,6 @@
 
 %include ConstantRandomVector_doc.i
 
+%copyctor OT::ConstantRandomVector;
+
 %include openturns/ConstantRandomVector.hxx
-namespace OT { %extend ConstantRandomVector { ConstantRandomVector(const ConstantRandomVector & other) { return new OT::ConstantRandomVector(other); } } }

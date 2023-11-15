@@ -7,6 +7,6 @@
 
 %include MeshDomain_doc.i
 
-%include openturns/MeshDomain.hxx
+%copyctor OT::MeshDomain;
 
-namespace OT { %extend MeshDomain { MeshDomain(const MeshDomain & other) { return new OT::MeshDomain(other); } } }
+%include openturns/MeshDomain.hxx

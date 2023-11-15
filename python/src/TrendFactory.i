@@ -7,5 +7,6 @@
 
 %include TrendFactory_doc.i
 
+%copyctor OT::TrendFactory;
+
 %include openturns/TrendFactory.hxx
-namespace OT { %extend TrendFactory { TrendFactory(const TrendFactory & other) { return new OT::TrendFactory(other); } } }

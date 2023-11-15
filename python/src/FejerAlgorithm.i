@@ -10,5 +10,6 @@
 
 %include FejerAlgorithm_doc.i
 
+%copyctor OT::FejerAlgorithm;
+
 %include openturns/FejerAlgorithm.hxx
-namespace OT { %extend FejerAlgorithm { FejerAlgorithm(const FejerAlgorithm & other) { return new OT::FejerAlgorithm(other); } } }

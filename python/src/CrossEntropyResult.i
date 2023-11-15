@@ -6,5 +6,6 @@
 
 %include CrossEntropyResult_doc.i
 
+%copyctor OT::CrossEntropyResult;
+
 %include openturns/CrossEntropyResult.hxx
-namespace OT { %extend CrossEntropyResult { CrossEntropyResult(const CrossEntropyResult & other) { return new OT::CrossEntropyResult(other); } } }

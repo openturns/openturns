@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveSVDAlgorithm_doc.i
 
+%copyctor OT::KarhunenLoeveSVDAlgorithm;
+
 %include openturns/KarhunenLoeveSVDAlgorithm.hxx
-namespace OT { %extend KarhunenLoeveSVDAlgorithm { KarhunenLoeveSVDAlgorithm(const KarhunenLoeveSVDAlgorithm & other) { return new OT::KarhunenLoeveSVDAlgorithm(other); } } }

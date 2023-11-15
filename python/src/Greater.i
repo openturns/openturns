@@ -6,6 +6,6 @@
 
 %include Greater_doc.i
 
-%include openturns/Greater.hxx
+%copyctor OT::Greater;
 
-namespace OT { %extend Greater { Greater(const Greater & other) { return new OT::Greater(other); } } }
+%include openturns/Greater.hxx

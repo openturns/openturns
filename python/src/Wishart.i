@@ -6,5 +6,6 @@
 
 %include Wishart_doc.i
 
+%copyctor OT::Wishart;
+
 %include openturns/Wishart.hxx
-namespace OT { %extend Wishart { Wishart(const Wishart & other) { return new OT::Wishart(other); } } }

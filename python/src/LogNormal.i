@@ -6,5 +6,6 @@
 
 %include LogNormal_doc.i
 
+%copyctor OT::LogNormal;
+
 %include openturns/LogNormal.hxx
-namespace OT { %extend LogNormal { LogNormal(const LogNormal & other) { return new OT::LogNormal(other); } } }

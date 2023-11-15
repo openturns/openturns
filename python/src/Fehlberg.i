@@ -6,5 +6,6 @@
 
 %include Fehlberg_doc.i
 
+%copyctor OT::Fehlberg;
+
 %include openturns/Fehlberg.hxx
-namespace OT { %extend Fehlberg { Fehlberg(const Fehlberg & other) { return new OT::Fehlberg(other); } } }

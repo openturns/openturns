@@ -6,5 +6,6 @@ OTAutodoc(LinearCombinationHessian)
 #include "openturns/LinearCombinationHessian.hxx"
 %}
 
+%copyctor OT::LinearCombinationHessian;
+
 %include openturns/LinearCombinationHessian.hxx
-namespace OT { %extend LinearCombinationHessian { LinearCombinationHessian(const LinearCombinationHessian & other) { return new OT::LinearCombinationHessian(other); } } }

@@ -6,5 +6,6 @@
 
 %include ARMA_doc.i
 
+%copyctor OT::ARMA;
+
 %include openturns/ARMA.hxx
-namespace OT { %extend ARMA { ARMA(const ARMA & other) { return new OT::ARMA(other); } } }

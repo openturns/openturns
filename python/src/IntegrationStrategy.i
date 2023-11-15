@@ -6,5 +6,6 @@
 
 %include IntegrationStrategy_doc.i
 
+%copyctor OT::IntegrationStrategy;
+
 %include openturns/IntegrationStrategy.hxx
-namespace OT{ %extend IntegrationStrategy { IntegrationStrategy(const IntegrationStrategy & other) { return new OT::IntegrationStrategy(other); } } }

@@ -6,5 +6,6 @@
 
 %include HaarWaveletFactory_doc.i
 
+%copyctor OT::HaarWaveletFactory;
+
 %include openturns/HaarWaveletFactory.hxx
-namespace OT{ %extend HaarWaveletFactory { HaarWaveletFactory(const HaarWaveletFactory & other) { return new OT::HaarWaveletFactory(other); } } }

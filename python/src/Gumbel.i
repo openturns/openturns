@@ -6,5 +6,6 @@
 
 %include Gumbel_doc.i
 
+%copyctor OT::Gumbel;
+
 %include openturns/Gumbel.hxx
-namespace OT { %extend Gumbel { Gumbel(const Gumbel & other) { return new OT::Gumbel(other); } } }

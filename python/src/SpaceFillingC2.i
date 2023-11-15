@@ -6,5 +6,6 @@
 
 %include SpaceFillingC2_doc.i
 
+%copyctor OT::SpaceFillingC2;
+
 %include openturns/SpaceFillingC2.hxx
-namespace OT { %extend SpaceFillingC2 { SpaceFillingC2(const SpaceFillingC2 & other) { return new OT::SpaceFillingC2(other); } } }

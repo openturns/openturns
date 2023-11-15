@@ -6,6 +6,7 @@
 
 %include DesignProxy_doc.i
 
+%copyctor OT::DesignProxy;
+
 %include openturns/DesignProxy.hxx
-namespace OT { %extend DesignProxy { DesignProxy(const DesignProxy & other) { return new OT::DesignProxy(other); } } }
 

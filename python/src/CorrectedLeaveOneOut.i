@@ -6,5 +6,6 @@
 
 %include CorrectedLeaveOneOut_doc.i
 
+%copyctor OT::CorrectedLeaveOneOut;
+
 %include openturns/CorrectedLeaveOneOut.hxx
-namespace OT { %extend CorrectedLeaveOneOut { CorrectedLeaveOneOut(const CorrectedLeaveOneOut & other) { return new OT::CorrectedLeaveOneOut(other); } } }

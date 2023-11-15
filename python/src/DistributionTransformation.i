@@ -6,5 +6,6 @@
 
 %include DistributionTransformation_doc.i
 
+%copyctor OT::DistributionTransformation;
+
 %include openturns/DistributionTransformation.hxx
-namespace OT { %extend DistributionTransformation { DistributionTransformation(const DistributionTransformation & other) { return new OT::DistributionTransformation(other); } } }

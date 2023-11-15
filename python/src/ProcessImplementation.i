@@ -6,5 +6,6 @@
 
 %include ProcessImplementation_doc.i
 
+%copyctor OT::ProcessImplementation;
+
 %include openturns/ProcessImplementation.hxx
-namespace OT { %extend ProcessImplementation { ProcessImplementation(const ProcessImplementation & other) { return new OT::ProcessImplementation(other); } } }

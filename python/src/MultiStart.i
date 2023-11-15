@@ -32,6 +32,7 @@ namespace OT {
 
 %template(_OptimizationResultCollection) OT::Collection<OT::OptimizationResult>;
 
+%copyctor OT::MultiStart;
+
 %include openturns/MultiStart.hxx
-namespace OT{ %extend MultiStart { MultiStart(const MultiStart & other) { return new OT::MultiStart(other); } } }
 

@@ -6,7 +6,7 @@
 
 %include GeneralLinearModelAlgorithm_doc.i
 
-%include openturns/GeneralLinearModelAlgorithm.hxx
+%copyctor OT::GeneralLinearModelAlgorithm;
 
-namespace OT{ %extend GeneralLinearModelAlgorithm { GeneralLinearModelAlgorithm(const GeneralLinearModelAlgorithm & other) { return new OT::GeneralLinearModelAlgorithm(other); } } }
+%include openturns/GeneralLinearModelAlgorithm.hxx
 

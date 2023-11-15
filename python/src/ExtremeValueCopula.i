@@ -6,5 +6,6 @@
 
 %include ExtremeValueCopula_doc.i
 
+%copyctor OT::ExtremeValueCopula;
+
 %include openturns/ExtremeValueCopula.hxx
-namespace OT { %extend ExtremeValueCopula { ExtremeValueCopula(const ExtremeValueCopula & other) { return new OT::ExtremeValueCopula(other); } } }

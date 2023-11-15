@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(EnclosingSimplexAlgorithm)
 
+%copyctor OT::EnclosingSimplexAlgorithm;
+
 %include openturns/EnclosingSimplexAlgorithm.hxx
-namespace OT{ %extend EnclosingSimplexAlgorithm { EnclosingSimplexAlgorithm(const EnclosingSimplexAlgorithm & other) { return new OT::EnclosingSimplexAlgorithm(other); } } }

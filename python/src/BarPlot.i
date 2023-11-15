@@ -6,5 +6,6 @@
 
 %include BarPlot_doc.i
 
+%copyctor OT::BarPlot;
+
 %include openturns/BarPlot.hxx
-namespace OT { %extend BarPlot { BarPlot(const BarPlot & other) { return new OT::BarPlot(other); } } }

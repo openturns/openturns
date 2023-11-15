@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(FittingAlgorithm)
 
+%copyctor OT::FittingAlgorithm;
+
 %include openturns/FittingAlgorithm.hxx
-namespace OT { %extend FittingAlgorithm { FittingAlgorithm(const FittingAlgorithm & other) { return new OT::FittingAlgorithm(other); } } }

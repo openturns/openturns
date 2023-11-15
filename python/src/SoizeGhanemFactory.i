@@ -6,5 +6,6 @@
 
 %include SoizeGhanemFactory_doc.i
 
+%copyctor OT::SoizeGhanemFactory;
+
 %include openturns/SoizeGhanemFactory.hxx
-namespace OT { %extend SoizeGhanemFactory { SoizeGhanemFactory(const SoizeGhanemFactory & other) { return new OT::SoizeGhanemFactory(other); } } }

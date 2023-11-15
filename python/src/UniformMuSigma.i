@@ -6,5 +6,6 @@
 
 %include UniformMuSigma_doc.i
 
+%copyctor OT::UniformMuSigma;
+
 %include openturns/UniformMuSigma.hxx
-namespace OT{ %extend UniformMuSigma { UniformMuSigma(const UniformMuSigma & other) { return new OT::UniformMuSigma(other); } } }

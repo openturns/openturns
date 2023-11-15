@@ -8,5 +8,6 @@
 
 %ignore OT::LHSExperiment::generateStandard;
 
+%copyctor OT::LHSExperiment;
+
 %include openturns/LHSExperiment.hxx
-namespace OT { %extend LHSExperiment { LHSExperiment(const LHSExperiment & other) { return new OT::LHSExperiment(other); } } }

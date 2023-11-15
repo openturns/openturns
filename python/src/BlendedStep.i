@@ -6,5 +6,6 @@
 
 %include BlendedStep_doc.i
 
+%copyctor OT::BlendedStep;
+
 %include openturns/BlendedStep.hxx
-namespace OT { %extend BlendedStep { BlendedStep(const BlendedStep & other) { return new OT::BlendedStep(other); } } }

@@ -6,5 +6,6 @@
 
 %include SkellamFactory_doc.i
 
+%copyctor OT::SkellamFactory;
+
 %include openturns/SkellamFactory.hxx
-namespace OT { %extend SkellamFactory { SkellamFactory(const SkellamFactory & other) { return new OT::SkellamFactory(other); } } }

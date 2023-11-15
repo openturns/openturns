@@ -6,5 +6,6 @@
 
 %include DistanceToDomainFunction_doc.i
 
+%copyctor OT::DistanceToDomainFunction;
+
 %include openturns/DistanceToDomainFunction.hxx
-namespace OT { %extend DistanceToDomainFunction { DistanceToDomainFunction(const DistanceToDomainFunction & other) { return new OT::DistanceToDomainFunction(other); } } }

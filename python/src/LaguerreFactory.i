@@ -6,5 +6,6 @@
 
 %include LaguerreFactory_doc.i
 
+%copyctor OT::LaguerreFactory;
+
 %include openturns/LaguerreFactory.hxx
-namespace OT { %extend LaguerreFactory { LaguerreFactory(const LaguerreFactory & other) { return new OT::LaguerreFactory(other); } } }

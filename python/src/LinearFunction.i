@@ -6,6 +6,7 @@
 
 %include LinearFunction_doc.i
 
+%copyctor OT::LinearFunction;
+
 %include openturns/LinearFunction.hxx
-namespace OT { %extend LinearFunction { LinearFunction(const LinearFunction & other) { return new OT::LinearFunction(other); } } }
 

@@ -6,6 +6,6 @@
 
 %include GreaterOrEqual_doc.i
 
-%include openturns/GreaterOrEqual.hxx
+%copyctor OT::GreaterOrEqual;
 
-namespace OT { %extend GreaterOrEqual { GreaterOrEqual(const GreaterOrEqual & other) { return new OT::GreaterOrEqual(other); } } }
+%include openturns/GreaterOrEqual.hxx

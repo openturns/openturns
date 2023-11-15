@@ -6,5 +6,6 @@
 
 %include LatentVariableModel_doc.i
 
+%copyctor OT::LatentVariableModel;
+
 %include openturns/LatentVariableModel.hxx
-namespace OT { %extend LatentVariableModel { LatentVariableModel(const LatentVariableModel & other) { return new OT::LatentVariableModel(other); } } }

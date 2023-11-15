@@ -9,5 +9,6 @@
 %ignore OT::PosteriorDistribution::computeLikelihood;
 %ignore OT::PosteriorDistribution::computeLogLikelihood;
 
+%copyctor OT::PosteriorDistribution;
+
 %include openturns/PosteriorDistribution.hxx
-namespace OT { %extend PosteriorDistribution { PosteriorDistribution(const PosteriorDistribution & other) { return new OT::PosteriorDistribution(other); } } }

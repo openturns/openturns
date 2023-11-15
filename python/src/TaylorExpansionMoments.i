@@ -6,6 +6,7 @@
 
 %include TaylorExpansionMoments_doc.i
 
+%copyctor OT::TaylorExpansionMoments;
+
 %include openturns/TaylorExpansionMoments.hxx
-namespace OT{ %extend TaylorExpansionMoments { TaylorExpansionMoments(const TaylorExpansionMoments & other) { return new OT::TaylorExpansionMoments(other); } } }
 

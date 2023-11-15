@@ -27,6 +27,6 @@
 
 %rename(__eq__) OT::Interval::operator==(const Interval & rhs) const;
 
-%include openturns/Interval.hxx
+%copyctor OT::Interval;
 
-namespace OT { %extend Interval { Interval(const Interval & other) { return new OT::Interval(other); } } }
+%include openturns/Interval.hxx

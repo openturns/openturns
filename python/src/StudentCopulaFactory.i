@@ -6,5 +6,6 @@
 
 %include StudentCopulaFactory_doc.i
 
+%copyctor OT::StudentCopulaFactory;
+
 %include openturns/StudentCopulaFactory.hxx
-namespace OT { %extend StudentCopulaFactory { StudentCopulaFactory(const StudentCopulaFactory & other) { return new OT::StudentCopulaFactory(other); } } }

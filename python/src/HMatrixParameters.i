@@ -8,5 +8,6 @@
 
 %ignore OT::HMatrixParameters::getCompressionMethodAsUnsignedInteger;
 
+%copyctor OT::HMatrixParameters;
+
 %include openturns/HMatrixParameters.hxx
-namespace OT{ %extend HMatrixParameters { HMatrixParameters(const HMatrixParameters & other) { return new OT::HMatrixParameters(other); } } }

@@ -6,5 +6,6 @@
 
 %include LeastSquaresProblem_doc.i
 
+%copyctor OT::LeastSquaresProblem;
+
 %include openturns/LeastSquaresProblem.hxx
-namespace OT{ %extend LeastSquaresProblem { LeastSquaresProblem(const LeastSquaresProblem & other) { return new OT::LeastSquaresProblem(other); } } }

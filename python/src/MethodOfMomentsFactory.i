@@ -9,5 +9,6 @@
 %ignore OT::MethodOfMomentsFactory::setParallel;
 %ignore OT::MethodOfMomentsFactory::buildParameter;
 
+%copyctor OT::MethodOfMomentsFactory;
+
 %include openturns/MethodOfMomentsFactory.hxx
-namespace OT { %extend MethodOfMomentsFactory { MethodOfMomentsFactory(const MethodOfMomentsFactory & other) { return new OT::MethodOfMomentsFactory(other); } } }

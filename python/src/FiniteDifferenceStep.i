@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(FiniteDifferenceStep)
 
+%copyctor OT::FiniteDifferenceStep;
+
 %include openturns/FiniteDifferenceStep.hxx
-namespace OT { %extend FiniteDifferenceStep { FiniteDifferenceStep(const FiniteDifferenceStep & other) { return new OT::FiniteDifferenceStep(other); } } }

@@ -6,5 +6,6 @@
 
 %include KPermutationsDistribution_doc.i
 
+%copyctor OT::KPermutationsDistribution;
+
 %include openturns/KPermutationsDistribution.hxx
-namespace OT { %extend KPermutationsDistribution { KPermutationsDistribution(const KPermutationsDistribution & other) { return new OT::KPermutationsDistribution(other); } } }

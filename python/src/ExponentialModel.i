@@ -6,6 +6,6 @@
 
 %include ExponentialModel_doc.i
 
-%include openturns/ExponentialModel.hxx
+%copyctor OT::ExponentialModel;
 
-namespace OT { %extend ExponentialModel { ExponentialModel(const ExponentialModel & other) { return new OT::ExponentialModel(other); } } }
+%include openturns/ExponentialModel.hxx

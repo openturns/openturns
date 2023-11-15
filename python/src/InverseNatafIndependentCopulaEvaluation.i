@@ -6,5 +6,6 @@ OTAutodoc(InverseNatafIndependentCopulaEvaluation)
 #include "openturns/InverseNatafIndependentCopulaEvaluation.hxx"
 %}
 
+%copyctor OT::InverseNatafIndependentCopulaEvaluation;
+
 %include openturns/InverseNatafIndependentCopulaEvaluation.hxx
-namespace OT { %extend InverseNatafIndependentCopulaEvaluation { InverseNatafIndependentCopulaEvaluation(const InverseNatafIndependentCopulaEvaluation & other) { return new OT::InverseNatafIndependentCopulaEvaluation(other); } } }

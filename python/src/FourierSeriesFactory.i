@@ -6,5 +6,6 @@
 
 %include FourierSeriesFactory_doc.i
 
+%copyctor OT::FourierSeriesFactory;
+
 %include openturns/FourierSeriesFactory.hxx
-namespace OT{ %extend FourierSeriesFactory { FourierSeriesFactory(const FourierSeriesFactory & other) { return new OT::FourierSeriesFactory(other); } } }

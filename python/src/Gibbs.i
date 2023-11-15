@@ -6,5 +6,6 @@
 
 %include Gibbs_doc.i
 
+%copyctor OT::Gibbs;
+
 %include openturns/Gibbs.hxx
-namespace OT { %extend Gibbs { Gibbs(const Gibbs & other) { return new OT::Gibbs(other); } } }

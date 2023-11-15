@@ -6,6 +6,7 @@
 
 %include ParetoFactory_doc.i
 
+%copyctor OT::ParetoFactory;
+
 %include openturns/ParetoFactory.hxx
-namespace OT { %extend ParetoFactory { ParetoFactory(const ParetoFactory & other) { return new OT::ParetoFactory(other); } } }
 

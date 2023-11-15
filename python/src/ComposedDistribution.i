@@ -6,5 +6,6 @@
 
 %include ComposedDistribution_doc.i
 
+%copyctor OT::ComposedDistribution;
+
 %include openturns/ComposedDistribution.hxx
-namespace OT { %extend ComposedDistribution { ComposedDistribution(const ComposedDistribution & other) { return new OT::ComposedDistribution(other); } } }

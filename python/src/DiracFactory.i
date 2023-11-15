@@ -6,5 +6,6 @@
 
 %include DiracFactory_doc.i
 
+%copyctor OT::DiracFactory;
+
 %include openturns/DiracFactory.hxx
-namespace OT { %extend DiracFactory { DiracFactory(const DiracFactory & other) { return new OT::DiracFactory(other); } } }

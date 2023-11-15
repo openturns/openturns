@@ -6,5 +6,6 @@
 
 %include DomainUnion_doc.i
 
+%copyctor OT::DomainUnion;
+
 %include openturns/DomainUnion.hxx
-namespace OT { %extend DomainUnion { DomainUnion(const DomainUnion & other) { return new OT::DomainUnion(other); } } }

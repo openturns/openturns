@@ -6,5 +6,6 @@
 
 %include PhysicalSpaceCrossEntropyImportanceSampling_doc.i
 
+%copyctor OT::PhysicalSpaceCrossEntropyImportanceSampling;
+
 %include openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx
-namespace OT { %extend PhysicalSpaceCrossEntropyImportanceSampling { PhysicalSpaceCrossEntropyImportanceSampling(const PhysicalSpaceCrossEntropyImportanceSampling & other) { return new OT::PhysicalSpaceCrossEntropyImportanceSampling(other); } } }

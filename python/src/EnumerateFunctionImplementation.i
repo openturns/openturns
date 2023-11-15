@@ -6,5 +6,6 @@
 
 %include EnumerateFunctionImplementation_doc.i
 
+%copyctor OT::EnumerateFunctionImplementation;
+
 %include openturns/EnumerateFunctionImplementation.hxx
-namespace OT { %extend EnumerateFunctionImplementation { EnumerateFunctionImplementation(const EnumerateFunctionImplementation & other) { return new OT::EnumerateFunctionImplementation(other); } } }

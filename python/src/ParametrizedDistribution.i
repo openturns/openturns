@@ -6,5 +6,6 @@
 
 %include ParametrizedDistribution_doc.i
 
+%copyctor OT::ParametrizedDistribution;
+
 %include openturns/ParametrizedDistribution.hxx
-namespace OT{ %extend ParametrizedDistribution { ParametrizedDistribution(const ParametrizedDistribution & other) { return new OT::ParametrizedDistribution(other); } } }

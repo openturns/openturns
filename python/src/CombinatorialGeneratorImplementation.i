@@ -6,5 +6,6 @@
 
 %include CombinatorialGeneratorImplementation_doc.i
 
+%copyctor OT::CombinatorialGeneratorImplementation;
+
 %include openturns/CombinatorialGeneratorImplementation.hxx
-namespace OT { %extend CombinatorialGeneratorImplementation { CombinatorialGeneratorImplementation(const CombinatorialGeneratorImplementation & other) { return new OT::CombinatorialGeneratorImplementation(other); } } }

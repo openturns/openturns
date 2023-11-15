@@ -6,5 +6,6 @@
 
 %include MaternModel_doc.i
 
+%copyctor OT::MaternModel;
+
 %include openturns/MaternModel.hxx
-namespace OT { %extend MaternModel { MaternModel(const MaternModel & other) { return new OT::MaternModel(other); } } }

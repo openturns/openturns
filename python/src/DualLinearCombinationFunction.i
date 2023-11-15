@@ -6,5 +6,6 @@
 
 %include DualLinearCombinationFunction_doc.i
 
+%copyctor OT::DualLinearCombinationFunction;
+
 %include openturns/DualLinearCombinationFunction.hxx
-namespace OT { %extend DualLinearCombinationFunction { DualLinearCombinationFunction(const DualLinearCombinationFunction & other) { return new OT::DualLinearCombinationFunction(other); } } }

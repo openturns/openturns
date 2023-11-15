@@ -6,5 +6,6 @@
 
 %include QuadraticBasisFactory_doc.i 
 
+%copyctor OT::QuadraticBasisFactory;
+
 %include openturns/QuadraticBasisFactory.hxx
-namespace OT { %extend QuadraticBasisFactory { QuadraticBasisFactory(const QuadraticBasisFactory & other) { return new OT::QuadraticBasisFactory(other); } } }

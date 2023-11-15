@@ -6,5 +6,6 @@
 
 %include PlackettCopulaFactory_doc.i
 
+%copyctor OT::PlackettCopulaFactory;
+
 %include openturns/PlackettCopulaFactory.hxx
-namespace OT { %extend PlackettCopulaFactory { PlackettCopulaFactory(const PlackettCopulaFactory & other) { return new OT::PlackettCopulaFactory(other); } } }

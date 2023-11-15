@@ -6,5 +6,6 @@
 
 %include IsotropicCovarianceModel_doc.i
 
+%copyctor OT::IsotropicCovarianceModel;
+
 %include openturns/IsotropicCovarianceModel.hxx
-namespace OT { %extend IsotropicCovarianceModel { IsotropicCovarianceModel(const IsotropicCovarianceModel & other) { return new OT::IsotropicCovarianceModel(other); } } }

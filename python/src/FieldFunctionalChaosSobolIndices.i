@@ -6,6 +6,7 @@
 
 %include FieldFunctionalChaosSobolIndices_doc.i
 
+%copyctor OT::FieldFunctionalChaosSobolIndices;
+
 %include openturns/FieldFunctionalChaosSobolIndices.hxx
-namespace OT{ %extend FieldFunctionalChaosSobolIndices { FieldFunctionalChaosSobolIndices(const FieldFunctionalChaosSobolIndices & other) { return new OT::FieldFunctionalChaosSobolIndices(other); } } }
 

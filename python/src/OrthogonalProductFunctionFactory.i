@@ -6,6 +6,7 @@
 
 %include OrthogonalProductFunctionFactory_doc.i
 
+%copyctor OT::OrthogonalProductFunctionFactory;
+
 %include openturns/OrthogonalProductFunctionFactory.hxx
-namespace OT{ %extend OrthogonalProductFunctionFactory { OrthogonalProductFunctionFactory(const OrthogonalProductFunctionFactory & other) { return new OT::OrthogonalProductFunctionFactory(other); } } }
 

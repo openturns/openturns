@@ -6,5 +6,6 @@ OTAutodoc(LinearCombinationGradient)
 #include "openturns/LinearCombinationGradient.hxx"
 %}
 
+%copyctor OT::LinearCombinationGradient;
+
 %include openturns/LinearCombinationGradient.hxx
-namespace OT { %extend LinearCombinationGradient { LinearCombinationGradient(const LinearCombinationGradient & other) { return new OT::LinearCombinationGradient(other); } } }

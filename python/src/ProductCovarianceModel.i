@@ -6,5 +6,6 @@
 
 %include ProductCovarianceModel_doc.i
 
+%copyctor OT::ProductCovarianceModel;
+
 %include openturns/ProductCovarianceModel.hxx
-namespace OT{ %extend ProductCovarianceModel { ProductCovarianceModel(const ProductCovarianceModel & other) { return new OT::ProductCovarianceModel(other); } } }

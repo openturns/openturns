@@ -6,5 +6,6 @@
 
 %include ArcsineFactory_doc.i
 
+%copyctor OT::ArcsineFactory;
+
 %include openturns/ArcsineFactory.hxx
-namespace OT { %extend ArcsineFactory { ArcsineFactory(const ArcsineFactory & other) { return new OT::ArcsineFactory(other); } } }

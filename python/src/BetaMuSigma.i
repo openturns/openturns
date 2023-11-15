@@ -6,5 +6,6 @@
 
 %include BetaMuSigma_doc.i
 
+%copyctor OT::BetaMuSigma;
+
 %include openturns/BetaMuSigma.hxx
-namespace OT{ %extend BetaMuSigma { BetaMuSigma(const BetaMuSigma & other) { return new OT::BetaMuSigma(other); } } }

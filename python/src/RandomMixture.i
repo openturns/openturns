@@ -9,5 +9,6 @@
 %}
 %include RandomMixture_doc.i
 
+%copyctor OT::RandomMixture;
+
 %include openturns/RandomMixture.hxx
-namespace OT { %extend RandomMixture { RandomMixture(const RandomMixture & other) { return new OT::RandomMixture(other); } } }

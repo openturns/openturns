@@ -6,5 +6,6 @@
 
 %include HaselgroveSequence_doc.i
 
+%copyctor OT::HaselgroveSequence;
+
 %include openturns/HaselgroveSequence.hxx
-namespace OT{ %extend HaselgroveSequence { HaselgroveSequence(const HaselgroveSequence & other) { return new OT::HaselgroveSequence(other); } } }

@@ -6,5 +6,6 @@ OTAutodoc(NullHessian)
 #include "openturns/NullHessian.hxx"
 %}
 
+%copyctor OT::NullHessian;
+
 %include openturns/NullHessian.hxx
-namespace OT { %extend NullHessian { NullHessian(const NullHessian & other) { return new OT::NullHessian(other); } } }

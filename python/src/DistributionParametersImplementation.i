@@ -6,5 +6,6 @@
 
 %include DistributionParametersImplementation_doc.i
 
+%copyctor OT::DistributionParametersImplementation;
+
 %include openturns/DistributionParametersImplementation.hxx
-namespace OT { %extend DistributionParametersImplementation { DistributionParametersImplementation(const DistributionParametersImplementation & other) { return new OT::DistributionParametersImplementation(other); } } }

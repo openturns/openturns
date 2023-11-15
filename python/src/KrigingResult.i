@@ -6,6 +6,6 @@
 
 %include KrigingResult_doc.i
 
-%include openturns/KrigingResult.hxx
+%copyctor OT::KrigingResult;
 
-namespace OT{ %extend KrigingResult { KrigingResult(const KrigingResult & other) { return new OT::KrigingResult(other); } } }
+%include openturns/KrigingResult.hxx

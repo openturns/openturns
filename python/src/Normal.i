@@ -6,5 +6,6 @@
 
 %include Normal_doc.i
 
+%copyctor OT::Normal;
+
 %include openturns/Normal.hxx
-namespace OT { %extend Normal { Normal(const Normal & other) { return new OT::Normal(other); } } }

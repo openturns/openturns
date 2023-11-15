@@ -6,5 +6,6 @@
 
 %include GeometricProfile_doc.i
 
+%copyctor OT::GeometricProfile;
+
 %include openturns/GeometricProfile.hxx
-namespace OT { %extend GeometricProfile { GeometricProfile(const GeometricProfile & other) { return new OT::GeometricProfile(other); } } }

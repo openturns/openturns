@@ -6,5 +6,6 @@ OTAutodoc(InverseBoxCoxEvaluation)
 #include "openturns/InverseBoxCoxEvaluation.hxx"
 %}
 
+%copyctor OT::InverseBoxCoxEvaluation;
+
 %include openturns/InverseBoxCoxEvaluation.hxx
-namespace OT { %extend InverseBoxCoxEvaluation { InverseBoxCoxEvaluation(const InverseBoxCoxEvaluation & other) { return new OT::InverseBoxCoxEvaluation(other); } } }

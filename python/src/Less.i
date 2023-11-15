@@ -6,6 +6,6 @@
 
 %include Less_doc.i
 
-%include openturns/Less.hxx
+%copyctor OT::Less;
 
-namespace OT { %extend Less { Less(const Less & other) { return new OT::Less(other); } } }
+%include openturns/Less.hxx

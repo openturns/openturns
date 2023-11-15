@@ -6,5 +6,6 @@
 
 %include CalibrationResult_doc.i
 
+%copyctor OT::CalibrationResult;
+
 %include openturns/CalibrationResult.hxx
-namespace OT{ %extend CalibrationResult { CalibrationResult(const CalibrationResult & other) { return new OT::CalibrationResult(other); } } }

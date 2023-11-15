@@ -6,5 +6,6 @@
 
 %include SVDMethod_doc.i
 
+%copyctor OT::SVDMethod;
+
 %include openturns/SVDMethod.hxx
-namespace OT { %extend SVDMethod { SVDMethod(const SVDMethod & other) { return new OT::SVDMethod(other); } } }

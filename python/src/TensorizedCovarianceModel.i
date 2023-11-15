@@ -6,5 +6,6 @@
 
 %include TensorizedCovarianceModel_doc.i
 
+%copyctor OT::TensorizedCovarianceModel;
+
 %include openturns/TensorizedCovarianceModel.hxx
-namespace OT{ %extend TensorizedCovarianceModel { TensorizedCovarianceModel(const TensorizedCovarianceModel & other) { return new OT::TensorizedCovarianceModel(other); } } }
