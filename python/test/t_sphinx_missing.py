@@ -83,5 +83,5 @@ print(
 print(
     f"-- undocumented methods: {count_methods_undoc} ({100.0 * count_methods_undoc / count_methods:.2f}%) --"
 )
-if count_class_undoc + count_methods_undoc > 50:
+if count_class_undoc + count_methods_undoc > 10:
     raise ValueError("too much undocumented class/methods")
