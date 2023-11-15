@@ -173,7 +173,7 @@ cycle of the hue.
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().BuildRainbowPalette(4))
+>>> print(ot.Drawable.BuildRainbowPalette(4))
 [#ff0000,#ccff00,#00ff66,#0066ff]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildRainbowPalette
@@ -204,11 +204,70 @@ linearily depending on the 'Drawable-DefaultPalettePhase' key of the
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().BuildTableauPalette(4))
+>>> print(ot.Drawable.BuildTableauPalette(4))
 [#1f77b4,#ff7f0e,#2ca02c,#d62728]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildTableauPalette
 OT_Drawable_BuildTableauPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_BuildViridisPalette_doc
+"Build viridis palette.
+
+Parameters
+----------
+n : int :math:`n > 0` and :math:`n < 10`
+    Number of colors needed.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of n color codes defined according to the viridis palette.
+
+Notes
+-----
+The colors are distributed evenly across the viridis palette ensuring that
+the first and last colors match the first and last colors of the viridis palette.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.BuildViridisPalette(4))
+[#440154,#30688e,#35b778,#fde724]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::BuildViridisPalette
+OT_Drawable_BuildViridisPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_BuildGrayScalePalette_doc
+"Build gray scale palette.
+
+Parameters
+----------
+n : int :math:`n > 0` and :math:`n < 10`
+    Number of colors needed.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of n color codes defined according to the gray scale palette.
+
+Notes
+-----
+The colors are distributed evenly across the grayscale ensuring that
+the first and last colors match the 'Drawable-WhiteMargin' and 'Drawable-BlackMargin'.
+keys of the :class:`~openturns.ResourceMap`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.BuildGrayScalePalette(4))
+[#ebebeb,#9d9d9d,#4e4e4e,#000000]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::BuildGrayScalePalette
+OT_Drawable_BuildGrayScalePalette_doc
 
 // ---------------------------------------------------------------------
 

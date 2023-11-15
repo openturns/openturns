@@ -91,6 +91,8 @@
   <Drawable-DefaultSurfaceColor value_str="white"          />
   <Drawable-DataThreshold       value_int="2000"           />
   <Drawable-DefaultPalettePhase value_int="12"             />
+  <Drawable-WhiteMargin         value_int="20"             />
+  <Drawable-BlackMargin         value_int="0"              />
 
   <!-- OT::Text parameters -->
   <Text-DefaultTextSize    value_float="0.75"            />

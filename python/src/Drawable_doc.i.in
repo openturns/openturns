@@ -18,6 +18,10 @@ OT_Drawable_BuildDefaultPalette_doc
 OT_Drawable_BuildRainbowPalette_doc
 %feature("docstring") OT::Drawable::BuildTableauPalette
 OT_Drawable_BuildTableauPalette_doc
+%feature("docstring") OT::Drawable::BuildViridisPalette
+OT_Drawable_BuildViridisPalette_doc
+%feature("docstring") OT::Drawable::BuildGrayScalePalette
+OT_Drawable_BuildGrayScalePalette_doc
 %feature("docstring") OT::Drawable::getColor
 OT_Drawable_getColor_doc
 %feature("docstring") OT::Drawable::setColor

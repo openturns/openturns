@@ -20,3 +20,5 @@ BuildRainbowPalette=[#ff0000,#ff8b00,#e8ff00,#5dff00,#00ff2e,#00ffb9,#00b9ff,#00
 BuildTableauPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf]
 BuildDefaultPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]
 BuildTableauPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]
+BuildViridisPalette=[#440154,#471466,#482676,#453681,#3f4788,#39558c,#32648d,#2c708e,#277d8e,#228a8d,#1f968b,#1fa386,#29af7f,#3bbb75,#55c666,#72cf55,#95d83f,#b8de29,#dde318,#fde724]
+BuildGrayScalePalette=[#ebebeb,#dfdfdf,#d2d2d2,#c6c6c6,#bababa,#adadad,#a1a1a1,#949494,#888888,#7c7c7c,#6f6f6f,#636363,#575757,#4a4a4a,#3e3e3e,#313131,#252525,#191919,#0c0c0c,#000000]

@@ -228,6 +228,12 @@ public:
   /** Build tableau palette */
   static Description BuildTableauPalette(const UnsignedInteger size);
 
+  /** Build viridis palette */
+  static Description BuildViridisPalette(const UnsignedInteger size);
+
+  /** Build gray scale palette */
+  static Description BuildGrayScalePalette(const UnsignedInteger size);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -267,6 +273,9 @@ protected:
 
   /** Valid point styles */
   static Description ValidPointStyles;
+
+  /** Viridis colors */
+  static Description ViridisColors;
 
   /** Data accessor */
   virtual void setData(const Sample & data);
