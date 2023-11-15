@@ -117,7 +117,7 @@ blocs = connected_components(C)
 blocs
 
 # %%
-# For each dependent block, we estimate the most accurate non parameteric copula.
+# For each dependent block, we estimate the most accurate parameteric copula.
 #
 # To do this, we first need to transform the sample in such a way as to keep the copula intact but make all marginal samples follow the uniform distribution on [0,1].
 
