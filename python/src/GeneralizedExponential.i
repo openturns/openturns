@@ -6,5 +6,6 @@
 
 %include GeneralizedExponential_doc.i
 
+%copyctor OT::GeneralizedExponential;
+
 %include openturns/GeneralizedExponential.hxx
-namespace OT { %extend GeneralizedExponential { GeneralizedExponential(const GeneralizedExponential & other) { return new OT::GeneralizedExponential(other); } } }

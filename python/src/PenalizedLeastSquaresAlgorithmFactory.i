@@ -6,5 +6,6 @@
 
 %include PenalizedLeastSquaresAlgorithmFactory_doc.i
 
+%copyctor OT::PenalizedLeastSquaresAlgorithmFactory;
+
 %include openturns/PenalizedLeastSquaresAlgorithmFactory.hxx
-namespace OT { %extend PenalizedLeastSquaresAlgorithmFactory { PenalizedLeastSquaresAlgorithmFactory(const PenalizedLeastSquaresAlgorithmFactory & other) { return new OT::PenalizedLeastSquaresAlgorithmFactory(other); } } }

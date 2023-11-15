@@ -6,5 +6,6 @@
 
 %include Skellam_doc.i
 
+%copyctor OT::Skellam;
+
 %include openturns/Skellam.hxx
-namespace OT { %extend Skellam { Skellam(const Skellam & other) { return new OT::Skellam(other); } } }

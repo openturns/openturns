@@ -6,5 +6,6 @@
 
 %include FunctionalBasisProcess_doc.i
 
+%copyctor OT::FunctionalBasisProcess;
+
 %include openturns/FunctionalBasisProcess.hxx
-namespace OT { %extend FunctionalBasisProcess { FunctionalBasisProcess(const FunctionalBasisProcess & other) { return new OT::FunctionalBasisProcess(other); } } }

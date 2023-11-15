@@ -6,5 +6,6 @@
 
 %include SORM_doc.i
 
+%copyctor OT::SORM;
+
 %include openturns/SORM.hxx
-namespace OT{ %extend SORM { SORM(const SORM & other) { return new OT::SORM(other); } } }

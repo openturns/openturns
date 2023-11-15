@@ -6,5 +6,6 @@
 
 %include FieldToPointConnection_doc.i
 
+%copyctor OT::FieldToPointConnection;
+
 %include openturns/FieldToPointConnection.hxx
-namespace OT { %extend FieldToPointConnection { FieldToPointConnection(const FieldToPointConnection & other) { return new OT::FieldToPointConnection(other); } } }

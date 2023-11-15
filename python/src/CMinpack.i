@@ -6,7 +6,7 @@
 
 %include CMinpack_doc.i
 
-%include openturns/CMinpack.hxx
+%copyctor OT::CMinpack;
 
-namespace OT { %extend CMinpack { CMinpack(const CMinpack & other) { return new OT::CMinpack(other); } } }
+%include openturns/CMinpack.hxx
 

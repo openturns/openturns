@@ -6,5 +6,6 @@
 
 %include GumbelLambdaGamma_doc.i
 
+%copyctor OT::GumbelLambdaGamma;
+
 %include openturns/GumbelLambdaGamma.hxx
-namespace OT{ %extend GumbelLambdaGamma { GumbelLambdaGamma(const GumbelLambdaGamma & other) { return new OT::GumbelLambdaGamma(other); } } }

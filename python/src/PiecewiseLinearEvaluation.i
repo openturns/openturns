@@ -6,6 +6,6 @@
 
 %include PiecewiseLinearEvaluation_doc.i
 
-%include openturns/PiecewiseLinearEvaluation.hxx
+%copyctor OT::PiecewiseLinearEvaluation;
 
-namespace OT { %extend PiecewiseLinearEvaluation { PiecewiseLinearEvaluation(const PiecewiseLinearEvaluation & other) { return new OT::PiecewiseLinearEvaluation(other); } } }
+%include openturns/PiecewiseLinearEvaluation.hxx

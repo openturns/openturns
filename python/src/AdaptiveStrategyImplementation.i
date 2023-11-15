@@ -6,5 +6,6 @@
 
 %include AdaptiveStrategyImplementation_doc.i
 
+%copyctor OT::AdaptiveStrategyImplementation;
+
 %include openturns/AdaptiveStrategyImplementation.hxx
-namespace OT{ %extend AdaptiveStrategyImplementation { AdaptiveStrategyImplementation(const AdaptiveStrategyImplementation & other) { return new OT::AdaptiveStrategyImplementation(other); } } }

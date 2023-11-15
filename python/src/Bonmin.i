@@ -44,6 +44,6 @@ template <>
 
 %include Bonmin_doc.i
 
-%include openturns/Bonmin.hxx
+%copyctor OT::Bonmin;
 
-namespace OT { %extend Bonmin { Bonmin(const Bonmin & other) { return new OT::Bonmin(other); } } }
+%include openturns/Bonmin.hxx

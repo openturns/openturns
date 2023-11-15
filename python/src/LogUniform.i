@@ -6,5 +6,6 @@
 
 %include LogUniform_doc.i
 
+%copyctor OT::LogUniform;
+
 %include openturns/LogUniform.hxx
-namespace OT { %extend LogUniform { LogUniform(const LogUniform & other) { return new OT::LogUniform(other); } } }

@@ -6,5 +6,6 @@
 
 %include Geometric_doc.i
 
+%copyctor OT::Geometric;
+
 %include openturns/Geometric.hxx
-namespace OT { %extend Geometric { Geometric(const Geometric & other) { return new OT::Geometric(other); } } }

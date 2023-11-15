@@ -6,5 +6,6 @@
 
 %include ProductFunction_doc.i
 
+%copyctor OT::ProductFunction;
+
 %include openturns/ProductFunction.hxx
-namespace OT { %extend ProductFunction { ProductFunction(const ProductFunction & other) { return new OT::ProductFunction(other); } } }

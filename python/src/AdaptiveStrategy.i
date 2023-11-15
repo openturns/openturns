@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(AdaptiveStrategy)
 
+%copyctor OT::AdaptiveStrategy;
+
 %include openturns/AdaptiveStrategy.hxx
-namespace OT{ %extend AdaptiveStrategy { AdaptiveStrategy(const AdaptiveStrategy & other) { return new OT::AdaptiveStrategy(other); } } }

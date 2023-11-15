@@ -6,5 +6,6 @@
 
 %include OrthonormalizationAlgorithmImplementation_doc.i
 
+%copyctor OT::OrthonormalizationAlgorithmImplementation;
+
 %include openturns/OrthonormalizationAlgorithmImplementation.hxx
-namespace OT{ %extend OrthonormalizationAlgorithmImplementation { OrthonormalizationAlgorithmImplementation(const OrthonormalizationAlgorithmImplementation & other) { return new OT::OrthonormalizationAlgorithmImplementation(other); } } }

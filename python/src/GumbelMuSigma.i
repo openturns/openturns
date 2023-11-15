@@ -6,5 +6,6 @@
 
 %include GumbelMuSigma_doc.i
 
+%copyctor OT::GumbelMuSigma;
+
 %include openturns/GumbelMuSigma.hxx
-namespace OT{ %extend GumbelMuSigma { GumbelMuSigma(const GumbelMuSigma & other) { return new OT::GumbelMuSigma(other); } } }

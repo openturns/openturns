@@ -6,6 +6,7 @@
 
 %include LARS_doc.i
 
+%copyctor OT::LARS;
+
 %include openturns/LARS.hxx
-namespace OT { %extend LARS { LARS(const LARS & other) { return new OT::LARS(other); } } }
 

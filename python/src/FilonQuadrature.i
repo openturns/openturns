@@ -6,5 +6,6 @@
 
 %include FilonQuadrature_doc.i
 
+%copyctor OT::FilonQuadrature;
+
 %include openturns/FilonQuadrature.hxx
-namespace OT { %extend FilonQuadrature { FilonQuadrature(const FilonQuadrature & other) { return new OT::FilonQuadrature(other); } } }

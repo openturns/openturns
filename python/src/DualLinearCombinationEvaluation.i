@@ -6,6 +6,6 @@
 
 %include DualLinearCombinationEvaluation_doc.i
 
-%include openturns/DualLinearCombinationEvaluation.hxx
+%copyctor OT::DualLinearCombinationEvaluation;
 
-namespace OT { %extend DualLinearCombinationEvaluation { DualLinearCombinationEvaluation(const DualLinearCombinationEvaluation & other) { return new OT::DualLinearCombinationEvaluation(other); } } }
+%include openturns/DualLinearCombinationEvaluation.hxx

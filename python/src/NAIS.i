@@ -6,5 +6,6 @@
 
 %include NAIS_doc.i
 
+%copyctor OT::NAIS;
+
 %include openturns/NAIS.hxx
-namespace OT { %extend NAIS { NAIS(const NAIS & other) { return new OT::NAIS(other); } } }

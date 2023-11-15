@@ -6,5 +6,6 @@
 
 %include VonMisesFactory_doc.i
 
+%copyctor OT::VonMisesFactory;
+
 %include openturns/VonMisesFactory.hxx
-namespace OT { %extend VonMisesFactory { VonMisesFactory(const VonMisesFactory & other) { return new OT::VonMisesFactory(other); } } }

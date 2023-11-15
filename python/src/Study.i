@@ -8,5 +8,6 @@
 
 %include Study_doc.i
 
+%copyctor OT::Study;
+
 %include openturns/Study.hxx
-namespace OT{ %extend Study { Study(const Study & other) { return new OT::Study(other); } } }

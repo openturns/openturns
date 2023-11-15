@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(SamplingStrategy)
 
+%copyctor OT::SamplingStrategy;
+
 %include openturns/SamplingStrategy.hxx
-namespace OT{ %extend SamplingStrategy { SamplingStrategy(const SamplingStrategy & other) { return new OT::SamplingStrategy(other); } } }

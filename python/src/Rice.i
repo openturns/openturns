@@ -6,5 +6,6 @@
 
 %include Rice_doc.i
 
+%copyctor OT::Rice;
+
 %include openturns/Rice.hxx
-namespace OT { %extend Rice { Rice(const Rice & other) { return new OT::Rice(other); } } }

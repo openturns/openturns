@@ -6,5 +6,6 @@
 
 %include DiscreteCompoundDistribution_doc.i
 
+%copyctor OT::DiscreteCompoundDistribution;
+
 %include openturns/DiscreteCompoundDistribution.hxx
-namespace OT { %extend DiscreteCompoundDistribution { DiscreteCompoundDistribution(const DiscreteCompoundDistribution & other) { return new OT::DiscreteCompoundDistribution(other); } } }

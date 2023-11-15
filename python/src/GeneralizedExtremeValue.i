@@ -6,5 +6,6 @@
 
 %include GeneralizedExtremeValue_doc.i
 
+%copyctor OT::GeneralizedExtremeValue;
+
 %include openturns/GeneralizedExtremeValue.hxx
-namespace OT { %extend GeneralizedExtremeValue { GeneralizedExtremeValue(const GeneralizedExtremeValue & other) { return new OT::GeneralizedExtremeValue(other); } } }

@@ -6,5 +6,6 @@
 
 %include BasisSequenceImplementation_doc.i
 
+%copyctor OT::BasisSequenceImplementation;
+
 %include openturns/BasisSequenceImplementation.hxx
-namespace OT { %extend BasisSequenceImplementation { BasisSequenceImplementation(const BasisSequenceImplementation & other) { return new OT::BasisSequenceImplementation(other); } } }

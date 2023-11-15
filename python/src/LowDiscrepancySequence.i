@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(LowDiscrepancySequence)
 
+%copyctor OT::LowDiscrepancySequence;
+
 %include openturns/LowDiscrepancySequence.hxx
-namespace OT{ %extend LowDiscrepancySequence { LowDiscrepancySequence(const LowDiscrepancySequence & other) { return new OT::LowDiscrepancySequence(other); } } }

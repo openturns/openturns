@@ -6,5 +6,6 @@
 
 %include MonomialFunction_doc.i
 
+%copyctor OT::MonomialFunction;
+
 %include openturns/MonomialFunction.hxx
-namespace OT { %extend MonomialFunction { MonomialFunction(const MonomialFunction & other) { return new OT::MonomialFunction(other); } } }

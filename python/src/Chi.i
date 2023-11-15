@@ -6,5 +6,6 @@
 
 %include Chi_doc.i
 
+%copyctor OT::Chi;
+
 %include openturns/Chi.hxx
-namespace OT { %extend Chi { Chi(const Chi & other) { return new OT::Chi(other); } } }

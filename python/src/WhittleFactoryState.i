@@ -6,5 +6,6 @@
 
 %include WhittleFactoryState_doc.i
 
+%copyctor OT::WhittleFactoryState;
+
 %include openturns/WhittleFactoryState.hxx
-namespace OT { %extend WhittleFactoryState { WhittleFactoryState(const WhittleFactoryState & other) { return new OT::WhittleFactoryState(other); } } }

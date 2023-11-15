@@ -6,5 +6,6 @@
 
 %include UsualRandomVector_doc.i
 
+%copyctor OT::UsualRandomVector;
+
 %include openturns/UsualRandomVector.hxx
-namespace OT { %extend UsualRandomVector { UsualRandomVector(const UsualRandomVector & other) { return new OT::UsualRandomVector(other); } } }

@@ -6,5 +6,6 @@
 
 %include FrankCopulaFactory_doc.i
 
+%copyctor OT::FrankCopulaFactory;
+
 %include openturns/FrankCopulaFactory.hxx
-namespace OT { %extend FrankCopulaFactory { FrankCopulaFactory(const FrankCopulaFactory & other) { return new OT::FrankCopulaFactory(other); } } }

@@ -6,5 +6,6 @@
 
 %include MonteCarloExperiment_doc.i
 
+%copyctor OT::MonteCarloExperiment;
+
 %include openturns/MonteCarloExperiment.hxx
-namespace OT { %extend MonteCarloExperiment { MonteCarloExperiment(const MonteCarloExperiment & other) { return new OT::MonteCarloExperiment(other); } } }

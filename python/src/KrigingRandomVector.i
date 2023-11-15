@@ -6,5 +6,6 @@
 
 %include KrigingRandomVector_doc.i
 
+%copyctor OT::KrigingRandomVector;
+
 %include openturns/KrigingRandomVector.hxx
-namespace OT { %extend KrigingRandomVector { KrigingRandomVector(const KrigingRandomVector & other) { return new OT::KrigingRandomVector(other); } } }

@@ -6,5 +6,6 @@
 
 %include TrapezoidalFactory_doc.i
 
+%copyctor OT::TrapezoidalFactory;
+
 %include openturns/TrapezoidalFactory.hxx
-namespace OT { %extend TrapezoidalFactory { TrapezoidalFactory(const TrapezoidalFactory & other) { return new OT::TrapezoidalFactory(other); } } }

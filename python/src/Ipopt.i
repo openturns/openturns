@@ -6,6 +6,6 @@
 
 %include Ipopt_doc.i
 
-%include openturns/Ipopt.hxx
+%copyctor OT::Ipopt;
 
-namespace OT { %extend Ipopt { Ipopt(const Ipopt & other) { return new OT::Ipopt(other); } } }
+%include openturns/Ipopt.hxx

@@ -6,5 +6,6 @@
 
 %include HistogramPolynomialFactory_doc.i
 
+%copyctor OT::HistogramPolynomialFactory;
+
 %include openturns/HistogramPolynomialFactory.hxx
-namespace OT { %extend HistogramPolynomialFactory { HistogramPolynomialFactory(const HistogramPolynomialFactory & other) { return new OT::HistogramPolynomialFactory(other); } } }

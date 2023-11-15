@@ -6,5 +6,6 @@
 
 %include FFTImplementation_doc.i
 
+%copyctor OT::FFTImplementation;
+
 %include openturns/FFTImplementation.hxx
-namespace OT { %extend FFTImplementation { FFTImplementation(const FFTImplementation & other) { return new OT::FFTImplementation(other); } } }

@@ -6,5 +6,6 @@
 
 %include Text_doc.i
 
+%copyctor OT::Text;
+
 %include openturns/Text.hxx
-namespace OT { %extend Text { Text(const Text & other) { return new OT::Text(other); } } }

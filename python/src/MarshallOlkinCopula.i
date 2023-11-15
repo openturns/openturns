@@ -6,5 +6,6 @@
 
 %include MarshallOlkinCopula_doc.i
 
+%copyctor OT::MarshallOlkinCopula;
+
 %include openturns/MarshallOlkinCopula.hxx
-namespace OT { %extend MarshallOlkinCopula { MarshallOlkinCopula(const MarshallOlkinCopula & other) { return new OT::MarshallOlkinCopula(other); } } }

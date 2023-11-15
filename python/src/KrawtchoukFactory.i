@@ -6,5 +6,6 @@
 
 %include KrawtchoukFactory_doc.i
 
+%copyctor OT::KrawtchoukFactory;
+
 %include openturns/KrawtchoukFactory.hxx
-namespace OT { %extend KrawtchoukFactory { KrawtchoukFactory(const KrawtchoukFactory & other) { return new OT::KrawtchoukFactory(other); } } }

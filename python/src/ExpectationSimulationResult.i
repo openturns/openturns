@@ -6,5 +6,6 @@
 
 %include ExpectationSimulationResult_doc.i
 
+%copyctor OT::ExpectationSimulationResult;
+
 %include openturns/ExpectationSimulationResult.hxx
-namespace OT{ %extend ExpectationSimulationResult { ExpectationSimulationResult(const ExpectationSimulationResult & other) { return new OT::ExpectationSimulationResult(other); } } }

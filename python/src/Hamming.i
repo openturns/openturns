@@ -6,7 +6,6 @@
 
 %include Hamming_doc.i
 
+%copyctor OT::Hamming;
+
 %include openturns/Hamming.hxx
-
-
-namespace OT { %extend Hamming { Hamming(const Hamming & other) { return new OT::Hamming(other); } } }

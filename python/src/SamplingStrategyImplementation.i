@@ -6,5 +6,6 @@
 
 %include SamplingStrategyImplementation_doc.i
 
+%copyctor OT::SamplingStrategyImplementation;
+
 %include openturns/SamplingStrategyImplementation.hxx
-namespace OT{ %extend SamplingStrategyImplementation { SamplingStrategyImplementation(const SamplingStrategyImplementation & other) { return new OT::SamplingStrategyImplementation(other); } } }

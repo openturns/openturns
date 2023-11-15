@@ -6,5 +6,6 @@
 
 %include LeastSquaresMethodImplementation_doc.i
 
+%copyctor OT::LeastSquaresMethodImplementation;
+
 %include openturns/LeastSquaresMethodImplementation.hxx
-namespace OT { %extend LeastSquaresMethodImplementation { LeastSquaresMethodImplementation(const LeastSquaresMethodImplementation & other) { return new OT::LeastSquaresMethodImplementation(other); } } }

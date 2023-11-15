@@ -6,5 +6,6 @@
 
 %include QRMethod_doc.i
 
+%copyctor OT::QRMethod;
+
 %include openturns/QRMethod.hxx
-namespace OT { %extend QRMethod { QRMethod(const QRMethod & other) { return new OT::QRMethod(other); } } }

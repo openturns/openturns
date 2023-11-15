@@ -6,5 +6,6 @@
 
 %include GaussianNonLinearCalibration_doc.i
 
+%copyctor OT::GaussianNonLinearCalibration;
+
 %include openturns/GaussianNonLinearCalibration.hxx
-namespace OT { %extend GaussianNonLinearCalibration { GaussianNonLinearCalibration(const GaussianNonLinearCalibration & other) { return new OT::GaussianNonLinearCalibration(other); } } }

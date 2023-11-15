@@ -6,7 +6,8 @@
 
 %include WeibullMinMuSigma_doc.i
 
+%copyctor OT::WeibullMinMuSigma;
+
 %include openturns/WeibullMinMuSigma.hxx
-namespace OT{ %extend WeibullMinMuSigma { WeibullMinMuSigma(const WeibullMinMuSigma & other) { return new OT::WeibullMinMuSigma(other); } } }
 
 

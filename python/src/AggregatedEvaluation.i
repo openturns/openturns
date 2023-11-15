@@ -6,6 +6,6 @@
 
 %include AggregatedEvaluation_doc.i
 
-%include openturns/AggregatedEvaluation.hxx
+%copyctor OT::AggregatedEvaluation;
 
-namespace OT { %extend AggregatedEvaluation { AggregatedEvaluation(const AggregatedEvaluation & other) { return new OT::AggregatedEvaluation(other); } } }
+%include openturns/AggregatedEvaluation.hxx

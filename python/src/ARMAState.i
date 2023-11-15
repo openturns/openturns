@@ -7,9 +7,8 @@
 %include ARMAState_doc.i
 
 
+%copyctor OT::ARMAState;
+
 %include openturns/ARMAState.hxx
-
-
-namespace OT { %extend ARMAState { ARMAState(const ARMAState & other) { return new OT::ARMAState(other); } } }
 
 

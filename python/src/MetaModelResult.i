@@ -6,5 +6,6 @@
 
 %include MetaModelResult_doc.i
 
+%copyctor OT::MetaModelResult;
+
 %include openturns/MetaModelResult.hxx
-namespace OT{ %extend MetaModelResult { MetaModelResult(const MetaModelResult & other) { return new OT::MetaModelResult(other); } } }

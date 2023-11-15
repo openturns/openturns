@@ -6,6 +6,6 @@
 
 %include LessOrEqual_doc.i
 
-%include openturns/LessOrEqual.hxx
+%copyctor OT::LessOrEqual;
 
-namespace OT { %extend LessOrEqual { LessOrEqual(const LessOrEqual & other) { return new OT::LessOrEqual(other); } } }
+%include openturns/LessOrEqual.hxx

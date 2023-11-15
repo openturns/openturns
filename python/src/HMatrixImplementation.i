@@ -14,5 +14,6 @@
 
 %include HMatrixImplementation_doc.i
 
+%copyctor OT::HMatrixImplementation;
+
 %include openturns/HMatrixImplementation.hxx
-namespace OT { %extend HMatrixImplementation { HMatrixImplementation(const HMatrixImplementation & other) { return new OT::HMatrixImplementation(other); } } }

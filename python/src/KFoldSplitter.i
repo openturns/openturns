@@ -6,5 +6,6 @@
 
 %include KFoldSplitter_doc.i
 
+%copyctor OT::KFoldSplitter;
+
 %include openturns/KFoldSplitter.hxx
-namespace OT { %extend KFoldSplitter { KFoldSplitter(const KFoldSplitter & other) { return new OT::KFoldSplitter(other); } } }

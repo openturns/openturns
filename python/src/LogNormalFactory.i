@@ -6,5 +6,6 @@
 
 %include LogNormalFactory_doc.i
 
+%copyctor OT::LogNormalFactory;
+
 %include openturns/LogNormalFactory.hxx
-namespace OT { %extend LogNormalFactory { LogNormalFactory(const LogNormalFactory & other) { return new OT::LogNormalFactory(other); } } }

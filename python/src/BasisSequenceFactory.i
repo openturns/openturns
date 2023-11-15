@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(BasisSequenceFactory)
 
+%copyctor OT::BasisSequenceFactory;
+
 %include openturns/BasisSequenceFactory.hxx
-namespace OT { %extend BasisSequenceFactory { BasisSequenceFactory(const BasisSequenceFactory & other) { return new OT::BasisSequenceFactory(other); } } }

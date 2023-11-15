@@ -8,5 +8,6 @@
 
 %ignore OT::ApproximationAlgorithmImplementation::getSelectionHistory;
 
+%copyctor OT::ApproximationAlgorithmImplementation;
+
 %include openturns/ApproximationAlgorithmImplementation.hxx
-namespace OT { %extend ApproximationAlgorithmImplementation { ApproximationAlgorithmImplementation(const ApproximationAlgorithmImplementation & other) { return new OT::ApproximationAlgorithmImplementation(other); } } }

@@ -6,8 +6,9 @@
 
 %include OrthogonalProductPolynomialFactory_doc.i
 
+%copyctor OT::OrthogonalProductPolynomialFactory;
+
 %include openturns/OrthogonalProductPolynomialFactory.hxx
-namespace OT{ %extend OrthogonalProductPolynomialFactory { OrthogonalProductPolynomialFactory(const OrthogonalProductPolynomialFactory & other) { return new OT::OrthogonalProductPolynomialFactory(other); } } }
 
 %pythoncode %{
 def __OrthogonalProductPolynomialFactory_repr_html(self):

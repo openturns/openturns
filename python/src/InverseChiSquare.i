@@ -6,5 +6,6 @@
 
 %include InverseChiSquare_doc.i
 
+%copyctor OT::InverseChiSquare;
+
 %include openturns/InverseChiSquare.hxx
-namespace OT { %extend InverseChiSquare { InverseChiSquare(const InverseChiSquare & other) { return new OT::InverseChiSquare(other); } } }

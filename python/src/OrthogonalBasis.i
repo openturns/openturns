@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectImplementationHelper(OrthogonalBasis, OrthogonalFunctionFactory)
 
-%include openturns/OrthogonalBasis.hxx
+%copyctor OT::OrthogonalBasis;
 
-namespace OT{ %extend OrthogonalBasis { OrthogonalBasis(const OrthogonalBasis & other) { return new OT::OrthogonalBasis(other); } } }
+%include openturns/OrthogonalBasis.hxx

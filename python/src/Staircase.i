@@ -6,5 +6,6 @@
 
 %include Staircase_doc.i
 
+%copyctor OT::Staircase;
+
 %include openturns/Staircase.hxx
-namespace OT { %extend Staircase { Staircase(const Staircase & other) { return new OT::Staircase(other); } } }

@@ -6,6 +6,6 @@
 
 %include PiecewiseHermiteEvaluation_doc.i
 
-%include openturns/PiecewiseHermiteEvaluation.hxx
+%copyctor OT::PiecewiseHermiteEvaluation;
 
-namespace OT { %extend PiecewiseHermiteEvaluation { PiecewiseHermiteEvaluation(const PiecewiseHermiteEvaluation & other) { return new OT::PiecewiseHermiteEvaluation(other); } } }
+%include openturns/PiecewiseHermiteEvaluation.hxx

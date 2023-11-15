@@ -6,5 +6,6 @@
 
 %include CharlierFactory_doc.i
 
+%copyctor OT::CharlierFactory;
+
 %include openturns/CharlierFactory.hxx
-namespace OT { %extend CharlierFactory { CharlierFactory(const CharlierFactory & other) { return new OT::CharlierFactory(other); } } }

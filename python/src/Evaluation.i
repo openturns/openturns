@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(Evaluation)
 
+%copyctor OT::Evaluation;
+
 %include openturns/Evaluation.hxx
-namespace OT{ %extend Evaluation { Evaluation(const Evaluation & other) { return new OT::Evaluation(other); } } }

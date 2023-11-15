@@ -6,5 +6,6 @@
 
 %include BasisFactory_doc.i
 
+%copyctor OT::BasisFactory;
+
 %include openturns/BasisFactory.hxx
-namespace OT { %extend BasisFactory { BasisFactory(const BasisFactory & other) { return new OT::BasisFactory(other); } } }

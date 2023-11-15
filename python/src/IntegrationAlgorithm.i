@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(IntegrationAlgorithm)
 
+%copyctor OT::IntegrationAlgorithm;
+
 %include openturns/IntegrationAlgorithm.hxx
-namespace OT{ %extend IntegrationAlgorithm { IntegrationAlgorithm(const IntegrationAlgorithm & other) { return new OT::IntegrationAlgorithm(other); } } }

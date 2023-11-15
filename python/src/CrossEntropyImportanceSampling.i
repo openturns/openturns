@@ -6,5 +6,6 @@
 
 %include CrossEntropyImportanceSampling_doc.i
 
+%copyctor OT::CrossEntropyImportanceSampling;
+
 %include openturns/CrossEntropyImportanceSampling.hxx
-namespace OT { %extend CrossEntropyImportanceSampling { CrossEntropyImportanceSampling(const CrossEntropyImportanceSampling & other) { return new OT::CrossEntropyImportanceSampling(other); } } }

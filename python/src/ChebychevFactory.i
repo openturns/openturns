@@ -6,5 +6,6 @@
 
 %include ChebychevFactory_doc.i
 
+%copyctor OT::ChebychevFactory;
+
 %include openturns/ChebychevFactory.hxx
-namespace OT { %extend ChebychevFactory { ChebychevFactory(const ChebychevFactory & other) { return new OT::ChebychevFactory(other); } } }

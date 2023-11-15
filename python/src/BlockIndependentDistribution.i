@@ -6,5 +6,6 @@
 
 %include BlockIndependentDistribution_doc.i
 
+%copyctor OT::BlockIndependentDistribution;
+
 %include openturns/BlockIndependentDistribution.hxx
-namespace OT { %extend BlockIndependentDistribution { BlockIndependentDistribution(const BlockIndependentDistribution & other) { return new OT::BlockIndependentDistribution(other); } } }

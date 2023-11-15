@@ -6,5 +6,6 @@
 
 %include MarginalTransformationEvaluation_doc.i
 
+%copyctor OT::MarginalTransformationEvaluation;
+
 %include openturns/MarginalTransformationEvaluation.hxx
-namespace OT { %extend MarginalTransformationEvaluation { MarginalTransformationEvaluation(const MarginalTransformationEvaluation & other) { return new OT::MarginalTransformationEvaluation(other); } } }

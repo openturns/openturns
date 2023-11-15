@@ -6,5 +6,6 @@ OTAutodoc(ComposedHessian)
 #include "openturns/ComposedHessian.hxx"
 %}
 
+%copyctor OT::ComposedHessian;
+
 %include openturns/ComposedHessian.hxx
-namespace OT { %extend ComposedHessian { ComposedHessian(const ComposedHessian & other) { return new OT::ComposedHessian(other); } } }

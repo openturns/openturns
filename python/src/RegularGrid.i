@@ -8,6 +8,6 @@
 
 %include RegularGrid_doc.i
 
-%include openturns/RegularGrid.hxx
+%copyctor OT::RegularGrid;
 
-namespace OT { %extend RegularGrid { RegularGrid(const RegularGrid & other) { return new OT::RegularGrid(other); } } }
+%include openturns/RegularGrid.hxx

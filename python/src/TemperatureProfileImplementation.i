@@ -6,5 +6,6 @@
 
 %include TemperatureProfileImplementation_doc.i
 
+%copyctor OT::TemperatureProfileImplementation;
+
 %include openturns/TemperatureProfileImplementation.hxx
-namespace OT { %extend TemperatureProfileImplementation { TemperatureProfileImplementation(const TemperatureProfileImplementation & other) { return new OT::TemperatureProfileImplementation(other); } } }

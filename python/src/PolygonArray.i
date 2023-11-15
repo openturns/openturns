@@ -65,5 +65,6 @@ namespace OT {
 
 %include PolygonArray_doc.i
 
+%copyctor OT::PolygonArray;
+
 %include openturns/PolygonArray.hxx
-namespace OT { %extend PolygonArray { PolygonArray(const PolygonArray & other) { return new OT::PolygonArray(other); } } }

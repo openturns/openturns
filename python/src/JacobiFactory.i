@@ -6,5 +6,6 @@
 
 %include JacobiFactory_doc.i
 
+%copyctor OT::JacobiFactory;
+
 %include openturns/JacobiFactory.hxx
-namespace OT { %extend JacobiFactory { JacobiFactory(const JacobiFactory & other) { return new OT::JacobiFactory(other); } } }

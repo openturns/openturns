@@ -6,5 +6,6 @@
 
 %include FarlieGumbelMorgensternCopulaFactory_doc.i
 
+%copyctor OT::FarlieGumbelMorgensternCopulaFactory;
+
 %include openturns/FarlieGumbelMorgensternCopulaFactory.hxx
-namespace OT { %extend FarlieGumbelMorgensternCopulaFactory { FarlieGumbelMorgensternCopulaFactory(const FarlieGumbelMorgensternCopulaFactory & other) { return new OT::FarlieGumbelMorgensternCopulaFactory(other); } } }

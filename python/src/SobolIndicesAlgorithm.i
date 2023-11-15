@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(SobolIndicesAlgorithm)
 
+%copyctor OT::SobolIndicesAlgorithm;
+
 %include openturns/SobolIndicesAlgorithm.hxx
-namespace OT{ %extend SobolIndicesAlgorithm { SobolIndicesAlgorithm(const SobolIndicesAlgorithm & other) { return new OT::SobolIndicesAlgorithm(other); } } }

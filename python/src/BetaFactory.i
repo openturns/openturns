@@ -6,5 +6,6 @@
 
 %include BetaFactory_doc.i
 
+%copyctor OT::BetaFactory;
+
 %include openturns/BetaFactory.hxx
-namespace OT { %extend BetaFactory { BetaFactory(const BetaFactory & other) { return new OT::BetaFactory(other); } } }

@@ -6,5 +6,6 @@ OTAutodoc(InverseNatafEllipticalDistributionHessian)
 #include "openturns/InverseNatafEllipticalDistributionHessian.hxx"
 %}
 
+%copyctor OT::InverseNatafEllipticalDistributionHessian;
+
 %include openturns/InverseNatafEllipticalDistributionHessian.hxx
-namespace OT { %extend InverseNatafEllipticalDistributionHessian { InverseNatafEllipticalDistributionHessian(const InverseNatafEllipticalDistributionHessian & other) { return new OT::InverseNatafEllipticalDistributionHessian(other); } } }

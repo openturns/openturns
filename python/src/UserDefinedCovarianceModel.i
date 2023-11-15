@@ -6,6 +6,6 @@
 
 %include UserDefinedCovarianceModel_doc.i
 
-%include openturns/UserDefinedCovarianceModel.hxx
+%copyctor OT::UserDefinedCovarianceModel;
 
-namespace OT{ %extend UserDefinedCovarianceModel { UserDefinedCovarianceModel(const UserDefinedCovarianceModel & other) { return new OT::UserDefinedCovarianceModel(other); } } }
+%include openturns/UserDefinedCovarianceModel.hxx

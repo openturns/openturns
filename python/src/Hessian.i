@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(Hessian)
 
+%copyctor OT::Hessian;
+
 %include openturns/Hessian.hxx
-namespace OT{ %extend Hessian { Hessian(const Hessian & other) { return new OT::Hessian(other); } } }

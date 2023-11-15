@@ -6,5 +6,6 @@
 
 %include Secant_doc.i
 
+%copyctor OT::Secant;
+
 %include openturns/Secant.hxx
-namespace OT { %extend Secant { Secant(const Secant & other) { return new OT::Secant(other); } } }

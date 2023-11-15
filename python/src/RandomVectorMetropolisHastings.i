@@ -6,6 +6,7 @@
 
 %include RandomVectorMetropolisHastings_doc.i
 
+%copyctor OT::RandomVectorMetropolisHastings;
+
 %include openturns/RandomVectorMetropolisHastings.hxx
-namespace OT { %extend RandomVectorMetropolisHastings { RandomVectorMetropolisHastings(const RandomVectorMetropolisHastings & other) { return new OT::RandomVectorMetropolisHastings(other); } } }
 

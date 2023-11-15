@@ -6,5 +6,6 @@
 
 %include ConstantStep_doc.i
 
+%copyctor OT::ConstantStep;
+
 %include openturns/ConstantStep.hxx
-namespace OT { %extend ConstantStep { ConstantStep(const ConstantStep & other) { return new OT::ConstantStep(other); } } }

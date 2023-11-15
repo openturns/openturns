@@ -6,5 +6,6 @@
 
 %include LogUniformFactory_doc.i
 
+%copyctor OT::LogUniformFactory;
+
 %include openturns/LogUniformFactory.hxx
-namespace OT { %extend LogUniformFactory { LogUniformFactory(const LogUniformFactory & other) { return new OT::LogUniformFactory(other); } } }

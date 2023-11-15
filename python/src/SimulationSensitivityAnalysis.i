@@ -6,5 +6,6 @@
 
 %include SimulationSensitivityAnalysis_doc.i
 
+%copyctor OT::SimulationSensitivityAnalysis;
+
 %include openturns/SimulationSensitivityAnalysis.hxx
-namespace OT{ %extend SimulationSensitivityAnalysis { SimulationSensitivityAnalysis(const SimulationSensitivityAnalysis & other) { return new OT::SimulationSensitivityAnalysis(other); } } }

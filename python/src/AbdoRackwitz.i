@@ -6,6 +6,6 @@
 
 %include AbdoRackwitz_doc.i
 
-%include openturns/AbdoRackwitz.hxx
+%copyctor OT::AbdoRackwitz;
 
-namespace OT{ %extend AbdoRackwitz { AbdoRackwitz(const AbdoRackwitz & other) { return new OT::AbdoRackwitz(other); } } }
+%include openturns/AbdoRackwitz.hxx

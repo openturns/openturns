@@ -6,5 +6,6 @@
 
 %include ChiSquare_doc.i
 
+%copyctor OT::ChiSquare;
+
 %include openturns/ChiSquare.hxx
-namespace OT { %extend ChiSquare { ChiSquare(const ChiSquare & other) { return new OT::ChiSquare(other); } } }

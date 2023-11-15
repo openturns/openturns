@@ -6,5 +6,6 @@
 
 %include HSICUStat_doc.i
 
+%copyctor OT::HSICUStat;
+
 %include openturns/HSICUStat.hxx
-namespace OT{ %extend HSICUStat { HSICUStat(const HSICUStat & other) { return new OT::HSICUStat(other); } } }

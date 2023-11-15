@@ -6,5 +6,6 @@
 
 %include ZipfMandelbrot_doc.i
 
+%copyctor OT::ZipfMandelbrot;
+
 %include openturns/ZipfMandelbrot.hxx
-namespace OT { %extend ZipfMandelbrot { ZipfMandelbrot(const ZipfMandelbrot & other) { return new OT::ZipfMandelbrot(other); } } }

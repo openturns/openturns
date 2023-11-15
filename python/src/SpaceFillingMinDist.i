@@ -6,5 +6,6 @@
 
 %include SpaceFillingMinDist_doc.i
 
+%copyctor OT::SpaceFillingMinDist;
+
 %include openturns/SpaceFillingMinDist.hxx
-namespace OT { %extend SpaceFillingMinDist { SpaceFillingMinDist(const SpaceFillingMinDist & other) { return new OT::SpaceFillingMinDist(other); } } }

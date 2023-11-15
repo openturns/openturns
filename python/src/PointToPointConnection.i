@@ -6,5 +6,6 @@
 
 %include PointToPointConnection_doc.i
 
+%copyctor OT::PointToPointConnection;
+
 %include openturns/PointToPointConnection.hxx
-namespace OT { %extend PointToPointConnection { PointToPointConnection(const PointToPointConnection & other) { return new OT::PointToPointConnection(other); } } }

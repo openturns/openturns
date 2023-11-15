@@ -6,5 +6,6 @@
 
 %include InverseBoxCoxTransform_doc.i
 
+%copyctor OT::InverseBoxCoxTransform;
+
 %include openturns/InverseBoxCoxTransform.hxx
-namespace OT { %extend InverseBoxCoxTransform { InverseBoxCoxTransform(const InverseBoxCoxTransform & other) { return new OT::InverseBoxCoxTransform(other); } } }

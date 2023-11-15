@@ -6,5 +6,6 @@
 
 %include InverseGamma_doc.i
 
+%copyctor OT::InverseGamma;
+
 %include openturns/InverseGamma.hxx
-namespace OT { %extend InverseGamma { InverseGamma(const InverseGamma & other) { return new OT::InverseGamma(other); } } }

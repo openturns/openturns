@@ -6,5 +6,6 @@
 
 %include HaltonSequence_doc.i
 
+%copyctor OT::HaltonSequence;
+
 %include openturns/HaltonSequence.hxx
-namespace OT{ %extend HaltonSequence { HaltonSequence(const HaltonSequence & other) { return new OT::HaltonSequence(other); } } }

@@ -6,5 +6,6 @@
 
 %include SquaredExponential_doc.i
 
+%copyctor OT::SquaredExponential;
+
 %include openturns/SquaredExponential.hxx
-namespace OT { %extend SquaredExponential { SquaredExponential(const SquaredExponential & other) { return new OT::SquaredExponential(other); } } }

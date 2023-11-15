@@ -6,5 +6,6 @@
 
 %include SmoothedUniform_doc.i
 
+%copyctor OT::SmoothedUniform;
+
 %include openturns/SmoothedUniform.hxx
-namespace OT { %extend SmoothedUniform { SmoothedUniform(const SmoothedUniform & other) { return new OT::SmoothedUniform(other); } } }

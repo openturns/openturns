@@ -6,6 +6,7 @@
 
 %include UserDefinedMetropolisHastings_doc.i
 
+%copyctor OT::UserDefinedMetropolisHastings;
+
 %include openturns/UserDefinedMetropolisHastings.hxx
-namespace OT { %extend UserDefinedMetropolisHastings { UserDefinedMetropolisHastings(const UserDefinedMetropolisHastings & other) { return new OT::UserDefinedMetropolisHastings(other); } } }
 

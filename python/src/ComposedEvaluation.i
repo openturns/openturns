@@ -6,5 +6,6 @@ OTAutodoc(ComposedEvaluation)
 #include "openturns/ComposedEvaluation.hxx"
 %}
 
+%copyctor OT::ComposedEvaluation;
+
 %include openturns/ComposedEvaluation.hxx
-namespace OT { %extend ComposedEvaluation { ComposedEvaluation(const ComposedEvaluation & other) { return new OT::ComposedEvaluation(other); } } }

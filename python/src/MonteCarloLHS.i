@@ -6,5 +6,6 @@
 
 %include MonteCarloLHS_doc.i
 
+%copyctor OT::MonteCarloLHS;
+
 %include openturns/MonteCarloLHS.hxx
-namespace OT { %extend MonteCarloLHS { MonteCarloLHS(const MonteCarloLHS & other) { return new OT::MonteCarloLHS(other); } } }

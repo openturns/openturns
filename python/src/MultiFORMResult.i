@@ -32,6 +32,6 @@ namespace OT {
 
 %template(_FORMResultCollection) OT::Collection<OT::FORMResult>;
 
-%include openturns/MultiFORMResult.hxx
+%copyctor OT::MultiFORMResult;
 
-namespace OT { %extend MultiFORMResult { MultiFORMResult(const MultiFORMResult & other) { return new OT::MultiFORMResult(other); } } }
+%include openturns/MultiFORMResult.hxx

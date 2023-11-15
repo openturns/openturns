@@ -6,5 +6,6 @@
 
 %include Full_doc.i
 
+%copyctor OT::Full;
+
 %include openturns/Full.hxx
-namespace OT{ %extend Full { Full(const Full & other) { return new OT::Full(other); } } }

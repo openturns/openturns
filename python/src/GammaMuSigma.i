@@ -6,5 +6,6 @@
 
 %include GammaMuSigma_doc.i
 
+%copyctor OT::GammaMuSigma;
+
 %include openturns/GammaMuSigma.hxx
-namespace OT{ %extend GammaMuSigma { GammaMuSigma(const GammaMuSigma & other) { return new OT::GammaMuSigma(other); } } }

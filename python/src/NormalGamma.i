@@ -6,5 +6,6 @@
 
 %include NormalGamma_doc.i
 
+%copyctor OT::NormalGamma;
+
 %include openturns/NormalGamma.hxx
-namespace OT { %extend NormalGamma { NormalGamma(const NormalGamma & other) { return new OT::NormalGamma(other); } } }

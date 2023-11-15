@@ -6,5 +6,6 @@
 
 %include Arcsine_doc.i
 
+%copyctor OT::Arcsine;
+
 %include openturns/Arcsine.hxx
-namespace OT { %extend Arcsine { Arcsine(const Arcsine & other) { return new OT::Arcsine(other); } } }

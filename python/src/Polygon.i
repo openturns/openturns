@@ -6,5 +6,6 @@
 
 %include Polygon_doc.i
 
+%copyctor OT::Polygon;
+
 %include openturns/Polygon.hxx
-namespace OT { %extend Polygon { Polygon(const Polygon & other) { return new OT::Polygon(other); } } }

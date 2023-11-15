@@ -10,6 +10,6 @@ OTDefaultCollectionConvertFunctions(CovarianceModel)
 OTTypedInterfaceObjectHelper(CovarianceModel)
 OTTypedCollectionInterfaceObjectHelper(CovarianceModel)
 
-%include openturns/CovarianceModel.hxx
+%copyctor OT::CovarianceModel;
 
-namespace OT{ %extend CovarianceModel { CovarianceModel(const CovarianceModel & other) { return new OT::CovarianceModel(other); } } }
+%include openturns/CovarianceModel.hxx

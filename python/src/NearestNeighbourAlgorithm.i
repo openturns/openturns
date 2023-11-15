@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(NearestNeighbourAlgorithm)
 
+%copyctor OT::NearestNeighbourAlgorithm;
+
 %include openturns/NearestNeighbourAlgorithm.hxx
-namespace OT{ %extend NearestNeighbourAlgorithm { NearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & other) { return new OT::NearestNeighbourAlgorithm(other); } } }

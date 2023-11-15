@@ -6,6 +6,7 @@
 
 %include AdaptiveDirectionalStratification_doc.i
 
+%copyctor OT::AdaptiveDirectionalStratification;
+
 %include openturns/AdaptiveDirectionalStratification.hxx
-namespace OT { %extend AdaptiveDirectionalStratification { AdaptiveDirectionalStratification(const AdaptiveDirectionalStratification & other) { return new OT::AdaptiveDirectionalStratification(other); } } }
 

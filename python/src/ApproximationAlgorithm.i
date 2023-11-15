@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(ApproximationAlgorithm)
 
+%copyctor OT::ApproximationAlgorithm;
+
 %include openturns/ApproximationAlgorithm.hxx
-namespace OT { %extend ApproximationAlgorithm { ApproximationAlgorithm(const ApproximationAlgorithm & other) { return new OT::ApproximationAlgorithm(other); } } }

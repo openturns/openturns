@@ -6,5 +6,6 @@
 
 %include ProfileLikelihoodResult_doc.i
 
+%copyctor OT::ProfileLikelihoodResult;
+
 %include openturns/ProfileLikelihoodResult.hxx
-namespace OT { %extend ProfileLikelihoodResult { ProfileLikelihoodResult(const ProfileLikelihoodResult & other) { return new OT::ProfileLikelihoodResult(other); } } }

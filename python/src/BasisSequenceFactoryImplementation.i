@@ -8,5 +8,6 @@
 
 %ignore OT::BasisSequenceFactoryImplementation::getSelectionHistory;
 
+%copyctor OT::BasisSequenceFactoryImplementation;
+
 %include openturns/BasisSequenceFactoryImplementation.hxx
-namespace OT { %extend BasisSequenceFactoryImplementation { BasisSequenceFactoryImplementation(const BasisSequenceFactoryImplementation & other) { return new OT::BasisSequenceFactoryImplementation(other); } } }

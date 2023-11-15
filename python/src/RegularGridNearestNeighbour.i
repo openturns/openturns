@@ -6,5 +6,6 @@
 
 %include RegularGridNearestNeighbour_doc.i
 
+%copyctor OT::RegularGridNearestNeighbour;
+
 %include openturns/RegularGridNearestNeighbour.hxx
-namespace OT { %extend RegularGridNearestNeighbour { RegularGridNearestNeighbour(const RegularGridNearestNeighbour & other) { return new OT::RegularGridNearestNeighbour(other); } } }

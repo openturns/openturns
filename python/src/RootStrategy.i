@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(RootStrategy)
 
+%copyctor OT::RootStrategy;
+
 %include openturns/RootStrategy.hxx
-namespace OT{ %extend RootStrategy { RootStrategy(const RootStrategy & other) { return new OT::RootStrategy(other); } } }

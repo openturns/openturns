@@ -6,5 +6,6 @@
 
 %include SobolIndicesExperiment_doc.i
 
+%copyctor OT::SobolIndicesExperiment;
+
 %include openturns/SobolIndicesExperiment.hxx
-namespace OT { %extend SobolIndicesExperiment { SobolIndicesExperiment(const SobolIndicesExperiment & other) { return new OT::SobolIndicesExperiment(other); } } }

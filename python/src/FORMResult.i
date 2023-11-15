@@ -6,5 +6,6 @@
 
 %include FORMResult_doc.i
 
+%copyctor OT::FORMResult;
+
 %include openturns/FORMResult.hxx
-namespace OT{ %extend FORMResult { FORMResult(const FORMResult & other) { return new OT::FORMResult(other); } } }

@@ -6,5 +6,6 @@
 
 %include ANCOVA_doc.i
 
+%copyctor OT::ANCOVA;
+
 %include openturns/ANCOVA.hxx
-namespace OT{ %extend ANCOVA { ANCOVA(const ANCOVA & other) { return new OT::ANCOVA(other); } } }

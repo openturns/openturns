@@ -8,5 +8,6 @@
 
 %ignore OT::SmolyakExperiment::ComparePointsApproximately;
 
+%copyctor OT::SmolyakExperiment;
+
 %include openturns/SmolyakExperiment.hxx
-namespace OT { %extend SmolyakExperiment { SmolyakExperiment(const SmolyakExperiment & other) { return new OT::SmolyakExperiment(other); } } }

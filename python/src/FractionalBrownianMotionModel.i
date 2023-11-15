@@ -6,5 +6,6 @@
 
 %include FractionalBrownianMotionModel_doc.i
 
+%copyctor OT::FractionalBrownianMotionModel;
+
 %include openturns/FractionalBrownianMotionModel.hxx
-namespace OT{ %extend FractionalBrownianMotionModel { FractionalBrownianMotionModel(const FractionalBrownianMotionModel & other) { return new OT::FractionalBrownianMotionModel(other); } } }

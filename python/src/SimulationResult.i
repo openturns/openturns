@@ -6,5 +6,6 @@
 
 %include SimulationResult_doc.i
 
+%copyctor OT::SimulationResult;
+
 %include openturns/SimulationResult.hxx
-namespace OT{ %extend SimulationResult { SimulationResult(const SimulationResult & other) { return new OT::SimulationResult(other); } } }

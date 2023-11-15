@@ -6,5 +6,6 @@
 
 %include SphericalModel_doc.i
 
+%copyctor OT::SphericalModel;
+
 %include openturns/SphericalModel.hxx
-namespace OT { %extend SphericalModel { SphericalModel(const SphericalModel & other) { return new OT::SphericalModel(other); } } }

@@ -6,5 +6,6 @@
 
 %include GalambosCopula_doc.i
 
+%copyctor OT::GalambosCopula;
+
 %include openturns/GalambosCopula.hxx
-namespace OT { %extend GalambosCopula { GalambosCopula(const GalambosCopula & other) { return new OT::GalambosCopula(other); } } }

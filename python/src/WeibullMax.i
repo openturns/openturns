@@ -6,6 +6,7 @@
 
 %include WeibullMax_doc.i
 
+%copyctor OT::WeibullMax;
+
 %include openturns/WeibullMax.hxx
-namespace OT { %extend WeibullMax { WeibullMax(const WeibullMax & other) { return new OT::WeibullMax(other); } } }
 

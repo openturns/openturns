@@ -6,5 +6,6 @@
 
 %include BernoulliFactory_doc.i
 
+%copyctor OT::BernoulliFactory;
+
 %include openturns/BernoulliFactory.hxx
-namespace OT { %extend BernoulliFactory { BernoulliFactory(const BernoulliFactory & other) { return new OT::BernoulliFactory(other); } } }

@@ -6,5 +6,6 @@
 
 %include Cobyla_doc.i
 
+%copyctor OT::Cobyla;
+
 %include openturns/Cobyla.hxx
-namespace OT{ %extend Cobyla { Cobyla(const Cobyla & other) { return new OT::Cobyla(other); } } }

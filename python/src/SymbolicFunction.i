@@ -6,5 +6,6 @@
 
 %include SymbolicFunction_doc.i
 
+%copyctor OT::SymbolicFunction;
+
 %include openturns/SymbolicFunction.hxx
-namespace OT { %extend SymbolicFunction { SymbolicFunction(const SymbolicFunction & other) { return new OT::SymbolicFunction(other); } } }

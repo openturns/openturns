@@ -6,5 +6,6 @@
 
 %include UniformFactory_doc.i
 
+%copyctor OT::UniformFactory;
+
 %include openturns/UniformFactory.hxx
-namespace OT { %extend UniformFactory { UniformFactory(const UniformFactory & other) { return new OT::UniformFactory(other); } } }

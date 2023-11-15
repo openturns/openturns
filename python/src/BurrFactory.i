@@ -6,5 +6,6 @@
 
 %include BurrFactory_doc.i
 
+%copyctor OT::BurrFactory;
+
 %include openturns/BurrFactory.hxx
-namespace OT { %extend BurrFactory { BurrFactory(const BurrFactory & other) { return new OT::BurrFactory(other); } } }

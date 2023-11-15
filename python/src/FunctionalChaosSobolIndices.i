@@ -6,8 +6,9 @@
 
 %include FunctionalChaosSobolIndices_doc.i
 
+%copyctor OT::FunctionalChaosSobolIndices;
+
 %include openturns/FunctionalChaosSobolIndices.hxx
-namespace OT { %extend FunctionalChaosSobolIndices { FunctionalChaosSobolIndices(const FunctionalChaosSobolIndices & other) { return new OT::FunctionalChaosSobolIndices(other); } } }
 
 %pythoncode %{
 def __FunctionalChaosSobolIndices_repr_html(self):

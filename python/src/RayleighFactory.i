@@ -6,5 +6,6 @@
 
 %include RayleighFactory_doc.i
 
+%copyctor OT::RayleighFactory;
+
 %include openturns/RayleighFactory.hxx
-namespace OT { %extend RayleighFactory { RayleighFactory(const RayleighFactory & other) { return new OT::RayleighFactory(other); } } }

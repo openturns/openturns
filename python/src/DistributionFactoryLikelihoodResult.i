@@ -6,5 +6,6 @@
 
 %include DistributionFactoryLikelihoodResult_doc.i
 
+%copyctor OT::DistributionFactoryLikelihoodResult;
+
 %include openturns/DistributionFactoryLikelihoodResult.hxx
-namespace OT { %extend DistributionFactoryLikelihoodResult { DistributionFactoryLikelihoodResult(const DistributionFactoryLikelihoodResult & other) { return new OT::DistributionFactoryLikelihoodResult(other); } } }

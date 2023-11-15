@@ -27,5 +27,6 @@
 %rename(__stride__) OT::MatrixImplementation::stride;
 %rename(MatrixImplementation_operator___eq__) OT::operator ==(const MatrixImplementation & lhs, const MatrixImplementation & rhs);
 
+%copyctor OT::MatrixImplementation;
+
 %include openturns/MatrixImplementation.hxx
-namespace OT{ %extend MatrixImplementation { MatrixImplementation(const MatrixImplementation & other) { return new OT::MatrixImplementation(other); } } }

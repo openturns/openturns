@@ -6,5 +6,6 @@
 
 %include LeaveOneOutSplitter_doc.i
 
+%copyctor OT::LeaveOneOutSplitter;
+
 %include openturns/LeaveOneOutSplitter.hxx
-namespace OT { %extend LeaveOneOutSplitter { LeaveOneOutSplitter(const LeaveOneOutSplitter & other) { return new OT::LeaveOneOutSplitter(other); } } }

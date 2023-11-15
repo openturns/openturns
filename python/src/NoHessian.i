@@ -6,5 +6,6 @@ OTAutodoc(NoHessian)
 #include "openturns/NoHessian.hxx"
 %}
 
+%copyctor OT::NoHessian;
+
 %include openturns/NoHessian.hxx
-namespace OT { %extend NoHessian { NoHessian(const NoHessian & other) { return new OT::NoHessian(other); } } }

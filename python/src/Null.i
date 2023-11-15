@@ -6,5 +6,6 @@
 
 %include Null_doc.i
 
+%copyctor OT::Null;
+
 %include openturns/Null.hxx
-namespace OT{ %extend Null { Null(const Null & other) { return new OT::Null(other); } } }

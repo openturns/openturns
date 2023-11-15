@@ -6,5 +6,6 @@
 
 %include TruncatedOverMesh_doc.i
 
+%copyctor OT::TruncatedOverMesh;
+
 %include openturns/TruncatedOverMesh.hxx
-namespace OT { %extend TruncatedOverMesh { TruncatedOverMesh(const TruncatedOverMesh & other) { return new OT::TruncatedOverMesh(other); } } }

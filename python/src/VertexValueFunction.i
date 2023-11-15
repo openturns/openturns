@@ -6,6 +6,7 @@
 
 %include VertexValueFunction_doc.i
 
+%copyctor OT::VertexValueFunction;
+
 %include openturns/VertexValueFunction.hxx
-namespace OT { %extend VertexValueFunction { VertexValueFunction(const VertexValueFunction & other) { return new OT::VertexValueFunction(other); } } }
 

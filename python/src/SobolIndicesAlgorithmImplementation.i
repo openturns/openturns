@@ -6,5 +6,6 @@
 
 %include SobolIndicesAlgorithmImplementation_doc.i
 
+%copyctor OT::SobolIndicesAlgorithmImplementation;
+
 %include openturns/SobolIndicesAlgorithmImplementation.hxx
-namespace OT{ %extend SobolIndicesAlgorithmImplementation { SobolIndicesAlgorithmImplementation(const SobolIndicesAlgorithmImplementation & other) { return new OT::SobolIndicesAlgorithmImplementation(other); } } }

@@ -6,5 +6,6 @@ OTAutodoc(ParametricGradient)
 #include "openturns/ParametricGradient.hxx"
 %}
 
+%copyctor OT::ParametricGradient;
+
 %include openturns/ParametricGradient.hxx
-namespace OT { %extend ParametricGradient { ParametricGradient(const ParametricGradient & other) { return new OT::ParametricGradient(other); } } }

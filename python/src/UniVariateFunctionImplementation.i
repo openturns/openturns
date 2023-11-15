@@ -6,5 +6,6 @@
 
 %include UniVariateFunctionImplementation_doc.i
 
+%copyctor OT::UniVariateFunctionImplementation;
+
 %include openturns/UniVariateFunctionImplementation.hxx
-namespace OT { %extend UniVariateFunctionImplementation { UniVariateFunctionImplementation(const UniVariateFunctionImplementation & other) { return new OT::UniVariateFunctionImplementation(other); } } }

@@ -6,5 +6,6 @@
 
 %include GradientImplementation_doc.i
 
+%copyctor OT::GradientImplementation;
+
 %include openturns/GradientImplementation.hxx
-namespace OT { %extend GradientImplementation { GradientImplementation(const GradientImplementation & other) { return new OT::GradientImplementation(other); } } }

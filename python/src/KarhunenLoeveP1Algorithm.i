@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveP1Algorithm_doc.i
 
+%copyctor OT::KarhunenLoeveP1Algorithm;
+
 %include openturns/KarhunenLoeveP1Algorithm.hxx
-namespace OT { %extend KarhunenLoeveP1Algorithm { KarhunenLoeveP1Algorithm(const KarhunenLoeveP1Algorithm & other) { return new OT::KarhunenLoeveP1Algorithm(other); } } }

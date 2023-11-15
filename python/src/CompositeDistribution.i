@@ -6,5 +6,6 @@
 
 %include CompositeDistribution_doc.i
 
+%copyctor OT::CompositeDistribution;
+
 %include openturns/CompositeDistribution.hxx
-namespace OT { %extend CompositeDistribution { CompositeDistribution(const CompositeDistribution & other) { return new OT::CompositeDistribution(other); } } }

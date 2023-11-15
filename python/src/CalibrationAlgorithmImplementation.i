@@ -6,5 +6,6 @@
 
 %include CalibrationAlgorithmImplementation_doc.i
 
+%copyctor OT::CalibrationAlgorithmImplementation;
+
 %include openturns/CalibrationAlgorithmImplementation.hxx
-namespace OT { %extend CalibrationAlgorithmImplementation { CalibrationAlgorithmImplementation(const CalibrationAlgorithmImplementation & other) { return new OT::CalibrationAlgorithmImplementation(other); } } }

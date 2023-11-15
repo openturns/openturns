@@ -6,5 +6,6 @@ OTAutodoc(TrendEvaluation)
 #include "openturns/TrendEvaluation.hxx"
 %}
 
+%copyctor OT::TrendEvaluation;
+
 %include openturns/TrendEvaluation.hxx
-namespace OT { %extend TrendEvaluation { TrendEvaluation(const TrendEvaluation & other) { return new OT::TrendEvaluation(other); } } }

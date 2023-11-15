@@ -6,6 +6,6 @@
 
 %include KroneckerCovarianceModel_doc.i
 
-%include openturns/KroneckerCovarianceModel.hxx
+%copyctor OT::KroneckerCovarianceModel;
 
-namespace OT { %extend KroneckerCovarianceModel { KroneckerCovarianceModel(const KroneckerCovarianceModel & other) { return new OT::KroneckerCovarianceModel(other); } } }
+%include openturns/KroneckerCovarianceModel.hxx

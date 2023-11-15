@@ -6,5 +6,6 @@
 
 %include Logistic_doc.i
 
+%copyctor OT::Logistic;
+
 %include openturns/Logistic.hxx
-namespace OT { %extend Logistic { Logistic(const Logistic & other) { return new OT::Logistic(other); } } }

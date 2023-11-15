@@ -6,5 +6,6 @@
 
 %include Mixture_doc.i
 
+%copyctor OT::Mixture;
+
 %include openturns/Mixture.hxx
-namespace OT { %extend Mixture { Mixture(const Mixture & other) { return new OT::Mixture(other); } } }

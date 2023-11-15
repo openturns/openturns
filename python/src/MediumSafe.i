@@ -6,5 +6,6 @@
 
 %include MediumSafe_doc.i
 
+%copyctor OT::MediumSafe;
+
 %include openturns/MediumSafe.hxx
-namespace OT{ %extend MediumSafe { MediumSafe(const MediumSafe & other) { return new OT::MediumSafe(other); } } }

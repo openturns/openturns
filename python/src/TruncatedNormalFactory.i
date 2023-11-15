@@ -6,5 +6,6 @@
 
 %include TruncatedNormalFactory_doc.i
 
+%copyctor OT::TruncatedNormalFactory;
+
 %include openturns/TruncatedNormalFactory.hxx
-namespace OT { %extend TruncatedNormalFactory { TruncatedNormalFactory(const TruncatedNormalFactory & other) { return new OT::TruncatedNormalFactory(other); } } }

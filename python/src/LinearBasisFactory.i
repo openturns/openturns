@@ -6,5 +6,6 @@
 
 %include LinearBasisFactory_doc.i
 
+%copyctor OT::LinearBasisFactory;
+
 %include openturns/LinearBasisFactory.hxx
-namespace OT { %extend LinearBasisFactory { LinearBasisFactory(const LinearBasisFactory & other) { return new OT::LinearBasisFactory(other); } } }

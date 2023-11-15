@@ -6,5 +6,6 @@
 
 %include DomainEvent_doc.i
 
+%copyctor OT::DomainEvent;
+
 %include openturns/DomainEvent.hxx
-namespace OT { %extend DomainEvent { DomainEvent(const DomainEvent & other) { return new OT::DomainEvent(other); } } }

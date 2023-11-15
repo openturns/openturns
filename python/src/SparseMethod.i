@@ -6,5 +6,6 @@
 
 %include SparseMethod_doc.i
 
+%copyctor OT::SparseMethod;
+
 %include openturns/SparseMethod.hxx
-namespace OT { %extend SparseMethod { SparseMethod(const SparseMethod & other) { return new OT::SparseMethod(other); } } }

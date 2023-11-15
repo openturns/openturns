@@ -8,8 +8,9 @@
 
 %include Object_doc.i
 
+%copyctor OT::Object;
+
 %include openturns/Object.hxx
-namespace OT{ %extend Object { Object(const Object & other) { return new OT::Object(other); } } }
 
 %pythoncode %{
 def Object___getstate__(self):

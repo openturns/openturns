@@ -6,5 +6,6 @@
 
 %include Brent_doc.i
 
+%copyctor OT::Brent;
+
 %include openturns/Brent.hxx
-namespace OT { %extend Brent { Brent(const Brent & other) { return new OT::Brent(other); } } }

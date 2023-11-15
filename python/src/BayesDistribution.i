@@ -6,5 +6,6 @@
 
 %include BayesDistribution_doc.i
 
+%copyctor OT::BayesDistribution;
+
 %include openturns/BayesDistribution.hxx
-namespace OT { %extend BayesDistribution { BayesDistribution(const BayesDistribution & other) { return new OT::BayesDistribution(other); } } }

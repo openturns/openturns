@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveAlgorithmImplementation_doc.i
 
+%copyctor OT::KarhunenLoeveAlgorithmImplementation;
+
 %include openturns/KarhunenLoeveAlgorithmImplementation.hxx
-namespace OT { %extend KarhunenLoeveAlgorithmImplementation { KarhunenLoeveAlgorithmImplementation(const KarhunenLoeveAlgorithmImplementation & other) { return new OT::KarhunenLoeveAlgorithmImplementation(other); } } }

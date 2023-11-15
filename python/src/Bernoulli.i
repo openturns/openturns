@@ -6,5 +6,6 @@
 
 %include Bernoulli_doc.i
 
+%copyctor OT::Bernoulli;
+
 %include openturns/Bernoulli.hxx
-namespace OT { %extend Bernoulli { Bernoulli(const Bernoulli & other) { return new OT::Bernoulli(other); } } }

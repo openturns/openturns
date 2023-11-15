@@ -6,5 +6,6 @@
 
 %include StandardDistributionPolynomialFactory_doc.i
 
+%copyctor OT::StandardDistributionPolynomialFactory;
+
 %include openturns/StandardDistributionPolynomialFactory.hxx
-namespace OT { %extend StandardDistributionPolynomialFactory { StandardDistributionPolynomialFactory(const StandardDistributionPolynomialFactory & other) { return new OT::StandardDistributionPolynomialFactory(other); } } }

@@ -6,5 +6,6 @@ OTAutodoc(DistanceToDomainEvaluation)
 #include "openturns/DistanceToDomainEvaluation.hxx"
 %}
 
+%copyctor OT::DistanceToDomainEvaluation;
+
 %include openturns/DistanceToDomainEvaluation.hxx
-namespace OT { %extend DistanceToDomainEvaluation { DistanceToDomainEvaluation(const DistanceToDomainEvaluation & other) { return new OT::DistanceToDomainEvaluation(other); } } }

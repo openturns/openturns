@@ -6,5 +6,6 @@
 
 %include MultinomialFactory_doc.i
 
+%copyctor OT::MultinomialFactory;
+
 %include openturns/MultinomialFactory.hxx
-namespace OT { %extend MultinomialFactory { MultinomialFactory(const MultinomialFactory & other) { return new OT::MultinomialFactory(other); } } }

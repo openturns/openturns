@@ -6,5 +6,6 @@
 
 %include RankMCovarianceModel_doc.i
 
+%copyctor OT::RankMCovarianceModel;
+
 %include openturns/RankMCovarianceModel.hxx
-namespace OT{ %extend RankMCovarianceModel { RankMCovarianceModel(const RankMCovarianceModel & other) { return new OT::RankMCovarianceModel(other); } } }

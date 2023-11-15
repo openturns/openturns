@@ -6,5 +6,6 @@
 
 %include NAISResult_doc.i
 
+%copyctor OT::NAISResult;
+
 %include openturns/NAISResult.hxx
-namespace OT { %extend NAISResult { NAISResult(const NAISResult & other) { return new OT::NAISResult(other); } } }

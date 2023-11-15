@@ -6,5 +6,6 @@
 
 %include Pie_doc.i
 
+%copyctor OT::Pie;
+
 %include openturns/Pie.hxx
-namespace OT { %extend Pie { Pie(const Pie & other) { return new OT::Pie(other); } } }

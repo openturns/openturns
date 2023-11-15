@@ -6,5 +6,6 @@
 
 %include ProbabilitySimulationResult_doc.i
 
+%copyctor OT::ProbabilitySimulationResult;
+
 %include openturns/ProbabilitySimulationResult.hxx
-namespace OT{ %extend ProbabilitySimulationResult { ProbabilitySimulationResult(const ProbabilitySimulationResult & other) { return new OT::ProbabilitySimulationResult(other); } } }
