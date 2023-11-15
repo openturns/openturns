@@ -52,6 +52,9 @@ Description DrawableImplementation::ValidLineStyles;
 /* Accepted fill styles */
 Description DrawableImplementation::ValidFillStyles;
 
+/* Viridis colors */
+Description DrawableImplementation::ViridisColors;
+
 void DrawableImplementation::InitializeValidParameterList()
 {
   /* Accepted point symbols */
@@ -778,6 +781,10 @@ void DrawableImplementation::InitializeValidParameterList()
   ValidFillStyles.setName("ValidFillStyles");
   ValidFillStyles.add("solid");
   ValidFillStyles.add("shaded");
+
+  /* Viridis colors */
+  ViridisColors = Description({ "#440154", "#440255", "#440357", "#450558", "#45065a", "#45085b", "#46095d", "#460b5e", "#460c5f", "#470e61", "#470f62", "#471164", "#471265", "#471466", "#471568", "#481669", "#48186a", "#48196b", "#481a6d", "#481c6e", "#481d6f", "#481e70", "#482071", "#482172", "#482273", "#482474", "#482575", "#482676", "#472777", "#472978", "#472a79", "#472b7a", "#472c7b", "#472e7c", "#462f7d", "#46307d", "#46317e", "#46337f", "#453480", "#453580", "#453681", "#443782", "#443982", "#443a83", "#433b83", "#433c84", "#423d85", "#423f85", "#424086", "#414186", "#414286", "#404387", "#404487", "#3f4688", "#3f4788", "#3f4888", "#3e4989", "#3e4a89", "#3d4b89", "#3d4c8a", "#3c4d8a", "#3c4f8a", "#3b508a", "#3b518b", "#3a528b", "#3a538b", "#39548b", "#39558c", "#38568c", "#38578c", "#37588c", "#37598c", "#365a8c", "#365b8c", "#355c8d", "#355d8d", "#345e8d", "#34608d", "#33618d", "#33628d", "#32638d", "#32648d", "#32658d", "#31668d", "#31678e", "#30688e", "#30688e", "#2f698e", "#2f6a8e", "#2e6b8e", "#2e6c8e", "#2e6d8e", "#2d6e8e", "#2d6f8e", "#2c708e", "#2c718e", "#2c728e", "#2b738e", "#2b748e", "#2a758e", "#2a768e", "#2a778e", "#29788e", "#29798e", "#297a8e", "#287b8e", "#287c8e", "#277d8e", "#277e8e", "#277e8e", "#267f8e", "#26808e", "#26818e", "#25828e", "#25838e", "#24848e", "#24858e", "#24868e", "#23878d", "#23888d", "#23898d", "#228a8d", "#228b8d", "#228c8d", "#218d8d", "#218e8d", "#218e8d", "#208f8c", "#20908c", "#20918c", "#20928c", "#1f938c", "#1f948b", "#1f958b", "#1f968b", "#1e978b", "#1e988a", "#1e998a", "#1e9a8a", "#1e9b8a", "#1e9c89", "#1e9d89", "#1e9e89", "#1e9e88", "#1e9f88", "#1fa087", "#1fa187", "#1fa287", "#1fa386", "#20a486", "#20a585", "#21a685", "#21a784", "#22a884", "#23a983", "#23aa83", "#24ab82", "#25ab82", "#26ac81", "#27ad80", "#28ae80", "#29af7f", "#2ab07e", "#2bb17e", "#2cb27d", "#2eb37c", "#2fb47b", "#30b47b", "#32b57a", "#33b679", "#35b778", "#36b877", "#38b977", "#39ba76", "#3bbb75", "#3dbb74", "#3ebc73", "#40bd72", "#42be71", "#44bf70", "#46c06f", "#47c06e", "#49c16d", "#4bc26c", "#4dc36b", "#4fc46a", "#51c469", "#53c567", "#55c666", "#57c765", "#5ac864", "#5cc863", "#5ec961", "#60ca60", "#62cb5f", "#64cb5d", "#67cc5c", "#69cd5b", "#6bcd59", "#6ece58", "#70cf57", "#72cf55", "#75d054", "#77d152", "#7ad151", "#7cd24f", "#7ed34e", "#81d34c", "#83d44b", "#86d449", "#88d548", "#8bd646", "#8dd644", "#90d743", "#93d741", "#95d83f", "#98d83e", "#9ad93c", "#9dd93a", "#a0da39", "#a2da37", "#a5db35", "#a8db33", "#aadc32", "#addc30", "#b0dd2e", "#b2dd2c", "#b5dd2b", "#b8de29", "#bade27", "#bddf26", "#c0df24", "#c2df23", "#c5e021", "#c8e020", "#cae11e", "#cde11d", "#d0e11c", "#d2e21b", "#d5e21a", "#d8e219", "#dae318", "#dde318", "#dfe318", "#e2e418", "#e5e418", "#e7e419", "#eae419", "#ece51a", "#efe51b", "#f1e51c", "#f4e61e", "#f6e61f", "#f8e621", "#fbe722", "#fde724" });
+  ViridisColors.setName("ViridisColors");
 }
 
 /* Give the colors name */
@@ -1534,6 +1541,8 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
   const String name(ResourceMap::GetAsString("Drawable-DefaultPaletteName"));
   if      (name == "Tableau") return BuildTableauPalette(size);
   else if (name == "Rainbow") return BuildRainbowPalette(size);
+  else if (name == "GrayScale") return BuildGrayScalePalette(size);
+  else if (name == "Viridis") return BuildViridisPalette(size);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for palette : " << name;
 }
 
@@ -1604,6 +1613,48 @@ Description DrawableImplementation::BuildTableauPalette(const UnsignedInteger si
     // Store result
     palette[paletteIndex] = hexa;
   }
+  return palette;
+}
+
+/* Build Viridis palette
+   Distributes colors evenly ensuring that the first and last colors match the extreme colors of the viridis palette */
+Description DrawableImplementation::BuildViridisPalette(const UnsignedInteger size)
+{
+  if (IsFirstInitialization)
+  {
+    InitializeValidParameterList();
+    IsFirstInitialization = false;
+  }
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
+  Description palette(size);
+  palette[size - 1] = ViridisColors[255];
+  if (size > 1)
+  {
+    Scalar step = 255. / (size - 1);
+    for (UnsignedInteger i = 0; i + 1 < size; i++)
+      palette[i] = ViridisColors[(UnsignedInteger)(i * step + 0.49)];
+  }
+  return palette;
+}
+
+/* Build Viridis palette
+   Distributes colors evenly ensuring that the first and last colors match the white and black margins */
+Description DrawableImplementation::BuildGrayScalePalette(const UnsignedInteger size)
+{
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
+  Description palette(size);
+  UnsignedInteger firstValue = 255 - std::min(255UL, ResourceMap::GetAsUnsignedInteger("Drawable-WhiteMargin")),
+    lastValue = std::min(255UL, ResourceMap::GetAsUnsignedInteger("Drawable-BlackMargin"));
+  if (size > 1)
+  {
+    Scalar step = (lastValue - (Scalar)firstValue) / (size - 1);
+    for (UnsignedInteger i = 0; i < size; i++){
+      UnsignedInteger val = std::min(255UL, (UnsignedInteger)(firstValue + i * step + 0.49));
+      palette[i] = ConvertFromRGB(val,val,val);
+    }
+  }
+  else
+    palette[0] = ConvertFromRGB(lastValue, lastValue, lastValue);
   return palette;
 }
 

@@ -109,7 +109,7 @@ view = viewer.View(graphBasic)
 # We can configure the number of levels by setting the `Contour-DefaultLevelsNumber` key in the `ResourceMap`.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 6)
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50] * 2)
 graphBasic.setXTitle(r"$\mu$")
@@ -150,6 +150,7 @@ levels
 contours = graphBasic.getDrawable(0)
 contours.setLevels(levels)
 contours.setDrawLabels(True)
+contours.setColor("red")
 
 # %%
 # Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
@@ -171,17 +172,18 @@ view = viewer.View(graphFineTune)
 # levels, while others are very different.
 # Anyway, it is obviously nicer to get a colored graphics.
 #
-# The following script first creates a palette of colors with the `BuildDefaultPalette` class.
-# Before doing so, we configure the `Drawable-DefaultPalettePhase` `ResourceMap` key so
-# that the number of generated colors corresponds to the number of levels.
+# The following script first creates a palette of colors with the `BuildGrayScalePalette` class.
+# We adjust the white and black margins using the `Drawable-WhiteMargin` and `Drawable-BlackMargin` keys in the `ResourceMap`
+# in order to use colors between #cdcdcd and #141414
 # Then we create the `drawables` list, where each item is a single contour with its own level and color.
 
 # %%
 # Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0)
 # Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
-palette = ot.Drawable.BuildDefaultPalette(len(levels))
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-BlackMargin", 20)
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-WhiteMargin", 50)
+palette = ot.Drawable.BuildGrayScalePalette(len(levels))
 # Create the drawables list, appending each contour with its own color
 drawables = list()
 for i in range(len(levels)):

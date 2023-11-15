@@ -716,6 +716,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultSurfaceColor", "white");
   addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
+  addAsUnsignedInteger("Drawable-WhiteMargin", 20);
+  addAsUnsignedInteger("Drawable-BlackMargin", 0);
 
   // Text drawable
   addAsScalar("Text-DefaultTextSize", 0.75);

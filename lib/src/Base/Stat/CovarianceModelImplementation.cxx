@@ -1209,6 +1209,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   isoValues.buildDefaultLabels();
   const Point levels(isoValues.getLevels());
   const Description labels(isoValues.getLabels());
+  const Description palette = DrawableImplementation::BuildViridisPalette(levels.getDimension());
   for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
   {
     Contour current(isoValues);
@@ -1216,7 +1217,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     current.setLabels(Description(1, labels[i]));
     current.setDrawLabels(false);
     current.setLegend(labels[i]);
-    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+    current.setColor(palette[i]);
     graph.add(current);
   }
   return graph;
