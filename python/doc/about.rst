@@ -27,6 +27,7 @@ reliability analysis.
 - 2020: (1.15, 1.16) hmat AcaRandom compression, Spectra iterative SVD, examples gallery, C++11, XML/H5 storage
 - 2021: (1.17, 1.18) Karhunen-Loeve validation, new covariance models
 - 2022: (1.19, 1.20) HSIC indices, iterative statistics, field chaos/sensitivity
+- 2023: (1.21, 1.22) Cross-Entropy simulation algorithms, Uniform/TruncatedOverMesh distributions
 
 People
 ------
