@@ -163,7 +163,7 @@ void Curve::load(Advocate & adv)
   DrawableImplementation::load(adv);
 }
 
-/* Builds a polygon wich fills the area between two curves */
+/* Builds a polygon which fills the area between two curves */
 Polygon Curve::FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2) {
   const UnsignedInteger size = dataX.getSize();
   if ((dataY1.getSize() != size) || (dataY2.getSize() != size))
