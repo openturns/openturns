@@ -367,7 +367,7 @@ ot_add_python_module(func func_module.i
                       P1LagrangeInterpolation.i P1LagrangeInterpolation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
-                      BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
+                      BasisSequenceImplementation.i
                       BasisSequence.i BasisSequence_doc.i.in
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
