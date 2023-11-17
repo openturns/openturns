@@ -42,6 +42,9 @@ VertexValuePointToFieldFunction::VertexValuePointToFieldFunction(const Function 
 {
   if (!(function_.getInputDimension() >= mesh.getDimension()))
     throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();
+  Description inputDescription(function_.getInputDescription());
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + mesh.getDimension());
+  setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
 }
 
