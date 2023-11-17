@@ -129,8 +129,7 @@ view = viewer.View(graphBasic)
 # %%
 drawables = graphBasic.getDrawables()
 levels = []
-for i in range(len(drawables)):
-    contours = drawables[i]
+for contours in drawables:
     levels.append(contours.getLevels()[0])
 levels
 
@@ -174,7 +173,7 @@ view = viewer.View(graphFineTune)
 #
 # The following script first creates a palette of colors with the `BuildGrayScalePalette` class.
 # We adjust the white and black margins using the `Drawable-WhiteMargin` and `Drawable-BlackMargin` keys in the `ResourceMap`
-# in order to use colors between #cdcdcd and #141414
+# in order to use colors between `#cdcdcd` and `#141414`.
 # Then we create the `drawables` list, where each item is a single contour with its own level and color.
 
 # %%
@@ -185,9 +184,9 @@ ot.ResourceMap.SetAsUnsignedInteger("Drawable-BlackMargin", 20)
 ot.ResourceMap.SetAsUnsignedInteger("Drawable-WhiteMargin", 50)
 palette = ot.Drawable.BuildGrayScalePalette(len(levels))
 # Create the drawables list, appending each contour with its own color
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
+drawables = []
+for level in levels:
+    contour.setLevels([level])
     # Inline the level values
     contour.setDrawLabels(True)
     # We have to copy the drawable because a Python list stores only pointers
