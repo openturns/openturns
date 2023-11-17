@@ -126,7 +126,7 @@ void MultiStart::run()
                   result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
                   solver.getMaximumConstraintError());
 
-    evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    evaluationNumber = getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
     LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
     if (evaluationNumber > getMaximumEvaluationNumber())
     {
