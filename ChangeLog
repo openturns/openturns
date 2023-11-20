@@ -33,6 +33,7 @@
  * Removed deprecated Point.clean
  * Removed deprecated (Inverse)Gamma.setKLambda
  * Removed deprecated Os::GetEndOfLine
+ * Deprecated Sample::computePearsonCorrelation in favor of computeLinearCorrelation
 
 === Documentation ===
 

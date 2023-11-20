@@ -209,9 +209,10 @@ public:
   Point computeVariance() const;
 
   /**
-   * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample
+   * Method computeLinearCorrelation() gives the linear correlation matrix of the sample
    */
   CorrelationMatrix computeLinearCorrelation() const;
+  /* @deprecated */
   CorrelationMatrix computePearsonCorrelation() const;
 
   /**

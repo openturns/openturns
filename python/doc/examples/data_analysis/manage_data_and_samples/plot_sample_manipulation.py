@@ -140,9 +140,9 @@ sample.computeKurtosis()
 # %%
 # Some statistical test for correlation are available :
 #
-# - get the sample Pearson correlation matrix :
+# - get the sample linear correlation matrix :
 #
-sample.computePearsonCorrelation()
+sample.computeLinearCorrelation()
 
 # %%
 # - get  the sample Kendall correlation matrix :

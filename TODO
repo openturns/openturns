@@ -1,2 +1,3 @@
 When the OPENTURNS_MAXSCALAR_IS_INF compilation option is removed, some checks marked TODO JM need to be removed as well.
 At the same time, we need to rename MaxScalar to Infinity and ActualMaxScalar to MaxScalar.
+Remove Sample::computePearsonCorrelation

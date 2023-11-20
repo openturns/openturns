@@ -195,7 +195,7 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   // Implement the test using basic rho statistic
   Sample fullSample(firstSample);
   fullSample.stack(secondSample);
-  const Scalar rho = fullSample.computePearsonCorrelation()(0, 1);
+  const Scalar rho = fullSample.computeLinearCorrelation()(0, 1);
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))

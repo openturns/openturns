@@ -466,11 +466,6 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::computeLinearCorrelation
-"**(ditch me?)**"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Sample::computeMean
 "Estimate the mean vector.
 
@@ -521,8 +516,8 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::computePearsonCorrelation
-"Estimate the Pearson correlation matrix.
+%feature("docstring") OT::Sample::computeLinearCorrelation
+"Estimate the linear (Pearson) correlation matrix.
 
 Returns
 -------
@@ -546,7 +541,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computePearsonCorrelation())
+>>> print(sample.computeLinearCorrelation())
 [[ 1         0.0196933 ]
  [ 0.0196933 1         ]]"
 
@@ -726,7 +721,7 @@ of the ranks sample (i.e. using `self.rank().computePearsonCorrelation()`).
 
 See Also
 --------
-rank, computePearsonCorrelation
+rank, computeLinearCorrelation
 
 Examples
 --------
