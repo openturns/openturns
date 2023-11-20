@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
+#include <filesystem>
 
 #if defined OPENTURNS_HAVE_LIBXML2
 #include <libxml/parser.h>
@@ -65,6 +66,8 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
+  if (!std::ifstream(std::filesystem::u8path(fileName)).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
   doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
@@ -98,6 +101,8 @@ XMLDoc::operator xmlDocPtr() const
 
 void XMLDoc::save(const FileName & fileName) const
 {
+  if (!std::ofstream(std::filesystem::u8path(fileName)).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
   int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
   if (rc < 0)
     throw InternalException(HERE) << "XMLDoc: Could not save XML file " << fileName;
