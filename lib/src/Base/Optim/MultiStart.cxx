@@ -148,10 +148,11 @@ void MultiStart::run()
       }
     }
   }
+  result_.setEvaluationNumber(evaluationNumber);
+
   if (!(successNumber > 0))
     throw InternalException(HERE) << "None of the local searches succeeded.";
   LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
-  result_.setEvaluationNumber(evaluationNumber);
 }
 
 

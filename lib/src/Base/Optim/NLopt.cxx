@@ -308,28 +308,28 @@ void NLopt::run()
   // the default seed is non-deterministic
   nlopt::srand(seed_);
 
+  nlopt::result rc = nlopt::FAILURE;
   try
   {
     // The C++ interface of NLopt does not return a code for failures cases.
     // It is either positive (termination criterion) or an exception is thrown.
     p_opt_ = &opt;
-    const int rc = opt.optimize(x, optimalValue);
-    if (rc == nlopt::MAXEVAL_REACHED)
-      LOGDEBUG("NLopt rc=MAXEVAL_REACHED");
+    rc = opt.optimize(x, optimalValue);
   }
   catch (const nlopt::roundoff_limited &)
   {
-    // Here we catch the roundoff_limited exception as the result
-    // of the optimization may be useful even if not at the requested precision
-    LOGWARN("NLopt raised a roundoff-limited exception");
+    rc = nlopt::ROUNDOFF_LIMITED;
   }
   catch (const nlopt::forced_stop &)
   {
-    LOGWARN("NLopt was stopped by user");
+    rc = nlopt::FORCED_STOP;
   }
-  catch (const std::exception & exc)
+  catch (const std::bad_alloc &)
   {
-    throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
+    rc = nlopt::OUT_OF_MEMORY;
+  }
+  catch (const std::exception &)
+  {
   }
   p_opt_ = nullptr;
 
@@ -339,6 +339,11 @@ void NLopt::run()
     inequalityConstraintHistory_ = getProblem().getInequalityConstraint()(evaluationInputHistory_);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
+
+  if (rc < 0)
+    throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
+
 #else
   (void) p_opt_;
   throw NotYetImplementedException(HERE) << "No NLopt support";

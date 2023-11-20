@@ -210,17 +210,16 @@ void TNC::run()
   int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
+  result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {
     if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
+      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << result_.getStatusMessage());
     else
-      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
+      throw InternalException(HERE) << "Solving problem by TNC method failed (" << result_.getStatusMessage() << ")";
   }
-  if (!evaluationInputHistory_.getSize())
-    throw InternalException(HERE) << "TNC error at starting point x=" << x << " (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
-
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 }
 
 /* Scale accessor */

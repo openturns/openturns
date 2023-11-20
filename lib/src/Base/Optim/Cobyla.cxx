@@ -131,17 +131,17 @@ void Cobyla::run()
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
   int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+
+  result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+
   if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {
     if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << result_.getStatusMessage());
     else
-      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
+      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
   }
-  if (!evaluationInputHistory_.getSize())
-    throw InternalException(HERE) << "Cobyla error at starting point x=" << x << " (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
-
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 }
 
 /* RhoBeg accessor */

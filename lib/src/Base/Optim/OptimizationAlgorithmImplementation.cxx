@@ -254,6 +254,13 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   // Update the result
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = inputHistory.getSize();
+  if (outputHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+  if (getProblem().hasInequalityConstraint() && inequalityHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+  if (getProblem().hasEqualityConstraint() && equalityHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+
   const UnsignedInteger dimension = getProblem().getDimension();
 
   Scalar absoluteError = -1.0;

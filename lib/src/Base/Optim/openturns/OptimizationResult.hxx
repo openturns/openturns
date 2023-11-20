@@ -133,6 +133,10 @@ public:
   void setParetoFrontsIndices(const IndicesCollection & indices);
   IndicesCollection getParetoFrontsIndices() const;
 
+  /** Status message accessor */
+  void setStatusMessage(const String & statusMessage);
+  String getStatusMessage() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
@@ -170,8 +174,10 @@ private:
   Sample finalPoints_;
   Sample finalValues_;
 
-  // pareto fronts indices, for multi-objective optimization
+  // for multi-objective optimization
   IndicesCollection paretoFrontsIndices_;
+
+  String statusMessage_;
 
 }; // class OptimizationResult
 

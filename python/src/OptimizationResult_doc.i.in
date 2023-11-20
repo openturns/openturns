@@ -337,3 +337,23 @@ Parameters
 ----------
 indices : 2-d sequence of int
     Pareto fronts indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setStatusMessage
+"Accessor to the status string.
+
+Parameters
+----------
+statusMessage : str
+    Convergence or error message"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getStatusMessage
+"Accessor to the status string.
+
+Returns
+-------
+statusMessage : str
+    Convergence or error message"

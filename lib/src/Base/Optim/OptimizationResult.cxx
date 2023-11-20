@@ -262,6 +262,7 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "finalPoints_", finalPoints_ );
   adv.saveAttribute( "finalValues_", finalValues_ );
   adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
+  adv.saveAttribute( "statusMessage_", statusMessage_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -292,6 +293,8 @@ void OptimizationResult::load(Advocate & adv)
     adv.loadAttribute( "finalValues_", finalValues_ );
     adv.loadAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
   }
+  if (adv.hasAttribute("statusMessage_"))
+    adv.loadAttribute("statusMessage_", statusMessage_);
 }
 
 /* Incremental history storage */
@@ -493,6 +496,17 @@ IndicesCollection OptimizationResult::getParetoFrontsIndices() const
   if (getProblem().getObjective().getOutputDimension() <= 1)
     throw InvalidArgumentException(HERE) << "No pareto fronts available for mono-objective";
   return paretoFrontsIndices_;
+}
+
+/* Status message accessor */
+void OptimizationResult::setStatusMessage(const String & statusMessage)
+{
+  statusMessage_ = statusMessage;
+}
+
+String OptimizationResult::getStatusMessage() const
+{
+  return statusMessage_;
 }
 
 END_NAMESPACE_OPENTURNS

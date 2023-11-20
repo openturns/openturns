@@ -362,39 +362,45 @@ void CMinpack::run()
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
 
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   switch (info)
   {
     case -1:
       // user stop
+      result_.setStatusMessage("user stop");
       break;
     case 0:
-      throw InvalidArgumentException(HERE) << "CMinpack: Improper input parameters";
+      result_.setStatusMessage("improper input parameters");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 1:
-      LOGINFO("ftol termination condition is satisfied.");
+      result_.setStatusMessage("ftol termination condition is satisfied");
       break;
     case 2:
-      LOGINFO("xtol termination condition is satisfied.");
+      result_.setStatusMessage("xtol termination condition is satisfied");
       break;
     case 3:
-      LOGINFO("Both ftol and xtol termination conditions are satisfied.");
+      result_.setStatusMessage("Both ftol and xtol termination conditions are satisfied");
       break;
     case 4:
-      LOGINFO("gtol termination condition is satisfied.");
+      result_.setStatusMessage("gtol termination condition is satisfied");
       break;
     case 5:
-      LOGINFO("The maximum number of function evaluations is exceeded.");
+      result_.setStatusMessage("maximum function evaluations exceeded");
       break;
     case 6:
-      throw InvalidArgumentException(HERE) << "CMinpack: ftol is too small";
+      result_.setStatusMessage("ftol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 7:
-      throw InvalidArgumentException(HERE) << "CMinpack: xtol is too small";
+      result_.setStatusMessage("xtol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 8:
-      throw InvalidArgumentException(HERE) << "CMinpack: gtol is too small";
+      result_.setStatusMessage("gtol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     default:
+      result_.setStatusMessage("Unknown");
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
-
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  LOGDEBUG(OSS() << "CMinpack status: " << result_.getStatusMessage());
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

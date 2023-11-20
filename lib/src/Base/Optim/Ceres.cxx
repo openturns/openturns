@@ -256,6 +256,7 @@ void Ceres::run()
   result_ = OptimizationResult(getProblem());
 
   UnsignedInteger iterationNumber = 0;
+  ceres::TerminationType termination_type = ceres::FAILURE;
 
   if (getProblem().hasResidualFunction())
   {
@@ -399,16 +400,10 @@ void Ceres::run()
     options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
+
     LOGINFO(OSS() << summary.BriefReport());
-    if (summary.termination_type == ceres::FAILURE)
-      throw InternalException(HERE) << "Ceres terminated with failure.";
-    else if (summary.termination_type == ceres::NO_CONVERGENCE)
-      throw InternalException(HERE) << "Ceres did not converge.";
-    else if (summary.termination_type != ceres::CONVERGENCE)
-      LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
-
+    termination_type = summary.termination_type;
     iterationNumber = summary.iterations.size();
-
   }
   else
   {
@@ -474,18 +469,20 @@ void Ceres::run()
     ceres::Solve(options, problem, &x[0], &summary);
 
     LOGINFO(OSS() << summary.BriefReport());
-    if (summary.termination_type == ceres::FAILURE)
-      throw InternalException(HERE) << "Ceres terminated with failure.";
-    else if (summary.termination_type == ceres::NO_CONVERGENCE)
-      throw InternalException(HERE) << "Ceres did not converge.";
-    else if (summary.termination_type != ceres::CONVERGENCE)
-      LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
-
+    termination_type = summary.termination_type;
     iterationNumber = summary.iterations.size();
   }
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setIterationNumber(iterationNumber);
+  result_.setStatusMessage(ceres::TerminationTypeToString(termination_type));
+
+  if (termination_type == ceres::FAILURE)
+    throw InternalException(HERE) << "Ceres terminated with failure.";
+  else if (termination_type == ceres::NO_CONVERGENCE)
+    throw InternalException(HERE) << "Ceres did not converge.";
+  else if (termination_type != ceres::CONVERGENCE)
+    LOGWARN(OSS() << "Ceres terminated with " << result_.getStatusMessage());
 
 #else
   throw NotYetImplementedException(HERE) << "No Ceres support";
