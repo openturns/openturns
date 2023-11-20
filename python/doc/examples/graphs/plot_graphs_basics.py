@@ -216,7 +216,7 @@ view = viewer.View(graph)
 # Create matrices of graphics
 # ---------------------------
 #
-# The library does *not* has objects to create a grid of graphics. However, we can use the `add_subplot` function from Matplotlib.
+# The library provides features to create a grid of graphics. However, we can use the `add_subplot` function from Matplotlib.
 #
 # Let us create two graphics of the PDF and CDF of the following gaussian distribution..
 
@@ -226,9 +226,15 @@ myPDF = n.drawPDF()
 myCDF = n.drawCDF()
 
 # %%
+# Using `~openturns.GridLayout`.
+grid = ot.GridLayout(1, 2)
+grid.setGraph(0, 0, myPDF)
+grid.setGraph(0, 1, myCDF)
+_ = viewer.View(grid)
 
 # %%
-# We create a figure with the `figure` function from Matplotlib, then we add two graphics with the `add_subplot` function.
+# Another method is to create a figure with the `figure` function from Matplotlib, 
+# then add two graphics with the `add_subplot` function.
 # We use the `viewer.View` function to create the required Matplotlib object.
 # Since we are not interested by the output of the `View` function, we use the dummy variable `_` as output.
 # The title is finally configured with `suptitle`.
