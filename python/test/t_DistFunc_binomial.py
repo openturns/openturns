@@ -52,7 +52,7 @@ for x in sample2:
     ott.assert_almost_equal(val, ref)
 
 # Corner cases
-dataset = ot.Sample.ImportFromCSVFile("t_binomial_dataset.csv", ",")
+dataset = ot.Sample.ImportFromTextFile("t_binomial_dataset.csv", ",", 13)
 
 precision = 1e-11
 binomial = ot.Binomial()

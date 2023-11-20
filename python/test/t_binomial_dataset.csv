@@ -1,3 +1,16 @@
+# Copyright (C) 2012 - Prateek Papriwal
+# Copyright (C) 2012 - Michael Baudin
+#
+# This file must be used under the terms of the CeCILL.
+# This source file is licensed as described in the file COPYING which
+# you should have received as part of this distribution. The terms
+# are also available at
+# http:#www.cecill.info/licences/Licence_CeCILL_V2-en.txt
+#
+# <-- JVM NOT MANDATORY -->
+#
+# Assessing the quality of the Binomial distribution function
+# Table of inputs computed using R software
 x,N,pr,PDF-P,CDF-P,CDF-Q
 0,10,0,1,1,0
 10,10,0,0,1,0

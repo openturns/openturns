@@ -66,7 +66,7 @@ int main(int, char *[])
     }
 
     // Corner cases
-    const Sample dataset(Sample::ImportFromCSVFile("t_binomial_dataset.csv", ","));
+    const Sample dataset(Sample::ImportFromTextFile("t_binomial_dataset.csv", ",", 13));
 
     const Scalar precision = 1e-11;
     Binomial binomial;
