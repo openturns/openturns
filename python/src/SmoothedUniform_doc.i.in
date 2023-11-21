@@ -108,3 +108,23 @@ Parameters
 ----------
 sigma : float, :math:`\sigma > 0`
     Standard deviation of the :class:`~openturns.Normal` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::setFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Parameters
+----------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::getFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Returns
+-------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
