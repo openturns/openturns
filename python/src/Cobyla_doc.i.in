@@ -54,24 +54,3 @@ Parameters
 ----------
 rhoBeg : float
     A reasonable initial change to the variables."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Cobyla::setIgnoreFailure
-"Accessor to ignore failure flag.
-
-Parameters
-----------
-ignore_failure : bool
-    Whether to ignore failure return codes."
-
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Cobyla::getIgnoreFailure
-"Accessor to ignore failure flag.
-
-Returns
--------
-ignore_failure : bool
-    Whether to ignore failure return codes."

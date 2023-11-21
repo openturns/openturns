@@ -138,10 +138,10 @@ void Cobyla::run()
   if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << result_.getStatusMessage());
-    else
+    if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "The Cobyla algorithm failed. The error message is " << result_.getStatusMessage());
   }
 }
 
@@ -298,12 +298,14 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
 void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
 {
-  ignoreFailure_ = ignoreFailure;
+  LOGWARN(OSS() << "Cobyla.setIgnoreFailure is deprecated, use setCheckStatus");
+  setCheckStatus(!ignoreFailure);
 }
 
 Bool Cobyla::getIgnoreFailure() const
 {
-  return ignoreFailure_;
+  LOGWARN(OSS() << "Cobyla.getIgnoreFailure is deprecated, use getCheckStatus");
+  return !getCheckStatus();
 }
 
 END_NAMESPACE_OPENTURNS

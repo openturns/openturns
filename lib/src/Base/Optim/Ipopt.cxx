@@ -216,7 +216,10 @@ void Ipopt::run()
   else if (status < 0)
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    throw InternalException(HERE) << "Ipopt error: " << statusMessage;
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Ipopt error: " << statusMessage;
+    else
+      LOGWARN(OSS() << "Ipopt algorithm failed. The error message is " << result_.getStatusMessage());
   }
 
 #else

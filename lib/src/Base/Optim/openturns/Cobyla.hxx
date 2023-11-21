@@ -68,7 +68,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Ignore failure return codes */
+  /** @deprecated Ignore failure return codes */
   void setIgnoreFailure(const Bool ignoreFailure);
   Bool getIgnoreFailure() const;
 
@@ -95,9 +95,6 @@ private:
   Sample evaluationOutputHistory_;
   Sample equalityConstraintHistory_;
   Sample inequalityConstraintHistory_;
-
-  /** Whether to ignore failure return codes */
-  Bool ignoreFailure_ = false;
 
 }; /* class Cobyla */
 

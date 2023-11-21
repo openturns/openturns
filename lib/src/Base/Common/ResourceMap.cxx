@@ -778,6 +778,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
+  addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 
   // Pagmo parameters //
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);

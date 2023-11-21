@@ -254,24 +254,3 @@ rescale : float
     if a big value, never rescale
 
     if < 0, rescale is set to 1.3."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TNC::setIgnoreFailure
-"Accessor to ignore failure flag.
-
-Parameters
-----------
-ignore_failure : bool
-    Whether to ignore failure return codes."
-
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TNC::getIgnoreFailure
-"Accessor to ignore failure flag.
-
-Returns
--------
-ignore_failure : bool
-    Whether to ignore failure return codes."

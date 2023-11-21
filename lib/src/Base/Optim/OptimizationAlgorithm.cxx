@@ -202,15 +202,27 @@ void OptimizationAlgorithm::run()
 
 void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setProgressCallback(callBack, state);
 }
 
-
 void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
 }
 
+/* Check status accessor */
+void OptimizationAlgorithm::setCheckStatus(const Bool checkStatus)
+{
+  copyOnWrite();
+  getImplementation()->setCheckStatus(checkStatus);
+}
+
+Bool OptimizationAlgorithm::getCheckStatus() const
+{
+  return getImplementation()->getCheckStatus();
+}
 
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {

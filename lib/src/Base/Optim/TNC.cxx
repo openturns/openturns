@@ -216,10 +216,10 @@ void TNC::run()
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << result_.getStatusMessage());
-    else
+    if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by TNC method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "TNC algorithm failed. The error message is " << result_.getStatusMessage());
   }
 }
 
@@ -431,12 +431,14 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
 void TNC::setIgnoreFailure(const Bool ignoreFailure)
 {
-  ignoreFailure_ = ignoreFailure;
+  LOGWARN(OSS() << "TNC.setIgnoreFailure is deprecated, use setCheckStatus");
+  setCheckStatus(!ignoreFailure);
 }
 
 Bool TNC::getIgnoreFailure() const
 {
-  return ignoreFailure_;
+  LOGWARN(OSS() << "TNC.getIgnoreFailure is deprecated, use getCheckStatus");
+  return !getCheckStatus();
 }
 
 END_NAMESPACE_OPENTURNS

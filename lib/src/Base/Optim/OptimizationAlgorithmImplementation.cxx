@@ -40,6 +40,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
+  , checkStatus_(ResourceMap::GetAsBool("OptimizationAlgorithm-DefaultCheckStatus"))
 {
   // Nothing to do
 }
@@ -58,6 +59,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
+  , checkStatus_(ResourceMap::GetAsBool("OptimizationAlgorithm-DefaultCheckStatus"))
 {
   // Nothing to do
 }
@@ -217,6 +219,7 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
+  adv.saveAttribute( "checkStatus_", checkStatus_ );
 }
 
 
@@ -232,6 +235,8 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
+  if (adv.hasAttribute("checkStatus_"))
+    adv.loadAttribute("checkStatus_", checkStatus_);
 }
 
 
@@ -333,6 +338,18 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
   }
   result_.setEvaluationNumber(size);
+}
+
+
+/* Check status accessor */
+void OptimizationAlgorithmImplementation::setCheckStatus(const Bool checkStatus)
+{
+  checkStatus_ = checkStatus;
+}
+
+Bool OptimizationAlgorithmImplementation::getCheckStatus() const
+{
+  return checkStatus_;
 }
 
 END_NAMESPACE_OPENTURNS

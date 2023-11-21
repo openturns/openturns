@@ -263,12 +263,8 @@ void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
-  if (cobyla)
-    cobyla->setIgnoreFailure(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setIgnoreFailure(true);
+  if ((solverName == "Cobyla") || (solverName == "TNC"))
+    solver_.setCheckStatus(false);
 }
 
 /* Virtual constructor */

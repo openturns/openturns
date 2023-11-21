@@ -117,6 +117,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Check status accessor */
+  void setCheckStatus(const Bool checkStatus);
+  Bool getCheckStatus() const;
+
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
@@ -146,6 +150,9 @@ private:
   Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
+
+  /* Whether to check if optimization has converged or not */
+  Bool checkStatus_ = true;
 
 } ; /* class OptimizationAlgorithmImplementation */
 

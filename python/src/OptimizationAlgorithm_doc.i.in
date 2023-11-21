@@ -44,6 +44,10 @@ OT_OptimizationAlgorithm_setStartingPoint_doc
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+%feature("docstring") OT::OptimizationAlgorithm::setCheckStatus
+OT_OptimizationAlgorithm_setCheckStatus_doc
+%feature("docstring") OT::OptimizationAlgorithm::getCheckStatus
+OT_OptimizationAlgorithm_getCheckStatus_doc
 
 // ---------------------------------------------------------------------
 

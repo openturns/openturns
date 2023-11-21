@@ -344,7 +344,10 @@ void NLopt::run()
   if (rc < 0)
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
+    if (getCheckStatus())
+      throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
+    else
+      LOGWARN(OSS() << "NLopt algorithm failed. The error message is " << result_.getStatusMessage());
   }
 
 #else

@@ -102,6 +102,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Check status accessor */
+  void setCheckStatus(const Bool checkStatus);
+  Bool getCheckStatus() const;
+  
   /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
 

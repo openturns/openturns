@@ -357,3 +357,33 @@ Examples
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setCheckStatus_doc
+"Accessor to check status flag.
+
+Parameters
+----------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setCheckStatus
+OT_OptimizationAlgorithm_setCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getCheckStatus_doc
+"Accessor to check status flag.
+
+Returns
+-------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getCheckStatus
+OT_OptimizationAlgorithm_getCheckStatus_doc
