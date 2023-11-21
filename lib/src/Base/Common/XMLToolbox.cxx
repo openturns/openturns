@@ -30,6 +30,7 @@
 #include <cstring>
 
 #if defined OPENTURNS_HAVE_LIBXML2
+#include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
 #endif
