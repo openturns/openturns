@@ -202,7 +202,7 @@ void AbdoRackwitz::run()
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
-    result_.setEvaluationNumber(evaluationNumber);
+    result_.setCallsNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 

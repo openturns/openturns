@@ -188,7 +188,7 @@ public:
       algorithm_.evaluationOutputHistory_.add(outP);
 
       // update result
-      algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
       algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
     }
     catch (Exception &)

@@ -50,23 +50,23 @@ constraintErrorHistory : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::setEvaluationNumber
-"Accessor to the number of evaluation.
+%feature("docstring") OT::OptimizationResult::setCallsNumber
+"Accessor to the number calls.
 
 Parameters
 ----------
-evaluationNumber : int
-    Number of evaluations."
+callsNumber : int
+    Number of objective calls."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::getEvaluationNumber
-"Accessor to the number of evaluations.
+%feature("docstring") OT::OptimizationResult::getCallsNumber
+"Accessor to the number of calls.
 
 Returns
 -------
-evaluationNumber : int
-    Number of evaluations."
+callsNumber : int
+    Number of objective calls."
 
 // ---------------------------------------------------------------------
 

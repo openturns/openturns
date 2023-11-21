@@ -151,7 +151,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
     // update result
-    algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+    algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
     algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
 
     std::copy(outP.begin(), outP.end(), fvec);

@@ -274,7 +274,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, constraintValue.normInf(), algorithm->getMaximumConstraintError());
 
   int returnValue = 0;

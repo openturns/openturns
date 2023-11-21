@@ -352,7 +352,7 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     result_.setStatus(OptimizationResult::FAILURE);
     throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
   }
-  result_.setEvaluationNumber(size);
+  result_.setCallsNumber(size);
 }
 
 

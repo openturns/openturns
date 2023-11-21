@@ -36,6 +36,7 @@
  * Deprecated Sample|CorrelationAnalysis::computePearsonCorrelation in favor of computeLinearCorrelation
  * Deprecated Cobyla::setIgnoreFailure, TNC::setIgnoreFailure in favor of setCheckStatus
  * Deprecated OptimizationAlgorithm.set/getMaximumEvaluationNumber in favor of set/getMaximumCallsNumber
+ * Deprecated OptimizationResult.set/getEvaluationNumber in favor of set/getCallsNumber
 
 === Documentation ===
 

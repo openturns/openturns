@@ -70,7 +70,10 @@ public:
   void setFinalValues(const Sample & finalValues);
   Sample getFinalValues() const;
 
-  /** Evaluation number accessor */
+  /** Calls number accessor */
+  void setCallsNumber(const UnsignedInteger callsNumber);
+  UnsignedInteger getCallsNumber() const;
+  // @deprecated
   void setEvaluationNumber(const UnsignedInteger evaluationNumber);
   UnsignedInteger getEvaluationNumber() const;
 
@@ -162,7 +165,7 @@ protected:
 private:
   Point optimalPoint_;
   Point optimalValue_;
-  UnsignedInteger evaluationNumber_ = 0; // Number of function evaluations
+  UnsignedInteger callsNumber_ = 0; // Number of function calls
   UnsignedInteger iterationNumber_ = 0; // Number of outermost iterations (in case of nested iterations)
   Scalar absoluteError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| */
   Scalar relativeError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

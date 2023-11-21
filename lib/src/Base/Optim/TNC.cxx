@@ -407,7 +407,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // callbacks

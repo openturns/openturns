@@ -611,7 +611,7 @@ void Pagmo::run()
   PagmoProblem::evaluationNumber_ = 0;
   pop = algo.evolve(pop);
   result_ = OptimizationResult(getProblem());
-  result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
+  result_.setCallsNumber(PagmoProblem::evaluationNumber_);
   result_.setIterationNumber(getMaximumIterationNumber());
   Scalar optimalValue = 0.0;
   Sample finalPoints(0, getProblem().getDimension());

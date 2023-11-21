@@ -110,15 +110,27 @@ void OptimizationResult::setFinalValues(const Sample & finalValues)
   finalValues_ = finalValues;
 }
 
-/* Evaluation number accessor */
+/* Evaluation calls accessor */
+UnsignedInteger OptimizationResult::getCallsNumber() const
+{
+  return callsNumber_;
+}
+
+void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
+{
+  callsNumber_ = callsNumber;
+}
+
 UnsignedInteger OptimizationResult::getEvaluationNumber() const
 {
-  return evaluationNumber_;
+  LOGWARN("OptimizationResult.getEvaluationNumber is deprecated, use getCallsNumber");
+  return getCallsNumber();
 }
 
 void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
 {
-  evaluationNumber_ = evaluationNumber;
+  LOGWARN("OptimizationResult.setEvaluationNumber is deprecated, use setCallsNumber");
+  setCallsNumber(evaluationNumber);
 }
 
 /* Iteration number accessor */
@@ -229,7 +241,7 @@ String OptimizationResult::__repr__() const
       << " statusMessage=" << statusMessage_
       << " optimal point=" << optimalPoint_
       << " optimal value=" << optimalValue_
-      << " evaluationNumber=" << evaluationNumber_
+      << " callsNumber=" << callsNumber_
       << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
@@ -245,7 +257,7 @@ void OptimizationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
-  adv.saveAttribute( "evaluationNumber_", evaluationNumber_ );
+  adv.saveAttribute( "callsNumber_", callsNumber_ );
   adv.saveAttribute( "iterationNumber_", iterationNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
@@ -274,7 +286,10 @@ void OptimizationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "optimalPoint_", optimalPoint_ );
   adv.loadAttribute( "optimalValue_", optimalValue_ );
-  adv.loadAttribute( "evaluationNumber_", evaluationNumber_ );
+  if (adv.hasAttribute("callsNumber_"))
+    adv.loadAttribute( "callsNumber_", callsNumber_ );
+  else
+    adv.loadAttribute( "evaluationNumber_", callsNumber_ );
   adv.loadAttribute( "iterationNumber_", iterationNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );

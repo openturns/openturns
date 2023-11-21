@@ -290,7 +290,7 @@ public:
                               const double funct_value,
                               const DlibMatrix & )
   {
-    optimizationResult_.setEvaluationNumber(objectiveFunction_.getEvaluationNumber());
+    optimizationResult_.setCallsNumber(objectiveFunction_.getEvaluationNumber());
 
     Point xPoint(x.size());
     std::copy(x.begin(), x.end(), xPoint.begin());
@@ -672,7 +672,7 @@ void Dlib::run()
 
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, globalOptimResult.y));
-    result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
+    result_.setCallsNumber(objectiveDlibFunction.getEvaluationNumber());
   }
   else if (algoName_ == "least_squares")
   {

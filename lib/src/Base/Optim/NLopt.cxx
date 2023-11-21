@@ -449,7 +449,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // gradient

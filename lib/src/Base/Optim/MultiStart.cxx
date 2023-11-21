@@ -150,7 +150,7 @@ void MultiStart::run()
       }
     }
   }
-  result_.setEvaluationNumber(callsNumber);
+  result_.setCallsNumber(callsNumber);
 
   if (!(successNumber > 0))
   {
