@@ -336,7 +336,7 @@ Function Function::getMarginal(const Indices & indices) const
 /* Number of calls to the evaluation */
 UnsignedInteger Function::getCallsNumber() const
 {
-  return getEvaluationCallsNumber();
+  return getImplementation()->getCallsNumber();
 }
 
 UnsignedInteger Function::getEvaluationCallsNumber() const

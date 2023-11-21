@@ -50,7 +50,7 @@ int main(int, char *[])
       fullprint << "myFunc.gradient(point)=" << myFunc.gradient(point) << std::endl;
       fullprint << "myFunc.hessian(point)=" << myFunc.hessian(point) << std::endl;
       /* Get the number of calls */
-      fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
+      fullprint << "called " << myFunc.getEvaluationCallsNumber() << " times" << std::endl;
     }
     // Construction based on a PointToFieldFunction followed by a FieldToPointFunction
     {
@@ -81,7 +81,7 @@ int main(int, char *[])
       fullprint << "myFunc.gradient(point)=" << myFunc.gradient(point).clean(1.0e-8) << std::endl;
       fullprint << "myFunc.hessian(point)=" << myFunc.hessian(point).clean(1.0e-7) << std::endl;
       /* Get the number of calls */
-      fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
+      fullprint << "called " << myFunc.getEvaluationCallsNumber() << " times" << std::endl;
     }
   } // try
   catch (TestFailed & ex)
