@@ -102,19 +102,23 @@ public:
   void setResidualError(const Scalar residualError);
   Scalar getResidualError() const;
 
-  /** Maximum function evaluation accessor */
+  /** Maximum function calls accessor */
+  void setMaximumCallsNumber(const UnsignedInteger maximumFunctionEvaluation);
+  UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
   UnsignedInteger getMaximumFunctionEvaluation() const;
 
-  /** Used function evaluation */
+  /** Used function calls */
+  UnsignedInteger getCallsNumber() const;
+  // @deprecated
   UnsignedInteger getUsedFunctionEvaluation() const;
 
 protected:
 
-
-  /** Used function evaluation statistics */
-  mutable UnsignedInteger maximumFunctionEvaluation_;
-  mutable UnsignedInteger usedFunctionEvaluation_;
+  /** Used function calls statistics */
+  mutable UnsignedInteger maximumCallsNumber_ = 0;
+  mutable UnsignedInteger callsNumber_ = 0;
 
 private:
   Scalar absoluteError_;
