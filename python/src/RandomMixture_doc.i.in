@@ -455,3 +455,23 @@ Examples
 >>> dist, kolmogorovNorm = distribution.project(coll)
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomMixture::setFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Parameters
+----------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomMixture::getFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Returns
+-------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
+
