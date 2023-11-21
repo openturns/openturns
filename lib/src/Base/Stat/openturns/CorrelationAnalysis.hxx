@@ -55,6 +55,8 @@ public:
   String __repr__() const override;
 
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
+  Point computeLinearCorrelation() const;
+  // @deprecated
   Point computePearsonCorrelation() const;
 
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
@@ -87,8 +89,8 @@ public:
 protected:
 
   // computePearsonCorrelation with arguments
-  static Point ComputePearsonCorrelation(const Sample & firstSample,
-                                         const Sample & secondSample);
+  static Point ComputeLinearCorrelation(const Sample & firstSample,
+                                        const Sample & secondSample);
 
   // computePCC with arguments
   static Point ComputePCC(const Sample & firstSample,

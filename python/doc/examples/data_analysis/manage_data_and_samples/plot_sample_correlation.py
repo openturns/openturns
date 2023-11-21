@@ -115,7 +115,7 @@ view = viewer.View(graph)
 # -----------------------
 # We compute here the Pearson :math:`\rho` coefficients.
 
-pearson_correlation = corr_analysis.computePearsonCorrelation()
+pearson_correlation = corr_analysis.computeLinearCorrelation()
 print(pearson_correlation)
 
 # %%

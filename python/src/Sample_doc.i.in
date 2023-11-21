@@ -717,7 +717,7 @@ rho : :class:`~openturns.CorrelationMatrix`
 Notes
 -----
 The Spearman correlation matrix is estimated as the Pearson correlation matrix
-of the ranks sample (i.e. using `self.rank().computePearsonCorrelation()`).
+of the ranks sample (i.e. using `self.rank().computeLinearCorrelation()`).
 
 See Also
 --------

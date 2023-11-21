@@ -53,7 +53,7 @@ ott.assert_almost_equal(pcc, [1.0, 1.0], 1e-5, 0.0)  # theoretical value
 prcc = corr_analysis.computePRCC()
 ott.assert_almost_equal(prcc, [0.99, 0.92], 0.0, 1e-2)  # approximate value
 
-pearson = corr_analysis.computePearsonCorrelation()
+pearson = corr_analysis.computeLinearCorrelation()
 ott.assert_almost_equal(pearson, [0.95, 0.31], 0.0, 1e-2)  # approximate value
 
 spearman = corr_analysis.computeSpearmanCorrelation()
