@@ -185,7 +185,7 @@ void Bonmin::run()
   LOGINFO(allOptions);
 
 #else
-
+  result_.setStatus(OptimizationResult::FAILURE);
   throw NotYetImplementedException(HERE) << "No Bonmin support";
 
 #endif

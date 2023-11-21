@@ -127,6 +127,8 @@ void MultiStart::run()
                   solver.getMaximumConstraintError());
 
     evaluationNumber = getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    result_.setStatusMessage(result.getStatusMessage());
+
     LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
     if (evaluationNumber > getMaximumEvaluationNumber())
     {
@@ -151,7 +153,10 @@ void MultiStart::run()
   result_.setEvaluationNumber(evaluationNumber);
 
   if (!(successNumber > 0))
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InternalException(HERE) << "None of the local searches succeeded.";
+  }
   LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
 }
 

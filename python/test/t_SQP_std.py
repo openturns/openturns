@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.PlatformInfo.SetNumericalPrecision(3)
 
 # linear
 levelFunction = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
@@ -19,7 +19,7 @@ print("algo=", algo)
 algo.run()
 result = algo.getResult()
 print("result=", result)
-
+ott.assert_almost_equal(algo.getResult().getOptimalValue(), [3.0])
 
 # non-linear
 levelFunction = ot.SymbolicFunction(
@@ -37,3 +37,4 @@ print("algo=", algo)
 algo.run()
 result = algo.getResult()
 print("result=", result)
+ott.assert_almost_equal(algo.getResult().getOptimalValue(), [-0.5])

@@ -225,6 +225,8 @@ String OptimizationResult::__repr__() const
 {
   OSS oss;
   oss << "class=" << OptimizationResult::GetClassName()
+      << " status=" << status_
+      << " statusMessage=" << statusMessage_
       << " optimal point=" << optimalPoint_
       << " optimal value=" << optimalValue_
       << " evaluationNumber=" << evaluationNumber_
@@ -263,6 +265,7 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "finalValues_", finalValues_ );
   adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
   adv.saveAttribute( "statusMessage_", statusMessage_ );
+  adv.saveAttribute( "status_", status_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -293,8 +296,11 @@ void OptimizationResult::load(Advocate & adv)
     adv.loadAttribute( "finalValues_", finalValues_ );
     adv.loadAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
   }
-  if (adv.hasAttribute("statusMessage_"))
+  if (adv.hasAttribute("status_"))
+  {
     adv.loadAttribute("statusMessage_", statusMessage_);
+    adv.loadAttribute("status_", status_);
+  }
 }
 
 /* Incremental history storage */
@@ -507,6 +513,16 @@ void OptimizationResult::setStatusMessage(const String & statusMessage)
 String OptimizationResult::getStatusMessage() const
 {
   return statusMessage_;
+}
+
+void OptimizationResult::setStatus(const UnsignedInteger status)
+{
+  status_ = status;
+}
+
+UnsignedInteger OptimizationResult::getStatus() const
+{
+  return status_;
 }
 
 END_NAMESPACE_OPENTURNS

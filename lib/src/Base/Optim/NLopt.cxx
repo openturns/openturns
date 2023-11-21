@@ -342,7 +342,10 @@ void NLopt::run()
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
 
   if (rc < 0)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
+  }
 
 #else
   (void) p_opt_;

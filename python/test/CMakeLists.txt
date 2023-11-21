@@ -278,7 +278,7 @@ ot_pyinstallcheck_test (CenteredFiniteDifferenceHessian_std)
 ot_pyinstallcheck_test (NonCenteredFiniteDifferenceGradient_std)
 
 ## Optim
-ot_pyinstallcheck_test (AbdoRackwitz_std)
+ot_pyinstallcheck_test (AbdoRackwitz_std IGNOREOUT)
 if (Bonmin_FOUND)
   ot_pyinstallcheck_test (Bonmin_std IGNOREOUT)
   ot_pyinstallcheck_test (Bonmin_4dsoo IGNOREOUT)
@@ -309,7 +309,7 @@ if (Pagmo_FOUND)
   ot_pyinstallcheck_test (Pagmo_std IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (EfficientGlobalOptimization_std IGNOREOUT)
-ot_pyinstallcheck_test (SQP_std)
+ot_pyinstallcheck_test (SQP_std IGNOREOUT)
 ot_pyinstallcheck_test (TNC_std)
 
 ## Solver

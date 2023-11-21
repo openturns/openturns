@@ -132,11 +132,12 @@ void Cobyla::run()
    */
   int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
-  result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
 
   if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {
+    result_.setStatus(OptimizationResult::FAILURE);
     if (ignoreFailure_)
       LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << result_.getStatusMessage());
     else

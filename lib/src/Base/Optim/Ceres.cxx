@@ -478,9 +478,15 @@ void Ceres::run()
   result_.setStatusMessage(ceres::TerminationTypeToString(termination_type));
 
   if (termination_type == ceres::FAILURE)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InternalException(HERE) << "Ceres terminated with failure.";
+  }
   else if (termination_type == ceres::NO_CONVERGENCE)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InternalException(HERE) << "Ceres did not converge.";
+  }
   else if (termination_type != ceres::CONVERGENCE)
     LOGWARN(OSS() << "Ceres terminated with " << result_.getStatusMessage());
 

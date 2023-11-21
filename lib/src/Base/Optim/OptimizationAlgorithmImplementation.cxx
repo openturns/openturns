@@ -328,7 +328,10 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
   if (!result_.getOptimalPoint().getDimension())
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
+  }
   result_.setEvaluationNumber(size);
 }
 

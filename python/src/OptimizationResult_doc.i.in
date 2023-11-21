@@ -357,3 +357,23 @@ Returns
 -------
 statusMessage : str
     Convergence or error message"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setStatus
+"Accessor to the status string.
+
+Parameters
+----------
+status : int
+    Status flag, possible values SUCCEEDED, FAILURE"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getStatus
+"Accessor to the status string.
+
+Returns
+-------
+status : str
+    Status flag, possible values SUCCEEDED, FAILURE"

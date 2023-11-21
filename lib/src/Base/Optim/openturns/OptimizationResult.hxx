@@ -137,6 +137,11 @@ public:
   void setStatusMessage(const String & statusMessage);
   String getStatusMessage() const;
 
+  /** Status accessor */
+  enum Status {SUCCEEDED, FAILURE};
+  void setStatus(const UnsignedInteger status);
+  UnsignedInteger getStatus() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
@@ -178,6 +183,7 @@ private:
   IndicesCollection paretoFrontsIndices_;
 
   String statusMessage_;
+  UnsignedInteger status_ = SUCCEEDED;
 
 }; // class OptimizationResult
 
