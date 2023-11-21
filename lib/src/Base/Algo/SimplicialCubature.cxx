@@ -38,7 +38,7 @@ SimplicialCubature::SimplicialCubature()
   , rule_(ResourceMap::GetAsUnsignedInteger("SimplicialCubature-DefaultRule"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("SimplicialCubature-DefaultMaximumRelativeError"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("SimplicialCubature-DefaultMaximumEvaluationNumber"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber"))
 {
   // Nothing to do
 }
@@ -84,14 +84,14 @@ Scalar SimplicialCubature::getMaximumRelativeError() const
 }
 
 /* Maximum evaluations number accessor */
-void SimplicialCubature::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
+void SimplicialCubature::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
 {
-  maximumEvaluationNumber_ = maximumEvaluationNumber;
+  maximumCallsNumber_ = maximumCallsNumber;
 }
 
-UnsignedInteger SimplicialCubature::getMaximumEvaluationNumber() const
+UnsignedInteger SimplicialCubature::getMaximumCallsNumber() const
 {
-  return maximumEvaluationNumber_;
+  return maximumCallsNumber_;
 }
 
 
@@ -156,7 +156,7 @@ UnsignedInteger SimplicialCubature::getNodeNumber(const UnsignedInteger dimensio
 Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
 {
   const UnsignedInteger outputDimension = F.getOutputDimension();
-  const UnsignedInteger MXFS = maximumEvaluationNumber_;
+  const UnsignedInteger MXFS = maximumCallsNumber_;
   const Scalar EA = maximumAbsoluteError_;
   const Scalar ER = maximumRelativeError_;
   const UnsignedInteger dimension = mesh.getDimension();
