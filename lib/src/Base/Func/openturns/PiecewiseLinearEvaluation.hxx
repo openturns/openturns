@@ -39,6 +39,9 @@ class OT_API PiecewiseLinearEvaluation
   : public EvaluationImplementation
 {
   CLASSNAME
+  
+  friend class PiecewiseHermiteEvaluation;
+  
 public:
   /** Default constructor */
   PiecewiseLinearEvaluation();
@@ -88,6 +91,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+protected:
   /** Check if the locations grid is regular to the given tolerance */
   static Bool IsRegular(const Point & locations,
                         const Scalar & epsilon);
