@@ -384,7 +384,7 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
   cobyla->setCheckStatus(false);
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Optimization solver accessor */

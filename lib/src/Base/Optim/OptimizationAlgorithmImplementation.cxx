@@ -35,7 +35,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
@@ -54,7 +54,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , problem_(problem)
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
@@ -103,14 +103,26 @@ void OptimizationAlgorithmImplementation::setMaximumIterationNumber(const Unsign
   maximumIterationNumber_ = maximumIterationNumber;
 }
 
+void OptimizationAlgorithmImplementation::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
+{
+  maximumCallsNumber_ = maximumCallsNumber;
+}
+
+UnsignedInteger OptimizationAlgorithmImplementation::getMaximumCallsNumber() const
+{
+  return maximumCallsNumber_;
+}
+
 void OptimizationAlgorithmImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
 {
-  maximumEvaluationNumber_ = maximumEvaluationNumber;
+  LOGWARN("OptimizationAlgorithm.setMaximumEvaluationNumber is deprecated, use setMaximumCallsNumber");
+  setMaximumCallsNumber(maximumEvaluationNumber);
 }
 
 UnsignedInteger OptimizationAlgorithmImplementation::getMaximumEvaluationNumber() const
 {
-  return maximumEvaluationNumber_;
+  LOGWARN("OptimizationAlgorithm.getMaximumEvaluationNumber is deprecated, use getMaximumCallsNumber");
+  return getMaximumCallsNumber();
 }
 
 /* Maximum absolute error accessor */
@@ -169,7 +181,7 @@ String OptimizationAlgorithmImplementation::__repr__() const
       << " problem=" << problem_
       << " startingPoint=" << startingPoint_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " maximumEvaluationNumber=" << maximumEvaluationNumber_
+      << " maximumCallsNumber=" << maximumCallsNumber_
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
@@ -214,7 +226,7 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "startingPoint_", startingPoint_);
   adv.saveAttribute( "problem_", problem_);
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_);
-  adv.saveAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
+  adv.saveAttribute( "maximumCallsNumber_", maximumCallsNumber_);
   adv.saveAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
@@ -230,7 +242,10 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "startingPoint_", startingPoint_);
   adv.loadAttribute( "problem_", problem_);
   adv.loadAttribute( "maximumIterationNumber_", maximumIterationNumber_);
-  adv.loadAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
+  if (adv.hasAttribute("maximumCallsNumber_")) // OT>=1.23
+    adv.loadAttribute( "maximumCallsNumber_", maximumCallsNumber_);
+  else
+    adv.loadAttribute( "maximumEvaluationNumber_", maximumCallsNumber_);
   adv.loadAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);

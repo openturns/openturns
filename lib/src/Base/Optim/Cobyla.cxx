@@ -101,7 +101,7 @@ void Cobyla::run()
   }
 
   Scalar rhoEnd = getMaximumAbsoluteError();
-  int maxFun = getMaximumEvaluationNumber();
+  int maxFun = getMaximumCallsNumber();
   cobyla_message message = (Log::HasDebug() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE);
 
   // initialize history
@@ -280,7 +280,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   int returnValue = 0;
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {

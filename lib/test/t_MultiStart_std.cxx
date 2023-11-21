@@ -66,7 +66,7 @@ int main(int, char *[])
     LHSExperiment experiment(distribution, size);
     Sample startingSample(experiment.generate());
     MultiStart algo(solver, startingSample);
-    algo.setMaximumEvaluationNumber(100);
+    algo.setMaximumCallsNumber(100);
     algo.run();
     result = algo.getResult();
     const Point trueOptimalPoint = {0.228279, -1.62553};

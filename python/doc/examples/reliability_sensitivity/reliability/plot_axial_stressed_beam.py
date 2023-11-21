@@ -145,7 +145,7 @@ view = viewer.View(graph)
 myCobyla = ot.Cobyla()
 # Resolution options:
 eps = 1e-3
-myCobyla.setMaximumEvaluationNumber(100)
+myCobyla.setMaximumCallsNumber(100)
 myCobyla.setMaximumAbsoluteError(eps)
 myCobyla.setMaximumRelativeError(eps)
 myCobyla.setMaximumResidualError(eps)

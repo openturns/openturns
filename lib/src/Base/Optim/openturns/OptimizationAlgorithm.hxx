@@ -74,7 +74,10 @@ public:
   UnsignedInteger getMaximumIterationNumber() const;
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
-  /** Maximum evaluations number accessor */
+  /** Maximum calls number accessor */
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   UnsignedInteger getMaximumEvaluationNumber() const;
 

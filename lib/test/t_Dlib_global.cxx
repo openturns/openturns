@@ -82,7 +82,7 @@ int main()
 
     // With not constraining bounds
     Dlib notConstrainingBoundsGlobal(notConstrainingBoundsProblem, "global");
-    notConstrainingBoundsGlobal.setMaximumEvaluationNumber(300);
+    notConstrainingBoundsGlobal.setMaximumCallsNumber(300);
     notConstrainingBoundsGlobal.setStartingPoint(Point(2));
     notConstrainingBoundsGlobal.run();
 
@@ -93,7 +93,7 @@ int main()
 
     // With constraining bounds
     Dlib constrainingBoundsGlobal(constrainingBoundsProblem, "global");
-    constrainingBoundsGlobal.setMaximumEvaluationNumber(300);
+    constrainingBoundsGlobal.setMaximumCallsNumber(300);
     constrainingBoundsGlobal.setStartingPoint(Point(2));
     constrainingBoundsGlobal.run();
 

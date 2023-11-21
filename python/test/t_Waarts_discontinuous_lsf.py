@@ -66,7 +66,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 #
 # FORM/SORM Cobyla
 myCobyla = ot.Cobyla()
-myCobyla.setMaximumEvaluationNumber(1000 * dim)
+myCobyla.setMaximumCallsNumber(1000 * dim)
 myCobyla.setMaximumAbsoluteError(1.0e-10)
 myCobyla.setMaximumRelativeError(1.0e-10)
 myCobyla.setMaximumResidualError(1.0e-10)

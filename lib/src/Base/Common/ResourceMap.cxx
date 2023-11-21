@@ -776,7 +776,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
   addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 

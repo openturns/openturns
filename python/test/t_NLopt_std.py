@@ -64,7 +64,7 @@ for algoName in algoNames:
                     except Exception:
                         print("-- Not supported")
                         continue
-                    algo.setMaximumEvaluationNumber(1000)
+                    algo.setMaximumCallsNumber(1000)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()
@@ -102,7 +102,7 @@ vect = ot.RandomVector(distribution)
 output = ot.CompositeRandomVector(f, vect)
 event = ot.ThresholdEvent(output, ot.Less(), -3.0)
 solver = ot.NLopt("LD_AUGLAG")
-solver.setMaximumEvaluationNumber(400)
+solver.setMaximumCallsNumber(400)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)

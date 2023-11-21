@@ -59,7 +59,7 @@ MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution
   solver_ = OptimizationAlgorithm::Build(problem);
 
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumObjectiveError"));

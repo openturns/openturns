@@ -232,7 +232,7 @@ void NLopt::run()
   opt.set_xtol_abs(getMaximumAbsoluteError());
   opt.set_xtol_rel(getMaximumRelativeError());
   opt.set_ftol_rel(getMaximumResidualError());
-  opt.set_maxeval(getMaximumEvaluationNumber());
+  opt.set_maxeval(getMaximumCallsNumber());
 
   if (getProblem().hasBounds())
   {
@@ -281,7 +281,7 @@ void NLopt::run()
     local_opt.set_xtol_abs(getMaximumAbsoluteError());
     local_opt.set_xtol_rel(getMaximumRelativeError());
     local_opt.set_ftol_rel(getMaximumResidualError());
-    local_opt.set_maxeval(getMaximumEvaluationNumber());
+    local_opt.set_maxeval(getMaximumCallsNumber());
     opt.set_local_optimizer(local_opt);
   }
   else
@@ -292,7 +292,7 @@ void NLopt::run()
     local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
     local_opt.set_xtol_rel(p_localSolver_->getMaximumRelativeError());
     local_opt.set_ftol_rel(p_localSolver_->getMaximumResidualError());
-    local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
+    local_opt.set_maxeval(p_localSolver_->getMaximumCallsNumber());
     if (p_localSolver_->getInitialStep().getDimension() > 0)
     {
       Point localInitialStep(p_localSolver_->getInitialStep());
@@ -470,7 +470,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {

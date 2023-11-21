@@ -82,7 +82,7 @@ int main()
     /** PRINTING TESTS **/
     Dlib printCg(unboundedProblem, "cg");
     printCg.setStartingPoint(start);
-    printCg.setMaximumEvaluationNumber(100);
+    printCg.setMaximumCallsNumber(100);
     printCg.setMaximumIterationNumber(100);
 
     fullprint << printCg << std::endl;
@@ -96,7 +96,7 @@ int main()
     // Without bounds
     Dlib unboundedCg(unboundedProblem, "cg");
     unboundedCg.setStartingPoint(start);
-    unboundedCg.setMaximumEvaluationNumber(1000000);
+    unboundedCg.setMaximumCallsNumber(1000000);
     unboundedCg.setMaximumIterationNumber(100000);
     unboundedCg.run();
 
@@ -113,7 +113,7 @@ int main()
     // With not constraining bounds
     Dlib notConstrainingBoundsCg(notConstrainingBoundsProblem, "cg");
     notConstrainingBoundsCg.setStartingPoint(start);
-    notConstrainingBoundsCg.setMaximumEvaluationNumber(1000000);
+    notConstrainingBoundsCg.setMaximumCallsNumber(1000000);
     notConstrainingBoundsCg.setMaximumIterationNumber(100000);
     notConstrainingBoundsCg.run();
 
@@ -131,7 +131,7 @@ int main()
     // With constraining bounds
     Dlib constrainingBoundsCg(constrainingBoundsProblem, "cg");
     constrainingBoundsCg.setStartingPoint(start);
-    constrainingBoundsCg.setMaximumEvaluationNumber(1000000);
+    constrainingBoundsCg.setMaximumCallsNumber(1000000);
     constrainingBoundsCg.setMaximumIterationNumber(100000);
     constrainingBoundsCg.run();
 
@@ -154,7 +154,7 @@ int main()
     // Without bounds
     Dlib unboundedBfgs(unboundedProblem, "bfgs");
     unboundedBfgs.setStartingPoint(start);
-    unboundedBfgs.setMaximumEvaluationNumber(1000000);
+    unboundedBfgs.setMaximumCallsNumber(1000000);
     unboundedBfgs.setMaximumIterationNumber(100000);
     unboundedBfgs.run();
 
@@ -171,7 +171,7 @@ int main()
     // With not constraining bounds
     Dlib notConstrainingBoundsBfgs(notConstrainingBoundsProblem, "bfgs");
     notConstrainingBoundsBfgs.setStartingPoint(start);
-    notConstrainingBoundsBfgs.setMaximumEvaluationNumber(1000000);
+    notConstrainingBoundsBfgs.setMaximumCallsNumber(1000000);
     notConstrainingBoundsBfgs.setMaximumIterationNumber(100000);
     notConstrainingBoundsBfgs.run();
 
@@ -188,7 +188,7 @@ int main()
     // With constraining bounds
     Dlib constrainingBoundsBfgs(constrainingBoundsProblem, "bfgs");
     constrainingBoundsBfgs.setStartingPoint(start);
-    constrainingBoundsBfgs.setMaximumEvaluationNumber(1000000);
+    constrainingBoundsBfgs.setMaximumCallsNumber(1000000);
     constrainingBoundsBfgs.setMaximumIterationNumber(100000);
     constrainingBoundsBfgs.run();
 
@@ -211,7 +211,7 @@ int main()
     // Without bounds
     Dlib unboundedLbfgs(unboundedProblem, "lbfgs");
     unboundedLbfgs.setStartingPoint(start);
-    unboundedLbfgs.setMaximumEvaluationNumber(1000000);
+    unboundedLbfgs.setMaximumCallsNumber(1000000);
     unboundedLbfgs.setMaximumIterationNumber(100000);
     unboundedLbfgs.run();
 
@@ -228,7 +228,7 @@ int main()
     // With not constraining bounds
     Dlib notConstrainingBoundsLbfgs(notConstrainingBoundsProblem, "lbfgs");
     notConstrainingBoundsLbfgs.setStartingPoint(start);
-    notConstrainingBoundsLbfgs.setMaximumEvaluationNumber(1000000);
+    notConstrainingBoundsLbfgs.setMaximumCallsNumber(1000000);
     notConstrainingBoundsLbfgs.setMaximumIterationNumber(100000);
     notConstrainingBoundsLbfgs.run();
 
@@ -245,7 +245,7 @@ int main()
     // With constraining bounds
     Dlib constrainingBoundsLbfgs(constrainingBoundsProblem, "lbfgs");
     constrainingBoundsLbfgs.setStartingPoint(start);
-    constrainingBoundsLbfgs.setMaximumEvaluationNumber(1000000);
+    constrainingBoundsLbfgs.setMaximumCallsNumber(1000000);
     constrainingBoundsLbfgs.setMaximumIterationNumber(100000);
     constrainingBoundsLbfgs.run();
 
@@ -268,7 +268,7 @@ int main()
     // Without bounds
     Dlib unboundedNewton(unboundedProblem, "newton");
     unboundedNewton.setStartingPoint(start);
-    unboundedNewton.setMaximumEvaluationNumber(1000000);
+    unboundedNewton.setMaximumCallsNumber(1000000);
     unboundedNewton.setMaximumIterationNumber(100000);
     unboundedNewton.run();
 
@@ -285,7 +285,7 @@ int main()
     // With not constraining bounds
     Dlib notConstrainingBoundsNewton(notConstrainingBoundsProblem, "newton");
     notConstrainingBoundsNewton.setStartingPoint(start);
-    notConstrainingBoundsNewton.setMaximumEvaluationNumber(1000000);
+    notConstrainingBoundsNewton.setMaximumCallsNumber(1000000);
     notConstrainingBoundsNewton.setMaximumIterationNumber(100000);
     notConstrainingBoundsNewton.run();
 
@@ -302,7 +302,7 @@ int main()
     // With constraining bounds
     Dlib constrainingBoundsNewton(constrainingBoundsProblem, "newton");
     constrainingBoundsNewton.setStartingPoint(start);
-    constrainingBoundsNewton.setMaximumEvaluationNumber(1000000);
+    constrainingBoundsNewton.setMaximumCallsNumber(1000000);
     constrainingBoundsNewton.setMaximumIterationNumber(100000);
     constrainingBoundsNewton.run();
 
@@ -325,7 +325,7 @@ int main()
     // Without bounds
     Dlib unboundedTR(unboundedProblem, "trust_region");
     unboundedTR.setStartingPoint(start);
-    unboundedTR.setMaximumEvaluationNumber(10000);
+    unboundedTR.setMaximumCallsNumber(10000);
     unboundedTR.setMaximumIterationNumber(1000);
     unboundedTR.run();
 
@@ -379,7 +379,7 @@ int main()
 
     // Without bounds
     lsqAlgorithm.setStartingPoint(start);
-    lsqAlgorithm.setMaximumEvaluationNumber(10000);
+    lsqAlgorithm.setMaximumCallsNumber(10000);
     lsqAlgorithm.setMaximumIterationNumber(100);
 
     fullprint << lsqAlgorithm << std::endl << std::endl;
@@ -404,7 +404,7 @@ int main()
 
     // Without bounds
     lsqlmAlgorithm.setStartingPoint(start);
-    lsqlmAlgorithm.setMaximumEvaluationNumber(10000);
+    lsqlmAlgorithm.setMaximumCallsNumber(10000);
     lsqlmAlgorithm.setMaximumIterationNumber(1000);
     lsqlmAlgorithm.run();
 

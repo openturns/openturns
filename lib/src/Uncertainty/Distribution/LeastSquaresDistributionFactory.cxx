@@ -55,7 +55,7 @@ LeastSquaresDistributionFactory::LeastSquaresDistributionFactory(const Distribut
 {
   solver_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));

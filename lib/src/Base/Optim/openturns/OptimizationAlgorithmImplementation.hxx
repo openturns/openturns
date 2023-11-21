@@ -72,7 +72,10 @@ public:
   virtual void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
   virtual UnsignedInteger getMaximumIterationNumber() const;
 
-  /** Maximum evaluations number accessor */
+  /** Maximum calls number accessor */
+  virtual void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  virtual UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   virtual void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   virtual UnsignedInteger getMaximumEvaluationNumber() const;
 
@@ -144,7 +147,7 @@ private:
   UnsignedInteger maximumIterationNumber_;
 
   /** Maximum function calls */
-  UnsignedInteger maximumEvaluationNumber_;
+  UnsignedInteger maximumCallsNumber_;
 
   Scalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

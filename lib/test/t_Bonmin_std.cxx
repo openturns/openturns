@@ -94,7 +94,7 @@ int main()
     // Running Bonmin algorithm
     Bonmin bonminAlgorithm(problem);
     bonminAlgorithm.setStartingPoint(Point(4, 0));
-    bonminAlgorithm.setMaximumEvaluationNumber(10000);
+    bonminAlgorithm.setMaximumCallsNumber(10000);
     bonminAlgorithm.setMaximumIterationNumber(1000);
     ResourceMap::AddAsString("Bonmin-mu_oracle", "loqo");
     //ResourceMap::AddAsScalar("Bonmin-bonmin.time_limit", 5);

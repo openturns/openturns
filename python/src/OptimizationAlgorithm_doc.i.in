@@ -8,8 +8,8 @@ OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
 OT_OptimizationAlgorithm_getMaximumConstraintError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumIterationNumber
 OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
-%feature("docstring") OT::OptimizationAlgorithm::getMaximumEvaluationNumber
-OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumCallsNumber
+OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumRelativeError
 OT_OptimizationAlgorithm_getMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumResidualError
@@ -28,8 +28,8 @@ OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
 OT_OptimizationAlgorithm_setMaximumConstraintError_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumIterationNumber
 OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
-%feature("docstring") OT::OptimizationAlgorithm::setMaximumEvaluationNumber
-OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumCallsNumber
+OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumRelativeError
 OT_OptimizationAlgorithm_setMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumResidualError

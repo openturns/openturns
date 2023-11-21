@@ -75,7 +75,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 # %%
 algo = ot.Cobyla(problem)
 algo.setMaximumRelativeError(1.0e-1)  # on x
-algo.setMaximumEvaluationNumber(50000)
+algo.setMaximumCallsNumber(50000)
 algo.setStartingPoint(x0)
 algo.run()
 

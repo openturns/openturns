@@ -142,7 +142,7 @@ void Bonmin::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
   // Create BonminProblem
-  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
+  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   tminlp->setProgressCallback(progressCallback_.first, progressCallback_.second);
   tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
 

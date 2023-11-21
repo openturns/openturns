@@ -115,7 +115,7 @@ void Ipopt::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
   // Create BonminProblem
-  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
+  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 

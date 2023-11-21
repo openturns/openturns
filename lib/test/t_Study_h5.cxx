@@ -449,7 +449,7 @@ int main(int, char *[])
     // Create a Cobyla algorithm
     Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setMaximumEvaluationNumber(100);
+    cobyla.setMaximumCallsNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
     cobyla.setMaximumResidualError(1.0e-10);

@@ -158,7 +158,7 @@ void AbdoRackwitz::run()
   result_ = OptimizationResult(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
+  while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumCallsNumber()))
   {
     /* Go to next iteration */
     ++ iterationNumber;
@@ -211,7 +211,7 @@ void AbdoRackwitz::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {

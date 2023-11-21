@@ -103,7 +103,7 @@ int main(int, char *[])
     //   #########################################################################################################;
     //   # FORM/SORM Cobyla;
     Cobyla myCobyla;
-    myCobyla.setMaximumEvaluationNumber(100 * dim);
+    myCobyla.setMaximumCallsNumber(100 * dim);
     myCobyla.setMaximumAbsoluteError(1.0e-4);
     myCobyla.setMaximumRelativeError(1.0e-4);
     myCobyla.setMaximumResidualError(1.0e-4);

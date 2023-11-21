@@ -54,7 +54,7 @@ MultiStart::MultiStart(const OptimizationAlgorithm & solver,
   checkSolver(solver);
 
   // no global limit unless the maximum eval number is set
-  setMaximumEvaluationNumber(solver.getMaximumEvaluationNumber() * startingSample.getSize());
+  setMaximumCallsNumber(solver.getMaximumCallsNumber() * startingSample.getSize());
 
   setProblem(solver.getProblem());
 }
@@ -103,10 +103,10 @@ void MultiStart::run()
   {
     solver.setStartingPoint(startingSample_[i]);
     // ensure we do not exceed the global budget if the maximum eval number is set
-    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - callsNumber), 0L);
+    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
     LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingSample_[i] << ", " << remainingEval << " remaining evaluations");
-    if (remainingEval < solver.getMaximumEvaluationNumber())
-      solver.setMaximumEvaluationNumber(remainingEval);
+    if (remainingEval < solver.getMaximumCallsNumber())
+      solver.setMaximumCallsNumber(remainingEval);
 
     try
     {
@@ -130,7 +130,7 @@ void MultiStart::run()
     result_.setStatusMessage(result.getStatusMessage());
 
     LOGDEBUG(OSS() << "Number of evaluations so far=" << callsNumber);
-    if (callsNumber > getMaximumEvaluationNumber())
+    if (callsNumber > getMaximumCallsNumber())
     {
       break;
     }
@@ -138,7 +138,7 @@ void MultiStart::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * callsNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * callsNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {

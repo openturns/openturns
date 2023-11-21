@@ -30,7 +30,7 @@ Examples
 >>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
 >>> problem = ot.NearestPointProblem(model, 5.0)
 >>> algo = ot.Cobyla(problem)
->>> algo.setMaximumEvaluationNumber(10000)
+>>> algo.setMaximumCallsNumber(10000)
 >>> algo.setStartingPoint([1.0] * 4)
 >>> algo.run()
 >>> result = algo.getResult()"

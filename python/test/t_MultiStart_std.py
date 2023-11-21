@@ -42,7 +42,7 @@ size = 20
 experiment = ot.LHSExperiment(distribution, size)
 startingSample = experiment.generate()
 algo = ot.MultiStart(solver, startingSample)
-algo.setMaximumEvaluationNumber(2000)
+algo.setMaximumCallsNumber(2000)
 algo.run()
 result = algo.getResult()
 true_optimal_point = [0.228279, -1.62553]

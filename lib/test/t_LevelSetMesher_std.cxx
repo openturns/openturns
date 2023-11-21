@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000 );
-    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000);
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );

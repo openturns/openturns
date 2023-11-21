@@ -400,7 +400,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -583,7 +583,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;

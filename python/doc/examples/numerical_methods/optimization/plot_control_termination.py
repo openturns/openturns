@@ -33,7 +33,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 # %%
 # Create the optimization algorithm
 myCobyla = ot.Cobyla()
-myCobyla.setMaximumEvaluationNumber(400)
+myCobyla.setMaximumCallsNumber(400)
 myCobyla.setMaximumAbsoluteError(1.0e-10)
 myCobyla.setMaximumRelativeError(1.0e-10)
 myCobyla.setMaximumResidualError(1.0e-10)

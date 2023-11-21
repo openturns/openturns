@@ -87,7 +87,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   solver.setRhoBeg(rhoBeg);
   const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");
   solver.setMaximumAbsoluteError(rhoEnd);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   const Scalar delta = (max - min) / (2.0 + size);
   startingPoint[0] = min + delta;// a
   startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b

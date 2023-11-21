@@ -207,7 +207,7 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
@@ -413,7 +413,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {
@@ -421,7 +421,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
     if (p_nfeval)
     {
-      if (stop) *p_nfeval = algorithm->getMaximumEvaluationNumber();
+      if (stop) *p_nfeval = algorithm->getMaximumCallsNumber();
     }
     else
       throw InternalException(HERE) << "Null p_nfeval";

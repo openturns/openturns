@@ -122,12 +122,12 @@ problem.setBounds(bounds)
 # %%
 # In order to show the various options, we configure them all, even if most could be left to default settings in this case.
 #
-# The most important method is `setMaximumEvaluationNumber` which limits the number of iterations that the algorithm can perform.
+# The most important method is `setMaximumCallsNumber` which limits the number of iterations that the algorithm can perform.
 # In the Ackley example, we choose to perform 10 iterations of the algorithm.
 
 # %%
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-algo.setMaximumEvaluationNumber(10)
+algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()
 
@@ -282,7 +282,7 @@ problem.setBounds(bounds)
 # %%
 # We configure the algorithm, with the model noise:
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noise)
-algo.setMaximumEvaluationNumber(20)
+algo.setMaximumCallsNumber(20)
 
 # %%
 # We run the algorithm and get the result:

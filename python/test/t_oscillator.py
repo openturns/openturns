@@ -20,7 +20,7 @@ event = ot.ThresholdEvent(G, ot.Less(), 0.0)
 event.setName("failure")
 
 optimAlgo = ot.Cobyla()
-optimAlgo.setMaximumEvaluationNumber(1000)
+optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-3)
 optimAlgo.setMaximumRelativeError(1.0e-3)
 optimAlgo.setMaximumResidualError(1.0e-3)

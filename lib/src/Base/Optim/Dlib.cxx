@@ -314,7 +314,7 @@ public:
                         && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                         && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                        || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                       || (objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumEvaluationNumber());
+                       || (objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumCallsNumber());
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -636,7 +636,7 @@ void Dlib::run()
                           lb,
                           ub,
                           is_integer_variable,
-                          dlib::max_function_calls(getMaximumEvaluationNumber()),
+                          dlib::max_function_calls(getMaximumCallsNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
     else
@@ -644,7 +644,7 @@ void Dlib::run()
                           lb,
                           ub,
                           is_integer_variable,
-                          dlib::max_function_calls(getMaximumEvaluationNumber()),
+                          dlib::max_function_calls(getMaximumCallsNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
 

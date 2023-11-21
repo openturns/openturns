@@ -171,7 +171,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {
@@ -345,7 +345,7 @@ void CMinpack::run()
   const Scalar ftol = getMaximumResidualError();
   const Scalar xtol = getMaximumAbsoluteError();
   const Scalar gtol = getMaximumConstraintError();
-  const int maxfev = getMaximumEvaluationNumber();
+  const int maxfev = getMaximumCallsNumber();
   const int mode = 1;
   const Scalar factor = 100.0;
   const int nprint = 0;
