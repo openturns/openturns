@@ -96,14 +96,14 @@ void MultiStart::run()
   resultCollection_.clear();
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
-  const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
-  UnsignedInteger evaluationNumber = 0;
+  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingSample_[i]);
     // ensure we do not exceed the global budget if the maximum eval number is set
-    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - evaluationNumber), 0L);
+    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - callsNumber), 0L);
     LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingSample_[i] << ", " << remainingEval << " remaining evaluations");
     if (remainingEval < solver.getMaximumEvaluationNumber())
       solver.setMaximumEvaluationNumber(remainingEval);
@@ -126,11 +126,11 @@ void MultiStart::run()
                   result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
                   solver.getMaximumConstraintError());
 
-    evaluationNumber = getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
     result_.setStatusMessage(result.getStatusMessage());
 
-    LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
-    if (evaluationNumber > getMaximumEvaluationNumber())
+    LOGDEBUG(OSS() << "Number of evaluations so far=" << callsNumber);
+    if (callsNumber > getMaximumEvaluationNumber())
     {
       break;
     }
@@ -138,7 +138,7 @@ void MultiStart::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * callsNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {
@@ -150,7 +150,7 @@ void MultiStart::run()
       }
     }
   }
-  result_.setEvaluationNumber(evaluationNumber);
+  result_.setEvaluationNumber(callsNumber);
 
   if (!(successNumber > 0))
   {
