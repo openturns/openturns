@@ -151,6 +151,7 @@
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
+  <OptimizationAlgorithm-DefaultMaximumTimeDuration     value_float="-1.0" />
   <OptimizationAlgorithm-DefaultMaximumCallsNumber      value_int="1000" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
   <OptimizationAlgorithm-DefaultCheckStatus             value_bool="true" />

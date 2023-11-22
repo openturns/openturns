@@ -21,8 +21,8 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Box.hxx"
+
+#include <chrono>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -91,6 +91,9 @@ void MultiStart::run()
     throw InvalidArgumentException(HERE) << "The starting points dimension (" << startingSample_.getDimension()
                                          << ") and the problem dimension (" << problemDimension << ") do not match.";
 
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+  Scalar timeDuration = 0.0;
+
   // run the solver with each starting point
   OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
@@ -118,6 +121,8 @@ void MultiStart::run()
       LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
       continue;
     }
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
 
     const OptimizationResult result(solver.getResult());
     if (keepResults_) resultCollection_.add(result);
@@ -130,10 +135,8 @@ void MultiStart::run()
     result_.setStatusMessage(result.getStatusMessage());
 
     LOGDEBUG(OSS() << "Number of evaluations so far=" << callsNumber);
-    if (callsNumber > getMaximumCallsNumber())
-    {
+    if ((callsNumber > getMaximumCallsNumber()) || ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration())))
       break;
-    }
 
     // callbacks
     if (progressCallback_.first)
@@ -151,6 +154,7 @@ void MultiStart::run()
     }
   }
   result_.setCallsNumber(callsNumber);
+  result_.setTimeDuration(timeDuration);
 
   if (!(successNumber > 0))
   {

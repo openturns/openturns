@@ -233,6 +233,8 @@ void NLopt::run()
   opt.set_xtol_rel(getMaximumRelativeError());
   opt.set_ftol_rel(getMaximumResidualError());
   opt.set_maxeval(getMaximumCallsNumber());
+  if (getMaximumTimeDuration() > 0.0)
+    opt.set_maxtime(getMaximumTimeDuration());
 
   if (getProblem().hasBounds())
   {
@@ -307,8 +309,9 @@ void NLopt::run()
 
   // the default seed is non-deterministic
   nlopt::srand(seed_);
-
   nlopt::result rc = nlopt::FAILURE;
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   try
   {
     // The C++ interface of NLopt does not return a code for failures cases.
@@ -340,6 +343,10 @@ void NLopt::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 
   if (rc < 0)
   {

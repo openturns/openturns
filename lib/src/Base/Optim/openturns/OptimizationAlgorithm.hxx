@@ -97,6 +97,10 @@ public:
   Scalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const Scalar maximumConstraintError);
 
+  /** Maximum time accessor */
+  void setMaximumTimeDuration(const Scalar maximumTime);
+  Scalar getMaximumTimeDuration() const;
+
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   void setProgressCallback(ProgressCallback callBack, void * state = 0);

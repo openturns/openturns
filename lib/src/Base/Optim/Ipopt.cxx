@@ -113,9 +113,10 @@ void Ipopt::run()
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
-
+ 
   // Create BonminProblem
-  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber(), getMaximumTimeDuration(), t0);
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 
@@ -132,9 +133,7 @@ void Ipopt::run()
   // Initialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
   if (status != Solve_Succeeded)
-  {
     throw InternalException(HERE) << "ipopt failed with code " << status;
-  }
 
   // Ask Ipopt to solve the problem
   status = app->OptimizeTNLP(ipoptProblem);

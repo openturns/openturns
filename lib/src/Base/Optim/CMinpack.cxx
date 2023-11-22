@@ -132,7 +132,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
 {
   CMinpack *algorithm = static_cast<CMinpack *>(p);
   if (!algorithm)
-    throw InternalException(HERE) << "p is null";
+    throw InternalException(HERE) << "CMinpack p is null";
 
   Point inP(n);
   std::copy(x, x + n, inP.begin());
@@ -145,7 +145,16 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   if (iflag == 1)
   {
     // evaluation
-    const Point outP(algorithm->getProblem().getResidualFunction()(inP));
+    Point outP;
+    try
+    {
+      outP = algorithm->getProblem().getResidualFunction()(inP);
+    }
+    catch (const std::exception & exc)
+    {
+      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
+    }
+
     // track input/outputs
     algorithm->evaluationInputHistory_.add(inP);
     algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
@@ -159,7 +168,15 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   else if (iflag == 2)
   {
     // gradient
-    Matrix jacobian(algorithm->getProblem().getResidualFunction().gradient(inP).transpose());
+    Matrix jacobian;
+    try
+    {
+      jacobian = algorithm->getProblem().getResidualFunction().gradient(inP).transpose();
+    }
+    catch (const std::exception & exc)
+    {
+      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " jacobian=" << jacobian.__str__() << " msg=" << exc.what());
+    }
     if (algorithm->getProblem().hasBounds())
     {
       for (int j = 0; j < n; ++ j)
@@ -168,6 +185,12 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     }
     std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
   }
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    return -1;
+
   // callbacks
   if (algorithm->progressCallback_.first)
   {
@@ -358,11 +381,18 @@ void CMinpack::run()
   {
     InverseTransform(x, n, bounds);
   }
+  t0_ = std::chrono::steady_clock::now();
+
   info = lmder(&CMinpack::ComputeObjectiveJacobian, this, m, n, &x[0], &fvec[0], &fjac[0], ldfjac, ftol, xtol, gtol,
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
+
   switch (info)
   {
     case -1:

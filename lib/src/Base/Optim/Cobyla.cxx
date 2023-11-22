@@ -111,6 +111,8 @@ void Cobyla::run()
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
   result_ = OptimizationResult(getProblem());
 
+  t0_ = std::chrono::steady_clock::now();
+
   /*
    * cobyla : minimize a function subject to constraints
    *
@@ -134,6 +136,10 @@ void Cobyla::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
 
   if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {
@@ -231,7 +237,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     // exit gracefully
     return 1;
   }
-
   UnsignedInteger shift = 0;
 
   /* Compute the inequality constraints at inP */
@@ -278,6 +283,12 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, constraintValue.normInf(), algorithm->getMaximumConstraintError());
 
   int returnValue = 0;
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    returnValue = 1;
+
   if (algorithm->progressCallback_.first)
   {
     algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);

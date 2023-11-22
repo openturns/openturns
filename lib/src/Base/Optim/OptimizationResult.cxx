@@ -278,6 +278,7 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
   adv.saveAttribute( "statusMessage_", statusMessage_ );
   adv.saveAttribute( "status_", status_ );
+  adv.saveAttribute( "time_", time_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -315,6 +316,7 @@ void OptimizationResult::load(Advocate & adv)
   {
     adv.loadAttribute("statusMessage_", statusMessage_);
     adv.loadAttribute("status_", status_);
+    adv.loadAttribute("time_", time_);
   }
 }
 
@@ -538,6 +540,17 @@ void OptimizationResult::setStatus(const UnsignedInteger status)
 UnsignedInteger OptimizationResult::getStatus() const
 {
   return status_;
+}
+
+/* Elapsed time accessor */
+void OptimizationResult::setTimeDuration(const Scalar time)
+{
+  time_ = time;
+}
+
+Scalar OptimizationResult::getTimeDuration() const
+{
+  return time_;
 }
 
 END_NAMESPACE_OPENTURNS

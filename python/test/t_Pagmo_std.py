@@ -55,7 +55,7 @@ for name in multi_obj:
         assert len(fronts) > 0, "no pareto"
         print(name, len(fronts))
         assert (
-            result.getEvaluationNumber() == algo.getMaximumIterationNumber() * size
+            result.getCallsNumber() == (algo.getMaximumIterationNumber() + 1) * size
         ), "wrong size"
 
 # rosenbrock for the other algorithms

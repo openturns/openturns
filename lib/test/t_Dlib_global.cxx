@@ -87,7 +87,7 @@ int main()
     notConstrainingBoundsGlobal.run();
 
     fullprint << "*** Bounded (optimum included) Global run completed:" << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsGlobal.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsGlobal.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsGlobal.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 
@@ -98,7 +98,7 @@ int main()
     constrainingBoundsGlobal.run();
 
     fullprint << "*** Bounded (optimum not included) Global run completed:" << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsGlobal.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsGlobal.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsGlobal.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 

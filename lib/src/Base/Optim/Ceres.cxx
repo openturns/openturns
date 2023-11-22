@@ -256,6 +256,7 @@ void Ceres::run()
   result_ = OptimizationResult(getProblem());
 
   UnsignedInteger iterationNumber = 0;
+  Scalar time = 0.0;
   ceres::TerminationType termination_type = ceres::FAILURE;
 
   if (getProblem().hasResidualFunction())
@@ -296,6 +297,8 @@ void Ceres::run()
     options.function_tolerance = getMaximumResidualError();
     options.parameter_tolerance = getMaximumRelativeError();
     options.gradient_tolerance = getMaximumConstraintError();
+    if (getMaximumTimeDuration() > 0.0)
+      options.max_solver_time_in_seconds = getMaximumTimeDuration();
 
     // Set remaining options from ResourceMap
     if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
@@ -404,6 +407,7 @@ void Ceres::run()
     LOGINFO(OSS() << summary.BriefReport());
     termination_type = summary.termination_type;
     iterationNumber = summary.iterations.size();
+    time = summary.total_time_in_seconds;
   }
   else
   {
@@ -418,6 +422,8 @@ void Ceres::run()
     options.function_tolerance = getMaximumResidualError();
     options.parameter_tolerance = getMaximumRelativeError();
     options.gradient_tolerance = getMaximumConstraintError();
+    if (getMaximumTimeDuration() > 0.0)
+      options.max_solver_time_in_seconds = getMaximumTimeDuration();
 
     // Set remaining options from ResourceMap
     if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
@@ -471,11 +477,13 @@ void Ceres::run()
     LOGINFO(OSS() << summary.BriefReport());
     termination_type = summary.termination_type;
     iterationNumber = summary.iterations.size();
+    time = summary.total_time_in_seconds;
   }
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setIterationNumber(iterationNumber);
   result_.setStatusMessage(ceres::TerminationTypeToString(termination_type));
+  result_.setTimeDuration(time);
 
   if (termination_type == ceres::FAILURE)
   {

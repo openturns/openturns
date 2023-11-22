@@ -102,7 +102,7 @@ int main()
 
     fullprint << "*** Unbounded CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedCg.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << unboundedCg.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << unboundedCg.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << unboundedCg.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << unboundedCg.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << unboundedCg.getResult().getAbsoluteError() << std::endl;
@@ -119,7 +119,7 @@ int main()
 
     fullprint << "*** Bounded (optimum included) CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsCg.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsCg.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsCg.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsCg.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsCg.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << notConstrainingBoundsCg.getResult().getAbsoluteError() << std::endl;
@@ -137,7 +137,7 @@ int main()
 
     fullprint << "*** Bounded (optimum not included) CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsCg.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsCg.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsCg.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsCg.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsCg.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << constrainingBoundsCg.getResult().getAbsoluteError() << std::endl;
@@ -160,7 +160,7 @@ int main()
 
     fullprint << "*** Unbounded BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedBfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << unboundedBfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << unboundedBfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << unboundedBfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << unboundedBfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << unboundedBfgs.getResult().getAbsoluteError() << std::endl;
@@ -177,7 +177,7 @@ int main()
 
     fullprint << "*** Bounded (optimum included) BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsBfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsBfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsBfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsBfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsBfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << notConstrainingBoundsBfgs.getResult().getAbsoluteError() << std::endl;
@@ -194,7 +194,7 @@ int main()
 
     fullprint << "*** Bounded (optimum not included) BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsBfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsBfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsBfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsBfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsBfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << constrainingBoundsBfgs.getResult().getAbsoluteError() << std::endl;
@@ -217,7 +217,7 @@ int main()
 
     fullprint << "*** Unbounded L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedLbfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << unboundedLbfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << unboundedLbfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << unboundedLbfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << unboundedLbfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << unboundedLbfgs.getResult().getAbsoluteError() << std::endl;
@@ -234,7 +234,7 @@ int main()
 
     fullprint << "*** Bounded (optimum included) L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsLbfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsLbfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsLbfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsLbfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsLbfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << notConstrainingBoundsLbfgs.getResult().getAbsoluteError() << std::endl;
@@ -251,7 +251,7 @@ int main()
 
     fullprint << "*** Bounded (optimum not included) L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsLbfgs.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsLbfgs.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsLbfgs.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsLbfgs.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsLbfgs.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << constrainingBoundsLbfgs.getResult().getAbsoluteError() << std::endl;
@@ -274,7 +274,7 @@ int main()
 
     fullprint << "*** Unbounded Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedNewton.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << unboundedNewton.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << unboundedNewton.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << unboundedNewton.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << unboundedNewton.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << unboundedNewton.getResult().getAbsoluteError() << std::endl;
@@ -291,7 +291,7 @@ int main()
 
     fullprint << "*** Bounded (optimum included) Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsNewton.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsNewton.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsNewton.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsNewton.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsNewton.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << notConstrainingBoundsNewton.getResult().getAbsoluteError() << std::endl;
@@ -308,7 +308,7 @@ int main()
 
     fullprint << "*** Bounded (optimum not included) Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsNewton.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsNewton.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsNewton.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsNewton.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsNewton.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << constrainingBoundsNewton.getResult().getAbsoluteError() << std::endl;
@@ -331,7 +331,7 @@ int main()
 
     fullprint << "*** Unbounded TrustRegion run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedTR.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << unboundedTR.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << unboundedTR.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << unboundedTR.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << unboundedTR.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << unboundedTR.getResult().getAbsoluteError() << std::endl;
@@ -388,7 +388,7 @@ int main()
 
     fullprint << "*** LSQ run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << lsqAlgorithm.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << lsqAlgorithm.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << lsqAlgorithm.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << lsqAlgorithm.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << lsqAlgorithm.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << lsqAlgorithm.getResult().getAbsoluteError() << std::endl;
@@ -410,7 +410,7 @@ int main()
 
     fullprint << "*** LSQLM run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << lsqlmAlgorithm.getResult().getIterationNumber() << std::endl;
-    fullprint << "      -- Evaluation number = " << lsqlmAlgorithm.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << lsqlmAlgorithm.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << lsqlmAlgorithm.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << lsqlmAlgorithm.getResult().getOptimalValue().__str__() << std::endl;
     fullprint << "      -- Absolute error = " << lsqlmAlgorithm.getResult().getAbsoluteError() << std::endl;

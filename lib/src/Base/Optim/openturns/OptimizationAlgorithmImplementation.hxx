@@ -81,27 +81,23 @@ public:
 
   /** Maximum absolute error accessor */
   virtual Scalar getMaximumAbsoluteError() const;
-
-  /** Maximum absolute error accessor */
   virtual void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
   virtual Scalar getMaximumRelativeError() const;
-
-  /** Maximum relative error accessor */
   virtual void setMaximumRelativeError(const Scalar maximumRelativeError);
 
   /** Maximum residual error accessor */
   virtual Scalar getMaximumResidualError() const;
-
-  /** Maximum residual error accessor */
   virtual void setMaximumResidualError(const Scalar maximumResidualError);
 
   /** Maximum constraint error accessor */
   virtual Scalar getMaximumConstraintError() const;
-
-  /** Maximum constraint error accessor */
   virtual void setMaximumConstraintError(const Scalar maximumConstraintError);
+
+  /** Maximum time accessor */
+  virtual void setMaximumTimeDuration(const Scalar maximumTime);
+  virtual Scalar getMaximumTimeDuration() const;
 
   /** String converter */
   String __repr__() const override;
@@ -144,15 +140,17 @@ private:
   OptimizationProblem problem_;
 
   /** Number of outermost iterations (in case of nested iterations) */
-  UnsignedInteger maximumIterationNumber_;
+  UnsignedInteger maximumIterationNumber_ = 0.0;
 
   /** Maximum function calls */
-  UnsignedInteger maximumCallsNumber_;
+  UnsignedInteger maximumCallsNumber_ = 0.0;
 
-  Scalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
-  Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
-  Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
-  Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
+  Scalar maximumTimeDuration_ = -1.0;
+
+  Scalar maximumAbsoluteError_ = 0.0;    /**< Value of ||x_n - x_{n-1}|| */
+  Scalar maximumRelativeError_ = 0.0;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
+  Scalar maximumResidualError_ = 0.0;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
+  Scalar maximumConstraintError_ = 0.0;  /**< Value of ||constraints(x_n)|| for the active constraints */
 
   /* Whether to check if optimization has converged or not */
   Bool checkStatus_ = true;

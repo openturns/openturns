@@ -59,7 +59,7 @@ result = algo.getResult()
 x_star = result.getOptimalPoint()
 print("x*=", x_star)
 y_star = result.getOptimalValue()
-neval = result.getEvaluationNumber()
+neval = result.getCallsNumber()
 print("f(x*)=", y_star, "neval=", neval)
 
 print("g(x*)=", constraintFun(x_star))

@@ -377,3 +377,23 @@ Returns
 -------
 status : str
     Status flag, possible values SUCCEEDED, FAILURE"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setTimeDuration
+"Accessor to the elapsed time.
+
+Parameters
+----------
+time : float
+    Optimization duration in seconds"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getTimeDuration
+"Accessor to the elapsed time.
+
+Returns
+-------
+time : float
+    Optimization duration in seconds"

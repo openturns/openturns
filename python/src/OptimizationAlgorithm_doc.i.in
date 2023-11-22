@@ -34,6 +34,10 @@ OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
 OT_OptimizationAlgorithm_setMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumResidualError
 OT_OptimizationAlgorithm_setMaximumResidualError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumTimeDuration
+OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumTimeDuration
+OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
 %feature("docstring") OT::OptimizationAlgorithm::setProblem
 OT_OptimizationAlgorithm_setProblem_doc
 %feature("docstring") OT::OptimizationAlgorithm::setResult

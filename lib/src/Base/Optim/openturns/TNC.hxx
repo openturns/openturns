@@ -24,6 +24,8 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#include <chrono>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -132,6 +134,7 @@ private:
   Sample evaluationOutputHistory_;
 
   void * p_nfeval_ = nullptr;
+  std::chrono::steady_clock::time_point t0_;
 
 }; /* class TNC */
 

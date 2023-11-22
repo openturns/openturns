@@ -461,7 +461,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
+  const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)

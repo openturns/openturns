@@ -98,7 +98,7 @@ absoluteError
 result.getOptimalValue()  # f(x*)
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
@@ -178,7 +178,7 @@ absoluteError
 result.getOptimalValue()  # f(x*)
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 # This number of iterations is much less than the previous experiment.

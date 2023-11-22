@@ -151,6 +151,7 @@ void TNC::run()
   result_ = OptimizationResult(getProblem());
 
   Scalar f = -1.0;
+  t0_ = std::chrono::steady_clock::now();
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -212,6 +213,10 @@ void TNC::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
 
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {
@@ -409,6 +414,11 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   // update result
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    return 1;
 
   // callbacks
   if (algorithm->progressCallback_.first)

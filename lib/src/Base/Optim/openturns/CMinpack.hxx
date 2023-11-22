@@ -23,6 +23,8 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#include <chrono>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -73,6 +75,8 @@ private:
   // temporary, used to track input/outputs
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
+
+  std::chrono::steady_clock::time_point t0_;
 };
 
 

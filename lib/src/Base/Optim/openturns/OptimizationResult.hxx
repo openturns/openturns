@@ -145,6 +145,10 @@ public:
   void setStatus(const UnsignedInteger status);
   UnsignedInteger getStatus() const;
 
+  /** Elapsed time accessor */
+  void setTimeDuration(const Scalar time);
+  Scalar getTimeDuration() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
@@ -167,6 +171,7 @@ private:
   Point optimalValue_;
   UnsignedInteger callsNumber_ = 0; // Number of function calls
   UnsignedInteger iterationNumber_ = 0; // Number of outermost iterations (in case of nested iterations)
+  Scalar time_ = 0.0;
   Scalar absoluteError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| */
   Scalar relativeError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar residualError_ = -1.0; /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

@@ -36,6 +36,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
   , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
@@ -55,6 +56,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , problem_(problem)
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
   , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
@@ -171,6 +173,17 @@ Scalar OptimizationAlgorithmImplementation::getMaximumConstraintError() const
 void OptimizationAlgorithmImplementation::setMaximumConstraintError(const Scalar maximumConstraintError)
 {
   maximumConstraintError_ = maximumConstraintError;
+}
+
+/* Maximum time accessor */
+void OptimizationAlgorithmImplementation::setMaximumTimeDuration(const Scalar maximumTime)
+{
+  maximumTimeDuration_ = maximumTime;
+}
+
+Scalar OptimizationAlgorithmImplementation::getMaximumTimeDuration() const
+{
+  return maximumTimeDuration_;
 }
 
 /* String converter */

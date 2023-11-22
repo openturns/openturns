@@ -191,6 +191,18 @@ void OptimizationAlgorithm::setMaximumConstraintError(const Scalar maximumConstr
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
+/* Maximum time accessor */
+void OptimizationAlgorithm::setMaximumTimeDuration(const Scalar maximumTime)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumTimeDuration(maximumTime);
+}
+
+Scalar OptimizationAlgorithm::getMaximumTimeDuration() const
+{
+  return getImplementation()->getMaximumTimeDuration();
+}
+
 /* String converter */
 String OptimizationAlgorithm::__repr__() const
 {

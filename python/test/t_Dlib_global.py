@@ -9,7 +9,7 @@ def printResults(result, problemName):
     print("      -- Optimal point = ", result.getOptimalPoint())
     print("      -- Optimal value = ", result.getOptimalValue())
     print("      -- Iteration number = ", result.getIterationNumber())
-    print("      -- Evaluation number = ", result.getEvaluationNumber())
+    print("      -- Evaluation number = ", result.getCallsNumber())
     print("      -- Absolute error = {:.6e}".format(result.getAbsoluteError()))
     print("      -- Relative error = {:.6e}".format(result.getRelativeError()))
     print("      -- Residual error = {:.6e}".format(result.getResidualError()))

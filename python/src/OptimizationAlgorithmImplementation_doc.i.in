@@ -389,3 +389,29 @@ checkStatus : bool
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getCheckStatus
 OT_OptimizationAlgorithm_getCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+"Accessor to check status flag.
+
+Parameters
+----------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumTimeDuration
+OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
+"Accessor to check status flag.
+
+Returns
+-------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumTimeDuration
+OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
