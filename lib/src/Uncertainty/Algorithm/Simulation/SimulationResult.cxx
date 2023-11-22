@@ -74,6 +74,17 @@ void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
   blockSize_ = blockSize;
 }
 
+/* Elapsed time accessor */
+void SimulationResult::setTimeDuration(const Scalar time)
+{
+  timeDuration_ = time;
+}
+
+Scalar SimulationResult::getTimeDuration() const
+{
+  return timeDuration_;
+}
+
 /* String converter */
 String SimulationResult::__repr__() const
 {
@@ -89,6 +100,7 @@ void SimulationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("outerSampling_", outerSampling_);
   adv.saveAttribute("blockSize_", blockSize_);
+  adv.saveAttribute("timeDuration_", timeDuration_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -97,6 +109,8 @@ void SimulationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("outerSampling_", outerSampling_);
   adv.loadAttribute("blockSize_", blockSize_);
+  if (adv.hasAttribute("timeDuration_"))
+    adv.loadAttribute("timeDuration_", timeDuration_);
 }
 
 END_NAMESPACE_OPENTURNS

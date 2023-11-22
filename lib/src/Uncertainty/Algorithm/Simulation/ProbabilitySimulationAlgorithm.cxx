@@ -38,7 +38,6 @@ static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulati
 
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy)
   : EventSimulation(convergenceStrategy)
-  , isExperimentProvided_(false)
 {
   // Nothing to do
 }
@@ -47,7 +46,6 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStra
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, convergenceStrategy)
-  , isExperimentProvided_(false)
 {
   // Nothing to do
 }

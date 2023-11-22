@@ -263,7 +263,6 @@ as Python functions.
     SpecFunc.RegularizedIncompleteGammaInverse
     SpecFunc.Stirlerr
     SpecFunc.TriGamma
-    TimerCallback
 
 .. _coupling_tools:
 

@@ -1340,6 +1340,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SimulationAlgorithm parameters //
   addAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation", 1.0e-1);
   addAsScalar("SimulationAlgorithm-DefaultMaximumStandardDeviation", 0.0);
+  addAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration", -1.0);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultMaximumOuterSampling", 1000);
 

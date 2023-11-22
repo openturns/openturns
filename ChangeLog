@@ -39,6 +39,7 @@
  * Deprecated OptimizationResult.set/getEvaluationNumber in favor of set/getCallsNumber
  * Deprecated Solver.set/getMaximumFunctionEvaluation in favor of set/getMaximumCallsNumber
  * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
+ * Deprecated TimerCallback
 
 === Documentation ===
 

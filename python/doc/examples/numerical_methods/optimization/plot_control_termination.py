@@ -70,8 +70,7 @@ myAlgo.setMaximumCoefficientOfVariation(-1.0)
 
 # %%
 # Define the stopping criterion
-timer = ot.TimerCallback(0.01)
-myAlgo.setStopCallback(timer)
+myAlgo.setMaximumTimeDuration(0.01)
 
 # %%
 # Run algorithm

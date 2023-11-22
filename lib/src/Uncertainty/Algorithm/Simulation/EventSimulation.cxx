@@ -130,6 +130,8 @@ void EventSimulation::run()
   result_.setOuterSampling(outerSampling);
 
   Bool stop = false;
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   // We loop if there remains some outer sampling and the coefficient of variation is greater than the limit or has not been computed yet.
   while ((outerSampling < getMaximumOuterSampling()) && ((coefficientOfVariation == -1.0) || (coefficientOfVariation > getMaximumCoefficientOfVariation())) && ((standardDeviation == -1.0) || (standardDeviation > getMaximumStandardDeviation())) && !stop)
   {
@@ -177,20 +179,30 @@ void EventSimulation::run()
       convergencePoint[1] = -1.0;
     convergenceStrategy_.store(convergencePoint);
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO(OSS() << "Maximum time exceeded");
+      stop = true;
+    }
+
     // callbacks
     if (progressCallback_.first)
     {
       progressCallback_.first((100.0 * outerSampling) / getMaximumOuterSampling(), progressCallback_.second);
     }
-    if (stopCallback_.first)
+    if (!stop && stopCallback_.first)
     {
       stop = stopCallback_.first(stopCallback_.second);
       if (stop)
-      {
         LOGINFO(OSS() << "Stopped due to user");
-      }
     } // stopCallback
   } // while
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 }
 
 /* Compute the block sample and the points that realized the event */

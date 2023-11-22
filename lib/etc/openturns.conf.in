@@ -713,6 +713,7 @@
   <!-- OT::SimulationAlgorithm parameters -->
   <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value_float="1.0e-1"         />
   <SimulationAlgorithm-DefaultMaximumStandardDeviation      value_float="0.0"            />
+  <SimulationAlgorithm-DefaultMaximumTimeDuration           value_float="-1.0" />
   <SimulationAlgorithm-DefaultBlockSize                     value_int="1"    />
   <SimulationAlgorithm-DefaultMaximumOuterSampling          value_int="1000" />
 

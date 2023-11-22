@@ -75,7 +75,7 @@ protected:
 
   // The experiment type
   WeightedExperiment experiment_;
-  Bool isExperimentProvided_;
+  Bool isExperimentProvided_ = false;
 private:
 
 } ; /* class ProbabilitySimulationAlgorithm */

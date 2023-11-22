@@ -6,3 +6,4 @@ Remove TNC,Cobya::set/getIgnoreFailure
 Remove OptimizationAlgorithm.set/getMaximumEvaluationNumber
 Remove Solver.set/getMaximumFunctionEvaluation
 Remove Solver.getUsedFunctionEvaluation
+Remove TimerCallback
