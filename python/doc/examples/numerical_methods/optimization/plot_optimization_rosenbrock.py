@@ -139,6 +139,25 @@ view = viewer.View(graph)
 # We see that the algorithm made lots of evaluations in the bottom of the valley before getting in the neighbourhood of the minimum.
 
 # %%
+# Sometimes, the simulation budget for the optimization needs to be reduced due to the computational cost.
+#
+# In that case, setting a low value of the Maximum Evaluation Number may be not sufficient to satisfy the convergence tolerances, and the optimization algorithm may return an exception.
+#
+# If one wants to still use the results provided by the algorithm in case of a partial convergence, one can use the `setIgnoreFailure` method. This option is also available for :class:`~openturns.TNC` algorithm.
+
+# %%
+algo = ot.Cobyla(problem)
+algo.setIgnoreFailure(True)
+algo.setMaximumRelativeError(1.0e-1)
+algo.setMaximumEvaluationNumber(1000)
+algo.setStartingPoint(x0)
+algo.run()
+result = algo.getResult()
+
+# %%
+result.getEvaluationNumber()
+
+# %%
 # Solving the problem with NLopt
 # ------------------------------
 #
