@@ -1627,17 +1627,17 @@ Description DrawableImplementation::BuildViridisPalette(const UnsignedInteger si
   }
   if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
   Description palette(size);
-  palette[size - 1] = ViridisColors[255];
+  palette[size - 1] = ViridisColors[ViridisColors.getSize() - 1];
   if (size > 1)
   {
-    Scalar step = 255. / (size - 1);
+    Scalar step = (ViridisColors.getSize() - 1.) / (size - 1);
     for (UnsignedInteger i = 0; i + 1 < size; i++)
-      palette[i] = ViridisColors[(UnsignedInteger)(i * step + 0.49)];
+      palette[i] = ViridisColors[(UnsignedInteger)std::round(i * step)];
   }
   return palette;
 }
 
-/* Build Viridis palette
+/* Build GrayScale palette
    Distributes colors evenly ensuring that the first and last colors match the white and black margins */
 Description DrawableImplementation::BuildGrayScalePalette(const UnsignedInteger size)
 {
@@ -1648,9 +1648,10 @@ Description DrawableImplementation::BuildGrayScalePalette(const UnsignedInteger 
   if (size > 1)
   {
     Scalar step = (lastValue - (Scalar)firstValue) / (size - 1);
-    for (UnsignedInteger i = 0; i < size; i++){
-      UnsignedInteger val = std::min(255UL, (UnsignedInteger)(firstValue + i * step + 0.49));
-      palette[i] = ConvertFromRGB(val,val,val);
+    for (UnsignedInteger i = 0; i < size; i++)
+    {
+      UnsignedInteger val = std::min(255UL, (UnsignedInteger)std::round(firstValue + i * step));
+      palette[i] = ConvertFromRGB(val, val, val);
     }
   }
   else
