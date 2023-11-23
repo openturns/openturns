@@ -104,7 +104,7 @@ void CMinpack::Transform(Point & x, int n, const Interval & bounds, Point & jacf
     {
       const Scalar xmiddle = (xmin[j] + xmax[j]) * 0.5;
       const Scalar xwidth = (xmax[j] - xmin[j]) * 0.5;
-      const Scalar th = tanh(x[j]);
+      const Scalar th = std::tanh(x[j]);
       x[j] = xmiddle + th * xwidth;
       jacfac[j] = xwidth * (1.0 - th * th);
     }
@@ -123,7 +123,13 @@ void CMinpack::InverseTransform(Point & x, int n, const Interval & bounds)
     {
       const Scalar xmiddle = (xmin[j] + xmax[j]) * 0.5;
       const Scalar xwidth = (xmax[j] - xmin[j]) * 0.5;
-      x[j] = atanh((x[j] - xmiddle) / xwidth);
+      Scalar v = (x[j] - xmiddle) / xwidth;
+      // clip v inside ]-1;1[
+      if (v <= -1.0)
+        v = -1.0 + SpecFunc::Precision;
+      if (v >= 1.0)
+        v = 1.0 - SpecFunc::Precision;
+      x[j] = std::atanh(v);
     }
   }
 }
