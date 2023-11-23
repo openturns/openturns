@@ -33,23 +33,17 @@ static const Factory<OptimizationResult> Factory_OptimizationResult;
 OptimizationResult::OptimizationResult()
   : PersistentObject()
 {
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
+
 }
 
 /* Default constructor */
 OptimizationResult::OptimizationResult(const OptimizationProblem & problem)
   : PersistentObject()
+  , inputHistory_(0, problem.getObjective().getInputDimension())
+  , outputHistory_(0, problem.getObjective().getOutputDimension())
   , problem_(problem)
 {
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(problem.getObjective().getInputDimension());
-  outputHistory_.setDimension(problem.getObjective().getOutputDimension());
+
 }
 
 /* Virtual constructor */
@@ -152,7 +146,7 @@ Scalar OptimizationResult::getAbsoluteError() const
 
 Sample OptimizationResult::getAbsoluteErrorHistory() const
 {
-  return absoluteErrorHistory_.getSample();
+  return absoluteErrorHistory_;
 }
 
 /* Absolute error accessor */
@@ -169,7 +163,7 @@ Scalar OptimizationResult::getRelativeError() const
 
 Sample OptimizationResult::getRelativeErrorHistory() const
 {
-  return relativeErrorHistory_.getSample();
+  return relativeErrorHistory_;
 }
 
 /* Relative error accessor */
@@ -186,7 +180,7 @@ Scalar OptimizationResult::getResidualError() const
 
 Sample OptimizationResult::getResidualErrorHistory() const
 {
-  return residualErrorHistory_.getSample();
+  return residualErrorHistory_;
 }
 
 /* Residual error accessor */
@@ -203,7 +197,7 @@ Scalar OptimizationResult::getConstraintError() const
 
 Sample OptimizationResult::getConstraintErrorHistory() const
 {
-  return constraintErrorHistory_.getSample();
+  return constraintErrorHistory_;
 }
 
 /* Constraint error accessor */
@@ -214,12 +208,12 @@ void OptimizationResult::setConstraintError(const Scalar constraintError)
 
 Sample OptimizationResult::getInputSample() const
 {
-  return inputHistory_.getSample();
+  return inputHistory_;
 }
 
 Sample OptimizationResult::getOutputSample() const
 {
-  return outputHistory_.getSample();
+  return outputHistory_;
 }
 
 void OptimizationResult::setProblem(const OptimizationProblem & problem)
@@ -264,13 +258,13 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "residualError_", residualError_ );
   adv.saveAttribute( "constraintError_", constraintError_ );
 
-  adv.saveAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-  adv.saveAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-  adv.saveAttribute( "residualErrorHistory_", residualErrorHistory_ );
-  adv.saveAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+  adv.saveAttribute( "absoluteErrorHistory_S", absoluteErrorHistory_ );
+  adv.saveAttribute( "relativeErrorHistory_S", relativeErrorHistory_ );
+  adv.saveAttribute( "residualErrorHistory_S", residualErrorHistory_ );
+  adv.saveAttribute( "constraintErrorHistory_S", constraintErrorHistory_ );
 
-  adv.saveAttribute( "inputHistory_", inputHistory_ );
-  adv.saveAttribute( "outputHistory_", outputHistory_ );
+  adv.saveAttribute( "inputHistory_S", inputHistory_ );
+  adv.saveAttribute( "outputHistory_S", outputHistory_ );
 
   adv.saveAttribute( "problem_", problem_ );
   adv.saveAttribute( "finalPoints_", finalPoints_ );
@@ -297,13 +291,26 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "residualError_", residualError_ );
   adv.loadAttribute( "constraintError_", constraintError_ );
 
-  adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-  adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-  adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
-  adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+  if (adv.hasAttribute("inputHistory_S")) // Sample instead of Compact in 1.23
+  {
+    adv.loadAttribute( "absoluteErrorHistory_S", absoluteErrorHistory_ );
+    adv.loadAttribute( "relativeErrorHistory_S", relativeErrorHistory_ );
+    adv.loadAttribute( "residualErrorHistory_S", residualErrorHistory_ );
+    adv.loadAttribute( "constraintErrorHistory_S", constraintErrorHistory_ );
 
-  adv.loadAttribute( "inputHistory_", inputHistory_ );
-  adv.loadAttribute( "outputHistory_", outputHistory_ );
+    adv.loadAttribute( "inputHistory_S", inputHistory_ );
+    adv.loadAttribute( "outputHistory_S", outputHistory_ );
+  }
+  else
+  {
+    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
+    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
+    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
+    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+
+    adv.loadAttribute( "inputHistory_", inputHistory_ );
+    adv.loadAttribute( "outputHistory_", outputHistory_ );
+  }
 
   adv.loadAttribute( "problem_", problem_ );
   if (adv.hasAttribute("finalPoints_"))
@@ -351,13 +358,13 @@ void OptimizationResult::store(const Point & x,
   }
 
   // append values
-  absoluteErrorHistory_.store(Point(1, absoluteError));
-  relativeErrorHistory_.store(Point(1, relativeError));
-  residualErrorHistory_.store(Point(1, residualError));
-  constraintErrorHistory_.store(Point(1, constraintError));
+  absoluteErrorHistory_.add(Point(1, absoluteError));
+  relativeErrorHistory_.add(Point(1, relativeError));
+  residualErrorHistory_.add(Point(1, residualError));
+  constraintErrorHistory_.add(Point(1, constraintError));
 
-  inputHistory_.store(x);
-  outputHistory_.store(y);
+  inputHistory_.add(x);
+  outputHistory_.add(y);
 }
 
 Graph OptimizationResult::drawErrorHistory() const

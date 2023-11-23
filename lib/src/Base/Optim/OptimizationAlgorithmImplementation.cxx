@@ -305,6 +305,7 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   {
     const Point inP(inputHistory[i]);
     const Point outP(outputHistory[i]);
+
     constraintError = 0.0;
     if (getProblem().hasBounds())
     {

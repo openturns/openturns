@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Compact.hxx"
 #include "openturns/OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -176,12 +175,12 @@ private:
   Scalar relativeError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar residualError_ = -1.0; /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar constraintError_ = -1.0; /**< Value of ||constraints(x_n)|| for the active constraints */
-  Compact absoluteErrorHistory_;
-  Compact relativeErrorHistory_;
-  Compact residualErrorHistory_;
-  Compact constraintErrorHistory_;
-  Compact inputHistory_;
-  Compact outputHistory_;
+  Sample absoluteErrorHistory_;
+  Sample relativeErrorHistory_;
+  Sample residualErrorHistory_;
+  Sample constraintErrorHistory_;
+  Sample inputHistory_;
+  Sample outputHistory_;
   OptimizationProblem problem_;
 
   Sample finalPoints_;
