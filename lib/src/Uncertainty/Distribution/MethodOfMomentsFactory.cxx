@@ -271,7 +271,7 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
     throw InvalidArgumentException(HERE) << "The bounds dimension must match the moments order size (" << momentOrders_.getSize() << ")";
 
   // Define evaluation
-  MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, momentOrders_, knownParameterValues_, knownParameterIndices_);
+  const MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, momentOrders_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
 
   // Define optimization problem
@@ -280,31 +280,31 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
   OptimizationAlgorithm solver(solver_);
 
   Point effectiveParameter(distribution_.getParameter());
-  LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << momentsObjective.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
   // extract unknown values
-  Point parameter;
+  Point startingPoint;
   for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
   {
     if (!knownParameterIndices_.contains(j))
-      parameter.add(effectiveParameter[j]);
+      startingPoint.add(effectiveParameter[j]);
   }
-
-  solver.setStartingPoint(parameter);
 
   // clip starting point
-  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(solver.getStartingPoint()))
+  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(startingPoint))
   {
-    Point startingPoint(solver.getStartingPoint());
     const Point lb(optimizationBounds_.getLowerBound());
     const Point ub(optimizationBounds_.getUpperBound());
+    const Interval::BoolCollection flb(optimizationBounds_.getFiniteLowerBound());
+    const Interval::BoolCollection fub(optimizationBounds_.getFiniteUpperBound());
     for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
     {
-      startingPoint[j] = std::min(startingPoint[j], ub[j]);
-      startingPoint[j] = std::max(startingPoint[j], lb[j]);
+      if (flb[j])
+        startingPoint[j] = std::max(startingPoint[j], lb[j]);
+      if (fub[j])
+        startingPoint[j] = std::min(startingPoint[j], ub[j]);
     }
   }
-
+  solver.setStartingPoint(startingPoint);
   solver.setProblem(problem);
   try
   {
@@ -316,7 +316,7 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
   }
 
   // set unknown values
-  parameter = solver.getResult().getOptimalPoint();
+  const Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
   {
@@ -327,7 +327,7 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
     }
   }
   // set known values
-  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
 
