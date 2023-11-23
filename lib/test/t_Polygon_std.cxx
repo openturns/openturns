@@ -71,12 +71,28 @@ int main(int, char *[])
     OT::Polygon myPolygon2(data2);
     myPolygon2.setColor("red");
 
-    // Add it to the graph and draw everything
+    // Add it to the graph
     myGraph.add(myPolygon2);
+
+    // Fill below the start of the second curve
+    size = 10;
+    Point y1(size), y2(size), x(size);
+    for (UnsignedInteger i = 0; i < size; i++)
+    {
+      x[i] = data2[i][0];
+      y1[i] = data2[0][1];
+      y2[i] = data2[i][1];
+    }
+    Polygon polygon = Polygon::FillBetween(x, y1, y2);
+    myGraph.add(polygon);
+
+    // Draw everything
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       myGraph.setLogScale(static_cast<GraphImplementation::LogScale>(i));
     }
+
+    fullprint << "myGraph=" << myGraph << std::endl;
   }
   catch (TestFailed & ex)
   {

@@ -107,14 +107,13 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     # Graphics of the bounds
     epsilon = 1.0e-8
     dataLower = [
-        [yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0]] for i in range(nbpoints)
+        yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
     ]
     dataUpper = [
-        [yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0]] for i in range(nbpoints)
+        yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
     ]
     # Compute the Polygon graphics
-    boundsPoly = ot.Curve.FillBetween(xGrid, dataLower, dataUpper)
-    boundsPoly.setColor(ot.Drawable.BuildDefaultPalette(2)[1])
+    boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
     mmv = ot.MetaModelValidation(xGrid, yFunction, meta)

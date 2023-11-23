@@ -169,4 +169,29 @@ void Polygon::load(Advocate & adv)
   adv.loadAttribute( "edgeColor_", edgeColor_ );
 }
 
+/* Builds a polygon which fills the area between two curves */
+Polygon Polygon::FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2)
+{
+  return FillBetween(dataX.asPoint(), dataY1.asPoint(), dataY2.asPoint());
+}
+
+/* Builds a polygon which fills the area between two curves */
+Polygon Polygon::FillBetween(Point const& dataX, Point const& dataY1, Point const& dataY2)
+{
+  const UnsignedInteger size = dataX.getSize();
+  if ((dataY1.getSize() != size) || (dataY2.getSize() != size))
+    throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on numerical samples with different size.";
+  Sample dataFull(size * 2, 2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    dataFull(i, 0) = dataX[i];
+    dataFull(i, 1) = dataY1[i];
+    dataFull(i + size, 0) = dataX[size - i - 1];
+    dataFull(i + size, 1) = dataY2[size - i - 1];
+  }
+  Polygon polygon = Polygon(dataFull);
+  polygon.setLineWidth(0); // To only draw between the curves
+  return polygon;
+}
+
 END_NAMESPACE_OPENTURNS

@@ -106,12 +106,11 @@ x = linearSample(KSstat, 0.6, nplot)
 # Compute the bounds to fill: the lower vertical bound is 0 and the upper vertical bound is the KS PDF.
 
 # %%
-vLow = [[0.0]] * nplot
-vUp = [[pKolmogorov.gradient(x[i])[0, 0]] for i in range(nplot)]
+vLow = [0.0] * nplot
+vUp = [pKolmogorov.gradient(x[i])[0, 0] for i in range(nplot)]
 
 # %%
-boundsPoly = ot.Curve.FillBetween(x, vLow, vUp)
-boundsPoly.setColor(ot.Drawable.BuildDefaultPalette(2)[1])
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 boundsPoly.setLegend("pvalue = %.4f" % (pvalue))
 curve = ot.Curve(s, y)
 curve.setLegend("Exact distribution")

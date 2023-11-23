@@ -50,14 +50,14 @@ y = dist.computePDF(x)
 
 
 # %%
-vLow = [[0.0]] * nplot
-vUp = [[y[i, 0]] for i in range(nplot)]
+vLow = [0.0] * nplot
+vUp = [y[i, 0] for i in range(nplot)]
 
 # %%
 area = dist.computeCDF(b) - dist.computeCDF(a)
 
 # %%
-boundsPoly = ot.Curve.FillBetween(x, vLow, vUp)
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 graph = dist.drawPDF()
 graph.add(boundsPoly)
 graph.setTitle("Area = %.3f" % (area))

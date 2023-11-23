@@ -41,3 +41,44 @@ Parameters
 ----------
 edgeColor : str
     Color of the edge of the :class:`~openturns.Polygon`."
+
+// ---------------------------------------------------------------------
+
+%define OT_Polygon_FillBetween_doc
+"Fill an area between two curves.
+
+Parameters
+----------
+dataX : 2-d sequence of floats of dimension 1, or sequence of floats
+    First coordinates common to the curves.
+dataY1 : 2-d sequence of floats of dimension 1, or sequence of floats
+    Second coordinates of the first curve.
+dataY2 : 2-d sequence of floats of dimension 1, or sequence of floats
+    Second coordinates of the second curve.
+
+Returns
+-------
+polygon : :class:`~openturns.Polygon`
+    Polygon which fills the surface between the two curves.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import pi, sin
+>>> # Generate the data for the curve to be drawn
+>>> data = [[-3 * pi + 6 * pi * i / 100, sin(-3 * pi + 6 * pi * i / 100)] for i in range(100)]
+>>> # Create the curve
+>>> myCurve = ot.Curve(data, 'blue', 'solid', 2, '')
+>>> # Create the polygon to fill between the curve and the x-axis
+>>> x = [xy[0] for xy in data]
+>>> y = [xy[1] for xy in data]
+>>> myPolygon = ot.Polygon.FillBetween(x, y, [0.] * len(data))
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('A filled curve', 'x', 'sin(x)', True, '')
+>>> # Add drawables into the graph
+>>> myGraph.add(myCurve)
+>>> myGraph.add(myPolygon)"
+
+%enddef
+%feature("docstring") OT::Polygon::FillBetween
+OT_Polygon_FillBetween_doc

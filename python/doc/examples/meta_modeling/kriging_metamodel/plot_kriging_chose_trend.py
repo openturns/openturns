@@ -243,12 +243,12 @@ def plotKrigingConfidenceBounds(krigingResult, x_test, myTransform, color, alpha
     metamodel = krigingResult.getMetaModel()
     y_test = metamodel(scaled_x_test)
     dataLower = [
-        [y_test[i, 0] - quantileAlpha * conditionalSigma[i, 0]] for i in range(n_test)
+        y_test[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(n_test)
     ]
     dataUpper = [
-        [y_test[i, 0] + quantileAlpha * conditionalSigma[i, 0]] for i in range(n_test)
+        y_test[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(n_test)
     ]
-    boundsPoly = ot.Curve.FillBetween(x_test, dataLower, dataUpper)
+    boundsPoly = ot.Polygon.FillBetween(x_test.asPoint(), dataLower, dataUpper)
     boundsPoly.setColor(color)
     boundsPoly.setLegend("%d%% C.I." % ((1.0 - alpha) * 100))
     return boundsPoly

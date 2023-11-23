@@ -68,10 +68,10 @@ x = linearSample(a, b, nplot)
 y = distX.computePDF(x)
 
 
-vLow = [[0.0] for i in range(nplot)]
-vUp = [[y[i, 0]] for i in range(nplot)]
+vLow = [0.0 for i in range(nplot)]
+vUp = [y[i, 0] for i in range(nplot)]
 area = distX.computeCDF(b) - distX.computeCDF(a)
-boundsPoly = ot.Curve.FillBetween(x, vLow, vUp)
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 
 # %%
 # We add the colored area to the PDF graph.
