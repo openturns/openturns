@@ -143,7 +143,8 @@ view = viewer.View(graph)
 #
 # In that case, setting a low value of the Maximum Evaluation Number may be not sufficient to satisfy the convergence tolerances, and the optimization algorithm may return an exception.
 #
-# If one wants to still use the results provided by the algorithm in case of a partial convergence, one can use the `setIgnoreFailure` method. This option is also available for :class:`~openturns.TNC` algorithm.
+# If one wants to still use the results provided by the algorithm in case of a partial convergence, one can use the `setIgnoreFailure` method.
+# This option is also available for :class:`~openturns.TNC` algorithm.
 
 # %%
 algo = ot.Cobyla(problem)
