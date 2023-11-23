@@ -336,14 +336,31 @@ void OptimizationResult::store(const Point & x,
                                const Scalar constraintError,
                                const Scalar maximumConstraintError)
 {
+  // append values (and check dimensions)
+  inputHistory_.add(x);
+  outputHistory_.add(y);
+
+  absoluteErrorHistory_.add(Point(1, absoluteError));
+  relativeErrorHistory_.add(Point(1, relativeError));
+  residualErrorHistory_.add(Point(1, residualError));
+  constraintErrorHistory_.add(Point(1, constraintError));
+
   if (getProblem().getObjective().getOutputDimension() <= 1)
   {
+    Bool isNormal = true;
+    for (UnsignedInteger j = 0; j < x.getDimension(); ++ j)
+      if (!SpecFunc::IsNormal(x[j]))
+        isNormal = false;
+    for (UnsignedInteger j = 0; j < y.getDimension(); ++ j)
+      if (!SpecFunc::IsNormal(y[j]))
+        isNormal = false;
+
     const Bool objectiveImproved = (!getOptimalValue().getDimension())
                                    || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
 
     const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
 
-    if ((objectiveImproved && insideBounds && (constraintError <= maximumConstraintError))
+    if ((isNormal && objectiveImproved && insideBounds && (constraintError <= maximumConstraintError))
         || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
     {
       // update values
@@ -356,15 +373,6 @@ void OptimizationResult::store(const Point & x,
       setOptimalValue(y);
     }
   }
-
-  // append values
-  absoluteErrorHistory_.add(Point(1, absoluteError));
-  relativeErrorHistory_.add(Point(1, relativeError));
-  residualErrorHistory_.add(Point(1, residualError));
-  constraintErrorHistory_.add(Point(1, constraintError));
-
-  inputHistory_.add(x);
-  outputHistory_.add(y);
 }
 
 Graph OptimizationResult::drawErrorHistory() const
