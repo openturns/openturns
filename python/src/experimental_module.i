@@ -61,6 +61,7 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+%include PointToFieldFunctionalChaosAlgorithm.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include CrossEntropyResult.i

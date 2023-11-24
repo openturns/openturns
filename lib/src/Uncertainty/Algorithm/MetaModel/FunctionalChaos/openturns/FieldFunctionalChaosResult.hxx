@@ -65,26 +65,35 @@ public:
   FunctionalChaosResult getFCEResult() const;
 
   /** Block indices accessors */
-  Collection<Indices> getBlockIndices() const;
-  void setBlockIndices(const Collection<Indices> & blockIndices);
+  Collection<Indices> getInputBlockIndices() const;
+  void setInputBlockIndices(const Collection<Indices> & inputBlockIndices);
+
+  Collection<Indices> getOutputBlockIndices() const;
+  void setOutputBlockIndices(const Collection<Indices> & outputBlockIndices);
 
   /** Metamodel accessor */
-  FieldToPointFunction getFieldToPointMetamodel() const;
-  void setMetamodel(const FieldToPointFunction & metamodel);
-  PointToFieldFunction getPointToFieldMetamodel() const;
-  void setMetamodel(const PointToFieldFunction & metamodel);
-  FieldFunction getFieldMetamodel() const;
-  void setMetamodel(const FieldFunction & metamodel);
+  FieldToPointFunction getFieldToPointMetaModel() const;
+  void setMetaModel(const FieldToPointFunction & metamodel);
+
+  PointToFieldFunction getPointToFieldMetaModel() const;
+  void setMetaModel(const PointToFieldFunction & metamodel);
+
+  FieldFunction getFieldMetaModel() const;
+  void setMetaModel(const FieldFunction & metamodel);
 
   /** Sample accessors */
   void setInputProcessSample(const ProcessSample & inputProcessSample);
   ProcessSample getInputProcessSample() const;
+
   void setOutputProcessSample(const ProcessSample & outputProcessSample);
   ProcessSample getOutputProcessSample() const;
+
   void setInputSample(const Sample & inputSample);
   Sample getInputSample() const;
+
   void setOutputSample(const Sample & outputSample);
   Sample getOutputSample() const;
+
   void setModesSample(const Sample & modesSample);
   Sample getModesSample() const;
 
@@ -94,23 +103,25 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-protected:
+protected: 
   // KL and FCE decompositions
   PersistentCollection<KarhunenLoeveResult> inputKLResultCollection_;
   FunctionalChaosResult fceResult_;
   PersistentCollection<KarhunenLoeveResult> outputKLResultCollection_;
 
   // independent component blocks
-  PersistentCollection<Indices> blockIndices_;
+  PersistentCollection<Indices> inputBlockIndices_;
+  PersistentCollection<Indices> outputBlockIndices_;
 
   // metamodel
-  FieldToPointFunction fieldToPointMetamodel_;
-  PointToFieldFunction pointToFieldMetamodel_;
-  FieldFunction fieldMetamodel_;
+  FieldToPointFunction fieldToPointMetaModel_;
+  PointToFieldFunction pointToFieldMetaModel_;
+  FieldFunction fieldMetaModel_;
 
   // data
   ProcessSample inputProcessSample_;
   ProcessSample outputProcessSample_;
+
   Sample inputSample_;
   Sample outputSample_;
   Sample modesSample_;

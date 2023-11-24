@@ -62,7 +62,7 @@ If the `FunctionalChaosAlgorithm-BasisSize` key of the :class:`~openturns.Resour
 then this parameter sets the basis size.
 Otherwise, the `FunctionalChaosAlgorithm-MaximumTotalDegree` key of the
 :class:`~openturns.ResourceMap` is used to compute the basis size using the `getBasisSizeFromTotalDegree`
-method of the orthogonal basis.
+method of the orthogonal basis (with a maximum of :math:`n` terms due to the sample size).
 Finally, the :class:`~openturns.FixedStrategy` class is used.
 
 **Default settings for the projection strategy**

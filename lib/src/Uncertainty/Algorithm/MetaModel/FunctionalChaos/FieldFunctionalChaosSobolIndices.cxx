@@ -40,9 +40,8 @@ FieldFunctionalChaosSobolIndices::FieldFunctionalChaosSobolIndices()
 /* Constructor with parameters */
 FieldFunctionalChaosSobolIndices::FieldFunctionalChaosSobolIndices(const FieldFunctionalChaosResult & result)
   : PersistentObject()
-  , result_(result)
 {
-  // Nothing to do
+  setResult(result);
 }
 
 /* Virtual constructor */
@@ -60,6 +59,44 @@ String FieldFunctionalChaosSobolIndices::__repr__() const
   return oss;
 }
 
+
+void FieldFunctionalChaosSobolIndices::setResult(const FieldFunctionalChaosResult & result)
+{
+  result_ = result;
+
+  cumulatedInputSizes_.clear();
+  const UnsignedInteger inputBlockNumber = result_.getInputKLResultCollection().getSize();
+  if (inputBlockNumber)
+  {
+    // Field input
+    cumulatedInputSizes_.resize(inputBlockNumber + 1);
+    for (UnsignedInteger k = 0; k < inputBlockNumber; ++ k)
+      cumulatedInputSizes_[k + 1] = cumulatedInputSizes_[k] + result_.getInputKLResultCollection()[k].getEigenvalues().getDimension();
+  }
+  else
+  {
+    // Vector input
+    cumulatedInputSizes_.resize(result_.getInputSample().getDimension() + 1);
+    cumulatedInputSizes_.fill();
+  }
+
+  cumulatedOutputSizes_.clear();
+  const UnsignedInteger outputBlockNumber = result_.getOutputKLResultCollection().getSize();
+  if (outputBlockNumber)
+  {
+    // Field output
+    cumulatedOutputSizes_.resize(outputBlockNumber + 1);
+    for (UnsignedInteger k = 0; k < outputBlockNumber; ++ k)
+      cumulatedOutputSizes_[k + 1] = cumulatedOutputSizes_[k] + result_.getOutputKLResultCollection()[k].getEigenvalues().getDimension();
+  }
+  else
+  {
+    // Vector output
+    cumulatedOutputSizes_.resize(result_.getOutputSample().getDimension() + 1);
+    cumulatedOutputSizes_.fill();
+  }
+}
+
 Scalar FieldFunctionalChaosSobolIndices::getSobolIndex(const UnsignedInteger variableIndex, const UnsignedInteger marginalIndex) const
 {
   const Indices index(1, variableIndex);
@@ -68,11 +105,10 @@ Scalar FieldFunctionalChaosSobolIndices::getSobolIndex(const UnsignedInteger var
 
 Scalar FieldFunctionalChaosSobolIndices::getSobolIndex(const Indices & variableIndices, const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger blockNumber = result_.getBlockIndices().getSize();
-  if (!variableIndices.check(blockNumber))
-    throw InvalidArgumentException(HERE) << "The variable indices must be in the range [0, " << blockNumber - 1 << "] and must be different.";
-  if (marginalIndex >= result_.getOutputSample().getDimension())
-    throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
+  if (!variableIndices.check(cumulatedInputSizes_.getSize() - 1))
+    throw InvalidArgumentException(HERE) << "The variable indices must be in the range [0, " << cumulatedInputSizes_.getSize() - 2 << "] and must be different.";
+  if (marginalIndex >= cumulatedOutputSizes_.getSize() - 1)
+    throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, " << cumulatedOutputSizes_.getSize() - 2 << "].";
   if (!result_.getFCEResult().getOrthogonalBasis().getMeasure().hasIndependentCopula())
     throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
   if (!result_.getFCEResult().getDistribution().hasIndependentCopula())
@@ -83,49 +119,57 @@ Scalar FieldFunctionalChaosSobolIndices::getSobolIndex(const Indices & variableI
   Scalar totalVariance = 0.0;
   Scalar covarianceVariables = 0.0;
 
-  // build the list of indices of the KL coefficients matching variable indices
-  Indices cumulatedInputSizes(blockNumber + 1);
-  for (UnsignedInteger k = 0; k < blockNumber; ++ k)
-    cumulatedInputSizes[k + 1] = cumulatedInputSizes[k] + result_.getInputKLResultCollection()[k].getEigenvalues().getDimension();
-  Indices groupIndices;
+  // build the list of indices of the KL coefficients matching input variable indices
+  Indices inputGroupIndices;
   for (UnsignedInteger i = 0; i < variableIndices.getSize(); ++ i)
   {
     const UnsignedInteger variableIndex = variableIndices[i];
-    const UnsignedInteger startInput = cumulatedInputSizes[variableIndex];
-    const UnsignedInteger stopInput = cumulatedInputSizes[variableIndex + 1];
+    const UnsignedInteger startInput = cumulatedInputSizes_[variableIndex];
+    const UnsignedInteger stopInput = cumulatedInputSizes_[variableIndex + 1];
     for (UnsignedInteger j = startInput; j < stopInput; ++ j)
-      groupIndices.add(j);
+      inputGroupIndices.add(j);
   }
 
+  // build the list of indices of the KL coefficients matching output variable indices
+  Indices outputGroupIndices;
+  const UnsignedInteger startInput = cumulatedOutputSizes_[marginalIndex];
+  const UnsignedInteger stopInput = cumulatedOutputSizes_[marginalIndex + 1];
+  for (UnsignedInteger j = startInput; j < stopInput; ++ j)
+    outputGroupIndices.add(j);
+  const UnsignedInteger outputGroupSize = outputGroupIndices.getSize();
+  
   // Now, select the relevant coefficients
-  const Sample coefficients(result_.getFCEResult().getCoefficients().getMarginal(marginalIndex));
+  const Sample coefficients(result_.getFCEResult().getCoefficients());
   const UnsignedInteger size = coefficients.getSize();
   const EnumerateFunction enumerateFunction(result_.getFCEResult().getOrthogonalBasis().getEnumerateFunction());
   const Indices coefficientIndices(result_.getFCEResult().getIndices());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Scalar coefficientI = coefficients(i, 0);
-    // Only non-zero coefficients have to be taken into account
-    if (coefficientI != 0.0)
+    for (UnsignedInteger j = 0; j < outputGroupSize; ++ j)
     {
-      // The only multi-indices we must take into account for
-      // the conditional variance are those associated to
-      // multi-indices that contain positive indices in the
-      // correct input range and null indices outside of this range
-      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-      // Take into account only nonzero multi indices
-      if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
+      const Scalar coefficientIJ = coefficients(i, outputGroupIndices[j]);
+      // Only non-zero coefficients have to be taken into account
+      if (coefficientIJ != 0.0)
       {
-        totalVariance += coefficientI * coefficientI;
-        // Set the exponents corresponding to the group to zero
-        for (UnsignedInteger j = 0; j < groupIndices.getSize(); ++j)
-          multiIndices[groupIndices[j]] = 0;
-        // Now check that all the indices are zero
-        if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
-          covarianceVariables += coefficientI * coefficientI;
-      }
-    }
-  }
+        // The only multi-indices we must take into account for
+        // the conditional variance are those associated to
+        // multi-indices that contain positive indices in the
+        // correct input range and null indices outside of this range
+        Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+        // Take into account only nonzero multi indices
+        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
+        {
+          totalVariance += coefficientIJ * coefficientIJ / outputGroupSize;
+          // Set the exponents corresponding to the group to zero
+          for (UnsignedInteger k = 0; k < inputGroupIndices.getSize(); ++ k)
+            multiIndices[inputGroupIndices[k]] = 0;
+          // Now check that all the indices are zero
+          if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
+            covarianceVariables += coefficientIJ * coefficientIJ / outputGroupSize;
+        } // max_element > 0
+      } // coefficientIJ != 0.0
+    } // for j
+  } // for i
   return (totalVariance > 0.0) ? covarianceVariables / totalVariance : 0.0;
 }
 
@@ -138,7 +182,7 @@ Scalar FieldFunctionalChaosSobolIndices::getSobolTotalIndex(const UnsignedIntege
 Scalar FieldFunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variableIndices, const UnsignedInteger marginalIndex) const
 {
   // Compute total index from complementary indices
-  const UnsignedInteger blockNumber = result_.getBlockIndices().getSize();
+  const UnsignedInteger blockNumber = cumulatedInputSizes_.getSize() - 1;
   if (!variableIndices.check(blockNumber))
     throw InvalidArgumentException(HERE) << "The variable indices must be in the range [0, " << blockNumber - 1 << "] and must be different.";
   const Indices complementaryVariableIndices(variableIndices.complement(blockNumber));
@@ -147,7 +191,7 @@ Scalar FieldFunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & vari
 
 Point FieldFunctionalChaosSobolIndices::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger blockNumber = result_.getBlockIndices().getSize();
+  const UnsignedInteger blockNumber = cumulatedInputSizes_.getSize() - 1;
   Point result(blockNumber);
   for (UnsignedInteger i = 0; i < blockNumber; ++ i)
     result[i] = getSobolIndex(i, marginalIndex);
@@ -156,7 +200,7 @@ Point FieldFunctionalChaosSobolIndices::getFirstOrderIndices(const UnsignedInteg
 
 Point FieldFunctionalChaosSobolIndices::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger blockNumber = result_.getBlockIndices().getSize();
+  const UnsignedInteger blockNumber = cumulatedInputSizes_.getSize() - 1;
   Point result(blockNumber);
   for (UnsignedInteger i = 0; i < blockNumber; ++ i)
     result[i] = getSobolTotalIndex(i, marginalIndex);
@@ -165,8 +209,11 @@ Point FieldFunctionalChaosSobolIndices::getTotalOrderIndices(const UnsignedInteg
 
 Graph FieldFunctionalChaosSobolIndices::draw(const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger blockNumber = result_.getBlockIndices().getSize();
-  const Description inputDescription(Description::BuildDefault(blockNumber, "x"));
+  Description inputDescription;
+  if (result_.getFieldToPointMetaModel().getInputDimension())
+    inputDescription = result_.getFieldToPointMetaModel().getInputDescription();
+  else
+    inputDescription = result_.getInputSample().getDescription();
   const Point firstOrderIndices(getFirstOrderIndices(marginalIndex));
   const Point totalOrderIndices(getTotalOrderIndices(marginalIndex));
   const Graph graph(SobolIndicesAlgorithmImplementation::DrawSobolIndices(inputDescription, firstOrderIndices, totalOrderIndices));
@@ -185,6 +232,7 @@ void FieldFunctionalChaosSobolIndices::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("result_", result_);
+  setResult(result_);
 }
 
 END_NAMESPACE_OPENTURNS

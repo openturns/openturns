@@ -71,7 +71,12 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  void setResult(const FieldFunctionalChaosResult & result);
+  
   FieldFunctionalChaosResult result_;
+
+  Indices cumulatedInputSizes_;
+  Indices cumulatedOutputSizes_;
 
 }; /* class FieldFunctionalChaosSobolIndices */
 
