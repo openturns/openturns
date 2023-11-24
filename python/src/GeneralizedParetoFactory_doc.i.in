@@ -246,10 +246,10 @@ The mean of excesses of :math:`X` for :math:`u>u_s` is
 
     M_n(u) = \Expect{X-u|X>u} = \frac{\sigma_s+\xi_u}{1-\xi}
 
-So for all :math:`u>u_s` M_n(u) is linear wrt. :math:`u`.
+So for all :math:`u>u_s` :math:`M_n(u)` is linear wrt. :math:`u`.
 The threshold :math:`u_s` is the smallest value of :math:`u` for which the curve is linear.
 
-The quantity :math:`M_n(u)` is estimater par the empirical estimator of the mean:
+The quantity :math:`M_n(u)` is estimated by the empirical estimator of the mean:
 
 .. math::
 
