@@ -1023,6 +1023,7 @@ ot_add_python_module(experimental experimental_module.i
                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
+                     PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
 		     SamplePartition.i SamplePartition_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in

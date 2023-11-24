@@ -18,39 +18,43 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_FIELDTOPOINTFUNCTIONALCHAOSALGORITHM_HXX
-#define OPENTURNS_FIELDTOPOINTFUNCTIONALCHAOSALGORITHM_HXX
+#ifndef OPENTURNS_POINTTOFIELDFUNCTIONALCHAOSALGORITHM_HXX
+#define OPENTURNS_POINTTOFIELDFUNCTIONALCHAOSALGORITHM_HXX
 
 #include "openturns/FieldFunctionalChaosResult.hxx"
 #include "openturns/ProcessSample.hxx"
+
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 
 /**
- * @class FieldToPointFunctionalChaosAlgorithm
+ * @class PointToFieldFunctionalChaosAlgorithm
  *
  */
 
-class OT_API FieldToPointFunctionalChaosAlgorithm
+class OT_API PointToFieldFunctionalChaosAlgorithm
   : public PersistentObject
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  FieldToPointFunctionalChaosAlgorithm();
+  PointToFieldFunctionalChaosAlgorithm();
 
   /** Constructor with parameters */
-  FieldToPointFunctionalChaosAlgorithm(const ProcessSample & inputProcessSample, const Sample & outputSample);
+  PointToFieldFunctionalChaosAlgorithm(const Sample & inputSample,
+                                       const ProcessSample & outputProcessSample,
+                                       const Distribution & distribution);
 
   /** Virtual constructor */
-  FieldToPointFunctionalChaosAlgorithm * clone() const override;
+  PointToFieldFunctionalChaosAlgorithm * clone() const override;
 
   /** Sample accessors */
-  ProcessSample getInputProcessSample() const;
-  Sample getOutputSample() const;
+  Sample getInputSample() const;
+  ProcessSample getOutputProcessSample() const;
 
   /** Block indices accessors */
   Collection<Indices> getBlockIndices() const;
@@ -68,10 +72,6 @@ public:
   Bool getRecompress() const;
   void setRecompress(const Bool recompress);
 
-  /** Centered sample flag accessor */
-  void setCenteredSample(const Bool centered);
-  Bool getCenteredSample() const;
-
   /** String converter */
   String __repr__() const override;
 
@@ -80,9 +80,6 @@ public:
 
   /** Result accessor */
   FieldFunctionalChaosResult getResult() const;
-
-  /** Build distribution of KL modes */
-  static Distribution BuildDistribution(const Sample & modesSample);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -93,11 +90,9 @@ public:
 protected:
 
   // the data
-  ProcessSample inputProcessSample_;
-  Sample outputSample_;
-
-  // whether the sample is centered
-  Bool centeredSample_ = false;
+  Sample inputSample_;
+  ProcessSample outputProcessSample_;
+  Distribution distribution_;
 
   // independent component blocks
   PersistentCollection<Indices> blockIndices_;
@@ -107,7 +102,7 @@ protected:
    *  - by specifying the threshold of spectrum cut-off
    *  - by specifying the number of modes to compute */
   Scalar threshold_ = 0.0;
-  UnsignedInteger nbModes_ = 0;
+  UnsignedInteger nbModes_ = std::numeric_limits<UnsignedInteger>::max();
 
   // Whether to recompress KL modes
   Bool recompress_ = false;
@@ -118,4 +113,4 @@ protected:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_FIELDTOPOINTFUNCTIONALCHAOSALGORITHM_HXX */
+#endif /* OPENTURNS_POINTTOFIELDFUNCTIONALCHAOSALGORITHM_HXX */

@@ -11,6 +11,7 @@
  * SmoothedUniformFactory (openturns.experimental)
  * GeneralizedParetoValidation (openturns.experimental)
  * SamplePartition (openturns.experimental)
+ * PointToFieldFunctionalChaosAlgorithm (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated Pagmo.setGenerationNumber

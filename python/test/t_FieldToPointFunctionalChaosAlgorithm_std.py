@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 # ot.Log.Show(ot.Log.INFO)
@@ -70,7 +71,7 @@ algo.run()
 result = algo.getResult()
 
 # check metamodel
-metamodel = result.getFieldToPointMetamodel()
+metamodel = result.getFieldToPointMetaModel()
 assert metamodel.getInputDimension() == x.getDimension(), "wrong in dim"
 assert metamodel.getOutputDimension() == y.getDimension(), "wrong out dim"
 
@@ -108,3 +109,18 @@ kl_results = result.getInputKLResultCollection()
 n_modes = [len(res.getEigenvalues()) for res in kl_results]
 print(f"n_modes={n_modes}")
 assert sum(n_modes) == 6, "wrong modes"
+
+# serialization
+if ot.PlatformInfo.HasFeature("libxml2"):
+    study = ot.Study()
+    fname = "study_p2f_result.xml"
+    study.setStorageManager(ot.XMLStorageManager(fname))
+    study.add("algo", algo)
+    study.save()
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fname))
+    study.load()
+    algo = otexp.FieldToPointFunctionalChaosAlgorithm()
+    study.fillObject("algo", algo)
+    print(algo)
+    os.remove(fname)
