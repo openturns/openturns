@@ -61,3 +61,12 @@ jobs:
         run: |
           docker pull openturns/debian-aarch64
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+
+  mindeps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull debian:10
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
