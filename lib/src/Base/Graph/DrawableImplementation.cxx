@@ -1297,10 +1297,15 @@ String DrawableImplementation::getColorCode() const
 /* Accessor for color */
 void DrawableImplementation::setColor(const String & color)
 {
+  setColor(color, true);
+}
+
+void DrawableImplementation::setColor(const String & color, const Bool isColorExplicitlySet)
+{
   if(!IsValidColor(color)) throw InvalidArgumentException(HERE) << "Given color = " << color << " is incorrect";
 
   color_ = color;
-  isColorExplicitlySet_ = true;
+  isColorExplicitlySet_ = isColorExplicitlySet;
 }
 
 /* Accessor for edge color */
