@@ -38,5 +38,6 @@
 #include "openturns/FieldFunctionalChaosResult.hxx"
 #include "openturns/FieldToPointFunctionalChaosAlgorithm.hxx"
 #include "openturns/FieldFunctionalChaosSobolIndices.hxx"
+#include "openturns/PointToFieldFunctionalChaosAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTFUNCTIONALCHAOS_HXX */

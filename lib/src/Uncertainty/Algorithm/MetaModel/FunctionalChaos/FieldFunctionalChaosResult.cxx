@@ -91,8 +91,9 @@ void FieldFunctionalChaosResult::setBlockIndices(const Collection<Indices> & blo
   Indices flat;
   for (UnsignedInteger i = 0; i < blockIndices.getSize(); ++ i)
     flat.add(blockIndices[i]);
-  if ((flat.getSize() != inputProcessSample_.getDimension()) || !flat.check(inputProcessSample_.getDimension()))
-    throw InvalidArgumentException(HERE) << "Block indices does not match with input dimension";
+  if (inputProcessSample_.getDimension())
+    if ((flat.getSize() != inputProcessSample_.getDimension()) || !flat.check(inputProcessSample_.getDimension()))
+      throw InvalidArgumentException(HERE) << "Block indices does not match with input dimension";
   blockIndices_ = blockIndices;
 }
 

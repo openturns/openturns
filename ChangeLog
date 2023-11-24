@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
+ * PointToFieldFunctionalChaosAlgorithm (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated Pagmo.setGenerationNumber
