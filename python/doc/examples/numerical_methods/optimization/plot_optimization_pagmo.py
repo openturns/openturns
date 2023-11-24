@@ -59,7 +59,6 @@ for i in range(front.getSize()):
         data[2 * i + 1, 0] = front[i + 1, 0]
         data[2 * i + 1, 1] = front[i, 1]
 curve = ot.Curve(data)
-curve.setColor("blue")
 curve.setLegend(f"front {0}")
 graph.add(curve)
 graph.setGrid(True)
@@ -92,3 +91,5 @@ _ = View(graph)
 
 
 View.ShowAll()
+
+# %%

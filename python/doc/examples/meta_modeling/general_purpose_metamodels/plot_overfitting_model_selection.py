@@ -182,7 +182,7 @@ graph.add(cloud)
 # Predictions
 curve = ot.Curve(x_test, y_test)
 curve.setLegend("Polynomial Degree = %d" % (total_degree))
-curve.setColor("red")
+curve.setColor("blue")
 graph.add(curve)
 view = otv.View(graph)
 
@@ -197,15 +197,15 @@ graph = ot.Graph(
     True,
     "upper right",
 )
+# Predictions
+curve = ot.Curve(x_test, y_test)
+curve.setLegend("Polynomial Degree = %d" % (total_degree))
+curve.setColor("blue")
+graph.add(curve)
 # Training set observations
 cloud = ot.Cloud(x_train, y_train)
 cloud.setPointStyle("circle")
 graph.add(cloud)
-# Predictions
-curve = ot.Curve(x_test, y_test)
-curve.setLegend("Polynomial Degree = %d" % (total_degree))
-curve.setColor("red")
-graph.add(curve)
 # Errors
 ypredicted_train = responseSurface(basis(x_train))
 for i in range(n_train):
@@ -262,7 +262,7 @@ def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
     # Predictions
     curve = ot.Curve(x_test, ypredicted_test)
     curve.setLegend("Polynomial Degree = %d" % (total_degree))
-    curve.setColor("red")
+    curve.setColor("blue")
     graph.add(curve)
     return graph
 
@@ -387,13 +387,11 @@ degreeSample = ot.Sample([[i] for i in range(maximum_degree)])
 graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "upper right")
 # Train
 cloud = ot.Curve(degreeSample, RMSE_train)
-cloud.setColor("blue")
 cloud.setLegend("Train")
 cloud.setPointStyle("circle")
 graph.add(cloud)
 # Test
 cloud = ot.Curve(degreeSample, RMSE_test)
-cloud.setColor("red")
 cloud.setLegend("Test")
 cloud.setPointStyle("circle")
 graph.add(cloud)
