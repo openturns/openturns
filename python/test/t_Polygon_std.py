@@ -41,8 +41,8 @@ myGraph.add(myPolygon2)
 
 # Fill below the start of the second polygon
 polygon = ot.Polygon.FillBetween([data2[i][0] for i in range(10)],
-                               [data2[i][1] for i in range(10)],
-                               [data2[0][1]] * 10)
+                                 [data2[i][1] for i in range(10)],
+                                 [data2[0][1]] * 10)
 polygon.setColor("green")
 myGraph.add(polygon)
 
