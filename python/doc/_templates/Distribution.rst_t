@@ -34,6 +34,8 @@
         weights = [0.8, 0.2]
         cst = 3.0
         distribution = ot.RandomMixture(coll, weights, cst)
+    elif ot.{{ objname }}().__class__.__name__ == 'SmoothedUniform':
+        distribution = ot.SmoothedUniform(-1.0, 10.0, 1.0)
     elif ot.{{ objname }}().__class__.__name__ == 'TruncatedDistribution':
         distribution = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0)
     elif ot.{{ objname }}().__class__.__name__ == 'UserDefined':
