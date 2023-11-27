@@ -418,18 +418,11 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   // If based on quantiles, rank the values
   UnsignedInteger minRank = 0;
   UnsignedInteger maxRank = 0;
-  if (!quantileScale)
-  {
-    const Scalar minCDF = outputSample.computeEmpiricalCDF(Point(1, minValue));
-    const Scalar maxCDF = outputSample.computeEmpiricalCDF(Point(1, maxValue));
-    minRank = static_cast<UnsignedInteger>(round(size * minCDF));
-    maxRank = static_cast<UnsignedInteger>(round(size * maxCDF));
-  }
-  else
+  if (quantileScale)
   {
     if ((minValue < 0.0) || (maxValue > 1.0) || (minValue > maxValue))  throw InvalidArgumentException(HERE) << "Error: we must have 0 <= minValue <= maxValue <= 1 when using quantile scale.";
-    minRank = static_cast<UnsignedInteger>(size * minValue);
-    maxRank = static_cast<UnsignedInteger>(size * maxValue);
+    minRank = size * minValue;
+    maxRank = size * maxValue;
   }
   const UnsignedInteger inputDimension = inputSample.getDimension();
   const Sample rankedInput(inputSample.rank());
@@ -440,8 +433,9 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   Indices selectedFilaments(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger currentRank = static_cast<UnsignedInteger>(rankedOutput(i, 0));
-    if ((currentRank >= minRank) && (currentRank <= maxRank))
+    const Scalar currentRank = rankedOutput(i, 0);
+    if ((quantileScale && (currentRank >= minRank) && (currentRank <= maxRank)) ||
+        (!quantileScale && (outputSample(i, 0) >= minValue) && (outputSample(i, 0) <= maxValue)))
       selectedFilaments.add(i);
     else
     {
