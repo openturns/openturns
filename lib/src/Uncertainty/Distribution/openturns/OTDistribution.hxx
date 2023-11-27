@@ -157,6 +157,7 @@
 #include "openturns/Skellam.hxx"
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniform.hxx"
+#include "openturns/SmoothedUniformFactory.hxx"
 #include "openturns/SquaredNormal.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/StudentCopula.hxx"

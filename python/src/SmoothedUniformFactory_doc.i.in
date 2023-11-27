@@ -1,0 +1,57 @@
+%feature("docstring") OT::SmoothedUniformFactory
+"SmoothedUniform factory.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Notes
+-----
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\delta=\sqrt[4]{120 * \hat{\sigma}^4 * (3-\hat{\kappa})}\\
+      \displaystyle\Hat{a}_n=\hat{\mu} - \frac{\delta}{2}\\
+      \displaystyle\Hat{b}_n=\hat{\mu} + \frac{\delta}{2}\\
+      \displaystyle\Hat{\sigma}_n=\sqrt{\hat{\sigma}^2 - \frac{\delta^2}{12}}
+    \end{eqnarray*}
+
+Where :math:`\hat{\mu}, \hat{\sigma}, \hat{\kappa}` are empirical estimates of the mean,
+standard deviation and kurtosis of the sample.
+
+These are then used to initialize a numerical maximum likelihood step.
+
+See also
+--------
+DistributionFactory, SmoothedUniform"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniformFactory::buildAsSmoothedUniform
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsSmoothedUniform()
+
+    buildAsSmoothedUniform(*sample*)
+
+    buildAsSmoothedUniform(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.SmoothedUniform`.
+
+Returns
+-------
+dist : :class:`~openturns.SmoothedUniform`
+    The estimated distribution as a :class:`~openturns.SmoothedUniform`.
+    
+    In the first usage, the default :class:`~openturns.SmoothedUniform` distribution is built."
+

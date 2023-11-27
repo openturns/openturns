@@ -1023,6 +1023,7 @@ ot_add_python_module(experimental experimental_module.i
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
+		     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in

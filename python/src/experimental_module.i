@@ -36,6 +36,7 @@
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i
+%import dist_bundle3_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i
@@ -68,6 +69,7 @@
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 
 /* Uncertainty/Distribution */
+%include SmoothedUniformFactory.i
 %include StudentCopula.i
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
