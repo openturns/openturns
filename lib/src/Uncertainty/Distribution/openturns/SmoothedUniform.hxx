@@ -67,10 +67,6 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
-  using RandomMixture::computeDDF;
-  Point computeDDF(const Point & point) const override;
-
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using RandomMixture::computePDF;
   Scalar computePDF(const Point & point) const override;

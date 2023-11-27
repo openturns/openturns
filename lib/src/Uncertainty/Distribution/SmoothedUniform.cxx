@@ -124,15 +124,6 @@ Sample SmoothedUniform::getSample(const UnsignedInteger size) const
   return result;
 }
 
-/* Get the DDF of the distribution */
-Point SmoothedUniform::computeDDF(const Point & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  return Point(1, 0.0);
-}
-
-
 /* Get the PDF of the distribution */
 Scalar SmoothedUniform::computePDF(const Point & point) const
 {
