@@ -1081,18 +1081,6 @@ Sample RandomMixture::getSample(const UnsignedInteger size) const
   return weights_.getImplementation()->genSampleProd(sample, true, true, 'R') + constant_;
 }
 
-Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
-{
-  const UnsignedInteger atomSize = distributionCollection_.getSize();
-  Sample sample(atomSize, size);
-  const Point u(SobolSequence(1).generate(size).getImplementation()->getData());
-  for (UnsignedInteger i = 0; i < atomSize; ++i)
-  {
-    sample[i] = distributionCollection_[i].computeQuantile(u).asPoint();
-  }
-  return weights_.getImplementation()->genSampleProd(sample, true, true, 'R') + constant_;
-}
-
 /* Get the DDF of the RandomMixture */
 Point RandomMixture::computeDDF(const Point & point) const
 {

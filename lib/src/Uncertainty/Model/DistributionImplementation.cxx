@@ -627,12 +627,21 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
 {
   static SobolSequence sequence(dimension_);
   SampleImplementation returnSample(size, dimension_);
-  UnsignedInteger shift = 0;
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  const Sample u(sequence.generate(size));
+  if (getDimension() == 1)
   {
-    const Point point(computeSequentialConditionalQuantile(sequence.generate()));
-    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
-    shift += dimension_;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      returnSample(i, 0) = computeScalarQuantile(u(i, 0));
+  }
+  else
+  {
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Point point(computeSequentialConditionalQuantile(u[i]));
+      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      shift += dimension_;
+    }
   }
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
