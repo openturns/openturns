@@ -118,10 +118,6 @@ public:
   /** Get a sample of the RandomMixture */
   Sample getSample(const UnsignedInteger size) const override;
 
-protected:
-  Sample getSampleByQMC(const UnsignedInteger size) const override;
-public:
-
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
