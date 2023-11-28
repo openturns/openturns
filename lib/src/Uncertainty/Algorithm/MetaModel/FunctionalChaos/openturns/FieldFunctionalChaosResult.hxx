@@ -69,12 +69,12 @@ public:
   void setBlockIndices(const Collection<Indices> & blockIndices);
 
   /** Metamodel accessor */
-  FieldToPointFunction getFieldToPointMetamodel() const;
-  void setMetamodel(const FieldToPointFunction & metamodel);
-  PointToFieldFunction getPointToFieldMetamodel() const;
-  void setMetamodel(const PointToFieldFunction & metamodel);
-  FieldFunction getFieldMetamodel() const;
-  void setMetamodel(const FieldFunction & metamodel);
+  FieldToPointFunction getFieldToPointMetaModel() const;
+  void setMetaModel(const FieldToPointFunction & metamodel);
+  PointToFieldFunction getPointToFieldMetaModel() const;
+  void setMetaModel(const PointToFieldFunction & metamodel);
+  FieldFunction getFieldMetaModel() const;
+  void setMetaModel(const FieldFunction & metamodel);
 
   /** Sample accessors */
   void setInputProcessSample(const ProcessSample & inputProcessSample);
@@ -104,9 +104,9 @@ protected:
   PersistentCollection<Indices> blockIndices_;
 
   // metamodel
-  FieldToPointFunction fieldToPointMetamodel_;
-  PointToFieldFunction pointToFieldMetamodel_;
-  FieldFunction fieldMetamodel_;
+  FieldToPointFunction fieldToPointMetaModel_;
+  PointToFieldFunction pointToFieldMetaModel_;
+  FieldFunction fieldMetaModel_;
 
   // data
   ProcessSample inputProcessSample_;

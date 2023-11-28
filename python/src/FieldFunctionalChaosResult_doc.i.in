@@ -67,7 +67,7 @@ blockIndices : :class:`~openturns.IndicesCollection`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldFunctionalChaosResult::setMetamodel
+%feature("docstring") OT::FieldFunctionalChaosResult::setMetaModel
 "Accessor to the metamodel.
 
 Parameters
@@ -77,7 +77,7 @@ metamodel : :class:`~openturns.FieldToPointFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldFunctionalChaosResult::getFieldToPointMetamodel
+%feature("docstring") OT::FieldFunctionalChaosResult::getFieldToPointMetaModel
 "Accessor to the metamodel.
 
 Returns
@@ -87,7 +87,7 @@ metamodel : :class:`~openturns.FieldToPointFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldFunctionalChaosResult::getPointToFieldMetamodel
+%feature("docstring") OT::FieldFunctionalChaosResult::getPointToFieldMetaModel
 "Accessor to the metamodel.
 
 Returns
@@ -97,7 +97,7 @@ metamodel : :class:`~openturns.PointToFieldFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldFunctionalChaosResult::getFieldMetamodel
+%feature("docstring") OT::FieldFunctionalChaosResult::getFieldMetaModel
 "Accessor to the metamodel.
 
 Returns

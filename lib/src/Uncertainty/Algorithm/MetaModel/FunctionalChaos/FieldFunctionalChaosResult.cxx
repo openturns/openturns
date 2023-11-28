@@ -98,34 +98,34 @@ void FieldFunctionalChaosResult::setBlockIndices(const Collection<Indices> & blo
 }
 
 /* Metamodel accessor */
-FieldToPointFunction FieldFunctionalChaosResult::getFieldToPointMetamodel() const
+FieldToPointFunction FieldFunctionalChaosResult::getFieldToPointMetaModel() const
 {
-  return fieldToPointMetamodel_;
+  return fieldToPointMetaModel_;
 }
 
-void FieldFunctionalChaosResult::setMetamodel(const FieldToPointFunction & metamodel)
+void FieldFunctionalChaosResult::setMetaModel(const FieldToPointFunction & metamodel)
 {
-  fieldToPointMetamodel_ = metamodel;
+  fieldToPointMetaModel_ = metamodel;
 }
 
-PointToFieldFunction FieldFunctionalChaosResult::getPointToFieldMetamodel() const
+PointToFieldFunction FieldFunctionalChaosResult::getPointToFieldMetaModel() const
 {
-  return pointToFieldMetamodel_;
+  return pointToFieldMetaModel_;
 }
 
-void FieldFunctionalChaosResult::setMetamodel(const PointToFieldFunction & metamodel)
+void FieldFunctionalChaosResult::setMetaModel(const PointToFieldFunction & metamodel)
 {
-  pointToFieldMetamodel_ = metamodel;
+  pointToFieldMetaModel_ = metamodel;
 }
 
-FieldFunction FieldFunctionalChaosResult::getFieldMetamodel() const
+FieldFunction FieldFunctionalChaosResult::getFieldMetaModel() const
 {
-  return fieldMetamodel_;
+  return fieldMetaModel_;
 }
 
-void FieldFunctionalChaosResult::setMetamodel(const FieldFunction & metamodel)
+void FieldFunctionalChaosResult::setMetaModel(const FieldFunction & metamodel)
 {
-  fieldMetamodel_ = metamodel;
+  fieldMetaModel_ = metamodel;
 }
 
 /* Sample accessors */
@@ -187,9 +187,9 @@ void FieldFunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute("outputKLResultCollection_", outputKLResultCollection_);
   adv.saveAttribute("fceResult_", fceResult_);
   adv.saveAttribute("blockIndices_", blockIndices_);
-  adv.saveAttribute("fieldToPointMetamodel_", fieldToPointMetamodel_);
-  adv.saveAttribute("pointToFieldMetamodel_", pointToFieldMetamodel_);
-  adv.saveAttribute("fieldMetamodel_", fieldMetamodel_);
+  adv.saveAttribute("fieldToPointMetaModel_", fieldToPointMetaModel_);
+  adv.saveAttribute("pointToFieldMetaModel_", pointToFieldMetaModel_);
+  adv.saveAttribute("fieldMetaModel_", fieldMetaModel_);
   adv.saveAttribute("inputProcessSample_", inputProcessSample_);
   adv.saveAttribute("outputProcessSample_", outputProcessSample_);
   adv.saveAttribute("inputSample_", inputSample_);
@@ -205,9 +205,9 @@ void FieldFunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute("outputKLResultCollection_", outputKLResultCollection_);
   adv.loadAttribute("fceResult_", fceResult_);
   adv.loadAttribute("blockIndices_", blockIndices_);
-  adv.loadAttribute("fieldToPointMetamodel_", fieldToPointMetamodel_);
-  adv.loadAttribute("pointToFieldMetamodel_", pointToFieldMetamodel_);
-  adv.loadAttribute("fieldMetamodel_", fieldMetamodel_);
+  adv.loadAttribute("fieldToPointMetaModel_", fieldToPointMetaModel_);
+  adv.loadAttribute("pointToFieldMetaModel_", pointToFieldMetaModel_);
+  adv.loadAttribute("fieldMetaModel_", fieldMetaModel_);
   adv.loadAttribute("inputProcessSample_", inputProcessSample_);
   adv.loadAttribute("outputProcessSample_", outputProcessSample_);
   adv.loadAttribute("inputSample_", inputSample_);

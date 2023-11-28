@@ -71,7 +71,7 @@ algo.run()
 result = algo.getResult()
 
 # check metamodel
-metamodel = result.getFieldToPointMetamodel()
+metamodel = result.getFieldToPointMetaModel()
 assert metamodel.getInputDimension() == x.getDimension(), "wrong in dim"
 assert metamodel.getOutputDimension() == y.getDimension(), "wrong out dim"
 
