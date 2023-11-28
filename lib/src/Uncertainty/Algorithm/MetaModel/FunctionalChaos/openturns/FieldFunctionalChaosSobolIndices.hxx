@@ -72,7 +72,7 @@ public:
 
 protected:
   void setResult(const FieldFunctionalChaosResult & result);
-  
+
   FieldFunctionalChaosResult result_;
 
   Indices cumulatedInputSizes_;
