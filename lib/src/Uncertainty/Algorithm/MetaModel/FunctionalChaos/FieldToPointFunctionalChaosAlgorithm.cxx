@@ -382,7 +382,7 @@ void FieldToPointFunctionalChaosAlgorithm::run()
   result_ = FieldFunctionalChaosResult(klResultCollection, fceResult, Collection<KarhunenLoeveResult>());
   result_.setMetaModel(metamodel);
   result_.setInputProcessSample(inputProcessSample_);
-  result_.setBlockIndices(blockIndices_);
+  result_.setInputBlockIndices(blockIndices_);
   result_.setOutputSample(outputSample_);
   result_.setModesSample(modesSample);
 }

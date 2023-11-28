@@ -77,6 +77,26 @@ view = otv.View(graph)
 # touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.
 
 # %%
+# Sensitivity analysis
+# --------------------
+
+# %%
+# Compute the sensitivity indices
+sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
+s1 = sensitivity.getFirstOrderIndices()
+st = sensitivity.getTotalOrderIndices()
+
+# %%
+# We can notice that `v0` and `m` are the most influencial parameters
+# and that there are almost no interactions (total indices being close to first order indices)
+print(s1, st)
+
+# %%
+# Draw the sensitivity indices
+graph = sensitivity.draw()
+view = otv.View(graph)
+
+# %%
 # Manual approach
 # ---------------
 

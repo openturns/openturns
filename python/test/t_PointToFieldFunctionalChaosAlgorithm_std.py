@@ -2,7 +2,7 @@
 
 import openturns as ot
 import openturns.experimental as otexp
-# import openturns.testing as ott
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 # ot.Log.Show(ot.Log.INFO)
@@ -55,7 +55,7 @@ n_modes = [len(res.getEigenvalues()) for res in kl_results]
 print(f"n_modes={n_modes}")
 # assert sum(n_modes) == 6, "wrong modes"
 
-# separate decomposition of the last output component and rerun
+# separate components {0,1} from {2} and rerun
 blockIndices = [[0, 1], [2]]
 algo.setBlockIndices(blockIndices)
 algo.run()
@@ -73,8 +73,10 @@ print(f"n_modes={n_modes}")
 # assert sum(n_modes) == 6, "wrong modes"
 
 # retrieve Sobol indices
-if 0:
-    sobol = otexp.FieldFunctionalChaosSobolIndices(result)
-    s1 = sobol.getFirstOrderIndices()
-    st = sobol.getTotalOrderIndices()
+sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
+for marginalIndex in range(len(blockIndices)):
+    s1 = sensitivity.getFirstOrderIndices(marginalIndex)
+    st = sensitivity.getTotalOrderIndices(marginalIndex)
     print(s1, st)
+ott.assert_almost_equal(sensitivity.getFirstOrderIndices(0), [0.452448, 0.457835, 0.0897175, 0.0])
+ott.assert_almost_equal(sensitivity.getFirstOrderIndices(1), [0.0, 0.0, 0.0, 1.0])

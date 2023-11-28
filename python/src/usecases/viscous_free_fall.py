@@ -97,9 +97,13 @@ class ViscousFreeFall:
         self.distribution = ot.JointDistribution(
             [self.distZ0, self.distV0, self.distM, self.distC]
         )
+        description = ["z0", "v0", "m", "c"]
+        self.distribution.setDescription(description)
 
         # Exact solution
         self.model = ot.PythonPointToFieldFunction(
             self.dim, self.mesh, self.outputDimension, AltiFunc
         )
+        self.model.setInputDescription(description)
+        self.model.setOutputDescription(["z"])
         self.alti = self.model  # deprecated

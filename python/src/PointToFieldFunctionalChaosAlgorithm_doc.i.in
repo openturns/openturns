@@ -120,7 +120,9 @@ the :class:`~openturns.ResourceMap` key *FunctionalChaosAlgorithm-BasisSize*.
 
 It is possible to separate output variables by independent blocks with :func:`setBlockIndices`,
 this way Karhunen-Loeve process decompositions are done on each block rather
-than on all variables (at the price of increased chaos decomposition output dimension).
+than on all output variables at once (at the price of increased chaos decomposition output dimension)
+which then makes sensitivity analysis possible for each output variable
+or group of output variables.
 
 Examples
 --------
