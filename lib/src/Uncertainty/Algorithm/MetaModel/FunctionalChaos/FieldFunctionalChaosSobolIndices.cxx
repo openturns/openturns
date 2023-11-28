@@ -137,7 +137,7 @@ Scalar FieldFunctionalChaosSobolIndices::getSobolIndex(const Indices & variableI
   for (UnsignedInteger j = startInput; j < stopInput; ++ j)
     outputGroupIndices.add(j);
   const UnsignedInteger outputGroupSize = outputGroupIndices.getSize();
-  
+
   // Now, select the relevant coefficients
   const Sample coefficients(result_.getFCEResult().getCoefficients());
   const UnsignedInteger size = coefficients.getSize();
@@ -211,9 +211,16 @@ Graph FieldFunctionalChaosSobolIndices::draw(const UnsignedInteger marginalIndex
 {
   Description inputDescription;
   if (result_.getFieldToPointMetaModel().getInputDimension())
-    inputDescription = result_.getFieldToPointMetaModel().getInputDescription();
-  else
+  {
+    if (result_.getInputKLResultCollection().getSize() == result_.getFieldToPointMetaModel().getInputDimension())
+      inputDescription = result_.getFieldToPointMetaModel().getInputDescription();
+    else
+      inputDescription = Description::BuildDefault(result_.getInputKLResultCollection().getSize(), "x");
+  }
+  else if (result_.getPointToFieldMetaModel().getInputDimension())
+  {
     inputDescription = result_.getInputSample().getDescription();
+  }
   const Point firstOrderIndices(getFirstOrderIndices(marginalIndex));
   const Point totalOrderIndices(getTotalOrderIndices(marginalIndex));
   const Graph graph(SobolIndicesAlgorithmImplementation::DrawSobolIndices(inputDescription, firstOrderIndices, totalOrderIndices));

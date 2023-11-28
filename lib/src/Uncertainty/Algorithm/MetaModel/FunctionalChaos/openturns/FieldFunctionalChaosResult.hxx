@@ -103,7 +103,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-protected: 
+protected:
   // KL and FCE decompositions
   PersistentCollection<KarhunenLoeveResult> inputKLResultCollection_;
   FunctionalChaosResult fceResult_;
