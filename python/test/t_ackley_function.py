@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-from openturns.usecases import ackley_function as ackley_function
+from openturns.usecases import ackley_function
 from math import pi
 
 

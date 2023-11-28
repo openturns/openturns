@@ -3,7 +3,7 @@
 import openturns as ot
 import openturns.experimental as otexp
 from openturns.testing import assert_almost_equal
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 

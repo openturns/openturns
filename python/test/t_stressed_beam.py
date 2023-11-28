@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-from openturns.usecases import stressed_beam as stressed_beam
+from openturns.usecases import stressed_beam
 from math import pi
 
 
