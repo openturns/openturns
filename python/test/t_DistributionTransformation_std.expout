@@ -1,7 +1,7 @@
 left= Normal(mu = 0, sigma = 1)
 right= Normal(mu = 0, sigma = 1)
-transformation= IdentityEvaluation(dimension=1)
-inverseTransformation= IdentityEvaluation(dimension=1)
+transformation= id_1
+inverseTransformation= id_1
 ----------------------------------------------------------------------------------------------------
 left= ComposedDistribution(Normal(mu = 0, sigma = 1), Gumbel(beta = 1, gamma = 0), IndependentCopula(dimension = 2))
 right= ComposedDistribution(Triangular(a = -1, m = 0, b = 1), Triangular(a = -1, m = 0, b = 1), IndependentCopula(dimension = 2))
