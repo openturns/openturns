@@ -32,6 +32,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,25 +44,11 @@ static const Factory<ConditionalDistribution> Factory_ConditionalDistribution;
 /* Default constructor */
 ConditionalDistribution::ConditionalDistribution()
   : Mixture()
-  , conditionedDistribution_()
-  , conditioningDistribution_()
-  , linkFunction_()
-  , discreteMarginalsIndices_(0)
-  , diracMarginalsIndices_(0)
-  , continuousMarginalsIndices_(0)
-  , continuousLowerBounds_(0)
-  , continuousUpperBounds_(0)
-  , continuousNodes_()
-  , continuousWeights_(0)
-  , discreteNodes_()
-  , diracValues_(0)
 {
   setName("ConditionalDistribution");
   const Description inVars(Description::BuildDefault(1, "y"));
   const Description outVars(Description::BuildDefault(2, "theta"));
-  Description formulas(2);
-  formulas[0] = inVars[0];
-  formulas[1] = String(OSS() << inVars[0] << " + 1");
+  const Description formulas = {inVars[0], inVars[0] + " + 1"};
   SymbolicFunction linkFunction(inVars, formulas);
   Description description(inVars);
   description.add(outVars);
@@ -73,24 +60,9 @@ ConditionalDistribution::ConditionalDistribution()
 /* Parameters constructor */
 ConditionalDistribution::ConditionalDistribution(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution)
-  : Mixture()
-  , conditionedDistribution_()
-  , conditioningDistribution_()
-  , linkFunction_()
-  , discreteMarginalsIndices_(0)
-  , diracMarginalsIndices_(0)
-  , continuousMarginalsIndices_(0)
-  , continuousLowerBounds_(0)
-  , continuousUpperBounds_(0)
-  , continuousNodes_()
-  , continuousWeights_(0)
-  , discreteNodes_()
-  , diracValues_(0)
+  : ConditionalDistribution(conditionedDistribution, conditioningDistribution, IdentityFunction(conditioningDistribution.getDimension()))
 {
-  setName("ConditionalDistribution");
-  // The dimension and range are computed using the upper class through this call
-  SymbolicFunction linkFunction(Description::BuildDefault(conditioningDistribution.getDimension(), "y"), Description::BuildDefault(conditioningDistribution.getDimension(), "y"));
-  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
+  // Nothing to do
 }
 
 /* Parameters constructor */
@@ -98,18 +70,6 @@ ConditionalDistribution::ConditionalDistribution(const Distribution & conditione
     const Distribution & conditioningDistribution,
     const Function & linkFunction)
   : Mixture()
-  , conditionedDistribution_()
-  , conditioningDistribution_()
-  , linkFunction_()
-  , discreteMarginalsIndices_(0)
-  , diracMarginalsIndices_(0)
-  , continuousMarginalsIndices_(0)
-  , continuousLowerBounds_(0)
-  , continuousUpperBounds_(0)
-  , continuousNodes_()
-  , continuousWeights_(0)
-  , discreteNodes_()
-  , diracValues_(0)
 {
   setName("ConditionalDistribution");
   // The dimension and range are computed using the upper class through this call
