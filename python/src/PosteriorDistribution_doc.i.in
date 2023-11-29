@@ -1,9 +1,6 @@
 %feature("docstring") OT::PosteriorDistribution
 "Distribution conditioned by observations.
 
-Available constructors:
-    PosteriorDistribution(*conditional, observations*)
-
 Parameters
 ----------
 conditional : :class:`~openturns.ConditionalDistribution`
