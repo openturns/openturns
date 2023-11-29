@@ -198,7 +198,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
 
   Bool FL = false;
   for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-    if (AE[i] > std::max(EA, ER * abs(VL[i])))
+    if (AE[i] > std::max(EA, ER * std::abs(VL[i])))
     {
       FL = true;
       break;
@@ -253,7 +253,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     // Check for error termination.
     FL = false;
     for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-      if (AE[i] > std::max(EA, ER * abs(VL[i])))
+      if (AE[i] > std::max(EA, ER * std::abs(VL[i])))
       {
         FL = true;
         break;
