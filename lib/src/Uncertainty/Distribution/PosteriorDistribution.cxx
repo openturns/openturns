@@ -181,6 +181,10 @@ void PosteriorDistribution::setObservations(const Sample & observations)
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
   if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
   observations_ = observations;
+  const UnsignedInteger size = observations_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
+  computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
