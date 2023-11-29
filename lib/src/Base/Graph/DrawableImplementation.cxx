@@ -1632,7 +1632,7 @@ Description DrawableImplementation::BuildViridisPalette(const UnsignedInteger si
   {
     Scalar step = (ViridisColors.getSize() - 1.) / (size - 1);
     for (UnsignedInteger i = 0; i + 1 < size; i++)
-      palette[i] = ViridisColors[(UnsignedInteger)std::round(i * step)];
+      palette[i] = ViridisColors[static_cast<UnsignedInteger>(round(i * step))];
   }
   return palette;
 }
@@ -1650,7 +1650,7 @@ Description DrawableImplementation::BuildGrayScalePalette(const UnsignedInteger 
     Scalar step = (lastValue - (Scalar)firstValue) / (size - 1);
     for (UnsignedInteger i = 0; i < size; i++)
     {
-      UnsignedInteger val = std::min(255UL, (UnsignedInteger)std::round(firstValue + i * step));
+      UnsignedInteger val = std::min(255UL, static_cast<UnsignedInteger>(round(firstValue + i * step)));
       palette[i] = ConvertFromRGB(val, val, val);
     }
   }
