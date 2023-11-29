@@ -161,17 +161,11 @@ graphFineTune.setLegendPosition("")  # Remove the legend
 view = viewer.View(graphFineTune)
 
 # %%
-# Multicolor contour plot
-# -----------------------
+# Grayscale contour plot
+# ----------------------
 
 # %%
-# The previous contour plot is fine, but lacks of colors.
-# It is not obvious that the colors make the plot clearer given that the values
-# in the contour plot are so different: some adjacent contours have close
-# levels, while others are very different.
-# Anyway, it is obviously nicer to get a colored graphics.
-#
-# The following script first creates a palette of colors with the `BuildGrayScalePalette` class.
+# The following script applies a grayscale palette to the contour plot.
 # We adjust the white and black margins using the `Drawable-WhiteMargin` and `Drawable-BlackMargin` keys in the `ResourceMap`
 # in order to use colors between `#cdcdcd` and `#141414`.
 # Then we create the `drawables` list, where each item is a single contour with its own level and color.
