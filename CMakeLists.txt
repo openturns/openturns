@@ -33,6 +33,7 @@ option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"  
 option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
+option (USE_CXX17                    "Use C++17 standard"                                                    ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
