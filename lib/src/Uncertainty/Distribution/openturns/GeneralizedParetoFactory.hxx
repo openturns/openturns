@@ -73,6 +73,10 @@ public:
   Graph drawMeanResidualLife(const Sample & sample) const;
 
   /** Maximum likelihood */
+protected:
+  DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimatorWithStartingPoint(const Sample & sample,
+                                                                                                    const Point & startingPoint, const Scalar u) const;
+public:
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const Scalar u) const;
   GeneralizedPareto buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const;
 
