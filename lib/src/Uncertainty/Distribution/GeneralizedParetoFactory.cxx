@@ -322,8 +322,10 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   Curve curveMrl(u, mrl, "mrl");
   curveMrl.setColor("red");
   Curve curveCILow(u, ciLow, "CI low");
+  curveCILow.setColor("blue");
   curveCILow.setLineStyle("dashed");
   Curve curveCIUp(u, ciUp, "CI up");
+  curveCIUp.setColor("blue");
   curveCIUp.setLineStyle("dashed");
   Graph result("Mean residual life plot", "Threshold", "Mean excess", true, "topleft");
   result.add(curveMrl);
@@ -405,8 +407,7 @@ private:
 };
 
 
-
-DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample,
+DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimatorWithStartingPoint(const Sample & sample, const Point & startingPoint,
     const Scalar u) const
 {
   const UnsignedInteger size = sample.getSize();
@@ -434,6 +435,39 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   const SymbolicFunction constraint(Description({"sigma", "xi"}), formulas);
   problem.setInequalityConstraint(constraint);
 
+  // solve optimization problem
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(startingPoint);
+  solver.run();
+  Point optimalParameter(solver.getResult().getOptimalPoint()); // sigma, xi
+  optimalParameter.add(u);
+
+  Sample xu(0, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (sample(i, 0) > u)
+      xu.add(sample[i]);
+  if (xu.getSize() < 10)
+    throw InvalidArgumentException(HERE) << "Not enough points, lower the threshold u";
+
+  const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
+  Distribution fullParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
+  fullParameterDistribution.setDescription({"sigma", "xi", "u"}); // prevents warnings from BlockIndependentDistribution
+
+  // keep only sigma/xi parameters distributions as u is fixed
+  const BlockIndependentDistribution parameterDistribution({fullParameterDistribution.getMarginal({0, 1}), Dirac(u)});
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
+  DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
+  return result;
+}
+
+DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample,
+    const Scalar u) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of size>=2, here size=" << sample.getSize();
+
   Sample xu(0, 1);
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (sample(i, 0) > u)
@@ -446,23 +480,7 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   const Scalar xi0 = 0.1;
   const Point x0({sigma0, xi0});
 
-  // solve optimization problem
-  OptimizationAlgorithm solver(solver_);
-  solver.setProblem(problem);
-  solver.setStartingPoint(x0);
-  solver.run();
-  Point optimalParameter(solver.getResult().getOptimalPoint()); // sigma, xi
-  optimalParameter.add(u);
-
-  const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
-  Distribution fullParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
-  fullParameterDistribution.setDescription({"sigma", "xi", "u"}); // prevents warnings from BlockIndependentDistribution
-
-  // keep only sigma/xi parameters distributions as u is fixed
-  const BlockIndependentDistribution parameterDistribution({fullParameterDistribution.getMarginal({0, 1}), Dirac(u)});
-  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
-  return result;
+  return buildMethodOfLikelihoodMaximizationEstimatorWithStartingPoint(sample, x0, u);
 }
 
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const
@@ -664,12 +682,18 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Sample scaleCILow(pointsNumber, 1);
   Sample scaleCIUp(pointsNumber, 1);
 
+  // find the first parameters from scratch
+  const DistributionFactoryLikelihoodResult result0(buildMethodOfLikelihoodMaximizationEstimator(sample, uMin));
+  Point parameter(result0.getDistribution().getParameter());
+
   for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
   {
     const Scalar u = uMin + i * (uMax - uMin) / (pointsNumber - 1);
     uS(i, 0) = u;
-    const DistributionFactoryLikelihoodResult resultI(buildMethodOfLikelihoodMaximizationEstimator(sample, u));
-    const Point parameter(resultI.getDistribution().getParameter());
+    const Point x0 = {parameter[0], parameter[1]}; // xi, sigma
+    // reuse the parameters from the previous iteration
+    const DistributionFactoryLikelihoodResult resultI(buildMethodOfLikelihoodMaximizationEstimatorWithStartingPoint(sample, x0, u));
+    parameter = (resultI.getDistribution().getParameter());
     const Scalar sigma = parameter[0];
     const Scalar xi = parameter[1];
 
@@ -695,8 +719,10 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveScale(uS, scaleS, "scale");
   curveScale.setColor("red");
   Curve curveScaleCILow(uS, scaleCILow, "CI low");
+  curveScaleCILow.setColor("blue");
   curveScaleCILow.setLineStyle("dashed");
   Curve curveScaleCIUp(uS, scaleCIUp, "CI up");
+  curveScaleCIUp.setColor("blue");
   curveScaleCIUp.setLineStyle("dashed");
   Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter", true, "topleft");
   scaleGraph.add(curveScale);
@@ -707,8 +733,10 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveXi(uS, xiS, "xi");
   curveXi.setColor("red");
   Curve curveXiCILow(uS, xiCILow, "CI low");
+  curveXiCILow.setColor("blue");
   curveXiCILow.setLineStyle("dashed");
   Curve curveXiCIUp(uS, xiCIUp, "CI up");
+  curveXiCIUp.setColor("blue");
   curveXiCIUp.setLineStyle("dashed");
   Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter", true, "topleft");
   shapeGraph.add(curveXi);
