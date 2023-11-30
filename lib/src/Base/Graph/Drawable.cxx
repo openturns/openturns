@@ -456,4 +456,18 @@ Description Drawable::BuildTableauPalette(const UnsignedInteger size)
   return DrawableImplementation::BuildTableauPalette(size);
 }
 
+/* Build viridis palette
+   Distributes colors evenly in the viridis palette. */
+Description Drawable::BuildViridisPalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildViridisPalette(size);
+}
+
+/* Build gray scale palette
+   Distributes colors evenly between the Drawable-WhiteMargin and the Drawable-BlackMargin. */
+Description Drawable::BuildGrayScalePalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildGrayScalePalette(size);
+}
+
 END_NAMESPACE_OPENTURNS

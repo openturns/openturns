@@ -54,6 +54,8 @@ int main(int, char *[])
     fullprint << "BuildTableauPalette=" << Drawable::BuildTableauPalette(10) << std::endl;
     fullprint << "BuildDefaultPalette=" << Drawable::BuildDefaultPalette(20) << std::endl;
     fullprint << "BuildTableauPalette=" << Drawable::BuildTableauPalette(20) << std::endl;
+    fullprint << "BuildViridisPalette=" << Drawable::BuildViridisPalette(20) << std::endl;
+    fullprint << "BuildGrayScalePalette=" << Drawable::BuildGrayScalePalette(20) << std::endl;
   }
   catch (TestFailed & ex)
   {

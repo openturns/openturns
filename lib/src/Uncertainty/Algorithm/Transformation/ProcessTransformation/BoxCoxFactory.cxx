@@ -432,6 +432,7 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues(i, 0) = xMin + i * (xMax - xMin) / (npts - 1.0);
   Point lambdaMarginal(1, 0.0);
   Sample logLikelihoodValues(npts, 1);
+  const Description palette = DrawableImplementation::BuildViridisPalette(dimension);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
@@ -441,7 +442,7 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
       logLikelihoodValues(i, 0) = boxCoxOptimization(lambdaMarginal)[0];
     }
     Curve curve(lambdaValues, logLikelihoodValues);
-    curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
+    curve.setColor(palette[d]);
     graph.add(curve);
     Point optimum(2);
     optimum[0] = lambda[d];

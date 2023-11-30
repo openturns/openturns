@@ -436,9 +436,7 @@ Graph FieldImplementation::draw() const
     // To take into account the vertices number
     if (automaticScaling) rho /= std::sqrt(static_cast<Scalar>(vertices.getSize()));
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
-    Description palette(levelsNumber);
-    for (UnsignedInteger i = 0; i < levelsNumber; ++i)
-      palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
+    const Description palette = DrawableImplementation::BuildViridisPalette(levelsNumber);
 
     for (UnsignedInteger i = 0; i < values_.getSize(); ++i)
     {
@@ -513,12 +511,11 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     {
       // Compute the iso-values
       Point levels(levelsNumber);
-      Description palette(levelsNumber);
+      const Description palette = DrawableImplementation::BuildViridisPalette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
         const Scalar q = (i + 1.0) / (levelsNumber + 1.0);
         levels[i] = marginalValues.computeQuantile(q)[0];
-        palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
       }
       // Loop over the simplices to draw the segments (if any) associated with the different levels
       const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
@@ -594,8 +591,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     else
     {
       const UnsignedInteger size = marginalValues.getSize();
-      Description palette(size);
-      for (UnsignedInteger i = 0; i < size; ++i) palette[i] = Curve::ConvertFromHSV((270.0 * (size - i - 1)) / size, 1.0, 1.0);
+      const Description palette = DrawableImplementation::BuildViridisPalette(size);
       const Scalar minValue = marginalValues.getMin()[0];
       const Scalar maxValue = marginalValues.getMax()[0];
       const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();

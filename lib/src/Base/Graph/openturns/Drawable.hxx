@@ -217,8 +217,14 @@ public:
   /** Build rainbow palette */
   static Description BuildRainbowPalette(const UnsignedInteger size);
 
-  /** Build tableu palette */
+  /** Build tableau palette */
   static Description BuildTableauPalette(const UnsignedInteger size);
+
+  /** Build viridis palette */
+  static Description BuildViridisPalette(const UnsignedInteger size);
+
+  /** Build gray scale palette */
+  static Description BuildGrayScalePalette(const UnsignedInteger size);
 
 }; /* class Drawable */
 
