@@ -99,7 +99,10 @@ The starting point of the optimization is initialized from the probability weigh
 Parameters
 ----------
 sample : 2-d sequence of float
-    The block maxima sample of dimension 1.
+    Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
+r : int, :math:`1 \leq r \leq R`,
+    Number of largest order statistics taken into account among the :math:`R` stored ones.
+    By default, :math:`r=0` which means that all the maxima are used.
 
 Returns
 -------
@@ -126,7 +129,10 @@ The result class produced by the method provides:
 Parameters
 ----------
 sample : 2-d sequence of float
-    The block maxima sample of dimension 1.
+    Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
+r : int, :math:`1 \leq r \leq R`,
+    Number of largest order statistics taken into account among the :math:`R` stored ones.
+    By default, :math:`r=0` which means that all the maxima are used.
 
 Returns
 -------
@@ -172,12 +178,9 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
-r : int, :math:`1 \leq r \leq R`, 
+r : int, :math:`1 \leq r \leq R`,
     Number of largest order statistics taken into account among the :math:`R` stored ones.
-    
     By default, :math:`r=0` which means that all the maxima are used.
-    
-    
 
 Returns
 -------

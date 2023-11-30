@@ -52,7 +52,7 @@ ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2
 )
 
-estimated_prof_mle = factory.buildMethodOfXiProfileLikelihood(sample)
+estimated_prof_mle = factory.buildMethodOfXiProfileLikelihood(sample, 1)
 print("Estimated GeneralizedExtremeValue (profile MLE)=", estimated_prof_mle)
 ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2

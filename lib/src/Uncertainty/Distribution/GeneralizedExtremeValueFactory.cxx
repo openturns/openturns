@@ -204,6 +204,7 @@ class GeneralizedExtremeValueProfileLikelihoodEvaluation : public EvaluationImpl
 {
 public:
   GeneralizedExtremeValueProfileLikelihoodEvaluation(const Sample & sample,
+      const UnsignedInteger r,
       const Scalar mean,
       const Scalar bpwm1,
       const Scalar zMin,
@@ -211,6 +212,7 @@ public:
       const OptimizationAlgorithm & solver)
     : EvaluationImplementation()
     , sample_(sample)
+    , r_(r)
     , mean_(mean)
     , bpwm1_(bpwm1)
     , solver_(solver)
@@ -243,7 +245,7 @@ public:
   {
     const Scalar xi0 = parameter[0];
 
-    const Function objective(new GeneralizedExtremeValueRMaximaLikelihoodEvaluation(sample_, 1));
+    const Function objective(new GeneralizedExtremeValueRMaximaLikelihoodEvaluation(sample_, r_));
     const ParametricFunction objectiveXi(objective, Indices({2}), parameter);
     OptimizationProblem problem(objectiveXi);
     problem.setMinimization(false);
@@ -304,6 +306,7 @@ public:
 
 private:
   Sample sample_;
+  UnsignedInteger r_ = 0;
   Scalar mean_ = 0.0;
   Scalar zMin_ = 0.0;
   Scalar zMax_ = 0.0;
@@ -313,12 +316,22 @@ private:
 };
 
 
-ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample) const
+ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample, const UnsignedInteger rx) const
 {
-  if (sample.getSize() < 3)
-    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
-  if (sample.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  const UnsignedInteger R = sample.getDimension();
+  // r=0 means r=R
+  const UnsignedInteger r = (rx > 0) ? rx : R;
+  const UnsignedInteger size = sample.getSize();
+  if (r > R)
+    throw InvalidArgumentException(HERE) << "r(" << r << ") should be < R (" << R << ")";
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of size>=2, here size=" << sample.getSize();
+
+  // Check if order statistics are sorted the right way
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < r - 1; ++j)
+      if (sample(i, j) < sample(i, j + 1))
+        throw InvalidArgumentException(HERE) << "The maxima of bloc #" << (i + 1) << "/" << size << " are not sorted in decreasing order";
 
   const Scalar zMin = sample.getMin()[0];
   const Scalar zMax = sample.getMax()[0];
@@ -332,7 +345,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLi
   const Scalar xi0 = -(7.859 + 2.9554 * kst) * kst;
   const Point x0({xi0});
 
-  const GeneralizedExtremeValueProfileLikelihoodEvaluation profileLikelihoodEvaluation(sample, mean, bpwm1, zMin, zMax, solver_);
+  const GeneralizedExtremeValueProfileLikelihoodEvaluation profileLikelihoodEvaluation(sample, r, mean, bpwm1, zMin, zMax, solver_);
   const Function objective(profileLikelihoodEvaluation.clone());
   OptimizationProblem problem(objective);
   problem.setMinimization(false);
@@ -374,9 +387,9 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLi
   return result;
 }
 
-GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihood(const Sample & sample) const
+GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildMethodOfXiProfileLikelihood(const Sample & sample, const UnsignedInteger r) const
 {
-  const Distribution distribution(buildMethodOfXiProfileLikelihoodEstimator(sample).getDistribution());
+  const Distribution distribution(buildMethodOfXiProfileLikelihoodEstimator(sample, r).getDistribution());
   return buildAsGeneralizedExtremeValue(distribution.getParameter());
 }
 

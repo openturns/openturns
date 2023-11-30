@@ -64,8 +64,8 @@ public:
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue() const;
 
   /** Profiled maximum likelihood */
-  ProfileLikelihoodResult buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample) const;
-  GeneralizedExtremeValue buildMethodOfXiProfileLikelihood(const Sample & sample) const;
+  ProfileLikelihoodResult buildMethodOfXiProfileLikelihoodEstimator(const Sample & sample, const UnsignedInteger r = 0) const;
+  GeneralizedExtremeValue buildMethodOfXiProfileLikelihood(const Sample & sample, const UnsignedInteger r = 0) const;
 
   /** Maximum likelihood r largest order statistics */
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const UnsignedInteger r = 0) const;
