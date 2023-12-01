@@ -82,8 +82,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Selection history accessor */
+  /** Selection/error history accessor */
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+  Point getErrorHistory() const override;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
@@ -101,6 +102,8 @@ private:
   /** Selection history */
   Collection<Indices> indicesHistory_;
   PersistentCollection<Point> coefficientsHistory_;
+
+  Point errorHistory_;
 
 } ; /* class LeastSquaresStrategy */
 

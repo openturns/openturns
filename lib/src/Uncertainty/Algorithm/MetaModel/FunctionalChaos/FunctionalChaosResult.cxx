@@ -285,6 +285,9 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "alpha_k_", alpha_k_ );
   adv.saveAttribute( "Psi_k_", Psi_k_ );
   adv.saveAttribute( "composedMetaModel_", composedMetaModel_ );
+  adv.saveAttribute( "indicesHistory_", indicesHistory_ );
+  adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
+  adv.saveAttribute( "errorHistory_", errorHistory_ );
 }
 
 
@@ -300,6 +303,12 @@ void FunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute( "alpha_k_", alpha_k_ );
   adv.loadAttribute( "Psi_k_", Psi_k_ );
   adv.loadAttribute( "composedMetaModel_", composedMetaModel_ );
+  if (adv.hasAttribute("errorHistory_"))
+  {
+    adv.loadAttribute( "indicesHistory_", indicesHistory_ );
+    adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
+    adv.loadAttribute( "errorHistory_", errorHistory_ );
+  }
 }
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
@@ -352,13 +361,48 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
     for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
       valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
-  Graph result("Selection history", "iteration", "coefficient", true, "topright");
+  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
     curve.setLegend(OSS() << "Coef. #" << uniqueBasisIndices[i]);
     result.add(curve);
   }
+  result.setIntegerXTick(true);
+  return result;
+}
+
+/* Error history accessor */
+void FunctionalChaosResult::setErrorHistory(const Point & errorHistory)
+{
+  errorHistory_ = errorHistory;
+}
+
+Point FunctionalChaosResult::getErrorHistory() const
+{
+  return errorHistory_;
+}
+
+Graph FunctionalChaosResult::drawErrorHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawErrorHistory is only available for 1-d output dimension"
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  const UnsignedInteger size = errorHistory_.getSize();
+  if (!size)
+    throw InvalidArgumentException(HERE) << "No error history available";
+
+  Sample values(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    values(i, 0) = i;
+    values(i, 1) = errorHistory_[i];
+  }
+  Graph result("Error history", "iteration", "error", true, "upper right");
+  Curve curve(values);
+  curve.setColor("blue");
+  result.add(curve);
+  result.setIntegerXTick(true);
   return result;
 }
 

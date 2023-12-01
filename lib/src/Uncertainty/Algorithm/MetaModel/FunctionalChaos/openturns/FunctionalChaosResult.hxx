@@ -111,6 +111,11 @@ public:
   void setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory);
   Graph drawSelectionHistory() const;
 
+  /** Error history accessor */
+  void setErrorHistory(const Point & errorHistory);
+  Point getErrorHistory() const;
+  Graph drawErrorHistory() const;
+
 protected:
 
 private:
@@ -139,8 +144,11 @@ private:
   Function composedMetaModel_;
 
   /** Selection history */
-  Collection<Indices> indicesHistory_;
+  PersistentCollection<Indices> indicesHistory_;
   PersistentCollection<Point> coefficientsHistory_;
+
+  /** Error history */
+  Point errorHistory_;
 
 } ; /* class FunctionalChaosResult */
 

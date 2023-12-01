@@ -7,6 +7,7 @@
 %include ProjectionStrategyImplementation_doc.i
 
 %ignore OT::ProjectionStrategyImplementation::getSelectionHistory;
+%ignore OT::ProjectionStrategyImplementation::getErrorHistory;
 
 %copyctor OT::ProjectionStrategyImplementation;
 

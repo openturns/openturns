@@ -86,6 +86,7 @@ public:
   void load(Advocate & adv) override;
 
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+  Point getErrorHistory() const override;
 
 protected:
 
@@ -94,6 +95,8 @@ protected:
 
   /** Basis selection algorithm */
   FittingAlgorithm fittingAlgorithm_;
+
+  Point errorHistory_;
 
 }; /* class LeastSquaresMetaModelSelection */
 

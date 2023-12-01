@@ -91,6 +91,7 @@ public:
 
   /** Selection history accessor */
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+  Point getErrorHistory() const override;
 
 protected:
 

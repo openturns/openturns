@@ -212,3 +212,36 @@ coefficientsHistory : 2-d sequence of float
     The coefficients values selection history
     Must be of same size as indicesHistory."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::drawErrorHistory
+"Draw the error history.
+
+This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The evolution of the error at each selection iteration"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getErrorHistory
+"The error history accessor.
+
+This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+
+Returns
+-------
+errorHistory : sequence of float
+    The error history"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setErrorHistory
+"The error history accessor.
+
+Parameters
+----------
+errorHistory : sequence of float
+    The error history"

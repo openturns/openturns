@@ -209,5 +209,9 @@ Collection<Indices> IntegrationStrategy::getSelectionHistory(Collection<Point> &
   return Collection<Indices>();
 }
 
+Point IntegrationStrategy::getErrorHistory() const
+{
+  return Point();
+}
 
 END_NAMESPACE_OPENTURNS
