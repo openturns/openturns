@@ -42,6 +42,7 @@ SpectralGaussianProcess::SpectralGaussianProcess()
   , nFrequency_(0)
   , frequencyStep_(0.0)
   , choleskyFactorsCache_(0)
+  , choleskyFactorsCache1D_(0)
   , alpha_(0)
   , fftAlgorithm_()
 {
@@ -58,6 +59,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , nFrequency_(0)
   , frequencyStep_(0.0)
   , choleskyFactorsCache_(0)
+  , choleskyFactorsCache1D_(0)
   , alpha_(0)
   , fftAlgorithm_()
 {
@@ -77,6 +79,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , nFrequency_(nFrequency)
   , frequencyStep_(0.0)
   , choleskyFactorsCache_(0)
+  , choleskyFactorsCache1D_(0)
   , alpha_(0)
   , fftAlgorithm_()
 {
@@ -86,6 +89,12 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   // Adapt the time grid to the frequency discretization
   computeTimeGrid();
   computeAlpha();
+  if (getOutputDimension() == 1)
+    {
+      choleskyFactorsCache1D_ = Point(nFrequency_);
+      for (UnsignedInteger k = 0; k < nFrequency_; ++k)
+        choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
+    } // getOutputDimension() == 1
   setOutputDimension(spectralModel.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
@@ -229,8 +238,16 @@ void SpectralGaussianProcess::setTimeGrid(const RegularGrid & tg)
     frequencyStep_ = maximalFrequency_ / nFrequency_;
     // We must fix also the alpha vector
     computeAlpha();
-    // Reset the cache
+    // Reset the caches
     choleskyFactorsCache_ = TriangularComplexMatrixPersistentCollection(0);
+    if (getOutputDimension() == 1)
+      {
+        choleskyFactorsCache1D_ = Point(nFrequency_);
+        for (UnsignedInteger k = 0; k < nFrequency_; ++k)
+          choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
+      } // getOutputDimension() == 1
+    else
+      choleskyFactorsCache1D_ = Point(0);
   }
 }
 
@@ -258,6 +275,7 @@ void SpectralGaussianProcess::computeAlpha()
 /* Realization accessor */
 Field SpectralGaussianProcess::getRealization() const
 {
+  if (getOutputDimension() == 1) return getRealization1D();
   // Build the big collection of size dimension * number of frequencies
   const UnsignedInteger twoNF = 2 * nFrequency_;
   ComplexCollection arrayCollection(getOutputDimension() * twoNF);
@@ -306,6 +324,37 @@ Field SpectralGaussianProcess::getRealization() const
   return Field(mesh_, sampleValues);
 }
 
+/* Realization accessor, outputDimension==1 */
+Field SpectralGaussianProcess::getRealization1D() const
+{
+  // Build the big collection of size dimension * number of frequencies
+  const UnsignedInteger twoNF = 2 * nFrequency_;
+  ComplexCollection arrayCollection(twoNF);
+  // Loop over the frequencies
+  // Gaussian vector
+  // Loop over half of the frequency range
+  for (UnsignedInteger k = 0; k < nFrequency_; ++k)
+  {
+    // Complex gaussian realization
+    const Scalar choleskyFactorK = choleskyFactorsCache1D_[k];
+    const Scalar realLeft = choleskyFactorK * DistFunc::rNormal();
+    const Scalar imagLeft = choleskyFactorK * DistFunc::rNormal();
+    const Scalar realRight = choleskyFactorK * DistFunc::rNormal();
+    const Scalar imagRight = choleskyFactorK * DistFunc::rNormal();
+    // Here we could drop the minus sign as N(0,1) is symmetrical wrt 0
+    // but we keep it to underline the fact that the complex left RV is
+    // equal to the conjugate of the right RV in law.
+    arrayCollection[nFrequency_ - 1 - k] = Complex(realLeft, -imagLeft);
+    arrayCollection[nFrequency_     + k] = Complex(realRight, imagRight);
+  } // Loop over the frequencies
+  // From the big collection, build the inverse FFT by blocks
+  Sample sampleValues(twoNF, 1);
+  const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, 0, twoNF));
+  for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues(k, 0) = std::real(inverseFFTResult[k] * alpha_[k]);
+  sampleValues.setDescription(getDescription());
+  return Field(mesh_, sampleValues);
+}
+
 /* Check if the process is stationary */
 Bool SpectralGaussianProcess::isStationary() const
 {
@@ -335,6 +384,7 @@ void SpectralGaussianProcess::save(Advocate & adv) const
   adv.saveAttribute("maximalFrequency_", maximalFrequency_);
   adv.saveAttribute("nFrequency_", nFrequency_);
   adv.saveAttribute("choleskyFactorsCache_", choleskyFactorsCache_);
+  adv.saveAttribute("choleskyFactorsCache1D_", choleskyFactorsCache1D_);
   adv.saveAttribute("alpha_", alpha_);
   adv.saveAttribute("fftAlgorithm_", fftAlgorithm_);
 }
@@ -349,6 +399,10 @@ void SpectralGaussianProcess::load(Advocate & adv)
   adv.loadAttribute("choleskyFactorsCache_", choleskyFactorsCache_);
   adv.loadAttribute("alpha_", alpha_);
   adv.loadAttribute("fftAlgorithm_", fftAlgorithm_);
+  if (adv.hasAttribute("choleskyFactorsCache1D_"))
+    adv.loadAttribute("choleskyFactorsCache1D_", choleskyFactorsCache1D_);
+  else
+    *this = SpectralGaussianProcess(spectralModel_, maximalFrequency_, nFrequency_);
 }
 
 END_NAMESPACE_OPENTURNS
