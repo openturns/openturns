@@ -70,7 +70,9 @@ public:
 
   /** Realization accessor */
   Field getRealization() const override;
-
+ private:
+  Field getRealization1D() const;
+ public:
   /** Frequency grid accessor, covering both the negative and the positive axes */
   RegularGrid getFrequencyGrid() const;
 
@@ -141,7 +143,8 @@ private:
 
   /** Cholesky factor  */
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;
-
+  Point choleskyFactorsCache1D_;
+  
   /** Cache size */
   mutable UnsignedInteger cacheSize_;
 
