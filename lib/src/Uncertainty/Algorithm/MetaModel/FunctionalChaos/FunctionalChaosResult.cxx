@@ -27,6 +27,12 @@
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/Curve.hxx"
 #include <unordered_map>
+#include "openturns/OrthogonalProductPolynomialFactory.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
+#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
+#include "openturns/NormInfEnumerateFunction.hxx"
+#include "openturns/DistributionTransformation.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -271,6 +277,131 @@ FunctionalChaosResult::FunctionCollection FunctionalChaosResult::getReducedBasis
 Function FunctionalChaosResult::getComposedMetaModel() const
 {
   return composedMetaModel_;
+}
+
+/* Conditional expectation accessor */
+FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Indices & conditioningIndices) const
+{
+  // Get marginal input sample and distribution
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
+  conditioningIndices.check(inputDimension);
+  const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
+  const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
+
+  // Restrict the orthogonal basis
+  // TODO: create a new OrthogonalBasis.getMarginal(activeIndices)
+  const String basicClassName(orthogonalBasis_.getImplementation()->getClassName());
+  if (basicClassName != "OrthogonalProductPolynomialFactory")
+    throw InvalidArgumentException(HERE) << "This class can only manage an OrthogonalProductPolynomialFactory "
+          << "but current basis is" << basicClassName;
+  const OrthogonalProductPolynomialFactory* p_basis = dynamic_cast<const OrthogonalProductPolynomialFactory*>(orthogonalBasis_.getImplementation().get());
+  const OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialCollection(p_basis->getPolynomialFamilyCollection());
+
+  // Restrict the collection of polynomial families
+  OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialMarginalCollection;
+  for (UnsignedInteger index = 0; index < inputDimension; ++ index)
+    if (conditioningIndices.contains(index))
+      polynomialMarginalCollection.add(polynomialCollection[index]);
+
+  // Restrict the enumeration function
+  // TODO: create a new EnumerateFunction.getMarginal(activeIndices)
+  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
+  const EnumerateFunctionImplementation enumerateFunctionImplementation(enumerateFunction.getImplementation());
+  const String enumerateName(enumerateFunction.getImplementation()->getClassName());
+  EnumerateFunction enumerateFunctionMarginal;
+  const UnsignedInteger activeDimension = conditioningIndices.getSize();
+  if (enumerateName == "LinearEnumerateFunction")
+  {
+    enumerateFunctionMarginal = LinearEnumerateFunction(activeDimension);
+  }
+  else if (enumerateName == "HyperbolicAnisotropicEnumerateFunction")
+  {
+    const HyperbolicAnisotropicEnumerateFunction* p_rule = dynamic_cast<const HyperbolicAnisotropicEnumerateFunction*>(enumerateFunction.getImplementation().get());
+    const Scalar quasiNorm(p_rule->getQ());
+    const Point weightVector(p_rule->getWeight());
+    Point weightMarginal(activeDimension);
+    for (UnsignedInteger i = 0; i < activeDimension; ++i)
+      weightMarginal[i] = weightVector[conditioningIndices[i]];
+    enumerateFunctionMarginal = HyperbolicAnisotropicEnumerateFunction(weightMarginal, quasiNorm);
+  }
+  else if (enumerateName == "NormInfEnumerateFunction")
+  {
+    enumerateFunctionMarginal = NormInfEnumerateFunction(activeDimension);
+  }
+  else
+    throw InvalidArgumentException(HERE) << "Cannot manage an enumerate function with "
+      << enumerateName;
+
+  // Create the conditioned orthogonal basis
+  const OrthogonalProductPolynomialFactory orthogonalBasisMarginal(polynomialMarginalCollection, enumerateFunctionMarginal);
+
+  // Create the active transformation and its inverse
+  const Distribution measureMarginal(orthogonalBasisMarginal.getMeasure());
+  const DistributionTransformation transformationMarginal(inputDistributionMarginal, measureMarginal);
+  const DistributionTransformation inverseTransformationMarginal(transformationMarginal.inverse());
+
+  // Condition the multi-indices (taking into account for model selection)
+  // Get the indices of active multi-indices in the reduced enumeration rule
+  Indices listOfActiveReducedIndices(0);  // In the reduced enumeration rule
+  Indices listOfActiveIndices(0);  // In the list of coefficients
+  const UnsignedInteger numberOfFunctions = Psi_k_.getSize();
+  for (UnsignedInteger k = 0; k < numberOfFunctions; ++k)
+  {
+    const Function basisFunction(Psi_k_[k]);
+    const Indices multiIndex(enumerateFunction(I_[k]));
+    // See if this function has active marginal indices only
+    bool isActive = true;
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      if (!(conditioningIndices.contains(i)) && multiIndex[i] > 0)
+      {
+        isActive = false;
+        break;
+      }
+    if (isActive)
+    {
+      listOfActiveIndices.add(k);
+      Indices activeMultiIndex(activeDimension);
+      UnsignedInteger localIndex = 0;
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+        if (conditioningIndices.contains(i))
+          activeMultiIndex[localIndex] = multiIndex[i];
+      UnsignedInteger activeIndice = enumerateFunctionMarginal.inverse(activeMultiIndex);
+      listOfActiveReducedIndices.add(activeIndice);
+    }
+  }
+  const UnsignedInteger reducedActiveBasisDimension = listOfActiveReducedIndices.getSize();
+
+  // Compute active coefficients
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  Sample activeCoefficients(reducedActiveBasisDimension, outputDimension);
+  const UnsignedInteger numberOfActiveIndices = listOfActiveIndices.getSize();
+  for (UnsignedInteger k = 0; k < numberOfActiveIndices; ++k)
+    activeCoefficients[k] = alpha_k_[listOfActiveIndices[k]];
+
+  // Get the conditioned functional basis
+  Basis activeReducedBasis(0);
+  for (UnsignedInteger k = 0; k < reducedActiveBasisDimension; ++k)
+  {
+    const UnsignedInteger activeIndice = listOfActiveReducedIndices[k];
+    const Function activeFunction(orthogonalBasisMarginal.build(activeIndice));
+    activeReducedBasis.add(activeFunction);
+  }
+
+  // Create the conditional expectation PCE
+  const FunctionalChaosResult conditionalPCE(
+      inputSampleMarginal,
+      outputSample_,
+      inputDistributionMarginal,
+      transformationMarginal,
+      inverseTransformationMarginal,
+      orthogonalBasisMarginal,
+      listOfActiveReducedIndices,
+      activeCoefficients,
+      activeReducedBasis,
+      residuals_,
+      relativeErrors_
+  );
+  return conditionalPCE;
 }
 
 /* Method save() stores the object through the StorageManager */

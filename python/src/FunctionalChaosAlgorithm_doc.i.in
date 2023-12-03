@@ -21,11 +21,11 @@ Parameters
 inputSample, outputSample : 2-d sequence of float
     Sample of the input - output random vectors
 distribution : :class:`~openturns.Distribution`
-    Distribution of the random vector :math:`\vect{X}`
+    Distribution of the random vector :math:`\physicalInputRandomVector`
 adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
     Strategy of selection of the different terms of the multivariate basis.
 projectionStrategy : :class:`~openturns.ProjectionStrategy`
-    Strategy of evaluation of the coefficients :math:`\alpha_k`
+    Strategy of evaluation of the coefficients :math:`a_k`
 weights : sequence of float
     Weights :math:`\omega_i` associated to the data base
 
@@ -38,113 +38,130 @@ FunctionalChaosResult
 
 Notes
 -----
-Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`, 
-:math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance: 
-:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+Consider :math:`\physicalOutputRandomVector = \model(\physicalInputRandomVector)` with :math:`\model: \Rset^{\physicalInputDimension} \rightarrow \Rset^{\physicalOutputDimension}`, 
+:math:`\physicalInputRandomVector \sim \cL_{\physicalInputRandomVector}` and :math:`\physicalOutputRandomVector` with finite variance, i.e. 
+:math:`\model\in L_{\cL_{\physicalInputRandomVector}}^2(\Rset^{\physicalInputDimension}, \Rset^{\physicalOutputDimension})`.
 
-When  :math:`p>1`, the functional chaos algorithm is used on each marginal 
-of :math:`\vect{Y}`, using the same multivariate orthonormal basis for all the marginals. 
+When  :math:`\physicalOutputDimension > 1`, the functional chaos algorithm is used on each marginal 
+of :math:`\physicalOutputRandomVector`, using the same multivariate orthonormal basis for all the marginals. 
 Thus, the algorithm is detailed here for a scalar output :math:`Y` and 
-:math:`g: \Rset^d \rightarrow \Rset`.
+:math:`\model: \Rset^{\physicalInputDimension} \rightarrow \Rset`.
 
-Let :math:`T: \Rset^d \rightarrow \Rset^d` be an isoprobabilistic transformation
-such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`. We note :math:`f = g \circ T^{-1}`, then :math:`f \in L_{\mu}^2(\Rset^d, \Rset)`.
-
-Let :math:`(\Psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
-:math:`L^2_{\mu}(\Rset^d,\Rset)`.
-
-Then the functional chaos decomposition of *f* writes:
+Let :math:`T: \Rset^{\physicalInputDimension} \rightarrow \Rset^{\physicalInputDimension}` be an isoprobabilistic transformation
+such that:
 
 .. math::
 
-    f = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{\alpha}_k \Psi_k 
+    \standardInputObservation = T(\physicalInputRandomVector) \sim \mu.
 
-
-which can be truncated to the finite set :math:`K \in \Nset`:
-
-.. math::
-
-    \tilde{f} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k 
-
-
-The approximation :math:`\tilde{f}` can be used to build an efficient random 
-generator of :math:`Y` based on the random vector :math:`\vect{Z}`. 
-It writes:
+Let :math:`h` be the composed model:
 
 .. math::
 
-    \tilde{Y} = \tilde{f}(\vect{Z})
+    h = \model \circ T^{-1}.
 
-For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
+Then :math:`h \in L_{\mu}^2(\Rset^{\physicalInputDimension}, \Rset)`.
+Let :math:`(\psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
+:math:`L^2_{\mu}(\Rset^{\physicalInputDimension},\Rset)`.
+Then the functional chaos decomposition of :math:`\model` can be written:
 
-The functional chaos decomposition can be used to build a meta model of *g*, 
+.. math::
+
+    h(\standardInputObservation) = \model \circ T^{-1}(\standardInputObservation) = \sum_{k=0}^{\infty} \vect{a}_k \psi_k (\standardInputObservation)
+
+
+which can be truncated to the finite set :math:`\mathcal{J}^P_s \subseteq \Nset`:
+
+.. math::
+
+    \tilde{h}(\standardInputObservation) =  \sum_{k \in \mathcal{J}^P_s} \vect{a}_k \psi_k (\standardInputObservation)
+
+The set :math:`\mathcal{J}^P_s` may be the result of a selection method such as 
+:class:`~.openturns.LARS`.
+In this case, we first consider a candidate set of indices :math:`\mathcal{J}^P`
+and compute the selection of the best basis functions in this candidate set, 
+which leads to the subset :math:`\mathcal{J}^P_s \subseteq \mathcal{J}^P`.
+
+The surrogate model :math:`\surrogateModel` can be used to build an efficient random 
+generator of :math:`Y` based on the random vector :math:`\standardInputObservation`. 
+Then we can define :math:`\tilde{h} = \surrogateModel \circ T^{-1}` and:
+
+.. math::
+
+    \widetilde{Y} = \tilde{h}(\standardInputObservation)
+
+For more details on this topic, see :class:`~openturns.FunctionalChaosRandomVector`.
+
+The functional chaos decomposition can be used to build a meta model of :math:`\model`, 
 which writes:
 
 .. math::
 
-    \tilde{g} = \tilde{f} \circ T
+    \surrogateModel(\physicalInputRandomVector) = \left(\tilde{h} \circ T \right)(\physicalInputRandomVector)
 
-If the basis :math:`(\Psi_k)_{k \in \Nset}` has been obtained by tensorisation of
-univariate orthonormal basis, then the distribution :math:`\mu` writes  
+If the basis :math:`(\psi_k)_{k \in \Nset}` has been obtained by tensorisation of
+univariate orthonormal basis, then the distribution :math:`\mu` is
 :math:`\mu = \prod_{i=1}^d \mu_i`. In that case only, the Sobol indices can
-easily be deduced from the coefficients :math:`\alpha_k`.
+easily be deduced from the coefficients :math:`a_k`.
+
+*Compute the coefficients*
 
 We detail here all the steps required in order to create a functional chaos 
 algorithm.
 
-**Step 1 - Construction of the multivariate orthonormal basis**: the
-multivariate orthonornal basis :math:`(\Psi_k(\vect{x}))_{k \in \Nset}` is built
+*Step 1 - Construction of the multivariate orthonormal basis*: the
+multivariate orthonornal basis :math:`(\psi_k(\physicalInputRandomVector))_{k \in \Nset}` is built
 as the tensor product of orthonormal univariate families.
 
 The univariate bases may be:
 
-    - *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
-      Note that it is possible to build the polynomial family orthonormal to any univariate 
-      distribution :math:`\mu_i` under some conditions. 
-      For more details, see :class:`~openturns.StandardDistributionPolynomialFactory`;
+- *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
+  Note that it is possible to build the polynomial family orthonormal to any univariate 
+  distribution :math:`\mu_i` under some conditions. 
+  For more details on this topic, see :class:`~openturns.StandardDistributionPolynomialFactory`;
 
-    - Haar wavelets: they enable to approximate functions with discontinuities.
-      For more details, see :class:`~openturns.HaarWaveletFactory`,;
+- Haar wavelets: they enable to approximate functions with discontinuities.
+  For more details on this topic, see :class:`~openturns.HaarWaveletFactory`,;
 
-    - Fourier series: for more details, see :class:`~openturns.FourierSeriesFactory`.
+- Fourier series: for more details on this topic, see :class:`~openturns.FourierSeriesFactory`.
 
-Furthermore, the numerotation of the multivariate orthonormal basis :math:`(\Psi_k(\vect{z}))_k` 
+Furthermore, the numerotation of the multivariate orthonormal basis :math:`(\psi_k(\standardInputObservation))_k` 
 is given by an enumerate function which defines a regular way to generate the collection of degres 
 used for the univariate polynomials : an enumerate function represents a bijection 
 :math:`\Nset \rightarrow \Nset^d`. See :class:`~openturns.LinearEnumerateFunction` or :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` 
 for more details.
 
-**Step 2 - Truncation strategy of the multivariate orthonormal basis**: a
+*Step 2 - Truncation strategy of the multivariate orthonormal basis*: a
 strategy must be chosen for the selection of the different terms of the
 multivariate basis. The selected terms are gathered in the subset *K*.
 
 For more details on the possible strategies, see :class:`~openturns.FixedStrategy`
 and :class:`~openturns.CleaningStrategy`.
 
-**Step 3 -  Evaluation strategy of the coefficients**: a
-strategy must be chosen for the estimation of te coefficients :math:`\alpha_k`. 
-The vector :math:`\vect{\alpha} = (\alpha_k)_{k \in K}` is equivalently defined by:
+*Step 3 -  Evaluation strategy of the coefficients*: a
+strategy must be chosen for the estimation of the coefficients :math:`a_k`. 
+The vector :math:`\vect{a} = (a_k)_{k \in \mathcal{J}^P_s}` is equivalently defined by:
 
 .. math::
     :label: quadEr
 
-    \vect{\alpha} = \argmin_{\vect{\alpha} \in \Rset^K}\Expect{\left( g \circ T^{-1}(\vect{Z}) - \sum_{k \in K} \alpha_k \Psi_k (\vect{Z})\right)^2}
+    \vect{a} = \argmin_{\vect{a} \in \Rset^K}\Expect{\left( g \circ T^{-1}(\standardInputObservation) - \sum_{k \in K} a_k \psi_k (\standardInputObservation)\right)^2}
 
 or
 
 .. math::
     :label: scalProd
 
-    \alpha_k =  <g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z})>_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
+    a_k =  <g \circ T^{-1}(\standardInputObservation), \psi_k (\standardInputObservation)>_{\mu} = \Expect{  g \circ T^{-1}(\standardInputObservation) \psi_k (\standardInputObservation) }
 
 where the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
 
-Relation :eq:`quadEr` means that the coefficients :math:`(\alpha_k)_{k \in K}`
+Equation :eq:`quadEr` means that the coefficients :math:`(a_k)_{k \in K}`
 minimize the quadratic error between the model and the polynomial approximation.
 For more details, see :class:`~openturns.LeastSquaresStrategy`.
 
-Relation  :eq:`scalProd` means that :math:`\alpha_k` is the scalar product of the
-model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
+Equation  :eq:`scalProd` means that :math:`a_k` is the scalar product of the
+model with the *k-th* element of the orthonormal basis :math:`(\psi_k)_{k \in \Nset}`.
 For more details, see :class:`~openturns.IntegrationStrategy`.
 
 Examples
@@ -280,6 +297,6 @@ residual : float
 Parameters
 ----------
 strategy : :class:`~openturns.ProjectionStrategy`
-    Strategy to estimate the coefficients :math:`\alpha_k`."
+    Strategy to estimate the coefficients :math:`a_k`."
 
 // ---------------------------------------------------------------------

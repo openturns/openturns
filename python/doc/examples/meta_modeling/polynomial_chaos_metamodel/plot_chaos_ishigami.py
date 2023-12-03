@@ -48,6 +48,21 @@ outputSample = im.model(inputSample)
 
 # %%
 def plotXvsY(sampleX, sampleY):
+    """
+    Plot a Y sample against a X sample on a grid.
+
+    Parameters
+    ----------
+    sampleX : ot.Sample(sampleSize, inputDimension)
+        The input sample.
+    sampleY : ot.Sample(sampleSize, outputDimension)
+        The output sample.
+
+    Returns
+    -------
+    grid: ot.GridLayout(outputDimension, inputDimension)
+        The grid of plots of all projections of Y vs X.
+    """
     dimX = sampleX.getDimension()
     dimY = sampleY.getDimension()
     descriptionX = sampleX.getDescription()

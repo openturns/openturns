@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an weightedExperiment plane
+ *  @brief Abstract top-level view of a WeightedExperiment
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -29,7 +29,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(WeightedExperimentImplementation)
 
 static const Factory<WeightedExperimentImplementation> Factory_WeightedExperimentImplementation;
-
 
 /* Default constructor */
 WeightedExperimentImplementation::WeightedExperimentImplementation()
