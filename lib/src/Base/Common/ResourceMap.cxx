@@ -1037,6 +1037,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber", 50);
 
   // EnclosingSimplexAlgorithm parameters
+  addAsScalar("EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon", 1.0e-12);
   addAsUnsignedInteger("EnclosingSimplexAlgorithm-LargeDimension", 5);
 
   // Matrix parameters

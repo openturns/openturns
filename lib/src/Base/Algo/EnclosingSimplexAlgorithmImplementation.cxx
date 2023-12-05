@@ -42,17 +42,20 @@ EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation
   , simplices_()
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
+  , barycentricCoordinatesEpsilon_(ResourceMap::GetAsScalar("EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon"))
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation(const Sample & vertices, const IndicesCollection & simplices)
+EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation(const Sample & vertices,
+    const IndicesCollection & simplices)
   : PersistentObject()
   , vertices_(vertices)
   , simplices_()
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
+  , barycentricCoordinatesEpsilon_(ResourceMap::GetAsScalar("EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon"))
 {
   setVerticesAndSimplices(vertices, simplices);
 }
@@ -164,12 +167,12 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
 
 namespace
 {
-inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex1D(const Scalar v1, const Scalar v2, const Scalar pt)
+  inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex1D(const Scalar v1, const Scalar v2, const Scalar pt, const Scalar epsilon)
 {
-  return (pt - v1) * (pt - v2) <= SpecFunc::ScalarEpsilon;
+  return (pt - v1) * (pt - v2) <= epsilon * std::abs(v1 - v2);
 }
 
-inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const pt)
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const pt, const Scalar epsilon)
 {
   const Scalar x = *pt;
   const Scalar y = *(pt + 1);
@@ -183,28 +186,34 @@ inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const
   const Scalar volume1 = (x - v2x) * (v1y - v2y) - (v1x - v2x) * (y - v2y);
   const Scalar volume2 = (x - v3x) * (v2y - v3y) - (v2x - v3x) * (y - v3y);
   const Scalar volume3 = (x - v1x) * (v3y - v1y) - (v3x - v1x) * (y - v1y);
-  if (totalVolume > SpecFunc::ScalarEpsilon)
+  if (totalVolume > epsilon)
   {
-    return volume1 > - SpecFunc::ScalarEpsilon && volume2 > - SpecFunc::ScalarEpsilon && volume3 > - SpecFunc::ScalarEpsilon;
+    return volume1 > -epsilon * totalVolume && volume2 > -epsilon * totalVolume && volume3 > -epsilon * totalVolume;
   }
-  else if (totalVolume < - SpecFunc::ScalarEpsilon)
+  else if (totalVolume < -epsilon)
   {
-    return volume1 < SpecFunc::ScalarEpsilon && volume2 < SpecFunc::ScalarEpsilon && volume3 < SpecFunc::ScalarEpsilon;
+    return volume1 < -epsilon * totalVolume && volume2 < -epsilon * totalVolume && volume3 < -epsilon * totalVolume;
   }
   else
   {
     // Degenerate case
-    if (volume1 > SpecFunc::ScalarEpsilon || volume1 < - SpecFunc::ScalarEpsilon ||
-        volume2 > SpecFunc::ScalarEpsilon || volume2 < - SpecFunc::ScalarEpsilon ||
-        volume3 > SpecFunc::ScalarEpsilon || volume3 < - SpecFunc::ScalarEpsilon)
+    if (volume1 > epsilon || volume1 < -epsilon ||
+        volume2 > epsilon || volume2 < -epsilon ||
+        volume3 > epsilon || volume3 < -epsilon)
       return false;
     // Point is on the same line
-    return x <= std::max(std::max(v1x, v2x), v3x) && x >= std::min(std::min(v1x, v2x), v3x) &&
-           y <= std::max(std::max(v1y, v2y), v3y) && y >= std::min(std::min(v1y, v2y), v3y);
+    const Scalar xMax = std::max(std::max(v1x, v2x), v3x);
+    const Scalar xMin = std::min(std::min(v1x, v2x), v3x);
+    const Scalar deltaX = xMax - xMin;
+    const Scalar yMax = std::max(std::max(v1y, v2y), v3y);
+    const Scalar yMin = std::min(std::min(v1y, v2y), v3y);
+    const Scalar deltaY = yMax - yMin;
+    return x <= xMax + epsilon * deltaX && x >= xMin - epsilon * deltaX &&
+           y <= yMax + epsilon * deltaY && y >= yMin - epsilon * deltaY;
   }
 } // EnclosingSimplexAlgorithm_checkPointInSimplex2D
 
-inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt)
+  inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt, const Scalar epsilon)
 {
   const Scalar x = *pt;
   const Scalar y = *(pt + 1);
@@ -226,26 +235,35 @@ inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const
   const Scalar volume2 = (v1x - v4x) * ((y - v4y) * (v3z - v4z) - (v3y - v4y) * (z - v4z)) - (x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (z - v4z) - (y - v4y) * (v1z - v4z));
   const Scalar volume3 = (v1x - v4x) * ((v2y - v4y) * (z - v4z) - (y - v4y) * (v2z - v4z)) - (v2x - v4x) * ((v1y - v4y) * (z - v4z) - (y - v4y) * (v1z - v4z)) + (x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z));
   const Scalar volume4 = (v1x - x) * ((v2y - y) * (v3z - z) - (v3y - y) * (v2z - z)) - (v2x - x) * ((v1y - y) * (v3z - z) - (v3y - y) * (v1z - z)) + (v3x - x) * ((v1y - y) * (v2z - z) - (v2y - y) * (v1z - z));
-  if (totalVolume > SpecFunc::ScalarEpsilon)
+  if (totalVolume > epsilon)
   {
-    return volume1 > - SpecFunc::ScalarEpsilon && volume2 > - SpecFunc::ScalarEpsilon && volume3 > - SpecFunc::ScalarEpsilon && volume4 > - SpecFunc::ScalarEpsilon;
+    return volume1 > -epsilon * totalVolume && volume2 > -epsilon * totalVolume && volume3 > -epsilon * totalVolume && volume4 > -epsilon * totalVolume;
   }
-  else if (totalVolume < - SpecFunc::ScalarEpsilon)
+  else if (totalVolume < -epsilon)
   {
-    return volume1 < SpecFunc::ScalarEpsilon && volume2 < SpecFunc::ScalarEpsilon && volume3 < SpecFunc::ScalarEpsilon && volume4 < SpecFunc::ScalarEpsilon;
+    return volume1 < -epsilon * totalVolume && volume2 < -epsilon * totalVolume && volume3 < -epsilon * totalVolume && volume4 < -epsilon * totalVolume;
   }
   else
   {
     // Degenerate case
-    if (volume1 > SpecFunc::ScalarEpsilon || volume1 < - SpecFunc::ScalarEpsilon ||
-        volume2 > SpecFunc::ScalarEpsilon || volume2 < - SpecFunc::ScalarEpsilon ||
-        volume3 > SpecFunc::ScalarEpsilon || volume3 < - SpecFunc::ScalarEpsilon ||
-        volume4 > SpecFunc::ScalarEpsilon || volume4 < - SpecFunc::ScalarEpsilon)
+    if (volume1 > epsilon || volume1 < -epsilon ||
+        volume2 > epsilon || volume2 < -epsilon ||
+        volume3 > epsilon || volume3 < -epsilon ||
+        volume4 > epsilon || volume4 < -epsilon)
       return false;
     // Point is on the same line
-    return x <= std::max(std::max(std::max(v1x, v2x), v3x), v4x) && x >= std::min(std::min(std::min(v1x, v2x), v3x), v4x) &&
-           y <= std::max(std::max(std::max(v1y, v2y), v3y), v4y) && y >= std::min(std::min(std::min(v1y, v2y), v3y), v4y) &&
-           z <= std::max(std::max(std::max(v1z, v2z), v3z), v4z) && z >= std::min(std::min(std::min(v1z, v2z), v3z), v4z);
+    const Scalar xMax = std::max(std::max(std::max(v1x, v2x), v3x), v4x);
+    const Scalar xMin = std::min(std::min(std::min(v1x, v2x), v3x), v4x);
+    const Scalar deltaX = xMax - xMin;
+    const Scalar yMax = std::max(std::max(std::max(v1y, v2y), v3y), v4y);
+    const Scalar yMin = std::min(std::min(std::min(v1y, v2y), v3y), v4y);
+    const Scalar deltaY = yMax - yMin;
+    const Scalar zMax = std::max(std::max(std::max(v1z, v2z), v3z), v4z);
+    const Scalar zMin = std::min(std::min(std::min(v1z, v2z), v3z), v4z);
+    const Scalar deltaZ = zMax - zMin;
+    return x <= xMax + epsilon * deltaX && x >= xMin - epsilon * deltaX &&
+           y <= yMax + epsilon * deltaY && y >= yMin - epsilon * deltaY &&
+           z <= zMax + epsilon * deltaZ && z >= zMin - epsilon * deltaZ;
   }
 } // EnclosingSimplexAlgorithm_checkPointInSimplex3D
 
@@ -261,7 +279,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   if (dimension == 1)
   {
     IndicesCollection::const_iterator cit1d = simplices_.cbegin_at(index);
-    return EnclosingSimplexAlgorithm_checkPointInSimplex1D(vertices_(*cit1d, 0), vertices_(*(cit1d + 1), 0), point[0]);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex1D(vertices_(*cit1d, 0), vertices_(*(cit1d + 1), 0), point[0], barycentricCoordinatesEpsilon_);
   }
   // Special case for dimension==2
   // It is more efficient to skip the tests against both the global bounding box
@@ -269,7 +287,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   else if (dimension == 2)
   {
     IndicesCollection::const_iterator cit2d = simplices_.cbegin_at(index);
-    return EnclosingSimplexAlgorithm_checkPointInSimplex2D(&vertices_(*cit2d, 0), &vertices_(*(cit2d + 1), 0), &vertices_(*(cit2d + 2), 0), &point[0]);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex2D(&vertices_(*cit2d, 0), &vertices_(*(cit2d + 1), 0), &vertices_(*(cit2d + 2), 0), &point[0], barycentricCoordinatesEpsilon_);
   }
   // Special case for dimension==3
   // It is more efficient to skip the tests against both the global bounding box
@@ -277,7 +295,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   else if (dimension == 3)
   {
     IndicesCollection::const_iterator cit3d = simplices_.cbegin_at(index);
-    return EnclosingSimplexAlgorithm_checkPointInSimplex3D(&vertices_(*cit3d, 0), &vertices_(*(cit3d + 1), 0), &vertices_(*(cit3d + 2), 0), &vertices_(*(cit3d + 3), 0), &point[0]);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex3D(&vertices_(*cit3d, 0), &vertices_(*(cit3d + 1), 0), &vertices_(*(cit3d + 2), 0), &vertices_(*(cit3d + 3), 0), &point[0], barycentricCoordinatesEpsilon_);
   }
 
   // Exit if point is outside global bounding box
@@ -303,9 +321,21 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
     v[i] = point[i];
   const Point coordinates(simplexMatrix.solveLinearSystemInPlace(v));
   for (UnsignedInteger i = 0; i <= dimension; ++i)
-    if (!(coordinates[i] >= 0.0 && coordinates[i] <= 1.0))
+    if (!(coordinates[i] >= -barycentricCoordinatesEpsilon_ && coordinates[i] <= 1.0 + barycentricCoordinatesEpsilon_))
       return false;
   return true;
+}
+
+/* Accessor to the barycentric coordinates tolerance */
+void EnclosingSimplexAlgorithmImplementation::setBarycentricCoordinatesEpsilon(const Scalar epsilon)
+{
+  if (!(epsilon >= 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a nonnegative value, here epsilon)" << epsilon;
+  barycentricCoordinatesEpsilon_ = epsilon;
+}
+  
+Scalar EnclosingSimplexAlgorithmImplementation::getBarycentricCoordinatesEpsilon() const
+{
+  return barycentricCoordinatesEpsilon_;
 }
 
 /* String converter */
@@ -330,6 +360,7 @@ void EnclosingSimplexAlgorithmImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
+  adv.saveAttribute("barycentricCoordinatesEpsilon_", barycentricCoordinatesEpsilon_);
 }
 
 
@@ -342,6 +373,9 @@ void EnclosingSimplexAlgorithmImplementation::load(Advocate & adv)
   IndicesCollection simplices;
   adv.loadAttribute("simplices_", simplices);
   setVerticesAndSimplices(vertices, simplices);
+  if (adv.hasAttribute("barycentricCoordinatesEpsilon_"))
+    adv.loadAttribute("barycentricCoordinatesEpsilon_", barycentricCoordinatesEpsilon_);
+  else barycentricCoordinatesEpsilon_ = ResourceMap::GetAsScalar("EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon");
 }
 
 END_NAMESPACE_OPENTURNS

@@ -74,6 +74,10 @@ public:
   /** Get the indices of the enclosing simplex of the given points */
   virtual Indices query(const Sample & sample) const;
 
+  /** Accessor to the barycentric coordinates tolerance */
+  void setBarycentricCoordinatesEpsilon(const Scalar epsilon);
+  Scalar getBarycentricCoordinatesEpsilon() const;
+
   /** String converter */
   String __repr__() const override;
 
