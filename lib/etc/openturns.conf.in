@@ -412,6 +412,7 @@
   <BoundingVolumeHierarchy-BinNumber value_int="50" />
 
   <!-- OT::EnclosingSimplexAlgorithm parameters -->
+  <EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon value_float="1.0e-12" />
   <EnclosingSimplexAlgorithm-LargeDimension value_int="5" />
 
   <!-- OT::Matrix parameters -->

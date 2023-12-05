@@ -4,5 +4,13 @@
 OT_EnclosingSimplexAlgorithm_doc
 %feature("docstring") OT::EnclosingSimplexAlgorithm::setVerticesAndSimplices
 OT_EnclosingSimplexAlgorithm_setVerticesAndSimplices_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::getVertices
+OT_EnclosingSimplexAlgorithm_getVertices_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::getSimplices
+OT_EnclosingSimplexAlgorithm_getSimplices_doc
 %feature("docstring") OT::EnclosingSimplexAlgorithm::query
 OT_EnclosingSimplexAlgorithm_query_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::setBarycentricCoordinatesEpsilon
+OT_EnclosingSimplexAlgorithm_setBarycentricCoordinatesEpsilon_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::getBarycentricCoordinatesEpsilon
+OT_EnclosingSimplexAlgorithm_getBarycentricCoordinatesEpsilon_doc
