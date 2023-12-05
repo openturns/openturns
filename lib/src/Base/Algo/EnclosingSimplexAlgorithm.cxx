@@ -135,6 +135,18 @@ Indices EnclosingSimplexAlgorithm::query(const Sample & sample) const
   return getImplementation()->query(sample);
 }
 
+/* Accessor to the barycentric coordinates tolerance */
+void EnclosingSimplexAlgorithm::setBarycentricCoordinatesEpsilon(const Scalar epsilon)
+{
+  copyOnWrite();
+  getImplementation()->setBarycentricCoordinatesEpsilon(epsilon);
+}
+
+Scalar EnclosingSimplexAlgorithm::getBarycentricCoordinatesEpsilon() const
+{
+  return getImplementation()->getBarycentricCoordinatesEpsilon();
+}
+
 /* String converter */
 String EnclosingSimplexAlgorithm::__repr__() const
 {
