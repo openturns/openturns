@@ -178,6 +178,7 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
     } // i
     DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result(n, 0));
   } // n
+  result.setDescription(getDescription());
   return result;
 }
 
