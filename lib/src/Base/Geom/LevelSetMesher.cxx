@@ -219,16 +219,16 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               {
                 const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
                 const ComposedFunction constraint(function, tToPoint);
-                Brent solver;
+                Brent brent;
                 try
                 {
-                  const Scalar t = solver.solve(constraint, level, 0.0, 1.0);
+                  const Scalar t = brent.solve(constraint, level, 0.0, 1.0);
                   LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t);
                   movedVertices.add(tToPoint(Point(1, t)));
                 }
                 catch(...)
                 {
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << solver << ", using minimization for the projection");
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << brent << ", using minimization for the projection");
                   minimizeDistance = true;
                 }
               } // solveEquation
@@ -262,18 +262,27 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                   {
                     solver.run();
                     result = solver.getResult();
+                    movedVertices.add(currentVertex + result.getOptimalPoint());
                   }
                   catch(...)
                   {
                     // There is definitely a problem with this vertex. Try a gradient-free solver
-                    Cobyla solver2(solver.getProblem());
-                    solver2.setStartingPoint(solver.getStartingPoint());
-                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << solver2);
-                    solver2.run();
-                    result = solver2.getResult();
+                    Cobyla cobyla(solver.getProblem());
+                    cobyla.setStartingPoint(solver.getStartingPoint());
+                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << cobyla);
+                    try
+                    {
+                      cobyla.run();
+                      result = cobyla.getResult();
+                      movedVertices.add(currentVertex + result.getOptimalPoint());
+                    }
+                    catch(...)
+                    {
+                      LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
+                      movedVertices.add(currentVertex + delta);
+                    }
                   } // Even finite differences gradient failed?
                 } // Gradient failed ?
-                movedVertices.add(currentVertex + result.getOptimalPoint());
                 minimizeDistance = !solveEquation;
               } // minimizeDistance
             } // project
