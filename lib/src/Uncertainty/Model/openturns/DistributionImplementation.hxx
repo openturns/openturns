@@ -209,6 +209,10 @@ public:
                                const Indices & pointNumber,
                                Sample & gridOut) const;
 
+  /** Flag to tell if the distribution implements the CDF analytically (true in most cases)
+   * or if it is be computed by numerical integration in some generic implementation */
+  virtual Bool isAnalyticalCDF() const;
+
   /** Get the CDF of the distribution */
   virtual Scalar computeCDF(const Scalar scalar) const;
   virtual Scalar computeComplementaryCDF(const Scalar scalar) const;

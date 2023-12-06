@@ -760,6 +760,25 @@ Bool PythonDistribution::hasIndependentCopula() const
 }
 
 
+Bool PythonDistribution::isAnalyticalCDF() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isAnalyticalCDF") ) )
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
+                                     const_cast<char *>( "isAnalyticalCDF" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Bool result = convert< _PyBool_, Bool >(callResult.get());
+    return result;
+  }
+  else
+    return false;
+}
+
+
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution PythonDistribution::getMarginal(const Indices & indices) const
 {

@@ -35,6 +35,7 @@
 %ignore OT::DistributionImplementation::computeProbabilityContinuous;
 %ignore OT::DistributionImplementation::computeProbabilityContinuous1D;
 %ignore OT::DistributionImplementation::computeProbabilityDiscrete;
+%ignore OT::DistributionImplementation::isAnalyticalCDF;
 
 
 %include openturns/DistributionImplementation.hxx

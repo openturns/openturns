@@ -1091,35 +1091,45 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
 /* Generic implementation for 1D continuous distribution by integration of the PDF */
 Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a, const Scalar b) const
 {
-  // Use adaptive multidimensional integration of the PDF on the reduced interval
-  const PDFWrapper pdfWrapper(this);
   Scalar probability = 0.0;
-  Scalar error = -1.0;
-  Point ai;
-  Point bi;
-  Sample fi;
-  Point ei;
-  const Point singularities(getSingularities());
-  // If no singularity inside of the given reduced interval
-  const UnsignedInteger singularitiesNumber = singularities.getSize();
-  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
+  if (isAnalyticalCDF())
+  {
+    probability = computeProbabilityGeneral1D(a, b);
+  }
   else
   {
-    Scalar lower = a;
-    for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
+    // Use adaptive integration of the PDF on the reduced interval
+    const PDFWrapper pdfWrapper(this);
+    Scalar error = -1.0;
+    Point ai;
+    Point bi;
+    Sample fi;
+    Point ei;
+    const Point singularities(getSingularities());
+    // If no singularity inside of the given reduced interval
+    const UnsignedInteger singularitiesNumber = singularities.getSize();
+    if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a)
     {
-      const Scalar upper = singularities[i];
-      if (upper > a && upper < b)
+      probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
+    }
+    else
+    {
+      Scalar lower = a;
+      for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
       {
-        probability += GaussKronrod().integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
-        lower = upper;
-      }
-      // Exit the loop if no more singularities inside of the reduced interval
-      if (upper >= b) break;
-    } // for
-    // Last contribution
-    probability += GaussKronrod().integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
-  } // else
+        const Scalar upper = singularities[i];
+        if (upper > a && upper < b)
+        {
+          probability += GaussKronrod().integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
+          lower = upper;
+        }
+        // Exit the loop if no more singularities inside of the reduced interval
+        if (upper >= b) break;
+      } // for
+      // Last contribution
+      probability += GaussKronrod().integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
+    } // else
+  }
   return SpecFunc::Clip01(probability);
 }
 
@@ -5317,6 +5327,12 @@ void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon
   if (!(quantileEpsilon >= 0.0) || !(quantileEpsilon <= 1.0))
     throw InvalidArgumentException(HERE) << "Quantile epsilon must be in [0, 1] here epsilon=" << quantileEpsilon;
   quantileEpsilon_ = quantileEpsilon;
+}
+
+Bool DistributionImplementation::isAnalyticalCDF() const
+{
+  // true in most cases
+  return true;
 }
 
 END_NAMESPACE_OPENTURNS

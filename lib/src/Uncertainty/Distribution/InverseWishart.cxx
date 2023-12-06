@@ -209,11 +209,9 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
   }
 }
 
-/* Get the CDF of the distribution */
-Scalar InverseWishart::computeCDF(const Point & point) const
+Bool InverseWishart::isAnalyticalCDF() const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return ContinuousDistribution::computeCDF(point);
+  return false;
 }
 
 /* Compute the mean of the distribution */

@@ -80,6 +80,9 @@ public:
   Scalar computePDF(const Point & point) const override;
   Scalar computeLogPDF(const Point & point) const override;
 
+  /** Flag to tell if the distribution implements the CDF */
+  Bool isAnalyticalCDF() const override;
+
   /** Get the CDF of the distribution */
   Scalar computeCDF(const Point & point) const override;
 
@@ -168,7 +171,6 @@ public:
   Sample getSupport(const Interval & interval) const override;
 
 protected:
-
 
 private:
 

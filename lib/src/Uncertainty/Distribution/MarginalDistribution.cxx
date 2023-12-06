@@ -198,6 +198,11 @@ Scalar MarginalDistribution::computeCDF(const Point & point) const
   return distribution_.computeCDF(expandPoint(point));
 }
 
+Bool MarginalDistribution::isAnalyticalCDF() const
+{
+  return distribution_.getImplementation()->isAnalyticalCDF();
+}
+
 Scalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
 {
   return distribution_.computeSurvivalFunction(expandPoint(point, false));

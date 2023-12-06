@@ -2220,6 +2220,12 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   }
 }
 
+Bool RandomMixture::isAnalyticalCDF() const
+{
+  // implemented by integration of the PDF through computeProbability
+  return false;
+}
+
 /* Get the CDF of the RandomMixture */
 Scalar RandomMixture::computeCDF(const Point & point) const
 {

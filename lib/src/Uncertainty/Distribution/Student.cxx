@@ -206,6 +206,11 @@ Sample Student::getSample(const UnsignedInteger size) const
   return result;
 }
 
+// depends on the dimension
+Bool Student::isAnalyticalCDF() const
+{
+  return false;
+}
 
 /* Get the CDF of the distribution */
 Scalar Student::computeCDF(const Point & point) const

@@ -80,6 +80,9 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
+
   /** Get the CDF of the distribution */
   using EllipticalDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;

@@ -429,6 +429,11 @@ void BayesDistribution::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+Bool BayesDistribution::isAnalyticalCDF() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void BayesDistribution::save(Advocate & adv) const
 {

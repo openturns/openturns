@@ -76,6 +76,9 @@ public:
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
+
   /* Interface specific to BayesDistribution */
 
   /** Conditioned distribution accessor */

@@ -82,6 +82,9 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
+
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
@@ -150,6 +153,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+protected:
 
 private:
   /** Compute the mean of the distribution */

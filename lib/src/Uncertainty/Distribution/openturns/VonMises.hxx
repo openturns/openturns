@@ -74,6 +74,9 @@ public:
   using ContinuousDistribution::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 

@@ -262,6 +262,11 @@ Bool VonMises::isElliptical() const
   return mu_ == 0.0;
 }
 
+Bool VonMises::isAnalyticalCDF() const
+{
+  return false;
+}
+
 /* Method load() reloads the object from the StorageManager */
 void VonMises::load(Advocate & adv)
 {

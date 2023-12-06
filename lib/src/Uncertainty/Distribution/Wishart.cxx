@@ -206,11 +206,9 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   }
 }
 
-/* Get the CDF of the distribution */
-Scalar Wishart::computeCDF(const Point & point) const
+Bool Wishart::isAnalyticalCDF() const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return ContinuousDistribution::computeCDF(point);
+  return false;
 }
 
 /* Compute the mean of the distribution */

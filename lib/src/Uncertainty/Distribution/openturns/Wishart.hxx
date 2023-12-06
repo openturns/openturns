@@ -76,9 +76,8 @@ public:
   Scalar computeLogPDF(const Point & point) const override;
   Scalar computeLogPDF(const CovarianceMatrix & m) const;
 
-  /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const override;
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
@@ -99,7 +98,6 @@ public:
   Description getParameterDescription() const override;
 
   /* Interface specific to Wishart */
-
 
   /** V accessor */
   void setV(const CovarianceMatrix & v);

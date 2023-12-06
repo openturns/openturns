@@ -130,6 +130,9 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Flag to tell if the distribution implements the CDF analytically */
+  Bool isAnalyticalCDF() const override;
+
 #ifndef SWIG
   /** Compute the PDF over a regular grid */
   Sample computePDF(const Scalar xMin,

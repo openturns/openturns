@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -151,3 +152,9 @@ print("covariance=", repr(covariance))
 parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
+
+# computeProba test with bound far away
+dist1 = ot.Burr(4.14855, 0.0661853)
+ub = dist1.getRange().getUpperBound()[0]
+probability = dist1.computeProbability(ot.Interval(0.0, ub))
+ott.assert_almost_equal(probability, 1.0)

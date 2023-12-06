@@ -68,6 +68,8 @@ Scalar ContinuousDistribution::computePDF(const Point & ) const
 /* Get the CDF of the distribution */
 Scalar ContinuousDistribution::computeCDF(const Point & point) const
 {
+  if (point.getDimension() != getDimension())
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Interval interval(getRange().getLowerBound(), point);
   LOGINFO(OSS() << "In ContinuousDistribution::computeCDF, using computeProbabilityContinuous(), interval=" << interval.__str__());
   return computeProbabilityContinuous(interval);
