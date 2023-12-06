@@ -109,9 +109,9 @@ public:
    * This method compares objects based on their content.
    */
   inline virtual
-  Bool operator ==(const PersistentObject & /*other*/) const
+  Bool operator ==(const PersistentObject & other) const
   {
-    return true;
+    return this == &other;
   }
 
   /**
