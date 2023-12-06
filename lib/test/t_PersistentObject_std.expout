@@ -5,5 +5,3 @@ streamObject(const T & anObject)
 class=PersistentObject name=Unnamed
 streamObject(const T & anObject)
 class=PersistentObject name=Unnamed
-areSameObjects(const T & firstObject, const T & secondObject)
-areDifferentObjects(const T & firstObject, const T & secondObject)
