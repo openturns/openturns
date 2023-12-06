@@ -51,6 +51,7 @@ if (NUMPY_FOUND)
 endif()
 
 # Common
+ot_pyinstallcheck_test (Object_std IGNOREOUT)
 if (LIBXML2_FOUND)
   ot_pyinstallcheck_test (Object_pickle)
 endif ()
