@@ -24,7 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/GaussLegendre.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -133,6 +133,10 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 /* Get the CDF of the distribution */
 Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
+  // FIXME: computeExpectation seems to incorrectly compute the CDF of the prior
+  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+    return ContinuousDistribution::computeCDF(point);
+
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   Description inputDescription(getDimension());
@@ -167,6 +171,14 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+
+  // FIXME: tweak normalization factor
+  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+  {
+    GaussLegendre integrationAlgorithm(getDimension());
+    const Scalar iPDF = integrationAlgorithm.integrate(PDFWrapper(this), getRange())[0];
+    logNormalizationFactor_ += std::log(iPDF);
+  }
 }
 
 ConditionalDistribution PosteriorDistribution::getConditionalDistribution() const
@@ -181,12 +193,7 @@ void PosteriorDistribution::setObservations(const Sample & observations)
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
   if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
   observations_ = observations;
-  const UnsignedInteger size = observations_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
-    logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
-  computeRange();
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
+  setConditionalDistribution(conditionalDistribution_);
 }
 
 Sample PosteriorDistribution::getObservations() const
