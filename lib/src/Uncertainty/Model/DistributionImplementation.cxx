@@ -1136,6 +1136,9 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
 /* Generic implementation for discrete distributions */
 Scalar DistributionImplementation::computeProbabilityDiscrete(const Interval & interval) const
 {
+  if (isAnalyticalCDF() && (getDimension() == 1))
+    return computeCDF(interval.getUpperBound()) - computeCDF(interval.getLowerBound()) + computePDF(interval.getLowerBound());
+
   const Sample support(getSupport(interval));
   Scalar value = 0.0;
   for (UnsignedInteger i = 0; i < support.getSize(); ++i) value += computePDF(support[i]);
