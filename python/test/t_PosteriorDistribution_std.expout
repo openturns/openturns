@@ -15,15 +15,15 @@ Distribution  PosteriorDistribution(conditional distribution = ConditionalDistri
 4 : [ -2.77208  ])
 range= [0, 1]
 [1, 2]
-Mean  [0.366308,1.48584]
-Covariance  [[ 0.0677337 0.0116648 ]
- [ 0.0116648 0.0730088 ]]
+Mean  [0.408932,1.65873]
+Covariance  [[ 0.0737985  0.00565287 ]
+ [ 0.00565287 0.0516131  ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= [0.714382,1.75489]
+oneRealization= [0.577515,1.61937]
 Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
-Quantile= [0.974679,1.97468]
+Quantile= [0.946843,1.98454]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -32,8 +32,8 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[0])
 margin CDF= [0]
-margin quantile= [0.95]
-margin realization= [0.373767]
+margin quantile= [0.900147]
+margin realization= [0.2696]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -42,8 +42,8 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[1])
 margin CDF= [0]
-margin quantile= [1.95]
-margin realization= [1.78061]
+margin quantile= [1.96961]
+margin realization= [1.58154]
 conditioning distribution= ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
