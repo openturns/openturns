@@ -102,11 +102,11 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 /* Compute the likelihood of the observations */
 Point PosteriorDistribution::computeLikelihood(const Point & theta) const
 {
-  return Point(1, std::exp(computeLogLikelihood(theta)[0]));
+  return Point(1, std::exp(computeLogLikelihood(theta)));
 }
 
 /* Compute the log-likelihood of the observations */
-Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
+Scalar PosteriorDistribution::computeLogLikelihood(const Point & theta) const
 {
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
   conditionedDistribution.setParameter(theta);
@@ -117,7 +117,7 @@ Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
     const Scalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
     logLikelihood += atomicValue;
   }
-  return Point(1, logLikelihood);
+  return logLikelihood;
 }
 
 /* Get the PDF of the distribution */
@@ -125,7 +125,7 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
+  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
   return std::exp(value);
 }
 
