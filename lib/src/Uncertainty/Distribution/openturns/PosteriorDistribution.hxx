@@ -109,7 +109,7 @@ public:
   Point computeLikelihood(const Point & theta) const;
 
   /** Compute the log-likelihood of the observations */
-  Point computeLogLikelihood(const Point & theta) const;
+  Scalar computeLogLikelihood(const Point & theta) const;
 
 protected:
 
