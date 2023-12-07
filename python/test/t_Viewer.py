@@ -11,8 +11,6 @@ view.show()
 
 # Contour
 graph = ot.Normal([1, 2], [3, 5], ot.CorrelationMatrix(2)).drawPDF()
-graph.setLegendPosition("upper left")
-graph.setLegendCorner([1.0, 1.0])
 view = View(graph)
 # view.save('curve2.png')
 view.show()
