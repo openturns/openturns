@@ -128,9 +128,9 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
       << "- indices size=" << indicesSize << "\n"
-      << "- relative errors=" << relativeErrors_ << "\n";
-      << "- residuals=" << residuals_ << "\n";
-      << "- isLeastSquares=" << isLeastSquares_ << "\n";
+      << "- relative errors=" << relativeErrors_ << "\n"
+      << "- residuals=" << residuals_ << "\n"
+      << "- isLeastSquares=" << isLeastSquares_ << "\n"
       << "- isModelSelection=" << isModelSelection_ << "\n";
   oss << "\n";
 

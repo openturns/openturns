@@ -47,7 +47,6 @@ CleaningStrategy::CleaningStrategy()
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension)
-                                   const Bool verbose)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" ))
@@ -60,8 +59,7 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const UnsignedInteger maximumSize,
-                                   const Scalar significanceFactor,
-                                   const Bool verbose)
+                                   const Scalar significanceFactor)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(maximumSize)
@@ -257,17 +255,6 @@ Scalar CleaningStrategy::getSignificanceFactor() const
 void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
 {
   significanceFactor_ = significanceFactor;
-}
-
-/* Verbosity accessor */
-Bool CleaningStrategy::getVerbose() const
-{
-  return verbose_;
-}
-
-void CleaningStrategy::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
 }
 
 /* isModelSelection accessor */

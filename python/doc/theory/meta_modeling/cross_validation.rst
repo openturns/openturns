@@ -24,21 +24,21 @@ model where :math:`\set{X} \subseteq \Rset^{n_x}`
 is the domain of the input parameters :math:`\vect{x}`.
 Let :math:`\metamodel` be a surrogate model of :math:`\physicalmodel`, i.e.
 an approximation of the function.
-Once a metamodel :math:`\metamodel`
+Once the metamodel :math:`\metamodel`
 of the original numerical model :math:`\physicalmodel` has been
 built up, we may estimate the mean squared error, i.e. the
 discrepancy between the response surface and the true model response
-in terms of the weighted :math:`L_2`-norm:
+in terms of the weighted :math:`L^2`-norm:
 
 .. math::
    \operatorname{MSE} \left(\metamodel\right)
-   & = \left\| \physicalmodel(\vect{x}) - \metamodel(\vect{x}) \right\|_{L_2}^2(\set{X}) \\
+   & = \left\| \physicalmodel(\vect{x}) - \metamodel(\vect{x}) \right\|_{L^2}^2(\set{X}) \\
    & = \int_{\set{X}} \left[ \physicalmodel(\vect{x}) - \metamodel(\vect{x}) \right]^2  \pdf d\vect{x}
 
 where :math:`\probabilitydensity` is the probability density function
 of the random vector :math:`\vect{X}`.
 In this section, we present the cross-validation of linear least squares
-model, as presented in [wang2012]_ page 485.
+models, as presented in [wang2012]_ page 485.
 
 The fraction of variance unexplained is:
 
@@ -157,10 +157,10 @@ When implemented naively, these methods may require to build many surrogate mode
 which can be time-consuming.
 Fortunately, there are *shortcuts* for many surrogate models
 including linear least squares and splines (and others).
-For a linear least squares model, some methods uses the
+For a linear least squares model, some methods use the
 Sherman-Morrisson-Woodbury formula to get updates of the inverse Gram matrix,
 as we are going to see later in this document.
-This makes it possible to evaluate easily the meta model errors
+This makes it possible to easily evaluate metamodel errors
 of a linear least squares model.
 
 Leave-one-out cross-validation
@@ -183,7 +183,7 @@ the corresponding input observations are:
     \set{D} \setminus \{\vect{x}^{(j)}\}
     = \left\{\vect{x}^{(1)}, ..., \vect{x}^{(j - 1)},
     \vect{x}^{(j + 1)}, ..., \vect{x}^{(n)}\right\}
-    = \left\{\vect{x}^{(j)}, \; j \in \set{S}_{-j}\right\}.
+    = \left\{\vect{x}^{(j)}, \; j \in \set{S}_{-j}\right\}
 
 and the corresponding output observations are:
 
@@ -228,7 +228,7 @@ of the projection matrix.
 In this case, the evaluation of the leave-one-out mean squared error involves the
 multiplication of the raw residuals by a correction which involves the leverages
 of the model.
-This method makes it possible to evaluation directly the mean squared error without
+This method makes it possible to directly evaluate the mean squared error without
 necessarily estimating the coefficients of :math:`n` different leave-one-out
 least squares models.
 It is then much faster than the naive leave-one-out method.
@@ -365,7 +365,7 @@ Corrected leave-one-out
 
 A penalized variant of the leave-one-out mean squared error may be used in order to
 increase its robustness with respect to overfitting.
-This is done using a criteria which takes into account for the
+This is done using a criterion which takes into account the
 number of coefficients compared to the size of the
 experimental design.
 The corrected leave-one-out error is ([chapelle2002]_, [blatman2009]_ eq. 4.38 page 86):
@@ -395,20 +395,20 @@ In this section, we present the naive K-Fold cross-validation.
 Let :math:`k \in \Nset` be a parameter representing the number of
 splits in the data set.
 The :math:`k`-fold cross-validation technique relies on splitting the
-data set :math:`\set{D}` into :math:`k` mutually disjoint sub-samples
+data set :math:`\set{D}` into :math:`k` sub-samples
 :math:`\set{D}_1, \dots, \set{D}_k`, called the *folds*.
 The corresponding set of indices:
 
 .. math::
 
-    \set{S}_1 \; \dot{\cup} \; \cdots \; \dot{\cup} \; \set{S}_k
+    \set{S}_1 \; \cup \; \cdots \; \cup \; \set{S}_k
     = \{1, ..., n\}
 
 and the corresponding set of input observations is:
 
 .. math::
 
-    \set{D} = \set{D}_1 \; \dot{\cup} \; \cdots \; \dot{\cup} \; \set{D}_k.
+    \set{D} = \set{D}_1 \; \cup \; \cdots \; \cup \; \set{D}_k.
 
 The next figure presents this type of cross validation.
 
@@ -419,7 +419,7 @@ The next figure presents this type of cross validation.
 
     *Figure 2.* K-Fold cross-validation.
 
-The :math:`k` folds are generally chosen so that they are of
+The :math:`k` folds are generally chosen to be of
 approximately equal sizes.
 If the sample size :math:`n` is a multiple of :math:`k`, then the
 folds can have exactly the same size.
@@ -444,7 +444,7 @@ The local approximation error is estimated on the sample :math:`\set{D}_{\ell}`:
 
 .. math::
    \widehat{\operatorname{MSE}}^{(\ell)}
-   = \frac{1}{n_\ell}  \sum_{j \in \set{S}_\ell} \left( \Delta^{(\ell, j)} \right)^2.
+   = \frac{1}{n_\ell}  \sum_{j \in \set{S}_\ell} \left( \Delta^{(\ell, j)} \right)^2
 
 where :math:`n_\ell` is the number of observations in
 the sub-sample :math:`\set{D}_{\ell}`:
@@ -601,13 +601,13 @@ Then the K-Fold mean squared error is evaluated from equation :eq:`kfoldMean`.
 Cross-validation and model selection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a model selection method is used (such as :class:`LARS`), then the fast cross-validation (CV)
+If a model selection method is used (such as :class:`~openturns.LARS`), then the fast cross-validation (CV)
 method can produce an optimistic estimated error i.e. the true error can
 be greater that the estimated error (see [hastie2009]_ section 7.10.2 page 245).
-This is because the fast CV does not take into account for the model selection.
+This is because the fast CV does not take model selection into account.
 
 The reason for this behavior is that the model selection produces a set
-of predictors which fits particularly well to the data.
+of predictors which fits the data particularly well.
 If a model selection method is involved, only the simple validation
 method can produce an unbiased estimator, because the model selection
 is then involved each time a new surrogate model is trained i.e. each

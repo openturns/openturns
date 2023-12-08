@@ -22,7 +22,7 @@ maximumSize : positive int
 significanceFactor : float 
     Parameter used as a threshold factor for selecting the efficient coefficients of
     the basis. The actual threshold is the product of the
-    significanceFactor with the maximum magnitude of the current
+    *significanceFactor* with the maximum magnitude of the current
     coefficients.
     Its default value is the `CleaningStrategy-DefaultSignificanceFactor` key of
     the :class:`~openturns.ResourceMap`.
@@ -39,7 +39,7 @@ Notes
 The cleaning strategy aims at building a PC expansion containing
 only a subset of the coefficients of the full expansion.
 Hence, this strategy can lead to a sparse expansion which can
-limit the effects of a potential overfitting of the surrogate model.
+limit the chances of potential surrogate model overfitting.
 
 Let :math:`P` be the number of coefficients in the full expansion
 and let :math:`P_{max}` be the maximum number of coefficients defined

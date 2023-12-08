@@ -144,8 +144,8 @@ X_test = myDistribution.getSample(sampleSize_test)
 Y_test = model(X_test)
 
 # %%
-# The :class:`~openturns.MetaModelValidation` class enables to validate the metamodel.
-# To create it, we use the validation samples and the metamodel.
+# The :class:`~openturns.MetaModelValidation` class is designed to validate the surrogate models.
+# To create it, we use a validation sample and a metamodel.
 
 # %%
 metamodelPredictions = krigingMetamodel(X_test)

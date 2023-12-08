@@ -143,9 +143,6 @@ private:
   /** Relative error */
   Scalar relativeError_ = 0.0;
 
-  /** Verbosity flag */
-  Bool verbose_;
-
 }; /* class ApproximationAlgorithmImplementation */
 
 END_NAMESPACE_OPENTURNS

@@ -17,7 +17,7 @@ It represents a generic class (virtual) for different factories like
 :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or
 :class:`~openturns.LeastSquaresMetaModelSelectionFactory`
 
-This class is not usable because it has sense only within the
+This class is not usable because it operates only within the class
 :class:`~openturns.FunctionalChaosAlgorithm`.
 
 See also
@@ -54,16 +54,21 @@ y : 2-d sequence of float
     where :math:`\vect{Y}=(Y_1, \dots, Y_{n_Y})^T` is the output of the physical
     model, :math:`n_Y` is the output dimension and :math:`n` is the sample size.
 weight : sequence of float
-    Numerical point that are the weights associated to the input sample points
+    Weights associated to the input sample points
     such that the corresponding weighted experiment is a good approximation of
     :math:`\mu`, where :math:`\mu` is the distribution of the standard
     random vector :math:`\vect{Z}` associated with the physical input random
-    vector :math:`\vect{X}`. If unspecified, all weights are equals to
+    vector :math:`\vect{X}`. If unspecified, all weights are equal to
     :math:`\frac{1}{n}`, where :math:`n` is the size of the
     sample.
 psi : sequence of :class:`~openturns.Function`
     The functional basis.
 indices : sequence of int
-    Indices in the basis."
+    Indices in the basis.
+
+Returns
+-------
+algorithm: :class:`~openturns.ApproximationAlgorithm`
+    The estimation algorithm."
 
 // ---------------------------------------------------------------------

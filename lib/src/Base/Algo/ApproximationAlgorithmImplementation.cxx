@@ -35,7 +35,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   , isAlreadyComputedCoefficients_(false)
   , residual_(0.0)
   , relativeError_(0.0)
-  , verbose_(false)
 {
   // Nothing to do
 }
@@ -55,7 +54,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , isAlreadyComputedCoefficients_(false)
   , residual_(0.0)
   , relativeError_(0.0)
-  , verbose_(false)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -78,7 +76,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , isAlreadyComputedCoefficients_(false)
   , residual_(0.0)
   , relativeError_(0.0)
-  , verbose_(false)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -193,17 +190,6 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;
-}
-
-/* Verbosity accessor */
-void ApproximationAlgorithmImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-Bool ApproximationAlgorithmImplementation::getVerbose() const
-{
-  return verbose_;
 }
 
 Bool ApproximationAlgorithmImplementation::isModelSelection() const

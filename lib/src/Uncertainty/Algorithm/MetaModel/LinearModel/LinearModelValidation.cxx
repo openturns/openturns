@@ -111,7 +111,7 @@ String LinearModelValidation::__repr__() const
 Sample LinearModelValidation::ComputeMetamodelLeaveOneOutPredictions(
     const LinearModelResult & linearModelResult, const LeaveOneOutSplitter &)
 {
-  // The residuals is ri = g(xi) - tilde{g}(xi) where g is the model
+  // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
   const Sample residualsSample(linearModelResult.getSampleResiduals());
@@ -132,7 +132,7 @@ Sample LinearModelValidation::ComputeMetamodelLeaveOneOutPredictions(
 Sample LinearModelValidation::ComputeMetamodelKFoldPredictions(
     const LinearModelResult & linearModelResult, const KFoldSplitter & splitter)
 {
-  // The residuals is ri = g(xi) - tilde{g}(xi) where g is the model
+  // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
   const Sample residualsSample(linearModelResult.getSampleResiduals());

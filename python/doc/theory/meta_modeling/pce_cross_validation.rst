@@ -9,8 +9,8 @@ Introduction
 The cross-validation of a polynomial chaos expansion
 uses the theory presented in :ref:`cross_validation`.
 In [blatman2009]_ page 84, the author applies the LOO equation to polynomial
-chaos expansion.
-The appendice D page 203 gives a proof.
+chaos expansion
+(see appendix D page 203 for a proof).
 If the coefficients are estimated from integration, the same derivation cannot,
 in theory, be applied.
 

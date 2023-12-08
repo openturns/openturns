@@ -88,7 +88,7 @@ OT_AdaptiveStrategy_getMaximumDimension_doc
 
 The value returned by this method depends on the specific
 choice of adaptive strategy and the previous calls to the
-:meth:`~openturns.AdaptiveStrategy.updateBasis` method.
+:meth:`updateBasis` method.
 
 Returns
 -------

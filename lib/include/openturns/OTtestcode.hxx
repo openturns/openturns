@@ -38,7 +38,7 @@
 #include "openturns/TBB.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
@@ -438,7 +438,7 @@ class IshigamiUseCase
       marginals[0] = Uniform(-M_PI, M_PI);
       marginals[1] = Uniform(-M_PI, M_PI);
       marginals[2] = Uniform(-M_PI, M_PI);
-      inputDistribution_ = ComposedDistribution(marginals);
+      inputDistribution_ = JointDistribution(marginals);
       
       // Mean, variance
       mean_ = a_ / 2;
@@ -545,7 +545,7 @@ class GSobolUseCase
 
       // Create the input distribution
       Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
-      inputDistribution_ = ComposedDistribution(marginals);
+      inputDistribution_ = JointDistribution(marginals);
       
     }
     Function getModel()

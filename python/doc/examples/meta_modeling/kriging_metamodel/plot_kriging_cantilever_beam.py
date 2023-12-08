@@ -132,7 +132,7 @@ X_test = myDistribution.getSample(sampleSize_test)
 Y_test = model(X_test)
 
 # %%
-# The :class:`~openturns.MetaModelValidation` class makes the validation easy.
+# The :class:`~openturns.MetaModelValidation` class makes surrogate model validation easy.
 # To create it, we use the validation samples and the metamodel.
 
 # %%

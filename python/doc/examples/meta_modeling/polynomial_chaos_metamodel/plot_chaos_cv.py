@@ -155,8 +155,6 @@ def compute_R2_score_by_splitting(
 # %%
 # The next function computes the mean squared error by K-Fold.
 
-
-
 # %%
 def computeMSENaiveKFold(
     inputSample,

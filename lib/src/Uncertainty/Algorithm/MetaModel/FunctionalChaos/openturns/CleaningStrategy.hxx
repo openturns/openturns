@@ -77,10 +77,6 @@ public:
   Scalar getSignificanceFactor() const;
   void setSignificanceFactor(const Scalar significanceFactor);
 
-  /** Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** isModelSelection accessor */
   Bool isModelSelection() const override;
 

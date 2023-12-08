@@ -229,7 +229,7 @@ projectionMatrix: :class:`~openturns.SymmetricMatrix`
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
-which allows one to best predict the output.
+to best predict the output.
 Model selection can lead to a sparse model.
 
 Returns
@@ -243,7 +243,7 @@ isModelSelection: bool
 "Set the model selection flag.
 
 A model selection method can be used to select the coefficients
-which allows one to best predict the output.
+to best predict the output.
 Model selection can lead to a sparse model.
 
 Parameters

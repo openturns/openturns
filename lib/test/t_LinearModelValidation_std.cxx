@@ -40,11 +40,11 @@ int main(int, char *[])
     // each fold.
     const UnsignedInteger sampleSize = foldRootSize * kFoldParameter + 1;
     fullprint << "sampleSize = " << sampleSize << std::endl;
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     Uniform marginal1(-1.0, 1.0);
     aCollection.add(marginal1);
     aCollection.add(marginal1);
-    ComposedDistribution distribution(aCollection);
+    JointDistribution distribution(aCollection);
     Sample inputSample(distribution.getSample(sampleSize));
     fullprint << "inputSample=" << inputSample << std::endl;
     Description inputVariables(2);

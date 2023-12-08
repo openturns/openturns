@@ -1,10 +1,6 @@
 %feature("docstring") OT::FunctionalChaosValidation
 "Validate a functional chaos metamodel.
 
-Available constructors:
-    FunctionalChaosValidation(*functionalChaosResult, cvMethod*)
-
-    FunctionalChaosValidation(*functionalChaosResult, cvMethod, kParameter*)
 
 Parameters
 ----------
@@ -13,17 +9,17 @@ result : :class:`~openturns.FunctionalChaosResult`
 
 cvMethod : int
     The cross-validation method.
-    Available values are 'LinearModelValidation.LEAVEONEOUT' and 'LinearModelValidation.KFOLD'.
+    Available values are `LinearModelValidation.LEAVEONEOUT` and `LinearModelValidation.KFOLD`.
 
 kParameter : int
     The :math:`k` parameter of the K-Fold cross-validation method.
     We must have :math:`1 < k \leq n` where :math:`n` is the sample size,
     otherwise an exception is raised.
     When :math:`k = n`, then the K-Fold method is mathematically equivalent to
-    leave-one-out, but its implementation can be slower so that leave-one-out
-    should be used instead for performance reasons.
+    leave-one-out, but its implementation can be slower so use leave-one-out
+    instead.
     The default value of the :math:`k` parameter of the K-Fold
-    cross-validation method uses the 'FunctionalChaosValidation-DefaultKFoldParameter'
+    cross-validation method uses the `FunctionalChaosValidation-DefaultKFoldParameter`
     key of the :class:`~openturns.ResourceMap`.
 
 See also
@@ -89,7 +85,7 @@ similarly.
 
 If the weights of the observations are not equal, the analytical method
 may not necessarily provide an accurate estimator of the mean squared error (MSE).
-This is because the LOO or K-Fold cross-validation does not take the weights
+This is because LOO and K-Fold cross-validation do not take the weights
 into account.
 Since the :class:`~openturns.FunctionalChaosResult` object does not know
 if the weights are equal, no exception can be generated.
@@ -103,8 +99,8 @@ is an estimator of the true MSE.
 For example, using cross-validation on a quasi Monte-Carlo (QMC) experiment may
 not necessarily provide an accurate estimate of the MSE, because the
 internal structure of the QMC is broken by the different splits:
-the elementary volumes are not filled as expected anymore so that the
-space-filling properties of the sequence can be lost.
+the elementary volumes are not filled as expected anymore and the
+space-filling properties of the sequence are lost.
 
 Examples
 --------
@@ -125,9 +121,7 @@ accurate estimator of the MSE.
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 >>> selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
->>> projectionStrategy = ot.LeastSquaresStrategy(
-...     inputTrain, outputTrain, selectionAlgorithm
-... )
+>>> projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
 >>> totalDegree = 8
 >>> enumerateFunction = multivariateBasis.getEnumerateFunction()
 >>> basisSize = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
@@ -140,18 +134,14 @@ accurate estimator of the MSE.
 
 Validate the polynomial chaos expansion using leave-one-out cross-validation.
 
->>> validation = ot.FunctionalChaosValidation(
-...     result, ot.FunctionalChaosValidation.LEAVEONEOUT
-... )
+>>> validation = ot.FunctionalChaosValidation(result, ot.FunctionalChaosValidation.LEAVEONEOUT)
 >>> r2Score = validation.computeR2Score()
 >>> print('R2 = ', r2Score[0])
 R2 =  0.99...
 
 Validate the polynomial chaos expansion using K-Fold cross-validation.
 
->>> validation = ot.FunctionalChaosValidation(
-...     result, ot.FunctionalChaosValidation.KFOLD
-... )
+>>> validation = ot.FunctionalChaosValidation(result, ot.FunctionalChaosValidation.KFOLD)
 
 Validate the polynomial chaos expansion using K-Fold cross-validation
 and set the :math:`k` parameter.

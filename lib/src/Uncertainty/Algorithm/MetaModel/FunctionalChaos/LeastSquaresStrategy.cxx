@@ -147,7 +147,6 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
   relativeError_p_ = approximationAlgorithm.getRelativeError();
   indicesHistory_ = approximationAlgorithm.getImplementation()->getSelectionHistory(coefficientsHistory_);
   errorHistory_ = approximationAlgorithm.getImplementation()->getErrorHistory();
-  isModelSelection_ = approximationAlgorithm.getImplementation()->getIsModelSelection();
 }
 
 /* Method save() stores the object through the StorageManager */

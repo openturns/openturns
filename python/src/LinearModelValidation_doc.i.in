@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearModelValidation
 "Validate a linear regression metamodel.
 
-Available constructors:
-    LinearModelValidation(*linearModelResult, splitter*)
-
 Parameters
 ----------
 result : :class:`~openturns.LinearModelResult`
@@ -11,7 +8,7 @@ result : :class:`~openturns.LinearModelResult`
 
 splitter : :class:`~openturns.SplitterImplementation`
     The cross-validation method.
-    The default is :class:`~openturns.LeaveOneOutSplitterr`.
+    The default is :class:`~openturns.LeaveOneOutSplitter`.
 
 See also
 --------
