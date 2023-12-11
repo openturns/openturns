@@ -105,6 +105,13 @@ Scalar Frechet::computeScalarQuantile(const Scalar prob,
   return gamma_ + beta_ * std::pow(-std::log(tail ? 1.0 - prob : prob), -1.0 / alpha_);
 }
 
+Scalar Frechet::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Get one realization of the distribution */
 Point Frechet::getRealization() const
 {

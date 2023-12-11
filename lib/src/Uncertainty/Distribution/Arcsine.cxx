@@ -217,6 +217,13 @@ Scalar Arcsine::computeScalarQuantile(const Scalar prob,
   return quantile;
 }
 
+Scalar Arcsine::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Arcsine::getRoughness() const
 {

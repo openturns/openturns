@@ -167,6 +167,13 @@ Scalar WeibullMax::computeComplementaryCDF(const Point & point) const
   return -expm1(-std::pow(-x / beta_, alpha_));
 }
 
+Scalar WeibullMax::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex WeibullMax::computeCharacteristicFunction(const Scalar x) const
 {

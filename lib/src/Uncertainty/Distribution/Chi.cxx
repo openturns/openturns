@@ -236,6 +236,12 @@ Scalar Chi::computeScalarQuantile(const Scalar prob,
   return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
 }
 
+Scalar Chi::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
 
 /* Compute the entropy of the distribution */
 Scalar Chi::computeEntropy() const

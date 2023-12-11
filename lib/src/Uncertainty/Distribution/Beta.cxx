@@ -240,6 +240,13 @@ Scalar Beta::computeScalarQuantile(const Scalar prob,
   return a_ + (b_ - a_) * DistFunc::qBeta(alpha_, beta_, prob, tail);
 }
 
+Scalar Beta::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Beta::computeCharacteristicFunction(const Scalar x) const
 {

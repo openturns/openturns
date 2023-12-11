@@ -74,6 +74,9 @@ public:
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the characteristic function of the distribution */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 

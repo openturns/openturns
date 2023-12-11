@@ -97,6 +97,9 @@ public:
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 

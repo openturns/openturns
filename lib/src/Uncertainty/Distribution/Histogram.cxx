@@ -44,7 +44,7 @@ Histogram::Histogram()
   setName( "Histogram" );
   // This call set also the range.
   setData(Point(1, 1.0), Point(1, 1.0));
-  setDimension( 1 );
+  setDimension(1);
 }
 
 /* Parameters constructor */
@@ -269,6 +269,13 @@ Scalar Histogram::computeScalarQuantile(const Scalar prob,
   if (p < currentProba) return first_ + width_[0] * p / currentProba;
   // ... or p >= cumulatedSurface_[currentIndex], which means that p is associated with the bin number currentIndex + 1. Do a linear interpolation.
   return first_ + cumulatedWidth_[currentIndex] + (p - currentProba) / height_[currentIndex + 1];
+}
+
+Scalar Histogram::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

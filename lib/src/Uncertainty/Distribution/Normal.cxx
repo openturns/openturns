@@ -439,8 +439,12 @@ Scalar Normal::computeProbability(const Interval & interval) const
 {
   if (interval.isEmpty()) return 0.0;
   const UnsignedInteger dimension = getDimension();
-  // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
-  if (dimension == 1) return DistributionImplementation::computeProbability(interval);
+  if (interval.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+
+  if (dimension == 1)
+    return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+
   // Decompose and normalize the interval
   Point lower(normalize(interval.getLowerBound()));
   Point upper(normalize(interval.getUpperBound()));

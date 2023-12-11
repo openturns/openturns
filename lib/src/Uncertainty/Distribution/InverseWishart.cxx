@@ -213,6 +213,10 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar InverseWishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
+  if (point[0] < getRange().getLowerBound()[0])
+    return 0.0;
+  if (point[0] > getRange().getUpperBound()[0])
+    return 1.0;
   return ContinuousDistribution::computeCDF(point);
 }
 

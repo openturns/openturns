@@ -160,7 +160,7 @@ Scalar Pareto::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
-  if (x < beta_) return 0.0;
+  if (x < beta_) return 1.0;
   return std::pow(beta_ / x, alpha_);
 }
 
@@ -220,6 +220,13 @@ Scalar Pareto::computeScalarQuantile(const Scalar prob,
 {
   const Scalar q = tail ? 1.0 - prob : prob;
   return gamma_ + beta_ / std::pow(1.0 - q, 1.0 / alpha_);
+}
+
+Scalar Pareto::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

@@ -81,6 +81,12 @@ public:
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the quantile of the Triangular distribution */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
@@ -153,9 +159,6 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-
-  /** Get the quantile of the Triangular distribution */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

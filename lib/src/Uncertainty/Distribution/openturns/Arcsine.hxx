@@ -78,7 +78,7 @@ public:
   Scalar computeCDF(const Point & point) const override;
   using ContinuousDistribution::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
-
+  
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
@@ -92,6 +92,9 @@ public:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
