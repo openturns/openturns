@@ -273,6 +273,13 @@ Scalar Triangular::computeScalarQuantile(const Scalar prob,
   return b_ - std::sqrt((1.0 - prob) * ba * bm);
 }
 
+Scalar Triangular::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the entropy of the distribution */
 Scalar Triangular::computeEntropy() const
 {

@@ -88,6 +88,9 @@ public:
   using ContinuousDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
+  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
@@ -150,9 +153,6 @@ protected:
 private:
   /** Initialize optimization solver parameter using the ResourceMap */
   void initializeOptimizationAlgorithmParameter();
-
-  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

@@ -225,6 +225,13 @@ Scalar Exponential::computeScalarQuantile(const Scalar prob,
   return gamma_ - log1p(-prob) / lambda_;
 }
 
+Scalar Exponential::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void Exponential::computeMean() const
 {

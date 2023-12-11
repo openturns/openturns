@@ -154,6 +154,13 @@ Scalar Epanechnikov::computeScalarQuantile(const Scalar prob,
   return 2.0 * std::cos(0.3333333333333333333333333 * std::acos(1.0 - 2.0 * prob) - 2.094395102393195492308429);
 }
 
+Scalar Epanechnikov::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the entropy of the distribution */
 Scalar Epanechnikov::computeEntropy() const
 {

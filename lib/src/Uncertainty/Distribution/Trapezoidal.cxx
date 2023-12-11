@@ -311,6 +311,13 @@ Scalar Trapezoidal::computeScalarQuantile(const Scalar prob,
   return d_ - std::sqrt(2.0 * (d_ - c_) * (1.0 - q) / h_);
 }
 
+Scalar Trapezoidal::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the entropy of the distribution */
 Scalar Trapezoidal::computeEntropy() const
 {

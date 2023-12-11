@@ -99,6 +99,12 @@ public:
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
+  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
 protected:
   /** Set simultaneously alpha and beta to factorize the call to computeRange() */
   void setAlphaBeta(const Scalar alpha,
@@ -154,9 +160,6 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-
-  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

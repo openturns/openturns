@@ -82,6 +82,12 @@ public:
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the quantile of the Triangular distribution */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 
@@ -130,9 +136,6 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-
-  /** Get the quantile of the Triangular distribution */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Update the derivative attributes */
   void update();

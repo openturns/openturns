@@ -187,6 +187,13 @@ Scalar FisherSnedecor::computeScalarQuantile(const Scalar prob,
   return d2_ * q / (d1_ * (1.0 - q));
 }
 
+Scalar FisherSnedecor::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void FisherSnedecor::computeMean() const
 {

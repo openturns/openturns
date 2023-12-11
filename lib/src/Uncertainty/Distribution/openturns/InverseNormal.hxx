@@ -75,6 +75,9 @@ public:
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 

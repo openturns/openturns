@@ -444,6 +444,13 @@ Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
   return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob / normalizationFactor_);
 }
 
+Scalar TruncatedNormal::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void TruncatedNormal::computeMean() const
 {

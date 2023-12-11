@@ -150,6 +150,13 @@ Scalar Laplace::computeComplementaryCDF(const Point & point) const
   return 0.5 * std::exp(-u);
 }
 
+Scalar Laplace::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the entropy of the distribution */
 Scalar Laplace::computeEntropy() const
 {

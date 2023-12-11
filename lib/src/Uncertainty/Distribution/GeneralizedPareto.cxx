@@ -298,6 +298,13 @@ Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
   else return u_ + sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
+Scalar GeneralizedPareto::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void GeneralizedPareto::computeMean() const
 {
