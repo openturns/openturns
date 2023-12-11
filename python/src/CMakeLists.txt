@@ -705,7 +705,6 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
                       ConditionalDistribution.i ConditionalDistribution_doc.i.in
-                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
                       NegativeBinomial.i NegativeBinomial_doc.i.in
@@ -1027,6 +1026,7 @@ ot_add_python_module(experimental experimental_module.i
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
+                     PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOverMesh.i UniformOverMesh_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
