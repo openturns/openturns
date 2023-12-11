@@ -72,6 +72,7 @@
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
 %include UniformOverMesh.i
+%include PosteriorDistribution.i
 
 // duplicate helpers
 OTTypedInterfaceObjectHelper(WeightedExperiment)

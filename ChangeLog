@@ -89,6 +89,7 @@
  * Deprecated Point.clean
  * Deprecated (Inverse)Gamma.setKLambda
  * Deprecated Os::GetEndOfLine
+ * Moved PosteriorDistribution to experimental
 
 === Documentation ===
  * Improved coverage of class/methods

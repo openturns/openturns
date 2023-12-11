@@ -1,6 +1,10 @@
 %feature("docstring") OT::PosteriorDistribution
 "Distribution conditioned by observations.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 conditional : :class:`~openturns.ConditionalDistribution`
@@ -27,6 +31,7 @@ with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> conditionedDistribution = ot.Normal()
 >>> # Conditional distribution
@@ -39,7 +44,7 @@ Examples
 >>> observationsDistribution.setParameter(conditioning.getMean())
 >>> observations = observationsDistribution.getSample(observationsSize)
 >>> # Posterior distribution
->>> distribution = ot.PosteriorDistribution(conditional, observations)"
+>>> distribution = otexp.PosteriorDistribution(conditional, observations)"
 
 // ---------------------------------------------------------------------
 
