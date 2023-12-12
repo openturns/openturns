@@ -1044,11 +1044,7 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
     probability = SpecFunc::AccurateSum(probabilities);
   } // not independent
 
-  // clip to [0, 1]
-  probability = std::max(probability, 0.0);
-  probability = std::min(probability, 1.0);
-
-  return probability;
+  return SpecFunc::Clip01(probability);
 }
 
 /* Generic implementation for 1D continuous distributions */
@@ -1089,7 +1085,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
 }
 
 /* Generic implementation for 1D continuous distribution by integration of the PDF */
-Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a, const Scalar b) const
+Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar aa, const Scalar bb) const
 {
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
@@ -1100,6 +1096,9 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
   Sample fi;
   Point ei;
   const Point singularities(getSingularities());
+  // Consider only the intersection with the range
+  const Scalar a = std::max(aa, range_.getLowerBound()[0]);
+  const Scalar b = std::min(bb, range_.getUpperBound()[0]);
   // If no singularity inside of the given reduced interval
   const UnsignedInteger singularitiesNumber = singularities.getSize();
   if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
