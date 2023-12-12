@@ -129,6 +129,7 @@ for factory in factories:
                 str(distribution),
             )
 
+            # check computeProbability on full float range
             interval = ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
             # FIXME: StudentCDF returns nan with MaxScalar
             if distribution.getName() == "Student":
@@ -194,6 +195,11 @@ for factory in factories:
             ott.assert_almost_equal(ccdf, 0.0)
             surv = distribution.computeSurvivalFunction(ub)
             ott.assert_almost_equal(surv, 0.0)
+
+            # check computeProbability on full float range
+            interval = ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
+            p = distribution.computeProbability(interval)
+            ott.assert_almost_equal(p, 1.0)
 
     # parameters
     p = distribution.getParameter()
