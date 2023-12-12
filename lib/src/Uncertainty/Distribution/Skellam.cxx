@@ -208,8 +208,8 @@ void Skellam::computeCovariance() const
 Sample Skellam::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const SignedInteger kMin = static_cast< SignedInteger > (ceil(interval.getLowerBound()[0]));
-  const SignedInteger kMax = static_cast< SignedInteger > (floor(interval.getUpperBound()[0]));
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(getRange().getLowerBound()[0], ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMax = static_cast< SignedInteger > (std::min(getRange().getUpperBound()[0], floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)
     result.add(Point(1, k));
