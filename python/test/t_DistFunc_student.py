@@ -25,6 +25,14 @@ for i1 in range(n1):
             ", complementary=%.6g" % ot.DistFunc.pStudent(nu, x, True),
         )
     print("pStudent(", grid, ")=", ot.DistFunc.pStudent(nu, grid))
+
+# check for nans
+for x in [-1e300, -1e200, -1e100, 1e10, -10.0, -0.1, 0.0, 0.1, 10.0, 1e10, 1e100, 1e200, 1e300]:
+    for nu in [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5]:
+        for tail in [False, True]:
+            p = ot.DistFunc.pStudent(nu, x, tail)
+            assert ot.SpecFunc.IsNormal(p), "pStudent returns nan"
+
 # qStudent
 nuMin = 0.2
 nuMax = 5.0
