@@ -188,7 +188,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     const Scalar scaleFactor(ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"));
     if (!(scaleFactor > 0))
       throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
     Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if scale is active
@@ -212,6 +212,11 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
       }
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+
+    // We set the lower bound for the nugget factor to 0.
+    const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < optimizationDimension; ++i)
+      if (activeParametersDescription[i] == "nuggetFactor") lowerBound[i] = 0.0;
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
@@ -492,10 +497,14 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   Scalar logDeterminant = 0.0;
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
+  LOGDEBUG(OSS(false) << "Set the amplitude ");
   if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
+  LOGDEBUG(OSS(false) << "Set the parameter " << parameters);
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
+  LOGDEBUG(OSS(false) << "First, compute the log-determinant of the Cholesky factor with method " << method_);
+
   if (method_ == LAPACK)
     logDeterminant = computeLapackLogDeterminantCholesky();
   else

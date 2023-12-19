@@ -178,7 +178,6 @@ int main(int, char *[])
 
   try
   {
-
     PlatformInfo::SetNumericalPrecision(3);
     // Default input dimension parameter to evaluate the model
     UnsignedInteger dimension = 2;
@@ -458,24 +457,25 @@ int main(int, char *[])
       test_model(myModel);
       assert_almost_equal(myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check");
       assert_almost_equal(myModel.getScale(), scale, 0, 0, "in kronecker scale check");
-      // full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
-      Point fullParameter = {1, 1, 2, 0.8, 1.5};
+      // full param size = 6 (scale(1), nuggetFactor(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
+      Point fullParameter = {1, 1e-12, 1, 2, 0.8, 1.5};
+      assert_almost_equal(myModel.getFullParameter().getSize(), 6, 0, 0, "in kronecker param size check");
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker full param check");
-      assert_almost_equal(myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check");
-      assert_almost_equal(myModel.getFullParameterDescription().getSize(), 5, 0, 0, "in kronecker param description size check");
-      Indices active(3);
-      active.fill();
+      assert_almost_equal(myModel.getFullParameterDescription().getSize(), 6, 0, 0, "in kronecker param description size check");
+      Indices active(1);
+      active.add(2);
+      active.add(3);
       assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
-      fullParameter = {2, 1, 2, .5, 2.5};
+      fullParameter = {2, 1e-12, 1, 2, .5, 2.5};
       myModel.setFullParameter(fullParameter);
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker param check");
-      active.add(4);
+      active.add(5);
       myModel.setActiveParameter(active);
       assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
       // Now we should get all values except correlation
       Point parameter = {2, 1, 2, 2.5};
       assert_almost_equal(myModel.getParameter(), parameter, 0, 0, "in kronecker param check");
-      Description description = {"scale_0", "amplitude_0", "amplitude_1", "R_1_0", "nu"};
+      Description description = {"scale_0", "nuggetFactor", "amplitude_0", "amplitude_1", "R_1_0", "nu"};
       Bool checkDesc = myModel.getFullParameterDescription() == description;
       if (!checkDesc)
         throw TestFailed(OSS() << "descriptions differ");
