@@ -99,6 +99,7 @@ public:
   void setFullParameter(const Point & parameter) override;
   Description getFullParameterDescription() const override;
   void setScale(const Point &scale) override;
+  void setNuggetFactor(const Scalar nuggetFactor) override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

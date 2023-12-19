@@ -66,7 +66,7 @@ In the example below, we illustrate this by introducing a power parameter :math:
 The full list of parameters for this :class:`~openturns.CovarianceModel` contains the parameter :math:`n`:
 
 >>> covModel.getFullParameterDescription()
-[scale_0,amplitude_0,n]
+[scale_0,nuggetFactor,amplitude_0,n]
 
 However, only the scale and amplitude parameters are active by default:
 
@@ -78,9 +78,10 @@ Active parameters of a :class:`~openturns.CovarianceModel` are those that must b
 Let us make all parameters active, including :math:`n`.
 The :meth:`setActiveParameter` method takes a list of integers as input:
 each integer is understood as the index of a parameter in the list yielded by :meth:`getFullParameterDescription`.
-Here parameter #0 is `scale_0`, parameter #1 is `amplitude_0` and parameter #2 is :math:`n`.
+Here parameter #0 is `scale_0`, parameter #1 is `nuggetFactor`,
+parameter #2 is `amplitude_0` and parameter #3 is :math:`n`.
 
->>> covModel.setActiveParameter([0, 1, 2])
+>>> covModel.setActiveParameter([0, 2, 3])
 
 We can check that all parameters are now active:
 

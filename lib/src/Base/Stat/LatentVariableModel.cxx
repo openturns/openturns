@@ -44,8 +44,11 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
   activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
   fullLatentVariables_ = Sample(nLevels_, latentDim_);
+  // Active parameters: all except the nuggetFactor
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
+  for (UnsignedInteger i = inputDimension_; i < activeParameter.getSize(); ++i)
+    activeParameter[i] += 1;
   setActiveParameter(activeParameter);
   updateLatentCovarianceMatrix();
 }
@@ -95,13 +98,14 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
     Care! To make the method not bogus, the size of parameter argument
     should be :
      - Size of scale : here 1
+     - Size of nuggetFactor : 1
      - Size of amplitude : here 1
      - Number of latent variable coordinates : latentDim_ * nLevels_ - 2 * latentDim_ + 1
     CovarianceModelImplementation::setFullParameter checks that size is
     equal to the total number of parameters : 2 + the number of latent variable coordinates
   */
   // Check the size
-  const UnsignedInteger totalSize = 2 + activeLatentCoordinateDim_;
+  const UnsignedInteger totalSize = 3 + activeLatentCoordinateDim_;
   if (!(parameter.getSize() == totalSize))
     throw InvalidArgumentException(HERE) << "In LatentVariableModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
@@ -114,7 +118,12 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
     scale_[i] = parameter[index];
     ++ index;
   }
-  // Second the amplitude parameter
+  // Second the nuggetFactor
+  if (!(parameter[index] >= 0.0))
+    throw InvalidArgumentException(HERE) << "In LatentVariableModel::setFullParameter, the component " << index << " of nuggetFactor is negative";
+  nuggetFactor_ = parameter[index];
+  ++ index;
+  // Third the amplitude parameter
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
@@ -125,9 +134,10 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
 
   // Update the latent covariance model
   latentCovarianceModel_.setAmplitude(amplitude_);
+  latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
   latentCovarianceModel_.setScale(Point(latentDim_, scale_[0]));
 
-  // Third the latent variable coordinates
+  // Fourth the latent variable coordinates
   Point activeLatentVariables = Point(activeLatentCoordinateDim_, 1.0);
   for (UnsignedInteger i = 0; i < activeLatentCoordinateDim_; ++ i)
   {
@@ -266,7 +276,7 @@ void LatentVariableModel::setAmplitude(const Point & amplitude)
 /* Set the covariance model nugget factor */
 void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 {
-  if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
+  if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "In LatentVariableModel: the nugget factor=" << nuggetFactor << " is negative";
   latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
   nuggetFactor_ = nuggetFactor;
   updateLatentCovarianceMatrix();
