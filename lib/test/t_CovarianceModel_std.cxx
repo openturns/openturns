@@ -475,6 +475,16 @@ int main(int, char *[])
       // Now we should get all values except correlation
       Point parameter = {2, 1, 2, 2.5};
       assert_almost_equal(myModel.getParameter(), parameter, 0, 0, "in kronecker param check");
+      myModel.activateAmplitude(false);
+      assert_almost_equal(myModel.getParameter(), {2, 2.5}, 0, 0, "in kronecker deactivate amplitude check");
+      myModel.activateScale(false);
+      assert_almost_equal(myModel.getParameter(), {2.5}, 0, 0, "in kronecker deactivate scale check");
+      myModel.activateNuggetFactor(true);
+      assert_almost_equal(myModel.getParameter(), {1e-12, 2.5}, 0, 0, "in kronecker activate nuggetFactor check");
+      myModel.activateAmplitude(true);
+      assert_almost_equal(myModel.getParameter(), {1e-12, 1, 2, 2.5}, 0, 0, "in kronecker activate amplitude check");
+      myModel.activateScale(true);
+      assert_almost_equal(myModel.getParameter(), {2, 1e-12, 1, 2, 2.5}, 0, 0, "in kronecker activate scale check");
       Description description = {"scale_0", "nuggetFactor", "amplitude_0", "amplitude_1", "R_1_0", "nu"};
       Bool checkDesc = myModel.getFullParameterDescription() == description;
       if (!checkDesc)

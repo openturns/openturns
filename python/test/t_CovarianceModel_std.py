@@ -447,7 +447,11 @@ ott.assert_almost_equal(
 )
 myModel.setFullParameter([2, 0.01, 1, 2, 0.5, 2.5])
 ott.assert_almost_equal(
-    myModel.getFullParameter(), [2, 0.01, 1, 2, 0.5, 2.5], 0, 0, "in kronecker param check"
+    myModel.getFullParameter(),
+    [2, 0.01, 1, 2, 0.5, 2.5],
+    0,
+    0,
+    "in kronecker param check",
 )
 myModel.setActiveParameter([0, 1, 2, 3, 5])
 ott.assert_almost_equal(
@@ -456,6 +460,42 @@ ott.assert_almost_equal(
 # Now we should get all values except correlation
 ott.assert_almost_equal(
     myModel.getParameter(), [2, 0.01, 1, 2, 2.5], 0, 0, "in kronecker param check"
+)
+myModel.activateAmplitude(False)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 2.5],
+    0,
+    0,
+    "in kronecker deactivate amplitude check",
+)
+myModel.activateScale(False)
+ott.assert_almost_equal(
+    myModel.getParameter(), [0.01, 2.5], 0, 0, "in kronecker deactivate scale check"
+)
+myModel.activateNuggetFactor(False)
+ott.assert_almost_equal(
+    myModel.getParameter(), [2.5], 0, 0, "in kronecker deactivate nuggetFactor check"
+)
+myModel.activateScale(True)
+ott.assert_almost_equal(
+    myModel.getParameter(), [2, 2.5], 0, 0, "in kronecker activate scale check"
+)
+myModel.activateNuggetFactor(True)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 2.5],
+    0,
+    0,
+    "in kronecker activate nuggetFactor check",
+)
+myModel.activateAmplitude(True)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 1, 2, 2.5],
+    0,
+    0,
+    "in kronecker activate amplitude check",
 )
 assert myModel.getFullParameterDescription() == [
     "scale_0",
