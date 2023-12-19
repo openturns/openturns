@@ -1030,6 +1030,56 @@ Indices CovarianceModelImplementation::getActiveParameter() const
   return activeParameter_;
 }
 
+/* Easily activate base parameters: scale, nuggetFactor, amplitude */
+void CovarianceModelImplementation::activateScale(const Bool isScaleActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  Indices newActiveParameter(0);
+  if (isScaleActive)
+    for (UnsignedInteger j = 0; j < scaleSize; ++j) newActiveParameter.add(j);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+    if (activeParameter[i] >= scaleSize) newActiveParameter.add(activeParameter[i]);
+  setActiveParameter(newActiveParameter);
+}
+
+void CovarianceModelImplementation::activateNuggetFactor(const Bool isNuggetFactorActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  Indices newActiveParameter(0);
+  Indices activeAmplitudeAndNext(0);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+  {
+    if(activeParameter[i] < scaleSize) newActiveParameter.add(activeParameter[i]);
+    else if (activeParameter[i] > scaleSize) activeAmplitudeAndNext.add(activeParameter[i]);
+  }
+  if (isNuggetFactorActive) newActiveParameter.add(scaleSize);
+  newActiveParameter.add(activeAmplitudeAndNext);
+  setActiveParameter(newActiveParameter);
+}
+
+void CovarianceModelImplementation::activateAmplitude(const Bool isAmplitudeActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  const UnsignedInteger amplitudeSize = getAmplitude().getSize();
+  Indices newActiveParameter(0);
+  Indices activeAfterAmplitude(0);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+  {
+    if(activeParameter[i] <= scaleSize) newActiveParameter.add(activeParameter[i]);
+    else if (activeParameter[i] > scaleSize + amplitudeSize) activeAfterAmplitude.add(activeParameter[i]);
+  }
+  if (isAmplitudeActive) 
+  {
+    Indices amplitudeIndices(amplitudeSize);
+    amplitudeIndices.fill(scaleSize + 1);
+    newActiveParameter.add(amplitudeIndices);
+  }
+  newActiveParameter.add(activeAfterAmplitude);
+  setActiveParameter(newActiveParameter);
+}
 
 void CovarianceModelImplementation::setParameter(const Point & parameter)
 {
