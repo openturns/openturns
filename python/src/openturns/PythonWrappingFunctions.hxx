@@ -24,6 +24,7 @@
 
 #include <Python.h>
 #include <csignal>
+#include <cstring>
 #include "openturns/OT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -69,6 +70,14 @@ private:
   PyObject* pyObj_;
 };
 
+// some macros cannot be used in limited API mode; redirect to the stable abi symbols
+#ifdef Py_LIMITED_API
+#define PySequence_ITEM PySequence_GetItem
+#define PyList_GET_SIZE PyList_Size
+#define PyTuple_GET_SIZE PyTuple_Size
+#define PyList_GET_ITEM PyList_GetItem
+#define PyTuple_GET_ITEM PyTuple_GetItem
+#endif
 
 /** These templates are just declared, not defined. Only specializations are. */
 template <class CPP_Type>                    struct traitsPythonType;
@@ -449,6 +458,7 @@ static inline
 bool
 isAPythonBufferOf(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
@@ -468,6 +478,7 @@ isAPythonBufferOf(PyObject * pyObj)
       PyErr_Clear();
     }
   }
+#endif
   return false;
 }
 
@@ -599,6 +610,7 @@ inline
 Point
 convert< _PySequence_, Point >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -623,7 +635,7 @@ convert< _PySequence_, Point >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
   return Point(*ptr);
 }
@@ -668,6 +680,7 @@ inline
 Collection<Complex>
 convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -692,7 +705,7 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   Pointer<Collection<Complex> > ptr = buildCollectionFromPySequence<Complex>(pyObj);
   return Collection<Complex>(*ptr);
 }
@@ -750,6 +763,7 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -784,7 +798,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
   {
@@ -878,6 +892,7 @@ inline
 Collection< UnsignedInteger >
 convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -902,7 +917,7 @@ convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   Pointer<Collection<UnsignedInteger> > ptr = buildCollectionFromPySequence<UnsignedInteger>(pyObj);
   return Collection<UnsignedInteger>(ptr->begin(), ptr->end());
 }
@@ -948,6 +963,7 @@ inline
 IndicesCollection
 convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -982,7 +998,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
   {
@@ -1071,6 +1087,7 @@ inline
 Collection<Scalar>
 convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1095,6 +1112,7 @@ convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
+#endif
   Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
   return Collection<Scalar>(*ptr);
 }
@@ -1115,6 +1133,7 @@ MatrixImplementation*
 convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
 {
   MatrixImplementation *p_implementation = 0;
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1149,7 +1168,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
   {
@@ -1319,6 +1338,7 @@ inline
 TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1355,7 +1375,7 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   Pointer< Collection< Sample > > ptr = buildCollectionFromPySequence< Sample >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
@@ -1407,6 +1427,7 @@ inline
 ComplexMatrixImplementation*
 convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
 {
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1441,7 +1462,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
-
+#endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
   {
@@ -1586,7 +1607,7 @@ ComplexTensorImplementation*
 convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
 {
   ComplexTensorImplementation *p_implementation = 0;
-
+#ifndef Py_LIMITED_API
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1623,6 +1644,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
     else
       PyErr_Clear();
   }
+#endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
   {

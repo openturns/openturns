@@ -1049,6 +1049,7 @@ if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
 elseif (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 endif ()
+set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
