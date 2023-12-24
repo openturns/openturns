@@ -16,7 +16,7 @@ poisson_distribution = ot.Poisson(10.0)
 
 for i in range(upper_bound):
     ott.assert_almost_equal(
-        distribution.computePDF([float(i)]), poisson_distribution.computePDF([float(i)])
+        distribution.computePDF([i]), poisson_distribution.computePDF([i])
     )
 
 print("Distribution ", repr(distribution))

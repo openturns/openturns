@@ -56,25 +56,6 @@ String DiscreteDistribution::__repr__() const
   return oss;
 }
 
-/* Get the PDF of the distribution */
-Scalar DiscreteDistribution::computePDF(const Point & point) const
-{
-  if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point with dimension=" << dimension_ << ", got dimension=" << point.getDimension();
-  Indices x(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    x[i] = static_cast< UnsignedInteger >(round(point[i]));
-    if (std::abs(x[i] - point[i]) > supportEpsilon_) return 0.0;
-  }
-  return computePDF(x);
-}
-
-Scalar DiscreteDistribution::computePDF(const Indices & point) const
-{
-  const Collection<Scalar> x(point.begin(), point.end());
-  return DistributionImplementation::computePDF(x);
-}
-
 /* Tell if the distribution is continuous */
 Bool DiscreteDistribution::isContinuous() const
 {

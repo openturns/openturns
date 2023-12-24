@@ -54,11 +54,6 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Get the PDF of the distribution */
-  using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const override;
-  virtual Scalar computePDF(const Indices & point) const;
-
   /* Methods inherited from upper classes */
 
   /** Tell if the distribution is continuous */
