@@ -79,6 +79,8 @@ private:
 #define PyTuple_GET_ITEM PyTuple_GetItem
 #endif
 
+void handleException();
+
 /** These templates are just declared, not defined. Only specializations are. */
 template <class CPP_Type>                    struct traitsPythonType;
 template <class PYTHON_Type>                 static inline int          isAPython(PyObject * pyObj);
@@ -215,14 +217,51 @@ convert< _PyInt_, UnsignedInteger >(PyObject * pyObj)
 
 template <>
 inline
+SignedInteger
+convert< _PyInt_, SignedInteger >(PyObject * pyObj)
+{
+  return PyLong_AsLong(pyObj);
+}
+
+template <>
+inline
 PyObject *
 convert< UnsignedInteger, _PyInt_ >(UnsignedInteger n)
 {
   return PyLong_FromUnsignedLong(n);
 }
 
+/* NumPy int (or regular int) */
+struct _NumPyInt_ {};
 
+template <>
+inline
+const char *
+namePython<_NumPyInt_>()
+{
+  return "integer";
+}
 
+template <>
+inline
+int
+isAPython<_NumPyInt_>(PyObject * pyObj)
+{
+  return isAPython< _PyInt_ >(pyObj) || PyObject_HasAttrString(pyObj, "__int__");
+}
+
+template <>
+inline
+SignedInteger
+convert< _NumPyInt_, SignedInteger >(PyObject * pyObj)
+{
+  if (isAPython<_PyInt_>(pyObj))
+    return convert<_PyInt_, SignedInteger>(pyObj);
+  ScopedPyObjectPointer intValue(PyObject_CallMethod(pyObj, const_cast<char *>("__int__"), NULL));
+  if (intValue.isNull())
+    handleException();
+  return convert<_PyInt_, SignedInteger>(intValue.get());
+}
 
 /* PyFloat */
 struct _PyFloat_ {};
@@ -1021,9 +1060,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
             PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
             if (elt.get())
-            {
-              indices(i, j) = checkAndConvert<_PyInt_, UnsignedInteger>(elt.get());
-            }
+              indices(i, j) = checkAndConvert<_NumPyInt_, SignedInteger>(elt.get());
           }
         }
         return indices;

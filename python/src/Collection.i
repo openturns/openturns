@@ -60,15 +60,8 @@ PyObject * __getitem__(PyObject * arg) const
     {
       PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
       long index = 0;
-      if (PyInt_Check(elt))
-        index = PyInt_AsLong(elt);
-      else if (PyObject_HasAttrString(elt, "__int__"))
-      {
-        OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
-        if (intValue.isNull())
-          OT::handleException();
-        index = PyInt_AsLong(intValue.get());
-      }
+      if (OT::isAPython<OT::_NumPyInt_>(elt))
+        index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
       else
         throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
 
@@ -151,15 +144,8 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     {
       PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
       long index = 0;
-      if (PyInt_Check(elt))
-        index = PyInt_AsLong(elt);
-      else if (PyObject_HasAttrString(elt, "__int__"))
-      {
-        OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
-        if (intValue.isNull())
-          OT::handleException();
-        index = PyInt_AsLong(intValue.get());
-      }
+      if (OT::isAPython<OT::_NumPyInt_>(elt))
+        index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
       else
         throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
 
