@@ -12,6 +12,10 @@ dist : :class:`~openturns.Distribution`
 mesh : :class:`~openturns.Mesh`
     Mesh defining the domain of the distribution.
 
+See also
+--------
+UniformOverMesh
+
 Notes
 -----
 Its probability density function is defined as:
