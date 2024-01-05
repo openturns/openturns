@@ -145,6 +145,9 @@ Scalar SmoothedUniform::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
+  const Interval range(getRange());
+  if (x < range.getLowerBound()[0]) return 0.0;
+  if (x > range.getUpperBound()[0]) return 1.0;
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
@@ -162,6 +165,9 @@ Scalar SmoothedUniform::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
+  const Interval range(getRange());
+  if (x < range.getLowerBound()[0]) return 1.0;
+  if (x > range.getUpperBound()[0]) return 0.0;
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
