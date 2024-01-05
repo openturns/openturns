@@ -31,7 +31,7 @@ void check2DPointInUnitSquare(Point point)
   if (point.getDimension() != 2) throw TestFailed("Point is not dimension 2");
   for ( UnsignedInteger index = 0; index < dim; ++ index)
   {
-    if (SpecFunc::IsNaN(point[index])) throw TestFailed("Point component is nan");
+    if (std::isnan(point[index])) throw TestFailed("Point component is nan");
     if (point[index] > 1.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is greater than 1");
     if (point[index] < 0.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is lower than 0");
   }

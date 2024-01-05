@@ -385,7 +385,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
     outP = problem.getObjective().operator()(inP);
 
-    if (SpecFunc::IsNaN(outP[0]))
+    if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "TNC got a nan output value";
 
     *f = problem.isMinimization() ? outP[0] : -outP[0];

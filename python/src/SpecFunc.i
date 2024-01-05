@@ -6,10 +6,6 @@
 
 %include SpecFunc_doc.i
 
-// available in math module
-%ignore OT::SpecFunc::IsInf;
-%ignore OT::SpecFunc::IsNaN;
-
 // available in cmath module
 %ignore OT::SpecFunc::Acosh;
 %ignore OT::SpecFunc::Asinh;

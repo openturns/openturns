@@ -2360,9 +2360,9 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar q = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
   const Function f(bindMethod<CDFWrapper, Point, Point>(wrapper, &CDFWrapper::computeCDF, 1, 1));
-  const Scalar leftTau = (SpecFunc::IsInf(lower) ? -SpecFunc::ActualMaxScalar : lower);
+  const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::ActualMaxScalar : lower);
   const Scalar leftCDF = 0.0;
-  const Scalar rightTau = (SpecFunc::IsInf(upper) ? SpecFunc::ActualMaxScalar : upper);
+  const Scalar rightTau = (std::isinf(upper) ? SpecFunc::ActualMaxScalar : upper);
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   const Scalar root = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);

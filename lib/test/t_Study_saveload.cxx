@@ -1133,8 +1133,8 @@ int main(int, char *[])
       {
         std::cout << "j=" << j;
         std::cout << " isnormal=" << SpecFunc::IsNormal(point2[j]);
-        std::cout << " isnan=" << SpecFunc::IsNaN(point2[j]);
-        std::cout << " isinf=" << SpecFunc::IsInf(point2[j]) << std::endl;
+        std::cout << " isnan=" << std::isnan(point2[j]);
+        std::cout << " isinf=" << std::isinf(point2[j]) << std::endl;
       }
       // cleanup
       Os::Remove(fileName);
