@@ -127,3 +127,9 @@ if (UNIX AND BUILD_SHARED_LIBS)
   execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/libOT-gdb.py ${CMAKE_CURRENT_BINARY_DIR}/${OT_GDB_PY})
   install (FILES libOT-gdb.py DESTINATION ${OPENTURNS_DATA_PATH}/gdb/auto-load/${LIBRARY_PATH} RENAME ${OT_GDB_PY})
 endif ()
+
+# Option to build with INF as SpecFunc::MaxScalar
+option (OPENTURNS_MAXSCALAR_IS_INF "Set MaxScalar=inf" ON)
+if (OPENTURNS_MAXSCALAR_IS_INF)
+  target_compile_definitions(OT PUBLIC OPENTURNS_MAXSCALAR_IS_INF)
+endif ()

@@ -134,7 +134,7 @@ Scalar InverseNormal::computeCDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   const Scalar lx = std::sqrt(lambda_ / x);
-  const Scalar phiArg1 = lx * ( x / mu_ - 1.0);
+  const Scalar phiArg1 = std::sqrt(lambda_ * x) / mu_ - lx;
   // Quick return if in the far right tail. The pNormal() function is constant
   // equal to 1 in double precision for argument greater than 8.24, and the
   // InverseNormal CDF is greater than pNormal()

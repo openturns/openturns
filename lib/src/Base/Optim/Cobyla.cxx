@@ -211,7 +211,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
     outP = problem.getObjective().operator()(inP);
 
-    if (!SpecFunc::IsNormal(outP[0]))
+    if (SpecFunc::IsNaN(outP[0]))
       throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
 
     // cobyla freezes when dealing with SpecFunc::MaxScalar

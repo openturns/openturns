@@ -172,7 +172,7 @@ public:
         const Scalar c1 = xi * yir;
         if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
         {
-          ll += -std::log(SpecFunc::MaxScalar);
+          ll += -std::log(SpecFunc::ActualMaxScalar);
           continue;
         }
         const Scalar log1pC1 = std::log1p(c1);
@@ -184,7 +184,7 @@ public:
           const Scalar c2 = xi * yik;
           if (c2 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::MaxScalar);
+            ll += -std::log(SpecFunc::ActualMaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c2);
@@ -519,7 +519,7 @@ public:
 
       if (sigma <= 0.0)
       {
-        ll += -std::log(SpecFunc::MaxScalar);
+        ll += -std::log(SpecFunc::ActualMaxScalar);
         continue;
       }
 
@@ -529,7 +529,7 @@ public:
       minC1 = std::min(minC1, 1.0 + c1);
       if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
       {
-        ll += -std::log(SpecFunc::MaxScalar);
+        ll += -std::log(SpecFunc::ActualMaxScalar);
         continue;
       }
       const Scalar log1pC1 = std::log1p(c1);

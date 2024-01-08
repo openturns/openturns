@@ -69,7 +69,7 @@ int main(int, char *[])
 
     // Show PDF and CDF of point
     Scalar LPDF = distribution.computeLogPDF( point );
-    fullprint << "log pdf=" << LPDF << std::endl;
+    assert_equal(LPDF, SpecFunc::LowestScalar);
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     Scalar CDF = distribution.computeCDF( point );

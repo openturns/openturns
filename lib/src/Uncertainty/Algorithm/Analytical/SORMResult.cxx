@@ -342,9 +342,10 @@ String SORMResult::__repr__() const
       << " eventProbabilityBreitung=" << eventProbabilityBreitung_
       << " eventProbabilityHohenbichler=" << eventProbabilityHohenbichler_
       << " eventProbabilityTvedt=" << eventProbabilityTvedt_
-      << " generalisedReliabilityIndexBreitung=" << generalisedReliabilityIndexBreitung_
-      << " generalisedReliabilityIndexHohenbichler=" << generalisedReliabilityIndexHohenbichler_
-      << " generalisedReliabilityIndexTvedt=" << generalisedReliabilityIndexTvedt_
+      // TODO JM: remove the check after the use of infs has been thoroughly tested
+      << " generalisedReliabilityIndexBreitung=" << (generalisedReliabilityIndexBreitung_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexBreitung_ : generalisedReliabilityIndexBreitung_ * 2.0)
+      << " generalisedReliabilityIndexHohenbichler=" << (generalisedReliabilityIndexHohenbichler_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexHohenbichler_ : generalisedReliabilityIndexHohenbichler_ * 2.0)
+      << " generalisedReliabilityIndexTvedt=" << (generalisedReliabilityIndexTvedt_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexTvedt_ : generalisedReliabilityIndexTvedt_ * 2.0)
       << " gradientLimitStateFunction_=" << gradientLimitStateFunction_
       << " hessianLimitStateFunction_=" << hessianLimitStateFunction_;
   return oss;

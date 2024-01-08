@@ -122,9 +122,9 @@ Examples
 >>> func = ot.SymbolicFunction(['x'], ['x', 'x^2'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample, 0.05)
->>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]]
->>> no_rank_correlation = test_result[0].getBinaryQualityMeasure()"
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -220,9 +220,9 @@ Examples
 >>> func = ot.SymbolicFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
->>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]]
->>> no_rank_correlation = test_result[0].getBinaryQualityMeasure()"
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 

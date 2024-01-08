@@ -58,8 +58,13 @@ const Scalar ZETA3                 = 1.20205690315959429;
 // Scalar limits
 const Scalar MinScalar     = std::numeric_limits<Scalar>::min();
 const Scalar LogMinScalar  = std::log(MinScalar);
+#ifdef OPENTURNS_MAXSCALAR_IS_INF
+const Scalar MaxScalar     = std::numeric_limits<Scalar>::infinity();
+#else
 const Scalar MaxScalar     = std::numeric_limits<Scalar>::max();
+#endif
 const Scalar LogMaxScalar  = std::log(MaxScalar);
+const Scalar ActualMaxScalar = std::numeric_limits<Scalar>::max();
 const Scalar LowestScalar  = -MaxScalar;
 const Scalar ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 // Maximum number of iterations for the algorithms

@@ -89,7 +89,11 @@ int main(int, char *[])
   // Probability of the H0 reject zone : 0.10
 
   fullprint << "FullPearsonX0Y=" << HypothesisTest::FullPearson(sampleX, sampleY, 0.10) << std::endl;
-  fullprint << "FullPearsonYY=" << HypothesisTest::FullPearson(sampleY, sampleY, 0.10) << std::endl;
+  
+  // Expected result is SpecFunc::MaxScalar
+  TestResult fullPearsonYY(HypothesisTest::FullPearson(sampleY, sampleY, 0.10)[0]);
+  Scalar testStatistic = fullPearsonYY.getStatistic();
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   return ExitCode::Success;
 }
