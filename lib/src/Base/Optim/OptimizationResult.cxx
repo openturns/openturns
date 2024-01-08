@@ -352,7 +352,7 @@ void OptimizationResult::store(const Point & x,
       if (!SpecFunc::IsNormal(x[j]))
         isNormal = false;
     for (UnsignedInteger j = 0; j < y.getDimension(); ++ j)
-      if (!SpecFunc::IsNormal(y[j]))
+      if (std::isnan(y[j]))
         isNormal = false;
 
     const Bool objectiveImproved = (!getOptimalValue().getDimension())
