@@ -173,7 +173,7 @@ Scalar FisherSnedecor::computeCDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0) return 0.0;
-  return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, d1_ * x / (d1_ * x + d2_));
+  return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, 1.0 / (1.0 + d2_ / (d1_ * x)));
 }
 
 /* Get the quantile of the distribution */
