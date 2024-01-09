@@ -293,9 +293,9 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   if (outputHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
   if (getProblem().hasInequalityConstraint() && inequalityHistory.getSize() != size)
-    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation inequality constraint history size does not match input size";
   if (getProblem().hasEqualityConstraint() && equalityHistory.getSize() != size)
-    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation equality constraint history size does not match input size";
 
   const UnsignedInteger dimension = getProblem().getDimension();
 
