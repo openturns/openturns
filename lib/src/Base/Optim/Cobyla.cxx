@@ -214,9 +214,24 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   {
     for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
       if (!SpecFunc::IsNormal(inP[i]))
-        throw InvalidArgumentException(HERE) << "Cobyla got a nan input value";
+        throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
-    outP = problem.getObjective().operator()(inP);
+    // evaluate the function on the clipped point (still penalized if outside the bounds) 
+    Point inClip(inP);
+    if (problem.hasBounds())
+    {
+      const Point lowerBound(problem.getBounds().getLowerBound());
+      const Point upperBound(problem.getBounds().getUpperBound());
+      const Scalar maximumConstraintError = algorithm->getMaximumConstraintError();
+      for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
+      {
+        if (problem.getBounds().getFiniteLowerBound()[i])
+          inClip[i] = std::max(inP[i], lowerBound[i] - maximumConstraintError);
+        if (problem.getBounds().getFiniteUpperBound()[i])
+          inClip[i] = std::min(inP[i], upperBound[i] + maximumConstraintError);
+      }
+    }
+    outP = problem.getObjective().operator()(inClip);
 
     if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
