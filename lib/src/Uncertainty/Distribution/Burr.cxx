@@ -187,6 +187,8 @@ Point Burr::computeCDFGradient(const Point & point) const
 Scalar Burr::computeScalarQuantile(const Scalar prob,
                                    const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return 0.0;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
   if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
   return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
 }

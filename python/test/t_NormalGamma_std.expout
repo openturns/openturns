@@ -23,8 +23,6 @@ cdf gradient (FD)= [-0.349393,0.0436741,0.0135182,-0.00130662]
 quantile= [2.55849,4.59228]
 cdf(quantile)=0.997715
 entropy=1.765404
-Minimum volume interval= [0.0390431, 2.00954]
-[-1.80326, 3.80326]
 threshold=0.986085
 Minimum volume level set= {x | f(x) <= inf} with f=
 MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4))

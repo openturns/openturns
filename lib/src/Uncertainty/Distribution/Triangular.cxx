@@ -261,6 +261,8 @@ Point Triangular::computeCDFGradient(const Point & point) const
 Scalar Triangular::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return a_;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return b_;
   const Scalar ma = m_ - a_;
   const Scalar ba = b_ - a_;
   const Scalar bm = b_ - m_;

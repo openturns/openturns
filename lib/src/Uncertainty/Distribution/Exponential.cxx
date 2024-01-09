@@ -221,6 +221,8 @@ Point Exponential::computeCDFGradient(const Point & point) const
 Scalar Exponential::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return gamma_;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
   if (tail) return gamma_ - std::log(prob) / lambda_;
   return gamma_ - log1p(-prob) / lambda_;
 }

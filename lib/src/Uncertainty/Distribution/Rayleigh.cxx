@@ -212,6 +212,8 @@ Point Rayleigh::computeCDFGradient(const Point & point) const
 Scalar Rayleigh::computeScalarQuantile(const Scalar prob,
                                        const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return gamma_;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
   if (tail) return gamma_ + beta_ * std::sqrt(-2.0 * std::log(prob));
   return gamma_ + beta_ * std::sqrt(-2.0 * log1p(-prob));
 }
