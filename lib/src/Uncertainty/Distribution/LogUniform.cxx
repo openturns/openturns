@@ -207,6 +207,8 @@ Point LogUniform::computeCDFGradient(const Point & point) const
 Scalar LogUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return std::exp(aLog_);
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return std::exp(bLog_);
   if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
   return std::exp(aLog_ + prob * (bLog_ - aLog_));
 }

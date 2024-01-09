@@ -300,6 +300,8 @@ Point Trapezoidal::computeCDFGradient(const Point & point) const
 Scalar Trapezoidal::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return a_;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return d_;
   const Scalar c1 = 0.5 * (b_ - a_) * h_;
   const Scalar c2 = c1 + (c_ - b_) * h_;
   const Scalar q = tail ? 1.0 - prob : prob;

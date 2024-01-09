@@ -30,7 +30,6 @@ cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.349393,0.04367
 cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,0.0135182,-0.00130662]
 quantile=class=Point name=Unnamed dimension=2 values=[2.55849,4.59228]
 cdf(quantile)=0.997715
-Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0390431,-1.80326] upper bound=class=Point name=Unnamed dimension=2 values=[2.00954,3.80326] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.986085
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[Y0,X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) gradientImplementation=MinimumVolumeLevelSetGradient(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) level=inf
 beta=0

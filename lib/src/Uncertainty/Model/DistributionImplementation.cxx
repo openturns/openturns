@@ -2444,11 +2444,11 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
 {
   const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
-  // Special case for bording values
-  if (prob < quantileEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
-  if (prob >= 1.0 - quantileEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, tail));
+  // Special case for border values
+  if (prob < cdfEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
+  if (prob >= 1.0 - cdfEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for independent copula
   if (hasIndependentCopula())
   {
