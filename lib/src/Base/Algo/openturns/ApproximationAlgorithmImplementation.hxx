@@ -100,8 +100,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Selection history accessor */
+  /** Selection/error history accessor */
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+  virtual Point getErrorHistory() const;
 
 protected:
 

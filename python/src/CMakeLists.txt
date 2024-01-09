@@ -367,7 +367,7 @@ ot_add_python_module(func func_module.i
                       P1LagrangeInterpolation.i P1LagrangeInterpolation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
-                      BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
+                      BasisSequenceImplementation.i
                       BasisSequence.i BasisSequence_doc.i.in
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
@@ -744,6 +744,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
+		      UniformOverMesh.i UniformOverMesh_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
@@ -884,6 +885,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
+		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
+                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
                    )
 
@@ -1020,14 +1023,11 @@ ot_add_python_module(experimental experimental_module.i
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
-                     LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
-                     IntegrationExpansion.i IntegrationExpansion_doc.i.in
 		     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
-                     UniformOverMesh.i UniformOverMesh_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
@@ -1049,6 +1049,7 @@ if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
 elseif (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 endif ()
+set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 

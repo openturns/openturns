@@ -20,7 +20,7 @@ startingSample : 2-d sequence of float, optional
 
 Notes
 -----
-The total number of evaluations is the size of the initial population multiplied by the iteration number.
+The total number of evaluations is the size of the initial population multiplied by the iteration number plus one.
 Starting points provided through the *startingSample* parameter should be
 within the bounds of the :class:`~openturns.OptimizationProblem`, but this is not enforced.
 

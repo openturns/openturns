@@ -83,9 +83,13 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Maximum time accessor */
+  void setMaximumTimeDuration(const Scalar maximumTimeDuration);
+  Scalar getMaximumTimeDuration() const;
+
 protected:
   // Size of the atomic blocks of computation
-  UnsignedInteger blockSize_;
+  UnsignedInteger blockSize_ = 0;
 
   // callbacks
   std::pair< ProgressCallback, void *> progressCallback_;
@@ -97,14 +101,15 @@ protected:
 private:
 
   // Maximum number of outer iteration allowed
-  UnsignedInteger maximumOuterSampling_;
+  UnsignedInteger maximumOuterSampling_ = 0;
 
   // Maximum coefficient of variation allowed for convergence
-  Scalar maximumCoefficientOfVariation_;
+  Scalar maximumCoefficientOfVariation_ = 0.0;
 
   // Maximum standard deviation allowed for convergence
-  Scalar maximumStandardDeviation_;
+  Scalar maximumStandardDeviation_ = 0.0;
 
+  Scalar maximumTimeDuration_ = -1.0;
 } ; /* class SimulationAlgorithm */
 
 

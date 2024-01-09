@@ -104,7 +104,7 @@ void CMinpack::Transform(Point & x, int n, const Interval & bounds, Point & jacf
     {
       const Scalar xmiddle = (xmin[j] + xmax[j]) * 0.5;
       const Scalar xwidth = (xmax[j] - xmin[j]) * 0.5;
-      const Scalar th = tanh(x[j]);
+      const Scalar th = std::tanh(x[j]);
       x[j] = xmiddle + th * xwidth;
       jacfac[j] = xwidth * (1.0 - th * th);
     }
@@ -123,7 +123,13 @@ void CMinpack::InverseTransform(Point & x, int n, const Interval & bounds)
     {
       const Scalar xmiddle = (xmin[j] + xmax[j]) * 0.5;
       const Scalar xwidth = (xmax[j] - xmin[j]) * 0.5;
-      x[j] = atanh((x[j] - xmiddle) / xwidth);
+      Scalar v = (x[j] - xmiddle) / xwidth;
+      // clip v inside ]-1;1[
+      if (v <= -1.0)
+        v = -1.0 + SpecFunc::Precision;
+      if (v >= 1.0)
+        v = 1.0 - SpecFunc::Precision;
+      x[j] = std::atanh(v);
     }
   }
 }
@@ -132,7 +138,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
 {
   CMinpack *algorithm = static_cast<CMinpack *>(p);
   if (!algorithm)
-    throw InternalException(HERE) << "p is null";
+    throw InternalException(HERE) << "CMinpack p is null";
 
   Point inP(n);
   std::copy(x, x + n, inP.begin());
@@ -145,13 +151,22 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   if (iflag == 1)
   {
     // evaluation
-    const Point outP(algorithm->getProblem().getResidualFunction()(inP));
+    Point outP;
+    try
+    {
+      outP = algorithm->getProblem().getResidualFunction()(inP);
+    }
+    catch (const std::exception & exc)
+    {
+      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
+    }
+
     // track input/outputs
     algorithm->evaluationInputHistory_.add(inP);
     algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
     // update result
-    algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+    algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
     algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
 
     std::copy(outP.begin(), outP.end(), fvec);
@@ -159,7 +174,15 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   else if (iflag == 2)
   {
     // gradient
-    Matrix jacobian(algorithm->getProblem().getResidualFunction().gradient(inP).transpose());
+    Matrix jacobian;
+    try
+    {
+      jacobian = algorithm->getProblem().getResidualFunction().gradient(inP).transpose();
+    }
+    catch (const std::exception & exc)
+    {
+      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " jacobian=" << jacobian.__str__() << " msg=" << exc.what());
+    }
     if (algorithm->getProblem().hasBounds())
     {
       for (int j = 0; j < n; ++ j)
@@ -168,10 +191,16 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     }
     std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
   }
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    return -1;
+
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {
@@ -345,7 +374,7 @@ void CMinpack::run()
   const Scalar ftol = getMaximumResidualError();
   const Scalar xtol = getMaximumAbsoluteError();
   const Scalar gtol = getMaximumConstraintError();
-  const int maxfev = getMaximumEvaluationNumber();
+  const int maxfev = getMaximumCallsNumber();
   const int mode = 1;
   const Scalar factor = 100.0;
   const int nprint = 0;
@@ -358,43 +387,56 @@ void CMinpack::run()
   {
     InverseTransform(x, n, bounds);
   }
+  t0_ = std::chrono::steady_clock::now();
+
   info = lmder(&CMinpack::ComputeObjectiveJacobian, this, m, n, &x[0], &fvec[0], &fjac[0], ldfjac, ftol, xtol, gtol,
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
+
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
 
   switch (info)
   {
     case -1:
       // user stop
+      result_.setStatusMessage("user stop");
       break;
     case 0:
-      throw InvalidArgumentException(HERE) << "CMinpack: Improper input parameters";
+      result_.setStatusMessage("improper input parameters");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 1:
-      LOGINFO("ftol termination condition is satisfied.");
+      result_.setStatusMessage("ftol termination condition is satisfied");
       break;
     case 2:
-      LOGINFO("xtol termination condition is satisfied.");
+      result_.setStatusMessage("xtol termination condition is satisfied");
       break;
     case 3:
-      LOGINFO("Both ftol and xtol termination conditions are satisfied.");
+      result_.setStatusMessage("Both ftol and xtol termination conditions are satisfied");
       break;
     case 4:
-      LOGINFO("gtol termination condition is satisfied.");
+      result_.setStatusMessage("gtol termination condition is satisfied");
       break;
     case 5:
-      LOGINFO("The maximum number of function evaluations is exceeded.");
+      result_.setStatusMessage("maximum function evaluations exceeded");
       break;
     case 6:
-      throw InvalidArgumentException(HERE) << "CMinpack: ftol is too small";
+      result_.setStatusMessage("ftol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 7:
-      throw InvalidArgumentException(HERE) << "CMinpack: xtol is too small";
+      result_.setStatusMessage("xtol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     case 8:
-      throw InvalidArgumentException(HERE) << "CMinpack: gtol is too small";
+      result_.setStatusMessage("gtol is too small");
+      throw InvalidArgumentException(HERE) << "CMinpack: " << result_.getStatusMessage();
     default:
+      result_.setStatusMessage("Unknown");
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
-
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  LOGDEBUG(OSS() << "CMinpack status: " << result_.getStatusMessage());
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

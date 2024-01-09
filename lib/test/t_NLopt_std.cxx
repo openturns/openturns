@@ -72,7 +72,7 @@ int main(int, char *[])
               {
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
-                algo.setMaximumEvaluationNumber(1000);
+                algo.setMaximumCallsNumber(1000);
                 fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
                 algo.run();
               }

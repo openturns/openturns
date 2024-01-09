@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <cmath>
 #include <iomanip>
 #include <limits>
 #include "openturns/XMLStorageManager.hxx"
@@ -326,11 +327,11 @@ void toStringConverter(const _Tp & value, String & st)
   st = ( OSS() << value );
   PlatformInfo::SetNumericalPrecision(oldPrecision);
 
-  if (SpecFunc::IsNaN(value))
+  if (std::isnan(static_cast<Scalar>(value)))
   {
     st = "nan";
   }
-  else if (SpecFunc::IsInf(value))
+  else if (std::isinf(static_cast<Scalar>(value)))
   {
     st = (value < 0.0) ? "-inf" : "inf";
   }

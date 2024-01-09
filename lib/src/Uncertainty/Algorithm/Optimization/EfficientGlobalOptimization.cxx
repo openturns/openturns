@@ -205,7 +205,7 @@ void EfficientGlobalOptimization::run()
   // use the provided kriging result at first iteration
   KrigingResult metaModelResult(krigingResult_);
 
-  while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
+  while ((!exitLoop) && (evaluationNumber < getMaximumCallsNumber()))
   {
     Scalar optimalValueSubstitute = optimalValue[0];
     if (hasNoise)
@@ -341,7 +341,7 @@ void EfficientGlobalOptimization::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {

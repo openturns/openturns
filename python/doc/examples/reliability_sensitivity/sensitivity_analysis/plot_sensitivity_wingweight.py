@@ -199,7 +199,7 @@ view = otv.View(graph)
 # We compute here the Pearson :math:`\rho` coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
-pearson_correlation = corr_analysis.computePearsonCorrelation()
+pearson_correlation = corr_analysis.computeLinearCorrelation()
 print(pearson_correlation)
 
 # %%

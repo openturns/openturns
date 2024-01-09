@@ -45,3 +45,23 @@ Parameters
 ----------
 outerSampling : int, :math:`outerSampling \geq 0`
     Number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationResult::setTimeDuration
+"Accessor to the elapsed time.
+
+Parameters
+----------
+time : float
+    Simulation duration in seconds"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationResult::getTimeDuration
+"Accessor to the elapsed time.
+
+Returns
+-------
+time : float
+    Simulation duration in seconds"

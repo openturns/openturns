@@ -67,16 +67,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 // Some facilities for NaN and inf
-Bool SpecFunc::IsNaN(const Scalar value)
-{
-  return value != value;
-}
-
-Bool SpecFunc::IsInf(const Scalar value)
-{
-  return (value == value) && IsNaN(value - value);
-}
-
 Bool SpecFunc::IsNormal(const Scalar value)
 {
   return value - value == 0.0;

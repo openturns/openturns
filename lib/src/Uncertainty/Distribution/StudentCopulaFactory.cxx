@@ -36,7 +36,7 @@ StudentCopulaFactory::StudentCopulaFactory()
   // Initialize optimization solver parameter using the ResourceMap
   String solverName(ResourceMap::GetAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("StudentCopulaFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("StudentCopulaFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("StudentCopulaFactory-MaximumObjectiveError"));

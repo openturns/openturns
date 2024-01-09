@@ -21,7 +21,8 @@
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/NLopt.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -51,8 +52,12 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
   , activeParameters_(activeParameters)
-  , solver_(NLopt("LD_LBFGS"))
+  , solver_(OptimizationAlgorithm::Build("Cobyla"))
 {
+  solver_.setCheckStatus(false);
+  if (OptimizationAlgorithm::GetAlgorithmNames().contains("LD_LBFGS"))
+    solver_ = OptimizationAlgorithm::Build("LD_LBFGS");
+
   auxiliaryDistribution_ = auxiliaryDistribution;
   quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
   bounds_ = bounds;

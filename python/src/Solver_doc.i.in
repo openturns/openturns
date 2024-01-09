@@ -4,19 +4,19 @@
 OT_Solver_doc
 %feature("docstring") OT::Solver::getAbsoluteError
 OT_Solver_getAbsoluteError_doc
-%feature("docstring") OT::Solver::getMaximumFunctionEvaluation
-OT_Solver_getMaximumFunctionEvaluation_doc
+%feature("docstring") OT::Solver::getMaximumCallsNumber
+OT_Solver_getMaximumCallsNumber_doc
 %feature("docstring") OT::Solver::getRelativeError
 OT_Solver_getRelativeError_doc
 %feature("docstring") OT::Solver::getResidualError
 OT_Solver_getResidualError_doc
 %feature("docstring") OT::Solver::setAbsoluteError
 OT_Solver_setAbsoluteError_doc
-%feature("docstring") OT::Solver::setMaximumFunctionEvaluation
-OT_Solver_setMaximumFunctionEvaluation_doc
+%feature("docstring") OT::Solver::setMaximumCallsNumber
+OT_Solver_setMaximumCallsNumber_doc
 %feature("docstring") OT::Solver::setRelativeError
 OT_Solver_setRelativeError_doc
 %feature("docstring") OT::Solver::setResidualError
 OT_Solver_setResidualError_doc
-%feature("docstring") OT::Solver::getUsedFunctionEvaluation
-OT_Solver_getUsedFunctionEvaluation_doc
+%feature("docstring") OT::Solver::getCallsNumber
+OT_Solver_getCallsNumber_doc

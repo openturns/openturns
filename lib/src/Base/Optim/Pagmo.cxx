@@ -63,11 +63,15 @@ struct PagmoProblem
 {
   PagmoProblem() {};
 
-  PagmoProblem(const Pagmo * algorithm)
+  PagmoProblem(const Pagmo *algorithm, Sample *evaluationInputHistory, Sample *evaluationOutputHistory)
     : algorithm_(algorithm)
+    , evaluationInputHistory_(evaluationInputHistory)
+    , evaluationOutputHistory_(evaluationOutputHistory)
   {
     if (!algorithm)
-      throw InvalidArgumentException(HERE) << "Null algo";
+      throw InvalidArgumentException(HERE) << "PagmoProblem null algo";
+    if (!evaluationInputHistory || !evaluationOutputHistory)
+      throw InvalidArgumentException(HERE) << "PagmoProblem null history";
 
     // pagmo wants the integer components grouped at the end, so renumbering is in order
     Indices renum;
@@ -84,8 +88,8 @@ struct PagmoProblem
     if (renum != ordinal)
       renum_ = renum;
 
-    evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
-    evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
+    *evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
+    *evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
   }
 
   Point renumber(const Point & inP) const
@@ -102,22 +106,27 @@ struct PagmoProblem
   pagmo::vector_double fitness(const pagmo::vector_double & inv) const
   {
     const Point inP(renumber(Point(inv.begin(), inv.end())));
-    evaluationInputHistory_.add(inP);
+    evaluationInputHistory_->add(inP);
     Point outP(algorithm_->getProblem().getObjective()(inP));
-    evaluationOutputHistory_.add(outP);
+    evaluationOutputHistory_->add(outP);
     for (UnsignedInteger i = 0; i < outP.getDimension(); ++ i)
       if (!algorithm_->getProblem().isMinimization(i))
         outP[i] *= -1.0;
-    ++ evaluationNumber_;
     if (algorithm_->getProblem().hasEqualityConstraint())
       outP.add(algorithm_->getProblem().getEqualityConstraint()(inP));
     if (algorithm_->getProblem().hasInequalityConstraint())
       outP.add(-1.0 * algorithm_->getProblem().getInequalityConstraint()(inP));// opposite convention for ineq constraints
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((algorithm_->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
+      throw InternalException(HERE) << "Maximum time exceeed";
+
     // callbacks
     if (algorithm_->progressCallback_.first)
     {
-      algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
+      const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
+      algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
     }
     if (algorithm_->stopCallback_.first)
     {
@@ -184,9 +193,9 @@ struct PagmoProblem
         const Point xsi(xs.begin() + offset + i * inputDimension, xs.begin() + offset + (i + 1) * inputDimension);
         inSb[i] = renumber(xsi);
       }
-      evaluationInputHistory_.add(inSb);
+      evaluationInputHistory_->add(inSb);
       Sample outSb(problem.getObjective()(inSb));
-      evaluationOutputHistory_.add(outSb);
+      evaluationOutputHistory_->add(outSb);
       for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
         for (UnsignedInteger j = 0; j < outputDimension; ++ j)
           if (!problem.isMinimization(j))
@@ -197,12 +206,17 @@ struct PagmoProblem
         outSb.stack(-1.0 * problem.getInequalityConstraint()(inSb));
       outS.add(outSb);
       offset += blockSize * inputDimension;
-      evaluationNumber_ += effectiveBlockSize;
+
+      std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+      const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+      if ((algorithm_->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
+        throw InternalException(HERE) << "Maximum time exceeed";
 
       // callbacks
       if (algorithm_->progressCallback_.first)
       {
-        algorithm_->progressCallback_.first((100.0 * evaluationNumber_) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
+        const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
+        algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
       }
       if (algorithm_->stopCallback_.first)
       {
@@ -235,16 +249,17 @@ struct PagmoProblem
            pagmo::thread_safety::constant : pagmo::thread_safety::none;
   }
 
-  static UnsignedInteger evaluationNumber_;
-  static Sample evaluationInputHistory_;
-  static Sample evaluationOutputHistory_;
-  const Pagmo * algorithm_ = 0;
-  Indices renum_;
-};
+  void setT0(const std::chrono::steady_clock::time_point & t0)
+  {
+    t0_ = t0;
+  }
 
-UnsignedInteger PagmoProblem::evaluationNumber_ = 0;
-Sample PagmoProblem::evaluationInputHistory_;
-Sample PagmoProblem::evaluationOutputHistory_;
+  const Pagmo * algorithm_ = nullptr;
+  Indices renum_;
+  Sample *evaluationInputHistory_ = nullptr;
+  Sample *evaluationOutputHistory_ = nullptr;
+  std::chrono::steady_clock::time_point t0_;
+};
 #endif
 
 
@@ -327,7 +342,11 @@ void Pagmo::run()
   }
 
 #ifdef OPENTURNS_HAVE_PAGMO
-  PagmoProblem pproblem(this);
+  Sample evaluationInputHistory;
+  Sample evaluationOutputHistory;
+  PagmoProblem pproblem(this, &evaluationInputHistory, &evaluationOutputHistory);
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+  pproblem.setT0(t0);
   pagmo::problem prob(pproblem);
   const pagmo::vector_double ctol(prob.get_nc(), getMaximumConstraintError());
   prob.set_c_tol(ctol);
@@ -400,7 +419,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -583,7 +602,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, populationSize);
-    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumEvaluationNumber(), focus, memory);
+    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
     algo = algorithm_impl;
@@ -608,11 +627,16 @@ void Pagmo::run()
     throw NotYetImplementedException(HERE) << algoName_;
   algo.set_verbosity(Log::HasDebug());
   algo.set_seed(seed_);
-  PagmoProblem::evaluationNumber_ = 0;
+
   pop = algo.evolve(pop);
   result_ = OptimizationResult(getProblem());
-  result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
+  result_.setCallsNumber(evaluationInputHistory.getSize());
   result_.setIterationNumber(getMaximumIterationNumber());
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
+
   Scalar optimalValue = 0.0;
   Sample finalPoints(0, getProblem().getDimension());
 
@@ -651,8 +675,7 @@ void Pagmo::run()
   }
 
   // we want to retrieve evaluations before penalization to avoid MaxScalar values
-  const DatabaseFunction xToY(PagmoProblem::evaluationInputHistory_,
-                              PagmoProblem::evaluationOutputHistory_);
+  const DatabaseFunction xToY(evaluationInputHistory, evaluationOutputHistory);
   const Sample finalValues(xToY(finalPoints));
   result_.setFinalPoints(finalPoints);
   result_.setFinalValues(finalValues);

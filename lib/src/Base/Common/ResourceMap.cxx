@@ -776,8 +776,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
+  addAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration", -1.0);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
+  addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 
   // Pagmo parameters //
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);
@@ -1338,6 +1340,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SimulationAlgorithm parameters //
   addAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation", 1.0e-1);
   addAsScalar("SimulationAlgorithm-DefaultMaximumStandardDeviation", 0.0);
+  addAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration", -1.0);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultMaximumOuterSampling", 1000);
 
@@ -1645,7 +1648,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
   addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
-  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 10000);
   addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
 
   // SparseMethod parameters //

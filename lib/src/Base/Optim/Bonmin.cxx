@@ -142,7 +142,8 @@ void Bonmin::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
   // Create BonminProblem
-  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber(), getMaximumTimeDuration(), t0);
   tminlp->setProgressCallback(progressCallback_.first, progressCallback_.second);
   tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
 
@@ -180,12 +181,16 @@ void Bonmin::run()
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
+
   String allOptions;
   app.options()->PrintList(allOptions);
   LOGINFO(allOptions);
 
 #else
-
+  result_.setStatus(OptimizationResult::FAILURE);
   throw NotYetImplementedException(HERE) << "No Bonmin support";
 
 #endif

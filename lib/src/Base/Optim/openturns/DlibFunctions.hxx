@@ -112,7 +112,7 @@ public:
                                   general_matrix & hess) const;
 
   /* Accessors to attributes */
-  UnsignedInteger getEvaluationNumber() const;
+  UnsignedInteger getCallsNumber() const;
   Sample getInputHistory();
   Sample getOutputHistory();
 
@@ -121,7 +121,7 @@ protected:
   mutable Sample outputHistory_;
 private:
   Bool minimization_ = true;
-} ;
+};
 
 END_NAMESPACE_OPENTURNS
 

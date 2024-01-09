@@ -76,7 +76,7 @@ for i in range(1):
 
     # We create a NearestPoint algorithm
     myCobyla = ot.Cobyla()
-    myCobyla.setMaximumEvaluationNumber(200)
+    myCobyla.setMaximumCallsNumber(200)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
     myCobyla.setMaximumRelativeError(1.0e-10)
     myCobyla.setMaximumResidualError(1.0e-10)

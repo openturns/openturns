@@ -46,6 +46,7 @@ SimulationAlgorithm::SimulationAlgorithm()
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling" ))
   , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation" ))
   , maximumStandardDeviation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation" ))
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration"))
 {
   // Nothing to do
 }
@@ -172,5 +173,15 @@ void SimulationAlgorithm::setStopCallback(StopCallback callBack, void * state)
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
+/* Maximum time accessor */
+void SimulationAlgorithm::setMaximumTimeDuration(const Scalar maximumTimeDuration)
+{
+  maximumTimeDuration_ = maximumTimeDuration;
+}
+
+Scalar SimulationAlgorithm::getMaximumTimeDuration() const
+{
+  return maximumTimeDuration_;
+}
 
 END_NAMESPACE_OPENTURNS

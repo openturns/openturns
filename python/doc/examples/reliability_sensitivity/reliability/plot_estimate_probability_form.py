@@ -62,7 +62,7 @@ event.setName("deviation")
 # %%
 # Define a solver
 optimAlgo = ot.Cobyla()
-optimAlgo.setMaximumEvaluationNumber(1000)
+optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-10)
 optimAlgo.setMaximumRelativeError(1.0e-10)
 optimAlgo.setMaximumResidualError(1.0e-10)

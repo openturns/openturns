@@ -71,7 +71,7 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  Scalar computePDF(const Indices & point) const override;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;

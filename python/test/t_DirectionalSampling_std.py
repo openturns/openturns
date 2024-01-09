@@ -74,8 +74,8 @@ for X in [X1, X2]:
     print("X:", X.getDistribution())
 
     myAlgo3 = ot.DirectionalSampling(event)
-    n1 = myFunction.getCallsNumber()
+    n1 = myFunction.getEvaluationCallsNumber()
     myAlgo3.run()
-    n2 = myFunction.getCallsNumber()
+    n2 = myFunction.getEvaluationCallsNumber()
     result = myAlgo3.getResult().getProbabilityEstimate()
     print("p=%.6g (ncalls = %d)" % (result, n2 - n1))

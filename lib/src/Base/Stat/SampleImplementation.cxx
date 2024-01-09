@@ -1247,6 +1247,7 @@ Point SampleImplementation::computeVariance() const
  */
 CorrelationMatrix SampleImplementation::computePearsonCorrelation() const
 {
+  LOGWARN("Sample.computePearsonCorrelation is deprecated, use computeLinearCorrelation");
   return computeLinearCorrelation();
 }
 

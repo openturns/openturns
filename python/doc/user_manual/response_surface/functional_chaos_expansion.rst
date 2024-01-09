@@ -12,8 +12,8 @@ Functional chaos algorithm
     :template: class.rst_t
 
     FunctionalChaosAlgorithm
-    experimental.LeastSquaresExpansion
-    experimental.IntegrationExpansion
+    LeastSquaresExpansion
+    IntegrationExpansion
 
 Construction of the truncated multivariate orthogonal basis
 ===========================================================

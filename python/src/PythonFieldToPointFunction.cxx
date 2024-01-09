@@ -19,6 +19,7 @@
  *
  */
 #include <Python.h>
+#include <cstdio>
 #include "openturns/swigpyrun.h"
 
 #include "openturns/PythonFieldToPointFunction.hxx"

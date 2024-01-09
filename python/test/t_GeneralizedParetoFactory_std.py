@@ -52,6 +52,9 @@ ott.assert_almost_equal(
     estimatedGeneralizedPareto.getParameter(), distribution.getParameter()
 )
 
+if not ot.PlatformInfo.HasFeature("bison"):
+    exit(0)
+
 # mean residual life
 sample = coles.Coles().rain
 graph = factory.drawMeanResidualLife(sample)

@@ -107,7 +107,7 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
   assert(node);
-  const hsize_t dsetSize = std::stoi(XML::GetAttributeByName(node, "size"));
+  const hsize_t dsetSize = std::stol(XML::GetAttributeByName(node, "size"));
 
   // append value in buffer
   getBuffer<CPP_Type>().push_back(value);

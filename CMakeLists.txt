@@ -33,6 +33,7 @@ option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"  
 option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
+option (USE_CXX17                    "Use C++17 standard"                                                    ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -122,8 +123,6 @@ set (OPENTURNS_TEMPDIR
       CACHE PATH "The directory for temporary files. /tmp by default."
    )
 set (TEMPDIR ${OPENTURNS_TEMPDIR})
-
-set (CMAKE_CXX_STANDARD 11)
 
 if (NOT DEFINED LAPACK_LIBRARIES)
   find_package (LAPACK REQUIRED)
@@ -288,15 +287,9 @@ if (USE_BOOST)
 endif ()
 
 if (USE_NLOPT)
-  find_package (NLopt 2.6 CONFIG QUIET)
+  find_package (NLopt 2.6 CONFIG)
   if (NLopt_FOUND)
     message(STATUS "Found NLopt: ${NLopt_DIR}  (found version \"${NLopt_VERSION}\")")
-  else ()
-    # fallback to our macro if NLoptConfig is not provided
-    find_package (NLopt)
-    set (NLopt_FOUND ${NLOPT_FOUND})
-  endif ()
-  if (NLopt_FOUND)
     set (OPENTURNS_HAVE_NLOPT TRUE)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${NLOPT_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${NLOPT_LIBRARIES})

@@ -643,9 +643,10 @@ public:
   virtual Point computeStandardDeviation() const;
 
   /**
-   * Gives the Pearson correlation matrix of the sample
+   * Gives the Linear correlation matrix of the sample
    */
   virtual CorrelationMatrix computeLinearCorrelation() const;
+  /* @deprecated */
   virtual CorrelationMatrix computePearsonCorrelation() const;
 
   /**

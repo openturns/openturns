@@ -287,4 +287,9 @@ Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collecti
   return Collection<Indices>(1, currentIndices_);
 }
 
+Point PenalizedLeastSquaresAlgorithm::getErrorHistory() const
+{
+  return Point();  
+}
+
 END_NAMESPACE_OPENTURNS

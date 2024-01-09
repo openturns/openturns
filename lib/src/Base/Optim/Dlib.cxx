@@ -62,7 +62,8 @@ public:
     , maxLineSearchIterations_(maxLineSearchIterations)
   {
     // Check wolfeRho and wolfeSigma
-    if (!(wolfeRho < wolfeSigma)) throw InvalidArgumentException(HERE) << "Error: wolfeRho must be lower than wolfeSigma";
+    if (!(wolfeRho < wolfeSigma))
+      throw InvalidArgumentException(HERE) << "Error: wolfeRho must be lower than wolfeSigma";
   }
 
   // Virtual constructor
@@ -102,6 +103,8 @@ protected:
   Scalar wolfeSigma_;
   UnsignedInteger maxLineSearchIterations_;
 };
+
+
 
 class DlibSearchStrategy
   : public TypedInterfaceObject<DlibSearchStrategyImplementation>
@@ -143,6 +146,8 @@ public:
   }
 };
 
+
+
 class DlibCgSearchStrategy
   : public DlibSearchStrategyImplementation
 {
@@ -170,6 +175,8 @@ public:
   }
 };
 
+
+
 class DlibBfgsSearchStrategy
   : public DlibSearchStrategyImplementation
 {
@@ -196,6 +203,8 @@ public:
     return dlib::bfgs_search_strategy().get_next_direction(x, f_value, funct_derivative);
   }
 };
+
+
 
 /** In addition to the previous features, L-BFGS algorithm allows the user
  *  to define the maximum amount of memory to use during the process **/
@@ -233,6 +242,8 @@ private:
   UnsignedInteger maxSize_;
 };
 
+
+
 /** Newton algorithm requires the user to provide the Hessian matrix of the objective function. **/
 class DlibNewtonSearchStrategy
   : public DlibSearchStrategyImplementation
@@ -267,7 +278,7 @@ private:
   DlibHessian hessian_;
 };
 
-/**                               => End of search strategy classes definitions **/
+
 
 class DlibStopStrategy
 {
@@ -275,12 +286,14 @@ public:
   DlibStopStrategy(const Dlib& dlibAlgorithm,
                    OptimizationResult& optimizationResult,
                    const DlibFunction& objectiveFunction,
+                   const std::chrono::steady_clock::time_point & t0,
                    const Bool minimization = true)
     : dlibAlgorithm_(dlibAlgorithm)
     , optimizationResult_(optimizationResult)
     , objectiveFunction_(objectiveFunction)
     , lastInput_(dlibAlgorithm_.getProblem().getDimension())
     , lastOutput_(1)
+    , t0_(t0)
     , minimization_(minimization)
   {
     // Nothing to do
@@ -290,7 +303,7 @@ public:
                               const double funct_value,
                               const DlibMatrix & )
   {
-    optimizationResult_.setEvaluationNumber(objectiveFunction_.getEvaluationNumber());
+    optimizationResult_.setCallsNumber(objectiveFunction_.getCallsNumber());
 
     Point xPoint(x.size());
     std::copy(x.begin(), x.end(), xPoint.begin());
@@ -309,12 +322,16 @@ public:
       constraintError = 0.0;
     }
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+
     // Compute stop criterion
-    bool stopSearch =  ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
+    bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                         && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                         && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                        || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                       || (objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumEvaluationNumber());
+                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber()
+                       || ((dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration())));
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -334,6 +351,7 @@ private:
   const DlibFunction & objectiveFunction_;
   Point lastInput_;
   Point lastOutput_;
+  std::chrono::steady_clock::time_point t0_;
   Bool minimization_ = true;
 };
 
@@ -586,6 +604,7 @@ void Dlib::run()
 
   // initialize result
   result_ = OptimizationResult(getProblem());
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
   /** SWITCH BETWEEN ALGORITHMS **/
   if (algoName_ == "cg"
@@ -610,7 +629,7 @@ void Dlib::run()
       searchStrategy = DlibNewtonSearchStrategy(wolfeRho_, wolfeSigma_, maxLineSearchIterations_, objectiveDlibFunction);
 
     // Create stopStrategy
-    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction, getProblem().isMinimization());
+    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction, t0, getProblem().isMinimization());
 
     // find_max (& find_max_box_constrained) is not used since broken in dlib<19.19
     if (getProblem().hasBounds())
@@ -630,22 +649,26 @@ void Dlib::run()
       return objectiveDlibFunction(input);
     };
 
+    std::chrono::nanoseconds max_runtime = dlib::FOREVER;
+    if (getMaximumTimeDuration() > 0.0)
+      max_runtime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::duration<Scalar, std::ratio<1> >(getMaximumTimeDuration()));
+
     const std::vector<bool> is_integer_variable(dimension, false);
     if (getProblem().isMinimization())
       globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
                           lb,
                           ub,
                           is_integer_variable,
-                          dlib::max_function_calls(getMaximumEvaluationNumber()),
-                          std::chrono::nanoseconds(dlib::FOREVER),
+                          dlib::max_function_calls(getMaximumCallsNumber()),
+                          max_runtime,
                           getMaximumAbsoluteError());
     else
       globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
                           lb,
                           ub,
                           is_integer_variable,
-                          dlib::max_function_calls(getMaximumEvaluationNumber()),
-                          std::chrono::nanoseconds(dlib::FOREVER),
+                          dlib::max_function_calls(getMaximumCallsNumber()),
+                          max_runtime,
                           getMaximumAbsoluteError());
 
     // Reconstruction of OptimizationResult
@@ -662,7 +685,7 @@ void Dlib::run()
                   0.0,
                   0.0);
 
-    for (UnsignedInteger i = 1; i < objectiveDlibFunction.getEvaluationNumber(); ++ i) // Iterations 2 to last
+    for (UnsignedInteger i = 1; i < objectiveDlibFunction.getCallsNumber(); ++ i) // Iterations 2 to last
       result_.store(  inputHistory[i],
                       outputHistory[i],
                       (inputHistory[i] - inputHistory[i - 1]).norm(),
@@ -672,13 +695,13 @@ void Dlib::run()
 
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, globalOptimResult.y));
-    result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
+    result_.setCallsNumber(objectiveDlibFunction.getCallsNumber());
   }
   else if (algoName_ == "least_squares")
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
-    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction, t0);
 
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
     auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
@@ -712,7 +735,7 @@ void Dlib::run()
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
-    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, residualDlibFunction, t0);
 
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
     auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
@@ -746,7 +769,7 @@ void Dlib::run()
   else if (algoName_ == "trust_region")
   {
     DlibFunction objectiveDlibFunction(getProblem().getObjective());
-    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction);
+    DlibStopStrategy stopStrategy(*this, result_, objectiveDlibFunction, t0);
 
     // Convert optimPoint to DlibFunction::column_vector
     DlibFunction::column_vector optimizer(dimension, 1);
@@ -768,6 +791,10 @@ void Dlib::run()
   }
   else
     throw NotYetImplementedException(HERE) << "Error: unknown strategy " << algoName_;
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 #endif  // dlib_FOUND
 }
 

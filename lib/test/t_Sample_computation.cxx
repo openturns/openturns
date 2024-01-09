@@ -52,7 +52,7 @@ int main(int, char *[])
     fullprint << "mean=" << sample.computeMean() << std::endl;
     fullprint << "covariance=" << sample.computeCovariance() << std::endl;
     fullprint << "standard deviation=" << sample.computeStandardDeviation() << std::endl;
-    fullprint << "Pearson correlation=" << sample.computePearsonCorrelation() << std::endl;
+    fullprint << "Pearson correlation=" << sample.computeLinearCorrelation() << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
     fullprint << "range per component=" << sample.computeRange() << std::endl;
@@ -131,7 +131,7 @@ int main(int, char *[])
     fullprint << "covariance=" << normal.getCovariance() << std::endl;
     Sample normalSample(normal.getSample(size));
     fullprint << "Empirical covariance=" << normalSample.computeCovariance() << std::endl;
-    CorrelationMatrix RPearson(normalSample.computePearsonCorrelation());
+    CorrelationMatrix RPearson(normalSample.computeLinearCorrelation());
     fullprint << "Pearson correlation=" << RPearson << std::endl;
     CorrelationMatrix RSpearman(normalSample.computeSpearmanCorrelation());
     fullprint << "Spearman correlation=" << RSpearman << std::endl;

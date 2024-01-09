@@ -62,16 +62,16 @@ OT_Solver_getAbsoluteError_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Solver_getMaximumFunctionEvaluation_doc
-"Accessor to the maximum number of evaluations of the function.
+%define OT_Solver_getMaximumCallsNumber_doc
+"Accessor to the maximum number of function calls.
 
 Returns
 -------
 maxEval : int
-    The maximum number of evaluations of the function."
+    The maximum number of function calls."
 %enddef
-%feature("docstring") OT::SolverImplementation::getMaximumFunctionEvaluation
-OT_Solver_getMaximumFunctionEvaluation_doc
+%feature("docstring") OT::SolverImplementation::getMaximumCallsNumber
+OT_Solver_getMaximumCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
@@ -116,16 +116,16 @@ OT_Solver_setAbsoluteError_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Solver_setMaximumFunctionEvaluation_doc
-"Accessor to the maximum number of evaluations of the function.
+%define OT_Solver_setMaximumCallsNumber_doc
+"Accessor to the maximum number of function calls.
 
 Parameters
 ----------
 maxEval : int
-    The maximum number of evaluations of the function."
+    The maximum number of function calls."
 %enddef
-%feature("docstring") OT::SolverImplementation::setMaximumFunctionEvaluation
-OT_Solver_setMaximumFunctionEvaluation_doc
+%feature("docstring") OT::SolverImplementation::setMaximumCallsNumber
+OT_Solver_setMaximumCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
@@ -157,13 +157,13 @@ OT_Solver_setResidualError_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Solver_getUsedFunctionEvaluation_doc
-"Accessor to the number of evaluations of the function.
+%define OT_Solver_getCallsNumber_doc
+"Accessor to the number of function calls.
 
 Returns
 -------
 nEval : int
-    The number of evaluations of the function."
+    The number of function calls."
 %enddef
-%feature("docstring") OT::SolverImplementation::getUsedFunctionEvaluation
-OT_Solver_getUsedFunctionEvaluation_doc
+%feature("docstring") OT::SolverImplementation::getCallsNumber
+OT_Solver_getCallsNumber_doc

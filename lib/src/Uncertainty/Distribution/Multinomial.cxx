@@ -171,7 +171,7 @@ Sample Multinomial::getSample(const UnsignedInteger size) const
 }
 
 /* Get the PDF of the distribution */
-Scalar Multinomial::computePDF(const Indices & point) const
+Scalar Multinomial::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getSize();
@@ -179,9 +179,12 @@ Scalar Multinomial::computePDF(const Indices & point) const
   UnsignedInteger k = 0;
   // First, check the validity of the input
   UnsignedInteger sumX = 0.0;
+  Indices x(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    k = point[i];
+    x[i] = static_cast< UnsignedInteger >(round(point[i]));
+    if (std::abs(x[i] - point[i]) > supportEpsilon_) return 0.0;
+    k = x[i];
     // Early exit if the given point is not in the support of the distribution
     if (k > n_) return 0.0;
     sumX += k;
@@ -201,7 +204,7 @@ Scalar Multinomial::computePDF(const Indices & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // Here we know that round(point[i]) >= 0
-    k = point[i];
+    k = x[i];
     pdf *= DistFunc::dBinomial(n_ - sumK, p_[i] / sumP, k);
     sumK += k;
     sumP -= p_[i];
@@ -363,7 +366,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
   // If we are at the origin, CDF=PDF(0,...,0)
   if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
-  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_)) return computePDF(kPoint);
+  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_)) return computePDF(point);
   // If the point covers the whole support of the distribution, return 1.0
   const UnsignedInteger size = indices.getSize();
   if (size == 0) return 1.0;
@@ -441,20 +444,24 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   // Now we have sumP_ == 1
   Indices a(dimension_);
   Indices b(dimension_);
+  Point aP(dimension_);
+  Point bP(dimension_);
   UnsignedInteger sigmaA = 0;
   UnsignedInteger sigmaB = 0;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    a[i] = static_cast<UnsignedInteger>(std::max(0.0, std::ceil(lower[i])));
-    b[i] = static_cast<UnsignedInteger>(std::min(1.0 * n_, std::floor(upper[i])));
+    aP[i] = std::max(0.0, std::ceil(lower[i]));
+    bP[i] = std::min(1.0 * n_, std::floor(upper[i]));
+    a[i] = static_cast<UnsignedInteger>(aP[i]);
+    b[i] = static_cast<UnsignedInteger>(bP[i]);
     if (a[i] > b[i]) return 0.0;
     sigmaA += a[i];
     sigmaB += b[i];
   }
   if (sigmaA > n_) return 0.0;
   if (sigmaB < n_) return 0.0;
-  if (sigmaA == n_) return computePDF(a);
-  if (sigmaB == n_) return computePDF(b);
+  if (sigmaA == n_) return computePDF(aP);
+  if (sigmaB == n_) return computePDF(bP);
   // Here we know that 0 <= a[j] < b[j] <= h[j]
   const UnsignedInteger nA = n_ - sigmaA;
   Scalar r = 1.0;

@@ -74,7 +74,10 @@ public:
   UnsignedInteger getMaximumIterationNumber() const;
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
-  /** Maximum evaluations number accessor */
+  /** Maximum calls number accessor */
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   UnsignedInteger getMaximumEvaluationNumber() const;
 
@@ -94,6 +97,10 @@ public:
   Scalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const Scalar maximumConstraintError);
 
+  /** Maximum time accessor */
+  void setMaximumTimeDuration(const Scalar maximumTime);
+  Scalar getMaximumTimeDuration() const;
+
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   void setProgressCallback(ProgressCallback callBack, void * state = 0);
@@ -102,6 +109,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Check status accessor */
+  void setCheckStatus(const Bool checkStatus);
+  Bool getCheckStatus() const;
+  
   /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
 

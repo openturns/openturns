@@ -24,6 +24,8 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#include <chrono>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -68,7 +70,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Ignore failure return codes */
+  /** @deprecated Ignore failure return codes */
   void setIgnoreFailure(const Bool ignoreFailure);
   Bool getIgnoreFailure() const;
 
@@ -96,8 +98,7 @@ private:
   Sample equalityConstraintHistory_;
   Sample inequalityConstraintHistory_;
 
-  /** Whether to ignore failure return codes */
-  Bool ignoreFailure_ = false;
+  std::chrono::steady_clock::time_point t0_;
 
 }; /* class Cobyla */
 

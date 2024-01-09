@@ -263,12 +263,8 @@ void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
-  if (cobyla)
-    cobyla->setIgnoreFailure(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setIgnoreFailure(true);
+  if ((solverName == "Cobyla") || (solverName == "TNC"))
+    solver_.setCheckStatus(false);
 }
 
 /* Virtual constructor */
@@ -465,7 +461,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
+  const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)

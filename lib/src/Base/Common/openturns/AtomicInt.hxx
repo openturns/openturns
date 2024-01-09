@@ -92,6 +92,20 @@ public:
     return val_.load();
   }
 
+  inline
+  AtomicInt & operator ++()
+  {
+    ++ val_;
+    return *this;
+  }
+
+  inline
+  AtomicInt & operator +=(int d)
+  {
+    val_ += d;
+    return *this;
+  }
+
 }; // AtomicInt
 
 END_NAMESPACE_OPENTURNS

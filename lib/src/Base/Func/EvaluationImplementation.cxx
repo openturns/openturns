@@ -425,7 +425,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "topright", 1.0, scale);
+  Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
+  graph.setLegendCorner({1.0, 1.0});
   Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();

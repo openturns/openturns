@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-from openturns.usecases import logistic_model as logistic_model
+from openturns.usecases import logistic_model
 
 
 ot.TESTPREAMBLE()

@@ -76,7 +76,7 @@ int main(int, char *[])
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
-    myAlgorithm.setMaximumEvaluationNumber(400);
+    myAlgorithm.setMaximumCallsNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
     myAlgorithm.setMaximumResidualError(1.0e-10);

@@ -22,22 +22,37 @@ for name, obj in inspect.getmembers(ot):
             print(obj.__name__, "FAIL")
 
 # save / load
-fileName = "myStudyStd.xml"
+fileName = "studyStd.xml"
 for class_ in instanciables:
-    myStudy = ot.Study()
-    myStudy.setStorageManager(ot.XMLStorageManager(fileName))
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fileName))
 
     print(class_.__name__)
     try:
         instance = class_()
-        myStudy.add(class_.__name__, instance)
-        myStudy.save()
-        myStudy = ot.Study()
-        myStudy.setStorageManager(ot.XMLStorageManager(fileName))
-        myStudy.load()
+        study.add(class_.__name__, instance)
+        study.save()
+        study = ot.Study()
+        study.setStorageManager(ot.XMLStorageManager(fileName))
+        study.load()
         os.remove(fileName)
         instance = class_()
-        myStudy.fillObject(class_.__name__, instance)
+        study.fillObject(class_.__name__, instance)
         print(class_.__name__, "OK")
     except Exception as exc:
         print("--", class_.__name__, exc)
+
+# non-ascii filename
+fileName = "utf_é.xml"
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.add("x", ot.Point([42.0]))
+study.save()
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.load()
+x = ot.Point()
+study.fillObject("x", x)
+assert len(x) == 1 and x[0] == 42.0, "wrong x"
+print(x)
+os.remove(fileName)

@@ -1,14 +1,14 @@
 %feature("docstring") OT::UniformOverMesh
 "UniformOverMesh distribution.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
     Mesh defining the domain of the distribution.
+
+See also
+--------
+TruncatedOverMesh
 
 Notes
 -----
@@ -25,12 +25,11 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> f = ot.SymbolicFunction(['x', 'y'], ['sin(x)*sin(y)'])
 >>> levelSet = ot.LevelSet(f, ot.Less(), 0.2)
 >>> box = ot.Interval([-5.0]*2, [5.0]*2)
 >>> mesh = ot.LevelSetMesher([50]*2).build(levelSet, box, False)
->>> distribution = otexp.UniformOverMesh(mesh)
+>>> distribution = ot.UniformOverMesh(mesh)
 
 Draw a sample:
 

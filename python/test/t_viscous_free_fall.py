@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-from openturns.usecases import viscous_free_fall as viscous_free_fall
+from openturns.usecases import viscous_free_fall
 
 
 ot.TESTPREAMBLE()

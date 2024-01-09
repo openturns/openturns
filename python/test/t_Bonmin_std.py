@@ -54,7 +54,7 @@ problem.setInequalityConstraint(h)
 
 bonminAlgorithm = ot.Bonmin(problem, "B-BB")
 bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
-bonminAlgorithm.setMaximumEvaluationNumber(10000)
+bonminAlgorithm.setMaximumCallsNumber(10000)
 bonminAlgorithm.setProgressCallback(progress)
 bonminAlgorithm.setStopCallback(stop)
 

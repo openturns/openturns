@@ -63,8 +63,8 @@ public:
   Scalar getMaximumRelativeError() const;
 
   /** Maximum evaluations number accessor */
-  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
-  UnsignedInteger getMaximumEvaluationNumber() const;
+  void setMaximumCallsNumber(const UnsignedInteger maximumEvaluationNumber);
+  UnsignedInteger getMaximumCallsNumber() const;
 
   /** String converter */
   String __repr__() const override;
@@ -100,7 +100,7 @@ private:
   // stop criterion
   Scalar maximumAbsoluteError_ = 0.0;
   Scalar maximumRelativeError_ = 0.0;
-  UnsignedInteger maximumEvaluationNumber_ = 0;
+  UnsignedInteger maximumCallsNumber_ = 0;
 
 } ; /* class SimplicialCubature */
 

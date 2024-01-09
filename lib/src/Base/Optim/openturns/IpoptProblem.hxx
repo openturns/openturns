@@ -27,6 +27,8 @@
 #define HAVE_CSTDDEF // for 3.11 in debian
 #include <IpTNLP.hpp>
 
+#include <chrono>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 typedef ::Ipopt::TNLP::LinearityType * LinearityTypeTable;
@@ -40,8 +42,9 @@ public:
   /** Constructor with parameters */
   IpoptProblem( const OptimizationProblem & optimProblem,
                 const Point & startingPoint,
-                const UnsignedInteger maximumEvaluationNumber
-              );
+                const UnsignedInteger maximumEvaluationNumber,
+                const Scalar maximumTimeDuration,
+                const std::chrono::steady_clock::time_point & t0);
 
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
@@ -165,11 +168,11 @@ private:
   Point optimalPoint_;
   Point optimalValue_;
   // Callbacks
-  UnsignedInteger maximumEvaluationNumber_;
+  UnsignedInteger maximumEvaluationNumber_ = 0;
+  Scalar maximumTimeDuration_ = -1.0;
+  std::chrono::steady_clock::time_point t0_;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
-
-
 };
 
 END_NAMESPACE_OPENTURNS

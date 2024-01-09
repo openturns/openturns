@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Compact.hxx"
 #include "openturns/OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -70,7 +69,10 @@ public:
   void setFinalValues(const Sample & finalValues);
   Sample getFinalValues() const;
 
-  /** Evaluation number accessor */
+  /** Calls number accessor */
+  void setCallsNumber(const UnsignedInteger callsNumber);
+  UnsignedInteger getCallsNumber() const;
+  // @deprecated
   void setEvaluationNumber(const UnsignedInteger evaluationNumber);
   UnsignedInteger getEvaluationNumber() const;
 
@@ -133,6 +135,19 @@ public:
   void setParetoFrontsIndices(const IndicesCollection & indices);
   IndicesCollection getParetoFrontsIndices() const;
 
+  /** Status message accessor */
+  void setStatusMessage(const String & statusMessage);
+  String getStatusMessage() const;
+
+  /** Status accessor */
+  enum Status {SUCCEEDED, FAILURE};
+  void setStatus(const UnsignedInteger status);
+  UnsignedInteger getStatus() const;
+
+  /** Elapsed time accessor */
+  void setTimeDuration(const Scalar time);
+  Scalar getTimeDuration() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
@@ -153,25 +168,29 @@ protected:
 private:
   Point optimalPoint_;
   Point optimalValue_;
-  UnsignedInteger evaluationNumber_ = 0; // Number of function evaluations
+  UnsignedInteger callsNumber_ = 0; // Number of function calls
   UnsignedInteger iterationNumber_ = 0; // Number of outermost iterations (in case of nested iterations)
+  Scalar time_ = 0.0;
   Scalar absoluteError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| */
   Scalar relativeError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar residualError_ = -1.0; /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar constraintError_ = -1.0; /**< Value of ||constraints(x_n)|| for the active constraints */
-  Compact absoluteErrorHistory_;
-  Compact relativeErrorHistory_;
-  Compact residualErrorHistory_;
-  Compact constraintErrorHistory_;
-  Compact inputHistory_;
-  Compact outputHistory_;
+  Sample absoluteErrorHistory_;
+  Sample relativeErrorHistory_;
+  Sample residualErrorHistory_;
+  Sample constraintErrorHistory_;
+  Sample inputHistory_;
+  Sample outputHistory_;
   OptimizationProblem problem_;
 
   Sample finalPoints_;
   Sample finalValues_;
 
-  // pareto fronts indices, for multi-objective optimization
+  // for multi-objective optimization
   IndicesCollection paretoFrontsIndices_;
+
+  String statusMessage_;
+  UnsignedInteger status_ = SUCCEEDED;
 
 }; // class OptimizationResult
 

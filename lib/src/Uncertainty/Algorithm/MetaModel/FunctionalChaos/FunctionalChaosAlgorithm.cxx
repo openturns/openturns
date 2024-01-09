@@ -344,6 +344,7 @@ void FunctionalChaosAlgorithm::run()
   Collection<Point> coefficientsHistory;
   Collection<Indices> indicesHistory(projectionStrategy_.getImplementation()->getSelectionHistory(coefficientsHistory));
   result_.setSelectionHistory(indicesHistory, coefficientsHistory);
+  result_.setErrorHistory(projectionStrategy_.getImplementation()->getErrorHistory());
 }
 
 /* Marginal computation */

@@ -33,14 +33,21 @@
  * Removed deprecated Point.clean
  * Removed deprecated (Inverse)Gamma.setKLambda
  * Removed deprecated Os::GetEndOfLine
+ * Deprecated Sample|CorrelationAnalysis::computePearsonCorrelation in favor of computeLinearCorrelation
+ * Deprecated Cobyla::setIgnoreFailure, TNC::setIgnoreFailure in favor of setCheckStatus
+ * Deprecated OptimizationAlgorithm.set/getMaximumEvaluationNumber in favor of set/getMaximumCallsNumber
+ * Deprecated OptimizationResult.set/getEvaluationNumber in favor of set/getCallsNumber
+ * Deprecated Solver.set/getMaximumFunctionEvaluation in favor of set/getMaximumCallsNumber
+ * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
+ * Deprecated TimerCallback
 
 === Documentation ===
 
 === Python module ===
 
 === Miscellaneous ===
-
-
+ * UniformOverMesh left the experimental module
+ * IntegrationExpansion/LeastSquaresExpansion left the experimental module
 
 == 1.22rc1 release (2023-11-14) == #release-1.22rc1
 

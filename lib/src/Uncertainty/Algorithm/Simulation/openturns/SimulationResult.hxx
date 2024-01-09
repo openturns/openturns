@@ -58,6 +58,10 @@ public:
   UnsignedInteger getBlockSize() const;
   void setBlockSize(const UnsignedInteger blockSize);
 
+  /** Elapsed time accessor */
+  void setTimeDuration(const Scalar time);
+  Scalar getTimeDuration() const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -69,8 +73,9 @@ public:
 
 protected:
 
-  UnsignedInteger outerSampling_;
-  UnsignedInteger blockSize_;
+  UnsignedInteger outerSampling_ = 0;
+  UnsignedInteger blockSize_ = 0;
+  Scalar timeDuration_ = 0.0;
 
 }; // class SimulationResult
 

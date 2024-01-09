@@ -308,4 +308,9 @@ Collection<Indices> ProjectionStrategyImplementation::getSelectionHistory(Collec
   throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getSelectionHistory";
 }
 
+Point ProjectionStrategyImplementation::getErrorHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getErrorHistory";
+}
+
 END_NAMESPACE_OPENTURNS

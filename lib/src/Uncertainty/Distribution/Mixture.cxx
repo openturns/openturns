@@ -207,7 +207,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     const Scalar w = weights[i];
     if (w < smallWeight)
     {
-      LOGWARN(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
+      LOGWARN(OSS() << "Removed the mixture's distribution #" << i << " with a too small weight=" << w << " wrt the maximum weight=" << maximumWeight);
     }
     else
     {

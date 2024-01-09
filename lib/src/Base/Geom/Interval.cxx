@@ -24,6 +24,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -414,7 +415,7 @@ void Interval::setLowerBound(const Point & lowerBound)
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-    if (SpecFunc::IsInf(lowerBound[i]))
+    if (std::isinf(lowerBound[i]))
     {
       lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteLowerBound_[i] = false;
@@ -432,7 +433,7 @@ void Interval::setUpperBound(const Point & upperBound)
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-    if (SpecFunc::IsInf(upperBound[i]))
+    if (std::isinf(upperBound[i]))
     {
       upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteUpperBound_[i] = false;

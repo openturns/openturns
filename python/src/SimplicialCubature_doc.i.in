@@ -72,23 +72,23 @@ rule : int in [1, 4]
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SimplicialCubature::setMaximumEvaluationNumber
-"Maximum evaluation number accessor.
+%feature("docstring") OT::SimplicialCubature::setMaximumCallsNumber
+"Maximum calls number accessor.
 
 Parameters
 ----------
 maxEval : int
-    The maximum function evaluation number."
+    The maximum function calls number."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SimplicialCubature::getMaximumEvaluationNumber
-"Maximum evaluation number accessor.
+%feature("docstring") OT::SimplicialCubature::getMaximumCallsNumber
+"Maximum calls number accessor.
 
 Returns
 -------
 maxEval : int
-    The maximum function evaluation number."
+    The maximum function calls number."
 
 // ---------------------------------------------------------------------
 

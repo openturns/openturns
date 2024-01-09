@@ -21,8 +21,8 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Box.hxx"
+
+#include <chrono>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +54,7 @@ MultiStart::MultiStart(const OptimizationAlgorithm & solver,
   checkSolver(solver);
 
   // no global limit unless the maximum eval number is set
-  setMaximumEvaluationNumber(solver.getMaximumEvaluationNumber() * startingSample.getSize());
+  setMaximumCallsNumber(solver.getMaximumCallsNumber() * startingSample.getSize());
 
   setProblem(solver.getProblem());
 }
@@ -91,22 +91,25 @@ void MultiStart::run()
     throw InvalidArgumentException(HERE) << "The starting points dimension (" << startingSample_.getDimension()
                                          << ") and the problem dimension (" << problemDimension << ") do not match.";
 
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+  Scalar timeDuration = 0.0;
+
   // run the solver with each starting point
   OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
-  const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
-  UnsignedInteger evaluationNumber = 0;
+  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingSample_[i]);
     // ensure we do not exceed the global budget if the maximum eval number is set
-    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - evaluationNumber), 0L);
+    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
     LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingSample_[i] << ", " << remainingEval << " remaining evaluations");
-    if (remainingEval < solver.getMaximumEvaluationNumber())
-      solver.setMaximumEvaluationNumber(remainingEval);
+    if (remainingEval < solver.getMaximumCallsNumber())
+      solver.setMaximumCallsNumber(remainingEval);
 
     try
     {
@@ -118,6 +121,8 @@ void MultiStart::run()
       LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
       continue;
     }
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
 
     const OptimizationResult result(solver.getResult());
     if (keepResults_) resultCollection_.add(result);
@@ -126,17 +131,17 @@ void MultiStart::run()
                   result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
                   solver.getMaximumConstraintError());
 
-    evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
-    LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
-    if (evaluationNumber > getMaximumEvaluationNumber())
-    {
+    callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
+    result_.setStatusMessage(result.getStatusMessage());
+
+    LOGDEBUG(OSS() << "Number of evaluations so far=" << callsNumber);
+    if ((callsNumber > getMaximumCallsNumber()) || ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration())))
       break;
-    }
 
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * callsNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {
@@ -148,10 +153,15 @@ void MultiStart::run()
       }
     }
   }
+  result_.setCallsNumber(callsNumber);
+  result_.setTimeDuration(timeDuration);
+
   if (!(successNumber > 0))
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InternalException(HERE) << "None of the local searches succeeded.";
+  }
   LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
-  result_.setEvaluationNumber(evaluationNumber);
 }
 
 

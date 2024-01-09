@@ -83,7 +83,7 @@ int main(int, char *[])
     Point prcc(corr_analysis.computePRCC());
     assert_almost_equal(prcc, Point({0.99, 0.92}), 0.0, 1e-2); // approximate value
 
-    Point pearson(corr_analysis.computePearsonCorrelation());
+    Point pearson(corr_analysis.computeLinearCorrelation());
     assert_almost_equal(pearson, Point({0.95, 0.31}), 0.0, 1e-2); // approximate value
 
     Point spearman(corr_analysis.computeSpearmanCorrelation());

@@ -215,4 +215,9 @@ Collection<Indices> ApproximationAlgorithmImplementation::getSelectionHistory(Co
   throw NotYetImplementedException(HERE) << "in ApproximationAlgorithmImplementation::getSelectionHistory";
 }
 
+Point ApproximationAlgorithmImplementation::getErrorHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in ApproximationAlgorithmImplementation::getErrorHistory";
+}
+
 END_NAMESPACE_OPENTURNS

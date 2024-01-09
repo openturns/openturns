@@ -45,14 +45,13 @@ Examples
 Solves a functional least-squares approximation using a projection on an orthonormal basis:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction('x', 'sin(x)')
 >>> distribution = ot.Uniform(-2.0, 2.0)
 >>> inSample = distribution.getSample(10)
 >>> outSample = g(inSample)
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
 >>> basisSize = 5
->>> algo = otexp.IntegrationExpansion(inSample, outSample, distribution, basis, basisSize)
+>>> algo = ot.IntegrationExpansion(inSample, outSample, distribution, basis, basisSize)
 >>> algo.run()"
 
 // ---------------------------------------------------------------------

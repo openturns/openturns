@@ -75,7 +75,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 # %%
 algo = ot.Cobyla(problem)
 algo.setMaximumRelativeError(1.0e-1)  # on x
-algo.setMaximumEvaluationNumber(50000)
+algo.setMaximumCallsNumber(50000)
 algo.setStartingPoint(x0)
 algo.run()
 
@@ -98,7 +98,7 @@ absoluteError
 result.getOptimalValue()  # f(x*)
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
@@ -178,7 +178,7 @@ absoluteError
 result.getOptimalValue()  # f(x*)
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 # This number of iterations is much less than the previous experiment.

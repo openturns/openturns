@@ -7,6 +7,7 @@
 %include ApproximationAlgorithmImplementation_doc.i
 
 %ignore OT::ApproximationAlgorithmImplementation::getSelectionHistory;
+%ignore OT::ApproximationAlgorithmImplementation::getErrorHistory;
 
 %copyctor OT::ApproximationAlgorithmImplementation;
 

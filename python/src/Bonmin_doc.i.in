@@ -108,7 +108,7 @@ In OpenTURNS, inequality constraints are defined by a function :math:`h` such th
 
 >>> bonminAlgorithm = ot.Bonmin(problem,'B-BB')
 >>> bonminAlgorithm.setStartingPoint([0,0,0,0])
->>> bonminAlgorithm.setMaximumEvaluationNumber(10000)
+>>> bonminAlgorithm.setMaximumCallsNumber(10000)
 >>> bonminAlgorithm.setMaximumIterationNumber(1000)
 >>> ot.ResourceMap.AddAsString('Bonmin-mu_oracle','loqo')
 >>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 5.0)

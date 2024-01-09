@@ -151,8 +151,10 @@
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="1000" />
+  <OptimizationAlgorithm-DefaultMaximumTimeDuration     value_float="-1.0" />
+  <OptimizationAlgorithm-DefaultMaximumCallsNumber      value_int="1000" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
+  <OptimizationAlgorithm-DefaultCheckStatus             value_bool="true" />
 
   <!-- OT::Pagmo parameters -->
   <Pagmo-InitialSeed value_int="0" />
@@ -711,6 +713,7 @@
   <!-- OT::SimulationAlgorithm parameters -->
   <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value_float="1.0e-1"         />
   <SimulationAlgorithm-DefaultMaximumStandardDeviation      value_float="0.0"            />
+  <SimulationAlgorithm-DefaultMaximumTimeDuration           value_float="-1.0" />
   <SimulationAlgorithm-DefaultBlockSize                     value_int="1"    />
   <SimulationAlgorithm-DefaultMaximumOuterSampling          value_int="1000" />
 
@@ -1014,7 +1017,7 @@
   <!-- SimplicialCubature parameters -->
   <SimplicialCubature-DefaultMaximumAbsoluteError value_float="0.0" />
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
-  <SimplicialCubature-DefaultMaximumEvaluationNumber value_int="10000" />
+  <SimplicialCubature-DefaultMaximumCallsNumber   value_int="10000" />
   <SimplicialCubature-DefaultRule value_int="3" />
 
   <!-- OT::SparseMethod parameters -->

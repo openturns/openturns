@@ -146,8 +146,8 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
   residual_p_ = approximationAlgorithm.getResidual();
   relativeError_p_ = approximationAlgorithm.getRelativeError();
   indicesHistory_ = approximationAlgorithm.getImplementation()->getSelectionHistory(coefficientsHistory_);
+  errorHistory_ = approximationAlgorithm.getImplementation()->getErrorHistory();
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void LeastSquaresStrategy::save(Advocate & adv) const
@@ -170,6 +170,11 @@ Collection<Indices> LeastSquaresStrategy::getSelectionHistory(Collection<Point> 
 {
   coefficientsHistory = coefficientsHistory_;
   return indicesHistory_;
+}
+
+Point LeastSquaresStrategy::getErrorHistory() const
+{
+  return errorHistory_;
 }
 
 END_NAMESPACE_OPENTURNS

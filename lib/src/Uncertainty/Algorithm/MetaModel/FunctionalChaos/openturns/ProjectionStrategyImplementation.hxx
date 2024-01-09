@@ -121,6 +121,7 @@ public:
   void load(Advocate & adv) override;
 
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+  virtual Point getErrorHistory() const;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

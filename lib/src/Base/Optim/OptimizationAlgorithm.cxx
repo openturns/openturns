@@ -114,7 +114,19 @@ void OptimizationAlgorithm::setMaximumIterationNumber(const UnsignedInteger maxi
   getImplementation()->setMaximumIterationNumber(maximumIterationNumber);
 }
 
-/* Maximum evaluations number accessor */
+/* Maximum calls number accessor */
+UnsignedInteger OptimizationAlgorithm::getMaximumCallsNumber() const
+{
+  return getImplementation()->getMaximumCallsNumber();
+}
+
+/* Maximum iterations number accessor */
+void OptimizationAlgorithm::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumCallsNumber(maximumCallsNumber);
+}
+
 UnsignedInteger OptimizationAlgorithm::getMaximumEvaluationNumber() const
 {
   return getImplementation()->getMaximumEvaluationNumber();
@@ -179,6 +191,18 @@ void OptimizationAlgorithm::setMaximumConstraintError(const Scalar maximumConstr
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
+/* Maximum time accessor */
+void OptimizationAlgorithm::setMaximumTimeDuration(const Scalar maximumTime)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumTimeDuration(maximumTime);
+}
+
+Scalar OptimizationAlgorithm::getMaximumTimeDuration() const
+{
+  return getImplementation()->getMaximumTimeDuration();
+}
+
 /* String converter */
 String OptimizationAlgorithm::__repr__() const
 {
@@ -202,15 +226,27 @@ void OptimizationAlgorithm::run()
 
 void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setProgressCallback(callBack, state);
 }
 
-
 void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
 }
 
+/* Check status accessor */
+void OptimizationAlgorithm::setCheckStatus(const Bool checkStatus)
+{
+  copyOnWrite();
+  getImplementation()->setCheckStatus(checkStatus);
+}
+
+Bool OptimizationAlgorithm::getCheckStatus() const
+{
+  return getImplementation()->getCheckStatus();
+}
 
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {

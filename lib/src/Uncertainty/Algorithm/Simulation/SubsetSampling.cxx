@@ -113,6 +113,8 @@ void SubsetSampling::run()
   // blockSize may have changed
   initialExperiment_.setSize(blockSize);
 
+  t0_ = std::chrono::steady_clock::now();
+
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
@@ -185,9 +187,7 @@ void SubsetSampling::run()
 
     // make sure the last failure domain does not overlap the real failure domain
     if (stop)
-    {
       currentThreshold = getEvent().getThreshold();
-    }
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
     previousVariance = varianceEstimate;
@@ -218,6 +218,11 @@ void SubsetSampling::run()
     if (probabilityEstimate < minimumProbability_)
       throw NotDefinedException(HERE) << "Probability estimate too small: " << probabilityEstimate;
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      stop = true;
+    
     // compute variance estimate
     varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
@@ -233,6 +238,10 @@ void SubsetSampling::run()
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
 
   // free work samples
   currentLevelSample_.clear();
@@ -389,9 +398,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
 
         // accept new point with probability ratio
         if (ratio < uniform[k])
-        {
           newPoint[k] = oldPoint[k];
-        }
       }
 
       inputSample[j] = newPoint;
@@ -408,6 +415,11 @@ void SubsetSampling::generatePoints(Scalar threshold)
         currentLevelSample_[i * blockSize + j] = blockSample[j];
       }
     }
+
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      throw InternalException(HERE) << "Maximum time exceeded";
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";

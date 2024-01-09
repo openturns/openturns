@@ -9,7 +9,7 @@ def printResults(result, problemName):
     print("      -- Optimal point = ", result.getOptimalPoint())
     print("      -- Optimal value = ", result.getOptimalValue())
     print("      -- Iteration number = ", result.getIterationNumber())
-    print("      -- Evaluation number = ", result.getEvaluationNumber())
+    print("      -- Evaluation number = ", result.getCallsNumber())
     print("      -- Absolute error = {:.6e}".format(result.getAbsoluteError()))
     print("      -- Relative error = {:.6e}".format(result.getRelativeError()))
     print("      -- Residual error = {:.6e}".format(result.getResidualError()))
@@ -41,13 +41,13 @@ unboundedPref = [0.0, 0.0]
 # Non-contraining bounds Global
 notConstrainingBoundsGlobal = ot.Dlib(notConstrainingBoundsProblem, "global")
 notConstrainingBoundsGlobal.setStartingPoint([0.0] * 2)
-notConstrainingBoundsGlobal.setMaximumEvaluationNumber(300)
+notConstrainingBoundsGlobal.setMaximumCallsNumber(300)
 notConstrainingBoundsGlobal.run()
 printResults(notConstrainingBoundsGlobal.getResult(), "Non-constraining bounds Global")
 
 # Contraining bounds Global
 constrainingBoundsGlobal = ot.Dlib(constrainingBoundsProblem, "global")
-constrainingBoundsGlobal.setMaximumEvaluationNumber(300)
+constrainingBoundsGlobal.setMaximumCallsNumber(300)
 constrainingBoundsGlobal.setStartingPoint([0.0] * 2)
 constrainingBoundsGlobal.run()
 printResults(constrainingBoundsGlobal.getResult(), "Constraining bounds Global")

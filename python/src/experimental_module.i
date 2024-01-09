@@ -59,8 +59,6 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
-%include LeastSquaresExpansion.i
-%include IntegrationExpansion.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include CrossEntropyResult.i
@@ -73,7 +71,6 @@
 %include StudentCopula.i
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
-%include UniformOverMesh.i
 %include PosteriorDistribution.i
 
 // duplicate helpers

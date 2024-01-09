@@ -25,6 +25,8 @@
 #include "openturns/StandardEvent.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
+#include <chrono>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSampling
@@ -130,6 +132,7 @@ private:
   Sample currentPointSample_;// X
   Sample currentLevelSample_;//f(X)
   UnsignedInteger seedNumber_ = 0;// number of seed points
+  std::chrono::steady_clock::time_point t0_;
 
   // keep samples generated at each step
   Bool keepSample_ = false;

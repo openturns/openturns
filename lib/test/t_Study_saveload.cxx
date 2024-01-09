@@ -416,7 +416,7 @@ int main(int, char *[])
     // Create a Cobyla algorithm
     Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setMaximumEvaluationNumber(100);
+    cobyla.setMaximumCallsNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
     cobyla.setMaximumResidualError(1.0e-10);
@@ -1133,8 +1133,8 @@ int main(int, char *[])
       {
         std::cout << "j=" << j;
         std::cout << " isnormal=" << SpecFunc::IsNormal(point2[j]);
-        std::cout << " isnan=" << SpecFunc::IsNaN(point2[j]);
-        std::cout << " isinf=" << SpecFunc::IsInf(point2[j]) << std::endl;
+        std::cout << " isnan=" << std::isnan(point2[j]);
+        std::cout << " isinf=" << std::isinf(point2[j]) << std::endl;
       }
       // cleanup
       Os::Remove(fileName);

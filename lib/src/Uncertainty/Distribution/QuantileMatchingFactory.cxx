@@ -61,7 +61,7 @@ QuantileMatchingFactory::QuantileMatchingFactory(const Distribution & distributi
   solver_ = OptimizationAlgorithm::Build(problem);
 
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("QuantileMatchingFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("QuantileMatchingFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("QuantileMatchingFactory-MaximumObjectiveError"));

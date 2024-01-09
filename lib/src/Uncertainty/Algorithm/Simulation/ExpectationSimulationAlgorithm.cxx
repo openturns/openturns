@@ -117,6 +117,8 @@ void ExpectationSimulationAlgorithm::run()
   result_.setVarianceEstimate(varianceEstimate);
   result_.setOuterSampling(outerSampling);
 
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   Bool stop = false;
   // We loop if there remains some outer sampling and the coefficient of variation is greater than the limit or has not been computed yet.
   while ((outerSampling < getMaximumOuterSampling()) && !stop)
@@ -197,6 +199,14 @@ void ExpectationSimulationAlgorithm::run()
         convergencePoint[dimension + j] = reducedVarianceEstimate[j];
     convergenceStrategy_.store(convergencePoint);
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO(OSS() << "Maximum time exceeded");
+      stop = true;
+    }
+
     // callbacks
     if (progressCallback_.first)
     {
@@ -211,6 +221,10 @@ void ExpectationSimulationAlgorithm::run()
       }
     }
   }
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 }
 
 Scalar ExpectationSimulationAlgorithm::computeCriterion(const String & criterionType, const Point & values)

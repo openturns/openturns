@@ -50,23 +50,23 @@ constraintErrorHistory : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::setEvaluationNumber
-"Accessor to the number of evaluation.
+%feature("docstring") OT::OptimizationResult::setCallsNumber
+"Accessor to the number calls.
 
 Parameters
 ----------
-evaluationNumber : int
-    Number of evaluations."
+callsNumber : int
+    Number of objective calls."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::getEvaluationNumber
-"Accessor to the number of evaluations.
+%feature("docstring") OT::OptimizationResult::getCallsNumber
+"Accessor to the number of calls.
 
 Returns
 -------
-evaluationNumber : int
-    Number of evaluations."
+callsNumber : int
+    Number of objective calls."
 
 // ---------------------------------------------------------------------
 
@@ -337,3 +337,63 @@ Parameters
 ----------
 indices : 2-d sequence of int
     Pareto fronts indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setStatusMessage
+"Accessor to the status string.
+
+Parameters
+----------
+statusMessage : str
+    Convergence or error message"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getStatusMessage
+"Accessor to the status string.
+
+Returns
+-------
+statusMessage : str
+    Convergence or error message"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setStatus
+"Accessor to the status string.
+
+Parameters
+----------
+status : int
+    Status flag, possible values SUCCEEDED, FAILURE"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getStatus
+"Accessor to the status string.
+
+Returns
+-------
+status : str
+    Status flag, possible values SUCCEEDED, FAILURE"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setTimeDuration
+"Accessor to the elapsed time.
+
+Parameters
+----------
+time : float
+    Optimization duration in seconds"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getTimeDuration
+"Accessor to the elapsed time.
+
+Returns
+-------
+time : float
+    Optimization duration in seconds"

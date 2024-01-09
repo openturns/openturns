@@ -142,7 +142,7 @@ xexact
 # Let us focus on the instance that found the global minimum. How many times did it evaluate `rastrigin`?
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 # Let us view these evaluation points.
