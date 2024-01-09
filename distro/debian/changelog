@@ -1,6 +1,6 @@
-openturns (1.22~rc1-1) experimental; urgency=medium
+openturns (1.22-1) experimental; urgency=medium
 
-  * New upstream pre-release
+  * New upstream release
 
  -- Julien Schueller <schueller@phimeca.com>  Tue, 14 Nov 2023 10:19:33 +0100
 
