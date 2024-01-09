@@ -417,7 +417,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
-  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+  if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
     return 1;
 
   // callbacks

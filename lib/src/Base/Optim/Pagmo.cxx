@@ -119,8 +119,8 @@ struct PagmoProblem
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
-    if ((algorithm_->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
-      throw InternalException(HERE) << "Maximum time exceeed";
+    if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
+      throw InternalException(HERE) << "Time is " << timeDuration << ", exceeds maximum authorized time " << algorithm_->getMaximumTimeDuration();
 
     // callbacks
     if (algorithm_->progressCallback_.first)
@@ -209,8 +209,8 @@ struct PagmoProblem
 
       std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
       const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
-      if ((algorithm_->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
-        throw InternalException(HERE) << "Maximum time exceeed";
+      if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
+        throw InternalException(HERE) << "Time is " << timeDuration << ", exceeds maximum authorized time " << algorithm_->getMaximumTimeDuration();
 
       // callbacks
       if (algorithm_->progressCallback_.first)
