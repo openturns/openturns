@@ -343,14 +343,21 @@ void NLopt::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
+  if (rc < 0)
+    result_.setStatus(OptimizationResult::FAILURE);
 
+  // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
   result_.setTimeDuration(timeDuration);
-
-  if (rc < 0)
+  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
   {
-    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << " s");
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
     if (getCheckStatus())
       throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
     else

@@ -136,14 +136,21 @@ void Cobyla::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
+    result_.setStatus(OptimizationResult::FAILURE);
 
+  // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
   result_.setTimeDuration(timeDuration);
-
-  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
+  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
   {
-    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << " s");
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
     else
