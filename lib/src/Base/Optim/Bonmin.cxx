@@ -170,11 +170,39 @@ void Bonmin::run()
   LOGDEBUG(optlist);
 
   // Update setup with BonminProblem
-  app.initialize(GetRawPtr(tminlp));
+  try
+  {
+    app.initialize(GetRawPtr(tminlp));
 
-  // Solve problem
-  Bab solver;
-  solver(app);
+    // Solve problem
+    Bab solver;
+    solver(app);
+  }
+  catch (TNLPSolver::UnsolvedError *exc)
+  {
+    const Sample inputHistory(tminlp->getInputHistory());
+    setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+
+    result_.setStatus(OptimizationResult::FAILURE);
+    std::ostringstream oss;
+    exc->printError(oss);
+    result_.setStatusMessage(oss.str());
+    return;
+  }
+  catch(const OsiTMINLPInterface::SimpleError & exc)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatusMessage(exc.message());
+    return;
+  }
+  catch(const CoinError & exc)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatusMessage(exc.message());
+    return;
+  }
 
   const Sample inputHistory(tminlp->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
