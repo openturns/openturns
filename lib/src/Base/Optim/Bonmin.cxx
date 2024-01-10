@@ -204,19 +204,32 @@ void Bonmin::run()
     return;
   }
 
+  String allOptions;
+  app.options()->PrintList(allOptions);
+  LOGINFO(allOptions);
+
   const Sample inputHistory(tminlp->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
+  // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
   result_.setTimeDuration(timeDuration);
+  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "Bonmin optimization timeout after " << timeDuration << " s");
+  }
 
-  String allOptions;
-  app.options()->PrintList(allOptions);
-  LOGINFO(allOptions);
-
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Solving problem by Bonmin method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "Bonmin algorithm failed. The error message is " << result_.getStatusMessage());
+  }
 #else
   result_.setStatus(OptimizationResult::FAILURE);
   throw NotYetImplementedException(HERE) << "No Bonmin support";
