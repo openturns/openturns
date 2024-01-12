@@ -101,3 +101,23 @@ Examples
 >>> import openturns as ot
 >>> have_xml_support = ot.PlatformInfo.HasFeature('libxml2')
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetCompilerId
+"Accessor to the compiler id.
+
+Returns
+-------
+id : str
+    Compiler id (GNU, MSVC...)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetCompilerVersion
+"Accessor to the compiler version.
+
+Returns
+-------
+version : str
+    Compiler version."

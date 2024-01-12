@@ -197,4 +197,14 @@ Bool PlatformInfo::HasFeature(const String & feature)
     throw InvalidArgumentException(HERE) << "Unknown feature: " << feature;
 }
 
+String PlatformInfo::GetCompilerId()
+{
+  return CompilerId;
+}
+
+String PlatformInfo::GetCompilerVersion()
+{
+  return CompilerVersion;
+}
+
 END_NAMESPACE_OPENTURNS
