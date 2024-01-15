@@ -3,56 +3,6 @@
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PersistentObject::getId
-"Accessor to the object's id.
-
-Returns
--------
-id : int
-   Internal unique identifier."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PersistentObject::setShadowedId
-"Accessor to the object's shadowed id.
-
-Parameters
-----------
-id : int
-    Internal unique identifier."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PersistentObject::getShadowedId
-"Accessor to the object's shadowed id.
-
-Returns
--------
-id : int
-    Internal unique identifier."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PersistentObject::setVisibility
-"Accessor to the object's visibility state.
-
-Parameters
-----------
-visible : bool
-    Visibility flag."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PersistentObject::getVisibility
-"Accessor to the object's visibility state.
-
-Returns
--------
-visible : bool
-    Visibility flag."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::PersistentObject::hasName
 "Test if the object is named.
 
@@ -60,16 +10,6 @@ Returns
 -------
 hasName : bool
     True if the name is not empty."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PersistentObject::hasVisibleName
-"Test if the object has a distinguishable name.
-
-Returns
--------
-hasVisibleName : bool
-    True if the name is not empty and not the default one."
 
 // ---------------------------------------------------------------------
 
