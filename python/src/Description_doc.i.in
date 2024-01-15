@@ -87,3 +87,11 @@ True
 >>> vector = ot.Description(['P1', 'P2', ' '])
 >>> vector.isBlank()
 False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Description::sort
+"Sort the list.
+
+The list is sorted in-place.
+"
