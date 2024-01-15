@@ -4,6 +4,6 @@
 #include "openturns/EvaluationProxy.hxx"
 %}
 
-%copyctor OT::EvaluationProxy;
+%ignore OT::EvaluationProxy;
 
 %include openturns/EvaluationProxy.hxx
