@@ -138,6 +138,11 @@ UnsignedInteger Solver::getMaximumFunctionEvaluation() const
   return getImplementation()->getMaximumFunctionEvaluation();
 }
 
+UnsignedInteger Solver::getCallsNumber() const
+{
+  return getImplementation()->getCallsNumber();
+}
+
 UnsignedInteger Solver::getUsedFunctionEvaluation() const
 {
   return getImplementation()->getUsedFunctionEvaluation();
