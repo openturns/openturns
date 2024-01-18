@@ -96,7 +96,7 @@ print("KendallPlot2 = ", kendallPlot2)
 sample = ot.Normal(4).getSample(200)
 clouds = ot.VisualTest.DrawPairs(sample)
 print("Clouds = ", clouds)
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(4)]
 )
 cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)

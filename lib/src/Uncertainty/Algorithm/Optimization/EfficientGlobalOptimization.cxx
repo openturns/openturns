@@ -24,7 +24,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -239,14 +239,14 @@ void EfficientGlobalOptimization::run()
       const Point upperBound(bounds.getUpperBound());
       const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
       const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-      ComposedDistribution::DistributionCollection coll;
+      JointDistribution::DistributionCollection coll;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
         if (!finiteLowerBound[i] || !finiteUpperBound[i])
           throw InvalidArgumentException(HERE) << "Bounds must be finite";
         coll.add(Uniform(lowerBound[i], upperBound[i]));
       }
-      const ComposedDistribution distribution(coll);
+      const JointDistribution distribution(coll);
       Sample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
       // retain best P/N points as starting points
       improvementExperiment.stack(improvementObjective(improvementExperiment));

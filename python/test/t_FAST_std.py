@@ -19,7 +19,7 @@ formulaIshigami[
 
 modelIshigami = ot.SymbolicFunction(inputName, formulaIshigami)
 
-distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * inputDimension)
+distributions = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * inputDimension)
 
 sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 400)
 
@@ -82,7 +82,7 @@ for i in range(inputDimension):
 covTh = covTh - 1.0
 modelGSobol = ot.SymbolicFunction(inputName, formulaGSobol)
 
-distributions = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
+distributions = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
 
 sensitivityAnalysis = ot.FAST(modelGSobol, distributions, 400)
 

@@ -139,12 +139,12 @@ first one has dimension 2, and the second one has dimension 3.
 >>> # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
 >>> marginal_sizes_1 = [3, 2]
 >>> dimension_1 = len(marginal_sizes_1)
->>> distribution_1 = ot.ComposedDistribution([ot.Uniform()] * dimension_1)
+>>> distribution_1 = ot.JointDistribution([ot.Uniform()] * dimension_1)
 >>> experiment_1 = ot.GaussProductExperiment(distribution_1, marginal_sizes_1)
 >>> # Experiment 2 : Normal * 3 with 2, 2 and 1 nodes.
 >>> marginal_sizes_2 = [2, 2, 1]
 >>> dimension_2 = len(marginal_sizes_2)
->>> distribution_2 = ot.ComposedDistribution([ot.Normal()] * dimension_2)
+>>> distribution_2 = ot.JointDistribution([ot.Normal()] * dimension_2)
 >>> experiment_2 = ot.GaussProductExperiment(distribution_2, marginal_sizes_2)
 >>> # Tensor product
 >>> collection = [experiment_1, experiment_2]

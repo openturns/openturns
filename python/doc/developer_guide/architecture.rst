@@ -460,4 +460,4 @@ the object.
 
 The Composite pattern is an essential element of the design model for the platform.
 It can be found in several modeling bricks, such as function composition (ComposedFunction)
-random vector composition (CompositeRandomVector), joint distributions (ComposedDistribution), etc.
+random vector composition (CompositeRandomVector), joint distributions (JointDistribution), etc.

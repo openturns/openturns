@@ -53,7 +53,7 @@ int main(int, char *[])
       copulaCollection.add(NormalCopula(R1));
       copulaCollection.add(NormalCopula(R2));
       ComposedCopula copula(copulaCollection);
-      ComposedDistribution ref(Collection<Distribution>(7, Normal(0.0, 1.0)), copula);
+      JointDistribution ref(Collection<Distribution>(7, Normal(0.0, 1.0)), copula);
       // Define a point
       Point point( distribution.getDimension(), 0.3 );
       fullprint << "Point= " << point << std::endl;
@@ -88,9 +88,9 @@ int main(int, char *[])
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;
     BlockIndependentDistribution::DistributionCollection collection(3);
-    collection[0] = ComposedDistribution(Collection<Distribution>(2, Normal()), AliMikhailHaqCopula(0.5));
+    collection[0] = JointDistribution(Collection<Distribution>(2, Normal()), AliMikhailHaqCopula(0.5));
     collection[1] = Normal(Point(3, 1.0), Point(3, 2.0), R);
-    collection[2] = ComposedDistribution(Collection<Distribution>(2, Exponential()), FrankCopula(0.5));
+    collection[2] = JointDistribution(Collection<Distribution>(2, Exponential()), FrankCopula(0.5));
     BlockIndependentDistribution distribution(collection);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

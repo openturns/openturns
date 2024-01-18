@@ -138,7 +138,7 @@ int main(int, char *[])
     marginals[0] = Uniform(-M_PI, M_PI);
     marginals[1] = Uniform(-M_PI, M_PI);
     marginals[2] = Uniform(-M_PI, M_PI);
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
     Sample inputsSample(distribution.getSample(100));
 
     Point refResultValues(100, 0.);

@@ -35,8 +35,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
->>> importanceDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
+>>> distribution = ot.JointDistribution([ot.Uniform(0, 1)] * 2)
+>>> importanceDistribution = ot.JointDistribution([ot.Uniform(0, 1)] * 2)
 >>> experiment = ot.ImportanceSamplingExperiment(distribution, importanceDistribution, 5)
 >>> print(experiment.generate())
     [ X0        X1        ]

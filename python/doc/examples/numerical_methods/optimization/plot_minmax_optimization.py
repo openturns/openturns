@@ -18,7 +18,7 @@ dist_F = ot.LogNormalMuSigma(30000, 9000, 15000).getDistribution()
 dist_L = ot.Uniform(250, 260)
 dist_I = ot.Beta(2.5, 1.5, 3.1e2, 4.5e2)
 marginals = [dist_E, dist_F, dist_L, dist_I]
-distribution = ot.ComposedDistribution(marginals)
+distribution = ot.JointDistribution(marginals)
 
 # %%
 # Define bounds

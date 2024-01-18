@@ -1,12 +1,12 @@
-conditioning distribution= ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
 2 : [ -0.157398 ]
 3 : [  2.30822  ]
 4 : [ -2.77208  ])
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -24,7 +24,7 @@ Independent copula=  False
 oneRealization= [0.577515,1.61937]
 Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
 Quantile= [0.946843,1.98454]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -34,7 +34,7 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 margin CDF= [0]
 margin quantile= [0.900147]
 margin realization= [0.2696]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -44,15 +44,15 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 margin CDF= [0]
 margin quantile= [1.96961]
 margin realization= [1.58154]
-conditioning distribution= ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+conditioning distribution= JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.216    ]
 1 : [  1.18973  ]
 2 : [ -0.705788 ]
 3 : [  0.391527 ]
 4 : [ -3.43509  ])
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.216    ]
 1 : [  1.18973  ]
@@ -70,7 +70,7 @@ Independent copula=  False
 oneRealization= [0,2]
 Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
 Quantile= [0,1.95]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.216    ]
 1 : [  1.18973  ]
@@ -80,7 +80,7 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 margin CDF= [1]
 margin quantile= [0]
 margin realization= [0]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.216    ]
 1 : [  1.18973  ]

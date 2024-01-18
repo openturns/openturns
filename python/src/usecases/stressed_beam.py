@@ -40,7 +40,7 @@ class AxialStressedBeam:
     distribution_F : `Normal` distribution of the traction load
                      ot.Normal(muF, sigmaF)
 
-    distribution : `ComposedDistribution`
+    distribution : `JointDistribution`
                    The joint distribution of the inpput parameters.
 
     Examples
@@ -74,6 +74,6 @@ class AxialStressedBeam:
         self.distribution_F.setDescription("F")
 
         # Joint distribution of the input parameters
-        self.distribution = ot.ComposedDistribution(
+        self.distribution = ot.JointDistribution(
             [self.distribution_R, self.distribution_F]
         )

@@ -36,11 +36,11 @@ int main(int, char *[])
     Uniform X2(-M_PI, M_PI);
     Uniform X3(-M_PI, M_PI);
 
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add(X1);
     aCollection.add(X2);
     aCollection.add(X3);
-    Distribution distX  = ComposedDistribution(aCollection);
+    Distribution distX  = JointDistribution(aCollection);
 
     /* Input sample of size 100 and dimension 3. */
     UnsignedInteger size = 100;

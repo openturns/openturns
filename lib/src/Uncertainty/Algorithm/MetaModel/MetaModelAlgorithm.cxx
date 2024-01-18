@@ -26,7 +26,7 @@
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/HypothesisTest.hxx"
 #include "openturns/UserDefined.hxx"
@@ -246,7 +246,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
     }
   }
 
-  ComposedDistribution distribution(marginals);
+  JointDistribution distribution(marginals);
   if (!isIndependent)
     distribution.setCopula(NormalCopulaFactory().build(inputSample));
   return distribution;

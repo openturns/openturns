@@ -14,7 +14,7 @@ formula = [
 
 model = ot.SymbolicFunction(["X1", "X2", "X3"], formula)
 
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
+distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
 
 # Size of simulation
 size = 10000
@@ -76,7 +76,7 @@ for method in methods:
 # with experiment
 sequence = ot.SobolSequence(input_dimension)
 experiment = ot.LowDiscrepancyExperiment(
-    sequence, ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * input_dimension), size
+    sequence, ot.JointDistribution([ot.Uniform(0.0, 1.0)] * input_dimension), size
 )
 sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(experiment, model)
 print(sensitivity_algorithm.getFirstOrderIndices())
@@ -86,7 +86,7 @@ model_aggregated = ot.SymbolicFunction(
     ["X1", "X2", "X3"],
     ["2*X1 + X2 - 3*X3 + 0.3*X1*X2", "-5*X1 + 4*X2 - 0.8*X2*X3 + 2*X3"],
 )
-distribution_aggregated = ot.ComposedDistribution([ot.Uniform()] * 3)
+distribution_aggregated = ot.JointDistribution([ot.Uniform()] * 3)
 inputDesign = ot.SobolIndicesExperiment(distribution_aggregated, size).generate()
 outputDesign = model_aggregated(inputDesign)
 # Case 1 : Estimation of sensitivity using estimator and no bootstrap
@@ -129,7 +129,7 @@ for method in methods:
 # special case in dim=2
 ot.ResourceMap.SetAsString("SobolIndicesExperiment-SamplingMethod", "MonteCarlo")
 ot.RandomGenerator.SetSeed(0)
-distribution = ot.ComposedDistribution([ot.Uniform()] * 2)
+distribution = ot.JointDistribution([ot.Uniform()] * 2)
 size = 1000
 model = ot.SymbolicFunction(["X1", "X2"], ["2*X1 + X2"])
 sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(distribution, size, model, True)
@@ -147,7 +147,7 @@ print(sensitivity_algorithm.getSecondOrderIndices())
 
 # null contribution case: X3 not in output formula
 model = ot.SymbolicFunction(["X1", "X2", "X3"], ["10+3*X1+X2"])
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
+distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
 size = 10000
 for method in methods:
     sensitivity_algorithm = eval(

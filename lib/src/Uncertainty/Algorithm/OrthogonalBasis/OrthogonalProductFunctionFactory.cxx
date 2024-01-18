@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
@@ -154,7 +154,7 @@ void OrthogonalProductFunctionFactory::buildMeasure(const FunctionFamilyCollecti
   {
     distributions[i] = coll[i].getMeasure();
   }
-  measure_ = ComposedDistribution(distributions);
+  measure_ = JointDistribution(distributions);
 }
 
 

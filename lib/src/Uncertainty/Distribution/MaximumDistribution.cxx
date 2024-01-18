@@ -23,7 +23,7 @@
 
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,7 +75,7 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
       break;
     }
   if (allSame_) setDistribution(collection[0]);
-  else setDistribution(ComposedDistribution(collection));
+  else setDistribution(JointDistribution(collection));
 }
 
 /* Parameters constructor */
@@ -225,7 +225,7 @@ void MaximumDistribution::setDistribution(const Distribution & distribution)
 
 Distribution MaximumDistribution::getDistribution() const
 {
-  if (allSame_) return ComposedDistribution(DistributionCollection(variablesNumber_, distribution_));
+  if (allSame_) return JointDistribution(DistributionCollection(variablesNumber_, distribution_));
   return distribution_;
 }
 

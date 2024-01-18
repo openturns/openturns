@@ -152,7 +152,7 @@ priorCopula = ot.IndependentCopula(2)  # prior independence
 priorMarginals = []  # prior marginals
 priorMarginals.append(ot.Gamma(a_beta, b_beta))  # Gamma prior for beta
 priorMarginals.append(ot.Uniform(alpha_min, alpha_max))  # uniform prior for alpha
-prior = ot.ComposedDistribution(priorMarginals, priorCopula)
+prior = ot.JointDistribution(priorMarginals, priorCopula)
 prior.setDescription(["beta", "alpha"])
 
 
@@ -174,7 +174,7 @@ initialState = [a_beta / b_beta, 0.5 * (alpha_max - alpha_min)]
 proposal = []
 proposal.append(ot.Normal(0.0, 0.1 * np.sqrt(a_beta / b_beta**2)))
 proposal.append(ot.Normal(0.0, 0.1 * (alpha_max - alpha_min)))
-proposal = ot.ComposedDistribution(proposal)
+proposal = ot.JointDistribution(proposal)
 
 # %%
 # Sample from the posterior distribution

@@ -145,7 +145,7 @@ int main(int, char *[])
     aCopula.setName("Independent copula");
 
     // Instantiate one distribution object
-    ComposedDistribution myDistribution(aCollection, Copula(aCopula));
+    JointDistribution myDistribution(aCollection, Copula(aCopula));
     myDistribution.setName("myDist");
 
     Point start(myDistribution.getMean());

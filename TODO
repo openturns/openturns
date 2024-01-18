@@ -7,3 +7,4 @@ Remove OptimizationAlgorithm.set/getMaximumEvaluationNumber
 Remove Solver.set/getMaximumFunctionEvaluation
 Remove Solver.getUsedFunctionEvaluation
 Remove TimerCallback
+Remove ComposedDistribution in some future version

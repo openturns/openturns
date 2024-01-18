@@ -36,7 +36,7 @@ Examples
 >>> conditionedDistribution = ot.Normal()
 >>> # Conditional distribution
 >>> atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
->>> conditioning = ot.ComposedDistribution(atoms)
+>>> conditioning = ot.JointDistribution(atoms)
 >>> conditional = ot.ConditionalDistribution(conditionedDistribution, conditioning)
 >>> # Observations
 >>> observationsSize = 5

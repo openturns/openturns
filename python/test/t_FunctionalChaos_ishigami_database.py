@@ -40,7 +40,7 @@ formula[0] = (
 model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
-distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * dimension)
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)

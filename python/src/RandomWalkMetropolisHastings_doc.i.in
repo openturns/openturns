@@ -62,7 +62,7 @@ The likelihood function penalizes the initially provided target distribution (no
 in order to get the *posterior* distribution.
 We sample from the posterior.
 
->>> prior = ot.ComposedDistribution([ot.Uniform(-100.0, 100.0)] * 2)
+>>> prior = ot.JointDistribution([ot.Uniform(-100.0, 100.0)] * 2)
 >>> proposal = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
 >>> initialState = [0.0] * 2
 >>> sampler = ot.RandomWalkMetropolisHastings(prior, initialState, proposal)

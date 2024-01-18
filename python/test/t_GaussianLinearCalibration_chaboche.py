@@ -62,7 +62,7 @@ C.setDescription(["C"])
 Gamma.setDescription(["Gamma"])
 
 # Create the joint input distribution function.
-inputRandomVector = ot.ComposedDistribution([Strain, R, C, Gamma])
+inputRandomVector = ot.JointDistribution([Strain, R, C, Gamma])
 
 # Create the Monte-Carlo sample.
 sampleSize = 10

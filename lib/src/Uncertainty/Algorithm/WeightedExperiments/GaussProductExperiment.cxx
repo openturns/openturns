@@ -20,7 +20,7 @@
  */
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,7 +46,7 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalSizes)
   , nodes_(0, 0)
 {
   // Here we have to set a distribution of dimension compatible with the marginal sizes
-  setDistributionAndMarginalSizes(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalSizes.getSize())), marginalSizes);
+  setDistributionAndMarginalSizes(JointDistribution(JointDistribution::DistributionCollection(marginalSizes.getSize())), marginalSizes);
 }
 
 /* Constructor with parameters */

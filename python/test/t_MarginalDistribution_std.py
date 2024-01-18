@@ -6,7 +6,7 @@ ot.TESTPREAMBLE()
 
 dimension = 5
 indices = [2, 0, 1]
-fullDistribution = ot.ComposedDistribution(
+fullDistribution = ot.JointDistribution(
     [ot.Normal(), ot.Uniform(), ot.Exponential(), ot.WeibullMin()],
     ot.ComposedCopula([ot.GumbelCopula(), ot.ClaytonCopula()]),
 )

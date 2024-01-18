@@ -1,8 +1,8 @@
-%feature("docstring") OT::ComposedDistribution
+%feature("docstring") OT::JointDistribution
 "Composed distribution.
 
 Available constructors:
-    ComposedDistribution(*distributions, copula=ot.IndependentCopula(n)*)
+    JointDistribution(*distributions, copula=ot.IndependentCopula(n)*)
 
 Parameters
 ----------
@@ -16,7 +16,7 @@ copula : :class:`~openturns.Distribution`
 
 Notes
 -----
-A ComposedDistribution is a :math:`n`-dimensional distribution which can be
+A JointDistribution is a :math:`n`-dimensional distribution which can be
 written in terms of 1-d marginal distribution functions and a copula :math:`C`
 which describes the dependence structure between the variables.
 Its cumulative distribution function :math:`F` is defined by its marginal
@@ -35,7 +35,7 @@ Examples
 >>> import openturns as ot
 >>> copula = ot.GumbelCopula(2.0)
 >>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
->>> distribution = ot.ComposedDistribution(marginals, copula)
+>>> distribution = ot.JointDistribution(marginals, copula)
 
 Draw a sample:
 
@@ -43,7 +43,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ComposedDistribution::getDistributionCollection
+%feature("docstring") OT::JointDistribution::getDistributionCollection
 "Get the marginals of the distribution.
 
 Returns
@@ -53,7 +53,7 @@ distributions : list of :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ComposedDistribution::setDistributionCollection
+%feature("docstring") OT::JointDistribution::setDistributionCollection
 "Set the marginals of the distribution.
 
 Parameters
@@ -63,7 +63,7 @@ distributions : list of :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ComposedDistribution::setCopula
+%feature("docstring") OT::JointDistribution::setCopula
 "Set the copula of the distribution.
 
 Parameters

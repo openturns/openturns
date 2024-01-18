@@ -13,7 +13,7 @@ int main(int, char *[])
   for(UnsignedInteger i = 0; i < dimension; ++i)
     distributions[i] = Uniform();
 
-  LHSExperiment lhs(ComposedDistribution(distributions), size);
+  LHSExperiment lhs(JointDistribution(distributions), size);
   Sample design(lhs.generate());
 
   // Defining space fillings

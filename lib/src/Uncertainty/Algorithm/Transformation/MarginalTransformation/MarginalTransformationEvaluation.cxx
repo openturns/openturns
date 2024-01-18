@@ -25,7 +25,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -444,9 +444,9 @@ Point MarginalTransformationEvaluation::getParameter() const
 //   // else use marginals
 //   Point parameter;
 //   if (parameterSide_ & LEFT)
-//     parameter.add(ComposedDistribution(inputDistributionCollection_).getParameter());
+//     parameter.add(JointDistribution(inputDistributionCollection_).getParameter());
 //   if (parameterSide_ & RIGHT)
-//     parameter.add(ComposedDistribution(outputDistributionCollection_).getParameter());
+//     parameter.add(JointDistribution(outputDistributionCollection_).getParameter());
 //   return parameter;
 }
 
@@ -470,7 +470,7 @@ void MarginalTransformationEvaluation::setParameter(const Point & parameter)
 //       inputDistributionCollection_[i].setParameter(partialParameter);
 //       index += parametersDimension;
 //     }
-// //   index = ComposedDistribution(inputDistributionCollection_).getParameter().getDimension();
+// //   index = JointDistribution(inputDistributionCollection_).getParameter().getDimension();
 //   if ((direction_ == TO) || (direction_ == FROMTO))
 //     for (UnsignedInteger i = 0; i < getOutputDimension(); ++ i)
 //     {
@@ -494,9 +494,9 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
 //   // else use marginals
 //   Description description;
 //   if (parameterSide_ & LEFT)
-//     description.add(ComposedDistribution(inputDistributionCollection_).getParameterDescription());
+//     description.add(JointDistribution(inputDistributionCollection_).getParameterDescription());
 //   if (parameterSide_ & RIGHT)
-//     description.add(ComposedDistribution(outputDistributionCollection_).getParameterDescription());
+//     description.add(JointDistribution(outputDistributionCollection_).getParameterDescription());
 //   return description;
 }
 

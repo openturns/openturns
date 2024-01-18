@@ -19,7 +19,7 @@ die_distribution = ot.UserDefined([[i] for i in range(1, 7)])
 
 # %%
 # We consider now an experiment with two independent dice and build the corresponding random vector :
-two_dice_distribution = ot.ComposedDistribution([die_distribution] * 2)
+two_dice_distribution = ot.JointDistribution([die_distribution] * 2)
 
 # %%
 # We now build a sample of size :math:`n=5` from this distribution :

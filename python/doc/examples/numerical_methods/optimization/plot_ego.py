@@ -83,7 +83,7 @@ view = viewer.View(graph)
 listUniformDistributions = [
     ot.Uniform(lowerbound[i], upperbound[i]) for i in range(dim)
 ]
-distribution = ot.ComposedDistribution(listUniformDistributions)
+distribution = ot.JointDistribution(listUniformDistributions)
 sampleSize = 50
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()
@@ -244,7 +244,7 @@ view = viewer.View(graph)
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # %%
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dim)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim)
 sampleSize = 50
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()

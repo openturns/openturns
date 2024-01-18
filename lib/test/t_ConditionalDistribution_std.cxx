@@ -42,11 +42,11 @@ int main(int, char *[])
       coll2.add(Dirac(2));
       coll2.add(Bernoulli(0.7));
       coll2.add(Uniform(3.0, 4.0));
-      ComposedDistribution d2(coll2);
+      JointDistribution d2(coll2);
       Collection< Distribution > coll1;
       coll1.add(Uniform());
       coll1.add(Uniform());
-      ComposedDistribution d1(coll1);
+      JointDistribution d1(coll1);
       ConditionalDistribution distribution(d1, d2);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "distribution=" << distribution << std::endl;
@@ -102,21 +102,21 @@ int main(int, char *[])
       Collection< Distribution > atoms;
       atoms.add( Uniform( 0.0, 1.0) );
       atoms.add( Uniform( 1.0, 2.0) );
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Second conditioning distribution: discrete/continuous
     {
       Collection< Distribution > atoms;
       atoms.add( Binomial(3, 0.5) );
       atoms.add( Uniform( 1.0, 2.0) );
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Third conditioning distribution: dirac/continuous
     {
       Collection< Distribution > atoms;
       atoms.add( Dirac(0.0) );
       atoms.add( Uniform( 1.0, 2.0) );
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {

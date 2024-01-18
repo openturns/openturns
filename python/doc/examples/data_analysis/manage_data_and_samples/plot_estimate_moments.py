@@ -17,7 +17,7 @@ ot.Log.Show(ot.Log.NONE)
 model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2", "x2^2+x1"])
 
 # input vector X
-inputDist = ot.ComposedDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
+inputDist = ot.JointDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
 inputDist.setDescription(["X1", "X2"])
 inputVector = ot.RandomVector(inputDist)
 

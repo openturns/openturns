@@ -30,7 +30,7 @@ import numpy as np
 # %%
 distX1 = ot.Exponential(1.0)
 distX2 = ot.Normal()
-distX = ot.ComposedDistribution([distX1, distX2])
+distX = ot.JointDistribution([distX1, distX2])
 
 
 # %%

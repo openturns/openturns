@@ -226,11 +226,11 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
 
 # Use the distribution as a copula
 myDist = ot.Distribution(UniformNdPy([0.0] * 2, [1.0] * 2))
-print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
+print(ot.JointDistribution([ot.Normal(), ot.Normal()], myDist))
 try:
     print("try with another Python distribution")
     myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
-    print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
+    print(ot.JointDistribution([ot.Normal(), ot.Normal()], myDist))
 except Exception:
     print("The construction failed on purpose as", myDist, "is not a copula")
 

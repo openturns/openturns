@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 conditionedDistribution = ot.Normal()
-conditioningDistribution = ot.ComposedDistribution(
+conditioningDistribution = ot.JointDistribution(
     [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
 )
 distribution = ot.BayesDistribution(conditionedDistribution, conditioningDistribution)
@@ -72,7 +72,7 @@ print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
 #  result should be
 #  Minimum volume level set= {x | f(x) <= 3.24752} with f=
 #  MinimumVolumeLevelSetEvaluation(BayesDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y),
-#    f=IdentityEvaluation(dimension=2), Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))))
+#    f=IdentityEvaluation(dimension=2), Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))))
 #  beta= [0.0388705]
 # levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 # print("Minimum volume level set=", levelSet)

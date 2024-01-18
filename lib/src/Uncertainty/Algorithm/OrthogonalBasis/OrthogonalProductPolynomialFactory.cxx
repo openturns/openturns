@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductPolynomialEvaluation.hxx"
 #include "openturns/ProductPolynomialGradient.hxx"
@@ -254,7 +254,7 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
         throw InvalidArgumentException(HERE) << "Measure support is empty";
     }
   }
-  measure_ = ComposedDistribution(distributions);
+  measure_ = JointDistribution(distributions);
 
   // the enumerate function must support bounds
   if (hasDiscrete)

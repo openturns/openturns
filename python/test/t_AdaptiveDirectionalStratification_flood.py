@@ -33,7 +33,7 @@ Ks_law = ot.TruncatedDistribution(
 Zv_law = ot.Triangular(49.0, 50.0, 51.0)
 Zm_law = ot.Triangular(54.0, 55.0, 56.0)
 coll = ot.DistributionCollection([Q_law, Ks_law, Zv_law, Zm_law])
-distribution = ot.ComposedDistribution(coll)
+distribution = ot.JointDistribution(coll)
 
 x = [dist.computeQuantile(0.5)[0] for dist in coll]
 fx = function(x)

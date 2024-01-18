@@ -128,7 +128,7 @@ marginals = [ot.Normal()] * 3
 S = ot.CorrelationMatrix(3)
 S[0, 2] = 0.9
 copula = ot.NormalCopula(S)
-distribution = ot.ComposedDistribution(marginals, copula)
+distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(30)
 
 # %%

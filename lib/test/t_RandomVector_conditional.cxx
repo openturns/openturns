@@ -39,10 +39,10 @@ int main(int, char *[])
     fullprint << "distribution = " << distribution << std::endl;
 
     // Create a collection of distribution
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add(Normal(0.0, 1.0));
     aCollection.add(Uniform(1.0, 1.5));
-    ComposedDistribution distributionParameters(aCollection);
+    JointDistribution distributionParameters(aCollection);
     RandomVector randomParameters(distributionParameters);
 
     fullprint << "random parameters=" << randomParameters << std::endl;

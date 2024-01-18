@@ -51,7 +51,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> model = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['x1*x2+x3'])
 >>> estimator = ot.SaltelliSensitivityAlgorithm()
 >>> estimator.setUseAsymptoticDistribution(True)

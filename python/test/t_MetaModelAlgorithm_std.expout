@@ -1,15 +1,15 @@
-ComposedDistribution(Uniform(a = -3.14, b = 3.14), Uniform(a = -3.14, b = 3.14), IndependentCopula(dimension = 2))
-ComposedDistribution(Normal(mu = 3.98, sigma = 2.02), Normal(mu = 3.92, sigma = 2.02), IndependentCopula(dimension = 2))
-ComposedDistribution(Exponential(lambda = 0.967, gamma = 0.00106), FisherSnedecor(d1 = 1.99, d2 = 157), IndependentCopula(dimension = 2))
-ComposedDistribution(WeibullMin(beta = 0.626, alpha = 1.25, gamma = -0.496), Gamma(k = 1.41, lambda = 2.34, gamma = -0.497), IndependentCopula(dimension = 2))
-ComposedDistribution(Beta(alpha = 0.495, beta = 0.485, a = 5.2, b = 11.6), Beta(alpha = 0.449, beta = 0.47, a = 5.2, b = 11.6), IndependentCopula(dimension = 2))
-ComposedDistribution(Normal(mu = 3.02, sigma = 1.99), Normal(mu = 3.03, sigma = 2.05), NormalCopula(R = [[ 1     0.493 ]
+JointDistribution(Uniform(a = -3.14, b = 3.14), Uniform(a = -3.14, b = 3.14), IndependentCopula(dimension = 2))
+JointDistribution(Normal(mu = 3.98, sigma = 2.02), Normal(mu = 3.92, sigma = 2.02), IndependentCopula(dimension = 2))
+JointDistribution(Exponential(lambda = 0.967, gamma = 0.00106), FisherSnedecor(d1 = 1.99, d2 = 157), IndependentCopula(dimension = 2))
+JointDistribution(WeibullMin(beta = 0.626, alpha = 1.25, gamma = -0.496), Gamma(k = 1.41, lambda = 2.34, gamma = -0.497), IndependentCopula(dimension = 2))
+JointDistribution(Beta(alpha = 0.495, beta = 0.485, a = 5.2, b = 11.6), Beta(alpha = 0.449, beta = 0.47, a = 5.2, b = 11.6), IndependentCopula(dimension = 2))
+JointDistribution(Normal(mu = 3.02, sigma = 1.99), Normal(mu = 3.03, sigma = 2.05), NormalCopula(R = [[ 1     0.493 ]
  [ 0.493 1     ]]))
-ComposedDistribution(Uniform(a = -100, b = 1.1e+03))
+JointDistribution(Uniform(a = -100, b = 1.1e+03))
 distribution (HTML)
-ComposedDistribution
+JointDistribution
 <ul>
-  <li>name=ComposedDistribution</li>
+  <li>name=JointDistribution</li>
   <li>dimension: 1</li>
   <li>description=[v0]
 </ul>
@@ -28,8 +28,8 @@ ComposedDistribution
 </table>
 
 distribution (Markdown)
-ComposedDistribution
-- name=ComposedDistribution
+JointDistribution
+- name=JointDistribution
 - dimension=1
 - description=[v0]
 

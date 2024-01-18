@@ -53,7 +53,7 @@ S = ot.CorrelationMatrix(2)
 S[1, 0] = 0.3
 R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(S)
 copula = ot.NormalCopula(R)
-distribution_corr = ot.ComposedDistribution([ot.Normal()] * 2, copula)
+distribution_corr = ot.JointDistribution([ot.Normal()] * 2, copula)
 
 # %%
 # ANCOVA needs a functional decomposition of the model

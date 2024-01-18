@@ -30,7 +30,7 @@ marginals = [
     ot.Normal(-40.0, 3.0),
     ot.Triangular(100.0, 150.0, 300.0),
 ]
-distribution = ot.ComposedDistribution(marginals, copula)
+distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
 
 # %%
@@ -164,5 +164,5 @@ estimated_copula
 # We build joint distribution from marginal distributions and dependency structure:
 
 # %%
-estimated_distribution = ot.ComposedDistribution(estimated_marginals, estimated_copula)
+estimated_distribution = ot.JointDistribution(estimated_marginals, estimated_copula)
 estimated_distribution

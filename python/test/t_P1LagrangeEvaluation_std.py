@@ -29,7 +29,7 @@ lagrange = ot.P1LagrangeEvaluation(sample)
 # New mesh
 mesh = ot.Mesh(
     ot.MonteCarloExperiment(
-        ot.ComposedDistribution([ot.Uniform(-1, 1)] * 2), 200
+        ot.JointDistribution([ot.Uniform(-1, 1)] * 2), 200
     ).generate()
 )
 

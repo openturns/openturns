@@ -40,6 +40,7 @@
  * Deprecated Solver.set/getMaximumFunctionEvaluation in favor of set/getMaximumCallsNumber
  * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
  * Deprecated TimerCallback
+ * Deprecated ComposedDistribution in favor of JointDistribution
 
 === Documentation ===
 

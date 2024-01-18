@@ -82,7 +82,7 @@ dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
 myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, II], myCopula)
+myDistribution = ot.JointDistribution([E, F, L, II], myCopula)
 
 # %%
 # Create the design of experiments
@@ -376,7 +376,7 @@ Y_train = model(X_train)
 
 # %%
 distributions = [ot.Uniform(lbounds[i], ubounds[i]) for i in range(dim)]
-boundedDistribution = ot.ComposedDistribution(distributions)
+boundedDistribution = ot.JointDistribution(distributions)
 
 # %%
 # We first generate a Latin Hypercube Sampling (LHS) design made of 25 points in the sample space. This LHS is optimized so as to fill the space.

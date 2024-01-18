@@ -8,8 +8,8 @@ int main(int, char *[])
 {
   const UnsignedInteger dimension = 3;
   const UnsignedInteger size = 25;
-  ComposedDistribution::DistributionCollection coll(dimension, Uniform(0.0, 1.0));
-  ComposedDistribution distribution(coll);
+  JointDistribution::DistributionCollection coll(dimension, Uniform(0.0, 1.0));
+  JointDistribution distribution(coll);
   LHSExperiment lhs(distribution, size);
   lhs.setRandomShift(false); // centered
   lhs.setAlwaysShuffle(true); // randomized

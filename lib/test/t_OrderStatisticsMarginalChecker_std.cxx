@@ -25,7 +25,7 @@ using namespace OT;
 using namespace OT::Test;
 
 
-inline void checkMarginals(const ComposedDistribution::DistributionCollection& coll)
+inline void checkMarginals(const JointDistribution::DistributionCollection& coll)
 {
   OStream fullprint(std::cout);
   OrderStatisticsMarginalChecker osmc(coll);
@@ -42,7 +42,7 @@ int main(int, char *[])
 
   try
   {
-    ComposedDistribution::DistributionCollection coll;
+    JointDistribution::DistributionCollection coll;
     coll.add(Uniform(-1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
     coll.add(Triangular(3.0, 4.0, 5.));

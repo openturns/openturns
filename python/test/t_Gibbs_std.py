@@ -42,7 +42,7 @@ for i in range(len(sigma0s)):
     sigma0 = sigma0s[i]
     mean_prior = ot.Normal(mu0, sigma0)
     std_prior = ot.Dirac(2.0)  # standard dev is known
-    prior = ot.ComposedDistribution([mean_prior, std_prior])
+    prior = ot.JointDistribution([mean_prior, std_prior])
     # choose the initial state within the prior
     initialState = prior.getRealization()
 
@@ -159,7 +159,7 @@ print("sigma=", sample.computeStandardDeviation())
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
 target = ot.Normal(3)
-weird_target = ot.ComposedDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
+weird_target = ot.JointDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
 normal0_rwmh = ot.RandomWalkMetropolisHastings(
     target, initial_state, ot.Uniform(-10, 10), [0]
 )  # samples from Normal(0,1)

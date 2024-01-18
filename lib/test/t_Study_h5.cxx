@@ -370,13 +370,13 @@ int main(int, char *[])
     Uniform uniform(-1.5, 2.0);
     study.add("uniform", uniform);
 
-    // Create a ComposedDistribution
-    ComposedDistribution::DistributionCollection collection;
+    // Create a JointDistribution
+    JointDistribution::DistributionCollection collection;
     collection.add(beta);
     collection.add(gamma);
     collection.add(logistic);
-    ComposedDistribution composedDistribution(collection, normalCopula);
-    study.add("composedDistribution", composedDistribution);
+    JointDistribution jointDistribution(collection, normalCopula);
+    study.add("jointDistribution", jointDistribution);
 
     // Create an analytical Function
     SymbolicFunction analytical;
@@ -583,10 +583,10 @@ int main(int, char *[])
     {
       Distribution dist1 = Normal(0.0, 0.01);
       Distribution dist2 = Normal(0.0, 0.02);
-      ComposedDistribution::DistributionCollection aCollection;
+      JointDistribution::DistributionCollection aCollection;
       aCollection.add( dist1 );
       aCollection.add( dist2 );
-      Distribution dist  = ComposedDistribution(aCollection);
+      Distribution dist  = JointDistribution(aCollection);
       whiteNoise = WhiteNoise(dist);
       whiteNoise.setTimeGrid(regularGrid);
     }
@@ -785,7 +785,7 @@ int main(int, char *[])
         basis2[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
         coefficients[i] = Normal(0.0, (1.0 + i));
       }
-      functionalBasisProcess = FunctionalBasisProcess(ComposedDistribution(coefficients), basis2);
+      functionalBasisProcess = FunctionalBasisProcess(JointDistribution(coefficients), basis2);
     }
     study.add("functionalBasisProcess", functionalBasisProcess);
 
@@ -1066,7 +1066,7 @@ int main(int, char *[])
     compare<Chi >( chi, study2 );
     compare<ChiSquare >( chiSquare, study2 );
     compare<Dirichlet >( dirichlet, study2 );
-    compare<ComposedDistribution >( composedDistribution, study2 );
+    compare<JointDistribution >( jointDistribution, study2 );
     compare<Exponential >( exponential, study2 );
     compare<FisherSnedecor >( fisherSnedecor, study2 );
     compare<Gamma >( gamma, study2 );

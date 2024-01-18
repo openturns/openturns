@@ -168,7 +168,7 @@ def testSmolyakExperiment1():
     #
     distribution = smolyak.getDistribution()
     collection = [ot.Uniform(0.0, 1.0)] * 2
-    expected_distribution = ot.ComposedDistribution(collection)
+    expected_distribution = ot.JointDistribution(collection)
     assert distribution == expected_distribution
 
 
@@ -280,7 +280,7 @@ def testSmolyakExperiment4():
     #
     distribution = smolyak.getDistribution()
     collection = [ot.Uniform(0.0, 1.0)] * 2
-    expected_distribution = ot.ComposedDistribution(collection)
+    expected_distribution = ot.JointDistribution(collection)
     assert distribution == expected_distribution
 
 

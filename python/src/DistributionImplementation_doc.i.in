@@ -1678,7 +1678,7 @@ Examples
 >>> graph = distribution.drawQuantile()
 >>> view = View(graph)
 >>> view.show()
->>> distribution = ot.ComposedDistribution([ot.Normal(), ot.Exponential(1.0)], ot.ClaytonCopula(0.5))
+>>> distribution = ot.JointDistribution([ot.Normal(), ot.Exponential(1.0)], ot.ClaytonCopula(0.5))
 >>> graph = distribution.drawQuantile()
 >>> view = View(graph)
 >>> view.show()"
@@ -1792,7 +1792,7 @@ C : :class:`~openturns.Distribution`
 
 See Also
 --------
-ComposedDistribution"
+JointDistribution"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCopula
 OT_Distribution_getCopula_doc

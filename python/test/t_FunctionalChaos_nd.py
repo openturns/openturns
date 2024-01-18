@@ -147,7 +147,7 @@ sob_T3 = ot.Point(sob_3)
 model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(inputDimension)

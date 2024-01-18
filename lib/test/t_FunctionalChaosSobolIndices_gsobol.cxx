@@ -103,7 +103,7 @@ int main(int, char *[])
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

@@ -15,7 +15,7 @@ analytical = ot.SymbolicFunction(["x0", "x1"], ["10+3*x0+x1"])
 aCollection = [ot.Normal()] * dimension
 
 # we create one distribution object
-aDistribution = ot.ComposedDistribution(aCollection)
+aDistribution = ot.JointDistribution(aCollection)
 
 # Random vectors
 randomVector = ot.RandomVector(aDistribution)

@@ -64,12 +64,12 @@ int main(int, char *[])
     sigma[0] = 3.3; // x0
     sigma[1] = 3.0; // x1
     IdentityMatrix R(dim);
-    ComposedDistribution::DistributionCollection testDistributions(2);
+    JointDistribution::DistributionCollection testDistributions(2);
     testDistributions[0] = Normal(mean, sigma, R);
-    ComposedDistribution::DistributionCollection marginals(2);
+    JointDistribution::DistributionCollection marginals(2);
     marginals[0] = testDistributions[0].getMarginal(0);
     marginals[1] = testDistributions[0].getMarginal(1);
-    testDistributions[1] = ComposedDistribution(marginals);
+    testDistributions[1] = JointDistribution(marginals);
     for (UnsignedInteger i = 0; i < 2; i ++)
     {
       Distribution myDistribution(testDistributions[i]);

@@ -4,7 +4,7 @@ from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
 
 sample = ot.Normal(3).getSample(100)
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(3)]
 )
 graph = ot.VisualTest.DrawPairsMarginals(sample, distribution)

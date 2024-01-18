@@ -22,7 +22,7 @@
 #define OPENTURNS_CROSSENTROPYIMPORTANCESAMPLING_HXX
 
 #include "openturns/EventSimulation.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/CrossEntropyResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

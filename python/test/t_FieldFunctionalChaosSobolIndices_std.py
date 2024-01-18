@@ -44,7 +44,7 @@ p1 = ot.FunctionalBasisProcess(coefDis, myBasis, tg)
 p2 = ot.GaussianProcess(ot.SquaredExponential([1.0], [T / 4.0]), tg)
 
 # Third process: elementary process based on a bivariate random vector
-randomParameters = ot.ComposedDistribution([ot.Uniform(), ot.Normal()])
+randomParameters = ot.JointDistribution([ot.Uniform(), ot.Normal()])
 p3 = ot.FunctionalBasisProcess(
     randomParameters,
     ot.Basis(

@@ -54,7 +54,7 @@ int main(int, char *[])
 
     RandomGenerator::SetSeed(0);
     Collection<Distribution> coll(dimension, Uniform(-1.0, 11.0));
-    const Sample test(ComposedDistribution(coll).getSample(100));
+    const Sample test(JointDistribution(coll).getSample(100));
 
     Point coordinates;
     for (UnsignedInteger i = 0; i < test.getSize(); ++i)

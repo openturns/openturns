@@ -42,7 +42,7 @@ model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["1+x1*x2 + 2*x3^2+x4^4"])
 # Create a distribution of dimension 4.
 
 # %%
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0), ot.Beta(2.5, 1.0, -1.0, 2.0)]
 )
 

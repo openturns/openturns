@@ -9,13 +9,13 @@ conditionedDistribution = ot.Normal()
 conditioningDistributionCollection = []
 # First conditioning distribution: continuous/continuous
 atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
-conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 # Second conditioning distribution: discrete/continuous
 atoms = [ot.Binomial(3, 0.5), ot.Uniform(1.0, 2.0)]
-# conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+# conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 # Third conditioning distribution: dirac/continuous
 atoms = [ot.Dirac(0.0), ot.Uniform(1.0, 2.0)]
-conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 
 
 for conditioning in conditioningDistributionCollection:

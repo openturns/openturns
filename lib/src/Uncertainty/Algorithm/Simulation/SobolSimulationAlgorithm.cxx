@@ -30,7 +30,7 @@
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
 #include "openturns/SaltelliSensitivityAlgorithm.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -212,8 +212,8 @@ void SobolSimulationAlgorithm::run()
     Point stddevTO(dimension);
     const Point reducedVarianceFO(varianceFO / size);
     const Point reducedVarianceTO(varianceTO / size);
-    ComposedDistribution::DistributionCollection marginalsFO(dimension);
-    ComposedDistribution::DistributionCollection marginalsTO(dimension);
+    JointDistribution::DistributionCollection marginalsFO(dimension);
+    JointDistribution::DistributionCollection marginalsTO(dimension);
     Bool allNormalFO = true;
     Bool allNormalTO = true;
     for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -241,7 +241,7 @@ void SobolSimulationAlgorithm::run()
     if (allNormalFO)
       firstOrderIndicesDistribution = Normal(meanFO, stddevFO, CorrelationMatrix(dimension));
     else
-      firstOrderIndicesDistribution = ComposedDistribution(marginalsFO);
+      firstOrderIndicesDistribution = JointDistribution(marginalsFO);
     firstOrderIndicesDistribution.setDescription(distribution_.getDescription());
     result_.setFirstOrderIndicesDistribution(firstOrderIndicesDistribution);
 
@@ -249,7 +249,7 @@ void SobolSimulationAlgorithm::run()
     if (allNormalTO)
       totalOrderIndicesDistribution = Normal(meanTO, stddevTO, CorrelationMatrix(dimension));
     else
-      totalOrderIndicesDistribution = ComposedDistribution(marginalsTO);
+      totalOrderIndicesDistribution = JointDistribution(marginalsTO);
     totalOrderIndicesDistribution.setDescription(distribution_.getDescription());
     result_.setTotalOrderIndicesDistribution(totalOrderIndicesDistribution);
 

@@ -49,7 +49,7 @@
 %include GumbelCopula.i
 %include GumbelCopulaFactory.i
 %include BlockIndependentDistribution.i
-%include ComposedDistribution.i
+%include JointDistribution.i
 %include CumulativeDistributionNetwork.i
 %include ComposedCopula.i
 %include MarshallOlkinCopula.i

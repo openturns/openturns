@@ -45,7 +45,7 @@ dist_L.setDescription(["L"])
 dist_I = ot.Beta(2.5, 1.5, 310.0, 450.0)  # in cm^4
 dist_I.setDescription(["I"])
 
-myDistribution = ot.ComposedDistribution([dist_E, dist_F, dist_L, dist_I])
+myDistribution = ot.JointDistribution([dist_E, dist_F, dist_L, dist_I])
 
 dim_input = 4  # dimension of the input
 dim_output = 1  # dimension of the output

@@ -167,7 +167,7 @@ Combining and transforming distributions
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
-    ComposedDistribution
+    JointDistribution
 
     :template: classWithPlot.rst_t
     CompositeDistribution

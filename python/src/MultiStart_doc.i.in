@@ -41,7 +41,7 @@ First define the :class:`~openturns.OptimizationAlgorithm` to be run from multip
 
 Starting points must be manually specified.
 
->>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 3.0)] * dim)
+>>> uniform = ot.JointDistribution([ot.Uniform(-2.0, 3.0)] * dim)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> startingSample = uniform.getSample(5)
 >>> print(startingSample)
