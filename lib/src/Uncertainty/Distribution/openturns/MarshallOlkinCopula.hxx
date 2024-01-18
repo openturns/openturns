@@ -59,6 +59,10 @@ public:
   /** Virtual constructor */
   MarshallOlkinCopula * clone() const override;
 
+  /** Get the PDF of the distribution */
+  using DistributionImplementation::computePDF;
+  Scalar computePDF(const Point & point) const override;
+
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;

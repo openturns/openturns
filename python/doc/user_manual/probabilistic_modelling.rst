@@ -239,7 +239,13 @@ Refer to :ref:`copula`.
     ExtremeValueCopula
     JoeCopula
     GalambosCopula
+
+    :template: class.rst_t
+
     MarshallOlkinCopula
+
+    :template: Copula.rst_t
+
     MaximumEntropyOrderStatisticsCopula
 
     :template: class.rst_t
