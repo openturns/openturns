@@ -57,7 +57,7 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
   // marginal extraction can be costly
   const Distribution distribution(getDistribution());
   const UnsignedInteger dimension = distribution.getDimension();
-  ComposedDistribution::DistributionCollection marginals(dimension);
+  JointDistribution::DistributionCollection marginals(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
     marginals[j] = distribution.getMarginal(j);
   // Build the iso-probabilistic transformation

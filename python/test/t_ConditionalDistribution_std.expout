@@ -1,6 +1,6 @@
 ##################################################
 method= GaussProduct
-distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=id_4, Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.1]
 Covariance  [[ 0.0833333 0         ]
@@ -36,7 +36,7 @@ Unilateral confidence interval (upper tail)= [1.02532, 1]
 beta= [0.974679]
 ##################################################
 method= QMC
-distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=id_4, Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.09997]
 Covariance  [[ 0.0833333 0         ]
@@ -72,7 +72,7 @@ Unilateral confidence interval (upper tail)= [1.02532, 1]
 beta= [0.974679]
 ##################################################
 method= MC
-distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=id_4, Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.10103]
 Covariance  [[ 0.0833333 0         ]
@@ -106,8 +106,8 @@ beta= [0.974679]
 Unilateral confidence interval (upper tail)= [1.02532, 1]
 [0.293522, 1]
 beta= [0.974679]
-conditioning distribution= ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [0.49998]
 Covariance  [[ 2.42797 ]]
@@ -133,8 +133,8 @@ Quantile= [3.05746]
 CDF(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05552]
 Survival(inverseSurvival)=0.950000
-conditioning distribution= ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+conditioning distribution= JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[n_marginal_0 : 3, p_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [1.5]
 Covariance  [[ 3.09555 ]]
@@ -160,8 +160,8 @@ Quantile= [4.38606]
 CDF(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.38606]
 Survival(inverseSurvival)=0.950000
-conditioning distribution= ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+conditioning distribution= JointDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[point_0_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [0.5]
 Covariance  [[ 2.33541 ]]

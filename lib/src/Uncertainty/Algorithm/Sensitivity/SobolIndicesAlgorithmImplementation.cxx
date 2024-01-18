@@ -31,7 +31,7 @@
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/KernelSmoothing.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -252,8 +252,8 @@ void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & va
   const UnsignedInteger inputDimension = inputDescription_.getSize();
   Point standardDeviationFO(inputDimension);
   Point standardDeviationTO(inputDimension);
-  ComposedDistribution::DistributionCollection marginalsFO(inputDimension);
-  ComposedDistribution::DistributionCollection marginalsTO(inputDimension);
+  JointDistribution::DistributionCollection marginalsFO(inputDimension);
+  JointDistribution::DistributionCollection marginalsTO(inputDimension);
   const Point aggregatedFO(getAggregatedFirstOrderIndices());
   const Point aggregatedTO(getAggregatedTotalOrderIndices());
   Bool allNormalFO = true;
@@ -282,12 +282,12 @@ void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & va
   if (allNormalFO)
     firstOrderIndiceDistribution_ = Normal(aggregatedFO, standardDeviationFO, CorrelationMatrix(inputDimension));
   else
-    firstOrderIndiceDistribution_ = ComposedDistribution(marginalsFO);
+    firstOrderIndiceDistribution_ = JointDistribution(marginalsFO);
 
   if (allNormalTO)
     totalOrderIndiceDistribution_ = Normal(aggregatedTO, standardDeviationTO, CorrelationMatrix(inputDimension));
   else
-    totalOrderIndiceDistribution_ = ComposedDistribution(marginalsTO);
+    totalOrderIndiceDistribution_ = JointDistribution(marginalsTO);
 }
 
 

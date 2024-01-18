@@ -90,7 +90,7 @@ class Oscillator:
     distributionS0 : :class:`~openturns.LogNormal` distribution of the intensity of the white noise
           distributionS0 = ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
 
-    distribution : :class:`~openturns.ComposedDistribution`
+    distribution : :class:`~openturns.JointDistribution`
                    The joint distribution of the input parameters
 
     Examples
@@ -205,7 +205,7 @@ class Oscillator:
         self.distributionS0.setDescription(["S0"])
 
         # Joint distribution of the input parameters
-        self.distribution = ot.ComposedDistribution(
+        self.distribution = ot.JointDistribution(
             [
                 self.distributionMp,
                 self.distributionMs,

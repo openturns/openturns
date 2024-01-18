@@ -8,7 +8,7 @@ ot.RandomGenerator.SetSeed(0)
 distribution_R = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 distribution_F = ot.Normal(75e3, 5e3)
 marginals = [distribution_R, distribution_F]
-distribution = ot.ComposedDistribution(marginals)
+distribution = ot.JointDistribution(marginals)
 
 
 model = ot.SymbolicFunction(["R", "F"], ["R - F / (pi_ * 100.0)"])

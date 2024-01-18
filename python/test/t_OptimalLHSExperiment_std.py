@@ -9,7 +9,7 @@ dimension = 3
 size = 100
 
 # Build standard LHS algorithm
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 lhs = ot.LHSExperiment(distribution, size)
 lhs.setRandomShift(False)  # centered
 lhs.setAlwaysShuffle(True)  # randomized

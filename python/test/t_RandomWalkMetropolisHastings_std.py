@@ -55,7 +55,7 @@ fun = ot.SymbolicFunction(
 linkFunction = ot.ParametricFunction(fun, [2], [0.0])
 instrumental = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
 
-target = ot.ComposedDistribution([ot.Uniform(-100.0, 100.0)] * 2)
+target = ot.JointDistribution([ot.Uniform(-100.0, 100.0)] * 2)
 rwmh = ot.RandomWalkMetropolisHastings(target, [0.0] * 2, instrumental)
 rwmh.setBurnIn(10000)
 conditional = ot.Bernoulli()
@@ -145,7 +145,7 @@ ott.assert_almost_equal(real_504[0], 2.0)
 # see MetropolisHastingsImplementation::computeLogPosterior
 obs = ot.TruncatedNormal(0.5, 0.5, 0.0, 10.0).getSample(50)
 likelihood = ot.GeneralizedPareto()
-prior = ot.ComposedDistribution([ot.LogUniform(-1.40, 4.0), ot.Normal(), ot.Normal()])
+prior = ot.JointDistribution([ot.LogUniform(-1.40, 4.0), ot.Normal(), ot.Normal()])
 proposals = [
     ot.Uniform(
         -prior.getMarginal(k).getStandardDeviation()[0],

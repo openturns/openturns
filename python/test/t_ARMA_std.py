@@ -51,7 +51,7 @@ dist2 = ot.Normal(0.0, 0.02)
 # Create a collection of distribution
 aCollection = [dist1, dist2]
 
-dist = ot.ComposedDistribution(aCollection)
+dist = ot.JointDistribution(aCollection)
 print("dist = ", dist)
 
 epsilon = ot.WhiteNoise(dist)

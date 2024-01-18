@@ -59,14 +59,14 @@ int main(int, char *[])
     Collection<Distribution> marginals(dimension);
     marginals[0] = Normal();
     marginals[1] = Normal();
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Correlated input distribution
     CorrelationMatrix S(2);
     S(1, 0) = 0.3;
     CorrelationMatrix R(NormalCopula::GetCorrelationFromSpearmanCorrelation(S));
     NormalCopula myCopula(R);
-    ComposedDistribution myCorrelatedInputDistribution(marginals, myCopula);
+    JointDistribution myCorrelatedInputDistribution(marginals, myCopula);
 
     Sample sample(myCorrelatedInputDistribution.getSample(2000));
 

@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include "openturns/MixedHistogramUserDefined.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Histogram.hxx"
 #include "openturns/Uniform.hxx"
@@ -659,7 +659,7 @@ Mixture MixedHistogramUserDefined::asMixture() const
           else
             subAtoms[j] = Uniform(ticks[k], ticks[k + 1]);
         } // j
-        atoms[i] = ComposedDistribution(subAtoms);
+        atoms[i] = JointDistribution(subAtoms);
       } // i
       mixture = Mixture(atoms, probabilityTable_);
     } // At least one continuous

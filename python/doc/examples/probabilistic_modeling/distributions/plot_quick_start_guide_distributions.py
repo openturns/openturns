@@ -11,7 +11,7 @@ Quick start guide to distributions
 # For univariate distributions, we show how to compute the probability density,
 # the cumulated probability density and the quantiles.
 # We also show how to create graphics.
-# The :class:`~openturns.ComposedDistribution` class, which creates a distribution based on its
+# The :class:`~openturns.JointDistribution` class, which creates a distribution based on its
 # marginals and its copula, is presented.
 # We show how to truncate any distribution with the :class:`~openturns.TruncatedDistribution` class.
 
@@ -108,12 +108,12 @@ distribution
 # %%
 # Since the method based on a marginal and a copula is more flexible, we illustrate below this principle.
 # In the following script, we define a bivariate distribution made of two univariate distributions (Gaussian and uniform) and an independent copula.
-# The second input argument of the :class:`~openturns.ComposedDistribution` class is optional: if it is not specified, the copula is independent by default.
+# The second input argument of the :class:`~openturns.JointDistribution` class is optional: if it is not specified, the copula is independent by default.
 
 # %%
 normal = ot.Normal()
 uniform = ot.Uniform()
-distribution = ot.ComposedDistribution([normal, uniform])
+distribution = ot.JointDistribution([normal, uniform])
 distribution
 
 # %%
@@ -123,7 +123,7 @@ distribution
 normal = ot.Normal()
 uniform = ot.Uniform()
 copula = ot.IndependentCopula(2)
-distribution = ot.ComposedDistribution([normal, uniform], copula)
+distribution = ot.JointDistribution([normal, uniform], copula)
 distribution
 
 # %%
@@ -182,7 +182,7 @@ normal = ot.Normal()
 uniform = ot.Uniform()
 theta = 0.9
 copula = ot.AliMikhailHaqCopula(theta)
-distribution = ot.ComposedDistribution([normal, uniform], copula)
+distribution = ot.JointDistribution([normal, uniform], copula)
 distribution
 
 # %%

@@ -21,7 +21,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # input parameters
-inputDist = ot.ComposedDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
+inputDist = ot.JointDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
 inputDist.setDescription(["X1", "X2"])
 
 # %%

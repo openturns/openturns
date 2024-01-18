@@ -1,11 +1,11 @@
 Copula =  class=IndependentCopula name=Independent copula dimension=3
 Copula =  IndependentCopula(dimension = 3)
 Distribution = 
-class=ComposedDistribution name=myDist dimension=3 copula=class=IndependentCopula name=Independent copula dimension=3 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+class=JointDistribution name=myDist dimension=3 copula=class=IndependentCopula name=Independent copula dimension=3 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution = 
-ComposedDistribution(Normal(mu = 1, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 3, sigma = 4), IndependentCopula(dimension = 3))
+JointDistribution(Normal(mu = 1, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 3, sigma = 4), IndependentCopula(dimension = 3))
 Distribution (Markdown) = 
-ComposedDistribution
+JointDistribution
 - name=myDist
 - dimension=3
 - description=[One,Two,Three]
@@ -18,7 +18,7 @@ ComposedDistribution
 |     2 |    Three | Normal(mu = 3, sigma = 4) |
 
 Distribution (HTML) = 
-ComposedDistribution
+JointDistribution
 <ul>
   <li>name=myDist</li>
   <li>dimension: 3</li>
@@ -84,7 +84,7 @@ margin CDF=0.226627
 margin quantile= class=Point name=Unnamed dimension=1 values=[3]
 margin realization= class=Point name=Unnamed dimension=1 values=[4.1999]
 indices= [1,0]
-margins= class=ComposedDistribution name=ComposedDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins= class=JointDistribution name=JointDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margins PDF=0.018744
 margins CDF=0.077903
 margins quantile= class=Point name=Unnamed dimension=2 values=[3.6349,2.0899]
@@ -96,7 +96,7 @@ conditional quantile=2.760041
 sequential conditional PDF= [0.19552,0.11926,0.083306]
 sequential conditional CDF= [0.42074,0.32037,0.27425]
 sequential conditional quantile= [1.5067,2.76,4.0134]
-Distribution  class=ComposedDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution  class=JointDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Parameters  [class=PointWithDescription name=One dimension=2 description=[mu_0_marginal_0,sigma_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mu_0_marginal_1,sigma_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mu_0_marginal_2,sigma_0_marginal_2] values=[3,4],class=PointWithDescription name=Normal copula dimension=3 description=[R_2_1_copula,R_3_1_copula,R_3_2_copula] values=[0.25,0,0.25]]
 PDF      =0.001754
 PDF (ref)=0.001754
@@ -157,10 +157,10 @@ sequential conditional PDF= [0.17603,0.11745,0.084824]
 sequential conditional CDF( [1.5,2.5,3.5] )= [0.59871,0.54284,0.54008]
 sequential conditional quantile( [0.59871,0.54284,0.54008] )= [1.5,2.5,3.5]
 Distribution = 
-ComposedDistribution(Uniform(a = -1, b = 1), TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 3))
+JointDistribution(Uniform(a = -1, b = 1), TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 3))
 Distribution (Markdown) = 
-ComposedDistribution
-- name=ComposedDistribution
+JointDistribution
+- name=JointDistribution
 - dimension=3
 - description=[X0,X1,X2]
 - copula=IndependentCopula(dimension = 3)
@@ -172,9 +172,9 @@ ComposedDistribution
 |     2 |       X2 | Normal(mu = 0, sigma = 1)                                           |
 
 Distribution (HTML) = 
-ComposedDistribution
+JointDistribution
 <ul>
-  <li>name=ComposedDistribution</li>
+  <li>name=JointDistribution</li>
   <li>dimension: 3</li>
   <li>description=[X0,X1,X2]
   <li>copula: IndependentCopula(dimension = 3)</li>

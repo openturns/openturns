@@ -7,11 +7,11 @@ ot.TESTPREAMBLE()
 model = ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["-(6+x0^2-x1+x2+3*x3)"])
 dim = model.getInputDimension()
 marginals = [ot.Normal(5.0, 3.0) for i in range(dim)]
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     marginals, ot.ComposedCopula([ot.ClaytonCopula(), ot.NormalCopula()])
 )
 # distribution = ot.Normal([5]*dim, [3]*dim, ot.CorrelationMatrix(dim))
-# distribution = ot.ComposedDistribution(marginals, ot.IndependentCopula(dim))
+# distribution = ot.JointDistribution(marginals, ot.IndependentCopula(dim))
 distribution.setDescription(["marginal" + str(i) for i in range(dim)])
 vect = ot.RandomVector(distribution)
 output = ot.CompositeRandomVector(model, vect)

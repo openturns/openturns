@@ -18,7 +18,7 @@ formula = [
 model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
-distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-pi, pi)] * dimension)
 
 # Fix sampling size
 samplingSize = 100

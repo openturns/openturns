@@ -46,7 +46,7 @@
 #include "openturns/ClaytonCopula.hxx"
 #include "openturns/ClaytonCopulaFactory.hxx"
 #include "openturns/ComposedCopula.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/ConditionalDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"

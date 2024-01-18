@@ -6,7 +6,7 @@ from openturns.viewer import View
 distXgivenT = ot.Exponential()
 distGamma = ot.Uniform(1.0, 2.0)
 distAlpha = ot.Uniform(0.0, 0.1)
-distTheta = ot.ComposedDistribution([distGamma, distAlpha])
+distTheta = ot.JointDistribution([distGamma, distAlpha])
 rvTheta = ot.RandomVector(distTheta)
 
 rvX = ot.ConditionalRandomVector(distXgivenT, rvTheta)

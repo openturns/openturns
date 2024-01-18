@@ -35,7 +35,7 @@ for i in range(dim):
         RCopula[i, j] = (i + j + 1.0) / (2.0 * dim)
 
 # Instantiate one distribution object
-distribution = ot.ComposedDistribution(aCollection, ot.NormalCopula(RCopula))
+distribution = ot.JointDistribution(aCollection, ot.NormalCopula(RCopula))
 # Test for sampling
 size = 10000
 sample = distribution.getSample(size)
@@ -140,11 +140,11 @@ gradient = ot.Matrix(5, 2)
 coll = ot.DistributionCollection(dim)
 coll[0] = ot.Uniform(-1.0 + eps, 2.0)
 coll[1] = aCollection[1]
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 coll[0] = ot.Uniform(-1.0 - eps, 2.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -154,11 +154,11 @@ gradient[0, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = ot.Uniform(-1.0, 2.0 + eps)
 coll[1] = aCollection[1]
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 coll[0] = ot.Uniform(-1.0, 2.0 - eps)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -168,11 +168,11 @@ gradient[1, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0 + eps, 2.0, 0.0)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0 - eps, 2.0, 0.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -182,11 +182,11 @@ gradient[2, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0, 2.0 + eps, 0.0)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0, 2.0 - eps, 0.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -196,11 +196,11 @@ gradient[3, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0, 2.0, 0.0 + eps)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0, 2.0, 0.0 - eps)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -219,11 +219,11 @@ print(
 coll = ot.DistributionCollection(dim)
 coll[0] = ot.Uniform(-1.0 + eps, 2.0)
 coll[1] = aCollection[1]
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 coll[0] = ot.Uniform(-1.0 - eps, 2.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -233,11 +233,11 @@ gradient[0, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = ot.Uniform(-1.0, 2.0 + eps)
 coll[1] = aCollection[1]
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 coll[0] = ot.Uniform(-1.0, 2.0 - eps)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -247,11 +247,11 @@ gradient[1, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0 + eps, 2.0, 0.0)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0 - eps, 2.0, 0.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -261,11 +261,11 @@ gradient[2, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0, 2.0 + eps, 0.0)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0, 2.0 - eps, 0.0)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor
@@ -275,11 +275,11 @@ gradient[3, 1] = dTdp[1]
 coll = ot.DistributionCollection(dim)
 coll[0] = aCollection[0]
 coll[1] = ot.Gamma(2.0, 2.0, 0.0 + eps)
-left = ot.ComposedDistribution(
+left = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 coll[1] = ot.Gamma(2.0, 2.0, 0.0 - eps)
-right = ot.ComposedDistribution(
+right = ot.JointDistribution(
     coll, ot.NormalCopula(RCopula)
 ).getInverseIsoProbabilisticTransformation()
 dTdp = (left(point) - right(point)) * factor

@@ -18,7 +18,7 @@ ishigami_model = ot.ParametricFunction(full, [3, 4], [a, b])
 N = 150
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-pi,pi), (-pi,pi) and (-pi,pi)
-distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-pi, pi)] * dimension)
 bounds = distribution.getRange()
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
@@ -65,7 +65,7 @@ approximation_algorithm = ot.LeastSquaresMetaModelSelectionFactory(
 )
 projection_strategy = ot.LeastSquaresStrategy(approximation_algorithm)
 print("Surrogate model...")
-distribution_ishigami = ot.ComposedDistribution(dimension * [ot.Uniform(-pi, pi)])
+distribution_ishigami = ot.JointDistribution(dimension * [ot.Uniform(-pi, pi)])
 algo_pc = ot.FunctionalChaosAlgorithm(
     input_database,
     output_database,

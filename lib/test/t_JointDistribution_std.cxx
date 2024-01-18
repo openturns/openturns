@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class ComposedDistribution for standard methods
+ *  @brief The test file of class JointDistribution for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -46,7 +46,7 @@ int main(int, char *[])
     sigma[1] = 3.0;
     sigma[2] = 4.0;
     // Create a collection of distribution
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     Normal marginal(mean[0], sigma[0]);
     marginal.setName("First");
     Description component(1);
@@ -71,7 +71,7 @@ int main(int, char *[])
     IndependentCopula aCopula(aCollection.getSize());
     aCopula.setName("Independent copula");
     // Instantiate one distribution object
-    ComposedDistribution distribution(aCollection, aCopula);
+    JointDistribution distribution(aCollection, aCopula);
     distribution.setName("myDist");
     UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;
@@ -179,7 +179,7 @@ int main(int, char *[])
     }
     NormalCopula anotherCopula(correlation);
     anotherCopula.setName("Normal copula");
-    distribution = ComposedDistribution(aCollection, anotherCopula);
+    distribution = JointDistribution(aCollection, anotherCopula);
     distribution.setName("myDist");
     Normal distributionRef(mean, sigma, correlation);
     fullprint << "Distribution " << distribution << std::endl;
@@ -250,7 +250,7 @@ int main(int, char *[])
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
     // Create and print a complex distribution
-    ComposedDistribution::DistributionCollection aCollection2;
+    JointDistribution::DistributionCollection aCollection2;
     Normal marginalN(0.0, 1.0);
     marginalN.setName("First");
     Description componentN(1);
@@ -272,7 +272,7 @@ int main(int, char *[])
     marginalTN.setDescription(componentTN);
     aCollection2.add( Distribution(marginalTN) );
     aCollection2[2].setName("Third");
-    ComposedDistribution distribution2(aCollection2);
+    JointDistribution distribution2(aCollection2);
     distribution2.setName("myDist2");
     fullprint << "Distribution " << distribution2 << std::endl;
     std::cout << "Distribution " << std::endl;

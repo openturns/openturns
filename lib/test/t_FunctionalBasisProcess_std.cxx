@@ -52,7 +52,7 @@ int main(int, char *[])
       coefficients[i] = Normal(0.0, (1.0 + i));
     }
     PlatformInfo::SetNumericalPrecision(oldPrecision);
-    Process process = FunctionalBasisProcess(ComposedDistribution(coefficients), basis);
+    Process process = FunctionalBasisProcess(JointDistribution(coefficients), basis);
 
     /* Setting the timeGrid */
     process.setTimeGrid(timeGrid);

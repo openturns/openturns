@@ -60,7 +60,7 @@ int main(int, char *[])
     fullprint << productBasis3.__repr_markdown__() << std::endl;
 
     // Collection based on a complex collection of distributions
-    ComposedDistribution::DistributionCollection aCollection4;
+    JointDistribution::DistributionCollection aCollection4;
     Normal marginalN(0.0, 1.0);
     aCollection4.add( Distribution(marginalN) );
     Uniform marginalU(12345.6, 123456.7);

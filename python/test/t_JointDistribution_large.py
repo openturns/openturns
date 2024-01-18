@@ -22,7 +22,7 @@ for i in range(dimension):
 aCopula = ot.IndependentCopula(dimension)
 
 # Instantiate one distribution object
-distribution = ot.ComposedDistribution(aCollection, aCopula)
+distribution = ot.JointDistribution(aCollection, aCopula)
 print("Distribution created.")
 
 # Is this distribution elliptical ?

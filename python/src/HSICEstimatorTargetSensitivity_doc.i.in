@@ -34,7 +34,7 @@ Examples
 Generate input and output samples.
 
 >>> # 3d input distribution with an independent copula
->>> distX = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * 3)
+>>> distX = ot.JointDistribution([ot.Uniform(-pi, pi)] * 3)
 >>> X = distX.getSample(100) # get a sample
 >>>
 >>> # Apply the Ishigami model.

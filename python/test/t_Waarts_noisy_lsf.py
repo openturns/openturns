@@ -109,7 +109,7 @@ aCopula = ot.IndependentCopula(aCollection.getSize())
 aCopula.setName("Independent copula")
 
 # Instantiate one distribution object
-myDistribution = ot.ComposedDistribution(aCollection, aCopula)
+myDistribution = ot.JointDistribution(aCollection, aCopula)
 myDistribution.setName("myDist")
 
 start = myDistribution.getMean()

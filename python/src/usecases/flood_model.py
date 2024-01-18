@@ -72,7 +72,7 @@ class FloodModel:
         :math:`Y = H`.
         Its parameters are :math:`\theta = (B, L)`.
 
-    distribution : :class:`~openturns.ComposedDistribution`
+    distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
@@ -182,7 +182,7 @@ class FloodModel:
             ["Q", "Ks", "Zv", "Zm", "B", "L", "Zb", "Hd"], ["H", "S", "C"], formula
         )
 
-        self.distribution = ot.ComposedDistribution(
+        self.distribution = ot.JointDistribution(
             [self.Q, self.Ks, self.Zv, self.Zm, self.B, self.L, self.Zb, self.Hd]
         )
         self.dim = self.distribution.getDimension()

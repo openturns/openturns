@@ -576,7 +576,7 @@ Examples
 >>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
 >>> size = 100
 >>> sample = distribution.getSample(size)
->>> distribution = ot.ComposedDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
+>>> distribution = ot.JointDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
 >>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 >>> View(clouds).show()"
 

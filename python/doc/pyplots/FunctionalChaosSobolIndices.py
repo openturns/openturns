@@ -9,7 +9,7 @@ input_names = ["X1", "X2", "X3"]
 g = ot.SymbolicFunction(input_names, formula)
 # Create the probabilistic model
 distributionList = [ot.Uniform(-pi, pi)] * 3
-distribution = ot.ComposedDistribution(distributionList)
+distribution = ot.JointDistribution(distributionList)
 # Create a training sample
 N = 500
 inputTrain = distribution.getSample(N)

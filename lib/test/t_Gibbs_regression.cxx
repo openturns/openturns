@@ -24,7 +24,7 @@
 
 using namespace OT;
 using namespace OT::Test;
-typedef ComposedDistribution::DistributionCollection                DistributionCollection;
+typedef JointDistribution::DistributionCollection                DistributionCollection;
 
 int main(int, char *[])
 {

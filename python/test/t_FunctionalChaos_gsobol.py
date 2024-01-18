@@ -42,7 +42,7 @@ model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
 marginals = [ot.Uniform(0.0, 1.0)] * dimension
-distribution = ot.ComposedDistribution(marginals)
+distribution = ot.JointDistribution(marginals)
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)

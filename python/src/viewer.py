@@ -872,7 +872,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 2
     >>> X = [ot.Uniform()] * dim
-    >>> distribution = ot.ComposedDistribution(X)
+    >>> distribution = ot.JointDistribution(X)
     >>> sampleSize = 10
     >>> sample = distribution.getSample(sampleSize)
     >>> fig = PlotDesign(sample)
@@ -883,7 +883,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 5
     >>> size = 10
-    >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
+    >>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)]*dim)
     >>> bounds = distribution.getRange()
     >>> lhs = ot.LHSExperiment(distribution, size)
     >>> sample = lhs.generate()

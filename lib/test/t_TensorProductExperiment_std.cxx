@@ -107,10 +107,10 @@ void test_2()
   // Marginal 0: [Uniform * 2] with sizes [3, 2]
   const Uniform uniform_1(-1.0, 1.0);
   const Uniform uniform_2(-1.0, 1.0);
-  ComposedDistribution::DistributionCollection distributionCollection1;
+  JointDistribution::DistributionCollection distributionCollection1;
   distributionCollection1.add(Distribution(uniform_1));
   distributionCollection1.add(Distribution(uniform_2));
-  ComposedDistribution distribution3(distributionCollection1);
+  JointDistribution distribution3(distributionCollection1);
   Indices marginalSizes3(0);
   marginalSizes3.add(3);
   marginalSizes3.add(2);
@@ -120,11 +120,11 @@ void test_2()
   const Normal normal_1(0.0, 1.0);
   const Normal normal_2(0.0, 1.0);
   const Normal normal_3(0.0, 1.0);
-  ComposedDistribution::DistributionCollection distributionCollection2;
+  JointDistribution::DistributionCollection distributionCollection2;
   distributionCollection2.add(Distribution(normal_1));
   distributionCollection2.add(Distribution(normal_2));
   distributionCollection2.add(Distribution(normal_3));
-  ComposedDistribution distribution4(distributionCollection2);
+  JointDistribution distribution4(distributionCollection2);
   Indices marginalSizes4(0);
   marginalSizes4.add(2);
   marginalSizes4.add(2);

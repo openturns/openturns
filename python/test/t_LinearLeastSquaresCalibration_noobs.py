@@ -37,7 +37,7 @@ Theta1 = ot.Dirac(trueParameter[0])
 Theta2 = ot.Dirac(trueParameter[1])
 Theta3 = ot.Dirac(trueParameter[2])
 
-inputRandomVector = ot.ComposedDistribution([Theta1, Theta2, Theta3])
+inputRandomVector = ot.JointDistribution([Theta1, Theta2, Theta3])
 
 candidate = ot.Point([8.0, 9.0, -6.0])
 

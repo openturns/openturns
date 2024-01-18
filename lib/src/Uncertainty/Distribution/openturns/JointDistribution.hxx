@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_COMPOSEDDISTRIBUTION_HXX
-#define OPENTURNS_COMPOSEDDISTRIBUTION_HXX
+#ifndef OPENTURNS_JOINTDISTRIBUTION_HXX
+#define OPENTURNS_JOINTDISTRIBUTION_HXX
 
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
@@ -28,12 +28,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ComposedDistribution
+ * @class JointDistribution
  *
  * The class describes the probabilistic concept of distributions
  * made from marginal distributions and from a copula.
  */
-class OT_API ComposedDistribution
+class OT_API JointDistribution
   : public DistributionImplementation
 {
   CLASSNAME
@@ -44,19 +44,19 @@ public:
   typedef PersistentCollection<Distribution>       DistributionPersistentCollection;
 
   /** Default constructor for save/load methods : 1D distribution with default Uniform marginal and IndependentCopula */
-  ComposedDistribution();
+  JointDistribution();
 
   /** Default constructor, independent copula is supposed */
-  explicit ComposedDistribution(const DistributionCollection & coll);
+  explicit JointDistribution(const DistributionCollection & coll);
 
   /** Default constructor */
-  ComposedDistribution(const DistributionCollection & coll,
+  JointDistribution(const DistributionCollection & coll,
                        const Distribution & copula);
 
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  Bool operator ==(const ComposedDistribution & other) const;
+  Bool operator ==(const JointDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -80,32 +80,32 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  ComposedDistribution * clone() const override;
+  JointDistribution * clone() const override;
 
-  /** Get one realization of the ComposedDistribution */
+  /** Get one realization of the JointDistribution */
   Point getRealization() const override;
 protected:
   Sample getSampleParallel(const UnsignedInteger size) const;
 public:
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Get the DDF of the ComposedDistribution */
+  /** Get the DDF of the JointDistribution */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
-  /** Get the PDF of the ComposedDistribution */
+  /** Get the PDF of the JointDistribution */
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /** Get the logarithm of the PDF of the ComposedDistribution */
+  /** Get the logarithm of the PDF of the JointDistribution */
   using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
-  /** Get the CDF of the ComposedDistribution */
+  /** Get the CDF of the JointDistribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
-  /** Get the survival function of the ComposedDistribution */
+  /** Get the survival function of the JointDistribution */
   using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
@@ -214,15 +214,23 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** The collection of distribution of the ComposedDistribution */
+  /** The collection of distribution of the JointDistribution */
   DistributionPersistentCollection distributionCollection_;
 
-  /** The copula of the ComposedDistribution */
+  /** The copula of the JointDistribution */
   Distribution copula_;
 
-}; /* class ComposedDistribution */
+}; /* class JointDistribution */
 
+
+// @deprecated
+class OT_API ComposedDistribution
+  : public JointDistribution
+{
+CLASSNAME
+public:
+};
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_COMPOSEDDISTRIBUTION_HXX */
+#endif /* OPENTURNS_JOINTDISTRIBUTION_HXX */

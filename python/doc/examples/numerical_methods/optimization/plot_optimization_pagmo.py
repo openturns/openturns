@@ -27,7 +27,7 @@ zdt1.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
 
 # %%
 # We create the first generation of points by sampling into the bounding box
-pop0 = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2).getSample(100)
+pop0 = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2).getSample(100)
 
 # %%
 # We create the algorithm that should evolve over 10 generations

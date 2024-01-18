@@ -150,7 +150,7 @@ int main(int, char *[])
     // Create the input distribution
     Collection<Distribution> marginals(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i) marginals[i] = Uniform(0.0, 1.0);
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(inputDimension);

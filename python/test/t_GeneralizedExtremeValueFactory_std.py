@@ -59,7 +59,7 @@ ott.assert_almost_equal(
 )
 
 # try MLE on multiple parameters
-pdist = ot.ComposedDistribution(
+pdist = ot.JointDistribution(
     [
         ot.Normal(0.0, 2.0),
         ot.TruncatedNormal(1.0, 2.0, 1e-6, 10.0),

@@ -47,7 +47,7 @@ int main(int, char *[])
     // Force the use of the approximation to avoid timeout
     ResourceMap::SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", true);
 
-    ComposedDistribution::DistributionCollection coll;
+    JointDistribution::DistributionCollection coll;
     coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
     coll.add(Triangular(3.0, 4.5, 5.0));

@@ -1,4 +1,4 @@
-lhs= LHSExperiment(distribution=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1, size100, always shuffle=true, random shift=false
+lhs= LHSExperiment(distribution=class=JointDistribution name=JointDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1, size100, always shuffle=true, random shift=false
 Bounds of uniform distributions= [0, 1]
 [0, 1]
 [0, 1]
@@ -104,7 +104,7 @@ design=      [ X0    X1    X2    ]
 98 : [ 0.405 0.115 0.865 ]
 99 : [ 0.535 0.935 0.195 ]
 PhiP=27.099207, C2=0.027859
-lhs= class=MonteCarloLHS name=Unnamed lhs=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1 size=100 alwaysShuffle=true random shift=false spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true simulation size=100
+lhs= class=MonteCarloLHS name=Unnamed lhs=class=LHSExperiment name=Unnamed distribution=class=JointDistribution name=JointDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1 size=100 alwaysShuffle=true random shift=false spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true simulation size=100
 Generating design with MonteCarlo and C2 space filling=      [ X0    X1    X2    ]
  0 : [ 0.335 0.145 0.885 ]
  1 : [ 0.945 0.895 0.305 ]
@@ -308,7 +308,7 @@ History criterion=      [ C2 criterion ]
 98 : [ 0.0297715    ]
 99 : [ 0.0285167    ]
 Final criteria: C2=0.021652, PhiP=26.726124
-lhs= class=MonteCarloLHS name=Unnamed lhs=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1 size=100 alwaysShuffle=true random shift=false spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 simulation size=100
+lhs= class=MonteCarloLHS name=Unnamed lhs=class=LHSExperiment name=Unnamed distribution=class=JointDistribution name=JointDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=0 b=1 size=100 alwaysShuffle=true random shift=false spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 simulation size=100
 Generating design with MonteCarlo and PhiP optimum=      [ X0    X1    X2    ]
  0 : [ 0.095 0.625 0.055 ]
  1 : [ 0.575 0.605 0.465 ]

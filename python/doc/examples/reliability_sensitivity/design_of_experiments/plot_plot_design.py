@@ -23,7 +23,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 dim = 2
 X = [ot.Uniform()] * dim
-distribution = ot.ComposedDistribution(X)
+distribution = ot.JointDistribution(X)
 
 # %%
 sampleSize = 10
@@ -84,7 +84,7 @@ fig = otv.PlotDesign(sample, figure=fig)
 # %%
 dim = 3
 X = [ot.Uniform()] * dim
-distribution = ot.ComposedDistribution(X)
+distribution = ot.JointDistribution(X)
 
 # %%
 sampleSize = 10

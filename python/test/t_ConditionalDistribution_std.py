@@ -10,11 +10,11 @@ coll2.add(ot.Dirac(1))
 coll2.add(ot.Dirac(2))
 coll2.add(ot.Bernoulli(0.7))
 coll2.add(ot.Uniform(3.0, 4.0))
-d2 = ot.ComposedDistribution(coll2)
+d2 = ot.JointDistribution(coll2)
 coll1 = ot.DistributionCollection(0)
 coll1.add(ot.Uniform())
 coll1.add(ot.Uniform())
-d1 = ot.ComposedDistribution(coll1)
+d1 = ot.JointDistribution(coll1)
 # Test the different DOE
 ot.ResourceMap.SetAsUnsignedInteger(
     "ConditionalDistribution-MarginalIntegrationNodesNumber", 256
@@ -110,17 +110,17 @@ conditioningDistributionCollection = ot.DistributionCollection(0)
 atoms = ot.DistributionCollection(0)
 atoms.add(ot.Uniform(0.0, 1.0))
 atoms.add(ot.Uniform(1.0, 2.0))
-conditioningDistributionCollection.add(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.add(ot.JointDistribution(atoms))
 # Second conditioning distribution: discrete/continuous
 atoms = ot.DistributionCollection(0)
 atoms.add(ot.Binomial(3, 0.5))
 atoms.add(ot.Uniform(1.0, 2.0))
-conditioningDistributionCollection.add(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.add(ot.JointDistribution(atoms))
 # Third conditioning distribution: dirac/continuous
 atoms = ot.DistributionCollection(0)
 atoms.add(ot.Dirac(0.5))
 atoms.add(ot.Uniform(1.0, 2.0))
-conditioningDistributionCollection.add(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.add(ot.JointDistribution(atoms))
 for i in range(conditioningDistributionCollection.getSize()):
     print("conditioning distribution=", conditioningDistributionCollection[i])
     distribution = ot.ConditionalDistribution(

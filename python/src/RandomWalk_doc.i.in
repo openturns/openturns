@@ -31,7 +31,7 @@ Create a random walk:
 
 >>> import openturns as ot
 >>> myTimeGrid = ot.RegularGrid(0, 0.1, 10)
->>> myDist = ot.ComposedDistribution([ot.Normal(), ot.Exponential(0.2)], ot.ClaytonCopula(0.5))
+>>> myDist = ot.JointDistribution([ot.Normal(), ot.Exponential(0.2)], ot.ClaytonCopula(0.5))
 >>> myOrigin = myDist.getMean()
 >>> myRandomWalk = ot.RandomWalk(myOrigin, myDist, myTimeGrid)
 

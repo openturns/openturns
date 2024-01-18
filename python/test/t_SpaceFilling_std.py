@@ -7,7 +7,7 @@ dimension = 5
 size = 100
 
 # Build OT LHS algorithm
-lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform()] * dimension), size)
+lhs = ot.LHSExperiment(ot.JointDistribution([ot.Uniform()] * dimension), size)
 
 # Generate design without optimization
 design = lhs.generate()

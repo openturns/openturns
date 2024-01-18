@@ -18,7 +18,7 @@ L.setDescription("L")
 # Moment of inertia I
 II = ot.Beta(2.5, 4, 310, 450)  # in cm^4
 II.setDescription("I")
-distribution = ot.ComposedDistribution([E, F, L, II])
+distribution = ot.JointDistribution([E, F, L, II])
 
 # estimator
 estimator = ot.SaltelliSensitivityAlgorithm()

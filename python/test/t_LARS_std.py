@@ -45,7 +45,7 @@ model = ot.SymbolicFunction(
 )
 
 # Create the input distribution
-distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-pi, pi)] * dimension)
 
 # Create the orthogonal basis
 polynomialCollection = ot.PolynomialFamilyCollection(dimension)

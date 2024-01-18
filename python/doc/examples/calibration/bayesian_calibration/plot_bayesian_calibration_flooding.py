@@ -145,7 +145,7 @@ Z_m.setDescription(["Zm (m)"])
 # We create the joint input distribution.
 
 # %%
-inputRandomVector = ot.ComposedDistribution([Q, K_s, Z_v, Z_m])
+inputRandomVector = ot.JointDistribution([Q, K_s, Z_v, Z_m])
 
 # %%
 # Create a Monte-Carlo sample of the output :math:`H`.

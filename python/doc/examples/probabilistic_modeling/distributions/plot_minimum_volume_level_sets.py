@@ -186,12 +186,12 @@ corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
 x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
-x_funk = ot.ComposedDistribution([x1, x2], copula)
+x_funk = ot.JointDistribution([x1, x2], copula)
 
 # Create a second gaussian
 x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
-x_punk = ot.ComposedDistribution([x1, x2], copula)
+x_punk = ot.JointDistribution([x1, x2], copula)
 
 # Mix the distributions
 mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])

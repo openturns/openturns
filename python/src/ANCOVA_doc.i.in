@@ -98,11 +98,11 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Model and distribution definition
 >>> model = ot.SymbolicFunction(['X1','X2'], ['4.*X1 + 5.*X2'])
->>> distribution = ot.ComposedDistribution([ot.Normal()] * 2)
+>>> distribution = ot.JointDistribution([ot.Normal()] * 2)
 >>> S = ot.CorrelationMatrix(2)
 >>> S[1, 0] = 0.3
 >>> R = ot.NormalCopula().GetCorrelationFromSpearmanCorrelation(S)
->>> CorrelatedInputDistribution = ot.ComposedDistribution([ot.Normal()] * 2, ot.NormalCopula(R))
+>>> CorrelatedInputDistribution = ot.JointDistribution([ot.Normal()] * 2, ot.NormalCopula(R))
 >>> sample = CorrelatedInputDistribution.getSample(200)
 >>> # Functional chaos computation
 >>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 2, ot.LinearEnumerateFunction(2))

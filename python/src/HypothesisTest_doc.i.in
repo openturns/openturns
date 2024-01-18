@@ -25,7 +25,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distCol = [ot.Poisson(3), ot.Binomial(10, 0.3)]
->>> distribution = ot.ComposedDistribution(distCol)
+>>> distribution = ot.JointDistribution(distCol)
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
 >>> print(test_result)
@@ -74,7 +74,7 @@ Examples
 >>> S = ot.CorrelationMatrix(3)
 >>> S[0, 2] = 0.9
 >>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> distribution = ot.JointDistribution(distCol, copula)
 >>> sample = distribution.getSample(30)
 >>> firstSample = sample[:, :2]
 >>> secondSample = sample[:, 2]
@@ -167,7 +167,7 @@ Examples
 >>> S = ot.CorrelationMatrix(4)
 >>> S[0, 3] = 0.9
 >>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> distribution = ot.JointDistribution(distCol, copula)
 >>> sample = distribution.getSample(30)
 >>> firstSample = sample[:, :3]
 >>> secondSample = sample[:, 3]

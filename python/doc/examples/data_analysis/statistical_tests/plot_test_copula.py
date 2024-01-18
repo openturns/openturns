@@ -21,12 +21,12 @@ ot.Log.Show(ot.Log.NONE)
 N = 500
 
 # %%
-dist1 = ot.ComposedDistribution([ot.Normal()] * 2, ot.GumbelCopula(3.0))
+dist1 = ot.JointDistribution([ot.Normal()] * 2, ot.GumbelCopula(3.0))
 sample1 = dist1.getSample(N)
 sample1.setName("sample1")
 
 # %%
-dist2 = ot.ComposedDistribution([ot.Normal()] * 2, ot.ClaytonCopula(0.2))
+dist2 = ot.JointDistribution([ot.Normal()] * 2, ot.ClaytonCopula(0.2))
 sample2 = dist2.getSample(N)
 sample2.setName("sample2")
 
@@ -59,7 +59,7 @@ view = viewer.View(graph)
 # %%
 # First we create data
 marginals = [ot.Normal()] * 2
-dist = ot.ComposedDistribution(marginals, ot.ClaytonCopula(3))
+dist = ot.JointDistribution(marginals, ot.ClaytonCopula(3))
 N = 500
 sample = dist.getSample(N)
 

@@ -10,7 +10,7 @@ print("distribution = ", repr(distribution))
 aCollection = []
 aCollection.append(ot.Normal(0.0, 1.0))
 aCollection.append(ot.Uniform(1.0, 1.5))
-distributionParameters = ot.ComposedDistribution(aCollection)
+distributionParameters = ot.JointDistribution(aCollection)
 randomParameters = ot.RandomVector(distributionParameters)
 
 print("random parameters=", randomParameters)

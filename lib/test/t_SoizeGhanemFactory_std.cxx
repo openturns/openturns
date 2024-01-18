@@ -58,9 +58,9 @@ int main(int, char *[])
     R(0, 1) = 0.5;
     NormalCopula copula(R);
     Collection<SoizeGhanemFactory> factories(3);
-    factories[0] = SoizeGhanemFactory(ComposedDistribution(marginals));
-    factories[1] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), false);
-    factories[2] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), true);
+    factories[0] = SoizeGhanemFactory(JointDistribution(marginals));
+    factories[1] = SoizeGhanemFactory(JointDistribution(marginals, copula), false);
+    factories[2] = SoizeGhanemFactory(JointDistribution(marginals, copula), true);
     Point x(2, 0.5);
     UnsignedInteger kMax = 5;
     ResourceMap::SetAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 2048 );

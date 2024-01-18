@@ -20,7 +20,7 @@
  */
 #include <cmath>
 #include "openturns/ConditionalDistribution.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/Box.hxx"
@@ -237,7 +237,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   UnsignedInteger continuousAtomsNumber = 0;
   if (continuousDimension > 0)
   {
-    const ComposedDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
+    const JointDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
     // Create the DOE for continuous integration
     const String method(ResourceMap::GetAsString("ConditionalDistribution-ContinuousDiscretizationMethod"));
     const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" );

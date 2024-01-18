@@ -36,10 +36,10 @@ class CantileverBeam:
     copula : `NormalCopula`
              Copula of the model.
 
-    distribution : `ComposedDistribution`
+    distribution : `JointDistribution`
                    The joint distribution of the parameters.
 
-    independentDistribution : `ComposedDistribution`
+    independentDistribution : `JointDistribution`
                               The joint distribution of the parameters with independent copula.
 
 
@@ -82,11 +82,11 @@ class CantileverBeam:
         self.copula = ot.NormalCopula(
             ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R)
         )
-        self.distribution = ot.ComposedDistribution(
+        self.distribution = ot.JointDistribution(
             [self.E, self.F, self.L, self.II], self.copula
         )
 
         # special case of an independent copula
-        self.independentDistribution = ot.ComposedDistribution(
+        self.independentDistribution = ot.JointDistribution(
             [self.E, self.F, self.L, self.II]
         )

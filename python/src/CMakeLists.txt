@@ -563,7 +563,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       GumbelCopula.i GumbelCopula_doc.i.in
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
                       BlockIndependentDistribution.i BlockIndependentDistribution_doc.i.in
-                      ComposedDistribution.i ComposedDistribution_doc.i.in
+                      JointDistribution.i JointDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
                       PlackettCopula.i PlackettCopula_doc.i.in

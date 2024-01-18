@@ -25,7 +25,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -127,13 +127,13 @@ Distribution ExpectationSimulationResult::getExpectationDistribution() const
   }
   else
   {
-    ComposedDistribution::DistributionCollection coll(varianceEstimate_.getDimension());
+    JointDistribution::DistributionCollection coll(varianceEstimate_.getDimension());
     for (UnsignedInteger j = 0; j < varianceEstimate_.getDimension(); ++ j)
       if (varianceEstimate_[j] > 0.0)
         coll[j] = Normal(expectationEstimate_[j], sqrt(varianceEstimate_[j]));
       else
         coll[j] = Dirac(expectationEstimate_[j]);
-    result = ComposedDistribution(coll);
+    result = JointDistribution(coll);
   }
   return result;
 }

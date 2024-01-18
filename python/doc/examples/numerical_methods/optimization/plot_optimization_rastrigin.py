@@ -94,7 +94,7 @@ problem = ot.OptimizationProblem(rastrigin)
 
 # %%
 size = 64
-distribution = ot.ComposedDistribution([ot.Uniform(lowerbound[0], upperbound[0])] * dim)
+distribution = ot.JointDistribution([ot.Uniform(lowerbound[0], upperbound[0])] * dim)
 experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
 solver = ot.MultiStart(ot.Cobyla(problem), experiment.generate())
 
