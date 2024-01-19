@@ -377,16 +377,19 @@ Point DualLinearCombinationEvaluation::getParameter() const
 void DualLinearCombinationEvaluation::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = functionsCollection_.getSize();
+  UnsignedInteger parameterSize = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    parameterSize += functionsCollection_[i].getParameter().getSize();
+  if (parameter.getSize() != parameterSize)
+    throw InvalidDimensionException(HERE) << "DualLinearCombinationEvaluation expected a parameter of size " << parameterSize
+                                          << " got " << parameter.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     Point marginalParameter(functionsCollection_[i].getParameter());
     const UnsignedInteger marginalDimension = marginalParameter.getDimension();
-    for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
-    {
-      marginalParameter[j] = parameter[index];
-      ++ index;
-    }
+    std::copy(parameter.begin() + index, parameter.begin() + index + marginalDimension, marginalParameter.begin());
+    index += marginalDimension;
     functionsCollection_[i].setParameter(marginalParameter);
   }
 }
