@@ -2071,7 +2071,7 @@ OT_Distribution_getKurtosis_doc
 
 Parameters
 ----------
-i : int or list of ints, :math:`1 \leq i \leq n`
+i : int or list of ints, :math:`0 \leq i < n`
     Component(s) indice(s).
 
 Returns
@@ -3084,7 +3084,7 @@ OT_Distribution_drawSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`0 \leq i < n`
     The index of the margin of interest.
 x_min : float
     The starting value that is used for meshing the x-axis.
@@ -3124,9 +3124,9 @@ OT_Distribution_drawMarginal1DSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`0 \leq i < n`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq n`
+j : int, :math:`0 \leq i \neq j < n`
     The index of the second margin of interest.
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
