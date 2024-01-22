@@ -32,17 +32,15 @@ weightsMatrix :  2-d sequence of float
 
 Notes
 -----
-Create an affine combination of input random variables of form:
-    :math:`Y = y_0 + M X`
-where: :math:`\vect{Y}` of size :math:`d` with :math:`d\in \{1,2,3\}`
-       :math:`\vect{X}` is a :math:`n`-random vector with independent components, i.e. a
-       collection of univariate distributions,
+Create an affine combination of input random variables of the form :math:`\vect{Y} = \vect{y}_0 + \mat{M} \vect{X}` where:
 
-       :math:`\mat{M}` is a :math:`d \times n` deterministic matrix, i.e. the linear
-       operator of the affine transformation,
-
-       :math:`\vect{y}_0` a constant and deterministic vector, i.e the constant
-       part of the affine transformation.
+- :math:`\vect{Y}` is a random vector of size :math:`d` with :math:`d\in \{1,2,3\}`
+- :math:`\vect{X}` is a :math:`n`-random vector with independent components, i.e. a
+  collection of univariate distributions,
+- :math:`\mat{M}` is a :math:`d \times n` deterministic matrix, i.e. the linear
+  operator of the affine transformation,
+- :math:`\vect{y}_0` is a constant and deterministic vector, i.e the constant
+  part of the affine transformation.
 
 As the univariate random variables :math:`X_i` are independent, the
 characteristic function of :math:`\vect{Y}`, denoted :math:`\phi_Y`, is
