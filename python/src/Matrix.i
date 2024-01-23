@@ -353,10 +353,6 @@ namespace OT {
   Matrix __rmul__(const Scalar s) { return s * (*self); }
   Matrix __matmul__(const Matrix & other) { return *self * other; }
 
-#if SWIG_VERSION < 0x030011
-  Matrix __truediv__(const Scalar s) { return (*self) / s; }
-#endif
-
   Matrix __neg__() { return -1.0 * (*self); }
 
 } // Matrix
