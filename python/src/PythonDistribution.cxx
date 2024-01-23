@@ -69,6 +69,8 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
   ScopedPyObjectPointer dim(PyObject_CallMethod ( pyObj_,
                             const_cast<char *>( "getDimension" ),
                             const_cast<char *>( "()" ) ));
+  if (dim.isNull())
+    handleException();
   setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
 
   if (!PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDF")))
