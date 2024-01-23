@@ -24,9 +24,5 @@ namespace OT {
 
   OTMatrixAccessors()
 
-#if SWIG_VERSION < 0x030011
-  SquareMatrix __truediv__(Scalar s) { return (*self) / s; }
-#endif
-
 } // SquareMatrix
 } // OT

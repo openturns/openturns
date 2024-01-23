@@ -906,12 +906,6 @@ Sample __isub__(const Sample & other)
   return *self;
 }
 
-#if SWIG_VERSION < 0x030011
-Sample __truediv__(const Scalar & u) { return (*self) / u; }
-
-Sample __truediv__(const Point & v) { return (*self) / v; }
-#endif
-
 Sample __rmul__(Scalar s)
 {
   return s * (*self);

@@ -78,10 +78,6 @@ Distribution __rdiv__(Scalar s) { return self->inverse() * s; }
 
 Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
 
-#if SWIG_VERSION < 0x030011
-  Distribution __truediv__(Scalar s) { return (*self) / s; }
-#endif
-
 } // class Distribution
 } // namespace OT
 
