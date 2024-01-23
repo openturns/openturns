@@ -198,6 +198,10 @@ for factory in factories:
             p = distribution.computeProbability(interval)
             ott.assert_almost_equal(p, 1.0)
 
+            # check getSupport not overflowing with negative upper bound
+            interval = ot.Interval(-1e3, -10)
+            support = distribution.getSupport(interval)
+
     # parameters
     p = distribution.getParameter()
     pd = distribution.getParameterDescription()
