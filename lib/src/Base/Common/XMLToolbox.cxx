@@ -244,7 +244,7 @@ char * XML::MakeMessage(const char *fmt, va_list args)
   char *p, *np;
   va_list args_copy;
 
-  if ((p = (char*) calloc (sizeof(char), size)) == NULL)
+  if ((p = (char*) calloc(size, sizeof(char))) == NULL)
     return NULL;
 
   while (1)
