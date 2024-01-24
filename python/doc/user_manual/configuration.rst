@@ -18,6 +18,9 @@ OPENTURNS_HOME
 OPENTURNS_LOG_SEVERITY
     The default severity of logs, see the :class:`~openturns.Log` class.
 
+OPENTURNS_NUM_THREADS
+    Number of threads to use for parallel regions, see the :class:`~openturns.TBB` class.
+
 Environment checking and filesystem manipulation
 ================================================
 
