@@ -45,12 +45,12 @@ Run tests
 
 Python tests can be run once the bindings are finished compiled::
 
-    ctest --test-dir build -j4 -R pyinstallcheck
+    ctest --preset=python
 
 C++ tests must be built prior to be launched::
 
     cmake --build build --target tests --parallel 4
-    ctest --test-dir build -j4 -R cppcheck
+    ctest --preset=cpp
 
 and all the tests should be successful else check the log file
 Testing/Temporary/LastTest.log.
