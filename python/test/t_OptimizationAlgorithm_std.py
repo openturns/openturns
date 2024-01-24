@@ -43,19 +43,24 @@ for minimization in [True, False]:
 
 def _exec(x):
     if x[0] < 0.0 or x[0] > 1.0:
-        raise ValueError(f"Point {ot.Point(x)} not in bounds.")
+        raise ValueError(f"Point {x[0]} not in bounds.")
     c = 1.0 - x[0] ** 2
     return [c]
 
 
 # check algorithm stays inside bounds
+eps = 1e-14
+ot.ResourceMap.SetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon", eps)
+ot.ResourceMap.SetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon", eps)
+# the tolerance prevents FD gradients from stepping outside of [0,1]
+# but we still want to keep it as low as possible to detect slightly out of bounds points
+bounds = ot.Interval([2.0 * eps], [1.0 - 2.0 * eps])
 costFunction = ot.PythonFunction(1, 1, _exec)
 problem = ot.OptimizationProblem(costFunction)
-# the tolerance prevents gradients from stepping outside of [0,1]
-bounds = ot.Interval([1e-3], [1.0-1e-3])
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     algo = ot.OptimizationAlgorithm.Build(name)
+    algo.setMaximumConstraintError(0.0)
     try:
         algo.setProblem(problem)
         startingPoint = [0.5]

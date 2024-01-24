@@ -233,6 +233,7 @@ bool IpoptProblem::get_starting_point(int /*n*/,
   return true;
 }
 
+
 bool IpoptProblem::eval_f(int n,
                           const double* x,
                           bool /*new_x*/,
