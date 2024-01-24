@@ -125,10 +125,12 @@ void Ipopt::run()
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
   app->Options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
+  if (getMaximumConstraintError() > 0.0)
+    app->Options()->SetNumericValue("constr_viol_tol", getMaximumConstraintError());
+  else
+    app->Options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
+  app->Options()->SetNumericValue("bound_relax_factor", 0.0);
   GetOptionsFromResourceMap(app->Options());
-  String optlist;
-  app->Options()->PrintList(optlist);
-  LOGDEBUG(optlist);
 
   // Initialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
@@ -137,6 +139,11 @@ void Ipopt::run()
 
   // Ask Ipopt to solve the problem
   status = app->OptimizeTNLP(ipoptProblem);
+
+  // print used options
+  String optionsLog;
+  app->Options()->PrintList(optionsLog);
+  LOGDEBUG(optionsLog);
 
   const Sample inputHistory(ipoptProblem->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),

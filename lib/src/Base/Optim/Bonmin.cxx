@@ -164,10 +164,12 @@ void Bonmin::run()
   for (UnsignedInteger i = 0; i < algos.getSize(); ++ i)
     if (!app.options()->SetIntegerValue("bonmin." + algos[i] + "_log_level", 0))
       throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin." << algos[i] << "_log_level";
+  if (getMaximumConstraintError() > 0.0)
+    app.options()->SetNumericValue("constr_viol_tol", getMaximumConstraintError());
+  else
+    app.options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
+  app.options()->SetNumericValue("bound_relax_factor", 0.0);
   GetOptionsFromResourceMap(app.options());
-  String optlist;
-  app.options()->PrintList(optlist);
-  LOGDEBUG(optlist);
 
   // Update setup with BonminProblem
   try
@@ -204,9 +206,10 @@ void Bonmin::run()
     return;
   }
 
-  String allOptions;
-  app.options()->PrintList(allOptions);
-  LOGINFO(allOptions);
+  // print used options
+  String optionsLog;
+  app.options()->PrintList(optionsLog);
+  LOGINFO(optionsLog);
 
   const Sample inputHistory(tminlp->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),

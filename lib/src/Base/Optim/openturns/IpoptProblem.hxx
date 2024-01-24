@@ -161,6 +161,9 @@ public:
   }
 
 private:
+  // Clip point wrt problem bounds
+  void clip(Point & xPoint) const;
+
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
   Sample evaluationInputHistory_;
