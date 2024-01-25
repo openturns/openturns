@@ -310,7 +310,6 @@ void NLopt::run()
   // the default seed is non-deterministic
   nlopt::srand(seed_);
   nlopt::result rc = nlopt::FAILURE;
-  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
   try
   {
@@ -343,25 +342,17 @@ void NLopt::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
-  if (rc < 0)
-    result_.setStatus(OptimizationResult::FAILURE);
-
-  // check for timeout
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
-  result_.setTimeDuration(timeDuration);
-  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
-  {
+  if (rc == nlopt::MAXTIME_REACHED)
     result_.setStatus(OptimizationResult::TIMEOUT);
-    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << " s");
-  }
+  else if (rc < 0)
+    result_.setStatus(OptimizationResult::FAILURE);
 
   if (result_.getStatus() != OptimizationResult::SUCCEEDED)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
     else
-      LOGWARN(OSS() << "NLopt algorithm failed. The error message is " << result_.getStatusMessage());
+      LOGWARN(OSS() << "NLopt algorithm failed: " << result_.getStatusMessage());
   }
 
 #else
