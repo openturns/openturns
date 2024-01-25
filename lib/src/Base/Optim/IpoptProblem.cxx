@@ -28,9 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /** Constructor with parameters */
 IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
                             const Point & startingPoint,
-                            const UnsignedInteger maximumEvaluationNumber,
-                            const Scalar maximumTimeDuration,
-                            const std::chrono::steady_clock::time_point & t0)
+                            const UnsignedInteger maximumCallsNumber)
   : TNLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
@@ -38,10 +36,8 @@ IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
   , evaluationOutputHistory_(0, 1)
   , optimalPoint_(optimProblem.getDimension())
   , optimalValue_(1)
-  , maximumEvaluationNumber_(maximumEvaluationNumber)
-  , maximumTimeDuration_(maximumTimeDuration)
-  , t0_(t0)
-  , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
+  , maximumCallsNumber_(maximumCallsNumber)
+  , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(nullptr, nullptr))
   , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
 {
   // Nothing to do
@@ -254,15 +250,10 @@ bool IpoptProblem::eval_f(int n,
   evaluationInputHistory_.add(xPoint);
   evaluationOutputHistory_.add(yPoint);
 
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
-  if ((maximumTimeDuration_ > 0.0) && (timeDuration > maximumTimeDuration_))
-    return false;
-
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumEvaluationNumber_, progressCallback_.second);
+    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -271,7 +262,7 @@ bool IpoptProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumEvaluationNumber_);
+  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
 }
 
 

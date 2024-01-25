@@ -115,8 +115,7 @@ void Ipopt::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
  
   // Create BonminProblem
-  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
-  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber(), getMaximumTimeDuration(), t0);
+  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 
@@ -130,6 +129,10 @@ void Ipopt::run()
   else
     app->Options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
   app->Options()->SetNumericValue("bound_relax_factor", 0.0);
+
+  // max_wall_time is only available from ipopt>=3.14
+  if (getMaximumTimeDuration() > 0.0)
+    app->Options()->SetNumericValue("max_wall_time", getMaximumTimeDuration());
   GetOptionsFromResourceMap(app->Options());
 
   // Initialize the IpoptApplication and process the options
@@ -153,6 +156,9 @@ void Ipopt::run()
   String statusMessage;
   switch (status)
   {
+    case Solve_Succeeded:
+      statusMessage = "Solve succeeded";
+      break;
     // info/warning (>0)
     case Solved_To_Acceptable_Level:
       statusMessage = "Solved to acceptable level";
@@ -182,9 +188,11 @@ void Ipopt::run()
     case Error_In_Step_Computation:
       statusMessage = "Error in step computation";
       break;
-    case Maximum_CpuTime_Exceeded:
-      statusMessage = "Maximum CPU time exceeded";
+#if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
+    case Maximum_WallTime_Exceeded:
+      statusMessage = "Maximum Wall time exceeded";
       break;
+#endif
     case Not_Enough_Degrees_Of_Freedom:
       statusMessage = "Not enough degrees of freedom";
       break;
@@ -210,7 +218,7 @@ void Ipopt::run()
       statusMessage = "Internal Error";
       break;
     default:
-      statusMessage = (OSS() << status);
+      statusMessage = (OSS() << "Unknown status: "<< status);
       break;
   }
   result_.setStatusMessage(statusMessage);
@@ -219,15 +227,24 @@ void Ipopt::run()
   {
     LOGINFO(OSS() << "Ipopt exited with status: " << statusMessage);
   }
+#if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
+  else if (status == Maximum_WallTime_Exceeded)
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+  }
+#endif
   else if (status < 0)
   {
     result_.setStatus(OptimizationResult::FAILURE);
+  }
+
+  if (status < 0)
+  {
     if (getCheckStatus())
       throw InternalException(HERE) << "Ipopt error: " << statusMessage;
     else
       LOGWARN(OSS() << "Ipopt algorithm failed. The error message is " << result_.getStatusMessage());
   }
-
 #else
   throw NotYetImplementedException(HERE) << "No Ipopt support";
 #endif
