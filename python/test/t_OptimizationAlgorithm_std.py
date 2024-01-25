@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import time
 
 ot.TESTPREAMBLE()
 
@@ -73,3 +74,47 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     algo.run()
     assert algo.getResult().getStatus() == ot.OptimizationResult.SUCCEEDED
     print(f"{name}: OK")
+
+
+def _exec(X):
+    time.sleep(0.2)
+    x1, x2 = X
+    return [x1**2 + x2**2]
+
+
+# check algorithm enforces time limit
+ot.Log.Show(ot.Log.ALL)
+bounds = ot.Interval([-10] * 2, [10] * 2)
+costFunction = ot.PythonFunction(2, 1, _exec)
+problem = ot.OptimizationProblem(costFunction)
+problem.setMinimization(False)
+problem.setBounds(bounds)
+for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    if name in ot.Bonmin.GetAlgorithmNames():
+        continue
+    if name in ot.Dlib.GetAlgorithmNames():
+        continue
+    if "AUGLAG" in name:
+        # returns XTOL_REACHED
+        continue
+    if name == "Ipopt":
+        # walltime criterion requires ipopt>=3.14
+        continue
+    algo = ot.OptimizationAlgorithm.Build(name)
+    try:
+        algo.setProblem(problem)
+        startingPoint = [0.1] * 2
+        algo.setStartingPoint(startingPoint)
+    except Exception:
+        # not supported
+        continue
+    algo.setMaximumIterationNumber(50)
+    algo.setMaximumCallsNumber(100)
+    algo.setMaximumTimeDuration(0.1)
+    algo.setCheckStatus(False)
+    algo.run()
+    status = algo.getResult().getStatus()
+    msg = algo.getResult().getStatusMessage()
+    calls = algo.getResult().getCallsNumber()
+    print(f"{name}: {status} {msg} {calls}")
+    assert status == ot.OptimizationResult.TIMEOUT, name
