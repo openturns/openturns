@@ -136,16 +136,6 @@ public:
                                  const ::Ipopt::IpoptData* ip_data,
                                  ::Ipopt::IpoptCalculatedQuantities* ip_cq);
 
-  Point getOptimalPoint() const
-  {
-    return optimalPoint_;
-  }
-
-  Point getOptimalValue() const
-  {
-    return optimalValue_;
-  }
-
   virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = 0)
   {
     progressCallback_ = std::pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(callBack, state);
@@ -164,8 +154,7 @@ private:
   const Point startingPoint_;
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
-  Point optimalPoint_;
-  Point optimalValue_;
+
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
