@@ -96,9 +96,6 @@ bonminAlgorithm.setMaximumCallsNumber(10000)
 bonminAlgorithm.setMaximumIterationNumber(1000)
 bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
 
-ot.ResourceMap.AddAsString("Bonmin-mu_oracle", "loqo")
-ot.ResourceMap.AddAsScalar("Bonmin-bonmin.time_limit", 5)
-
 # %%
 # Running the solver
 bonminAlgorithm.run()

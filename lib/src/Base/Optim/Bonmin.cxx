@@ -152,8 +152,10 @@ void Bonmin::run()
   app.initializeOptionsAndJournalist();
   if (!app.options()->SetStringValue("bonmin.algorithm", algoName_))
     throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.algorithm";
-  if (!app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber()))
-    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for max_iter";
+  if (!app.options()->SetIntegerValue("bonmin.iteration_limit", getMaximumIterationNumber()))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.iteration_limit";
+  if (getMaximumTimeDuration() > 0.0)
+    app.options()->SetNumericValue("bonmin.time_limit", getMaximumTimeDuration());
   if (!app.options()->SetStringValue("sb", "yes"))
     throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for sb";
   if (!app.options()->SetIntegerValue("print_level", 0))
@@ -216,15 +218,20 @@ void Bonmin::run()
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
-  // check for timeout
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
-  result_.setTimeDuration(timeDuration);
-  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+  const ::Bonmin::TMINLP::SolverReturn status = tminlp->getStatus();
+  const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
+                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"};
+  result_.setStatusMessage(bonminExitStatus[status]);
+  switch (status)
   {
-    result_.setStatus(OptimizationResult::TIMEOUT);
-    result_.setStatusMessage(OSS() << "Bonmin optimization timeout after " << timeDuration << " s");
+    case ::Bonmin::TMINLP::SUCCESS:
+      break;
+    default:
+      result_.setStatus(OptimizationResult::FAILURE);
+      break;
   }
+  if (tminlp->getTimeOut())
+    result_.setStatus(OptimizationResult::TIMEOUT);
 
   if (result_.getStatus() != OptimizationResult::SUCCEEDED)
   {
