@@ -146,7 +146,7 @@ void Cobyla::run()
   if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
   {
     result_.setStatus(OptimizationResult::TIMEOUT);
-    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << " s");
+    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << "s");
   }
 
   if (result_.getStatus() != OptimizationResult::SUCCEEDED)
