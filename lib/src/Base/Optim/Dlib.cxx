@@ -326,12 +326,13 @@ public:
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
 
     // Compute stop criterion
+    const bool timeout = (dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration());
     bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                         && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                         && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                        || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber()
-                       || ((dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration())));
+                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
+                       || timeout;
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -341,6 +342,8 @@ public:
                               dlibAlgorithm_.getMaximumConstraintError());
 
     if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber() + 1);
+    if (timeout)
+      optimizationResult_.setStatus(OptimizationResult::TIMEOUT);
 
     return !stopSearch;
   }
@@ -795,6 +798,21 @@ void Dlib::run()
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
   result_.setTimeDuration(timeDuration);
+
+  const Bool timeout = (getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration());
+  if (timeout)
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "Dlib optimization timeout after " << timeDuration << "s");
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Solving optimization problem with Dlib failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "Solving optimization problem with Dlib failed (" << result_.getStatusMessage() << ")");
+  }
 #endif  // dlib_FOUND
 }
 

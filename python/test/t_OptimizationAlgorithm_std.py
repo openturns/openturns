@@ -91,8 +91,7 @@ problem.setMinimization(False)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     if name in ot.Bonmin.GetAlgorithmNames():
-        continue
-    if name in ot.Dlib.GetAlgorithmNames():
+        # interruption has to be forced but cannot recover
         continue
     if "AUGLAG" in name:
         # returns XTOL_REACHED
