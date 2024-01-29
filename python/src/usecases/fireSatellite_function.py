@@ -16,32 +16,32 @@ class FireSatelliteModel:
     dim : Dimension of the problem
           dim = 9
 
-    H : Altitude (m), :class:`~openturns.Normal` distribution
-         First marginal, ot.Normal(18e6,1e6)
+    H : Altitude (m), :class:`~openturns.TruncatedNormal` distribution
+         First marginal, ot.TruncatedNormal(18e6,1e6,18e6-3e6,18e6+3e6)
 
-    Pother : Power other than ACS (W), :class:`~openturns.Normal` distribution
-         Second marginal, ot.Normal(1000.0,50.0)
+    Pother : Power other than ACS (W), :class:`~openturns.TruncatedNormal` distribution
+         Second marginal, ot.TruncatedNormal(1000.0,50.0,1000.0-150.0,1000.0+150.0)
 
-    Fs : Average solar flux (W/m^2), :class:`~openturns.Normal` distribution
-         Third marginal, ot.Normal(1400.0,20.0)
+    Fs : Average solar flux (W/m^2), :class:`~openturns.TruncatedNormal` distribution
+         Third marginal, ot.TruncatedNormal(1400.0,20.0,1400.0-60.0,1400.0+60.0)
 
-    theta : Deviation of moment axis (deg), :class:`~openturns.Normal` distribution
-         Fourth marginal, ot.Normal(15.0,1.0)
+    theta : Deviation of moment axis (deg), :class:`~openturns.TruncatedNormal` distribution
+         Fourth marginal, ot.TruncatedNormal(15.0,1.0,15.0-3.0,15.0+3.0)
 
-    Lsp : Moment arm for radiation torque (m), :class:`~openturns.Normal` distribution
-         Fifth marginal, ot.Normal(2.0,0.4)
+    Lsp : Moment arm for radiation torque (m), :class:`~openturns.TruncatedNormal` distribution
+         Fifth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    q : Reflectance factor (-), :class:`~openturns.Normal` distribution
-         Sixth marginal, ot.Normal(0.5,1.0)
+    q : Reflectance factor (-), :class:`~openturns.TruncatedNormal` distribution
+         Sixth marginal, ot.TruncatedNormal(0.5,0.1,0.5-0.3,0.5+0.3)
 
-    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.Normal` distribution
-         Seventh marginal, ot.Normal(5.0,1.0)
+    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.TruncatedNormal` distribution
+         Seventh marginal, ot.TruncatedNormal(5.0,1.0,5.0-3.0,5.0+3.0)
 
-    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.Normal` distribution
-         Eighth marginal, ot.Normal(2.0,0.4)
+    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.TruncatedNormal` distribution
+         Eighth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    Cd : Drag coefficient (-), :class:`~openturns.Normal` distribution
-         Nineth marginal, ot.Normal(1.0,0.3)
+    Cd : Drag coefficient (-), :class:`~openturns.TruncatedNormal` distribution
+         Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
     distributionX : :class:`~openturns.ComposedDistribution`
         The joint distribution of the input parameters.
@@ -156,31 +156,31 @@ class FireSatelliteModel:
         self.dim = 9
 
         # Altitude
-        self.H = ot.Normal(18e6, 1e6)
+        self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 + 1e6)
 
         # Power other than ACS
-        self.Pother = ot.Normal(1000.0, 50.0)
+        self.Pother = ot.TruncatedNormal(1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0 )
 
         # Average solar flux
-        self.Fs = ot.Normal(1400.0, 20.0)
+        self.Fs = ot.TruncatedNormal(1400.0, 20.0, 1400.0 - 3 * 20.0, 1400.0 + 3 * 20.0)
 
         # Deviation of moment axis
-        self.theta = ot.Normal(15.0, 1.0)
+        self.theta = ot.TruncatedNormal(15.0, 1.0, 15.0 - 3 * 1.0, 15.0 + 3 * 1.0)
 
         # Moment arm for radiation torque
-        self.Lsp = ot.Normal(2.0, 0.4)
+        self.Lsp = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
 
         # Reflectance factor
-        self.q = ot.Normal(0.5, 1.0)
+        self.q = ot.TruncatedNormal(0.5, 0.1, 0.5 - 3 * 0.1, 0.5 + 3 * 0.1)
 
         # Residual dipole of spacecraft
-        self.RD = ot.Normal(5.0, 1.0)
+        self.RD = ot.TruncatedNormal(5.0, 1.0, 5.0 - 3 * 1.0, 5.0 + 3 * 1.0)
 
         # Moment arm for aerodynamic torque
-        self.Lalpha = ot.Normal(2.0, 0.4)
+        self.Lalpha = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
 
         # Drag coefficient
-        self.Cd = ot.Normal(1.0, 0.3)
+        self.Cd = ot.TruncatedNormal(1.0, 0.3, 1.0 - 3 * 0.3, 1.0 + 3 * 0.3)
 
         # Input distribution
         self.distributionX = ot.ComposedDistribution(
