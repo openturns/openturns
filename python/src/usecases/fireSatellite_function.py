@@ -159,7 +159,7 @@ class FireSatelliteModel:
         self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 * 1e6)
 
         # Power other than ACS
-        self.Pother = ot.TruncatedNormal(1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0 )
+        self.Pother = ot.TruncatedNormal(1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0)
 
         # Average solar flux
         self.Fs = ot.TruncatedNormal(1400.0, 20.0, 1400.0 - 3 * 20.0, 1400.0 + 3 * 20.0)
