@@ -156,7 +156,7 @@ class FireSatelliteModel:
         self.dim = 9
 
         # Altitude
-        self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 + 1e6)
+        self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 * 1e6)
 
         # Power other than ACS
         self.Pother = ot.TruncatedNormal(1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0 )
