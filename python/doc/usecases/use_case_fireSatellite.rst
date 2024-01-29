@@ -22,7 +22,7 @@ The multidisciplinary analysis that is used to compute the converged values of t
 
 
 This test case is composed of nine random variables.
-These variables are distributed according to truncated Normal distribution :math:`\mathcal{TN}(\mu,\sigma,a,b).
+These variables are distributed according to truncated Normal distribution :math:`\mathcal{TN}(\mu,\sigma,a,b)`.
 The hyperparameters are :math:`\mu` the mean, :math:`\sigma` the standard deviation, :math:`a` the lower bound and :math:`b` the upper bound.
 
 - :math:`H \sim \mathcal{TN}(18e6, 1e6, 15e6, 21e6)`: the altitude (m)
