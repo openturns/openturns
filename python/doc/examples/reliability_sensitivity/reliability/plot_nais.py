@@ -151,7 +151,7 @@ levels = algo.getThresholdPerStep()
 print("Levels of g = ", levels)
 
 # %%
-# Draw the subset samples used by the algorithm
+# Draw the NAIS samples used by the algorithm
 # ---------------------------------------------
 
 # %%
@@ -166,19 +166,19 @@ for step in range(Ns):
     list_subSamples.append(algo.getInputSample(step))
 
 # %%
-# The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
+# The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
 graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
-graph.setTitle("Subset sampling: samples")
+graph.setTitle("NAIS sampling: samples")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
 graph.setLegendPosition("lower left")
 
 # %%
-# Add all the subset samples:
+# Add all the NAIS samples:
 
 # %%
 for i in range(Ns):
@@ -225,7 +225,7 @@ for i in range(len(levels)):
 
 graph.setColors(col)
 graph.setLegendPosition("lower left")
-graph.setTitle("Subset sampling: thresholds")
+graph.setTitle("NAIS sampling: thresholds")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
 
@@ -237,7 +237,7 @@ _ = View(graph)
 # The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
 
 # %%
-select = ot.SubsetSampling.EVENT1  # points that realize the event
+select = ot.NAISSampling.EVENT1  # points that realize the event
 step = Ns - 1  # get the working sample from last iteration
 inputEventSample = algo.getInputSample(step, select)
 outputEventSample = algo.getOutputSample(step, select)
