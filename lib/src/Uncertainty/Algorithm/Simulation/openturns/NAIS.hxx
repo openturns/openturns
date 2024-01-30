@@ -66,7 +66,6 @@ public:
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
   
-  
   /** Accessor to the achieved number of steps */
   UnsignedInteger getStepsNumber() const;
   

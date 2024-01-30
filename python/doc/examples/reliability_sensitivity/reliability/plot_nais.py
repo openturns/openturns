@@ -109,6 +109,12 @@ quantileLevel = 0.1
 algo = ot.NAIS(myEvent, quantileLevel)
 
 # %%
+# In order to get all the inputs and outputs that realize the event, you have to mention it now:
+
+# %%
+algo.setKeepSample(True)
+
+# %%
 # Now you can run the algorithm.
 
 # %%
@@ -138,65 +144,46 @@ print(
 )
 
 # %%
-# Draw the NAIS samples used by the algorithm
-# -------------------------------------------
-#
-# The following manipulations are possible only if you have created a :class:`~openturns.MemoizeFunction` that enables to store all the inputs and outputs of the function :math:`g`.
-#
-# Get all the inputs and outputs where :math:`g` were evaluated:
+# You can also get the successive thresholds used by the algorithm:
 
 # %%
-inputNAIS = g.getInputHistory()
-outputNAIS = g.getOutputHistory()
-nTotal = inputNAIS.getSize()
-print("Number of evaluations of g = ", nTotal)
+levels = algo.getThresholdPerStep()
+print("Levels of g = ", levels)
 
 # %%
-# Within each step of the algorithm, a sample of size :math:`N` is created, where:
-
-# %%
-N = algo.getMaximumOuterSampling() * algo.getBlockSize()
-print("Size of each subset = ", N)
+# Draw the subset samples used by the algorithm
+# ---------------------------------------------
 
 # %%
 # You can get the number :math:`N_s` of steps with:
+Ns = algo.getStepsNumber()
+print("Number of steps= ", Ns)
 
 # %%
-Ns = int(nTotal / N)
-print("Number of steps = ", Ns)
+# Get all the inputs where :math:`g` was evaluated at each step
+list_subSamples = list()
+for step in range(Ns):
+    list_subSamples.append(algo.getInputSample(step))
 
 # %%
-# Now, we can split the initial sample into NAIS samples of size :math:`N_s`:
+# The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-listNAISSamples = list()
-listOutputNAISSamples = list()
-for i in range(Ns):
-    listNAISSamples.append(inputNAIS[i * N: i * N + N])
-    listOutputNAISSamples.append(outputNAIS[i * N: i * N + N])
-
-# %%
-# And get all the levels defining the intermediate and final thresholds given by the empirical quantiles of each NAIS output sample:
-
-# %%
-levels = []
-for i in range(Ns - 1):
-    levels.append(listOutputNAISSamples[i].computeQuantile(quantileLevel)[0])
-levels.append(threshold)
-
-# %%
-# The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
-
-# %%
-graph = ot.Graph("NAIS samples", "x1", "x2", True, "lower left")
+graph = ot.Graph()
+graph.setAxes(True)
 graph.setGrid(True)
+graph.setTitle("Subset sampling: samples")
+graph.setXTitle(r"$x_1$")
+graph.setYTitle(r"$x_2$")
+graph.setLegendPosition("lower left")
 
 # %%
-# Add all the NAIS samples:
+# Add all the subset samples:
 
 # %%
 for i in range(Ns):
-    cloud = ot.Cloud(listNAISSamples[i])
+    cloud = ot.Cloud(list_subSamples[i])
+    # cloud.setPointStyle("dot")
     graph.add(cloud)
 col = ot.Drawable().BuildDefaultPalette(Ns)
 graph.setColors(col)
@@ -205,35 +192,72 @@ graph.setColors(col)
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-gIsoLines = g.draw([-8] * 2, [8] * 2, [128] * 2)
-dr = gIsoLines.getDrawable(2)
-for i, lv in enumerate(levels):
-    dr.setLevels([lv])
+gIsoLines = g.draw([-5] * 2, [5] * 2, [128] * 2)
+dr = gIsoLines.getDrawable(0)
+for i in range(levels.getSize()):
+    dr.setLevels([levels[i]])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
 
-# sphinx_gallery_thumbnail_number = 2
-view = View(graph)
+# %%
+_ = View(graph)
 
 # %%
 # Draw the frontiers only
 # -----------------------
 #
-# The following graph enables to understand the progression of the algorithm from the mean value of the initial distribution to the limit state function:
+# The following graph enables to understand the progresison of the algorithm:
 
 # %%
-graph = ot.Graph("NAIS thresholds", "x1", "x2", True, "lower left")
+graph = ot.Graph()
+graph.setAxes(True)
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
-for i, lv in enumerate(levels):
-    dr.setLevels([lv])
+for i in range(len(levels)):
+    dr.setLevels([levels[i]])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     graph.add(dr)
 
 graph.setColors(col)
-view = View(graph)
+graph.setLegendPosition("lower left")
+graph.setTitle("Subset sampling: thresholds")
+graph.setXTitle(r"$x_1$")
+graph.setYTitle(r"$x_2$")
+
+_ = View(graph)
+
+# %%
+# Get all the input and output points that realized the event
+# -----------------------------------------------------------
+# The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
+
+# %%
+select = ot.SubsetSampling.EVENT1  # points that realize the event
+step = Ns - 1  # get the working sample from last iteration
+inputEventSample = algo.getInputSample(step, select)
+outputEventSample = algo.getOutputSample(step, select)
+print("Number of event realizations = ", inputEventSample.getSize())
+
+# %%
+# Draw them! They are all in the event space.
+
+# %%
+graph = ot.Graph()
+graph.setAxes(True)
+graph.setGrid(True)
+cloud = ot.Cloud(inputEventSample)
+cloud.setPointStyle("bullet")
+graph.add(cloud)
+gIsoLines = g.draw([-5] * 2, [5] * 2, [1000] * 2)
+dr = gIsoLines.getDrawable(0)
+dr.setLevels([0.0])
+dr.setColor("red")
+graph.add(dr)
+_ = View(graph)
+
+View.ShowAll()
