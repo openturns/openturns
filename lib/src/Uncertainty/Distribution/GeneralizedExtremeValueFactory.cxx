@@ -883,6 +883,11 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
   if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
     xiBetaFunction = ComposedFunction(xiLink, xiBetaFunction);
 
+  // useful for the theta(y) graphs
+  muBetaFunction.setOutputDescription({"$\\mu$"});
+  sigmaBetaFunction.setOutputDescription({"$\\sigma$"});
+  xiBetaFunction.setOutputDescription({"$\\xi$"});
+
   // stack mu, sigma, xi functions
   AggregatedFunction thetaFunction({muBetaFunction, sigmaBetaFunction, xiBetaFunction});
 
@@ -972,7 +977,7 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
     GeneralizedExtremeValuePDFEvaluation::SetX(sample[i]);
 
     // compute the jacobian wrt the beta coefficients
-    Matrix dpdfi(yToPDF.parameterGradient(covariates[i]));
+    const Matrix dpdfi(yToPDF.parameterGradient(covariates[i]));
     fisher = fisher + dpdfi.computeGram(false);
   }
 

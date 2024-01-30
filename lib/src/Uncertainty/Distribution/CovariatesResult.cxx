@@ -24,6 +24,7 @@
 #include "openturns/Brent.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,12 +97,15 @@ Scalar CovariatesResult::getLogLikelihood() const
 class CovariatesResultQuantileEvaluation : public EvaluationImplementation
 {
 public:
-  CovariatesResultQuantileEvaluation(const CovariatesResult & result, const Scalar p)
-    : result_(result)
+  CovariatesResultQuantileEvaluation(const DistributionFactory & factory,
+                                     const Function & parameterFunction,
+                                     const Scalar p)
+    : factory_(factory)
+    , parameterFunction_(parameterFunction)
     , p_(p)
   {
-    setInputDescription({"t"});
-    setOutputDescription({"quantile(t)"});
+    setInputDescription(parameterFunction.getInputDescription());
+    setOutputDescription({"quantile(y)"});
   }
 
   CovariatesResultQuantileEvaluation * clone() const override
@@ -109,14 +113,15 @@ public:
     return new CovariatesResultQuantileEvaluation(*this);
   }
 
-  Point operator()(const Point & inP) const override
+  Point operator()(const Point & covariate) const override
   {
-    return result_.getDistribution(inP).computeQuantile(p_);
+    const Point theta(parameterFunction_(covariate));
+    return factory_.build(theta).computeQuantile(p_);
   }
 
   UnsignedInteger getInputDimension() const override
   {
-    return 1;
+    return parameterFunction_.getInputDimension();
   }
 
   UnsignedInteger getOutputDimension() const override
@@ -125,34 +130,70 @@ public:
   }
 
 private:
-  CovariatesResult result_;
+  DistributionFactory factory_;
+  Function parameterFunction_;
   Scalar p_ = 0.0;
 };
 
 /* Draw parameter according to 1 or 2 covariates
    the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawParameterFunction1D(const UnsignedInteger parameterIndex,
-                                   const Point & referencePoint) const
+                                                     const Point & referencePoint0) const
 {
-      (void)parameterIndex;
-  (void)referencePoint;
-  GridLayout grid;
+  if (parameterIndex > 2)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: parameter index (" << parameterIndex << ") should be < 3";
+  const UnsignedInteger covariatesDimension = covariates_.getDimension();
+  Point referencePoint(referencePoint0);
+  if (!referencePoint.getDimension())
+    referencePoint = covariates_.computeMean();
+  if (referencePoint.getDimension() != covariatesDimension)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: reference point dimension (" << referencePoint.getDimension()
+                                         << ") should match covariates dimension (" << covariatesDimension << ")";
+  GridLayout grid(1, covariatesDimension);
+  const Point xMin(covariates_.getMin());
+  const Point xMax(covariates_.getMax());
+  for (UnsignedInteger i = 0; i < covariatesDimension; ++ i)
+  {
+    Point referencePoint2(referencePoint);
+    referencePoint2.erase(i);
+    const ParametricFunction parametric(parameterFunction_.getMarginal(parameterIndex),
+                                        Indices({i}), referencePoint2, false);
+    Graph graph(parametric.draw(xMin[i], xMax[i]));
+    grid.setGraph(0, i, graph);
+  }
   return grid;
 }
 
 GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger parameterIndex,
-                                 const Point & referencePoint) const
+                                                     const Point & referencePoint0) const
 {
-//     if (covariates_.getDimension() > 2) throw NotDefinedException(HERE) << "Error: cannot draw a parameter function when there is more than 2 covariates";
-//   const Point xMin(covariates_.getMin());
-//   const Point xMax(covariates_.getMax());
-//   Graph result(parameterFunction_.getMarginal(parameterIndex).draw(xMin, xMax));
-//   result.setTitle("Parameter function");
-//   return result;
-  
-    (void)parameterIndex;
-  (void)referencePoint;
-  GridLayout grid;
+  const UnsignedInteger covariatesDimension = covariates_.getDimension();
+  if (covariatesDimension < 2)
+    throw NotDefinedException(HERE) << "CovariatesResult: cannot draw a parameter function when there are less than 2 covariates";
+  if (parameterIndex > 2)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: parameter index (" << parameterIndex << ") should be < 3";
+  Point referencePoint(referencePoint0);
+  if (!referencePoint.getDimension())
+    referencePoint = covariates_.computeMean();
+  if (referencePoint.getDimension() != covariatesDimension)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: reference point dimension (" << referencePoint.getDimension()
+                                         << ") should match covariates dimension (" << covariatesDimension << ")";
+  GridLayout grid(covariatesDimension - 1, covariatesDimension - 1);
+  const Point xMin(covariates_.getMin());
+  const Point xMax(covariates_.getMax());
+  for (UnsignedInteger i = 1; i < covariatesDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      Point referencePoint2(referencePoint);
+      referencePoint2.erase(i);// erase greatest first
+      referencePoint2.erase(j);
+      const ParametricFunction parametric(parameterFunction_.getMarginal(parameterIndex),
+                                          Indices({i, j}), referencePoint2, false);
+      Graph graph(parametric.draw(Point({xMin[i], xMin[j]}), Point({xMax[i], xMax[j]})));
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
   return grid;
 }
 
@@ -160,27 +201,58 @@ GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger param
 /* Draw quantile according to 1 or 2 covariates
     the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
-                                  const Point & referencePoint) const
+                                                    const Point & referencePoint0) const
 {
-  //   const Scalar xMin = covariates_.getMin()[0];
-//   const Scalar xMax = covariates_.getMax()[0];
-// 
-//   Function quantileFunction(CovariatesResultQuantileEvaluation(*this, p));
-//   Graph result(quantileFunction.draw(xMin, xMax));
-//   result.setTitle("Quantile function");
-//   return result;
-  (void)p;
-  (void)referencePoint;
-  GridLayout grid;
+  const UnsignedInteger covariatesDimension = covariates_.getDimension();
+  if (covariatesDimension < 2)
+    throw NotDefinedException(HERE) << "CovariatesResult: cannot draw a quantile function when there are less than 2 covariates";
+  Point referencePoint(referencePoint0);
+  if (!referencePoint.getDimension())
+    referencePoint = covariates_.computeMean();
+  if (referencePoint.getDimension() != covariatesDimension)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: reference point dimension (" << referencePoint.getDimension()
+                                         << ") should match covariates dimension (" << covariatesDimension << ")";
+  GridLayout grid(1, covariatesDimension);
+  const Point xMin(covariates_.getMin());
+  const Point xMax(covariates_.getMax());
+  for (UnsignedInteger i = 0; i < covariatesDimension; ++ i)
+  {
+    Point referencePoint2(referencePoint);
+    referencePoint2.erase(i);
+    const ParametricFunction parametric(parameterFunction_, Indices({i}), referencePoint2, false);
+    const Function quantileFunction(CovariatesResultQuantileEvaluation(factory_, parametric, p));
+    Graph graph(quantileFunction.draw(xMin[i], xMax[i]));
+    grid.setGraph(0, i, graph);
+  }
   return grid;
 }
 
 GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
-                                  const Point & referencePoint) const
+                                                    const Point & referencePoint0) const
 {
-    (void)p;
-  (void)referencePoint;
-  GridLayout grid;
+  const UnsignedInteger covariatesDimension = covariates_.getDimension();
+  Point referencePoint(referencePoint0);
+  if (!referencePoint.getDimension())
+    referencePoint = covariates_.computeMean();
+  if (referencePoint.getDimension() != covariatesDimension)
+    throw InvalidArgumentException(HERE) << "CovariatesResult: reference point dimension (" << referencePoint.getDimension()
+                                         << ") should match covariates dimension (" << covariatesDimension << ")";
+  GridLayout grid(covariatesDimension - 1, covariatesDimension - 1);
+  const Point xMin(covariates_.getMin());
+  const Point xMax(covariates_.getMax());
+  for (UnsignedInteger i = 0; i < covariatesDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      Point referencePoint2(referencePoint);
+      referencePoint2.erase(i);// erase greatest first
+      referencePoint2.erase(j);
+      const ParametricFunction parametric(parameterFunction_, Indices({i, j}), referencePoint2, false);
+      const Function quantileFunction(CovariatesResultQuantileEvaluation(factory_, parametric, p));
+      Graph graph(quantileFunction.draw(Point({xMin[i], xMin[j]}), Point({xMax[i], xMax[j]})));
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
   return grid;
 }
 
@@ -192,6 +264,11 @@ String CovariatesResult::__repr__() const
 Function CovariatesResult::getParameterFunction() const
 {
   return parameterFunction_;
+}
+
+Sample CovariatesResult::getCovariates() const
+{
+  return covariates_;
 }
 
 LinearFunction CovariatesResult::getNormalizationFunction() const
@@ -210,6 +287,7 @@ Distribution CovariatesResult::getDistribution(const Point & covariates) const
 void CovariatesResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute("factory_", factory_);
   adv.saveAttribute("parameterFunction_", parameterFunction_);
   adv.saveAttribute("covariates_", covariates_);
   adv.saveAttribute("parameterDistribution_", parameterDistribution_);
@@ -221,6 +299,7 @@ void CovariatesResult::save(Advocate & adv) const
 void CovariatesResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  adv.loadAttribute("factory_", factory_);
   adv.loadAttribute("parameterFunction_", parameterFunction_);
   adv.loadAttribute("covariates_", covariates_);
   adv.loadAttribute("parameterDistribution_", parameterDistribution_);

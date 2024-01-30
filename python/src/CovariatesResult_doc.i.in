@@ -16,7 +16,7 @@ The functions :math:`X_i^{j}` are scalar functions :math:`\Rset \mapsto \Rset`  
 
 We denote by :math:`\vect{\beta} = (\beta_1^{1}, \dots, \beta_{d_1}^{1}, \dots, \beta_1^{d}, \dots, \beta_{d_d}^{d})` the complete vector of parameters.
 
-The estimator of vector  :math:`\vect{\beta}` maximizes the likelihood of the Parent distribution.
+The estimator of vector :math:`\vect{\beta}` maximizes the likelihood of the Parent distribution.
 
 Parameters
 ----------
@@ -24,8 +24,8 @@ factory : :class:`~openturns.DistributionFactory`
     Parent distribution factory.
 parameterFunction : :class:`~openturns.Function`
     The  function :math:`\vect{\theta}`.
-timeStamps : 2-d sequence of float
-    Values of :math:`t`.
+covariates : 2-d sequence of float
+    Values of :math:`\vect{y}`.
 parameterDistribution : :class:`~openturns.Distribution`
     The distribution of :math:`\vect{\beta}`.
 llh : float
@@ -78,7 +78,17 @@ parameterDistribution : :class:`~openturns.Distribution`
 Returns
 -------
 parameterFunction : :class:`~openturns.Function`
-    The  function :math:`t \mapsto \vect{\theta}(t)`."
+    The function :math:`t \mapsto \vect{\theta}(t)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovariatesResult::getCovariates
+"Covariates accessor.
+
+Returns
+-------
+covariates : :class:`~openturns.Sample`
+    The sample of covariates."
 
 // ---------------------------------------------------------------------
 
@@ -126,33 +136,82 @@ llh : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CovariatesResult::drawParameterFunction
+%feature("docstring") OT::CovariatesResult::drawParameterFunction1D
 "Draw the parameter function.
 
 Parameters
 ----------
-parameterIndex : int, 
+parameterIndex : int in [0, 2]
     The index specifying the marginal of :math:`\vect{\theta}`.
+referencePoint : sequence of float, optional
+    Reference values for the frozen :math:`y_k` values.
+    If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Graph of :math:`\theta^j(t)`.
+graph : :class:`~openturns.GridLayout`
+    Graph of :math:`\theta_q` as a function of :math:`y_i`.
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CovariatesResult::drawQuantileFunction
+%feature("docstring") OT::CovariatesResult::drawParameterFunction2D
+"Draw the parameter function.
+
+Parameters
+----------
+parameterIndex : int in [0, 2]
+    The index specifying the marginal of :math:`\vect{\theta}`.
+referencePoint : sequence of float, optional
+    Reference values for the frozen :math:`y_k` values.
+    If not provided the mean of covariates is used.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    Graph of :math:`\theta_q` as a function of :math:`y_i, y_j`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovariatesResult::drawQuantileFunction1D
 "Draw the quantile function.
 
-The quantile function is the function :math:`t \mapsto q_p(t)` where :math:`q_p(t)` is the quantile of order :math:`p` of the Parent distribution at time :math:`t`.
+The quantile function is the function :math:`y \mapsto q_{\theta(y)}(t)` where :math:`q_{\theta}(y)`
+is the quantile of order :math:`p` of the Parent distribution for the covariate value :math:`y`.
 
 Parameters
 ----------
 p : float
     The quantile level.
+referencePoint : sequence of float, optional
+    Reference values for the frozen :math:`y_k` values.
+    If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Quantile function graph."
+graph : :class:`~openturns.GridLayout`
+    Graph of :math:`\theta_q` as a function of :math:`y_i`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovariatesResult::drawQuantileFunction2D
+"Draw the quantile function.
+
+The quantile function is the function :math:`y \mapsto q_{\theta(y)}(t)` where :math:`q_{\theta}(y)`
+is the quantile of order :math:`p` of the Parent distribution for the covariate value :math:`y`.
+
+Parameters
+----------
+p : float
+    The quantile level.
+referencePoint : sequence of float, optional
+    Reference values for the frozen :math:`y_k` values.
+    If not provided the mean of covariates is used.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    Graph of :math:`\theta_q` as a function of :math:`y_i, y_j`.
+"
