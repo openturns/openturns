@@ -50,6 +50,9 @@ public:
   /** Accessor to the parameter function */
   Function getParameterFunction() const;
 
+  /** Accessor to the covariates */
+  Sample getCovariates() const;
+
   /** Accessor to the normalization function */
   LinearFunction getNormalizationFunction() const;
 
@@ -78,7 +81,6 @@ public:
   GridLayout drawQuantileFunction2D(const Scalar p,
                                     const Point & referencePoint = Point()) const;
 
-  
   String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */

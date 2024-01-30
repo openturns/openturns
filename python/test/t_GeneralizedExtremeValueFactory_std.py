@@ -97,7 +97,7 @@ assert (
 xi = estimator_prof_mle.getParameter()
 try:
     ci = estimator_prof_mle.getParameterConfidenceInterval()
-    print("profile MLE estimator xsi=", xi, ci)
+    print("profile MLE estimator xi=", xi, ci)
     assert [xi] in ci, "xi should be inside confidence interval"
 except Exception as exception:
     print(exception)
@@ -140,6 +140,10 @@ cov_ref = [
     [-1.99653e-08, 3.93182e-05, 1.51924e-06, -6.06597e-06],
     [2.10413e-07, -0.000414466, -6.06597e-06, 8.53944e-05]]
 ott.assert_almost_equal(ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3)
+graph_mu1d = estimator_covariate.drawParameterFunction1D(0)
+graph_mu2d = estimator_covariate.drawParameterFunction2D(0)
+graph_q_mu1d = estimator_covariate.drawQuantileFunction1D(0.9)
+graph_q_mu2d = estimator_covariate.drawQuantileFunction2D(0.9)
 
 # functional
 t0 = fremantle[0, 0]  # year of first record
