@@ -237,7 +237,7 @@ _ = View(graph)
 # The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
 
 # %%
-select = ot.NAISSampling.EVENT1  # points that realize the event
+select = ot.NAIS.EVENT1  # points that realize the event
 step = Ns - 1  # get the working sample from last iteration
 inputEventSample = algo.getInputSample(step, select)
 outputEventSample = algo.getOutputSample(step, select)
