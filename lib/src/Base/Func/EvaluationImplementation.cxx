@@ -24,10 +24,12 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Cloud.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Box.hxx"
 #include "openturns/MarginalEvaluation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -321,24 +323,38 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (!(getInputDimension() >= 1)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
   if (!(inputMarginal < getInputDimension())) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
   if (!(outputMarginal < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
+  if (!(xMin <= xMax)) throw InvalidArgumentException(HERE) << "Error: xMin ("<<xMin<<") cannot be greater than xMax("<< xMax << ")";
+  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
   if (useLogX && (!(xMin > 0.0 && xMax > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
-  Sample inputData(pointNumber, centralPoint);
-  if (useLogX)
+
+  Sample inputData;
+  if (xMin < xMax)
   {
-    const Scalar a = std::log(xMin);
-    const Scalar b = std::log(xMax);
-    const Scalar dLogX = (b - a) / (pointNumber - 1.0);
-    for (UnsignedInteger i = 0; i < pointNumber; ++i)
-      inputData(i, inputMarginal) = std::exp(a + i * dLogX);
+    inputData = Sample(pointNumber, centralPoint);
+    if (useLogX)
+    {
+      const Scalar a = std::log(xMin);
+      const Scalar b = std::log(xMax);
+      const Scalar dLogX = (b - a) / (pointNumber - 1.0);
+      for (UnsignedInteger i = 0; i < pointNumber; ++i)
+        inputData(i, inputMarginal) = std::exp(a + i * dLogX);
+    }
+    else
+    {
+      const Scalar dx = (xMax - xMin) / (pointNumber - 1.0);
+      for (UnsignedInteger i = 0; i < pointNumber; ++i)
+        inputData(i, inputMarginal) = xMin + i * dx;
+    }
   }
   else
   {
-    const Scalar dx = (xMax - xMin) / (pointNumber - 1.0);
-    for (UnsignedInteger i = 0; i < pointNumber; ++i)
-      inputData(i, inputMarginal) = xMin + i * dx;
+    // single point
+    inputData = Sample(1, centralPoint);
+    inputData(0, inputMarginal) = xMin;
   }
+
   // Evaluate the function over all its input in one call in order to benefit from potential parallelism
   const Sample outputData((*this)(inputData));
   const Description inputDescription(getInputDescription());
@@ -348,7 +364,10 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   String title(OSS() << yName << " as a function of " << xName);
   if (centralPoint.getDimension() > 1) title = String(OSS(false) << title << " around " << centralPoint);
   Graph graph(title, xName, yName, true, "", 1.0, scale);
-  graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
+  if (xMin < xMax)
+    graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
+  else
+    graph.add(Cloud(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
   return graph;
 }
 
@@ -362,14 +381,15 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Indices & pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
-  if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
-  if (!(pointNumber[0] > 2 && pointNumber[1] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
+  if ((xMin.getDimension() != 2) || (xMax.getDimension() != 2) || (pointNumber.getSize() != 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and pointNumber must be bidimensional";
+  if ((pointNumber[0] < 2) || (pointNumber[1] < 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
   if (useLogX && (!(xMin[0] > 0.0 && xMax[0] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
   const Bool useLogY = (scale == GraphImplementation::LOGY || scale == GraphImplementation::LOGXY);
   if (useLogY && (!(xMin[1] > 0.0 && xMax[1] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
+
   // Discretization of the first component
   const UnsignedInteger nX = pointNumber[0];
   Sample x(nX, 1);
@@ -387,6 +407,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     for (UnsignedInteger i = 0; i < nX; ++i)
       x(i, 0) = xMin[0] + i * dX;
   }
+
   // Discretization of the second component
   const Scalar nY = pointNumber[1];
   Sample y(nY, 1);
@@ -404,43 +425,113 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     for (UnsignedInteger i = 0; i < nY; ++i)
       y(i, 0) = xMin[1] + i * dY;
   }
-  // Discretization of the XY plane
-  Sample inputSample(nX * nY, centralPoint);
-  // Prepare the input sample
-  UnsignedInteger index = 0;
-  for (UnsignedInteger j = 0; j < nY; ++j)
-  {
-    const Scalar yJ = y(j, 0);
-    for (UnsignedInteger i = 0; i < nX; ++i)
-    {
-      const Scalar xI = x(i, 0);
-      inputSample(index, firstInputMarginal)  = xI;
-      inputSample(index, secondInputMarginal) = yJ;
-      ++index;
-    } // i
-  } // j
-  // Compute the output sample, using possible parallelism
-  const Sample z((*this)(inputSample).getMarginal(outputMarginal));
+
   const String xName(getInputDescription()[firstInputMarginal]);
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
   Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
   graph.setLegendCorner({1.0, 1.0});
-  Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
-  isoValues.buildDefaultLevels();
-  isoValues.buildDefaultLabels();
-  const Point levels(isoValues.getLevels());
-  const Description labels(isoValues.getLabels());
-  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
+
+  if (Interval(xMin, xMax).getVolume() > 0.0)
   {
-    Contour current(isoValues);
-    current.setLevels(Point(1, levels[i]));
-    current.setLabels(Description(1, labels[i]));
-    current.setDrawLabels(false);
-    current.setLegend(labels[i]);
-    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
-    graph.add(current);
+    // Discretization of the XY plane
+    Sample inputSample(nX * nY, centralPoint);
+    // Prepare the input sample
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < nY; ++j)
+    {
+      const Scalar yJ = y(j, 0);
+      for (UnsignedInteger i = 0; i < nX; ++i)
+      {
+        const Scalar xI = x(i, 0);
+        inputSample(index, firstInputMarginal)  = xI;
+        inputSample(index, secondInputMarginal) = yJ;
+        ++index;
+      } // i
+    } // j
+    // Compute the output sample, using possible parallelism
+    const Sample z((*this)(inputSample).getMarginal(outputMarginal));
+    Contour isoValues(x, y, z, Point(0), Description(0), true, title);
+    isoValues.buildDefaultLevels();
+    isoValues.buildDefaultLabels();
+    const Point levels(isoValues.getLevels());
+    const Description labels(isoValues.getLabels());
+    for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
+    {
+      Contour current(isoValues);
+      current.setLevels({levels[i]});
+      current.setLabels({labels[i]});
+      current.setDrawLabels(false);
+      current.setLegend(labels[i]);
+      current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+      graph.add(current);
+    }
+  }
+  else
+  {
+    // degenerate cases
+    Sample inputSample;
+    if (xMin[0] < xMax[0])
+    {
+      // constant Y
+      inputSample = Sample(nX, centralPoint);
+      for (UnsignedInteger i = 0; i < nX; ++ i)
+      {
+        inputSample(i, firstInputMarginal)  = x(i, 0);
+        inputSample(i, secondInputMarginal) = xMin[1];
+      }
+    }
+    else if (xMin[1] < xMax[1])
+    {
+      // constant X
+      inputSample = Sample(nY, centralPoint);
+      for (UnsignedInteger j = 0; j < nY; ++ j)
+      {
+        inputSample(j, firstInputMarginal)  = xMin[0];
+        inputSample(j, secondInputMarginal) = y(j, 0);
+      }
+    }
+    else
+    {
+      // single point
+      inputSample = Sample(1, centralPoint);
+      inputSample(0, firstInputMarginal)  = xMin[0];
+      inputSample(0, secondInputMarginal) = xMin[1];
+    }
+    // Compute the output sample, using possible parallelism
+    const Sample z((*this)(inputSample).getMarginal(outputMarginal));
+    const UnsignedInteger size = inputSample.getSize();
+    if (size > 1)
+    {
+      if (xMin[0] < xMax[0])
+      {
+        // constant Y
+        graph.setXTitle(xName);
+        graph.setYTitle(getOutputDescription()[outputMarginal]);
+        graph.setTitle(OSS() << graph.getYTitle() << " as a function of " << graph.getXTitle());
+        Curve curve(inputSample.getMarginal(firstInputMarginal), z);
+        graph.add(curve);
+      }
+      else if (xMin[1] < xMax[1])
+      {
+        // constant X
+        graph.setXTitle(yName);
+        graph.setYTitle(getOutputDescription()[outputMarginal]);
+        graph.setTitle(OSS() << graph.getYTitle() << " as a function of " << graph.getXTitle()); 
+        Curve curve(inputSample.getMarginal(secondInputMarginal), z);
+        graph.add(curve);
+      }
+    }
+    else
+    {
+      // single point
+      Cloud cloud(inputSample.getMarginal({firstInputMarginal, secondInputMarginal}), z);
+      cloud.setColor("blue");
+      const Scalar zMin = z.getMin()[0];
+      cloud.setLegend(OSS() << zMin);
+      graph.add(cloud);
+    }
   }
   return graph;
 }
