@@ -59,6 +59,13 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/* Keep event sample */
+void NAIS::setKeepSample(const Bool keepSample)
+{
+  keepSample_ = keepSample;
+}
+
+
 // Get quantileLevel
 Scalar NAIS::getQuantileLevel() const
 {
