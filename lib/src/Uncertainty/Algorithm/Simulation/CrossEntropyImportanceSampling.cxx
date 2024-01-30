@@ -328,5 +328,11 @@ Indices CrossEntropyImportanceSampling::getSampleIndices(const UnsignedInteger s
   return result;
 }
 
+/* Keep event sample */
+void CrossEntropyImportanceSampling::setKeepSample(const Bool keepSample)
+{
+  keepSample_ = keepSample;
+}
+
 
 END_NAMESPACE_OPENTURNS
