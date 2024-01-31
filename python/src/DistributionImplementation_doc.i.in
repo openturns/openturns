@@ -1770,7 +1770,7 @@ OT_Distribution_getShiftedMoment_doc
 
 Returns
 -------
-L : :class:`~openturns.SquareMatrix`
+L : :class:`~openturns.TriangularMatrix`
     Cholesky factor of the covariance matrix.
 
 See Also
@@ -1898,7 +1898,7 @@ OT_Distribution_getDispersionIndicator_doc
 
 Returns
 -------
-Linv : :class:`~openturns.SquareMatrix`
+Linv : :class:`~openturns.TriangularMatrix`
     Inverse Cholesky factor of the covariance matrix.
 
 See also
@@ -2017,7 +2017,7 @@ OT_Distribution_getIsoProbabilisticTransformation_doc
 
 Returns
 -------
-tau: :class:`~openturns.SquareMatrix`
+tau : :class:`~openturns.CorrelationMatrix`
     Kendall coefficients matrix.
 
 Notes
