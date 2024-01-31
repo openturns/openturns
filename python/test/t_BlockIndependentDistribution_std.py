@@ -252,3 +252,7 @@ print("range=", distribution.getRange())
 # getStandardDeviation vs Dirac
 distribution2 = ot.BlockIndependentDistribution([ot.Normal(), ot.Dirac(1800)])
 ott.assert_almost_equal(distribution2.getStandardDeviation(), [1, 0])
+
+# check marginal from a group is not uselessly wrapped in BlockIndependent
+margins = distribution.getMarginal([0, 1])
+ott.assert_almost_equal(margins, collection[0])
