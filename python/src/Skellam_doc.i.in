@@ -104,3 +104,23 @@ lambda1 : float, :math:`\lambda_1 >0`
     First Poisson distribution's parameter :math:`\lambda_1`.
 lambda2 : float, :math:`\lambda_2 >0`
     Second Poisson distribution's parameter :math:`\lambda_2`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::getMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the PDF/CDF computation."
