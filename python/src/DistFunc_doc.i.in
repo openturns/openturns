@@ -195,9 +195,8 @@ m : int, :math:`0\leq m\leq n`
     The number of individuals in a draw.
 x : int, :math:`x\geq 0`
     The number of candidates in a draw.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     If True, the complementary CDF is computed.
 
 Returns
@@ -300,16 +299,14 @@ Parameters
 ----------
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at point :math:`x`.
 
 Examples
@@ -329,16 +326,14 @@ x2 : float, :math:`\sigma >0`
     Second component of :math:`\vect{x}`.
 rho : float
     Correlation between the first and second margin.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at point
     :math:`\vect{x} = (x_1, x_2)`.
 
@@ -370,16 +365,14 @@ rho13 : float
     Correlation between the first and third margin.
 rho23 : float
     Correlation between the second and third margin.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at point
     :math:`\vect{x} = (x_1, x_2, x_3)`.
 
@@ -402,11 +395,9 @@ Parameters
 ----------
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the log-complementary CDF is computed.
 
 Returns
@@ -427,7 +418,7 @@ Examples
 
 Parameters
 ----------
-p: float, in :math:`[0,1]`
+p : float, in :math:`[0,1]`
    The probability.
 
 Returns
@@ -577,16 +568,14 @@ n : int
 rho : float, :math:`-1<rho<1`
     The Pearson correlation coefficient.
 
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or its complementary of the Pearson statistic distribution.
 
 Notes
@@ -700,15 +689,13 @@ Examples
 
 Parameters
 ----------
-lambda: float, :math:`\lambda\geq 0`
+lambda : float, :math:`\lambda\geq 0`
     The intensity of the Poisson distribution.
 p : float, in :math:`[0,1]`
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -736,11 +723,9 @@ lambda : float, :math:`\lambda \geq 0`
     The intensity of the Poisson distribution.
 p : float, in :math:`[0,1]`
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -865,20 +850,18 @@ lambda : float, :math:`\lambda \geq 0`
     The :math:`\lambda` parameter.
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
-precision: float
+precision : float, optional
     The precision of the evaluation.
-maxInter : int
+maxInter : int, optional
     The maximum number of iterations of the algorithm.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at :math:`x`.
 
 Notes
@@ -959,9 +942,8 @@ nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
 delta : float, :math:`\delta > 0`
     The :math:`\delta` parameter.
-size : int
-    The number of realizations (optional).
-    
+size : int, optional
+    The number of realizations.
     Default value is 1.
 
 Returns
@@ -1010,16 +992,14 @@ delta : float, :math:`\delta > 0`
     The :math:`\nu` parameter.
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at x.
 
 Notes
@@ -1062,11 +1042,9 @@ nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
 p : float, in :math:`[0,1]`
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1101,16 +1079,14 @@ nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
 x : float or sequence of float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float or sequence of float
+p : float or sequence of float
     The CDF or the complementary CDF at x or at each :math:`x[i]`.
 
 Notes
@@ -1138,9 +1114,8 @@ Parameters
 ----------
 nu : float, :math:`\nu > 0`
     The :math:`\nu` parameter.
-size : int
-    The number of realizations (optional).
-    
+size : int, optional
+    The number of realizations.
     Default value is 1.
 
 Returns
@@ -1330,16 +1305,14 @@ beta : float, :math:`\beta > 0`
     Parameter :math:`\beta`.
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at :math:`x`.
 
 Notes
@@ -1370,11 +1343,9 @@ beta : float, :math:`\beta > 0`
     Parameter :math:`\beta`.
 p : float, in :math:`[0,1]`
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1447,16 +1418,14 @@ k : float
     Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 
 Returns
 -------
-p: float
+p : float
     The CDF or the complementary CDF at x.
 
 Notes
@@ -1489,11 +1458,9 @@ k : float
 x : float
 p : float, in :math:`[0,1]`
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1574,11 +1541,9 @@ n : int
     The number of the iid observations.
 x : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 
 Returns
@@ -1611,11 +1576,9 @@ n : int
     The number of distinct ranks.
 rho : float
     Location.
-tail : bool
+tail : bool, optional
     Tail flag. 
-
     Default value is False.
-    
     If True, the complementary CDF is computed.
 ties : bool
     Indicates whether ties in the samples are taken into account.
@@ -1656,11 +1619,9 @@ Parameters
 ----------
 p : float
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1722,11 +1683,9 @@ Parameters
 ----------
 p : float
     The probability.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1790,11 +1749,9 @@ Parameters
 p : float
     The probability.
 x : float
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the quantile associated to :math:`(1-p)` is computed.
 
 Returns
@@ -1857,11 +1814,9 @@ Parameters
 ----------
 x : float
     The location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
@@ -1925,11 +1880,9 @@ Parameters
 ----------
 x : float
     The location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
@@ -1993,11 +1946,9 @@ Parameters
 ----------
 x : float
     The location.
-tail : bool
+tail : bool, optional
     Tail flag.
-
     Default value is False.
-
     If True, the complementary CDF is computed.
 
 Returns
