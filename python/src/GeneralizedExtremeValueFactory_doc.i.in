@@ -479,9 +479,12 @@ result : :class:`~openturns.TimeVaryingResult`
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelEstimator
 "Estimate a return level and its distribution from the GEV parameters.
 
-The :math:`m`-return level :math:`z_m` is the level exceeded on average once every :math:`m` blocks. The parameter :math:`m` is referred to as the *return period*. For example, if the GEV distribution is the distribution of the annual maxima, then :math:`z_{100}` is the 100-year return period and is exceeded on average once in every century.
+The :math:`m`-return level :math:`z_m` is the level exceeded on average once every :math:`m` blocks.
+The parameter :math:`m` is referred to as the *return period*.
+For example, if the GEV distribution is the distribution of the annual maxima,
+then :math:`z_{100}` is the 100-year return period and is exceeded on average once in every century.
 
-The  :math:`m`-return level is defined as the quantile of order :math:`1-p=1-1/m` of the GEV distribution.
+The :math:`m`-return level is defined as the quantile of order :math:`1-p=1-1/m` of the GEV distribution.
 
 
 If :math:`\xi \neq 0`:
@@ -498,7 +501,8 @@ If :math:`\xi = 0`:
 
     z_m = \mu - \sigma \log(-\log(1-p))
 
-The estimator :math:`\hat{z}_m` of :math:`z_m` is deduced from the estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` of :math:`(\mu, \sigma, \xi)`. 
+The estimator :math:`\hat{z}_m` of :math:`z_m` is deduced from the estimator
+:math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` of :math:`(\mu, \sigma, \xi)`. 
 
 The asymptotic distribution of :math:`\hat{z_m}` is obtained by the Delta method from the asymptotic distribution of
 :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`. It is a normal distribution with mean :math:`\hat{z}_m` and variance:
@@ -507,7 +511,8 @@ The asymptotic distribution of :math:`\hat{z_m}` is obtained by the Delta method
 
     \Var{z_m} = (\nabla z_m)^T \mat{V}_n \nabla z_m
 
-where :math:`\nabla z_m = (\frac{\partial z_m}{\partial \mu}, \frac{\partial z_m}{\partial \sigma}, \frac{\partial z_m}{\partial \xi})` and :math:`\mat{V}_n` is the asymptotic covariance of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
+where :math:`\nabla z_m = (\frac{\partial z_m}{\partial \mu}, \frac{\partial z_m}{\partial \sigma}, \frac{\partial z_m}{\partial \xi})`
+and :math:`\mat{V}_n` is the asymptotic covariance of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
     
 Parameters
 ----------

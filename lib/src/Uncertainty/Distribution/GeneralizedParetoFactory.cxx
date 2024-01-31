@@ -441,21 +441,16 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   solver.setStartingPoint(startingPoint);
   solver.run();
   Point optimalParameter(solver.getResult().getOptimalPoint()); // sigma, xi
+
+  // distribution of (sigma,xi)
+  const SymmetricMatrix hessian(objective.hessian(optimalParameter).getSheet(0) * -1.0);
+  const CovarianceMatrix covariance(hessian.solveLinearSystem(IdentityMatrix(2)).getImplementation());
+  const Normal sigmaXiDistribution(optimalParameter, covariance);
+
+  // distribution of (sigma,xi,u)
   optimalParameter.add(u);
-
-  Sample xu(0, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    if (sample(i, 0) > u)
-      xu.add(sample[i]);
-  if (xu.getSize() < 10)
-    throw InvalidArgumentException(HERE) << "Not enough points, lower the threshold u";
-
   const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
-  Distribution fullParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, xu));
-  fullParameterDistribution.setDescription({"sigma", "xi", "u"}); // prevents warnings from BlockIndependentDistribution
-
-  // keep only sigma/xi parameters distributions as u is fixed
-  const BlockIndependentDistribution parameterDistribution({fullParameterDistribution.getMarginal({0, 1}), Dirac(u)});
+  const BlockIndependentDistribution parameterDistribution({sigmaXiDistribution, Dirac(u)});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
   DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
   return result;
@@ -472,7 +467,8 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (sample(i, 0) > u)
       xu.add(sample[i]);
-  if (xu.getSize() < 10)
+  const Scalar nxu = xu.getSize();
+  if (nxu < 10)
     throw InvalidArgumentException(HERE) << "Not enough points, lower the threshold u";
 
   // starting point: initialize sigma as Gumbel parametrization, xi is arbitrary (see ismev package)
@@ -747,6 +743,66 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   grid.setGraph(0, 0, scaleGraph);
   grid.setGraph(1, 0, shapeGraph);
   return grid;
+}
+
+
+/* Return level */
+Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const DistributionFactoryResult & result,
+                                                                 const Scalar m, const Sample & sample) const
+{
+  // see coles2001 4.3.3 p81
+  if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedPareto")
+    throw InvalidArgumentException(HERE) << "Return level can only be estimated from a GPD";
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "Return period should be > 1";
+  const Scalar sigma = result.getDistribution().getParameter()[0];
+  const Scalar xi = result.getDistribution().getParameter()[1];
+  const Scalar u = result.getDistribution().getParameter()[2];
+
+  UnsignedInteger k = 0;
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Return level estimation requires a sample of dimension 1";
+  const UnsignedInteger size = sample.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (sample(i, 0) > u)
+      ++ k;
+  if (!k)
+    throw InvalidArgumentException(HERE) << "Return level estimation requires sample values > u";
+  const Scalar zeta = k * 1.0 / size;
+
+  // (sigma, xi) are Gaussian, u can be a Dirac
+  if (result.getParameterDistribution().getMarginal(Indices({0, 1})).getImplementation()->getClassName() == "Normal")
+  {
+    Scalar xm = 0.0;
+    Matrix dxm(3, 1);
+    if (std::abs(xi) < SpecFunc::Precision)
+    {
+      xm = u + sigma * std::log(m * zeta);
+      dxm(0, 0) = sigma / zeta;
+      dxm(1, 0) = std::log(m * zeta);
+    }
+    else
+    {
+      xm = u + sigma * (std::pow(m * zeta, xi) - 1.0) / xi;
+      dxm(0, 0) = sigma * std::pow(m, xi) * std::pow(zeta, xi - 1.0);
+      dxm(1, 0) = (std::pow(m * zeta, xi) - 1.0) / xi;
+      dxm(2, 0) = sigma / xi * (std::pow(m * zeta, xi) * std::log(m * zeta) - dxm(1, 0));
+    }
+    const Matrix Vn(result.getParameterDistribution().getCovariance());
+    Matrix V(3, 3);
+    V(0, 0) = zeta * (1.0 - zeta) / size;
+    V(1, 1) = Vn(0, 0);
+    V(1, 2) = Vn(0, 1);
+    V(2, 1) = Vn(1, 0);
+    V(2, 2) = Vn(1, 1);
+    const Scalar varXm = (dxm.transpose() * V * dxm)(0, 0);
+    return Normal(xm, std::sqrt(varXm));
+  }
+  else
+  {
+    // sample input distribution + kernel smoothing
+    throw NotYetImplementedException(HERE) << "GPD parameter distribution is not Gaussian";
+  }
 }
 
 END_NAMESPACE_OPENTURNS

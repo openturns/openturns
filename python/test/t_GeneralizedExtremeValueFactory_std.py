@@ -182,8 +182,8 @@ assert not result_deviance.getBinaryQualityMeasure(), "H0 (stationary model) acc
 
 # specific check for return level
 zm = factory.buildReturnLevelEstimator(estimator_mle, 10.0)
-print("zm=", zm.getMean())
-ott.assert_almost_equal(zm.getMean(), [1.73377], 1e-2, 1e-2)
+print("zm=", zm)
+ott.assert_almost_equal(zm, ot.Normal(1.73377, 0.0228792), 1e-2, 1e-2)
 
 # specific check for return level via profile likelihood
 estimator_prof_rl = factory.buildReturnLevelXiProfileLikelihoodEstimator(
