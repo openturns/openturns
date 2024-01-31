@@ -105,12 +105,7 @@ private:
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds
-<<<<<<< HEAD
-  
-=======
 
-
->>>>>>> be868a6659c83a6f1c872830a124a4b62369d01a
   // keep samples generated at each step
   Bool keepSample_ = false;
   PersistentCollection<Sample> inputSample_;

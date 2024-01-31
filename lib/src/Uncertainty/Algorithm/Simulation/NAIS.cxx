@@ -218,7 +218,6 @@ void NAIS::run()
       outputSample_.add(auxiliaryOutputSample);
     }
     
-
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
@@ -288,46 +287,6 @@ void NAIS::run()
   naisResult_.setVarianceEstimate(varianceEstimate);
 
 }
-
-/* Event input/output sample accessor */
-Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
-{
-  if (!keepSample_)
-    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
-  if (step >= getStepsNumber())
-    throw InvalidArgumentException(HERE) << "NAIS step index (" << step << ") should be < " << getStepsNumber();
-  if (select > 2)
-    throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
-  return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
-}
-
-Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
-{
-  if (!keepSample_)
-    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
-  if (step >= getStepsNumber())
-    throw InvalidArgumentException(HERE) << "NAIS step index (" << step << ") should be < " << getStepsNumber();
-  if (select > 2)
-    throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
-  return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
-}
-
-Indices NAIS::getSampleIndices(const UnsignedInteger step, const Bool status) const
-{
-  Indices result;
-  const Sample outputSample(outputSample_[step]);
-  const Scalar threshold = getThresholdPerStep()[step];
-  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++ i)
-    if (getEvent().getOperator()(outputSample(i, 0), threshold) == status)
-      result.add(i);
-  return result;
-}
-
-Point NAIS::getThresholdPerStep() const
-{
-  return thresholdPerStep_;
-}
-
 
 /* Event input/output sample accessor */
 Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
