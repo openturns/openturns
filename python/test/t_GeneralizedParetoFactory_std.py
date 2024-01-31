@@ -73,10 +73,17 @@ pref_mle = [7.44573, 0.184112, 30.0]
 ott.assert_almost_equal(inf_dist.getParameter(), pref_mle, 1e-2, 1e-2)
 print("parameter dist=", estimator_mle.getParameterDistribution())
 print(estimator_mle.getParameterDistribution().getCovariance())
-cov_ref = [[0.995799, -0.084775, 0],
-           [-0.084775, 0.0146052, 0],
+cov_ref = [[0.920412, -0.0655531, 0],
+           [-0.0655531, 0.0102358, 0],
            [0, 0, 0]]
 ott.assert_almost_equal(ot.Matrix(estimator_mle.getParameterDistribution().getCovariance()), ot.Matrix(cov_ref), 2e-3, 1e-5)
+ott.assert_almost_equal(estimator_mle.getLogLikelihood(), -485.094)
+
+# specific check for return level, see coles2001 p86
+xm = factory.buildReturnLevelEstimator(estimator_mle, 100.0 * 365.0, sample)
+print("xm=", xm)
+ott.assert_almost_equal(xm.getMean(), [106.284], 1e-2, 1e-2)
+ott.assert_almost_equal(xm.getCovariance()[0, 0], 433.145, 1e-2, 1e-2)
 
 # profile MLE (xi)
 estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)

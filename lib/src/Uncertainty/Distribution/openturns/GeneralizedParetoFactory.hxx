@@ -87,6 +87,9 @@ public:
   /** Parameter stability plot*/
   GridLayout drawParameterThresholdStability(const Sample & sample, const Interval & thresholdRange) const;
 
+  /** Return level */
+  Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m, const Sample & sample) const;
+
 private:
 
   /** Optimization solver */

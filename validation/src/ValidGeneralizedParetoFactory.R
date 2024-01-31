@@ -13,10 +13,17 @@ mrlplot(data)
 library(eva)
 png("mlexi.png")
 # mle
+cat("\n--- MLE ---\n")
 fit <- gpdFit(data, threshold=30)
 print(fit)
 
+# return level
+cat("\n--- return level ---\n")
+rl <- gpdRl(fit, period = 100, method = "delta")
+print(rl)
+
 # profiled ll
+cat("\n--- profiled LL ---\n")
 fit2 <- gpdProfShape(fit)
 print(fit2)
 
