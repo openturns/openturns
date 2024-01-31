@@ -90,3 +90,23 @@ Parameters
 ----------
 nu : float, :math:`\nu >= 0`
     Location parameter :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::setMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::getMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
