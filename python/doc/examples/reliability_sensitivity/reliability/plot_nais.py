@@ -194,10 +194,10 @@ graph.setColors(col)
 # %%
 gIsoLines = g.draw([-5] * 2, [5] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(0)
-for i in range(levels.getSize()):
-    dr.setLevels([levels[i]])
+for i, lv in enumerate(levels):
+    dr.setLevels([lv])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
@@ -216,10 +216,10 @@ graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
-for i in range(len(levels)):
-    dr.setLevels([levels[i]])
+for i, lv in enumerate(levels):
+    dr.setLevels([lv])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
     dr.setLineWidth(3)
     graph.add(dr)
 
