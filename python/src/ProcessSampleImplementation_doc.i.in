@@ -270,7 +270,7 @@ variance : :class:`~openturns.Field`
     values at this vertex of the `K` fields contained in the process sample.
 "
 %enddef
-%feature("docstring") OT::ProcessSampleImplementation::computeStandardDeviation
+%feature("docstring") OT::ProcessSampleImplementation::computeVariance
 OT_ProcessSample_computeVariance_doc
 
 // ---------------------------------------------------------------------
