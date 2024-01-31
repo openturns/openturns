@@ -176,6 +176,11 @@ Combining and transforming distributions
     ConditionalDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
+
+    :template: class.rst_t
+    MarginalDistribution
+
+    :template: Distribution.rst_t
     MaximumDistribution
 
     :template: classWithPlot.rst_t
