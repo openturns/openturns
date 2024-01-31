@@ -708,10 +708,10 @@ class View:
 
         Parameters
         ----------
-        fname: bool, optional
+        fname : bool, optional
             A string containing a path to a filename from which file format is deduced.
 
-        kwargs:
+        kwargs : dict
             See matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
 
         Examples
@@ -844,18 +844,18 @@ def PlotDesign(
     ----------
     design : 2-d sequence of float
         The sample.
-    figure : a Matplotlib figure.
+    figure : a Matplotlib figure, optional
         If this is not None, then create a new figure.
         Otherwise, use the existing figure.
-    axes : a Matplotlib axis.
+    axes : a Matplotlib axis, optional
         If empty, then create new axes.
-    bounds: :class:`~openturns.Interval`
+    bounds : :class:`~openturns.Interval`, optional
         Bounds of the plot. By default, compute the bounds from the sample.
-    subdivisions : a list of integers
+    subdivisions : a list of integers, optional
         Number of subdivisions in the each direction.
         By default, set the number of subdivisions in each direction
         as equal to the sample size.
-    enableTicks :
+    enableTicks : bool, optional
         A boolean. If True, then the ticks are plotted.
 
     Returns
