@@ -1,0 +1,3 @@
+%feature("docstring") OT::ContinuousDistribution
+"Base class for continuous distributions."
+
