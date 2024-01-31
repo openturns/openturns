@@ -48,7 +48,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeightedExperiment::getImportanceDistribution
+%feature("docstring") OT::ImportanceSamplingExperiment::getImportanceDistribution
 "Accessor to the importance distribution.
 
 Returns
