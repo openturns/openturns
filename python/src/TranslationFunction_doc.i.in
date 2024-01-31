@@ -26,7 +26,7 @@ where:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TranslationFunction::setConstant
+%feature("docstring") OT::TranslationFunction::getConstant
 "Accessor to the constant.
 
 Returns
@@ -42,6 +42,6 @@ constant : :class:`~openturns.Point`
 
 Parameters
 ----------
-constant : :class:`~openturns.Point`
+constant : sequence of float
     Vector :math:`\vect{c}`
 "
