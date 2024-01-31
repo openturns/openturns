@@ -93,8 +93,6 @@ private:
   /** Select sample indices according to status */
   Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
 
-
-
   // Initial distribution
   Distribution initialDistribution_;
 
@@ -107,7 +105,6 @@ private:
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds
-
 
   // keep samples generated at each step
   Bool keepSample_ = false;
