@@ -218,7 +218,6 @@ void NAIS::run()
       outputSample_.add(auxiliaryOutputSample);
     }
     
-    
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
@@ -286,6 +285,7 @@ void NAIS::run()
   naisResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber + 1));
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
+
 }
 
 /* Event input/output sample accessor */
