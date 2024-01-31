@@ -457,3 +457,59 @@ The confidence level can be set using the :class:`~openturns.ResourceMap` key
 The number of threshold points in the graph can be set with the key
 `GeneralizedParetoFactory-ThresholdStabilityPointNumber`.
 "
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelEstimator
+"Estimate a return level and its distribution from the GPD parameters.
+
+The :math:`m`-return level :math:`x_m` is the level exceeded on average once every :math:`m` blocks.
+The parameter :math:`m` is referred to as the *return period*.
+For example, if the GEV distribution is the distribution of the annual maxima,
+then :math:`x_{100}` is the 100-year return period and is exceeded on average once in every century.
+
+The :math:`m`-return level is defined as the quantile of order :math:`1-p=1-1/m` of the GEV distribution.
+
+
+If :math:`\xi \neq 0`:
+
+.. math::
+    :label: xm1
+
+    x_m = u - \frac{\sigma}{\xi}(m \zeta_u)^{\xi}
+
+If :math:`\xi = 0`:
+
+.. math::
+    :label: xm2
+
+    x_m = u + \sigma \log(m \zeta_u)
+
+with :math:`zeta_u` the ratio of samples exceeding the threshold :math:`u`.
+
+The estimator :math:`\hat{x}_m` of :math:`x_m` is deduced from the estimator
+:math:`(\hat{\sigma}, \hat{\xi}, \hat{\zeta_u})` of :math:`(\sigma, \xi, \zeta_u)`.
+
+The asymptotic distribution of :math:`\hat{x_m}` is obtained by the Delta method from the asymptotic distribution of
+:math:`(\hat{\sigma}, \hat{\xi}, \hat{\zeta_u})`. It is a normal distribution with mean :math:`\hat{x}_m` and variance:
+
+.. math::
+
+    \Var{z_m} = (\nabla x_m)^T \mat{V}_n \nabla x_m
+
+where :math:`\nabla x_m = (\frac{\partial x_m}{\partial \mu}, \frac{\partial x_m}{\partial \sigma}, \frac{\partial x_m}{\partial \xi})`
+and :math:`\mat{V}_n` is the asymptotic covariance of :math:`(\hat{\sigma}, \hat{\xi}, \hat{\mu})`.
+
+Parameters
+----------
+result : :class:`~openturns.DistributionFactoryResult`
+    Likelihood estimation result of a :class:`~openturns.GeneralizedPareto`
+m : float
+    The return period expressed in terms of number of blocks.
+sample : 2-d sequence of float
+    The same sample used for the likelihood estimation (to compute :math:`\zeta_u`).
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The asymptotic distribution of :math:`\hat{x}_m`."
