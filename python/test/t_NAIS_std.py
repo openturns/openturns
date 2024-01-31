@@ -67,9 +67,23 @@ quantileLevel = 0.25
 Nais_algo = ot.NAIS(event, quantileLevel)
 Nais_algo.setMaximumOuterSampling(numberSamples)
 Nais_algo.setBlockSize(blockSize)
+Nais_algo.setKeepSample(True)
 
 # Run of the algorithm
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
 assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00215688)
+
+
+# check that the event sample is right
+stepsNumber = Nais_algo.getStepsNumber()
+inputEventSample = Nais_algo.getInputSample(stepsNumber - 1, Nais_algo.EVENT1)
+outputEventSample = Nais_algo.getOutputSample(stepsNumber - 1, Nais_algo.EVENT1)
+outputG = my_four_branch_7(inputEventSample)
+diffSample = outputG - outputEventSample
+assert_almost_equal(diffSample.computeMean(), [0.0])
+
+
+
+
