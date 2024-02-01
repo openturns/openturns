@@ -341,7 +341,7 @@ indices : 2-d sequence of int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationResult::setStatusMessage
-"Accessor to the status string.
+"Accessor to the specialized status string.
 
 Parameters
 ----------
@@ -351,7 +351,7 @@ statusMessage : str
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationResult::getStatusMessage
-"Accessor to the status string.
+"Accessor to the specialized status string.
 
 Returns
 -------
@@ -361,7 +361,7 @@ statusMessage : str
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationResult::setStatus
-"Accessor to the status string.
+"Accessor to the generic status.
 
 Parameters
 ----------
@@ -371,11 +371,11 @@ status : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationResult::getStatus
-"Accessor to the status string.
+"Accessor to the generic status.
 
 Returns
 -------
-status : str
+status : int
     Status flag, possible values SUCCEEDED, FAILURE"
 
 // ---------------------------------------------------------------------
