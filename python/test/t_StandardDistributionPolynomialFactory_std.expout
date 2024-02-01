@@ -223,3 +223,33 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
+polynomialFactory( UserDefined = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 data=[[0],[1],[2],[3],[4],[5],[6],[7],[8],[9]] probabilities=class=Point name=Unnamed dimension=10 values=[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1] monicRecurrenceCoefficients=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[1,-4.5,0],[1,-4.5,-8.25]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,8.25] isElliptical=false )
+UserDefined  polynomial( 0 )= 1
+UserDefined  polynomial( 1 )= -1.567 + 0.3482 * X
+UserDefined  polynomial( 2 )= 1.651 - 1.239 * X + 0.1376 * X^2
+UserDefined  polynomial( 3 )= -1.434 + 2.623 * X - 0.7681 * X^2 + 0.0569 * X^3
+UserDefined  polynomial( 4 )= 1.064 - 4.435 * X + 2.488 * X^2 - 0.4435 * X^3 + 0.02464 * X^4
+UserDefined  polynomial( 4 ) roots= [0.2826,2.853,6.147,8.717]
+UserDefined  polynomial( 4 ) nodes= [0.2826,2.853,6.147,8.717]  and weights= [0.1837,0.3163,0.3163,0.1837]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( UserDefined = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 data=[[0.5],[1.5],[2.5],[3.5],[4.5],[5.5],[6.5],[7.5],[8.5],[9.5]] probabilities=class=Point name=Unnamed dimension=10 values=[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1] monicRecurrenceCoefficients=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[1,-5,0],[1,-5,-8.25]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,8.25] isElliptical=false )
+UserDefined  polynomial( 0 )= 1
+UserDefined  polynomial( 1 )= -1.741 + 0.3482 * X
+UserDefined  polynomial( 2 )= 2.305 - 1.376 * X + 0.1376 * X^2
+UserDefined  polynomial( 3 )= -2.945 + 3.434 * X - 0.8535 * X^2 + 0.0569 * X^3
+UserDefined  polynomial( 4 )= 3.961 - 7.268 * X + 3.191 * X^2 - 0.4928 * X^3 + 0.02464 * X^4
+UserDefined  polynomial( 4 ) roots= [0.7826,3.353,6.647,9.217]
+UserDefined  polynomial( 4 ) nodes= [0.7826,3.353,6.647,9.217]  and weights= [0.1837,0.3163,0.3163,0.1837]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
