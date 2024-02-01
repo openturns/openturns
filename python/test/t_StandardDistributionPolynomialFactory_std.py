@@ -32,6 +32,8 @@ distributionCollection = [
     ot.Beta(0.5, 0.5, -2.0, 3.0),
     ot.Gamma(1.0, 3.0),
     ot.Arcsine(),
+    ot.UserDefined([[i] for i in range(10)]),
+    ot.UserDefined([[i + 0.5] for i in range(10)]),
 ]
 for n in range(len(distributionCollection)):
     distribution = distributionCollection[n]
@@ -55,7 +57,10 @@ for n in range(len(distributionCollection)):
             def kernel(x):
                 return [pI(x[0]) * pJ(x[0]) * distribution.computePDF(x)]
 
-            M[i, j] = ot.GaussKronrod().integrate(
-                ot.PythonFunction(1, 1, kernel), distribution.getRange()
-            )[0]
+            integrand = ot.PythonFunction(1, 1, kernel)
+            if distribution.isContinuous():
+                M[i, j] = ot.GaussKronrod().integrate(integrand, distribution.getRange())[0]
+            else:
+                x = distribution.getSupport()
+                M[i, j] = integrand(x).computeMean()[0] * len(x)
     print("M=\n", M.clean(1.0e-6))
