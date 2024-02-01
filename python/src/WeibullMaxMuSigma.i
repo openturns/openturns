@@ -6,6 +6,7 @@
 
 %include WeibullMaxMuSigma_doc.i
 
+%copyctor OT::WeibullMaxMuSigma;
+
 %include openturns/WeibullMaxMuSigma.hxx
-namespace OT{ %extend WeibullMaxMuSigma { WeibullMaxMuSigma(const WeibullMaxMuSigma & other) { return new OT::WeibullMaxMuSigma(other); } } }
 

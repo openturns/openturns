@@ -2,7 +2,7 @@
 /**
  * @brief Class for identity evaluation.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,9 +64,7 @@ String IdentityEvaluation::__repr__() const
 String IdentityEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << IdentityEvaluation::GetClassName()
-      << "(dimension=" << dimension_
-      << ")";
+  oss << "id_" << dimension_;
   return oss;
 }
 

@@ -8,5 +8,6 @@
 
 %ignore OT::BasisImplementation::operator[];
 
+%copyctor OT::BasisImplementation;
+
 %include openturns/BasisImplementation.hxx
-namespace OT { %extend BasisImplementation { BasisImplementation(const BasisImplementation & other) { return new OT::BasisImplementation(other); } } }

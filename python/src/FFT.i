@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(FFT)
 
+%copyctor OT::FFT;
+
 %include openturns/FFT.hxx
-namespace OT{ %extend FFT { FFT(const FFT & other) { return new OT::FFT(other); } } }

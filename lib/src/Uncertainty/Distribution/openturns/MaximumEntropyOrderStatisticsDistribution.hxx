@@ -2,7 +2,7 @@
 /**
  *  @brief The maximum entropy order statistics distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -170,7 +170,6 @@ private:
   /** Build a C1 interpolation of the exponential factors in the PDF */
   void interpolateExponentialFactors();
 
-public:
   /** Compute the exponential factor */
   Scalar computeExponentialFactor(const UnsignedInteger k,
                                   const Scalar u,
@@ -180,7 +179,7 @@ public:
   Scalar computeFactor(const UnsignedInteger k,
                        const Scalar u,
                        const Scalar v) const;
-private:
+
   /** The main parameter set of the distribution */
   DistributionPersistentCollection distributionCollection_;
 

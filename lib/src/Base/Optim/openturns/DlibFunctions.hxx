@@ -2,7 +2,7 @@
 /**
  *  @brief Dlib functions interface
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -112,7 +112,7 @@ public:
                                   general_matrix & hess) const;
 
   /* Accessors to attributes */
-  UnsignedInteger getEvaluationNumber() const;
+  UnsignedInteger getCallsNumber() const;
   Sample getInputHistory();
   Sample getOutputHistory();
 
@@ -121,7 +121,7 @@ protected:
   mutable Sample outputHistory_;
 private:
   Bool minimization_ = true;
-} ;
+};
 
 END_NAMESPACE_OPENTURNS
 

@@ -47,7 +47,7 @@ ot.RandomGenerator.SetSeed(0)
 g = ot.SymbolicFunction(["x"], ["sin(2*pi_*x)"])
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -58,6 +58,7 @@ view = otv.View(graph)
 
 # %%
 # This seems a nice, smooth function to approximate with polynomials.
+
 
 # %%
 def linearSample(xmin, xmax, npoints):
@@ -91,7 +92,7 @@ noiseSample = noise.getSample(n_train)
 y_train = g(x_train) + noiseSample
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -169,7 +170,7 @@ x_test = linearSample(0, 1, n_test)
 y_test = responseSurface(basis(x_test))
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setColors(["green"])
@@ -194,7 +195,7 @@ graph = ot.Graph(
     "x",
     "y",
     True,
-    "topright",
+    "upper right",
 )
 # Training set observations
 cloud = ot.Cloud(x_train, y_train)
@@ -219,7 +220,9 @@ view = otv.View(graph)
 # The least squares method minimizes the sum of the squared errors i.e. the sum of the squares of the lengths of the vertical segments.
 
 # %%
-# We gather the previous computation in two different functions. The `myPolynomialDataFitting` function computes the least squares solution and `myPolynomialCurveFittingGraph` plots the results.
+# We gather the previous computation in two different functions. The `myPolynomialDataFitting` function computes
+# the least squares solution and `myPolynomialCurveFittingGraph` plots the results.
+
 
 # %%
 def myPolynomialDataFitting(total_degree, x_train, y_train):
@@ -246,7 +249,7 @@ def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
     x_test = linearSample(0, 1, n_test)
     ypredicted_test = responseSurface(basis(x_test))
     # Graphics
-    graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "topright")
+    graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
     # The "unknown" function
     curve = g.draw(0, 1)
     curve.setColors(["green"])
@@ -323,6 +326,7 @@ responseSurface, basis = myPolynomialDataFitting(total_degree, x_train, y_train)
 # %%
 # Then we create a test set, with the same method as before.
 
+
 # %%
 def createDataset(n):
     x = linearSample(0, 1, n)
@@ -360,6 +364,7 @@ RMSE
 # %%
 # The following function gathers the RMSE computation to make the experiment easier.
 
+
 # %%
 def computeRMSE(responseSurface, basis, x, y):
     ypredicted = responseSurface(basis(x))
@@ -379,7 +384,7 @@ for total_degree in range(maximum_degree):
 
 # %%
 degreeSample = ot.Sample([[i] for i in range(maximum_degree)])
-graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "topright")
+graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "upper right")
 # Train
 cloud = ot.Curve(degreeSample, RMSE_train)
 cloud.setColor("blue")

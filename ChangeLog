@@ -1,12 +1,67 @@
 = New Features =
 
-== 1.22 release (in-progress) == #release-1.22
+== 1.23 release (in-progress) == #release-1.23
 
 === Library ===
 
 ==== Major changes ====
 
 ==== New classes ====
+ * SmoothedUniformFactory (openturns.experimental)
+
+==== API changes ====
+ * Removed deprecated Pagmo.setGenerationNumber
+ * Removed deprecated NLopt.SetSeed
+ * Removed deprecated IterativeThresholdExceedance(dimension, threshold) ctor
+ * Removed deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
+ * Removed deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
+ * Removed deprecated SubsetSampling.setISubset, setBetaMin
+ * Removed deprecated LHS
+ * Removed deprecated OptimizationAlgorithm.set/getVerbose
+ * Removed deprecated DickeyFullerTest.setVerbose/getVerbose
+ * Removed deprecated MetropolisHasting.setVerbose/getVerbose
+ * Removed deprecated BasisSequenceFactory.setVerbose/getVerbose
+ * Removed deprecated SimulationAlgorithm.setVerbose/getVerbose
+ * Removed deprecated WhittleFactory.setVerbose/getVerbose
+ * Removed deprecated CLassifier.setVerbose/getVerbose
+ * Removed deprecated ARMALLHF.setVerbose/getVerbose
+ * Removed deprecated CleaningStrategy.setVerbose/getVerbose
+ * Removed deprecated ApproximationAlgorithm.setVerbose/getVerbose
+ * Removed deprecated EllipticalDistribution.setCorrelation/getCorrelation
+ * Removed deprecated EllipticalDistribution.setMean
+ * Removed deprecated Distribution.computeDensityGenerator
+ * Removed deprecated Point.clean
+ * Removed deprecated (Inverse)Gamma.setKLambda
+ * Removed deprecated Os::GetEndOfLine
+ * Deprecated Sample|CorrelationAnalysis::computePearsonCorrelation in favor of computeLinearCorrelation
+ * Deprecated Cobyla::setIgnoreFailure, TNC::setIgnoreFailure in favor of setCheckStatus
+ * Deprecated OptimizationAlgorithm.set/getMaximumEvaluationNumber in favor of set/getMaximumCallsNumber
+ * Deprecated OptimizationResult.set/getEvaluationNumber in favor of set/getCallsNumber
+ * Deprecated Solver.set/getMaximumFunctionEvaluation in favor of set/getMaximumCallsNumber
+ * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
+ * Deprecated TimerCallback
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+ * UniformOverMesh left the experimental module
+ * IntegrationExpansion/LeastSquaresExpansion left the experimental module
+
+== 1.22 release (2024-01-09) == #release-1.22
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+ * BoundaryMesher (openturns.experimental)
+ * LatentVariableModel (openturns.experimental)
+ * StudentCopula (openturns.experimental)
+ * StudentCopulaFactory (openturns.experimental)
+ * TruncatedOverMesh (openturns.experimental)
+ * SimplicialCubature (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated (Non)LinearLeastSquaresCalibration::getCandidate method
@@ -18,13 +73,85 @@
  * Deprecated Pagmo.setGenerationNumber for setMaximumIterationNumber
  * Deprecated NLopt.SetSeed for setSeed
  * Deprecated IterativeThresholdExceedance(dimension, threshold) ctor
+ * Deprecated Linear|QuadraticLeastSquares(Sample, Function) constructor
+ * Deprecated SubsetSampling.setKeepEventSample, getEventInputSample, getEventOutputSample
+ * Deprecated SubsetSampling.setISubset, setBetaMin
+ * QuantileMatchingFactory probabilities argument is no longer optional
+ * Add a new moment order argument to MethodOfMomentsFactory
+ * Removed Drawable.getPointCode
+ * Deprecated LHS in favor of ProbabilitySimulationAlgorithm+LHSExperiment
+ * Deprecated OptimizationAlgorithm.setVerbose/getVerbose
+ * Deprecated DickeyFullerTest.setVerbose/getVerbose
+ * Deprecated MetropolisHastings.setVerbose/getVerbose
+ * Deprecated BasisSequenceFactory.setVerbose/getVerbose
+ * Deprecated SimulationAlgorithm.setVerbose/getVerbose
+ * Deprecated WhittleFactory.setVerbose
+ * Deprecated Classifier.setVerbose/getVerbose
+ * Deprecated ARMAlikelihoodFactory.setVerbose/getVerbose
+ * Deprecated CleaningStrategy.setVerbose/getVerbose
+ * Deprecated ApproximationAlgorithm.setVerbose/getVerbose
+ * Deprecated EllipticalDistribution.setCorrelation/getCorrelation
+ * Deprecated EllipticalDistribution.setMean
+ * Student.setMu/getMu now operate on Point
+ * Deprecated Distribution.computeDensityGenerator methods
+ * Deprecated Point.clean
+ * Deprecated (Inverse)Gamma.setKLambda
+ * Deprecated Os::GetEndOfLine
+ * Moved PosteriorDistribution to experimental
 
 === Documentation ===
+ * Improved coverage of class/methods
+ * New two-degree-of-freedom oscillator use-case
 
 === Python module ===
+ * New Graph.setLegendCorner method to set legend outside of Graph
+ * Allowing use of matplotlib markers and legend location strings in Graphs
 
 === Miscellaneous ===
+ * Improved pretty-printing of chaos functions, distributions
  * Added IterativeThresholdExceedance::getRatio
+ * Added FunctionalChaosResult::drawSelectionHistory to plot LARS coefs paths
+ * New API in SubsetSampling to get samples at each iteration
+ * Added SubsetSampling method to set the initial experiment
+ * Allowing use of non-independent copulas in LHSExperiment
+ * Improved system events to allow more kinds of events like DomainEvent
+ * Add CMake presets file
+
+=== Bug fixes ===
+ * #1338 (The example in UserDefined does not show how to create a uniform discrete distribution)
+ * #1670 (IntervalMesher segfault when diamond==true)
+ * #1896 (Operator == inconsistencies)
+ * #1979 (The doc of KernelSmoothing has issues)
+ * #2195 (SubsetSampling: keep the failed and secure points at each step)
+ * #2216 (Characteristic function of the Triangular and Trapezoidal distributions)
+ * #2220 (Negative value given by the computeComplementaryCDF method)
+ * #2235 (Documentation is missing for some methods of class Matrix)
+ * #2339 (FunctionalChaosSobolIndices has doc issues)
+ * #2347 (Build error of /usr/include/tbb/machine/gcc_generic.h:39:20: error: operator '||' has no left operand in s390x on Fedora)
+ * #2351 (Import error in the draw method example)
+ * #2354 (IterativeThresholdExceedance)
+ * #2371 (t-Copula implementation)
+ * #2403 (KrigingAlgorithm fails if basis is empty)
+ * #2406 (Student does not give access to all its parameters)
+ * #2412 (The class QuadraticLeastSquares returns a wrong quadratic term)
+ * #2420 (Deprecate Os::GetEndOfLine())
+ * #2423 (mutable OptimizationAlgorithm)
+ * #2429 (Elliptical distributions)
+ * #2431 (LHSExperiment.generate() can fail)
+ * #2434 (WeibullMaxMuSigma: default values are not good)
+ * #2437 (Binomial computeSurvivalFunction error)
+ * #2439 (Use more computeScalarQuantile)
+ * #2442 (EGO does not handle maximization problems)
+ * #2443 (C++ Test SmolyakExperiment_std fails on arm64, ppc64el, s390x)
+ * #2452 (The LHSExperiment does not manage a non-independent copula)
+ * #2456 (configure fails to find bonmin)
+ * #2459 (Problems while configuring OpenTURNS for Visual Studio 2019)
+ * #2463 (Normal.computeConditionalPDF() is wrong when the components are independent)
+ * #2466 (PlackettCopula covariance matrix)
+ * #2481 (Improve SpectralGaussianProcess sampling speed)
+ * #2486 (DrawParallelCoordinates is not correct)
+ * #2487 (Cannot save large datasets using XMLH5StorageManager)
+ * #2503 (Using KernelSmoothing can make Jupyter Notebook to hang)
 
 
 == 1.21 release (2023-06-20) == #release-1.21

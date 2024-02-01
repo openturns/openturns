@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation class for a nonlinear scalar solver
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -102,19 +102,23 @@ public:
   void setResidualError(const Scalar residualError);
   Scalar getResidualError() const;
 
-  /** Maximum function evaluation accessor */
+  /** Maximum function calls accessor */
+  void setMaximumCallsNumber(const UnsignedInteger maximumFunctionEvaluation);
+  UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
   UnsignedInteger getMaximumFunctionEvaluation() const;
 
-  /** Used function evaluation */
+  /** Used function calls */
+  UnsignedInteger getCallsNumber() const;
+  // @deprecated
   UnsignedInteger getUsedFunctionEvaluation() const;
 
 protected:
 
-
-  /** Used function evaluation statistics */
-  mutable UnsignedInteger maximumFunctionEvaluation_;
-  mutable UnsignedInteger usedFunctionEvaluation_;
+  /** Used function calls statistics */
+  mutable UnsignedInteger maximumCallsNumber_ = 0;
+  mutable UnsignedInteger callsNumber_ = 0;
 
 private:
   Scalar absoluteError_;

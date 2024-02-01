@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the incomplete
  *         regularized gamma function and related functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,6 +58,8 @@ Scalar RegularizedIncompleteGamma(const Scalar a,
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
+  // for incgam or old boost versions
+  if (std::isinf(x)) return (tail ? 0.0 : 1.0);
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q(a, x) : boost::math::gamma_p(a, x));
 #else

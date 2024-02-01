@@ -27,7 +27,7 @@ marginalIndices : sequence of int, optional
 
 Notes
 -----
-The random walk Metropolis-Hastings algorithm 
+The random walk Metropolis-Hastings algorithm
 is a Markov Chain Monte-Carlo algorithm.
 It draws candidates for the
 next state of the chain as follows: denoting the current state by
@@ -143,8 +143,8 @@ period : positive int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::getExpansionFactor
-"Get the expansion factor.
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationExpansionFactor
+"Get the adaptation expansion factor.
 
 Returns
 -------
@@ -153,8 +153,8 @@ expansionFactor : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::setExpansionFactor
-"Set the expansion factor.
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationExpansionFactor
+"Set the adaptation expansion factor.
 
 Parameters
 ----------
@@ -164,27 +164,41 @@ expansionFactor : float, :math:`e > 1`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationRange
-"Get the range.
+"Get the expected range for the acceptance rate.
+During burn-in, at the end of every adaptation period,
+if the acceptance rate does not belong to this range,
+the adaptation factor is multiplied
+either by the expansion factor
+(if the acceptance rate is larger than the *upperBound*)
+or by the shrink factor
+(if the acceptance rate is smaller than the *lowerBound*).
 
 Returns
 -------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the adaptation factor."
+    Range [*lowerBound*, *upperBound*] of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationRange
-"Set the range.
+"Set the expected range for the acceptance rate.
+During burn-in, at the end of every adaptation period,
+if the acceptance rate does not belong to this range,
+the adaptation factor is multiplied
+either by the expansion factor
+(if the acceptance rate is larger than the *upperBound*)
+or by the shrink factor
+(if the acceptance rate is smaller than the *lowerBound*).
 
 Parameters
 ----------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` of the adaptation factor."
+    Range [*lowerBound*, *upperBound*] of the expected acceptance rate."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::getShrinkFactor
-"Get the shrink factor.
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationShrinkFactor
+"Get the adaptation shrink factor.
 
 Returns
 -------
@@ -193,8 +207,8 @@ shrinkFactor : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::setShrinkFactor
-"Set the shrink factor.
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationShrinkFactor
+"Set the adaptation shrink factor.
 
 Parameters
 ----------

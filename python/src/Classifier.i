@@ -8,6 +8,7 @@
 
 OTTypedInterfaceObjectHelper(Classifier)
 
+%copyctor OT::Classifier;
+
 %include openturns/Classifier.hxx
-namespace OT { %extend Classifier { Classifier(const Classifier & other) { return new OT::Classifier(other); } } }
 

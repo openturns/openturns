@@ -4,7 +4,7 @@
  *  using a maximization of the likelihood function. We use here some articles of J.A.Mauricio (http://www.ucm.es/info/ecocuan/jam/)
  *  to use an efficient method
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,18 +46,6 @@ static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
 /* Default constructor */
 ARMALikelihoodFactory::ARMALikelihoodFactory()
   : ARMAFactoryImplementation()
-  , currentG_(0)
-  , w_()
-  , dimension_(1)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
@@ -70,18 +58,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_(0)
-  , w_()
   , dimension_(dimension)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   if (dimension == 0)
@@ -107,18 +84,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_(0)
-  , w_()
   , dimension_(dimension)
-  , covarianceMatrix_()
-  , autoCovariance_()
-  , crossCovariance_()
-  , blockPhiTThetaTMatrix_()
-  , sigma2_(1.0)
-  , hasInitializedARCoefficients_(false)
-  , hasInitializedMACoefficients_(false)
-  , hasInitializedCovarianceMatrix_(false)
-  , verbose_(false)
   , solver_(new Cobyla())
 {
   if (dimension == 0)
@@ -415,10 +381,10 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
   if (cobyla == NULL) throw InternalException(HERE);
 
   cobyla->setRhoBeg(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
-  cobyla->setIgnoreFailure(true);
+  cobyla->setCheckStatus(false);
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Optimization solver accessor */
@@ -521,17 +487,6 @@ String ARMALikelihoodFactory::__str__(const String & ) const
   return this->__repr__();
 }
 
-/* Verbosity accessor */
-Bool ARMALikelihoodFactory::getVerbose() const
-{
-  return verbose_;
-}
-
-void ARMALikelihoodFactory::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
 /* Build method */
 ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 {
@@ -611,14 +566,15 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   OptimizationProblem problem(getLogLikelihoodFunction());
   problem.setMinimization(false);
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(beta);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(beta);
 
   // run Optimization problem
-  solver_.run();
+  solver.run();
 
   // optimal point
-  const Point optpoint(solver_.getResult().getOptimalPoint());
+  const Point optpoint(solver.getResult().getOptimalPoint());
   beta = optpoint;
 
   // Return result

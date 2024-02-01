@@ -1,6 +1,6 @@
-parameters=[[w_0 : 0.142857, mean_0 : -3, standard_deviation_0 : 1, w_1 : 0.285714, mean_0 : 1, standard_deviation_0 : 2, w_2 : 0.571429, mean_0 : 3, standard_deviation_0 : 3]]
+parameters=[[w_0 : 0.142857, mu_0 : -3, sigma_0 : 1, w_1 : 0.285714, mu_0 : 1, sigma_0 : 2, w_2 : 0.571429, mu_0 : 3, sigma_0 : 3]]
 parameter=class=Point name=Unnamed dimension=9 values=[0.142857,-3,1,0.285714,1,2,0.571429,3,3]
-parameter description=[w_0,mean_0,standard_deviation_0,w_1,mean_0,standard_deviation_0,w_2,mean_0,standard_deviation_0]
+parameter description=[w_0,mu_0,sigma_0,w_1,mu_0,sigma_0,w_2,mu_0,sigma_0]
 Standard representative=Mixture((w = 0.142857, d = Normal(mu = -3, sigma = 1)), (w = 0.285714, d = Normal(mu = 1, sigma = 2)), (w = 0.571429, d = Normal(mu = 3, sigma = 3)))
 weights=class=Point name=Unnamed dimension=3 values=[0.142857,0.285714,0.571429]
 New weights=class=Point name=Unnamed dimension=3 values=[0.157303,0.393258,0.449438]
@@ -33,7 +33,7 @@ cdf(quantile)=0.95
 mean=class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,3.66667,0.666667,3.66667,9.66667,2.16667,0.666667,2.16667,1.66667]
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.545921,0.239046,0.545921,1,0.539796,0.239046,0.539796,1]
-parameters=[[mean_0 : 0.5, standard_deviation_0 : 2],[mean_0 : 1.5, standard_deviation_0 : 2],[mean_0 : 2.5, standard_deviation_0 : 2],[atom_0_R_1_0 : 0.5, atom_0_R_2_0 : 0, atom_0_R_2_1 : 0.5, atom_1_R_1_0 : 0.5, atom_1_R_2_0 : 0, atom_1_R_2_1 : 0.5, atom_2_R_1_0 : 0.5, atom_2_R_2_0 : 0, atom_2_R_2_1 : 0.5]]
+parameters=[[mu_0 : 0.5, sigma_0 : 2],[mu_0 : 1.5, sigma_0 : 2],[mu_0 : 2.5, sigma_0 : 2],[atom_0_R_1_0 : 0.5, atom_0_R_2_0 : 0, atom_0_R_2_1 : 0.5, atom_1_R_1_0 : 0.5, atom_1_R_2_0 : 0, atom_1_R_2_1 : 0.5, atom_2_R_1_0 : 0.5, atom_2_R_2_0 : 0, atom_2_R_2_1 : 0.5]]
 conditional PDF=0.139463
 conditional CDF=0.692996
 conditional quantile=-0.0523458

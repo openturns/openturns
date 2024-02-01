@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the evaluation of an analytical function.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -113,6 +113,14 @@ String SymbolicEvaluation::__repr__() const
 String SymbolicEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
+  oss << getInputDescription() << "->" << formulas_;
+  return oss;
+}
+
+/* String converter */
+String SymbolicEvaluation::_repr_html_() const
+{
+  OSS oss(true);
   oss << getInputDescription() << "->" << formulas_;
   return oss;
 }

@@ -3,7 +3,8 @@ Define a connection function with a field output
 ================================================
 """
 # %%
-# In this example, we define a function which has a vector input and a field output. The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions.
+# In this example, we define a function which has a vector input and a field output.
+# The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions.
 # A detailed explanation of the model is presented :ref:`here <use-case-viscous-fall>`.
 
 # %%
@@ -47,6 +48,7 @@ dimension
 
 # %%
 # Then we define the Python function which computes the altitude at each time value. This function has 5 inputs: `z0`, `v0`, `m`, `c` and `zmin`.
+
 
 # %%
 def AltiFunc(X):

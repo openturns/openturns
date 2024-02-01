@@ -6,6 +6,7 @@
 
 %include MetropolisHastingsImplementation_doc.i
 
+%copyctor OT::MetropolisHastingsImplementation;
+
 %include openturns/MetropolisHastingsImplementation.hxx
-namespace OT { %extend MetropolisHastingsImplementation { MetropolisHastingsImplementation(const MetropolisHastingsImplementation & other) { return new OT::MetropolisHastingsImplementation(other); } } }
 

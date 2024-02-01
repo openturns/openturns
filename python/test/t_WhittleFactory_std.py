@@ -34,7 +34,6 @@ sample = myARMA.getSample(100)
 
 # First, build an ARMA based on a given order using the WhittleFactory
 factory = ot.WhittleFactory(p, q)
-# factory.setVerbose(False)
 print("factory=", factory)
 print("factory as an ARMA factory=", ot.ARMAFactory(factory))
 result, informationCriteria = factory.buildWithCriteria(ot.TimeSeries(timeSeries))

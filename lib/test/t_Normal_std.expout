@@ -1,7 +1,7 @@
 
 *** Case 1 ***
 
-Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1]]
+Parameters collection=[[mu_0 : 0, sigma_0 : 1]]
 Standard representative=Normal(mu = 0, sigma = 1)
 Distribution class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution Normal(mu = 0, sigma = 1)
@@ -50,7 +50,7 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[mean_0 : 0, standard_deviation_0 : 1]]
+parameters=[[mu_0 : 0, sigma_0 : 1]]
 Standard representative=Normal(mu = 0, sigma = 1)
 density generator=0.35207
 pdf via density generator=0.35207
@@ -59,7 +59,7 @@ density generator derivative (FD)=-0.17603
 density generator second derivative     =0.088016
 density generator second derivative (FD)=0.088016
 Radial CDF(2)=0.9545
-conditional PDF=0.27833
+conditional PDF=0.33322
 conditional CDF=0.72575
 conditional quantile=0.25335
 sequential conditional PDF=class=Point name=Unnamed dimension=1 values=[0.129518]
@@ -82,7 +82,7 @@ Comparison with another member false
 
 *** Case 2 ***
 
-Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[R_1_0 : 0.5]]
+Parameters collection=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[R_1_0 : 0.5]]
 Standard representative=Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])
 Distribution class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
@@ -132,7 +132,7 @@ covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 spearman=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.482584,0.482584,1]
 kendall=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.333333,0.333333,1]
-parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[R_1_0 : 0.5]]
+parameters=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[R_1_0 : 0.5]]
 Standard representative=Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])
 density generator=0.12395
@@ -177,7 +177,7 @@ Comparison with another member false
 
 *** Case 3 ***
 
-Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
+Parameters collection=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[mu_2 : 0, sigma_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
 Standard representative=Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])
@@ -216,7 +216,7 @@ covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]
 spearman=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.482584,0,0.482584,1,0.482584,0,0.482584,1]
 kendall=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.333333,0,0.333333,1,0.333333,0,0.333333,1]
-parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
+parameters=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[mu_2 : 0, sigma_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
 Standard representative=Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])
@@ -267,7 +267,7 @@ Comparison with another member false
 
 *** Case 4 ***
 
-Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[mean_3 : 0, standard_deviation_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
+Parameters collection=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[mu_2 : 0, sigma_2 : 3],[mu_3 : 0, sigma_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
 Standard representative=Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
  [ 0 1 0 0 ]
  [ 0 0 1 0 ]
@@ -306,7 +306,7 @@ covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.5,0,0,0.5,1,0.5,0,0,0.5,1,0.5,0,0,0.5,1]
 spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.482584,0,0,0.482584,1,0.482584,0,0,0.482584,1,0.482584,0,0,0.482584,1]
 kendall=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.333333,0,0,0.333333,1,0.333333,0,0,0.333333,1,0.333333,0,0,0.333333,1]
-parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[mean_3 : 0, standard_deviation_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
+parameters=[[mu_0 : 0, sigma_0 : 1],[mu_1 : 0, sigma_1 : 2],[mu_2 : 0, sigma_2 : 3],[mu_3 : 0, sigma_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
 Standard representative=Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
  [ 0 1 0 0 ]
  [ 0 0 1 0 ]

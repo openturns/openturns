@@ -2,7 +2,7 @@
 /**
  *  @brief The Rice distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -165,6 +165,13 @@ Scalar Rice::computeComplementaryCDF(const Point & point) const
   const Scalar lambda = std::pow(nu_ / beta_, 2);
   const Scalar y = std::pow(point[0] / beta_, 2);
   return DistFunc::pNonCentralChiSquare(2, lambda, y, true, pdfEpsilon_, maximumIteration_);
+}
+
+Scalar Rice::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

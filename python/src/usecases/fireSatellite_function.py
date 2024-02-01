@@ -16,32 +16,32 @@ class FireSatelliteModel:
     dim : Dimension of the problem
           dim = 9
 
-    H : Altitude (m), :class:`~openturns.Normal` distribution
-         First marginal, ot.Normal(18e6,1e6)
+    H : Altitude (m), :class:`~openturns.TruncatedNormal` distribution
+         First marginal, ot.TruncatedNormal(18e6,1e6,18e6-3e6,18e6+3e6)
 
-    Pother : Power other than ACS (W), :class:`~openturns.Normal` distribution
-         Second marginal, ot.Normal(1000.0,50.0)
+    Pother : Power other than ACS (W), :class:`~openturns.TruncatedNormal` distribution
+         Second marginal, ot.TruncatedNormal(1000.0,50.0,1000.0-150.0,1000.0+150.0)
 
-    Fs : Average solar flux (W/m^2), :class:`~openturns.Normal` distribution
-         Third marginal, ot.Normal(1400.0,20.0)
+    Fs : Average solar flux (W/m^2), :class:`~openturns.TruncatedNormal` distribution
+         Third marginal, ot.TruncatedNormal(1400.0,20.0,1400.0-60.0,1400.0+60.0)
 
-    theta : Deviation of moment axis (deg), :class:`~openturns.Normal` distribution
-         Fourth marginal, ot.Normal(15.0,1.0)
+    theta : Deviation of moment axis (deg), :class:`~openturns.TruncatedNormal` distribution
+         Fourth marginal, ot.TruncatedNormal(15.0,1.0,15.0-3.0,15.0+3.0)
 
-    Lsp : Moment arm for radiation torque (m), :class:`~openturns.Normal` distribution
-         Fifth marginal, ot.Normal(2.0,0.4)
+    Lsp : Moment arm for radiation torque (m), :class:`~openturns.TruncatedNormal` distribution
+         Fifth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    q : Reflectance factor (-), :class:`~openturns.Normal` distribution
-         Sixth marginal, ot.Normal(0.5,1.0)
+    q : Reflectance factor (-), :class:`~openturns.TruncatedNormal` distribution
+         Sixth marginal, ot.TruncatedNormal(0.5,0.1,0.5-0.3,0.5+0.3)
 
-    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.Normal` distribution
-         Seventh marginal, ot.Normal(5.0,1.0)
+    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.TruncatedNormal` distribution
+         Seventh marginal, ot.TruncatedNormal(5.0,1.0,5.0-3.0,5.0+3.0)
 
-    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.Normal` distribution
-         Eighth marginal, ot.Normal(2.0,0.4)
+    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.TruncatedNormal` distribution
+         Eighth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    Cd : Drag coefficient (-), :class:`~openturns.Normal` distribution
-         Nineth marginal, ot.Normal(1.0,0.3)
+    Cd : Drag coefficient (-), :class:`~openturns.TruncatedNormal` distribution
+         Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
     distributionX : :class:`~openturns.ComposedDistribution`
         The joint distribution of the input parameters.
@@ -152,36 +152,35 @@ class FireSatelliteModel:
     """
 
     def __init__(self):
-
         # dimension
         self.dim = 9
 
         # Altitude
-        self.H = ot.Normal(18e6, 1e6)
+        self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 * 1e6)
 
         # Power other than ACS
-        self.Pother = ot.Normal(1000.0, 50.0)
+        self.Pother = ot.TruncatedNormal(1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0)
 
         # Average solar flux
-        self.Fs = ot.Normal(1400.0, 20.0)
+        self.Fs = ot.TruncatedNormal(1400.0, 20.0, 1400.0 - 3 * 20.0, 1400.0 + 3 * 20.0)
 
         # Deviation of moment axis
-        self.theta = ot.Normal(15.0, 1.0)
+        self.theta = ot.TruncatedNormal(15.0, 1.0, 15.0 - 3 * 1.0, 15.0 + 3 * 1.0)
 
         # Moment arm for radiation torque
-        self.Lsp = ot.Normal(2.0, 0.4)
+        self.Lsp = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
 
         # Reflectance factor
-        self.q = ot.Normal(0.5, 1.0)
+        self.q = ot.TruncatedNormal(0.5, 0.1, 0.5 - 3 * 0.1, 0.5 + 3 * 0.1)
 
         # Residual dipole of spacecraft
-        self.RD = ot.Normal(5.0, 1.0)
+        self.RD = ot.TruncatedNormal(5.0, 1.0, 5.0 - 3 * 1.0, 5.0 + 3 * 1.0)
 
         # Moment arm for aerodynamic torque
-        self.Lalpha = ot.Normal(2.0, 0.4)
+        self.Lalpha = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
 
         # Drag coefficient
-        self.Cd = ot.Normal(1.0, 0.3)
+        self.Cd = ot.TruncatedNormal(1.0, 0.3, 1.0 - 3 * 0.3, 1.0 + 3 * 0.3)
 
         # Input distribution
         self.distributionX = ot.ComposedDistribution(
@@ -381,9 +380,9 @@ class FireSatelliteModel:
         L = m.sqrt(A_sa * r_lw / n_sa)
         W = m.sqrt(A_sa / (r_lw * n_sa))
         m_sa = 2 * rho_sa * L * W * t
-        I_saX = m_sa * (1 / 12 * (L ** 2 + t ** 2) + (D + L / 2) ** 2)
-        I_saY = m_sa / 12 * (t ** 2 + W ** 2)
-        I_saZ = m_sa * (1 / 12 * (L ** 2 + W ** 2) + (D + L / 2) ** 2)
+        I_saX = m_sa * (1 / 12 * (L**2 + t**2) + (D + L / 2) ** 2)
+        I_saY = m_sa / 12 * (t**2 + W**2)
+        I_saZ = m_sa * (1 / 12 * (L**2 + W**2) + (D + L / 2) ** 2)
 
         # total moment of inertia
         I_tot = ot.Sample([[I_saX + I_bodyX], [I_saY + I_bodyY], [I_saZ + I_bodyZ]])
@@ -466,7 +465,7 @@ class FireSatelliteModel:
         v = inputs["v"]
 
         # slewing torque
-        tau_slew = 4 * theta_slew * Imax / delta_theta_slew ** 2
+        tau_slew = 4 * theta_slew * Imax / delta_theta_slew**2
 
         # torque due to gravity gradients
         tau_g = 3 * mu / (2 * RE + H) ** 3 * abs(Imax - Imin) * m.sin(2 * theta)
@@ -478,10 +477,10 @@ class FireSatelliteModel:
         tau_m = 2 * M * R_D / (RE + H) ** 3
 
         # torque due to atmospheric drag
-        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v ** 2
+        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v**2
 
         # total disturbance torque
-        tau_dist = m.sqrt(tau_sp ** 2 + tau_m ** 2 + tau_g ** 2 + tau_alpha ** 2)
+        tau_dist = m.sqrt(tau_sp**2 + tau_m**2 + tau_g**2 + tau_alpha**2)
 
         # total torque
         tau_tot = ot.Sample([[tau_dist], [tau_slew]]).getMax()[0]
@@ -523,7 +522,6 @@ class FireSatelliteModel:
         itFPI = 0
 
         while tolP_ACS > self.tolFPI and itFPI < self.maxFPIIter:
-
             # run of power discipline
             inputs_power = {}
             inputs_power["theta"] = theta

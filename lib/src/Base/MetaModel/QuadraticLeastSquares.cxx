@@ -2,7 +2,7 @@
 /**
  *  @brief Second order polynomial response surface by least square
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,9 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(QuadraticLeastSquares)
 
 static const Factory<QuadraticLeastSquares> Factory_QuadraticLeastSquares;
@@ -41,26 +38,10 @@ QuadraticLeastSquares::QuadraticLeastSquares()
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
-    const Function & inputFunction)
-  : PersistentObject(),
-    dataIn_(dataIn),
-    dataOut_(Sample(0, inputFunction.getOutputDimension())),
-    inputFunction_(inputFunction),
-    constant_(Point(inputFunction_.getOutputDimension())),
-    linear_(Matrix(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension())),
-    quadratic_(SymmetricTensor(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension()))
-{
-  if (!inputFunction_.getEvaluation().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the given function must have an actual implementation";
-  if (inputFunction.getInputDimension() != dataIn.getDimension()) throw InvalidArgumentException(HERE) << "Error: the input data dimension and the input dimension of the function must be the same, here input dimension=" << dataIn.getDimension() << " and input dimension of the function=" << inputFunction.getInputDimension();
-}
-
-/* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
     const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(Sample(0, dataOut.getDimension())),
-    inputFunction_(Function()),
     constant_(Point(dataOut.getDimension())),
     linear_(Matrix(dataIn.getDimension(), dataOut.getDimension())),
     quadratic_(SymmetricTensor(dataIn.getDimension(), dataOut.getDimension()))
@@ -82,7 +63,6 @@ String QuadraticLeastSquares::__repr__() const
       << " name=" << getName ()
       << " dataIn=" << dataIn_
       << " dataOut=" << dataOut_
-      << " function=" << inputFunction_
       << " responseSurface=" << responseSurface_
       << " constant=" << constant_
       << " linear=" << linear_
@@ -93,11 +73,6 @@ String QuadraticLeastSquares::__repr__() const
 /* Response surface computation */
 void QuadraticLeastSquares::run()
 {
-  if (dataOut_.getSize() == 0)
-  {
-    /* Compute the given function over the given sample */
-    dataOut_ = inputFunction_(dataIn_);
-  }
   const UnsignedInteger inputDimension = dataIn_.getDimension();
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
@@ -131,7 +106,7 @@ void QuadraticLeastSquares::run()
       /* Then, the off-diagonal terms */
       for(UnsignedInteger componentIndexTranspose = componentIndex + 1; componentIndexTranspose < inputDimension; ++componentIndexTranspose)
       {
-        componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex] * currentSample[componentIndexTranspose];
+        componentMatrix(sampleIndex, rowIndex) = 0.5 * currentSample[componentIndex] * currentSample[componentIndexTranspose];
         ++rowIndex;
       } // off-diagonal terms
     } // quadratic term
@@ -181,14 +156,11 @@ Sample QuadraticLeastSquares::getDataIn() const
 /* DataOut accessor */
 Sample QuadraticLeastSquares::getDataOut()
 {
-  // If the response surface has been defined with an input function and the output data have not already been computed, compute them
-  if (inputFunction_.getEvaluation().getImplementation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
 void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
-  if (inputFunction_.getEvaluation().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
   dataOut_ = dataOut;
 }
@@ -211,12 +183,6 @@ SymmetricTensor QuadraticLeastSquares::getQuadratic() const
   return quadratic_;
 }
 
-/* Function accessor */
-Function QuadraticLeastSquares::getInputFunction() const
-{
-  return inputFunction_;
-}
-
 /* Metamodel accessor */
 Function QuadraticLeastSquares::getMetaModel() const
 {
@@ -228,7 +194,6 @@ void QuadraticLeastSquares::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("dataIn_", dataIn_);
   adv.saveAttribute("dataOut_", dataOut_);
-  adv.saveAttribute("inputFunction_", inputFunction_);
   adv.saveAttribute("responseSurface_", responseSurface_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
@@ -241,7 +206,6 @@ void QuadraticLeastSquares::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("dataIn_", dataIn_);
   adv.loadAttribute("dataOut_", dataOut_);
-  adv.loadAttribute("inputFunction_", inputFunction_);
   adv.loadAttribute("responseSurface_", responseSurface_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);

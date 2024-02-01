@@ -2,7 +2,7 @@
 /**
  *  @brief Regression from a data sample upon a particular basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,10 +60,6 @@ public:
 
   /** Basis accessor */
   Basis getPsi() const;
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** String converter */
   String __repr__() const override;

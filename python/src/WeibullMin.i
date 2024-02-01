@@ -6,6 +6,7 @@
 
 %include WeibullMin_doc.i
 
+%copyctor OT::WeibullMin;
+
 %include openturns/WeibullMin.hxx
-namespace OT { %extend WeibullMin { WeibullMin(const WeibullMin & other) { return new OT::WeibullMin(other); } } }
 

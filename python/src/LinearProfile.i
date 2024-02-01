@@ -6,5 +6,6 @@
 
 %include LinearProfile_doc.i
 
+%copyctor OT::LinearProfile;
+
 %include openturns/LinearProfile.hxx
-namespace OT { %extend LinearProfile { LinearProfile(const LinearProfile & other) { return new OT::LinearProfile(other); } } }

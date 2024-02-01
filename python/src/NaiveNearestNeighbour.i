@@ -6,5 +6,6 @@
 
 %include NaiveNearestNeighbour_doc.i
 
+%copyctor OT::NaiveNearestNeighbour;
+
 %include openturns/NaiveNearestNeighbour.hxx
-namespace OT { %extend NaiveNearestNeighbour { NaiveNearestNeighbour(const NaiveNearestNeighbour & other) { return new OT::NaiveNearestNeighbour(other); } } }

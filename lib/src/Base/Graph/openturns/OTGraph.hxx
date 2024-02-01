@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Graph
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,6 @@
 #include "openturns/Pie.hxx"
 #include "openturns/Polygon.hxx"
 #include "openturns/PolygonArray.hxx"
-#include "openturns/Rfunctions.hxx"
 #include "openturns/Staircase.hxx"
 #include "openturns/Text.hxx"
 

@@ -2,7 +2,7 @@
 /**
  *  @brief OrderStatisticsMarginalChecker class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -87,11 +87,11 @@ void OrderStatisticsMarginalChecker::check() const
   for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
   {
     const Scalar prob = (k + 1.0) / (quantileIteration + 1.0);
-    Scalar qIm1 = collection_[0].computeQuantile(prob)[0];
+    Scalar qIm1 = collection_[0].computeScalarQuantile(prob);
     quantiles(0, k) = qIm1;
     for (UnsignedInteger i = 1; i < size; ++ i)
     {
-      const Scalar qI = collection_[i].computeQuantile(prob)[0];
+      const Scalar qI = collection_[i].computeScalarQuantile(prob);
       if (qIm1 >= qI) throw InvalidArgumentException(HERE) << "margins are not compatible: the quantile=" << qIm1 << " of margin " << i - 1 << " is greater than the quantile=" << qI << " of margin " << i << " at level " << prob;
       quantiles(i, k) = qI;
       qIm1 = qI;
@@ -115,14 +115,14 @@ void OrderStatisticsMarginalChecker::check() const
       // Define Optimization problem
       OptimizationProblem problem(f);
       problem.setBounds(Interval(xMin, xMax));
-      solver_.setStartingPoint(Point(1, xMiddle));
-      solver_.setProblem(problem);
-      solver_.setVerbose(Log::HasInfo());
-      solver_.run();
-      const Point minimizer(solver_.getResult().getOptimalPoint());
-      const Scalar minValue = solver_.getResult().getOptimalValue()[0];
+      OptimizationAlgorithm solver(solver_);
+      solver.setStartingPoint(Point(1, xMiddle));
+      solver.setProblem(problem);
+      solver.run();
+      const Point minimizer(solver.getResult().getOptimalPoint());
+      const Scalar minValue = solver.getResult().getOptimalValue()[0];
 
-      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver_.getResult());
+      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver.getResult());
       if (minValue < epsilon) throw InvalidArgumentException(HERE) << "margins are not compatible: the CDF at x=" << minimizer[0] << " of margin " << i << " is not enough larger than the CDF of margin " << i + 1 << ". Gap is " << minValue << ".";
     } // k
   } // i

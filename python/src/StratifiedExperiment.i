@@ -6,5 +6,6 @@
 
 %include StratifiedExperiment_doc.i
 
+%copyctor OT::StratifiedExperiment;
+
 %include openturns/StratifiedExperiment.hxx
-namespace OT { %extend StratifiedExperiment { StratifiedExperiment(const StratifiedExperiment & other) { return new OT::StratifiedExperiment(other); } } }

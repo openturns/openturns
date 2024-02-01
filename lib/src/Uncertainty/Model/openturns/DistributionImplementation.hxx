@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,7 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,10 +70,8 @@ public:
   DistributionImplementation();
 
   /** Comparison operator */
-protected:
-  using PersistentObject::operator ==;
-public:
   Bool operator ==(const DistributionImplementation & other) const;
+  using PersistentObject::operator ==;
 protected:
   virtual Bool equals(const DistributionImplementation & other) const;
 public:
@@ -135,6 +134,8 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String _repr_html_() const override;
+  String __repr_markdown__() const override;
 
   /** Weight accessor */
   void setWeight(Scalar w);
@@ -462,17 +463,6 @@ public:
 
   /** Get the PDF singularities inside of the range - 1D only */
   virtual Point getSingularities() const;
-
-  /** Compute the density generator of the elliptical generator, i.e.
-   *  the function phi such that the density of the distribution can
-   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
-
-  /** Compute the derivative of the density generator */
-  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
-
-  /** Compute the seconde derivative of the density generator */
-  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the radial distribution CDF */
   virtual Scalar computeRadialDistributionCDF(const Scalar radius,
@@ -1128,7 +1118,7 @@ protected:
     Point diagonalToSpace(const Scalar tau) const
     {
       Point x(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeScalarQuantile(tau);
       LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
@@ -1212,7 +1202,7 @@ protected:
     Point diagonalToSpace(const Scalar tau) const
     {
       Point x(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau, true)[0];
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeScalarQuantile(tau, true);
       LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
@@ -1659,6 +1649,7 @@ protected:
     Point operator() (const Point & point) const override
     {
       const Scalar logPDF = p_distribution_->computeLogPDF(point);
+      if (logPDF == SpecFunc::LowestScalar) return Point(1, 0.0);
       return Point(1, -std::exp(logPDF) * logPDF);
     }
 
@@ -1670,7 +1661,8 @@ protected:
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         const Scalar logPDFI = logPDF[i];
-        result(i, 0) = -std::exp(logPDFI) * logPDFI;
+        if (logPDFI == SpecFunc::LowestScalar) result(i, 0) = 0.0;
+        else result(i, 0) = -std::exp(logPDFI) * logPDFI;
       }
       return result;
     }

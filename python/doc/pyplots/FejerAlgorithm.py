@@ -36,7 +36,7 @@ g.add(lower)
 g.setTitle(r"Fejer algorithms example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value[0]))
 
 g.setLegends(["f", "Fejer_1", "Fejer_2", "Clenshaw-Curtis"])
-g.setLegendPosition("topright")
+g.setLegendPosition("upper right")
 
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)

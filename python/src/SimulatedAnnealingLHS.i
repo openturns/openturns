@@ -6,5 +6,6 @@
 
 %include SimulatedAnnealingLHS_doc.i
 
+%copyctor OT::SimulatedAnnealingLHS;
+
 %include openturns/SimulatedAnnealingLHS.hxx
-namespace OT { %extend SimulatedAnnealingLHS { SimulatedAnnealingLHS(const SimulatedAnnealingLHS & other) { return new OT::SimulatedAnnealingLHS(other); } } }

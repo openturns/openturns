@@ -22,7 +22,7 @@ for minimization in [True, False]:
             algo = ot.OptimizationAlgorithm.Build(algoName)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
-            algo.setMaximumEvaluationNumber(1000)
+            algo.setMaximumCallsNumber(1000)
             try:
                 algo.setStartingPoint(x0)
             except Exception:

@@ -6,5 +6,6 @@
 
 %include AliMikhailHaqCopula_doc.i
 
+%copyctor OT::AliMikhailHaqCopula;
+
 %include openturns/AliMikhailHaqCopula.hxx
-namespace OT { %extend AliMikhailHaqCopula { AliMikhailHaqCopula(const AliMikhailHaqCopula & other) { return new OT::AliMikhailHaqCopula(other); } } }

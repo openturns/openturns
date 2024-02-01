@@ -2,7 +2,7 @@
 /**
  *  @brief Default LinearLeastSquaresCalibration
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::ActualMaxScalar).getImplementation())))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
@@ -67,7 +67,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::ActualMaxScalar).getImplementation())))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)
@@ -142,7 +142,7 @@ void LinearLeastSquaresCalibration::run()
   }
   catch (...)
   {
-    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * SpecFunc::MaxScalar).getImplementation()));
+    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * SpecFunc::ActualMaxScalar).getImplementation()));
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);

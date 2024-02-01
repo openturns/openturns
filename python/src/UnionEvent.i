@@ -8,6 +8,6 @@
 
 %apply const RandomVectorCollection & { const OT::UnionEvent::RandomVectorCollection & };
 
-%include openturns/UnionEvent.hxx
+%copyctor OT::UnionEvent;
 
-namespace OT { %extend UnionEvent { UnionEvent(const UnionEvent & other) { return new OT::UnionEvent(other); } } }
+%include openturns/UnionEvent.hxx

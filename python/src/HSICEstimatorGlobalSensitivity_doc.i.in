@@ -24,6 +24,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from math import pi
+>>> ot.RandomGenerator.SetSeed(0)
 
 Generate input and output samples.
 
@@ -59,6 +60,6 @@ Build and use the HSIC estimator for global sensitivity analysis.
 
 >>> hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
 >>> print(hsic.getR2HSICIndices())
-[0.404051,0.0206756,0.0846069]"
+[0.298073,0.00344498,0.0772657]"
 
 // ---------------------------------------------------------------------

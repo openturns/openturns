@@ -6,5 +6,6 @@
 
 %include MaximumEntropyOrderStatisticsDistribution_doc.i
 
+%copyctor OT::MaximumEntropyOrderStatisticsDistribution;
+
 %include openturns/MaximumEntropyOrderStatisticsDistribution.hxx
-namespace OT { %extend MaximumEntropyOrderStatisticsDistribution { MaximumEntropyOrderStatisticsDistribution(const MaximumEntropyOrderStatisticsDistribution & other) { return new OT::MaximumEntropyOrderStatisticsDistribution(other); } } }

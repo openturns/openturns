@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is an abstract class.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,8 @@ public:
   EnclosingSimplexAlgorithmImplementation();
 
   /** Parameter constructor */
-  EnclosingSimplexAlgorithmImplementation(const Sample & vertices, const IndicesCollection & simplices);
+  EnclosingSimplexAlgorithmImplementation(const Sample & vertices,
+                                          const IndicesCollection & simplices);
 
   /** Virtual copy constructor */
   EnclosingSimplexAlgorithmImplementation * clone() const override;
@@ -69,6 +70,10 @@ public:
 
   /** Get the indices of the enclosing simplex of the given points */
   virtual Indices query(const Sample & sample) const;
+
+  /** Accessor to the barycentric coordinates tolerance */
+  void setBarycentricCoordinatesEpsilon(const Scalar epsilon);
+  Scalar getBarycentricCoordinatesEpsilon() const;
 
   /** String converter */
   String __repr__() const override;
@@ -100,6 +105,9 @@ protected:
   // The bounding boxes of simplices
   Sample lowerBoundingBoxSimplices_;
   Sample upperBoundingBoxSimplices_;
+
+  // The tolerance for the membreship test
+  Scalar barycentricCoordinatesEpsilon_;
 
 } ; /* class EnclosingSimplexAlgorithmImplementation */
 

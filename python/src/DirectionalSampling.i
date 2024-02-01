@@ -6,5 +6,6 @@
 
 %include DirectionalSampling_doc.i
 
+%copyctor OT::DirectionalSampling;
+
 %include openturns/DirectionalSampling.hxx
-namespace OT{ %extend DirectionalSampling { DirectionalSampling(const DirectionalSampling & other) { return new OT::DirectionalSampling(other); } } }

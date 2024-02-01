@@ -6,5 +6,6 @@
 
 %include IndependentCopula_doc.i
 
+%copyctor OT::IndependentCopula;
+
 %include openturns/IndependentCopula.hxx
-namespace OT { %extend IndependentCopula { IndependentCopula(const IndependentCopula & other) { return new OT::IndependentCopula(other); } } }

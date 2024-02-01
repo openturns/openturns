@@ -6,5 +6,6 @@
 
 %include ConditionalRandomVector_doc.i
 
+%copyctor OT::ConditionalRandomVector;
+
 %include openturns/ConditionalRandomVector.hxx
-namespace OT { %extend ConditionalRandomVector { ConditionalRandomVector(const ConditionalRandomVector & other) { return new OT::ConditionalRandomVector(other); } } }

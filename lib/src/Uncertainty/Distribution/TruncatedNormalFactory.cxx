@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for TruncatedNormal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,15 +75,12 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
   // Create a method of moments
-  MethodOfMomentsFactory factory(buildAsTruncatedNormal());
+  const Indices momentOrders = {1, 2}; // mean, variance
+  MethodOfMomentsFactory factory(buildAsTruncatedNormal(), momentOrders);
 
   // Set the bounds as known parameters
-  Point knownParameterValues(2);
-  knownParameterValues[0] = a;
-  knownParameterValues[1] = b;
-  Indices knownParameterIndices(2);
-  knownParameterIndices[0] = 2;
-  knownParameterIndices[1] = 3;
+  const Point knownParameterValues = {a, b};
+  const Indices knownParameterIndices = {2, 3};
   factory.setKnownParameter(knownParameterValues, knownParameterIndices);
 
   // Compute the mean and std and set it as initial values
@@ -94,7 +91,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   // Configure starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // Estimate
@@ -142,7 +138,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds

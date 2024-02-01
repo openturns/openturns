@@ -6,5 +6,6 @@
 
 %include FiniteDifferenceGradient_doc.i
 
+%copyctor OT::FiniteDifferenceGradient;
+
 %include openturns/FiniteDifferenceGradient.hxx
-namespace OT { %extend FiniteDifferenceGradient { FiniteDifferenceGradient(const FiniteDifferenceGradient & other) { return new OT::FiniteDifferenceGradient(other); } } }

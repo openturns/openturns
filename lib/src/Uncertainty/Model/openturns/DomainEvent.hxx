@@ -5,7 +5,7 @@
  *        The antecedent of the event must be a "classical" composite random
  *        vector in the context of OpenTURNS.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,12 +68,17 @@ public:
 
   /** Realization accessor */
   Point getRealization() const override;
+  Point getFrozenRealization(const Point & fixedPoint) const override;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
+  Sample getFrozenSample(const Sample & fixedSample) const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;
+
+  /** Build as composed event */
+  RandomVector asComposedEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

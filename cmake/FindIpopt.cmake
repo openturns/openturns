@@ -9,7 +9,7 @@
 #  IPOPT_DEFINITIONS
 #
 #=============================================================================
-# Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -20,9 +20,6 @@
 #=============================================================================
 # (To distributed this file outside of CMake, substitute the full
 #  License text for the above reference.)
-#
-# Find the path based on a required header file
-#
 
 find_package(PkgConfig QUIET)
 

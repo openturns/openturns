@@ -7,7 +7,7 @@ DistributionFactory, WeibullMax
 
 Notes
 -----
-Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)`follows a WeibullMin :math:`(\beta, \alpha, -\gamma)` distribution."
+Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)` follows a WeibullMin :math:`(\beta, \alpha, -\gamma)` distribution."
 
 // ----------------------------------------------------------------------------
 
@@ -23,8 +23,8 @@ Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` dist
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 param : Collection of  :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
@@ -43,12 +43,24 @@ We use the default strategy of  :class:`~openturns.WeibullMinFactory`."
 %feature("docstring") OT::WeibullMaxFactory::buildAsWeibullMax
 "Estimate the distribution as native distribution.
 
+**Available usages**:
+
+    buildAsWeibullMax()
+
+    buildAsWeibullMax(*sample*)
+
+    buildAsWeibullMax(*param*)
+
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.WeibullMax`.
 
 Returns
 -------
-distribution : :class:`~openturns.WeibullMax`
-    The estimated distribution"
+dist : :class:`~openturns.WeibullMax`
+    The estimated distribution as a WeibullMax.
+    
+    In the first usage, the default WeibullMax distribution is built."

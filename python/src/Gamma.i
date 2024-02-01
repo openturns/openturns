@@ -6,5 +6,6 @@
 
 %include Gamma_doc.i
 
+%copyctor OT::Gamma;
+
 %include openturns/Gamma.hxx
-namespace OT { %extend Gamma { Gamma(const Gamma & other) { return new OT::Gamma(other); } } }

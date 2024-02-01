@@ -101,7 +101,7 @@ Initial minimum output value:  [-248]
 >>> kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> kriging.run()
 >>> algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
->>> algo.setMaximumEvaluationNumber(2)
+>>> algo.setMaximumCallsNumber(2)
 >>> algo.run()
 >>> result = algo.getResult()
 >>> updatedKrigingResult = algo.getKrigingResult()

@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.testing import assert_almost_equal
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 
@@ -443,7 +442,7 @@ for doe in doeList:
     wMax = max(weights)
     outputSample = model(inputSample)
     # Create the polynomial chaos algorithm using the full constructor
-    algo = otexp.IntegrationExpansion(
+    algo = ot.IntegrationExpansion(
         inputSample, weights, outputSample, distribution, productBasis, basisSize
     )
     algo.run()
@@ -466,7 +465,7 @@ for doe in doeList:
     assert_almost_equal(err, 0.0, rtol, atol)
     if wMin == wMax:
         # Create the polynomial chaos algorithm using the full constructor
-        algo = otexp.IntegrationExpansion(
+        algo = ot.IntegrationExpansion(
             inputSample, outputSample, distribution, productBasis, basisSize
         )
         algo.run()
@@ -477,7 +476,7 @@ for doe in doeList:
         err = (coeffs - ref).norm()
         assert_almost_equal(err, 0.0, rtol, atol)
     # Create the polynomial chaos algorithm using the simplified constructor
-    algo = otexp.IntegrationExpansion(inputSample, weights, outputSample, distribution)
+    algo = ot.IntegrationExpansion(inputSample, weights, outputSample, distribution)
     algo.run()
     # Check the coefficients
     result = algo.getResult()
@@ -490,7 +489,7 @@ for doe in doeList:
     # Check the constructors assuming uniform weights
     if wMin == wMax:
         # Create the polynomial chaos algorithm using the simplified constructor
-        algo = otexp.IntegrationExpansion(inputSample, outputSample, distribution)
+        algo = ot.IntegrationExpansion(inputSample, outputSample, distribution)
         algo.run()
         # Check the coefficients
         result = algo.getResult()

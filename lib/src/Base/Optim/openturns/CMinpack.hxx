@@ -2,7 +2,7 @@
 /**
  *  @brief CMinpack solver
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,8 @@
 #define OPENTURNS_CMINPACK_HXX
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
+
+#include <chrono>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,6 +75,8 @@ private:
   // temporary, used to track input/outputs
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
+
+  std::chrono::steady_clock::time_point t0_;
 };
 
 

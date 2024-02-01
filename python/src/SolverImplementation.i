@@ -6,5 +6,6 @@
 
 %include SolverImplementation_doc.i
 
+%copyctor OT::SolverImplementation;
+
 %include openturns/SolverImplementation.hxx
-namespace OT { %extend SolverImplementation { SolverImplementation(const SolverImplementation & other) { return new OT::SolverImplementation(other); } } }

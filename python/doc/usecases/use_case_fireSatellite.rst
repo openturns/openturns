@@ -3,7 +3,8 @@
 The Fire Satellite model
 ========================
 
-The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. [wertz1999]_.
+The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control.
+This usecase has been firstly proposed by Wertz et al. [wertz1999]_.
 
 The model deals with the design of a realistic satellite, the goal of which is to detect and monitor forest fires from Earth's orbit, through the use of optical sensors.
 Three disciplines are needed to design this satellite.
@@ -20,25 +21,27 @@ The multidisciplinary analysis that is used to compute the converged values of t
     :width: 50%
 
 
-This test case is composed of nine random variables:
+This test case is composed of nine random variables.
+These variables are distributed according to truncated Normal distribution :math:`\mathcal{TN}(\mu,\sigma,a,b)`.
+The hyperparameters are :math:`\mu` the mean, :math:`\sigma` the standard deviation, :math:`a` the lower bound and :math:`b` the upper bound.
 
-- :math:`H \sim\mathcal{N}(18e6, 1e6)`: the altitude (m)
+- :math:`H \sim \mathcal{TN}(18e6, 1e6, 15e6, 21e6)`: the altitude (m)
 
-- :math:`P_{other} \sim\mathcal{N}(1000, 50)`: the power other than attitude control system (W)
+- :math:`P_{other} \sim \mathcal{TN}(1000, 50, 850, 1150)`: the power other than attitude control system (W)
 
-- :math:`F_{s} \sim\mathcal{N}(1400, 20)`: the average solar flux (W/m2)
+- :math:`F_{s} \sim \mathcal{TN}(1400, 20, 1340, 1460)`: the average solar flux (W/m2)
 
-- :math:`\theta \sim\mathcal{N}(15, 1)`: the deviation of moment axis (deg)
+- :math:`\theta \sim \mathcal{TN}(15, 1, 12, 18)`: the deviation of moment axis (deg)
 
-- :math:`L_{sp} \sim\mathcal{N}(2, 0.4)`: the moment arm for radiation torque (m)
+- :math:`L_{sp} \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for radiation torque (m)
 
-- :math:`q \sim\mathcal{N}(0.5, 1)`: the reflectance factor (-)
+- :math:`q \sim \mathcal{TN}(0.5, 0.1, 0.2, 0.8)`: the reflectance factor (-)
 
-- :math:`R_D \sim\mathcal{N}(5,1)`: the residual dipole of spacecraft (A.m2)
+- :math:`R_D \sim \mathcal{TN}(5, 1, 2, 8)`: the residual dipole of spacecraft (A.m2)
 
-- :math:`L_\alpha \sim\mathcal{N}(2,0.4)`: the moment arm for aerodynamic torque (m)
+- :math:`L_\alpha \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for aerodynamic torque (m)
 
-- :math:`C_d \sim\mathcal{N}(1,0.3)`: the drag coefficient (-)
+- :math:`C_d \sim \mathcal{TN}(1, 0.3, 0.1, 1.9)`: the drag coefficient (-)
 
 
 The three outputs of interest are:

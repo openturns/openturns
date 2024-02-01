@@ -6,5 +6,6 @@
 
 %include ApproximationAlgorithmImplementationFactory_doc.i
 
+%copyctor OT::ApproximationAlgorithmImplementationFactory;
+
 %include openturns/ApproximationAlgorithmImplementationFactory.hxx
-namespace OT { %extend ApproximationAlgorithmImplementationFactory { ApproximationAlgorithmImplementationFactory(const ApproximationAlgorithmImplementationFactory & other) { return new OT::ApproximationAlgorithmImplementationFactory(other); } } }

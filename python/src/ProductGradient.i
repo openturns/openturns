@@ -6,5 +6,6 @@ OTAutodoc(ProductGradient)
 #include "openturns/ProductGradient.hxx"
 %}
 
+%copyctor OT::ProductGradient;
+
 %include openturns/ProductGradient.hxx
-namespace OT { %extend ProductGradient { ProductGradient(const ProductGradient & other) { return new OT::ProductGradient(other); } } }

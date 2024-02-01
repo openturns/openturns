@@ -48,7 +48,7 @@ graph.setTitle("Instrumental PDF")
 graph.setXTitle("")
 graph.setYTitle("")
 graph.add(instrumentalDistribution.drawPDF(lower_bound, upper_bound, 100))
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setLegends(["Unnormalized target density", "Instrumental PDF"])
 _ = View(graph)
 
@@ -87,7 +87,7 @@ graph = ot.Graph(
     "",
     "",
     True,
-    "topright",
+    "upper right",
 )
 graph.setBoundingBox(ot.Interval([lower_bound, 0.0], [upper_bound, f([0.0])[0]]))
 graph.add(f.draw(lower_bound, upper_bound, 100))
@@ -127,7 +127,7 @@ graph = ot.Graph(
     "",
     "",
     True,
-    "topright",
+    "upper right",
 )
 graph.setBoundingBox(ot.Interval([lower_bound, 0.0], [upper_bound, f([0.0])[0]]))
 graph.add(f.draw(lower_bound, upper_bound, 100))

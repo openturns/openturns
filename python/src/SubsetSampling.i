@@ -6,5 +6,6 @@
 
 %include SubsetSampling_doc.i
 
+%copyctor OT::SubsetSampling;
+
 %include openturns/SubsetSampling.hxx
-namespace OT { %extend SubsetSampling { SubsetSampling(const SubsetSampling & other) { return new OT::SubsetSampling(other); } } }

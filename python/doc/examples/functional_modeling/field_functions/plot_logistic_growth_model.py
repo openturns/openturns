@@ -40,6 +40,7 @@ distX = lm.distX
 # %%
 # We define the model :
 
+
 # %%
 class Popu(ot.OpenTURNSPythonPointToFieldFunction):
     def __init__(self, t0=1790.0, tfinal=2000.0, nt=1000):
@@ -92,7 +93,7 @@ cloud = ot.Cloud(ustime, uspop)
 cloud.setPointStyle("circle")
 cloud.setLegend("Data")
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = viewer.View(graph)
 plt.show()
 

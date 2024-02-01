@@ -2,7 +2,7 @@
 /**
  *  @brief VisualTest implements statistical tests
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,7 +69,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphQQplot.add(bisector);
   // Then the QQ plot
@@ -91,7 +90,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   {
     data(i, 0) = sortedSample(i, 0);
     const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
-    data(i, 1) = dist.computeQuantile(p)[0];
+    data(i, 1) = dist.computeScalarQuantile(p);
   }
   Cloud cloudQQplot(data, "Data");
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
@@ -103,7 +102,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphQQplot.add(bisector);
   // Then the QQ plot
@@ -136,7 +134,6 @@ Graph VisualTest::DrawPPplot(const Sample & sample1,
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graph.add(bisector);
   // Then the PP plot
@@ -170,7 +167,6 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graph.add(bisector);
   // Then the PP plot
@@ -196,7 +192,6 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphCDFplot.add(bisector);
   // Then the CDF plot
@@ -222,7 +217,6 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
   Curve bisector(diagonal, "Test line");
-  bisector.setColor("red");
   bisector.setLineStyle("dashed");
   graphCDFplot.add(bisector);
   // Then the CDF plot
@@ -257,7 +251,6 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   henryLinePoints(1, 0) = sortedSample(size - 1, 0); // sample.getMax()[0];
   henryLinePoints(1, 1) = (henryLinePoints(1, 0) - mu) / sigma;
   Curve henryLine(henryLinePoints, "Henry line");
-  henryLine.setColor("red");
   henryLine.setLineStyle("dashed");
   graphHenry.add(henryLine);
 
@@ -289,7 +282,7 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
+      Cloud cloud(sample.getMarginal(indices));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -354,7 +347,6 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
   curveLinearModelTest.setLegend("regression");
-  curveLinearModelTest.setColor("red");
   Cloud cloudLinearModelTest(sample1, sample2);
   cloudLinearModelTest.setPointStyle("fsquare");
   cloudLinearModelTest.setLegend("sample");
@@ -394,7 +386,8 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample &
 
   OSS oss;
   oss << sample1.getDescription()[0] << " LinearModel residual Test";
-  const Cloud cloudLinearModelRTest(data, "red", "fsquare", oss);
+  Cloud cloudLinearModelRTest(data, oss);
+  cloudLinearModelRTest.setPointStyle("fsquare");
 
   Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
@@ -425,18 +418,11 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   // If based on quantiles, rank the values
   UnsignedInteger minRank = 0;
   UnsignedInteger maxRank = 0;
-  if (!quantileScale)
-  {
-    const Scalar minCDF = outputSample.computeEmpiricalCDF(Point(1, minValue));
-    const Scalar maxCDF = outputSample.computeEmpiricalCDF(Point(1, maxValue));
-    minRank = static_cast<UnsignedInteger>(round(size * minCDF));
-    maxRank = static_cast<UnsignedInteger>(round(size * maxCDF));
-  }
-  else
+  if (quantileScale)
   {
     if ((minValue < 0.0) || (maxValue > 1.0) || (minValue > maxValue))  throw InvalidArgumentException(HERE) << "Error: we must have 0 <= minValue <= maxValue <= 1 when using quantile scale.";
-    minRank = static_cast<UnsignedInteger>(size * minValue);
-    maxRank = static_cast<UnsignedInteger>(size * maxValue);
+    minRank = size * minValue;
+    maxRank = size * maxValue;
   }
   const UnsignedInteger inputDimension = inputSample.getDimension();
   const Sample rankedInput(inputSample.rank());
@@ -447,8 +433,9 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   Indices selectedFilaments(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger currentRank = static_cast<UnsignedInteger>(rankedOutput(i, 0));
-    if ((currentRank >= minRank) && (currentRank <= maxRank))
+    const Scalar currentRank = rankedOutput(i, 0);
+    if ((quantileScale && (currentRank >= minRank) && (currentRank <= maxRank)) ||
+        (!quantileScale && (outputSample(i, 0) >= minValue) && (outputSample(i, 0) <= maxValue)))
       selectedFilaments.add(i);
     else
     {
@@ -472,7 +459,6 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     cobWeb.add(filament);
   }
   // Draw the vertical lines associated with the input variables
-  const Description palette(Curve::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
@@ -482,7 +468,6 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     Curve bar(data);
     if (i < inputDimension)
     {
-      bar.setColor(palette[i]);
       bar.setLegend(inputSample.getDescription()[i]);
     }
     else
@@ -580,7 +565,6 @@ Graph VisualTest::DrawKendallPlot(const Sample & data,
   dataDiagonal.add(Point(2, 0.0));
   dataDiagonal.add(Point(2, 1.0));
   Curve diagonal(dataDiagonal);
-  diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
   graph.add(diagonal);
   // Draw the Kendall curve
@@ -604,7 +588,6 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   data.add(Point(2, 0.0));
   data.add(Point(2, 1.0));
   Curve diagonal(data);
-  diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
   graph.add(diagonal);
   // Draw the Kendall curve
@@ -614,9 +597,9 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
 
 /* Draw dependence functions */
 static Graph VisualTestDrawDependenceFunction(const Sample & data,
-                                       const String & linkFormula,
-                                       const String & legend,
-                                       const Bool survival = false)
+    const String & linkFormula,
+    const String & legend,
+    const Bool survival = false)
 {
   if (!data.getSize())
     throw InvalidArgumentException(HERE) << "The sample must not be empty";
@@ -676,7 +659,6 @@ static Graph VisualTestDrawDependenceFunction(const Sample & data,
 
   // estimate
   Curve curveXu(valuesU, valuesXu);
-  curveXu.setColor("red");
   curveXu.setLegend(legend);
   graph.add(curveXu);
   // confidence lower bound

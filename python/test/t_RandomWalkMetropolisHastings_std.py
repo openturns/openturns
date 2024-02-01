@@ -2,7 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
-from math import exp
+from math import exp, inf
 
 ot.TESTPREAMBLE()
 
@@ -162,3 +162,42 @@ for mh in mh_coll:
     mh.setLikelihood(likelihood, obs)
 sampler = ot.Gibbs(mh_coll)
 parameters_sample = sampler.getSample(2000)
+
+
+# Trick RandomWalkMetropolisHastings into being a simple random walk
+# with Uniform(-1, 1) step: every "proposal" is automatically accepted.
+logdensity = ot.SymbolicFunction("x", "1")
+support = ot.Interval([-inf], [inf])
+proposal = ot.Uniform(-1.0, 1.0)
+rw = ot.RandomWalkMetropolisHastings(logdensity, support, [0.0], proposal)
+
+# The acceptance rate is 1 in this trivial case,
+# so every adaptation step will multiply the adaptation factor
+# by the expansion factor.
+rw.setAdaptationExpansionFactor(2.0)
+rw.setAdaptationPeriod(10)
+rw.getSample(100)
+ott.assert_almost_equal(rw.getAdaptationFactor(), 2.0**10, 0.0, 0.0)
+
+# Check that the adaptation factor is really taken into account.
+# We lengthen the adaptation period to get a longer period witout adaptation.
+# We then compare the standard deviation of the step lengths with
+# their theoretical standard deviation considering the 1024 adaptation factor.
+rw.setAdaptationPeriod(100)
+constantAdapationFactorSample = rw.getSample(99)
+steps = constantAdapationFactorSample[1:] - constantAdapationFactorSample[:-1]
+ref_std = ot.Uniform(-(2.0**10), 2.0**10).getStandardDeviation()
+ott.assert_almost_equal(steps.computeStandardDeviation(), ref_std, 0.1, 0.0)
+
+# At the next realization, once again the adaptation factor is multiplied by 2.
+rw.getRealization()
+
+# We now change the adaptation range
+# to an interval with lower bound larger than 1 (the acceptance rate)
+# This way, every adaptation step will multiply the adaptation factor
+# by the shrink factor.
+rw.setAdaptationRange(ot.Interval(1.1, 1.2))
+rw.setAdaptationPeriod(10)
+rw.setAdaptationShrinkFactor(0.5)
+rw.getSample(100)
+ott.assert_almost_equal(rw.getAdaptationFactor(), 2.0, 0.0, 0.0)

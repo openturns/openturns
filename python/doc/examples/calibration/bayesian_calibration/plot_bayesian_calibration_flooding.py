@@ -7,7 +7,12 @@ Bayesian calibration of the flooding model
 # Abstract
 # --------
 #
-# The goal of this example is to present the Bayesian calibration of the :ref:`flooding model<use-case-flood-model>`.
+# The goal of this example is to present the Bayesian calibration of the
+# :ref:`flooding model<use-case-flood-model>`.
+# We use the :class:`~openturns.RandomWalkMetropolisHastings` and
+# :class:`~openturns.Gibbs` classes
+# and simulate a sample of the posterior distribution using
+# :ref:`metropolis_hastings`.
 
 # %%
 # Parameters to calibrate
@@ -92,7 +97,9 @@ fm = flood_model.FloodModel()
 # %%
 # We define the model :math:`g` which has 4 inputs and one output H.
 #
-# The nonlinear least squares does not take into account for bounds in the parameters. Therefore, we ensure that the output is computed whatever the inputs. The model fails into two situations:
+# The nonlinear least squares does not take into account for bounds in the parameters.
+# Therefore, we ensure that the output is computed whatever the inputs.
+# The model fails into two situations:
 #
 # * if :math:`K_s<0`,
 # * if :math:`Z_v-Z_m<0`.
@@ -182,6 +189,7 @@ view = viewer.View(graph)
 # here :math:`\vect z=(\mu, \sigma)` with :math:`\mu = G(Q, K_s, Z_v, Z_m)`
 # and :math:`\sigma = 0.5`.
 
+
 # %%
 def fullModelPy(X):
     Q, K_s, Z_v, Z_m = X
@@ -215,9 +223,9 @@ sigmaZm = 1.0
 
 # %%
 parameterPriorCovariance = ot.CovarianceMatrix(paramDim)
-parameterPriorCovariance[0, 0] = sigmaKs ** 2
-parameterPriorCovariance[1, 1] = sigmaZv ** 2
-parameterPriorCovariance[2, 2] = sigmaZm ** 2
+parameterPriorCovariance[0, 0] = sigmaKs**2
+parameterPriorCovariance[1, 1] = sigmaZv**2
+parameterPriorCovariance[2, 2] = sigmaZm**2
 
 # %%
 # Define the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`
@@ -278,15 +286,63 @@ posterior = kernel.build(sample)
 # %%
 # Display prior vs posterior for each parameter.
 
-fig = pl.figure(figsize=(12, 4))
 
-for parameter_index in range(paramDim):
-    graph = posterior.getMarginal(parameter_index).drawPDF()
-    priorGraph = prior.getMarginal(parameter_index).drawPDF()
-    priorGraph.setColors(["blue"])
-    graph.add(priorGraph)
-    graph.setLegends(["Posterior", "Prior"])
-    ax = fig.add_subplot(1, paramDim, parameter_index + 1)
-    _ = ot.viewer.View(graph, figure=fig, axes=[ax])
+def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
+    """
+    Plot the prior and posterior distribution of a Bayesian calibration
 
-_ = fig.suptitle("Bayesian calibration")
+    Parameters
+    ----------
+    prior : ot.Distribution(dimension)
+        The prior.
+    posterior : ot.Distribution(dimension)
+        The posterior.
+
+    Return
+    ------
+    grid : ot.GridLayout(1, dimension)
+        The prior and posterior PDF for each marginal.
+    """
+    palette = ot.Drawable.BuildDefaultPalette(2)
+    paramDim = prior.getDimension()
+    grid = ot.GridLayout(1, paramDim)
+    parameterNames = prior.getDescription()
+    for parameter_index in range(paramDim):
+        graph = ot.Graph("", parameterNames[parameter_index], "PDF", True)
+        # Prior
+        curve = prior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PriorLineStyle")
+        )
+        curve.setLegend("Prior")
+        graph.add(curve)
+        # Posterior
+        curve = posterior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PosteriorLineStyle")
+        )
+        curve.setLegend("Posterior")
+        graph.add(curve)
+        #
+        if parameter_index < paramDim - 1:
+            graph.setLegends([""])
+        if parameter_index > 0:
+            graph.setYTitle("")
+        graph.setColors(palette)
+        graph.setLegendPosition("upper right")
+        grid.setGraph(0, parameter_index, graph)
+    grid.setTitle("Bayesian calibration")
+    return grid
+
+
+# %%
+# sphinx_gallery_thumbnail_number = 2
+grid = plot_bayesian_prior_vs_posterior_pdf(prior, posterior)
+viewer.View(
+    grid,
+    figure_kw={"figsize": (8.0, 3.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+pl.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
+
+# %%

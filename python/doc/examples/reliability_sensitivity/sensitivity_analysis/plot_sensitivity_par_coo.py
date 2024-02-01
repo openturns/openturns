@@ -68,7 +68,7 @@ quantileScale = False
 graphCobweb = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graphCobweb.setLegendPosition("bottomright")
+graphCobweb.setLegendPosition("lower right")
 view = viewer.View(graphCobweb)
 
 # %%
@@ -79,6 +79,6 @@ quantileScale = True
 graphCobweb = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
-graphCobweb.setLegendPosition("bottomright")
+graphCobweb.setLegendPosition("lower right")
 view = viewer.View(graphCobweb)
 plt.show()

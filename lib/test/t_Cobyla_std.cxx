@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Cobyla for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,10 +41,9 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-
   try
   {
-
+    Log::Show(Log::NONE);
     // Test function operator ()
     Description input(4);
     input[0] = "x1";
@@ -77,7 +76,7 @@ int main(int, char *[])
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
-    myAlgorithm.setMaximumEvaluationNumber(400);
+    myAlgorithm.setMaximumCallsNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
     myAlgorithm.setMaximumResidualError(1.0e-10);

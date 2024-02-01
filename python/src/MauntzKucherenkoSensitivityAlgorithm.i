@@ -6,5 +6,6 @@
 
 %include MauntzKucherenkoSensitivityAlgorithm_doc.i
 
+%copyctor OT::MauntzKucherenkoSensitivityAlgorithm;
+
 %include openturns/MauntzKucherenkoSensitivityAlgorithm.hxx
-namespace OT{ %extend MauntzKucherenkoSensitivityAlgorithm { MauntzKucherenkoSensitivityAlgorithm(const MauntzKucherenkoSensitivityAlgorithm & other) { return new OT::MauntzKucherenkoSensitivityAlgorithm(other); } } }

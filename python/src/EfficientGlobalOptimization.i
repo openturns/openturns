@@ -6,6 +6,7 @@
 
 %include EfficientGlobalOptimization_doc.i
 
+%copyctor OT::EfficientGlobalOptimization;
+
 %include openturns/EfficientGlobalOptimization.hxx
-namespace OT{ %extend EfficientGlobalOptimization { EfficientGlobalOptimization(const EfficientGlobalOptimization & other) { return new OT::EfficientGlobalOptimization(other); } } }
 

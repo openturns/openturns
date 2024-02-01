@@ -5,14 +5,20 @@ Parameters
 ----------
 beta : float
     Scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
 alpha : float
     Shape parameter :math:`\alpha > 0`.
+
+    Default value is 1.0.
 gamma : float, optional
     Location parameter.
 
+    Default value is 0.0.
+
 Notes
 -----
-Its cumulative and probability density functions are defined as:
+Its cumulative distribution function and probability density function are defined as:
 
 .. math::
     :nowrap:
@@ -61,7 +67,7 @@ Create a distribution from its native parameters :math:`(\beta, \alpha, \gamma)`
 
 Create it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
 
->>> myDist2 = ot.WeibullMin()
+>>> myDist2 = ot.WeibullMax()
 >>> myDist2.setParameter(ot.WeibullMaxMuSigma()([2.8, 1.2, 4.6]))
 
 Create it from :math:`(\mu, \sigma, \gamma)` and keep that parametrization for the remaining study: 

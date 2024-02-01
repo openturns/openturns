@@ -3,7 +3,7 @@
  *  @brief StatTest implements statistical tests
  *  This statistical test enables user to check if a time series is stationary
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,55 +38,14 @@ static const Factory<DickeyFullerTest> Factory_DickeyFullerTest;
 /* Default constructor */
 DickeyFullerTest::DickeyFullerTest()
   : PersistentObject()
-  , timeSeries_()
-  , T_()
-  , verbose_(false)
-  , lastModel_(0)
-  , rho_(0.0)
-  , sigmaRho_(1.0)
-  , drift_(0.0)
-  , sigmaDrift_(1.0)
-  , trend_(0.0)
-  , sigmaTrend_(1.0)
-  , isComputedNoConstantCharacteristics_(false)
-  , sum_yt_yt_minus_one_(0.0)
-  , sum_squared_yt_minus_one_(0.0)
-  , isComputedDriftCharacteristics_(false)
-  , sum_yt_minus_one_(0.0)
-  , sum_yt_(0.0)
-  , isComputedTrendCharacteristics_(false)
-  , sum_t_yt_minus_one_(0.0)
-  , sum_t_yt_(0.0)
-  , sum_ti_(0.0)
-  , sum_ti_ti_(0.0)
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-DickeyFullerTest::DickeyFullerTest(const TimeSeries & series,
-                                   const Bool verbose)
+DickeyFullerTest::DickeyFullerTest(const TimeSeries & series)
   : PersistentObject()
   , timeSeries_(series)
-  , T_()
-  , verbose_(verbose)
-  , lastModel_()
-  , rho_(0.0)
-  , sigmaRho_(1.0)
-  , drift_(0.0)
-  , sigmaDrift_(1.0)
-  , trend_(0.0)
-  , sigmaTrend_(1.0)
-  , isComputedNoConstantCharacteristics_(false)
-  , sum_yt_yt_minus_one_(0.0)
-  , sum_squared_yt_minus_one_(0.0)
-  , isComputedDriftCharacteristics_(false)
-  , sum_yt_minus_one_(0.0)
-  , sum_yt_(0.0), isComputedTrendCharacteristics_(false)
-  , sum_t_yt_minus_one_(0.0)
-  , sum_t_yt_(0.0)
-  , sum_ti_(0.0)
-  , sum_ti_ti_(0.0)
 {
   if (series.getOutputDimension() != 1)
     throw InvalidDimensionException(HERE) << "Expected time series of dimension 1";
@@ -356,44 +315,44 @@ TestResult DickeyFullerTest::testUnitRootInAR1Model(const Scalar level)
 TestResult DickeyFullerTest::runStrategy(const Scalar level)
 {
   // Run the trend model
-  if (verbose_) LOGINFO("Running test with general model...\nTesting unit root...");
+  LOGDEBUG("Running test with general model...\nTesting unit root...");
   const TestResult runTrendTestModel(testUnitRootInDriftAndLinearTrendModel(level));
 
   if (!runTrendTestModel.getBinaryQualityMeasure())
   {
-    if (verbose_) LOGINFO("Testing unit root with general model rejected.\nRunning test of nullity of trend coefficient...");
+    LOGDEBUG("Testing unit root with general model rejected.\nRunning test of nullity of trend coefficient...");
     // Student test
     TestResult testNullTrend(testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(level));
-    if (verbose_) LOGINFO("Test of nullity of trend coefficient done.");
-    if (verbose_) LOGINFO(testNullTrend.__repr__());
+    LOGDEBUG("Test of nullity of trend coefficient done.");
+    LOGDEBUG(testNullTrend.__repr__());
     // Test is rejected if the the statistic is greater than the quantile
     if (!testNullTrend.getBinaryQualityMeasure())
     {
-      if (verbose_) LOGINFO("Test of nullity of trend coefficient rejected ==> No unit root and trend stationary.");
-      if (verbose_) LOGINFO("End of strategy tests");
+      LOGDEBUG("Test of nullity of trend coefficient rejected ==> No unit root and trend stationary.");
+      LOGDEBUG("End of strategy tests");
       return testNullTrend;
     }
     else
     {
-      if (verbose_) LOGINFO("Test of nullity of trend coefficient accepted.");
+      LOGDEBUG("Test of nullity of trend coefficient accepted.");
       return runDriftModelStrategyTest(level);
     }
   }
   else
   {
-    if (verbose_) LOGINFO("Testing unit root with general model accepted.\nRunning test of nullity of trend coefficient and unit root");
+    LOGDEBUG("Testing unit root with general model accepted.\nRunning test of nullity of trend coefficient and unit root");
     // Fisher test
     TestResult testNullTrend(testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(level));
-    if (verbose_) LOGINFO("Test done.");
-    if (verbose_) LOGINFO(testNullTrend.__repr__());
+    LOGDEBUG("Test done.");
+    LOGDEBUG(testNullTrend.__repr__());
 
     // Test is rejected if the the statistic is greater than the quantile
     if (!testNullTrend.getBinaryQualityMeasure())
     {
       // Check the pValue ==> False
       // The test bases on the fact that H0 :
-      if (verbose_) LOGINFO("Test of nullity of trend coefficient rejected ==> trend stationary and no unit root");
-      if (verbose_) LOGINFO("End of strategy tests");
+      LOGDEBUG("Test of nullity of trend coefficient rejected ==> trend stationary and no unit root");
+      LOGDEBUG("End of strategy tests");
       return testNullTrend;
     }
     else
@@ -407,48 +366,48 @@ TestResult DickeyFullerTest::runStrategy(const Scalar level)
 TestResult DickeyFullerTest::runDriftModelStrategyTest(const Scalar level)
 {
   // Run the trend model
-  if (verbose_) LOGINFO("Running test with drift model...\nTesting unit root...");
+  LOGDEBUG("Running test with drift model...\nTesting unit root...");
   // First check the presence of a unit root in the drift model
   const TestResult runDriftTestModel(testUnitRootInDriftModel(level));
 
   if (!runDriftTestModel.getBinaryQualityMeasure())
   {
-    if (verbose_) LOGINFO("Unit root test with drift model rejected.\nRunning test of nullity of drift coefficient...");
+    LOGDEBUG("Unit root test with drift model rejected.\nRunning test of nullity of drift coefficient...");
     // Student test
     TestResult testNullDrift(testNoUnitRootAndNoDriftInDriftModel(level));
-    if (verbose_) LOGINFO("Test done.");
-    if (verbose_) LOGINFO(testNullDrift.__repr__());
+    LOGDEBUG("Test done.");
+    LOGDEBUG(testNullDrift.__repr__());
     // Test is rejected if the the statistic is greater than the quantile
     if (!testNullDrift.getBinaryQualityMeasure())
     {
-      if (verbose_) LOGINFO("Test of nullity of drift coefficient rejected ==> No unit root but drift.");
-      if (verbose_) LOGINFO("End of strategy tests");
+      LOGDEBUG("Test of nullity of drift coefficient rejected ==> No unit root but drift.");
+      LOGDEBUG("End of strategy tests");
       return testNullDrift;
     }
     else
     {
-      if (verbose_) LOGINFO("Test of nullity of drift coefficient accepted. Checking a random walk");
+      LOGDEBUG("Test of nullity of drift coefficient accepted. Checking a random walk");
       return runRandomWalkModelStrategyTest(level);
     }
   }
   else
   {
-    if (verbose_) LOGINFO("Testing unit root with drift model accepted.\nRunning test of nullity of drift coefficient and unit root");
+    LOGDEBUG("Testing unit root with drift model accepted.\nRunning test of nullity of drift coefficient and unit root");
     // Fisher test
     TestResult testNullDrift(testNoUnitRootAndNoDriftInDriftModel(level));
-    if (verbose_) LOGINFO("Test done.");
-    if (verbose_) LOGINFO(testNullDrift.__repr__());
+    LOGDEBUG("Test done.");
+    LOGDEBUG(testNullDrift.__repr__());
 
     // Test is rejected if the the statistic is greater than the quantile
     if (!testNullDrift.getBinaryQualityMeasure())
     {
-      if (verbose_) LOGINFO("Test of nullity of drift coefficient rejected ==> drift and unit root");
-      if (verbose_) LOGINFO("End of strategy tests");
+      LOGDEBUG("Test of nullity of drift coefficient rejected ==> drift and unit root");
+      LOGDEBUG("End of strategy tests");
       return testNullDrift;
     }
     else
     {
-      if (verbose_) LOGINFO("Test of nullity of drift coefficient accepted. Checking a random walk");
+      LOGDEBUG("Test of nullity of drift coefficient accepted. Checking a random walk");
       return runRandomWalkModelStrategyTest(level);
     }
   }
@@ -458,19 +417,19 @@ TestResult DickeyFullerTest::runDriftModelStrategyTest(const Scalar level)
 TestResult DickeyFullerTest::runRandomWalkModelStrategyTest(const Scalar level)
 {
   // Run the trend model
-  if (verbose_) LOGINFO("Running test with random walk model...\nTesting unit root...");
+  LOGDEBUG("Running test with random walk model...\nTesting unit root...");
   // First check the presence of a unit root in the drift model
   const TestResult runRWTestModel(testUnitRootInAR1Model(level));
   if (!runRWTestModel.getBinaryQualityMeasure())
   {
-    if (verbose_) LOGINFO("Unit root test rejected. Stationary checked");
+    LOGDEBUG("Unit root test rejected. Stationary checked");
   }
   else
   {
-    if (verbose_) LOGINFO("Unit root test accepted.");
+    LOGDEBUG("Unit root test accepted.");
   }
 
-  if (verbose_) LOGINFO("End of strategy tests");
+  LOGDEBUG("End of strategy tests");
   return runRWTestModel;
 
 }
@@ -628,25 +587,12 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoDriftInDriftModel(const Scalar l
 
 }
 
-/* Verbosity set accessor */
-void DickeyFullerTest::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-/* Verbosity get accessor */
-Bool DickeyFullerTest::getVerbose() const
-{
-  return verbose_;
-}
-
 /* Method save() stores the object through the StorageManager */
 void DickeyFullerTest::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("timeSeries_", timeSeries_);
   adv.saveAttribute("T_", T_);
-  adv.saveAttribute("verbose_", verbose_);
   adv.saveAttribute("sum_yt_yt_minus_one_", sum_yt_yt_minus_one_);
   adv.saveAttribute("sum_squared_yt_minus_one_", sum_squared_yt_minus_one_);
   adv.saveAttribute("lastModel_", lastModel_);
@@ -672,7 +618,6 @@ void DickeyFullerTest::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("timeSeries_", timeSeries_ );
   adv.loadAttribute("T_", T_ );
-  adv.loadAttribute("verbose_", verbose_ );
   adv.loadAttribute("sum_yt_yt_minus_one_", sum_yt_yt_minus_one_);
   adv.loadAttribute("sum_squared_yt_minus_one_", sum_squared_yt_minus_one_);
   adv.loadAttribute("lastModel_", lastModel_);

@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building BasisSequence objects
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,10 +54,6 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** Method to create new BasisSequence objects */
   BasisSequence build(const Sample & x,

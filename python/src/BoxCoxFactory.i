@@ -18,5 +18,6 @@
 
 %include  BoxCoxFactory_doc.i
 
+%copyctor OT::BoxCoxFactory;
+
 %include openturns/BoxCoxFactory.hxx
-namespace OT { %extend BoxCoxFactory { BoxCoxFactory(const BoxCoxFactory & other) { return new OT::BoxCoxFactory(other); } } }

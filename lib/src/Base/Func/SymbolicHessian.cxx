@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the Hessian of analytical functions.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -104,7 +104,7 @@ String SymbolicHessian::__str__(const String & offset) const
     initialize();
     if (isAnalytical_)
     {
-      oss << Os::GetEndOfLine() << offset;
+      oss << "\n" << offset;
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
       const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
@@ -128,9 +128,9 @@ String SymbolicHessian::__str__(const String & offset) const
         {
           for (UnsignedInteger j = 0; j < i; ++j)
           {
-            oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")d(" + inputVariablesNames[j] + ")") << " = " << getFormula(i, j, k) << Os::GetEndOfLine() << offset;
+            oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")d(" + inputVariablesNames[j] + ")") << " = " << getFormula(i, j, k) << "\n" << offset;
           }
-          oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")^2") << " = " << getFormula(i, i, k) << Os::GetEndOfLine() << offset;
+          oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")^2") << " = " << getFormula(i, i, k) << "\n" << offset;
         } // For i
       } // For k
     } // isAnalytical

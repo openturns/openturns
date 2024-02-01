@@ -2,7 +2,7 @@
 /**
  *  @brief The Fisher-Snedecor distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -173,7 +173,7 @@ Scalar FisherSnedecor::computeCDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0) return 0.0;
-  return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, d1_ * x / (d1_ * x + d2_));
+  return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, 1.0 / (1.0 + d2_ / (d1_ * x)));
 }
 
 /* Get the quantile of the distribution */
@@ -185,6 +185,13 @@ Scalar FisherSnedecor::computeScalarQuantile(const Scalar prob,
   const Scalar q = DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p);
   if (q >= 1.0) return getRange().getUpperBound()[0];
   return d2_ * q / (d1_ * (1.0 - q));
+}
+
+Scalar FisherSnedecor::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

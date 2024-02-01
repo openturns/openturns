@@ -2,7 +2,7 @@
 /**
  *  @brief The Histogram distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ Histogram::Histogram()
   setName( "Histogram" );
   // This call set also the range.
   setData(Point(1, 1.0), Point(1, 1.0));
-  setDimension( 1 );
+  setDimension(1);
 }
 
 /* Parameters constructor */
@@ -269,6 +269,13 @@ Scalar Histogram::computeScalarQuantile(const Scalar prob,
   if (p < currentProba) return first_ + width_[0] * p / currentProba;
   // ... or p >= cumulatedSurface_[currentIndex], which means that p is associated with the bin number currentIndex + 1. Do a linear interpolation.
   return first_ + cumulatedWidth_[currentIndex] + (p - currentProba) / height_[currentIndex + 1];
+}
+
+Scalar Histogram::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */
@@ -500,7 +507,9 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(0, 1) = 0.0;
     data(1, 0) = xMax;
     data(1, 1) = 0.0;
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
+    Curve curve(data, title);
+    curve.setLineWidth(2);
+    graphPDF.add(curve);
     return graphPDF;
   }
   // Find the index of the left bar to draw
@@ -514,7 +523,9 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(0, 1) = height_[indexLeft];
     data(1, 0) = xMax;
     data(1, 1) = height_[indexLeft];
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
+    Curve curve(data, title);
+    curve.setLineWidth(2);
+    graphPDF.add(curve);
     return graphPDF;
   }
   // Find the index of the right bar to draw
@@ -588,8 +599,8 @@ Graph Histogram::drawPDF(const Scalar xMin,
     data(2, 1) = height_[indexRight];
     dataFull.add(data);
   }
-  Curve curve(dataFull, "red", "solid", 2, "");
-  curve.setLegend(title);
+  Curve curve(dataFull, title);
+  curve.setLineWidth(2);
   graphPDF.add(curve);
   return graphPDF;
 }

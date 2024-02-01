@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,14 +41,7 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 /* Default constructor */
 SubsetSampling::SubsetSampling()
   : EventSimulation()
-  , proposalRange_(0.0)
-  , conditionalProbability_(0.0)
-  , iSubset_(false)
-  , betaMin_(0.0)
-  , keepEventSample_(false)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
-  , numberOfSteps_(0)
-  , seedNumber_(0)
 {
 }
 
@@ -56,21 +50,17 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulation(event)
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
-  , iSubset_(false)
-  , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
-  , keepEventSample_(false)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
-  , numberOfSteps_(0)
-  , seedNumber_(0)
 {
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
-  UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
+  UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension=" << outputDimension;
+  setInitialExperiment(MonteCarloExperiment());
 }
 
 
@@ -91,14 +81,15 @@ void SubsetSampling::run()
   gammaPerStep_.clear();
   coefficientOfVariationPerStep_.clear();
   probabilityEstimatePerStep_.clear();
-  eventInputSample_.clear();
-  eventOutputSample_.clear();
+  inputSample_.clear();
+  outputSample_.clear();
   dimension_ = getEvent().getAntecedent().getDimension();
 
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
   const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
+  const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
@@ -119,34 +110,16 @@ void SubsetSampling::run()
   currentPointSample_ = Sample(N, dimension_);
   currentLevelSample_ = Sample(N, getEvent().getFunction().getOutputDimension());
 
+  // blockSize may have changed
+  initialExperiment_.setSize(blockSize);
+
+  t0_ = std::chrono::steady_clock::now();
+
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
-    Sample inputSample;
-    if (!iSubset_)
-    {
-      // crude MC
-      inputSample = standardEvent_.getAntecedent().getDistribution().getSample(blockSize);
-    }
-    else
-    {
-      // conditional sampling
-      TruncatedDistribution truncatedChiSquare(Chi(dimension_), betaMin_, TruncatedDistribution::LOWER);
-      Normal normal(dimension_);
-      inputSample = Sample(0, dimension_);
-      for (UnsignedInteger j = 0; j < blockSize; ++ j)
-      {
-        Point direction(normal.getRealization());
-        Scalar norm = direction.norm();
-        Scalar radius = truncatedChiSquare.getRealization()[0];
-        if (norm != 0.0)
-        {
-          radius *= 1.0 / norm;
-        }
-        inputSample.add(direction * radius);
-      }
-    }
-    Sample blockSample(standardEvent_.getFunction()(inputSample));
+    const Sample inputSample(initialExperiment_.generate());
+    const Sample blockSample(standardEvent_.getFunction()(inputSample));
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
       currentPointSample_[i * blockSize + j] = inputSample[j];
@@ -175,12 +148,6 @@ void SubsetSampling::run()
   // cannot determine next subset domain if no variance
   stop = stop || (std::abs(varianceEstimate) < epsilon);
 
-  if (iSubset_)
-  {
-    Scalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent().getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
-    probabilityEstimate *= correction;
-  }
-
   // if there is no subset step ...
   if (stop)
   {
@@ -196,6 +163,11 @@ void SubsetSampling::run()
   gammaPerStep_.add(0.0);
   probabilityEstimatePerStep_.add(probabilityEstimate);
   coefficientOfVariationPerStep_.add(coefficientOfVariationSquare);
+  if (keepSample_)
+  {
+    inputSample_.add(uToX(currentPointSample_));
+    outputSample_.add(currentLevelSample_);
+  }
 
   Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   // as long as the conditional failure domain do not overlap the global one
@@ -215,9 +187,7 @@ void SubsetSampling::run()
 
     // make sure the last failure domain does not overlap the real failure domain
     if (stop)
-    {
       currentThreshold = getEvent().getThreshold();
-    }
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
     previousVariance = varianceEstimate;
@@ -248,30 +218,30 @@ void SubsetSampling::run()
     if (probabilityEstimate < minimumProbability_)
       throw NotDefinedException(HERE) << "Probability estimate too small: " << probabilityEstimate;
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      stop = true;
+    
     // compute variance estimate
     varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
     ++ numberOfSteps_;
+
+    if (keepSample_)
+    {
+      inputSample_.add(uToX(currentPointSample_));
+      outputSample_.add(currentLevelSample_);
+    }
 
     Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
 
-  // keep the event sample if requested
-  if (keepEventSample_)
-  {
-    eventInputSample_ = Sample(0, dimension_);
-    eventOutputSample_ = Sample (0, getEvent().getFunction().getOutputDimension());
-    for (UnsignedInteger i = 0; i < currentPointSample_.getSize(); ++ i)
-    {
-      if (getEvent().getOperator()(currentLevelSample_(i, 0), getEvent().getThreshold()))
-      {
-        eventInputSample_.add(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
-        eventOutputSample_.add(currentLevelSample_[i]);
-      }
-    }
-  }
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
 
   // free work samples
   currentLevelSample_.clear();
@@ -316,7 +286,7 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
       {
         // update local mean and variance
         meanBlock += 1.0 / blockSize;
-        varianceBlock += 1.0 * 1.0 / blockSize;
+        varianceBlock += 1.0 / blockSize;
       }
     }
     varianceBlock -= pow(meanBlock, 2.0);
@@ -428,9 +398,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
 
         // accept new point with probability ratio
         if (ratio < uniform[k])
-        {
           newPoint[k] = oldPoint[k];
-        }
       }
 
       inputSample[j] = newPoint;
@@ -447,6 +415,11 @@ void SubsetSampling::generatePoints(Scalar threshold)
         currentLevelSample_[i * blockSize + j] = blockSample[j];
       }
     }
+
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      throw InternalException(HERE) << "Maximum time exceeded";
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
@@ -495,7 +468,7 @@ Scalar SubsetSampling::getMinimumProbability() const
 }
 
 
-UnsignedInteger SubsetSampling::getStepsNumber()
+UnsignedInteger SubsetSampling::getStepsNumber() const
 {
   return numberOfSteps_;
 }
@@ -525,35 +498,60 @@ Point SubsetSampling::getThresholdPerStep() const
 }
 
 
-void SubsetSampling::setKeepEventSample(bool keepEventSample)
+/* Keep event sample */
+void SubsetSampling::setKeepSample(const Bool keepSample)
 {
-  keepEventSample_ = keepEventSample;
+  keepSample_ = keepSample;
 }
 
-
-Sample SubsetSampling::getEventInputSample() const
+/* Event input/output sample accessor */
+Sample SubsetSampling::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
-  return eventInputSample_;
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
-
-Sample SubsetSampling::getEventOutputSample() const
+Sample SubsetSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
-  return eventOutputSample_;
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "SubsetSampling step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
-
-void SubsetSampling::setISubset(Bool iSubset)
+Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const
 {
-  iSubset_ = iSubset;
+  Indices result;
+  const Sample outputSample(outputSample_[step]);
+  const Scalar threshold = getThresholdPerStep()[step];
+  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++ i)
+    if (getEvent().getOperator()(outputSample(i, 0), threshold) == status)
+      result.add(i);
+  return result;
 }
 
-void SubsetSampling::setBetaMin(Scalar betaMin)
+/* Experiment for first step */
+void SubsetSampling::setInitialExperiment(const WeightedExperiment & initialExperiment)
 {
-  if (!(betaMin > 0.0)) throw InvalidArgumentException(HERE) << "Beta min should be positive";
-  betaMin_ = betaMin;
+  if (!initialExperiment.hasUniformWeights())
+    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlyng weighted experiment must have uniform weights";
+  initialExperiment_ = initialExperiment;
+  initialExperiment_.setSize(getBlockSize());
+  initialExperiment_.setDistribution(StandardEvent(getEvent()).getAntecedent().getDistribution());
 }
 
+WeightedExperiment SubsetSampling::getInitialExperiment() const
+{
+  return initialExperiment_;
+}
 
 /* String converter */
 String SubsetSampling::__repr__() const
@@ -563,7 +561,7 @@ String SubsetSampling::__repr__() const
       << " derived from " << EventSimulation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
-      << " keepEventSample_=" << keepEventSample_;
+      << " keepSample_=" << keepSample_;
   return oss;
 }
 
@@ -574,16 +572,18 @@ void SubsetSampling::save(Advocate & adv) const
   EventSimulation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
-  adv.saveAttribute("iSubset_", iSubset_);
-  adv.saveAttribute("betaMin_", betaMin_);
-  adv.saveAttribute("keepEventSample_", keepEventSample_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
+  adv.saveAttribute("initialExperiment_", initialExperiment_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
   adv.saveAttribute("gammaPerStep_", gammaPerStep_);
   adv.saveAttribute("coefficientOfVariationPerStep_", coefficientOfVariationPerStep_);
   adv.saveAttribute("probabilityEstimatePerStep_", probabilityEstimatePerStep_);
+
+  adv.saveAttribute("keepSample_", keepSample_);
+  adv.saveAttribute("inputSample_", inputSample_);
+  adv.saveAttribute("outputSample_", outputSample_);
 }
 
 
@@ -593,16 +593,22 @@ void SubsetSampling::load(Advocate & adv)
   EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
-  adv.loadAttribute("iSubset_", iSubset_);
-  adv.loadAttribute("betaMin_", betaMin_);
-  adv.loadAttribute("keepEventSample_", keepEventSample_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);
+  if (adv.hasAttribute("initialExperiment_"))
+    adv.loadAttribute("initialExperiment_", initialExperiment_);
 
   adv.loadAttribute("numberOfSteps_", numberOfSteps_);
   adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);
   adv.loadAttribute("gammaPerStep_", gammaPerStep_);
   adv.loadAttribute("coefficientOfVariationPerStep_", coefficientOfVariationPerStep_);
   adv.loadAttribute("probabilityEstimatePerStep_", probabilityEstimatePerStep_);
+
+  if (adv.hasAttribute("keepSample_"))
+  {
+    adv.loadAttribute("keepSample_", keepSample_);
+    adv.loadAttribute("inputSample_", inputSample_);
+    adv.loadAttribute("outputSample_", outputSample_);
+  }
 }
 
 

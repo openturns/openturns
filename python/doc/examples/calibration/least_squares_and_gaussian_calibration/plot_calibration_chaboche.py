@@ -178,8 +178,7 @@ cloud.setPointStyle(
     ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
 )
 graph.add(cloud)
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -288,7 +287,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -507,7 +506,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -607,7 +606,7 @@ sigmaStress = 1.0e7  # (Pa)
 
 # %%
 errorCovariance = ot.CovarianceMatrix(1)
-errorCovariance[0, 0] = sigmaStress ** 2
+errorCovariance[0, 0] = sigmaStress**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -623,9 +622,9 @@ sigmaGamma = 0.1 * Gamma
 
 # %%
 sigma = ot.CovarianceMatrix(3)
-sigma[0, 0] = sigmaR ** 2
-sigma[1, 1] = sigmaC ** 2
-sigma[2, 2] = sigmaGamma ** 2
+sigma[0, 0] = sigmaR**2
+sigma[1, 1] = sigmaC**2
+sigma[2, 2] = sigmaGamma**2
 print(sigma)
 
 # %%
@@ -682,7 +681,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -814,7 +813,7 @@ printRCGammaInterval(interval)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MixtureClassifier for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,13 +58,21 @@ int main(int, char *[])
     {
       for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
       {
-        fullprint << "inP=" << Point(inS[i]).__str__() << " grade|" << j << "=" << classifier.grade(inS[i], j) << std::endl;
+        const Scalar grade = classifier.grade(inS[i], j);
+        // TODO JM: remove the check after the use of infs has been thoroughly tested
+        fullprint << "inP=" << Point(inS[i]).__str__() << " grade|" << j << "=" << (grade > SpecFunc::LowestScalar ? grade : grade * 2.0) << std::endl;
       }
     }
 
     for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
     {
-      fullprint << "grades|" << j << "=" << Point(classifier.grade(inS, Indices(inS.getSize(), j))).__str__() << std::endl;
+      Point grades(classifier.grade(inS, Indices(inS.getSize(), j)));
+      for (UnsignedInteger k = 0; k < grades.getDimension(); ++ k)
+      {
+        // TODO JM: remove the check after the use of infs has been thoroughly tested
+        if (grades[k] <= SpecFunc::LowestScalar) grades[k] *= 2.0;
+      }
+      fullprint << "grades|" << j << "=" << grades.__str__() << std::endl;
     }
   }
   catch (TestFailed & ex)

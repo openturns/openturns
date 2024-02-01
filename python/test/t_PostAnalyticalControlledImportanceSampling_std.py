@@ -38,7 +38,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), -3)
 # The second parameter is an event
 # The third parameter is a starting point for the design point research
 myCobyla = ot.Cobyla()
-myCobyla.setMaximumEvaluationNumber(400)
+myCobyla.setMaximumCallsNumber(400)
 myAlgo = ot.FORM(myCobyla, myEvent, mean)
 
 # Perform the simulation

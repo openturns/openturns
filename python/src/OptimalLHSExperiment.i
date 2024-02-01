@@ -6,5 +6,6 @@
 
 %include OptimalLHSExperiment_doc.i
 
+%copyctor OT::OptimalLHSExperiment;
+
 %include openturns/OptimalLHSExperiment.hxx
-namespace OT { %extend OptimalLHSExperiment { OptimalLHSExperiment(const OptimalLHSExperiment & other) { return new OT::OptimalLHSExperiment(other); } } }

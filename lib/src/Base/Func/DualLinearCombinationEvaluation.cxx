@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of functional linear combination of vectors
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include "openturns/UniVariatePolynomialImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -110,6 +111,8 @@ String DualLinearCombinationEvaluation::__str__(const String & ) const
   static const String valid("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_()[]{}^*/");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const String expr(functionsCollection_[i].getEvaluation().getImplementation()->__str__());
+    Bool mustPrint = false;
     if (outputDimension == 1)
     {
       const Scalar value = coefficients_(i, 0);
@@ -118,37 +121,60 @@ String DualLinearCombinationEvaluation::__str__(const String & ) const
         if (first) oss << value;
         else if (value > 0.0) oss << " + " << value;
         else oss << " - " << -value;
-        first = false;
-        const String expr(functionsCollection_[i].getEvaluation().getImplementation()->__str__());
-        // Print the function factor only if it is different from 1
-        if (expr != "1")
-        {
-          oss << " * ";
-
-          const Bool complexString = expr.find_first_not_of(valid) != String::npos;
-          if (complexString) oss << "(";
-          oss << expr;
-          if (complexString) oss << ")";
-        }
+        mustPrint = true;
       }
     } // output dimension == 1
     else
     {
       if (first) oss << coefficients_[i];
       else oss << " + " << coefficients_[i];
+      mustPrint = true;
+    } // output dimension > 1
+    if (mustPrint)
+    {
       first = false;
-      const String expr(functionsCollection_[i].getEvaluation().getImplementation()->__str__());
+      // Print the function factor only if it is different from 1
       if (expr != "1")
       {
         oss << " * ";
-
         const Bool complexString = expr.find_first_not_of(valid) != String::npos;
         if (complexString) oss << "(";
         oss << expr;
         if (complexString) oss << ")";
       }
-    }
-  }
+    } // Must print the expression
+  } // Loop over the functions
+  return oss;
+}
+
+String DualLinearCombinationEvaluation::_repr_html_() const
+{
+  OSS oss(false);
+  const UnsignedInteger size = functionsCollection_.getSize();
+  oss << getClassName() << "\n";
+  oss << "<ul>\n";
+  oss << "  <li> " << "Input dimension = " << getInputDimension() << "  </li>\n";
+  oss << "  <li> " << "Input description = " << getInputDescription() << "  </li>\n";
+  oss << "  <li> " << "Output dimension = " << getOutputDimension() << "  </li>\n";
+  oss << "  <li> " << "Size = " << size << "  </li>\n";
+  oss << "</ul>\n";
+  oss << "<table>\n";
+  // Header
+  oss << "  <tr>\n";
+  oss << "    <th>Coefficient</th>\n";
+  oss << "    <th>Function</th>\n";
+  oss << "  </tr>\n";
+  // Content
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Evaluation evaluation(functionsCollection_[i].getEvaluation().getMarginal(0));
+    const String expr(evaluation.getImplementation()->_repr_html_());
+    oss << "  <tr>\n";
+    oss << "    <td>" << coefficients_[i] << "</td>\n";
+    oss << "    <td>" << expr << "</td>\n";
+    oss << "  </tr>\n";
+  } // Loop over the functions
+  oss << "</table>\n";
   return oss;
 }
 

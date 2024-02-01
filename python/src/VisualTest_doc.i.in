@@ -531,7 +531,8 @@ graph : :class:`~openturns.Graph`
 
 Notes
 -----
-The point style and the color are given by 'Drawable-DefaultPointStyle' and 'Drawable-DefaultColor' keys in :class:`~openturns.ResourceMap`.
+The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The color is given by the first individual color in the default palette.
 
 Examples
 --------

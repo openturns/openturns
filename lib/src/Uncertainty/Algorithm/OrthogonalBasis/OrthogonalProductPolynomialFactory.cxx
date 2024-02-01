@@ -2,7 +2,7 @@
 /**
  *  @brief This is the orthogonal polynomial basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -188,11 +188,11 @@ String OrthogonalProductPolynomialFactory::getMarginalPolynomialName(const Unsig
 String OrthogonalProductPolynomialFactory::__repr_markdown__() const
 {
   OSS oss(false);
-  oss << getClassName() << Os::GetEndOfLine();
-  oss << "- measure=" << getMeasure().getClassName() << Os::GetEndOfLine();
-  oss << "- isOrthogonal=" << isOrthogonal() << Os::GetEndOfLine();
-  oss << "- enumerateFunction=" << phi_ << Os::GetEndOfLine();
-  oss << Os::GetEndOfLine();
+  oss << getClassName() << "\n";
+  oss << "- measure=" << getMeasure().getClassName() << "\n";
+  oss << "- isOrthogonal=" << isOrthogonal() << "\n";
+  oss << "- enumerateFunction=" << phi_ << "\n";
+  oss << "\n";
   // Compute maximum column width
   const UnsignedInteger size = coll_.getSize();
   String intermediateString;
@@ -204,13 +204,13 @@ String OrthogonalProductPolynomialFactory::__repr_markdown__() const
       maximumColumnWidth = intermediateString.size();
   }
   // Create table
-  oss << "| Index |" << OSS::PadString(" Type", maximumColumnWidth) << "|" << Os::GetEndOfLine();
-  oss << "|-------|" << String(maximumColumnWidth, '-') << "|" << Os::GetEndOfLine();
+  oss << "| Index |" << OSS::PadString(" Type", maximumColumnWidth) << "|" << "\n";
+  oss << "|-------|" << String(maximumColumnWidth, '-') << "|" << "\n";
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     oss << "| " << std::setw(5) << i << " |";
     intermediateString = OSS() << " " << getMarginalPolynomialName(i) << " ";
-    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << Os::GetEndOfLine();
+    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << "\n";
   }
   return oss;
 }

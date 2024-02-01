@@ -96,26 +96,6 @@ sigma : float, :math:`\sigma > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SimulationAlgorithm::getVerbose
-"Accessor to verbosity.
-
-Returns
--------
-verbosity_enabled : bool
-    If *True*, the computation is verbose. By default it is verbose."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::SimulationAlgorithm::setVerbose
-"Accessor to verbosity.
-
-Parameters
-----------
-verbosity_enabled : bool
-    If *True*, make the computation verbose. By default it is verbose."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SimulationAlgorithm::run
 "Launch simulation.
 
@@ -183,8 +163,7 @@ Stop a Monte Carlo simulation algorithm using a time limit
 >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 >>> algo.setMaximumOuterSampling(10000000)
 >>> algo.setMaximumCoefficientOfVariation(-1.0)
->>> timer = ot.TimerCallback(0.1)
->>> algo.setStopCallback(timer)
+>>> algo.setMaximumTimeDuration(0.1)
 >>> algo.run()"
 
 // ---------------------------------------------------------------------
@@ -208,3 +187,23 @@ Parameters
 storage_strategy : :class:`~openturns.HistoryStrategy`
     Storage strategy used to store the values of the probability estimator
     and its variance during the simulation algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setMaximumTimeDuration
+"Accessor to check status flag.
+
+Parameters
+----------
+maximumTimeDuration : float
+    Maximum optimization duration in seconds."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getMaximumTimeDuration
+"Accessor to check status flag.
+
+Returns
+-------
+maximumTimeDuration : float
+    Maximum optimization duration in seconds."

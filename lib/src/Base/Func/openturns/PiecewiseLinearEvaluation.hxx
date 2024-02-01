@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of a linear piecewise scalar function
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,9 @@ class OT_API PiecewiseLinearEvaluation
   : public EvaluationImplementation
 {
   CLASSNAME
+  
+  friend class PiecewiseHermiteEvaluation;
+  
 public:
   /** Default constructor */
   PiecewiseLinearEvaluation();
@@ -88,6 +91,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+protected:
   /** Check if the locations grid is regular to the given tolerance */
   static Bool IsRegular(const Point & locations,
                         const Scalar & epsilon);

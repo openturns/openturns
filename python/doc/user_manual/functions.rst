@@ -119,7 +119,6 @@ Evaluation functions
 
     EvaluationImplementation
     AggregatedEvaluation
-    SymbolicEvaluation
     ComposedEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
@@ -127,7 +126,9 @@ Evaluation functions
     IndicatorEvaluation
     LinearCombinationEvaluation
     LinearEvaluation
+    MarginalEvaluation
     MarginalTransformationEvaluation
+    MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
     PiecewiseHermiteEvaluation
@@ -136,7 +137,8 @@ Evaluation functions
     ProductEvaluation
     ProductPolynomialEvaluation
     QuadraticEvaluation
-    MarginalEvaluation
+    SymbolicEvaluation
+    TranslationEvaluation
 
 Gradient functions
 ==================
@@ -205,6 +207,7 @@ as Python functions.
     SpecFunc.BesselI0
     SpecFunc.BesselI1
     SpecFunc.BesselK
+    SpecFunc.BesselKDerivative
     SpecFunc.Beta
     SpecFunc.BinomialCoefficient
     SpecFunc.BitCount
@@ -212,6 +215,7 @@ as Python functions.
     SpecFunc.Clip01
     SpecFunc.Dawson
     SpecFunc.Debye
+    SpecFunc.DeltaLogBesselI10
     SpecFunc.DiGamma
     SpecFunc.DiGammaInv
     SpecFunc.DiLog
@@ -222,6 +226,7 @@ as Python functions.
     SpecFunc.ErfI
     SpecFunc.ErfInverse
     SpecFunc.Expm1
+    SpecFunc.Factorial
     SpecFunc.Faddeeva
     SpecFunc.FaddeevaIm
     SpecFunc.Gamma
@@ -234,6 +239,8 @@ as Python functions.
     SpecFunc.IncompleteBetaInverse
     SpecFunc.IncompleteGamma
     SpecFunc.IncompleteGammaInverse
+    SpecFunc.IPow
+    SpecFunc.IRoot
     SpecFunc.IsNormal
     SpecFunc.LambertW
     SpecFunc.LnBeta
@@ -256,7 +263,6 @@ as Python functions.
     SpecFunc.RegularizedIncompleteGammaInverse
     SpecFunc.Stirlerr
     SpecFunc.TriGamma
-    TimerCallback
 
 .. _coupling_tools:
 

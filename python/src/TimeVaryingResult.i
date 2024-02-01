@@ -6,5 +6,6 @@
 
 %include TimeVaryingResult_doc.i
 
+%copyctor OT::TimeVaryingResult;
+
 %include openturns/TimeVaryingResult.hxx
-namespace OT { %extend TimeVaryingResult { TimeVaryingResult(const TimeVaryingResult & other) { return new OT::TimeVaryingResult(other); } } }

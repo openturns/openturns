@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class WhittleFactory
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,6 @@ int main(int, char *[])
     /* First, build an ARMA based on a given order using the WhittleFactory */
     {
       WhittleFactory factory(p, q);
-      // factory.setVerbose(true);
       fullprint << "factory=" << factory << std::endl;
       Point informationCriteria;
       Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
@@ -75,7 +74,6 @@ int main(int, char *[])
     Indices qIndices(q + 1);
     qIndices.fill();
     WhittleFactory factory(pIndices, qIndices);
-    // factory.setVerbose(true);
     fullprint << "factory=" << factory << std::endl;
     Point informationCriteria;
     Process result(factory.buildWithCriteria(timeSeries, informationCriteria));

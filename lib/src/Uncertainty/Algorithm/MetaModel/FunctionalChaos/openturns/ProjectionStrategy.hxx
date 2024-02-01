@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for projection strategies
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,11 +84,17 @@ public:
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
 
+  /** Design proxy accessor */
+  virtual DesignProxy getDesignProxy() const;
+
   /** String converter */
   String __repr__() const override;
 
   /** String converter */
   String __str__(const String & offset = "") const override;
+
+  /** String converter */
+  String _repr_html_() const override;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

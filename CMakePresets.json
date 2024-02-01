@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "linux-debug",
+      "binaryDir": "${sourceDir}/build",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "USE_SPHINX": "OFF",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow",
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow -D_GLIBCXX_ASSERTIONS",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/install",
+        "SWIG_COMPILE_FLAGS": "-O1 -Wno-unused-parameter -Wno-shadow",
+        "CMAKE_UNITY_BUILD": "OFF"
+      }
+    },
+    {
+      "name": "linux-debug-unity",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "CMAKE_UNITY_BUILD": "ON",
+        "CMAKE_UNITY_BUILD_BATCH_SIZE": "32"
+      }
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "common",
+      "configurePreset": "linux-debug",
+      "output": {"outputOnFailure": true},
+      "execution": {"timeout": 100, "jobs": 8, "scheduleRandom": true}
+    },
+    {
+      "name": "python",
+      "inherits": "common",
+      "filter": {"include": {"name": "pyinstallcheck"}}
+    },
+    {
+      "name": "cpp",
+      "inherits": "common",
+      "filter": {"include": {"name": "cppcheck"}}
+    }
+  ]
+}

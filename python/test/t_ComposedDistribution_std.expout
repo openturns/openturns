@@ -18,9 +18,12 @@ ComposedDistribution
 |     2 |    Three | Normal(mu = 3, sigma = 4) |
 
 Distribution (HTML) = 
+ComposedDistribution
 <ul>
+  <li>name=myDist</li>
   <li>dimension: 3</li>
-  <li>copula: Independent copula</li>
+  <li>description=[One,Two,Three]
+  <li>copula: IndependentCopula(dimension = 3)</li>
 </ul>
 
 <table>
@@ -46,7 +49,7 @@ Distribution (HTML) =
   </tr>
 </table>
 
-Parameters =  [class=PointWithDescription name=One dimension=2 description=[mean_0_marginal_0,standard_deviation_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mean_0_marginal_1,standard_deviation_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mean_0_marginal_2,standard_deviation_0_marginal_2] values=[3,4],class=PointWithDescription name=Independent copula dimension=0 description=[] values=[]]
+Parameters =  [class=PointWithDescription name=One dimension=2 description=[mu_0_marginal_0,sigma_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mu_0_marginal_1,sigma_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mu_0_marginal_2,sigma_0_marginal_2] values=[3,4],class=PointWithDescription name=Independent copula dimension=0 description=[] values=[]]
 Mean =  class=Point name=Unnamed dimension=3 values=[1,2,3]
 Covariance =  class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,0,0,0,9,0,0,0,16]
 Elliptical =  True
@@ -94,7 +97,7 @@ sequential conditional PDF= [0.19552,0.11926,0.083306]
 sequential conditional CDF= [0.42074,0.32037,0.27425]
 sequential conditional quantile= [1.5067,2.76,4.0134]
 Distribution  class=ComposedDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Parameters  [class=PointWithDescription name=One dimension=2 description=[mean_0_marginal_0,standard_deviation_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mean_0_marginal_1,standard_deviation_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mean_0_marginal_2,standard_deviation_0_marginal_2] values=[3,4],class=PointWithDescription name=Normal copula dimension=3 description=[R_2_1_copula,R_3_1_copula,R_3_2_copula] values=[0.25,0,0.25]]
+Parameters  [class=PointWithDescription name=One dimension=2 description=[mu_0_marginal_0,sigma_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mu_0_marginal_1,sigma_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mu_0_marginal_2,sigma_0_marginal_2] values=[3,4],class=PointWithDescription name=Normal copula dimension=3 description=[R_2_1_copula,R_3_1_copula,R_3_2_copula] values=[0.25,0,0.25]]
 PDF      =0.001754
 PDF (ref)=0.001754
 CDF      =0.033495
@@ -169,9 +172,12 @@ ComposedDistribution
 |     2 |       X2 | Normal(mu = 0, sigma = 1)                                           |
 
 Distribution (HTML) = 
+ComposedDistribution
 <ul>
+  <li>name=ComposedDistribution</li>
   <li>dimension: 3</li>
-  <li>copula: IndependentCopula</li>
+  <li>description=[X0,X1,X2]
+  <li>copula: IndependentCopula(dimension = 3)</li>
 </ul>
 
 <table>

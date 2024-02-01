@@ -2,7 +2,7 @@
 /**
  *  @brief PhysicalSpaceCrossEntropyImportanceSampling implement class for Cross Entropy Importance Sampling algorithms in Physical Space
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,8 @@
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/NLopt.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -51,10 +52,14 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
   , activeParameters_(activeParameters)
-  , solver_(NLopt("LD_LBFGS"))
+  , solver_(OptimizationAlgorithm::Build("Cobyla"))
 {
+  solver_.setCheckStatus(false);
+  if (OptimizationAlgorithm::GetAlgorithmNames().contains("LD_LBFGS"))
+    solver_ = OptimizationAlgorithm::Build("LD_LBFGS");
+
   auxiliaryDistribution_ = auxiliaryDistribution;
-  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
   bounds_ = bounds;
   initialAuxiliaryDistributionParameters_ = initialAuxiliaryDistributionParameters;
 

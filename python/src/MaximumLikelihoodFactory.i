@@ -9,5 +9,6 @@
 %ignore OT::MaximumLikelihoodFactory::buildParameter;
 %ignore OT::MaximumLikelihoodFactory::BuildMaximumLikelihoodEstimator;
 
+%copyctor OT::MaximumLikelihoodFactory;
+
 %include openturns/MaximumLikelihoodFactory.hxx
-namespace OT { %extend MaximumLikelihoodFactory { MaximumLikelihoodFactory(const MaximumLikelihoodFactory & other) { return new OT::MaximumLikelihoodFactory(other); } } }

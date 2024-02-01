@@ -6,5 +6,6 @@
 
 %include CholeskyMethod_doc.i
 
+%copyctor OT::CholeskyMethod;
+
 %include openturns/CholeskyMethod.hxx
-namespace OT { %extend CholeskyMethod { CholeskyMethod(const CholeskyMethod & other) { return new OT::CholeskyMethod(other); } } }

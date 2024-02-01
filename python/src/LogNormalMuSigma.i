@@ -6,5 +6,6 @@
 
 %include LogNormalMuSigma_doc.i
 
+%copyctor OT::LogNormalMuSigma;
+
 %include openturns/LogNormalMuSigma.hxx
-namespace OT{ %extend LogNormalMuSigma { LogNormalMuSigma(const LogNormalMuSigma & other) { return new OT::LogNormalMuSigma(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief Least Angle Regression Algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,8 +33,8 @@ typedef Collection<Scalar>    ScalarCollection;
 static const Factory<LARS> Factory_LARS;
 
 /* Default constructor */
-LARS::LARS(const Bool verbose)
-  : BasisSequenceFactoryImplementation(verbose)
+LARS::LARS()
+  : BasisSequenceFactoryImplementation()
   , relativeConvergence_(1.0)
   , oldCoefficientsL1Norm_(0.0)
   , coefficientsL1Norm_(0.0)
@@ -68,6 +68,9 @@ void LARS::initialize()
   predictors_.clear();
   inPredictors_.clear();
   mPsiX_ = Matrix();
+
+  indicesHistory_.clear();
+  coefficientsHistory_.clear();
 }
 
 /* Method to create new BasisSequence objects */
@@ -129,7 +132,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
           }
         } // if
     }
-    if (getVerbose()) LOGINFO(OSS() << "predictor=" << candidatePredictor << " residual=" << cMax);
+    LOGDEBUG(OSS() << "predictor=" << candidatePredictor << " residual=" << cMax);
 
     // add the predictor index
     predictors_.add(candidatePredictor);
@@ -149,17 +152,17 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j]) cI.add(cC[j]);
 
-    if (getVerbose()) LOGINFO(OSS() << "matrix of elements of the inactive set built.");
+    LOGDEBUG(OSS() << "matrix of elements of the inactive set built.");
 
-    Matrix mPsiAk(method.computeWeightedDesign());
+    const Matrix mPsiAk(method.computeWeightedDesign());
 
-    if (getVerbose()) LOGINFO(OSS() << "matrix of elements of the active set built.");
+    LOGDEBUG(OSS() << "matrix of elements of the active set built.");
 
-    Point ga1(method.solveNormal(sC));
-    if (getVerbose()) LOGINFO( OSS() << "Solved normal equation.");
+    const Point ga1(method.solveNormal(sC));
+    LOGDEBUG(OSS() << "Solved normal equation.");
 
     // normalization coefficient
-    Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
+    const Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
 
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);
@@ -192,11 +195,22 @@ void LARS::updateBasis(LeastSquaresMethod & method,
       coefficients_[predictors_[j]] += step * descentDirectionAk[j];
       coefficientsL1Norm_ += std::abs(coefficients_[predictors_[j]]);
     }
-
     if (coefficientsL1Norm_ > 0.0) relativeConvergence_ = std::abs(1.0 - oldCoefficientsL1Norm_ / coefficientsL1Norm_);
     else relativeConvergence_ = -1.0;
 
-    if (getVerbose()) LOGINFO( OSS() << "End of iteration " << iterations << " over " << maximumNumberOfIterations - 1 << " iteration(s)" << ", relative convergence=" << relativeConvergence_ << " for a target=" << maximumRelativeConvergence_);
+    // selection history in the global basis
+    Indices indicesSelection(predictorsSize);
+    Point coefficientsSelection(predictorsSize);
+    const Indices initialIndices(method.getInitialIndices());
+    for (UnsignedInteger j = 0; j < predictorsSize; ++ j)
+    {
+      indicesSelection[j] = initialIndices[predictors_[j]];
+      coefficientsSelection[j] = coefficients_[predictors_[j]];
+    }
+    indicesHistory_.add(indicesSelection);
+    coefficientsHistory_.add(coefficientsSelection);
+
+    LOGDEBUG(OSS() << "End of iteration " << iterations << " over " << maximumNumberOfIterations - 1 << " iteration(s)" << ", relative convergence=" << relativeConvergence_ << " for a target=" << maximumRelativeConvergence_);
   }
 }
 
@@ -221,6 +235,12 @@ void LARS::save(Advocate & adv) const
 void LARS::load(Advocate & adv)
 {
   BasisSequenceFactoryImplementation::load(adv);
+}
+
+Collection<Indices> LARS::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = coefficientsHistory_;
+  return indicesHistory_;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -25,7 +25,7 @@ print("myFunc(point)=", myFunc(point))
 print("myFunc.gradient(point)=", myFunc.gradient(point))
 print("myFunc.hessian(point)=", myFunc.hessian(point))
 # Get the number of calls */
-print("called ", myFunc.getCallsNumber(), " times")
+print("called ", myFunc.getEvaluationCallsNumber(), " times")
 
 # Construction based on a PointToFieldFunction followed by a FieldToPointFunction
 # Create a KarhunenLoeveResult
@@ -55,4 +55,4 @@ print("myFunc(point)=", myFunc(point))
 print("myFunc.gradient(point)=", myFunc.gradient(point).clean(1.0e-8))
 print("myFunc.hessian(point)=", myFunc.hessian(point).clean(1.0e-7))
 # Get the number of calls */
-print("called ", myFunc.getCallsNumber(), " times")
+print("called ", myFunc.getEvaluationCallsNumber(), " times")

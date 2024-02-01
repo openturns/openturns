@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements numerical math functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,6 +70,12 @@ String Evaluation::__repr__() const
 String Evaluation::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
+}
+
+/* String converter */
+String Evaluation::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
 }
 
 /* Description Accessor */

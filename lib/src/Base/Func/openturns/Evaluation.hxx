@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements numerical math functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,6 +67,9 @@ public:
 
   /** String converter */
   String __str__(const String & offset = "") const override;
+
+  /** String converter */
+  String _repr_html_() const override;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);

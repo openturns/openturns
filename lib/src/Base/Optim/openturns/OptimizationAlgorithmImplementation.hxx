@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,33 +72,32 @@ public:
   virtual void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
   virtual UnsignedInteger getMaximumIterationNumber() const;
 
-  /** Maximum evaluations number accessor */
+  /** Maximum calls number accessor */
+  virtual void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  virtual UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   virtual void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   virtual UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
   virtual Scalar getMaximumAbsoluteError() const;
-
-  /** Maximum absolute error accessor */
   virtual void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
   virtual Scalar getMaximumRelativeError() const;
-
-  /** Maximum relative error accessor */
   virtual void setMaximumRelativeError(const Scalar maximumRelativeError);
 
   /** Maximum residual error accessor */
   virtual Scalar getMaximumResidualError() const;
-
-  /** Maximum residual error accessor */
   virtual void setMaximumResidualError(const Scalar maximumResidualError);
 
   /** Maximum constraint error accessor */
   virtual Scalar getMaximumConstraintError() const;
-
-  /** Maximum constraint error accessor */
   virtual void setMaximumConstraintError(const Scalar maximumConstraintError);
+
+  /** Maximum time accessor */
+  virtual void setMaximumTimeDuration(const Scalar maximumTime);
+  virtual Scalar getMaximumTimeDuration() const;
 
   /** String converter */
   String __repr__() const override;
@@ -109,10 +108,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Verbose accessor */
-  virtual Bool getVerbose() const;
-  virtual void setVerbose(const Bool verbose);
-
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   virtual void setProgressCallback(ProgressCallback callBack, void * state = 0);
@@ -120,6 +115,10 @@ public:
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = 0);
+
+  /** Check status accessor */
+  void setCheckStatus(const Bool checkStatus);
+  Bool getCheckStatus() const;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
@@ -141,16 +140,20 @@ private:
   OptimizationProblem problem_;
 
   /** Number of outermost iterations (in case of nested iterations) */
-  UnsignedInteger maximumIterationNumber_;
+  UnsignedInteger maximumIterationNumber_ = 0.0;
 
   /** Maximum function calls */
-  UnsignedInteger maximumEvaluationNumber_;
+  UnsignedInteger maximumCallsNumber_ = 0.0;
 
-  Scalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
-  Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
-  Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
-  Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
-  Bool verbose_ = false;
+  Scalar maximumTimeDuration_ = -1.0;
+
+  Scalar maximumAbsoluteError_ = 0.0;    /**< Value of ||x_n - x_{n-1}|| */
+  Scalar maximumRelativeError_ = 0.0;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
+  Scalar maximumResidualError_ = 0.0;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
+  Scalar maximumConstraintError_ = 0.0;  /**< Value of ||constraints(x_n)|| for the active constraints */
+
+  /* Whether to check if optimization has converged or not */
+  Bool checkStatus_ = true;
 
 } ; /* class OptimizationAlgorithmImplementation */
 

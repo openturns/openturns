@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Exception for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,17 +34,17 @@ ExitCodeValue check()
     throw EXC(HERE) << "This is the reason of the exception";
     std::cerr << "--- Exception not thrown !" << std::endl;
   }
-  catch (const EXC & ex)
+  catch (const EXC &)
   {
     rc = ExitCode::Success;
     std::cerr << "+++ Correct exception caught." << std::endl;
   }
-  catch (const Exception & ex)
+  catch (const Exception &)
   {
     rc = ExitCode::Error;
     std::cerr << "--- General exception caught !" << std::endl;
   }
-  catch (const std::exception & ex)
+  catch (const std::exception &)
   {
     rc = ExitCode::Error;
     std::cerr << "--- Standard exception caught !" << std::endl;
@@ -68,12 +68,12 @@ ExitCodeValue check< Exception >()
     throw Exception(HERE) << "This is the reason of the exception";
     std::cerr << "--- Exception not thrown !" << std::endl;
   }
-  catch (const Exception & ex)
+  catch (const Exception &)
   {
     rc = ExitCode::Success;
     std::cerr << "+++ Correct exception caught." << std::endl;
   }
-  catch (const std::exception & ex)
+  catch (const std::exception &)
   {
     rc = ExitCode::Error;
     std::cerr << "--- Standard exception caught !" << std::endl;
@@ -90,7 +90,7 @@ ExitCodeValue check< Exception >()
 
 int main(int, char *[])
 {
-  Log::Show( Log::ALL );
+  Log::Show(Log::ALL);
 
   TESTPREAMBLE;
   OStream fullprint(std::cout);

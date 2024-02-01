@@ -6,5 +6,6 @@
 
 %include QuadraticTaylor_doc.i
 
+%copyctor OT::QuadraticTaylor;
+
 %include openturns/QuadraticTaylor.hxx
-namespace OT { %extend QuadraticTaylor { QuadraticTaylor(const QuadraticTaylor & other) { return new OT::QuadraticTaylor(other); } } }

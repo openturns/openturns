@@ -1,9 +1,8 @@
 %feature("docstring") OT::PoissonFactory
 "Poisson factory.
 
-Available constructor:
-    PoissonFactory()
-
+Notes
+-----
 We use the following estimator:
 
 .. math::
@@ -16,3 +15,31 @@ We use the following estimator:
 See also
 --------
 DistributionFactory, Poisson"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PoissonFactory::buildAsPoisson
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsPoisson()
+
+    buildAsPoisson(*sample*)
+
+    buildAsPoisson(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Poisson`.
+
+Returns
+-------
+distribution : :class:`~openturns.Poisson`
+    The estimated distribution as a Poisson.
+    
+    In the first usage, the default Poisson distribution is built."

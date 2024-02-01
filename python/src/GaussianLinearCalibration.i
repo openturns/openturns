@@ -6,5 +6,6 @@
 
 %include GaussianLinearCalibration_doc.i
 
+%copyctor OT::GaussianLinearCalibration;
+
 %include openturns/GaussianLinearCalibration.hxx
-namespace OT { %extend GaussianLinearCalibration { GaussianLinearCalibration(const GaussianLinearCalibration & other) { return new OT::GaussianLinearCalibration(other); } } }

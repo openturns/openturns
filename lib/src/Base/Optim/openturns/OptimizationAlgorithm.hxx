@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -74,7 +74,10 @@ public:
   UnsignedInteger getMaximumIterationNumber() const;
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
-  /** Maximum evaluations number accessor */
+  /** Maximum calls number accessor */
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  UnsignedInteger getMaximumCallsNumber() const;
+  // @deprecated
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   UnsignedInteger getMaximumEvaluationNumber() const;
 
@@ -94,9 +97,9 @@ public:
   Scalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const Scalar maximumConstraintError);
 
-  /* Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
+  /** Maximum time accessor */
+  void setMaximumTimeDuration(const Scalar maximumTime);
+  Scalar getMaximumTimeDuration() const;
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
@@ -106,6 +109,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Check status accessor */
+  void setCheckStatus(const Bool checkStatus);
+  Bool getCheckStatus() const;
+  
   /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
 

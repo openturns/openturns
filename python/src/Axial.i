@@ -6,5 +6,6 @@
 
 %include Axial_doc.i
 
+%copyctor OT::Axial;
+
 %include openturns/Axial.hxx
-namespace OT { %extend Axial { Axial(const Axial & other) { return new OT::Axial(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate Sobol indices
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -257,7 +257,7 @@ void SobolSimulationAlgorithm::run()
     LOGINFO(OSS() << "SobolSimulationAlgorithm::run: FO=" << firstOrderIndicesDistribution);
 
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
 
     Bool converged = true;
     for (UnsignedInteger j = 0; (j < dimension) && converged; ++ j)
@@ -384,14 +384,16 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
       dataUpperBound.add(pt);
     }
   }
-  const Curve estimateCurve(dataEstimate, "red", "solid", 2, "index estimate");
+  Curve estimateCurve(dataEstimate, "index estimate");
+  estimateCurve.setLineWidth(2);
   OSS oss;
   oss << label << " order index convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
   convergenceGraph.add(estimateCurve);
-  const Curve lowerBoundCurve(dataLowerBound, "green", "solid", 1, "bounds");
-  const Curve upperBoundCurve(dataUpperBound, "green", "solid", 1, "");
+  const Curve lowerBoundCurve(dataLowerBound, "bounds");
+  Curve upperBoundCurve(dataUpperBound);
   convergenceGraph.add(lowerBoundCurve);
+  upperBoundCurve.setColor(convergenceGraph.getDrawable(1).getColor());
   convergenceGraph.add(upperBoundCurve);
   return convergenceGraph;
 }

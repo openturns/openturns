@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation class of the scalar nonlinear solver based on
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,8 +38,8 @@ static const Factory<Bisection> Factory_Bisection;
 Bisection::Bisection(const Scalar absoluteError,
                      const Scalar relativeError,
                      const Scalar residualError,
-                     const UnsignedInteger maximumFunctionEvaluation)
-  : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
+                     const UnsignedInteger maximumCallsNumber)
+  : SolverImplementation(absoluteError, relativeError, residualError, maximumCallsNumber)
 {
   // Nothing to do
 }
@@ -68,8 +68,8 @@ Scalar Bisection::solve(const UniVariateFunction & function,
                         const Scalar supValue) const
 {
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation = 0;
-  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
+  UnsignedInteger callsNumber = 0;
+  const UnsignedInteger maximumCallsNumber = getMaximumCallsNumber();
   /* We transform function(x) = value into function(x) - value = 0 */
   Scalar a = infPoint;
   Scalar fA = infValue - value;
@@ -92,10 +92,10 @@ Scalar Bisection::solve(const UniVariateFunction & function,
     // If the bracketing interval is small enough, return its center
     if (std::abs(delta) <= error) break;
     // If all the evaluation budget has been spent, return the approximation
-    if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
+    if (callsNumber == maximumCallsNumber) break;
     // New evaluation
     fC = function(c) - value;
-    ++usedFunctionEvaluation;
+    ++callsNumber;
     // If the absolute value of the function is small enough, c is a root
     if (std::abs(fC) <= getResidualError()) break;
     // If the function takes a value at middle on the same side of value that at left
@@ -110,7 +110,7 @@ Scalar Bisection::solve(const UniVariateFunction & function,
       fB = fC;
     }
   } // end Bisection loop
-  usedFunctionEvaluation_ = usedFunctionEvaluation;
+  callsNumber_ = callsNumber;
   return c;
 }
 

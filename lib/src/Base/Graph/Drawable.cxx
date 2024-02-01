@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Drawable
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -317,12 +317,6 @@ void Drawable::setTextSize(const Scalar size)
 Sample Drawable::getData() const
 {
   return getImplementation()->getData();
-}
-
-/* Get R point code from key */
-UnsignedInteger Drawable::getPointCode(const String key) const
-{
-  return getImplementation()->getPointCode(key);
 }
 
 /* Give the colors name */

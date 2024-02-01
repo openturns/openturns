@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of PostAnalyticalControlledImportanceSampling class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,7 +66,7 @@ int main(int, char *[])
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     Cobyla myCobyla;
-    myCobyla.setMaximumEvaluationNumber(400);
+    myCobyla.setMaximumCallsNumber(400);
     FORM myAlgo(myCobyla, myEvent, mean);
 
     /* Perform the simulation */

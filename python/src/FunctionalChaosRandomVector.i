@@ -6,5 +6,6 @@
 
 %include FunctionalChaosRandomVector_doc.i
 
+%copyctor OT::FunctionalChaosRandomVector;
+
 %include openturns/FunctionalChaosRandomVector.hxx
-namespace OT { %extend FunctionalChaosRandomVector { FunctionalChaosRandomVector(const FunctionalChaosRandomVector & other) { return new OT::FunctionalChaosRandomVector(other); } } }

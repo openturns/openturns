@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Stat
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -87,5 +87,6 @@
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/IsotropicCovarianceModel.hxx"
+#include "openturns/LatentVariableModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

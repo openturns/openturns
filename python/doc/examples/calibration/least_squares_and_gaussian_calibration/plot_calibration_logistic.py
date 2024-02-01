@@ -74,8 +74,7 @@ populationObservations = observedSample[:, 1]
 populationObservations[0:5]
 
 # %%
-palette = ot.Drawable.BuildDefaultPalette(1)
-graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "topleft")
+graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "upper left")
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
 cloud.setPointStyle(
@@ -83,10 +82,10 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 curve = ot.Curve(timeObservations, populationObservations)
+curve.setColor(graph.getDrawable(0).getColor())
 curve.setLegend("")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
-graph.setColors([palette[0]] * 2)
 view = otv.View(graph)
 
 # %%
@@ -199,7 +198,7 @@ print(populationPredicted[:5])
 
 # %%
 graph = ot.Graph(
-    "Before calibration", "Time (years)", "Population (Millions)", True, "topleft"
+    "Before calibration", "Time (years)", "Population (Millions)", True, "upper left"
 )
 # Observations
 cloud = ot.Cloud(timeObservations, populationObservations)
@@ -213,7 +212,6 @@ cloud = ot.Cloud(timeObservations.asPoint(), populationPredicted)
 cloud.setLegend("Predictions")
 cloud.setPointStyle(ot.ResourceMap.GetAsString("CalibrationResult-PriorPointStyle"))
 graph.add(cloud)
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph)
 
 # %%
@@ -322,7 +320,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

@@ -192,7 +192,7 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
     graph = val.drawValidation().getGraph(0, 0)
     graph.setLegends([""])
     graph.setLegends(["%s, Q2 = %.2f%%" % (title, 100 * Q2), ""])
-    graph.setLegendPosition("topleft")
+    graph.setLegendPosition("upper left")
     return graph
 
 

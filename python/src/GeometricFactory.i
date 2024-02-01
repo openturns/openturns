@@ -6,5 +6,6 @@
 
 %include GeometricFactory_doc.i
 
+%copyctor OT::GeometricFactory;
+
 %include openturns/GeometricFactory.hxx
-namespace OT { %extend GeometricFactory { GeometricFactory(const GeometricFactory & other) { return new OT::GeometricFactory(other); } } }

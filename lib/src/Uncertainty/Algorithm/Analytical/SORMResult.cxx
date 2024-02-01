@@ -2,7 +2,7 @@
 /**
  *  @brief SORMResult implements the results obtained from the Second Order Reliability Method
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -342,9 +342,10 @@ String SORMResult::__repr__() const
       << " eventProbabilityBreitung=" << eventProbabilityBreitung_
       << " eventProbabilityHohenbichler=" << eventProbabilityHohenbichler_
       << " eventProbabilityTvedt=" << eventProbabilityTvedt_
-      << " generalisedReliabilityIndexBreitung=" << generalisedReliabilityIndexBreitung_
-      << " generalisedReliabilityIndexHohenbichler=" << generalisedReliabilityIndexHohenbichler_
-      << " generalisedReliabilityIndexTvedt=" << generalisedReliabilityIndexTvedt_
+      // TODO JM: remove the check after the use of infs has been thoroughly tested
+      << " generalisedReliabilityIndexBreitung=" << (generalisedReliabilityIndexBreitung_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexBreitung_ : generalisedReliabilityIndexBreitung_ * 2.0)
+      << " generalisedReliabilityIndexHohenbichler=" << (generalisedReliabilityIndexHohenbichler_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexHohenbichler_ : generalisedReliabilityIndexHohenbichler_ * 2.0)
+      << " generalisedReliabilityIndexTvedt=" << (generalisedReliabilityIndexTvedt_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexTvedt_ : generalisedReliabilityIndexTvedt_ * 2.0)
       << " gradientLimitStateFunction_=" << gradientLimitStateFunction_
       << " hessianLimitStateFunction_=" << hessianLimitStateFunction_;
   return oss;
@@ -356,30 +357,30 @@ String SORMResult::__str__(const String & offset) const
   OSS oss;
   try
   {
-    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << "\n" << offset;
+    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << "\n" << offset;
   }
   try
   {
-    oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << "\n" << offset;
+    oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << "\n" << offset;
   }
   try
   {
-    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << "\n" << offset;
+    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << "\n" << offset;
   }
   catch (const NotDefinedException &)
   {
-    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << "\n" << offset;
   }
   return oss;
 }

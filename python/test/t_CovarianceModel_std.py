@@ -8,7 +8,6 @@ ot.TESTPREAMBLE()
 
 
 def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
-
     inputDimension = myModel.getInputDimension()
     dimension = myModel.getOutputDimension()
 

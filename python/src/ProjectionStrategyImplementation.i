@@ -6,5 +6,9 @@
 
 %include ProjectionStrategyImplementation_doc.i
 
+%ignore OT::ProjectionStrategyImplementation::getSelectionHistory;
+%ignore OT::ProjectionStrategyImplementation::getErrorHistory;
+
+%copyctor OT::ProjectionStrategyImplementation;
+
 %include openturns/ProjectionStrategyImplementation.hxx
-namespace OT{ %extend ProjectionStrategyImplementation { ProjectionStrategyImplementation(const ProjectionStrategyImplementation & other) { return new OT::ProjectionStrategyImplementation(other); } } }

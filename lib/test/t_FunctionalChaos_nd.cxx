@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of MonteCarlo class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -169,7 +169,7 @@ int main(int, char *[])
     UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
     UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
     Scalar threshold = 1.0e-6;
-    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
+    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
 

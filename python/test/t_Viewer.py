@@ -5,14 +5,12 @@ import openturns as ot
 
 # Curve
 graph = ot.Normal().drawCDF()
-# graph.draw('curve1.png')
 view = View(graph, pixelsize=(800, 600), plot_kw={"color": "blue"})
 # view.save('curve1.png')
 view.show()
 
 # Contour
 graph = ot.Normal([1, 2], [3, 5], ot.CorrelationMatrix(2)).drawPDF()
-# graph.draw('curve2.png')
 view = View(graph)
 # view.save('curve2.png')
 view.show()
@@ -22,7 +20,6 @@ normal = ot.Normal(1)
 size = 100
 sample = normal.getSample(size)
 graph = ot.HistogramFactory().build(sample, 10).drawPDF()
-# graph.draw('curve3.png')
 view = View(graph)
 # view.save('curve3.png')
 view.show()
@@ -33,7 +30,6 @@ normal = ot.Normal(1)
 sample = normal.getSample(size)
 sample2 = ot.Gamma(3.0, 4.0, 0.0).getSample(size)
 graph = ot.VisualTest.DrawQQplot(sample, sample2, 100)
-# graph.draw('curve4.png')
 view = View(graph)
 # view.save('curve4.png')
 view.ShowAll(block=True)
@@ -47,13 +43,19 @@ size = 100
 sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
 sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
 cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
-cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
-graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
+cloud2 = ot.Cloud(sample2, "red", "fcircle", "Sample2 Cloud")
+graph = ot.Graph("two samples clouds", "x1", "x2", True, "upper right")
 graph.add(cloud1)
 graph.add(cloud2)
-# graph.draw('curve5.png')
 view = View(graph)
 # view.save('curve5.png')
+view.show()
+
+# Cloud, empty legend
+graph = ot.Graph("two samples clouds", "x1", "x2", True, "upper right")
+cloud1 = ot.Cloud(sample1)
+graph.add(cloud1)
+view = View(graph)
 view.show()
 
 # Text
@@ -106,7 +108,6 @@ outputSample = model(inputSample)
 graph = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 2.5, 3.0, "red", False
 )
-# graph.draw('curve6.png')
 view = View(graph, legend_kw={"loc": "lower center"})
 # view.save('curve6.png')
 view.show()
@@ -114,7 +115,6 @@ view.show()
 # Staircase
 distribution = ot.Poisson(10.0)
 graph = distribution.drawCDF()
-# graph.draw('curve7.png')
 view = View(graph)
 # view.save('curve7.png')
 view.ShowAll(block=True)
@@ -123,7 +123,6 @@ view.ShowAll(block=True)
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     [0.4, 0.3, 0.2, 0.1], ["a0", "a1", "a2", "a3"], "Zou"
 )
-# graph.draw('curve8.png')
 view = View(graph)
 # view.save('curve8.png')
 view.show()
@@ -145,7 +144,6 @@ myAlgo.setMaximumCoefficientOfVariation(0.05)
 myAlgo.setMaximumOuterSampling(int(1e5))
 myAlgo.run()
 graph = myAlgo.drawProbabilityConvergence()
-# graph.draw('curve10.png')
 view = View(graph)
 # view.save('curve10.png')
 view.show()
@@ -164,7 +162,7 @@ for i in range(size):
     cursor[0] = tmp
     cursor[1] = tmp * tmp
     data2[i] = cursor
-graph = ot.Graph("Some polygons", "x1", "x2", True, "topright", 1.0)
+graph = ot.Graph("Some polygons", "x1", "x2", True, "upper right", 1.0)
 myPolygon1 = ot.Polygon(data1)
 myPolygon1.setColor("blue")
 myPolygon1.setLegend("polygon 1")
@@ -173,7 +171,6 @@ myPolygon2 = ot.Polygon(data2)
 myPolygon2.setColor("red")
 myPolygon2.setLegend("polygon 2")
 graph.add(myPolygon2)
-# graph.draw('curve11.png')
 view = View(graph)
 # view.save('curve11.png')
 view.ShowAll(block=True)
@@ -181,21 +178,20 @@ view.ShowAll(block=True)
 # PolygonArray
 generator = ot.Normal(2)
 size = 5
-array = ot.PolygonCollection(size)
+array = [None] * size
 palette = ot.Drawable.BuildDefaultPalette(size)
 palette[0] = "blue"
 for i in range(size):
     vertices = generator.getSample(3)
     array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])
-graph = ot.Graph("An array of polygons", "x", "y", True, "topright")
+graph = ot.Graph("An array of polygons", "x", "y", True, "upper right")
 parray = ot.PolygonArray(array)
 parray.setLegend("array of polys")
 graph.add(parray)
-# graph.draw('curve12.png')
 view = View(graph)
 # view.save('curve12.png')
 
-# BipartiteGraph.draw
+# BipartiteGraph
 graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]]).draw()
 view = View(graph)
 
@@ -210,7 +206,7 @@ vect = ot.RandomVector(distribution)
 output = ot.CompositeRandomVector(f, vect)
 event = ot.ThresholdEvent(output, ot.Less(), -3.0)
 solver = ot.Cobyla()
-solver.setMaximumEvaluationNumber(400)
+solver.setMaximumCallsNumber(400)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)
@@ -257,7 +253,7 @@ assert b"PNG" in png[:10]
 
 # BuildDefaultPalette, BuildTableauPalette
 ncurves = 5
-graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")
+graph = ot.Graph("BuildPalette", "X", "Y", True, "upper right")
 n = 20
 x = ot.Sample([[i] for i in range(n)])
 for i in range(ncurves):

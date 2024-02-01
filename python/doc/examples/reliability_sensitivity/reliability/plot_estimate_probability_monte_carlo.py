@@ -3,7 +3,8 @@ Estimate a probability with Monte Carlo
 =======================================
 """
 # %%
-# In this example we estimate a probability by means of a simulation algorithm, the Monte-Carlo algorithm. To do this, we need the classes `MonteCarloExperiment` and `ProbabilitySimulationAlgorithm`.
+# In this example we estimate a probability by means of a simulation algorithm, the Monte-Carlo algorithm.
+# To do this, we need the classes `MonteCarloExperiment` and `ProbabilitySimulationAlgorithm`.
 # We consider the :ref:`axial stressed beam <use-case-stressed-beam>` example.
 
 

@@ -29,7 +29,7 @@ The different drawable elements are:
 Examples
 --------
 >>> import openturns as ot
->>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'topright')
+>>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'upper right')
 >>> sample = ot.Normal([0.0,0.0], [1.0,1.0], ot.CorrelationMatrix(2)).getSample(10)
 >>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
 >>> myGraph.add(myCloud)"
@@ -231,7 +231,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Drawable().getColor())
-blue
+#1f77b4
 
 See Also
 --------
@@ -280,7 +280,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Drawable().getColorCode())
-#0000FF
+#1f77b4
 
 See Also
 --------
@@ -501,29 +501,11 @@ validPointStyles : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().GetValidPointStyles()[:5])
-[bullet,circle,diamond,dot,fcircle]"
+>>> print(ot.Drawable().GetValidPointStyles())
+[square,circle,triangleup,plus,times,..."
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidPointStyles
 OT_Drawable_GetValidPointStyles_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Drawable_getPointCode_doc
-"Accessor to the code of the points style.
-
-Parameters
-----------
-pointStyle : str
-    Style point to be changed in code.
-
-Returns
--------
-code : int
-    Code of the style of the points within the drawable element."
-%enddef
-%feature("docstring") OT::DrawableImplementation::getPointCode
-OT_Drawable_getPointCode_doc
 
 // ---------------------------------------------------------------------
 

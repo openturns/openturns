@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a product-kernel multidimensional mixture.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -115,7 +116,7 @@ String KernelMixture::__repr__() const
 String KernelMixture::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(kernel = " << p_kernel_->__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << Os::GetEndOfLine() << offset << sample_.__str__(offset);
+  oss << getClassName() << "(kernel = " << p_kernel_->__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << "\n" << offset << sample_.__str__(offset);
   return oss;
 }
 
@@ -563,7 +564,7 @@ Scalar KernelMixture::computeConditionalCDF(const Scalar x,
   }
   if (marginalPDF <= 0.0) return 0.0;
   // No need to normalize by 1/h as it simplifies
-  return std::min(1.0, jointCDF / marginalPDF);
+  return SpecFunc::Clip01(jointCDF / marginalPDF);
 }
 
 Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const

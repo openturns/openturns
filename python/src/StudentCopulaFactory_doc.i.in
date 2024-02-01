@@ -1,0 +1,47 @@
+%feature("docstring") OT::StudentCopulaFactory
+"Student copula factory.
+
+This class implements the method described in [peng2014]_.
+It consists in inferring the correlation matrix and then estimating the
+:math:`\nu` parameter via profiled likelihood maximization.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` entries can be used to tweak
+the optimization step:
+
+- `StudentCopulaFactory-MaximumAbsoluteError`
+- `StudentCopulaFactory-MaximumConstraintError`
+- `StudentCopulaFactory-MaximumObjectiveError`
+- `StudentCopulaFactory-MaximumRelativeError`
+- `StudentCopulaFactory-NuMin`
+- `StudentCopulaFactory-NuMax`
+- `StudentCopulaFactory-NuStart`
+- `StudentCopulaFactory-DefaultOptimizationAlgorithm`
+- `StudentCopulaFactory-MaximumEvaluationNumber`
+
+See also
+--------
+DistributionFactory, StudentCopula
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopulaFactory::setOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the log-likelihood.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopulaFactory::getOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the log-likelihood."

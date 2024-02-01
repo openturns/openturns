@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Drawable
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,10 +40,10 @@ static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
-/* A map  matching keys with R codes for point symbols */
-std::map<String, UnsignedInteger> DrawableImplementation::SymbolCodes;
-/* A map  matching keys with R codes for point symbols */
+/* Accepted point styles */
+Description DrawableImplementation::ValidPointStyles;
 
+/* A map  matching keys with R codes for colors */
 std::map<String, String> DrawableImplementation::ColorCodes;
 
 /* Accepted line styles */
@@ -54,22 +54,52 @@ Description DrawableImplementation::ValidFillStyles;
 
 void DrawableImplementation::InitializeValidParameterList()
 {
-  /* A map  matching keys with R codes for point symbols */
-  SymbolCodes["square"]       = 0;
-  SymbolCodes["circle"]       = 1;
-  SymbolCodes["triangleup"]   = 2;
-  SymbolCodes["plus"]         = 3;
-  SymbolCodes["times"]        = 4;
-  SymbolCodes["diamond"]      = 5;
-  SymbolCodes["triangledown"] = 6;
-  SymbolCodes["star"]         = 8;
-  SymbolCodes["fsquare"]      = 15;
-  SymbolCodes["fcircle"]      = 16;
-  SymbolCodes["ftriangleup"]  = 17;
-  SymbolCodes["fdiamond"]     = 18;
-  SymbolCodes["bullet"]       = 20;
-  SymbolCodes["dot"]          = 127;
-  SymbolCodes["none"]         = 256;
+  /* Accepted point symbols */
+  ValidPointStyles.setName("ValidPointStyles");
+  ValidPointStyles.add("square");
+  ValidPointStyles.add("circle");
+  ValidPointStyles.add("triangleup");
+  ValidPointStyles.add("plus");
+  ValidPointStyles.add("times");
+  ValidPointStyles.add("diamond");
+  ValidPointStyles.add("triangledown");
+  ValidPointStyles.add("star");
+  ValidPointStyles.add("fsquare");
+  ValidPointStyles.add("fcircle");
+  ValidPointStyles.add("ftriangleup");
+  ValidPointStyles.add("fdiamond");
+  ValidPointStyles.add("bullet");
+  ValidPointStyles.add("dot");
+  ValidPointStyles.add("none");
+  // https://matplotlib.org/stable/api/markers_api.html
+  ValidPointStyles.add(".");
+  ValidPointStyles.add(",");
+  ValidPointStyles.add("o");
+  ValidPointStyles.add("v");
+  ValidPointStyles.add("^");
+  ValidPointStyles.add("<");
+  ValidPointStyles.add(">");
+  ValidPointStyles.add("1");
+  ValidPointStyles.add("2");
+  ValidPointStyles.add("3");
+  ValidPointStyles.add("4");
+  ValidPointStyles.add("8");
+  ValidPointStyles.add("s");
+  ValidPointStyles.add("p");
+  ValidPointStyles.add("P");
+  ValidPointStyles.add("*");
+  ValidPointStyles.add("h");
+  ValidPointStyles.add("H");
+  ValidPointStyles.add("+");
+  ValidPointStyles.add("x");
+  ValidPointStyles.add("X");
+  ValidPointStyles.add("d");
+  ValidPointStyles.add("D");
+  ValidPointStyles.add("|");
+  ValidPointStyles.add("_");
+  ValidPointStyles.add("");
+  ValidPointStyles.add(" ");
+  ValidPointStyles.add("None");
 
   /* Accepted colors */
   ColorCodes["white"]                = "#FFFFFF";
@@ -797,10 +827,7 @@ Description DrawableImplementation::GetValidPointStyles()
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  Description validPointStyle;
-  std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.begin());
-  for (it = SymbolCodes.begin(); it != SymbolCodes.end(); ++it) validPointStyle.add(it->first);
-  return validPointStyle;
+  return ValidPointStyles;
 }
 
 
@@ -1018,7 +1045,7 @@ DrawableImplementation::DrawableImplementation()
   : PersistentObject()
   , legend_("")
   , data_()
-  , color_(ResourceMap::GetAsString("Drawable-DefaultColor"))
+  , color_(BuildDefaultPalette(1)[0])
   , fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle"))
   , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
@@ -1033,7 +1060,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
   : PersistentObject(),
     legend_(legend),
     data_(data),
-    color_(ResourceMap::GetAsString("Drawable-DefaultColor")),
+    color_(BuildDefaultPalette(1)[0]),
     fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
@@ -1062,6 +1089,7 @@ String DrawableImplementation::__repr__() const
       << " legend=" << legend_
       << " data=" << data_
       << " color=" << color_
+      << " isColorExplicitlySet=" << isColorExplicitlySet_
       << " fillStyle=" << fillStyle_
       << " lineStyle=" << lineStyle_
       << " pointStyle=" << pointStyle_
@@ -1074,12 +1102,14 @@ String DrawableImplementation::__str__(const String & offset) const
   OSS oss(false);
   oss << getClassName()
       << "(name=" << getName()
+      << ", legend=" << legend_
       << ", color=" << color_
+      << ", isColorExplicitlySet=" << isColorExplicitlySet_
       << ", fill=" << fillStyle_
       << ", line=" << lineStyle_
       << ", point=" << pointStyle_
       << ", width=" << lineWidth_
-      << ", data=" << Os::GetEndOfLine() << offset << data_.__str__(offset);
+      << ", data=" << "\n" << offset << data_.__str__(offset);
   return oss;
 }
 
@@ -1098,16 +1128,6 @@ String DrawableImplementation::getLegend() const
 void DrawableImplementation::setLegend(const String & legend)
 {
   legend_ = legend;
-}
-
-/* Point code accessor */
-UnsignedInteger DrawableImplementation::getPointCode(const String & key) const
-{
-  const std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.find(key));
-  UnsignedInteger pointCode = 0;
-  if(it != SymbolCodes.end()) pointCode = it->second;
-
-  return pointCode;
 }
 
 /* Check validity of color */
@@ -1195,9 +1215,9 @@ Bool DrawableImplementation::IsValidPointStyle(const String & key)
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  const std::map<String, UnsignedInteger>::iterator it(SymbolCodes.find(key));
+  const Description::const_iterator it = std::find(ValidPointStyles.begin(), ValidPointStyles.end(), key);
 
-  return (it != SymbolCodes.end());
+  return (it != ValidPointStyles.end());
 }
 
 /* Check validity of fill style */
@@ -1281,12 +1301,19 @@ void DrawableImplementation::setColor(const String & color)
   if(!IsValidColor(color)) throw InvalidArgumentException(HERE) << "Given color = " << color << " is incorrect";
 
   color_ = color;
+  isColorExplicitlySet_ = true;
 }
 
 /* Accessor for edge color */
 String DrawableImplementation::getEdgeColor() const
 {
   throw NotDefinedException(HERE) << "Error: no edge color in " << getClassName();
+}
+
+/* Accessor for explicit color validation flag*/
+Bool DrawableImplementation::isColorExplicitlySet() const
+{
+  return isColorExplicitlySet_;
 }
 
 /* Accessor for line style */
@@ -1587,6 +1614,7 @@ void DrawableImplementation::save(Advocate & adv) const
   adv.saveAttribute( "legend_", legend_ );
   adv.saveAttribute( "data_", data_ );
   adv.saveAttribute( "color_", color_ );
+  adv.saveAttribute( "isColorExplicitlySet_", isColorExplicitlySet_ );
   adv.saveAttribute( "fillStyle_", fillStyle_ );
   adv.saveAttribute( "lineStyle_", lineStyle_ );
   adv.saveAttribute( "pointStyle_", pointStyle_ );
@@ -1600,6 +1628,10 @@ void DrawableImplementation::load(Advocate & adv)
   adv.loadAttribute( "legend_", legend_ );
   adv.loadAttribute( "data_", data_ );
   adv.loadAttribute( "color_", color_ );
+  if (adv.hasAttribute("isColorExplicitlySet_"))
+    adv.loadAttribute("isColorExplicitlySet_", isColorExplicitlySet_);
+  else
+    isColorExplicitlySet_ = true;
   adv.loadAttribute( "fillStyle_", fillStyle_ );
   adv.loadAttribute( "lineStyle_", lineStyle_ );
   adv.loadAttribute( "pointStyle_", pointStyle_ );

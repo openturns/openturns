@@ -8,7 +8,7 @@
  *        means Transpose(linear).x, <quadratic, x> means
  *        Transpose_kj(quadratic).x
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -92,11 +92,11 @@ String QuadraticEvaluation::__repr__() const
 String QuadraticEvaluation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << QuadraticEvaluation::GetClassName() << Os::GetEndOfLine()
-      << offset << "  center :"  << Os::GetEndOfLine()   << offset << "  " << center_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << offset << "  constant :" << Os::GetEndOfLine()  << offset << "  " << constant_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << offset << "  linear :" << Os::GetEndOfLine()    << offset << "  " << linear_.transpose().__str__(offset + "  ") << Os::GetEndOfLine()
-      << offset << "  quadratic :" << Os::GetEndOfLine() << offset << "  " << quadratic_.__str__(offset + "  ") << Os::GetEndOfLine();
+  oss << QuadraticEvaluation::GetClassName() << "\n"
+      << offset << "  center :"  << "\n"   << offset << "  " << center_.__str__(offset + "  ") << "\n"
+      << offset << "  constant :" << "\n"  << offset << "  " << constant_.__str__(offset + "  ") << "\n"
+      << offset << "  linear :" << "\n"    << offset << "  " << linear_.transpose().__str__(offset + "  ") << "\n"
+      << offset << "  quadratic :" << "\n" << offset << "  " << quadratic_.__str__(offset + "  ") << "\n";
   return oss;
 }
 

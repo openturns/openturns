@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,7 +114,19 @@ void OptimizationAlgorithm::setMaximumIterationNumber(const UnsignedInteger maxi
   getImplementation()->setMaximumIterationNumber(maximumIterationNumber);
 }
 
-/* Maximum evaluations number accessor */
+/* Maximum calls number accessor */
+UnsignedInteger OptimizationAlgorithm::getMaximumCallsNumber() const
+{
+  return getImplementation()->getMaximumCallsNumber();
+}
+
+/* Maximum iterations number accessor */
+void OptimizationAlgorithm::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumCallsNumber(maximumCallsNumber);
+}
+
 UnsignedInteger OptimizationAlgorithm::getMaximumEvaluationNumber() const
 {
   return getImplementation()->getMaximumEvaluationNumber();
@@ -179,17 +191,16 @@ void OptimizationAlgorithm::setMaximumConstraintError(const Scalar maximumConstr
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
-/* Verbose accessor */
-Bool OptimizationAlgorithm::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
-/* Verbose accessor */
-void OptimizationAlgorithm::setVerbose(const Bool verbose)
+/* Maximum time accessor */
+void OptimizationAlgorithm::setMaximumTimeDuration(const Scalar maximumTime)
 {
   copyOnWrite();
-  getImplementation()->setVerbose(verbose);
+  getImplementation()->setMaximumTimeDuration(maximumTime);
+}
+
+Scalar OptimizationAlgorithm::getMaximumTimeDuration() const
+{
+  return getImplementation()->getMaximumTimeDuration();
 }
 
 /* String converter */
@@ -215,15 +226,27 @@ void OptimizationAlgorithm::run()
 
 void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setProgressCallback(callBack, state);
 }
 
-
 void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
+  copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
 }
 
+/* Check status accessor */
+void OptimizationAlgorithm::setCheckStatus(const Bool checkStatus)
+{
+  copyOnWrite();
+  getImplementation()->setCheckStatus(checkStatus);
+}
+
+Bool OptimizationAlgorithm::getCheckStatus() const
+{
+  return getImplementation()->getCheckStatus();
+}
 
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {

@@ -2,7 +2,7 @@
 /**
  *  @brief Sensitivity analysis based on functional chaos expansion
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
   const Description inputDescription = inputDistribution.getDescription();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
   OSS oss(false);
-  oss << FunctionalChaosSobolIndices::GetClassName() << Os::GetEndOfLine();
+  oss << FunctionalChaosSobolIndices::GetClassName() << "\n";
 
   const Indices indices(functionalChaosResult_.getIndices());
   const Sample coefficients(functionalChaosResult_.getCoefficients());
@@ -96,12 +96,12 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
     stdDev[i] = std::sqrt(covarianceMatrix(i, i));
 
   // quick summary
-  oss << "- input dimension=" << inputDimension << Os::GetEndOfLine()
-      << "- output dimension=" << outputDimension << Os::GetEndOfLine()
-      << "- basis size=" << functionalChaosResult_.getReducedBasis().getSize() << Os::GetEndOfLine()
-      << "- mean=" << mean << Os::GetEndOfLine()
-      << "- std-dev=" << stdDev << Os::GetEndOfLine();
-  oss << Os::GetEndOfLine();
+  oss << "- input dimension=" << inputDimension << "\n"
+      << "- output dimension=" << outputDimension << "\n"
+      << "- basis size=" << functionalChaosResult_.getReducedBasis().getSize() << "\n"
+      << "- mean=" << mean << "\n"
+      << "- std-dev=" << stdDev << "\n";
+  oss << "\n";
   String intermediateString;
   const Scalar varianceThreshold = ResourceMap::GetAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold");
   const UnsignedInteger maximumNumberOfOutput = ResourceMap::GetAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput");
@@ -111,7 +111,7 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
   {
     if (m > maximumNumberOfOutput) break;
     if (outputDimension > 1)
-      oss << "Marginal: " << m << Os::GetEndOfLine();
+      oss << "Marginal: " << m << "\n";
 
     const Point partOfVariance(getPartOfVariance(m));
     const Sample partOfVarianceSample(Sample::BuildFromPoint(partOfVariance));
@@ -122,11 +122,11 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
     oss << "| Index |"
         << OSS::PadString(" Multi-index", columnWidth) << "|"
         << OSS::PadString(" Variance part", columnWidth) << "|"
-        << Os::GetEndOfLine();
+        << "\n";
     // Print dashes
     oss << "|-------|";
     const String dashesSeparator(String(columnWidth, '-') + "|");
-    oss << dashesSeparator << dashesSeparator << Os::GetEndOfLine();
+    oss << dashesSeparator << dashesSeparator << "\n";
     // Print table content
     for (UnsignedInteger i = 0; i < basisSize; ++ i)
     {
@@ -142,19 +142,19 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
       oss << OSS::PadString(intermediateString, columnWidth) << "|";
 
       intermediateString = OSS() << " " << partOfVariance[sortedIndex];
-      oss << OSS::PadString(intermediateString, columnWidth) << "|" << Os::GetEndOfLine();
+      oss << OSS::PadString(intermediateString, columnWidth) << "|" << "\n";
     } // loop over the multi-indices
-    oss << Os::GetEndOfLine();
+    oss << "\n";
 
     // table of first/total order indices for each input
     // print table header
     oss << "| Input |" << OSS::PadString(" Name", columnWidth) << "|";
     oss << OSS::PadString(" Sobol' index", columnWidth) << "|";
     oss << OSS::PadString(" Total index", columnWidth) << "|";
-    oss << Os::GetEndOfLine();
+    oss << "\n";
     // print table dashes
     oss << "|-------|"
-        << dashesSeparator << dashesSeparator << dashesSeparator << Os::GetEndOfLine();
+        << dashesSeparator << dashesSeparator << dashesSeparator << "\n";
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
       oss << "|" << std::setw(6) << i << " |";
@@ -166,9 +166,9 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
       oss << OSS::PadString(intermediateString, columnWidth) << "|";
 
       intermediateString = OSS() << " " << getSobolTotalIndex(i, m);
-      oss << OSS::PadString(intermediateString, columnWidth) << "|" << Os::GetEndOfLine();
+      oss << OSS::PadString(intermediateString, columnWidth) << "|" << "\n";
     } // Loop over the input marginals
-    oss << Os::GetEndOfLine();
+    oss << "\n";
   } // Loop over the output marginals
   return oss;
 }

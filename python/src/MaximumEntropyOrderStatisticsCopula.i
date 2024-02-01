@@ -6,5 +6,6 @@
 
 %include MaximumEntropyOrderStatisticsCopula_doc.i
 
+%copyctor OT::MaximumEntropyOrderStatisticsCopula;
+
 %include openturns/MaximumEntropyOrderStatisticsCopula.hxx
-namespace OT { %extend MaximumEntropyOrderStatisticsCopula { MaximumEntropyOrderStatisticsCopula(const MaximumEntropyOrderStatisticsCopula & other) { return new OT::MaximumEntropyOrderStatisticsCopula(other); } } }

@@ -28,7 +28,7 @@ chaosResult = algo.getResult()
 chaosSobol = ot.FunctionalChaosSobolIndices(chaosResult)
 print(chaosSobol)
 print(chaosSobol._repr_html_())
-print(chaosSobol._repr_markdown_())
+print(chaosSobol.__repr_markdown__())
 
 
 class RepeatedFloodOutputDimensionFunction(ot.OpenTURNSPythonFunction):
@@ -69,4 +69,4 @@ chaosResult = chaosAlgo.getResult()
 chaosSobol = ot.FunctionalChaosSobolIndices(chaosResult)
 print(chaosSobol)
 print(chaosSobol._repr_html_())
-print(chaosSobol._repr_markdown_())
+print(chaosSobol.__repr_markdown__())

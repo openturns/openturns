@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all BlockIndependentDistribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,7 +107,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
   Description description(0);
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
-  bool parallel = true;
+  Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger distributionDimension = coll[i].getDimension();

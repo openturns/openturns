@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building BasisSequence objects
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,14 +46,10 @@ public:
   typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
-  explicit BasisSequenceFactoryImplementation(const Bool verbose = false);
+  BasisSequenceFactoryImplementation();
 
   /** Virtual constructor */
   BasisSequenceFactoryImplementation * clone() const override;
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** Method to create new BasisSequence objects */
   virtual BasisSequence build(const Sample & x,
@@ -89,12 +85,12 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-protected:
-  /** Verbosity flag */
-  Bool verbose_;
+  /** Selection history accessor */
+  virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
 
+protected:
   /** Stopping criterion on the L1-norm of the coefficients */
-  Scalar maximumRelativeConvergence_;
+  Scalar maximumRelativeConvergence_ = 0.0;
 
   /** The collection of indices of the vectors in the partial basis with respect to the orthogonal basis */
   Indices currentIndices_;

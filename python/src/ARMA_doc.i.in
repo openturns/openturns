@@ -26,7 +26,9 @@ whiteNoise : :class:`~openturns.WhiteNoise`
 
     Default is: the Normal distribution with zero mean and unit variance in dimension 1.
 ARMAstate : :class:`~openturns.ARMAState`
-    The state of the ARMA process which will be extended to the next time stamps. The state  is composed with :math:`p` values of the process and :math:`q` values of the white noise. This constructor is needed to get possible futurs from the current state.
+    The state of the ARMA process which will be extended to the next time stamps.
+    The state is composed with :math:`p` values of the process and :math:`q` values of the white noise.
+    This constructor is needed to get possible futures from the current state.
 
 
 Notes

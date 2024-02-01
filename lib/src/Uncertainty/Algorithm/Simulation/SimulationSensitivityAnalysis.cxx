@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -318,11 +318,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     internalX = static_cast<Scalar>(good) / size;
   }
   Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
-  const Description colors(Drawable::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
     Curve curve(dataCollection[j]);
-    curve.setColor(colors[j]);
     curve.setLegend(inputSample_.getDescription()[j]);
     graph.add(curve);
   }

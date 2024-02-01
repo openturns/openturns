@@ -6,5 +6,6 @@
 
 %include RandomDirection_doc.i
 
+%copyctor OT::RandomDirection;
+
 %include openturns/RandomDirection.hxx
-namespace OT{ %extend RandomDirection { RandomDirection(const RandomDirection & other) { return new OT::RandomDirection(other); } } }

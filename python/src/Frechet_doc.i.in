@@ -4,15 +4,21 @@
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
-    Scale parameter
+    Scale parameter.
+    
+    Default value is 1.0.
 alpha : float, :math:`\alpha > 0`
-    Shape parameter
+    Shape parameter.
+    
+    Default value is 1.0.
 gamma : float, optional
-    Location parameter
+    Location parameter.
+    
+    Default value is 0.0.
 
 Notes
 -----
-Its cumulative and probability density functions are defined as:
+Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
     :nowrap:

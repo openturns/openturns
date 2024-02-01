@@ -62,7 +62,7 @@ event.setName("deviation")
 # %%
 # Define a solver
 optimAlgo = ot.Cobyla()
-optimAlgo.setMaximumEvaluationNumber(1000)
+optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-10)
 optimAlgo.setMaximumRelativeError(1.0e-10)
 optimAlgo.setMaximumResidualError(1.0e-10)
@@ -168,7 +168,7 @@ plt.show()
 
 def cantilever_beam_python(X):
     E, F, L, II = X
-    return [F * L ** 3 / (3 * E * II)]
+    return [F * L**3 / (3 * E * II)]
 
 
 cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)

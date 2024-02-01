@@ -6,5 +6,6 @@
 
 %include FixedExperiment_doc.i
 
+%copyctor OT::FixedExperiment;
+
 %include openturns/FixedExperiment.hxx
-namespace OT { %extend FixedExperiment { FixedExperiment(const FixedExperiment & other) { return new OT::FixedExperiment(other); } } }

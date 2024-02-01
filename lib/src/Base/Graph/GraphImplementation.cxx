@@ -2,7 +2,7 @@
 /*
  * @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #include <fstream>
 
 #include "openturns/GraphImplementation.hxx"
-#include "openturns/Rfunctions.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -52,6 +51,19 @@ void GraphImplementation::InitializeValidLegendPositions()
 {
   ValidLegendPositions.setName("ValidLegendPositions");
   ValidLegendPositions.add("");
+  // matplotlib strings
+  ValidLegendPositions.add("best");
+  ValidLegendPositions.add("upper right");
+  ValidLegendPositions.add("upper left");
+  ValidLegendPositions.add("lower right");
+  ValidLegendPositions.add("lower left");
+  ValidLegendPositions.add("center right");
+  ValidLegendPositions.add("center left");
+  ValidLegendPositions.add("lower center");
+  ValidLegendPositions.add("upper center");
+  ValidLegendPositions.add("upper center");
+  ValidLegendPositions.add("center");
+  // R strings
   ValidLegendPositions.add("bottomright");
   ValidLegendPositions.add("bottom");
   ValidLegendPositions.add("bottomleft");
@@ -60,7 +72,6 @@ void GraphImplementation::InitializeValidLegendPositions()
   ValidLegendPositions.add("top");
   ValidLegendPositions.add("topright");
   ValidLegendPositions.add("right");
-  ValidLegendPositions.add("center");
 }
 
 /* Default constructor */
@@ -144,7 +155,12 @@ String GraphImplementation::__repr__() const
 /* Adds a drawable instance to the collection of drawables contained in GraphImplementation */
 void GraphImplementation::add(const Drawable & aDrawable)
 {
+  UnsignedInteger drawableCount = drawablesCollection_.getSize();
   drawablesCollection_.add(aDrawable);
+  Drawable&drawable = drawablesCollection_[drawableCount];
+  /* TODO: It would be more efficient to have a method to obtain the ith color from a palette */
+  if (!drawable.getImplementation()->isColorExplicitlySet())
+    drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount + 1)[drawableCount]);
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
@@ -156,7 +172,7 @@ void GraphImplementation::erase(const UnsignedInteger i)
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
 void GraphImplementation::add(const DrawableCollection & drawableCollection)
 {
-  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) drawablesCollection_.add(drawableCollection[i]);
+  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) add(drawableCollection[i]);
 }
 
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
@@ -175,6 +191,13 @@ GraphImplementation::DrawableCollection GraphImplementation::getDrawables() cons
 void GraphImplementation::setDrawables(const DrawableCollection & drawableCollection)
 {
   drawablesCollection_ = drawableCollection;
+  const Description palette(DrawableImplementation::BuildDefaultPalette(drawableCollection.getSize()));
+  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i)
+  {
+    Drawable & drawable = drawablesCollection_[i];
+    if (!drawable.getImplementation()->isColorExplicitlySet())
+      drawable.setColor(palette[i]);
+  }
 }
 
 /* Individual drawable accessor */
@@ -509,6 +532,19 @@ Bool GraphImplementation::IsValidLegendPosition(const String & position)
   return (it != ValidLegendPositions.end());
 }
 
+/* Legend bounding box accessor */
+Point GraphImplementation::getLegendCorner() const
+{
+  return legendCorner_;
+}
+
+void GraphImplementation::setLegendCorner(const Point & corner)
+{
+  if (corner.getDimension() && (corner.getDimension() != 2))
+    throw InvalidArgumentException(HERE) << "Error: the given point must have a dimension equal to 2, but dimension=" << corner.getDimension();
+  legendCorner_ = corner;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GraphImplementation::save(Advocate & adv) const
 {
@@ -516,6 +552,7 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "title_", title_ );
   adv.saveAttribute( "legendPosition_", legendPosition_ );
   adv.saveAttribute( "legendFontSize_", legendFontSize_ );
+  adv.saveAttribute( "legendCorner_", legendCorner_ );
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
@@ -539,6 +576,8 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "title_", title_ );
   adv.loadAttribute( "legendPosition_", legendPosition_ );
   adv.loadAttribute( "legendFontSize_", legendFontSize_ );
+  if (adv.hasAttribute("legendCorner_"))
+    adv.loadAttribute("legendCorner_", legendCorner_);
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );

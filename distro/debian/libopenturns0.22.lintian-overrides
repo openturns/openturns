@@ -1,7 +1,0 @@
-# We use a longer package name so that it is more descriptive. Also avoiding
-# possible troubles in the namespace of packages.
-libopenturns0.22: package-name-doesnt-match-sonames libOT0.22
-
-# Not providing symbols for the C++ library, using shlibs file instead
-libopenturns0.22: no-symbols-control-file
-

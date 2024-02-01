@@ -2,7 +2,7 @@
 /**
  *  @brief Point implements the classical mathematical point
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,9 +69,6 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-
-  /** Set small elements to zero */
-  Point clean(const Scalar threshold) const;
 
   /** Check if the components are in increasing order */
   Bool isIncreasing() const;

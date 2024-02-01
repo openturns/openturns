@@ -2,7 +2,7 @@
 /**
  *  @brief The GeneralizedPareto distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -182,7 +182,7 @@ Scalar GeneralizedPareto::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
   if (z <= 0.0) return 0.0;
-  if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
+  if ((z == SpecFunc::MaxScalar) || ((xi_ < 0.0) && (z > -1.0 / xi_))) return 1.0;
   if (std::abs(xi_) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   return -expm1(-log1p(xi_ * z) / xi_);
 }
@@ -298,6 +298,13 @@ Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
   else return u_ + sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
+Scalar GeneralizedPareto::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void GeneralizedPareto::computeMean() const
 {
@@ -346,16 +353,12 @@ void GeneralizedPareto::computeCovariance() const
 /* Parameters value  accessor */
 Point GeneralizedPareto::getParameter() const
 {
-  Point point(3);
-  point[0] = sigma_;
-  point[1] = xi_;
-  point[2] = u_;
-  return point;
+  return {sigma_, xi_, u_};
 }
 
 void GeneralizedPareto::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const Scalar w = getWeight();
   *this = GeneralizedPareto(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
@@ -364,11 +367,7 @@ void GeneralizedPareto::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description GeneralizedPareto::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "sigma";
-  description[1] = "xi";
-  description[2] = "location";
-  return description;
+  return {"sigma", "xi", "u"};
 }
 
 /* Sigma accessor */

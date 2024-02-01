@@ -6,5 +6,6 @@ OTAutodoc(InverseRosenblattEvaluation)
 #include "openturns/InverseRosenblattEvaluation.hxx"
 %}
 
+%copyctor OT::InverseRosenblattEvaluation;
+
 %include openturns/InverseRosenblattEvaluation.hxx
-namespace OT { %extend InverseRosenblattEvaluation { InverseRosenblattEvaluation(const InverseRosenblattEvaluation & other) { return new OT::InverseRosenblattEvaluation(other); } } }

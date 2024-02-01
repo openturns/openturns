@@ -21,7 +21,17 @@ print("classes=", classifier.classify(inS))
 
 for i in range(inS.getSize()):
     for j in range(len(aCollection)):
-        print("inP=", inS[i], " grade|", j, "= %g" % classifier.grade(inS[i], j))
+        grade = classifier.grade(inS[i], j)
+        # TODO JM: remove the check after the use of infs has been thoroughly tested
+        if grade <= ot.SpecFunc.LowestScalar:
+            grade *= 2.0
+        print("inP=", inS[i], " grade|", j, "= %g" % grade)
 
 for j in range(len(aCollection)):
-    print("grades|", j, "=", classifier.grade(inS, ot.Indices(inS.getSize(), j)))
+    grades = classifier.grade(inS, ot.Indices(inS.getSize(), j))
+    for num, grade in enumerate(grades):
+        # TODO JM: remove the check after the use of infs has been thoroughly tested
+        if grade <= ot.SpecFunc.LowestScalar:
+            grade *= 2.0
+        grades[num] = grade
+    print("grades|", j, "=", grades)

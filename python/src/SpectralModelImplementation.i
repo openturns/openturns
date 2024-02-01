@@ -6,5 +6,6 @@
 
 %include SpectralModelImplementation_doc.i
 
+%copyctor OT::SpectralModelImplementation;
+
 %include openturns/SpectralModelImplementation.hxx
-namespace OT{ %extend SpectralModelImplementation { SpectralModelImplementation(const SpectralModelImplementation & other) { return new OT::SpectralModelImplementation(other); } } }

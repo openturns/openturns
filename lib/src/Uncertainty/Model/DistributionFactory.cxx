@@ -2,7 +2,7 @@
 /**
  * @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,6 +62,7 @@
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/RiceFactory.hxx"
 #include "openturns/SkellamFactory.hxx"
+#include "openturns/SmoothedUniformFactory.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/TrapezoidalFactory.hxx"
 #include "openturns/TriangularFactory.hxx"
@@ -103,6 +104,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(ParetoFactory());
   collection.add(RayleighFactory());
   collection.add(RiceFactory());
+  collection.add(SmoothedUniformFactory());
   collection.add(StudentFactory());
   collection.add(TrapezoidalFactory());
   collection.add(TriangularFactory());

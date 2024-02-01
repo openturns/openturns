@@ -2,7 +2,7 @@
 /**
  *  @brief TensorImplementation implements the Tensor classes
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -101,8 +101,8 @@ String TensorImplementation::__str__(const String & offset) const
   OSS oss(false);
   for (UnsignedInteger k = 0; k < getNbSheets(); ++k)
   {
-    oss << (k == 0 ? "" : Os::GetEndOfLine()) << offset << "sheet " << k << ":" << Os::GetEndOfLine() << offset;
-    oss << getSheet(k).__str__(offset) << Os::GetEndOfLine();
+    oss << (k == 0 ? "" : "\n") << offset << "sheet " << k << ":" << "\n" << offset;
+    oss << getSheet(k).__str__(offset) << "\n";
   }
   return oss;
 }

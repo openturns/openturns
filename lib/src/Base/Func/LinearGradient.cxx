@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a quadratic numerical math gradient implementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -81,10 +81,10 @@ String LinearGradient::__repr__() const
 String LinearGradient::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << LinearGradient::GetClassName() << Os::GetEndOfLine() << offset
-      << "  center :"  << Os::GetEndOfLine() << offset << center_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << "  constant :" << Os::GetEndOfLine() << offset << constant_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << "  linear :" << Os::GetEndOfLine() << offset << linear_.__str__(offset + "  ") << Os::GetEndOfLine();
+  oss << LinearGradient::GetClassName() << "\n" << offset
+      << "  center :"  << "\n" << offset << center_.__str__(offset + "  ") << "\n"
+      << "  constant :" << "\n" << offset << constant_.__str__(offset + "  ") << "\n"
+      << "  linear :" << "\n" << offset << linear_.__str__(offset + "  ") << "\n";
   return oss;
 }
 

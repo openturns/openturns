@@ -26,7 +26,7 @@ def fourdsoo(x):
     x1, x2, disc_b, logic = x
     # minimum : f([-5,-3,1,1]) = -18
     if round(disc_b) == 0.0:
-        result = x1 ** 2 + x2 ** 2 + 10 * round(logic)
+        result = x1**2 + x2**2 + 10 * round(logic)
     else:
         result = x1 + x2 - 10 * round(logic)
     return [result]
@@ -60,7 +60,7 @@ problem.setMinimization(True)
 x0 = [0, 0, 0, 0]
 algo = ot.Bonmin(problem, "B-BB")
 algo.setStartingPoint(x0)
-algo.setMaximumEvaluationNumber(10000)
+algo.setMaximumCallsNumber(10000)
 algo.setMaximumIterationNumber(1000)
 # ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
 algo.run()
@@ -69,7 +69,7 @@ result = algo.getResult()
 x_star = result.getOptimalPoint()
 print("x*=", x_star)
 y_star = result.getOptimalValue()
-neval = result.getEvaluationNumber()
+neval = result.getCallsNumber()
 print("f(x*)=", y_star, "neval=", neval)
 
 

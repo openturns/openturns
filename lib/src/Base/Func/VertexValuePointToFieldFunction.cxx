@@ -2,7 +2,7 @@
 /**
  *  @brief Function mapping a point to a field.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,6 +42,9 @@ VertexValuePointToFieldFunction::VertexValuePointToFieldFunction(const Function 
 {
   if (!(function_.getInputDimension() >= mesh.getDimension()))
     throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();
+  Description inputDescription(function_.getInputDescription());
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + mesh.getDimension());
+  setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
 }
 

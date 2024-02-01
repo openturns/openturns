@@ -2,7 +2,7 @@
 /**
  *  @brief IterativeThresholdExceedance
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,13 +34,10 @@ class OT_API IterativeThresholdExceedance
   CLASSNAME
 
 public:
-  /** @deprecated */
-  IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar threshold);
-
   /** Constructor */
   explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1,
-                               const ComparisonOperator & op = Greater(),
-                               const Scalar threshold = 0.0);
+                                        const ComparisonOperator & op = Greater(),
+                                        const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   IterativeThresholdExceedance * clone() const override;
@@ -61,7 +58,7 @@ public:
   Bool operator ==(const IterativeThresholdExceedance & other) const
   {
     return (dimension_ == other.dimension_) && (operator_ == other.operator_)
-    && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
+           && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
   }
 
   /**

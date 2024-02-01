@@ -1,19 +1,20 @@
 %feature("docstring") OT::Binomial
 "Binomial distribution.
 
-Available constructors:
-    Binomial(*n=1, p=0.5*)
-
 Parameters
 ----------
 n : int, :math:`n \in \Nset`
     The number of Bernoulli trials.
+
+    Default value is 1.
 p : float, :math:`0 \leq p \leq 1`
     The success probability of the Bernoulli trial.
 
+    Default value is 0.5.
+
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

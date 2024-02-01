@@ -60,4 +60,8 @@ print("FullPearsonX0Y=", ot.HypothesisTest.FullPearson(sampleX0, sampleY, 0.10))
 # For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector.
 # Probability of the H0 reject zone : 0.10
 print("FullPearsonXY=", ot.HypothesisTest.FullPearson(sampleX, sampleY, 0.10))
-print("FullPearsonYY=", ot.HypothesisTest.FullPearson(sampleY, sampleY, 0.10))
+
+# Expected result is SpecFunc::MaxScalar
+fullPearsonYY = ot.HypothesisTest.FullPearson(sampleY, sampleY, 0.10)[0]
+testStatistic = fullPearsonYY.getStatistic()
+assert (testStatistic == ot.SpecFunc.MaxScalar)

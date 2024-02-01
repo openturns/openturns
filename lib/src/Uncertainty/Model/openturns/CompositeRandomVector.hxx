@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for composite random vectors
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,9 +70,11 @@ public:
 
   /** Realization accessor */
   Point getRealization() const override;
+  Point getFrozenRealization(const Point & fixedPoint) const override;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
+  Sample getFrozenSample(const Sample & fixedSample) const override;
 
   /** Get the random vector corresponding to the i-th marginal component */
   RandomVector getMarginal(const UnsignedInteger i) const override;

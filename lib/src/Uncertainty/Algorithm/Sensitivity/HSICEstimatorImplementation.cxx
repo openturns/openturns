@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorImplementation implements the HSIC sensivity indices.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -416,7 +416,8 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
     data(k, 1) = values[k];
   }
 
-  Cloud cloud(data, "red", "circle", "");
+  Cloud cloud(data);
+  cloud.setPointStyle("circle");
   graph.add(cloud);
 
   /* Min & max indices values */

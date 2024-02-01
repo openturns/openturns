@@ -6,5 +6,6 @@
 
 %include BootstrapExperiment_doc.i
 
+%copyctor OT::BootstrapExperiment;
+
 %include openturns/BootstrapExperiment.hxx
-namespace OT { %extend BootstrapExperiment { BootstrapExperiment(const BootstrapExperiment & other) { return new OT::BootstrapExperiment(other); } } }

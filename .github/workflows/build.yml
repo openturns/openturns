@@ -9,11 +9,11 @@ jobs:
       LDFLAGS: -L/usr/local/opt/openblas/lib
       CPPFLAGS: -I/usr/local/opt/openblas/include
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: |
         brew upgrade
         brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo
-        pip3 install matplotlib "numpy<1.25" scipy chaospy pandas dill
+        pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
         git clone -b 1.9.0 https://github.com/jeromerobert/hmat-oss.git hmat-oss
@@ -26,7 +26,7 @@ jobs:
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
-        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations" \
+        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations -Wno-missing-field-initializers" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
@@ -35,7 +35,7 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
@@ -49,15 +49,24 @@ jobs:
         run: |
           set "LIB=C:\Miniconda3\Library\lib;%LIB%"
           set "INCLUDE=C:\Miniconda3\Library\include;%INCLUDE%"
-          cmake -G Ninja -B . -LAH -DCMAKE_INSTALL_PREFIX="C:/Miniconda3/Library" -DLAPACK_LIBRARIES="C:/Miniconda3/Library/lib/lapack.lib" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DCMAKE_PREFIX_PATH="C:/Miniconda3/Library" -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Miniconda3"
-          cmake --build . --target install --parallel 2
+          cmake -G Ninja -B . -LAH -DCMAKE_INSTALL_PREFIX="C:/Miniconda3/Library" -DLAPACK_LIBRARIES="C:/Miniconda3/Library/lib/lapack.lib" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DCMAKE_PREFIX_PATH="C:/Miniconda3/Library" -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Miniconda3" || exit 1
+          cmake --build . --target install --parallel 2 || exit 1
           ctest --output-on-failure --timeout 100 -E cppcheck -j2 --repeat after-timeout:2 --schedule-random
 
   aarch64:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: |
           docker pull openturns/debian-aarch64
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+
+  mindeps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull debian:10
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh

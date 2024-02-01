@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for elliptical distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ EllipticalDistribution::EllipticalDistribution()
 }
 
 /* Parameter constructor */
-EllipticalDistribution::EllipticalDistribution(const Point & mean,
+EllipticalDistribution::EllipticalDistribution(const Point & mu,
     const Point & sigma,
     const CorrelationMatrix & R,
     const Scalar covarianceScalingFactor)
@@ -62,19 +62,19 @@ EllipticalDistribution::EllipticalDistribution(const Point & mean,
 {
   const UnsignedInteger dimension = R.getDimension();
   // We check if the inputs have the same dimension. If not, we throw an exception
-  if ( (dimension != mean.getDimension()) ||
+  if ( (dimension != mu.getDimension()) ||
        (dimension != sigma.getDimension()) )
     throw InvalidArgumentException(HERE)
         << "Arguments have incompatible dimensions: R dimension=" << dimension
         << " sigma dimension=" << sigma.getDimension()
-        << " mean dimension=" << mean.getDimension();
+        << " mu dimension=" << mu.getDimension();
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
     if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
   // The mean attribute is stored at an upper level
-  mean_ = mean;
+  mean_ = mu;
   // Compute the auxiliary attributes. It also set isAlreadyComputedMean to true
   update();
 }
@@ -501,17 +501,22 @@ void EllipticalDistribution::update()
   isAlreadyComputedMean_ = true;
 }
 
-/* Mean point accessor */
-void EllipticalDistribution::setMean(const Point & mean)
+/* Mu accessor */
+void EllipticalDistribution::setMu(const Point & mu)
 {
-  if (mean.getDimension() != getDimension())
+  if (mu.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
-        << "Mean point dimension (" << mean.getDimension()
+        << "Mean point dimension (" << mu.getDimension()
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct EllipticalDistribution distribution object.";
-  mean_ = mean;
+  mean_ = mu;
   isAlreadyComputedMean_ = true;
   computeRange();
+}
+
+Point EllipticalDistribution::getMu() const
+{
+  return mean_;
 }
 
 /* Mean computation */
@@ -565,7 +570,7 @@ Point EllipticalDistribution::getStandardDeviation() const
 }
 
 /* Correlation matrix accessor */
-void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
+void EllipticalDistribution::setR(const CorrelationMatrix & R)
 {
   if (R.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
@@ -588,7 +593,7 @@ void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
 }
 
 /* Correlation matrix accessor */
-CorrelationMatrix EllipticalDistribution::getCorrelation() const
+CorrelationMatrix EllipticalDistribution::getR() const
 {
   return R_;
 }
@@ -678,9 +683,9 @@ Distribution EllipticalDistribution::getStandardDistribution() const
 {
   EllipticalDistribution * p_standardDistribution(clone());
   const UnsignedInteger dimension = getDimension();
-  p_standardDistribution->setMean(Point(dimension, 0.0));
+  p_standardDistribution->setMu(Point(dimension, 0.0));
   p_standardDistribution->setSigma(Point(dimension, 1.0));
-  p_standardDistribution->setCorrelation(CorrelationMatrix(dimension));
+  p_standardDistribution->setR(CorrelationMatrix(dimension));
   return p_standardDistribution;
 }
 
@@ -697,8 +702,8 @@ EllipticalDistribution::PointWithDescriptionCollection EllipticalDistribution::g
     Description marginalDescription(point.getDimension());
     point[0] = mean_[marginalIndex];
     point[1] = sigma_[marginalIndex];
-    marginalDescription[0] = OSS() << "mean_" << marginalIndex;
-    marginalDescription[1] = OSS() << "standard_deviation_" << marginalIndex;
+    marginalDescription[0] = OSS() << "mu_" << marginalIndex;
+    marginalDescription[1] = OSS() << "sigma_" << marginalIndex;
     point.setDescription(marginalDescription);
     point.setName(description[marginalIndex]);
     parameters[marginalIndex] = point;
@@ -791,13 +796,15 @@ void EllipticalDistribution::setParameter(const Point & parameters)
   Scalar dimReal = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for EllipticalDistribution";
   const UnsignedInteger dimension = dimReal;
-  mean_ = Point(dimension);
-  sigma_ = Point(dimension);
-  R_ = CorrelationMatrix(dimension);
+  Point mean(dimension);
+  Point sigma(dimension);
+  CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    mean_[i] = parameters[2 * i];
-    sigma_[i] = parameters[2 * i + 1];
+    mean[i] = parameters[2 * i];
+    sigma[i] = parameters[2 * i + 1];
+    if (!(sigma[i] > 0.0))
+      throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   }
   if (dimension > 1)
   {
@@ -806,12 +813,17 @@ void EllipticalDistribution::setParameter(const Point & parameters)
     {
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
-        R_(i, j) = parameters[index];
+        R(i, j) = parameters[index];
         ++ index;
       }
     }
-    if (!R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+    if (!R.isPositiveDefinite())
+      throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   }
+  // commit all changes at once
+  mean_ = mean;
+  sigma_ = sigma;
+  R_ = R;
   update();
   computeRange();
   isAlreadyComputedCovariance_ = false;
@@ -823,8 +835,8 @@ Description EllipticalDistribution::getParameterDescription() const
   Description description(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    description[2 * i] = OSS() << "mean_" << i;
-    description[2 * i + 1] = OSS() << "standard_deviation_" << i;
+    description[2 * i] = OSS() << "mu_" << i;
+    description[2 * i + 1] = OSS() << "sigma_" << i;
   }
   UnsignedInteger index = 2 * dimension;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -845,7 +857,7 @@ void EllipticalDistribution::save(Advocate & adv) const
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
-  adv.saveAttribute( "mean_duplicate", mean_ );
+  adv.saveAttribute( "mu_", mean_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -856,7 +868,10 @@ void EllipticalDistribution::load(Advocate & adv)
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
-  adv.loadAttribute( "mean_duplicate", mean_ );
+  if (adv.hasAttribute("mean_duplicate"))
+    adv.loadAttribute( "mean_duplicate", mean_ );
+  else
+    adv.loadAttribute( "mu_", mean_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
 }

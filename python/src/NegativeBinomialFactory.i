@@ -6,5 +6,6 @@
 
 %include NegativeBinomialFactory_doc.i
 
+%copyctor OT::NegativeBinomialFactory;
+
 %include openturns/NegativeBinomialFactory.hxx
-namespace OT { %extend NegativeBinomialFactory { NegativeBinomialFactory(const NegativeBinomialFactory & other) { return new OT::NegativeBinomialFactory(other); } } }

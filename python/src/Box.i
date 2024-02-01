@@ -6,5 +6,6 @@
 
 %include Box_doc.i
 
+%copyctor OT::Box;
+
 %include openturns/Box.hxx
-namespace OT { %extend Box { Box(const Box & other) { return new OT::Box(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief GraphImplementation implements graphic devices for plotting through R
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -149,25 +149,28 @@ public:
   virtual Bool getAutomaticBoundingBox() const;
   virtual void setAutomaticBoundingBox(const Bool automaticBoundingBox);
 
-  /** Legend position accessor */
-  virtual void setLegendPosition(const String & position);
-  String getLegendPosition() const;
-
   /** Get the legend font size */
-  Scalar getLegendFontSize() const;
-  void setLegendFontSize(const Scalar legendFontSize);
+  virtual Scalar getLegendFontSize() const;
+  virtual void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */
   static Bool IsValidLegendPosition(const String & position);
+  /** Gives all the valid legend positions */
+  static Description GetValidLegendPositions();
+
+  /** Legend position accessor */
+  virtual void setLegendPosition(const String & position);
+  virtual String getLegendPosition() const;
+
+  /** Legend bounding box accessor */
+  virtual void setLegendCorner(const Point & corner);
+  virtual Point getLegendCorner() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-  /** Gives all the valid legend positions */
-  static Description GetValidLegendPositions();
 
 private:
   static Description ValidLegendPositions;
@@ -187,6 +190,9 @@ private:
 
   /** Legend font size */
   Scalar legendFontSize_;
+
+  /** Legend corner position */
+  Point legendCorner_;
 
   /** x axis title */
   String xTitle_;

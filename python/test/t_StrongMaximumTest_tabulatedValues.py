@@ -67,20 +67,16 @@ for dim in [2, 5, 10]:
 
     # loop on beta
     for indexBeta in range(beta.getDimension()):
-
         # We create the design point
         designPoint = ot.Point(dim, 0.0)
         designPoint[0] = beta[indexBeta]
 
         # loop on the importance level epsilon
         for indexImportanceLevel in range(importanceLevel.getDimension()):
-
             # loop on the accuracy level tau
             for indexAccuracyLevel in range(accuracyLevel.getDimension()):
-
                 # loop on the confidence level (1-q)
                 for indexConfidenceLevel in range(confidenceLevel.getDimension()):
-
                     # we calculate the corresponding deltaEpsilon and
                     # pointNumber N
                     myTest = ot.StrongMaximumTest(
@@ -115,20 +111,16 @@ for dim in [2, 5, 10]:
 
     # loop on beta
     for indexBeta in range(beta.getDimension()):
-
         # We create the design point
         designPoint = ot.Point(dim, 0.0)
         designPoint[0] = beta[indexBeta]
 
         # loop on the importance level epsilon
         for indexImportanceLevel in range(importanceLevel.getDimension()):
-
             # loop on the accuracy level tau
             for indexAccuracyLevel in range(accuracyLevel.getDimension()):
-
                 # loop on the pointNumber N
                 for indexPointNumber in range(pointNumber.getSize()):
-
                     # we calculate the corresponding deltaEpsilon and
                     # confidenceLevel
                     myTest = ot.StrongMaximumTest(

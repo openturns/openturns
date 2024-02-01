@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,9 @@
 
 #include "openturns/EventSimulation.hxx"
 #include "openturns/StandardEvent.hxx"
+#include "openturns/WeightedExperiment.hxx"
+
+#include <chrono>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,7 +59,7 @@ public:
   Scalar getMinimumProbability() const;
 
   /** Accessor to the achieved number of steps */
-  UnsignedInteger getStepsNumber();
+  UnsignedInteger getStepsNumber() const;
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
@@ -65,15 +68,16 @@ public:
   Point getProbabilityEstimatePerStep() const;
 
   /** Keep event sample */
-  void setKeepEventSample(bool keepEventSample);
+  void setKeepSample(const Bool keepSample);
 
-  /** Event input/output sample accessor */
-  Sample getEventInputSample() const;
-  Sample getEventOutputSample() const;
+  /** Input/output sample accessor according to select flag */
+  enum SelectSample {EVENT0, EVENT1, BOTH};
+  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
-  /** i-subset */
-  void setISubset(Bool iSubset);
-  void setBetaMin(Scalar betaMin);
+  /** Experiment for first step */
+  void setInitialExperiment(const WeightedExperiment & initialExperiment);
+  WeightedExperiment getInitialExperiment() const;
 
   /** Performs the actual computation. */
   void run() override;
@@ -106,29 +110,34 @@ private:
   /** Generate new points in the conditional failure domain */
   void generatePoints(Scalar threshold);
 
+  /** Select sample indices according to status */
+  Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
+
   // some parameters
-  Scalar proposalRange_;// width of the proposal pdf
-  Scalar conditionalProbability_;// target probability at each subset
-  Bool iSubset_;// conditional pre-sampling
-  Scalar betaMin_;// pre-sampling hypersphere exclusion radius
-  Bool keepEventSample_;// do we keep the event sample ?
-  Scalar minimumProbability_;// limit on the smallest probability
+  Scalar proposalRange_ = 0.0;// width of the proposal pdf
+  Scalar conditionalProbability_ = 0.0;// target probability at each subset
+  Scalar minimumProbability_ = 0.0;// limit on the smallest probability
+  WeightedExperiment initialExperiment_; // experiment for first step
 
   // some results
-  UnsignedInteger numberOfSteps_;// number of subset steps
+  UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds
   Point gammaPerStep_;// intermediate gammas
   Point coefficientOfVariationPerStep_;// intermediate COVS
   Point probabilityEstimatePerStep_;// intermediate PFs
-  Sample eventInputSample_;// event input sample
-  Sample eventOutputSample_;// event output sample
 
-  // attributes used for conveniency, not to be saved/loaded
+  // attributes used for convenience, not to be saved/loaded
   StandardEvent standardEvent_;// the algorithm happens in U
   UnsignedInteger dimension_;// input dimension
   Sample currentPointSample_;// X
   Sample currentLevelSample_;//f(X)
-  UnsignedInteger seedNumber_;// number of seed points
+  UnsignedInteger seedNumber_ = 0;// number of seed points
+  std::chrono::steady_clock::time_point t0_;
+
+  // keep samples generated at each step
+  Bool keepSample_ = false;
+  PersistentCollection<Sample> inputSample_;
+  PersistentCollection<Sample> outputSample_;
 
 } ; /* class SubsetSampling */
 

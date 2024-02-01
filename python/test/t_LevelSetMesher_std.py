@@ -10,7 +10,7 @@ try:
         "OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000
     )
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000
+        "OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000
     )
     ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7
@@ -47,8 +47,18 @@ try:
     )
     levelSet2D = ot.LevelSet(function2D, ot.LessOrEqual(), level)
 
-    # Manual bounding box
-    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2))
+    # Manual bounding box, linear interpolation
+    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2), False)
+    print("mesh2D=", mesh2D)
+
+    # Manual bounding box, solve the equation projection
+    ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
+    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2), True)
+    print("mesh2D=", mesh2D)
+
+    # Manual bounding box, optimization projection
+    ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", False)
+    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2), True)
     print("mesh2D=", mesh2D)
 
     # The 3D mesher

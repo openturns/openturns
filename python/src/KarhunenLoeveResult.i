@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(KarhunenLoeveResult)
 
+%copyctor OT::KarhunenLoeveResult;
+
 %include openturns/KarhunenLoeveResult.hxx
-namespace OT { %extend KarhunenLoeveResult { KarhunenLoeveResult(const KarhunenLoeveResult & other) { return new OT::KarhunenLoeveResult(other); } } }

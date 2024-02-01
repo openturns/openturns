@@ -6,5 +6,6 @@
 
 %include PointToFieldFunctionImplementation_doc.i
 
+%copyctor OT::PointToFieldFunctionImplementation;
+
 %include openturns/PointToFieldFunctionImplementation.hxx
-namespace OT { %extend PointToFieldFunctionImplementation { PointToFieldFunctionImplementation(const PointToFieldFunctionImplementation & other) { return new OT::PointToFieldFunctionImplementation(other); } } }

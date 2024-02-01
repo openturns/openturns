@@ -1,9 +1,8 @@
 %feature("docstring") OT::GeometricFactory
 "Geometric factory.
 
-Available constructor:
-    GeometricFactory()
-
+Notes
+-----
 We use the following estimator:
 
 .. math::
@@ -16,3 +15,32 @@ We use the following estimator:
 See also
 --------
 DistributionFactory, Geometric"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeometricFactory::buildAsGeometric
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsGeometric()
+
+    buildAsGeometric(*sample*)
+
+    buildAsGeometric(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Geometric`.
+
+Returns
+-------
+distribution : :class:`~openturns.Geometric`
+    The estimated distribution as a Geometric.
+    
+    In the first usage, the default Geometric distribution is built."
+

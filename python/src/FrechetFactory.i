@@ -6,5 +6,6 @@
 
 %include FrechetFactory_doc.i
 
+%copyctor OT::FrechetFactory;
+
 %include openturns/FrechetFactory.hxx
-namespace OT { %extend FrechetFactory { FrechetFactory(const FrechetFactory & other) { return new OT::FrechetFactory(other); } } }

@@ -13,7 +13,6 @@ class FUNC(ot.OpenTURNSPythonFunction):
         self.setOutputDescription(["T"])
 
     def _exec(self, X):
-
         Y = [X[0] + X[1]]
         return Y
 

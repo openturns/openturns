@@ -6,7 +6,7 @@
 
 %include Ceres_doc.i
 
-%include openturns/Ceres.hxx
+%copyctor OT::Ceres;
 
-namespace OT { %extend Ceres { Ceres(const Ceres & other) { return new OT::Ceres(other); } } }
+%include openturns/Ceres.hxx
 

@@ -6,5 +6,6 @@
 
 %include FittingAlgorithmImplementation_doc.i
 
+%copyctor OT::FittingAlgorithmImplementation;
+
 %include openturns/FittingAlgorithmImplementation.hxx
-namespace OT { %extend FittingAlgorithmImplementation { FittingAlgorithmImplementation(const FittingAlgorithmImplementation & other) { return new OT::FittingAlgorithmImplementation(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MarshallOlkin for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ void check2DPointInUnitSquare(Point point)
   if (point.getDimension() != 2) throw TestFailed("Point is not dimension 2");
   for ( UnsignedInteger index = 0; index < dim; ++ index)
   {
-    if (SpecFunc::IsNaN(point[index])) throw TestFailed("Point component is nan");
+    if (std::isnan(point[index])) throw TestFailed("Point component is nan");
     if (point[index] > 1.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is greater than 1");
     if (point[index] < 0.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is lower than 0");
   }

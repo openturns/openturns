@@ -2,7 +2,7 @@
 /**
  * @brief CorrelationAnalysis implements computation of correlation coefficients
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,6 +55,8 @@ public:
   String __repr__() const override;
 
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
+  Point computeLinearCorrelation() const;
+  // @deprecated
   Point computePearsonCorrelation() const;
 
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
@@ -87,8 +89,8 @@ public:
 protected:
 
   // computePearsonCorrelation with arguments
-  static Point ComputePearsonCorrelation(const Sample & firstSample,
-                                         const Sample & secondSample);
+  static Point ComputeLinearCorrelation(const Sample & firstSample,
+                                        const Sample & secondSample);
 
   // computePCC with arguments
   static Point ComputePCC(const Sample & firstSample,

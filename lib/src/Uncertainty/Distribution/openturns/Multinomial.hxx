@@ -2,7 +2,7 @@
 /**
  *  @brief The Multinomial distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  Scalar computePDF(const Indices & point) const override;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;

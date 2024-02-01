@@ -14,6 +14,9 @@ Bibliography
     *Lilliefors/Van Soest’s test of normality.*. Encyclopedia of Measurement and Statistics, 2007.
 .. [AbdiMolin1998] Hervé Abdi, Paul Molin.
     *New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test.*, 1998.
+.. [acklam2017] Acklam P.J.
+    *Acklam's algorithm for the inverse normal cdf*, 2017.
+    https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
@@ -27,6 +30,11 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1501.05242>`__
 .. [beirlant2004] Beirlant J., Goegebeur Y., Teugels J., Segers J.,
     *Statistics of extremes: theory and applications*, Wiley, 2004
+.. [benton2003] Benton D. and Krishnamoorthy K. (2003). *Computing
+    discrete mixtures of continuous distributions: noncentral chisquare, noncentral t
+    and the distribution of the square of the sample multiple correlation coefficient*.
+    Computational Statistics and Data Analysis, 43 (2003) pp 249-267,
+    https://www.sciencedirect.com/science/article/abs/pii/S0167947302002839
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
@@ -36,6 +44,10 @@ Bibliography
 .. [blatman2011] Blatman, G., and Sudret, B..
     *Adaptive sparse polynomial chaos expansion based on least angle regression.*
     Journal of Computational Physics 230 (2011) 2345–2367.
+.. [borgonovo2017] Borgonovo, E. (2017).
+    *Sensitivity analysis.*
+    *An Introduction for the Management Scientist.* International Series in
+    Operations Research and Management Science. Cham, Switzerland : Springer.
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
@@ -64,6 +76,12 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [deRocquigny2006] De Rocquigny, É. (2006).
+    *La maîtrise des incertitudes dans un contexte industriel.
+    1re partie: une approche méthodologique globale basée sur des exemples.*
+    Journal de la Société française de statistique, 147 (3), 33-71.
+.. [deRocquigny2012] De Rocquigny, E. (2012).
+    *Modelling under risk and uncertainty.* John Wiley & Sons.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -95,9 +113,15 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
+    ACM Transactions on Mathematical Software 29(3):297-308, September 2003
+    `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
+.. [giles2013] Mike Giles, *Fast evaluation of the inverse Poisson CDF*, university of Oxford,
+    Ninth IMACS Seminar on Monte Carlo Methods, 2013.
+    `pdf <http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf>`__
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
@@ -193,15 +217,26 @@ Bibliography
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
+.. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
+    *Uncertainty analysis using evidence theory–confronting level-1 and
+    level-2 approaches with data availability and computational constraints.*
+    Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [luke] https://www.luke-g.com/math/spearman/index.html
 .. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
-   polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
-   `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
+    polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
+    `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
 .. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis:
     application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
-.. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
+.. [marsaglia1993] Marsaglia G. and Tsang W. W.  *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
+    https://www.researchgate.net/publication/220492850_A_simple_method_for_generating_Gamma_Variables
+.. [marsaglia2000] Marsaglia G. and Tsang W.W.
+    *A simple method for generating gamma variables*,
+    ACM Transactions  on Mathematical Software, Vol. 26, No. 3, September 2000, Pages
+    363-372
+    https://dl.acm.org/doi/10.1145/358407.358414
 .. [martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
     Presentation in the meeting of GdR Ondes and GdR MASCOT-NUM,
     January, 13th, 2011, Institut Henri Poincare, Paris, France
@@ -242,6 +277,8 @@ Bibliography
     Systems Engineering and Operations Research Dept.,
     George Mason University, Fairfax, VA 22030.
     `pdf <https://core.ac.uk/download/pdf/82362441.pdf>`__
+.. [johnson1995]  Johnson, N. L. and Kotz, S; and Balakrishnan, N., *Continuous univariate distributions volume 2*,
+     second edition, 1995, Wiley Inter-Science.
 .. [nelsen2006] Roger B. Nelsen, *An Introduction to Copulas 2nd Edition*,
     Springer, 2006.
 .. [NikitinTchirina2007]  Ya. Yu. Nikitin and A.V.Tchirina.
@@ -254,6 +291,12 @@ Bibliography
 .. [park1990] Byeong U. Park and J. S. Marron.
     *Comparison of data-driven bandwidth selectors.*
     Journal of the American Statistical Association, 85(409) :66–72, 1990.
+.. [pelamatti2020] Pelamatti, J., Brevault, L., Balesdent, M., Talbi, E. G., & Guerin, Y. (2020).
+    *Overview and comparison of gaussian process-based surrogate models for mixed continuous and discrete variables: Application on aerospace design problems.*
+    High-Performance Simulation-Based Optimization, 189-224.
+.. [peng2014] L. Peng, R. Wang, *Interval Estimation for Bivariate t-Copulas via Kendall's Tau*
+    Casualty Actuarial Society, Volume 8/Issue 1, 2014.
+    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014PW(Variance).pdf>`__
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.
@@ -349,5 +392,9 @@ Bibliography
     First Edition, Chapman & Hall, 1994.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
+.. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
+    Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 .. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012
+.. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*
+    Technometrics 62.3 (2020): 291-302.

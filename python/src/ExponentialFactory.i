@@ -6,5 +6,6 @@
 
 %include ExponentialFactory_doc.i
 
+%copyctor OT::ExponentialFactory;
+
 %include openturns/ExponentialFactory.hxx
-namespace OT { %extend ExponentialFactory { ExponentialFactory(const ExponentialFactory & other) { return new OT::ExponentialFactory(other); } } }

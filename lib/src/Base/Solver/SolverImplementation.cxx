@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,8 +38,7 @@ SolverImplementation::SolverImplementation(const Scalar absoluteError,
     const Scalar residualError,
     const UnsignedInteger maximumFunctionEvaluation)
   : PersistentObject()
-  , maximumFunctionEvaluation_(maximumFunctionEvaluation)
-  , usedFunctionEvaluation_(0)
+  , maximumCallsNumber_(maximumFunctionEvaluation)
   , absoluteError_(absoluteError)
   , relativeError_(relativeError)
   , residualError_(residualError)
@@ -60,8 +59,8 @@ Bool SolverImplementation::operator ==(const SolverImplementation & other) const
   return (absoluteError_ == other.absoluteError_) &&
          (relativeError_ == other.relativeError_) &&
          (residualError_ == other.residualError_) &&
-         (maximumFunctionEvaluation_ == other.maximumFunctionEvaluation_)
-         && (usedFunctionEvaluation_ == other.usedFunctionEvaluation_);
+         (maximumCallsNumber_ == other.maximumCallsNumber_)
+         && (callsNumber_ == other.callsNumber_);
 }
 
 /** String converter */
@@ -72,8 +71,8 @@ String SolverImplementation::__repr__() const
       << " absoluteError=" << absoluteError_
       << " relativeError=" << relativeError_
       << " residualError=" << residualError_
-      << " maximumFunctionEvaluation=" << maximumFunctionEvaluation_
-      << " usedFunctionEvaluation=" << usedFunctionEvaluation_;
+      << " maximumCallsNumber=" << maximumCallsNumber_
+      << " callsNumber=" << callsNumber_;
   return oss;
 }
 
@@ -84,7 +83,7 @@ void SolverImplementation::save(Advocate & adv) const
   adv.saveAttribute("absoluteError_", absoluteError_);
   adv.saveAttribute("relativeError_", relativeError_);
   adv.saveAttribute("residualError_", residualError_);
-  adv.saveAttribute("maximumFunctionEvaluation_", maximumFunctionEvaluation_);
+  adv.saveAttribute("maximumCallsNumber_", maximumCallsNumber_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -94,7 +93,10 @@ void SolverImplementation::load(Advocate & adv)
   adv.loadAttribute("absoluteError_", absoluteError_);
   adv.loadAttribute("relativeError_", relativeError_);
   adv.loadAttribute("residualError_", residualError_);
-  adv.loadAttribute("maximumFunctionEvaluation_", maximumFunctionEvaluation_);
+  if (adv.hasAttribute("maximumCallsNumber_"))
+    adv.loadAttribute("maximumCallsNumber_", maximumCallsNumber_);
+  else
+    adv.loadAttribute("maximumFunctionEvaluation_", maximumCallsNumber_);
 }
 
 /** Absolute error accessor */
@@ -130,20 +132,38 @@ Scalar SolverImplementation::getResidualError() const
   return residualError_;
 }
 
-/** Maximum function evaluation accessor */
+/** Maximum function calls accessor */
+void SolverImplementation::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
+{
+  maximumCallsNumber_ = maximumCallsNumber;
+}
+
+UnsignedInteger SolverImplementation::getMaximumCallsNumber() const
+{
+  return maximumCallsNumber_;
+}
+
 void SolverImplementation::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation)
 {
-  maximumFunctionEvaluation_ = maximumFunctionEvaluation;
+  LOGWARN("Solver.setMaximumFunctionEvaluation is deprecated, use setMaximumCallsNumber");
+  setMaximumCallsNumber(maximumFunctionEvaluation);
 }
 
 UnsignedInteger SolverImplementation::getMaximumFunctionEvaluation() const
 {
-  return maximumFunctionEvaluation_;
+  LOGWARN("Solver.getMaximumFunctionEvaluation is deprecated, use setMaximumCallsNumber");
+  return getMaximumCallsNumber();
+}
+
+UnsignedInteger SolverImplementation::getCallsNumber() const
+{
+  return callsNumber_;
 }
 
 UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
 {
-  return usedFunctionEvaluation_;
+  LOGWARN("Solver.getUsedFunctionEvaluation is deprecated, use getCallsNumber");
+  return getCallsNumber();
 }
 
 namespace
@@ -196,12 +216,12 @@ Scalar SolverImplementation::solve(const UniVariateFunction & function,
                                    const Scalar infPoint,
                                    const Scalar supPoint) const
 {
-  if (!(maximumFunctionEvaluation_ >= 2)) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumFunctionEvaluation_;
+  if (!(maximumCallsNumber_ >= 2)) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumCallsNumber_;
   /* We take into account the fact that we use 2 function calls when using the other solve method */
-  maximumFunctionEvaluation_ -= 2;
+  maximumCallsNumber_ -= 2;
   Scalar root = solve(function, value, infPoint, supPoint, function(infPoint), function(supPoint));
-  maximumFunctionEvaluation_ += 2;
-  usedFunctionEvaluation_ += 2;
+  maximumCallsNumber_ += 2;
+  callsNumber_ += 2;
   return root;
 }
 

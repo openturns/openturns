@@ -6,5 +6,6 @@
 
 %include LowDiscrepancyExperiment_doc.i
 
+%copyctor OT::LowDiscrepancyExperiment;
+
 %include openturns/LowDiscrepancyExperiment.hxx
-namespace OT { %extend LowDiscrepancyExperiment { LowDiscrepancyExperiment(const LowDiscrepancyExperiment & other) { return new OT::LowDiscrepancyExperiment(other); } } }

@@ -4,5 +4,6 @@
 #include "openturns/NoCalibration.hxx"
 %}
 
+%copyctor OT::NoCalibration;
+
 %include openturns/NoCalibration.hxx
-namespace OT { %extend NoCalibration { NoCalibration(const NoCalibration & other) { return new OT::NoCalibration(other); } } }

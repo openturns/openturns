@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -1156,7 +1156,6 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
     Curve curve(data);
     curve.setLineWidth(2);
-    curve.setColor("red");
     graph.add(curve);
     return graph;
   } // asStationary && isStationary()

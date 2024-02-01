@@ -28,7 +28,8 @@ vecY = ot.CompositeRandomVector(f, vecX)
 thresholdEvent = ot.ThresholdEvent(vecY, ot.Less(), 1.0)
 
 # %%
-# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1) away from the mean (here 0) account roughly for 68.27% of the set.
+# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1)
+# away from the mean (here 0) account roughly for 68.27% of the set.
 # So the probability of the event is:
 #
 print("Probability of the event : %.4f" % 0.6827)
@@ -43,6 +44,7 @@ print(
 
 # %%
 # The geometric interpretation is simply the area under the PDF of the standard normal distribution for :math:`x \in [-1,1]` which we draw thereafter.
+
 
 # %%
 def linearSample(xmin, xmax, npoints):

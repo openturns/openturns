@@ -6,5 +6,6 @@ OTAutodoc(QuadraticEvaluation)
 #include "openturns/QuadraticEvaluation.hxx"
 %}
 
+%copyctor OT::QuadraticEvaluation;
+
 %include openturns/QuadraticEvaluation.hxx
-namespace OT { %extend QuadraticEvaluation { QuadraticEvaluation(const QuadraticEvaluation & other) { return new OT::QuadraticEvaluation(other); } } }

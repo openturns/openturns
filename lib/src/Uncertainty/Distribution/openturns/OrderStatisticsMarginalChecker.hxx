@@ -2,7 +2,7 @@
 /**
  *  @brief OrderStatisticsMarginalChecker class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ public:
   typedef Collection<Distribution> DistributionCollection;
 
   /** Parameters constructor */
-  OrderStatisticsMarginalChecker(const DistributionCollection & collection);
+  explicit OrderStatisticsMarginalChecker(const DistributionCollection & collection = DistributionCollection());
 
   /** Is the collection of marginals compatible ? */
   Bool isCompatible() const;
@@ -59,7 +59,7 @@ public:
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 private:
   DistributionCollection collection_;

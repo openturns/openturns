@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveQuadratureAlgorithm_doc.i
 
+%copyctor OT::KarhunenLoeveQuadratureAlgorithm;
+
 %include openturns/KarhunenLoeveQuadratureAlgorithm.hxx
-namespace OT { %extend KarhunenLoeveQuadratureAlgorithm { KarhunenLoeveQuadratureAlgorithm(const KarhunenLoeveQuadratureAlgorithm & other) { return new OT::KarhunenLoeveQuadratureAlgorithm(other); } } }

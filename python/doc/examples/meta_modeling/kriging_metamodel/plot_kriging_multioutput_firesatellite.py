@@ -136,7 +136,7 @@ for i in range(3):
     graph = val.drawValidation().getGraph(0, i)
     graph.setLegends([""])
     graph.setLegends(["Q2 = %.2f%%" % (100 * Q2[i]), ""])
-    graph.setLegendPosition("topleft")
+    graph.setLegendPosition("upper left")
     graph.setXTitle("Exact function")
     graph.setYTitle("Metamodel prediction")
     graph.setTitle(label[i])

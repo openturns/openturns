@@ -6,5 +6,6 @@
 
 %include ReverseHaltonSequence_doc.i
 
+%copyctor OT::ReverseHaltonSequence;
+
 %include openturns/ReverseHaltonSequence.hxx
-namespace OT{ %extend ReverseHaltonSequence { ReverseHaltonSequence(const ReverseHaltonSequence & other) { return new OT::ReverseHaltonSequence(other); } } }

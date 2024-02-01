@@ -2,7 +2,7 @@
 /**
  *  @brief ARMAState class enables to set a State before a simulation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,7 +70,7 @@ String ARMAState::__str__(const String & offset) const
   // are needed to compute the current value
   String separator("");
   const UnsignedInteger xSize = x_.getSize();
-  for (UnsignedInteger i = 0; i < xSize; ++i, separator = Os::GetEndOfLine() )
+  for (UnsignedInteger i = 0; i < xSize; ++i, separator = "\n" )
   {
     const UnsignedInteger index = xSize - i;
     oss << separator << offset << "X(t-" << index << ")" << std::setw(String(OSS() << xSize).size() - String(OSS() << index).size() + 3) << " = " << x_[i];

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class PosteriorDistribution for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -101,7 +101,7 @@ int main(int, char *[])
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      Point zero(dim, 0.0);
+      Point zero(dim, 1e-3);
 
       // Show PDF and CDF of zero point
       Scalar zeroPDF = distribution.computePDF(zero);

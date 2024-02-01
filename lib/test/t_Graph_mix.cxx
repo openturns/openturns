@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of Graph class for EDF case number 9
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -135,6 +135,11 @@ int main(int, char *[])
     secondGraph.add(myLine);
     // Extract the drawable from the second graph and add it to the first graph
     firstGraph.add(secondGraph.getDrawables()[0]);
+
+    // Add drawables with default colors
+    Curve myCurve(Point({ 0.0, 1.0, 2.0 }), Point({ 1.0, 3.0, 2.0 }));
+    firstGraph.add(myCurve);
+    secondGraph.add(Graph::DrawableCollection({ myCurve, myCloud }));
 
     //  Set new colors
     Description colors(0);

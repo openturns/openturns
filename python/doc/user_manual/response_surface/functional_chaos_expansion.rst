@@ -12,8 +12,8 @@ Functional chaos algorithm
     :template: class.rst_t
 
     FunctionalChaosAlgorithm
-    experimental.LeastSquaresExpansion
-    experimental.IntegrationExpansion
+    LeastSquaresExpansion
+    IntegrationExpansion
 
 Construction of the truncated multivariate orthogonal basis
 ===========================================================
@@ -42,7 +42,11 @@ Computation of the polynomial chaos coefficients
     LeastSquaresMetaModelSelectionFactory
     LeastSquaresMetaModelSelection
     BasisSequenceFactory
+
+    :template: classWithPlot.rst_t
     LARS
+
+    :template: class.rst_t
     FittingAlgorithm
     CorrectedLeaveOneOut
     KFold

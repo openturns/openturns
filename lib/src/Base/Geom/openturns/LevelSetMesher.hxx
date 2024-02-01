@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for levelSets
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,7 @@ private:
   Indices discretization_;
 
   /* Optimization solver used to project the vertices */
-  mutable OptimizationAlgorithm solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class LevelSetMesher */
 

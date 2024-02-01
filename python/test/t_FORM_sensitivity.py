@@ -55,7 +55,6 @@ marginals[0] = testDistributions[0].getMarginal(0)
 marginals[1] = testDistributions[0].getMarginal(1)
 testDistributions[1] = ot.ComposedDistribution(marginals, ot.NormalCopula(R))
 for i in range(1):
-
     myDistribution = testDistributions[i]
     # We name the components of the distribution
     componentDescription = ot.Description(dim)
@@ -77,7 +76,7 @@ for i in range(1):
 
     # We create a NearestPoint algorithm
     myCobyla = ot.Cobyla()
-    myCobyla.setMaximumEvaluationNumber(200)
+    myCobyla.setMaximumCallsNumber(200)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
     myCobyla.setMaximumRelativeError(1.0e-10)
     myCobyla.setMaximumResidualError(1.0e-10)

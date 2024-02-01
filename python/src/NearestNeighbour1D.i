@@ -6,5 +6,6 @@
 
 %include NearestNeighbour1D_doc.i
 
+%copyctor OT::NearestNeighbour1D;
+
 %include openturns/NearestNeighbour1D.hxx
-namespace OT { %extend NearestNeighbour1D { NearestNeighbour1D(const NearestNeighbour1D & other) { return new OT::NearestNeighbour1D(other); } } }

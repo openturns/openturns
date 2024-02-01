@@ -13,37 +13,11 @@ implementation factory which is a
 :class:`~openturns.ApproximationAlgorithmImplementationFactory` or a
 :class:`~openturns.LeastSquaresMetaModelSelectionFactory`.
 
-This class is not usable because it has sense only whithin the
+This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation
 OT_ApproximationAlgorithm_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_ApproximationAlgorithm_getVerbose_doc
-"Accessor to the verbosity flag.
-
-Returns
--------
-v : bool.
-    Verbosity"
-%enddef
-%feature("docstring") OT::ApproximationAlgorithmImplementation::getVerbose
-OT_ApproximationAlgorithm_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_ApproximationAlgorithm_setVerbose_doc
-"Accessor to the verbosity flag.
-
-Parameters
-----------
-v : bool
-    Enable or disable the verbosity."
-%enddef
-%feature("docstring") OT::ApproximationAlgorithmImplementation::setVerbose
-OT_ApproximationAlgorithm_setVerbose_doc
 
 // ---------------------------------------------------------------------
 

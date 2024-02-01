@@ -6,8 +6,8 @@
 
 %include Description_doc.i
 
-%template(StringCollection) OT::Collection<OT::String>;
-%template(StringPersistentCollection) OT::PersistentCollection<OT::String>;
+%template(_StringCollection) OT::Collection<OT::String>;
+%template(_StringPersistentCollection) OT::PersistentCollection<OT::String>;
 
 %typemap(in) const OT::Description & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {

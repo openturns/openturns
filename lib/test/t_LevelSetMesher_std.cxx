@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LevelSetMesher for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000 );
-    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000);
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );
@@ -56,10 +56,23 @@ int main(int, char *[])
 
     SymbolicFunction function2D(Description::BuildDefault(2, "x"), Description(1, "cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"));
     LevelSet levelSet2D(function2D, LessOrEqual(), level);
-    // Manual bounding box
-    Mesh mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)));
-    fullprint << "mesh2D=" << mesh2D << std::endl;
-
+    // Manual bounding box, linear interpolation
+    {
+      Mesh mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)), false);
+      fullprint << "mesh2D=" << mesh2D << std::endl;
+    }
+    // Manual bounding box, solve the equation projection
+    {
+      ResourceMap::SetAsBool("LevelSetMesher-SolveEquation", true);
+      Mesh mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)), true);
+      fullprint << "mesh2D=" << mesh2D << std::endl;
+    }
+    // Manual bounding box, optimization projection
+    {
+      ResourceMap::SetAsBool("LevelSetMesher-SolveEquation", false);
+      Mesh mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)), true);
+      fullprint << "mesh2D=" << mesh2D << std::endl;
+    }
     // The 3D mesher
     LevelSetMesher mesher3D(Indices(3, 3));
     fullprint << "mesher3D=" << mesher3D << std::endl;
@@ -67,6 +80,7 @@ int main(int, char *[])
     SymbolicFunction function3D(Description::BuildDefault(3, "x"), Description(1, "cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"));
     LevelSet levelSet3D(function3D, LessOrEqual(), level);
     // Manual bounding box
+    ResourceMap::SetAsBool("LevelSetMesher-SolveEquation", true);
     Mesh mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
 
@@ -78,6 +92,7 @@ int main(int, char *[])
     LevelSet levelSet4D(function4D, LessOrEqual(), level);
 
     // Manual bounding box
+    ResourceMap::SetAsBool("LevelSetMesher-SolveEquation", true);
     Mesh mesh4D = mesher4D.build(levelSet4D, Interval(Point(4, -0.5), Point(4, 0.5)));
     fullprint << "mesh4D=" << mesh4D << std::endl;
   }

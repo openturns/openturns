@@ -4,7 +4,7 @@
  * optimization problems. It is derived from Bonmin::TMINLP to ensure
  * compatibility with Bonmin algorithms.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,9 +26,11 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
-#define HAVE_CSTDDEF// for 3.11 in debian
+#define HAVE_CSTDDEF // for 3.11 in debian
 #include <BonTMINLP.hpp>
 #include <IpTNLP.hpp>
+
+#include <chrono>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,16 +39,16 @@ typedef ::Ipopt::TNLP::LinearityType * LinearityTypeTable;
 
 
 class BonminProblem
-  : public ::Bonmin::TMINLP // Namespace to be confirmed
+  : public ::Bonmin::TMINLP
 {
-
 public:
 
   /** Constructor with parameters */
   BonminProblem( const OptimizationProblem & optimProblem,
                  const Point & startingPoint,
-                 const UnsignedInteger maximumEvaluationNumber
-               );
+                 const UnsignedInteger maximumCallsNumber,
+                 const Scalar maximumTimeDuration,
+                 const std::chrono::steady_clock::time_point & t0);
 
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
@@ -176,6 +178,7 @@ public:
     stopCallback_ = std::pair<OptimizationAlgorithmImplementation::StopCallback, void *>(callBack, state);
   }
 
+
 private:
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
@@ -184,11 +187,11 @@ private:
   Point optimalPoint_;
   Point optimalValue_;
   // Callbacks
-  UnsignedInteger maximumEvaluationNumber_;
+  UnsignedInteger maximumCallsNumber_ = 0;
+  Scalar maximumTimeDuration_ = 0.0;
+  std::chrono::steady_clock::time_point t0_;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
-
-
 };
 
 END_NAMESPACE_OPENTURNS

@@ -102,6 +102,6 @@ graph = ot.Graph(
 )
 curve = ot.Curve(x, "UserSpectral")
 graph.add(curve)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 plt.show()

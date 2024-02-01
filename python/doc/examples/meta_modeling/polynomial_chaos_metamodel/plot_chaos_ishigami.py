@@ -211,7 +211,8 @@ chaosSI = ot.FunctionalChaosSobolIndices(chaosResult)
 chaosSI
 
 # %%
-# We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance. Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.
+# We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance.
+# Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.
 
 # %%
 # Draw Sobol' indices.
@@ -261,7 +262,8 @@ for i in range(im.dim):
     )
 
 # %%
-# We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations. This shows the good performance of the polynomial chaos in this case.
+# We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations.
+# This shows the good performance of the polynomial chaos in this case.
 
 # %%
 # We can compute the part of the variance of the output explained by each multi-index.
@@ -269,16 +271,20 @@ for i in range(im.dim):
 # %%
 partOfVariance = chaosSI.getPartOfVariance()
 chaosResult = chaosSI.getFunctionalChaosResult()
+coefficients = chaosResult.getCoefficients()
 orthogonalBasis = chaosResult.getOrthogonalBasis()
 enumerateFunction = orthogonalBasis.getEnumerateFunction()
 indices = chaosResult.getIndices()
 basisSize = indices.getSize()
-print("Index, global index, multi-index, coefficient")
+print("Index, global index, multi-index, coefficient, part of variance")
 for i in range(basisSize):
     globalIndex = indices[i]
     multiIndex = enumerateFunction(globalIndex)
     if partOfVariance[i] > 1.0e-3:
-        print("%d, %d, %s, %.4f" % (i, globalIndex, multiIndex, partOfVariance[i]))
+        print(
+            "%d, %d, %s, %.4f, %.4f"
+            % (i, globalIndex, multiIndex, coefficients[i, 0], partOfVariance[i])
+        )
 
 # %%
 view.show()

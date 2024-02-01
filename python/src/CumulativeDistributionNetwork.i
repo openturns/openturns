@@ -6,6 +6,6 @@
 
 %include CumulativeDistributionNetwork_doc.i
 
-%include openturns/CumulativeDistributionNetwork.hxx
+%copyctor OT::CumulativeDistributionNetwork;
 
-namespace OT { %extend CumulativeDistributionNetwork { CumulativeDistributionNetwork(const CumulativeDistributionNetwork & other) { return new OT::CumulativeDistributionNetwork(other); } } }
+%include openturns/CumulativeDistributionNetwork.hxx

@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -195,7 +195,7 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   // Implement the test using basic rho statistic
   Sample fullSample(firstSample);
   fullSample.stack(secondSample);
-  const Scalar rho = fullSample.computePearsonCorrelation()(0, 1);
+  const Scalar rho = fullSample.computeLinearCorrelation()(0, 1);
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
@@ -328,13 +328,13 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample &
   return PartialSpearman(firstSample, secondSample, selection, level);
 }
 
-TestResult HypothesisTest::LikelihoodRatioTest(const UnsignedInteger model0NbParameters, 
-                                               const Scalar model0LogLikelihood,
+TestResult HypothesisTest::LikelihoodRatioTest(const UnsignedInteger model0NbParameters,
+    const Scalar model0LogLikelihood,
     const UnsignedInteger model1NbParameters,
     const Scalar model1LogLikelihood,
     const Scalar level)
 {
-    if (model0NbParameters >= model1NbParameters) throw InvalidArgumentException(HERE) << "Error: Model 0 must be embedded into Model 1. Here Model 0 has " << model0NbParameters << " parameters and Model 1 has " << model1NbParameters << " parameters";
+  if (model0NbParameters >= model1NbParameters) throw InvalidArgumentException(HERE) << "Error: Model 0 must be embedded into Model 1. Here Model 0 has " << model0NbParameters << " parameters and Model 1 has " << model1NbParameters << " parameters";
   const Scalar dp = 2.0 * (model1LogLikelihood - model0LogLikelihood);
 
   // The p-value is the complementary CDF of a ChiSquare(1) at dp

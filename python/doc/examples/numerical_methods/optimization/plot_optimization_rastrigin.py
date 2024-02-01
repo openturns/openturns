@@ -38,7 +38,7 @@ ot.Log.Show(ot.Log.NONE)
 
 def rastriginPy(X):
     A = 10.0
-    delta = [x ** 2 - A * np.cos(2 * np.pi * x) for x in X]
+    delta = [x**2 - A * np.cos(2 * np.pi * x) for x in X]
     y = A + sum(delta)
     return [y]
 
@@ -75,8 +75,9 @@ bounds = ot.Interval(lowerbound, upperbound)
 # %%
 graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
-view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendPosition("upper left")
+graph.setLegendCorner([1.0, 1.0])
+view = viewer.View(graph)
 
 # %%
 # We see that the Rastrigin function has several local minima. However, there is only one single global minimum at :math:`\vect{x}^\star=(0, 0)`.
@@ -141,7 +142,7 @@ xexact
 # Let us focus on the instance that found the global minimum. How many times did it evaluate `rastrigin`?
 
 # %%
-result.getEvaluationNumber()
+result.getCallsNumber()
 
 # %%
 # Let us view these evaluation points.
@@ -154,8 +155,9 @@ cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = viewer.View(graph)
 
 # %%
 # How fast did it find the global minimum?
@@ -179,8 +181,9 @@ cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = viewer.View(graph)
 
 # %%
 # How many times did all :class:`~openturns.Cobyla` instances combined call `rastrigin`?

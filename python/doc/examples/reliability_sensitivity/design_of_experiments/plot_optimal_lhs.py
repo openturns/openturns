@@ -47,7 +47,8 @@ print(phip, mindist, phip_inf)
 # - Linear profile: :math:`T_i = T_0 (1-\frac{1}{n_{iter}})`
 # - Geometric profile: :math:`T_i = T_O c^i, 0<c<1`
 #
-# Starting from an LHS design, a new design is built by permuting a random coordinate of two randomly chosen sample points; this new design is also an LHS. but not necessary a more efficient design.
+# Starting from an LHS design, a new design is built by permuting a random coordinate of two randomly chosen sample points;
+# this new design is also an LHS, but not necessarily a more efficient design.
 #
 # A comparison of criteria of the two designs is done, and the new LHS is accepted with probability
 #

@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,9 +70,9 @@ Scalar DistFunc::qBeta(const Scalar p1,
 /* Random number generation
    We use the algorithm of Cheng (1978), Johnk, Atkinson and Whittaker (1979) 1 & 2 described in:
    Luc Devroye, "Non-Uniform RandomVariate Generation", Springer-Verlag, 1986, available online at:
-   http://cg.scs.carleton.ca/~luc/nonuniformrandomvariates.zip
+   http://www.nrbook.com/devroye/Devroye_files/
    and with the important errata at:
-   http://cg.scs.carleton.ca/~luc/errors.pdf
+   http://www.nrbook.com/devroye/Devroye_files/errors.pdf
 */
 Scalar DistFunc::rBeta(const Scalar p1,
                        const Scalar p2)
@@ -1187,7 +1187,7 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 
 /* CDF inverse
    It implements the algorithm of Peter John Acklam, see
-   http://home.online.no/~pjacklam/notes/invnorm/index.html
+   https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
 */
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
@@ -1434,7 +1434,7 @@ Scalar DistFunc::dPoisson(const Scalar lambda,
 
 /* Quantile function
    We use the algorithm described in:
-   Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf
+   Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf or http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf
    It is the Author's implementation, used in OpenTURNS with his written permission, see COPYING.poissinv
 */
 Scalar DistFunc::qPoisson(const Scalar lambda,
@@ -1532,7 +1532,7 @@ Scalar DistFunc::pPearsonCorrelation(const UnsignedInteger size, const Scalar rh
 /********************************************************************************************/
 /* Spearman rho distribution: let (X_i) and (Y_i) be two samples of size n and dimension 1. */
 /* This function computes the probability that the Spearman correlation between the samples */
-/* is less or equal (tail = false) or is greater (tail = ture) than the given value under   */
+/* is less or equal (tail = false) or is greater (tail = true) than the given value under   */
 /* the assumption that the permutation that reorder the first sample in the same order as   */
 /* the second sample is uniformly distributed among the n-permutations. It is the case in   */
 /* particular when the two samples are independent and iid.                                 */

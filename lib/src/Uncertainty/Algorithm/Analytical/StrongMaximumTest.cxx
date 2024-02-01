@@ -2,7 +2,7 @@
 /**
  *  @brief StrongMaxTest implements an algorithm to check if a given design point
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -405,25 +405,28 @@ Scalar StrongMaximumTest::computeDeltaEpsilon()
   const Scalar betaSquare = standardSpaceDesignPoint_.normSquare();
 
   /* get the input distribution in the standard space */
-  const Distribution inputStandardDistribution(event_.getImplementation()->getAntecedent().getDistribution().getImplementation());
+  const Distribution inputStandardDistribution(event_.getImplementation()->getAntecedent().getDistribution());
+  const EllipticalDistribution *p_elliptical = dynamic_cast<EllipticalDistribution *>(inputStandardDistribution.getImplementation().get());
+  if (!p_elliptical)
+    throw InvalidArgumentException(HERE) << "StrongMaximumTest::computeDeltaEpsilon distribution is not elliptical";
 
   /* evaluate the generator at beta square */
-  const Scalar pdfMin = importanceLevel_ * inputStandardDistribution.computeDensityGenerator(betaSquare);
+  const Scalar pdfMin = importanceLevel_ * p_elliptical->computeDensityGenerator(betaSquare);
 
   /* research the interval [deltaMin deltaMax] including the solution */
   Scalar deltaMax = 1.0;
 
-  while ( inputStandardDistribution.computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin ) ++deltaMax;
+  while (p_elliptical->computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin) ++deltaMax;
   Scalar deltaMin = deltaMax - 1.0;
 
   /* we proceed to the dichotomie on [deltaMin deltaMax] */
   Scalar deltaMiddle = 0.0;
   const Scalar deltaEpsilon = ResourceMap::GetAsScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
-  while ( (deltaMax - deltaMin) > deltaEpsilon )
+  while ((deltaMax - deltaMin) > deltaEpsilon)
   {
     /* we evaluate the middle of  [deltaMin deltaMax] */
     deltaMiddle = 0.5 * (deltaMax + deltaMin);
-    if(  inputStandardDistribution.computeDensityGenerator(betaSquare * pow(1.0 + deltaMiddle, 2)) > pdfMin )
+    if(p_elliptical->computeDensityGenerator(betaSquare * pow(1.0 + deltaMiddle, 2)) > pdfMin)
     {
       deltaMin = deltaMiddle;
     }

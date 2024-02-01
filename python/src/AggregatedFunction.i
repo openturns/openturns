@@ -6,5 +6,6 @@
 
 %include AggregatedFunction_doc.i
 
+%copyctor OT::AggregatedFunction;
+
 %include openturns/AggregatedFunction.hxx
-namespace OT { %extend AggregatedFunction { AggregatedFunction(const AggregatedFunction & other) { return new OT::AggregatedFunction(other); } } }

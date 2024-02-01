@@ -2,7 +2,7 @@
 /**
  *  @brief The WeibullMax distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -165,6 +165,13 @@ Scalar WeibullMax::computeComplementaryCDF(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x >= 0.0) return 0.0;
   return -expm1(-std::pow(-x / beta_, alpha_));
+}
+
+Scalar WeibullMax::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

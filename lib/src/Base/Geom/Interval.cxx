@@ -2,7 +2,7 @@
 /**
  *  @brief Interval is defined as the cartesian product of n 1D intervals ]low_1, up_1]x...x]low_n,up_n]
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -414,7 +415,7 @@ void Interval::setLowerBound(const Point & lowerBound)
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-    if (SpecFunc::IsInf(lowerBound[i]))
+    if (std::isinf(lowerBound[i]))
     {
       lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteLowerBound_[i] = false;
@@ -432,7 +433,7 @@ void Interval::setUpperBound(const Point & upperBound)
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-    if (SpecFunc::IsInf(upperBound[i]))
+    if (std::isinf(upperBound[i]))
     {
       upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteUpperBound_[i] = false;
@@ -481,7 +482,7 @@ String Interval::__str__(const String & offset) const
   OSS oss(false);
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
-    if (i > 0) oss << Os::GetEndOfLine() << offset;
+    if (i > 0) oss << "\n" << offset;
     if (finiteLowerBound_[i]) oss << "[" << lowerBound_[i] << ", ";
     else oss << "]-inf (" << lowerBound_[i] << "), ";
     if (finiteUpperBound_[i]) oss << upperBound_[i] << "]";

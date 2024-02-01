@@ -4,5 +4,6 @@
 #include "openturns/EvaluationProxy.hxx"
 %}
 
+%copyctor OT::EvaluationProxy;
+
 %include openturns/EvaluationProxy.hxx
-namespace OT{ %extend EvaluationProxy { EvaluationProxy(const EvaluationProxy & other) { return new OT::EvaluationProxy(other); } } }

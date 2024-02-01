@@ -2,7 +2,7 @@
 /**
  *  @brief Regression from a data sample upon a particular basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,11 +31,6 @@ static const Factory<ApproximationAlgorithmImplementation> Factory_Approximation
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   : PersistentObject()
-  , hasUniformWeight_(true)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   // Nothing to do
 }
@@ -52,10 +47,6 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , hasUniformWeight_(true)
   , psi_(psi)
   , currentIndices_(indices)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -73,13 +64,8 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , x_(x)
   , y_(y)
   , weight_()
-  , hasUniformWeight_(false)
   , psi_(psi)
   , currentIndices_(indices)
-  , isAlreadyComputedCoefficients_(false)
-  , residual_(0.0)
-  , relativeError_(0.0)
-  , verbose_(false)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -153,8 +139,7 @@ String ApproximationAlgorithmImplementation::__repr__() const
          << " x=" << x_
          << " y=" << y_
          << " weight=" << weight_
-         << " psi=" << psi_
-         << " verbose=" << verbose_ ;
+         << " psi=" << psi_;
 }
 
 
@@ -200,17 +185,6 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
   return relativeError_;
 }
 
-/* Verbosity accessor */
-void ApproximationAlgorithmImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-Bool ApproximationAlgorithmImplementation::getVerbose() const
-{
-  return verbose_;
-}
-
 /* Method save() stores the object through the StorageManager */
 void ApproximationAlgorithmImplementation::save(Advocate & adv) const
 {
@@ -220,7 +194,6 @@ void ApproximationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute("weight_", weight_);
   adv.saveAttribute("psi_", psi_);
   adv.saveAttribute("currentIndices_", currentIndices_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 
@@ -234,9 +207,17 @@ void ApproximationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute("weight_", weight);
   adv.loadAttribute("psi_", psi_);
   adv.loadAttribute("currentIndices_", currentIndices_);
-  adv.loadAttribute("verbose_", verbose_);
   setWeight(weight);
 }
 
+Collection<Indices> ApproximationAlgorithmImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in ApproximationAlgorithmImplementation::getSelectionHistory";
+}
+
+Point ApproximationAlgorithmImplementation::getErrorHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in ApproximationAlgorithmImplementation::getErrorHistory";
+}
 
 END_NAMESPACE_OPENTURNS

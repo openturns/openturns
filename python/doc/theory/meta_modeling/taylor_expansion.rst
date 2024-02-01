@@ -1,57 +1,73 @@
 .. _taylor_expansion:
 
-Linear and Quadratic Taylor Expansions
---------------------------------------
 
-| The approximation of the model response
-  :math:`\underline{y} = h(\underline{x})` around a specific set
-  :math:`\underline{x}_0 = (x_{0,1},\dots,x_{0,n_{X}})` of input
-  parameters may be of interest. One may then substitute :math:`h` for
-  its Taylor expansion at point :math:`\underline{x}_0`. Hence :math:`h`
-  is replaced with a first or second-order polynomial
-  :math:`\widehat{h}` whose evaluation is inexpensive, allowing the
-  analyst to apply the uncertainty propagation methods.
-| We consider the first and second order Taylor expansions around
-  :math:`\ux=\underline{x}_0`.
+Let :math:`h: \Rset^d \rightarrow \Rset^q` be a function, let :math:`\ux \in \Rset^{n_X}`
+be an input point and let :math:`\uy=h(\ux)` be the corresponding output.
 
-  .. math::
+First-order Taylor expansion
+----------------------------
 
-    \underline{y} \, \, \approx \, \, \widehat{h}(\underline{x}) \, \, = \, \, h(\underline{x}_0) \, + \,  \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right)
-
-Introducing a vector notation, the previous equation rewrites:
+The first-order Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function
+:math:`\widehat{h}: \Rset^d \rightarrow \Rset^q` defined for each marginal function
+:math:`h_k` of :math:`h`  by the equation:
 
 .. math::
 
-    \underline{y} \, \, \approx \, \,  \underline{y}_0 \, + \, \underline{\underline{L}} \: \left(\underline{x}-\underline{x}_0\right)
+   \widehat{h}_k(\ux) = h_k(\ux_0) + \sum_{i=1}^{d} \left(\frac{\partial h_k}{\partial x_i}\right)(\ux_0)\left(x_i - x_{0,i} \right)
 
-where:
-
--  :math:`\underline{y_0} = (y_{0,1} , \dots, y_{0,n_Y})^{\textsf{T}}=  h(\underline{x}_0)`
-   is the vector model response evaluated at :math:`\underline{x}_0`;
-
--  :math:`\underline{x}` is the current set of input parameters;
-
--  :math:`\underline{\underline{L}} = \left( \frac{\partial y_{0,j}}{\partial x_i} \, \, , \, \, i=1,\ldots, n_X \, \, , \, \, j=1, \ldots, n_Y \right)`
-   is the transposed Jacobian matrix evaluated at
-   :math:`\underline{x}_0`.
-
-  .. math::
-
-     \begin{aligned}
-         \underline{y} \, \, \approx \, \, \widehat{h}(\underline{x}) \, \, = \, \,
-         h(\underline{x}_0) \, +  \, \sum_{i=1}^{n_{X}} \;  \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right) \, + \, \frac{1}{2} \; \sum_{i,j=1}^{n_X} \;  \frac{\partial^2 h}{\partial x_i \partial x_j}(\underline{x}_0).\left(x_i - x_{0,i} \right).\left(x_j - x_{0,j} \right)
-       \end{aligned}
-
-Introducing a vector notation, the previous equation rewrites:
+for :math:`k \in \{1, ..., q\}` which can be written as:
 
 .. math::
 
-    \underline{y} \, \, \approx  \, \,  \underline{y}_0 \, + \,  \underline{\underline{L}} \: \left(\underline{x}-\underline{x}_0\right) \, + \,  \frac{1}{2} \; \left\langle \left\langle\underline{\underline{\underline{Q}}}\:,\underline{x}-\underline{x}_0 \right\rangle,\:\underline{x}-\underline{x}_0 \right\rangle
+    \widehat{h}(\ux) = h(\ux_0) + \mat{L} (\ux-\ux_0)
 
-where
-:math:`\underline{\underline{Q}} = \left\{ \frac{\partial^2 y_{0,k}}{\partial x_i \partial x_j} \, \, , \, \, i,j=1,\ldots, n_X \, \, , \, \, k=1, \ldots, n_Y \right\}`
-is the transposed Hessian matrix.
 
+where :math:`\mat{L} = (L_{ij})_{1 \leq i \leq q, 1\leq j \leq d}` is the Jacobian
+matrix evaluated at the point :math:`\ux_0`:
+
+.. math::
+
+    L_{ij} = \left(\frac{\partial h_i}{\partial x_i}\right)(\ux_0)
+
+for :math:`i \in \{1, ..., q\}` and :math:`j \in \{1, ..., d\}`.
+
+
+Second-order Taylor expansion
+-----------------------------
+
+The second-order Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function
+:math:`\widehat{h}: \Rset^d \rightarrow \Rset^q` defined for each marginal function
+:math:`h_k` of :math:`h`  by the equation:
+
+.. math::
+
+   \widehat{h}_k(\ux) = h_k(\ux_0) + \sum_{i=1}^{d}  \left(\frac{\partial h_k}{\partial x_i}\right)(\ux_0)
+   \left(x_i - x_{0,i} \right) +  \frac{1}{2} \sum_{i,j = 1}^d \left( \frac{\partial^2 h_k}{\partial x_i
+   \partial x_j}\right)(\ux_0)(x_i-x_{0,i})(x_j-x_{0,j})
+
+
+which can be written as:
+
+.. math::
+
+    \widehat{h}(\ux) = h(\ux_0) + \mat{L} (\ux-\ux_0) +  \frac{1}{2}  \left\langle \left\langle\mat{Q},\ux-
+    \ux_0 \right \rangle, \ux-\ux_0 \right \rangle
+
+
+where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq d, 1\leq k \leq q}` is the Hessian tensor of order 3 evaluated at :math:`\ux_0`:
+
+
+.. math::
+
+    Q_{ijk} = \left(\frac{\partial^2 h_k}{\partial x_i\partial x_j}\right)(\ux_0)
+
+for :math:`i, j \in \{1, ..., d\}` and :math:`k \in \{1, ..., q\}`.
+
+The first and second order Taylor expansions are used in the following cases:
+
+- to evaluate the importance factors of the input point on the output: refer to :ref:`taylor_importance_factors`,
+
+- to get an approximation of the mean and the variance of the output: refer to :ref:`taylor_expansion_moments`.
 
 
 .. topic:: API:

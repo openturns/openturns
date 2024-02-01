@@ -6,5 +6,6 @@
 
 %include FieldToPointFunctionalChaosAlgorithm_doc.i
 
+%copyctor OT::FieldToPointFunctionalChaosAlgorithm;
+
 %include openturns/FieldToPointFunctionalChaosAlgorithm.hxx
-namespace OT{ %extend FieldToPointFunctionalChaosAlgorithm { FieldToPointFunctionalChaosAlgorithm(const FieldToPointFunctionalChaosAlgorithm & other) { return new OT::FieldToPointFunctionalChaosAlgorithm(other); } } }

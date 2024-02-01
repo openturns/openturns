@@ -99,7 +99,7 @@ level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
 level_list = list(range(1, 1 + level_max))
 graph = ot.Graph(
-    "Smolyak vs tensorized quadrature", r"$level$", r"$n$", True, "topleft"
+    "Smolyak vs tensorized quadrature", r"$level$", r"$n$", True, "upper left"
 )
 dimension_list = list(range(1, dimension_max, 2))
 palette = ot.Drawable().BuildDefaultPalette(len(dimension_list))
@@ -117,7 +117,7 @@ for dimension in dimension_list:
     graph.add(curve)
     # Smolyak
     for level in level_list:
-        number_of_nodes[level - 1, 0] = 2 ** level * level ** (dimension - 1)
+        number_of_nodes[level - 1, 0] = 2**level * level ** (dimension - 1)
     curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     curve.setLegend("")
     curve.setLineStyle("dashed")
@@ -153,7 +153,7 @@ level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
 uniform = ot.GaussProductExperiment(ot.Uniform(-1.0, 1.0))
 level_list = list(range(1, 1 + level_max))
-graph = ot.Graph("Smolyak-Legendre quadrature", r"$level$", r"$n$", True, "topleft")
+graph = ot.Graph("Smolyak-Legendre quadrature", r"$level$", r"$n$", True, "upper left")
 palette = ot.Drawable().BuildDefaultPalette(dimension_max - 1)
 graph_index = 0
 for dimension in range(1, dimension_max):

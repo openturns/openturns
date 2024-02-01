@@ -6,5 +6,6 @@
 
 %include CompositeRandomVector_doc.i
 
+%copyctor OT::CompositeRandomVector;
+
 %include openturns/CompositeRandomVector.hxx
-namespace OT { %extend CompositeRandomVector { CompositeRandomVector(const CompositeRandomVector & other) { return new OT::CompositeRandomVector(other); } } }

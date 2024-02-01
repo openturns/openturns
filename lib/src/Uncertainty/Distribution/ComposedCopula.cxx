@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedCopulas
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,7 +114,7 @@ void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
   isIndependent_ = true;
-  bool parallel = true;
+  Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (!coll[i].isCopula())

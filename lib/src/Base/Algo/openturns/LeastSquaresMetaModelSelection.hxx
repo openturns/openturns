@@ -2,7 +2,7 @@
 /**
  *  @brief Basis selection algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,6 +40,7 @@ class OT_API LeastSquaresMetaModelSelection
   CLASSNAME
 
 public:
+
   /** Default constructor */
   LeastSquaresMetaModelSelection();
 
@@ -84,6 +85,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+  Point getErrorHistory() const override;
+
 protected:
 
   /** Algorithm that builds the BasisSequence */
@@ -92,6 +96,7 @@ protected:
   /** Basis selection algorithm */
   FittingAlgorithm fittingAlgorithm_;
 
+  Point errorHistory_;
 
 }; /* class LeastSquaresMetaModelSelection */
 

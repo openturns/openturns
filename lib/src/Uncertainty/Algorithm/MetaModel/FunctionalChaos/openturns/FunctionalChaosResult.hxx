@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a chaos expansion
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,6 @@
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
-
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,7 +73,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-  String __repr_markdown__() const;
+  String __repr_markdown__() const override;
 
   /** Distribution accessor */
   virtual Distribution getDistribution() const;
@@ -106,6 +105,16 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  IndicesCollection getIndicesHistory() const;
+  Collection<Point> getCoefficientsHistory() const;
+  void setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory);
+  Graph drawSelectionHistory() const;
+
+  /** Error history accessor */
+  void setErrorHistory(const Point & errorHistory);
+  Point getErrorHistory() const;
+  Graph drawErrorHistory() const;
 
 protected:
 
@@ -133,6 +142,13 @@ private:
 
   /** Composed meta model */
   Function composedMetaModel_;
+
+  /** Selection history */
+  PersistentCollection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
+
+  /** Error history */
+  Point errorHistory_;
 
 } ; /* class FunctionalChaosResult */
 

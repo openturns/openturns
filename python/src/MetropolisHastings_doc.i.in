@@ -10,7 +10,7 @@ OT_MetropolisHastings_getTargetDistribution_doc
 OT_MetropolisHastings_getTargetLogPDF_doc
 %feature("docstring") OT::MetropolisHastings::getTargetLogPDFSupport
 OT_MetropolisHastings_getTargetLogPDFSupport_doc
-%feature("docstring") OT::MetropolisHastingsImplementation::getMarginalIndices
+%feature("docstring") OT::MetropolisHastings::getMarginalIndices
 OT_MetropolisHastings_getMarginalIndices_doc
 %feature("docstring") OT::MetropolisHastings::setLikelihood
 OT_MetropolisHastings_setLikelihood_doc

@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for projection strategies
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -130,6 +130,11 @@ Point ProjectionStrategy::getCoefficients() const
   return getImplementation()->getCoefficients();
 }
 
+/* Design proxy accessor */
+DesignProxy ProjectionStrategy::getDesignProxy() const
+{
+  return getImplementation()->getDesignProxy();
+}
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategy::computeCoefficients(const Function & function,
@@ -143,7 +148,6 @@ void ProjectionStrategy::computeCoefficients(const Function & function,
   getImplementation()->computeCoefficients(function, basis, indices, addedRanks, conservedRanks, removedRanks, marginalIndex);
 }
 
-
 /* String converter */
 String ProjectionStrategy::__repr__() const
 {
@@ -151,13 +155,15 @@ String ProjectionStrategy::__repr__() const
          << " implementation=" << getImplementation()->__repr__();
 }
 
-
 /* String converter */
-String ProjectionStrategy::__str__(const String & ) const
+String ProjectionStrategy::__str__(const String & offset) const
 {
-  return __repr__();
+  return OSS() << getImplementation()->__str__(offset);
 }
-
-
+/* String converter */
+String ProjectionStrategy::_repr_html_() const
+{
+  return OSS() << getImplementation()->_repr_html_();
+}
 
 END_NAMESPACE_OPENTURNS

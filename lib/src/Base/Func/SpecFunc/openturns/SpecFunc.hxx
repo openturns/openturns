@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,8 +58,13 @@ const Scalar ZETA3                 = 1.20205690315959429;
 // Scalar limits
 const Scalar MinScalar     = std::numeric_limits<Scalar>::min();
 const Scalar LogMinScalar  = std::log(MinScalar);
+#ifdef OPENTURNS_MAXSCALAR_IS_INF
+const Scalar MaxScalar     = std::numeric_limits<Scalar>::infinity();
+#else
 const Scalar MaxScalar     = std::numeric_limits<Scalar>::max();
+#endif
 const Scalar LogMaxScalar  = std::log(MaxScalar);
+const Scalar ActualMaxScalar = std::numeric_limits<Scalar>::max();
 const Scalar LowestScalar  = -MaxScalar;
 const Scalar ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 // Maximum number of iterations for the algorithms
@@ -67,8 +72,6 @@ const UnsignedInteger MaximumIteration = ResourceMap::GetAsUnsignedInteger("Spec
 const Scalar Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
 // Some facilities for NaN and inf
-OT_API Bool IsNaN(const Scalar value);
-OT_API Bool IsInf(const Scalar value);
 OT_API Bool IsNormal(const Scalar value);
 
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}

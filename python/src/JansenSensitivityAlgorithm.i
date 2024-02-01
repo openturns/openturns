@@ -6,5 +6,6 @@
 
 %include JansenSensitivityAlgorithm_doc.i
 
+%copyctor OT::JansenSensitivityAlgorithm;
+
 %include openturns/JansenSensitivityAlgorithm.hxx
-namespace OT{ %extend JansenSensitivityAlgorithm { JansenSensitivityAlgorithm(const JansenSensitivityAlgorithm & other) { return new OT::JansenSensitivityAlgorithm(other); } } }

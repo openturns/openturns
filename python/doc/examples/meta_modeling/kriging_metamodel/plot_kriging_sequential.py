@@ -3,7 +3,8 @@ Sequentially adding new points to a kriging
 ===========================================
 """
 # %%
-# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel. In order to create simple graphics, we consider a 1D function.
+# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel.
+# In order to create simple graphics, we consider a 1D function.
 
 # %%
 # Create the function and the design of experiments
@@ -48,6 +49,7 @@ view = viewer.View(graph)
 # %%
 # Create the algorithms
 # ---------------------
+
 
 # %%
 def createMyBasicKriging(X, Y):
@@ -154,7 +156,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     graph.add(graphFonction)
     graph.add(cloudDOE)
     graph.add(graphKriging)
-    graph.setLegendPosition("bottomright")
+    graph.setLegendPosition("lower right")
     graph.setAxes(True)
     graph.setGrid(True)
     graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100 * Q2))
@@ -178,6 +180,7 @@ view = viewer.View(graph)
 
 # %%
 # The following function is the building block of the algorithm. It returns a new point which maximizes the conditional variance.
+
 
 # %%
 def getNewPoint(xMin, xMax, krigResult):

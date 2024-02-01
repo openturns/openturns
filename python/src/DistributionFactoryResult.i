@@ -6,5 +6,6 @@
 
 %include DistributionFactoryResult_doc.i
 
+%copyctor OT::DistributionFactoryResult;
+
 %include openturns/DistributionFactoryResult.hxx
-namespace OT { %extend DistributionFactoryResult { DistributionFactoryResult(const DistributionFactoryResult & other) { return new OT::DistributionFactoryResult(other); } } }

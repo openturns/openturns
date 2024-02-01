@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseWishart distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -87,7 +87,7 @@ String InverseWishart::__repr__() const
 String InverseWishart::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << getClassName() << "(V = " << Os::GetEndOfLine() << offset << getV() << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(V = " << "\n" << offset << getV() << ", nu = " << nu_ << ")";
   return oss;
 }
 
@@ -213,6 +213,10 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar InverseWishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
+  if (point[0] < getRange().getLowerBound()[0])
+    return 0.0;
+  if (point[0] > getRange().getUpperBound()[0])
+    return 1.0;
   return ContinuousDistribution::computeCDF(point);
 }
 

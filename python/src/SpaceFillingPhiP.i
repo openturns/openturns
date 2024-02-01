@@ -6,5 +6,6 @@
 
 %include SpaceFillingPhiP_doc.i
 
+%copyctor OT::SpaceFillingPhiP;
+
 %include openturns/SpaceFillingPhiP.hxx
-namespace OT { %extend SpaceFillingPhiP { SpaceFillingPhiP(const SpaceFillingPhiP & other) { return new OT::SpaceFillingPhiP(other); } } }

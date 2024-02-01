@@ -2,7 +2,7 @@
 /**
  *  @brief Classification algorithm base type
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,10 +70,6 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Input space dimension */
   virtual UnsignedInteger getDimension() const;
 
@@ -96,11 +92,8 @@ protected:
   Indices classes_;
 
 private:
-  /** Verbosity flag */
-  Bool verbose_;
-
   /** Flag to tell if parallelization must be used */
-  Bool isParallel_;
+  Bool isParallel_ = false;
 
 }; /* class ClassifierImplementation */
 

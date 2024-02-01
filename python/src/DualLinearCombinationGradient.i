@@ -6,5 +6,6 @@
 
 %include DualLinearCombinationGradient_doc.i
 
+%copyctor OT::DualLinearCombinationGradient;
+
 %include openturns/DualLinearCombinationGradient.hxx
-namespace OT { %extend DualLinearCombinationGradient { DualLinearCombinationGradient(const DualLinearCombinationGradient & other) { return new OT::DualLinearCombinationGradient(other); } } }

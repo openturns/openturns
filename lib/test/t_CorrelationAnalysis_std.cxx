@@ -2,7 +2,7 @@
 /**
  *  @brief Test file fo the correlation coefficients computation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -83,7 +83,7 @@ int main(int, char *[])
     Point prcc(corr_analysis.computePRCC());
     assert_almost_equal(prcc, Point({0.99, 0.92}), 0.0, 1e-2); // approximate value
 
-    Point pearson(corr_analysis.computePearsonCorrelation());
+    Point pearson(corr_analysis.computeLinearCorrelation());
     assert_almost_equal(pearson, Point({0.95, 0.31}), 0.0, 1e-2); // approximate value
 
     Point spearman(corr_analysis.computeSpearmanCorrelation());

@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -418,7 +418,7 @@ String LevelSet::__repr__() const
 String LevelSet::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << Os::GetEndOfLine() << offset << function_.__str__(offset);
+  oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << "\n" << offset << function_.__str__(offset);
   return oss;
 }
 

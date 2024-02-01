@@ -79,10 +79,11 @@ fm.data
 # - `Q` : the flowrate of the river,
 # - `a`, `b` : the parameters.
 
+
 # %%
 def functionSimpleFlooding(X):
     Q, a, b = X
-    H = a * Q ** b
+    H = a * Q**b
     return [H]
 
 
@@ -187,8 +188,7 @@ cloud = ot.Cloud(Qobs, Hobs)
 cloud.setLegend("Observations")
 graph.add(cloud)
 #
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -236,7 +236,7 @@ graph = calibrationResult.drawObservationsVsInputs()
 aEstimated, bEstimated = thetaMAP
 title = "After calibration : a = %.4f, b = %.4f" % (aEstimated, bEstimated)
 graph.setTitle(title)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 
@@ -247,7 +247,7 @@ view = otv.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

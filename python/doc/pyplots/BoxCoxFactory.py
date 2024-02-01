@@ -44,13 +44,11 @@ shift = [0.0]
 # We estimate the lambda parameter from the field field
 # All values of the field are positive
 transform, graph = factory.buildWithGraph(field, shift)
-graphMarginal2 = (
-    ot.KernelSmoothing().build(transform(field).getValues()).drawPDF()
-)
+graphMarginal2 = ot.KernelSmoothing().build(transform(field).getValues()).drawPDF()
 graphMarginal2.setXTitle("T_lambda(X)")
 graphMarginal2.setLegendPosition("")
 
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 
 fig = plt.figure(figsize=(12, 4))
 axis = fig.add_subplot(131)

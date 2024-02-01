@@ -1,3 +1,5 @@
+.. _library_development:
+
 Library development
 ===================
 
@@ -20,37 +22,35 @@ Download openturns
 ~~~~~~~~~~~~~~~~~~
 
 You can retrieve the development master branch through the git
-repository by issuing the following command:
-
-::
+repository by issuing the following commands::
 
     git clone https://github.com/openturns/openturns.git
     cd openturns
 
-Or, you can pick up a stable version tarball:
+Or, you can pick up a stable version::
 
-::
-
-    curl -L https://github.com/openturns/openturns/archive/v1.15.tar.gz | tar xz
-    cd openturns-1.12
+    git clone -b v1.22 https://github.com/openturns/openturns.git
+    cd openturns
 
 Build openturns
 ~~~~~~~~~~~~~~~
 
-::
+CMake presets can be used on Linux, which sets debug build mode, warning flags, build dir, install prefix, etc::
 
-    mkdir build
-    cd build
-    cmake -DCMAKE_INSTALL_PREFIX=$PWD/install ..
-    make install -j4
+    cmake --preset=linux-debug
+    cmake --build build --target install --parallel 4
 
 Run tests
 ~~~~~~~~~
 
-::
+Python tests can be run once the bindings are finished compiled::
 
-    make tests
-    ctest -j4
+    ctest --test-dir build -j4 -R pyinstallcheck
+
+C++ tests must be built prior to be launched::
+
+    cmake --build build --target tests --parallel 4
+    ctest --test-dir build -j4 -R cppcheck
 
 and all the tests should be successful else check the log file
 Testing/Temporary/LastTest.log.
@@ -116,6 +116,8 @@ First, add the class to the C++ library
 #. Create a test file ``t_MyClass_std.cxx`` in the directory lib/test.
    This test file must use the standard functionalities of the class
    MyClass.
+   Keep in mind there are over a thousand unit tests, so they should be
+   reasonably quick to run, lasting preferably less than 10 seconds.
 
 #. Create an expected output file ``t_MyClass_std.expout`` that contains
    a verbatim copy of the expected output (copy-paste the *validated*
@@ -201,9 +203,11 @@ Second, add your class to the Python interface
        Examples
        --------
        >>> import openturns as ot
+       >>> ot.RandomGenerator.SetSeed(0)
        >>> dp = ot.Normal().getRealization()
        >>> inst = ot.MyClass(dp, 4.8)
-       >>> print(inst)"
+       >>> print(inst)
+       >>> 4.5677..."
 
        // ---------------------------------------------------------------------
 
@@ -211,9 +215,11 @@ Second, add your class to the Python interface
        "...
        "
 
-       // ---------------------------------------------------------------------
-
-       ...
+   Beware that docstring tests run from the Examples section share the same environment
+   and they can be affected by global settings such as RandomGenerator seed or ResourceMap entries,
+   so for example here we reset the RNG seed prior to sampling to avoid affecting the expected result.
+   Also, these examples must be very quick because they are run as batches per module,
+   more expensive tests can be run in the dedicated unit tests.
 
 #. Modify the CMakeLists.txt file in python/src: add MyClass.i,
    MyClass\_doc.i.in to the relevant ``ot_add_python_module`` clause.
@@ -227,6 +233,8 @@ Second, add your class to the Python interface
 #. Create a test file ``t_MyClass_std.py`` in the directory python/test.
    This test implements the same tests than ``t_MyClass_std.cxx``, but
    using python.
+   Keep in mind there are over a thousand unit tests, so they should be
+   reasonably quick to run, lasting preferably less than 10 seconds.
 
 #. Modify the CMakeLists.txt file in python/test:
 
@@ -290,7 +298,7 @@ by the following template:
     #
     #  CMakeLists.txt
     #
-    #  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+    #  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
     #
     #  This library is free software: you can redistribute it and/or modify
     #  it under the terms of the GNU Lesser General Public License as published by

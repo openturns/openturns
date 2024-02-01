@@ -382,7 +382,6 @@ cloud = ot.Cloud(yTrain, predictionsLOO)
 graph.add(cloud)
 curve = ot.Curve(yTrain, yTrain)
 graph.add(curve)
-graph.setColors(ot.Drawable().BuildDefaultPalette(2))
 view = otv.View(graph)
 
 # %%

@@ -1,17 +1,16 @@
 %feature("docstring") OT::Poisson
 "Poisson distribution.
 
-Available constructors:
-    Poisson(*lambda=1.0*)
-
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`
     Mean and variance value.
 
+    Default value is 1.0.
+
 Notes
 -----
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

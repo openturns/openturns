@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(CalibrationAlgorithm)
 
+%copyctor OT::CalibrationAlgorithm;
+
 %include openturns/CalibrationAlgorithm.hxx
-namespace OT { %extend CalibrationAlgorithm { CalibrationAlgorithm(const CalibrationAlgorithm & other) { return new OT::CalibrationAlgorithm(other); } } }

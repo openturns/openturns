@@ -6,6 +6,6 @@
 
 %include Histogram_doc.i
 
-%include openturns/Histogram.hxx
+%copyctor OT::Histogram;
 
-namespace OT { %extend Histogram { Histogram(const Histogram & other) { return new OT::Histogram(other); } } }
+%include openturns/Histogram.hxx

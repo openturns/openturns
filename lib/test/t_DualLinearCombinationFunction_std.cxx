@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Function for dual_linear combinations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,6 +60,8 @@ int main(int, char *[])
     inPoint[1] = 2.3;
     inPoint[2] = 3.4;
     fullprint << "myFunction=" << myFunction << std::endl;
+    fullprint << "myFunction (HTML)=" << std::endl;
+    fullprint << myFunction._repr_html_() << std::endl;
     fullprint << "Value at " << inPoint << "=" << myFunction(inPoint) << std::endl;
     fullprint << "Gradient at " << inPoint << "=" << myFunction.gradient(inPoint) << std::endl;
     PlatformInfo::SetNumericalPrecision(5);

@@ -198,8 +198,7 @@ cloud.setPointStyle(
 )
 graph.add(cloud)
 #
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -380,7 +379,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -405,7 +404,7 @@ print(observationError)
 
 # sphinx_gallery_thumbnail_number = 5
 graph = calibrationResult.drawResiduals()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -421,7 +420,7 @@ view = otv.View(graph)
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8, bottom=0.2)
@@ -486,7 +485,7 @@ sigmaH = 0.5  # (m^2)
 # %%
 # Define the covariance matrix of the output Y of the model.
 errorCovariance = ot.CovarianceMatrix(1)
-errorCovariance[0, 0] = sigmaH ** 2
+errorCovariance[0, 0] = sigmaH**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -495,9 +494,9 @@ sigmaZv = 1.0
 sigmaZm = 1.0
 #
 sigma = ot.CovarianceMatrix(3)
-sigma[0, 0] = sigmaKs ** 2
-sigma[1, 1] = sigmaZv ** 2
-sigma[2, 2] = sigmaZm ** 2
+sigma[0, 0] = sigmaKs**2
+sigma[1, 1] = sigmaZv**2
+sigma[2, 2] = sigmaZm**2
 print(sigma)
 
 # %%
@@ -523,7 +522,7 @@ print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -539,7 +538,7 @@ view = otv.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -573,10 +572,10 @@ print(
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # The two distributions are different, which shows that the calibration is
@@ -623,7 +622,7 @@ print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
@@ -671,10 +670,10 @@ print(
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # The two distributions are very different, with a spiky posterior distribution.
@@ -725,10 +724,10 @@ calibrationResult = algo.getResult()
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (8.0, 4.0)},
+    figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # As we can see, this does not change much the posterior distribution, which remains spiky.

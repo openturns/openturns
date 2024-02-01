@@ -8,5 +8,6 @@
 
 %ignore OT::CovarianceModelImplementation::isParallel;
 
+%copyctor OT::CovarianceModelImplementation;
+
 %include openturns/CovarianceModelImplementation.hxx
-namespace OT{ %extend CovarianceModelImplementation { CovarianceModelImplementation(const CovarianceModelImplementation & other) { return new OT::CovarianceModelImplementation(other); } } }

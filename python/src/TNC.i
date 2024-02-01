@@ -6,5 +6,6 @@
 
 %include TNC_doc.i
 
+%copyctor OT::TNC;
+
 %include openturns/TNC.hxx
-namespace OT{ %extend TNC { TNC(const TNC & other) { return new OT::TNC(other); } } }

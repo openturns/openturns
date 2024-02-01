@@ -2,7 +2,7 @@
 /**
  *  @brief This class stores the current state of the fitting step in the WhittleFactory class.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,10 +82,10 @@ String WhittleFactoryState::__repr__() const
 String WhittleFactoryState::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getARMA().__str__(offset) << Os::GetEndOfLine() << offset;
-  oss << "Information criteria:" << Os::GetEndOfLine() << offset;
-  oss << "AICc = " << informationCriteria_[0] << Os::GetEndOfLine() << offset;
-  oss << "AIC  = " << informationCriteria_[1] << Os::GetEndOfLine() << offset;
+  oss << getARMA().__str__(offset) << "\n" << offset;
+  oss << "Information criteria:" << "\n" << offset;
+  oss << "AICc = " << informationCriteria_[0] << "\n" << offset;
+  oss << "AIC  = " << informationCriteria_[1] << "\n" << offset;
   oss << "BIC  = " << informationCriteria_[2];
   return oss;
 }

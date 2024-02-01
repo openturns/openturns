@@ -41,7 +41,7 @@ namespace OT {
 } // namespace OT
 %}
 
-%template(PolygonCollection) OT::Collection<OT::Polygon>;
+%template(_PolygonCollection) OT::Collection<OT::Polygon>;
 
 %typemap(in) const PolygonCollection & (OT::Pointer<OT::Collection<OT::Polygon> > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
@@ -65,5 +65,6 @@ namespace OT {
 
 %include PolygonArray_doc.i
 
+%copyctor OT::PolygonArray;
+
 %include openturns/PolygonArray.hxx
-namespace OT { %extend PolygonArray { PolygonArray(const PolygonArray & other) { return new OT::PolygonArray(other); } } }

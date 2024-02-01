@@ -1,5 +1,5 @@
 f= VertexValuePointToFieldFunction([t,x]->[x + t^2,5*x + 3*t])
-f input description= [x0]
+f input description= [x]
 f output description= [y0,y1]
 f input dimension= 1
 f output dimension= 2

@@ -2,7 +2,7 @@
 /**
  *  @brief XMLH5StorageManager implements xml/h5 storage
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,13 +37,20 @@ public:
       const UnsignedInteger compressionLevel = 0)
     : h5FileName_(h5FileName)
     , compressionLevel_(compressionLevel)
-  {}
+  {
+    H5::Exception::dontPrint();
+  }
 
   template <class CPP_Type>
   void addIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, CPP_Type value);
 
   template <class CPP_Type>
   void readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, CPP_Type & value);
+
+  void initialize(const SaveAction caller);
+
+  void initialize(const LoadAction caller);
+  void finalize(const LoadAction caller);
 
 private:
   template <class CPP_Type>
@@ -53,7 +60,7 @@ private:
   void readFromH5(const String & dataSetName);
 
   // Buffer size for writing hdf5 slabs
-  const UnsignedInteger BufferSize = 1048576;
+  const UnsignedInteger BufferSize = (1 << 22); // 4mb
 
   // 30kB (max recommended dataset header size)
   // https://support.hdfgroup.org/HDF5/doc/UG/HDF5_Users_Guide.pdf
@@ -64,6 +71,7 @@ private:
   FileName h5FileName_;
   std::vector<Scalar> valBuf_Scalar_;
   std::vector<UnsignedInteger> valBuf_UnsignedInteger_;
+  H5::H5File h5File_;
   Bool isFirstDS_ = true;
   UnsignedInteger compressionLevel_ = 0;
 };
@@ -99,7 +107,7 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
   assert(node);
-  const hsize_t dsetSize = std::stoi(XML::GetAttributeByName(node, "size"));
+  const hsize_t dsetSize = std::stol(XML::GetAttributeByName(node, "size"));
 
   // append value in buffer
   getBuffer<CPP_Type>().push_back(value);
@@ -107,14 +115,14 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   // if last value or buffer full then write to dataset
   if ((index == dsetSize - 1) || ((index % BufferSize == 0) && (index > 0)))
   {
-    String dataSetName = XML::GetAttributeByName(node, "id");
+    const String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5<CPP_Type>(dataSetName);
   }
 
   // if last value then add XML node
   if (index == dsetSize - 1)
   {
-    String dataSetName = XML::GetAttributeByName(node, "id");
+    const String dataSetName = XML::GetAttributeByName(node, "id");
     const size_t idx = h5FileName_.find_last_of(Os::GetDirectorySeparator());
     const FileName h5FileNameRel = h5FileName_.substr(idx + 1);
     XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileNameRel + ":/" + dataSetName);
@@ -123,27 +131,31 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   }
 }
 
+void XMLH5StorageManagerImplementation::initialize(const SaveAction /*caller*/)
+{
+  isFirstDS_ = true;
+}
 
 template <class CPP_Type>
 void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
 {
-  H5::Exception::dontPrint();
-  H5::H5File h5File;
-  if (isFirstDS_)
+  // - truncate file on first call, else r/w mode
+  // - no h5 file should be created if no dataset is necessary
+  // - its slower to copy everything in memory with H5Pset_fapl_core
+  //   and write the h5 only on close as writeToH5 already implements some kind of buffer
+  try
   {
-    //Create new or overwrite existing
-    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_TRUNC);
-    isFirstDS_ = false;
+    h5File_ = H5::H5File(h5FileName_.c_str(), isFirstDS_ ? H5F_ACC_TRUNC : H5F_ACC_RDWR);
   }
-  else
+  catch (const H5::Exception &)
   {
-    //R+W access
-    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
+    throw FileOpenException(HERE) << "Error opening file " << h5FileName_ << " for writing";
   }
+  isFirstDS_ = false;
 
   const hsize_t dims[1] = { getBuffer<CPP_Type>().size() };
 
-  if (!H5Lexists(h5File.getId(), dataSetName.c_str(), H5P_DEFAULT))
+  if (!H5Lexists(h5File_.getId(), dataSetName.c_str(), H5P_DEFAULT))
   {
     //Dataset does not exist, need to create it and initialize it with first chunk
     const hsize_t maxdims[1] = { H5S_UNLIMITED };
@@ -169,14 +181,14 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
     prop.setDeflate(compressionLevel_);
 
     //Create new dataset and write it
-    H5::DataSet dset(h5File.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
+    H5::DataSet dset(h5File_.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
     dset.write(getBuffer<CPP_Type>().data(), getDataType<CPP_Type>());
     prop.close();
   }
   else
   {
     //Dataset exists, and will be appended with buffer values
-    H5::DataSet dset(h5File.openDataSet(dataSetName));
+    H5::DataSet dset(h5File_.openDataSet(dataSetName));
     //Get actual dset size
     const hsize_t offset[1] = { (hsize_t)dset.getSpace().getSimpleExtentNpoints() };
     const hsize_t extent[1] = { dims[0] + offset[0] };
@@ -191,7 +203,7 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
     dset.write(getBuffer<CPP_Type>().data(), getDataType<CPP_Type>(), memspace, filespace);
   }
   getBuffer<CPP_Type>().clear();
-  h5File.close();
+  h5File_.close();
 }
 
 
@@ -221,12 +233,28 @@ void XMLH5StorageManagerImplementation::readIndexedValue(Pointer<StorageManager:
 }
 
 
+void XMLH5StorageManagerImplementation::initialize(const LoadAction /*caller*/)
+{
+  isFirstDS_ = true;
+}
+
 template <class CPP_Type>
 void XMLH5StorageManagerImplementation::readFromH5(const String & dataSetName)
 {
-  H5::Exception::dontPrint();
-  H5::H5File file(h5FileName_.c_str(), H5F_ACC_RDONLY);
-  H5::DataSet dataset = file.openDataSet(dataSetName.c_str());
+  if (isFirstDS_)
+  {
+    try
+    {
+      h5File_ = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDONLY);
+    }
+    catch (const H5::Exception &)
+    {
+      throw FileOpenException(HERE) << "Error opening file " << h5FileName_ << " for reading";
+    }
+  }
+  isFirstDS_ = false;
+
+  H5::DataSet dataset = h5File_.openDataSet(dataSetName.c_str());
   H5::DataSpace dataspace = dataset.getSpace();
   const int size = dataspace.getSimpleExtentNpoints();
 
@@ -235,7 +263,11 @@ void XMLH5StorageManagerImplementation::readFromH5(const String & dataSetName)
 
   dataspace.close();
   dataset.close();
-  file.close();
+}
+
+void XMLH5StorageManagerImplementation::finalize(const LoadAction /*caller*/)
+{
+  h5File_.close();
 }
 
 CLASSNAMEINIT(XMLH5StorageManager)
@@ -287,6 +319,23 @@ void XMLH5StorageManager::setStorageManager()
   XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLH5StorageManager");
 }
 
+void XMLH5StorageManager::initialize(const SaveAction caller)
+{
+  XMLStorageManager::initialize(caller);
+  p_implementation_->initialize(caller);
+}
+
+void XMLH5StorageManager::initialize(const LoadAction caller)
+{
+  XMLStorageManager::initialize(caller);
+  p_implementation_->initialize(caller);
+}
+
+void XMLH5StorageManager::finalize(const LoadAction caller)
+{
+  XMLStorageManager::finalize(caller);
+  p_implementation_->finalize(caller);
+}
 
 void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value)
 {

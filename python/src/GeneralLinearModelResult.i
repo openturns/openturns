@@ -6,8 +6,8 @@
 
 %include GeneralLinearModelResult_doc.i
 
-%include openturns/GeneralLinearModelResult.hxx
+%copyctor OT::GeneralLinearModelResult;
 
-namespace OT{ %extend GeneralLinearModelResult { GeneralLinearModelResult(const GeneralLinearModelResult & other) { return new OT::GeneralLinearModelResult(other); } } }
+%include openturns/GeneralLinearModelResult.hxx
 
 

@@ -178,13 +178,13 @@ OT_Function_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getCallsNumber_doc
-"Accessor to the number of times the function has been called.
+"Accessor to the number of direct calls to the function.
 
 Returns
 -------
 calls_number : int
     Integer that counts the number of times the function has been called
-    since its creation."
+    directly through the `()` operator."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getCallsNumber
 OT_Function_getCallsNumber_doc
@@ -192,13 +192,14 @@ OT_Function_getCallsNumber_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getEvaluationCallsNumber_doc
-"Accessor to the number of times the function has been called.
+"Accessor to the number of times the evaluation of the function has been called.
 
 Returns
 -------
 evaluation_calls_number : int
-    Integer that counts the number of times the function has been called
-    since its creation."
+    Integer that counts the number of times the evaluation of the function
+    has been called since its creation.
+    This may include indirect calls via finite-difference gradient or hessian."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getEvaluationCallsNumber
 OT_Function_getEvaluationCallsNumber_doc

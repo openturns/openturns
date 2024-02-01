@@ -1,19 +1,24 @@
 %feature("docstring") OT::TruncatedNormal
 "TruncatedNormal distribution.
 
-Available constructors:
-    TruncatedNormal(*mu=0.0, sigma=1.0, a=-1.0, b=1.0*)
-
 Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is 0.0.
 sigma : float, :math:`\sigma > 0`
     Standard deviation.
+
+    Default value is 1.0.
 a : float
     Lower bound.
+
+    Default is -1.0.
 b : float, :math:`a < b`
     Upper bound.
+
+    Default value is 1.0.
 
 Notes
 -----

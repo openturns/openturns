@@ -6,5 +6,6 @@
 
 %include EnclosingSimplexAlgorithmImplementation_doc.i
 
+%copyctor OT::EnclosingSimplexAlgorithmImplementation;
+
 %include openturns/EnclosingSimplexAlgorithmImplementation.hxx
-namespace OT{ %extend EnclosingSimplexAlgorithmImplementation { EnclosingSimplexAlgorithmImplementation(const EnclosingSimplexAlgorithmImplementation & other) { return new OT::EnclosingSimplexAlgorithmImplementation(other); } } }

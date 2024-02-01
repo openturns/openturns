@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for sensitivity algorithms
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -301,8 +301,8 @@ Interval SobolIndicesAlgorithmImplementation::getFirstOrderIndicesInterval() con
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     Distribution marginal(distribution.getMarginal(j));
-    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
-    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+    lowerBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 - confidenceLevel_));
+    upperBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 + confidenceLevel_));
   }
   return Interval(lowerBound, upperBound);
 }
@@ -370,8 +370,8 @@ Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() con
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     Distribution marginal(distribution.getMarginal(j));
-    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
-    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+    lowerBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 - confidenceLevel_));
+    upperBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 + confidenceLevel_));
   }
   return Interval(lowerBound, upperBound);
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an LHSExperiment plane
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,8 @@
 #include "openturns/Point.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistributionTransformation.hxx"
+#include "openturns/IndependentCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,9 +40,6 @@ LHSExperiment::LHSExperiment()
   : WeightedExperimentImplementation()
   , marginals_(1, distribution_)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
-  , alwaysShuffle_(false)
-  , randomShift_(true)
 {
   // Check if the distribution has an independent copula and build the transformation
   setDistribution(distribution_);
@@ -53,7 +52,6 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
   : WeightedExperimentImplementation(size)
   , marginals_(1, distribution_)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
@@ -69,7 +67,6 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
   : WeightedExperimentImplementation(distribution, size)
   , marginals_(0)
   , shuffle_(0, 0)
-  , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
@@ -170,16 +167,18 @@ Matrix LHSExperiment::getShuffle() const
 /* Distribution accessor */
 void LHSExperiment::setDistribution(const Distribution & distribution)
 {
-  if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use the LHS experiment with a non-independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  DistributionCollection marginals(dimension);
-  // Get the marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals[i] = distribution.getMarginal(i);
   if (dimension != getDistribution().getDimension())
     isAlreadyComputedShuffle_ = false;
-  // Build the iso-probabilistic transformation
-  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
+  // Build the iso-probabilistic transformation using [cambou2017]
+  transformation_ = DistributionTransformation(IndependentCopula(dimension), distribution);
   WeightedExperimentImplementation::setDistribution(distribution);
+}
+
+void LHSExperiment::setSize(const UnsignedInteger size)
+{
+  WeightedExperimentImplementation::setSize(size);
+  isAlreadyComputedShuffle_ = false;
 }
 
 /* AlwaysShuffle accessor */

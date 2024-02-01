@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,6 @@ WhittleFactory::WhittleFactory()
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -71,7 +70,6 @@ WhittleFactory::WhittleFactory(const UnsignedInteger p,
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -94,7 +92,6 @@ WhittleFactory::WhittleFactory(const Indices & p,
   , m_(0)
   , spectralDensity_()
   , sigma2_(0.0)
-  , verbose_(false)
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
@@ -256,10 +253,10 @@ void WhittleFactory::initializeCobylaSolverParameter()
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
   cobyla->setRhoBeg(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoBeg"));
-  cobyla->setIgnoreFailure(true);
+  cobyla->setCheckStatus(false);
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Optimization solver accessor */
@@ -294,17 +291,6 @@ String WhittleFactory::__str__(const String & ) const
 WelchFactory WhittleFactory::getSpectralModelFactory() const
 {
   return spectralFactory_;
-}
-
-/* Verbosity accessor */
-Bool WhittleFactory::getVerbose() const
-{
-  return verbose_;
-}
-
-void WhittleFactory::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
 }
 
 /* Enable or disable the estimation history */
@@ -415,7 +401,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
     {
       currentQ_ = q_[qIndex];
 
-      if (verbose_) LOGINFO(OSS() << "Current parameters p=" << currentP_ << ", q=" << currentQ_);
+      LOGDEBUG(OSS() << "Current parameters p=" << currentP_ << ", q=" << currentQ_);
 
 
       // Dimension of the optimization problem
@@ -438,14 +424,15 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
         // use attributes to pass the data
         nbInequalityConstraint_ = m;
         problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-        solver_.setProblem(problem);
-        solver_.setStartingPoint(startingPoints_[pointIndex]);
+        OptimizationAlgorithm solver(solver_);
+        solver.setProblem(problem);
+        solver.setStartingPoint(startingPoints_[pointIndex]);
 
         // run Optimization problem
-        solver_.run();
+        solver.run();
 
         // optimal point
-        const Point optpoint(solver_.getResult().getOptimalPoint());
+        const Point optpoint(solver.getResult().getOptimalPoint());
         theta = optpoint;
       }
       // Compute the information criteria
@@ -462,7 +449,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       currentInformationCriteria[1] = -2.0 * logLikelihood + 2.0 * (n + 1);
       // Third, the BIC
       currentInformationCriteria[2] = -2.0 * logLikelihood + 2.0 * (n + 1) * log(1.0 * m_);
-      if (verbose_) LOGINFO(OSS(false) << "Current estimate: theta=" << theta << ", sigma2=" << sigma2_ << ", Current information criteria=" << currentInformationCriteria);
+      LOGDEBUG(OSS(false) << "Current estimate: theta=" << theta << ", sigma2=" << sigma2_ << ", Current information criteria=" << currentInformationCriteria);
       if (isHistoryEnabled_) history_.add(WhittleFactoryState(currentP_, theta, sigma2_, currentInformationCriteria, timeGrid_));
       // Keep the best model according to the first criteria
       if (currentInformationCriteria[0] < bestInformationCriteria[0])
@@ -473,7 +460,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
         bestP = currentP_;
         bestQ = currentQ_;
       }
-      if (verbose_) LOGINFO(OSS(false) << "Best so far: p=" << bestP << ", q=" << bestQ << ", theta=" << bestTheta << ", sigma2=" << bestSigma2 << ", information criteria=" << bestInformationCriteria);
+      LOGDEBUG(OSS(false) << "Best so far: p=" << bestP << ", q=" << bestQ << ", theta=" << bestTheta << ", sigma2=" << bestSigma2 << ", information criteria=" << bestInformationCriteria);
       ++pointIndex;
     } // Loop over q
   } // Loop over p
@@ -545,7 +532,6 @@ void WhittleFactory::save(Advocate & adv) const
 {
   ARMAFactoryImplementation::save(adv);
   adv.saveAttribute( "spectralFactory_", spectralFactory_);
-  adv.saveAttribute( "verbose_", verbose_);
   adv.saveAttribute( "isHistoryEnabled_", isHistoryEnabled_);
   adv.saveAttribute( "history_", history_);
   adv.saveAttribute( "startingPoints_", startingPoints_);
@@ -556,7 +542,6 @@ void WhittleFactory::load(Advocate & adv)
 {
   ARMAFactoryImplementation::load(adv);
   adv.loadAttribute( "spectralFactory_", spectralFactory_);
-  adv.loadAttribute( "verbose_", verbose_);
   adv.loadAttribute( "isHistoryEnabled_", isHistoryEnabled_);
   adv.loadAttribute( "history_", history_);
   adv.loadAttribute( "startingPoints_", startingPoints_);

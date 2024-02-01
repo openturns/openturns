@@ -6,5 +6,6 @@
 
 %include RiskyAndFast_doc.i
 
+%copyctor OT::RiskyAndFast;
+
 %include openturns/RiskyAndFast.hxx
-namespace OT{ %extend RiskyAndFast { RiskyAndFast(const RiskyAndFast & other) { return new OT::RiskyAndFast(other); } } }

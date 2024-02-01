@@ -6,5 +6,6 @@
 
 %include Burr_doc.i
 
+%copyctor OT::Burr;
+
 %include openturns/Burr.hxx
-namespace OT { %extend Burr { Burr(const Burr & other) { return new OT::Burr(other); } } }

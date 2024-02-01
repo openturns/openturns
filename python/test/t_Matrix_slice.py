@@ -8,7 +8,6 @@ d = 5
 
 matrices = [ot.Matrix(N, d), ot.ComplexMatrix(N, d)]
 for matrix in matrices:
-
     # We populate the empty sample with numerous data
     for i in range(matrix.getNbRows()):
         for j in range(matrix.getNbColumns()):

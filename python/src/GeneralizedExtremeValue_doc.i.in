@@ -2,7 +2,7 @@
 "Generalized ExtremeValue distribution.
 
 Available constructors:
-    GeneralizedExtremeValue(*mu=0.0, sigma=1.0, xi=0.0*)
+    GeneralizedExtremeValue(*mu, sigma, xi*)
 
     GeneralizedExtremeValue(*distribution*)
 
@@ -10,16 +10,22 @@ Parameters
 ----------
 mu : float
     Position parameter :math:`\mu`.
+    
+    Default value is 0.0.
 sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma >0`.
+    
+    Default value is 1.0.
 xi : float
     Shape parameter :math:`\xi`.
+    
+    Default value is 0.0.
 distribution : :class:`~openturns.WeibullMax`, :class:`~openturns.Frechet` or :class:`~openturns.Gumbel`
     The underlying distribution.
 
 Notes
 -----
-Its cumulative and probability distribution functions are defined as:
+Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
     :nowrap:

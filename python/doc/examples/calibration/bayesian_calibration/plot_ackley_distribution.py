@@ -173,7 +173,7 @@ title = "Ackley PDF (up to a constant factor) and $X_1 = 1.5$ cross-section"
 graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 line = ot.Curve([[-3, 1.5], [3, 1.5]], "black", "dashed", 2)
 graph.add(line)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2)
 reversed_colors = [color for color in reversed(contour.getColors())]
 contour.setColors(reversed_colors)
@@ -181,8 +181,9 @@ legends = contour.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 contour.setLegends(legends)
 graph.add(contour)
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)
 
 # %%
 # Let us compare the histogram to the unnormalized PDF
@@ -210,7 +211,7 @@ title = "Ackley PDF (up to a constant factor) and $X_0 = 0.5$ cross-section"
 graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 line = ot.Curve([[0.5, -3], [0.5, 3]], "black", "dashed", 2)
 graph.add(line)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2)
 reversed_colors = [color for color in reversed(contour.getColors())]
 contour.setColors(reversed_colors)
@@ -218,8 +219,9 @@ legends = contour.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 contour.setLegends(legends)
 graph.add(contour)
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)
 
 scaling = ot.SymbolicFunction("x", "3.1e-10 * x")
 scaled_ackley_pdf = ot.ComposedFunction(scaling, ackley_pdf)
@@ -274,6 +276,6 @@ graph.add(ot.Cloud(sample, "black", "plus"))
 legends = graph.getLegends()
 legends = [format_float_scientific(float(v), precision=1) for v in legends[:-1]]
 graph.setLegends(legends)
-graph.setLegendPosition("topright")
-view = View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
-view.getFigure().tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = View(graph)

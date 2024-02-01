@@ -2,7 +2,7 @@
 /**
  *  @brief Default GaussianNonLinearCalibration
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -336,12 +336,12 @@ void GaussianNonLinearCalibration::run()
   const Function residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
   const Point residuals(residualFunction(thetaStar));
   if (globalErrorCovariance_)
-    error.setMean(residuals);
+    error.setMu(residuals);
   else
   {
     SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
     residualsAsSample.setData(residuals);
-    error.setMean(residualsAsSample.computeMean());
+    error.setMu(residualsAsSample.computeMean());
   }
   // Compute the posterior distribution
   Distribution parameterPosterior;
@@ -385,7 +385,6 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, parameterMean, parameterInverseCholesky, errorInverseCholesky);
   const Function residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
-  algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
   try
   {

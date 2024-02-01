@@ -2,7 +2,7 @@
 /**
  *  @brief LeastSquares solving algorithm interface
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -109,7 +109,7 @@ public:
               const Bool row = false);
 
   /** Build the Gram matrix */
-  Matrix computeWeightedDesign(bool whole = false) const;
+  Matrix computeWeightedDesign(const Bool whole = false) const;
 
   /** Build a method instance from its name */
   static LeastSquaresMethod Build(const String name,

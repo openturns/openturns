@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building PenalizedLeastSquaresAlgorithm objects
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,7 +58,7 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
     const FunctionCollection & psi,
     const Indices & indices) const
 {
-  return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi, indices, false, useNormal_ );
+  return new PenalizedLeastSquaresAlgorithm(x, y, weight, psi, indices, 0.0, useNormal_);
 }
 
 /* Method save() stores the object through the StorageManager */

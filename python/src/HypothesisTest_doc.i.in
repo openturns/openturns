@@ -30,7 +30,7 @@ Examples
 >>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
 >>> print(test_result)
 class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.855945 statistic=4.74502 description=[]
-"
+>>> independent_samples = test_result.getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ level : positive float :math:`< 1`, optional
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` of size of size :math:`n`.
 
 See Also
 --------
@@ -58,7 +58,7 @@ HypothesisTest.Pearson, HypothesisTest.PartialPearson
 
 Notes
 -----
-The Full Pearson Test is the independence Pearson test between 2 samples :
+The Full Pearson Test is the independence Pearson test between 2 samples:
 *firstSample* of dimension *n* and *secondSample* of dimension 1. If
 *firstSample[i]* is the sample extracted from *firstSample*
 (:math:`i^{th}` coordinate of each point of the sample), FullPearson
@@ -81,8 +81,7 @@ Examples
 >>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
 >>> print(test_result)
 [class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 statistic=13.61 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 statistic=-0.133027 description=[]]
-
-"
+>>> independent_samples = test_result[0].getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -123,9 +122,9 @@ Examples
 >>> func = ot.SymbolicFunction(['x'], ['x', 'x^2'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample, 0.05)
->>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]]
-"
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -147,8 +146,8 @@ level : positive float :math:`< 1`, optional
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` for each sample.
 
 See Also
 --------
@@ -175,7 +174,7 @@ Examples
 >>> test_result = ot.HypothesisTest.PartialPearson(firstSample, secondSample, [0, 2])
 >>> print(test_result)
 [class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 statistic=9.91178 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 statistic=-1.33717 description=[]]
-"
+>>> independent_samples = test_result[0].getBinaryQualityMeasure()"
 
 
 // ---------------------------------------------------------------------
@@ -189,8 +188,8 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-selection : sequence of integers, maximum integer value :math:`< n`
-    List of indices selecting which subsets of the first sample will successively
+indices : sequence of integers, maximum integer value :math:`< n`
+    Indices selecting which subsets of the first sample will successively
     be tested with the second sample through the Spearman test.
 level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
@@ -198,8 +197,8 @@ level : positive float :math:`< 1`, optional
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` for each selected component.
 
 See Also
 --------
@@ -221,9 +220,9 @@ Examples
 >>> func = ot.SymbolicFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
->>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]]
-"
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -267,7 +266,7 @@ Examples
 >>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 statistic=0.019302 description=[]
-"
+>>> independent_samples = test_result.getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -311,7 +310,7 @@ Examples
 >>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
-"
+>>> no_rank_correlation = test_result.getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -354,8 +353,10 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample1 = ot.Normal().getSample(20)
 >>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
->>> ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
-class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]"
+>>> test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]
+>>> same_distribution = test_result.getBinaryQualityMeasure()"
 
 // ---------------------------------------------------------------------
 
@@ -415,7 +416,6 @@ m1llh : float
     :math:`\mathcal{M}_1` log-likelihood
 level : float, :math:`0 \leq \alpha \leq 1`, optional
     Risk of wrongly rejecting :math:`\mathcal{M}_0`
-    
     Default value is 0.05
 
 Notes

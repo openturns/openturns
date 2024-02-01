@@ -2,7 +2,7 @@
 /**
  *  @brief NLopt solver
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -116,17 +116,6 @@ void NLopt::setSeed(const UnsignedInteger seed)
 UnsignedInteger NLopt::getSeed() const
 {
   return seed_;
-}
-
-void NLopt::SetSeed(const UnsignedInteger seed)
-{
-  LOGWARN(OSS() << "NLopt.SetSeed is deprecated in favor of setSeed");
-#ifdef OPENTURNS_HAVE_NLOPT
-  nlopt::srand(seed);
-#else
-  (void)seed;
-  throw NotYetImplementedException(HERE) << "No NLopt support";
-#endif
 }
 
 /* Default constructor */
@@ -243,7 +232,9 @@ void NLopt::run()
   opt.set_xtol_abs(getMaximumAbsoluteError());
   opt.set_xtol_rel(getMaximumRelativeError());
   opt.set_ftol_rel(getMaximumResidualError());
-  opt.set_maxeval(getMaximumEvaluationNumber());
+  opt.set_maxeval(getMaximumCallsNumber());
+  if (getMaximumTimeDuration() > 0.0)
+    opt.set_maxtime(getMaximumTimeDuration());
 
   if (getProblem().hasBounds())
   {
@@ -292,7 +283,7 @@ void NLopt::run()
     local_opt.set_xtol_abs(getMaximumAbsoluteError());
     local_opt.set_xtol_rel(getMaximumRelativeError());
     local_opt.set_ftol_rel(getMaximumResidualError());
-    local_opt.set_maxeval(getMaximumEvaluationNumber());
+    local_opt.set_maxeval(getMaximumCallsNumber());
     opt.set_local_optimizer(local_opt);
   }
   else
@@ -303,7 +294,7 @@ void NLopt::run()
     local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
     local_opt.set_xtol_rel(p_localSolver_->getMaximumRelativeError());
     local_opt.set_ftol_rel(p_localSolver_->getMaximumResidualError());
-    local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
+    local_opt.set_maxeval(p_localSolver_->getMaximumCallsNumber());
     if (p_localSolver_->getInitialStep().getDimension() > 0)
     {
       Point localInitialStep(p_localSolver_->getInitialStep());
@@ -318,27 +309,30 @@ void NLopt::run()
 
   // the default seed is non-deterministic
   nlopt::srand(seed_);
+  nlopt::result rc = nlopt::FAILURE;
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
   try
   {
     // The C++ interface of NLopt does not return a code for failures cases.
     // It is either positive (termination criterion) or an exception is thrown.
     p_opt_ = &opt;
-    opt.optimize(x, optimalValue);
+    rc = opt.optimize(x, optimalValue);
   }
   catch (const nlopt::roundoff_limited &)
   {
-    // Here we catch the roundoff_limited exception as the result
-    // of the optimization may be useful even if not at the requested precision
-    LOGWARN("NLopt raised a roundoff-limited exception");
+    rc = nlopt::ROUNDOFF_LIMITED;
   }
   catch (const nlopt::forced_stop &)
   {
-    LOGWARN("NLopt was stopped by user");
+    rc = nlopt::FORCED_STOP;
   }
-  catch (const std::exception & exc)
+  catch (const std::bad_alloc &)
   {
-    throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
+    rc = nlopt::OUT_OF_MEMORY;
+  }
+  catch (const std::exception &)
+  {
   }
   p_opt_ = nullptr;
 
@@ -348,6 +342,21 @@ void NLopt::run()
     inequalityConstraintHistory_ = getProblem().getInequalityConstraint()(evaluationInputHistory_);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
+
+  if (rc < 0)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    if (getCheckStatus())
+      throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
+    else
+      LOGWARN(OSS() << "NLopt algorithm failed. The error message is " << result_.getStatusMessage());
+  }
+
 #else
   (void) p_opt_;
   throw NotYetImplementedException(HERE) << "No NLopt support";
@@ -447,7 +456,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // gradient
@@ -468,7 +477,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {

@@ -1,23 +1,37 @@
 %feature("docstring") OT::PosteriorDistribution
 "Distribution conditioned by observations.
 
-Available constructors:
-    PosteriorDistribution(*conditional, observations*)
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
 
 Parameters
 ----------
 conditional : :class:`~openturns.ConditionalDistribution`
-    The conditional distribution.
+    The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
 observations : 2-d sequence of float
-    Observations.
+    Observations :math:`x_i`.
 
 See also
 --------
-ConditionalDistribution, MetropolisHastingsImplementation
+ConditionalDistribution, MetropolisHastings
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{\vect{Y}|\vect{X}=\vect{x}}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}}(x_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}'}(x_i) d \vect{y}'}
+
+with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
+:math:`f_{\vect{Y}}` the PDF of the conditioning distribution :math:`\vect{Y}`,
+:math:`x_i` the observations of the conditional distribution.
 
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> conditionedDistribution = ot.Normal()
 >>> # Conditional distribution
@@ -30,7 +44,7 @@ Examples
 >>> observationsDistribution.setParameter(conditioning.getMean())
 >>> observations = observationsDistribution.getSample(observationsSize)
 >>> # Posterior distribution
->>> distribution  = ot.PosteriorDistribution(conditional, observations)"
+>>> distribution = otexp.PosteriorDistribution(conditional, observations)"
 
 // ---------------------------------------------------------------------
 

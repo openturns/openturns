@@ -1,9 +1,6 @@
 %feature("docstring") OT::BinomialFactory
 "Binomial factory.
 
-Available constructor:
-    BinomialFactory()
-
 Notes
 -----
 The estimation is done by maximizing the likelihood of the sample.
@@ -11,7 +8,7 @@ The estimation is done by maximizing the likelihood of the sample.
 | We initialize the value of :math:`(n,p_n)` to
   :math:`\displaystyle\left(\left\lceil\frac{\Hat{x}_n^2}{\Hat{x}_n-\Hat{\sigma}_n^2}\right\rceil, \frac{\Hat{x}_n}{n}\right)`
   where :math:`\Hat{x}_n` is the empirical mean of the sample
-  :math:`(x_1, \hdots, x_n)`, and :math:`\Hat{\sigma}_n^2` its unbiaised
+  :math:`(x_1, \hdots, x_n)`, and :math:`\Hat{\sigma}_n^2` its unbiased
   empirical variance.
 | Then, we evaluate the likelihood of the sample with respect to the
   Binomial distribution parameterized with
@@ -26,3 +23,32 @@ The estimation is done by maximizing the likelihood of the sample.
 See also
 --------
 DistributionFactory, Binomial"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BinomialFactory::buildAsBinomial
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsBinomial()
+
+    buildAsBinomial(*sample*)
+
+    buildAsBinomial(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Binomial`.
+
+Returns
+-------
+distribution : :class:`~openturns.Binomial`
+    The estimated distribution as a Binomial.
+    
+    In the first usage, the default Binomial distribution is built."
+

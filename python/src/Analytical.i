@@ -6,5 +6,6 @@
 
 %include Analytical_doc.i
 
+%copyctor OT::Analytical;
+
 %include openturns/Analytical.hxx
-namespace OT{ %extend Analytical { Analytical(const Analytical & other) { return new OT::Analytical(other); } } }

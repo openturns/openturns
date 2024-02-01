@@ -2,8 +2,8 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-pdf_graph = ot.Graph("PDF graph", "x", "PDF", True, "topleft")
-cdf_graph = ot.Graph("CDF graph", "x", "CDF", True, "topleft")
+pdf_graph = ot.Graph("PDF graph", "x", "PDF", True, "upper left")
+cdf_graph = ot.Graph("CDF graph", "x", "CDF", True, "upper left")
 palette = ot.Drawable.BuildDefaultPalette(10)
 for i, p in enumerate([1.0, 2.0, 3.0]):
     distribution = ot.WeibullMin(1.0, p, 0.0)

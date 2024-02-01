@@ -130,7 +130,6 @@ class UniformNdPy(ot.PythonDistribution):
 
 
 for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
-
     print("pyDist=", pyDist)
 
     # Instance creation

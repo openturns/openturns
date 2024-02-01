@@ -2,7 +2,7 @@
 /**
  *  @brief The MeixnerDistribution distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -88,6 +88,9 @@ public:
   using ContinuousDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
+  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
@@ -145,14 +148,11 @@ public:
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 private:
   /** Initialize optimization solver parameter using the ResourceMap */
   void initializeOptimizationAlgorithmParameter();
-
-  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

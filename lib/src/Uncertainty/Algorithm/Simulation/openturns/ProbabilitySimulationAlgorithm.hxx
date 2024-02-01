@@ -3,7 +3,7 @@
  *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,18 +37,15 @@ class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
   CLASSNAME
 public:
   /** Default constructor */
-  ProbabilitySimulationAlgorithm(const Bool verbose = true,
-                                 const HistoryStrategy & convergenceStrategy = Compact());
+  ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const RandomVector & event,
-                                 const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const WeightedExperiment & experiment,
-                                 const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
@@ -78,7 +75,7 @@ protected:
 
   // The experiment type
   WeightedExperiment experiment_;
-  Bool isExperimentProvided_;
+  Bool isExperimentProvided_ = false;
 private:
 
 } ; /* class ProbabilitySimulationAlgorithm */

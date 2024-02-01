@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(SpaceFilling)
 
+%copyctor OT::SpaceFilling;
+
 %include openturns/SpaceFilling.hxx
-namespace OT { %extend SpaceFilling { SpaceFilling(const SpaceFilling & other) { return new OT::SpaceFilling(other); } } }

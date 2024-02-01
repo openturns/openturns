@@ -5,8 +5,12 @@ Parameters
 ----------
 beta : float, :math:`\beta > 0`
     Scale parameter :math:`\beta`.
+
+    Default value is 1.0.
 gamma : float
     Location parameter :math:`\gamma`.
+
+    Default value is 0.0.
 
 Notes
 -----
@@ -41,7 +45,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rayleigh::getSigma
+%feature("docstring") OT::Rayleigh::getBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
@@ -61,7 +65,7 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rayleigh::setSigma
+%feature("docstring") OT::Rayleigh::setBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters

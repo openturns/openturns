@@ -8,7 +8,7 @@ Release process
 
 2. Reindent sources (utils/indent.sh)
 
-3. Increment version number X.Yrc1 (utils/setVersionNumber.sh)
+3. Increment version number X.Y(rc1) (utils/setVersionNumber.sh)
 
 4. Increment rpm package number (distro/rpm)
 
@@ -17,13 +17,13 @@ Release process
   - Sync with `debian package <https://packages.debian.org/source/sid/openturns>`_
   - Check for new patches
   - New entry in changelog
-  - Update soversion in rules, rename install files
+  - Update soversion in control, rename install files
 
 6. Build new packages on `OBS <https://build.opensuse.org/project/monitor/science:openturns>`_
 
 7. Upload debian packages using `scripts <https://github.com/openturns/build-deb/>`_
 
-8. Merge release branch and tag new version
+8. Merge release branch, create X.Y branch, and tag new version
 
 9. Build `Windows binaries <https://github.com/openturns/build/>`_
 

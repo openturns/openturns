@@ -132,8 +132,8 @@ coefficient is sometimes denoted by :math:`r`.
 
 .. topic:: API:
 
-    - See :class:`CorrelationAnalysis.`:meth:`~openturns.CorrelationAnalysis.computePearsonCorrelation`
-    - See :class:`Sample.`:meth:`~openturns.Sample.computePearsonCorrelation`
+    - See :class:`CorrelationAnalysis.`:meth:`~openturns.CorrelationAnalysis.computeLinearCorrelation`
+    - See :class:`Sample.`:meth:`~openturns.Sample.computeLinearCorrelation`
 
 .. topic:: Examples:
 

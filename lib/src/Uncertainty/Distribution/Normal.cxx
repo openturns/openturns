@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -147,7 +147,7 @@ String Normal::__str__(const String & offset) const
   OSS oss;
   oss << getClassName();
   if (getDimension() == 1) oss << "(mu = " << getMean()[0] << ", sigma = " << getSigma()[0] << ")";
-  else oss << "(mu = " << getMean().__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
+  else oss << "(mu = " << getMean().__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getR().__str__(offset) << ")";
   return oss;
 }
 
@@ -187,8 +187,7 @@ Sample Normal::getSample(const UnsignedInteger size) const
     result.getImplementation()->setData(sigma_[0] * DistFunc::rNormal(size));
   else
   {
-    for (UnsignedInteger i = 0; i < size; ++i)
-      for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
+    result.getImplementation()->setData(DistFunc::rNormal(size * dimension));
     if (hasIndependentCopula_) result *= sigma_;
     else
     {
@@ -440,8 +439,12 @@ Scalar Normal::computeProbability(const Interval & interval) const
 {
   if (interval.isEmpty()) return 0.0;
   const UnsignedInteger dimension = getDimension();
-  // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
-  if (dimension == 1) return DistributionImplementation::computeProbability(interval);
+  if (interval.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+
+  if (dimension == 1)
+    return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+
   // Decompose and normalize the interval
   Point lower(normalize(interval.getLowerBound()));
   Point upper(normalize(interval.getUpperBound()));
@@ -550,9 +553,8 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
     const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
-    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z)
-    // With x = \sqrt{2} z, we use the Gaussian density function
-    return DistFunc::dNormal(z * std::sqrt(2.0)) / sigma_[conditioningDimension];
+    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z/2)
+    return DistFunc::dNormal(z) / sigma_[conditioningDimension];
   }
   // General case
   Scalar meanRos = 0.0;
@@ -751,11 +753,11 @@ Scalar Normal::computeRadialDistributionCDF(const Scalar radius,
 }
 
 /* Correlation matrix accessor */
-void Normal::setCorrelation(const CorrelationMatrix & R)
+void Normal::setR(const CorrelationMatrix & R)
 {
   // Perform checks at the upper level
   // This call set also the range
-  EllipticalDistribution::setCorrelation(R);
+  EllipticalDistribution::setR(R);
   // Then check for independence
   checkIndependentCopula();
 }

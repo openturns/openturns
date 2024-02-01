@@ -20,5 +20,6 @@
   }
 }
 
+%copyctor OT::MixedHistogramUserDefined;
+
 %include openturns/MixedHistogramUserDefined.hxx
-namespace OT { %extend MixedHistogramUserDefined { MixedHistogramUserDefined(const MixedHistogramUserDefined & other) { return new OT::MixedHistogramUserDefined(other); } } }

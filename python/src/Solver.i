@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(Solver)
 
+%copyctor OT::Solver;
+
 %include openturns/Solver.hxx
-namespace OT { %extend Solver { Solver(const Solver & other) { return new OT::Solver(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements randomMixtures
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -117,10 +117,6 @@ public:
 
   /** Get a sample of the RandomMixture */
   Sample getSample(const UnsignedInteger size) const override;
-
-protected:
-  Sample getSampleByQMC(const UnsignedInteger size) const override;
-public:
 
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;

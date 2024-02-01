@@ -2,7 +2,7 @@
 /**
  *  @brief The Exponential distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -223,6 +223,13 @@ Scalar Exponential::computeScalarQuantile(const Scalar prob,
 {
   if (tail) return gamma_ - std::log(prob) / lambda_;
   return gamma_ - log1p(-prob) / lambda_;
+}
+
+Scalar Exponential::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

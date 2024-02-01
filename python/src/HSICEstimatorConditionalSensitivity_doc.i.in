@@ -32,6 +32,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from math import pi
+>>> ot.RandomGenerator.SetSeed(0)
 
 Generate input and output samples.
 
@@ -70,7 +71,7 @@ Build and use the HSIC estimator for conditional sensitivity analysis.
 
 >>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
 >>> print(hsic.getR2HSICIndices())
-[0.280788,0.00600014,0.0577616]"
+[0.23014,0.0158769,0.107919]"
 
 // ---------------------------------------------------------------------
 

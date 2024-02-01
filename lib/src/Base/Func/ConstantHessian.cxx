@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a constant numerical math hessian implementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,7 +72,7 @@ String ConstantHessian::__str__(const String & offset) const
   OSS oss(false);
   const UnsignedInteger inputDimension = getInputDimension();
   const Description description(Description::BuildDefault(inputDimension, "x"));
-  if (hasVisibleName()) oss << getName() << ":" << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << getName() << ":" << "\n" << offset;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     if (i == 0) oss << "  (";
@@ -80,7 +80,7 @@ String ConstantHessian::__str__(const String & offset) const
     if (i == inputDimension - 1) oss << ")";
     else oss << ", ";
   }
-  oss << " ->" << Os::GetEndOfLine() << offset;
+  oss << " ->" << "\n" << offset;
   oss << constant_.__str__(offset + "  ");
   return oss;
 }

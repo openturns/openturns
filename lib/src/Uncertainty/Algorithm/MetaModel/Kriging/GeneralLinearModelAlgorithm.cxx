@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -263,12 +263,8 @@ void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
-  if (cobyla)
-    cobyla->setIgnoreFailure(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setIgnoreFailure(true);
+  if ((solverName == "Cobyla") || (solverName == "TNC"))
+    solver_.setCheckStatus(false);
 }
 
 /* Virtual constructor */
@@ -449,22 +445,23 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
-  solver_.setProblem(problem);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
   try
   {
     // If the solver is single start, we can use its setStartingPoint method
-    solver_.setStartingPoint(initialParameters);
+    solver.setStartingPoint(initialParameters);
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     // Nothing to do if setStartingPoint is not defined
   }
-  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
-  solver_.run();
-  const OptimizationAlgorithm::Result result(solver_.getResult());
+  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
+  solver.run();
+  const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
+  const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)

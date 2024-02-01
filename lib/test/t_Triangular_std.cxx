@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Triangular for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,6 +47,29 @@ int main(int, char *[])
     coll.add(Triangular(-0.5,  1.5, 2.5));
     coll.add(Triangular(-0.5, -0.5, 2.5));
     coll.add(Triangular(-0.5,  2.5, 2.5));
+    coll.add(Triangular(-2.5,  0.0, 2.5));
+    Point u = {0.1, 0.01, 0.001, 0.0001, 0.00001};
+    Collection< Collection<Complex> > refValues(4);
+    refValues[0].add(Complex(9.9127099972903484510e-01, 1.1618827274767113648e-01));
+    refValues[0].add(Complex(9.9991250210240596186e-01, 1.1666187507734305978e-02));
+    refValues[0].add(Complex(9.9999912500021024303e-01, 1.1666661875000773437e-03));
+    refValues[0].add(Complex(9.9999999125000002102e-01, 1.1666666618750000077e-04));
+    refValues[0].add(Complex(9.9999999991250000000e-01, 1.1666666666187500000e-05));
+    refValues[1].add(Complex(9.9625754367833246793e-01, 4.9821102073080346159e-02));
+    refValues[1].add(Complex(9.9996250075519992255e-01, 4.9998208360230421163e-03));
+    refValues[1].add(Complex(9.9999962500007552082e-01, 4.9999982083336023065e-04));
+    refValues[1].add(Complex(9.9999999625000000755e-01, 4.9999999820833333602e-05));
+    refValues[1].add(Complex(9.9999999996250000000e-01, 4.9999999998208333333e-06));
+    refValues[2].add(Complex(9.8629664648967592135e-01, 1.4909782248906273663e-01));
+    refValues[2].add(Complex(9.9986250467180267611e-01, 1.4999095853247538925e-02));
+    refValues[2].add(Complex(9.9999862500046718743e-01, 1.4999990958335324777e-03));
+    refValues[2].add(Complex(9.9999998625000004672e-01, 1.4999999909583333532e-04));
+    refValues[2].add(Complex(9.9999999986250000000e-01, 1.4999999999095833333e-05));
+    refValues[3].add(Complex(9.9480250525936690737e-01, 0.0000000000000000000e+00));
+    refValues[3].add(Complex(9.9994791775172400105e-01, 0.0000000000000000000e+00));
+    refValues[3].add(Complex(9.9999947916677517360e-01, 0.0000000000000000000e+00));
+    refValues[3].add(Complex(9.9999999479166667752e-01, 0.0000000000000000000e+00));
+    refValues[3].add(Complex(9.9999999994791666667e-01, 0.0000000000000000000e+00));
 
     for (UnsignedInteger nTriangular = 0; nTriangular < coll.getSize(); ++nTriangular)
     {
@@ -104,6 +127,8 @@ int main(int, char *[])
       fullprint << "characteristic function=" << CF << std::endl;
       Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
       fullprint << "log characteristic function=" << LCF << std::endl;
+      for (UnsignedInteger j = 0; j < refValues[nTriangular].getSize(); ++j)
+        assert_almost_equal(distribution.computeCharacteristicFunction(u[j]), refValues[nTriangular][j]);
       try
       {
         Point PDFgr = distribution.computePDFGradient( point );
@@ -127,7 +152,7 @@ int main(int, char *[])
                       Triangular(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
-      catch(NotDefinedException & ex)
+      catch(const NotDefinedException &)
       {
       }
       Point quantile = distribution.computeQuantile( 0.25 );
@@ -183,7 +208,7 @@ int main(int, char *[])
                       Triangular(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
         fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       }
-      catch(NotDefinedException & ex)
+      catch(const NotDefinedException &)
       {
       }
       quantile = distribution.computeQuantile( 0.95 );
@@ -213,7 +238,7 @@ int main(int, char *[])
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     }
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

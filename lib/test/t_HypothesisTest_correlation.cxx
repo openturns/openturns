@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,11 @@ int main(int, char *[])
   // Probability of the H0 reject zone : 0.10
 
   fullprint << "FullPearsonX0Y=" << HypothesisTest::FullPearson(sampleX, sampleY, 0.10) << std::endl;
-  fullprint << "FullPearsonYY=" << HypothesisTest::FullPearson(sampleY, sampleY, 0.10) << std::endl;
+  
+  // Expected result is SpecFunc::MaxScalar
+  TestResult fullPearsonYY(HypothesisTest::FullPearson(sampleY, sampleY, 0.10)[0]);
+  Scalar testStatistic = fullPearsonYY.getStatistic();
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   return ExitCode::Success;
 }

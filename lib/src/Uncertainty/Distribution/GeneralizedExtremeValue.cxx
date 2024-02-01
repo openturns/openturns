@@ -2,7 +2,7 @@
 /**
  *  @brief The GeneralizedExtremeValue distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -330,7 +330,6 @@ Graph GeneralizedExtremeValue::drawReturnLevel() const
   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
   Graph graph(wrapper.draw(xMin, xMax, pointNumber, GraphImplementation::LOGX));
   Drawable drawable(graph.getDrawable(0));
-  drawable.setColor("red");
   drawable.setLegend("GEV return level");
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);

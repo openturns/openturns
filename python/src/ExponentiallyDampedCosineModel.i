@@ -6,5 +6,6 @@
 
 %include ExponentiallyDampedCosineModel_doc.i
 
+%copyctor OT::ExponentiallyDampedCosineModel;
+
 %include openturns/ExponentiallyDampedCosineModel.hxx
-namespace OT { %extend ExponentiallyDampedCosineModel { ExponentiallyDampedCosineModel(const ExponentiallyDampedCosineModel & other) { return new OT::ExponentiallyDampedCosineModel(other); } } }

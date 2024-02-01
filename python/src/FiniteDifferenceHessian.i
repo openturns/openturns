@@ -6,5 +6,6 @@
 
 %include FiniteDifferenceHessian_doc.i
 
+%copyctor OT::FiniteDifferenceHessian;
+
 %include openturns/FiniteDifferenceHessian.hxx
-namespace OT { %extend FiniteDifferenceHessian { FiniteDifferenceHessian(const FiniteDifferenceHessian & other) { return new OT::FiniteDifferenceHessian(other); } } }

@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(EnumerateFunction)
 
+%copyctor OT::EnumerateFunction;
+
 %include openturns/EnumerateFunction.hxx
-namespace OT { %extend EnumerateFunction { EnumerateFunction(const EnumerateFunction & other) { return new OT::EnumerateFunction(other); } } }

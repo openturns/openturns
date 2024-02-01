@@ -6,5 +6,6 @@
 
 %include Tuples_doc.i
 
+%copyctor OT::Tuples;
+
 %include openturns/Tuples.hxx
-namespace OT { %extend Tuples { Tuples(const Tuples & other) { return new OT::Tuples(other); } } }

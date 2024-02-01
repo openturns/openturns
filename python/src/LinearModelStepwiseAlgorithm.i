@@ -6,5 +6,6 @@
 
 %include LinearModelStepwiseAlgorithm_doc.i
 
+%copyctor OT::LinearModelStepwiseAlgorithm;
+
 %include openturns/LinearModelStepwiseAlgorithm.hxx
-namespace OT { %extend LinearModelStepwiseAlgorithm { LinearModelStepwiseAlgorithm(const LinearModelStepwiseAlgorithm & other) { return new OT::LinearModelStepwiseAlgorithm(other); } } }

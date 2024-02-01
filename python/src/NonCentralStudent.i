@@ -6,5 +6,6 @@
 
 %include NonCentralStudent_doc.i
 
+%copyctor OT::NonCentralStudent;
+
 %include openturns/NonCentralStudent.hxx
-namespace OT { %extend NonCentralStudent { NonCentralStudent(const NonCentralStudent & other) { return new OT::NonCentralStudent(other); } } }

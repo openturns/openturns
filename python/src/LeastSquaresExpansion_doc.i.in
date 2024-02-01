@@ -50,14 +50,13 @@ Examples
 Solves a functional linear least squares approximation using residual minimization with QR method:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction('x', 'sin(x)')
 >>> distribution = ot.Uniform(-2.0, 2.0)
 >>> inSample = distribution.getSample(10)
 >>> outSample = g(inSample)
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
 >>> basisSize = 5
->>> algo = otexp.LeastSquaresExpansion(inSample, outSample, distribution, basis, basisSize, 'QR')
+>>> algo = ot.LeastSquaresExpansion(inSample, outSample, distribution, basis, basisSize, 'QR')
 >>> algo.run()"
 
 // ---------------------------------------------------------------------

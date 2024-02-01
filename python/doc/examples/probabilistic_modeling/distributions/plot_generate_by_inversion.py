@@ -52,7 +52,8 @@ Generate random variates by inverting the CDF
 #    \textrm{expm1}(x) = \exp(x)-1,
 #
 #
-# for any :math:`x\in\mathbb{R}`. This is *not* numerically equivalent to computing `exp` and then subtracting 1. Indeed, the `expm1` function is more accurate when its argument `x` is close to zero.
+# for any :math:`x\in\mathbb{R}`. This is *not* numerically equivalent to computing `exp` and then subtracting 1.
+# Indeed, the `expm1` function is more accurate when its argument `x` is close to zero.
 #
 # The CDF is then:
 #
@@ -107,6 +108,7 @@ ot.Log.Show(ot.Log.NONE)
 # (Of course, we could use the `computeQuantile` method of the `WeibullMin` class as well.
 # This would create a simpler, but less interesting example: this is a trade off
 # that we accept in order to better understand the algorithm.)
+
 
 # %%
 def weibullQ(argument):

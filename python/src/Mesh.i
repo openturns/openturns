@@ -12,6 +12,6 @@
 
 %include Mesh_doc.i
 
-%include openturns/Mesh.hxx
+%copyctor OT::Mesh;
 
-namespace OT { %extend Mesh { Mesh(const Mesh & other) { return new OT::Mesh(other); } } }
+%include openturns/Mesh.hxx

@@ -6,5 +6,6 @@
 
 %include Curve_doc.i
 
+%copyctor OT::Curve;
+
 %include openturns/Curve.hxx
-namespace OT { %extend Curve { Curve(const Curve & other) { return new OT::Curve(other); } } }

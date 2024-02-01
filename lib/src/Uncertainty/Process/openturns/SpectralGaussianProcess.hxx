@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the SpectralGaussianProcess process
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,7 +70,9 @@ public:
 
   /** Realization accessor */
   Field getRealization() const override;
-
+ private:
+  Field getRealization1D() const;
+ public:
   /** Frequency grid accessor, covering both the negative and the positive axes */
   RegularGrid getFrequencyGrid() const;
 
@@ -141,7 +143,8 @@ private:
 
   /** Cholesky factor  */
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;
-
+  Point choleskyFactorsCache1D_;
+  
   /** Cache size */
   mutable UnsignedInteger cacheSize_;
 

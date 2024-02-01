@@ -6,5 +6,6 @@
 
 %include Exponential_doc.i
 
+%copyctor OT::Exponential;
+
 %include openturns/Exponential.hxx
-namespace OT { %extend Exponential { Exponential(const Exponential & other) { return new OT::Exponential(other); } } }

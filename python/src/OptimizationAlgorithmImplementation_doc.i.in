@@ -30,7 +30,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumEvaluationNumber(10000)
+>>> solver.setMaximumCallsNumber(10000)
 >>> solver.run()
 >>> result = solver.getResult()
 >>> x_star = result.getOptimalPoint()
@@ -112,16 +112,17 @@ OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
-"Accessor to maximum allowed number of evaluations.
+%define OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
+"Accessor to maximum allowed number of calls.
 
 Returns
 -------
 N : int
-    Maximum allowed number of evaluations."
+    Maximum allowed number of direct objective function calls through the `()` operator.
+    Does not take into account eventual indirect calls through finite difference gradient calls."
 %enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumEvaluationNumber
-OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumCallsNumber
+OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
@@ -188,16 +189,17 @@ OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
-"Accessor to maximum allowed number of evaluations.
+%define OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
+"Accessor to maximum allowed number of calls
 
 Parameters
 ----------
 N : int
-    Maximum allowed number of evaluations."
+    Maximum allowed number of direct objective function calls through the `()` operator.
+    Does not take into account eventual indirect calls through finite difference gradient calls."
 %enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumEvaluationNumber
-OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumCallsNumber
+OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
@@ -301,32 +303,6 @@ OT_OptimizationAlgorithm_setStartingPoint_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationAlgorithm_setVerbose_doc
-"Accessor to the verbosity flag.
-
-Parameters
-----------
-verbose : bool
-    Verbosity flag state."
-%enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::setVerbose
-OT_OptimizationAlgorithm_setVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_OptimizationAlgorithm_getVerbose_doc
-"Accessor to the verbosity flag.
-
-Returns
--------
-verbose : bool
-    Verbosity flag state."
-%enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
-OT_OptimizationAlgorithm_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_OptimizationAlgorithm_setProgressCallback_doc
 "Set up a progress callback.
 
@@ -346,7 +322,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumEvaluationNumber(10000)
+>>> solver.setMaximumCallsNumber(10000)
 >>> def report_progress(progress):
 ...     sys.stderr.write('-- progress=' + str(progress) + '%\n')
 >>> solver.setProgressCallback(report_progress)
@@ -375,7 +351,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumEvaluationNumber(10000)
+>>> solver.setMaximumCallsNumber(10000)
 >>> def ask_stop():
 ...     return True
 >>> solver.setStopCallback(ask_stop)
@@ -383,3 +359,59 @@ Examples
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setCheckStatus_doc
+"Accessor to check status flag.
+
+Parameters
+----------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setCheckStatus
+OT_OptimizationAlgorithm_setCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getCheckStatus_doc
+"Accessor to check status flag.
+
+Returns
+-------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getCheckStatus
+OT_OptimizationAlgorithm_getCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+"Accessor to check status flag.
+
+Parameters
+----------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumTimeDuration
+OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
+"Accessor to check status flag.
+
+Returns
+-------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumTimeDuration
+OT_OptimizationAlgorithm_getMaximumTimeDuration_doc

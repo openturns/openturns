@@ -2,7 +2,7 @@
 /**
  *  @brief The Gamma distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -335,6 +335,13 @@ Scalar Gamma::computeScalarQuantile(const Scalar prob,
   return gamma_ + DistFunc::qGamma(k_, prob, tail) / lambda_;
 }
 
+Scalar Gamma::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Compute the mean of the distribution */
 void Gamma::computeMean() const
 {
@@ -379,11 +386,7 @@ void Gamma::computeCovariance() const
 /* Parameters value accessor */
 Point Gamma::getParameter() const
 {
-  Point point(3);
-  point[0] = k_;
-  point[1] = lambda_;
-  point[2] = gamma_;
-  return point;
+  return {k_, lambda_, gamma_};
 }
 
 void Gamma::setParameter(const Point & parameter)
@@ -397,11 +400,7 @@ void Gamma::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Gamma::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "k";
-  description[1] = "lambda";
-  description[2] = "gamma";
-  return description;
+  return {"k", "lambda", "gamma"};
 }
 
 /* Method save() stores the object through the StorageManager */

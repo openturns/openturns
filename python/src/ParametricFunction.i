@@ -6,5 +6,6 @@
 
 %include ParametricFunction_doc.i
 
+%copyctor OT::ParametricFunction;
+
 %include openturns/ParametricFunction.hxx
-namespace OT { %extend ParametricFunction { ParametricFunction(const ParametricFunction & other) { return new OT::ParametricFunction(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel validation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -163,12 +163,10 @@ GridLayout MetaModelValidation::drawValidation() const
     diagonalPoints[0] = Point(2, minS[j]);
     diagonalPoints[1] = Point(2, maxS[j]);
     Curve diagonal(diagonalPoints);
-    diagonal.setColor("red");
     graph.add(diagonal);
 
     // points
     Cloud cloud(outputSample_.getMarginal(j), yhat.getMarginal(j));
-    cloud.setColor("blue");
     graph.add(cloud);
 
     grid.setGraph(0, j, graph);

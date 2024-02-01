@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,9 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-#include <iomanip>
-#include <fstream>
+
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Exception.hxx"
@@ -31,6 +29,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,18 +46,20 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 
 /* Parameters constructor */
 MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
+    const Indices & momentOrders,
     const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
   , optimizationBounds_(optimizationBounds)
 {
+  setMomentOrders(momentOrders);
   LeastSquaresProblem problem(SymbolicFunction("x", "x^2"));
   if (optimizationBounds.getDimension())
     problem.setBounds(Interval(1));
   solver_ = OptimizationAlgorithm::Build(problem);
 
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumObjectiveError"));
@@ -92,12 +93,14 @@ class MethodOfMomentsEvaluation : public EvaluationImplementation
 public:
   MethodOfMomentsEvaluation(const Point & refMoments,
                             const Distribution & distribution,
+                            const Indices & momentOrders,
                             const Point & knownParameterValues,
                             const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , refMoments_(refMoments)
     , refSign_(refMoments.getSize())
     , distribution_(distribution)
+    , momentOrders_(momentOrders)
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
@@ -122,12 +125,12 @@ public:
 
   UnsignedInteger getInputDimension() const
   {
-    return distribution_.getParameterDimension() - knownParameterValues_.getSize();
+    return momentOrders_.getSize();
   }
 
   UnsignedInteger getOutputDimension() const
   {
-    return distribution_.getParameterDimension();
+    return getInputDimension();
   }
 
   Description getInputDescription() const
@@ -171,14 +174,19 @@ public:
     }
 
     // compute moments of conditioned distribution
-    Point moments(parameterDimension);
-    moments[0] = distribution.getMean()[0];
-    for (UnsignedInteger j = 1; j < parameterDimension; ++ j)
-      moments[j] = distribution.getCentralMoment(j + 1)[0];
+    const UnsignedInteger estimatedParameterSize = momentOrders_.getSize();
+    Point moments(estimatedParameterSize);
+    for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
+    {
+      if (momentOrders_[j] == 1)
+        moments[j] = distribution.getMean()[0];
+      else
+        moments[j] = distribution.getCentralMoment(momentOrders_[j])[0];
+    }
 
     // compute sum of deltas between centered homogenized moments
-    Point result(parameterDimension);
-    for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
+    Point result(momentOrders_.getSize());
+    for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
     {
       const Scalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
       result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
@@ -193,6 +201,7 @@ private:
   Point refMoments_;
   Point refSign_;
   Distribution distribution_;
+  Indices momentOrders_;
   Point knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
@@ -231,10 +240,14 @@ Distribution MethodOfMomentsFactory::build(const Sample & sample) const
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
-  Point refMoments(effectiveParameterSize);
-  refMoments[0] =  sample.computeMean()[0];
-  for (UnsignedInteger j = 1; j < effectiveParameterSize; ++ j)
-    refMoments[j] = sample.computeCentralMoment(j + 1)[0];
+  Point refMoments(momentOrders_.getSize());
+  for (UnsignedInteger j = 0; j < momentOrders_.getSize(); ++ j)
+  {
+    if (momentOrders_[j] == 1)
+      refMoments[j] = sample.computeMean()[0];
+    else
+      refMoments[j] = sample.computeCentralMoment(momentOrders_[j])[0];
+  }
 
   Distribution result(buildFromMoments(refMoments));
   result.setDescription(sample.getDescription());
@@ -244,47 +257,55 @@ Distribution MethodOfMomentsFactory::build(const Sample & sample) const
 /** Build a distribution from its moments */
 Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) const
 {
-  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-  if (moments.getSize() < effectiveParameterSize)
-    throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " moments to build distribution";
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (moments.getSize() + knownParameterValues_.getSize() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Expected " << parameterDimension - knownParameterValues_.getSize()
+                                         << " moments to estimate the distribution";
+
+  if (momentOrders_.getSize() + knownParameterValues_.getSize() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "The total of known parameters size (" << parameterDimension << ") "
+                                         << "and moment orders size (" << momentOrders_.getSize() << ") match the model parameter dimension ("
+                                         << parameterDimension << ")";
+
+  if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != momentOrders_.getSize()))
+    throw InvalidArgumentException(HERE) << "The bounds dimension must match the moments order size (" << momentOrders_.getSize() << ")";
 
   // Define evaluation
-  MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, knownParameterValues_, knownParameterIndices_);
+  const MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, momentOrders_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
 
   // Define optimization problem
   LeastSquaresProblem problem(momentsObjective);
   problem.setBounds(optimizationBounds_);
   OptimizationAlgorithm solver(solver_);
-  if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
-  {
-    Point effectiveParameter(distribution_.getParameter());
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << momentsObjective.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
-    // extract unknown values
-    Point parameter;
-    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
-    {
-      if (!knownParameterIndices_.contains(j))
-        parameter.add(effectiveParameter[j]);
-    }
-    solver.setStartingPoint(parameter);
-  }
-  // clip starting point
-  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(solver.getStartingPoint()))
+  Point effectiveParameter(distribution_.getParameter());
+
+  // extract unknown values
+  Point startingPoint;
+  for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
   {
-    Point startingPoint(solver.getStartingPoint());
+    if (!knownParameterIndices_.contains(j))
+      startingPoint.add(effectiveParameter[j]);
+  }
+
+  // clip starting point
+  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(startingPoint))
+  {
     const Point lb(optimizationBounds_.getLowerBound());
     const Point ub(optimizationBounds_.getUpperBound());
+    const Interval::BoolCollection flb(optimizationBounds_.getFiniteLowerBound());
+    const Interval::BoolCollection fub(optimizationBounds_.getFiniteUpperBound());
     for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
     {
-      startingPoint[j] = std::min(startingPoint[j], ub[j]);
-      startingPoint[j] = std::max(startingPoint[j], lb[j]);
+      if (flb[j])
+        startingPoint[j] = std::max(startingPoint[j], lb[j]);
+      if (fub[j])
+        startingPoint[j] = std::min(startingPoint[j], ub[j]);
     }
   }
-
+  solver.setStartingPoint(startingPoint);
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   try
   {
     solver.run();
@@ -294,11 +315,10 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
     throw NotDefinedException(HERE) << "Cannot estimate distribution from moments: " << exc.what();
   }
 
-  Point effectiveParameter(effectiveParameterSize);
   // set unknown values
-  Point parameter(solver.getResult().getOptimalPoint());
+  const Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
-  for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+  for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
   {
     if (!knownParameterIndices_.contains(j))
     {
@@ -307,7 +327,7 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
     }
   }
   // set known values
-  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
 
@@ -340,7 +360,7 @@ Interval MethodOfMomentsFactory::getOptimizationBounds() const
 void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+  if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Indices and values size must match";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
@@ -356,11 +376,31 @@ Point MethodOfMomentsFactory::getKnownParameterValues() const
   return knownParameterValues_;
 }
 
+/* Moments orders accessor */
+void MethodOfMomentsFactory::setMomentOrders(const Indices & momentsOrders)
+{
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (momentsOrders.getSize() > parameterDimension)
+    throw InvalidArgumentException(HERE) << "At most " << parameterDimension << " moments orders must be provided";
+  for (UnsignedInteger i = 0; i < momentsOrders.getSize(); ++ i)
+    if (!(momentsOrders[i] > 0))
+      throw InvalidArgumentException(HERE) << "Moments orders must be positive";
+  if (!momentsOrders.check(std::numeric_limits<UnsignedInteger>::max()))
+    throw InvalidArgumentException(HERE) << "Moments orders must be unique";
+  momentOrders_ = momentsOrders;
+}
+
+Indices MethodOfMomentsFactory::getMomentOrders() const
+{
+  return momentOrders_;
+}
 
 /* Method save() stores the object through the StorageManager */
 void MethodOfMomentsFactory::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
+  adv.saveAttribute("distribution_", distribution_);
+  adv.saveAttribute("momentOrders_", momentOrders_);
   adv.saveAttribute("knownParameterValues_", knownParameterValues_);
   adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
@@ -370,6 +410,8 @@ void MethodOfMomentsFactory::save(Advocate & adv) const
 void MethodOfMomentsFactory::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
+  adv.loadAttribute("distribution_", distribution_);
+  adv.loadAttribute("momentOrders_", momentOrders_);
   adv.loadAttribute("knownParameterValues_", knownParameterValues_);
   adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);

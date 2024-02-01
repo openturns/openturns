@@ -17,3 +17,6 @@ P1+P2= -1.2 + 5.9 * X + 0.8 * X^2 - 0.5 * X^3 + 4 * X^4
 P1-P2= 3.8 - 1.1 * X + 3.2 * X^2 - 0.5 * X^3 + 4 * X^4
 P1*P2= -3.25 - 1.45 * X + 1.84 * X^2 + 5.37 * X^3 - 14.15 * X^4 + 14.6 * X^5 - 4.8 * X^6
 P1*P2= -3.25 - 1.45 * X + 1.84 * X^2 + 5.37 * X^3 - 14.15 * X^4 + 14.6 * X^5 - 4.8 * X^6
+P1= X - 2 * X^2 - X^3 + X^5
+(repr) P1= class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=6 values=[0,1,-2,-1,0,1]
+(html) P1= X - 2 <span>&#215;</span> X<sup>2</sup> - X<sup>3</sup> + X<sup>5</sup>

@@ -51,19 +51,20 @@ Create a multivariate basis of functions from scalar multivariable functions
 #       f_2(x_1, x_2) & = & (1, x_1 + x_2, x_1^2 + x_2^2)
 #     \end{array}
 import openturns as ot
+
 d = 2
 q = 3
 
 # Create the functions g_i
-g_1 = ot.SymbolicFunction(['x1', 'x2'], ['1'])
-g_2 = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
-g_3 = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2^2'])
+g_1 = ot.SymbolicFunction(["x1", "x2"], ["1"])
+g_2 = ot.SymbolicFunction(["x1", "x2"], ["x1+x2"])
+g_3 = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2^2"])
 
 # Create the multivariate basis
 f_1 = ot.AggregatedFunction([g_1] * q)
 f_2 = ot.AggregatedFunction([g_1, g_2, g_3])
 basis = ot.Basis([f_1, f_2])
-print('Fonction f_1 : ', basis.build(0))
+print("Fonction f_1 : ", basis.build(0))
 
 # %%
 # Case 2: Aggregation of functions built from given bases

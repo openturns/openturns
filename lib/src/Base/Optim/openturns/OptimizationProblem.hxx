@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,7 +107,7 @@ public:
   /** Variable types accessors */
   void setVariablesType(const Indices & variableType);
   Indices getVariablesType() const;
-  bool isContinuous() const;
+  Bool isContinuous() const;
 
   /** String converter */
   String __repr__() const override;

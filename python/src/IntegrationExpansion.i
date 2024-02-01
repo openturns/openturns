@@ -6,5 +6,6 @@
 
 %include IntegrationExpansion_doc.i
 
+%copyctor OT::IntegrationExpansion;
+
 %include openturns/IntegrationExpansion.hxx
-namespace OT { %extend IntegrationExpansion { IntegrationExpansion(const IntegrationExpansion & other) { return new OT::IntegrationExpansion(other); } } }

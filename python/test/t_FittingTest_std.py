@@ -134,7 +134,11 @@ resultBIC = ot.SquareMatrix(distributionNumber)
 for i in range(distributionNumber):
     for j in range(distributionNumber):
         value = ot.FittingTest.BIC(sampleCollection[i], distributionCollection[j], 0)
-        resultBIC[i, j] = value
+        # TODO JM: remove the check after the use of infs has been thoroughly tested
+        if value < ot.SpecFunc.MaxScalar:
+            resultBIC[i, j] = value
+        else:
+            resultBIC[i, j] = value * 2.0
 print("resultBIC=", repr(resultBIC))
 
 # Kolmogorov test : case with estimated parameters

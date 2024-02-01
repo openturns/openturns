@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between numerical
  *        math functions implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,7 +75,7 @@ String ProductEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   if (hasVisibleName()) oss << getName() << " :";
-  if (getOutputDimension() > 1) oss << Os::GetEndOfLine() << offset;
+  if (getOutputDimension() > 1) oss << "\n" << offset;
   oss << "(" << leftEvaluation_.getImplementation()->__str__(offset) << ") * ("
       << "(" << rightEvaluation_.getImplementation()->__str__(offset) << ")";
   return oss;

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Poisson distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,7 +72,7 @@ Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
     if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample with integer components >= 0, here sample[" << i << "][0]=" << x;
     lambda += x;
   }
-  if (!(lambda > 0.0) || SpecFunc::IsInf(lambda)) throw InvalidArgumentException(HERE) << "Error: can build a poisson distribution only if lambda > 0, here lambda=" << lambda;
+  if (!(lambda > 0.0) || std::isinf(lambda)) throw InvalidArgumentException(HERE) << "Error: can build a poisson distribution only if lambda > 0, here lambda=" << lambda;
   Poisson result(lambda / size);
   result.setDescription(sample.getDescription());
   return result;

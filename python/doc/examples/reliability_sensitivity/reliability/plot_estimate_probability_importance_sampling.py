@@ -56,7 +56,7 @@ event = ot.ThresholdEvent(G, ot.Greater(), 0.30)
 # %%
 # Define a solver
 optimAlgo = ot.Cobyla()
-optimAlgo.setMaximumEvaluationNumber(1000)
+optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-10)
 optimAlgo.setMaximumRelativeError(1.0e-10)
 optimAlgo.setMaximumResidualError(1.0e-10)
@@ -88,7 +88,7 @@ dimension
 
 # %%
 myImportance = ot.Normal(dimension)
-myImportance.setMean(standardSpaceDesignPoint)
+myImportance.setMu(standardSpaceDesignPoint)
 myImportance
 
 # %%

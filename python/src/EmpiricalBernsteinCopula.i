@@ -6,5 +6,6 @@
 
 %include EmpiricalBernsteinCopula_doc.i
 
+%copyctor OT::EmpiricalBernsteinCopula;
+
 %include openturns/EmpiricalBernsteinCopula.hxx
-namespace OT { %extend EmpiricalBernsteinCopula { EmpiricalBernsteinCopula(const EmpiricalBernsteinCopula & other) { return new OT::EmpiricalBernsteinCopula(other); } } }

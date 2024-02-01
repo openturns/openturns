@@ -63,9 +63,9 @@ param_f = ot.ParametricFunction(ot_f, [0, 1], [1.0, 2.0])
 
 x = [3.0]
 y = [1.5]
-n_calls_0 = ot_f.getCallsNumber()
+n_calls_0 = ot_f.getEvaluationCallsNumber()
 par_grad = param_f.parameterGradient(x)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 assert (
     n_calls_1 - n_calls_0 == 4
 ), "Expected n_calls_1 - n_calls_0 == 4, here n_calls_1 - n_calls_0 == " + str(
@@ -74,9 +74,9 @@ assert (
 assert n_calls == 4, "Expected n_calls == 4, here n_calls == " + str(n_calls)
 
 n_calls = 0
-n_calls_0 = ot_f.getCallsNumber()
+n_calls_0 = ot_f.getEvaluationCallsNumber()
 f_grad = param_f.gradient(y)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 assert (
     n_calls_1 - n_calls_0 == 2
 ), "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + str(
@@ -92,9 +92,9 @@ param_f = ot.ParametricFunction(ot_f, [0, 1], [1.0, 2.0])
 
 x = [3.5]
 y = [2.5]
-n_calls_0 = ot_f.getCallsNumber()
+n_calls_0 = ot_f.getEvaluationCallsNumber()
 par_grad = param_f.parameterGradient(x)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 assert (
     n_calls_1 - n_calls_0 == 3
 ), "Expected n_calls_1 - n_calls_0 == 3, here n_calls_1 - n_calls_0 == " + str(
@@ -103,9 +103,9 @@ assert (
 assert n_calls == 3, "Expected n_calls == 3, here n_calls == " + str(n_calls)
 
 n_calls = 0
-n_calls_0 = ot_f.getCallsNumber()
+n_calls_0 = ot_f.getEvaluationCallsNumber()
 f_grad = param_f.gradient(y)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 assert (
     n_calls_1 - n_calls_0 == 2
 ), "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + str(

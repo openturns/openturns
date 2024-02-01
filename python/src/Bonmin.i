@@ -23,7 +23,7 @@ template <>
 }
 %}
 
-%template(VariableTypeCollection) OT::Collection<OT::OptimizationProblemImplementation::VariableType>;
+%template(_VariableTypeCollection) OT::Collection<OT::OptimizationProblemImplementation::VariableType>;
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const VariableTypeCollection & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) || OT::isAPythonSequenceOf<OT::_PyInt_>($input);
@@ -44,6 +44,6 @@ template <>
 
 %include Bonmin_doc.i
 
-%include openturns/Bonmin.hxx
+%copyctor OT::Bonmin;
 
-namespace OT { %extend Bonmin { Bonmin(const Bonmin & other) { return new OT::Bonmin(other); } } }
+%include openturns/Bonmin.hxx

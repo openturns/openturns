@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is the interface class.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,6 +73,10 @@ public:
 
   /** Get the indices of the enclosing simplex of the given points */
   virtual Indices query(const Sample & sample) const;
+
+  /** Accessor to the barycentric coordinates tolerance */
+  void setBarycentricCoordinatesEpsilon(const Scalar epsilon);
+  Scalar getBarycentricCoordinatesEpsilon() const;
 
   /** String converter */
   String __repr__() const override;

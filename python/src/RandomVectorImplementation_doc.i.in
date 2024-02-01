@@ -230,6 +230,88 @@ OT_RandomVector_getSample_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_RandomVector_getFrozenRealization_doc
+"Compute realizations of the RandomVector.
+
+In the case of a :class:`~openturns.CompositeRandomVector`
+or an event of some kind, this method returns
+the value taken by the random vector if the root cause
+takes the value given as argument.
+
+Parameters
+----------
+fixedPoint : :class:`~openturns.Point`
+    Point chosen as the root cause of the random vector.
+
+Returns
+-------
+realization : :class:`~openturns.Point`
+    The realization corresponding to the chosen root cause.
+
+See also
+--------
+getRealization
+getFrozenSample
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> randomVector = ot.RandomVector(distribution)
+>>> f = ot.SymbolicFunction('x', 'x')
+>>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
+>>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
+>>> print(event.getFrozenRealization([0.2]))
+[0]
+>>> print(event.getFrozenRealization([-0.1]))
+[1]"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getFrozenRealization
+OT_RandomVector_getFrozenRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getFrozenSample_doc
+"Compute realizations of the RandomVector.
+
+In the case of a :class:`~openturns.CompositeRandomVector`
+or an event of some kind, this method returns
+the different values taken by the random vector when the root cause
+takes the values given as argument.
+
+Parameters
+----------
+fixedSample : :class:`~openturns.Sample`
+    Sample of root causes of the random vector.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Sample of the realizations corresponding to the chosen root causes.
+
+See also
+--------
+getSample
+getFrozenRealization
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> randomVector = ot.RandomVector(distribution)
+>>> f = ot.SymbolicFunction('x', 'x')
+>>> compositeRandomVector = ot.CompositeRandomVector(f, randomVector)
+>>> event = ot.ThresholdEvent(compositeRandomVector, ot.Less(), 0.0)
+>>> print(event.getFrozenSample([[0.2], [-0.1]]))
+    [ y0 ]
+0 : [ 0  ]
+1 : [ 1  ]"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getFrozenSample
+OT_RandomVector_getFrozenSample_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_RandomVector_getOperator_doc
 "Accessor to the comparaison operator of the Event.
 
@@ -425,3 +507,18 @@ event : :class:`~openturns.RandomVector`
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::join
 OT_RandomVector_join_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_asComposedEvent_doc
+"If the random vector can be viewed as the composition of several :class:`~openturns.ThresholdEvent` objects,
+this method builds and returns the composition.
+Otherwise throws.
+
+Returns
+-------
+composed : :class:`~openturns.RandomVector`
+    Composed event."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::asComposedEvent
+OT_RandomVector_asComposedEvent_doc

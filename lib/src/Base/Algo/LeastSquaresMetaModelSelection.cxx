@@ -2,7 +2,7 @@
 /**
  *  @brief Basis selection algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -123,6 +123,8 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;
 
+  errorHistory_.clear();
+
   basisSequenceFactory_.initialize();
   basisSequenceFactory_.updateBasis(method, y_);
 
@@ -135,6 +137,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
     // retrieve the i-th basis of the sequence
     const Scalar error = fittingAlgorithm_.run(method, y_);
     LOGINFO(OSS() << "\nsubbasis=" << iterations << ", size=" << basisSequenceFactory_.getImplementation()->currentIndices_.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error);
+    errorHistory_.add(error);
 
     if (error < minimumError)
     {
@@ -209,5 +212,14 @@ void LeastSquaresMetaModelSelection::load(Advocate & adv)
   adv.loadAttribute( "fittingAlgorithm_", fittingAlgorithm_ );
 }
 
+Collection<Indices> LeastSquaresMetaModelSelection::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  return basisSequenceFactory_.getImplementation()->getSelectionHistory(coefficientsHistory);
+}
+
+Point LeastSquaresMetaModelSelection::getErrorHistory() const
+{
+  return errorHistory_;
+}
 
 END_NAMESPACE_OPENTURNS

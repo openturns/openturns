@@ -20,7 +20,6 @@ class execforresourcemap_directive(Directive):
             self.lineno - self.state_machine.input_offset - 1
         )
         try:
-
             table = nodes.table()
 
             tgroup = nodes.tgroup(cols=3)

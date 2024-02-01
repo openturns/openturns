@@ -2,7 +2,7 @@
 /**
  *  @brief Gumbel distribution with a and b as parameters
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,8 +32,8 @@ static const Factory<GumbelLambdaGamma> Factory_GumbelLambdaGamma;
 /* Default constructor */
 GumbelLambdaGamma::GumbelLambdaGamma()
   : DistributionParametersImplementation()
-  , lambda_(0.0)
-  , gamma_(1.0)
+  , lambda_(1.0)
+  , gamma_(0.0)
 {
   // Nothing to do
 }
@@ -62,11 +62,7 @@ Bool GumbelLambdaGamma::operator ==(const GumbelLambdaGamma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelLambdaGamma::getDistribution() const
 {
-  Point newParameters(2);
-  newParameters[0] = lambda_;
-  newParameters[1] = gamma_;
-
-  Point nativeParameters(operator()(newParameters));
+  const Point nativeParameters(operator()(getValues()));
   return GumbelFactory().build(nativeParameters);
 }
 
@@ -132,10 +128,7 @@ void GumbelLambdaGamma::setValues(const Point & inP)
 
 Point GumbelLambdaGamma::getValues() const
 {
-  Point point(2);
-  point[0] = lambda_;
-  point[1] = gamma_;
-  return point;
+  return {lambda_, gamma_};
 }
 
 Description GumbelLambdaGamma::getDescription() const

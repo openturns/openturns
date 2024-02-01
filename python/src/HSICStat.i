@@ -8,5 +8,6 @@ OTTypedInterfaceObjectHelper(HSICStat)
 
 %include HSICStat_doc.i
 
+%copyctor OT::HSICStat;
+
 %include openturns/HSICStat.hxx
-namespace OT{ %extend HSICStat { HSICStat(const HSICStat & other) { return new OT::HSICStat(other); } } }

@@ -27,6 +27,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # We will use the following function to plot bi-dimensional samples.
 
+
 # %%
 def drawBidimensionalSample(sample, title):
     n = sample.getSize()

@@ -6,7 +6,8 @@
 
 %include ValueFunction_doc.i
 
+%copyctor OT::ValueFunction;
+
 %include openturns/ValueFunction.hxx
-namespace OT { %extend ValueFunction { ValueFunction(const ValueFunction & other) { return new OT::ValueFunction(other); } } }
 
 

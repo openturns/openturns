@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LowDiscrepancyExperiment for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     Normal distribution(4);
-    distribution.setMean(Point(4, 5.0));
+    distribution.setMu(Point(4, 5.0));
     UnsignedInteger size = 16;
     LowDiscrepancyExperiment experiment(HaltonSequence(), distribution, size);
     fullprint << "experiment = " << experiment << std::endl;
@@ -71,7 +71,7 @@ int main(int, char *[])
     CorrelationMatrix R(4);
     for (UnsignedInteger i = 1; i < 4; ++i)
       R(i - 1, i) = 0.5;
-    distribution.setCorrelation(R);
+    distribution.setR(R);
     experiment = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
     fullprint << "sample = " << experiment.generate() << std::endl;
   }

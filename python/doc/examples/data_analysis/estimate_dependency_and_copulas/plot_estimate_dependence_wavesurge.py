@@ -15,9 +15,7 @@ from openturns.usecases import coles
 data = coles.Coles().wavesurge
 print(data[:5])
 
-graph = ot.Graph(
-    "Concurent wave and surge heights", "wave (m)", "surge (m)", True, ""
-)
+graph = ot.Graph("Concurent wave and surge heights", "wave (m)", "surge (m)", True, "")
 cloud = ot.Cloud(data)
 cloud.setColor("red")
 graph.add(cloud)

@@ -2,7 +2,7 @@
 /**
  *  @brief Classification algorithm interface
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,10 +72,6 @@ public:
 
   /** Input space dimension */
   UnsignedInteger getDimension() const;
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** String converter */
   String __repr__() const override;

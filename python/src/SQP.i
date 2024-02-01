@@ -6,5 +6,6 @@
 
 %include SQP_doc.i
 
+%copyctor OT::SQP;
+
 %include openturns/SQP.hxx
-namespace OT{ %extend SQP { SQP(const SQP & other) { return new OT::SQP(other); } } }

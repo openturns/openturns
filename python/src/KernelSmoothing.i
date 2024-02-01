@@ -6,5 +6,6 @@
 
 %include KernelSmoothing_doc.i
 
+%copyctor OT::KernelSmoothing;
+
 %include openturns/KernelSmoothing.hxx
-namespace OT { %extend KernelSmoothing { KernelSmoothing(const KernelSmoothing & other) { return new OT::KernelSmoothing(other); } } }

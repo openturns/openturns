@@ -10,7 +10,7 @@
 %include Point_doc.i
 
 %template(ScalarCollection)           OT::Collection<OT::Scalar>;
-%template(ScalarPersistentCollection) OT::PersistentCollection<OT::Scalar>;
+%template(_ScalarPersistentCollection) OT::PersistentCollection<OT::Scalar>;
 
 %typemap(in) const ScalarCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
@@ -29,7 +29,7 @@
 }
 
 %template(PointCollection)            OT::Collection<OT::Point>;
-%template(PointPersistentCollection)  OT::PersistentCollection<OT::Point>;
+%template(_PointPersistentCollection)  OT::PersistentCollection<OT::Point>;
 
 
 #define OT_TYPECHECK_NUMERICALPOINT 4

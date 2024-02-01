@@ -6,5 +6,6 @@
 
 %include KissFFT_doc.i
 
+%copyctor OT::KissFFT;
+
 %include openturns/KissFFT.hxx
-namespace OT { %extend KissFFT { KissFFT(const KissFFT & other) { return new OT::KissFFT(other); } } }

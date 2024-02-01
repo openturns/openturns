@@ -6,6 +6,6 @@
 
 %include PostAnalyticalSimulation_doc.i
 
-%include openturns/PostAnalyticalSimulation.hxx
+%copyctor OT::PostAnalyticalSimulation;
 
-namespace OT{ %extend PostAnalyticalSimulation { PostAnalyticalSimulation(const PostAnalyticalSimulation & other) { return new OT::PostAnalyticalSimulation(other); } } }
+%include openturns/PostAnalyticalSimulation.hxx

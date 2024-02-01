@@ -1,9 +1,8 @@
 %feature("docstring") OT::ChiSquareFactory
 "Chi-Square factory.
 
-Available constructor:
-    ChiSquareFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -19,10 +18,12 @@ DistributionFactory, ChiSquare"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsChiSquare_doc
-"Build the ChiSquare distribution.
+%feature("docstring") OT::ChiSquareFactory::buildAsChiSquare
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsChiSquare()
 
     buildAsChiSquare(*sample*)
 
@@ -32,14 +33,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
-
+param : sequence of float
+   The parameters of the :class:`~openturns.ChiSquare`.
+   
 Returns
 -------
 dist : :class:`~openturns.ChiSquare`
-    The built distribution."
-%enddef
-%feature("docstring") OT::ChiSquareFactory::buildAsChiSquare
-OT_DistributionFactory_buildAsChiSquare_doc
+    The estimated distribution as a Chi Square.
+    
+    In the first usage, the default Chi Square distribution is built."
 

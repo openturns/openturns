@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the Nataf transformation evaluation for elliptical
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -105,10 +105,10 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
-          const Scalar q25Input = inputDistribution.computeQuantile(0.25)[0];
-          const Scalar q75Input = inputDistribution.computeQuantile(0.75)[0];
-          const Scalar q25Output = outputDistribution.computeQuantile(0.25)[0];
-          const Scalar q75Output = outputDistribution.computeQuantile(0.75)[0];
+          const Scalar q25Input = inputDistribution.computeScalarQuantile(0.25);
+          const Scalar q75Input = inputDistribution.computeScalarQuantile(0.75);
+          const Scalar q25Output = outputDistribution.computeScalarQuantile(0.25);
+          const Scalar q75Output = outputDistribution.computeScalarQuantile(0.75);
           const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
           const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);
@@ -591,7 +591,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   const String name(getName());
-  if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << "\n" << offset;
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
   UnsignedInteger length = 0;
@@ -603,8 +603,8 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
     if (inputDistributionCollection_.getSize() > 1) oss << "| " << std::setw(length) << outputDescription[i] << " = ";
-    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << Os::GetEndOfLine() << offset;
-    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << Os::GetEndOfLine() << offset;
+    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << "\n" << offset;
+    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << "\n" << offset;
   }
   return oss;
 }

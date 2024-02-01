@@ -6,5 +6,6 @@
 
 %include FieldFunctionImplementation_doc.i
 
+%copyctor OT::FieldFunctionImplementation;
+
 %include openturns/FieldFunctionImplementation.hxx
-namespace OT { %extend FieldFunctionImplementation { FieldFunctionImplementation(const FieldFunctionImplementation & other) { return new OT::FieldFunctionImplementation(other); } } }

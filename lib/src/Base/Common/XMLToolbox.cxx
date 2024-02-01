@@ -2,7 +2,7 @@
 /**
  *  @brief This file provides basic XML functionalities
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,12 @@
 #include <cassert>
 #include <cstring>
 
+#ifdef OPENTURNS_ENABLE_CXX17
+#include <filesystem>
+#endif
+
 #if defined OPENTURNS_HAVE_LIBXML2
+#include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
 #endif
@@ -62,16 +67,20 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
   // Nothing to do
 }
 
-XMLDoc::XMLDoc(const FileName & pathToFile) : doc_(0)
+XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
-  doc_ = xmlParseFile( pathToFile.c_str() );
-  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing wrapper file " << pathToFile;
+#ifdef OPENTURNS_ENABLE_CXX17
+  if (!std::ifstream(std::filesystem::u8path(fileName)).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
+#endif
+  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
 
 XMLDoc::XMLDoc(const char * buffer, int size) : doc_(0)
 {
-  doc_ = xmlParseMemory( buffer, size );
-  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing buffer";
+  doc_ = xmlParseMemory(buffer, size);
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML";
 }
 
 XMLDoc::~XMLDoc()
@@ -95,9 +104,15 @@ XMLDoc::operator xmlDocPtr() const
   return doc_;
 }
 
-void XMLDoc::save( const FileName & fileName ) const
+void XMLDoc::save(const FileName & fileName) const
 {
-  xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
+#ifdef OPENTURNS_ENABLE_CXX17
+  if (!std::ofstream(std::filesystem::u8path(fileName)).good())
+    throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
+#endif
+  int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
+  if (rc < 0)
+    throw InternalException(HERE) << "XMLDoc: Could not save XML file " << fileName;
 }
 
 void XMLDoc::setCompressionLevel( const UnsignedInteger compressionLevel )

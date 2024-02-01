@@ -2,7 +2,7 @@
 /**
  *  @brief Point implements the classical mathematical point
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,24 +68,6 @@ Point::Point(std::initializer_list<Scalar> initList)
 Point * Point::clone() const
 {
   return new Point(*this);
-}
-
-
-/* Set small elements to zero */
-Point Point::clean(const Scalar threshold) const
-{
-  // Nothing to do for nonpositive threshold
-  if (threshold <= 0.0) return *this;
-  const UnsignedInteger size = getSize();
-  Point result(size, 0.0);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar value = (*this)[i];
-    // Things are done this way to prevent spurious -0.0
-    if (std::abs(value) < 0.5 * threshold) result[i] = 0.0;
-    else result[i] = threshold * round(value / threshold);
-  }
-  return result;
 }
 
 /* Check if the components are in increasing order */

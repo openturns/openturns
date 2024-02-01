@@ -6,5 +6,6 @@
 
 %include LeastSquaresExpansion_doc.i
 
+%copyctor OT::LeastSquaresExpansion;
+
 %include openturns/LeastSquaresExpansion.hxx
-namespace OT { %extend LeastSquaresExpansion { LeastSquaresExpansion(const LeastSquaresExpansion & other) { return new OT::LeastSquaresExpansion(other); } } }

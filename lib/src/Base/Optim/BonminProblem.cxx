@@ -4,7 +4,7 @@
  * for optimization problems. It is derived from Bonmin::TMINLP to ensure
  * compatibility with Bonmin algorithms.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,9 @@ BEGIN_NAMESPACE_OPENTURNS
 /** Constructor with parameters */
 BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
                               const Point & startingPoint,
-                              const UnsignedInteger maximumEvaluationNumber)
+                              const UnsignedInteger maximumCallsNumber,
+                              const Scalar maximumTimeDuration,
+                              const std::chrono::steady_clock::time_point & t0)
   : TMINLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
@@ -39,7 +41,9 @@ BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
   , evaluationOutputHistory_(0, 1)
   , optimalPoint_(optimProblem.getDimension())
   , optimalValue_(1)
-  , maximumEvaluationNumber_(maximumEvaluationNumber)
+  , maximumCallsNumber_(maximumCallsNumber)
+  , maximumTimeDuration_(maximumTimeDuration)
+  , t0_(t0)
   , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
 {
@@ -293,10 +297,15 @@ bool BonminProblem::eval_f(int n,
   evaluationInputHistory_.add(xPoint);
   evaluationOutputHistory_.add(yPoint);
 
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  if ((maximumTimeDuration_ > 0.0) && (timeDuration > maximumTimeDuration_))
+    return false;
+
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumEvaluationNumber_, progressCallback_.second);
+    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -305,7 +314,7 @@ bool BonminProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumEvaluationNumber_);
+  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
 }
 
 

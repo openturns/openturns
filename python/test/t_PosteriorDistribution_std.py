@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 
 observationsSize = 5
 # Create a collection of distribution
@@ -22,7 +23,7 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution = ot.Distribution(conditionedDistribution)
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
-    distribution = ot.PosteriorDistribution(
+    distribution = otexp.PosteriorDistribution(
         ot.ConditionalDistribution(conditionedDistribution, conditioning), observations
     )
     dim = distribution.getDimension()
@@ -57,7 +58,7 @@ for conditioning in conditioningDistributionCollection:
     #       print("anotherSample covariance=", anotherSample.computeCovariance())
 
     # Define a point
-    zero = [0.0] * dim
+    zero = [1e-3] * dim
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)

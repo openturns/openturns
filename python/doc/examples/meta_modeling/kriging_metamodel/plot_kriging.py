@@ -78,11 +78,12 @@ curve = modelAtXref.draw(x2min, x2max)
 curve.setLegends(["Model"])
 curve.setColors(["red"])
 graph.add(curve)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setTitle("Sample size = %d" % (samplesize))
 graph.setXTitle("X2")
 view = viewer.View(graph)
 plt.show()
 
 # %%
-# As we can see, the metamodel is quite accurate in this case. The metamodel is very close to the model in the center of the domain, where the density of the input distribution is highest.
+# As we can see, the metamodel is quite accurate in this case.
+# The metamodel is very close to the model in the center of the domain, where the density of the input distribution is highest.

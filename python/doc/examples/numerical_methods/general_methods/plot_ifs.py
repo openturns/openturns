@@ -17,6 +17,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # **Tree traversal algorithm (the chaos game)**
 
+
 # %%
 def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blue"):
     # Any set of initial points should work in theory
@@ -32,7 +33,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
         ot.SymbolicFunction("s", equation), 0.0, 0.0, -m.log(dim) / m.log(max(all_r))
     )
     # Add a small perturbation to sample even the degenerated transforms
-    probabilities = [r ** s + 1e-2 for r in all_r]
+    probabilities = [r**s + 1e-2 for r in all_r]
     # Build the sampling distribution
     support = [[i] for i in range(dim)]
     choice = ot.UserDefined(support, probabilities)

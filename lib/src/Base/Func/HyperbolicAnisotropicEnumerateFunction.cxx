@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -152,7 +152,7 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
       while ((it != candidates_.end()) && (it->second < nextNorm)) ++ it;
 
       // check if the same indice was already added
-      bool duplicate( false );
+      Bool duplicate = false;
       while ((it != candidates_.end()) && (it->second == nextNorm))
       {
         if (it->first == nextIndices)

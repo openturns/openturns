@@ -42,7 +42,7 @@ size = 20
 experiment = ot.LHSExperiment(distribution, size)
 startingSample = experiment.generate()
 algo = ot.MultiStart(solver, startingSample)
-algo.setMaximumEvaluationNumber(2000)
+algo.setMaximumCallsNumber(2000)
 algo.run()
 result = algo.getResult()
 true_optimal_point = [0.228279, -1.62553]
@@ -50,7 +50,7 @@ true_optimal_value = [-6.55113]
 ott.assert_almost_equal(result.getOptimalPoint(), true_optimal_point, 1e-5, 0.0)
 ott.assert_almost_equal(result.getOptimalValue(), true_optimal_value, 1e-5, 0.0)
 n_local_results = algo.getResultCollection().getSize()
-assert n_local_results == 13, "n_local_results is wrong"
+assert n_local_results == 20, "n_local_results is wrong"
 algo.setKeepResults(False)
 algo.run()
 n_local_results_nokeep = algo.getResultCollection().getSize()

@@ -6,5 +6,6 @@
 
 %include ChiFactory_doc.i
 
+%copyctor OT::ChiFactory;
+
 %include openturns/ChiFactory.hxx
-namespace OT { %extend ChiFactory { ChiFactory(const ChiFactory & other) { return new OT::ChiFactory(other); } } }

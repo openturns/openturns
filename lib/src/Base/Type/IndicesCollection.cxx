@@ -2,7 +2,7 @@
 /**
  *  @brief IndicesCollection stores a Collection of Indices contiguously.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,6 +72,12 @@ IndicesCollection::IndicesCollection(const IndicesCollectionImplementation & i)
 UnsignedInteger IndicesCollection::getSize() const
 {
   return getImplementation()->getSize();
+}
+
+/* Get the size of Indices */
+UnsignedInteger IndicesCollection::getStride() const
+{
+  return getImplementation()->getStride();
 }
 
 

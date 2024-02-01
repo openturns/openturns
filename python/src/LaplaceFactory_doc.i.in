@@ -1,9 +1,8 @@
 %feature("docstring") OT::LaplaceFactory
 "Laplace factory.
 
-Available constructor:
-    LaplaceFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,13 @@ DistributionFactory, Laplace"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsLaplace_doc
-"Build the Laplace distribution.
+%feature("docstring") OT::LaplaceFactory::buildAsLaplace
+"Estimate the distribution as native distribution.
+
 
 **Available usages**:
+
+    buildAsLaplace()
 
     buildAsLaplace(*sample*)
 
@@ -33,14 +35,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+   The parameters of the :class:`~openturns.Laplace`.
 
 Returns
 -------
-dist : :class:`~openturns.Laplace`
-    The built distribution."
-%enddef
-%feature("docstring") OT::LaplaceFactory::buildAsLaplace
-OT_DistributionFactory_buildAsLaplace_doc
+distribution : :class:`~openturns.Laplace`
+    The estimated distribution as a Laplace.
+    
+    In the first usage, the default Laplace distribution is built."
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The UniformOverMesh distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,27 +107,27 @@ Point UniformOverMesh::getRealization() const
   const UnsignedInteger dimension = getDimension();
   Point result(dimension);
   if (dimension == 1)
-    {
-      DistFunc::rUniformSegment(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), dimension, &result[0]);
-      return result;
-    }
+  {
+    DistFunc::rUniformSegment(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), dimension, &result[0]);
+    return result;
+  }
   if (dimension == 2)
-    {
-      DistFunc::rUniformTriangle(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), dimension, &result[0]);
-      return result;
-    }
+  {
+    DistFunc::rUniformTriangle(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), dimension, &result[0]);
+    return result;
+  }
   if (dimension == 3)
-    {
-      DistFunc::rUniformTetrahedron(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), &vertices_(simplices_(index, 3), 0), dimension, &result[0]);
-      return result;
-    }
+  {
+    DistFunc::rUniformTetrahedron(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), &vertices_(simplices_(index, 3), 0), dimension, &result[0]);
+    return result;
+  }
   Sample vertices(dimension + 1, dimension);
   for (UnsignedInteger i = 0; i <= dimension; ++i)
-    {
-      const UnsignedInteger vertexIndex = simplices_(index, i);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-          vertices(i, j) = vertices_(vertexIndex, j);
-    } // i
+  {
+    const UnsignedInteger vertexIndex = simplices_(index, i);
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      vertices(i, j) = vertices_(vertexIndex, j);
+  } // i
   DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result[0]);
   return result;
 }
@@ -140,44 +140,45 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
   if (dimension == 1)
-    {
-      for (UnsignedInteger n = 0; n < size; ++n)
-        {
-          const UnsignedInteger index = indices[n];
-          DistFunc::rUniformSegment(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), dimension, &result(n, 0));
-        } // n
-      return result;
-    } // dimension == 1
-  if (dimension == 2)
-    {
-      for (UnsignedInteger n = 0; n < size; ++n)
-        {
-          const UnsignedInteger index = indices[n];
-          DistFunc::rUniformTriangle(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), dimension, &result(n, 0));
-        }
-      return result;
-    } // dimension == 2
-  if (dimension == 3)
-    {
-      for (UnsignedInteger n = 0; n < size; ++n)
-        {
-          const UnsignedInteger index = indices[n];
-          DistFunc::rUniformTetrahedron(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), &vertices_(simplices_(index, 3), 0), dimension, &result(n, 0));
-        }
-      return result;
-    } // dimension == 3
-  Sample vertices(dimension + 1, dimension);
-  for (UnsignedInteger n = 0; n < size; ++n)
+  {
+    for (UnsignedInteger n = 0; n < size; ++n)
     {
       const UnsignedInteger index = indices[n];
-      for (UnsignedInteger i = 0; i <= dimension; ++i)
-        {
-          const UnsignedInteger vertexIndex = simplices_(index, i);
-          for (UnsignedInteger j = 0; j < dimension; ++j)
-            vertices(i, j) = vertices_(vertexIndex, j);
-        } // i
-      DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result(n, 0));
+      DistFunc::rUniformSegment(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), dimension, &result(n, 0));
     } // n
+    return result;
+  } // dimension == 1
+  if (dimension == 2)
+  {
+    for (UnsignedInteger n = 0; n < size; ++n)
+    {
+      const UnsignedInteger index = indices[n];
+      DistFunc::rUniformTriangle(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), dimension, &result(n, 0));
+    }
+    return result;
+  } // dimension == 2
+  if (dimension == 3)
+  {
+    for (UnsignedInteger n = 0; n < size; ++n)
+    {
+      const UnsignedInteger index = indices[n];
+      DistFunc::rUniformTetrahedron(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), &vertices_(simplices_(index, 3), 0), dimension, &result(n, 0));
+    }
+    return result;
+  } // dimension == 3
+  Sample vertices(dimension + 1, dimension);
+  for (UnsignedInteger n = 0; n < size; ++n)
+  {
+    const UnsignedInteger index = indices[n];
+    for (UnsignedInteger i = 0; i <= dimension; ++i)
+    {
+      const UnsignedInteger vertexIndex = simplices_(index, i);
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        vertices(i, j) = vertices_(vertexIndex, j);
+    } // i
+    DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result(n, 0));
+  } // n
+  result.setDescription(getDescription());
   return result;
 }
 
@@ -217,11 +218,11 @@ void UniformOverMesh::computeMean() const
   {
     const Scalar factor = simplicesVolumes_[i] / (meshVolume_ * (1.0 + dimension));
     for (UnsignedInteger j = 0; j <= dimension; ++j)
-      {
-        const UnsignedInteger vertexIndex = simplices_(i, j);
-        for (UnsignedInteger k = 0; k < dimension; ++k)
-          mean_[k] += vertices_(vertexIndex, k) * factor;
-      } // j
+    {
+      const UnsignedInteger vertexIndex = simplices_(i, j);
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+        mean_[k] += vertices_(vertexIndex, k) * factor;
+    } // j
   } // i
   isAlreadyComputedMean_ = true;
 }

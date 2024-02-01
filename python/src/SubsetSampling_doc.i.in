@@ -101,33 +101,55 @@ prob : float
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::setKeepEventSample
+%feature("docstring") OT::SubsetSampling::setKeepSample
 "Sample storage accessor.
 
 Parameters
 ----------
-keepEventsample : bool
-    Whether to keep the samples that realized the event."
+keepsample : bool
+    Whether to keep the working samples at each iteration."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getEventInputSample
+%feature("docstring") OT::SubsetSampling::getInputSample
 "Input sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
 
 Returns
 -------
 inputSample : :class:`~openturns.Sample`
-    Input sample that realized the event."
+    Input sample."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getEventOutputSample
+%feature("docstring") OT::SubsetSampling::getOutputSample
 "Output sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
 
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-    Output sample that realized the event."
+    Output sample."
 
 // ---------------------------------------------------------------------------
 
@@ -213,23 +235,20 @@ range : float
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::setBetaMin
-"Hypersphere radius accessor.
+%feature("docstring") OT::SubsetSampling::setInitialExperiment
+"Initial experiment accessor.
 
 Parameters
 ----------
-beta : float
-    Radius value of the exclusion hypershere when the conditional simulation
-    is enabled."
+initialExperiment : :class:`~openturns.WeightedExperiment`
+    Experiment for first step."
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::setISubset
-"Conditonal simulation flag accessor.
+%feature("docstring") OT::SubsetSampling::getInitialExperiment
+"Initial experiment accessor.
 
-Parameters
-----------
-isubset : bool
-    Whether to enable conditional simulation for the first step of the
-    simulation."
-
+Returns
+-------
+initialExperiment : :class:`~openturns.WeightedExperiment`
+    Experiment for first step."

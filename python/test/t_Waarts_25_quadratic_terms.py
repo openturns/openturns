@@ -58,7 +58,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 #
 # FORM/SORM Cobyla
 myCobyla = ot.Cobyla()
-myCobyla.setMaximumEvaluationNumber(100 * dim)
+myCobyla.setMaximumCallsNumber(100 * dim)
 myCobyla.setMaximumAbsoluteError(1.0e-10)
 myCobyla.setMaximumRelativeError(1.0e-10)
 myCobyla.setMaximumResidualError(1.0e-10)
@@ -93,9 +93,9 @@ resultAR2 = myAlgoAR2.getResult()
 
 #
 # Monte Carlo
-CoV_MC = 0.5
+CoV_MC = 0.1
 myMC = ot.ProbabilitySimulationAlgorithm(myEvent, ot.MonteCarloExperiment())
-myMC.setMaximumOuterSampling(8000)
+myMC.setMaximumOuterSampling(32000)
 myMC.setBlockSize(1)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
@@ -103,8 +103,8 @@ myMC.run()
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
-myLHS.setMaximumOuterSampling(8000)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, ot.LHSExperiment())
+myLHS.setMaximumOuterSampling(32000)
 myLHS.setBlockSize(1)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
 myLHS.run()

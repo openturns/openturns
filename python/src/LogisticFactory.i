@@ -6,5 +6,6 @@
 
 %include LogisticFactory_doc.i
 
+%copyctor OT::LogisticFactory;
+
 %include openturns/LogisticFactory.hxx
-namespace OT { %extend LogisticFactory { LogisticFactory(const LogisticFactory & other) { return new OT::LogisticFactory(other); } } }

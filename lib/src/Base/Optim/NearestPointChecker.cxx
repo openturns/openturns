@@ -2,7 +2,7 @@
 /**
  *  @brief NearestPointChecker checks whether the nearest point found is really the nearestpoint
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NearestPointChecker)
 /*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fnction)
+ * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
 /* Constructor with parameters */

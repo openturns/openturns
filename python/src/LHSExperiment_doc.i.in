@@ -9,8 +9,7 @@ Available constructors:
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-    Distribution :math:`\mu` with an independent copula used to generate the
-    set of input data.
+    Distribution :math:`\mu` used to generate the set of input data.
 size : positive int
     Number :math:`\mathrm{card}\,I` of points that will be generated in the experiment.
 alwaysShuffle : bool
@@ -36,6 +35,14 @@ selected cells. The weights associated to the points are all equal to
 sample: the point selection within the cells changes but not the cells
 selection. To change the cell selection, it is necessary to create a new LHS
 Experiment.
+
+.. warning::
+
+    When the distribution has a non-independent copula, the sample obtained by inverse
+    isoprobabilistic transformation of an LHS experiment does not have the same properties
+    as the original LHS experiment but can still be used to efficiently estimate
+    threshold exceedance probabilities, especially when the copula is normal
+    (as in this case the isoprobabilistic transformation is linear) and the limit-state is linear.
 
 See also
 --------

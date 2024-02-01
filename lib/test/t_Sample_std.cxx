@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Sample for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -97,7 +97,7 @@ void test_argsort()
   Sample nodesSorted(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger index(order[i]);
+    index = order[i];
     weightsSorted[i] = weightsShuffled[index];
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
@@ -241,7 +241,7 @@ int main(int, char *[])
       throw TestFailed("Exception has NOT been thrown or caught !");
 
     }
-    catch (OutOfBoundException & ex)
+    catch (const OutOfBoundException &)
     {
       // Nothing to do
     }
@@ -255,7 +255,7 @@ int main(int, char *[])
     fullprint << "sample5.stack(sample5)=" << sample5 << std::endl;
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

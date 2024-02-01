@@ -45,6 +45,7 @@ KSstat
 # %%
 # Create a function which returns the CDF given the KS distance.
 
+
 # %%
 def pKolmogorovPy(x):
     y = ot.DistFunc.pKolmogorov(samplesize, x[0])
@@ -57,6 +58,7 @@ pKolmogorov = ot.PythonFunction(1, 1, pKolmogorovPy)
 
 # %%
 # Create a function which returns the KS PDF given the KS distance: use the `gradient` method.
+
 
 # %%
 def kolmogorovPDF(x):
@@ -138,7 +140,7 @@ graph = ot.Graph(
     "KS-Statistics",
     "PDF",
     True,
-    "topright",
+    "upper right",
 )
 graph.setLegends(["Empirical distribution"])
 graph.add(curve)

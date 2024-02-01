@@ -6,5 +6,6 @@ OTAutodoc(MarginalGradient)
 #include "openturns/MarginalGradient.hxx"
 %}
 
+%copyctor OT::MarginalGradient;
+
 %include openturns/MarginalGradient.hxx
-namespace OT { %extend MarginalGradient { MarginalGradient(const MarginalGradient & other) { return new OT::MarginalGradient(other); } } }

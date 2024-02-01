@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation of projection strategy as a leastSquares
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -202,6 +202,16 @@ void IntegrationStrategy::load(Advocate & adv)
   ProjectionStrategyImplementation::load(adv);
 }
 
+/* Selection history accessor */
+Collection<Indices> IntegrationStrategy::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = Collection<Point>();
+  return Collection<Indices>();
+}
 
+Point IntegrationStrategy::getErrorHistory() const
+{
+  return Point();
+}
 
 END_NAMESPACE_OPENTURNS

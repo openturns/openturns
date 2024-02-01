@@ -6,5 +6,6 @@
 
 %include Beta_doc.i
 
+%copyctor OT::Beta;
+
 %include openturns/Beta.hxx
-namespace OT { %extend Beta { Beta(const Beta & other) { return new OT::Beta(other); } } }

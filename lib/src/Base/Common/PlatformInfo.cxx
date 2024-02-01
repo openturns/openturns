@@ -2,7 +2,7 @@
 /**
  *  @brief The class PlatformInfo gives information about the library
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -183,7 +183,7 @@ Description PlatformInfo::GetFeatures()
 
   Description keys;
   for (std::map<String, Bool>::iterator it = Features_.begin(); it != Features_.end(); ++ it)
-    keys.add(it->second);
+    keys.add(it->first);
   return keys;
 }
 

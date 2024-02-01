@@ -142,7 +142,7 @@ posterior_sample = s[:, 0:2]
 ks = ot.KernelSmoothing().build(posterior_sample)
 graph = ks.drawPDF()
 graph.setTitle("Posterior density")
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setXTitle(r"$\mu_0$")
 graph.setYTitle(r"$\mu_1$")
 _ = View(graph)

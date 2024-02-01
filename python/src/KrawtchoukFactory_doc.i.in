@@ -63,10 +63,8 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MeixnerFactory::getN
-"Accessor to the number of failures parameter :math:`n`.
-
-Of the :class:`~openturns.Binomial` distribution.
+%feature("docstring") OT::KrawtchoukFactory::getN
+"Accessor to the :math:`n` parameter.
 
 Returns
 -------
@@ -76,10 +74,8 @@ n : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MeixnerFactory::getP
-"Accessor to the success probability parameter :math:`p`.
-
-Of the :class:`~openturns.Binomial` distribution.
+%feature("docstring") OT::KrawtchoukFactory::getP
+"Accessor to the :math:`p` parameter.
 
 Returns
 -------

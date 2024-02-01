@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for elliptical distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ public:
   EllipticalDistribution();
 
   /** Parameter constructor */
-  EllipticalDistribution(const Point & mean,
+  EllipticalDistribution(const Point & mu,
                          const Point & sigma,
                          const CorrelationMatrix & R,
                          const Scalar covarianceNormalizationFactor);
@@ -83,14 +83,14 @@ public:
   /** Compute the density generator of the elliptical distribution, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^{-1}(x-mu))                      */
-  Scalar computeDensityGenerator(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
   virtual Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the second derivative of the density generator */
-  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const override;
+  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
@@ -99,8 +99,9 @@ public:
   /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 
-  /** Mean point accessor */
-  void setMean(const Point & mean);
+  /** Mu accessor */
+  void setMu(const Point & mu);
+  Point getMu() const;
 
   /** Sigma vector accessor */
   void setSigma(const Point & sigma);
@@ -112,10 +113,8 @@ public:
   Point getStandardDeviation() const override;
 
   /** Correlation matrix accessor */
-  void setCorrelation(const CorrelationMatrix & R);
-
-  /** Correlation matrix accessor */
-  CorrelationMatrix getCorrelation() const;
+  void setR(const CorrelationMatrix & R);
+  CorrelationMatrix getR() const;
 
 protected:
   /** Compute the mean of the distribution */

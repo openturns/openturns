@@ -2,7 +2,7 @@
 /**
  *  @brief The TruncatedDistribution distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,8 +66,8 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   : DistributionImplementation()
   , bounds_(Point(distribution.getDimension(), lowerBound), Point(distribution.getDimension(), upperBound))
 {
-  if (!SpecFunc::IsNormal(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter must be a real value, here bound=" << lowerBound;
-  if (!SpecFunc::IsNormal(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter must be a real value, here bound=" << upperBound;
+  if (std::isnan(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter is NaN";
+  if (std::isnan(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter is NaN";
   setName("TruncatedDistribution");
   // This call also set the range
   setDistribution(distribution);
@@ -82,7 +82,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   : DistributionImplementation()
   , bounds_(distribution.getDimension())
 {
-  if (!SpecFunc::IsNormal(bound)) throw InvalidArgumentException(HERE) << "The bound parameter must be a real value, here bound=" << bound;
+  if (std::isnan(bound)) throw InvalidArgumentException(HERE) << "The bound parameter is NaN";
   setName("TruncatedDistribution");
   setThresholdRealization(thresholdRealization);
   switch (side)
@@ -416,8 +416,8 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
-  if (tail) return distribution_.computeQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_))[0];
-  return distribution_.computeQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_))[0];
+  if (tail) return distribution_.computeScalarQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_));
+  return distribution_.computeScalarQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_));
 }
 
 /* Parameters value accessor */
