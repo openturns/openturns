@@ -79,6 +79,13 @@ public:
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
+
   /* Interface specific to TruncatedOverMesh */
 
   /** Mesh accessor */
