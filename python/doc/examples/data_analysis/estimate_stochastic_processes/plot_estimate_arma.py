@@ -10,7 +10,7 @@ Estimate a scalar ARMA process
 # The data can be a unique time series or several time series collected in
 # a process sample.
 #
-# If the user specifies the order :math:`(p,q)`, OpenTURNS fits a model
+# If the user specifies the order :math:`(p,q)`, the library fits a model
 # :math:`ARMA(p,q)` to the data by estimating the coefficients
 # :math:`(a_1, \dots, a_p), (b_1, \dots, b_q)` and the variance :math:`\sigma` of the
 # white noise.

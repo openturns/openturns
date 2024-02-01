@@ -446,7 +446,7 @@ pf = (1.0 - ot.Normal().computeCDF(betaHL)) * coeff
 print("SORM : Pf = ", pf)
 
 # %%
-# We can compare with the different estimators implemented in OpenTURNS :
+# We can compare with the different estimators:
 pfBreitung = resultSORM.getEventProbabilityBreitung()
 pfHohenbichler = resultSORM.getEventProbabilityHohenbichler()
 pfTvedt = resultSORM.getEventProbabilityTvedt()

@@ -118,7 +118,7 @@ print(
 # Test samples independence using regression
 # ------------------------------------------
 #
-# Independence testing with regression is also an option in OpenTURNS.
+# Independence testing with regression is also an option.
 # It consists in detecting a linear relation between two scalar samples.
 #
 

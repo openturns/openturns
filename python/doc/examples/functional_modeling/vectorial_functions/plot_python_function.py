@@ -3,7 +3,7 @@ Create a Python function
 ========================
 """
 # %%
-# In this example we are going to create a Function object (ie usable in the OpenTURNS context) from a pure Python function.
+# In this example we are going to create a :class:`~openturns.Function` object (ie usable throughout the library) from a pure Python function.
 #
 # The pure Python function to wrap must accept a sequence of floats and return a sequence of float.
 #

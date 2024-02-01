@@ -21,14 +21,14 @@ Quick start guide to distributions
 #
 # The library is a probabilistic programming library: it is possible to create a random variable and perform operations on this variable *without* generating a sample.
 #
-# In the OpenTURNS platform, several *univariate distributions* are implemented. The most commonly used are:
+# Several *univariate distributions* are implemented in the library. The most commonly used are:
 #
 # - :class:`~openturns.Uniform`,
 # - :class:`~openturns.Normal`,
 # - :class:`~openturns.Beta`,
 # - :class:`~openturns.LogNormal`,
 # - :class:`~openturns.Exponential`,
-# - :class:`~openturns.Weibull`.
+# - :class:`~openturns.WeibullMin`.
 
 # %%
 import openturns.viewer as otv

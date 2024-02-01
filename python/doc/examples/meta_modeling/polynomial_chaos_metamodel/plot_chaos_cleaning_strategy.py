@@ -120,7 +120,7 @@ Create a sparse chaos by integration
 # to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol'
 # function is given in [blatman2009]_ page 75.
 #
-# *Note.* It is currently not possible to create a low-rank PCE in OpenTURNS.
+# *Note.* It is currently not possible to create a low-rank PCE.
 
 # %%
 #
