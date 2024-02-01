@@ -1,10 +1,10 @@
 """
-Various design of experiments in OpenTURNS
-==========================================
+Various design of experiments
+=============================
 """
 # %%
 #
-# The goal of this example is to present several design of experiments available in OpenTURNS.
+# The goal of this example is to present several design of experiments available in the library.
 
 # %%
 # Distribution
