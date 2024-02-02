@@ -51,11 +51,13 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2)[0];
+      std::cout << "assert_almost_equal1"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
       error = 0.0;
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
+      std::cout << "assert_almost_equal2"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
     }
     {
@@ -105,11 +107,13 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
+      std::cout << "assert_almost_equal3"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
       error = 0.0;
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
+      std::cout << "assert_almost_equal4"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
     }
     {
@@ -139,11 +143,13 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
+      std::cout << "assert_almost_equal5"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
       error = 0.0;
       Point x(2, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
+      std::cout << "assert_almost_equal6"<<std::endl;
       assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
     }
   }
