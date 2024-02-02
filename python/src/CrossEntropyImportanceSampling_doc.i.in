@@ -91,7 +91,7 @@ n : int
 
 Returns
 -------
-quantileLevel : : float
+quantileLevel : float
     Result of Cross Entropy algorithm."
 
 // ---------------------------------------------------------------------------
@@ -101,7 +101,7 @@ quantileLevel : : float
 
 Parameters
 ----------
-quantileLevel : : float
+quantileLevel : float
     Intermediate quantile level, must belong to the interval (0,1)."
     
 // ---------------------------------------------------------------------------
@@ -111,8 +111,8 @@ quantileLevel : : float
 
 Returns
 -------
-CrossEntropyResult : : class:`~openturns.CrossEntropyResult`
-    Contains all the results of the Cross Entropy algorithm simulation."
+CrossEntropyResult : :class:`~openturns.experimental.CrossEntropyResult`
+    Contains all the results of the Cross Entropy algorithm simulation ototototo."
     
 // ---------------------------------------------------------------------------
 
