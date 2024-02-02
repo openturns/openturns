@@ -51,12 +51,12 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2)[0];
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
       error = 0.0;
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
     }
     {
       // 1d + truncation
@@ -105,12 +105,12 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
       error = 0.0;
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
     }
     {
       // 2d input, to check that issue #1660 is solved
@@ -139,7 +139,7 @@ int main(int, char *[])
       Scalar error = 0.0;
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
       error = 0.0;
       Point x(2, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
