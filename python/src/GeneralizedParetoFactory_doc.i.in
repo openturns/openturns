@@ -476,7 +476,7 @@ If :math:`\xi \neq 0`:
 .. math::
     :label: xm1
 
-    x_m = u - \frac{\sigma}{\xi}(m \zeta_u)^{\xi}
+    x_m = u + \frac{\sigma}{\xi}\left[(m \zeta_u)^{\xi} - 1 \right]
 
 If :math:`\xi = 0`:
 
@@ -513,3 +513,81 @@ Returns
 -------
 distribution : :class:`~openturns.Distribution`
     The asymptotic distribution of :math:`\hat{x}_m`."
+
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator
+"Estimate :math:`(z_m, \xi)` and its distribution with the profile likelihood.
+
+The estimators are defined in :meth:`buildReturnLevelProfileLikelihood`.
+
+The parameter estimates are given by:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+    \hat{z}_m = \argmax_{z_m} \ell_p(z_m)\\
+    \hat{\xi} = \argmax_{(\xi)} \ell(\hat{z}_m, \xi)
+    \end{align*}
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{z}_m, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{z}_m, \hat{\xi}, u)`,
+- the profile log-likelihood function :math:`z_m \mapsto \ell_p(z_m)`,
+- the optimal profile log-likelihood value :math:`\ell_p(\hat{z}_m)`,
+- confidence intervals of level :math:`(1-\alpha)` of :math:`\hat{z}_m`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+m : float
+    The return period, defines the level of the quantile as :math:`1-1/m`.
+u : float
+    The location parameter
+
+Returns
+-------
+result : :class:`~openturns.ProfileLikelihoodResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelProfileLikelihood
+"Estimate a return level and its distribution with the profile likelihood.
+
+The estimator is defined using a nested numerical optimization of the log-likelihood:
+
+.. math::
+
+    \ell_p (z_m) = \max_{(\xi)} \ell (z_m, \xi, u)
+
+where :math:`\ell (z_m, \xi, u)` is the log-likelihood detailed in :eq:`llR1` and :eq:`llR2` where we substitued
+:math:`\sigma` for :math:`z_m` using equations :eq:`xm1` or :eq:`xm2`.
+
+The estimator :math:`\hat{z}_m` of :math:`z_m` is defined by:
+
+.. math::
+
+    \hat{z}_m = \argmax_{z_m} \ell_p(z_m)
+
+The asymptotic distribution of :math:`\hat{z}_m` is normal.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+u : float
+    The location parameter
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of :math:`\hat{z}_m`.
+
+Notes
+-----
+The starting point of the optimization is initialized from the regular maximum likelihood method."

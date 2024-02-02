@@ -85,6 +85,20 @@ print("xm=", xm)
 ott.assert_almost_equal(xm.getMean(), [106.284], 1e-2, 1e-2)
 ott.assert_almost_equal(xm.getCovariance()[0, 0], 433.145, 1e-2, 1e-2)
 
+# specific check for return level via profile likelihood
+estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(sample, u, 100.0 * 365.0)
+print(estimator_prof_rl)
+zm = estimator_prof_rl.getParameter()
+try:
+    ci = estimator_prof_rl.getParameterConfidenceInterval()
+    print("profile return level estimator zm=", zm, ci)
+    assert [zm] in ci, "zm should be inside confidence interval"
+except Exception as exception:
+    print(exception)
+ott.assert_almost_equal(ci.getLowerBound(), [80.8575], 1e-2, 1e-2)
+ott.assert_almost_equal(ci.getUpperBound(), [184.988], 1e-2, 1e-2)
+graph = estimator_prof_rl.drawProfileLikelihoodFunction()
+
 # profile MLE (xi)
 estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
 inf_dist = estimator_prof_mle.getDistribution()

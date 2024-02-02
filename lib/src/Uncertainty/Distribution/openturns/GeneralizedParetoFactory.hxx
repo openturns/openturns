@@ -90,6 +90,10 @@ public:
   /** Return level */
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m, const Sample & sample) const;
 
+  /** Return level via profiled likelihood */
+  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u, const Scalar m) const;
+  GeneralizedPareto buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u, const Scalar m) const;
+
 private:
 
   /** Optimization solver */
