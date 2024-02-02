@@ -1326,8 +1326,8 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelXiProfil
     else
     zmMax = SpecFunc::MaxScalar;
   */
-  const Scalar zmMin = -SpecFunc::MaxScalar;
-  const Scalar zmMax =  SpecFunc::MaxScalar;
+  const Scalar zmMin = -SpecFunc::ActualMaxScalar;
+  const Scalar zmMax =  SpecFunc::ActualMaxScalar;
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm, zmMin, zmMax);
   return result;
 }
