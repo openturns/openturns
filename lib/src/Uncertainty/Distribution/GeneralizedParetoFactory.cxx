@@ -805,4 +805,213 @@ Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const Distribut
   }
 }
 
+
+class GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2 : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2(const Sample & sample, const Scalar u, const Scalar m, const Scalar zeta)
+    : EvaluationImplementation()
+    , llh_(new GeneralizedParetoLikelihoodEvaluation(sample, u))
+    , u_(u)
+    , m_(m)
+    , zeta_(zeta)
+  {
+    // Nothing to do
+  }
+
+  GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2 * clone() const override
+  {
+    return new GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 2;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator() (const Point & zParameter) const override
+  {
+    const Scalar zm = zParameter[0];
+    const Scalar xi = zParameter[1];
+    const Scalar sigma = (std::abs(xi) < SpecFunc::Precision) ? (zm - u_) / std::log(m_ * zeta_) : (zm - u_) * xi / (std::pow(m_ * zeta_, xi) - 1.0);
+    const Point nativeParameter = {sigma, xi};
+
+    const Point llh(llh_(nativeParameter));
+    return llh;
+  }
+
+private:
+  Function llh_;
+  Scalar u_ = 0.0;
+  Scalar m_ = 0.0;
+  Scalar zeta_ = 0.0;
+};
+
+class GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1 : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1(const Sample & sample,
+                                                          const Scalar u,
+                                                          const Scalar xi0,
+                                                          const Scalar zeta,
+                                                          const Scalar m,
+                                                          const OptimizationAlgorithm & solver)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , u_(u)
+    , xi0_(xi0)
+    , zeta_(zeta)
+    , m_(m)
+    , solver_(solver)
+  {
+    // Nothing to do
+  }
+
+  GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1 * clone() const override
+  {
+    return new GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const override
+  {
+    return {"zm"};
+  }
+
+  Point operator() (const Point & parameter) const override
+  {
+    const Function objective(new GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2(sample_, u_, m_, zeta_));
+    const ParametricFunction objectiveZm(objective, Indices({0}), parameter);
+    OptimizationProblem problem(objectiveZm);
+    problem.setMinimization(false);
+
+    const Point x0({xi0_});
+
+    // solve optimization problem
+    OptimizationAlgorithm solver(solver_);
+    solver.setProblem(problem);
+    solver.setStartingPoint(x0);
+    try
+    {
+      solver.run();
+      optimalPoint_ = solver.getResult().getOptimalPoint();
+      const Point optimalValue(solver.getResult().getOptimalValue());
+      return optimalValue;
+    }
+    catch (const Exception &exc)
+    {
+      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
+    }
+  }
+
+  Point getOptimalPoint() const
+  {
+    return optimalPoint_;
+  }
+
+private:
+  Sample sample_;
+  Scalar u_ = 0.0;
+  Scalar xi0_ = 0.0;
+  Scalar zeta_ = 0.0;
+  Scalar m_ = 0.0;
+  mutable Point optimalPoint_;
+  OptimizationAlgorithm solver_;
+};
+
+ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample,
+                                                                                             const Scalar u, const Scalar m) const
+{
+  if (sample.getSize() < 3)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 3";
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "Return period should be > 1";
+
+  UnsignedInteger k = 0;
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Return level estimation requires a sample of dimension 1";
+  const UnsignedInteger size = sample.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (sample(i, 0) > u)
+      ++ k;
+  if (!k)
+    throw InvalidArgumentException(HERE) << "Return level estimation requires sample values > u";
+  const Scalar zeta = k * 1.0 / size;
+
+  // start from maximum likelihood
+  const Distribution ref(buildMethodOfLikelihoodMaximization(sample, u));
+  const Scalar sigma0 = ref.getParameter()[0];
+  const Scalar xi0 = ref.getParameter()[1];
+  const Scalar zm0 = u + sigma0 / xi0 * (std::pow(m * zeta, xi0) - 1.0);
+  const Point x0({zm0});
+
+  const GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1 profileLikelihoodEvaluation(sample, u, xi0, zeta, m, solver_);
+  const Function objective(profileLikelihoodEvaluation.clone());
+
+  OptimizationProblem problem(objective);
+  problem.setMinimization(false);
+
+  // solve optimization problem
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(x0);
+  solver.run();
+
+  // rerun once to get optimal xi at optimal zm
+  const Scalar zm = solver.getResult().getOptimalPoint()[0];
+  profileLikelihoodEvaluation(solver.getResult().getOptimalPoint());
+  const Scalar xi = profileLikelihoodEvaluation.getOptimalPoint()[0];
+  const Scalar sigma = (zm - u) * xi/ (std::pow(m * zeta, xi) - 1.0);
+  const Point optimalParameter({sigma, xi, u});
+
+  const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
+  const Distribution nativeParameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+
+  // delta method to transport native parametrization into zm parametrization
+  Matrix dzm(IdentityMatrix(3));
+  if (std::abs(xi) < SpecFunc::Precision)
+  {
+    dzm(0, 0) = std::log(m * zeta);
+    dzm(2, 0) = 1.0;
+  }
+  else
+  {
+    dzm(0, 0) = (std::pow(m * zeta, xi) - 1.0) / xi;
+    dzm(1, 0) = - sigma / (xi * xi) - std::exp(xi * std::log(m * zeta)) * std::log(m * zeta);
+    dzm(2, 0) = 1.0;
+  }
+  const Matrix Vn(nativeParameterDistribution.getCovariance());
+  const Matrix covZm = (dzm.transpose() * Vn * dzm);
+  Normal parameterDistribution(optimalParameter, CovarianceMatrix(covZm.getImplementation()));
+  parameterDistribution.setDescription({"zm", "sigma", "xi"});
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
+
+  const Scalar zmMin = -SpecFunc::MaxScalar;
+  const Scalar zmMax =  SpecFunc::MaxScalar;
+  ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm, zmMin, zmMax);
+  return result;
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u, const Scalar m) const
+{
+  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, u, m).getDistribution());
+  return buildAsGeneralizedPareto(distribution.getParameter());
+}
+
 END_NAMESPACE_OPENTURNS

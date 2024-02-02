@@ -72,7 +72,7 @@ print("Standard dev = ", parameterEstimate.getStandardDeviation())
 # %%
 # We get the marginal confidence intervals of order 0.95.
 order = 0.95
-for i in range(3):
+for i in range(2):  # exclude u parameter (fixed)
     ci = parameterEstimate.getMarginal(i).computeBilateralConfidenceInterval(order)
     print(desc[i] + ":", ci)
 
@@ -125,6 +125,28 @@ return_level_100 = zm_100.getMean()
 print(f"100-year return level = {return_level_100}")
 return_level_ci100 = zm_100.computeBilateralConfidenceInterval(0.95)
 print(f"CI = {return_level_ci100}")
+
+# %%
+# **Return level estimate via the profile log-likelihood function of a stationary GPD**
+#
+# We can estimate the :math:`m`-block return level :math:`z_m` directly from the data using the profile
+# likelihood with respect to :math:`z_m`.
+result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, u, 100.0 * 365)
+zm_100_PLL = result_zm_100_PLL.getParameter()
+print(f"10-year return level (profile) = {zm_100_PLL}")
+
+# %%
+# We can get the confidence interval of :math:`z_m`: once more, it appears to be a bit smaller
+# than the interval obtained from the log-likelihood function.
+result_zm_100_PLL.setConfidenceLevel(0.95)
+return_level_ci100 = result_zm_100_PLL.getParameterConfidenceInterval()
+print("Maximum profile log-likelihood function : ")
+print(f"CI={return_level_ci100}")
+
+# %%
+# We can also plot the profile log-likelihood function and get the confidence interval, the optimal value
+# of :math:`z_m` and its confidence interval.
+view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 
 # %%
 otv.View.ShowAll()
