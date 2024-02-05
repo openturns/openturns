@@ -528,11 +528,11 @@ distribution : :class:`~openturns.Distribution`
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihoodEstimator
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihoodEstimator
 "Estimate :math:`(z_m, \sigma, \xi)` and its distribution with the profile likelihood.
 
 
-The estimators are defined in :meth:`buildReturnLevelXiProfileLikelihood`.
+The estimators are defined in :meth:`buildReturnLevelProfileLikelihood`.
 
 The parameter estimates  are given by:
 
@@ -566,7 +566,7 @@ result : :class:`~openturns.ProfileLikelihoodResult`
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihood
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood
 "Estimate a return level and its distribution with the profile likelihood.
 
 The estimator is defined using a nested numerical optimization of the log-likelihood:
