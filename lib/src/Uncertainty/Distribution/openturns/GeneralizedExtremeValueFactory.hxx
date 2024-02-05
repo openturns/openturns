@@ -100,8 +100,8 @@ public:
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;
 
   /** Return level via profiled likelihood */
-  ProfileLikelihoodResult buildReturnLevelXiProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
-  GeneralizedExtremeValue buildReturnLevelXiProfileLikelihood(const Sample & sample, const Scalar m) const;
+  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const;
+  GeneralizedExtremeValue buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);

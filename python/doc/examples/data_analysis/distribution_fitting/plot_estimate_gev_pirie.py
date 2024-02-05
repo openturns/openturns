@@ -138,7 +138,7 @@ print(f"CI = {return_level_ci100}")
 #
 # We can estimate the :math:`m`-block return level :math:`z_m` directly from the data using the profile
 # likelihood with respect to :math:`z_m`.
-result_zm_10_PLL = factory.buildReturnLevelXiProfileLikelihoodEstimator(sample, 10.0)
+result_zm_10_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, 10.0)
 zm_10_PLL = result_zm_10_PLL.getParameter()
 print(f"10-year return level (profile) = {zm_10_PLL}")
 
