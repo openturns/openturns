@@ -42,7 +42,7 @@ public:
   typedef DomainImplementation::BoolCollection BoolCollection;
 
   /** Default constructor */
-  explicit LevelSet(const UnsignedInteger dimension = 1);
+  LevelSet();
 
   /** Parameters constructor, simplified for 1D case */
   explicit LevelSet(const Function & function,
