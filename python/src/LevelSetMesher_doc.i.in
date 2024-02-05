@@ -1,14 +1,11 @@
 %feature("docstring") OT::LevelSetMesher
-"Creation of mesh of box type.
-
-Available constructor:
-    LevelSetMesher(*discretization*)
+"Creation of mesh from a level set.
 
 Parameters
 ----------
-discretization : sequence of int, of dimension :math:`\leq 3`.
+discretization : sequence of int
     Discretization of the level set bounding box.
-solver : :class:`~openturns.OptimizationAlgorithm`
+solver : :class:`~openturns.OptimizationAlgorithm`, optional
     Optimization solver used to project the vertices onto the level set.
     It must be able to solve nearest point problems.
     Default is :class:`~openturns.AbdoRackwitz`.
@@ -19,7 +16,7 @@ The meshing algorithm is based on the :class:`~openturns.IntervalMesher` class.
 First, the bounding box of the level set (provided by the user or automatically
 computed) is meshed. Then, all the simplices with all vertices outside of the
 level set are rejected, while the simplices with all vertices inside of the level
-set are kept. The remaining simplices are adapted the following way :
+set are kept. The remaining simplices are adapted the following way:
 
   * The mean point of the vertices inside of the level set is computed
 
