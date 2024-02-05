@@ -1242,7 +1242,7 @@ private:
   OptimizationAlgorithm solver_;
 };
 
-ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const
+ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar m) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedExtremeValue distribution from a sample of size < 3";
@@ -1332,9 +1332,9 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelXiProfil
   return result;
 }
 
-GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelXiProfileLikelihood(const Sample & sample, const Scalar m) const
+GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar m) const
 {
-  const Distribution distribution(buildReturnLevelXiProfileLikelihoodEstimator(sample, m).getDistribution());
+  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, m).getDistribution());
   return buildAsGeneralizedExtremeValue(distribution.getParameter());
 }
 
