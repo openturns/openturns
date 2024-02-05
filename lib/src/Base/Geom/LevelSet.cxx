@@ -40,9 +40,9 @@ CLASSNAMEINIT(LevelSet)
 static const Factory<LevelSet> Factory_LevelSet;
 
 /* Default constructor */
-LevelSet::LevelSet(const UnsignedInteger dimension)
-  : DomainImplementation(dimension)
-  , function_(SymbolicFunction(Description::BuildDefault(dimension, "x"), Description(1, "1.0")))
+LevelSet::LevelSet()
+  : DomainImplementation(1)
+  , function_(SymbolicFunction(Description({"x"}), Description({"1.0"})))
   , operator_(LessOrEqual())
 {
   // Nothing to do
