@@ -8,4 +8,4 @@
 
 %include openturns/IntervalMesher.hxx
 
-namespace OT {%extend IntervalMesher {IntervalMesher(const IntervalMesher & other){return new OT::IntervalMesher(other);}}}
+%copyctor OT::IntervalMesher;

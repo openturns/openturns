@@ -5,6 +5,9 @@
 %}
 
 %include openturns/IndicesCollectionImplementation.hxx
+
+%copyctor OT::IndicesCollectionImplementation;
+
 namespace OT{
 %extend IndicesCollectionImplementation {
 
@@ -39,11 +42,6 @@ void __setitem__ (SignedInteger index,
 UnsignedInteger __len__() const
 {
   return self->getSize();
-}
-
-IndicesCollectionImplementation(const IndicesCollectionImplementation & other)
-{
-  return new OT::IndicesCollectionImplementation(other);
 }
 
 }

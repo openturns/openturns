@@ -8,11 +8,4 @@
 
 %include openturns/ExpectationSimulationAlgorithm.hxx
 
-namespace OT {
-
-%extend ExpectationSimulationAlgorithm {
-
-ExpectationSimulationAlgorithm(const ExpectationSimulationAlgorithm & other) { return new OT::ExpectationSimulationAlgorithm(other); }
-
-} // ExpectationSimulationAlgorithm
-} // OT
+%copyctor OT::ExpectationSimulationAlgorithm;

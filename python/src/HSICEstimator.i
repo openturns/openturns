@@ -11,9 +11,4 @@ OTTypedInterfaceObjectHelper(HSICEstimator)
 
 %include openturns/HSICEstimator.hxx
 
-namespace OT {
-%extend HSICEstimator {
-
-HSICEstimator(const HSICEstimator & other) { return new OT::HSICEstimator(other); }
-
-} }
+%copyctor OT::HSICEstimator;
