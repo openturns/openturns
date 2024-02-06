@@ -445,12 +445,15 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   // distribution of (sigma,xi)
   const SymmetricMatrix hessian(objective.hessian(optimalParameter).getSheet(0) * -1.0);
   const CovarianceMatrix covariance(hessian.solveLinearSystem(IdentityMatrix(2)).getImplementation());
-  const Normal sigmaXiDistribution(optimalParameter, covariance);
+  Normal sigmaXiDistribution(optimalParameter, covariance);
+  sigmaXiDistribution.setDescription({"sigma", "xi"});
 
   // distribution of (sigma,xi,u)
   optimalParameter.add(u);
   const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
-  const BlockIndependentDistribution parameterDistribution({sigmaXiDistribution, Dirac(u)});
+  Dirac uDistribution(u);
+  uDistribution.setDescription({"u"});
+  const BlockIndependentDistribution parameterDistribution({sigmaXiDistribution, uDistribution});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
   DistributionFactoryLikelihoodResult result(distribution, parameterDistribution, logLikelihood);
   return result;
