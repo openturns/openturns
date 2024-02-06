@@ -1131,6 +1131,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ProfileLikelihoodResult-TextMargin", 0.03);
   addAsScalar("ProfileLikelihoodResult-StartingScaling", 1e-2);
 
+  // GeneralizedPareto parameters //
+  addAsScalar("GeneralizedPareto-MMin", 1.05);
+  addAsScalar("GeneralizedPareto-MMax", 1.0e3);
+
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10);

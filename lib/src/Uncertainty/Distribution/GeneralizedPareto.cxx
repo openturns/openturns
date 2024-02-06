@@ -298,6 +298,71 @@ Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
   else return u_ + sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
+/* Return level */
+Scalar GeneralizedPareto::computeReturnLevel(const Scalar m) const
+{
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "in computeReturnLevel m should be > 1";
+  return computeQuantile(1.0 / m, true)[0];
+}
+
+
+class GPDReturnLevelEvaluation: public EvaluationImplementation
+{
+public:
+  GPDReturnLevelEvaluation(const GeneralizedPareto & gpd)
+    : EvaluationImplementation()
+    , gpd_(gpd)
+  {
+    // Nothing to do
+  }
+
+  GPDReturnLevelEvaluation * clone() const override
+  {
+    return new GPDReturnLevelEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar m = inP[0];
+    return Point(1, gpd_.computeReturnLevel(m));
+  }
+
+private:
+  GeneralizedPareto gpd_;
+};
+
+/* Draw return level */
+Graph GeneralizedPareto::drawReturnLevel() const
+{
+  const Scalar xMin = ResourceMap::GetAsScalar("GeneralizedPareto-MMin");
+  const Scalar xMax = ResourceMap::GetAsScalar("GeneralizedPareto-MMax");
+  const GPDReturnLevelEvaluation wrapper(*this);
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
+  Graph graph(wrapper.draw(xMin, xMax, pointNumber, GraphImplementation::LOGX));
+  Drawable drawable(graph.getDrawable(0));
+  drawable.setLegend("GPD return level");
+  drawable.setLineStyle("solid");
+  drawable.setLineWidth(2);
+  drawable.setColor("red");
+  graph.setDrawable(drawable, 0);
+  graph.setXTitle("Return period");
+  graph.setYTitle("Return level");
+  graph.setTitle("");
+  graph.setLegendPosition("bottomright");
+  return graph;
+}
+
 Scalar GeneralizedPareto::computeProbability(const Interval & interval) const
 {
   if (interval.getDimension() != 1)

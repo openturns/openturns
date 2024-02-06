@@ -506,6 +506,10 @@
   <ProfileLikelihoodResult-TextMargin value_float="0.03" />
   <ProfileLikelihoodResult-StartingScaling value_float="1.0e-2" />
 
+  <!-- OT::GeneralizedPareto parameters -->
+  <GeneralizedPareto-MMin value_float="1.05" />
+  <GeneralizedPareto-MMax value_float="1.0e3" />
+
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumConstraintError  value_float="1.0e-10"        />
