@@ -254,7 +254,7 @@ Combining and transforming copulas
     :toctree: _generated/
     :template: DistributionHighDimension.rst_t
 
-    ComposedCopula
+    BlockIndependentCopula
 
     :template: Copula.rst_t
     SklarCopula

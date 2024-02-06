@@ -1,22 +1,22 @@
-// SWIG file ComposedCopula.i
+// SWIG file BlockIndependentCopula.i
 
 %{
-#include "openturns/ComposedCopula.hxx"
+#include "openturns/BlockIndependentCopula.hxx"
 %}
 
-%include ComposedCopula_doc.i
+%include BlockIndependentCopula_doc.i
 
-%include openturns/ComposedCopula.hxx
+%include openturns/BlockIndependentCopula.hxx
 
 namespace OT {
 
-%extend ComposedCopula {
+%extend BlockIndependentCopula {
 
-ComposedCopula(const ComposedCopula & other)
+BlockIndependentCopula(const BlockIndependentCopula & other)
 {
-  return new OT::ComposedCopula(other);
+  return new OT::BlockIndependentCopula(other);
 }
 
-} // ComposedCopula
+} // BlockIndependentCopula
  
 } // OT

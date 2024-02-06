@@ -880,7 +880,7 @@ void JointDistribution::computeCovariance() const
       indices[0] = rowIndex;
       const Scalar muI = mean_[rowIndex];
       // We must fill the upper triangle of the covariance matrix in order to access the 2D marginal distributions
-      // of the copula in the correct order for the ComposedCopula
+      // of the copula in the correct order for the BlockIndependentCopula
       for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
       {
         indices[1] = columnIndex;

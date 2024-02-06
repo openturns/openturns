@@ -20,7 +20,7 @@
  */
 #include <cmath>
 
-#include "openturns/ComposedCopula.hxx"
+#include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IndependentCopula.hxx"
 #include "openturns/MarginalDistribution.hxx"
@@ -36,52 +36,52 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComposedCopula)
+CLASSNAMEINIT(BlockIndependentCopula)
 
-static const Factory<ComposedCopula> Factory_ComposedCopula;
+static const Factory<BlockIndependentCopula> Factory_BlockIndependentCopula;
 
 /* Default constructor */
-ComposedCopula::ComposedCopula()
+BlockIndependentCopula::BlockIndependentCopula()
   : DistributionImplementation()
   , copulaCollection_(0)
   , isIndependent_(false)
 {
   isCopula_ = true;
-  setName("ComposedCopula");
+  setName("BlockIndependentCopula");
   DistributionCollection coll(1, IndependentCopula(2));
   setCopulaCollection(coll);
 }
 
 /* Default constructor */
-ComposedCopula::ComposedCopula(const DistributionCollection & coll)
+BlockIndependentCopula::BlockIndependentCopula(const DistributionCollection & coll)
   : DistributionImplementation()
   , copulaCollection_()
   , isIndependent_(false)
 {
   isCopula_ = true;
-  setName("ComposedCopula");
+  setName("BlockIndependentCopula");
   // We assign the copula collection through the accessor in order to compute the composed copula dimension
   setCopulaCollection(coll);
 }
 
 /* Comparison operator */
-Bool ComposedCopula::operator ==(const ComposedCopula & other) const
+Bool BlockIndependentCopula::operator ==(const BlockIndependentCopula & other) const
 {
   if (this == &other) return true;
   return copulaCollection_ == other.copulaCollection_;
 }
 
-Bool ComposedCopula::equals(const DistributionImplementation & other) const
+Bool BlockIndependentCopula::equals(const DistributionImplementation & other) const
 {
-  const ComposedCopula* p_other = dynamic_cast<const ComposedCopula*>(&other);
+  const BlockIndependentCopula* p_other = dynamic_cast<const BlockIndependentCopula*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String ComposedCopula::__repr__() const
+String BlockIndependentCopula::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ComposedCopula::GetClassName()
+  oss << "class=" << BlockIndependentCopula::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension();
   for (UnsignedInteger i = 0; i < copulaCollection_.getSize(); ++i)
@@ -89,7 +89,7 @@ String ComposedCopula::__repr__() const
   return oss;
 }
 
-String ComposedCopula::__str__(const String & ) const
+String BlockIndependentCopula::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(";
@@ -104,7 +104,7 @@ String ComposedCopula::__str__(const String & ) const
 }
 
 /* Copula collection accessor */
-void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
+void BlockIndependentCopula::setCopulaCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -145,19 +145,19 @@ void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
 
 
 /* Distribution collection accessor */
-ComposedCopula::DistributionCollection ComposedCopula::getCopulaCollection() const
+BlockIndependentCopula::DistributionCollection BlockIndependentCopula::getCopulaCollection() const
 {
   return copulaCollection_;
 }
 
 /* Virtual constructor */
-ComposedCopula * ComposedCopula::clone() const
+BlockIndependentCopula * BlockIndependentCopula::clone() const
 {
-  return new ComposedCopula(*this);
+  return new BlockIndependentCopula(*this);
 }
 
-/* Get one realization of the ComposedCopula */
-Point ComposedCopula::getRealization() const
+/* Get one realization of the BlockIndependentCopula */
+Point BlockIndependentCopula::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = copulaCollection_.getSize();
@@ -176,7 +176,7 @@ Point ComposedCopula::getRealization() const
   return result;
 }
 
-Sample ComposedCopula::getSample(const UnsignedInteger size) const
+Sample BlockIndependentCopula::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger collectionSize = copulaCollection_.getSize();
@@ -200,8 +200,8 @@ Sample ComposedCopula::getSample(const UnsignedInteger size) const
   return result;
 }
 
-/* Get the DDF of the ComposedCopula */
-Point ComposedCopula::computeDDF(const Point & point) const
+/* Get the DDF of the BlockIndependentCopula */
+Point BlockIndependentCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -244,8 +244,8 @@ Point ComposedCopula::computeDDF(const Point & point) const
   return DDF;
 }
 
-/* Get the PDF of the ComposedCopula */
-Scalar ComposedCopula::computePDF(const Point & point) const
+/* Get the PDF of the BlockIndependentCopula */
+Scalar BlockIndependentCopula::computePDF(const Point & point) const
 {
   /* PDF = PDF_copula1x...xPDF_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -270,8 +270,8 @@ Scalar ComposedCopula::computePDF(const Point & point) const
   return productPDF;
 }
 
-/* Get the log-PDF of the ComposedCopula */
-Scalar ComposedCopula::computeLogPDF(const Point & point) const
+/* Get the log-PDF of the BlockIndependentCopula */
+Scalar BlockIndependentCopula::computeLogPDF(const Point & point) const
 {
   /* PDF = PDF_copula1x...xPDF_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -296,8 +296,8 @@ Scalar ComposedCopula::computeLogPDF(const Point & point) const
   return sumLogPDF;
 }
 
-/* Get the CDF of the ComposedCopula */
-Scalar ComposedCopula::computeCDF(const Point & point) const
+/* Get the CDF of the BlockIndependentCopula */
+Scalar BlockIndependentCopula::computeCDF(const Point & point) const
 {
   /* CDF = CDF_copula1x...xCDF_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -326,7 +326,7 @@ Scalar ComposedCopula::computeCDF(const Point & point) const
 }
 
 /* Compute the probability content of an interval */
-Scalar ComposedCopula::computeProbability(const Interval & interval) const
+Scalar BlockIndependentCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (isIndependent_) return IndependentCopula(dimension).computeProbability(interval);
@@ -357,7 +357,7 @@ Scalar ComposedCopula::computeProbability(const Interval & interval) const
 }
 
 /* Get the survival function of the distribution */
-Scalar ComposedCopula::computeSurvivalFunction(const Point & point) const
+Scalar BlockIndependentCopula::computeSurvivalFunction(const Point & point) const
 {
   /* Survival = Survival_copula1x...xSurvival_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -386,7 +386,7 @@ Scalar ComposedCopula::computeSurvivalFunction(const Point & point) const
 }
 
 /* Get the Kendall concordance of the distribution */
-CorrelationMatrix ComposedCopula::getKendallTau() const
+CorrelationMatrix BlockIndependentCopula::getKendallTau() const
 {
   const UnsignedInteger dimension = getDimension();
   CorrelationMatrix tau(dimension);
@@ -407,7 +407,7 @@ CorrelationMatrix ComposedCopula::getKendallTau() const
 
 /* Get the shape matrix of the distribution, ie the correlation matrix
    of its copula if it is elliptical */
-CorrelationMatrix ComposedCopula::getShapeMatrix() const
+CorrelationMatrix BlockIndependentCopula::getShapeMatrix() const
 {
   if (!hasEllipticalCopula()) throw NotDefinedException(HERE) << "Error: the shape matrix is defined only for elliptical copulas.";
   const UnsignedInteger size = copulaCollection_.getSize();
@@ -428,25 +428,25 @@ CorrelationMatrix ComposedCopula::getShapeMatrix() const
 }
 
 /* Get the PDF gradient of the distribution */
-Point ComposedCopula::computePDFGradient(const Point & point) const
+Point BlockIndependentCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In ComposedCopula::computePDFGradient(const Point & point) const";
+  throw NotYetImplementedException(HERE) << "In BlockIndependentCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDF gradient of the distribution */
-Point ComposedCopula::computeCDFGradient(const Point & point) const
+Point BlockIndependentCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In ComposedCopula::computeCDFGradient(const Point & point) const";
+  throw NotYetImplementedException(HERE) << "In BlockIndependentCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ComposedCopula::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -467,7 +467,7 @@ Scalar ComposedCopula::computeConditionalPDF(const Scalar x, const Point & y) co
   return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
 }
 
-Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
+Point BlockIndependentCopula::computeSequentialConditionalPDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
@@ -494,7 +494,7 @@ Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -515,7 +515,7 @@ Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) co
   return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
 }
 
-Point ComposedCopula::computeSequentialConditionalCDF(const Point & x) const
+Point BlockIndependentCopula::computeSequentialConditionalCDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
@@ -542,7 +542,7 @@ Point ComposedCopula::computeSequentialConditionalCDF(const Point & x) const
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension == 0) return q;
@@ -569,7 +569,7 @@ Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & 
   return copulaCollection_[copulaIndex].computeConditionalQuantile(q, conditioningVector);
 }
 
-Point ComposedCopula::computeSequentialConditionalQuantile(const Point & q) const
+Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
@@ -597,7 +597,7 @@ Point ComposedCopula::computeSequentialConditionalQuantile(const Point & q) cons
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions
 */
-Distribution ComposedCopula::getMarginal(const Indices & indices) const
+Distribution BlockIndependentCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -650,11 +650,11 @@ Distribution ComposedCopula::getMarginal(const Indices & indices) const
     }
     marginalCopulas.add(copulaCollection_[copulaIndex].getMarginal(copulaIndices));
   }
-  return new ComposedCopula(marginalCopulas);
+  return new BlockIndependentCopula(marginalCopulas);
 }
 
 /* Parameters value and description accessor */
-ComposedCopula::PointWithDescriptionCollection ComposedCopula::getParametersCollection() const
+BlockIndependentCopula::PointWithDescriptionCollection BlockIndependentCopula::getParametersCollection() const
 {
   PointWithDescriptionCollection parameters(1);
   // No marginal parameter
@@ -682,7 +682,7 @@ ComposedCopula::PointWithDescriptionCollection ComposedCopula::getParametersColl
   return parameters;
 } // getParametersCollection
 
-void ComposedCopula::setParametersCollection(const PointCollection & parametersCollection)
+void BlockIndependentCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
@@ -711,7 +711,7 @@ void ComposedCopula::setParametersCollection(const PointCollection & parametersC
 }
 
 /* Tell if the distribution has elliptical copula */
-Bool ComposedCopula::hasEllipticalCopula() const
+Bool BlockIndependentCopula::hasEllipticalCopula() const
 {
   // The copula is elliptical either because it is based on a unique elliptical copula or it is composed of normal copulas
   const UnsignedInteger size = copulaCollection_.getSize();
@@ -725,13 +725,13 @@ Bool ComposedCopula::hasEllipticalCopula() const
 }
 
 /* Tell if the distribution has independent copula */
-Bool ComposedCopula::hasIndependentCopula() const
+Bool BlockIndependentCopula::hasIndependentCopula() const
 {
   return isIndependent_;
 }
 
 /* Get the isoprobabilist transformation */
-ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilisticTransformation() const
+BlockIndependentCopula::IsoProbabilisticTransformation BlockIndependentCopula::getIsoProbabilisticTransformation() const
 {
   // First special case: the copula is independent
   const UnsignedInteger dimension = getDimension();
@@ -759,7 +759,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
 }
 
 /* Get the inverse isoprobabilist transformation */
-ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverseIsoProbabilisticTransformation() const
+BlockIndependentCopula::InverseIsoProbabilisticTransformation BlockIndependentCopula::getInverseIsoProbabilisticTransformation() const
 {
   // First special case: the copula is independent
   const UnsignedInteger dimension = getDimension();
@@ -787,7 +787,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
 }
 
 /* Compute the covariance of the distribution */
-void ComposedCopula::computeCovariance() const
+void BlockIndependentCopula::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
@@ -805,7 +805,7 @@ void ComposedCopula::computeCovariance() const
 }
 
 /* Compute the entropy of the distribution */
-Scalar ComposedCopula::computeEntropy() const
+Scalar BlockIndependentCopula::computeEntropy() const
 {
   Scalar entropy = 0.0;
   if (isIndependent_) return entropy;
@@ -816,7 +816,7 @@ Scalar ComposedCopula::computeEntropy() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void ComposedCopula::save(Advocate & adv) const
+void BlockIndependentCopula::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaCollection_", copulaCollection_ );
@@ -824,12 +824,16 @@ void ComposedCopula::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ComposedCopula::load(Advocate & adv)
+void BlockIndependentCopula::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaCollection_", copulaCollection_ );
   adv.loadAttribute( "isIndependent_", isIndependent_ );
   computeRange();
 }
+
+CLASSNAMEINIT(ComposedCopula)
+
+static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 END_NAMESPACE_OPENTURNS

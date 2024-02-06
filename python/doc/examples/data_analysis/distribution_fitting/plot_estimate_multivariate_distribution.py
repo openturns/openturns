@@ -23,7 +23,7 @@ ot.RandomGenerator.SetSeed(0)
 # generate some multivariate data to estimate, with correlation
 cop1 = ot.AliMikhailHaqCopula(0.6)
 cop2 = ot.ClaytonCopula(2.5)
-copula = ot.ComposedCopula([cop1, cop2])
+copula = ot.BlockIndependentCopula([cop1, cop2])
 marginals = [
     ot.Uniform(5.0, 6.0),
     ot.Arcsine(),
@@ -145,7 +145,7 @@ estimated_copulas
 # Finally we assemble the copula
 
 # %%
-estimated_copula_perm = ot.ComposedCopula(estimated_copulas)
+estimated_copula_perm = ot.BlockIndependentCopula(estimated_copulas)
 
 # %%
 # Take care of the order of each bloc vs the order of original components !

@@ -7,8 +7,8 @@
     import openturns as ot
     from matplotlib import pyplot as plt
     from openturns.viewer import View
-    if ot.{{ objname }}().__class__.__name__ == 'ComposedCopula':
-        distribution = ot.ComposedCopula([ot.ClaytonCopula(2.0), ot.GumbelCopula(3.0)])
+    if ot.{{ objname }}().__class__.__name__ == 'BlockIndependentCopula':
+        distribution = ot.BlockIndependentCopula([ot.ClaytonCopula(2.0), ot.GumbelCopula(3.0)])
     elif ot.{{ objname }}().__class__.__name__ == 'JointDistribution':
         R = ot.CorrelationMatrix(3)
         R[0,1]=0.5

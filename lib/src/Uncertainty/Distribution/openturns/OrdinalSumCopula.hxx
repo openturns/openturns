@@ -161,7 +161,7 @@ private:
   Bool isInBlock(const Point & point,
                  const UnsignedInteger index) const;
 
-  /** The collection of distribution of the ComposedCopula */
+  /** The collection of distribution of the BlockIndependentCopula */
   DistributionPersistentCollection copulaCollection_;
 
   /** Bounds of the ordinal sum */

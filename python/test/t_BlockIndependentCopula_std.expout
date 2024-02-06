@@ -1,5 +1,5 @@
-Copula  class=ComposedCopula name=ComposedCopula dimension=7 copula[0]=class=FrankCopula name=FrankCopula dimension=2 theta=3 copula[1]=class=NormalCopula name=NormalCopula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0.25,0.5,1,0,0.25,0,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
-Copula  ComposedCopula(FrankCopula(theta = 3), NormalCopula(R = [[ 1    0.5  0.25 ]
+Copula  class=BlockIndependentCopula name=BlockIndependentCopula dimension=7 copula[0]=class=FrankCopula name=FrankCopula dimension=2 theta=3 copula[1]=class=NormalCopula name=NormalCopula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0.25,0.5,1,0,0.25,0,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
+Copula  BlockIndependentCopula(FrankCopula(theta = 3), NormalCopula(R = [[ 1    0.5  0.25 ]
  [ 0.5  1    0    ]
  [ 0.25 0    1    ]]), ClaytonCopula(theta = 2))
 Elliptical distribution=  False
@@ -21,7 +21,7 @@ Survival(inverseSurvival)=0.950000
 entropy=-0.729842
 mean= class=Point name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568528,0,0,0,0,0,0.0568528,0.0833333]
-parameters= [class=PointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
+parameters= [class=PointWithDescription name=BlockIndependentCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
 covariance= 7x7
 [[ 0.08333 0.03739 0       0       0       0       0       ]
  [ 0.03739 0.08333 0       0       0       0       0       ]
@@ -61,7 +61,7 @@ sequential conditional PDF= [1,1.21219,1,1.17967,1.05262,1,1.45164]
 sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.05,0.346653,0.25,0.477865,0.514559,0.55,0.595069]
 sequential conditional quantile( [0.05,0.346653,0.25,0.477865,0.514559,0.55,0.595069] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
 indices= [1,2,3,5,6]
-margins= class=ComposedCopula name=ComposedCopula dimension=5 copula[0]=class=IndependentCopula name=IndependentCopula dimension=1 copula[1]=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
+margins= class=BlockIndependentCopula name=BlockIndependentCopula dimension=5 copula[0]=class=IndependentCopula name=IndependentCopula dimension=1 copula[1]=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
 margins PDF=3.086065
 margins CDF=0.005401
 margins quantile= class=Point name=Unnamed dimension=5 values=[0.989493,0.989493,0.989493,0.989493,0.989493]
@@ -100,5 +100,5 @@ conditional quantile=0.597413
 sequential conditional PDF= [1,1.06099]
 sequential conditional CDF( [0.05,0.15] )= [0.05,0.220267]
 sequential conditional quantile( [0.05,0.220267] )= [0.05,0.15]
-ComposedCopula(NormalCopula(R = [[ 1 0 ]
+BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]]), IndependentCopula(dimension = 2))

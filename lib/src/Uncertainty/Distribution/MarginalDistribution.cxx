@@ -333,7 +333,7 @@ MarginalDistribution::PointWithDescriptionCollection MarginalDistribution::getPa
   const PointWithDescriptionCollection allParameters(distribution_.getParametersCollection());
   PointWithDescriptionCollection parametersCollection;
   const UnsignedInteger size = indices_.getSize();
-  // marginal parameters, can be omitted (ComposedCopula)
+  // marginal parameters, can be omitted (BlockIndependentCopula)
   if (allParameters.getSize() == distribution_.getDimension() + 1)
     for (UnsignedInteger i = 0; i < size; ++ i)
       parametersCollection.add(allParameters[indices_[i]]);

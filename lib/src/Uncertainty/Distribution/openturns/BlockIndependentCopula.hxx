@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_COMPOSEDCOPULA_HXX
-#define OPENTURNS_COMPOSEDCOPULA_HXX
+#ifndef OPENTURNS_BLOCKINDEPENDENTCOPULA_HXX
+#define OPENTURNS_BLOCKINDEPENDENTCOPULA_HXX
 
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -28,12 +28,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ComposedCopula
+ * @class BlockIndependentCopula
  *
  * The class describes the probabilistic concept of copulas
  * made from a collection of copulas joined by an independent copula
  */
-class OT_API ComposedCopula
+class OT_API BlockIndependentCopula
   : public DistributionImplementation
 {
   CLASSNAME
@@ -44,14 +44,14 @@ public:
   typedef PersistentCollection<Distribution>       DistributionPersistentCollection;
 
   /** Default constructor for save/load methods : 1D distribution with default Uniform marginal and IndependentCopula */
-  ComposedCopula();
+  BlockIndependentCopula();
 
   /** Default constructor */
-  explicit ComposedCopula(const DistributionCollection & coll);
+  explicit BlockIndependentCopula(const DistributionCollection & coll);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  Bool operator ==(const ComposedCopula & other) const;
+  Bool operator ==(const BlockIndependentCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -68,25 +68,25 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  ComposedCopula * clone() const override;
+  BlockIndependentCopula * clone() const override;
 
-  /** Get one realization of the ComposedCopula */
+  /** Get one realization of the BlockIndependentCopula */
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Get the DDF of the ComposedCopula */
+  /** Get the DDF of the BlockIndependentCopula */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
-  /** Get the PDF of the ComposedCopula */
+  /** Get the PDF of the BlockIndependentCopula */
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /** Get the log-PDF of the ComposedCopula */
+  /** Get the log-PDF of the BlockIndependentCopula */
   using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
-  /** Get the CDF of the ComposedCopula */
+  /** Get the CDF of the BlockIndependentCopula */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
@@ -161,15 +161,22 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** The collection of copules of the ComposedCopula */
+  /** The collection of copules of the BlockIndependentCopula */
   DistributionPersistentCollection copulaCollection_;
 
   /** Flag to tell if the copula is independent */
   Bool isIndependent_;
 
-}; /* class ComposedCopula */
+}; /* class BlockIndependentCopula */
 
+// @deprecated
+class OT_API ComposedCopula
+  : public BlockIndependentCopula
+{
+CLASSNAME
+public:
+};
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_COMPOSEDCOPULA_HXX */
+#endif /* OPENTURNS_BLOCKINDEPENDENTCOPULA_HXX */

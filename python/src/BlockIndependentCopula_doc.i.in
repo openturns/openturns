@@ -1,4 +1,4 @@
-%feature("docstring") OT::ComposedCopula
+%feature("docstring") OT::BlockIndependentCopula
 "Merge of a collection of independent copulas.
 
 Parameters
@@ -28,7 +28,7 @@ Create a distribution:
 >>> R[0, 1] = 0.5
 >>> R[0, 2] = 0.25
 >>> collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]
->>> copula = ot.ComposedCopula(collection)
+>>> copula = ot.BlockIndependentCopula(collection)
 
 Draw a sample:
 
@@ -36,7 +36,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ComposedCopula::getCopulaCollection
+%feature("docstring") OT::BlockIndependentCopula::getCopulaCollection
 "Accessor to the list of the copulas.
 
 Returns
@@ -46,7 +46,7 @@ copulas : list of copulas
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ComposedCopula::setCopulaCollection
+%feature("docstring") OT::BlockIndependentCopula::setCopulaCollection
 "Accessor to the list of the copulas.
 
 Parameters

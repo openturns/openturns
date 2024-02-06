@@ -24,7 +24,7 @@ collection = [
 ]
 distribution = ot.BlockIndependentDistribution(collection)
 copulaCollection = [ot.NormalCopula(R0), ot.NormalCopula(R1), ot.NormalCopula(R2)]
-copula = ot.ComposedCopula(copulaCollection)
+copula = ot.BlockIndependentCopula(copulaCollection)
 ref = ot.JointDistribution([ot.Normal(0.0, 1.0)] * 7, copula)
 
 # Define a point
