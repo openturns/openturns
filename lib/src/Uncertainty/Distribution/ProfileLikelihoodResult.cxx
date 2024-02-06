@@ -171,6 +171,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
     result = profileLikelihoodFunction_.draw(xMin, xMax);
   }
   result.setLegends({"likelihood"});
+  result.setColors({"blue"});
   String inputVar(profileLikelihoodFunction_.getInputDescription()[0]);
   // use latex syntax
   String base(inputVar);
