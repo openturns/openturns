@@ -147,6 +147,12 @@ public:
   /** Pareto distribution converter */
   Pareto asPareto() const;
 
+  /** Return level */
+  Scalar computeReturnLevel(const Scalar m) const;
+
+  /** Draw return level */
+  Graph drawReturnLevel() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
