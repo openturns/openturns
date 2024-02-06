@@ -41,6 +41,7 @@
  * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
  * Deprecated TimerCallback
  * Deprecated ComposedDistribution in favor of JointDistribution
+ * Deprecated ComposedCopula in favor of BlockIndependentCopula
 
 === Documentation ===
 

@@ -52,7 +52,7 @@ int main(int, char *[])
       copulaCollection.add(NormalCopula(R0));
       copulaCollection.add(NormalCopula(R1));
       copulaCollection.add(NormalCopula(R2));
-      ComposedCopula copula(copulaCollection);
+      BlockIndependentCopula copula(copulaCollection);
       JointDistribution ref(Collection<Distribution>(7, Normal(0.0, 1.0)), copula);
       // Define a point
       Point point( distribution.getDimension(), 0.3 );

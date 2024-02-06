@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class ComposedCopula for standard methods
+ *  @brief The test file of class BlockIndependentCopula for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -36,11 +36,11 @@ int main(int, char *[])
     CorrelationMatrix R(3);
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;
-    ComposedCopula::DistributionCollection collection(3);
+    BlockIndependentCopula::DistributionCollection collection(3);
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);
-    ComposedCopula copula(collection);
+    BlockIndependentCopula copula(collection);
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;
 
@@ -117,7 +117,7 @@ int main(int, char *[])
     fullprint << "entropy (MC)=" << -copula.computeLogPDF(copula.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = copula.getMean();
     fullprint << "mean=" << mean << std::endl;
-    ComposedCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
+    BlockIndependentCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     // Covariance and correlation
     PlatformInfo::SetNumericalPrecision(4);
@@ -168,13 +168,13 @@ int main(int, char *[])
     fullprint << "isoprobabilistic transformation (general normal)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     // General case with non-normal standard distribution
     collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
-    copula = ComposedCopula(collection);
+    copula = BlockIndependentCopula(collection);
     fullprint << "isoprobabilistic transformation (general non-normal)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     // Special case, independent copula
     collection[0] = SklarCopula(Normal(2));
     collection[1] = IndependentCopula(2);
     collection[2] = NormalCopula(CorrelationMatrix(2));
-    copula = ComposedCopula(collection);
+    copula = BlockIndependentCopula(collection);
     fullprint << "isoprobabilistic transformation (independent)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
       dim = copula.getDimension();
@@ -193,7 +193,7 @@ int main(int, char *[])
     // Special case, single contributor
     collection = Collection<Distribution>(1);
     collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
-    copula = ComposedCopula(collection);
+    copula = BlockIndependentCopula(collection);
     fullprint << "isoprobabilistic transformation (single contributor)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
       dim = copula.getDimension();

@@ -45,7 +45,7 @@
 #include "openturns/ChiFactory.hxx"
 #include "openturns/ClaytonCopula.hxx"
 #include "openturns/ClaytonCopulaFactory.hxx"
-#include "openturns/ComposedCopula.hxx"
+#include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/ConditionalDistribution.hxx"

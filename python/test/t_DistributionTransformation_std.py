@@ -31,7 +31,7 @@ for left, right in coll:
     print("-" * 100)
 
 # with marginaltransformation
-copula = ot.ComposedCopula([ot.IndependentCopula(2), ot.IndependentCopula(2)])
+copula = ot.BlockIndependentCopula([ot.IndependentCopula(2), ot.IndependentCopula(2)])
 distribution = ot.JointDistribution([ot.Normal()] * 4, copula)
 print(
     ot.DistributionTransformation(

@@ -9,7 +9,7 @@ R = ot.CorrelationMatrix(3)
 R[0, 1] = 0.5
 R[0, 2] = 0.25
 collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]
-copula = ot.ComposedCopula(collection)
+copula = ot.BlockIndependentCopula(collection)
 
 print("Copula ", repr(copula))
 print("Copula ", copula)
@@ -155,7 +155,7 @@ print(
 collection[0] = ot.SklarCopula(
     ot.Student(3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2))
 )
-copula = ot.ComposedCopula(collection)
+copula = ot.BlockIndependentCopula(collection)
 print(
     "isoprobabilistic transformation (general non-normal)=",
     copula.getIsoProbabilisticTransformation(),
@@ -180,7 +180,7 @@ print(
 collection[0] = ot.SklarCopula(ot.Normal(2))
 collection[1] = ot.IndependentCopula(2)
 collection[2] = ot.NormalCopula(ot.CorrelationMatrix(2))
-copula = ot.ComposedCopula(collection)
+copula = ot.BlockIndependentCopula(collection)
 print(
     "isoprobabilistic transformation (independent)=",
     copula.getIsoProbabilisticTransformation(),
@@ -207,7 +207,7 @@ collection = [
         ot.Student(3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2))
     )
 ]
-copula = ot.ComposedCopula(collection)
+copula = ot.BlockIndependentCopula(collection)
 print(
     "isoprobabilistic transformation (single contributor)=",
     copula.getIsoProbabilisticTransformation(),
@@ -229,6 +229,6 @@ print(
     copula.computeSequentialConditionalQuantile(resCDF),
 )
 
-# test ComposedCopula.getMarginal in reverse
-copula = ot.ComposedCopula([ot.IndependentCopula(2), ot.NormalCopula(2)])
+# test BlockIndependentCopula.getMarginal in reverse
+copula = ot.BlockIndependentCopula([ot.IndependentCopula(2), ot.NormalCopula(2)])
 print(copula.getMarginal([3, 2, 1, 0]))

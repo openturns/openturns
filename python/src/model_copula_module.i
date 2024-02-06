@@ -51,7 +51,7 @@
 %include BlockIndependentDistribution.i
 %include JointDistribution.i
 %include CumulativeDistributionNetwork.i
-%include ComposedCopula.i
+%include BlockIndependentCopula.i
 %include MarshallOlkinCopula.i
 %include OrdinalSumCopula.i
 %include PlackettCopula.i
