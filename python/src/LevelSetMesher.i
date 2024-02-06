@@ -8,4 +8,4 @@
 
 %include openturns/LevelSetMesher.hxx
 
-namespace OT {%extend LevelSetMesher {LevelSetMesher(const LevelSetMesher & other){return new OT::LevelSetMesher(other);}}}
+%copyctor OT::LevelSetMesher;

@@ -10,17 +10,5 @@
 
 %include openturns/UserDefined.hxx
 
-
-namespace OT {  
-
-%extend UserDefined {
-
-UserDefined(const UserDefined & other)
-{
-  return new OT::UserDefined(other);
-} 
-
-} // UserDefined
-
-} // OT
+%copyctor OT::UserDefined;
 

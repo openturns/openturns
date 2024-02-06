@@ -10,11 +10,4 @@ OTTypedInterfaceObjectHelper(SpectralModelFactory)
 
 %include openturns/SpectralModelFactory.hxx
 
-namespace OT { 
-
-  %extend SpectralModelFactory {
-
-     SpectralModelFactory(const SpectralModelFactory & other) { return new OT::SpectralModelFactory(other); }
-
-   }
- }
+%copyctor OT::SpectralModelFactory;

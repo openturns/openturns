@@ -8,4 +8,4 @@
 
 %include openturns/BoundaryMesher.hxx
 
-namespace OT {%extend BoundaryMesher {BoundaryMesher(const BoundaryMesher & other){return new OT::BoundaryMesher(other);}}}
+%copyctor OT::BoundaryMesher;
