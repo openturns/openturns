@@ -21,16 +21,16 @@ print("c=", c)
 c_ref = m.cos(4 * tau) * m.cosh((tau - m.pi) / alpha) / m.cosh(m.pi / alpha)
 ott.assert_almost_equal(c, c_ref)
 
-assert len(cov.getFullParameter()) == 3, "wrong full parameter"
-assert len(cov.getFullParameterDescription()) == 3, "wrong full parameter description"
+assert len(cov.getFullParameter()) == 4, "wrong full parameter"
+assert len(cov.getFullParameterDescription()) == 4, "wrong full parameter description"
 
 print(cov.getFullParameter())
 print(cov.getFullParameterDescription())
 
 assert len(cov.getActiveParameter()) == 2, "wrong active parameter"
-cov.setActiveParameter(range(3))
-cov.setParameter([1.0, 1.0, 0.5])
-assert len(cov.getParameter()) == 3, "wrong parameter"
+cov.setActiveParameter(range(4))
+cov.setParameter([1.0, 0.01, 1.0, 0.5])
+assert len(cov.getParameter()) == 4, "wrong parameter"
 c = cov([tau])[0, 0]
 print("c=", c)
 assert c != c_ref, "inactive parameter"

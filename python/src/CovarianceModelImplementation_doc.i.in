@@ -550,6 +550,53 @@ OT_CovarianceModel_getActiveParameter_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_activateScale_doc
+"Activate/deactivate the scale parameter(s).
+
+In the context of Kriging, defines whether scale parameters should be tuned.
+
+Parameters
+----------
+isScaleActive : bool
+    If True, the scale parameters are all tuned.
+    If False, none of them is tuned."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::activateScale
+OT_CovarianceModel_activateScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_activateNuggetFactor_doc
+"Activate/deactivate the nugget factor.
+
+In the context of Kriging, defines whether the nugget factor should be tuned.
+
+Parameters
+----------
+isNuggetFactorActive : bool
+    If True (resp. False), the nugget factor is (resp. is not) tuned."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::activateNuggetFactor
+OT_CovarianceModel_activateNuggetFactor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_activateAmplitude_doc
+"Activate/deactivate the amplitude parameter(s).
+
+In the context of Kriging, defines whether amplitude parameters should be tuned.
+
+Parameters
+----------
+isAmplitudeActive : bool
+    If True, the amplitude parameters are all tuned.
+    If False, none of them is tuned."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::activateAmplitude
+OT_CovarianceModel_activateAmplitude_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_draw_doc
 "Draw a specific component of the covariance model with input dimension 1.
 

@@ -300,6 +300,21 @@ Indices CovarianceModel::getActiveParameter() const
   return getImplementation()->getActiveParameter();
 }
 
+/* Easily activate base parameters: scale, nuggetFactor, amplitude */
+void CovarianceModel::activateScale(const Bool isScaleActive)
+{
+  return getImplementation()->activateScale(isScaleActive);
+}
+
+void CovarianceModel::activateNuggetFactor(const Bool isNuggetFactorActive)
+{
+  return getImplementation()->activateNuggetFactor(isNuggetFactorActive);
+}
+
+void CovarianceModel::activateAmplitude(const Bool isAmplitudeActive)
+{
+  return getImplementation()->activateAmplitude(isAmplitudeActive);
+}
 
 /* setter for the full parameter */
 void CovarianceModel::setFullParameter(const Point & parameter)

@@ -59,9 +59,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
-  // Remove the scale from the active parameter
+  // Remove the scale and nuggetFactor from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill(inputDimension_);
+  activeParameter_.fill(inputDimension_ + 1);
   isStationary_ = true;
 }
 
@@ -74,9 +74,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   outputDimension_ = amplitude.getDimension();
   setAmplitude(amplitude);
 
-  // Remove the scale from the active parameter
+  // Remove the scale and nuggetFactor from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill(inputDimension_);
+  activeParameter_.fill(inputDimension_ + 1);
   isStationary_ = true;
 }
 
@@ -93,9 +93,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // set amplitude & compute covariance
   setAmplitude(amplitude);
 
-  // Remove the scale from the active parameter
+  // Remove the scale and nuggetFactor from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill(inputDimension_);
+  activeParameter_.fill(inputDimension_ + 1);
   isStationary_ = true;
 }
 
@@ -118,9 +118,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Copy covariance
   outputCovariance_ = covariance;
 
-  // Remove the scale from the active parameter
+  // Remove the scale and nuggetFactor from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill(inputDimension_);
+  activeParameter_.fill(inputDimension_ + 1);
   isStationary_ = true;
 }
 
@@ -378,21 +378,23 @@ Matrix DiracCovarianceModel::partialGradient(const Point & s,
 /* Parameters accessor */
 void DiracCovarianceModel::setFullParameter(const Point & parameters)
 {
-  if (parameters.getDimension() != inputDimension_ + outputDimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << inputDimension_ + outputDimension_ << ", here, parameters dimension = " << parameters.getDimension();
+  if (parameters.getDimension() != inputDimension_ + 1 + outputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << inputDimension_ + 1 + outputDimension_ << ", here, parameters dimension = " << parameters.getDimension();
   Point scale(inputDimension_);
   std::copy(parameters.begin(), parameters.begin() + inputDimension_, scale.begin());
   setScale(scale);
+  setNuggetFactor(parameters[inputDimension_]);
   Point amplitude(outputDimension_);
-  std::copy(parameters.begin() + inputDimension_, parameters.end(), amplitude.begin());
+  std::copy(parameters.begin() + inputDimension_ + 1, parameters.end(), amplitude.begin());
   setAmplitude(amplitude);
 }
 
 Point DiracCovarianceModel::getFullParameter() const
 {
-  Point parameter(inputDimension_ + outputDimension_);
+  Point parameter(inputDimension_ + 1 + outputDimension_);
   std::copy(scale_.begin(), scale_.end(), parameter.begin());
-  std::copy(amplitude_.begin(), amplitude_.end(), parameter.begin() + inputDimension_);
+  parameter[inputDimension_] = nuggetFactor_;
+  std::copy(amplitude_.begin(), amplitude_.end(), parameter.begin() + inputDimension_ + 1);
   return parameter;
 }
 
@@ -401,6 +403,7 @@ Description DiracCovarianceModel::getFullParameterDescription() const
   Description description(0);
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
     description.add(OSS() << "scale_" << j);
+  description.add(OSS() << "nuggetFactor");
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
   return description;

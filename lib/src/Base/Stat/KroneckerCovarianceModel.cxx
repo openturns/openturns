@@ -126,29 +126,27 @@ void KroneckerCovarianceModel::setCorrelationModel(const CovarianceModel &rho)
   // isStationary
   isStationary_ = rho_.getImplementation()->isStationary();
 
-  // Initial copy of scale (for getScale purpose only)
+  // Initial copy of scale/nuggetFactor (for getScale/NuggetFactor purpose only)
   // scale is not necessary of size input dimension
   scale_ = rho_.getScale();
-
-  // Active parameter
-  // As scale_ is not necessary of size inputDimension_,
-  // we should update the indices
-  activeParameter_ = Indices(scale_.getSize() + outputDimension_);
-  activeParameter_.fill();
+  nuggetFactor_ = rho_.getNuggetFactor();
 
   // Extra parameter of the correlation model
-  extraParameterNumber_ = rho_.getFullParameter().getSize() - rho_.getScale().getSize() - rho_.getAmplitude().getSize();
+  extraParameterNumber_ = rho_.getFullParameter().getSize() - rho_.getScale().getSize() - 1 - rho_.getAmplitude().getSize();
 
-  if (extraParameterNumber_)
+  const Indices rhoActiveParameter(rho_.getActiveParameter());
+  activeParameter_ = Indices();
+  const UnsignedInteger covarianceParameterSize = outputDimension_ * (outputDimension_ + 1) / 2;
+
+  for (UnsignedInteger i = 0; i < rhoActiveParameter.getSize(); ++i)
   {
-    const Indices rhoActiveParameter(rho_.getActiveParameter());
-    const UnsignedInteger scaleAmplitudeRhoSize = scale_.getSize() + outputDimension_ * (outputDimension_ + 1) / 2;
-    for (UnsignedInteger localIndex = 0; localIndex < extraParameterNumber_; ++localIndex)
-    {
-      const UnsignedInteger index = scale_.getSize() + 1 + localIndex;
-      if (rhoActiveParameter.contains(index))
-        activeParameter_.add(scaleAmplitudeRhoSize + index);
-    }
+    // Scale and nugget factor
+    if (rhoActiveParameter[i] <= scale_.getSize()) activeParameter_.add(rhoActiveParameter[i]);
+    // Rho has one amplitude parameter which is set to 1.0, we activate our amplitude parameters if it is active
+    else if (rhoActiveParameter[i] == scale_.getSize() + 1)
+      for (UnsignedInteger j=0; j < outputDimension_; ++j) activeParameter_.add(scale_.getSize() + 1 + j);
+    // We now tackle extra parameters
+    else activeParameter_.add(covarianceParameterSize - 1 + rhoActiveParameter[i]);
   }
 }
 
@@ -335,14 +333,14 @@ TriangularMatrix KroneckerCovarianceModel::discretizeAndFactorize(const Sample &
 Point KroneckerCovarianceModel::getFullParameter() const
 {
   // First generic parameter
-  // Generic parameter returns scale, amplitude, correlation
+  // Generic parameter returns scale, nuggetFactor, amplitude, correlation
   Point parameter(CovarianceModelImplementation::getFullParameter());
   if (extraParameterNumber_)
   {
     // Check if rho_ get extra parameters
     const UnsignedInteger rhoParameterSize = rho_.getFullParameter().getSize();
     const Point rhoParameter(rho_.getFullParameter());
-    for (UnsignedInteger k = scale_.getSize() + 1; k < rhoParameterSize; ++k)
+    for (UnsignedInteger k = scale_.getSize() + 2; k < rhoParameterSize; ++k)
       parameter.add(rhoParameter[k]);
   }
   return parameter;
@@ -369,7 +367,12 @@ void KroneckerCovarianceModel::setFullParameter(const Point & parameter)
     scale_[i] = parameter[index];
     ++index;
   }
-  // Second the amplitude parameter
+  // Second the nugget factor
+  if (!(parameter[index] >= 0.0))
+    throw InvalidArgumentException(HERE) << "In KroneckerCovarianceModel::setFullParameter, the component " << index << " of nuggetFactor is negative";
+  nuggetFactor_ = parameter[index];
+  ++ index;
+  // Third the amplitude parameter
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     if (!(parameter[index] > 0.0))
@@ -378,7 +381,7 @@ void KroneckerCovarianceModel::setFullParameter(const Point & parameter)
     ++index;
   }
   CorrelationMatrix outputCorrelation(outputDimension_);
-  // Third the output correlation parameter, only the lower triangle
+  // Fourth the output correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     for (UnsignedInteger j = 0; j < i; ++j)
     {
@@ -386,17 +389,18 @@ void KroneckerCovarianceModel::setFullParameter(const Point & parameter)
       ++index;
     }
   setOutputCorrelation(outputCorrelation);
-  // Set scale at rho level
+  // Set scale and nuggetFactor at rho level
   rho_.setScale(scale_);
+  rho_.setNuggetFactor(nuggetFactor_);
   if (extraParameterNumber_ > 0)
   {
     // rho parameter
     // amplitude is unchanged (1)
     Point rhoParameter(rho_.getFullParameter());
-    index = rhoThetaSize + outputDimension_ * (outputDimension_ + 1) / 2;
+    index = rhoThetaSize + 1 + outputDimension_ * (outputDimension_ + 1) / 2;
     for (UnsignedInteger localIndex = 0; localIndex < extraParameterNumber_; ++localIndex)
     {
-      rhoParameter[rhoThetaSize + 1 + localIndex] = parameter[index];
+      rhoParameter[rhoThetaSize + 2 + localIndex] = parameter[index];
       ++ index;
     }
     rho_.setFullParameter(rhoParameter);
@@ -410,20 +414,22 @@ Description KroneckerCovarianceModel::getFullParameterDescription() const
   // First the scale parameter
   for (UnsignedInteger j = 0; j < scale_.getDimension(); ++j)
     description.add(OSS() << "scale_" << j);
-  // Second the amplitude parameter
+  // Second the nuggetFactor
+  description.add(OSS() << "nuggetFactor");
+  // Third the amplitude parameter
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
-  // Third the spatial correlation parameter, only the lower triangle
+  // Fourth the spatial correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     for (UnsignedInteger j = 0; j < i; ++j)
       description.add(OSS() << "R_" << i << "_" << j);
 
   // Check if rho_ get extra parameters
   const UnsignedInteger rhoParameterSize = rho_.getFullParameter().getSize();
-  if (rhoParameterSize > scale_.getSize() + 1)
+  if (rhoParameterSize > scale_.getSize() + 2)
   {
     const Description rhoParameterDescription(rho_.getFullParameterDescription());
-    for (UnsignedInteger k = scale_.getSize() + 1; k < rhoParameterSize; ++k)
+    for (UnsignedInteger k = scale_.getSize() + 2; k < rhoParameterSize; ++k)
       description.add(rhoParameterDescription[k]);
   }
   return description;
@@ -443,6 +449,14 @@ void KroneckerCovarianceModel::setScale(const Point &scale)
   scale_ = scale;
 }
 
+void KroneckerCovarianceModel::setNuggetFactor(const Scalar nuggetFactor)
+{
+  if (!(nuggetFactor >= 0.0))
+    throw InvalidArgumentException(HERE) << "In KroneckerCovarianceModel::setNuggetFactor: the given nuggetFactor is " << nuggetFactor << " but should be nonnegative";
+  rho_.setNuggetFactor(nuggetFactor);
+  // copy (at least for getNuggetFactor)
+  nuggetFactor_ = nuggetFactor;
+}
 
 /* String converter */
 String KroneckerCovarianceModel::__repr__() const
