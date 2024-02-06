@@ -18,6 +18,7 @@ Estimate a GPD on the daily rainfall data
 # - the profile log-likelihood function.
 #
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
 
@@ -75,6 +76,12 @@ order = 0.95
 for i in range(2):  # exclude u parameter (fixed)
     ci = parameterEstimate.getMarginal(i).computeBilateralConfidenceInterval(order)
     print(desc[i] + ":", ci)
+
+# %%
+# At last, we can validate the inference result thanks to the 4 usual diagnostic plots.
+validation = otexp.GeneralizedParetoValidation(result_LL, sample)
+graph = validation.drawDiagnosticPlot()
+view = otv.View(graph)
 
 # %%
 # **Stationary GPD modeling via the profile log-likelihood function**

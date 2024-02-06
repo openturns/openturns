@@ -77,3 +77,4 @@
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
 %include SmolyakExperiment.i
 %include GeneralizedExtremeValueValidation.i
+%include GeneralizedParetoValidation.i

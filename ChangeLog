@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
+ * GeneralizedParetoValidation (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated Pagmo.setGenerationNumber

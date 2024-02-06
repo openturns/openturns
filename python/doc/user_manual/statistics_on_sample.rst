@@ -246,6 +246,7 @@ Graphical tests
 
     :template: class.rst_t
     experimental.GeneralizedExtremeValueValidation
+    experimental.GeneralizedParetoValidation
 
 Hypothesis tests
 ----------------

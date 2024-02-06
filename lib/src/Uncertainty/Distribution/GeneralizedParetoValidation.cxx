@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Validation of GEV inference
+ *  @brief Validation of GPD inference
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,62 +18,73 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/GeneralizedExtremeValueValidation.hxx"
+#include "openturns/GeneralizedParetoValidation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/VisualTest.hxx"
-#include "openturns/GeneralizedExtremeValue.hxx"
-#include "openturns/GeneralizedExtremeValueFactory.hxx"
+#include "openturns/GeneralizedParetoFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralizedExtremeValueValidation)
+CLASSNAMEINIT(GeneralizedParetoValidation)
 
-static const Factory<GeneralizedExtremeValueValidation> Factory_GeneralizedExtremeValueValidation;
+static const Factory<GeneralizedParetoValidation> Factory_GeneralizedParetoValidation;
 
 
-GeneralizedExtremeValueValidation::GeneralizedExtremeValueValidation()
+GeneralizedParetoValidation::GeneralizedParetoValidation()
   : PersistentObject()
 {}
 
-GeneralizedExtremeValueValidation::GeneralizedExtremeValueValidation(const DistributionFactoryResult & result,
-    const Sample & sample)
+GeneralizedParetoValidation::GeneralizedParetoValidation(const DistributionFactoryResult & result,
+                                                         const Sample & sample)
   : PersistentObject()
   , sample_(sample)
   , result_(result)
 {
   const String distName(result.getDistribution().getImplementation()->getClassName());
-  if (distName != "GeneralizedExtremeValue")
-    throw InvalidArgumentException(HERE) << "Expected a GEV distribution, got " << distName;
+  if (distName != "GeneralizedPareto")
+    throw InvalidArgumentException(HERE) << "Expected a GPD distribution, got " << distName;
+
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "GeneralizedParetoValidation expected a sample of dimension 1, got " << sample.getDimension();
+  
+  // store excess sample
+  const Scalar u = result.getDistribution().getParameter()[2];
+  sample_ = Sample(0, 1);
+  for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+    if (sample(i, 0) > u)
+      sample_.add(sample[i]);
 }
 
-GeneralizedExtremeValueValidation * GeneralizedExtremeValueValidation::clone() const
+GeneralizedParetoValidation * GeneralizedParetoValidation::clone() const
 {
-  return new GeneralizedExtremeValueValidation(*this);
+  return new GeneralizedParetoValidation(*this);
 }
 
-Graph GeneralizedExtremeValueValidation::drawReturnLevel() const
+Graph GeneralizedParetoValidation::drawReturnLevel() const
 {
-  Graph rlPlot(dynamic_cast<GeneralizedExtremeValue*>(result_.getDistribution().getImplementation().get())->drawReturnLevel());
+  Graph rlPlot(dynamic_cast<GeneralizedPareto*>(result_.getDistribution().getImplementation().get())->drawReturnLevel());
   const Sample rlData(rlPlot.getDrawable(0).getData().getMarginal(0));
   const UnsignedInteger size = rlData.getSize();
   Sample rlCILO(size, 1);
   Sample rlCIUP(size, 1);
   Sample rlEmp(size, 1);
-  const GeneralizedExtremeValueFactory factory;
+  const GeneralizedParetoFactory factory;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Scalar mi = rlData(i, 0);
-    const Distribution zDistribution(factory.buildReturnLevelEstimator(result_, mi));
+    const Distribution zDistribution(factory.buildReturnLevelEstimator(result_, mi, sample_));
     const Interval zCI(zDistribution.computeBilateralConfidenceInterval(confidenceLevel_));
     rlCILO(i, 0) = zCI.getLowerBound()[0];
     rlCIUP(i, 0) = zCI.getUpperBound()[0];
     rlEmp(i, 0) = sample_.computeQuantile(1.0 - 1.0 / mi)[0];
   }
   Curve curveLO(rlData, rlCILO);
+  curveLO.setColor("blue");
   Curve curveUP(rlData, rlCIUP);
+  curveUP.setColor("blue");
   curveLO.setLineStyle("dashed");
   curveUP.setLineStyle("dashed");
   Cloud cloudRl(rlData, rlEmp);
@@ -86,7 +97,7 @@ Graph GeneralizedExtremeValueValidation::drawReturnLevel() const
   return rlPlot;
 }
 
-Graph GeneralizedExtremeValueValidation::drawPDF() const
+Graph GeneralizedParetoValidation::drawPDF() const
 {
   Graph graph(result_.getDistribution().drawPDF());
   graph.setColors({"red"});
@@ -100,7 +111,7 @@ Graph GeneralizedExtremeValueValidation::drawPDF() const
   return graph;
 }
 
-GridLayout GeneralizedExtremeValueValidation::drawDiagnosticPlot() const
+GridLayout GeneralizedParetoValidation::drawDiagnosticPlot() const
 {
   GridLayout grid(2, 2);
 
@@ -120,23 +131,23 @@ GridLayout GeneralizedExtremeValueValidation::drawDiagnosticPlot() const
   return grid;
 }
 
-void GeneralizedExtremeValueValidation::setConfidenceLevel(const Scalar confidenceLevel)
+void GeneralizedParetoValidation::setConfidenceLevel(const Scalar confidenceLevel)
 {
   confidenceLevel_ = confidenceLevel;
 }
 
-Scalar GeneralizedExtremeValueValidation::getConfidenceLevel() const
+Scalar GeneralizedParetoValidation::getConfidenceLevel() const
 {
   return confidenceLevel_;
 }
 
-String GeneralizedExtremeValueValidation::__repr__() const
+String GeneralizedParetoValidation::__repr__() const
 {
   return OSS() << PersistentObject::__repr__();
 }
 
 /* Method save() stores the object through the StorageManager */
-void GeneralizedExtremeValueValidation::save(Advocate & adv) const
+void GeneralizedParetoValidation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("sample_", sample_);
@@ -144,7 +155,7 @@ void GeneralizedExtremeValueValidation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void GeneralizedExtremeValueValidation::load(Advocate & adv)
+void GeneralizedParetoValidation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("sample_", sample_);
