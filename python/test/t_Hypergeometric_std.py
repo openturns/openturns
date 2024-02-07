@@ -91,5 +91,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Hypergeometric(25, 0, 0).computeScalarQuantile(0.6)
 
 # computeProba test with bound far away
-p = distribution.computeProbability(ot.Interval(-ot.MaxScalar, ot.MaxScalar))
+p = distribution.computeProbability(ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar))
 ott.assert_almost_equal(p, 1.0)
