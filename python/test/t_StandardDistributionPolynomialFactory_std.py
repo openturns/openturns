@@ -1,22 +1,12 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
-ot.PlatformInfo.SetNumericalPrecision(4)
-
-
-def clean(polynomial):
-    coefficients = polynomial.getCoefficients()
-    for i in range(coefficients.getDimension()):
-        if abs(coefficients[i]) < 1.0e-8:
-            coefficients[i] = 0.0
-    return ot.UniVariatePolynomial(coefficients)
-
 
 iMax = 5
-distributionCollection = [
+collection = [
     ot.Laplace(0.0, 1.0),
     ot.Logistic(0.0, 1.0),
     ot.Normal(0.0, 1.0),
@@ -35,15 +25,14 @@ distributionCollection = [
     ot.UserDefined([[i] for i in range(10)]),
     ot.UserDefined([[i + 0.5] for i in range(10)]),
 ]
-for n in range(len(distributionCollection)):
-    distribution = distributionCollection[n]
+for distribution in collection:
     name = distribution.getClassName()
     polynomialFactory = ot.StandardDistributionPolynomialFactory(
         ot.AdaptiveStieltjesAlgorithm(distribution)
     )
     print("polynomialFactory(", name, "=", polynomialFactory, ")")
     for i in range(iMax):
-        print(name, " polynomial(", i, ")=", clean(polynomialFactory.build(i)))
+        print(name, " polynomial(", i, ")=", polynomialFactory.build(i))
     roots = polynomialFactory.getRoots(iMax - 1)
     print(name, " polynomial(", iMax - 1, ") roots=", roots)
     nodes, weights = polynomialFactory.getNodesAndWeights(iMax - 1)
@@ -63,4 +52,5 @@ for n in range(len(distributionCollection)):
             else:
                 x = distribution.getSupport()
                 M[i, j] = integrand(x).computeMean()[0] * len(x)
-    print("M=\n", M.clean(1.0e-6))
+    print("M=\n", M)
+    ott.assert_almost_equal(M, ot.IdentityMatrix(iMax), 0.0, 1e-7)
