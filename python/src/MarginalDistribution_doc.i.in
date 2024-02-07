@@ -1,8 +1,8 @@
 %feature("docstring") OT::MarginalDistribution
 "Marginal distribution.
 
-Allows to extract marginals of a distribution when it does not natively
-support the extraction of marginals.
+Allows one to extract marginals of a distribution when it does not natively
+support it.
 
 Parameters
 ----------
