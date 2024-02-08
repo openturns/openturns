@@ -3708,21 +3708,25 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
   if (isDiscrete()) return drawDiscretePDF(xMin, xMax, logScale);
-  // Discretization of the x axis
-  const PDFWrapper pdfWrapper(this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
-  Drawable drawable(graphPDF.getDrawable(0));
-  const String title(OSS() << getDescription()[0] << " PDF");
-  drawable.setLegend(title);
-  drawable.setLineStyle("solid");
-  drawable.setLineWidth(2);
-  graphPDF.setDrawable(drawable, 0);
-  graphPDF.setXTitle(getDescription()[0]);
-  graphPDF.setYTitle("PDF");
-  graphPDF.setTitle("");
-  graphPDF.setLegendPosition("topright");
-  return graphPDF;
+  if (isContinuous())
+  {
+    // Discretization of the x axis
+    const PDFWrapper pdfWrapper(this);
+    const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+    Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
+    Drawable drawable(graphPDF.getDrawable(0));
+    const String title(OSS() << getDescription()[0] << " PDF");
+    drawable.setLegend(title);
+    drawable.setLineStyle("solid");
+    drawable.setLineWidth(2);
+    graphPDF.setDrawable(drawable, 0);
+    graphPDF.setXTitle(getDescription()[0]);
+    graphPDF.setYTitle("PDF");
+    graphPDF.setTitle("");
+    graphPDF.setLegendPosition("topright");
+    return graphPDF;
+  }
+  throw NotYetImplementedException(HERE) << "Error: the drawPDF() method is defined only for continuous or discrete distributions.";
 }
 
 /* Draw the PDF of the distribution when its dimension is 1 */
