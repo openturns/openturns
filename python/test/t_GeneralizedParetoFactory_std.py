@@ -5,6 +5,7 @@ import openturns.testing as ott
 from openturns.usecases import coles
 
 ot.TESTPREAMBLE()
+ot.Log.Show(ot.Log.INFO)
 
 size = 10000
 factory = ot.GeneralizedParetoFactory()
@@ -78,6 +79,42 @@ cov_ref = [[0.920412, -0.0655531, 0],
            [0, 0, 0]]
 ott.assert_almost_equal(ot.Matrix(estimator_mle.getParameterDistribution().getCovariance()), ot.Matrix(cov_ref), 2e-3, 1e-5)
 ott.assert_almost_equal(estimator_mle.getLogLikelihood(), -485.094)
+
+# specific check for covariates
+covariates = ot.Sample([[i + 1] for i in range(sample.getSize())])
+sigmaIndices = [0]  # linear
+xiIndices = []  # stationary
+sigmaLink = ot.SymbolicFunction(["x"], ["exp(x)"])
+estimator_covariate = factory.buildCovariates(sample, u, covariates, sigmaIndices, xiIndices, sigmaLink)
+beta = estimator_covariate.getOptimalParameter()
+print("beta*=", beta)
+ott.assert_almost_equal(beta, [1.9582e-05, 1.80441, 0.197766], 1e-2, 1e-2)
+beta_dist = estimator_covariate.getParameterDistribution()
+print("beta dist=", beta_dist)
+graph_sigma1d = estimator_covariate.drawParameterFunction1D(0)
+graph_sigma2d = estimator_covariate.drawParameterFunction2D(0)
+graph_q_sigma1d = estimator_covariate.drawQuantileFunction1D(0.9)
+graph_q_sigma2d = estimator_covariate.drawQuantileFunction2D(0.9)
+
+# functional
+timeStamps = ot.Sample([[i + 1] for i in range(sample.getSize())])
+constant = ot.SymbolicFunction(["t"], ["1.0"])
+basis = ot.Basis([ot.SymbolicFunction(["t"], ["t"]), constant])
+sigmaIndices = [0, 1]  # linear
+xiIndices = [1]  # stationary
+sigmaLink = ot.SymbolicFunction(["x"], ["exp(x)"])
+estimator_timevar = factory.buildTimeVarying(sample, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink)
+beta = estimator_timevar.getOptimalParameter()
+print("beta*=", beta)
+ott.assert_almost_equal(beta, [0.343272, 1.80443, 0.197766], 1e-2, 1e-2)
+beta_dist = estimator_timevar.getParameterDistribution()
+print("beta dist=", beta_dist)
+t0 = timeStamps[0, 0]
+dist0 = estimator_timevar.getDistribution(t0)
+print(dist0)
+assert dist0.getImplementation().__class__.__name__ == "GeneralizedPareto"
+graph_param = estimator_timevar.drawParameterFunction(0)
+graph_quantile = estimator_timevar.drawQuantileFunction(0.99)
 
 # specific check for return level, see coles2001 p86
 xm = factory.buildReturnLevelEstimator(estimator_mle, 100.0 * 365.0, sample)

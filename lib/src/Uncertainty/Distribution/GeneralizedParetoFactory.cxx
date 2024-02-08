@@ -32,6 +32,10 @@
 #include "openturns/Normal.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 #include "openturns/Dirac.hxx"
+#include "openturns/IdentityFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -166,7 +170,7 @@ struct GeneralizedParetoFactoryParameterConstraint
       const Scalar xNm2mJ = sortedSample(size_ - 2 - j, 0);
       if ((xNm1mJ == xMin) || (xNm2mJ == xMin))
       {
-        const String message("Cannot use exponential regression to estimate a GeneralizedPareto distribution when the mininmum value of the sample is repeated");
+        const String message("Cannot use exponential regression to estimate a GeneralizedPareto distribution when the minimum value of the sample is repeated");
         LOGINFO(message);
         throw InvalidArgumentException(HERE) << message;
       }
@@ -746,6 +750,529 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   grid.setGraph(0, 0, scaleGraph);
   grid.setGraph(1, 0, shapeGraph);
   return grid;
+}
+
+
+class GeneralizedParetoCovariatesLikelihoodEvaluation : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoCovariatesLikelihoodEvaluation(const Sample & sample,
+                                                  const Scalar u,
+      const Matrix & sigmaCovariates,
+      const Matrix & xiCovariates,
+      const Function & sigmaLink,
+      const Function & xiLink,
+      const Scalar startingValue)
+    : EvaluationImplementation()
+    , sample_(sample)
+    , u_(u)
+    , sigmaCovariates_(sigmaCovariates)
+    , xiCovariates_(xiCovariates)
+    , sigmaLink_(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1))
+    , xiLink_(xiLink.getEvaluation().getImplementation()->isActualImplementation() ? xiLink : IdentityFunction(1))
+    , sigmaDim_(sigmaCovariates.getNbColumns())
+    , xiDim_(xiCovariates.getNbColumns())
+    , startingValue_(startingValue)
+  {
+    // Nothing to do
+  }
+
+  GeneralizedParetoCovariatesLikelihoodEvaluation * clone() const override
+  {
+    return new GeneralizedParetoCovariatesLikelihoodEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return sigmaDim_ + xiDim_;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 3;
+  } 
+  
+  Point operator() (const Point & beta) const override
+  {
+    // Sigma
+    Point betaSigma(sigmaDim_);
+    std::copy(beta.begin(), beta.begin() + sigmaDim_, betaSigma.begin());
+    const Sample sigmaT(Sample::BuildFromPoint(sigmaCovariates_ * betaSigma));
+    UnsignedInteger shift = sigmaDim_;
+    // Xi
+    Point betaXi(xiDim_);
+    std::copy(beta.begin() + shift, beta.begin() + shift + xiDim_, betaXi.begin());
+    const Sample xiT(Sample::BuildFromPoint(xiCovariates_ * betaXi));
+    shift += xiDim_;
+
+    Scalar ll = startingValue_;
+    Scalar minSigma = SpecFunc::ActualMaxScalar;
+    Scalar minC1 = SpecFunc::ActualMaxScalar;
+    for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
+    {
+      const Scalar sigma = sigmaLink_(sigmaT[i])[0];
+      const Scalar xi = xiLink_(xiT[i])[0];
+      minSigma = std::min(minSigma, sigma);
+      const Scalar zi = sample_(i, 0) - u_;
+      LOGDEBUG(OSS() << "i=" << i << ", u=" << u_ << ", sigma=" << sigma << ", xi=" << xi << ", zi=" << zi);
+      if (zi > 0.0)
+      {
+        if (std::abs(xi) < SpecFunc::Precision)
+        {
+          ll += - 1.0 * zi / sigma;
+        }
+        else
+        {
+          const Scalar c1 = xi * zi / sigma;
+          minC1 = std::min(minC1, 1.0 + c1);
+          if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
+          {
+            ll += -std::log(SpecFunc::ActualMaxScalar);
+            continue;
+          }
+          ll += (-1.0 / xi - 1.0) * std::log1p(c1);
+        }
+        ll -= std::log(sigma);
+      }
+    }
+    LOGTRACE(OSS(false) << "covariates log-likelihood beta=" << beta << ", log-likelihood=" << ll << ", min_t sigma(t)=" << minSigma << ", min_t c1(t)=" << minC1);
+    return {ll, minSigma, minC1};
+  }
+
+  void setStartingValue(const Scalar startingValue)
+  {
+    startingValue_ = startingValue;
+  }
+
+private:
+  Sample sample_;
+  Scalar u_ = 0.0;
+  Matrix sigmaCovariates_;
+  Matrix xiCovariates_;
+  Function sigmaLink_;
+  Function xiLink_;
+  UnsignedInteger sigmaDim_ = 0;
+  UnsignedInteger xiDim_ = 0;
+  Scalar startingValue_ = 0.0;
+};
+
+
+
+class GeneralizedParetoPDFEvaluation : public EvaluationImplementation
+{
+public:
+  GeneralizedParetoPDFEvaluation()
+    : EvaluationImplementation()
+  {
+    // Nothing to do
+  }
+
+  GeneralizedParetoPDFEvaluation * clone() const override
+  {
+    return new GeneralizedParetoPDFEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 3;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator() (const Point & theta) const override
+  {
+    const Scalar logPDF = factory_.buildAsGeneralizedPareto(theta).computeLogPDF(X_);
+    return {logPDF};
+  }
+
+  static void SetX(const Point & x)
+  {
+    X_ = x;
+  }
+
+private:
+  GeneralizedParetoFactory factory_;
+  static Point X_;
+};
+
+Point GeneralizedParetoPDFEvaluation::X_;
+
+/** Covariates */
+CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample,
+                                                           const Scalar u,
+    const Sample & covariates0,
+    const Indices & sigmaIndices0,
+    const Indices & xiIndices0,
+    const Function & sigmaLink,
+    const Function & xiLink,
+    const String & initializationMethod,
+    const String & normalizationMethod) const
+{
+  const UnsignedInteger size = sample.getSize();
+
+  if (size < 3)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 3";
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (covariates0.getSize() != size)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only if the sample of covariates has the same size as the sample of observations";
+
+  UnsignedInteger covariatesDimension = covariates0.getDimension();
+  if (!sigmaIndices0.check(covariatesDimension))
+    throw InvalidArgumentException(HERE) << "Error: the indices for sigma are not compatible with the covariates dimension";
+  if (!xiIndices0.check(covariatesDimension))
+    throw InvalidArgumentException(HERE) << "Error: the indices for xi are not compatible with the covariates dimension";
+
+  // h is optional
+  if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    if (sigmaLink.getInputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from an inverse link function of input dimension 1, here dimension=" << sigmaLink.getInputDimension();
+    if (sigmaLink.getOutputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from an inverse link function of input dimension 1, here dimension=" << sigmaLink.getInputDimension();
+  }
+  if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    if (xiLink.getInputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from an inverse link function of input dimension 1, here dimension=" << xiLink.getInputDimension();
+    if (xiLink.getOutputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from an inverse link function of input dimension 1, here dimension=" << xiLink.getInputDimension();
+  }
+
+  // check for constant covariate
+  const Point sigmaCov(covariates0.computeStandardDeviation());
+  UnsignedInteger constantCovariateIndex = covariatesDimension;
+  for (UnsignedInteger j = 0; j < covariatesDimension; ++ j)
+  {
+    if (!(sigmaCov[j] > 0.0))
+    {
+      if (constantCovariateIndex == covariatesDimension)
+        constantCovariateIndex = j;
+      else
+        throw InvalidArgumentException(HERE) << "Cannot provide more than one constant covariate";
+    }
+  }
+
+  // add constant covariate column if needed
+  Sample covariates(covariates0);
+  Indices sigmaIndices(sigmaIndices0);
+  Indices xiIndices(xiIndices0);
+  if (constantCovariateIndex == covariatesDimension)
+  {
+    covariates.stack(Sample(size, Point({1.0})));
+    sigmaIndices.add(covariatesDimension);
+    xiIndices.add(covariatesDimension);
+    ++ covariatesDimension;
+  }
+
+  // the provided constant covariate must be non-null
+  if (std::abs(covariates(0, constantCovariateIndex)) < SpecFunc::Precision)
+    throw InvalidArgumentException(HERE) << "Null constant covariate at index " << constantCovariateIndex;
+
+  // indices must at least reference the constant covariate
+  if (!sigmaIndices.contains(constantCovariateIndex))
+    sigmaIndices.add(constantCovariateIndex);
+  if (!xiIndices.contains(constantCovariateIndex))
+    xiIndices.add(constantCovariateIndex);
+
+  // Get an initial guest for (sigma, xi, u) as if they were constant
+  Point initialGuess;
+  LOGINFO(OSS() << "Initialization method is \"" << initializationMethod << "\"");
+  const UnsignedInteger sigmaDim = sigmaIndices.getSize();
+  const UnsignedInteger xiDim = xiIndices.getSize();
+  if (initializationMethod == "Generic")
+  {
+    Sample xu(0, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      if (sample(i, 0) > u)
+        xu.add(sample[i]);
+    initialGuess = buildAsGeneralizedPareto(xu).getParameter();
+  }
+  else if (initializationMethod == "Static")
+  {
+    initialGuess = buildMethodOfLikelihoodMaximization(sample, u).getParameter();
+  }
+  else throw InvalidArgumentException(HERE) << "Error: the value " << initializationMethod << " is invalid for the \"GeneralizedParetoFactory-InitializationMethod\" key in ResourceMap. Valid values are \"Static\" and \"Generic\"";
+  LOGINFO(OSS(false) << "In buildCovariates, initial guess=" << initialGuess);
+
+  // normalize covariates
+  Point center(covariatesDimension);
+  const Point constant(covariatesDimension);
+  SquareMatrix linear(covariatesDimension);
+  if (normalizationMethod == "CenterReduce")
+  {
+    center = covariates.computeMean();
+    const Point stdCovariates = covariates.computeStandardDeviation();
+    for (UnsignedInteger i = 0; i < covariatesDimension; ++ i)
+      linear(i, i) = (stdCovariates[i] > 0.0 ? 1.0 / stdCovariates[i] : 1.0);
+    LOGINFO(OSS() << "Normalization method=" << normalizationMethod << ", center=" << center << ", linear=" << linear);
+  }
+  else if (normalizationMethod == "MinMax")
+  {
+    const Point minCovariates = covariates.getMin();
+    const Point maxCovariates = covariates.getMax();
+    for (UnsignedInteger i = 0; i < covariatesDimension; ++ i)
+      linear(i, i) = (minCovariates[i] < maxCovariates[i] ? 1.0 / (maxCovariates[i] - minCovariates[i]) : 1.0);
+    center = minCovariates;
+    LOGINFO(OSS() << "Normalization method=" << normalizationMethod << ", center=" << center << ", linear=" << linear);
+  }
+  else if (normalizationMethod == "None")
+  {
+    linear = IdentityMatrix(covariatesDimension);
+    LOGINFO("No normalization of the covariates");
+  }
+  else throw InvalidArgumentException(HERE) << "Error: the value " << normalizationMethod << " is invalid for the \"GeneralizedParetoFactory-NormalizationMethod\" key in ResourceMap. Valid values are \"MinMax\", \"CenterReduce\", \"None\"";
+
+  // normalization should not nullify constant column
+  if (constantCovariateIndex < covariatesDimension)
+    center[constantCovariateIndex] = 0.0;
+
+  const LinearFunction normalizationFunction(center, constant, linear);
+  const Sample normalizedCovariates(normalizationFunction(covariates));
+
+  // Extract the 3 matrices corresponding to the covariates for sigma, xi and u
+  const Matrix sigmaCovariates(Matrix(sigmaIndices.getSize(), normalizedCovariates.getSize(), normalizedCovariates.getMarginal(sigmaIndices).getImplementation()->getData()).transpose());
+  const Matrix xiCovariates(Matrix(xiIndices.getSize(), normalizedCovariates.getSize(), normalizedCovariates.getMarginal(xiIndices).getImplementation()->getData()).transpose());
+
+  // Conpute the log-likelihood associated to the initial point with a zero reference value in order to find a feasible initial point
+  GeneralizedParetoCovariatesLikelihoodEvaluation evaluation(sample, u, sigmaCovariates, xiCovariates, sigmaLink, xiLink, 0.0);
+
+  // set initial guess on coefficients for constant covariate
+  Point x0(sigmaDim + xiDim);
+  if (sigmaIndices.contains(constantCovariateIndex))
+    x0[sigmaIndices.find(constantCovariateIndex)] = initialGuess[0];
+  UnsignedInteger shift = sigmaDim;
+  if (xiIndices.contains(constantCovariateIndex))
+    x0[shift + xiIndices.find(constantCovariateIndex)] = initialGuess[1];
+
+  LOGINFO(OSS(false) << "Starting points for the coefficients=" << x0);
+
+  // Now take into account the initial log-likelihood in order to work on the log-likelihood improvement during the optimization step
+  // It gives a more robust stopping criterion
+  const Scalar startingValue = -evaluation(x0)[0];
+  evaluation.setStartingValue(startingValue);
+
+  const Function objectiveAndConstraints(evaluation.clone());
+  const Function objective(objectiveAndConstraints.getMarginal(0));
+  const Function inequalities(objectiveAndConstraints.getMarginal(Indices({1, 2})));
+  OptimizationProblem problem(objective);
+  problem.setInequalityConstraint(inequalities);
+  problem.setMinimization(false);
+
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(x0);
+  solver.run();
+  const Point optimalParameter(solver.getResult().getOptimalPoint());
+  const Scalar logLikelihood = solver.getResult().getOptimalValue()[0] - startingValue;
+  LOGINFO(OSS(false) << "Optimal coefficients=" << optimalParameter << ", optimal log-likelihood=" << logLikelihood);
+
+  // Build the theta function which maps a dim(covariates) vector into a (sigma, xi, u) vector.
+  const Description sigmaBetaDesc(Description::BuildDefault(sigmaDim, "sigmaBeta"));
+  const Description xiBetaDesc(Description::BuildDefault(xiDim, "xiBeta"));
+  const Description yDesc(Description::BuildDefault(covariatesDimension, "y"));
+  Description sigmaVars(sigmaBetaDesc);
+  Description xiVars(xiBetaDesc);
+  sigmaVars.add(yDesc);
+  xiVars.add(yDesc);
+  String sigmaFormula;
+  String xiFormula;
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+    sigmaFormula += OSS() << sigmaBetaDesc[i] << " * " << yDesc[sigmaIndices[i]] << (i < sigmaDim - 1 ? " + " : "");
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+    xiFormula += OSS() << xiBetaDesc[i] << " * " << yDesc[xiIndices[i]] << (i < xiDim - 1 ? " + " : "");
+  Function sigmaBetaFunction = SymbolicFunction(sigmaVars, {sigmaFormula});
+  Function xiBetaFunction = SymbolicFunction(xiVars, {xiFormula});
+
+  // use beta variables as parameters
+  Indices sigmaVarsIndices(sigmaDim);
+  Indices xiVarsIndices(xiDim);
+  sigmaVarsIndices.fill();
+  xiVarsIndices.fill();
+  sigmaBetaFunction = ParametricFunction(sigmaBetaFunction, sigmaVarsIndices, Point(sigmaDim, 1.0));
+  xiBetaFunction = ParametricFunction(xiBetaFunction, xiVarsIndices, Point(xiDim, 1.0));
+
+  // The theta function is the composition between the inverse link function and the linear function
+  if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation())
+    sigmaBetaFunction = ComposedFunction(sigmaLink, sigmaBetaFunction);
+  if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
+    xiBetaFunction = ComposedFunction(xiLink, xiBetaFunction);
+
+  // useful for the theta(y) graphs
+  sigmaBetaFunction.setOutputDescription({"$\\sigma$"});
+  xiBetaFunction.setOutputDescription({"$\\xi$"});
+
+  // stack sigma, xi, u functions
+  Function uBetaFunction = SymbolicFunction(yDesc, {OSS() << u});
+  AggregatedFunction thetaFunction({sigmaBetaFunction, xiBetaFunction, uBetaFunction});
+
+  // reorder the normalization coefficients for the beta coefficients
+  const UnsignedInteger nP = sigmaDim + xiDim;
+  Point alpha(nP);
+  Point gamma(nP);
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+  {
+    gamma[i] = center[sigmaIndices[i]];
+    alpha[i] = linear(sigmaIndices[i], sigmaIndices[i]);
+  }
+  shift = sigmaDim;
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+  {
+    gamma[shift + i] = center[xiIndices[i]];
+    alpha[shift + i] = linear(xiIndices[i], xiIndices[i]);
+  }
+
+  // compute the beta coefficients from the beta coefficients matching the normalized covariates
+  Point optimalBeta(optimalParameter);
+  Scalar offset = 0.0;
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+  {
+    if (sigmaIndices[i] != constantCovariateIndex)
+    {
+      optimalBeta[i] *= alpha[i];
+      offset += optimalParameter[i] * alpha[ i] * gamma[i];
+    }
+  }
+
+  // report the centering coefficients on the constant term
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+    if (sigmaIndices[i] == constantCovariateIndex)
+      optimalBeta[i] -= offset;
+
+  shift = sigmaDim;
+  offset = 0.0;
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+  {
+    if (xiIndices[i] != constantCovariateIndex)
+    {
+      optimalBeta[shift + i] *= alpha[shift + i];
+      offset += optimalParameter[shift + i] * alpha[shift + i] * gamma[shift + i];
+    }
+  }
+
+  // report the centering coefficients on the constant term
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+    if (xiIndices[i] == constantCovariateIndex)
+      optimalBeta[shift + i] -= offset;
+  
+  LOGINFO(OSS(false) << "Optimal unnormalized coefficients=" << optimalBeta);
+
+  // now its a function of the unnormalized covariates
+  thetaFunction.setParameter(optimalBeta);
+
+  // compose the y->theta->pdf function
+  GeneralizedParetoPDFEvaluation pdfFunction;
+  ComposedFunction yToPDF(pdfFunction, thetaFunction);
+
+  Distribution parameterDistribution;
+  try
+  {
+    // estimate parameter distribution via the Fisher information matrix
+    Matrix fisher(nP, nP);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      // set the location through a global variable
+      GeneralizedParetoPDFEvaluation::SetX(sample[i]);
+
+      // compute the jacobian wrt the beta coefficients
+      const Matrix dpdfi(yToPDF.parameterGradient(covariates[i]));
+      fisher = fisher + dpdfi.computeGram(false);
+    }
+    const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / size).getImplementation());
+    parameterDistribution = Normal(optimalBeta, covariance);
+  }
+  catch (const Exception & ex)
+  {
+    parameterDistribution = JointDistribution({Dirac(optimalBeta[0]), Dirac(optimalBeta[1]), Dirac(optimalBeta[2])});
+    LOGWARN("Could not compute GPD covariates parameter distribution covariance");
+  }
+
+  const CovariatesResult result(*this, thetaFunction, covariates, parameterDistribution, normalizationFunction, logLikelihood);
+  return result;
+}
+
+
+TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & sample,
+                                                             const Scalar u,
+    const Sample & timeStamps,
+    const Basis & basis,
+    const Indices & sigmaIndices,
+    const Indices & xiIndices,
+    const Function & sigmaLink,
+    const Function & xiLink,
+    const String & initializationMethod,
+    const String & normalizationMethod) const
+{
+  if (timeStamps.getSize() != sample.getSize())
+    throw InvalidArgumentException(HERE) << "GeneralizedPareto timeStamps size (" << timeStamps.getSize()<<") must match sample size (" << sample.getSize() << ")";
+  if (timeStamps.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << timeStamps.getDimension();
+  if (!basis.getSize())
+    throw InvalidArgumentException(HERE) << "Basis is empty";
+  if (!sigmaIndices.check(basis.getSize()))
+    throw InvalidArgumentException(HERE) << "Error: the indices for sigma are not compatible with the basis size";
+  if (!xiIndices.check(basis.getSize()))
+    throw InvalidArgumentException(HERE) << "Error: the indices for xi are not compatible with the basis size";
+
+  // normalize timestamps
+  LinearFunction normalizationFunction(Point(1), Point(1), IdentityMatrix(1));
+  if (normalizationMethod == "CenterReduce")
+  {
+    const Scalar meanTimeStamps = timeStamps.computeMean()[0];
+    const Scalar stdTimeStamps = timeStamps.computeStandardDeviation()[0];
+    SymmetricMatrix linear(1);
+    linear(0, 0) = (stdTimeStamps > 0.0 ? 1.0 / stdTimeStamps : 1.0);
+    normalizationFunction = LinearFunction(Point(1, meanTimeStamps), Point(1), linear);
+    LOGINFO(OSS() << "Normalization method=" << normalizationMethod << ", normalization function=" << normalizationFunction);
+  }
+  else if (normalizationMethod == "MinMax")
+  {
+    const Scalar minTimeStamps = timeStamps.getMin()[0];
+    const Scalar maxTimeStamps = timeStamps.getMax()[0];
+    SymmetricMatrix linear(1);
+    linear(0, 0) = (minTimeStamps < maxTimeStamps ? 1.0 / (maxTimeStamps - minTimeStamps) : 1.0);
+    normalizationFunction = LinearFunction(Point(1, minTimeStamps), Point(1), linear);
+    LOGINFO(OSS() << "Normalization method=" << normalizationMethod << ", normalization function=" << normalizationFunction);
+  }
+  else if (normalizationMethod == "None")
+  {
+    LOGINFO("No normalization of the timeStamps");
+  }
+  else throw InvalidArgumentException(HERE) << "Error: the value " << normalizationMethod << " is invalid for the \"GeneralizedParetoFactory-NormalizationMethod\" key in ResourceMap. Valid values are \"MinMax\", \"CenterReduce\", \"None\"";
+
+  // evaluate covariates from basis, without duplicates basis terms
+  Indices allIndices;
+  allIndices.add(sigmaIndices);
+  allIndices.add(xiIndices);
+  Indices uniqueIndices;
+  Collection<Function> yBasis;
+  for (UnsignedInteger j = 0; j < allIndices.getSize(); ++ j)
+  {
+    const UnsignedInteger currentIndex = allIndices[j];
+    if (!uniqueIndices.contains(currentIndex))
+    {
+      const Function phi(basis[currentIndex]);
+      yBasis.add(phi);
+      uniqueIndices.add(currentIndex);
+    }
+  }
+  Function timeToY = AggregatedFunction(yBasis);
+  if (normalizationMethod != "None")
+    timeToY = ComposedFunction(timeToY, normalizationFunction);
+  const Sample covariates = timeToY(timeStamps);
+  const CovariatesResult covariatesResult(buildCovariates(sample, u, covariates, sigmaIndices, xiIndices, sigmaLink, xiLink, initializationMethod, "None"));
+
+  // compose the parameter function: t(->tau)->y->theta
+  Function parameterFunction(covariatesResult.getParameterFunction());
+  parameterFunction = ComposedFunction(parameterFunction, timeToY);
+
+  const Distribution parameterDistribution(covariatesResult.getParameterDistribution());
+  const Scalar logLikelihood = covariatesResult.getLogLikelihood();
+  const TimeVaryingResult result(*this, sample, parameterFunction, timeStamps, parameterDistribution, normalizationFunction, logLikelihood);
+  return result;
 }
 
 
