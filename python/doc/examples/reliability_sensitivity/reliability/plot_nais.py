@@ -185,8 +185,7 @@ for i in range(Ns):
     cloud = ot.Cloud(list_subSamples[i])
     # cloud.setPointStyle("dot")
     graph.add(cloud)
-col = ot.Drawable().BuildDefaultPalette(Ns)
-graph.setColors(col)
+col = graph.getColors()
 
 # %%
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
