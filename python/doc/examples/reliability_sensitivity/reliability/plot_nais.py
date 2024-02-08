@@ -209,7 +209,7 @@ _ = View(graph)
 # Draw the frontiers only
 # -----------------------
 #
-# The following graph enables to understand the progresison of the algorithm:
+# The following graph enables to understand the progression of the algorithm:
 
 # %%
 graph = ot.Graph()
