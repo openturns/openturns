@@ -222,6 +222,7 @@ for i, lv in enumerate(levels):
     dr.setLineWidth(3)
     graph.add(dr)
 
+graph.setColors(col)
 graph.setLegendPosition("lower left")
 graph.setTitle("NAIS sampling: thresholds")
 graph.setXTitle(r"$x_1$")
