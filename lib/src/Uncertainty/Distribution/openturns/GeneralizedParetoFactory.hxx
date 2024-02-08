@@ -28,6 +28,10 @@
 #include "openturns/DistributionFactoryLikelihoodResult.hxx"
 #include "openturns/ProfileLikelihoodResult.hxx"
 #include "openturns/GridLayout.hxx"
+#include "openturns/CovariatesResult.hxx"
+#include "openturns/TimeVaryingResult.hxx"
+#include "openturns/Basis.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -86,6 +90,29 @@ public:
 
   /** Parameter stability plot*/
   GridLayout drawParameterThresholdStability(const Sample & sample, const Interval & thresholdRange) const;
+
+  /** Covariates */
+  CovariatesResult buildCovariates(const Sample & sample,
+                                   const Scalar u,
+                                   const Sample & covariates,
+                                   const Indices & sigmaIndices = Indices(),
+                                   const Indices & xiIndices = Indices(),
+                                   const Function & sigmaLink = Function(),
+                                   const Function & xiLink = Function(),
+                                   const String & initializationMethod = ResourceMap::GetAsString("GeneralizedParetoFactory-InitializationMethod"),
+                                   const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedParetoFactory-NormalizationMethod")) const;
+
+  /** Time-varying */
+  TimeVaryingResult buildTimeVarying(const Sample & sample,
+                                     const Scalar u,
+                                     const Sample & timeStamps,
+                                     const Basis & basis,
+                                     const Indices & sigmaIndices = Indices(),
+                                     const Indices & xiIndices = Indices(),
+                                     const Function & sigmaLink = Function(),
+                                     const Function & xiLink = Function(),
+                                     const String & initializationMethod = ResourceMap::GetAsString("GeneralizedParetoFactory-InitializationMethod"),
+                                     const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedParetoFactory-NormalizationMethod")) const;
 
   /** Return level */
   Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m, const Sample & sample) const;

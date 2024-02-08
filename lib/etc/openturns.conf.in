@@ -521,6 +521,8 @@
   <GeneralizedParetoFactory-MeanResidualLifePointNumber   value_int="100" />
   <GeneralizedParetoFactory-ThresholdStabilityPointNumber value_int="100" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+  <GeneralizedParetoFactory-InitializationMethod value_string="Generic" />
+  <GeneralizedParetoFactory-NormalizationMethod value_string="MinMax" />
   <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
 
   <!-- OT::Gibbs parameters -->

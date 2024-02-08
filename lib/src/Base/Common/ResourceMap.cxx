@@ -1146,6 +1146,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
+  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic");
+  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax");
   addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Gibbs parameters //

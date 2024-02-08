@@ -308,7 +308,7 @@ print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood
 # - the probability-probability pot,
 # - the quantile-quantile pot,
 # - the return level plot,
-# - the data histogram and the desnity of the fitted model.
+# - the data histogram and the density of the fitted model.
 #
 # using the transformed data compared to the Gumbel model. We can see that the adequation is better
 # than with the stationary model.

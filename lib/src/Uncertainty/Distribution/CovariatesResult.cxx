@@ -258,7 +258,9 @@ GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
 
 String CovariatesResult::__repr__() const
 {
-  return OSS() << PersistentObject::__repr__();
+  return OSS() << getClassName()
+              << " parameterDistribution="<< parameterDistribution_
+              << " logLikelihood=" << logLikelihood_;
 }
 
 Function CovariatesResult::getParameterFunction() const
