@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * CovarianceModel nuggetFactor can be optimized by KrigingAlgorithm
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
