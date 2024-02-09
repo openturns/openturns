@@ -85,6 +85,7 @@ ot_check_test (AtomicInt_std IGNOREOUT)
 target_link_libraries (t_AtomicInt_std PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # Type
+ot_check_test (BipartiteGraph_std)
 ot_check_test (Collection_std)
 ot_check_test (Indices_std)
 ot_check_test (IndicesCollection_std)
@@ -706,6 +707,7 @@ ot_check_test (CenteredFiniteDifferenceHessian_std)
 
 # Experiments
 ot_check_test (LinearTaylor_std)
+ot_check_test (QuadraticTaylor_std)
 ot_check_test (QuadraticLeastSquares_std)
 ot_check_test (LinearLeastSquares_std)
 
