@@ -23,22 +23,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-/* Virtual constructor */
-// PersistentObjectFactory * PersistentObjectFactory::clone() const = 0
-
-
 /* This method register the factory into the Catalog */
 void PersistentObjectFactory::registerMe(const String & className) const
 {
   Catalog::Add(className, this);
 }
-
-
-/* Method build() creates a new PersistentObject from the storage manager */
-// PersistentObject * PersistentObjectFactory::build(const StorageManager & mgr) const = 0;
-
 
 /* Accessor to PersistentObject's shadowed id */
 void PersistentObjectFactory::setShadowedId(PersistentObject & obj, Id id) const
