@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -10,25 +11,14 @@ ot.TESTPREAMBLE()
 # Physical model
 #
 
-inputFunction = ot.Description(6)
-inputFunction[0] = "X1"
-inputFunction[1] = "X2"
-inputFunction[2] = "X3"
-inputFunction[3] = "X4"
-inputFunction[4] = "X5"
-inputFunction[5] = "X6"
+inputFunction = ot.Description.BuildDefault(7, "X")[1:]
 
-outputFunction = ot.Description(1)
-outputFunction[0] = "G"
+formulas = [
+    "X1 + 2*X2 + 2*X3 + X4 - 5*X5 - 5*X6 +0.001*(sin(100*X1)+sin(100*X2)+sin(100*X3)+sin(100*X4)+sin(100*X5)+sin(100*X6))"]
 
-formulas = ot.Description(outputFunction.getSize())
-formulas[
-    0
-] = "X1 + 2*X2 + 2*X3 + X4 - 5*X5 - 5*X6 +0.001*(sin(100*X1)+sin(100*X2)+sin(100*X3)+sin(100*X4)+sin(100*X5)+sin(100*X6))"
+limitState = ot.SymbolicFunction(inputFunction, formulas)
 
-EtatLimite = ot.SymbolicFunction(inputFunction, outputFunction, formulas)
-
-dim = EtatLimite.getInputDimension()
+dim = limitState.getInputDimension()
 print(dim)
 
 #
@@ -56,61 +46,15 @@ BorneInf = 0.0
 component = ot.Description(1)
 
 aCollection = ot.DistributionCollection()
-
-marginal = ot.LogNormal(mean[0], sigma[0], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("First")
-component[0] = "One"
-marginal.setDescription(component)
-# Fill the first marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "First"))
-
-# Create a second marginal : distribution 1D
-marginal = ot.LogNormal(mean[1], sigma[1], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("Second")
-component[0] = "Two"
-marginal.setDescription(component)
-# Fill the second marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "Second"))
-
-# Create a third marginal : distribution 1D
-marginal = ot.LogNormal(mean[2], sigma[2], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("Third")
-component[0] = "Three"
-marginal.setDescription(component)
-# Fill the third marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "Third"))
-
-# Create a forth marginal : distribution 1D
-marginal = ot.LogNormal(mean[3], sigma[3], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("Forth")
-component[0] = "Four"
-marginal.setDescription(component)
-# Fill the forth marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "Forth"))
-
-# Create a fifth marginal : distribution 1D
-marginal = ot.LogNormal(mean[4], sigma[4], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("Fifth")
-component[0] = "Five"
-marginal.setDescription(component)
-# Fill the fifth marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "Fifth"))
-
-# Create a sixth marginal : distribution 1D
-marginal = ot.LogNormal(mean[5], sigma[5], BorneInf, ot.LogNormal.MUSIGMA)
-marginal.setName("Sixth")
-component[0] = "Six"
-marginal.setDescription(component)
-# Fill the sixth marginal of aCollection
-aCollection.add(ot.Distribution(marginal, "Sixth"))
+for i in range(len(mean)):
+    marginal = ot.LogNormalMuSigma(mean[i], sigma[i], BorneInf).getDistribution()
+    aCollection.add(marginal)
 
 # Create a copula : IndependentCopula (pas de correlation
 aCopula = ot.IndependentCopula(aCollection.getSize())
-aCopula.setName("Independent copula")
 
 # Instantiate one distribution object
 myDistribution = ot.JointDistribution(aCollection, aCopula)
-myDistribution.setName("myDist")
 
 start = myDistribution.getMean()
 Covariance = myDistribution.getCovariance()
@@ -121,7 +65,7 @@ Covariance = myDistribution.getCovariance()
 
 vect = ot.RandomVector(myDistribution)
 
-output = ot.RandomVector(EtatLimite, vect)
+output = ot.CompositeRandomVector(limitState, vect)
 
 myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
@@ -162,16 +106,21 @@ resultAR = ot.FORMResult(myAlgoAR.getResult())
 #
 # Monte Carlo
 CoV_MC = 0.5
-myMC = ot.MonteCarlo(myEvent)
+experiment = ot.MonteCarloExperiment()
+myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(1000)
 myMC.setBlockSize(100)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
+result = myMC.getResult()
+ott.assert_almost_equal(result.getProbabilityEstimate(), 0.0133333)
 
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
+experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myLHS.setMaximumOuterSampling(1000)
 myLHS.setBlockSize(10)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
@@ -219,7 +168,8 @@ myImportanceSE = ot.Normal(meanSE, sigmaSE, CorrSE)
 
 myStandardEvent = ot.StandardEvent(myEvent)
 
-myISS = ot.ImportanceSampling(myStandardEvent, myImportanceSE)
+experiment = ot.ImportanceSamplingExperiment(myImportanceSE)
+myISS = ot.ProbabilitySimulationAlgorithm(myStandardEvent)
 myISS.setMaximumOuterSampling(1000)
 myISS.setBlockSize(10)
 myISS.setMaximumCoefficientOfVariation(0.1)
@@ -238,7 +188,8 @@ CorrE = ot.IdentityMatrix(dim)
 
 myImportanceE = ot.Normal(meanE, sigmaE, CorrE)
 
-myIS = ot.ImportanceSampling(myEvent, myImportanceE)
+experiment = ot.ImportanceSamplingExperiment(myImportanceE)
+myIS = ot.ProbabilitySimulationAlgorithm(myEvent)
 myIS.setMaximumOuterSampling(1000)
 myIS.setBlockSize(10)
 myIS.setMaximumCoefficientOfVariation(0.1)

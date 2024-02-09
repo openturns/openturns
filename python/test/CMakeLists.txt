@@ -805,11 +805,12 @@ ot_pyinstallcheck_test (NormalityTest_std)
 
 ## Waarts
 ot_pyinstallcheck_test (Waarts_25_quadratic_terms)
-# ot_pyinstallcheck_test (Waarts_concave)
-# ot_pyinstallcheck_test (Waarts_convex)
-# ot_pyinstallcheck_test (Waarts_discontinuous_lsf)
-# ot_pyinstallcheck_test (Waarts_noisy_lsf)
-# ot_pyinstallcheck_test (Waarts_RS2)
+ot_pyinstallcheck_test (Waarts_concave IGNOREOUT)
+ot_pyinstallcheck_test (Waarts_convex IGNOREOUT)
+ot_pyinstallcheck_test (Waarts_discontinuous_lsf IGNOREOUT)
+ot_pyinstallcheck_test (Waarts_noisy_lsf IGNOREOUT)
+ot_pyinstallcheck_test (Waarts_oblate IGNOREOUT)
+ot_pyinstallcheck_test (Waarts_RS2 IGNOREOUT)
 ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 

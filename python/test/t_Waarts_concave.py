@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -8,11 +9,11 @@ ot.TESTPREAMBLE()
 # Physical model
 #
 
-EtatLimite = ot.SymbolicFunction(
-    ["X1", "X2"], ["G"], ["-0.5*(X1-X2)*(X1-X2) - (X1+X2)/(sqrt(2)) + 3"]
+limitState = ot.SymbolicFunction(
+    ["X1", "X2"], ["-0.5*(X1-X2)*(X1-X2) - (X1+X2)/(sqrt(2)) + 3"]
 )
 
-dim = EtatLimite.getInputDimension()
+dim = limitState.getInputDimension()
 print(dim)
 
 #
@@ -34,7 +35,7 @@ Covariance = myDistribution.getCovariance()
 
 vect = ot.RandomVector(myDistribution)
 
-output = ot.RandomVector(EtatLimite, vect)
+output = ot.CompositeRandomVector(limitState, vect)
 
 myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
@@ -80,17 +81,24 @@ resultAR = myAlgoAR.getResult()
 #
 # Monte Carlo
 CoV_MC = 0.5
-myMC = ot.MonteCarlo(myEvent)
+experiment = ot.MonteCarloExperiment()
+myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(100000)
 myMC.setBlockSize(1)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
+result = myMC.getResult()
+ott.assert_almost_equal(result.getProbabilityEstimate(), 0.129032)
 
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
+experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myLHS.setMaximumOuterSampling(100000)
 myLHS.setBlockSize(1)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
 myLHS.run()
+result = myLHS.getResult()
+ott.assert_almost_equal(result.getProbabilityEstimate(), 0.103926)
