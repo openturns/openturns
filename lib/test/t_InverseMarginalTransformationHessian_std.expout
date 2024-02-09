@@ -1,4 +1,0 @@
-transformation=class=InverseMarginalTransformationHessian distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Gamma name=Gamma dimension=1 k=1.5 lambda=3 gamma=0]
-transformation(class=Point name=Unnamed dimension=2 values=[0.75,0.75])=class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=2 values=[16.6983,0,0,0,0,0,0,5.86713]
-input dimension=2
-output dimension=2
