@@ -712,18 +712,6 @@ ot_check_test (QuadraticLeastSquares_std)
 ot_check_test (LinearLeastSquares_std)
 
 
-# Waarts tests
-# ot_check_test (Waarts_25_quadratic_terms)
-# ot_check_test (Waarts_concave)
-# ot_check_test (Waarts_convex)
-# ot_check_test (Waarts_discontinuous_lsf)
-# ot_check_test (Waarts_noisy_lsf)
-# ot_check_test (Waarts_oblate)
-# ot_check_test (Waarts_RS2)
-# ot_check_test (Waarts_saddle)
-# ot_check_test (Waarts_system_series)
-
-
 add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} --build-config ${CMAKE_BUILD_TYPE} --tests-regex "^cppcheck_"
                     DEPENDS ${CHECK_TO_BE_RUN}
                     COMMENT "Run C++ pre-installation tests")
