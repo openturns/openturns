@@ -26,16 +26,6 @@ x= 4 nextpow2= 4
 x= 10 nextpow2= 16
 x= 100 nextpow2= 128
 x= 1000 nextpow2= 1024
-n= 4 k= 2 binom= 6
-n= 4 k= 0 binom= 1
-n= 4 k= 3 binom= 4
-n= 5 k= 2 binom= 10
-n= 5 k= 0 binom= 1
-n= 5 k= 3 binom= 10
-n= 17 k= 2 binom= 136
-n= 17 k= 0 binom= 1
-n= 17 k= 7 binom= 19448
-n= 17 k= 3 binom= 680
 x= -2.0 n= 0 ipow= 1.0
 x= -2.0 n= 1 ipow= -2.0
 x= -2.0 n= 2 ipow= 4.0

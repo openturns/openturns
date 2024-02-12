@@ -1113,22 +1113,6 @@ result : float"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpecFunc::BinomialCoefficient
-"Binomial coefficient.
-
-Returns the value :math:`C_k^n = \binom{n}{k}`
-
-Parameters
-----------
-n : int
-k : int
-
-Returns
--------
-result : int"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SpecFunc::IsNormal
 "Check for non-NaN and non-Inf values.
 
