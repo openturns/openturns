@@ -1100,19 +1100,6 @@ result : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpecFunc::Cbrt
-"Cubit root function.
-
-Parameters
-----------
-x : float
-
-Returns
--------
-result : float"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SpecFunc::IsNormal
 "Check for non-NaN and non-Inf values.
 

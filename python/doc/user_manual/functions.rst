@@ -210,7 +210,6 @@ as Python functions.
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
     SpecFunc.BitCount
-    SpecFunc.Cbrt
     SpecFunc.Clip01
     SpecFunc.Dawson
     SpecFunc.Debye

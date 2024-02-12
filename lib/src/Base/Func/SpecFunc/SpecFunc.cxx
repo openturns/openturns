@@ -1338,12 +1338,6 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
   return (x * h01) >> 56;         // returns left 8 bits of x + (x << 8) + (x << 16) + (x << 24) + ...
 }
 
-Scalar SpecFunc::Cbrt(const Scalar x)
-{
-  if (x == 0.0) return 0.0;
-  return (x < 0.0 ? -std::exp(std::log(-x) / 3.0) : std::exp(std::log(x) / 3.0));
-}
-
 UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
     const UnsignedInteger k)
 {

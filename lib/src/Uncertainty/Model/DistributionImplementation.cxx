@@ -5300,7 +5300,7 @@ Distribution DistributionImplementation::cbrt() const
   const Scalar a = range_.getLowerBound()[0];
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Cbrt(a), SpecFunc::Cbrt(b)};
+  const Point values = {std::cbrt(a), std::cbrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values);
 }
 
