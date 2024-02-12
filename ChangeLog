@@ -44,6 +44,7 @@
 === Documentation ===
 
 === Python module ===
+* Graphs apply default colors to Drawables with no explicit color
 
 === Miscellaneous ===
  * UniformOverMesh left the experimental module
