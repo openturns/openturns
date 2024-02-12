@@ -136,7 +136,7 @@ void InverseChiSquare::update()
   // For small k, the normalization factor is:
   // normalizationFactor = log(2/Gamma(k))
   //                     = log(2) - log(Gamma(k))
-  else normalizationFactor_ = std::log(2.0) - SpecFunc::LnGamma(k);
+  else normalizationFactor_ = std::log(2.0) - SpecFunc::LogGamma(k);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }

@@ -638,12 +638,6 @@ Complex SpecFunc::LogGamma(const Complex & a)
 }
 
 // Natural logarithm of the Gamma function
-Scalar SpecFunc::LnGamma(const Scalar a)
-{
-  return LogGamma(a);
-}
-
-// LogGamma = LnGamma
 Scalar SpecFunc::LogGamma(const Scalar a)
 {
   return lgamma(a);

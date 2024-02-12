@@ -513,10 +513,10 @@ void Dirichlet::setTheta(const Point & theta)
   {
     const Scalar thetaI = theta[i];
     if (!(thetaI > 0.0)) throw InvalidArgumentException(HERE) << "Error: the vector theta must have positive components, here theta(" << i << ")=" << thetaI;
-    normalizationFactor_ -= SpecFunc::LnGamma(thetaI);
+    normalizationFactor_ -= SpecFunc::LogGamma(thetaI);
     sumTheta_ += thetaI;
   }
-  normalizationFactor_ += SpecFunc::LnGamma(sumTheta_);
+  normalizationFactor_ += SpecFunc::LogGamma(sumTheta_);
   setDimension(size - 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

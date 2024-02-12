@@ -145,7 +145,6 @@ OT_API Scalar GammaCorrection(const Scalar a);
 // Complex gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
 OT_API Complex Gamma(const Complex & a);
 // Natural logarithm of the gamma function
-OT_API Scalar LnGamma(const Scalar a);
 OT_API Scalar LogGamma(const Scalar a);
 OT_API Scalar LogGamma1p(const Scalar a);
 OT_API Complex LogGamma(const Complex & a);
