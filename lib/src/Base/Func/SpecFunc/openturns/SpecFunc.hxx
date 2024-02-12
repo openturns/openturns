@@ -237,9 +237,6 @@ OT_API UnsignedInteger Log2(const Unsigned64BitsInteger n);
 // Best known algorithm for 64 bits n and fast multiply
 OT_API UnsignedInteger BitCount(const Unsigned64BitsInteger n);
 
-// Missing functions in cmath wrt math.h as of C++98
-OT_API Scalar Cbrt(const Scalar x);
-
 // binomial coefficient C(n, k)
 OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
     const UnsignedInteger k);
