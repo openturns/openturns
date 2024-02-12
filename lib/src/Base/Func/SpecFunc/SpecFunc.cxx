@@ -1338,26 +1338,6 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
   return (x * h01) >> 56;         // returns left 8 bits of x + (x << 8) + (x << 16) + (x << 24) + ...
 }
 
-// Missing functions in cmath wrt math.h as of C++98
-Scalar SpecFunc::Acosh(const Scalar x)
-{
-  if (!(x >= 1.0)) throw InvalidArgumentException(HERE) << "Error: acosh is only defined for x>=1, here x=" << x;
-  return 2.0 * std::log(sqrt(0.5 * (x + 1.0)) + sqrt(0.5 * (x - 1.0)));
-}
-
-Scalar SpecFunc::Asinh(const Scalar x)
-{
-  if (std::abs(x) < 0.0081972522783123062436) return x * (1.0 + x * x * (-1.0 / 6.0 + 3.0 * x * x / 40.0));
-  return std::log(x + sqrt(1.0 + x * x));
-}
-
-Scalar SpecFunc::Atanh(const Scalar x)
-{
-  if (std::abs(x) < 0.0069422277258991260322) return x * (1.0 + x * x * (1.0 / 3.0 + x * x / 5.0));
-  if (x > 0.0) return 0.5 * log1p(2.0 * x / (1.0 - x));
-  return -0.5 * log1p(-2.0 * x / (1.0 + x));
-}
-
 Scalar SpecFunc::Cbrt(const Scalar x)
 {
   if (x == 0.0) return 0.0;
