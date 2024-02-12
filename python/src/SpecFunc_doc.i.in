@@ -455,28 +455,6 @@ result : float"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpecFunc::LnGamma
-"Logarithm of the Gamma function.
-
-.. math::
-
-    \forall a \in \Rset, \quad
-    LnGamma(a) = \ln (\Gamma(a))
-
-See also
---------
-SpecFunc.Gamma
-
-Parameters
-----------
-a : float
-
-Returns
--------
-result : float"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SpecFunc::IncompleteGamma
 "Incomplete Gamma function.
 

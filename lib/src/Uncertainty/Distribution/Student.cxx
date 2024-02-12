@@ -329,7 +329,7 @@ Scalar Student::computeEntropy() const
 {
   const UnsignedInteger dimension = getDimension();
   // normalizationFactor_ == 1/\sqrt{|Det(\Sigma)|}
-  // studentNormalizationFactor_ = SpecFunc::LnGamma(0.5 * (nu + dimension)) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
+  // studentNormalizationFactor_ = SpecFunc::LogGamma(0.5 * (nu + dimension)) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
   return 0.5 * (nu_ + dimension) * (SpecFunc::Psi(0.5 * (nu_ + dimension)) - SpecFunc::Psi(0.5 * nu_)) - std::log(normalizationFactor_) - studentNormalizationFactor_;
 }
 
@@ -744,7 +744,7 @@ void Student::setNu(const Scalar nu)
   nu_ = nu;
   // Only set the covarianceScalingFactor if nu > 0, else its value is -1.0
   if (nu > 2.0) covarianceScalingFactor_ = nu_ / (nu_ - 2.0);
-  studentNormalizationFactor_ = SpecFunc::LnGamma(0.5 * (nu + dimension)) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
+  studentNormalizationFactor_ = SpecFunc::LogGamma(0.5 * (nu + dimension)) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
   computeRange();
 }
 
