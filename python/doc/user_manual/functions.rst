@@ -209,7 +209,6 @@ as Python functions.
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
-    SpecFunc.BinomialCoefficient
     SpecFunc.BitCount
     SpecFunc.Cbrt
     SpecFunc.Clip01
