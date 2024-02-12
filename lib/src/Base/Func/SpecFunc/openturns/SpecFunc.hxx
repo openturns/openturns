@@ -238,9 +238,6 @@ OT_API UnsignedInteger Log2(const Unsigned64BitsInteger n);
 OT_API UnsignedInteger BitCount(const Unsigned64BitsInteger n);
 
 // Missing functions in cmath wrt math.h as of C++98
-OT_API Scalar Acosh(const Scalar x);
-OT_API Scalar Asinh(const Scalar x);
-OT_API Scalar Atanh(const Scalar x);
 OT_API Scalar Cbrt(const Scalar x);
 
 // binomial coefficient C(n, k)

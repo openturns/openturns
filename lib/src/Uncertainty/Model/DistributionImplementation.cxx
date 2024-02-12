@@ -5054,7 +5054,7 @@ Distribution DistributionImplementation::acosh() const
   if (!(a >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Acosh(a), SpecFunc::Acosh(b)};
+  const Point values = {std::acosh(a), std::acosh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values);
 }
 
@@ -5064,7 +5064,7 @@ Distribution DistributionImplementation::asinh() const
   const Scalar a = range_.getLowerBound()[0];
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Asinh(a), SpecFunc::Asinh(b)};
+  const Point values = {std::asinh(a), std::asinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values);
 }
 
@@ -5079,9 +5079,9 @@ Distribution DistributionImplementation::atanh() const
   // F_Y(y)=P(atanh(X)<y)<->P(X<tanh(y))=F_X(tanh(y))
   // y s.t. F_Y(y)=epsilon<->y=atanh(F_X^{-1}(epsilon))
 
-  Point values(1, a == -1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_)) : SpecFunc::Atanh(a));
+  Point values(1, a == -1.0 ? std::atanh(computeScalarQuantile(quantileEpsilon_)) : std::atanh(a));
   bounds.add(b);
-  values.add(b == 1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_, true)) : SpecFunc::Atanh(b));
+  values.add(b == 1.0 ? std::atanh(computeScalarQuantile(quantileEpsilon_, true)) : std::atanh(b));
   return new CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values);
 }
 
