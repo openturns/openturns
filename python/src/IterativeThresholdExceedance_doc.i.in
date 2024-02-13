@@ -3,12 +3,12 @@
 
 Parameters
 ----------
-dimension : int, default=1
-    Dimension of the input data
-operator : :class:`~openturns.ComparisonOperator`, default=:class:`~openturns.Greater`
-    Comparison operator
-threshold : float, default=0.0
-    Threshold value
+dimension : int, optional
+    Dimension of the input data, default is 1
+operator : :class:`~openturns.ComparisonOperator`, optional
+    Comparison operator, default is :class:`~openturns.Greater`
+threshold : float, optional
+    Threshold value, default is 0.0
 
 Notes
 -----
