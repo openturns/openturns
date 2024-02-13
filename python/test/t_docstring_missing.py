@@ -38,6 +38,28 @@ for class_ in instanciables:
                 print(f"{class_.__name__}.{attr_name} method")
                 count_methods_undoc += 1
 
+# find all static functions
+for name, mod in inspect.getmembers(ot):
+    if inspect.ismodule(mod):
+        modn = mod.__name__
+        if not modn.startswith("openturns") or modn == "openturns":
+            continue
+        if "_" in modn:
+            continue
+
+        for attr_name in dir(mod):
+            if "_" in attr_name:
+                continue
+            obj = getattr(mod, attr_name)
+
+            if not inspect.isclass(obj) and callable(obj):
+                symboln = f"{modn.split('.')[1]}.{attr_name}"
+                count_methods += 1
+                if obj.__doc__ is None:
+                    count_methods_undoc += 1
+                    print(f"{symboln} method")
+
+
 print(
     f"-- undocumented classes: {count_class_undoc} ({100.0 * count_class_undoc / count_class:.2f}%) --"
 )

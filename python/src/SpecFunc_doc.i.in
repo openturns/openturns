@@ -97,6 +97,25 @@ result : float"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::BesselKDerivative
+"Derivative of the modified second kind Bessel function of order :math:`\nu`.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    \mathrm{K'}_{\nu}(x) = \frac{\mathrm{K}_{\nu-1}(x) + \mathrm{K}_{\nu+1}(x)}{-2}
+
+Parameters
+----------
+nu : float
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::LogBesselK
 "Logarithm of the modified second kind Bessel function of order :math:`\nu`.
 
@@ -112,6 +131,28 @@ SpecFunc.BesselK
 Parameters
 ----------
 nu : float
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::DeltaLogBesselI10
+"Difference between the logarithms of Bessel I1 and I0.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    \mathrm{DeltaLogBesselI10}(x) = \log(\mathrm{I}_1(x)) - \log(\mathrm{I}_0(x))
+
+See also
+--------
+SpecFunc.BesselI0, SpecFunc.BesselI1
+
+Parameters
+----------
 x : float
 
 Returns
@@ -342,6 +383,28 @@ z : float or complex
 Returns
 -------
 result : float or complex (same as z)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Factorial
+"Factorial function.
+
+.. math::
+
+    \forall n \in \Nset, \quad
+    \mathrm{Factorial}(n) = n!
+
+See also
+--------
+SpecFunc.LogFactorial
+
+Parameters
+----------
+n : int
+
+Returns
+-------
+result : float"
 
 // ---------------------------------------------------------------------
 
