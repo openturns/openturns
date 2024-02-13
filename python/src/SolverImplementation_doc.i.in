@@ -1,28 +1,18 @@
 %define OT_Solver_doc
 "SolverImplementation of 1D non linear equations.
 
-Available constructor:
-    SolverImplementation()
-
-    SolverImplementation(*solverImplementation*)
-
-    SolverImplementation(*absError, relError, resError, maximumFunctionEvaluation*)
-
 Parameters
 ----------
-solverImplementation : SolverImplementationImplementation
-    The implementation of a particular solver which is :class:`~openturns.Bisection`,
-    :class:`~openturns.Brent` or :class:`~openturns.Secant`.   
-absError : positive float
+absError : positive float, optional
     Absolute error: distance between two successive iterates at the end point.
     Default is :math:`10^{-5}`.
-relError : positive float
+relError : positive float, optional
     Relative error: distance between the two last successive iterates with
     regards to the last iterate. Default is :math:`10^{-5}`.
-resError : positive float
+resError : positive float, optional
     Residual error: difference between the last iterate value and the expected
     value. Default is :math:`10^{-8}`.
-maximumFunctionEvaluation : int
+maximumFunctionEvaluation : int, optional
     The maximum number of evaluations of the function. Default is :math:`100`.
 
 See also
@@ -167,3 +157,31 @@ nEval : int
 %enddef
 %feature("docstring") OT::SolverImplementation::getCallsNumber
 OT_Solver_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_solve_doc
+"Solve an equation.
+
+Parameters
+----------
+function : :class:`~openturns.Function`
+    The function of the equation :math:`function(x) = value` to be solved in the
+    interval :math:`[infPoint, supPoint]`.
+value : float
+    The value to which the function must be equal.
+infPoint, supPoint : float
+    Lower and upper bounds of the variable :math:`x` range.
+infValue, supValue : float, optional
+    The values such that :math:`infValue = function(infPoint)`,
+    and :math:`supValue = function(supPoint)`.
+    :math:`infValue` must be of opposite sign of :math:`supValue`.
+
+Returns
+-------
+result : float
+    The result of the root research.
+"
+%enddef
+%feature("docstring") OT::SolverImplementation::solve
+OT_Solver_solve_doc
