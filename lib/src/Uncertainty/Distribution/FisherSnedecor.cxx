@@ -112,7 +112,7 @@ void FisherSnedecor::computeRange()
 /* Update the derivative attributes */
 void FisherSnedecor::update()
 {
-  normalizationFactor_ = 0.5 * d1_ * std::log(d1_ / d2_) - SpecFunc::LnBeta(0.5 * d1_, 0.5 * d2_);
+  normalizationFactor_ = 0.5 * d1_ * std::log(d1_ / d2_) - SpecFunc::LogBeta(0.5 * d1_, 0.5 * d2_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -149,9 +149,9 @@ Point FisherSnedecor::computeLogPDFGradient(const Point & point) const
   if (!(x > 0.0)) return logPdfGradient;
   const Scalar d1xd2 = d1_ * x + d2_;
   // First derivate the normlizationFactor as function of d1_, d2_ (see expression above in LogPDF)
-  // As the term is a combinations of LnBeta(d1/2, d2/2) := log(Beta(d1/2, d2/2), dLnBeta = dBeta/Beta
+  // As the term is a combinations of LogBeta(d1/2, d2/2) := log(Beta(d1/2, d2/2), dLogBeta = dBeta/Beta
   // As dBeta(x,y) = B(x,y) * (DiGamma(X) - DiGamma(x+y)) (see  https://en.wikipedia.org/wiki/Beta_function#Derivatives)
-  // it follows that d(LnBeta(x,y)) = dBeta(x,y) / Beta(x,y) = DiGamma(X) - DiGamma(x+y)
+  // it follows that d(LogBeta(x,y)) = dBeta(x,y) / Beta(x,y) = DiGamma(X) - DiGamma(x+y)
   // Rest is very easy to derivate
   logPdfGradient[0] = 0.5 * ( std::log(d1_ * x / d1xd2) + 1.0 - SpecFunc::DiGamma(0.5 * d1_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) - (d1_ + d2_) * x / d1xd2);
   logPdfGradient[1] = 0.5 * (-d1_  / d2_ - SpecFunc::DiGamma(0.5 * d2_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) - log1p(d1_ * x / d2_) + (d1_  + d2_) * (d1_ * x  / d2_) / d1xd2);

@@ -113,8 +113,6 @@ OT_API Scalar RegularizedIncompleteBetaInverse(const Scalar a,
     const Scalar x,
     const Bool tail = false);
 // Natural logarithm of the beta function
-OT_API Scalar LnBeta(const Scalar a,
-                     const Scalar b);
 OT_API Scalar LogBeta(const Scalar a,
                       const Scalar b);
 // Dawson function: Dawson(x) = \exp(-x^2) * \int_0^x \exp(t^2) dt

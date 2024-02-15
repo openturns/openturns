@@ -123,7 +123,7 @@ void Beta::update()
 {
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  normalizationFactor_ = (1.0 - (alpha_ + beta_)) * std::log(b_ - a_) - SpecFunc::LnBeta(alpha_, beta_);
+  normalizationFactor_ = (1.0 - (alpha_ + beta_)) * std::log(b_ - a_) - SpecFunc::LogBeta(alpha_, beta_);
 }
 
 

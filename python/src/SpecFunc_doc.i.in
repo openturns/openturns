@@ -201,28 +201,6 @@ result : float"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpecFunc::LnBeta
-"Logarithm of the Beta function.
-
-.. math::
-
-    \forall (a, b) > 0,\quad
-    LnBeta(a, b) = \ln (\mathrm{B}(a, b)) = \log (\mathrm{B}(a, b))
-
-See also
---------
-SpecFunc.Beta
-
-Parameters
-----------
-a, b : float :math:`\in \Rset^*_+`
-
-Returns
--------
-result : float"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SpecFunc::IncompleteBeta
 "Incomplete Beta function.
 
