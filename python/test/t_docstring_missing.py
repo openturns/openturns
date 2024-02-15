@@ -1,22 +1,24 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import inspect
 
 ot.TESTPREAMBLE()
 
 # find all instanciable classes
 instanciables = []
-for name, obj in inspect.getmembers(ot):
-    if inspect.isclass(obj):
-        cn = obj.__name__
-        if "_" in cn:
-            continue
-        try:
-            instance = obj()
-            instanciables.append(obj)
-        except Exception:
-            pass
+for mod in [ot, otexp]:
+    for name, obj in inspect.getmembers(mod):
+        if inspect.isclass(obj):
+            cn = obj.__name__
+            if "_" in cn:
+                continue
+            try:
+                instance = obj()
+                instanciables.append(obj)
+            except Exception:
+                pass
 
 # find missing docstrings
 count_class = 0
