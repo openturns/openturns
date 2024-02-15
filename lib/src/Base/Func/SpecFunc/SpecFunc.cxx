@@ -355,8 +355,8 @@ Scalar SpecFunc::BesselKDerivative(const Scalar nu,
 #endif
 }
 
-// LnBeta function: LnBeta(a, b) = \log(Beta(a, b))
-Scalar SpecFunc::LnBeta(const Scalar a,
+// LogBeta function: LogBeta(a, b) = \log(Beta(a, b))
+Scalar SpecFunc::LogBeta(const Scalar a,
                         const Scalar b)
 {
   const Scalar first = std::min(a, b);
@@ -393,18 +393,11 @@ Scalar SpecFunc::LnBeta(const Scalar a,
   return LogGamma(first) + correctionSecond - correctionSum + first * (1.0 - std::log(sum)) + (second - 0.5) * log1p(-first / sum);
 }
 
-// LogBeta = LnBeta
-Scalar SpecFunc::LogBeta(const Scalar a,
-                         const Scalar b)
-{
-  return LnBeta(a, b);
-}
-
 // Beta function: Beta(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
 Scalar SpecFunc::Beta(const Scalar a,
                       const Scalar b)
 {
-  return std::exp(LnBeta(a, b));
+  return std::exp(LogBeta(a, b));
 }
 
 // Incomplete Beta function: BetaInc(a, b, x) = \int_0^x t^{a-1}(1-t)^{b-1} dt

@@ -336,7 +336,7 @@ Scalar BPSER(const Scalar a,
   if (x == 0.0) return 0.0;
   const Scalar pMin = std::min(a, b);
   Scalar value = 0.0;
-  if (pMin >= 1.0) value = exp(a * log(a) - SpecFunc::LnBeta(a, b)) / a;
+  if (pMin >= 1.0) value = exp(a * log(a) - SpecFunc::LogBeta(a, b)) / a;
   else
   {
     const Scalar pMax = std::max(a, b);

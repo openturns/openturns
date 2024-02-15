@@ -241,7 +241,6 @@ as Python functions.
     SpecFunc.IRoot
     SpecFunc.IsNormal
     SpecFunc.LambertW
-    SpecFunc.LnBeta
     SpecFunc.Log1MExp
     SpecFunc.Log1p
     SpecFunc.Log2

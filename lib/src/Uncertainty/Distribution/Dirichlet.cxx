@@ -309,7 +309,7 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   const Scalar r = theta_[conditioningDimension];
   Scalar s = sumTheta_ - r;
-  if (conditioningDimension == 0) return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(x) + (s - 1.0) * log1p(-x));
+  if (conditioningDimension == 0) return std::exp(- SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(x) + (s - 1.0) * log1p(-x));
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
@@ -321,7 +321,7 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   s -= sumThetaConditioning;
   const Scalar z = x / (1.0 - sumY);
   if (z <= 0.0 || z >= 1.0) return 0.0;
-  return std::exp(-SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+  return std::exp(-SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
 }
 
 Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
@@ -333,7 +333,7 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
   Scalar r = theta_[0];
   Scalar s = sumTheta_ - r;
   Scalar z = x[0];
-  result[0] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z));
+  result[0] = std::exp(- SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z));
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
   {
     sumY += x[conditioningDimension - 1];
@@ -342,7 +342,7 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
     r = theta_[conditioningDimension];
     z = x[conditioningDimension] / (1.0 - sumY);
     if (z <= 0.0 || z >= 1.0) break;
-    result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+    result[conditioningDimension] = std::exp(- SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
   }
   return result;
 }
