@@ -2,6 +2,7 @@
 
 import inspect
 import openturns as ot
+import openturns.experimental as otexp
 from pathlib import Path
 import re
 
@@ -18,20 +19,21 @@ for rst_file in rst_files:
 
 # find all instanciable classes
 instanciables = []
-for name, obj in inspect.getmembers(ot):
-    if inspect.isclass(obj):
-        cn = obj.__name__
-        if (
-            cn.startswith("_")
-            or cn.endswith("Collection")
-            or cn.endswith("Implementation")
-        ):
-            continue
-        try:
-            instance = obj()
-            instanciables.append(obj)
-        except Exception:
-            pass
+for mod in [ot, otexp]:
+    for name, obj in inspect.getmembers(mod):
+        if inspect.isclass(obj):
+            cn = obj.__name__
+            if (
+                cn.startswith("_")
+                or cn.endswith("Collection")
+                or cn.endswith("Implementation")
+            ):
+                continue
+            try:
+                instance = obj()
+                instanciables.append(obj)
+            except Exception:
+                pass
 
 # find missing docstrings
 count_class = 0
