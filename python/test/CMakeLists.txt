@@ -109,7 +109,7 @@ endif ()
 ot_pyinstallcheck_test (DatabaseFunction_std)
 ot_pyinstallcheck_test (Function_operations)
 ot_pyinstallcheck_test (ParametricFunction_std)
-
+ot_pyinstallcheck_test (IdentityFunction_std IGNOREOUT)
 ot_pyinstallcheck_test (Function_draw)
 ot_pyinstallcheck_test (MemoizeFunction_std)
 ot_pyinstallcheck_test (AggregatedEvaluation_std)
