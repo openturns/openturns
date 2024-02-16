@@ -804,22 +804,7 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
     x0[shift + xiIndices.find(constantCovariateIndex)] = initialGuess[2];
 
   LOGINFO(OSS(false) << "Starting points for the coefficients=" << x0);
-  // heuristic for feasible mu
-  const UnsignedInteger maxIter = ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber");
-  const Scalar rho = ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor");
 
-  if (muIndices.contains(constantCovariateIndex))
-  {
-    Point value(evaluation(x0));
-    UnsignedInteger k = 0;
-    while (((value[1] <= 0.0) || (value[2] <= 0.0)) && (k < maxIter))
-    {
-      x0[muIndices.find(constantCovariateIndex)] *= rho;
-      value = evaluation(x0);
-      ++ k;
-    }
-    LOGINFO(OSS(false) << "Starting points for the coefficients=" << x0);
-  }
   // Now take into account the initial log-likelihood in order to work on the log-likelihood improvement during the optimization step
   // It gives a more robust stopping criterion
   const Scalar startingValue = -evaluation(x0)[0];
