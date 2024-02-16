@@ -1112,8 +1112,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralizedExtremeValueFactory parameters //
   addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumCallsNumber", 10000);
-  addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
-  addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumAbsoluteError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
