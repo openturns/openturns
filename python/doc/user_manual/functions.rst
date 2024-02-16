@@ -40,6 +40,7 @@ Algebra of functions
     :template: class.rst_t
     DistanceToDomainFunction
     DualLinearCombinationFunction
+    IdentityFunction
 
     :template: classWithPlot.rst_t
     IndicatorFunction
