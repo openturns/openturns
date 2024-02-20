@@ -26,6 +26,9 @@
 #include "openturns/Normal.hxx"
 #include "openturns/GeneralizedExtremeValueValidation.hxx"
 #include "openturns/GeneralizedExtremeValue.hxx"
+#include "openturns/GeneralizedParetoValidation.hxx"
+#include "openturns/GeneralizedPareto.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -159,32 +162,69 @@ Graph TimeVaryingResult::drawQuantileFunction(const Scalar p) const
 
 GridLayout TimeVaryingResult::drawDiagnosticPlot() const
 {
-  // see eq 6.6 in coles2001 paragraph 6.2.3 p110
   const UnsignedInteger size = timeGrid_.getSize();
-  Sample zT(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Scalar t = timeGrid_(i, 0);
-    const Point parameters(parameterFunction_(Point({t})));
-    const Scalar mu = parameters[0];
-    const Scalar sigma = parameters[1];
-    const Scalar xi = parameters[2];
-    zT(i, 0) = 1.0 / xi * std::log1p(xi * (data_(i, 0) - mu) / sigma);
-  }
   const Normal dummy(3);
-  const DistributionFactoryResult factoryResult(GeneralizedExtremeValue(0.0, 1.0, 0.0), dummy);
-  const GeneralizedExtremeValueValidation validation(factoryResult, zT);
-  GridLayout grid(validation.drawDiagnosticPlot());
+  Distribution standard;
+  const String distributionType = factory_.build().getName();
+  String standardType;
+  if (distributionType == "GeneralizedExtremeValue")
+  {
+    standard = GeneralizedExtremeValue(0.0, 1.0, 0.0);
+    standardType = "Gumbel";
+  }
+  else if (distributionType == "GeneralizedPareto")
+  {
+    standard = GeneralizedPareto(1.0, 0.0, 0.0);
+    standardType = "Exponential";
+  }
+  else
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult expected GEV or GPD, got" << distributionType;
+
+  const DistributionFactoryResult factoryResult(standard, dummy);
+  GridLayout grid;
+  if (distributionType == "GeneralizedExtremeValue")
+  {
+    // see eq 6.6 in coles2001 paragraph 6.2.3 p110
+    Sample zT(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Scalar t = timeGrid_(i, 0);
+      const Point parameters(parameterFunction_(Point({t})));
+      const Scalar mu = parameters[0];
+      const Scalar sigma = parameters[1];
+      const Scalar xi = parameters[2];
+      zT(i, 0) = 1.0 / xi * std::log1p(xi * (data_(i, 0) - mu) / sigma);
+    }
+    const GeneralizedExtremeValueValidation validation(factoryResult, zT);
+    grid = validation.drawDiagnosticPlot();
+  }
+  else if (distributionType == "GeneralizedPareto")
+  {
+    // see coles2001 paragraph 6.2.3 p111
+    Sample yT(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Scalar t = timeGrid_(i, 0);
+      const Point parameters(parameterFunction_(Point({t})));
+      const Scalar sigma = parameters[0];
+      const Scalar xi = parameters[1];
+      const Scalar u = parameters[2];
+      yT(i, 0) = 1.0 / xi * std::log1p(xi * (data_(i, 0) - u) / sigma);
+    }
+    const GeneralizedParetoValidation validation(factoryResult, yT);
+    grid = validation.drawDiagnosticPlot();
+  }
+
   // Now adapt the axes titles and the legend
   Graph ppPlot(grid.getGraph(0, 0));
-  ppPlot.setYTitle("Gumbel probability");
+  ppPlot.setYTitle(standardType + " probability");
   grid.setGraph(0, 0, ppPlot);
   Graph qqPlot(grid.getGraph(0, 1));
-  qqPlot.setYTitle("Gumbel quantile");
+  qqPlot.setYTitle(standardType + " quantile");
   grid.setGraph(0, 1, qqPlot);
   Graph densityPlot(grid.getGraph(1, 1));
   Description legends(densityPlot.getLegends());
-  legends[0] = "Gumbel PDF";
+  legends[0] = standardType + " PDF";
   densityPlot.setLegends(legends);
   grid.setGraph(1, 1, densityPlot);
   return grid;
