@@ -86,8 +86,8 @@ Create data from the ones stored in the study:
 
 Get information from the study:
 
->>> myStudy.printLabels()
-'point;simulationResult'
+>>> myStudy.getLabels()
+('point', 'simulationResult')
 
 Remove data:
 
@@ -227,13 +227,13 @@ hasObject : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Study::printLabels
-"Print all the names of the objects stored in the study.
+%feature("docstring") OT::Study::getLabels
+"Accessor to the labels of the stored objects.
 
 Returns
 -------
-names : str
-    Names of the objects stored in the study."
+labels : tuple of str
+    Labels of the objects stored in the study."
 
 // ---------------------------------------------------------------------
 

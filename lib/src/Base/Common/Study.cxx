@@ -417,4 +417,12 @@ String Study::printLabels() const
   return oss;
 }
 
+std::vector<String> Study::getLabels() const
+{
+  std::vector<String> labels;
+  for(LabelMap::const_iterator it = labelMap_.begin(); it != labelMap_.end(); ++it)
+    labels.push_back(it->first);
+  return labels;
+}
+
 END_NAMESPACE_OPENTURNS
