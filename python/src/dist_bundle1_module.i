@@ -16,6 +16,7 @@
 %include OTexceptions.i
 %include std_vector.i
 
+%include BaseTypCollection.i
 %include BaseFuncCollection.i
 %import base_module.i
 %import model_copula_module.i
