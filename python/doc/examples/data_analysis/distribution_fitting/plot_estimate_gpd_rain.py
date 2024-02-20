@@ -27,6 +27,16 @@ ot.Log.Show(ot.Log.INFO)
 # First, we load the Rain dataset. We start by looking at it through time.
 sample = coles.Coles().rain
 print(sample[:10])
+graph = ot.Graph(
+    "Daily rainfall accumulations SW England", "day", "level (mm)", True, ""
+)
+days = ot.Sample([[i] for i in range(len(sample))])
+cloud = ot.Cloud(days, sample)
+cloud.setColor("red")
+cloud.setPointStyle(",")
+graph.add(cloud)
+graph.setIntegerXTick(True)
+view = otv.View(graph)
 
 # %%
 # Draw the mean residual life plot
@@ -163,10 +173,10 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 # the observation period.
 #
 # We have to define the functional basis for each parameter of the GPD model. Even if we have
-# the possibility to affect a time-varying model to each of the 3 parameters :math:`(\sigma, \xi)`,
+# the possibility to affect a time-varying model to each of the 2 parameters :math:`(\sigma, \xi)`,
 # it is strongly recommended not to vary the parameter :math:`\xi`.
 #
-# We suppose that :math:`\mu` is linear with time, and that the other parameters remain constant.
+# We suppose that :math:`\sigma` is linear with time, and that the other parameters remain constant.
 #
 # For numerical reasons, it is strongly recommended to normalize all the data as follows:
 #
@@ -185,16 +195,15 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 #     :nowrap:
 #
 #     \begin{align*}
-#       \mu(t) & = \beta_1 + \beta_2\tau(t) \\
-#       \sigma(t) & = \beta_3 \\
-#       \xi(t) & = \beta_4
+#       \sigma(t) & = \beta_1 + \beta_2\tau(t) \\
+#       \xi(t) & = \beta_3
 #     \end{align*}
 #
 constant = ot.SymbolicFunction(["t"], ["1.0"])
-basis = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
+basis = ot.Basis([ot.SymbolicFunction(["t"], ["t"]), constant])
 # basis for mu, sigma, xi
 sigmaIndices = [0, 1]  # linear
-xiIndices = [0]  # stationary
+xiIndices = [1]  # stationary
 
 # %%
 # We need to get the time stamps (in days here).
@@ -250,31 +259,45 @@ functionTheta = result_NonStatLL.getParameterFunction()
 # stationary model does not really improve the quality of the modeling.
 print("Max log-likelihood: ")
 print("Stationary model =  ", result_LL.getLogLikelihood())
-print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood())
+print("Non stationary linear sigma(t) model =  ", result_NonStatLL.getLogLikelihood())
 
 # %%
-# We can draw the mean function  :math:`t \mapsto \Expect{\mbox{GPD}(t)}`. Be careful, it is not the function
-# :math:`t \mapsto \mu(t)`. As a matter of fact, the mean is defined for :math:`\xi <1` only and in that case,
-# for :math:`\xi \neq 0`, we have:
+# In order to draw some diagnostic plots similar to those drawn in the stationary case, we refer to the
+# following result: if :math:`Y_t` is a non stationary GPD model parametrized by :math:`(\sigma(t), \xi(t), u)`,
+# then the standardized variables :math:`\hat{Y}_t` defined by:
 #
 # .. math::
-#     \Expect{\mbox{GPD}(t)} = \mu(t) + \dfrac{\sigma(t)}{\xi(t)} (\Gamma(1-\xi(t))-1)
 #
-# and for :math:`\xi = 0`, we have:
+#    \hat{Y}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Y_t-u}{\sigma(t)} \right)\right]
+#
+# have the Exponential distribution which is the GPD model with :math:`(\sigma, \xi, u) = (1, 0, 0)`.
+#
+# As a result, we can validate the inference result thanks the 4 usual diagnostic plots:
+#
+# - the probability-probability pot,
+# - the quantile-quantile pot,
+# - the return level plot,
+# - the data histogram and the density of the fitted model.
+#
+# using the transformed data compared to the Exponential model. We can see that the adequation seems similar to the graph
+# of the stationary model.
+graph = result_NonStatLL.drawDiagnosticPlot()
+view = otv.View(graph)
+
+# %%
+# We can draw the mean function :math:`t \mapsto \Expect{\mbox{GPD}(t)}`, defined for :math:`\xi <1` only:
 #
 # .. math::
-#     \Expect{\mbox{GPD}(t)} = \mu(t) + \sigma(t)\gamma
-#
-# where :math:`\gamma` is the Euler constant.
+#     \Expect{\mbox{GPD}(t)} = u + \dfrac{\sigma(t)}{1 - \xi(t)}
 #
 # We can also draw the function :math:`t \mapsto q_p(t)` where :math:`q_p(t)` is the quantile of
 # order :math:`p` of the GPD distribution at time :math:`t`.
-# Here, :math:`\mu(t)` is a linear function and the other parameters are constant, so the mean and the quantile
+# Here, :math:`\sigma(t)` is a linear function and the other parameters are constant, so the mean and the quantile
 # functions are also linear functions.
 graph = ot.Graph(
     r"Maximum rain - Linear $\sigma(t)$",
     "day",
-    "level (m)",
+    "level (mm)",
     True,
     "",
 )
@@ -295,7 +318,7 @@ drawQuant = graphQuantile.getDrawable(0)
 drawQuant = graphQuantile.getDrawable(0)
 drawQuant.setLineStyle("dashed")
 graph.add(drawQuant)
-graph.setLegends(["data", "mean function", "quantile 0.95  function"])
+graph.setLegends(["data", "mean function", "quantile 0.95 function"])
 graph.setLegendPosition("lower right")
 view = otv.View(graph)
 

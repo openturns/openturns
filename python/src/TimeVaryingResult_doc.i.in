@@ -200,16 +200,33 @@ If :math:`Z_t` is a non stationary GEV model defined as follows:
 .. math::
 
     Z_t \sim \mbox{GEV}(\mu(t), \sigma(t), \xi(t))
-    
+
 then the standardized variables :math:`\hat{Z}_t` defined by:
 
 .. math::
 
     \hat{Z}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right]
 
-have  the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
+have the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
 
-Then, the 4 diagnostic graphs are built from the transformed data compared to the Gumbel model: the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the Gumbel distribution.
+
+Similarly for the GPD case we assume :math:`Y_t` is a non stationary GPD model defined as follows:
+
+.. math::
+
+    Y_t \sim \mbox{GPD}(\sigma(t), \xi(t), u)
+
+then the standardized variables :math:`\hat{Y}_t` defined by:
+
+.. math::
+
+    \hat{Y}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Y_t-u}{\sigma(t)} \right)\right]
+
+have the Exponential distribution which is the GPD model with :math:`(\sigma, \xi, u) = (1, 0, 0)`.
+
+
+Then, the 4 diagnostic graphs are built from the transformed data compared to the Gumbel or Exponential model:
+the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the Gumbel/Exponential distribution.
 
 If :math:`(\hat{z}_{(1)}, \dots, \hat{z}_{(n)})` denotes the ordered block maximum transformed data, the graphs are defined as follows.
 
@@ -217,7 +234,6 @@ The *probability-probability* plot consists of the points:
 
 .. math::
     \left\{ \left( i/(n+1),\exp (-\exp (-\hat{z}_{(i)})) \right), i=1, \dots , n\right\}
-
 
 The *quantile-quantile* plot consists of the points:
 
@@ -235,7 +251,7 @@ and the points:
     \left\{ \left( m, \hat{z}_{m}^{emp}\right), m> 0\right\}
 
 where :math:`\hat{z}_{m}^{emp}` is the empirical :math:`m`-block return level of the transformed data and :math:`\hat{z}_{m}` the 
-:math:`m`-block return level of the Gumbel distribution.
+:math:`m`-block return level of the Gumbel/Exponential distribution.
 
 Returns
 -------
