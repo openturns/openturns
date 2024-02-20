@@ -288,7 +288,7 @@ print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood
 #
 #    \hat{Z}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right]
 #
-# have  the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
+# have the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
 #
 # As a result, we can validate the inference result thanks the 4 usual diagnostic plots:
 #
@@ -345,7 +345,7 @@ drawQuant = graphQuantile.getDrawable(0)
 drawQuant = graphQuantile.getDrawable(0)
 drawQuant.setLineStyle("dashed")
 graph.add(drawQuant)
-graph.setLegends(["data", "mean function", "quantile 0.95  function"])
+graph.setLegends(["data", "mean function", "quantile 0.95 function"])
 graph.setLegendPosition("lower right")
 view = otv.View(graph)
 
