@@ -21,7 +21,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
-ot.Log.Show(ot.Log.INFO)
 
 # %%
 # First, we load the Rain dataset. We start by looking at it through time.

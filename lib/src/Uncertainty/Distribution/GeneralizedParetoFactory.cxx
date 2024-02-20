@@ -297,7 +297,7 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
     throw InvalidArgumentException(HERE) << "Can only draw mean residual life from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   const Scalar uMin = sample.getMin()[0];
-  const Scalar uMax = sample.getMax()[0] - 1.0;
+  const Scalar uMax = sample.getMax()[0];
   const UnsignedInteger pointsNumber = ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber");
   Sample u(pointsNumber, 1);
   Sample mrl(pointsNumber, 1);
@@ -308,7 +308,7 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   const Sample sortedSample(sample.sort(0));
   for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
   {
-    u(i, 0) = uMin + i * (uMax - uMin) / (pointsNumber - 1);
+    u(i, 0) = uMin + i * (uMax - uMin) / (pointsNumber + 1);
 
     // rebuild the sample Xi|Xi>u (no sorting)
     Sample xu(0, 1);
@@ -372,7 +372,7 @@ public:
     Point value(1);
     if (sigma <= 0.0)
     {
-      value[0] = -std::log(SpecFunc::MaxScalar);
+      value[0] = -std::log(SpecFunc::ActualMaxScalar);
       return value;
     }
     Scalar ll = 0.0;
@@ -391,7 +391,7 @@ public:
           const Scalar c1 = xi * zi / sigma;
           if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::MaxScalar);
+            ll += -std::log(SpecFunc::ActualMaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c1);
@@ -560,7 +560,7 @@ public:
         z.add(Point(1, sample_(i, 0) - u_));
 
     if (z.getSize() < 2)
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
 
     const Scalar sigma0 = std::sqrt(6.0 * z.computeCovariance()(0, 0)) / M_PI;
 
@@ -577,7 +577,7 @@ public:
     }
     catch (const Exception & ex)
     {
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
     }
   }
 
@@ -626,9 +626,8 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildMethodOfXiProfileLikeliho
   optimalParameter.add(u);
 
   const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
-//   Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
-//   parameterDistribution.setDescription({"sigma", "xi", "u"});
-  Distribution parameterDistribution(Normal(3));
+  Distribution parameterDistribution(MaximumLikelihoodFactory::BuildGaussianEstimator(distribution, sample));
+  parameterDistribution.setDescription({"sigma", "xi", "u"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
   // Compute the extreme possible values for xi given the sample and (mu, sigma)
   /*
@@ -1542,6 +1541,50 @@ GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(co
 {
   const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, u, m).getDistribution());
   return buildAsGeneralizedPareto(distribution.getParameter());
+}
+
+
+Sample GeneralizedParetoFactory::getPeakOverThresholdWithClusters(const Sample sample, const Scalar threshold, const UnsignedInteger r,
+                                                                  Collection<Indices> & clusters) const
+{
+  if (r == 0)
+    throw InvalidArgumentException(HERE) << "GeneralizedParetoFactory minimum cluster gap should be > 0";
+  const UnsignedInteger size = sample.getSize();
+  clusters.clear();
+  Sample peaks(0, 1);
+  UnsignedInteger streak = 0; // number of consecutive values below threshold
+  UnsignedInteger begin = 0; // cluster beginning index
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    if (sample(i, 0) > threshold)
+      streak = 0;
+    else
+      ++ streak;
+
+    // check if a cluster ends
+    if ((streak == r) || (i + 1 == size))
+    {
+      Indices selection(i - begin + 1);
+      selection.fill(begin);
+      const Point peak = sample.select(selection).getMax();
+      // keep only clusters with values above threshold
+      if (peak[0] > threshold)
+      {
+        peaks.add(peak);
+        const UnsignedInteger end = (streak == r) ? i - r + 1 : size;
+        clusters.add(Indices({begin, end}));
+      }
+      begin = i + 1; // reset cluster
+      streak = 0;
+    }
+  }
+  return peaks;
+}
+
+Sample GeneralizedParetoFactory::getPeakOverThreshold(const Sample sample, const Scalar threshold, const UnsignedInteger r) const
+{
+  Collection<Indices> clusters;
+  return getPeakOverThresholdWithClusters(sample, threshold, r, clusters);
 }
 
 END_NAMESPACE_OPENTURNS
