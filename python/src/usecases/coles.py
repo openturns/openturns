@@ -13,16 +13,18 @@ class Coles:
 
     Attributes
     ----------
-    portpirie : :class:`~openturns.Sample`
+    dowjones : :class:`~openturns.Sample`
+        Dow Jones Index dataset
+    fremantle : :class:`~openturns.Sample`
         Sea levels dataset
-    venice : :class:`~openturns.Sample`
+    portpirie : :class:`~openturns.Sample`
         Sea levels dataset
     racetime : :class:`~openturns.Sample`
         Race time dataset
-    fremantle : :class:`~openturns.Sample`
-        Sea levels dataset
     rain : :class:`~openturns.Sample`
         Daily rainfall dataset
+    venice : :class:`~openturns.Sample`
+        Sea levels dataset
     wavesurge : :class:`~openturns.Sample`
         Wave and surge heights dataset
     wind : :class:`~openturns.Sample`
@@ -40,6 +42,7 @@ class Coles:
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         for name in [
+            "dowjones",
             "portpirie",
             "venice",
             "racetime",
@@ -50,5 +53,9 @@ class Coles:
             "wooster",
         ]:
             fn = os.path.join(current_dir, name + ".csv")
-            dataset = ot.Sample.ImportFromCSVFile(fn, ",")
+            if name in ["wooster"]:
+                # cannot read sample with date column
+                dataset = fn
+            else:
+                dataset = ot.Sample.ImportFromCSVFile(fn, ",")
             setattr(self, name, dataset)
