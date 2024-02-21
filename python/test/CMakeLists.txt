@@ -65,7 +65,6 @@ if (LIBXML2_FOUND)
 endif ()
 ot_pyinstallcheck_test (Path_std IGNOREOUT)
 ot_pyinstallcheck_test (ResourceMap_std IGNOREOUT)
-ot_pyinstallcheck_test (Catalog_std IGNOREOUT)
 
 # Type
 ot_pyinstallcheck_test (Collection_std)
