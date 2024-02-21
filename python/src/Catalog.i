@@ -4,9 +4,6 @@
 #include "openturns/Catalog.hxx"
 %}
 
+%ignore OT::Catalog;
+
 %include openturns/Catalog.hxx
-namespace OT {  
-%extend Catalog {
-  const String __str__() const { return self->__repr__(); }
-}
-}
