@@ -60,7 +60,7 @@ public:
   /**
    * The numerical precision used to write out scientific numbers
    */
-  static const int Precision_;
+  static UnsignedInteger GetNumericalPrecision();
 
   /**
    * Constructor for a XML StorageManager that reads/writes
@@ -241,6 +241,10 @@ private:
   /** The compression level for the XML export */
   UnsignedInteger compressionLevel_;
 
+  /**
+   * The numerical precision used to write out scientific numbers
+   */
+  static const UnsignedInteger Precision_;
 }; /* class XMLStorageManager */
 
 #ifndef SWIG
