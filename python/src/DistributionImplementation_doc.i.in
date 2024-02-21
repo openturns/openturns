@@ -212,7 +212,7 @@ Conditional quantile with respect to the other fixed components.
 
 Parameters
 ----------
-p : float, sequence of float, :math:`0 < p < 1`
+p : float, sequence of float, :math:`p \in [0; 1]`
     Conditional quantile function input.
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
     Conditioning values for the other components.
@@ -623,25 +623,37 @@ OT_Distribution_computeProbability_doc
 
 Parameters
 ----------
-p : float (or sequence of float), :math:`0 < p < 1`
-    Quantile function input (a probability).
+p : float (or sequence of float), :math:`p \in [0; 1]`
+    A probability.
 tail : bool, optional (default=False)
     Whether p should be interpreted as the complementary probability.
 
 Returns
 -------
-X : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
-    Quantile at probability level :math:`p`.
+xp : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
+    Quantile of order :math:`p`.
 
 Notes
 -----
-The quantile function is also known as the inverse cumulative distribution
-function:
+If the underlying variable :math:`X` is scalar, then the quantile of order :math:`p` denoted by :math:`x_p`,
+is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-    Q_{\vect{X}}(p) = F_{\vect{X}}^{-1}(p),
-                      \quad p \in [0; 1]"
+    x_p = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \},
+                      \quad p \in [0; 1]
+                      
+If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension greater than :math:`d>1`, then
+the quantile of order :math:`p` denoted by :math:`\vect{x}_p`, is such that:
+
+.. math::
+
+    F_{\vect{X}}(\vect{x}_p) = p
+    F_{X_i}(\vect{x}_{p,i} = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+
+where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
+is such that all the components are associated to the same order of quantile of their marginal.
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeQuantile
 OT_Distribution_computeQuantile_doc
@@ -683,22 +695,23 @@ OT_Distribution_computeRadialDistributionCDF_doc
 
 Parameters
 ----------
-p : float, :math:`0 < p < 1`
-    Quantile function input (a probability).
+p : float, :math:`p \in [0; 1]`
+    A probability.
 
 Returns
 -------
-X : float
-    Quantile at probability level :math:`p`.
+xp : float
+    Quantile of order :math:`p`.
 
 Notes
 -----
-The quantile function is also known as the inverse cumulative distribution
-function:
+The quantile of order :math:`p` denoted by :math:`x_p`,
+is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-    Q_X(p) = F_X^{-1}(p), \quad p \in [0; 1]
+    x_p = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \},
+                      \quad p \in [0; 1]
 
 See Also
 --------
