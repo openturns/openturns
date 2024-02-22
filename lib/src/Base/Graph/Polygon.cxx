@@ -189,7 +189,7 @@ Polygon Polygon::FillBetween(Point const& dataX, Point const& dataY1, Point cons
     dataFull(i + size, 0) = dataX[size - i - 1];
     dataFull(i + size, 1) = dataY2[size - i - 1];
   }
-  Polygon polygon = Polygon(dataFull);
+  Polygon polygon(dataFull);
   polygon.setLineWidth(0); // To only draw between the curves
   return polygon;
 }

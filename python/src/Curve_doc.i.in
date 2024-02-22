@@ -12,7 +12,7 @@ Parameters
 ----------
 data : 2-d sequence of float
     Points from which the curve is built.
-dataX, dataY : two 2-d sequences of floats of dimension 1, or two sequences of floats
+dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
     Points from which the curve is built.
 legend : str
     Legend of the Curve.

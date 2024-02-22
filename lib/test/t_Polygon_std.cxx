@@ -76,13 +76,9 @@ int main(int, char *[])
 
     // Fill below the start of the second curve
     size = 10;
-    Point y1(size), y2(size), x(size);
-    for (UnsignedInteger i = 0; i < size; i++)
-    {
-      x[i] = data2[i][0];
-      y1[i] = data2[0][1];
-      y2[i] = data2[i][1];
-    }
+    Point x(data2.getMarginal(0).asPoint());
+    Point y1(size, data2[0][1]);
+    Point y2(data2.getMarginal(1).asPoint());
     Polygon polygon = Polygon::FillBetween(x, y1, y2);
     myGraph.add(polygon);
 
