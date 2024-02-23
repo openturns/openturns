@@ -75,3 +75,7 @@ distribution = ot.Binomial(10, 1.0)
 assert distribution.computeCDF(10.0) == 1.0
 assert distribution.computeComplementaryCDF(10.0) == 0.0
 assert distribution.computeSurvivalFunction(10.0) == 0.0
+
+# negative quantile bug
+distribution = ot.Binomial(3, 0.5)
+assert distribution.computeScalarQuantile(0.9, True) == 0
