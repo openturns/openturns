@@ -14,8 +14,7 @@ Select fitted distributions
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -24,7 +23,7 @@ ot.Log.Show(ot.Log.NONE)
 distribution = ot.Beta(2.0, 2.0, 0.0, 1.0)
 sample = distribution.getSample(1000)
 graph = ot.UserDefined(sample).drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # **1. Specify the model only**
@@ -86,7 +85,7 @@ ot.FittingTest.BestModelAICC(sample, distributions)
 distribution = ot.Poisson(2.0)
 sample = distribution.getSample(1000)
 graph = ot.UserDefined(sample).drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create the list of distribution estimators
@@ -94,6 +93,7 @@ distributions = [ot.Poisson(2.0), ot.Geometric(0.1)]
 
 # %%
 # Rank the discrete models wrt the ChiSquared p-values:
+ot.ResourceMap.SetAsBool("FittingTest-ChiSquaredCheckSample", False)
 estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(
     sample, distributions
 )
@@ -102,4 +102,8 @@ test_result
 # %%
 # Rank the discrete models wrt the BIC criteria:
 ot.FittingTest.BestModelBIC(sample, distributions)
-plt.show()
+otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()
