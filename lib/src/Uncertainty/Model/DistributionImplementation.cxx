@@ -2357,7 +2357,7 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: lower=" << lower << ", upper=" << upper);
   if (prob < 0.0) return (tail ? upper : lower);
   if (prob >= 1.0) return (tail ? lower : upper);
-  const Scalar q = tail ? 1.0 - prob : prob;
+  const Scalar p = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
   const Function f(bindMethod<CDFWrapper, Point, Point>(wrapper, &CDFWrapper::computeCDF, 1, 1));
   const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::ActualMaxScalar : lower);
@@ -2365,8 +2365,16 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar rightTau = (std::isinf(upper) ? SpecFunc::ActualMaxScalar : upper);
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-  const Scalar root = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
+  Scalar root = solver.solve(f, p, leftTau, rightTau, leftCDF, rightCDF);
   LOGDEBUG(OSS() << "root=" << root);
+
+  // special case non strictly increasing CDF: retain the inf of the interval veryfing F(x)=p
+  if (computeCDF(root - quantileEpsilon_) == prob)
+  {
+    solver.setResidualError(0.5 * cdfEpsilon_);
+    root = solver.solve(f, p - cdfEpsilon_, leftTau, root, leftCDF, prob);
+    LOGDEBUG(OSS() << "inf root=" << root);
+  }
   return root;
 } // computeScalarQuantile
 
