@@ -92,7 +92,7 @@ Geometric * Geometric::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Geometric::computeRange()
 {
-  const Point lowerBound(1, 0.0);
+  const Point lowerBound({1.0});
   const Point upperBound(DistributionImplementation::computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
