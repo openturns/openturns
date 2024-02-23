@@ -469,7 +469,7 @@ void KarhunenLoeveP1Algorithm::run()
               eigenVectors.getImplementation()->begin() + (k + 1)*augmentedDimension,
               a.begin());
 
-    const Point Ga(G * a);                                                  // TODO: useful?
+    const Point Ga(G * a);
     const Scalar norm = std::sqrt(a.dot(Ga));
     const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Store the eigen modes in two forms
@@ -487,7 +487,7 @@ void KarhunenLoeveP1Algorithm::run()
     }
 
     // Build the relevant row of the projection matrix
-    const Point b(Ga * (factor / sqrt(selectedEV[k])));
+    const Point b(Ga * (factor / std::sqrt(selectedEV[k])));
     for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
       projection(k, i) = b[i];
   }
