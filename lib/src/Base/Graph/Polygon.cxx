@@ -56,8 +56,8 @@ Polygon::Polygon(const Sample & dataX,
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getSize();
-  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
-  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples of dimension greater than 1.";
+  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two samples with different size.";
+  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two samples of dimension greater than 1.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -77,7 +77,7 @@ Polygon::Polygon(const Point & dataX,
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getDimension();
-  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
+  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two points with different size.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -180,7 +180,7 @@ Polygon Polygon::FillBetween(Point const& dataX, Point const& dataY1, Point cons
 {
   const UnsignedInteger size = dataX.getSize();
   if ((dataY1.getSize() != size) || (dataY2.getSize() != size))
-    throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on numerical samples with different size.";
+    throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on samples with different size.";
   Sample dataFull(size * 2, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
