@@ -1,15 +1,12 @@
 %feature("docstring") OT::JointDistribution
-"Composed distribution.
-
-Available constructors:
-    JointDistribution(*distributions, copula=ot.IndependentCopula(n)*)
+"Joint distribution.
 
 Parameters
 ----------
 distributions : list of :class:`~openturns.Distribution`
     List of :math:`n` marginals of the distribution. Each marginal must be of
     dimension 1.
-copula : :class:`~openturns.Distribution`
+copula : :class:`~openturns.Distribution`, optional
     A copula. If not mentioned, the copula is set to an
     :class:`~openturns.IndependentCopula` with the same dimension as
     *distributions*.
