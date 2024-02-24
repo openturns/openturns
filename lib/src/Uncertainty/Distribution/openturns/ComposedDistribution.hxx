@@ -1,0 +1,1 @@
+#include "openturns/JointDistribution.hxx"
