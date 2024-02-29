@@ -140,7 +140,7 @@ void AbdoRackwitz::run()
   const Scalar levelValue = getProblem().getLevelValue();
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
-  Bool exitLoop = false;
+  Bool stop = false;
   UnsignedInteger iterationNumber = 0;
   const UnsignedInteger initialEvaluationNumber = levelFunction.getEvaluationCallsNumber();
 
@@ -158,7 +158,9 @@ void AbdoRackwitz::run()
   result_ = OptimizationResult(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumCallsNumber()))
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
+  while ((!stop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumCallsNumber()))
   {
     /* Go to next iteration */
     ++ iterationNumber;
@@ -199,7 +201,7 @@ void AbdoRackwitz::run()
       relativeError = -1.0;
     }
     residualError = (currentPoint_ + currentLambda_ * currentGradient_).norm();
-    exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    stop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
     result_.setCallsNumber(evaluationNumber);
@@ -213,21 +215,21 @@ void AbdoRackwitz::run()
     {
       progressCallback_.first((100.0 * evaluationNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
-    if (stopCallback_.first)
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
     {
-      Bool stop = stopCallback_.first(stopCallback_.second);
-      if (stop)
-      {
-        exitLoop = true;
-        LOGWARN(OSS() << "AbdoRackwitz was stopped by user");
-      }
+      stop = true;
+      LOGWARN(OSS() << "AbdoRackwitz was stopped by user");
     }
-  }
 
-  /* Check if we converged */
-  if (!exitLoop)
-  {
-    LOGWARN(OSS() << "Warning! The AbdoRackwitz algorithm failed to converge after " << iterationNumber << " iterations, " << evaluationNumber << " evaluations." );
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO("Optim timeout");
+      stop = true;
+      result_.setStatus(OptimizationResult::TIMEOUT);
+      result_.setStatusMessage(OSS() << "AbdoRackwitz optimization timeout after " << timeDuration << "s");
+    }
   }
 } // run()
 
