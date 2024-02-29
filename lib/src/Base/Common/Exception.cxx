@@ -143,6 +143,7 @@ DEFINE_EXCEPTION( FileOpenException )
 DEFINE_EXCEPTION( StudyFileParsingException )
 DEFINE_EXCEPTION( ObjectNotInStudyException )
 DEFINE_EXCEPTION( ConfigurationFileParsingException )
+DEFINE_EXCEPTION( TimeoutException )
 
 #undef DEFINE_EXCEPTION
 
