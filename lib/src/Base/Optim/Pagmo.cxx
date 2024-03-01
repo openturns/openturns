@@ -128,12 +128,8 @@ struct PagmoProblem
       const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
       algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
     }
-    if (algorithm_->stopCallback_.first)
-    {
-      const Bool stop = algorithm_->stopCallback_.first(algorithm_->stopCallback_.second);
-      if (stop)
-        throw InterruptionException(HERE) << "User stopped optimization";
-    }
+    if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
+      throw InterruptionException(HERE) << "User stopped optimization";
     return outP.toStdVector();
   }
 
@@ -218,12 +214,8 @@ struct PagmoProblem
         const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
         algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
       }
-      if (algorithm_->stopCallback_.first)
-      {
-        const Bool stop = algorithm_->stopCallback_.first(algorithm_->stopCallback_.second);
-        if (stop)
-          throw InterruptionException(HERE) << "User stopped optimization";
-      }
+      if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
+        throw InterruptionException(HERE) << "User stopped optimization";
     }
     return outS.getImplementation()->getData().toStdVector();
   }

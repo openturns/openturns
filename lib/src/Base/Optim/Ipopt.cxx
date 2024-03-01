@@ -233,6 +233,10 @@ void Ipopt::run()
     result_.setStatus(OptimizationResult::TIMEOUT);
   }
 #endif
+  else if (status == User_Requested_Stop)
+  {
+    result_.setStatus(OptimizationResult::INTERRUPTION);
+  }
   else if (status < 0)
   {
     result_.setStatus(OptimizationResult::FAILURE);
