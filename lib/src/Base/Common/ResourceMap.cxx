@@ -1381,7 +1381,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps", 2);
 
   // Analytical parameters //
-  addAsScalar("Analytical-defaultLimitStateTolerance", 0.0001);
+  addAsScalar("Analytical-defaultLimitStateTolerance", 0.01);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);

@@ -5,6 +5,8 @@ Refer to :ref:`sorm_approximation`.
 
 Available constructors:
     SORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
+    
+    SORM(*nearestPointAlgorithm, event, physicalStartingPoint, limitStateTolerance*)
 
 Parameters
 ----------
@@ -15,7 +17,10 @@ event : :class:`~openturns.RandomVector`
 physicalStartingPoint : sequence of float
     Starting point of the optimization algorithm, declared in the physical
     space.
-
+limitStateTolerance : float
+    Tolerance on limit state function to assess if the found design point can be used 
+    to estimate failure probability. Default value is defined in :class:`~openturns.ResourceMap` of class :class:`~openturns.Analytical`.
+    
 Notes
 -----
 See :class:`~openturns.Analytical` for the description of the first steps of

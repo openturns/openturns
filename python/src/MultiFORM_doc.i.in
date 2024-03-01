@@ -36,6 +36,10 @@ event : :class:`~openturns.RandomVector`
 physicalStartingPoint : sequence of float
     Starting point of the optimization algorithm, declared in the physical
     space.
+limitStateTolerance : float (optional)
+    Tolerance on limit state function to assess if the found design point can be used 
+    to estimate failure probability. Default value is defined in :class:`~openturns.ResourceMap` of  class :class:`~openturns.Analytical`.
+    
 
 See also
 --------
