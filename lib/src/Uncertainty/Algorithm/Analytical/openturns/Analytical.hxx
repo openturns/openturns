@@ -57,7 +57,7 @@ public:
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
-             
+
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint,
@@ -114,7 +114,6 @@ protected:
   friend class Factory<Analytical>;
 
 private:
-
   Scalar limitStateTolerance_;
   OptimizationAlgorithm nearestPointAlgorithm_;
   RandomVector event_;
