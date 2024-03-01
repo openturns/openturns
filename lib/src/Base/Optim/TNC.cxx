@@ -432,16 +432,14 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   {
     algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
-  if (algorithm->stopCallback_.first)
+  if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
-    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
     int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
     if (p_nfeval)
-    {
-      if (stop) *p_nfeval = algorithm->getMaximumCallsNumber();
-    }
+      *p_nfeval = algorithm->getMaximumCallsNumber();
     else
       throw InternalException(HERE) << "Null p_nfeval";
+    algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
   }
   return 0;
 }

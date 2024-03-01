@@ -208,7 +208,7 @@ void AbdoRackwitz::run()
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-    LOGINFO(getResult().__repr__());
+    LOGTRACE(getResult().__repr__());
 
     // callbacks
     if (progressCallback_.first)
@@ -218,14 +218,16 @@ void AbdoRackwitz::run()
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
     {
       stop = true;
-      LOGWARN(OSS() << "AbdoRackwitz was stopped by user");
+      LOGTRACE(OSS() << "AbdoRackwitz was stopped by user");
+      result_.setStatus(OptimizationResult::INTERRUPTION);
+      result_.setStatusMessage(OSS() << "AbdoRackwitz was stopped by user");
     }
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
     {
-      LOGINFO("Optim timeout");
+      LOGTRACE("Optim timeout");
       stop = true;
       result_.setStatus(OptimizationResult::TIMEOUT);
       result_.setStatusMessage(OSS() << "AbdoRackwitz optimization timeout after " << timeDuration << "s");

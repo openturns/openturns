@@ -226,6 +226,9 @@ void Bonmin::run()
   {
     case ::Bonmin::TMINLP::SUCCESS:
       break;
+    case ::Bonmin::TMINLP::USER_INTERRUPT:
+      result_.setStatus(OptimizationResult::INTERRUPTION);
+      break;
     default:
       result_.setStatus(OptimizationResult::FAILURE);
       break;
