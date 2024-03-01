@@ -49,6 +49,21 @@ SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   setEvent(event);
 }
 
+
+SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+                       const RandomVector & event,
+                       const Point & physicalStartingPoint,
+                       const Scalar & limitStateTolerance)
+  : Analytical()
+{
+  setNearestPointAlgorithm(nearestPointAlgorithm);
+  setPhysicalStartingPoint(physicalStartingPoint);
+  setEvent(event);
+  setLimitStateTolerance(limitStateTolerance);
+}
+
+
+
 /* Virtual constructor */
 SystemFORM * SystemFORM::clone() const
 {

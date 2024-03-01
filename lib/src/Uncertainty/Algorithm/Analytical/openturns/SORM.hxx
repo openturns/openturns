@@ -47,10 +47,15 @@ public:
   /** Default constructor */
   SORM();
 
-  /** Constructor with parameters */
+  /** Constructors with parameters */
   SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
        const RandomVector & event,
        const Point & physicalStartingPoint);
+
+  SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+       const RandomVector & event,
+       const Point & physicalStartingPoint,
+       const Scalar & limitStateTolerance);
 
 
   /** Virtual constructor */

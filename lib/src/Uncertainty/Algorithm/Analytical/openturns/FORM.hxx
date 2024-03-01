@@ -45,12 +45,16 @@ public:
   /** Default constructor */
   FORM();
 
-  /** Constructor with parameters */
+  /** Constructors with parameters */
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
        const RandomVector & event,
        const Point & physicalStartingPoint);
 
-
+  FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+       const RandomVector & event,
+       const Point & physicalStartingPoint,
+       const Scalar & limitStateTolerance);
+       
   /** Virtual constructor */
   FORM * clone() const override;
 

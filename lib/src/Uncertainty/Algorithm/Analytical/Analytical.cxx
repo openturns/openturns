@@ -40,7 +40,27 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event),
-    physicalStartingPoint_(physicalStartingPoint)
+    physicalStartingPoint_(physicalStartingPoint),
+    limitStateTolerance_(ResourceMap::GetAsScalar("Analytical-defaultLimitStateTolerance"))
+{
+  const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
+  if (physicalStartingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
+    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
+  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
+}
+
+
+Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
+                       const RandomVector & event,
+                       const Point & physicalStartingPoint,
+                       const Scalar & limitStateTolerance)
+  : PersistentObject(),
+    nearestPointAlgorithm_(nearestPointAlgorithm),
+    event_(event),
+    physicalStartingPoint_(physicalStartingPoint),
+    limitStateTolerance_(limitStateTolerance)
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension)
@@ -55,6 +75,19 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 Analytical * Analytical::clone() const
 {
   return new Analytical(*this);
+}
+
+
+/* limitStateTolerance accessor */
+Scalar Analytical::getLimitStateTolerance() const
+{
+  return limitStateTolerance_;
+}
+
+/* limitStateTolerance accessor */
+void Analytical::setLimitStateTolerance(const Scalar & limitStateTolerance) 
+{
+  limitStateTolerance_ = limitStateTolerance;
 }
 
 /* Physical starting point accessor */
@@ -131,6 +164,18 @@ void Analytical::run()
   Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
+  
+  /* check is result is valid */
+  Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
+  
+  Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
+  
+  Scalar residual = (valuePhysicalSpaceDesignPoint[0]-event_.getThreshold())*(valuePhysicalSpaceDesignPoint[0]-event_.getThreshold());  
+  
+  if (residual > limitStateTolerance_*limitStateTolerance_)
+  throw Exception(HERE) << "Obtained design point is not on the limit state : its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << " that is uncompatible with the threshold : " << event_.getThreshold() << " considering the limit state tolerance "<< limitStateTolerance_;
+  
+  
 } /* Analytical::run() */
 
 /* Result accessor */

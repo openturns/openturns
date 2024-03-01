@@ -57,8 +57,12 @@ public:
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
-
-
+             
+  Analytical(const OptimizationAlgorithm & solver,
+             const RandomVector & compositeEvent,
+             const Point & physicalStartingPoint,
+             const Scalar & limitStateTolerance);
+                    
   /** Virtual constructor */
   Analytical * clone() const override;
 
@@ -80,6 +84,11 @@ public:
   /** OptimizationAlgorithm accessor */
   void setNearestPointAlgorithm(const OptimizationAlgorithm & solver);
 
+  /* limitStateTolerance accessors */
+  void setLimitStateTolerance(const Scalar & limitStateTolerance);
+  
+  Scalar getLimitStateTolerance() const;
+  
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
 
@@ -94,6 +103,8 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  
 
 protected:
 
@@ -104,6 +115,7 @@ protected:
 
 private:
 
+  Scalar limitStateTolerance_;
   OptimizationAlgorithm nearestPointAlgorithm_;
   RandomVector event_;
   Point physicalStartingPoint_;

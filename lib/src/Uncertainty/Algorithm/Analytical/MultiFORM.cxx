@@ -52,6 +52,19 @@ MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
   // Nothing to do
 }
 
+
+MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
+                     const RandomVector & event,
+                     const Point & physicalStartingPoint,
+                     const Scalar & limitStateTolerance)
+  : FORM(solver, event, physicalStartingPoint, limitStateTolerance)
+  , maximumDesignPointsNumber_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber"))
+{
+  // Nothing to do
+}
+
+
+
 /* Virtual constructor */
 MultiFORM * MultiFORM::clone() const
 {

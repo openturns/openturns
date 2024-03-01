@@ -39,10 +39,15 @@ public:
   /** Default constructor */
   SystemFORM();
 
-  /** Constructor with parameters */
+  /** Constructors with parameters */
   SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
              const RandomVector & event,
              const Point & physicalStartingPoint);
+
+  SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+             const RandomVector & event,
+             const Point & physicalStartingPoint,
+             const Scalar & limitStateTolerance);
 
   /** Virtual constructor */
   SystemFORM * clone() const override;

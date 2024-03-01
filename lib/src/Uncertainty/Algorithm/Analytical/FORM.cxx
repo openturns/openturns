@@ -48,6 +48,16 @@ FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   // Nothing to do
 }
 
+
+FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+           const RandomVector & event,
+           const Point & physicalStartingPoint,
+           const Scalar & limitStateTolerance):
+  Analytical(nearestPointAlgorithm, event, physicalStartingPoint, limitStateTolerance)
+{
+  // Nothing to do
+}
+
 /* Virtual constructor */
 FORM * FORM::clone() const
 {

@@ -50,6 +50,18 @@ SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   // Nothing to do
 }
 
+SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+           const RandomVector & event,
+           const Point & physicalStartingPoint,
+           const Scalar & limitStateTolerance):
+  Analytical(nearestPointAlgorithm, event, physicalStartingPoint, limitStateTolerance),
+  sormResult_()
+{
+  // Nothing to do
+}
+
+
+
 /* Virtual constructor */
 SORM * SORM::clone() const
 {
