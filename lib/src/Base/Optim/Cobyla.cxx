@@ -149,7 +149,7 @@ void Cobyla::run()
     result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";

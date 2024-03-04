@@ -226,7 +226,7 @@ void TNC::run()
     result_.setStatusMessage(OSS() << "TNC optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by TNC method failed (" << result_.getStatusMessage() << ")";
