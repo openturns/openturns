@@ -33,14 +33,12 @@ static Factory<MultiFORMResult> Factory_MultiFORMResult;
 
 MultiFORMResult::MultiFORMResult()
   : PersistentObject()
-  , eventProbability_(-1.0)
 {
   // Nothing to do
 }
 
 MultiFORMResult::MultiFORMResult(const FORMResultCollection & collection)
   : PersistentObject()
-  , eventProbability_(-1.0)
   , formResultCollection_(collection)
 {
   // Nothing to do
