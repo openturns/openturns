@@ -825,57 +825,6 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0] - startingValue;
   LOGINFO(OSS(false) << "Optimal coefficients=" << optimalParameter << ", optimal log-likelihood=" << logLikelihood);
 
-  // Build the theta function which maps a dim(covariates) vector into a (mu, sigma, xi) vector.
-  const Description muBetaDesc(Description::BuildDefault(muDim, "muBeta"));
-  const Description sigmaBetaDesc(Description::BuildDefault(sigmaDim, "sigmaBeta"));
-  const Description xiBetaDesc(Description::BuildDefault(xiDim, "xiBeta"));
-  const Description yDesc(Description::BuildDefault(covariatesDimension, "y"));
-  Description muVars(muBetaDesc);
-  Description sigmaVars(sigmaBetaDesc);
-  Description xiVars(xiBetaDesc);
-  muVars.add(yDesc);
-  sigmaVars.add(yDesc);
-  xiVars.add(yDesc);
-  String muFormula;
-  String sigmaFormula;
-  String xiFormula;
-  for (UnsignedInteger i = 0; i < muDim; ++ i)
-    muFormula += OSS() << muBetaDesc[i] << " * " << yDesc[muIndices[i]] << (i < muDim - 1 ? " + " : "");
-  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
-    sigmaFormula += OSS() << sigmaBetaDesc[i] << " * " << yDesc[sigmaIndices[i]] << (i < sigmaDim - 1 ? " + " : "");
-  for (UnsignedInteger i = 0; i < xiDim; ++ i)
-    xiFormula += OSS() << xiBetaDesc[i] << " * " << yDesc[xiIndices[i]] << (i < xiDim - 1 ? " + " : "");
-  Function muBetaFunction = SymbolicFunction(muVars, {muFormula});
-  Function sigmaBetaFunction = SymbolicFunction(sigmaVars, {sigmaFormula});
-  Function xiBetaFunction = SymbolicFunction(xiVars, {xiFormula});
-
-  // use beta variables as parameters
-  Indices muVarsIndices(muDim);
-  Indices sigmaVarsIndices(sigmaDim);
-  Indices xiVarsIndices(xiDim);
-  muVarsIndices.fill();
-  sigmaVarsIndices.fill();
-  xiVarsIndices.fill();
-  muBetaFunction = ParametricFunction(muBetaFunction, muVarsIndices, Point(muDim, 1.0));
-  sigmaBetaFunction = ParametricFunction(sigmaBetaFunction, sigmaVarsIndices, Point(sigmaDim, 1.0));
-  xiBetaFunction = ParametricFunction(xiBetaFunction, xiVarsIndices, Point(xiDim, 1.0));
-
-  // The theta function is the composition between the inverse link function and the linear function
-  if (muLink.getEvaluation().getImplementation()->isActualImplementation())
-    muBetaFunction = ComposedFunction(muLink, muBetaFunction);
-  if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation())
-    sigmaBetaFunction = ComposedFunction(sigmaLink, sigmaBetaFunction);
-  if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
-    xiBetaFunction = ComposedFunction(xiLink, xiBetaFunction);
-
-  // useful for the theta(y) graphs
-  muBetaFunction.setOutputDescription({"$\\mu$"});
-  sigmaBetaFunction.setOutputDescription({"$\\sigma$"});
-  xiBetaFunction.setOutputDescription({"$\\xi$"});
-
-  // stack mu, sigma, xi functions
-  AggregatedFunction thetaFunction({muBetaFunction, sigmaBetaFunction, xiBetaFunction});
-
   // reorder the normalization coefficients for the beta coefficients
   const UnsignedInteger nP = muDim + sigmaDim + xiDim;
   Point alpha(nP);
@@ -947,8 +896,67 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
     if (xiIndices[i] == constantCovariateIndex)
       optimalBeta[shift + i] -= offset;
 
-  // now its a function of the unnormalized covariates
-  thetaFunction.setParameter(optimalBeta);
+  // Build the theta function which maps a dim(covariates) vector into a (mu, sigma, xi) vector.
+  const Description muBetaDesc(Description::BuildDefault(muDim, "muBeta"));
+  const Description sigmaBetaDesc(Description::BuildDefault(sigmaDim, "sigmaBeta"));
+  const Description xiBetaDesc(Description::BuildDefault(xiDim, "xiBeta"));
+  const Description yDesc(Description::BuildDefault(covariatesDimension, "y"));
+  Description muVars(muBetaDesc);
+  Description sigmaVars(sigmaBetaDesc);
+  Description xiVars(xiBetaDesc);
+  muVars.add(yDesc);
+  sigmaVars.add(yDesc);
+  xiVars.add(yDesc);
+  String muFormula;
+  String sigmaFormula;
+  String xiFormula;
+  for (UnsignedInteger i = 0; i < muDim; ++ i)
+    muFormula += OSS() << muBetaDesc[i] << " * " << yDesc[muIndices[i]] << (i < muDim - 1 ? " + " : "");
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+    sigmaFormula += OSS() << sigmaBetaDesc[i] << " * " << yDesc[sigmaIndices[i]] << (i < sigmaDim - 1 ? " + " : "");
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+    xiFormula += OSS() << xiBetaDesc[i] << " * " << yDesc[xiIndices[i]] << (i < xiDim - 1 ? " + " : "");
+  Function muBetaFunction = SymbolicFunction(muVars, {muFormula});
+  Function sigmaBetaFunction = SymbolicFunction(sigmaVars, {sigmaFormula});
+  Function xiBetaFunction = SymbolicFunction(xiVars, {xiFormula});
+
+  // use beta variables as parameters
+  Description thetaBetaVars(muBetaDesc);
+  thetaBetaVars.add(sigmaBetaDesc);
+  thetaBetaVars.add(xiBetaDesc);
+  thetaBetaVars.add(yDesc);
+  Indices betaVarsIndices(muDim + sigmaDim + xiDim);
+  betaVarsIndices.fill();
+  SymbolicFunction thetaBetaFunction(thetaBetaVars, {muFormula, sigmaFormula, xiFormula});
+  Function thetaFunction = ParametricFunction(thetaBetaFunction, betaVarsIndices, optimalBeta);
+
+  Indices muVarsIndices(muDim);
+  Indices sigmaVarsIndices(sigmaDim);
+  Indices xiVarsIndices(xiDim);
+  muVarsIndices.fill();
+  sigmaVarsIndices.fill();
+  xiVarsIndices.fill();
+  muBetaFunction = ParametricFunction(muBetaFunction, muVarsIndices, Point(muDim, 1.0));
+  sigmaBetaFunction = ParametricFunction(sigmaBetaFunction, sigmaVarsIndices, Point(sigmaDim, 1.0));
+  xiBetaFunction = ParametricFunction(xiBetaFunction, xiVarsIndices, Point(xiDim, 1.0));
+ 
+  // The theta function is the composition between the inverse link function and the linear function
+  if (muLink.getEvaluation().getImplementation()->isActualImplementation()
+    || sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
+    || xiLink.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    Function link1(muLink.getEvaluation().getImplementation()->isActualImplementation() ? muLink : IdentityFunction(1));
+    link1 = ComposedFunction(link1, SymbolicFunction({"x1", "x2", "x3"}, {"x1"}));
+    Function link2(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1));
+    link2 = ComposedFunction(link2, SymbolicFunction({"x1", "x2", "x3"}, {"x2"}));
+    Function link3(xiLink.getEvaluation().getImplementation()->isActualImplementation() ? xiLink : IdentityFunction(1));
+    link3 = ComposedFunction(link3, SymbolicFunction({"x1", "x2", "x3"}, {"x3"}));
+    AggregatedFunction thetaLink({link1, link2, link3});
+    thetaFunction = ComposedFunction(thetaLink, thetaFunction);
+  }
+
+  // useful for the theta(y) graphs
+  thetaFunction.setOutputDescription({"$\\mu$", "$\\sigma$", "$\\xi$"});
 
   // compose the y->theta->pdf function
   GeneralizedExtremeValuePDFEvaluation pdfFunction;
