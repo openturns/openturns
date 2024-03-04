@@ -140,7 +140,7 @@ public:
   String getStatusMessage() const;
 
   /** Status accessor */
-  enum Status {SUCCEEDED, FAILURE, TIMEOUT, INTERRUPTION};
+  enum Status {SUCCESS, FAILURE, TIMEOUT, INTERRUPTION};
   void setStatus(const UnsignedInteger status);
   UnsignedInteger getStatus() const;
 
@@ -190,7 +190,7 @@ private:
   IndicesCollection paretoFrontsIndices_;
 
   String statusMessage_;
-  UnsignedInteger status_ = SUCCEEDED;
+  UnsignedInteger status_ = SUCCESS;
 
 }; // class OptimizationResult
 

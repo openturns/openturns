@@ -366,7 +366,7 @@ statusMessage : str
 Parameters
 ----------
 status : int
-    Status flag, possible values SUCCEEDED, FAILURE, TIMEOUT, INTERRUPTION"
+    Status flag, possible values SUCCESS, FAILURE, TIMEOUT, INTERRUPTION"
 
 // ---------------------------------------------------------------------
 
@@ -376,7 +376,7 @@ status : int
 Returns
 -------
 status : int
-    Status flag, possible values SUCCEEDED, FAILURE, TIMEOUT, INTERRUPTION"
+    Status flag, possible values SUCCESS, FAILURE, TIMEOUT, INTERRUPTION"
 
 // ---------------------------------------------------------------------
 

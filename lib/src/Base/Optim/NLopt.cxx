@@ -350,7 +350,7 @@ void NLopt::run()
     result_.setStatus(OptimizationResult::FAILURE);
 
   
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();
