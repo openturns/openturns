@@ -1069,45 +1069,6 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0] - startingValue;
   LOGINFO(OSS(false) << "Optimal coefficients=" << optimalParameter << ", optimal log-likelihood=" << logLikelihood);
 
-  // Build the theta function which maps a dim(covariates) vector into a (sigma, xi, u) vector.
-  const Description sigmaBetaDesc(Description::BuildDefault(sigmaDim, "sigmaBeta"));
-  const Description xiBetaDesc(Description::BuildDefault(xiDim, "xiBeta"));
-  const Description yDesc(Description::BuildDefault(covariatesDimension, "y"));
-  Description sigmaVars(sigmaBetaDesc);
-  Description xiVars(xiBetaDesc);
-  sigmaVars.add(yDesc);
-  xiVars.add(yDesc);
-  String sigmaFormula;
-  String xiFormula;
-  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
-    sigmaFormula += OSS() << sigmaBetaDesc[i] << " * " << yDesc[sigmaIndices[i]] << (i < sigmaDim - 1 ? " + " : "");
-  for (UnsignedInteger i = 0; i < xiDim; ++ i)
-    xiFormula += OSS() << xiBetaDesc[i] << " * " << yDesc[xiIndices[i]] << (i < xiDim - 1 ? " + " : "");
-  Function sigmaBetaFunction = SymbolicFunction(sigmaVars, {sigmaFormula});
-  Function xiBetaFunction = SymbolicFunction(xiVars, {xiFormula});
-
-  // use beta variables as parameters
-  Indices sigmaVarsIndices(sigmaDim);
-  Indices xiVarsIndices(xiDim);
-  sigmaVarsIndices.fill();
-  xiVarsIndices.fill();
-  sigmaBetaFunction = ParametricFunction(sigmaBetaFunction, sigmaVarsIndices, Point(sigmaDim, 1.0));
-  xiBetaFunction = ParametricFunction(xiBetaFunction, xiVarsIndices, Point(xiDim, 1.0));
-
-  // The theta function is the composition between the inverse link function and the linear function
-  if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation())
-    sigmaBetaFunction = ComposedFunction(sigmaLink, sigmaBetaFunction);
-  if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
-    xiBetaFunction = ComposedFunction(xiLink, xiBetaFunction);
-
-  // useful for the theta(y) graphs
-  sigmaBetaFunction.setOutputDescription({"$\\sigma$"});
-  xiBetaFunction.setOutputDescription({"$\\xi$"});
-
-  // stack sigma, xi, u functions
-  Function uBetaFunction = SymbolicFunction(yDesc, {OSS() << u});
-  AggregatedFunction thetaFunction({sigmaBetaFunction, xiBetaFunction, uBetaFunction});
-
   // reorder the normalization coefficients for the beta coefficients
   const UnsignedInteger nP = sigmaDim + xiDim;
   Point alpha(nP);
@@ -1159,8 +1120,46 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
   
   LOGINFO(OSS(false) << "Optimal unnormalized coefficients=" << optimalBeta);
 
-  // now its a function of the unnormalized covariates
-  thetaFunction.setParameter(optimalBeta);
+  // Build the theta function which maps a dim(covariates) vector into a (sigma, xi, u) vector.
+  const Description sigmaBetaDesc(Description::BuildDefault(sigmaDim, "sigmaBeta"));
+  const Description xiBetaDesc(Description::BuildDefault(xiDim, "xiBeta"));
+  const Description yDesc(Description::BuildDefault(covariatesDimension, "y"));
+  Description sigmaVars(sigmaBetaDesc);
+  Description xiVars(xiBetaDesc);
+  sigmaVars.add(yDesc);
+  xiVars.add(yDesc);
+  String sigmaFormula;
+  String xiFormula;
+  for (UnsignedInteger i = 0; i < sigmaDim; ++ i)
+    sigmaFormula += OSS() << sigmaBetaDesc[i] << " * " << yDesc[sigmaIndices[i]] << (i < sigmaDim - 1 ? " + " : "");
+  for (UnsignedInteger i = 0; i < xiDim; ++ i)
+    xiFormula += OSS() << xiBetaDesc[i] << " * " << yDesc[xiIndices[i]] << (i < xiDim - 1 ? " + " : "");
+
+  // use beta variables as parameters
+  Description thetaBetaVars(sigmaBetaDesc);
+  thetaBetaVars.add(xiBetaDesc);
+  thetaBetaVars.add(yDesc);
+  Indices betaVarsIndices(sigmaDim + xiDim);
+  betaVarsIndices.fill();
+  const String uFormula = (OSS() << u);
+  SymbolicFunction thetaBetaFunction(thetaBetaVars, {sigmaFormula, xiFormula, uFormula});
+  Function thetaFunction = ParametricFunction(thetaBetaFunction, betaVarsIndices, optimalBeta);
+
+  // The theta function is the composition between the inverse link function and the linear function
+  if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
+    || xiLink.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    Function link1(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1));
+    link1 = ComposedFunction(link1, SymbolicFunction({"x1", "x2", "x3"}, {"x1"}));
+    Function link2(xiLink.getEvaluation().getImplementation()->isActualImplementation() ? xiLink : IdentityFunction(1));
+    link2 = ComposedFunction(link2, SymbolicFunction({"x1", "x2", "x3"}, {"x2"}));
+    Function link3 = SymbolicFunction({"x1", "x2", "x3"}, {"x3"});
+    AggregatedFunction thetaLink({link1, link2, link3});
+    thetaFunction = ComposedFunction(thetaLink, thetaFunction);
+  }
+
+  // useful for the theta(y) graphs
+  thetaFunction.setOutputDescription({"$\\sigma$", "$\\xi$", "u"});
 
   // compose the y->theta->pdf function
   GeneralizedParetoPDFEvaluation pdfFunction;
