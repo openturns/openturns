@@ -61,7 +61,7 @@ MultiFORM * MultiFORM::clone() const
 /* Result accessor */
 MultiFORMResult MultiFORM::getResult() const
 {
-  return result_;
+  return multiFORMResult_;
 }
 
 
@@ -71,7 +71,7 @@ String MultiFORM::__repr__() const
   OSS oss;
   oss << "class=" << MultiFORM::GetClassName()
       << " derived from" << FORM::__repr__()
-      << " result=" << result_;
+      << " result=" << multiFORMResult_;
   return oss;
 }
 
@@ -88,7 +88,7 @@ void MultiFORM::run()
 
   Collection<Point> designPointCollection;
   Point betaCollection;
-  UnsignedInteger numberOfDesignPointsFound = 0;
+  UnsignedInteger designPointNumber = 0;
   const StandardEvent standardEvent(getEvent());
 
   // initialize the new limit state function
@@ -110,7 +110,7 @@ void MultiFORM::run()
     }
     catch (const Exception & ex)
     {
-      Log::Warn(String("MultiFORM: ") + ex.what());
+      LOGWARN(OSS() << "MultiFORM: " << ex.what());
       break; // then exit while-loop
     }
     const FORMResult formResult(FORM::getResult());
@@ -121,9 +121,9 @@ void MultiFORM::run()
     designPointCollection.add(standardSpaceDesignPoint);
     betaCollection.add(beta);
 
-    for (UnsignedInteger i = 0; i < numberOfDesignPointsFound; ++ i)
+    for (UnsignedInteger i = 0; i < designPointNumber; ++ i)
     {
-      for (UnsignedInteger j = i + 1; j <= numberOfDesignPointsFound; ++ j)
+      for (UnsignedInteger j = i + 1; j <= designPointNumber; ++ j)
       {
         const Scalar v = designPointCollection[i].dot(designPointCollection[j]);
         designPointValidity = designPointValidity && (std::acos(v / (betaCollection[i] * betaCollection[j])) > bound);
@@ -132,14 +132,14 @@ void MultiFORM::run()
 
     if (designPointValidity)
     {
-      ++ numberOfDesignPointsFound;
+      ++ designPointNumber;
       // the symmetric of the design point is the next starting point
       setPhysicalStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(formResult.getStandardSpaceDesignPoint() * -1.0));
       formResultCollection.add(formResult);
     }
 
     // check if we exceeded maximumDesignPointsNumber
-    if (numberOfDesignPointsFound >= maximumDesignPointsNumber_)
+    if (designPointNumber >= maximumDesignPointsNumber_)
       break;
 
     // bulge parameters
@@ -169,15 +169,15 @@ void MultiFORM::run()
     collection.add(bulge);
 
     // print some results
-    LOGINFO(OSS() << "SystemFORM: u*=" << standardSpaceDesignPoint << " beta=" << formResult.getGeneralisedReliabilityIndex());
+    LOGINFO(OSS() << "MultiFORM: u*=" << standardSpaceDesignPoint << " beta=" << formResult.getGeneralisedReliabilityIndex());
   }
 
-  result_ = MultiFORMResult(formResultCollection);
-  if (numberOfDesignPointsFound > 1)
+  multiFORMResult_ = MultiFORMResult(formResultCollection);
+  if (designPointNumber > 1)
   {
-    betaCollection = Point(numberOfDesignPointsFound);// only the accepted candidates
-    Collection<Point> directionCosines(numberOfDesignPointsFound);
-    for (UnsignedInteger i = 0; i < numberOfDesignPointsFound; ++ i)
+    betaCollection = Point(designPointNumber);// only the accepted candidates
+    Collection<Point> directionCosines(designPointNumber);
+    for (UnsignedInteger i = 0; i < designPointNumber; ++ i)
     {
       StandardEvent standardEventI(formResultCollection[i].getLimitStateVariable());
       //   to take in consideration the sens of the limitStatefunction we look at the comparaisonOperator
@@ -187,13 +187,13 @@ void MultiFORM::run()
       directionCosines[i] = 1.0 / currentStandardGradient.norm() * currentStandardGradient;
       betaCollection[i] = formResultCollection[i].getHasoferReliabilityIndex();
     }
-    CovarianceMatrix cov(numberOfDesignPointsFound);
-    for (UnsignedInteger i = 0; i < numberOfDesignPointsFound; ++ i)
+    CovarianceMatrix cov(designPointNumber);
+    for (UnsignedInteger i = 0; i < designPointNumber; ++ i)
       for (UnsignedInteger j = 0; j < i; ++ j)
         cov(i, j) = directionCosines[i].dot(directionCosines[j]);
 
-    Scalar eventProbability = Normal(Point(numberOfDesignPointsFound), cov).computeComplementaryCDF(betaCollection);
-    result_.setEventProbability(eventProbability);
+    const Scalar eventProbability = Normal(Point(designPointNumber), cov).computeComplementaryCDF(betaCollection);
+    multiFORMResult_.setEventProbability(eventProbability);
   }
 }
 
@@ -203,6 +203,7 @@ void MultiFORM::save(Advocate & adv) const
 {
   FORM::save(adv);
   adv.saveAttribute("maximumDesignPointsNumber_", maximumDesignPointsNumber_);
+  adv.saveAttribute("multiFORMResult_", multiFORMResult_);
 }
 
 
@@ -211,6 +212,7 @@ void MultiFORM::load(Advocate & adv)
 {
   FORM::load(adv);
   adv.loadAttribute("maximumDesignPointsNumber_", maximumDesignPointsNumber_);
+  adv.loadAttribute("multiFORMResult_", multiFORMResult_);
 }
 
 
