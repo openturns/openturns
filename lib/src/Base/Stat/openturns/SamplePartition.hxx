@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,13 +42,25 @@ public:
   /** Default constructor */
   SamplePartition();
 
+  /** Constructor from a list of [start-end[ pairs of indices */
+  explicit SamplePartition(const Sample & sample,
+                           const Collection<Indices> & indicesCollection = Collection<Indices>());
+
+  /** Constructor from the plain list of indices */
   SamplePartition(const Sample & sample,
-                  const Collection<Indices> & indicesCollection);
-  
+                  const Indices & indices);
+
   /** Virtual copy constructor */
   SamplePartition * clone() const override;
 
+  /** Retrieve peaks/clusters */
+  Sample getPeakOverThreshold(const Scalar threshold, const UnsignedInteger r, SamplePartition & clusters) const;
+
   Sample getSample() const;
+
+  Collection<Indices> getIndicesCollection() const;
+
+  Graph draw(const Scalar threshold) const;
 
   /** String converter */
   String __repr__() const override;

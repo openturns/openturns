@@ -1,0 +1,76 @@
+%feature("docstring") OT::SamplePartition
+"Find extreme values of groups of samples.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+indices : sequence of int 2-tuple or sequence of int, optional
+    Flat indices of population in the partition or
+    list of (start,end) ranges.
+    If not provided the default is to consider one single group with all the sample values.
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::SamplePartition::getPeakOverThreshold
+"Compute extreme values using Peaks Over Threshold (POT) method.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+threshold : float
+    The threshold value
+r : int
+    Minimum number of consecutive values below the threshold between clusters
+
+Returns
+-------
+peaks : :class:`~openturns.Sample`
+    The peaks for each cluster
+clusters : :class:`openturns.experimental.SamplePartition`
+    The clusters partition
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::SamplePartition::draw
+"Draw clusters and peaks.
+
+Parameters
+----------
+threshold : float
+    The threshold value
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph of clusters, peaks.
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::SamplePartition::getSample
+"Sample accessor.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The internal sample
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::SamplePartition::getIndicesCollection
+"Partition indices accessor.
+
+Returns
+-------
+indicesCollection : :class:`~openturns.IndicesCollection`
+    List of partitions ranges as (start,end) indices.
+"

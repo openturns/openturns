@@ -32,6 +32,7 @@
 
 /* Base/Stat */
 %include LatentVariableModel.i
+%include SamplePartition.i
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
