@@ -38,15 +38,25 @@ graph.setIntegerXTick(True)
 view = otv.View(graph)
 
 # %%
-# Draw the mean residual life plot
-# The curve becomes linear from a threshold :math:`u_s=60`
+# In order to select a threshold upon which the GPD model will be fitted, we draw the mean residual life plot with approximate :math:`95\%` confidence interval.
+# It appears that the graph is linear from the threshold around
+# :math:`u_s=30`. Then, it decays sharply although with a linear trend. We
+# should be tempted to choose :math:`u_s=60` but there are only 6
+# exceedances of the threshold :math:`u_s=60`. So it is not enough
+# to make meaningful inferences. Moreover, the graph is not reliable
+# for large values of :math:`u` due to the limited amount of data on
+# which the estimate and the confidence interval are based.
+# For all these reasons, it appear preferable to chose :math:`u_s=30`.
 factory = ot.GeneralizedParetoFactory()
 graph = factory.drawMeanResidualLife(sample)
 view = otv.View(graph)
 
 # %%
-# Draw the parameter stability plots
-# The perturbations appear small relative to sampling errors and a smaller threshold can be chosen :math:`u_s=60`.
+# To support that choice, we draw the parameter stability plots.
+# We see tat the perturbations appear small relative to sampling errors. 
+# We can see that the change in pattern observed in the mean
+# residual life plot is still apparent here for high thresholds.
+# Hence, we choose the threshold :math:`u_s=30`.
 u_range = ot.Interval(0.5, 50.0)
 graph = factory.drawParameterThresholdStability(sample, u_range)
 view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
@@ -56,7 +66,8 @@ view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
 #
 # We first assume that the dependence through time is negligible, so we first model the data as
 # independent observations over the observation period.
-# We estimate the parameters of the GPD distribution by maximizing the log-likelihood of the data for a given threshold u.
+# We estimate the parameters of the GPD distribution by maximizing
+# the log-likelihood of the data for the selecte threshold :math:`u_s=30`.
 u = 30
 result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(sample, u)
 
@@ -88,7 +99,13 @@ for i in range(2):  # exclude u parameter (fixed)
     print(desc[i] + ":", ci)
 
 # %%
-# At last, we can validate the inference result thanks to the 4 usual diagnostic plots.
+# At last, we can validate the inference result thanks to the 4 usual diagnostic plots:
+#
+# - the probability-probability pot,
+# - the quantile-quantile pot,
+# - the return level plot,
+# - the data histogram and the density of the fitted model.
+#
 validation = otexp.GeneralizedParetoValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
@@ -96,7 +113,9 @@ view = otv.View(graph)
 # %%
 # **Stationary GPD modeling via the profile log-likelihood function**
 #
-# Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GPD.
+# Now, we use the profile log-likehood function with respect
+# to the :math:`\xi` parameter rather than log-likehood function
+# to estimate the parameters of the GPD.
 result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
 
 # %%
@@ -168,12 +187,12 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 # %%
 # **Non stationary GPD modeling via the log-likelihood function**
 #
-# Now, we want to see whether it is necessary to model the time dependence over
+# Now, we want to see whether it is necessary to model the time dependency over
 # the observation period.
 #
 # We have to define the functional basis for each parameter of the GPD model. Even if we have
 # the possibility to affect a time-varying model to each of the 2 parameters :math:`(\sigma, \xi)`,
-# it is strongly recommended not to vary the parameter :math:`\xi`.
+# it is strongly recommended not to vary the shape parameter :math:`\xi`.
 #
 # We suppose that :math:`\sigma` is linear with time, and that the other parameters remain constant.
 #
@@ -214,7 +233,7 @@ timeStamps = ot.Sample([[i + 1] for i in range(len(sample))])
 result_NonStatLL = factory.buildTimeVarying(sample, u, timeStamps, basis, sigmaIndices, xiIndices)
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
-print(f"sigma(t) = {beta[1]:.4f} * t + {beta[0]:.4f}")
+print(f"sigma(t) = {beta[1]:.4f} * tau(t) + {beta[0]:.4f}")
 print(f"xi = {beta[2]:.4f}")
 print(f"Max log-likelihood = {result_NonStatLL.getLogLikelihood()}")
 

@@ -121,10 +121,6 @@ public:
   ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u, const Scalar m) const;
   GeneralizedPareto buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u, const Scalar m) const;
 
-  /** Retrieve peaks */
-  Sample getPeakOverThreshold(const Sample sample, const Scalar threshold, const UnsignedInteger r) const;
-  Sample getPeakOverThresholdWithClusters(const Sample sample, const Scalar threshold, const UnsignedInteger r, Collection<Indices> & clusters) const;
-
 private:
 
   /** Optimization solver */

@@ -6,33 +6,24 @@ Estimate a GPD on the Dow Jones Index data
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the 5-year series of daily Dow Jones Index closing prices.
 # Readers should refer to [coles2001]_ example 1.8 to get more details.
-#
-# We illustrate techniques to:
-#
-# - estimate a stationary and a non stationary GPD,
-# - estimate a return level,
-#
-# using:
-#
-# - the log-likelihood function,
-# - the profile log-likelihood function.
-#
 import math as m
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
+import pandas as pd
 
 # %%
 # First, we load the Dow Jones dataset and plot it through time.
-sample = coles.Coles().dowjones
-print(sample[:10])
+full = pd.read_csv(coles.Coles().dowjones, index_col=0, parse_dates=True)
+print(full[:10])
 graph = ot.Graph(
     "Daily closing prices of the Dow Jones Index", "Day index", "Index", True, ""
 )
 # multiply by a factor to account for non-working days missing values so the period range matches
-size = len(sample)
+size = len(full)
 days = ot.Sample([[i] for i in range(size)])
+sample = ot.Sample.BuildFromDataFrame(full)
 curve = ot.Curve(days, sample)
 curve.setColor("red")
 graph.add(curve)
@@ -101,14 +92,37 @@ validation = otexp.GeneralizedParetoValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 
-
 # %%
-# Find consecutive exceedances clusters and the associated peaks for a minimum gap r=4
-r = 4
-peaks, clusters = factory.getPeakOverThresholdWithClusters(sample, u, r)
+# Find consecutive exceedances clusters and the associated peaks for a minimum gap r=3
+part = otexp.SamplePartition(sample)
+r = 3
+peaks, clusters = part.getPeakOverThreshold(u, r)
 nc = len(peaks)
 nu = sum([1 if sample[i, 0] > u else 0 for i in range(size)])
-print(f"nc={nc} nu={u} theta={nc/nu:.2f}")
+print(f"nc={nc} nu={u} theta={nc/nu:.3f}")
+graph = clusters.draw(u)
+view = otv.View(graph)
+
+# %%
+# Estimate a stationary gpd on the clusters and estimate the return level
+# The extremal index theta=0.86 suggest a week dependence between extreme levels.
+theta = nc / nu
+result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(peaks, u)
+xm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 365 * theta, peaks)
+sigma, xi, _ = result_LL.getParameterDistribution().getMean()
+sigma_stddev, xi_stddev, _ = result_LL.getParameterDistribution().getStandardDeviation()
+print(f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})", end=" ")
+print(f"x100={xm_100.getMean()} ({xm_100.getStandardDeviation()}) theta={theta:.3f}")
+
+# %%
+# Plot the return level
+# We can see the fitted model works well and the large return level confidence length
+# makes it difficult to make reliable prediction on future levels.
+validation = otexp.GeneralizedParetoValidation(result_LL, peaks)
+grid = validation.drawDiagnosticPlot()
+rlPlot = grid.getGraph(1, 0)
+rlPlot.setTitle(rlPlot.getTitle() + f" (u={u} r={r})")
+view = otv.View(rlPlot)
 
 # %%
 otv.View.ShowAll()

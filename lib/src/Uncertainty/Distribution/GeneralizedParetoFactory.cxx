@@ -1543,47 +1543,4 @@ GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(co
 }
 
 
-Sample GeneralizedParetoFactory::getPeakOverThresholdWithClusters(const Sample sample, const Scalar threshold, const UnsignedInteger r,
-                                                                  Collection<Indices> & clusters) const
-{
-  if (r == 0)
-    throw InvalidArgumentException(HERE) << "GeneralizedParetoFactory minimum cluster gap should be > 0";
-  const UnsignedInteger size = sample.getSize();
-  clusters.clear();
-  Sample peaks(0, 1);
-  UnsignedInteger streak = 0; // number of consecutive values below threshold
-  UnsignedInteger begin = 0; // cluster beginning index
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    if (sample(i, 0) > threshold)
-      streak = 0;
-    else
-      ++ streak;
-
-    // check if a cluster ends
-    if ((streak == r) || (i + 1 == size))
-    {
-      Indices selection(i - begin + 1);
-      selection.fill(begin);
-      const Point peak = sample.select(selection).getMax();
-      // keep only clusters with values above threshold
-      if (peak[0] > threshold)
-      {
-        peaks.add(peak);
-        const UnsignedInteger end = (streak == r) ? i - r + 1 : size;
-        clusters.add(Indices({begin, end}));
-      }
-      begin = i + 1; // reset cluster
-      streak = 0;
-    }
-  }
-  return peaks;
-}
-
-Sample GeneralizedParetoFactory::getPeakOverThreshold(const Sample sample, const Scalar threshold, const UnsignedInteger r) const
-{
-  Collection<Indices> clusters;
-  return getPeakOverThresholdWithClusters(sample, threshold, r, clusters);
-}
-
 END_NAMESPACE_OPENTURNS

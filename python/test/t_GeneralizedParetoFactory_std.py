@@ -57,15 +57,6 @@ ott.assert_almost_equal(
     estimatedGeneralizedPareto.getParameter(), distribution.getParameter()
 )
 
-# POT
-u = 0.5
-r = 2
-sample = ot.Sample.BuildFromPoint([1, 2, 0, 0, 3, 4, 0, 5, 0, 0, 6, 0, 0, 7, 8])
-peaks, clusters = factory.getPeakOverThresholdWithClusters(sample, u, r)
-print(peaks, clusters)
-assert peaks.asPoint() == [2.0, 5.0, 6.0, 8.0]
-assert len(peaks) == len(clusters), "len(peak/clusters)"
-
 if not ot.PlatformInfo.HasFeature("bison"):
     exit(0)
 
