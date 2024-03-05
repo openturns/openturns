@@ -82,7 +82,7 @@ The unicity and the strongness of the design point can be checked thanks to the
 
 A tolerance on the limit state (in the physical space) is implemented to check if the found design point can be used to estimate the failure probability, that is if
 :math:`g(\vect{x}^*,\vect{d}) = 0`.
-Default value is defined in :class:`~openturns.ResourceMap` of  class :class:`~openturns.Analytical`. 
+Default value is defined by the :class:`~openturns.ResourceMap` key named `Analytical-DefaultLimitStateTolerance`. 
 
 
 See also
@@ -187,7 +187,7 @@ accessible with the method :meth:`getAnalyticalResult`."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Analytical::getLimitStateTolerance
-"Accessor to limitStateTolerance parameter.
+"Accessor to the limit state tolerance.
 
 Returns
 -------
@@ -198,7 +198,7 @@ limitStateTolerance : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Analytical::setLimitStateTolerance
-"Accessor to limitStateTolerance parameter.
+"Accessor to the limit state tolerance.
 
 Returns
 -------

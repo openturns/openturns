@@ -42,7 +42,7 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event),
     physicalStartingPoint_(physicalStartingPoint),
-    limitStateTolerance_(ResourceMap::GetAsScalar("Analytical-defaultLimitStateTolerance"))
+    limitStateTolerance_(ResourceMap::GetAsScalar("Analytical-DefaultLimitStateTolerance"))
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension)

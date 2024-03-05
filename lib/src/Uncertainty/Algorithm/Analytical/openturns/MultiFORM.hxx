@@ -40,7 +40,7 @@ public:
   /** Default constructor */
   MultiFORM();
 
-  /** Constructors with parameters */
+  /** Constructor with parameters */
   MultiFORM(const OptimizationAlgorithm & solver,
             const RandomVector & event,
             const Point & physicalStartingPoint);

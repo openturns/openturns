@@ -39,7 +39,7 @@ public:
   /** Default constructor */
   SystemFORM();
 
-  /** Constructors with parameters */
+  /** Constructor with parameters */
   SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
              const RandomVector & event,
              const Point & physicalStartingPoint);

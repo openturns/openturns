@@ -114,7 +114,7 @@ private:
   RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
-  Scalar limitStateTolerance_;
+  Scalar limitStateTolerance_ = 0.0;;
   
 } ; /* class Analytical */
 

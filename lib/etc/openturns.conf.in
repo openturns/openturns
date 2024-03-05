@@ -750,6 +750,10 @@
   <AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension value_int="3" />
   <AdaptiveDirectionalStratification-DefaultNumberOfSteps                  value_int="2" />
 
+
+  <!-- OT::AnalyticalResult parameters -->
+  <Analytical-DefaultLimitStateTolerance      value_float="0.01"           />
+  
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
   <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />
