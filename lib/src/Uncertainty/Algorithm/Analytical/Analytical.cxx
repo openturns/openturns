@@ -24,6 +24,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

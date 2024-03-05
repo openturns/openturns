@@ -34,6 +34,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
