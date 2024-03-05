@@ -3,13 +3,10 @@
 
 Refer to :ref:`sorm_approximation`.
 
-Available constructors:
-    SORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
-
 Parameters
 ----------
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
-    Optimization algorithm used to research the design point.
+    Optimization algorithm used to search the design point.
 event : :class:`~openturns.RandomVector`
     Failure event.
 physicalStartingPoint : sequence of float

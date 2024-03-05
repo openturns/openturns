@@ -30,7 +30,7 @@ More details can be found in [kiureghian1998]_.
 Parameters
 ----------
 solver : :class:`~openturns.OptimizationAlgorithm`
-    Optimization algorithm used to research the design point.
+    Optimization algorithm used to search the design point.
 event : :class:`~openturns.RandomVector`
     Failure event
 physicalStartingPoint : sequence of float

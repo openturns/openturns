@@ -1,13 +1,10 @@
 %feature("docstring") OT::Analytical
 "Base class to evaluate the probability of failure of a system.
 
-Available constructors:
-    Analytical(*nearestPointAlgorithm, event, physicalStartingPoint*)
-
 Parameters
 ----------
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
-    Optimization algorithm used to research the design point.
+    Optimization algorithm used to search the design point.
 event : :class:`~openturns.RandomVector`
     Failure event.
 physicalStartingPoint : sequence of float
