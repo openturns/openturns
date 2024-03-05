@@ -110,12 +110,12 @@ protected:
   friend class Factory<Analytical>;
 
 private:
-  Scalar limitStateTolerance_;
   OptimizationAlgorithm nearestPointAlgorithm_;
   RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
-
+  Scalar limitStateTolerance_;
+  
 } ; /* class Analytical */
 
 END_NAMESPACE_OPENTURNS
