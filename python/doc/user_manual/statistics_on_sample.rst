@@ -12,6 +12,7 @@ Sample
     :template: class.rst_t
 
     Sample
+    experimental.SamplePartition
 
 .. _parametric_distribution_factories:
 
