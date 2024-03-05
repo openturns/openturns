@@ -49,7 +49,6 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs,
     const TemperatureProfile & profile)
   : OptimalLHSExperiment(lhs, spaceFilling)
   , profile_(profile)
-  , standardInitialDesign_()
 {
 }
 
@@ -94,18 +93,17 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
     // history has dimension 3 :crit, proba & temperature
     // Total size depends on convergency
     Sample history(0, 3);
-    Description historyDescription(3);
-    historyDescription[0] = spaceFilling_.getImplementation()->getName() + " criterion";
-    historyDescription[1] = "Probability";
-    historyDescription[2] = "Temperature";
+    const Description historyDescription = {spaceFilling_.getImplementation()->getName() + " criterion", "Probability", "Temperature"};
     history.setDescription(historyDescription);
     LOGDEBUG("Starting simulated annealing process");
 
     // Starting sample, in the [0,1]^d space
     Sample standardOptimalDesign(standardInitialDesign_.getSize() > 0 ? standardInitialDesign_ : lhs_.generateStandard());
+    if (standardOptimalDesign.getSize() < 2)
+      throw InvalidArgumentException(HERE) << "SimulatedAnnealingLHS requires an experiment of size >=2";
 
     // Starting implementation
-    UnsignedInteger iteration(0);
+    UnsignedInteger iteration = 0;
     Scalar T(profile_.getT0());
     Scalar optimalValue(spaceFilling_.evaluate(standardOptimalDesign));
     const UnsignedInteger iMax(profile_.getIMax());
@@ -145,10 +143,7 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
         }
       }
       LOGDEBUG(OSS() << "Current optimal value =" << optimalValue);
-      Point historyElement(3);
-      historyElement[0] = optimalValue;
-      historyElement[1] = criteriaDifference;
-      historyElement[2] = T;
+      const Point historyElement = {optimalValue, criteriaDifference, T};
       history.add(historyElement);
       // Update iteration, temperature
       ++ iteration;
