@@ -80,6 +80,11 @@ The result of the optimization problem is recoverable thanks to the method
 The unicity and the strongness of the design point can be checked thanks to the
 :class:`Strong Maximum Test <openturns.StrongMaximumTest>`.
 
+A tolerance on the limit state (in the physical space) is implemented to check if the found design point can be used to estimate the failure probability, that is if
+:math:`g(\vect{x}^*,\vect{d}) = 0`.
+Default value is defined in :class:`~openturns.ResourceMap` of  class :class:`~openturns.Analytical`. 
+
+
 See also
 --------
 FORM, SORM, StrongMaximumTest, Event, StandardEvent, AnalyticalResult
