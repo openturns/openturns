@@ -57,11 +57,6 @@ public:
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
-
-  Analytical(const OptimizationAlgorithm & solver,
-             const RandomVector & compositeEvent,
-             const Point & physicalStartingPoint,
-             const Scalar & limitStateTolerance);
                     
   /** Virtual constructor */
   Analytical * clone() const override;

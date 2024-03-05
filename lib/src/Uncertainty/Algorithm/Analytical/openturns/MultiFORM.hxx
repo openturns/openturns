@@ -45,11 +45,6 @@ public:
             const RandomVector & event,
             const Point & physicalStartingPoint);
 
-  MultiFORM(const OptimizationAlgorithm & solver,
-            const RandomVector & event,
-            const Point & physicalStartingPoint,
-            const Scalar & limitStateTolerance);
-
   /** Virtual constructor */
   MultiFORM * clone() const override;
 
