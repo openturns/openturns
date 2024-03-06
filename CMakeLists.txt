@@ -510,11 +510,6 @@ macro (ot_add_build_dir_to_include_dirs DIR)
   set (INTERNAL_INCLUDE_DIRS ${inc_dirs} CACHE INTERNAL "List of directories with header files needed for build")
 endmacro (ot_add_build_dir_to_include_dirs)
 
-# Add definitions according to the prerequisites found
-if (NOT BUILD_SHARED_LIBS)
-  list (APPEND OPENTURNS_DEFINITIONS -DOT_STATIC)
-endif ()
-
 if (MSVC OR WINTEL)
   list (APPEND OPENTURNS_DEFINITIONS -D_USE_MATH_DEFINES)
 endif ()

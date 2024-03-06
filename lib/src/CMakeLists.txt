@@ -79,8 +79,11 @@ include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES} ${HEADERFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
+
 if (BUILD_SHARED_LIBS)
-  set_target_properties(OT PROPERTIES COMPILE_DEFINITIONS "OT_DLL_EXPORTS")
+  target_compile_definitions(OT PRIVATE "OT_DLL_EXPORTS")
+else ()
+  target_compile_definitions (OT PUBLIC "OT_STATIC")
 endif ()
 
 # soversion
