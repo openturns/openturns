@@ -141,6 +141,12 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
     pkg install openturns
 
+Vcpkg
+-----
+Install the C++ library from `vcpkg.link <https://vcpkg.link/ports/openturns>`_::
+
+    vcpkg install openturns
+
 Development version
 ===================
 
