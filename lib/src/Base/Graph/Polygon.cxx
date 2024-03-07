@@ -170,13 +170,13 @@ void Polygon::load(Advocate & adv)
 }
 
 /* Builds a polygon which fills the area between two curves */
-Polygon Polygon::FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2)
+Polygon Polygon::FillBetween(const Sample & dataX, const Sample & dataY1, const Sample & dataY2)
 {
   return FillBetween(dataX.asPoint(), dataY1.asPoint(), dataY2.asPoint());
 }
 
 /* Builds a polygon which fills the area between two curves */
-Polygon Polygon::FillBetween(Point const& dataX, Point const& dataY1, Point const& dataY2)
+Polygon Polygon::FillBetween(const Point & dataX, const Point & dataY1, const Point & dataY2)
 {
   const UnsignedInteger size = dataX.getSize();
   if ((dataY1.getSize() != size) || (dataY2.getSize() != size))
