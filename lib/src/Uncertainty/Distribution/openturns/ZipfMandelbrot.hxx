@@ -125,7 +125,7 @@ public:
 protected:
 
   /* Compute generalized harmonic numbers */
-  Scalar getHarmonicNumbers(UnsignedInteger const) const;
+  Scalar getHarmonicNumbers(const UnsignedInteger k) const;
   void computeHarmonicNumbers();
 
   ScalarCollection harmonicNumbers_;
@@ -146,13 +146,13 @@ private:
   void computeRange() override;
 
   /** The maximum value of the ZipfMandelbrot distribution */
-  UnsignedInteger n_;
+  UnsignedInteger n_ = 1;
 
   /** The q probability parameter of the ZipfMandelbrot distribution */
-  Scalar q_;
+  Scalar q_ = 0.0;
 
   /** The s probability parameter of the ZipfMandelbrot distribution */
-  Scalar s_;
+  Scalar s_ = 1.0;
 
 }; /* class ZipfMandelbrot */
 
