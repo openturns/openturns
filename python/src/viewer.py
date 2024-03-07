@@ -375,6 +375,8 @@ class View:
                 plot_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in step_kw_default) and ("lw" not in step_kw_default):
                 step_kw["linewidth"] = drawable.getLineWidth()
+            if ("linewidth" not in polygon_kw_default) and ("lw" not in polygon_kw_default):
+                polygon_kw["linewidth"] = drawable.getLineWidth()
 
             # retrieve data
             data = drawable.getData()

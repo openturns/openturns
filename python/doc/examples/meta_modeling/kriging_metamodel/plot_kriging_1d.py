@@ -55,7 +55,7 @@ Kriging : quick-start
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+from openturns import viewer
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -250,35 +250,6 @@ def computeBoundsConfidenceInterval(quantileAlpha):
 
 
 # %%
-# In order to create the graphics containing the bounds of the confidence
-# interval, we use the `Polygon`.
-# This will create a colored surface associated to the confidence interval.
-# In order to do this, we create the nodes of the polygons at the lower level
-# `vLow` and at the upper level `vUp`.
-# Then we assemble these nodes to create the polygons.
-# That is what we do inside the `plot_kriging_bounds` function.
-
-# %%
-
-
-def plot_kriging_bounds(dataLower, dataUpper, n_test, color=[120, 1.0, 1.0]):
-    """
-    From two lists containing the lower and upper bounds of the region,
-    create a PolygonArray.
-    Default color is green given by HSV values in color list.
-    """
-    vLow = [[x_test[i, 0], dataLower[i, 0]] for i in range(n_test)]
-    vUp = [[x_test[i, 0], dataUpper[i, 0]] for i in range(n_test)]
-    myHSVColor = ot.Polygon.ConvertFromHSV(color[0], color[1], color[2])
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myHSVColor, myHSVColor) for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
-
-
-# %%
 # We define two small lists to draw three different confidence intervals (defined by the alpha value) :
 alphas = [0.05, 0.1, 0.2]
 # three different green colors defined by HSV values
@@ -298,7 +269,8 @@ graph.add(plot_data_kriging(x_test, y_test_MM))
 for idx, v in enumerate(alphas):
     quantileAlpha = computeQuantileAlpha(v)
     vLow, vUp = computeBoundsConfidenceInterval(quantileAlpha)
-    boundsPoly = plot_kriging_bounds(vLow, vUp, n_test, mycolors[idx])
+    boundsPoly = ot.Polygon.FillBetween(x_test, vLow, vUp)
+    boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[idx][0], mycolors[idx][1], mycolors[idx][2]))
     boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
