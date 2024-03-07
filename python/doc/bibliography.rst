@@ -135,9 +135,6 @@ Bibliography
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
-.. [giles2013] Mike Giles, *Fast evaluation of the inverse Poisson CDF*, university of Oxford,
-    Ninth IMACS Seminar on Monte Carlo Methods, 2013.
-    `pdf <http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf>`__
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
