@@ -684,7 +684,6 @@ install (FILES COPYING
                 COPYING.kendall
                 COPYING.kissfft
                 COPYING.KolmogorovSmirnovDist
-                COPYING.poissinv
                 COPYING.tnc
           DESTINATION ${OPENTURNS_DOC_PATH}
        )

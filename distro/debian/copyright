@@ -49,12 +49,6 @@ License: GPL-3
 Comment: Author gave written permission to embed these files into OpenTURNS,
  see COPYING.KolmogorovSmirnovDist
 
-Files: lib/src/Uncertainty/Distribution/poissinv_cpu.h
-Copyright: University of Oxford
-License: GPL-3
-Comment: Author gave written permission to embed this file into OpenTURNS, see
- COPYING.poissinv
-
 Files: lib/test/CRT_fp8.c
 Copyright: none
 License: public-domain
