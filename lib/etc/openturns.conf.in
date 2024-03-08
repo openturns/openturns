@@ -751,7 +751,7 @@
   <AdaptiveDirectionalStratification-DefaultNumberOfSteps                  value_int="2" />
 
 
-  <!-- OT::AnalyticalResult parameters -->
+  <!-- OT::Analytical parameters -->
   <Analytical-DefaultLimitStateTolerance      value_float="0.01"           />
   
   <!-- OT::AnalyticalResult parameters -->

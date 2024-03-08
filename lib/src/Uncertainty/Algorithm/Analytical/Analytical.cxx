@@ -152,10 +152,10 @@ void Analytical::run()
   
   Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
   
-  Scalar residual = (valuePhysicalSpaceDesignPoint[0]-event_.getThreshold())*(valuePhysicalSpaceDesignPoint[0]-event_.getThreshold());  
+  const Scalar residual = std::abs(valuePhysicalSpaceDesignPoint[0] - event_.getThreshold()); 
   
-  if (residual > limitStateTolerance_*limitStateTolerance_)
-  throw Exception(HERE) << "Obtained design point is not on the limit state : its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << " that is uncompatible with the threshold : " << event_.getThreshold() << " considering the limit state tolerance "<< limitStateTolerance_;
+  if (residual > limitStateTolerance_)
+  throw Exception(HERE) << "Obtained design point is not on the limit state : its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << " that is uncompatible with the threshold : " << event_.getThreshold() << " considering the limit state tolerance : "<< limitStateTolerance_;
   
   
 } /* Analytical::run() */

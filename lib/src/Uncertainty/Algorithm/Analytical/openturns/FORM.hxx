@@ -80,6 +80,3 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_FORM_HXX */
-
-
-
