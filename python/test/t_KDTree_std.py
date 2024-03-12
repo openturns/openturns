@@ -2,7 +2,6 @@
 
 import openturns as ot
 import numpy as np
-import os
 
 ot.TESTPREAMBLE()
 
@@ -33,11 +32,6 @@ neighbourIndices = tree.query(test)
 
 neighbourIndices_np = [nearest_debug(x) for x in test]
 
-if neighbourIndices != neighbourIndices_np:
-    print("Errors found in query")
-    os.exit(1)
-
+assert neighbourIndices == neighbourIndices_np, "Errors found in query"
 for x in test:
-    if np.any(nearest_debug_indices(x)[:10] != tree.queryK(x, 10, True)):
-        print("Errors found in queryK")
-        os.exit(1)
+    assert np.any(nearest_debug_indices(x)[:10] == tree.queryK(x, 10, True)), "Errors found in queryK"

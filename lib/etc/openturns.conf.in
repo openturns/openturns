@@ -48,6 +48,10 @@
   <!-- OT::DesignProxy parameters -->
   <DesignProxy-DefaultCacheSize value_int="16777216" />
 
+  <!-- OT::KDTree parameters -->
+  <KDTree-leaf_max_size value_int="10" />
+  <!--KDTree-n_thread_build value_int="1" /-->
+
   <!-- OT::KFold parameters -->
   <KFold-DefaultK value_int="10" />
 

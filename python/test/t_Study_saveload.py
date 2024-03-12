@@ -312,7 +312,6 @@ try:
     # KDTree
     kDTree = ot.KDTree()
     myStudy.fillObject("kDTree", kDTree)
-    print("kDTree = ", kDTree)
 
     # ArcsineMuSigma parameter loading
     ams_parameters = ot.ArcsineMuSigma()

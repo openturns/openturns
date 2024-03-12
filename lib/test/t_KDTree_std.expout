@@ -1,4 +1,3 @@
-tree=class=KDTree root=class=KDNode index=5 left=class=KDNode index=4 left=NULL right=class=KDNode index=6 left=NULL right=class=KDNode index=2 left=NULL right=NULL right=class=KDNode index=7 left=class=KDNode index=0 left=NULL right=class=KDNode index=1 left=NULL right=NULL right=class=KDNode index=9 left=NULL right=class=KDNode index=8 left=NULL right=class=KDNode index=3 left=NULL right=NULL
 Nearest neighbour of class=Point name=Unnamed dimension=3 values=[-0.721533,-0.241223,-1.78796]=class=Point name=Unnamed dimension=3 values=[0.445785,-1.03808,-0.856712] (index=7)
 Nearest neighbour of class=Point name=Unnamed dimension=3 values=[0.40136,1.36783,1.00434]=class=Point name=Unnamed dimension=3 values=[-0.355007,1.43725,0.810668] (index=2)
 Nearest neighbour of class=Point name=Unnamed dimension=3 values=[0.741548,-0.0436123,0.539345]=class=Point name=Unnamed dimension=3 values=[0.473617,-0.125498,0.351418] (index=8)
