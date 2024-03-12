@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class KDNearestNeighboursFinder;
+class KDTreeImplementation;
 
 /**
  * @class KDTree
@@ -38,8 +38,6 @@ class OT_API KDTree
   : public NearestNeighbourAlgorithmImplementation
 {
   CLASSNAME
-
-  friend class KDNearestNeighboursFinder;
 
 public:
 
@@ -104,6 +102,7 @@ private:
   /** The tree, stored as a list of tuples (index, leftNode, rightNode) */
   Indices tree_;
 
+  Pointer<KDTreeImplementation> p_implementation_;
 }; /* class KDTree */
 
 
