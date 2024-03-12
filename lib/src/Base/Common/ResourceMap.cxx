@@ -673,6 +673,10 @@ void ResourceMap::loadDefaultConfiguration()
   // DesignProxy parameters
   addAsUnsignedInteger("DesignProxy-DefaultCacheSize", 16777216);// 2^24=16777216=128 Mio
 
+  // KDTree parameters
+  addAsUnsignedInteger("KDTree-leaf_max_size", 10);
+  addAsUnsignedInteger("KDTree-n_thread_build", getAsUnsignedInteger("TBB-ThreadsNumber"));
+
   // KFold parameters
   addAsUnsignedInteger("KFold-DefaultK", 10);
 

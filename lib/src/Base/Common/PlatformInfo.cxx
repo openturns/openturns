@@ -120,6 +120,12 @@ Description PlatformInfo::GetFeatures()
     Features_["primesieve"] = false;
 #endif
 
+#ifdef OPENTURNS_HAVE_NANOFLANN
+    Features_["nanoflann"] = true;
+#else
+    Features_["nanoflann"] = false;
+#endif
+
 #ifdef OPENTURNS_HAVE_TBB
     Features_["tbb"] = true;
 #else
