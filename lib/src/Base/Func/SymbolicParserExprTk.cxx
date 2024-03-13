@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymbolicParserExprTk);
+CLASSNAMEINIT(SymbolicParserExprTk)
 
 static const Factory<SymbolicParserExprTk> Factory_SymbolicParserExprTk;
 

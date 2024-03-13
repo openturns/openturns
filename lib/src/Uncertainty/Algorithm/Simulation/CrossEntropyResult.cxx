@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(CrossEntropyResult);
+CLASSNAMEINIT(CrossEntropyResult)
 
 static const Factory<CrossEntropyResult> Factory_CrossEntropyResult;
 

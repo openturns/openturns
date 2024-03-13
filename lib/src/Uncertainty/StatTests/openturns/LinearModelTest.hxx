@@ -108,7 +108,7 @@ OT_API TestResultCollection FullRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level = 0.05);
 
-}; /* LinearModelTest */
+} /* namespace LinearModelTest */
 
 END_NAMESPACE_OPENTURNS
 

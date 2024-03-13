@@ -66,7 +66,7 @@ protected:
   static mu::value_type Xor(mu::value_type v1, mu::value_type v2);
 };
 
-CLASSNAMEINIT(SymbolicParserMuParser);
+CLASSNAMEINIT(SymbolicParserMuParser)
 
 static const Factory<SymbolicParserMuParser> Factory_SymbolicParserMuParser;
 

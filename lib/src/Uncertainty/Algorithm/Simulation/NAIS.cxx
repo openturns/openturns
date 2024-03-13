@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class NAIS
  */
 
-CLASSNAMEINIT(NAIS);
+CLASSNAMEINIT(NAIS)
 
 static const Factory<NAIS> Factory_NAIS;
 

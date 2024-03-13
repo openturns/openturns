@@ -35,7 +35,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MixedHistogramUserDefined);
+CLASSNAMEINIT(MixedHistogramUserDefined)
 
 static const Factory<MixedHistogramUserDefined> Factory_MixedHistogramUserDefined;
 
