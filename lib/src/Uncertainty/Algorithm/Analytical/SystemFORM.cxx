@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SystemFORM);
+CLASSNAMEINIT(SystemFORM)
 
 static Factory<SystemFORM> Factory_SystemFORM;
 

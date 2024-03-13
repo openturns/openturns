@@ -43,7 +43,7 @@ OT_API TestResult AndersonDarlingNormal(const Sample & sample,
 OT_API TestResult CramerVonMisesNormal(const Sample & sample,
                                        const Scalar level = 0.05);
 
-}; /* class NormalityTest */
+} /* namespace NormalityTest */
 
 END_NAMESPACE_OPENTURNS
 #endif /* OPENTURNS_NORMALITYTEST_HXX */

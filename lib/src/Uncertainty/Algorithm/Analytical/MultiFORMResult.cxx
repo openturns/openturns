@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MultiFORMResult);
+CLASSNAMEINIT(MultiFORMResult)
 
 static const Factory<PersistentCollection<FORMResult> > Factory_PersistentCollection_FORMResult;
 static Factory<MultiFORMResult> Factory_MultiFORMResult;
