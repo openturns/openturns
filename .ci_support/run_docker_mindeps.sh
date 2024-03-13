@@ -4,7 +4,7 @@ apt-get -y update && apt-get -y install git g++ python3-matplotlib libxml2-dev l
 set -e
 
 cd /tmp
-cmake --preset=linux-debug -S /io -B build
+cmake -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -D_GLIBCXX_ASSERTIONS" -DCMAKE_INSTALL_PREFIX=$PWD/install -DSWIG_COMPILE_FLAGS="-O1" -S /io -B build
 cd build
 make install
 OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --schedule-random ${MAKEFLAGS} -E FunctionalChaosSobolIndices_std
