@@ -147,7 +147,7 @@ void Analytical::run()
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
   
-  /* check is result is valid */
+  /* check if result is valid */
   Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
   
   Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
