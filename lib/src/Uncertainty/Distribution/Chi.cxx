@@ -233,6 +233,7 @@ Point Chi::computeCDFGradient(const Point & point) const
 Scalar Chi::computeScalarQuantile(const Scalar prob,
                                   const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return 0.0;
   return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
 }
 

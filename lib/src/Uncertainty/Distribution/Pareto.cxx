@@ -218,6 +218,8 @@ Point Pareto::computeCDFGradient(const Point & point) const
 Scalar Pareto::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return gamma_ + beta_;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
   const Scalar q = tail ? 1.0 - prob : prob;
   return gamma_ + beta_ / std::pow(1.0 - q, 1.0 / alpha_);
 }

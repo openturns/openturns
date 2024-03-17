@@ -232,6 +232,7 @@ Point ChiSquare::computeCDFGradient(const Point & point) const
 Scalar ChiSquare::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return 0.0;
   return 2.0 * DistFunc::qGamma(0.5 * nu_, prob, tail);
 }
 

@@ -259,6 +259,8 @@ Point WeibullMax::computeCDFGradient(const Point & point) const
 Scalar WeibullMax::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return - SpecFunc::MaxScalar;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return gamma_;
   if (tail) return gamma_ - beta_ * std::pow(-std::log(1.0 - prob), 1.0 / alpha_);
   return gamma_ - beta_ * std::pow(-std::log(prob), 1.0 / alpha_);
 }

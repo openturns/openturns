@@ -21,7 +21,7 @@
 #include <cmath>
 #include "openturns/Gumbel.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/SpecFunc.hxx"
+#include "openturns/SpecFunc.hxx" 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Distribution.hxx"
 
@@ -228,6 +228,8 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 Scalar Gumbel::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
+  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return - SpecFunc::MaxScalar;
+  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
   if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0 / beta_);
   return gamma_ - std::log(-std::log(prob)) / (1.0 / beta_);
 }
