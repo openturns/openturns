@@ -39,7 +39,9 @@ Notes
 
 *Algorithms parameters:*
 
-  Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. These parameters can be modified using the :class:`~openturns.ResourceMap`. For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
+  Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html>`_.
+  These parameters can be modified using the :class:`~openturns.ResourceMap`.
+  For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
 
     >>> import openturns as ot
     >>> ot.ResourceMap.AddAsUnsignedInteger('Bonmin-bonmin.node_limit', 10000)
@@ -47,9 +49,11 @@ Notes
 
 *Convergence criteria:*
 
-  To estimate the convergence of the algorithm during the optimization process, Bonmin uses specific tolerance parameters, different from the standard absolute/relative/residual errors used in OpenTURNS. The definition of Bonmin's parameters can be found in `this paper, page 3 <http://www.optimization-online.org/DB_FILE/2004/03/836.pdf>`_.
-
-  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError`` defined in ``OptimizationAlgorithm`` are not used in this case.
+  To estimate the convergence of the algorithm during the optimization process,
+  Bonmin uses specific tolerance parameters, different from the standard absolute/relative/residual errors in the library.
+  The definition of Bonmin's parameters can be found in `this paper, page 3 <https://www.optimization-online.org/2004/03/836>`_.
+  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError``
+  defined in ``OptimizationAlgorithm`` are not used in this case.
 
 See also
 --------

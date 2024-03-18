@@ -72,7 +72,7 @@ Available constants:
 Notes
 -----
 
-Up to version 1.10, OpenTURNS relied on `muParser <http://beltoforion.de/article.php?a=muparser>`_
+Up to version 1.10, OpenTURNS relied on `muParser <https://beltoforion.de/en/muparser/>`_
 to parse analytical formulas. Since version 1.11, `ExprTk <http://www.partow.net/programming/exprtk/>`_
 is used by default, but both parsers can be used if their support have been compiled.
 This is controlled by the `SymbolicParser-Backend` :class:`~openturns.ResourceMap` entry.
