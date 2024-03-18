@@ -41,7 +41,7 @@ WeightedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
+>>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 
 Generate the sample with a reinitialization of the sequence at each change
 of distribution:

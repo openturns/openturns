@@ -39,6 +39,8 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimen
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
+  for (UnsignedInteger i = getScale().getSize(); i < activeParameter_.getSize(); ++i)
+    activeParameter_[i] = i + 1;
   isStationary_ = true;
 }
 
@@ -50,6 +52,8 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   scale_ = Point(inputDimension_, 1.0);
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
+  for (UnsignedInteger i = getScale().getSize(); i < activeParameter_.getSize(); ++i)
+    activeParameter_[i] = i + 1;
 }
 
 /** Parameters constructor */
@@ -62,6 +66,8 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
+  for (UnsignedInteger i = getScale().getSize(); i < activeParameter_.getSize(); ++i)
+    activeParameter_[i] = i + 1;
 }
 
 /* Collection accessor */
@@ -207,9 +213,10 @@ void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
   Point scale(inputDimension_);
   Point amplitude(outputDimension_);
   for (UnsignedInteger i = 0; i < scale_.getDimension(); ++i) scale[i] = parameter[i];
-  for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + inputDimension_];
+  for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + inputDimension_ + 1];
   // set parameters
   setScale(scale);
+  setNuggetFactor(parameter[inputDimension_]);
   setAmplitude(amplitude);
 }
 
@@ -218,6 +225,7 @@ Point TensorizedCovarianceModel::getFullParameter() const
   // Same convention : scale then amplitude parameters
   Point result(0);
   result.add(scale_);
+  result.add(nuggetFactor_);
   result.add(amplitude_);
   return result;
 }
@@ -226,6 +234,7 @@ Description TensorizedCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
   for (UnsignedInteger j = 0; j < scale_.getDimension(); ++ j) description.add(OSS() << "scale_" << j);
+  description.add(OSS() << "nuggetFactor");
   for (UnsignedInteger j = 0; j < amplitude_.getDimension(); ++ j) description.add(OSS() << "amplitude_" << j);
   return description;
 }

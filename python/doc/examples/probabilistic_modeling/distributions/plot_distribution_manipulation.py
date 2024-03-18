@@ -31,13 +31,13 @@ ot.Log.Show(ot.Log.NONE)
 dist_1 = ot.Normal()
 
 # Create a 2-d distribution
-dist_2 = ot.ComposedDistribution(
+dist_2 = ot.JointDistribution(
     [ot.Normal(), ot.Triangular(0.0, 2.0, 3.0)], ot.ClaytonCopula(2.3)
 )
 
 # Create a 3-d distribution
 copula_dim3 = ot.Student(5.0, 3).getCopula()
-dist_3 = ot.ComposedDistribution(
+dist_3 = ot.JointDistribution(
     [ot.Normal(), ot.Triangular(0.0, 2.0, 3.0), ot.Exponential(0.2)], copula_dim3
 )
 

@@ -40,7 +40,7 @@ X2 = ot.Normal(0.0, 3.0)
 # Independent marginals
 # ---------------------
 
-distX = ot.ComposedDistribution([X1, X2])
+distX = ot.JointDistribution([X1, X2])
 sample = distX.getSample(1000)
 
 
@@ -125,7 +125,7 @@ view = viewer.View(graph)
 
 # %%
 copula = ot.ClaytonCopula(2.5)
-distX = ot.ComposedDistribution([X1, X2], copula)
+distX = ot.JointDistribution([X1, X2], copula)
 
 # %%
 # We generate a sample from the distribution :

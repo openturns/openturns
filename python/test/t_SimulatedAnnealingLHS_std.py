@@ -9,7 +9,7 @@ bounds = ot.Interval(dimension)
 size = 25
 
 # Build standard LHS algorithm
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 distribution.setDescription(["U" + str(i) for i in range(dimension)])
 lhs = ot.LHSExperiment(distribution, size)
 lhs.setRandomShift(False)  # centered

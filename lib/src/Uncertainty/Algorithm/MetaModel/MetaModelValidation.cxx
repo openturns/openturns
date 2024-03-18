@@ -26,7 +26,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/BernsteinCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -134,12 +134,12 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
   if (!smooth)
   {
     const UnsignedInteger dimension = residual_.getDimension();
-    ComposedDistribution::DistributionCollection coll(dimension);
+    JointDistribution::DistributionCollection coll(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       coll[j] = HistogramFactory().build(residual_.getMarginal(j));
     // Estimate a copula only if dimension>1
     if (dimension > 1)
-      return ComposedDistribution(coll, BernsteinCopulaFactory().build(residual_));
+      return JointDistribution(coll, BernsteinCopulaFactory().build(residual_));
     return coll[0];
   }
   return KernelSmoothing().build(residual_);

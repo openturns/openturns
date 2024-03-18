@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class ComposedDistribution for standard methods
+ *  @brief The test file of class JointDistribution for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Create a collection of distribution
     UnsignedInteger dimension = 2000;
     fullprint << "Creating a composed distribution of dimension " << dimension << std::endl;
-    ComposedDistribution::DistributionCollection aCollection(dimension, Normal(meanPoint, sigma, R));
+    JointDistribution::DistributionCollection aCollection(dimension, Normal(meanPoint, sigma, R));
 
     for (UnsignedInteger i = 0; i < dimension; i++)
     {
@@ -53,7 +53,7 @@ int main(int, char *[])
     // Create a copula
     IndependentCopula aCopula(dimension);
     // Instantiate one distribution object
-    ComposedDistribution distribution(aCollection, aCopula);
+    JointDistribution distribution(aCollection, aCopula);
     fullprint << "Distribution created." << std::endl;
     // Is this distribution an elliptical distribution?
     fullprint << "Elliptical distribution= " << (distribution.isElliptical() ? "true" : "false") << std::endl;

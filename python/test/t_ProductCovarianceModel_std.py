@@ -18,7 +18,7 @@ def test_active_parameter():
         ],
     )
     print("Activate nu parameter")
-    cov_model_1d.setActiveParameter([0, 1, 2])
+    cov_model_1d.setActiveParameter([0, 2, 3])
     print(
         "active cov. param.: ",
         [
@@ -42,7 +42,7 @@ def test_active_parameter():
         ],
     )
     print("Disable nu for marginals 0 & 1 parameter : ", cov_model.getFullParameter())
-    cov_model.setActiveParameter([0, 1, 2, 3, 6])
+    cov_model.setActiveParameter([0, 1, 2, 4, 7])
     print(
         "active cov. param.: ",
         [
@@ -69,7 +69,7 @@ def test_active_amplitude_parameter():
     model1 = ot.MaternModel([1.0], 2.5)
     print("Model 1 : ", model1.getFullParameterDescription())
     print("Activate nu parameter and disable sigma2")
-    model1.setActiveParameter([0, 2])
+    model1.setActiveParameter([0, 1, 3])
     print(
         "model1 active parameter: ",
         [model1.getFullParameterDescription()[i] for i in model1.getActiveParameter()],
@@ -78,7 +78,13 @@ def test_active_amplitude_parameter():
     model2 = ot.ExponentiallyDampedCosineModel()
     print("Model 2 : ", model2.getFullParameterDescription())
     print("Activate freq parameter")
-    model2.setActiveParameter([0, 1, 2])
+    model2.setActiveParameter([0, 2, 3])
+    print(
+        "model2 active parameter: ",
+        [model2.getFullParameterDescription()[i] for i in model2.getActiveParameter()],
+    )
+    print("Activate nuggetFactor parameter")
+    model2.setActiveParameter([0, 1, 2, 3])
     print(
         "model2 active parameter: ",
         [model2.getFullParameterDescription()[i] for i in model2.getActiveParameter()],
@@ -98,6 +104,7 @@ def test_active_amplitude_parameter():
 
 def test_parameters_iso():
     scale = []
+    nuggetFactor = 1e-12
     amplitude = 1.0
     extraParameter = []
 
@@ -130,19 +137,23 @@ def test_parameters_iso():
     ott.assert_almost_equal(model.getScale(), scale, 1e-16, 1e-16)
     ott.assert_almost_equal(model.getAmplitude(), [amplitude], 1e-16, 1e-16)
     ott.assert_almost_equal(
-        model.getFullParameter(), scale + [amplitude] + extraParameter, 1e-16, 1e-16
+        model.getFullParameter(),
+        scale + [nuggetFactor, amplitude] + extraParameter,
+        1e-16,
+        1e-16,
     )
 
     # active parameter should be scale + amplitude
-    ott.assert_almost_equal(model.getActiveParameter(), [0, 1, 2, 3], 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getActiveParameter(), [0, 1, 2, 4], 1e-16, 1e-16)
 
     # setting new parameters
     extraParameter = [2.5, 0.5]
-    model.setFullParameter([6, 7, 8, 2] + extraParameter)
+    model.setFullParameter([6, 7, 8, 0.01, 2] + extraParameter)
 
     ott.assert_almost_equal(model.getCollection()[0].getScale()[0], 6, 1e-16, 1e-16)
     ott.assert_almost_equal(model.getCollection()[1].getScale()[0], 7, 1e-16, 1e-16)
     ott.assert_almost_equal(model.getCollection()[2].getScale()[0], 8, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getNuggetFactor(), 0.01, 0.0, 0.0)
     ott.assert_almost_equal(model.getAmplitude()[0], 2, 1e-16, 1e-16)
     ott.assert_almost_equal(
         model.getCollection()[0].getFullParameter()[-1], extraParameter[0], 1e-16, 1e-16
@@ -152,7 +163,7 @@ def test_parameters_iso():
     )
 
     # checking active par setting
-    model.setActiveParameter([0, 1, 2, 3, 5])
+    model.setActiveParameter([0, 1, 2, 4, 6])
     ott.assert_almost_equal(
         model.getParameter(), [6, 7, 8, 2, extraParameter[-1]], 1e-16, 1e-16
     )

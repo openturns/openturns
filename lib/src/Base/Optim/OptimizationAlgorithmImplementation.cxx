@@ -244,6 +244,7 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
+  adv.saveAttribute( "maximumTimeDuration_", maximumTimeDuration_);
   adv.saveAttribute( "checkStatus_", checkStatus_ );
 }
 
@@ -263,6 +264,8 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
+  if (adv.hasAttribute("maximumTimeDuration_")) // OT>=1.23
+    adv.loadAttribute( "maximumTimeDuration_", maximumTimeDuration_);
   if (adv.hasAttribute("checkStatus_"))
     adv.loadAttribute("checkStatus_", checkStatus_);
 }
@@ -290,9 +293,9 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   if (outputHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
   if (getProblem().hasInequalityConstraint() && inequalityHistory.getSize() != size)
-    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation inequality constraint history size does not match input size";
   if (getProblem().hasEqualityConstraint() && equalityHistory.getSize() != size)
-    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation equality constraint history size does not match input size";
 
   const UnsignedInteger dimension = getProblem().getDimension();
 

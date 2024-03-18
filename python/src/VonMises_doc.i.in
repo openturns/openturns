@@ -73,3 +73,23 @@ Parameters
 ----------
 kappa : float, :math:`\kappa > 0`
     Concentration parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularMean
+"Accessor to the circular mean.
+
+Returns
+-------
+mu : float
+    Circular mean :math:`\mu`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularVariance
+"Accessor to the circular variance.
+
+Returns
+-------
+var : float
+    Circular variance :math:`1-\frac{I_1(\kappa)}{I_0(\kappa)}`"

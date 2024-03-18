@@ -20,7 +20,7 @@
  */
 #include <cmath>
 
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/MarginalTransformationGradient.hxx"
 #include "openturns/MarginalTransformationHessian.hxx"
@@ -45,17 +45,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComposedDistribution)
+CLASSNAMEINIT(JointDistribution)
 
-static const Factory<ComposedDistribution> Factory_ComposedDistribution;
+static const Factory<JointDistribution> Factory_JointDistribution;
 
 /* Default constructor */
-ComposedDistribution::ComposedDistribution()
+JointDistribution::JointDistribution()
   : DistributionImplementation()
   , distributionCollection_()
   , copula_(IndependentCopula(1))
 {
-  setName("ComposedDistribution");
+  setName("JointDistribution");
   setDimension(1);
   DistributionCollection coll(1);
   coll[0] = Uniform();
@@ -64,12 +64,12 @@ ComposedDistribution::ComposedDistribution()
 }
 
 /* Default constructor */
-ComposedDistribution::ComposedDistribution(const DistributionCollection & coll)
+JointDistribution::JointDistribution(const DistributionCollection & coll)
   : DistributionImplementation()
   , distributionCollection_()
   , copula_(IndependentCopula(coll.getSize()))
 {
-  setName("ComposedDistribution");
+  setName("JointDistribution");
   setDimension(coll.getSize());
   // We can NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
@@ -80,13 +80,13 @@ ComposedDistribution::ComposedDistribution(const DistributionCollection & coll)
 }
 
 /* Default constructor */
-ComposedDistribution::ComposedDistribution(const DistributionCollection & coll,
+JointDistribution::JointDistribution(const DistributionCollection & coll,
     const Distribution & copula)
   : DistributionImplementation()
   , distributionCollection_()
   , copula_(copula)
 {
-  setName("ComposedDistribution");
+  setName("JointDistribution");
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   setDimension(copula.getDimension());
   // We can NOT set distributionCollection_ in the member area of the constructor
@@ -98,7 +98,7 @@ ComposedDistribution::ComposedDistribution(const DistributionCollection & coll,
 }
 
 /* Comparison operator */
-Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
+Bool JointDistribution::operator ==(const JointDistribution & other) const
 {
   if (this == &other) return true;
   // The copula...
@@ -118,15 +118,15 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
   return true;
 }
 
-Bool ComposedDistribution::equals(const DistributionImplementation & other) const
+Bool JointDistribution::equals(const DistributionImplementation & other) const
 {
   // First, test the dimension
   if (!(dimension_ == other.getDimension())) return false;
   // Second, check with cast
-  const ComposedDistribution* p_other = dynamic_cast<const ComposedDistribution*>(&other);
+  const JointDistribution* p_other = dynamic_cast<const JointDistribution*>(&other);
   if (p_other != 0) return (*this == *p_other);
   // Third, check by properties
-  // We coud go there eg. when comparing a ComposedDistribution([Normal()]*2) with a Normal(2)
+  // We coud go there eg. when comparing a JointDistribution([Normal()]*2) with a Normal(2)
   // The copula...
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();
@@ -145,10 +145,10 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
 }
 
 /* String converter */
-String ComposedDistribution::__repr__() const
+String JointDistribution::__repr__() const
 {
   OSS oss;
-  oss << "class=" << ComposedDistribution::GetClassName()
+  oss << "class=" << JointDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " copula=" << copula_;
@@ -156,7 +156,7 @@ String ComposedDistribution::__repr__() const
   return oss;
 }
 
-String ComposedDistribution::__str__(const String & ) const
+String JointDistribution::__str__(const String & ) const
 {
   OSS oss;
   oss << getClassName() << "(";
@@ -171,7 +171,7 @@ String ComposedDistribution::__str__(const String & ) const
   return oss;
 }
 
-String ComposedDistribution::_repr_html_() const
+String JointDistribution::_repr_html_() const
 {
   OSS oss(false);
   oss << getClassName() << "\n";
@@ -203,7 +203,7 @@ String ComposedDistribution::_repr_html_() const
   return oss;
 }
 
-String ComposedDistribution::__repr_markdown__() const
+String JointDistribution::__repr_markdown__() const
 {
   OSS oss(false);
   oss << getClassName() << "\n";
@@ -240,7 +240,7 @@ String ComposedDistribution::__repr_markdown__() const
 
 
 /* Distribution collection accessor */
-void ComposedDistribution::setDistributionCollection(const DistributionCollection & coll)
+void JointDistribution::setDistributionCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -262,13 +262,13 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
     upperBound[i] = marginalRange.getUpperBound()[0];
     finiteLowerBound[i] = marginalRange.getFiniteLowerBound()[0];
     finiteUpperBound[i] = marginalRange.getFiniteUpperBound()[0];
-    // The description of the ComposedDistribution is built first by using the marginal description
+    // The description of the JointDistribution is built first by using the marginal description
     // then by using the marginal name if the description is empty, which should never occur
     const String marginalDescription(coll[i].getDescription()[0]);
     if (marginalDescription.size() > 0) description[i] = marginalDescription;
     else
     {
-      LOGWARN(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the ComposedDistribution, because the marginal description is empty.");
+      LOGWARN(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the JointDistribution, because the marginal description is empty.");
       const String marginalName(coll[i].getName());
       description[i] = marginalName;
     }
@@ -302,46 +302,46 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
 
 
 /* Distribution collection accessor */
-ComposedDistribution::DistributionCollection ComposedDistribution::getDistributionCollection() const
+JointDistribution::DistributionCollection JointDistribution::getDistributionCollection() const
 {
   return distributionCollection_;
 }
 
 
 /* Copula accessor */
-void ComposedDistribution::setCopula(const Distribution & copula)
+void JointDistribution::setCopula(const Distribution & copula)
 {
   // We check if the copula has a dimension compatible with the one of the object,
   // especially if the object has already been created and has a collection of distribution
   if (getDimension() != 0)
   {
     if (getDimension() != copula.getDimension())
-      throw InvalidArgumentException(HERE) << "Copula has a dimension different from the ComposedDistribution's";
+      throw InvalidArgumentException(HERE) << "Copula has a dimension different from the JointDistribution's";
   }
   else
     setDimension(copula.getDimension());
 
   copula_ = copula;
   isAlreadyComputedCovariance_ = false;
-  // We ensure that the copula has the same description than the ComposedDistribution
+  // We ensure that the copula has the same description than the JointDistribution
   copula_.setDescription(getDescription());
 }
 
 
 /* Copula accessor */
-Distribution ComposedDistribution::getCopula() const
+Distribution JointDistribution::getCopula() const
 {
   return copula_;
 }
 
 /* Virtual constructor */
-ComposedDistribution * ComposedDistribution::clone() const
+JointDistribution * JointDistribution::clone() const
 {
-  return new ComposedDistribution(*this);
+  return new JointDistribution(*this);
 }
 
-/* Get one realization of the ComposedDistribution */
-Point ComposedDistribution::getRealization() const
+/* Get one realization of the JointDistribution */
+Point JointDistribution::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return distributionCollection_[0].getRealization();
@@ -384,7 +384,7 @@ struct ComposedDistributionComputeSamplePolicy
 }; /* end struct ComposedDistributionComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-Sample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
+Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   // For 1D or independent components, we can only rely on possible parallel
@@ -421,14 +421,14 @@ Sample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
   return result;
 }
 
-Sample ComposedDistribution::getSample(const UnsignedInteger size) const
+Sample JointDistribution::getSample(const UnsignedInteger size) const
 {
   if (isParallel_) return getSampleParallel(size);
   return DistributionImplementation::getSample(size);
 }
 
-/* Get the DDF of the ComposedDistribution */
-Point ComposedDistribution::computeDDF(const Point & point) const
+/* Get the DDF of the JointDistribution */
+Point JointDistribution::computeDDF(const Point & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
@@ -462,8 +462,8 @@ Point ComposedDistribution::computeDDF(const Point & point) const
   return ddf;
 }
 
-/* Get the PDF of the ComposedDistribution */
-Scalar ComposedDistribution::computePDF(const Point & point) const
+/* Get the PDF of the JointDistribution */
+Scalar JointDistribution::computePDF(const Point & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
@@ -490,8 +490,8 @@ Scalar ComposedDistribution::computePDF(const Point & point) const
   return copula_.computePDF(uPoint) * productPDF;
 }
 
-/* Get the logarithm of the PDF of the ComposedDistribution */
-Scalar ComposedDistribution::computeLogPDF(const Point & point) const
+/* Get the logarithm of the PDF of the JointDistribution */
+Scalar JointDistribution::computeLogPDF(const Point & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
@@ -518,8 +518,8 @@ Scalar ComposedDistribution::computeLogPDF(const Point & point) const
   return copula_.computeLogPDF(uPoint) + sumLogPDF;
 }
 
-/* Get the CDF of the ComposedDistribution */
-Scalar ComposedDistribution::computeCDF(const Point & point) const
+/* Get the CDF of the JointDistribution */
+Scalar JointDistribution::computeCDF(const Point & point) const
 {
   /* CDF = CDF_copula(CDF_dist1(p1), ..., CDF_distn(pn)) */
   const UnsignedInteger dimension = getDimension();
@@ -539,7 +539,7 @@ Scalar ComposedDistribution::computeCDF(const Point & point) const
   return copula_.computeCDF(uPoint);
 }
 
-Scalar ComposedDistribution::computeSurvivalFunction(const Point & point) const
+Scalar JointDistribution::computeSurvivalFunction(const Point & point) const
 {
   /* Survival = \hat{F}(x_1, \dots, x_d)
    *          = \hat{C}(\hat{F}_1(x_1), \dots, \hat{F}_d(x_d))
@@ -566,7 +566,7 @@ Scalar ComposedDistribution::computeSurvivalFunction(const Point & point) const
 }
 
 /* Compute the probability content of an interval */
-Scalar ComposedDistribution::computeProbability(const Interval & interval) const
+Scalar JointDistribution::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -590,7 +590,7 @@ Scalar ComposedDistribution::computeProbability(const Interval & interval) const
 }
 
 /* Get the PDF gradient of the distribution */
-Point ComposedDistribution::computePDFGradient(const Point & point) const
+Point JointDistribution::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -613,7 +613,7 @@ Point ComposedDistribution::computePDFGradient(const Point & point) const
 }
 
 /* Get the CDF gradient of the distribution */
-Point ComposedDistribution::computeCDFGradient(const Point & point) const
+Point JointDistribution::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -635,8 +635,8 @@ Point ComposedDistribution::computeCDFGradient(const Point & point) const
   return gradient;
 }
 
-/* Get the quantile of the ComposedDistribution */
-Point ComposedDistribution::computeQuantile(const Scalar prob,
+/* Get the quantile of the JointDistribution */
+Point JointDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
@@ -648,7 +648,7 @@ Point ComposedDistribution::computeQuantile(const Scalar prob,
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ComposedDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar JointDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -660,7 +660,7 @@ Scalar ComposedDistribution::computeConditionalPDF(const Scalar x, const Point &
   return distributionCollection_[conditioningDimension].computePDF(x) * copula_.computeConditionalPDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
 }
 
-Point ComposedDistribution::computeSequentialConditionalPDF(const Point & x) const
+Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
@@ -682,7 +682,7 @@ Point ComposedDistribution::computeSequentialConditionalPDF(const Point & x) con
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ComposedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar JointDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -694,7 +694,7 @@ Scalar ComposedDistribution::computeConditionalCDF(const Scalar x, const Point &
   return copula_.computeConditionalCDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
 }
 
-Point ComposedDistribution::computeSequentialConditionalCDF(const Point & x) const
+Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point u(dimension_);
@@ -708,7 +708,7 @@ Point ComposedDistribution::computeSequentialConditionalCDF(const Point & x) con
 /* Fk|1,...,k-1(x_k|x_1,...,x_{k-1})=Ck|1,...,k-1(F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
    Fk|1,...,k-1(Qk|1,...,k-1(q)|x_1,...,x_{k-1})=Ck|1,...,k-1(u_k=F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
  */
-Scalar ComposedDistribution::computeConditionalQuantile(const Scalar q,
+Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -721,7 +721,7 @@ Scalar ComposedDistribution::computeConditionalQuantile(const Scalar q,
   return distributionCollection_[conditioningDimension].computeScalarQuantile(copula_.computeConditionalQuantile(q, u));
 }
 
-Point ComposedDistribution::computeSequentialConditionalQuantile(const Point & q) const
+Point JointDistribution::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
@@ -740,7 +740,7 @@ Point ComposedDistribution::computeSequentialConditionalQuantile(const Point & q
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void ComposedDistribution::computeRange()
+void JointDistribution::computeRange()
 {
   const UnsignedInteger dimension = getDimension();
   Point lowerBound(dimension);
@@ -759,7 +759,7 @@ void ComposedDistribution::computeRange()
 }
 
 /* Compute the mean of the distribution. It is cheap if the marginal means are cheap */
-void ComposedDistribution::computeMean() const
+void JointDistribution::computeMean() const
 {
   const UnsignedInteger dimension = getDimension();
   mean_ = Point(dimension);
@@ -768,7 +768,7 @@ void ComposedDistribution::computeMean() const
 }
 
 /* Compute the entropy of the distribution */
-Scalar ComposedDistribution::computeEntropy() const
+Scalar JointDistribution::computeEntropy() const
 {
   Scalar entropy = copula_.computeEntropy();
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
@@ -777,7 +777,7 @@ Scalar ComposedDistribution::computeEntropy() const
 }
 
 /* Get the standard deviation of the distribution */
-Point ComposedDistribution::getStandardDeviation() const
+Point JointDistribution::getStandardDeviation() const
 {
   const UnsignedInteger dimension = getDimension();
   Point standardDeviation(dimension);
@@ -786,7 +786,7 @@ Point ComposedDistribution::getStandardDeviation() const
 }
 
 /* Compute the covariance of the distribution */
-void ComposedDistribution::computeCovariance() const
+void JointDistribution::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   // We need this to initialize the covariance matrix in two cases:
@@ -809,13 +809,13 @@ void ComposedDistribution::computeCovariance() const
           covariance_(rowIndex, columnIndex) = shape(rowIndex, columnIndex) * sigma[rowIndex] * sigma[columnIndex];
       return;
     }
-    if (ResourceMap::GetAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm"))
+    if (ResourceMap::GetAsBool("JointDistribution-UseGenericCovarianceAlgorithm"))
     {
-      LOGINFO("ComposedDistribution: using the generic covariance algorithm");
+      LOGINFO("JointDistribution: using the generic covariance algorithm");
       DistributionImplementation::computeCovariance();
       return;
     }
-    LOGINFO("ComposedDistribution: using the specific covariance algorithm");
+    LOGINFO("JointDistribution: using the specific covariance algorithm");
     // Here we use the following expression of the covariance \Sigma_{i,j}:
     // \Sigma_{i,j}=\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_{i,j}(x_i,x_j)dx_idx_j
     //             =\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_i(x_i)p_j(x_j}c_{i,j}(F_i(x_i),F_j(x_j))dx_idx_j
@@ -880,7 +880,7 @@ void ComposedDistribution::computeCovariance() const
       indices[0] = rowIndex;
       const Scalar muI = mean_[rowIndex];
       // We must fill the upper triangle of the covariance matrix in order to access the 2D marginal distributions
-      // of the copula in the correct order for the ComposedCopula
+      // of the copula in the correct order for the BlockIndependentCopula
       for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
       {
         indices[1] = columnIndex;
@@ -911,7 +911,7 @@ void ComposedDistribution::computeCovariance() const
 } // computeCovariance
 
 /* Get the skewness of the distribution */
-Point ComposedDistribution::getSkewness() const
+Point JointDistribution::getSkewness() const
 {
   const UnsignedInteger dimension = getDimension();
   Point skewness(dimension);
@@ -920,7 +920,7 @@ Point ComposedDistribution::getSkewness() const
 }
 
 /* Get the kurtosis of the distribution */
-Point ComposedDistribution::getKurtosis() const
+Point JointDistribution::getKurtosis() const
 {
   const UnsignedInteger dimension = getDimension();
   Point kurtosis(dimension);
@@ -929,7 +929,7 @@ Point ComposedDistribution::getKurtosis() const
 }
 
 /* Get the i-th marginal distribution */
-Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
+Distribution JointDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   Distribution marginal(distributionCollection_[i]);
@@ -938,7 +938,7 @@ Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution ComposedDistribution::getMarginal(const Indices & indices) const
+Distribution JointDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -950,13 +950,13 @@ Distribution ComposedDistribution::getMarginal(const Indices & indices) const
     marginal.setDescription(Description(1, getDescription()[i]));
     return marginal;
   }
-  ComposedDistribution marginal(distributionCollection_.select(indices), copula_.getMarginal(indices));
+  JointDistribution marginal(distributionCollection_.select(indices), copula_.getMarginal(indices));
   marginal.setDescription(getDescription().select(indices));
   return marginal;
 }
 
 /* Get the isoprobabilistic transformation */
-ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIsoProbabilisticTransformation() const
+JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProbabilisticTransformation() const
 {
   const UnsignedInteger dimension = getDimension();
   // Set the parameters values and descriptions
@@ -1028,7 +1028,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
 }
 
 /* Get the inverse isoprobabilist transformation */
-ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution::getInverseIsoProbabilisticTransformation() const
+JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getInverseIsoProbabilisticTransformation() const
 {
   const UnsignedInteger dimension = getDimension();
   // Set the parameters values and descriptions
@@ -1085,7 +1085,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
     const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
-    // const SquareMatrix cholesky(ComposedDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
+    // const SquareMatrix cholesky(JointDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
     LinearFunction linear(Point(dimension, 0.0), Point(dimension, 0.0), cholesky);
     return ComposedFunction(marginalTransformation, linear);
   }
@@ -1101,13 +1101,13 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
 }
 
 /* Get the standard distribution */
-Distribution ComposedDistribution::getStandardDistribution() const
+Distribution JointDistribution::getStandardDistribution() const
 {
   return copula_.getStandardDistribution();
 }
 
 /* Parameters value and description accessor */
-ComposedDistribution::PointWithDescriptionCollection ComposedDistribution::getParametersCollection() const
+JointDistribution::PointWithDescriptionCollection JointDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
   PointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
@@ -1140,7 +1140,7 @@ ComposedDistribution::PointWithDescriptionCollection ComposedDistribution::getPa
 } // getParametersCollection
 
 
-void ComposedDistribution::setParametersCollection(const PointCollection& parametersCollection)
+void JointDistribution::setParametersCollection(const PointCollection& parametersCollection)
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
@@ -1153,7 +1153,7 @@ void ComposedDistribution::setParametersCollection(const PointCollection& parame
 }
 
 
-Point ComposedDistribution::getParameter() const
+Point JointDistribution::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
   Point point;
@@ -1168,7 +1168,7 @@ Point ComposedDistribution::getParameter() const
   return point;
 }
 
-void ComposedDistribution::setParameter(const Point & parameter)
+void JointDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
   UnsignedInteger globalIndex = 0;
@@ -1191,7 +1191,7 @@ void ComposedDistribution::setParameter(const Point & parameter)
   }
 }
 
-Description ComposedDistribution::getParameterDescription() const
+Description JointDistribution::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description;
@@ -1211,19 +1211,19 @@ Description ComposedDistribution::getParameterDescription() const
 }
 
 /* Tell if the distribution has independent copula */
-Bool ComposedDistribution::hasIndependentCopula() const
+Bool JointDistribution::hasIndependentCopula() const
 {
   return copula_.hasIndependentCopula();
 }
 
 /* Tell if the distribution has elliptical copula */
-Bool ComposedDistribution::hasEllipticalCopula() const
+Bool JointDistribution::hasEllipticalCopula() const
 {
   return copula_.hasEllipticalCopula();
 }
 
 /* Check if the distribution is elliptical */
-Bool ComposedDistribution::isElliptical() const
+Bool JointDistribution::isElliptical() const
 {
   const Bool ellipticalCopula = copula_.hasEllipticalCopula();
   if (!ellipticalCopula) return false;
@@ -1242,7 +1242,7 @@ Bool ComposedDistribution::isElliptical() const
 }
 
 /* Check if the distribution is continuous */
-Bool ComposedDistribution::isContinuous() const
+Bool JointDistribution::isContinuous() const
 {
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isContinuous()) return false;
@@ -1250,7 +1250,7 @@ Bool ComposedDistribution::isContinuous() const
 }
 
 /* Check if the distribution is discrete */
-Bool ComposedDistribution::isDiscrete() const
+Bool JointDistribution::isDiscrete() const
 {
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
@@ -1258,7 +1258,7 @@ Bool ComposedDistribution::isDiscrete() const
 }
 
 /* Tell if the distribution is integer valued */
-Bool ComposedDistribution::isIntegral() const
+Bool JointDistribution::isIntegral() const
 {
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isIntegral()) return false;
@@ -1266,7 +1266,7 @@ Bool ComposedDistribution::isIntegral() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void ComposedDistribution::save(Advocate & adv) const
+void JointDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distributionCollection_", distributionCollection_ );
@@ -1274,12 +1274,16 @@ void ComposedDistribution::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ComposedDistribution::load(Advocate & adv)
+void JointDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "distributionCollection_", distributionCollection_ );
   adv.loadAttribute( "copula_", copula_ );
   computeRange();
 }
+
+CLASSNAMEINIT(ComposedDistribution)
+
+static const Factory<ComposedDistribution> Factory_ComposedDistribution;
 
 END_NAMESPACE_OPENTURNS

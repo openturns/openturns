@@ -95,6 +95,8 @@ public:
   UnsignedInteger getMaximumFunctionEvaluation() const;
 
   /** Used function evaluation */
+  UnsignedInteger getCallsNumber() const;
+  // @deprecated
   UnsignedInteger getUsedFunctionEvaluation() const;
 
 }; /* Class Solver */

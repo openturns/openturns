@@ -22,7 +22,7 @@ outputSample = model(inputSample)
 
 # Validation data
 sampleSize = 10
-inputValidSample = ot.ComposedDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
+inputValidSample = ot.JointDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
     sampleSize
 )
 outputValidSample = model(inputValidSample)
@@ -59,7 +59,7 @@ print("Mean over 5000 realizations = ", repr(mean))
 # Check if one can sample the process over a mesh containing conditioning points
 # and 100 new points
 vertices = ot.Sample(inputSample)
-vertices.add(ot.ComposedDistribution([ot.Uniform(0.0, 10.0)] * 2).getSample(100))
+vertices.add(ot.JointDistribution([ot.Uniform(0.0, 10.0)] * 2).getSample(100))
 process = ot.ConditionedGaussianProcess(result, ot.Mesh(vertices))
 realization = process.getRealization()
 num = 0.0

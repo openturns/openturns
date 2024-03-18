@@ -52,14 +52,14 @@ int main(int, char *[])
     assert_equal(Gumbel() != Triangular(), true);
     assert_equal(Normal(2) == Normal(2), true);
     assert_equal(Normal(2) != Normal(3), true);
-    assert_equal(Normal(2) == ComposedDistribution(Collection<Distribution>(2, Normal())), true);
-    assert_equal(Normal(2) != ComposedDistribution(Collection<Distribution>(2, Normal())), false);
-    assert_equal(Normal(3) == ComposedDistribution(Collection<Distribution>(2, Normal())), false);
-    assert_equal(Normal(3) != ComposedDistribution(Collection<Distribution>(2, Normal())), true);
-    assert_equal(ComposedDistribution(Collection<Distribution>(2, Normal())) == Normal(2), true);
-    assert_equal(ComposedDistribution(Collection<Distribution>(2, Normal())) != Normal(2), false);
-    assert_equal(ComposedDistribution(Collection<Distribution>(2, Normal())) == Normal(3), false);
-    assert_equal(ComposedDistribution(Collection<Distribution>(2, Normal())) != Normal(3), true);
+    assert_equal(Normal(2) == JointDistribution(Collection<Distribution>(2, Normal())), true);
+    assert_equal(Normal(2) != JointDistribution(Collection<Distribution>(2, Normal())), false);
+    assert_equal(Normal(3) == JointDistribution(Collection<Distribution>(2, Normal())), false);
+    assert_equal(Normal(3) != JointDistribution(Collection<Distribution>(2, Normal())), true);
+    assert_equal(JointDistribution(Collection<Distribution>(2, Normal())) == Normal(2), true);
+    assert_equal(JointDistribution(Collection<Distribution>(2, Normal())) != Normal(2), false);
+    assert_equal(JointDistribution(Collection<Distribution>(2, Normal())) == Normal(3), false);
+    assert_equal(JointDistribution(Collection<Distribution>(2, Normal())) != Normal(3), true);
   }
   catch (TestFailed & ex)
   {

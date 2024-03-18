@@ -63,7 +63,7 @@ Estimate first and total order Sobol' indices:
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
 >>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
->>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> # Define designs to pre-compute
 >>> size = 100000
 >>> inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()

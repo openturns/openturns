@@ -243,13 +243,13 @@ CorrelationMatrix FractionalBrownianMotionModel::getRho() const
 
 void FractionalBrownianMotionModel::setFullParameter(const Point & parameter)
 {
-  const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1);
+  const UnsignedInteger totalSize = inputDimension_ + 1 + outputDimension_ * (outputDimension_ + 1);
   if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In FractionalBrownianMotionModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
   CovarianceModelImplementation::setFullParameter(parameter);
   // Now the Hurst exponent
-  UnsignedInteger index = inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
+  UnsignedInteger index = inputDimension_ + 1 + outputDimension_ * (outputDimension_ + 1) / 2;
   Point exponent(outputDimension_);
   for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
     exponent[i] = parameter[index];

@@ -47,7 +47,7 @@ for algo in ot.Bonmin.GetAlgorithmNames():
 # The theoretical minimum is reached for :math:`x = [1,1,0.5,0]`.
 # At this point, the objective function value is :math:`-2.5`
 #
-# N.B.: OpenTURNS requires equality and inequality constraints to be stated as
+# N.B.: equality and inequality constraints are required to be stated as
 # :math:`g(x) = 0` and :math:`h(x) \geq 0`, respectively. Thus the inequalities
 # above will have to be restated to match this requirement:
 #
@@ -71,7 +71,7 @@ bounds = ot.Interval(
 )
 
 # Definition of constraints
-# Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
+# Constraints are defined as g(x) = 0 and h(x) >= 0
 #    No equality constraint -> nothing to do
 #    Inequality constraints:
 h = ot.SymbolicFunction(
@@ -95,9 +95,6 @@ bonminAlgorithm = ot.Bonmin(problem, "B-BB")
 bonminAlgorithm.setMaximumCallsNumber(10000)
 bonminAlgorithm.setMaximumIterationNumber(1000)
 bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
-
-ot.ResourceMap.AddAsString("Bonmin-mu_oracle", "loqo")
-ot.ResourceMap.AddAsScalar("Bonmin-bonmin.time_limit", 5)
 
 # %%
 # Running the solver

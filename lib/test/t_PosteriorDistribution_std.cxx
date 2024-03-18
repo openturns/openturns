@@ -44,21 +44,21 @@ int main(int, char *[])
       Collection< Distribution > atoms;
       atoms.add(Uniform(0.0, 1.0));
       atoms.add(Uniform(1.0, 2.0));
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Second conditioning distribution: discrete/continuous
     {
       Collection< Distribution > atoms;
       atoms.add(Binomial(3, 0.5));
       atoms.add(Uniform(1.0, 2.0));
-//       conditioningDistributionCollection.add(ComposedDistribution(atoms));
+//       conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Third conditioning distribution: dirac/continuous
     {
       Collection< Distribution > atoms;
       atoms.add(Dirac(0.0));
       atoms.add(Uniform(1.0, 2.0));
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {

@@ -75,7 +75,7 @@ class WingWeightModel:
          Tenth marginal, ot.Uniform(0.025, 0.08)
 
 
-    distributionX : :class:`~openturns.ComposedDistribution`
+    distributionX : :class:`~openturns.JointDistribution`
                     The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -133,7 +133,7 @@ class WingWeightModel:
         self.Wp.setName("Wp")
 
         # Input distribution
-        self.distributionX = ot.ComposedDistribution(
+        self.distributionX = ot.JointDistribution(
             [
                 self.Sw,
                 self.Wfw,

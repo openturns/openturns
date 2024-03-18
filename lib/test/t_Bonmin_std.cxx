@@ -96,8 +96,6 @@ int main()
     bonminAlgorithm.setStartingPoint(Point(4, 0));
     bonminAlgorithm.setMaximumCallsNumber(10000);
     bonminAlgorithm.setMaximumIterationNumber(1000);
-    ResourceMap::AddAsString("Bonmin-mu_oracle", "loqo");
-    //ResourceMap::AddAsScalar("Bonmin-bonmin.time_limit", 5);
 
     // Test __repr__ method
     std::cout << bonminAlgorithm.__repr__() << std::endl;
@@ -113,20 +111,20 @@ int main()
     {
       // Set solver
       bonminAlgorithm.setAlgorithmName(solvers[i]);
+      std::cout << " == TEST WITH " << bonminAlgorithm.getAlgorithmName() << " SOLVER:" << std::endl;
 
       // Run the solver
       bonminAlgorithm.run();
 
       // Retrieve solution
-      std::cout << " TEST WITH " << bonminAlgorithm.getAlgorithmName() << " SOLVER:" << std::endl;
       OptimizationResult result(bonminAlgorithm.getResult());
       std::cout << " -- Optimal point = " << result.getOptimalPoint() << std::endl;
       std::cout << " -- Optimal value = " << result.getOptimalValue() << std::endl;
-      std::cout << " -- Evaluation num = " << result.getInputSample().getSize() << std::endl << std::endl;
+      std::cout << " -- Evaluation num = " << result.getInputSample().getSize() << std::endl;
 
       // Check result
       assert_almost_equal(result.getOptimalPoint(), referenceSolution, 1e-2);
-      std::cout << " => TEST " << bonminAlgorithm.getAlgorithmName() << " PASSED" << std::endl;
+      std::cout << " => TEST " << bonminAlgorithm.getAlgorithmName() << " PASSED" << std::endl << std::endl;
     }
   }
 

@@ -24,8 +24,8 @@ collection = [
 ]
 distribution = ot.BlockIndependentDistribution(collection)
 copulaCollection = [ot.NormalCopula(R0), ot.NormalCopula(R1), ot.NormalCopula(R2)]
-copula = ot.ComposedCopula(copulaCollection)
-ref = ot.ComposedDistribution([ot.Normal(0.0, 1.0)] * 7, copula)
+copula = ot.BlockIndependentCopula(copulaCollection)
+ref = ot.JointDistribution([ot.Normal(0.0, 1.0)] * 7, copula)
 
 # Define a point
 point = [0.3] * distribution.getDimension()
@@ -62,9 +62,9 @@ R = ot.CorrelationMatrix(3)
 R[0, 1] = 0.5
 R[0, 2] = 0.25
 collection = [
-    ot.ComposedDistribution([ot.Normal()] * 2, ot.AliMikhailHaqCopula(0.5)),
+    ot.JointDistribution([ot.Normal()] * 2, ot.AliMikhailHaqCopula(0.5)),
     ot.Normal([1.0] * 3, [2.0] * 3, R),
-    ot.ComposedDistribution([ot.Exponential()] * 2, ot.FrankCopula(0.5)),
+    ot.JointDistribution([ot.Exponential()] * 2, ot.FrankCopula(0.5)),
 ]
 distribution = ot.BlockIndependentDistribution(collection)
 print("Distribution ", distribution)

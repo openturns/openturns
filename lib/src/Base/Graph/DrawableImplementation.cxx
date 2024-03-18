@@ -834,8 +834,8 @@ Description DrawableImplementation::GetValidPointStyles()
 /* Convert a color name to  a valid hexadecimal code */
 String DrawableImplementation::ConvertFromName(const String & name)
 {
-  if (IsValidColorCode(name)) return name;
   if (IsValidColorName(name)) return ColorCodes[name];
+  if (IsValidColorCode(name)) return name;
   LOGWARN(OSS() << "The given name=" << name << " is not a valid color name. Default to black.");
   return "#000000";
 }
@@ -1190,8 +1190,7 @@ Bool DrawableImplementation::IsValidColorCode(const String & key)
 
 Bool DrawableImplementation::IsValidColor(const String & key)
 {
-  if (IsValidColorCode(key)) return true;
-  return IsValidColorName(key);
+  return IsValidColorName(key) || IsValidColorCode(key);
 }
 
 /* Check validity of line style */

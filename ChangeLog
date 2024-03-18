@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * CovarianceModel nuggetFactor can be optimized by KrigingAlgorithm
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
@@ -40,6 +41,9 @@
  * Deprecated Solver.set/getMaximumFunctionEvaluation in favor of set/getMaximumCallsNumber
  * Deprecated Solver.getUsedFunctionEvaluation in favor of getCallsNumber
  * Deprecated TimerCallback
+ * Deprecated ComposedDistribution in favor of JointDistribution
+ * Deprecated ComposedCopula in favor of BlockIndependentCopula
+ * Added Polygon::FillBetween static method to fill the surface between two curves
 
 === Documentation ===
 

@@ -151,8 +151,6 @@ fig.suptitle("Kriging result")
 # Display the confidence interval
 # -------------------------------
 
-# %%
-# sphinx_gallery_thumbnail_number = 3
 level = 0.95
 quantile = ot.Normal().computeQuantile((1 - level) / 2)[0]
 borne_sup = krigingMeta(x_plot) + quantile * np.sqrt(variance)
@@ -162,9 +160,13 @@ fig, ax = plt.subplots(figsize=(8, 8))
 ax.plot(x, y, ("ro"))
 ax.plot(x_plot, borne_sup, "--", color="orange", label="Confidence interval")
 ax.plot(x_plot, borne_inf, "--", color="orange")
-View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax], plot_kw={"label": "$x sin(x)$"})
+graph_ref_func = ref_func.draw(xmin, xmax, n_pts_plot)
+graph_krigingMeta = krigingMeta.draw(xmin, xmax, n_pts_plot)
+for graph in [graph_ref_func, graph_krigingMeta]:
+    graph.setTitle("")
+View(graph_ref_func, axes=[ax], plot_kw={"label": "$x sin(x)$"})
 View(
-    krigingMeta.draw(xmin, xmax, n_pts_plot),
+    graph_krigingMeta,
     plot_kw={"color": "green", "label": "prediction"},
     axes=[ax],
 )
@@ -199,12 +201,12 @@ for i in range(krv_sample.getSize()):
     else:
         ax.plot(values, krv_sample[i, :], "--", alpha=0.8)
 View(
-    ref_func.draw(xmin, xmax, n_pts_plot),
+    graph_ref_func,
     axes=[ax],
     plot_kw={"color": "black", "label": "$x*sin(x)$"},
 )
 View(
-    krigingMeta.draw(xmin, xmax, n_pts_plot),
+    graph_krigingMeta,
     axes=[ax],
     plot_kw={"color": "green", "label": "prediction"},
 )
@@ -218,8 +220,8 @@ ax.autoscale()
 # %%
 n_valid = 10
 x_valid = ot.Uniform(xmin, xmax).getSample(n_valid)
+X_valid = ot.Sample(x_valid)
 if with_error:
-    X_valid = ot.Sample(x_valid)
     X_valid.stack(ot.Normal(0.0, 1.5).getSample(n_valid))
     y_valid = np.array(ref_func_with_error(X_valid))
 else:
@@ -237,7 +239,93 @@ view = viewer.View(graph)
 graph = validation.getResidualDistribution().drawPDF()
 graph.setXTitle("Residuals")
 view = viewer.View(graph)
+
+# %%
+# Nugget effect
+# -------------
+#
+# Let us try again, but this time we optimize the nugget effect.
+
+cov.activateNuggetFactor(True)
+
+# %%
+# We have to run the opitmization algorithm again.
+
+algokriging_nugget = ot.KrigingAlgorithm(x, y, cov, basis)
+algokriging_nugget.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))
+algokriging_nugget.run()
+
+# %%
+# We get the results and the metamodel.
+
+krigingResult_nugget = algokriging_nugget.getResult()
+print("residual = ", krigingResult_nugget.getResiduals())
+print("R2 = ", krigingResult_nugget.getRelativeErrors())
+print("Optimal scale= {}".format(krigingResult_nugget.getCovarianceModel().getScale()))
+print(
+    "Optimal amplitude = {}".format(
+        krigingResult_nugget.getCovarianceModel().getAmplitude()
+    )
+)
+print(
+    "Optimal trend coefficients = {}".format(
+        krigingResult_nugget.getTrendCoefficients()
+    )
+)
+
+# %%
+krigingMeta_nugget = krigingResult_nugget.getMetaModel()
+variance = [[krigingResult_nugget.getConditionalCovariance(xx)[0, 0]] for xx in x_plot]
+
+# %%
+# Plot the confidence interval again. Note that this time, it always contains
+# the true value of the function.
+
+# sphinx_gallery_thumbnail_number = 7
+borne_sup_nugget = krigingMeta_nugget(x_plot) + quantile * np.sqrt(variance)
+borne_inf_nugget = krigingMeta_nugget(x_plot) - quantile * np.sqrt(variance)
+
+fig, ax = plt.subplots(figsize=(8, 8))
+ax.plot(x, y, ("ro"))
+ax.plot(
+    x_plot,
+    borne_sup_nugget,
+    "--",
+    color="orange",
+    label="Confidence interval with nugget",
+)
+ax.plot(x_plot, borne_inf_nugget, "--", color="orange")
+graph_krigingMeta_nugget = krigingMeta_nugget.draw(xmin, xmax, n_pts_plot)
+graph_krigingMeta_nugget.setTitle("")
+View(graph_ref_func, axes=[ax], plot_kw={"label": "$x sin(x)$"})
+View(
+    graph_krigingMeta_nugget,
+    plot_kw={"color": "green", "label": "prediction with nugget"},
+    axes=[ax],
+)
+View(
+    graph_krigingMeta,
+    plot_kw={
+        "color": "green",
+        "linestyle": "dotted",
+        "label": "prediction without nugget",
+    },
+    axes=[ax],
+)
+legend = ax.legend()
+ax.autoscale()
+
 plt.show()
+
+# %%
+# We validate the model with the nugget effect:
+# its predictivity factor is slightly improved.
+
+validation_nugget = ot.MetaModelValidation(x_valid, y_valid, krigingMeta_nugget)
+print(
+    "predictivity factor with nugget: ", validation_nugget.computePredictivityFactor()
+)
+print("predictivity factor without nugget: ", validation.computePredictivityFactor())
 
 # %%
 # Reset default settings

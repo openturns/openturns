@@ -9,7 +9,7 @@ continuous_1D_dist = ot.Normal()
 d = 3
 finite_1D_dist = ot.Binomial(d - 1, 0.5)
 marginals = [continuous_1D_dist, finite_1D_dist]
-mixed_2D_dist = ot.ComposedDistribution(marginals)
+mixed_2D_dist = ot.JointDistribution(marginals)
 
 # data
 N = 1000

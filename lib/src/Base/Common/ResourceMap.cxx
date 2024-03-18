@@ -1076,8 +1076,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
-  // ComposedDistribution parameters //
-  addAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
+  // JointDistribution parameters //
+  addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
 
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);

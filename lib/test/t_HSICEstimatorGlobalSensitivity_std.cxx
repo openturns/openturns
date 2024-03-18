@@ -37,13 +37,13 @@ int main(int, char *[])
     Uniform X2(-M_PI, M_PI);
     Uniform X3(-M_PI, M_PI);
 
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add(X1);
     aCollection.add(X2);
     aCollection.add(X3);
 
     /* 3d distribution made with independent marginals */
-    Distribution distX  = ComposedDistribution(aCollection);
+    Distribution distX  = JointDistribution(aCollection);
 
     /* Get a sample of it */
     SignedInteger size = 100;

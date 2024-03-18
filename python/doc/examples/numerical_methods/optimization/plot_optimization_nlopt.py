@@ -4,7 +4,7 @@ Optimization using NLopt
 """
 
 # %%
-# In this example we are going to explore optimization using OpenTURNS' `NLopt <https://nlopt.readthedocs.io/en/latest/>`_ interface.
+# In this example we are going to explore optimization using the interface to the `NLopt <https://nlopt.readthedocs.io/en/latest/>`_ library.
 
 # %%
 import openturns as ot

@@ -152,8 +152,10 @@ void Bonmin::run()
   app.initializeOptionsAndJournalist();
   if (!app.options()->SetStringValue("bonmin.algorithm", algoName_))
     throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.algorithm";
-  if (!app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber()))
-    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for max_iter";
+  if (!app.options()->SetIntegerValue("bonmin.iteration_limit", getMaximumIterationNumber()))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.iteration_limit";
+  if (getMaximumTimeDuration() > 0.0)
+    app.options()->SetNumericValue("bonmin.time_limit", getMaximumTimeDuration());
   if (!app.options()->SetStringValue("sb", "yes"))
     throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for sb";
   if (!app.options()->SetIntegerValue("print_level", 0))
@@ -164,31 +166,80 @@ void Bonmin::run()
   for (UnsignedInteger i = 0; i < algos.getSize(); ++ i)
     if (!app.options()->SetIntegerValue("bonmin." + algos[i] + "_log_level", 0))
       throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin." << algos[i] << "_log_level";
+  if (getMaximumConstraintError() > 0.0)
+    app.options()->SetNumericValue("constr_viol_tol", getMaximumConstraintError());
+  else
+    app.options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
+  app.options()->SetNumericValue("bound_relax_factor", 0.0);
   GetOptionsFromResourceMap(app.options());
-  String optlist;
-  app.options()->PrintList(optlist);
-  LOGDEBUG(optlist);
 
   // Update setup with BonminProblem
-  app.initialize(GetRawPtr(tminlp));
+  try
+  {
+    app.initialize(GetRawPtr(tminlp));
 
-  // Solve problem
-  Bab solver;
-  solver(app);
+    // Solve problem
+    Bab solver;
+    solver(app);
+  }
+  catch (TNLPSolver::UnsolvedError *exc)
+  {
+    const Sample inputHistory(tminlp->getInputHistory());
+    setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+
+    result_.setStatus(OptimizationResult::FAILURE);
+    std::ostringstream oss;
+    exc->printError(oss);
+    result_.setStatusMessage(oss.str());
+    return;
+  }
+  catch(const OsiTMINLPInterface::SimpleError & exc)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatusMessage(exc.message());
+    return;
+  }
+  catch(const CoinError & exc)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatusMessage(exc.message());
+    return;
+  }
+
+  // print used options
+  String optionsLog;
+  app.options()->PrintList(optionsLog);
+  LOGINFO(optionsLog);
 
   const Sample inputHistory(tminlp->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
-  result_.setTimeDuration(timeDuration);
+  const ::Bonmin::TMINLP::SolverReturn status = tminlp->getStatus();
+  const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
+                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"};
+  result_.setStatusMessage(bonminExitStatus[status]);
+  switch (status)
+  {
+    case ::Bonmin::TMINLP::SUCCESS:
+      break;
+    default:
+      result_.setStatus(OptimizationResult::FAILURE);
+      break;
+  }
+  if (tminlp->getTimeOut())
+    result_.setStatus(OptimizationResult::TIMEOUT);
 
-  String allOptions;
-  app.options()->PrintList(allOptions);
-  LOGINFO(allOptions);
-
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Solving problem by Bonmin method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "Bonmin algorithm failed. The error message is " << result_.getStatusMessage());
+  }
 #else
   result_.setStatus(OptimizationResult::FAILURE);
   throw NotYetImplementedException(HERE) << "No Bonmin support";

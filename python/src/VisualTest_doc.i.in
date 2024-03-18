@@ -119,10 +119,10 @@ where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
 sample and :math:`\theta` denotes either the quantile function of the tested
 distribution or the empirical quantile function of the second tested sample.
 
-If the given sample fits to the tested distribution or sample, then the points
-should be close to be aligned (up to the uncertainty associated with the
-estimation of the empirical probabilities) with the **first bissector**  whose
-equation reads:
+If the given sample fits the tested distribution or sample, then the points
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
 
 .. math::
 
@@ -196,10 +196,10 @@ distribution or another sample) by plotting the following points cloud:
 where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
 sample.
 
-If the given sample fits to the tested distribution or sample, then the points
-should be close to be aligned (up to the uncertainty associated with the
-estimation of the empirical probabilities) with the **first bissector**  whose
-equation reads:
+If the given sample fits the tested distribution or sample, then the points
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
 
 .. math::
 
@@ -251,7 +251,7 @@ ditribution : :class:`~openturns.Distribution`
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Notes
@@ -270,9 +270,9 @@ where :math:`F` denotes either the CDF function of the tested
 distribution or the empirical CDF of the second tested sample.
 
 If the given sample fits to the tested distribution or sample, then the points
-should be close to be aligned (up to the uncertainty associated with the
-estimation of the empirical probabilities) with the **first bissector**  whose
-equation reads:
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
 
 .. math::
 
@@ -576,7 +576,7 @@ Examples
 >>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
 >>> size = 100
 >>> sample = distribution.getSample(size)
->>> distribution = ot.ComposedDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
+>>> distribution = ot.JointDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
 >>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 >>> View(clouds).show()"
 

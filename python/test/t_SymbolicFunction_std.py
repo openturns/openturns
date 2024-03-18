@@ -110,7 +110,7 @@ formula = ["sin(xi1) + 7. * (sin(xi2)) ^ 2 + 0.1 * xi3^4 * sin(xi1)"]
 model = ot.SymbolicFunction(["xi1", "xi2", "xi3"], formula)
 
 # Create an input distribution to calculate reference values
-distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3)
+distribution = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * 3)
 inSample = distribution.getSample(100)
 resultSample = model(inSample)
 refResultValues = [

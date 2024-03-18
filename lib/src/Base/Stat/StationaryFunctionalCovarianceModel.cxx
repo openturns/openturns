@@ -141,7 +141,7 @@ void StationaryFunctionalCovarianceModel::setFullParameter(const Point & paramet
 {
   CovarianceModelImplementation::setFullParameter(parameter);
   Point functionParameter(rho_.getParameter().getDimension());
-  std::copy(parameter.begin() + getInputDimension() + getOutputDimension(), parameter.end(), functionParameter.begin());
+  std::copy(parameter.begin() + getInputDimension() + 1 + getOutputDimension(), parameter.end(), functionParameter.begin());
   rho_.setParameter(functionParameter);
 }
 

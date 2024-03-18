@@ -147,6 +147,7 @@ void SimulationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  adv.saveAttribute("maximumTimeDuration_", maximumTimeDuration_);
   adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
 }
 
@@ -158,6 +159,8 @@ void SimulationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  if (adv.hasAttribute("maximumTimeDuration_")) // OT>=1.23
+    adv.loadAttribute("maximumTimeDuration_", maximumTimeDuration_);
   adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
 }
 

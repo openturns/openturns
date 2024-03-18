@@ -188,7 +188,7 @@ ot.RandomGenerator.SetSeed(0)
 marginR = ot.LogNormalMuSigma().getDistribution()
 marginF = ot.Normal()
 auxiliaryMarginals = [marginR, marginF]
-auxiliaryDistribution = ot.ComposedDistribution(auxiliaryMarginals)
+auxiliaryDistribution = ot.JointDistribution(auxiliaryMarginals)
 # Definition of parameters to be optimized
 activeParameters = ot.Indices(5)
 activeParameters.fill()
@@ -235,7 +235,7 @@ ot.RandomGenerator.SetSeed(0)
 marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 marginF = ot.Normal(750.0, 50.0)
 auxiliaryMarginals = [marginR, marginF]
-auxiliaryDistribution = ot.ComposedDistribution(auxiliaryMarginals)
+auxiliaryDistribution = ot.JointDistribution(auxiliaryMarginals)
 print("Parameters of initial distribution", auxiliaryDistribution.getParameter())
 
 # Definition of parameters to be optimized
@@ -286,7 +286,7 @@ marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 marginF = ot.Normal(750.0, 50.0)
 auxiliaryMarginals = [marginR, marginF]
 copula = ot.NormalCopula()
-auxiliaryDistribution = ot.ComposedDistribution(auxiliaryMarginals, copula)
+auxiliaryDistribution = ot.JointDistribution(auxiliaryMarginals, copula)
 desc = auxiliaryDistribution.getParameterDescription()
 p = auxiliaryDistribution.getParameter()
 print(

@@ -199,7 +199,7 @@ Returns
 evaluation_calls_number : int
     Integer that counts the number of times the evaluation of the function
     has been called since its creation.
-    This may include indirect calls via finite-difference gradient or hessian."
+    This may include indirect calls via finite-difference gradient or Hessian."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getEvaluationCallsNumber
 OT_Function_getEvaluationCallsNumber_doc

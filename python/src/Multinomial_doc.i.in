@@ -16,10 +16,10 @@ P : sequence of float, :math:`p_i \geq 0, i = 1, \ldots, d` and :math:`\sum_{i =
 Notes
 -----
 
-This distribution differs from the classical multinomial distribution definition. The classical multinomial distribution is
-constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by
+This distribution differs from the classical multinomial distribution definition.
+The classical multinomial distribution is constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by
 :math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is
-constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q\leq 1` and is supported in general by
+constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q \leq 1` and is supported in general by
 :math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
 
 Its probability distribution function is defined as:
@@ -31,9 +31,11 @@ Its probability distribution function is defined as:
 
 where :math:`s=\sum_{i = 1}^d x_i`.
 
-If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`. In this case, we recover the classical definition of the multinomial distribution.
+If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`.
+In this case, we recover the classical definition of the multinomial distribution.
 
-If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`. It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
+If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`.
+It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
 
 Its first moments are:
 

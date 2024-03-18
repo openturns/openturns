@@ -57,6 +57,24 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ProductDistribution::setLeft
+"Accessor to the left distribution of the product.
+
+Parameters
+----------
+distX :  :class:`~openturns.Distribution`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProductDistribution::setRight
+"Accessor to the right distribution of the product.
+
+Parameters
+----------
+distY :  :class:`~openturns.Distribution`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ProductDistribution::getLeft
 "Accessor to the left distribution of the product.
 
@@ -72,4 +90,3 @@ distX :  :class:`~openturns.Distribution`."
 Returns
 -------
 distY :  :class:`~openturns.Distribution`."
-

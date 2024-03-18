@@ -375,6 +375,8 @@ class View:
                 plot_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in step_kw_default) and ("lw" not in step_kw_default):
                 step_kw["linewidth"] = drawable.getLineWidth()
+            if ("linewidth" not in polygon_kw_default) and ("lw" not in polygon_kw_default):
+                polygon_kw["linewidth"] = drawable.getLineWidth()
 
             # retrieve data
             data = drawable.getData()
@@ -708,10 +710,10 @@ class View:
 
         Parameters
         ----------
-        fname: bool, optional
+        fname : bool, optional
             A string containing a path to a filename from which file format is deduced.
 
-        kwargs:
+        kwargs : dict
             See matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
 
         Examples
@@ -844,18 +846,18 @@ def PlotDesign(
     ----------
     design : 2-d sequence of float
         The sample.
-    figure : a Matplotlib figure.
+    figure : a Matplotlib figure, optional
         If this is not None, then create a new figure.
         Otherwise, use the existing figure.
-    axes : a Matplotlib axis.
+    axes : a Matplotlib axis, optional
         If empty, then create new axes.
-    bounds: :class:`~openturns.Interval`
+    bounds : :class:`~openturns.Interval`, optional
         Bounds of the plot. By default, compute the bounds from the sample.
-    subdivisions : a list of integers
+    subdivisions : a list of integers, optional
         Number of subdivisions in the each direction.
         By default, set the number of subdivisions in each direction
         as equal to the sample size.
-    enableTicks :
+    enableTicks : bool, optional
         A boolean. If True, then the ticks are plotted.
 
     Returns
@@ -872,7 +874,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 2
     >>> X = [ot.Uniform()] * dim
-    >>> distribution = ot.ComposedDistribution(X)
+    >>> distribution = ot.JointDistribution(X)
     >>> sampleSize = 10
     >>> sample = distribution.getSample(sampleSize)
     >>> fig = PlotDesign(sample)
@@ -883,7 +885,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 5
     >>> size = 10
-    >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
+    >>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)]*dim)
     >>> bounds = distribution.getRange()
     >>> lhs = ot.LHSExperiment(distribution, size)
     >>> sample = lhs.generate()

@@ -30,7 +30,7 @@ import numpy as np
 # %%
 distX1 = ot.Exponential(1.0)
 distX2 = ot.Normal()
-distX = ot.ComposedDistribution([distX1, distX2])
+distX = ot.JointDistribution([distX1, distX2])
 
 
 # %%
@@ -446,7 +446,7 @@ pf = (1.0 - ot.Normal().computeCDF(betaHL)) * coeff
 print("SORM : Pf = ", pf)
 
 # %%
-# We can compare with the different estimators implemented in OpenTURNS :
+# We can compare with the different estimators:
 pfBreitung = resultSORM.getEventProbabilityBreitung()
 pfHohenbichler = resultSORM.getEventProbabilityHohenbichler()
 pfTvedt = resultSORM.getEventProbabilityTvedt()

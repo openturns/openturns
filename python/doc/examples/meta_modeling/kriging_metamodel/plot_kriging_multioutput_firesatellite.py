@@ -83,29 +83,16 @@ covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
 # %%
 scaleOptimizationBounds = ot.Interval(
-    [1.0, 1.0, 0.1, 0.01, 0.1, 0.1, 0.01, 0.01, 0.001, 0.01, 0.01, 0.01],
-    [1.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 1e8, 1e4, 1e3],
+    [1.0e6, 1.0e3, 1.0e3, 1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+    [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
 )
 
 # %%
 # We can now define the scaled version of Kriging model.
-optimal_scale = [
-    1e07,
-    1126.11,
-    1446.96,
-    17.5554,
-    3.48743,
-    3.09689,
-    7.43877,
-    3.0465,
-    1.71498,
-]
-covarianceModel.setScale(optimal_scale)
-covarianceModel.setAmplitude([0.542174, 1.0, 1.0])
-
 algo = ot.KrigingAlgorithm(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
 algo.setOptimizationBounds(scaleOptimizationBounds)
-algo.setOptimizeParameters(False)
+algo.setOptimizeParameters(True)
+
 # %%
 # We run the algorithm and get the metamodel.
 algo.run()

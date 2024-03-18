@@ -118,7 +118,7 @@ print(
 # Test samples independence using regression
 # ------------------------------------------
 #
-# Independence testing with regression is also an option in OpenTURNS.
+# Independence testing with regression is also an option.
 # It consists in detecting a linear relation between two scalar samples.
 #
 
@@ -128,7 +128,7 @@ marginals = [ot.Normal()] * 3
 S = ot.CorrelationMatrix(3)
 S[0, 2] = 0.9
 copula = ot.NormalCopula(S)
-distribution = ot.ComposedDistribution(marginals, copula)
+distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(30)
 
 # %%

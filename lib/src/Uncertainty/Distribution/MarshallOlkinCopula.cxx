@@ -99,6 +99,12 @@ MarshallOlkinCopula * MarshallOlkinCopula::clone() const
   return new MarshallOlkinCopula(*this);
 }
 
+/* Get the PDF of the distribution */
+Scalar MarshallOlkinCopula::computePDF(const Point &) const
+{
+  throw NotYetImplementedException(HERE) << "in MarshallOlkinCopula.computePDF";
+}
+
 /* Get the CDF of the distribution */
 Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
 {

@@ -843,13 +843,13 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
     upperBound[i] = marginalRange.getUpperBound()[0];
     finiteLowerBound[i] = marginalRange.getFiniteLowerBound()[0];
     finiteUpperBound[i] = marginalRange.getFiniteUpperBound()[0];
-    // The description of the ComposedDistribution is built first by using the marginal description
+    // The description of the JointDistribution is built first by using the marginal description
     // then by using the marginal name if the description is empty, which should never occur
     const String marginalDescription(coll[i].getDescription()[0]);
     if (marginalDescription.size() > 0) description[i] = marginalDescription;
     else
     {
-      LOGINFO(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the ComposedDistribution, because the marginal description is empty.");
+      LOGINFO(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the JointDistribution, because the marginal description is empty.");
       const String marginalName(coll[i].getName());
       description[i] = marginalName;
     }

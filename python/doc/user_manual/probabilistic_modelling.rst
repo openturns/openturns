@@ -167,7 +167,7 @@ Combining and transforming distributions
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
-    ComposedDistribution
+    JointDistribution
 
     :template: classWithPlot.rst_t
     CompositeDistribution
@@ -176,6 +176,11 @@ Combining and transforming distributions
     ConditionalDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
+
+    :template: class.rst_t
+    MarginalDistribution
+
+    :template: Distribution.rst_t
     MaximumDistribution
 
     :template: classWithPlot.rst_t
@@ -234,7 +239,13 @@ Refer to :ref:`copula`.
     ExtremeValueCopula
     JoeCopula
     GalambosCopula
+
+    :template: class.rst_t
+
     MarshallOlkinCopula
+
+    :template: Copula.rst_t
+
     MaximumEntropyOrderStatisticsCopula
 
     :template: class.rst_t
@@ -254,7 +265,7 @@ Combining and transforming copulas
     :toctree: _generated/
     :template: DistributionHighDimension.rst_t
 
-    ComposedCopula
+    BlockIndependentCopula
 
     :template: Copula.rst_t
     SklarCopula

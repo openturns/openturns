@@ -45,14 +45,14 @@ int main(int, char *[])
 
     SymbolicFunction model(inputName, formula);
 
-    ComposedDistribution::DistributionCollection marginals(inputDimension);
+    JointDistribution::DistributionCollection marginals(inputDimension);
     marginals[0] = Uniform(-1.0, 1.0);
     //     marginals[0].setDescription("Marginal 1");
     marginals[1] = Uniform(-1.0, 1.0);
     //     marginals[1].setDescription("Marginal 2");
     marginals[2] = Uniform(-1.0, 1.0);
     //     marginals[2].setDescription("Marginal 3");
-    ComposedDistribution maDistribution(ComposedDistribution(marginals, IndependentCopula(inputDimension)));
+    JointDistribution maDistribution(JointDistribution(marginals, IndependentCopula(inputDimension)));
 
 
     const UnsignedInteger size = 10000;

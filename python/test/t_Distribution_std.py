@@ -12,25 +12,25 @@ assert ot.Exponential(2.5) != ot.Exponential(3.0), "Exponential(2.5)!=Exponentia
 assert not ot.Exponential(2.5) == ot.Exponential(
     3.0
 ), "Exponential(2.5)==Exponential(3.0)"
-assert ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(
+assert ot.JointDistribution([ot.Normal()] * 2) == ot.Normal(
     2
 ), "Normal(2)==Composed(2N)"
-assert not ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(
+assert not ot.JointDistribution([ot.Normal()] * 2) != ot.Normal(
     2
 ), "Normal(2)!=Composed(2N)"
-assert ot.ComposedDistribution([ot.Normal()] * 2) != ot.Normal(
+assert ot.JointDistribution([ot.Normal()] * 2) != ot.Normal(
     3
 ), "Composed(2N)!=Normal(3)"
-assert not ot.ComposedDistribution([ot.Normal()] * 2) == ot.Normal(
+assert not ot.JointDistribution([ot.Normal()] * 2) == ot.Normal(
     3
 ), "!Composed(2N)==Normal(3)"
-assert ot.Normal(2) == ot.ComposedDistribution(
+assert ot.Normal(2) == ot.JointDistribution(
     [ot.Normal()] * 2
 ), "Normal(2)==Composed(2N)"
-assert not ot.Normal(3) == ot.ComposedDistribution(
+assert not ot.Normal(3) == ot.JointDistribution(
     [ot.Normal()] * 2
 ), "Normal(3)==Composed(2N)"
-assert ot.Normal(3) != ot.ComposedDistribution(
+assert ot.Normal(3) != ot.JointDistribution(
     [ot.Normal()] * 2
 ), "Normal(3)!=Composed(2N)"
 assert ot.Normal(2) != ot.Student(3.0, 2), "Normal(2)!=Student(2)"
@@ -198,6 +198,10 @@ for factory in factories:
             p = distribution.computeProbability(interval)
             ott.assert_almost_equal(p, 1.0)
 
+            # check getSupport not overflowing with negative upper bound
+            interval = ot.Interval(-1e3, -10)
+            support = distribution.getSupport(interval)
+
     # parameters
     p = distribution.getParameter()
     pd = distribution.getParameterDescription()
@@ -216,7 +220,7 @@ Torque = ot.LogNormal(0.0, 0.25)
 Angle = ot.Normal(0.0, 2.0)
 rho = 0.5
 TorqueAngleCopula = ot.NormalCopula(ot.CorrelationMatrix(2, [1.0, rho, rho, 1.0]))
-d = ot.ComposedDistribution([Torque, Angle], TorqueAngleCopula)
+d = ot.JointDistribution([Torque, Angle], TorqueAngleCopula)
 interval = ot.Interval(
     [6.30177467808195, 3.56435643564356], [6.36881483423176, 3.72277227722772]
 )

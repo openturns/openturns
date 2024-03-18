@@ -114,9 +114,9 @@ f.close()
 
 # %%
 content = """
-X0=@X0
-X1=@X1
-X2=@X2
+X0=@X0@
+X1=@X1@
+X2=@X2@
 """
 
 # %%
@@ -138,7 +138,7 @@ def mySimulator(X):
     # 1. Create input file
     infile = "input_template.txt"
     outfile = "input.txt"
-    tokens = ["@X0", "@X1", "@X2"]
+    tokens = ["@X0@", "@X1@", "@X2@"]
     ct.replace(infile, outfile, tokens, X)
     # 2. Compute
     program = sys.executable + " external_program.py"
@@ -182,7 +182,7 @@ print(Y)
 X = [1.2, 45, 91.8]
 infile = "input_template.txt"
 outfile = "input.txt"
-tokens = ["@X0", "@X1", "@X2"]
+tokens = ["@X0@", "@X1@", "@X2@"]
 ct.replace(infile, outfile, tokens, X)
 
 # %%

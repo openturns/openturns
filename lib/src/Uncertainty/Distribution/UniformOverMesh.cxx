@@ -268,6 +268,22 @@ IntegrationAlgorithm UniformOverMesh::getIntegrationAlgorithm() const
   return integrationAlgorithm_;
 }
 
+Point UniformOverMesh::getParameter() const
+{
+  return {};
+}
+
+void UniformOverMesh::setParameter(const Point & parameter)
+{
+  if (parameter.getDimension())
+    throw InvalidArgumentException(HERE) << "UniformOverMesh parameter must be of dimension 0";
+}
+
+Description UniformOverMesh::getParameterDescription() const
+{
+  return {};
+}
+
 /* Method save() stores the object through the StorageManager */
 void UniformOverMesh::save(Advocate & adv) const
 {

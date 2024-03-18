@@ -33,7 +33,7 @@
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ChiSquare.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/LogNormal.hxx"
 #include "openturns/LogUniform.hxx"
@@ -172,7 +172,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) + other.getMarginal(j);
-  return new ComposedDistribution(marginals);
+  return new JointDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator + (const Scalar value) const
@@ -196,7 +196,7 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) + value;
-  return new ComposedDistribution(marginals, getCopula());
+  return new JointDistribution(marginals, getCopula());
 }
 
 /* Subtraction operator */
@@ -234,7 +234,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) - other.getMarginal(j);
-  return new ComposedDistribution(marginals);
+  return new JointDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator - (const Scalar value) const
@@ -3321,7 +3321,7 @@ CorrelationMatrix DistributionImplementation::getShapeMatrix() const
   if (isElliptical()) return getCorrelation();
   // Difficult case: elliptical distribution with nonelliptical marginals
   const Collection<Distribution> ellipticalMarginals(dimension_, getStandardDistribution().getMarginal(0));
-  return ComposedDistribution(ellipticalMarginals, getCopula()).getCorrelation();
+  return JointDistribution(ellipticalMarginals, getCopula()).getCorrelation();
 }
 
 /* Cholesky factor of the correlation matrix accessor */

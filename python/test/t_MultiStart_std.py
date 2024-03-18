@@ -37,7 +37,7 @@ upper_bound = bounds.getUpperBound()
 dist_collection = []
 for i in range(dim):
     dist_collection.append(ot.Uniform(lower_bound[i], upper_bound[i]))
-distribution = ot.ComposedDistribution(dist_collection)
+distribution = ot.JointDistribution(dist_collection)
 size = 20
 experiment = ot.LHSExperiment(distribution, size)
 startingSample = experiment.generate()

@@ -52,7 +52,7 @@ int main(int, char *[])
     }
 
     // we create one distribution object
-    ComposedDistribution aDistribution(aCollection, IndependentCopula(dimension));
+    JointDistribution aDistribution(aCollection, IndependentCopula(dimension));
 
     RandomVector randomVector(aDistribution);
     CompositeRandomVector composite(analytical, randomVector);

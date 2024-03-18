@@ -237,7 +237,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 3.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.0             |
+| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.11            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Version control                       | `Git <https://git-scm.com/>`_                                                   | 2.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -460,4 +460,4 @@ the object.
 
 The Composite pattern is an essential element of the design model for the platform.
 It can be found in several modeling bricks, such as function composition (ComposedFunction)
-random vector composition (CompositeRandomVector), joint distributions (ComposedDistribution), etc.
+random vector composition (CompositeRandomVector), joint distributions (JointDistribution), etc.

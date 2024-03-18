@@ -158,14 +158,14 @@ public:
     return NULL;
   };
 
-  Point getOptimalPoint() const
+  ::Bonmin::TMINLP::SolverReturn getStatus() const
   {
-    return optimalPoint_;
+    return status_;
   }
 
-  Point getOptimalValue() const
+  Bool getTimeOut() const
   {
-    return optimalValue_;
+    return timeOut_;
   }
 
   virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = 0)
@@ -180,15 +180,18 @@ public:
 
 
 private:
+  // Clip point wrt problem bounds
+  void clip(Point & xPoint) const;
+
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
-  Point optimalPoint_;
-  Point optimalValue_;
+  ::Bonmin::TMINLP::SolverReturn status_;
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;
   Scalar maximumTimeDuration_ = 0.0;
+  Bool timeOut_ = false;
   std::chrono::steady_clock::time_point t0_;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;

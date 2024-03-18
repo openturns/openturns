@@ -47,7 +47,7 @@ Examples
 >>> inputDim = 1
 >>> model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
 >>> # Create the input distribution
->>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> distribution = ot.JointDistribution([ot.Uniform()]*inputDim)
 >>> # Construction of the multivariate orthonormal basis
 >>> polyColl = [0.0]*inputDim
 >>> for i in range(distribution.getDimension()):

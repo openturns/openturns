@@ -121,7 +121,7 @@ Chebychev's othonormalization algorithm:
 
 Returns
 -------
-hasSpecificFamily: bool
+hasSpecificFamily : bool
     True if the factory has a specific orthogonal polynomial family."
 
 // ---------------------------------------------------------------------
@@ -131,7 +131,7 @@ hasSpecificFamily: bool
 
 Returns
 -------
-orthonormalizationAlgorithm: :class:`~openturns.OrthonormalizationAlgorithm`
+orthonormalizationAlgorithm : :class:`~openturns.OrthonormalizationAlgorithm`
     The univariate polynomial orthonormalization algorithm."
 
 // ---------------------------------------------------------------------
@@ -141,5 +141,5 @@ orthonormalizationAlgorithm: :class:`~openturns.OrthonormalizationAlgorithm`
 
 Returns
 -------
-specificFamily: :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+specificFamily : :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
     The specific orthonormal univariate polynomial family."

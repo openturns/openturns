@@ -42,3 +42,13 @@ Returns
 -------
 scrambling : str
     Name of the scrambling method. Possible values are 'NONE', 'REVERSE' and 'RANDOM'."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HaltonSequence::setScrambling
+"Accessor to the scrambling method.
+
+Parameters
+----------
+scrambling : str
+    Name of the scrambling method. Possible values are 'NONE', 'REVERSE' and 'RANDOM'."

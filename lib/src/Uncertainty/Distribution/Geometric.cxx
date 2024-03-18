@@ -189,10 +189,10 @@ Complex Geometric::computeGeneratingFunction(const Complex & z) const
 Sample Geometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
-  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(getRange().getUpperBound()[0], floor(interval.getUpperBound()[0])));
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(0.0, ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMax = static_cast< SignedInteger > (std::min(getRange().getUpperBound()[0], floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k)
+  for (SignedInteger k = kMin; k <= kMax; ++k)
     result.add(Point(1, k));
   return result;
 }

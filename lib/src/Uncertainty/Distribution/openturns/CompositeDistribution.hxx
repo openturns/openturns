@@ -121,9 +121,6 @@ public:
   void setSolver(const Solver & solver);
   Solver getSolver() const;
 
-  /** Compute the shifted moments of the distribution */
-  Point computeShiftedMomentContinuous(const UnsignedInteger n, const Point & shift) const override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -131,7 +128,8 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-
+  /** Compute the shifted moments of the distribution */
+  Point computeShiftedMomentContinuous(const UnsignedInteger n, const Point & shift) const override;
 private:
 
   friend class CompositeDistributionShiftedMomentWrapper;

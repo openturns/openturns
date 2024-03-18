@@ -21,9 +21,5 @@ namespace OT {
   TriangularComplexMatrix __rmul__(Complex s) { return s * (*self); }
   ComplexMatrix __rmul__(const ComplexMatrix & m) { return m * (*self); }
 
-#if SWIG_VERSION < 0x030011
-  TriangularComplexMatrix __truediv__(Complex s) { return (*self) / s; }
-#endif
-
   } // TriangularComplexMatrix
 } // OT

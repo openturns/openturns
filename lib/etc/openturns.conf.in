@@ -451,8 +451,8 @@
   <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
   <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
-  <!-- OT::ComposedDistribution parameters -->
-  <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
+  <!-- OT::JointDistribution parameters -->
+  <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />

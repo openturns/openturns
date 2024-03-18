@@ -133,7 +133,7 @@ aCollection.append(
     ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0]))
 )
 aCollection.append(ot.Normal(75e3, 5e3))
-myDistribution = ot.ComposedDistribution(aCollection)
+myDistribution = ot.JointDistribution(aCollection)
 vect = ot.RandomVector(myDistribution)
 LimitState = ot.SymbolicFunction(("R", "F"), ("R-F/(pi_*100.0)",))
 G = ot.CompositeRandomVector(LimitState, vect)

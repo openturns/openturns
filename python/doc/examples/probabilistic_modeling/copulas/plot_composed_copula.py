@@ -20,5 +20,5 @@ collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]
 
 # %%
 # merge the copulas
-copula = ot.ComposedCopula(collection)
+copula = ot.BlockIndependentCopula(collection)
 print(copula)

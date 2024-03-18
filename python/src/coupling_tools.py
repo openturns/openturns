@@ -70,7 +70,8 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         If equal to *None* or to *infile*, the file will be replaced in-place.
     tokens : list of str
         Regexes that will be replaced.
-        When dealing with overlapping tokens, longest tokens should go first.
+        Look out for overlapping tokens (eg @x1 and @x10): a solution can be to use padding (@x001, @x010)
+        or use markers at both sides (@x1@, @x10@), else longer tokens should be listed first.
     values : list
         Values (can be string, float, ...) that will replace
         the tokens. The list must have the same size as tokens.

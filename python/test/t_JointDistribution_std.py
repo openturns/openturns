@@ -42,7 +42,7 @@ aCopula.setName("Independent copula")
 print("Copula = ", repr(aCopula))
 print("Copula = ", aCopula)
 # Instantiate one distribution object
-distribution = ot.ComposedDistribution(aCollection, aCopula)
+distribution = ot.JointDistribution(aCollection, aCopula)
 distribution.setName("myDist")
 print("Distribution = ")
 print(repr(distribution))
@@ -190,7 +190,7 @@ anotherCopula = ot.NormalCopula(correlation)
 anotherCopula.setName("Normal copula")
 
 # Instantiate one distribution object
-distribution = ot.ComposedDistribution(aCollection, anotherCopula)
+distribution = ot.JointDistribution(aCollection, anotherCopula)
 distribution.setName("myDist")
 distributionRef = ot.Normal(mean, sigma, correlation)
 print("Distribution ", repr(distribution))
@@ -249,7 +249,7 @@ print(
 )
 
 # comparison
-d = ot.ComposedDistribution([ot.Uniform()] * 2, ot.ClaytonCopula(2.5))
+d = ot.JointDistribution([ot.Uniform()] * 2, ot.ClaytonCopula(2.5))
 d1 = ot.MaximumDistribution(d)
 d2 = ot.MaximumDistribution(d)
 assert d1.getDistribution() == d2.getDistribution(), "comp1"
@@ -261,7 +261,7 @@ dist_a.setDescription(["a"])
 dist_b = ot.Normal()
 dist_b.setDescription(["b"])
 dist_list = [dist_a, dist_b] + [ot.Normal()] * 3
-composed = ot.ComposedDistribution(dist_list)
+composed = ot.JointDistribution(dist_list)
 assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong description"
 
 # Create and print a composed distribution with different
@@ -271,7 +271,7 @@ aCollection = [
     ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
     ot.Normal(),
 ]
-distribution = ot.ComposedDistribution(aCollection)
+distribution = ot.JointDistribution(aCollection)
 print("Distribution = ")
 print(distribution)
 print("Distribution (Markdown) = ")

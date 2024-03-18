@@ -1,22 +1,17 @@
 %feature("docstring") OT::LevelSet
 "Level set.
 
-Available constructors:
-    LevelSet(*dim=1*)
-
-    LevelSet(*function=ot.SymbolicFunction(['x'], ['1.0']), operator=ot.LessOrEqual(), level=0.0*)
-
 Parameters
 ----------
-dim : int, :math:`dim \geq 0`
-    Dimension of the LevelSet.
 function : :class:`~openturns.Function`
     A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
     LevelSet.
-operator : :class:`~openturns.ComparisonOperator`
+operator : :class:`~openturns.ComparisonOperator`, optional
     Comparison operator against the level.
-level : float
+    The default value is :class:`~openturns.LessOrEqual`.
+level : float, optional
     Level :math:`s` defining the LevelSet.
+    The default value is 0.0.
 
 Notes
 -----

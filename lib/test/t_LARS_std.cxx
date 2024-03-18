@@ -68,7 +68,7 @@ int main(int, char *[])
   marginalX[0] = Uniform(-M_PI, M_PI);
   marginalX[1] = Uniform(-M_PI, M_PI);
   marginalX[2] = Uniform(-M_PI, M_PI);
-  ComposedDistribution distribution(marginalX);
+  JointDistribution distribution(marginalX);
 
   // Create the orthogonal basis
   Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

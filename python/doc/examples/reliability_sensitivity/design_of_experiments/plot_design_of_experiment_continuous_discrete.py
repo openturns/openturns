@@ -34,7 +34,7 @@ X1 = ot.Normal()
 # Create the multivariate distribution from its marginals and an independent copula.
 
 # %%
-distribution = ot.ComposedDistribution([X0, X1])
+distribution = ot.JointDistribution([X0, X1])
 
 # %%
 # Create the design.

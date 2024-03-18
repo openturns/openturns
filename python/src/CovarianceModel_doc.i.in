@@ -60,6 +60,12 @@ OT_CovarianceModel_operator_doc
 OT_CovarianceModel_setActiveParameter_doc
 %feature("docstring") OT::CovarianceModel::getActiveParameter
 OT_CovarianceModel_getActiveParameter_doc
+%feature("docstring") OT::CovarianceModel::activateScale
+OT_CovarianceModel_activateScale_doc
+%feature("docstring") OT::CovarianceModel::activateNuggetFactor
+OT_CovarianceModel_activateNuggetFactor_doc
+%feature("docstring") OT::CovarianceModel::activateAmplitude
+OT_CovarianceModel_activateAmplitude_doc
 %feature("docstring") OT::CovarianceModel::setFullParameter
 OT_CovarianceModel_setFullParameter_doc
 %feature("docstring") OT::CovarianceModel::getFullParameter

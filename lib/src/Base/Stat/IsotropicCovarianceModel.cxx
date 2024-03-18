@@ -146,9 +146,9 @@ Description IsotropicCovarianceModel::getFullParameterDescription() const
 /** Scale accessor */
 void IsotropicCovarianceModel::setScale(const Point & scale)
 {
-  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the scale should have dimension 1, not " << scale.getDimension() << ".";
-  if (!(scale[0] > 0))
-    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale";
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale: the scale should have dimension 1, not " << scale.getDimension() << ".";
+  if (!(scale[0] > 0.0))
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale: the scale is << " << scale[0] << " but should be positive";
   kernel_.setScale(scale);
   scale_ = scale;
 }
@@ -156,6 +156,8 @@ void IsotropicCovarianceModel::setScale(const Point & scale)
 /* Nugget factor accessor */
 void IsotropicCovarianceModel::setNuggetFactor(const Scalar nuggetFactor)
 {
+  if (!(nuggetFactor >= 0.0))
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setNuggetFactor: the nuggetFactor is << " << nuggetFactor << " but should be nonnegative";
   kernel_.setNuggetFactor(nuggetFactor);
   nuggetFactor_ = nuggetFactor;
 }

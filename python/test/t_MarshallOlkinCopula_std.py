@@ -44,10 +44,9 @@ print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
 # Define a point
 point = ot.Point(dim, 0.2)
 
-# Show PDF and CDF of point
-pointPDF = copula.computePDF(point)
+# Show CDF of point
 pointCDF = copula.computeCDF(point)
-print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
+print("Point = ", repr(point), " cdf=%.6f" % pointCDF)
 
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
@@ -64,7 +63,6 @@ print("InverseSurvival=", repr(inverseSurvival))
 print(
     "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
 )
-print("entropy=%.6f" % copula.computeEntropy())
 # Confidence regions
 """
 Fails, because of an INF in the PDF.
@@ -97,7 +95,6 @@ indices[1] = 0
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))
-print("margins PDF=%.6f" % margins.computePDF(ot.Point(2, 0.25)))
 print("margins CDF=%.6f" % margins.computeCDF(ot.Point(2, 0.25)))
 quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))

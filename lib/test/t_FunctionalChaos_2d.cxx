@@ -49,7 +49,7 @@ int main(int, char *[])
     // Create the input distribution
     Collection<Distribution> marginals(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i) marginals[i] = Normal(0.0, 1.0);
-    const ComposedDistribution distribution(marginals);
+    const JointDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(inputDimension);

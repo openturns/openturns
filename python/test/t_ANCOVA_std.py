@@ -28,14 +28,14 @@ full = ot.SymbolicFunction(inputName, formula)
 model = ot.ParametricFunction(full, [2, 3], [a, b])
 
 # Input distribution
-distribution = ot.ComposedDistribution([ot.Normal()] * inputDimension)
+distribution = ot.JointDistribution([ot.Normal()] * inputDimension)
 
 # Correlated input distribution
 S = ot.CorrelationMatrix(inputDimension)
 S[1, 0] = 0.3
 R = ot.NormalCopula().GetCorrelationFromSpearmanCorrelation(S)
 myCopula = ot.NormalCopula(R)
-myCorrelatedInputDistribution = ot.ComposedDistribution(
+myCorrelatedInputDistribution = ot.JointDistribution(
     [ot.Normal()] * inputDimension, myCopula
 )
 

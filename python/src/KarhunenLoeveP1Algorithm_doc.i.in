@@ -13,11 +13,11 @@ s : float, :math:`\geq0`
 Notes
 -----
 The Karhunen-Loeve :math:`P_1` algorithm solves the Fredholm problem associated to the
-covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
+covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` for the notations.
 
 The Karhunen-Loeve :math:`P_1` approximation uses the :math:`P_1` functional basis :math:`(\theta_p)_{1 \leq p \leq N}`
 where :math:`\theta_p: \cD_N \mapsto \Rset` are the basis functions of the :math:`P_1`
-finite element space associated to :math:`\cD_N`, which vertices are :math:`(\vect{s}_i)_{1 \leq i \leq N}`.
+finite element space associated to :math:`\cD_N`, whose vertices are :math:`(\vect{s}_i)_{1 \leq i \leq N}`.
 
 The covariance function :math:`\mat{C}` is approximated by its :math:`P_1` approximation :math:`\hat{\mat{C}}` on :math:`\cD_N`:
 
@@ -35,7 +35,7 @@ The Galerkin approach and the collocation one are equivalent in the :math:`P_1` 
 where :math:`\mat{G} = (G_{ij})_{1\leq i,j \leq N}` with :math:`G_{i\ell}= \int_{\cD} \theta_i(\vect{s})\theta_\ell(\vect{s})\,  d\vect{s}`, :math:`\mat{\Lambda}=diag(\vect{\lambda})`.
 
 Though the eigenvalues computation is performed by LAPACK by default, several other solvers can be used.
-The solver to use must be specified by setting ``KarhunenLoeveP1Algorithm-EigenvaluesSolver`` key in :class:`~openturns.ResourceMap`.
+The solver to use must be specified by setting the ``KarhunenLoeveP1Algorithm-EigenvaluesSolver`` key in :class:`~openturns.ResourceMap`.
 Some solvers set limits to the number of eigenvalues they can compute with regards to the size of the problem.
 The following table summarizes the supported solvers and their maximum number of eigenvalues for a problem of size :math:`n`:
 
@@ -49,7 +49,7 @@ The following table summarizes the supported solvers and their maximum number of
 
 For large dimension problems, it can be useful to generate the covariance matrix of the
 problem as a :class:`~openturns.HMatrix` instead of a standard dense matrix.
-In this case, one can set ``KarhunenLoeveP1Algorithm-CovarianceMatrixStorage``
+In this case, one can set the ``KarhunenLoeveP1Algorithm-CovarianceMatrixStorage``
 key in :class:`~openturns.ResourceMap` to ``HMAT`` (instead of ``DENSE``).
 
 Examples

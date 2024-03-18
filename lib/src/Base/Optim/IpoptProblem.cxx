@@ -28,20 +28,14 @@ BEGIN_NAMESPACE_OPENTURNS
 /** Constructor with parameters */
 IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
                             const Point & startingPoint,
-                            const UnsignedInteger maximumEvaluationNumber,
-                            const Scalar maximumTimeDuration,
-                            const std::chrono::steady_clock::time_point & t0)
+                            const UnsignedInteger maximumCallsNumber)
   : TNLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
   , evaluationInputHistory_(0, optimProblem.getDimension())
   , evaluationOutputHistory_(0, 1)
-  , optimalPoint_(optimProblem.getDimension())
-  , optimalValue_(1)
-  , maximumEvaluationNumber_(maximumEvaluationNumber)
-  , maximumTimeDuration_(maximumTimeDuration)
-  , t0_(t0)
-  , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
+  , maximumCallsNumber_(maximumCallsNumber)
+  , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(nullptr, nullptr))
   , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
 {
   // Nothing to do
@@ -233,6 +227,7 @@ bool IpoptProblem::get_starting_point(int /*n*/,
   return true;
 }
 
+
 bool IpoptProblem::eval_f(int n,
                           const double* x,
                           bool /*new_x*/,
@@ -253,15 +248,10 @@ bool IpoptProblem::eval_f(int n,
   evaluationInputHistory_.add(xPoint);
   evaluationOutputHistory_.add(yPoint);
 
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
-  if ((maximumTimeDuration_ > 0.0) && (timeDuration > maximumTimeDuration_))
-    return false;
-
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumEvaluationNumber_, progressCallback_.second);
+    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -270,7 +260,7 @@ bool IpoptProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumEvaluationNumber_);
+  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
 }
 
 
@@ -635,19 +625,13 @@ bool IpoptProblem::eval_grad_gi(int n,
 }
 
 
-void IpoptProblem::finalize_solution(::Ipopt::SolverReturn /*status*/, ::Ipopt::Index n,
-                                     const ::Ipopt::Number* x, const ::Ipopt::Number* /*z_L*/,
+void IpoptProblem::finalize_solution(::Ipopt::SolverReturn /*status*/, ::Ipopt::Index /*n*/,
+                                     const ::Ipopt::Number* /*x*/, const ::Ipopt::Number* /*z_L*/,
                                      const ::Ipopt::Number* /*z_U*/, ::Ipopt::Index /*m*/, const ::Ipopt::Number* /*g*/,
-                                     const ::Ipopt::Number* /*lambda*/, ::Ipopt::Number obj_value,
+                                     const ::Ipopt::Number* /*lambda*/, ::Ipopt::Number /*obj_value*/,
                                      const ::Ipopt::IpoptData* /*ip_data*/,
                                      ::Ipopt::IpoptCalculatedQuantities* /*ip_cq*/)
 {
-  // Convert x to OT::Point
-  std::copy(x, x + n, optimalPoint_.begin());
-  if (optimProblem_.isMinimization())
-    optimalValue_[0] = obj_value;
-  else
-    optimalValue_[0] = -obj_value;
 }
 
 

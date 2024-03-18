@@ -42,8 +42,8 @@ Notes
   Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. These parameters can be modified using the :class:`~openturns.ResourceMap`. For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
 
     >>> import openturns as ot
-    >>> ot.ResourceMap.AddAsUnsignedInteger('Bonmin-bonmin.iteration_limit', 100)
-    >>> ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 30.0)
+    >>> ot.ResourceMap.AddAsUnsignedInteger('Bonmin-bonmin.node_limit', 10000)
+    >>> ot.ResourceMap.AddAsScalar('Bonmin-bonmin.cutoff', 1e6)
 
 *Convergence criteria:*
 
@@ -92,7 +92,8 @@ subject to
 ... ot.OptimizationProblemImplementation.CONTINUOUS,
 ... ot.OptimizationProblemImplementation.INTEGER]
 
-In OpenTURNS, inequality constraints are defined by a function :math:`h` such that :math:`h(x) \geq 0`. The inequality expression above has to be modified to match this formulation.
+Inequality constraints are defined by a function :math:`h` such that :math:`h(x) \geq 0`.
+The inequality expression above has to be modified to match this formulation.
 
 >>> # Definition of constraints
 >>> # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
@@ -110,8 +111,6 @@ In OpenTURNS, inequality constraints are defined by a function :math:`h` such th
 >>> bonminAlgorithm.setStartingPoint([0,0,0,0])
 >>> bonminAlgorithm.setMaximumCallsNumber(10000)
 >>> bonminAlgorithm.setMaximumIterationNumber(1000)
->>> ot.ResourceMap.AddAsString('Bonmin-mu_oracle','loqo')
->>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 5.0)
 
 >>> # Running the solver
 >>> bonminAlgorithm.run() # doctest: +SKIP

@@ -540,7 +540,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       DistributionFactory.i DistributionFactory_doc.i.in
                       DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
                       DistributionParameters.i DistributionParameters_doc.i.in
-                      ContinuousDistribution.i
+                      ContinuousDistribution.i ContinuousDistribution_doc.i.in
                       EllipticalDistribution.i EllipticalDistribution_doc.i.in
                       DiscreteDistribution.i DiscreteDistribution_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
@@ -563,8 +563,8 @@ ot_add_python_module(model_copula model_copula_module.i
                       GumbelCopula.i GumbelCopula_doc.i.in
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
                       BlockIndependentDistribution.i BlockIndependentDistribution_doc.i.in
-                      ComposedDistribution.i ComposedDistribution_doc.i.in
-                      ComposedCopula.i ComposedCopula_doc.i.in
+                      JointDistribution.i JointDistribution_doc.i.in
+                      BlockIndependentCopula.i BlockIndependentCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
                       PlackettCopula.i PlackettCopula_doc.i.in
                       PlackettCopulaFactory.i PlackettCopulaFactory_doc.i.in
@@ -694,7 +694,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
                       LogUniformFactory.i LogUniformFactory_doc.i.in
-                      MarginalDistribution.i
+                      MarginalDistribution.i MarginalDistribution_doc.i.in
                       MaximumDistribution.i MaximumDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in

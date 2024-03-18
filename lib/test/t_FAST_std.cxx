@@ -46,11 +46,11 @@ int main(int, char *[])
 
     SymbolicFunction modelIshigami(inputName, formulaIshigami);
 
-    ComposedDistribution::DistributionCollection marginals(inputDimension);
+    JointDistribution::DistributionCollection marginals(inputDimension);
     marginals[0] = Uniform(-1.0, 1.0);
     marginals[1] = Uniform(-1.0, 1.0);
     marginals[2] = Uniform(-1.0, 1.0);
-    ComposedDistribution distributions(marginals);
+    JointDistribution distributions(marginals);
 
     FAST sensitivityFast(modelIshigami, distributions, 400);
 
@@ -103,7 +103,7 @@ int main(int, char *[])
     marginals[0] = Uniform(0., 1.0);
     marginals[1] = Uniform(0., 1.0);
     marginals[2] = Uniform(0., 1.0);
-    distributions = ComposedDistribution(marginals);
+    distributions = JointDistribution(marginals);
 
     sensitivityFast = FAST(modelGSobol, distributions, 400);
     sensitivityFast.setBlockSize(7);

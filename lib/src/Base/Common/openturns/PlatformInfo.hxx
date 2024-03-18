@@ -68,6 +68,11 @@ public:
   static Description GetFeatures();
   static Bool HasFeature(const String & feature);
 
+  /** Compiler id GNU/MSVC... */
+  static String GetCompilerId();
+
+  /** Compiler version */
+  static String GetCompilerVersion();
 private:
 
   PlatformInfo();

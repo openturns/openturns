@@ -155,7 +155,7 @@ Create the model:
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDim = 1
 >>> model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
->>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> distribution = ot.JointDistribution([ot.Uniform()]*inputDim)
 
 Build the multivariate orthonormal basis:
 

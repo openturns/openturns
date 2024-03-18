@@ -73,10 +73,6 @@ namespace OT {
   
   ComplexMatrix __rmul__(Complex s) { return s * (*self); }
 
-#if SWIG_VERSION < 0x030011
-  ComplexMatrix __truediv__(Complex s) { return (*self) / s; }
-#endif
-
   ComplexMatrix __matmul__(const ComplexMatrix & other) { return *self * other; }
 
   ComplexMatrix __matmul__(const Matrix & other) { return *self * other; }

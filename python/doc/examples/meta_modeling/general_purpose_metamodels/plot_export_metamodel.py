@@ -5,7 +5,7 @@ Export a metamodel
 
 # %%
 # In this example we will see how to export a metamodel from the context it is created
-# to another context where it will be actually used with the help of the pickle module.
+# to another context where it will actually be used with the help of the pickle module.
 
 # %%
 import openturns as ot
@@ -34,7 +34,7 @@ assert algo.getResult().getResiduals()[0] < 1e-12
 metamodel = algo.getResult().getMetaModel()
 
 # %%
-# Save the metamodel for reuse later into a .pkl file
+# Save the metamodel into a .pkl file for later use
 with open("metamodel.pkl", "wb") as f:
     pickle.dump(metamodel, f)
 

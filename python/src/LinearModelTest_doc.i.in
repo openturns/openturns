@@ -404,7 +404,7 @@ Examples
 >>> S = ot.CorrelationMatrix(dim)
 >>> S[0, dim - 1] = 0.99
 >>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> distribution = ot.JointDistribution(distCol, copula)
 >>> sample = distribution.getSample(30)
 >>> firstSample = sample[:, :2]
 >>> secondSample = sample[:, 2]
@@ -465,7 +465,7 @@ Examples
 >>> S = ot.CorrelationMatrix(dim)
 >>> S[0, dim - 1] = 0.99
 >>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> distribution = ot.JointDistribution(distCol, copula)
 >>> sample = distribution.getSample(30)
 >>> firstSample = sample[:, :2]
 >>> secondSample = sample[:, 2]

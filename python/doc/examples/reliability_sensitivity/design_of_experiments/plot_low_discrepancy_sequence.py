@@ -103,7 +103,7 @@ view = viewer.View(graph)
 
 # %%
 # Compare with uniform random sequence
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 sample = distribution.getSample(size)
 print(
     "discrepancy=",

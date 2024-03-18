@@ -86,3 +86,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample on which the kernels are centered."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelMixture::getInternalSample
+"Get the sample used in the linear combination.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Sample on which the kernels are centered."

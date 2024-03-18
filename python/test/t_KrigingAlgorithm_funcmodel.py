@@ -17,7 +17,7 @@ outputSample = model(inputSample)
 
 # Validation
 sampleSize = 10
-inputValidSample = ot.ComposedDistribution(2 * [ot.Uniform(1.0, 9.0)]).getSample(
+inputValidSample = ot.JointDistribution(2 * [ot.Uniform(1.0, 9.0)]).getSample(
     sampleSize
 )
 outputValidSample = model(inputValidSample)

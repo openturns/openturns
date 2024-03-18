@@ -172,6 +172,11 @@ public:
   virtual void setActiveParameter(const Indices & active);
   virtual Indices getActiveParameter() const;
 
+  /* Easily activate base parameters: scale, nuggetFactor, amplitude */
+  virtual void activateScale(const Bool isScaleActive);
+  virtual void activateNuggetFactor(const Bool isNuggetFactorActive);
+  virtual void activateAmplitude(const Bool isAmplitudeActive);
+
   /* setter for the full parameter */
   virtual void setFullParameter(const Point & parameter);
   virtual Point getFullParameter() const;

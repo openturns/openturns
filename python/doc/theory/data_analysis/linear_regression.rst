@@ -94,7 +94,7 @@ relationships, as in the following simple example where
     dist = ot.Triangular(1.0, 5.0, 10.0)
     # create a Y sample : Y = 0.5 + 3 * X + eps
     eps = ot.Normal(0.0, 1.0)
-    sample = ot.ComposedDistribution([dist, eps]).getSample(N)
+    sample = ot.JointDistribution([dist, eps]).getSample(N)
     f = ot.SymbolicFunction(['x', 'eps'], ['0.5+3.0*x+eps'])
     sampleY = f(sample)
     sampleX = sample.getMarginal(0)
@@ -128,7 +128,7 @@ regression coefficients :math:`a_j`.
     dist = ot.Triangular(1.0, 5.0, 10.0)
     # create a Y sample : Y = exp(X/2) + eps
     eps = ot.Normal(0.0, 1.0)
-    sample = ot.ComposedDistribution([dist, eps]).getSample(N)
+    sample = ot.JointDistribution([dist, eps]).getSample(N)
     f = ot.SymbolicFunction(['x', 'eps'], ['exp(0.5*x)+eps'])
     sampleY = f(sample)
     sampleX = sample.getMarginal(0)
@@ -177,7 +177,7 @@ nor in he standard deviation.
     dist = ot.Triangular(1.0, 5.0, 10.0)
     # create a Y sample : Y = 0.5 + 3 * X + eps
     eps = ot.Normal(0.0, 1.0)
-    sample = ot.ComposedDistribution([dist, eps]).getSample(N)
+    sample = ot.JointDistribution([dist, eps]).getSample(N)
     f = ot.SymbolicFunction(['x', 'eps'], ['0.5+3.0*x+eps'])
     sampleY = f(sample)
     sampleX = sample.getMarginal(0)
@@ -208,7 +208,7 @@ be abandoned, or at least used very cautiously.
     dist = ot.Triangular(1.0, 5.0, 10.0)
     # create a Y sample : Y = exp(X/2) + eps
     eps = ot.Normal(0.0, 1.0)
-    sample = ot.ComposedDistribution([dist, eps]).getSample(N)
+    sample = ot.JointDistribution([dist, eps]).getSample(N)
     f = ot.SymbolicFunction(['x', 'eps'], ['exp(0.5*x)+eps'])
     sampleY = f(sample)
     sampleX = sample.getMarginal(0)

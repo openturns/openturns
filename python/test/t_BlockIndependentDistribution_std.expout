@@ -13,9 +13,9 @@ Survival(inverse survival)=0.95000
 Quantile      = [1.26874,1.26874,1.26874,1.26874,1.26874,1.26874,1.26874]
 Quantile (ref)= [1.26874,1.26874,1.26874,1.26874,1.26874,1.26874,1.26874]
 CDF(quantile) =0.50000
-Distribution  BlockIndependentDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), AliMikhailHaqCopula(theta = 0.5)), Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
+Distribution  BlockIndependentDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), AliMikhailHaqCopula(theta = 0.5)), Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
  [ 0.5  1    0    ]
- [ 0.25 0    1    ]]), ComposedDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
+ [ 0.25 0    1    ]]), JointDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
 Elliptical distribution=  False
 Continuous =  True
 Elliptical =  False
@@ -85,7 +85,7 @@ sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.519939,0.
 sequential conditional quantile( [0.519939,0.545655,0.35383,0.436925,0.415568,0.42305,0.487447] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
 indices= [1, 2, 3, 5, 6]
 margins= BlockIndependentDistribution(Normal(mu = 0, sigma = 1), Normal(mu = [1,1], sigma = [2,2], R = [[ 1   0.5 ]
- [ 0.5 1   ]]), ComposedDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
+ [ 0.5 1   ]]), JointDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
 margins PDF=0.01057
 margins CDF=0.00675
 margins quantile= [2.30912,5.61824,5.61824,4.55939,4.55939]

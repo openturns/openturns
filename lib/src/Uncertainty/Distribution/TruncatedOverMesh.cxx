@@ -309,6 +309,21 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
   computeRange();
 }
 
+Point TruncatedOverMesh::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void TruncatedOverMesh::setParameter(const Point & parameter)
+{
+  distribution_.setParameter(parameter);
+}
+
+Description TruncatedOverMesh::getParameterDescription() const
+{
+  return distribution_.getParameterDescription();
+}
+
 Mesh TruncatedOverMesh::getMesh() const
 {
   return mesh_;
