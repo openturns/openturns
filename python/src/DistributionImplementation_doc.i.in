@@ -643,14 +643,14 @@ is defined as the generalized inverse of its cumulative distribution function:
     x_p = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \},
                       \quad p \in [0; 1]
                       
-If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension greater than :math:`d>1`, then
+If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension :math:`d>1`, then
 the quantile of order :math:`p`, denoted by :math:`\vect{x}_p`, is such that:
 
 .. math::
-
-    F_{\vect{X}}(\vect{x}_p) = p
-    
-    F_{X_i}(\vect{x}_{p,i}) = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+    \begin{eqnarray*}
+        F_{\vect{X}}(\vect{x}_p) & = p\\    
+        F_{X_i}(\vect{x}_{p,i}) & = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+    \end{array}
 
 where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
 is such that all the components are associated to the same order of quantile of their marginal.
