@@ -5,6 +5,8 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+ot.Log.Show(ot.Log.WARN)
+
 ll = [1.0, 0.7, 1.2, 0.9]
 h = [0.5, 1.5, 3.5, 2.5]
 distribution = ot.Histogram(-1.5, ll, h)
@@ -43,8 +45,7 @@ for useQuantile in [True, False]:
 # from quantiles
 ref_dist = ot.Normal()
 lowerBound = -3.0
-N = 10
-probabilities = [(i + 1) / N for i in range(N)]
+probabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 - ot.SpecFunc.ScalarEpsilon]
 quantiles = [ref_dist.computeQuantile(pi)[0] for pi in probabilities]
 inf_distribution = ot.HistogramFactory().buildFromQuantiles(
     lowerBound, probabilities, quantiles

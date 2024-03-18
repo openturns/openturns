@@ -127,7 +127,17 @@ int main(int, char *[])
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Confidence regions
       Scalar threshold;
-      fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+      Interval interval(distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold));
+      if (distribution.getK() == 1.5)
+      {
+        assert_almost_equal(interval.getLowerBound(), {-0.49937}, 1e-4, 0.0);
+        assert_almost_equal(interval.getUpperBound(), {1.06337}, 1e-4, 0.0);
+      }
+      else if (distribution.getK() == 15.0)
+      {
+        assert_almost_equal(interval.getLowerBound(), {3.1431}, 1e-4, 0.0);
+        assert_almost_equal(interval.getUpperBound(), {9.09027}, 1e-4, 0.0);
+      }
       fullprint << "threshold=" << threshold << std::endl;
       Scalar beta;
       LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
