@@ -635,7 +635,7 @@ xp : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
 
 Notes
 -----
-If the underlying variable :math:`X` is scalar, then the quantile of order :math:`p` denoted by :math:`x_p`,
+If the underlying variable :math:`X` is scalar, then the quantile of order :math:`p`, denoted by :math:`x_p`,
 is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
@@ -644,12 +644,13 @@ is defined as the generalized inverse of its cumulative distribution function:
                       \quad p \in [0; 1]
                       
 If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension greater than :math:`d>1`, then
-the quantile of order :math:`p` denoted by :math:`\vect{x}_p`, is such that:
+the quantile of order :math:`p`, denoted by :math:`\vect{x}_p`, is such that:
 
 .. math::
 
     F_{\vect{X}}(\vect{x}_p) = p
-    F_{X_i}(\vect{x}_{p,i} = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+    
+    F_{X_i}(\vect{x}_{p,i}) = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
 
 where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
 is such that all the components are associated to the same order of quantile of their marginal.
@@ -705,7 +706,7 @@ xp : float
 
 Notes
 -----
-The quantile of order :math:`p` denoted by :math:`x_p`,
+The quantile of order :math:`p`, denoted by :math:`x_p`,
 is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
@@ -1126,24 +1127,24 @@ Notes
 -----
 We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
-The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all :math:`i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product
+:math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` 
+such that there exists :math:`\beta` which verifies :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)`
+for all :math:`i` and :math:`\mu(I^*_{\alpha}) = \alpha`.
 
 Examples
 --------
-Create a sample from a Normal distribution:
+We consider a Normal(2) distribution with zero mean, unit standard deviation and independent components.
+We note :math:`\Phi_2` its cdf. Due to
+symetries of the distribution, the bilateral confidence interval is :math:`I^*_{\alpha} = [-a, a] \times \times [-a, a]`
+where :math:`a = \Phi^{-1}((1+\beta)/2)` where :math:`\Phi` is the marginal cdf of each component. Then :math:`\beta` is such that
+:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = _beta^2`,
+then, :math:`\beta` is equal to :math:`\beta = \sqrt{\alpha} \simeq 0.9486`
+and :math:`a \simeq -1.9488`.
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
-
-Fit a Normal distribution and extract the asymptotic parameters distribution:
-
->>> fittedRes = ot.NormalFactory().buildEstimator(sample)
->>> paramDist = fittedRes.getParameterDistribution()
-
-Determine the bilateral confidence interval at level 0.9:
-
->>> confInt = paramDist.computeBilateralConfidenceInterval(0.9)"
+>>> dist = ot.Normal(2)
+>>> confInt = dist.computeBilateralConfidenceInterval(0.9)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceInterval
 OT_Distribution_computeBilateralConfidenceInterval_doc
@@ -1164,25 +1165,22 @@ Returns
 -------
 confInterval : :class:`~openturns.Interval`
     The confidence interval of level :math:`\alpha`.
-marginalProb : float
-    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+beta : float
+    The probability :math:`\beta`.
 
 Examples
 --------
-Create a sample from a Normal distribution:
+We consider a Normal(2) distribution with zero mean, unit standard deviation and independent components.
+We note :math:`\Phi_2` its cdf. Due to
+symetries of the distribution, the bilateral confidence interval is :math:`I^*_{\alpha} = [-a, a] \times \times [-a, a]`
+where :math:`a = \Phi^{-1}((1+\beta)/2)` where :math:`\Phi` is the marginal cdf of each component. Then :math:`\beta` is such that
+:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = _beta^2`,
+then, :math:`\beta` is equal to :math:`\beta = \sqrt{\alpha} \simeq 0.9486`
+and :math:`a \simeq -1.9488`.
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
-
-Fit a Normal distribution and extract the asymptotic parameters distribution:
-
->>> fittedRes = ot.NormalFactory().buildEstimator(sample)
->>> paramDist = fittedRes.getParameterDistribution()
-
-Determine the bilateral confidence interval at level 0.9 with marginal probability:
-
->>> confInt, marginalProb = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
+>>> dist = ot.Normal(2)
+>>> confInt, beta = dist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability
 OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
