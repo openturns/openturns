@@ -29,7 +29,7 @@ where :math:`U_i = F_i(X_i)` is the random variate following the uniform distrib
 
 A copula of dimension :math:`d` is the restriction to the unit cube :math:`[0,1]^d` of a
 multivariate distribution function with uniform univariate marginals on :math:`[0,1]`.
-It has the following properties: 
+It has the following properties:
 
 - :math:`\forall \vect{u},\vect{v}\in[0,1]^d, |C(\vect{u})-C(\vect{v})|\leq \sum_{i=1}^d |u_i-v_i|`,
 
@@ -52,7 +52,7 @@ where :math:`x_{j1}=a_j` and :math:`x_{j2}=b_j` for all :math:`j \in \{1,\dots,d
 
 The copula represents the part of the joined cumulative density function which is not described by the
 marginal distributions. It models the dependence structure of the input variables.
-  
+
 In the probabilistic modelisation issue, the choice of the dependence structure is disconnected from the
 choice of the marginal distributions.
 
