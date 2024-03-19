@@ -293,8 +293,8 @@ Point GeneralizedPareto::computeCDFGradient(const Point & point) const
 Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return u_;
-  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar logProb = tail ? std::log(prob) : log1p(-prob);
   if (xi_ == 0.0) return u_ - sigma_ * logProb;
   else return u_ + sigma_ * expm1(-xi_ * logProb) / xi_;

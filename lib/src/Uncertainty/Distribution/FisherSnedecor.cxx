@@ -180,10 +180,12 @@ Scalar FisherSnedecor::computeCDF(const Point & point) const
 Scalar FisherSnedecor::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (getRange().getUpperBound()[0] < 0.0) return DistributionImplementation::computeScalarQuantile(prob, tail);
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  //if (getRange().getUpperBound()[0] < 0.0) return DistributionImplementation::computeScalarQuantile(prob, tail);
   const Scalar p = tail ? 1.0 - prob : prob;
   const Scalar q = DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p);
-  if (q >= 1.0) return getRange().getUpperBound()[0];
+  //if (q >= 1.0) return getRange().getUpperBound()[0];
   return d2_ * q / (d1_ * (1.0 - q));
 }
 
