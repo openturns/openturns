@@ -134,6 +134,18 @@ public:
 
   /** VTK export */
   void exportToVTKFile(const String & fileName) const;
+  
+  /** Translate realizations in-place */
+  Field & operator += (const Sample & translation);
+  Field & operator -= (const Sample & translation);
+  Field & operator += (const Point & translation);
+  Field & operator -= (const Point & translation);
+
+  /** Translate realizations */
+  Field operator + (const Sample & translation);
+  Field operator - (const Sample & translation);
+  Field operator + (const Point & translation);
+  Field operator - (const Point & translation);  
 
 }; /* class Field */
 

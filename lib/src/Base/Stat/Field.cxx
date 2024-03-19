@@ -247,6 +247,69 @@ Scalar Field::norm() const
   return getImplementation()->norm();
 }
 
+/* In place sum operator between field and sample */
+Field & Field::operator += (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(translation);
+  return *this;
+}
+
+/* In place difference operator between field and sample */
+Field & Field::operator -= (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(translation);
+  return *this;
+}
+
+/* Sum operator between field and sample */
+Field Field::operator + (const Sample & translation)
+{
+  Field field(getImplementation());
+  field += translation;
+  return field;
+}
+
+/* Difference operator between field and sample */
+Field Field::operator - (const Sample & translation)
+{
+  Field field(getImplementation());
+  field -= translation;
+  return field;
+}
+
+/* In place sum operator between field and point */
+Field & Field::operator += (const Point & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(translation);
+  return *this;
+}
+
+/* In place difference operator between field and point */
+Field & Field::operator -= (const Point & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(translation);
+  return *this;
+}
+
+/* Sum operator between field and point */
+Field Field::operator + (const Point & translation)
+{
+  Field field(getImplementation());
+  field += translation;
+  return field;
+}
+
+/* Difference operator between field and point */
+Field Field::operator - (const Point & translation)
+{
+  Field field(getImplementation());
+  field -= translation;
+  return field;
+}
 /* Draw a marginal of the field */
 Graph Field::drawMarginal(const UnsignedInteger index,
                           const Bool interpolate) const

@@ -176,6 +176,18 @@ public:
   /** Translate realizations in-place */
   ProcessSample & operator += (const Sample & translation);
   ProcessSample & operator -= (const Sample & translation);
+  ProcessSample & operator += (const Point & translation);
+  ProcessSample & operator -= (const Point & translation);
+  ProcessSample & operator += (const ProcessSample & translation);
+  ProcessSample & operator -= (const ProcessSample & translation);
+  
+  /** Translate realizations */
+  ProcessSample operator + (const Sample & translation);
+  ProcessSample operator - (const Sample & translation);
+  ProcessSample operator + (const Point & translation);
+  ProcessSample operator - (const Point & translation);
+  ProcessSample operator + (const ProcessSample & translation);
+  ProcessSample operator - (const ProcessSample & translation);
 
   /** Extract the sample of values at the given vertex index */
   Sample getSampleAtVertex(const UnsignedInteger index) const;

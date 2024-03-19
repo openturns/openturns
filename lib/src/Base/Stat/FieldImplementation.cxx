@@ -237,6 +237,67 @@ Bool FieldImplementation::operator ==(const FieldImplementation & other) const
   return (mesh_ == other.mesh_) && (values_ == other.values_);
 }
 
+/* In place sum operator between field and sample */
+FieldImplementation & FieldImplementation::operator += (const Sample & translation)
+{
+  values_ += translation;
+  return *this;
+}
+
+/* In place difference operator between field and sample */
+FieldImplementation & FieldImplementation::operator -= (const Sample & translation)
+{
+  values_ -= translation;
+  return *this;
+}
+
+/* Sum operator between field and sample */
+FieldImplementation FieldImplementation::operator + (const Sample & translation)
+{
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation += translation;
+  return fieldImplementation;
+}
+
+/* Difference operator between field and sample */
+FieldImplementation FieldImplementation::operator - (const Sample & translation)
+{
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation -= translation;
+  return fieldImplementation;
+}
+
+/* In place sum operator between field and point */
+FieldImplementation & FieldImplementation::operator += (const Point & translation)
+{
+  values_ += translation;
+  return *this;
+}
+
+/* In place difference operator between field and point */
+FieldImplementation & FieldImplementation::operator -= (const Point & translation)
+{
+  values_ -= translation;
+  return *this;
+}
+
+/* Sum operator between field and point */
+FieldImplementation FieldImplementation::operator + (const Point & translation)
+{
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation += translation;
+  return fieldImplementation;
+}
+
+/* Difference operator between field and point */
+FieldImplementation FieldImplementation::operator - (const Point & translation)
+{
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation -= translation;
+  return fieldImplementation;
+}
+
+
 /* String converter */
 String FieldImplementation::__repr__() const
 {
