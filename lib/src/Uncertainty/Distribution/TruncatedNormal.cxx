@@ -438,10 +438,10 @@ Point TruncatedNormal::computeCDFGradient(const Point & point) const
 Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (PhiANorm_ >= PhiBNorm_)
     return DistributionImplementation::computeScalarQuantile(prob, tail);
-  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return a_;
-  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return b_;
   if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - prob / normalizationFactor_);
   return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob / normalizationFactor_);
 }

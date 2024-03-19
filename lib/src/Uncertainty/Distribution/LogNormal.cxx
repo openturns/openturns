@@ -301,8 +301,8 @@ Point LogNormal::computeCDFGradient(const Point & point) const
 Scalar LogNormal::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
-  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return gamma_;
-  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::qNormal(prob, tail));
 }
 

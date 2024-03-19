@@ -160,8 +160,8 @@ Point Geometric::computeCDFGradient(const Point & point) const
 Scalar Geometric::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
-  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return 1.0;
-  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }

@@ -206,8 +206,8 @@ Point Laplace::computeCDFGradient(const Point & point) const
 Scalar Laplace::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  if (tail ? (prob >= 1.0) : (prob <= 0.0)) return - SpecFunc::MaxScalar;
-  if (tail ? (prob <= 0.0) : (prob >= 1.0)) return SpecFunc::MaxScalar;
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar d = tail ? 0.5 - prob : prob - 0.5;
   if (d < 0.0) return mu_ + log1p(2.0 * d) / lambda_;
   return mu_ - log1p(-2.0 * d) / lambda_;

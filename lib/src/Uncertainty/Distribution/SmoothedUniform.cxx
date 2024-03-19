@@ -239,6 +239,8 @@ Point SmoothedUniform::computeCDFGradient(const Point & point) const
 Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar q = (tail ? 1.0 - prob : prob);
   const Scalar xMin = range_.getLowerBound()[0];
   if (q <= 0.0) return xMin;
