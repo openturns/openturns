@@ -11,30 +11,26 @@ Create a sparse chaos by integration
 # Polynomial chaos expansion
 # --------------------------
 #
-# Let :math:`g : \mathcal{X} \rightarrow \mathbb{R}` be a function
-# where :math:`\mathcal{X} \subseteq \mathbb{R}^p` is the domain of :math:`g`.
-# Let :math:`f` be a probability density function on :math:`\mathcal{X}`.
-# Let :math:`T` be the iso-probabilistic transformation from the physical
-# space :math:`\mathcal{X}` to the standard space :math:`\mathcal{\bar{X}}`:
+# Let :math:`g : \mathcal{D} \rightarrow \mathbb{R}` be a function
+# where :math:`\mathcal{D} \subseteq \mathbb{R}^p` is the domain of :math:`g`.
+# We consider :math:`\vect{X}` a random vector in :math:`\mathcal{D}` which
+# probability density function is denoted by :math:`f`.
+# We assume that :math:`g(\vect{X})` has a finite second order moment.
+# Let :math:`T` be an isoprobabilistic transformation such that :math:`\vect{Z} = T(\vect{X})`
+# follows an unisolvent distribution.
+# We consider :math:`h` the function defined by:
 #
 # .. math::
 #
-#   \xi = T(\boldsymbol{x}) \in \mathcal{\bar{X}}
+#   h = g \circ T^{-1}.
 #
-# for any :math:`\boldsymbol{x} \in \mathcal{X}`.
-# Let :math:`h` be the function defined by the equation :
-#
-# .. math::
-#
-#   h(\boldsymbol{\xi}) = \left(g \circ T^{-1}\right)(\boldsymbol{\xi})
-#
-# for any :math:`\boldsymbol{\xi} \in \mathcal{\bar{X}}`.
-# The polynomial chaos decomposition of :math:`h` is ([blatman2009]_ page 73) :
+# The polynomial chaos decomposition of :math:`h` with respect to the measure of
+# :math:`\vect{Z}` is ([blatman2009]_ page 73) :
 #
 # .. math::
 #
-#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
+#   h(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p}
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{z})
 #
 # where :math:`\boldsymbol{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`
 # is a multiindex, :math:`a_{\boldsymbol{\alpha}} \in \mathbb{R}` is the
@@ -70,8 +66,8 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
+#   \tidle{h}(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}}
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}).
 #
 # In order to ensure a low error, we may choose a large value of the
 # parameter :math:`P`. This, however, leads to a large number of
@@ -106,15 +102,15 @@ Create a sparse chaos by integration
 #
 #   \mathcal{A}^{d,j} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p
 #   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d, \;
-#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}
+#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}.
 #
 # Therefore, the rank-`j` polynomial chaos expansion is:
 #
 # .. math::
 #
-#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in
+#   \tidle{h}(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in
 #   \mathcal{A}^{d,j}} a_{\boldsymbol{\alpha}}
-#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
+#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{z}).
 #
 # The rank is now a hyperparameter of the model: [blatman2009]_ suggests
 # to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol'
@@ -129,7 +125,7 @@ Create a sparse chaos by integration
 # If :math:`\textrm{card}\left(\mathcal{A}^{d}\right)` is large, many coefficients
 # may be poorly estimated, which may reduce the quality of the metamodel. We may
 # want to select a subset of the coefficients which best predict the output.
-# In other words, we may compute a subset
+# In other words, we may compute a subset :
 #
 # .. math::
 #
@@ -139,8 +135,8 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
+#   \tidle{h}(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}}
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{z})
 #
 # An enumeration rule is a function from the set of integers :math:`k` to
 # the corresponding set of multiindices :math:`\boldsymbol{\alpha}`. More
