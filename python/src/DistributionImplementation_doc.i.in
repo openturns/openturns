@@ -647,13 +647,14 @@ If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension 
 the quantile of order :math:`p`, denoted by :math:`\vect{x}_p`, is such that:
 
 .. math::
+
     \begin{eqnarray*}
         F_{\vect{X}}(\vect{x}_p) & = p\\    
         F_{X_i}(\vect{x}_{p,i}) & = F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
     \end{eqnarray*}
 
 where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
-is such that all the components are associated to the same order of quantile of their marginal.
+is such that all the components are associated to the same order of quantile of their margin.
 "
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeQuantile
