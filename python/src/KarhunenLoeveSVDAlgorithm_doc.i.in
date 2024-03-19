@@ -42,19 +42,30 @@ functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq
     \vect{\theta}_p^j(\vect{s})= \left[\mat{C}(\vect{s}, \vect{s}_p) \right]_{:, j}
 
 The SVD approach is used when the covariance function is not explicitly known but only
-through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
+through :math:`K` fields :math:`(\vect{X}_1, \dots, \vect{X}_K)`  respectively
+associated to the weights :math:`p_1, \dots, p_K`. The weights are not necessarily all equal
+when, for example, the fields have been generated from an importance sampling technique.
 
-It consists in :
+The SVD approach consists in approximating :math:`\mat{C}` by its empirical estimator computed from the :math:`K` fields
+which have been centered and in taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as
+the :math:`L` quadrature points to compute the integrals of the Fredholm problem.
 
-- approximating :math:`\mat{C}` by its empirical estimator
-  :math:`\dfrac{1}{\widetilde{K}} \widetilde{\mat{X}}\, \Tr{\widetilde{\mat{X}}}` where
-  :math:`\widetilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\widetilde{K}=K`
-  if the process is centered and :math:`\widetilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})` 
-  and :math:`\widetilde{K}=K-1`
-  otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
-- taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
+We denote by :math:`(\tilde{\vect{X}}_1, \dots, \tilde{\vect{X}}_K` the centered fields. If the mean process is not known,
+it is approximated by :math:`\sum_{k=1}^K p_k \vect{X}_k`.
 
-We suppose now that :math:`K < Ld`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
+The empirical estimator of :math:`\mat{C}` is then defined by:
+
+.. math::
+
+    \tilde{\mat{C}}_K = \sum_{k=1}^K \tilde{p}_k \vect{X}_k  \Tr{\vect{X}_k}
+
+where :math:`\widetilde{K} = p_k` if the :math:`\vect{X}_k` are already centered or
+if the mean process is known, and :math:`\widetilde{K} = \dfrac{K}{K-1}p_k` if the mean
+process has been estimated from the :math:`K` fields.
+
+We suppose now that :math:`K < Ld`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}` and
+:math:`\mat{\Psi}_k = \sqrt{\mat{W}}^{-1} \,\mat{\Phi}_k` (see
+:class:`~openturns.KarhunenLoeveQuadratureAlgorithm`).
 
 As the matrix :math:`\mat{\Theta} = \mat{C}` is nonsingular, the Galerkin and collocation
 approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
@@ -62,7 +73,7 @@ approaches are equivalent and both lead to the following singular value problem 
 .. math::
     :label: QuadCollDim1_ter
 
-     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \widetilde{K} \lambda_k \mat{\Psi}_k.
+     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \lambda_k \mat{\Psi}_k.
 
 The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{Ld,\widetilde{K}}(\Rset)` is:
 
@@ -88,13 +99,12 @@ We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \w
       \mat{\Phi}_k & = \dfrac{1}{\lambda_k} \sqrt{\mat{W}}\, \mat{U}_k \\
       \lambda_k & = \dfrac{\sigma_k^2}{\widetilde{K}}.
 
-We have:
+For :math:`k \leq \widetilde{K}`, we have:
 
 .. math::
 
     \widetilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} 
 
-for :math:`k \leq \widetilde{K}`.
 The most computationally intensive part of the algorithm is the computation of the
 SVD decomposition. By default, it is done using LAPACK dgesdd routine. While being
 very accurate and reasonably fast for small to medium sized problems, it becomes
