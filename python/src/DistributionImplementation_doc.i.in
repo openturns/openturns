@@ -649,8 +649,8 @@ the quantile of order :math:`p`, denoted by :math:`\vect{x}_p`, is such that:
 .. math::
 
     \begin{aligned}
-        F_{\vect{X}}(\vect{x}_p) & = & p\\    
-        F_{X_i}(\vect{x}_{p,i}) & = & F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+        F_{\vect{X}}(\vect{x}_p) & =  p \\    
+        F_{X_i}(\vect{x}_{p,i}) & =  F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
     \end{aligned}
 
 where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
