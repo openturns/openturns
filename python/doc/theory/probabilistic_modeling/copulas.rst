@@ -35,7 +35,7 @@ It has the following properties:
 
 - for all :math:`\vect{u}` with at least one component equal to 0, :math:`C(\vect{u})=0`,
 
-- :math:`C` is :math:`d` -increasing wich means that:
+- :math:`C` is :math:`d`-increasing which means that:
 
   .. math::
 
