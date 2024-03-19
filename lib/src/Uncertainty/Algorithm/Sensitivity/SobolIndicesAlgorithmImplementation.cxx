@@ -136,7 +136,7 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getFirstOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   return firstOrderSensitivity;
