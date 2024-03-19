@@ -1,26 +1,26 @@
 .. _parametric_spectral_model:
 
 Parametric spectral density functions
-=====================================
+-------------------------------------
 
-| Let :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate
-  stationary normal process of dimension :math:`d`. We only treat here
-  the case where the domain is of dimension 1: :math:`\cD \in \Rset`
-  (:math:`n=1`).
-| If the process is continuous, then :math:`\cD=\Rset`. In the discrete
-  case, :math:`\cD` is a lattice.
-| :math:`X` is supposed to be a second order process with zero mean and
-  we suppose that its spectral density function
-  :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` defined in
-  :eq:`specdensFunc` exists.
-  :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of
-  :math:`d`-dimensional positive definite hermitian matrices.
-| This use case illustrates how the User can create a density spectral
-  function from parametric models. The library proposes the *Cauchy
-  spectral model* as a parametric model for the spectral density
-  function :math:`S`.
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
+stationary normal process of dimension :math:`\inputDim`. We only treat here
+the case where the domain is of dimension 1: :math:`\cD \in \Rset`.
+If the process is continuous, then :math:`\cD=\Rset`. In the discrete
+case, :math:`\cD` is a lattice.
+:math:`X` is supposed to be a second order process with zero mean and
+we suppose that its spectral density function
+:math:`S : \Rset \rightarrow \mathcal{H}^+(\inputDim)` defined in
+:eq:`specdensFunc` exists.
+:math:`\mathcal{H}^+(\inputDim) \in \mathcal{M}_{\inputDim}(\Cset)` is the set of
+:math:`\inputDim`-dimensional positive definite Hermitian matrices.
+This page illustrates how to create a density spectral
+function from parametric models. The library proposes the *Cauchy
+spectral model* as a parametric model for the spectral density
+function :math:`S`.
 
-**The Cauchy spectral model**
+Example: the Cauchy spectral model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is associated to the Kronecker covariance model built upon an exponential covariance model (AbsoluteExponential). The Cauchy spectral model is defined by:
 

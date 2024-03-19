@@ -1,62 +1,63 @@
 .. _chi2_fitting_test:
 
-Chi-squared goodness of fit test
---------------------------------
+Chi-squared test
+----------------
 
-This method deals with the modelling of a probability distribution of a
-random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
-seeks to verify the compatibility between a sample of data
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
-candidate probability distribution previous chosen. The use of the
-:math:`\chi^2` Goodness-of-Fit test allows one to answer this
-question in the one dimensional case :math:`n_X =1`, and with a discrete
-distribution.
+The :math:`\chi^2` test is a statistical test of whether a given sample of data is drawn
+from a given discrete distribution. The library only provides the :math:`\chi^2` test for
+distributions of dimension 1.
 
-Let us limit the case to :math:`n_X = 1`. Thus we denote
-:math:`\vect{X} = X^1 = X`. We also note that as we are considering
-discrete distributions i.e. those for which the possible values of
-:math:`X` belong to a discrete set :math:`\cE`, the candidate
-distribution is characterized by the probabilities
-:math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}`.
+We denote by :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}` a sample of dimension 1.
+Let :math:`F` be  the (unknown) cumulative distribution function of the discrete distribution.
 
-| The chi squared test is based on the fact that if the candidate
-  distribution is appropriate, the number of values in the sample x1,
-  x2, ..., xN that are equal to :math:`x` should be on average equal to
-  :math:`N p(x;\vect{\theta})`. The idea is therefore to compare the
-  “theoretical values” with the actual observed values. This comparison
-  is performed with the aid of the following “distance”.
+We want to
+test whether the sample is drawn from the discrete distribution characterized by the
+probabilities :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}` and
+which cumulative distribution function is denoted by :math:`G`.
+
+This test  involves the calculation of the test statistic which is
+the distance between the empirical number of values equal to :math:`x` in the sample and the
+theoretical mean one evaluated from the discrete distribution.
+
+Let :math:`X_1, \ldots , X_{\sampleSize}` be i.i.d. random variables following the
+distribution with CDF :math:`F`. According to the tested distribution :math:`G`,
+the theoretical mean number of values equal to :math:`x` is :math:`\sampleSize p(x;\vect{\theta})`
+whereas the number evaluated from the :math:`X_1, \ldots , X_{\sampleSize}` is
+:math:`N(x) = \sum_{i=1}^{\sampleSize} 1_{X_i=x}`.
+Then the test statistic is defined by:
 
   .. math::
 
-     \begin{aligned}
-         \widehat{D}_N^2 = \sum_{x \in \cE_N} \frac{\left(Np(x)-n(x)\right)^2}{n(x)}
-       \end{aligned}
+         D_{\sampleSize} = \sum_{x \in \cE} \frac{\left[\sampleSize p(x)-N(x)\right]^2}{N(x)}
 
-where :math:`\cE_N` denotes the elements of :math:`\cE` which have
-been observed at least once in the data sample and where :math:`n(x)`
-denotes the number of data values in the sample that are equal to
-:math:`x`.
+If some values of :math:`x` have not been observed in the sample, we have to gather values in
+classes so that they contain at least 5 data points (empirical rule). Then the theoretical
+probabilities of all the values in the class are added to get the
+theoretical probability of the class.
 
-| The probability distribution of the distance :math:`\widehat{D}_N^2`
-  is asymptotically known (i.e. as the size of the sample tends to
-  infinity), and this asymptotic distribution does not depend on the
-  candidate distribution being tested. If :math:`N` is sufficiently
-  large, this means that for a probability :math:`\alpha`, one can
-  calculate the threshold / critical value) :math:`d_\alpha` such that:
+Let :math:`d_{\sampleSize}` be the realization of the test statistic :math:`d_{\sampleSize}`
+on the sample :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}`.
 
--  if :math:`\widehat{D}_N>d_{\alpha}`, we reject the candidate
-   distribution with a risk of error :math:`\alpha`,
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`,
+the distribution of the test statistic :math:`D_{\sampleSize}` is
+known: this is the :math:`chi^2(J-1)` distribution, where :math:`J` is the number
+of distinct values in the support of :math:`G`.
+We apply the test as follows.
 
--  if :math:`\widehat{D}_N \leq d_{\alpha}`, the candidate distribution
-   is considered acceptable.
+We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value
+:math:`d_\alpha` which is the quantile of order :math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
 
-An important notion is the so-called “:math:`p`-value” of the test. This
-quantity is equal to the limit error probability
-:math:`\alpha_\textrm{lim}` under which the candidate distribution is
-rejected. Thus, the candidate distribution will be accepted if and only
-if :math:`\alpha_\textrm{lim}` is greater than the value :math:`\alpha`
-desired by the user. Note that the higher
-:math:`\alpha_\textrm{lim} - \alpha`, the more robust the decision.
+Then a decision is made, either by comparing the test statistic to the theoretical threshold
+:math:`d_\alpha` (or equivalently by evaluating the p-value of the sample  defined as
+:math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing it to :math:`\alpha`):
+
+-  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently
+   :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \leq \alpha`),
+   then we reject :math:`G`,
+
+-  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently
+   :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \geq \alpha`),
+   then :math:`G` is considered acceptable.
 
 
 .. topic:: API:

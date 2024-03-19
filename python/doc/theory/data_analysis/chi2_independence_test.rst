@@ -3,68 +3,60 @@
 Chi-squared test for independence
 ---------------------------------
 
-This method deals with the parametric modelling of a probability
-distribution for a random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. We seek here to
-detect possible dependencies that may exist between two components
-:math:`X^i` and :math:`X^j`. The :math:`\chi^2` test for Independence
-for discrete probability distributions can be used.
+The :math:`\chi^2` test can be used to detect dependencies between two random discrete variables.
 
-As we are considering discrete distributions, the possible values for
-:math:`X^i` and :math:`X^j` respectively belong to the discrete sets
-:math:`\cE_i` and :math:`\cE_j`. The :math:`\chi^2` test of independence
-can be applied when we have a sample consisting of :math:`N` pairs
-:math:`\left\{ (x^i_1,x^j_1),(x^i_2,x^j_2),(x^i_N,x^j_N) \right\}`. We
-denote:
+Let :math:`\vect{X} = (X^1, X^2)` be a random variable of dimension 2 with  values in
+:math:`\{b_1, \dots, b_{\ell} \} \times \{c_1, \dots, c_{r} \}`.
 
--  :math:`n_{u,v}` the number of pairs in the sample such that
-   :math:`x^i_k = u` and :math:`x^j_k = v`,
+We want to test whether :math:`\vect{X}` has independent components.
 
--  :math:`n^i_{u}` the number of pairs in the sample such that
-   :math:`x^i_k = u`,
-
--  :math:`n^j_{v}` the number of pairs in the sample such that
-   :math:`x^j_k = v`.
-
-The test thus uses the quantity denoted :math:`\widehat{D}_N^2`:
+Let :math:`\vect{X}_1, \ldots , \vect{X}_\sampleSize` be i.i.d. random variables following the distribution of :math:`\vect{X}`. Two test statistics can be defined by:
 
 .. math::
 
-   \begin{aligned}
-       \widehat{D}_N^2 = \sum_{u \in \cE_i}\sum_{v\in \cE_2}\frac{\left(p_{u,v} - p^j_{v}p^i_{u}\right)^2}{p^i_{u}p^j_{v}}
-     \end{aligned}
+       D_{\sampleSize}^{(1)}  = \sum_{i=1}^{\ell} \sum_{j=1}^{r} \dfrac{\left(N_{i,j} -
+       \frac{N_{i,.}N_{.,j}}{\sampleSize}\right)}{N_{i,j}} \\
+       D_{\sampleSize}^{(2)}  = \sampleSize \sum_{i=1}^{\ell} \sum_{j=1}^{r}
+       \dfrac{\left(N_{i,j} - \frac{N_{i,.}N_{.,j}}{\sampleSize}\right)}{N_{i,.}N_{.,j}}
+
 
 where:
 
-.. math::
+-  :math:`N_{i,j} = \sum_{k=1}^{\sampleSize}1_{X^1_k = b_i, X^2_k = c_j}` be the number of pairs
+   equal to :math:`(b_i, c_j)`,
 
-   \begin{aligned}
-       p_{u,v} = \frac{n_{u,v}}{N},\ p^i_{u} =  \frac{n^i_{u}}{N},\ p^j_{v} =  \frac{n^j_{v}}{N}
-     \end{aligned}
+-  :math:`N_{i,.}= \sum_{k=1}^{\sampleSize}1_{X^1_k = b_i}` be the number of pairs
+   such that the first component is equal to :math:`b_i`,
 
-The probability distribution of the distance :math:`\widehat{D}_N^2` is
-asymptotically known (i.e. as the size of the sample tends to infinity).
-If :math:`N` is sufficiently large, this means that for a probability
-:math:`\alpha`, one can calculate the threshold (critical value)
-:math:`d_\alpha` such that:
+-  :math:`N_{., j}= \sum_{k=1}^{\sampleSize}1_{X^2_k = c_j}` be the number of pairs
+   such that the second component is equal to :math:`c_j`.
 
--  if :math:`\widehat{D}_N>d_{\alpha}`, we conclude, with the risk of
-   error :math:`\alpha`, that a dependency exists between :math:`X^i`
-   and :math:`X^j`,
+Let :math:`d_{\sampleSize}^{(i)}` be the realization of the test statistic
+:math:`D_{\sampleSize}^{(i)}` on the sample
+:math:`\left\{ \vect{x}_1,\dots,\vect{x}_{\sampleSize} \right\}` with :math:`i=1,2`.
 
--  if :math:`\widehat{D}_N \leq d_{\alpha}`, the independence hypothesis
-   is considered acceptable.
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ \vect{X} \mbox{ has independent components}\}`,
+the distribution of both test statistics :math:`D_{\sampleSize}^{(i)}` is asymptotically
+known: i.e. when :math:`\sampleSize \rightarrow +\infty`: this is
+the :math:`\chi^2((\ell-1)(r-1))` distribution.
+If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution to apply
+the test as follows.
 
-An important notion is the so-called “:math:`p`-value” of the test. This
-quantity is equal to the limit error probability
-:math:`\alpha_\textrm{lim}` under which the independence hypothesis is
-rejected. Thus, independence is assumed if and only if
-:math:`\alpha_\textrm{lim}` is greater than the value :math:`\alpha`
-desired by the user. Note that the higher
-:math:`\alpha_\textrm{lim} - \alpha`, the more robust the decision.
+We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value
+:math:`d_\alpha` which is the quantile of order
+:math:`(1-\alpha)` of :math:`D_{\sampleSize}^{(i)}`.
 
-This method is also referred to in the literature as the :math:`\chi^2`
-test of contingency.
+Then a decision is made, either by comparing the test statistic to the theoretical threshold
+:math:`d_\alpha^{(i)}` (or equivalently by evaluating the p-value of the sample  defined as
+:math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}}` and by comparing it to :math:`\alpha`):
+
+-  if :math:`d_{\sampleSize}^{(i)}>d_{\alpha}^{(i)}` (or equivalently
+   :math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}} \leq \alpha`),
+   then we reject the independence between the components,
+
+-  if :math:`d_{\sampleSize}^{(i)} \leq d_{\alpha}^{(i)}` (or equivalently
+   :math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}} \geq \alpha`),
+   then the independence between the components is considered acceptable.
 
 
 .. topic:: API:

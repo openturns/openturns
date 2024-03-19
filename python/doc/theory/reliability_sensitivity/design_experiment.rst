@@ -4,7 +4,7 @@ Design of Experiments
 ---------------------
 
 The method is used in the following context:
-:math:`\vect{x}= \left( x^1,\ldots,x^{n_X} \right)` is a vector of input
+:math:`\vect{x}= \left( x^1,\ldots,x^{\inputDim} \right)` is a vector of input
 parameters. We want to determine a particular set of values of
 :math:`\vect{x}` according to a particular design of experiments .
 
@@ -40,7 +40,7 @@ Different types of design of experiments can be determined:
   intermediate points specified for each direction (denoted
   :math:`n_{level\_direction\_i}`). The number of points generated
   is
-  :math:`\displaystyle \prod_{i=1}^{d} (2+n_{level\_direction\_i})`.
+  :math:`\displaystyle \prod_{i=1}^{\inputDim} (2+n_{level\_direction\_i})`.
 | The following figures illustrates the different patterns obtained.
 
 
@@ -177,14 +177,14 @@ Different types of design of experiments can be determined:
   all the sets of indices fulfilling the constraints. Examples of
   constraints are:
 
--  being a subset with :math:`k` elements of a set with :math:`n`
-   elements, with :math:`k\leq n`;
+-  being a subset with :math:`k` elements of a set with :math:`\sampleSize`
+   elements, with :math:`k\leq \sampleSize`;
 
 -  being a permutation of :math:`k` elements taken into a set of
-   :math:`n` elements, with :math:`k\leq n`;
+   :math:`\sampleSize` elements, with :math:`k\leq \sampleSize`;
 
 -  being an element of a Cartesian product of sets with
-   :math:`n_1,\hdots,n_d` elements.
+   :math:`\sampleSize_1,\hdots,\sampleSize_{\inputDim}` elements.
 
 It is important to get indices and not real-valued vectors. The
 distinction is made explicit by calling these design of experiments

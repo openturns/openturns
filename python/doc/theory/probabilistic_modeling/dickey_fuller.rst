@@ -3,35 +3,44 @@
 Dickey-Fuller stationarity test
 ===============================
 
-The Dickey-Fuller test checks the stationarity of a scalar time series using one time series.
-It assumes that the :math:`X: \Omega \times \cD \rightarrow \Rset` process with :math:`\cD \in \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{N-1})` writes:
+The Dickey-Fuller test checks the stationarity of a scalar time series.
+It assumes that the :math:`X: \Omega \times \cD \rightarrow \Rset` process with
+:math:`\cD \in \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{\sampleSize-1})`
+is written:
 
 .. math::
     :label: DFmodel
 
     X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}
 
-where :math:`\rho > 0` and where :math:`a` or :math:`b` or both :math:`(a,b)` can be assumed to be equal to 0.
+where :math:`\rho > 0` and where :math:`a` or :math:`b` or both :math:`(a,b)` can be assumed
+to be equal to 0.
 
 The Dickey-Fuller test checks whether the random perturbation at time :math:`t` vanishes with time.
 
 When :math:`a \neq 0` and :math:`b=0`, the model :eq:`DFmodel` is said to have a *drift*.
 When :math:`a = 0` and :math:`b \neq 0`, the model :eq:`DFmodel` is said to have a *linear trend*.
 
-In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have :math:`\rho = 1` (if :math:`\rho > 1`,
+In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have
+:math:`\rho = 1` (if :math:`\rho > 1`,
 then the process diverges with time which is readily seen in the data).
-In the general case, the Dickey-Fuller test is a unit root test to detect whether :math:`\rho=1` against :math:`\rho < 1`:
+In the general case, the Dickey-Fuller test is a unit root test to detect whether
+:math:`\rho=1` against :math:`\rho < 1`:
 
-The test statistics and its limit distribution depend on the a priori knowledge we have on :math:`a` and :math:`b`.
+The test statistics and its limit distribution depend on the a priori knowledge we have
+on :math:`a` and :math:`b`.
 In case of absence of a priori knowledge on the structure of the model, several
-authors have proposed a global strategy to cover all the sub-cases of the model :eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`.
+authors have proposed a global strategy to cover all the sub-cases of the model
+:eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`.
 
-The strategy implemented is recommended by Enders (*Applied Econometric Times Series*, Enders, W., second edition, John Wiley \& sons editions, 2004.).
+The strategy implemented is recommended by Enders (*Applied Econometric Times Series*,
+Enders, W., second edition, John Wiley \& sons editions, 2004.).
 
 
 
-We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process, and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}`,
-:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+We note :math:`(X_1, \hdots, X_{\sampleSize})` the data, by :math:`W(r)` the Wiener process,
+and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}`,
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s -\frac{1}{2} \right) W(s)\di{s}`.
 
 
 **1.** We assume the model :eq:`Model1`:
@@ -41,30 +50,31 @@ We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process,
 
     \boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}
 
-The coefficients :math:`(a,b,\rho)` are estimated by :math:`(\Hat{a}_n, \Hat{b}_n, \Hat{\rho}_n)` using ordinary least-squares fitting, which leads to:
+The coefficients :math:`(a,b,\rho)` are estimated by
+:math:`(\Hat{a}_{\sampleSize}, \Hat{b}_{\sampleSize}, \Hat{\rho}_{\sampleSize})` using ordinary least-squares fitting, which leads to:
 
 .. math::
     :label: Model1Estim
 
     \underbrace{\left(
        \begin{array}{lll}
-         \displaystyle n-1 &\sum_{i=1}^n t_{i} &\sum_{i=2}^n y_{i-1}\\
-         \displaystyle \sum_{i=1}^n t_{i} &\sum_{i=1}^n t_{i}^2 &\sum_{i=2}^n t_{i} y_{i-1}\\
-         \displaystyle \sum_{i=2}^n y_{i-1}& \sum_{i=2}^n t_{i}y_{i-1} &\sum_{i=2}^n y_{i-1}^2
+         \displaystyle n-1 &\sum_{i=1}^{\sampleSize} t_{i} &\sum_{i=2}^{\sampleSize} y_{i-1}\\
+         \displaystyle \sum_{i=1}^{\sampleSize} t_{i} &\sum_{i=1}^{\sampleSize} t_{i}^2 &\sum_{i=2}^{\sampleSize} t_{i} y_{i-1}\\
+         \displaystyle \sum_{i=2}^{\sampleSize} y_{i-1}& \sum_{i=2}^{\sampleSize} t_{i}y_{i-1} &\sum_{i=2}^{\sampleSize} y_{i-1}^2
        \end{array}
        \right)}_{\mat{M}}
      \left(
        \begin{array}{c}
-        \hat{a}_n\\
-        \hat{b}_n\\
-        \hat{\rho}_n
+        \hat{a}_{\sampleSize}\\
+        \hat{b}_{\sampleSize}\\
+        \hat{\rho}_{\sampleSize}
        \end{array}
      \right)=
      \left(
      \begin{array}{l}
-       \displaystyle \sum_{i=1}^n y_{i} \\
-       \displaystyle \sum_{i=1}^n t_{i} y_{i}\\
-       \displaystyle \sum_{i=2}^n y_{i-1} y_{i}
+       \displaystyle \sum_{i=1}^{\sampleSize} y_{i} \\
+       \displaystyle \sum_{i=1}^{\sampleSize} t_{i} y_{i}\\
+       \displaystyle \sum_{i=2}^{\sampleSize} y_{i-1} y_{i}
      \end{array}
      \right)
 
@@ -85,22 +95,26 @@ thanks to the Student statistics:
 
 .. math::
 
-    t_{\rho=1} = \frac{\rho_n-1}{\hat{\sigma}_{\rho_n}}
+    t_{\rho=1} = \frac{\rho_{\sampleSize}-1}{\hat{\sigma}_{\rho_{\sampleSize}}}
 
-where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`, given by:
-
-.. math::
-
-    \sigma_{\rho_n}=\mat{M}^{-1}_{33}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2}
-
-
-which converges in distribution to the Dickey-Fuller distribution associated to the model with drift and trend:
+where :math:`\sigma_{\rho_{\sampleSize}}` is the least square estimate of the standard
+deviation of :math:`\Hat{\rho}_{\sampleSize}`, given by:
 
 .. math::
 
-    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r) \di{W(r)}}{\int_{1}^{0} W^{b}(r)^2 \di{r}}
+    \sigma_{\rho_{\sampleSize}}=\mat{M}^{-1}_{33}\sqrt{\frac{1}{\sampleSize-1}\sum_{i=2}^{\sampleSize}\left(y_{i}-(\hat{a}_{\sampleSize}+\hat{b}_{\sampleSize}t_i+\hat{\rho}_{\sampleSize}y_{i-1})\right)^2}
 
-The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
+
+which converges in distribution to the Dickey-Fuller distribution associated to
+the model with drift and trend:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r)
+    \di{W(r)}}{\int_{1}^{0} W^{b}(r)^2 \di{r}}
+
+The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when
+:math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
 
 The quantiles of the Dickey-Fuller statistics for the model with drift and linear trend are:
 
@@ -129,22 +143,27 @@ We test whether :math:`b=0`:
     \end{array}
     \right.
 
-where the statistics :math:`t_n = \frac{|\hat{b}_n|}{\sigma_{b_n}}` converges
-in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-4`,
-where :math:`\sigma_{b_n}` is the least square estimate of the standard deviation of :math:`\Hat{b}_n`, given by:
+where the statistics :math:`t_{\sampleSize} = \frac{|\hat{b}_{\sampleSize}|}{\sigma_{b_{\sampleSize}}}` converges
+in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=\sampleSize-4`,
+where :math:`\sigma_{b_{\sampleSize}}` is the least square estimate of the standard
+deviation of :math:`\Hat{b}_{\sampleSize}`, given by:
 
 .. math::
 
-    \sigma_{b_n}=\mat{M}^{-1}_{22}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2}
+    \sigma_{b_{\sampleSize}}=\mat{M}^{-1}_{22}\sqrt{\frac{1}{\sampleSize-1}\sum_{i=2}^{\sampleSize}
+    \left(y_{i}-(\hat{a}_{\sampleSize}+\hat{b}_{\sampleSize}t_i+
+    \hat{\rho}_{\sampleSize}y_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is confirmed.
-      And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`.
-      We then conclude that the final model is: :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}`
+    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is
+      confirmed. And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`.
+      We then conclude that the final model is:
+      :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}`
       with :math:`\boldsymbol{\rho < 1}` which is a **trend stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is accepted, then the model 1 :eq:`Model1` is not confirmed,
-      since the trend presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model).
+    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is accepted, then the model 1 :eq:`Model1` is not
+      confirmed, since the trend presence is rejected and the test :eq:`TestModel1` is not conclusive
+      (since based on a wrong model).
       **We then have to test the second model** :eq:`Model2`.
 
 
@@ -168,13 +187,15 @@ with the Fisher statistics:
 
     \displaystyle \hat{F}_1 = \frac{(S_{1,0} - S_{1,b})/2}{S_{1,b}/(n-3)}
 
-where :math:`S_{1,0}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+y_{i-1})\right)^2` is the sum of the square
-errors of the model 1 :eq:`Model1` assuming :math:`\cH_0` from :eq:`TestSousModele1_2` and
-:math:`S_{1,b}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2`
+where :math:`S_{1,0}=\sum_{i=2}^{\sampleSize}\left(y_i-(\hat{a}_{\sampleSize}+y_{i-1})\right)^2` is
+the sum of the square errors of the model 1 :eq:`Model1` assuming :math:`\cH_0`
+from :eq:`TestSousModele1_2` and
+:math:`S_{1,b}=\sum_{i=2}^{\sampleSize}\left(y_i-(\hat{a}_{\sampleSize}+\hat{b}_{\sampleSize}t_i+\hat{\rho}_{\sampleSize}y_{i-1})\right)^2`
 is the same sum when we make no assumption on :math:`\rho` and :math:`b`.
 
 The statistics :math:`\hat{F}_1` converges in distribution to the Fisher-Snedecor distribution
-:class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-3`. The null hypothesis :math:`\cH_0`
+:class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=\sampleSize-3`.
+The null hypothesis :math:`\cH_0`
 from :eq:`TestModel1` is accepted when :math:`\hat{F}_1 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}`
 is the test threshold of level :math:`\alpha`.
 
@@ -182,7 +203,8 @@ The decision to be taken is:
     - If :math:`\cH_0` from :eq:`TestSousModele1_2` is rejected, then the model 1 :eq:`Model1`
       is confirmed since the presence of linear trend is confirmed.
       And the test :eq:`TestModel1` proved that the unit root is accepted: :math:`\rho = 1`.
-      We then conclude that the model is: :math:`\boldsymbol{X_t = a + bt + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
+      We then conclude that the model is:
+      :math:`\boldsymbol{X_t = a + bt + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
 
     - If :math:`\cH_0` from :eq:`TestSousModele1_2` is accepted, then the model 1 :eq:`Model1`
       is not confirmed, since the presence of the linear trend is rejected and the test
@@ -204,20 +226,20 @@ The coefficients :math:`(a,\rho)` are estimated as follows:
     :label: Model2Estim
 
     \underbrace{\left(\begin{array}{lll}
-       \displaystyle n-1 &\sum_{i=2}^n y_{i-1}\\
-       \displaystyle \sum_{i=2}^n y_{i-1} &\sum_{i=2}^n y_{i-1}^2
+       \displaystyle \sampleSize-1 &\sum_{i=2}^{\sampleSize} y_{i-1}\\
+       \displaystyle \sum_{i=2}^{\sampleSize} y_{i-1} &\sum_{i=2}^{\sampleSize} y_{i-1}^2
                       \end{array}
      \right)}_{\mat{N}}
      \left(
       \begin{array}{c}
-        \hat{a}_n\\
-        \hat{\rho}_n
+        \hat{a}_{\sampleSize}\\
+        \hat{\rho}_{\sampleSize}
       \end{array}
      \right)=
      \left(
       \begin{array}{l}
-        \displaystyle \sum_{i=1}^n y_{i} \\
-        \displaystyle \sum_{i=2}^n y_{i-1} y_{i}
+        \displaystyle \sum_{i=1}^{\sampleSize} y_{i} \\
+        \displaystyle \sum_{i=2}^{\sampleSize} y_{i-1} y_{i}
        \end{array}
      \right)
 
@@ -238,21 +260,26 @@ thanks to the Student statistics:
 
 .. math::
 
-    t_{\rho=1} = \frac{\rho_n-1}{\sigma_{\rho_n}}
+    t_{\rho=1} = \frac{\rho_{\sampleSize}-1}{\sigma_{\rho_{\sampleSize}}}
 
-where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`, given by:
-
-.. math::
-
-    \sigma_{\rho_n}=\mat{N}^{-1}_{22}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{\rho}_ny_{i-1})\right)^2}
-
-which converges in distribution to the Dickey-Fuller distribution associated to the model with drift and no linear trend:
+where :math:`\sigma_{\rho_{\sampleSize}}` is the least square estimate of the
+standard deviation of :math:`\Hat{\rho}_{\sampleSize}`, given by:
 
 .. math::
 
-    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) \di{W(r)}}{\int_{1}^{0} W^{a}(r)^2 \di{r}}
+    \sigma_{\rho_{\sampleSize}}=\mat{N}^{-1}_{22}\sqrt{\frac{1}{\sampleSize-1}\sum_{i=2}^{\sampleSize}
+    \left(y_{i}-(\hat{a}_{\sampleSize}+\hat{\rho}_{\sampleSize}y_{i-1})\right)^2}
 
-The null hypothesis :math:`\cH_0` from :eq:`TestModel2` is accepted when :math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
+which converges in distribution to the Dickey-Fuller distribution associated to the model with drift and
+no linear trend:
+
+.. math::
+
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) \di{W(r)}}
+    {\int_{1}^{0} W^{a}(r)^2 \di{r}}
+
+The null hypothesis :math:`\cH_0` from :eq:`TestModel2` is accepted when
+:math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
 
 The quantiles of the Dickey-Fuller statistics for the model with drift are:
 
@@ -281,20 +308,29 @@ We test whether :math:`a=0`:
     \end{array}
     \right.
 
-where the statistics :math:`t_n = \frac{|\hat{a}_n|}{\sigma_{a_n}}` converges in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-3`,
-where :math:`\sigma_{a_n}` is the least square estimate of the standard deviation of :math:`\Hat{a}_n`, given by:
+where the statistics :math:`t_{\sampleSize} = \frac{|\hat{a}_{\sampleSize}|}{\sigma_{a_{\sampleSize}}}`
+converges in distribution to the Student distribution :class:`~openturns.Student` with
+:math:`\nu=\sampleSize-3`,
+where :math:`\sigma_{a_{\sampleSize}}` is the least square estimate of the standard deviation of
+:math:`\Hat{a}_{\sampleSize}`, given by:
 
 .. math::
 
-    \sigma_{a_n}=\mat{N}^{-1}_{11}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{\rho}_ny_{i-1})\right)^2}
+    \sigma_{a_{\sampleSize}}=\mat{N}^{-1}_{11}\sqrt{\frac{1}{\sampleSize-1}\sum_{i=2}^{\sampleSize}
+    \left(y_{i}-(\hat{a}_{\sampleSize}+\hat{\rho}_{\sampleSize}y_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is confirmed.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is
+      confirmed.
       And the test :eq:`TestModel2` proved that the unit root is rejected: :math:`\rho < 1`.
-      We then conclude that the final model is: :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **stationary model**.
+      We then conclude that the final model is:
+      :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}`
+      which is a **stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is accepted, then the model 2 :eq:`Model2` is not confirmed,
-      since the drift presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model).
+    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is accepted, then the model 2 :eq:`Model2` is not
+      confirmed,
+      since the drift presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on
+      a wrong model).
       **We then have to test the third model** :eq:`Model3`.
 
 
@@ -318,17 +354,22 @@ with a Fisher test. The statistics is:
 
     \displaystyle \hat{F}_2 = \frac{(SCR_{2,c} - SCR_{2})/2}{SCR_{2}/(n-2)}
 
-where :math:`SCR_{2,c}` is the sum of the square errors of the model 2 :eq:`Model2` assuming :math:`\cH_0` from :eq:`TestSousModele2_2`
+where :math:`SCR_{2,c}` is the sum of the square errors of the model 2 :eq:`Model2` assuming :math:`\cH_0`
+from :eq:`TestSousModele2_2`
 and :math:`SCR_{2}` is the same sum when we make no assumption on :math:`\rho` and :math:`a`.
 
-The statistics :math:`\hat{F}_2` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-2`.
-The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted if when :math:`\hat{F}_2 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
+The statistics :math:`\hat{F}_2` converges in distribution to the Fisher-Snedecor distribution
+:class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=\sampleSize-2`.
+The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted if when
+:math:`\hat{F}_2 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level
+:math:`\alpha`.
 
 The decision to be taken is:
     - If :math:`\cH_0` from :eq:`TestSousModele2_2` is rejected, then the model 2 :eq:`Model2`
       is confirmed since the presence of the drift is confirmed.
       And the test :eq:`TestModel2` proved that the unit root is accepted: :math:`\rho =1`.
-      We then conclude that the model is: :math:`\boldsymbol{X_t = a + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
+      We then conclude that the model is: :math:`\boldsymbol{X_t = a + X_{t-1} + \varepsilon_{t}}` which is a **non
+      stationary model**.
 
     - If :math:`\cH_0` from :eq:`TestSousModele2_2` is accepted, then the model 2 :eq:`Model2` is not confirmed,
       since the drift presence is rejected and the test :eq:`TestModel2` is not conclusive (since based on a wrong model).
@@ -348,7 +389,7 @@ The coefficients :math:`\rho` are estimated as follows:
 .. math::
     :label: Model3Estim
 
-    \hat{\rho}_n=\frac{\sum_{i=2}^ny_{i-1}y_i}{\sum_{i=2}^ny_{i-1}^2}
+    \hat{\rho}_{\sampleSize}=\frac{\sum_{i=2}^{\sampleSize}y_{i-1}y_i}{\sum_{i=2}^{\sampleSize}y_{i-1}^2}
 
 We first test:
 
@@ -366,13 +407,15 @@ thanks to the Student statistics:
 
 .. math::
 
-    t_{\rho=1} = \frac{\hat{\rho}_n-1}{\sigma_{\rho_n}}
+    t_{\rho=1} = \frac{\hat{\rho}_{\sampleSize}-1}{\sigma_{\rho_{\sampleSize}}}
 
-where :math:`\sigma_{\rho_n}` is the least square estimate of the standard deviation of :math:`\Hat{\rho}_n`, given by:
+where :math:`\sigma_{\rho_{\sampleSize}}` is the least square estimate of the standard deviation of
+:math:`\Hat{\rho}_{\sampleSize}`, given by:
 
 .. math::
 
-    \sigma_{\rho_n}=\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-\hat{\rho}_ny_{i-1}\right)^2}/\sqrt{\sum_{i=2}^ny_{i-1}^2}
+    \sigma_{\rho_{\sampleSize}}=\sqrt{\frac{1}{\sampleSize-1}\sum_{i=2}^{\sampleSize}\left(y_{i}-
+    \hat{\rho}_{\sampleSize}y_{i-1}\right)^2}/\sqrt{\sum_{i=2}^{\sampleSize}y_{i-1}^2}
 
 which converges in distribution to the Dickey-Fuller distribution associated to the random walk model:
 
@@ -396,9 +439,11 @@ The quantiles of the Dickey-Fuller statistics for the random walk model are:
 
 The decision to be taken is:
 
-- If :math:`\cH_0` from :eq:`TestModel3` is rejected, we then conclude that the model is : :math:`\boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}`
+- If :math:`\cH_0` from :eq:`TestModel3` is rejected, we then conclude that the model is:
+  :math:`\boldsymbol{X_t = \rho X_{t-1} + \varepsilon_{t}}`
   where :math:`\rho < 1` which is a **stationary model**.
-- If :math:`\cH_0` from :eq:`TestModel3` is accepted, we then conclude that the model is: :math:`\boldsymbol{X_t = X_{t-1} + \varepsilon_{t}}`
+- If :math:`\cH_0` from :eq:`TestModel3` is accepted, we then conclude that the model is:
+  :math:`\boldsymbol{X_t = X_{t-1} + \varepsilon_{t}}`
   which is a **non stationary model**.
 
 .. topic:: API:

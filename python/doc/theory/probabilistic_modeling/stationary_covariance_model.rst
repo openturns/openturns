@@ -1,25 +1,26 @@
 .. _stationary_covariance_model:
 
 Parametric stationary covariance models
-=======================================
+---------------------------------------
 
-| Let :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate
-  stationary normal process where :math:`\cD \in \Rset^n`. The process
-  is supposed to be zero mean. It is entirely defined by its covariance
-  function
-  :math:`C^{stat}: \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`,
-  defined by
-  :math:`C^{stat}(\vect{\tau})=\Expect{X_{\vect{s}}X_{\vect{s}+\vect{\tau}}^t}`
-  for all :math:`\vect{s}\in \Rset^n`.
-| If the process is continuous, then :math:`\cD=\Rset^n`. In the
-  discrete case, :math:`\cD` is a lattice.
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
+stationary normal process where :math:`\cD \in \Rset^n`. The process
+is supposed to be zero mean. It is entirely defined by its covariance
+function
+:math:`C^{stat}: \cD \rightarrow  \mathcal{M}_{\inputDim \times \inputDim}(\Rset)`,
+defined by
+:math:`C^{stat}(\vect{\tau})=\Expect{X_{\vect{s}}X_{\vect{s}+\vect{\tau}}^t}`
+for all :math:`\vect{s}\in \Rset^n`.
+If the process is continuous, then :math:`\cD=\Rset^n`. In the
+discrete case, :math:`\cD` is a lattice.
 
-| This use case highlights how User can create a covariance
-  function from parametric models. The library proposes many parametric
-  covariance models. The *multivariate Exponential model* is one of them.
-   :math:`C^{stat}`.
+This use case highlights how User can create a covariance
+function from parametric models. The library proposes many parametric
+covariance models. The *multivariate Exponential model* is one of them.
+:math:`C^{stat}`.
 
-**The multivariate exponential model**
+Example: the multivariate exponential model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This model defines the covariance function :math:`C^{stat}` by:
 
@@ -42,8 +43,8 @@ and the spatial covariance matrix :math:`\mat{C^{stat}}(\vect{s}, \vect{t})` by:
 
    \mat{C^{stat}}(\vect{\tau})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
 
-with :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])` a correlation matrix
-, :math:`\theta_i>0` and :math:`\sigma_i>0` for any :math:`i`.
+with :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])` a correlation matrix,
+:math:`\theta_i>0` and :math:`\sigma_i>0` for any :math:`i`.
 
 The expression of :math:`C^{stat}` is the combination of:
 

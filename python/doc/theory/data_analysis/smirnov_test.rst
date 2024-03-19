@@ -1,52 +1,63 @@
 .. _smirnov_test:
 
-Kolmogorov-Smirnov two samples test
------------------------------------
+Kolmogorov-Smirnov test
+-----------------------
 
-Let :math:`X` be a scalar uncertain variable modeled as a random
-variable. This method deals with the construction of a dataset prior to
-the choice of a probability distribution for :math:`X`. This statatistical
-test is used to compare two samples :math:`\left\{x_1,\ldots,x_N \right\}`
-and :math:`\left\{x'_1,\ldots,x'_M \right\}`; the goal is to determine
-whether these two samples come from the same probability distribution or
-not. If this is the case, the two samples should be aggregated in order
-to increase the robustness of further statistical analysis.
+The Kolmogorov-Smirnov test is a statistical test that can be used
+to test whether two given samples of data are drawn from the same
+distribution which is of dimension 1 and continuous.
 
-The test relies on the maximum distance between the cumulative distribution
-functions :math:`\widehat{F}_N` and :math:`\widehat{F}'_M` of the samples
-:math:`\left\{x_1,\ldots,x_N \right\}` and :math:`\left\{x'_1,\ldots,x'_M \right\}`.
-This distance is expressed as follows:
+We denote by :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}`
+and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}` two given samples of dimension 1.
+Let :math:`F` be  the (unknown) cumulative distribution function of
+:math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` and :math:`G` the one
+of :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}`.
+
+We want to test  whether both samples are drawn from the same distribution, ie whether :math:`F=G`.
+
+
+This test involves the calculation of the test statistic which is the weighted maximum
+distance between both empirical cumulative distribution functions
+:math:`\widehat{F}_{X}` and :math:`\widehat{F}_{Y}` built respectively from
+:math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}`
+and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}`.
+Letting :math:`X_1, \ldots , X_\sampleSize` be i.i.d. random variables following the distribution
+with CDF :math:`F`, and :math:`Y_1, \ldots , Y_\sampleSize` be i.i.d. random variables following
+the distribution with CDF :math:`G`, the test statistic is defined by:
 
 .. math::
 
-   \begin{aligned}
-       \widehat{D}_{M,N} = \sup_x \left|\widehat{F}_N\left(x\right) - \widehat{F}'_M\left(x\right)\right|
-     \end{aligned}
+    D_{\sampleSize} = \sqrt{\sampleSize} \sup_x \left|\widehat{F}_{X}\left(x\right) - \widehat{F}_{Y}\left(x\right)\right|
 
-The probability distribution of the distance :math:`\widehat{D}_{M,N}`
-is asymptotically known (i.e. as the size of the samples tends to
-infinity). If :math:`M` and :math:`N` are sufficiently large, this means
-that for a probability :math:`\alpha`, one can calculate the threshold /
-critical value :math:`d_\alpha` such that:
+The empirical value of the test statistic, evaluated from the sample is:
 
--  if :math:`\widehat{D}_{M,N} >d_{\alpha}`, we conclude that the two
-   samples are not identically distributed, with a risk of error
-   :math:`\alpha`,
+.. math::
 
--  if :math:`\widehat{D}_{M,N} \leq d_{\alpha}`, it is reasonable to say
-   that both samples arise from the same distribution.
+    d = \sqrt{\sampleSize} \sup_{x_i}
+    \left|\widehat{F}_{X}\left(x_i\right) - \widehat{F}_{Y}\left(y_i\right)\right|
 
-An important notion is the so-called “:math:`p`-value” of the test. This
-quantity is equal to the limit error probability
-:math:`\alpha_\textrm{lim}` under which the “identically-distributed”
-hypothesis is rejected. Thus, the two samples will be supposed
-identically distributed if and only if :math:`\alpha_\textrm{lim}` is
-greater than the value :math:`\alpha` desired by the user. Note that the
-higher :math:`\alpha_\textrm{lim} - \alpha`, the more robust the
-decision.
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`, the distribution of the
+test statistic :math:`D_{\sampleSize}` is
+known: algorithms are available to compute the distribution of :math:`\widehat{D}`
+both for :math:`\sampleSize`
+large (asymptotic distribution: this is the Kolmogorov distribution) or for
+:math:`\sampleSize` small (exact distribution). Then we can use that
+distribution to apply the test as follows.
+We fix a risk :math:`\alpha`  (error type I) and we evaluate the associated critical value :math:`d_\alpha` which is the quantile of order
+:math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
 
-This test is also referred to as the Kolmogorov-Smirnov’s test for two
-samples.
+Then a decision is made, either by comparing the test statistic to the theoretical threshold :math:`d_\alpha`
+(or equivalently
+by evaluating the p-value of the sample  defined as :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing
+it to :math:`\alpha`):
+
+-  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently
+   :math:`\Prob{D_{\sampleSize} >  d_{\sampleSize}} \leq \alpha`), then we reject the
+   null hypothesis according to which both samples are drawn from the same distribution,
+
+-  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently
+   :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \geq \alpha`),
+   then the null hypothesis  is considered acceptable.
 
 .. topic:: API:
 
