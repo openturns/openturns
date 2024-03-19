@@ -17,7 +17,7 @@ Create a sparse chaos by integration
 # probability density function is denoted by :math:`f`.
 # We assume that :math:`g(\vect{X})` has a finite second order moment.
 # Let :math:`T` be an isoprobabilistic transformation such that :math:`\vect{Z} = T(\vect{X})`
-# follows an unisolvent distribution.
+# follows a distribution uniquely defined by all its moments.
 # We consider :math:`h` the function defined by:
 #
 # .. math::
