@@ -73,7 +73,6 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   basis_ = Basis(functions);
 }
 
-
 /* Parameters constructor */
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
@@ -90,7 +89,6 @@ LinearModelAlgorithm * LinearModelAlgorithm::clone() const
 {
   return new LinearModelAlgorithm(*this);
 }
-
 
 /* Perform regression */
 void LinearModelAlgorithm::run()
@@ -163,11 +161,11 @@ void LinearModelAlgorithm::run()
 
   result_ = LinearModelResult(inputSample_, basis_, fX, outputSample_, metaModel,
                               coefficients, basis_.__str__(), coefficientsNames, residualSample,
-                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2);
+                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2,
+                              false);
 
   hasRun_ = true;
 }
-
 
 /* String converter */
 String LinearModelAlgorithm::__repr__() const
@@ -181,19 +179,16 @@ String LinearModelAlgorithm::__repr__() const
   return oss;
 }
 
-
 Basis LinearModelAlgorithm::getBasis() const
 {
   return basis_;
 }
-
 
 LinearModelResult LinearModelAlgorithm::getResult()
 {
   run();
   return result_;
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void LinearModelAlgorithm::save(Advocate & adv) const

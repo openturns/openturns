@@ -12,10 +12,14 @@ Available constructors:
 
 Parameters
 ----------
-x : :class:`~openturns.Sample`
-    Input sample
-y : :class:`~openturns.Sample`
-    Output sample
+x : 2-d sequence of float
+    The input random observations :math:`\left\{\vect{X}^{(1)}, ..., \vect{X}^{(n)}\right\}` 
+    where :math:`\vect{X}=(X_1, \dots, X_{n_X})^T` is the input of the physical
+    model, :math:`n_X` is the input dimension and :math:`n` is the sample size.
+y : 2-d sequence of float
+    The output random observations :math:`\left\{\vect{Y}^{(1)}, ..., \vect{Y}^{(n)}\right\}` 
+    where :math:`\vect{Y}=(Y_1, \dots, Y_{n_Y})^T` is the output of the physical
+    model, :math:`n_Y` is the output dimension and :math:`n` is the sample size.
 weight : sequence of float
     Output weights
 psi : sequence of :class:`~openturns.Function`

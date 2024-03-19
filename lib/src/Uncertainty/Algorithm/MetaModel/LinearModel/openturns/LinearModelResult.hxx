@@ -60,7 +60,8 @@ public:
                     const Point & diagonalGramInverse,
                     const Point & leverages,
                     const Point & cookDistances,
-                    const Scalar sigma2);
+                    const Scalar sigma2,
+                    const Bool isModelSelection);
 
   /** Virtual constructor */
   LinearModelResult * clone() const override;
@@ -111,6 +112,15 @@ public:
   /** Adjusted R-squared */
   Scalar getAdjustedRSquared() const;
 
+  /** Design accessor */
+  virtual Matrix getDesign() const;
+
+  /** Projection matrix accessor */
+  virtual SymmetricMatrix computeProjectionMatrix() const;
+  
+  /** isModelSelection accessor */
+  virtual Bool getIsModelSelection() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -157,6 +167,9 @@ private:
   /** hasIntercept */
   Bool hasIntercept_;
 
+  /** isModelSelection */
+  Bool isModelSelection_;
+  
 }; /* class LinearModelResult */
 
 END_NAMESPACE_OPENTURNS

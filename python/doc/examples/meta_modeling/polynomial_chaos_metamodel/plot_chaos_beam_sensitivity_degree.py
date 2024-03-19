@@ -99,8 +99,8 @@ def ComputeSparseLeastSquaresChaos(
     selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
     projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
     enumfunc = multivariateBasis.getEnumerateFunction()
-    P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-    adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+    basisSize = enumfunc.getBasisSizeFromTotalDegree(totalDegree)
+    adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
     chaosalgo = ot.FunctionalChaosAlgorithm(
         inputTrain, outputTrain, myDistribution, adaptiveStrategy, projectionStrategy
     )
@@ -119,14 +119,14 @@ def ComputeSparseLeastSquaresChaos(
 # %%
 def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     """Compute the sparsity rate, assuming a FixedStrategy."""
-    # Get P, the maximum possible number of coefficients
+    # Get basisSize, the number of candidate coefficients
     enumfunc = multivariateBasis.getEnumerateFunction()
-    P = enumfunc.getStrataCumulatedCardinal(totalDegree)
+    basisSize = enumfunc.getStrataCumulatedCardinal(totalDegree)
     # Get number of coefficients in the selection
     indices = chaosResult.getIndices()
     nbcoeffs = indices.getSize()
     # Compute rate
-    sparsityRate = 1.0 - nbcoeffs / P
+    sparsityRate = 1.0 - nbcoeffs / basisSize
     return sparsityRate
 
 
@@ -135,29 +135,29 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 
 
 # %%
-def computeQ2Chaos(chaosResult, inputTest, outputTest):
-    """Compute the Q2 of a chaos."""
+def computeR2Chaos(chaosResult, inputTest, outputTest):
+    """Compute the R2 of a chaos."""
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-    Q2 = val.computePredictivityFactor()[0]
-    Q2 = max(Q2, 0.0)  # We are not lucky every day.
-    return Q2
+    r2Score = val.computeR2Score()[0]
+    r2Score = max(r2Score, 0.0)  # We are not lucky every day.
+    return r2Score
 
 
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
     sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
-    Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
+    r2Score = computeR2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
     graph = val.drawValidation().getGraph(0, 0)
-    legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
+    legend1 = "D=%d, R2=%.2f%%" % (totalDegree, 100 * r2Score)
     graph.setLegends(["", legend1])
     graph.setLegendPosition("upper left")
     print(
-        "Degree=%d, Q2=%.2f%%, Sparsity=%.2f%%"
-        % (totalDegree, 100 * Q2, 100 * sparsityRate)
+        "Degree=%d, R2=%.2f%%, Sparsity=%.2f%%"
+        % (totalDegree, 100 * r2Score, 100 * sparsityRate)
     )
     return graph
 
@@ -233,7 +233,7 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
             chaosResult = ComputeSparseLeastSquaresChaos(
                 inputTrain, outputTrain, multivariateBasis, totalDegree, myDistribution
             )
-            Q2sample[i, totalDegree - 1] = computeQ2Chaos(
+            Q2sample[i, totalDegree - 1] = computeR2Chaos(
                 chaosResult, inputTest, outputTest
             )
     return Q2sample

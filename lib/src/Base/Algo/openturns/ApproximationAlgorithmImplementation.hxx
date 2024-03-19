@@ -51,14 +51,16 @@ public:
   ApproximationAlgorithmImplementation(const Sample & x,
                                        const Sample & y,
                                        const FunctionCollection & psi,
-                                       const Indices & indices);
+                                       const Indices & indices,
+                                       const Bool isModelSelection);
 
   /** Default constructor */
   ApproximationAlgorithmImplementation(const Sample & x,
                                        const Sample & y,
                                        const Point & weight,
                                        const FunctionCollection & psi,
-                                       const Indices & indices);
+                                       const Indices & indices,
+                                       const Bool isModelSelection);
 
   /** Virtual constructor */
   ApproximationAlgorithmImplementation * clone() const override;
@@ -104,6 +106,9 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
 
+  /** isModelSelection accessor */
+  Bool getIsModelSelection() const;
+
 protected:
 
   void setCoefficients(const Point & coefficients);
@@ -139,6 +144,12 @@ private:
 
   /** Relative error */
   Scalar relativeError_ = 0.0;
+
+  /** Verbosity flag */
+  Bool verbose_;
+
+  /** isModelSelection flag */
+  Bool isModelSelection_;
 
 }; /* class ApproximationAlgorithmImplementation */
 

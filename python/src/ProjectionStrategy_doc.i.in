@@ -30,3 +30,5 @@ OT_ProjectionStrategy_setExperiment_doc
 OT_ProjectionStrategy_setMeasure_doc
 %feature("docstring") OT::ProjectionStrategy::getDesignProxy
 OT_ProjectionStrategy_getDesignProxy_doc
+%feature("docstring") OT::ProjectionStrategy::getIsLeastSquares
+OT_ProjectionStrategy_getIsLeastSquares_doc

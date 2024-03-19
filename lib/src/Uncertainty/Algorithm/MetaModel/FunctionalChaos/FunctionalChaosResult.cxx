@@ -45,6 +45,7 @@ FunctionalChaosResult::FunctionalChaosResult()
   , I_(0)
   , alpha_k_(0, 0)
   , Psi_k_(0)
+  , isLeastSquares_(true)
 {
   // Nothing to do
 }
@@ -61,7 +62,9 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const Sample & alpha_k,
     const FunctionCollection & Psi_k,
     const Point & residuals,
-    const Point & relativeErrors)
+    const Point & relativeErrors,
+    const Bool isLeastSquares,
+    const Bool isModelSelection)
   : MetaModelResult(inputSample, outputSample, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
@@ -70,6 +73,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , I_(I)
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
+  , isLeastSquares_(isLeastSquares)
+  , isModelSelection_(isModelSelection)
 {
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
@@ -130,7 +135,7 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- residuals=" << residuals_ << "\n";
   oss << "\n";
 
-  const Scalar ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
+  const UnsignedInteger ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
   const UnsignedInteger ell_size = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize");
   const UnsignedInteger columnWidth = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintColumnWidth");
   const UnsignedInteger ellipsis = (indicesSize * outputDimension > ell_threshold);
@@ -273,6 +278,26 @@ Function FunctionalChaosResult::getComposedMetaModel() const
   return composedMetaModel_;
 }
 
+/* Residuals accessor */
+Sample FunctionalChaosResult::getSampleResiduals() const
+{
+  const Sample predictionsSample(metaModel_(inputSample_));
+  const Sample residualsSample(outputSample_ - predictionsSample);
+  return residualsSample;
+}
+
+/* isLeastSquares accessor */
+Bool FunctionalChaosResult::getIsLeastSquares() const
+{
+  return isLeastSquares_;
+}
+
+/* isModelSelection accessor */
+Bool FunctionalChaosResult::getIsModelSelection() const
+{
+  return isModelSelection_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosResult::save(Advocate & adv) const
 {
@@ -288,6 +313,8 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "indicesHistory_", indicesHistory_ );
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
+  adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
+  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
 }
 
 
@@ -308,6 +335,16 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "indicesHistory_", indicesHistory_ );
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
+  }
+  if (adv.hasAttribute("isLeastSquares_"))
+  {
+    adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
+    adv.loadAttribute( "isModelSelection_", isModelSelection_ );
+  }
+  else
+  {
+      isLeastSquares_ = true;
+      isModelSelection_ = true;
   }
 }
 

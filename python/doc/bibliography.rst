@@ -48,9 +48,14 @@ Bibliography
     *Sensitivity analysis.*
     *An Introduction for the Management Scientist.* International Series in
     Operations Research and Management Science. Cham, Switzerland : Springer.
+.. [burman1989] P. Burman. *Comparative study of Ordinary Cross-Validation,
+    v-Fold Cross-Validation and the repeated Learning-Testing Methods.*
+    Biometrika, 76(3):503–514, 1989.
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
+.. [Bjorck1996] Björck, Å. (1996). *Numerical methods for least squares problems.*
+    Society for Industrial and Applied Mathematics.
 .. [cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
     `pdf <https://arxiv.org/pdf/1508.03483.pdf>`__
 .. [caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
@@ -61,6 +66,8 @@ Bibliography
     http://ceres-solver.org
 .. [chacon2018] Chacón, J. E., & Duong, T. (2018).
     *Multivariate kernel smoothing and its applications.* CRC Press.
+.. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
+    *Model selection for small sample regression.* Machine Learning, 48(1-3), 9.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -82,6 +89,8 @@ Bibliography
     Journal de la Société française de statistique, 147 (3), 33-71.
 .. [deRocquigny2012] De Rocquigny, E. (2012).
     *Modelling under risk and uncertainty.* John Wiley & Sons.
+.. [deisenroth2020] Deisenroth, M. P., Faisal, A. A., and Ong, C. S. (2020).
+    *Mathematics for machine learning.* Cambridge University Press.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -363,6 +372,8 @@ Bibliography
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [shao1993] Shao, J. (1993). *Linear model selection by cross-validation.*
+    Journal of the American statistical Association. 88 (422), 486-494.
 .. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).
     *A reliable data-based bandwidth selection method for kernel density estimation.*
     Journal of the Royal Statistical Society. Series B (Methodological),
@@ -395,6 +406,8 @@ Bibliography
     discrete random variates*. Journal of Computational and Applied Mathematics,
     vol. 31, no. 1, pp. 181-189, 1990.
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
+.. [stone1974] Stone, M. (1974). *Cross‐validatory choice and assessment of statistical predictions.*
+    Journal of the royal statistical society: Series B (Methodological), 36 (2), 111-133.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
@@ -404,8 +417,11 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
+.. [wang2012] Wang, Y. *Model selection.* (2012).
+    In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*

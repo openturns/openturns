@@ -69,16 +69,47 @@ listProjectionStrategy.append(ot.IntegrationStrategy())
 # First, the most efficient (but more complex!) strategy
 degree = 6
 listAdaptiveStrategy = list()
-indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
-basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
+indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
     ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(
-    ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+    ot.FixedStrategy(
+        productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
+    )
 )
+
+# Check LeastSquaresStrategy
+projectionStrategy = ot.LeastSquaresStrategy()
+assert projectionStrategy.getIsLeastSquares()
+assert not projectionStrategy.getIsModelSelection()
+
+# Check LeastSquaresMetaModelSelectionFactory
+projectionStrategy = ot.LeastSquaresStrategy(
+    ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
+)
+assert projectionStrategy.getIsLeastSquares()
+assert projectionStrategy.getIsModelSelection()
+
+# Check IntegrationStrategy
+projectionStrategy = ot.IntegrationStrategy()
+assert not projectionStrategy.getIsLeastSquares()
+assert not projectionStrategy.getIsModelSelection()
+
+# Check CleaningStrategy
+adaptiveStrategy = ot.CleaningStrategy(
+    productBasis, indexMax, basisDimension, threshold, False
+)
+assert adaptiveStrategy.getIsModelSelection()
+
+# Check FixedStrategy
+adaptiveStrategy = ot.FixedStrategy(
+    productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
+)
+assert not adaptiveStrategy.getIsModelSelection()
 
 for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
     adaptiveStrategy = listAdaptiveStrategy[adaptiveStrategyIndex]
@@ -106,6 +137,17 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()
         print("relativeErrors=", relativeErrors)
+        print("isLeastSquares= ", result.getIsLeastSquares())
+        isLeastSquaresReference = (
+            projectionStrategy.getClassName() == "LeastSquaresStrategy"
+        )
+        assert result.getIsLeastSquares() == isLeastSquaresReference
+        print("isModelSelection= ", result.getIsModelSelection())
+        modelSelectionReference = (
+            projectionStrategy.getIsModelSelection()
+            or adaptiveStrategy.getIsModelSelection()
+        )
+        assert result.getIsModelSelection() == modelSelectionReference
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)

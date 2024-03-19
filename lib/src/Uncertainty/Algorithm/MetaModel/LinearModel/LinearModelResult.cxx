@@ -52,7 +52,8 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & diagonalGramInverse,
                                      const Point & leverages,
                                      const Point & cookDistances,
-                                     const Scalar sigma2)
+                                     const Scalar sigma2,
+                                     const Bool isModelSelection)
   : MetaModelResult(inputSample, outputSample, metaModel, Point(1, 0.0), Point(1, 0.0))
   , basis_(basis)
   , design_(design)
@@ -66,6 +67,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   , cookDistances_(cookDistances)
   , sigma2_(sigma2)
   , hasIntercept_(false)
+  , isModelSelection_(isModelSelection)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
@@ -243,6 +245,25 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
     standardErrors[i] = std::sqrt(std::abs(sigma2 * diagGramInv[i]));
   }
   return standardErrors;
+}
+
+Matrix LinearModelResult::getDesign() const
+{
+  return design_;
+}
+
+SymmetricMatrix LinearModelResult::computeProjectionMatrix() const
+{
+  SymmetricMatrix gram(design_.computeGram());
+  SymmetricMatrix inverseGram(gram.inverse());
+  Matrix projection(design_ * inverseGram * design_.transpose());
+  return projection.getImplementation();
+}
+
+/* isModelSelection accessor */
+Bool LinearModelResult::getIsModelSelection() const
+{
+  return isModelSelection_;
 }
 
 /* Method save() stores the object through the StorageManager */

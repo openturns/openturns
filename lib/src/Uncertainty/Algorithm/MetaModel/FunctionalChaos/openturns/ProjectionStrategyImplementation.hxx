@@ -60,19 +60,27 @@ public:
   ProjectionStrategyImplementation();
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const Distribution & measure);
+  ProjectionStrategyImplementation(const Distribution & measure, 
+                                   const Bool isLeastSquares,
+                                   const Bool isModelSelection);
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment);
+  ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment, 
+                                   const Bool isLeastSquares,
+                                   const Bool isModelSelection);
 
   /** Parameter constructor */
   ProjectionStrategyImplementation(const Distribution & measure,
-                                   const WeightedExperiment & weightedExperiment);
+                                   const WeightedExperiment & weightedExperiment, 
+                                   const Bool isLeastSquares,
+                                   const Bool isModelSelection);
 
   /** Parameter constructor */
   ProjectionStrategyImplementation(const Sample & inputSample,
                                    const Point & weights,
-                                   const Sample & outputSample);
+                                   const Sample & outputSample, 
+                                   const Bool isLeastSquares,
+                                   const Bool isModelSelection);
 
   /** Virtual constructor */
   ProjectionStrategyImplementation * clone() const override;
@@ -104,7 +112,7 @@ public:
   /** Relative error accessor */
   virtual Scalar getRelativeError() const;
 
-  /** Relative error accessor */
+  /** Coefficients accessor */
   virtual Point getCoefficients() const;
 
   /** Experiment accessors */
@@ -114,6 +122,9 @@ public:
   /** Design proxy accessor */
   virtual DesignProxy getDesignProxy() const;
 
+  /** isLeastSquares accessor */
+  virtual Bool getIsLeastSquares() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -122,6 +133,9 @@ public:
 
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
+
+  /** isModelSelection accessor */
+  virtual Bool getIsModelSelection() const;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
@@ -142,7 +156,7 @@ protected:
   /** Relative error */
   Scalar relativeError_p_;
 
-  /** The measureing function for projection */
+  /** The measure function for projection */
   Distribution measure_;
 
   // An  experiment that will be used to discretize the L2 integral
@@ -159,6 +173,12 @@ protected:
 
   // Proxy to speed up evaluations of the basis over the input sample
   DesignProxy proxy_;
+
+  // isLeastSquares_ is true if the projection is a regression
+  Bool isLeastSquares_;
+
+  // isModelSelection flag
+  Bool isModelSelection_;
 private:
 
 } ; /* class ProjectionStrategyImplementation */

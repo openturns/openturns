@@ -4,13 +4,19 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-% The physical model
-\newcommand{\model}{g}
+% Uncertainty quantification
+\newcommand{\physicalmodel}{{g}}
+\newcommand{\metamodel}{{\widehat{\physicalmodel}}}
+\newcommand{\probabilitydensity}{f_{\un{X}}}
+\newcommand{\pdf}{\probabilitydensity(\un{x})}
 
 % For matrixes and vectors
 \newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}
 \newcommand{\mat}[1]{{\vect{\vect{#1}}}}
 \newcommand{\Tr}[1]{{#1}^\top}
+
+% Set of variables
+\newcommand{\set}[1]{{\mathcal{#1}}}
 
 % Bold letters 
 \newcommand{\bdA}{{\boldsymbol{A}}}
@@ -120,7 +126,6 @@
 \newcommand{\Econd}[2]{{\mathbb E}_{#1}\left[ #2 \right]}
 \newcommand{\Prob}[1]{{\mathbb P}\left( #1 \right)}
 \newcommand{\ProbCond}[2]{{\mathbb P}_{#1}\left( #2 \right)}
-\newcommand{\pdf}{f_{\un{X}}(\un{x})}
 \newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
 \newcommand{\matcov} {\mathbf C}
 \newcommand{\matcor} {\mathbf R}

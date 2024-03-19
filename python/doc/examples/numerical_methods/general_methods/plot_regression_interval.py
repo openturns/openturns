@@ -253,7 +253,7 @@ print("Confidence interval of the mean = ", confidenceIntervalMean[i])
 
 validation = ot.MetaModelValidation(inputSample, outputSample, metamodel)
 graph = validation.drawValidation().getGraph(0, 0)
-q2Score = validation.computePredictivityFactor()[0]
+q2Score = validation.computeR2Score()[0]
 graph.setTitle("Q2 = %.2f%%" % (100.0 * q2Score))
 graph.setXTitle("Observations")
 graph.setYTitle("Metamodel")

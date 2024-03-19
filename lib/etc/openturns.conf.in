@@ -796,12 +796,22 @@
   <FunctionalChaosSobolIndices-MaximumNumberOfOutput value_int="1000" />
   <FunctionalChaosSobolIndices-PrintColumnWidth value_int="15" />
 
+  <!-- OT::FunctionalChaosValidation parameters -->
+  <FunctionalChaosValidation-DefaultKFoldParameter value_int="10" />
+  <FunctionalChaosValidation-NoModelSelection      value_bool="true" />
+
   <!-- OT::LeastSquaresExpansion parameters -->
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
 
   <!-- OT::LinearModelAlgorithm parameters -->
-  <LinearModelAnalysis-Identifiers                 value_int="3"      />
-  <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
+  <LinearModelAlgorithm-DecompositionMethod        value_str="QR" />
+
+  <!-- OT::LinearModelAnalysis parameters -->
+  <LinearModelAnalysis-Identifiers                 value_int="3" />
+
+  <!-- OT::LinearModelValidation parameters -->
+  <LinearModelValidation-DefaultKFoldParameter     value_int="10" />
+  <LinearModelValidation-NoModelSelection          value_bool="true" />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
   <LinearModelStepwiseAlgorithm-Penalty                  value_float="2.0"      />

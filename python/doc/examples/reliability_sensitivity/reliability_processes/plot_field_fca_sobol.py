@@ -159,10 +159,10 @@ modes = result.getModesSample()
 metamodel = result.getFCEResult().getMetaModel()
 output = result.getOutputSample()
 validation = ot.MetaModelValidation(modes, output, metamodel)
-q2 = validation.computePredictivityFactor()
-print(f"q2={q2}")
+r2Score = validation.computeR2Score()
+print(f"R2={r2Score}")
 graph = validation.drawValidation()
-graph.setTitle(f"Chaos validation - q2={q2}")
+graph.setTitle(f"Chaos validation - R2={r2Score}")
 _ = View(graph)
 
 # %%

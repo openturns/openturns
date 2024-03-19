@@ -141,6 +141,25 @@ int main(int, char *[])
           Point relativeErrors(result.getRelativeErrors());
           fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
+          if (result.getIsLeastSquares() && not result.getIsModelSelection())
+          {
+            FunctionalChaosValidation validationLOO(result, FunctionalChaosValidation::LEAVEONEOUT);
+            const Point r2ScoreLOO(validationLOO.computeR2Score());
+            fullprint << "Analytical cross-validation LOO R2 score = " << r2ScoreLOO << std::endl;
+          }
+          else
+          {
+            fullprint << "Cannot perform analytical cross-validation: PCE is from integration or model selection involved. " << std::endl;
+            fullprint << "Use classical cross-validation instead. " << std::endl;
+            const UnsignedInteger testSampleSize = 500;
+            const Sample inputSampleTest(distribution.getSample(testSampleSize));
+            const Sample outputSampleTest(model(inputSampleTest));
+            const Function metamodel(result.getMetaModel());
+            MetaModelValidation validation(inputSampleTest, outputSampleTest, metamodel);
+            const Point r2Score(validation.computeR2Score());
+            fullprint << "Cross-validation R2 score = " << r2Score << std::endl;
+          }
+          
           // Post-process the results
           FunctionalChaosRandomVector vector(result);
           Scalar mean = vector.getMean()[0];

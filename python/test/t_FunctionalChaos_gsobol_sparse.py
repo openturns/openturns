@@ -10,7 +10,7 @@ ot.TESTPREAMBLE()
 # Problem parameters
 dimension = 8
 
-# Create the Ishigami function
+# Create the GSobol' function
 # Reference analytical values
 meanTh = 1.0
 covTh = 1.0
@@ -84,3 +84,7 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     print("coeffs = ", result.getCoefficients())
     print("residuals = ", result.getResiduals())
     print("relative errors = ", result.getRelativeErrors())
+    print("isLeastSquares= ", result.getIsLeastSquares())
+    assert result.getIsLeastSquares()
+    print("isModelSelection= ", result.getIsModelSelection())
+    assert result.getIsModelSelection()

@@ -144,24 +144,25 @@ X_test = myDistribution.getSample(sampleSize_test)
 Y_test = model(X_test)
 
 # %%
-# The `MetaModelValidation` classe makes the validation easy. To create it, we use the validation samples and the metamodel.
+# The :class:`~openturns.MetaModelValidation` class enables to validate the metamodel.
+# To create it, we use the validation samples and the metamodel.
 
 # %%
 val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
 
 # %%
-# The `computePredictivityFactor` computes the Q2 factor.
+# The :meth:`~openturns.MetaModelValidation.computeR2Score` computes the R2 coefficient of determination.
 
 # %%
-Q2 = val.computePredictivityFactor()[0]
-print(Q2)
+r2Score = val.computeR2Score()[0]
+print(r2Score)
 
 # %%
 # The residuals are the difference between the model and the metamodel.
 
 # %%
-r = val.getResidualSample()
-graph = ot.HistogramFactory().build(r).drawPDF()
+residualsSample = val.getResidualSample()
+graph = ot.HistogramFactory().build(residualsSample).drawPDF()
 graph.setXTitle("Residuals (cm)")
 graph.setTitle("Distribution of the residuals")
 graph.setLegends([""])
@@ -176,7 +177,7 @@ view = viewer.View(graph)
 # %%
 # sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
-graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
+graph.setTitle("R2 = %.2f%%" % (100 * r2Score))
 view = viewer.View(graph)
 
 plt.show()

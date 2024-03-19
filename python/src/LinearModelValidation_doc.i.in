@@ -1,0 +1,152 @@
+%feature("docstring") OT::LinearModelValidation
+"Validate a linear regression metamodel.
+
+Available constructors:
+    LinearModelValidation(*linearModelResult, cvMethod*)
+    
+    LinearModelValidation(*linearModelResult, cvMethod, kParameter*)
+
+Parameters
+----------
+result : :class:`~openturns.LinearModelResult`
+    A linear model result resulting from linear least squares regression.
+
+cvMethod : int
+    The cross-validation method.
+    Available values are 'LinearModelValidation.LEAVEONEOUT' and 'LinearModelValidation.KFOLD'.
+
+kParameter : int
+    The :math:`k` parameter of the K-Fold cross-validation method.
+    We must have :math:`1 < k \leq n` where :math:`n` is the sample size,
+    otherwise an exception is raised.
+    When :math:`k = n`, then the K-Fold method is mathematically equivalent to
+    leave-one-out, but its implementation can be slower so that leave-one-out
+    should be used instead for performance reasons.
+    The default value of the :math:`k` parameter of the K-Fold cross-validation method
+    uses the 'LinearModelValidation-DefaultKFoldParameter' key of the :class:`~openturns.ResourceMap`.
+
+See also
+--------
+LinearModelResult
+
+Notes
+-----
+A `LinearModelValidation` object is used for the validation of a linear model.
+It is based on the fast (analytical) leave-one-out and fast K-Fold
+cross-validation methods presented in :ref:`cross_validation`.
+
+Analytical cross-validation can only be performed accurately if some
+This can be done only if all coefficients are estimated, without model selection:
+if the coefficients are computed with model selection, then an exception is
+produced by default.
+This is because model selection leads to supposedly improved coefficients,
+so that the hypotheses required to estimate the mean squared error
+using the cross-validation method are not satisfied anymore.
+As a consequence, using the analytical formula without taking into
+account for the model selection leads to a biased, optimistic, mean squared
+error.
+More precisely, the analytical formula produces a MSE which is lower
+than the true one on average.
+Model selection is involved if the
+:class:`~openturns.LinearModelStepwiseAlgorithm` class is involved.
+If the :class:`~openturns.LinearModelAlgorithm` class
+is used, then no model selection is involved and the analytical
+cross-validation methods can be used.
+If model selection is involved, the naive methods based on the
+:class:`~openturns.LeaveOneOutSplitter` and :class:`~openturns.KFoldSplitter`
+classes can be used, but this can be much slower than the
+analytical methods implemented in the :class:`~openturns.LinearModelValidation`
+class.
+In many cases, however, the order of magnitude of the estimate from the
+analytical formula applied to a sparse model is correct: the estimate of
+the MSE is only slightly lower than the true value.
+In order to enable the calculation of the analytical MSE estimator
+on a sparse model, please set the `LinearModelValidation-NoModelSelection`
+key of the :class:`~openturns.ResourceMap` to `False`: use this
+option at your own risks.
+
+We suggest to use leave-one-out cross validation when possible,
+because it produces a more accurate estimate of the error than K-Fold does.
+If K-Fold is required, we suggest to use the largest possible value of :math:`k`.
+
+The predictions of the leave-one-one or K-Fold surrogate models
+are based on the hold-out method.
+For example, if we use the leave-one-out cross-validation method,
+the :math:`i`-th prediction is the prediction of the linear model
+trained using the hold-out sample where the :math:`i`-th observation
+was removed.
+This produces a sample of residuals which can be retrieved using
+the :class:`~openturns.LinearModelValidation.getResidualSample` method.
+The :class:`~openturns.LinearModelValidation.drawValidation` performs
+similarly.
+
+Examples
+--------
+Create a linear model.
+
+>>> import openturns as ot
+>>> func = ot.SymbolicFunction(
+...     ['x1', 'x2', 'x3'],
+...     ['x1 + x2 + sin(x2 * 2 * pi_) / 5 + 1e-3 * x3^2']
+... )
+>>> dimension = 3
+>>> distribution = ot.ComposedDistribution([ot.Normal()] * dimension)
+>>> inputSample = distribution.getSample(20)
+>>> outputSample = func(inputSample)
+>>> algo = ot.LinearModelAlgorithm(inputSample, outputSample)
+>>> algo.run()
+>>> result = algo.getResult()
+
+Validate the linear model using leave-one-out cross-validation.
+
+>>> validation = ot.LinearModelValidation(result, ot.LinearModelValidation.LEAVEONEOUT)
+>>> r2Score = validation.computeR2Score()
+>>> print('R2 = ', r2Score[0])
+R2 =  0.98...
+
+Validate the linear model using K-Fold cross-validation.
+
+>>> validation = ot.LinearModelValidation(result, ot.LinearModelValidation.KFOLD)
+
+Validate the linear model using K-Fold cross-validation and set K.
+
+>>> kFoldParameter = 10
+>>> validation = ot.LinearModelValidation(result, ot.LinearModelValidation.KFOLD, kFoldParameter)
+
+Draw the validation graph.
+
+>>> graph = validation.drawValidation()"
+
+%feature("docstring") OT::LinearModelValidation::getKParameter
+"Get the K parameter of the K-Fold cross-validation method.
+
+Returns
+-------
+k : int
+    The K parameter of the K-Fold cross-validation method."
+
+%feature("docstring") OT::LinearModelValidation::getLinearModelResult
+"Get the linear model result.
+
+Returns
+-------
+linearModelResult : :class:`~openturns.LinearModelResult`
+    The linear model result."
+
+%feature("docstring") OT::LinearModelValidation::getMethod
+"Get the cross-validation method.
+
+Returns
+-------
+cvMethod : in
+    The cross-validation method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelValidation::computePredictivityFactor
+"Compute the R2 score.
+
+Returns
+-------
+r2Score : :class:`~openturns.Point`
+    The coefficient of determination R2"

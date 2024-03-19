@@ -29,3 +29,4 @@ Functional chaos
     enumeration_strategy
     functional_chaos
     cross_validation
+    pce_cross_validation

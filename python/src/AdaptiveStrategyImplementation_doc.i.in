@@ -89,7 +89,7 @@ OT_AdaptiveStrategy_getMaximumDimension_doc
 Returns
 -------
 polynomials : list of polynomials
-    Sequence of :math:`P` analytical polynomials.
+    Sequence of :math:`P` polynomials.
 
 Notes
 -----

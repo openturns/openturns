@@ -46,7 +46,7 @@ public:
   KFoldSplitter * clone() const override;
 
   /** Generate next set of indices */
-  Indices generate(Indices & indices2Out) const override;
+  Indices generate(Indices & indicesTest) const override;
 
   /** Number of indices pairs accessor */
   UnsignedInteger getSize() const override;

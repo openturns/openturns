@@ -86,6 +86,9 @@ public:
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
   Point getErrorHistory() const override;
 
+  /** IsModelSelection accessor */
+  Bool getIsModelSelection() const override;
+
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,

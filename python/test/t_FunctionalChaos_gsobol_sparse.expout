@@ -48,6 +48,8 @@ coeffs =   0 : [  0.961893    ]
 47 : [ -0.0180804   ]
 residuals =  [0.00120113]
 relative errors =  [0.000126428]
+isLeastSquares=  True
+isModelSelection=  True
 coeffs =   0 : [  0.961274   ]
  1 : [  0.237628   ]
  2 : [  0.155141   ]
@@ -83,3 +85,5 @@ coeffs =   0 : [  0.961274   ]
 32 : [ -0.0216348  ]
 residuals =  [0.00233021]
 relative errors =  [0.000734432]
+isLeastSquares=  True
+isModelSelection=  True

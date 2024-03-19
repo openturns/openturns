@@ -51,7 +51,7 @@ public:
   ProjectionStrategy();
 
   /** Parameter constructor */
-  ProjectionStrategy(const Distribution & measure);
+  ProjectionStrategy(const Distribution & measure, const Bool isLeastSquares, const Bool isModelSelection);
 
   /** Constructor from implementation */
   ProjectionStrategy(const ProjectionStrategyImplementation & implementation);
@@ -86,6 +86,9 @@ public:
 
   /** Design proxy accessor */
   virtual DesignProxy getDesignProxy() const;
+
+  /** isLeastSquares accessor */
+  virtual Bool getIsLeastSquares() const;
 
   /** String converter */
   String __repr__() const override;

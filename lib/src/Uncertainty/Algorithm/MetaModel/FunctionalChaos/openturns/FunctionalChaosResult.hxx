@@ -65,7 +65,10 @@ public:
                         const Sample & alpha_k,
                         const FunctionCollection & Psi_k,
                         const Point & residuals,
-                        const Point & relativeErrors);
+                        const Point & relativeErrors,
+                        const Bool isLeastSquares,
+                        const Bool isModelSelection
+                       );
 
   /** Virtual constructor */
   FunctionalChaosResult * clone() const override;
@@ -98,6 +101,15 @@ public:
 
   /** Composed meta model accessor */
   virtual Function getComposedMetaModel() const;
+
+  /** Residuals accessor */
+  virtual Sample getSampleResiduals() const;
+
+  /** isLeastSquares_ accessor */
+  virtual Bool getIsLeastSquares() const;
+
+  /** isModelSelection accessor */
+  virtual Bool getIsModelSelection() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -149,6 +161,12 @@ private:
 
   /** Error history */
   Point errorHistory_;
+
+  /** Is regression? */
+  Bool isLeastSquares_;
+
+  /** Is model selection? */
+  Bool isModelSelection_;
 
 } ; /* class FunctionalChaosResult */
 

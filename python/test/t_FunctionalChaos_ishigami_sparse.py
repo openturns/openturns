@@ -83,3 +83,7 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     print("coeffs = ", result.getCoefficients())
     print("residuals = ", result.getResiduals())
     print("relative errors = ", result.getRelativeErrors())
+    print("isLeastSquares= ", result.getIsLeastSquares())
+    assert result.getIsLeastSquares()
+    print("isModelSelection= ", result.getIsModelSelection())
+    assert result.getIsModelSelection()

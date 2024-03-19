@@ -41,7 +41,7 @@ FixedStrategy::FixedStrategy()
 /* Constructor from an orthogonal basis */
 FixedStrategy::FixedStrategy(const OrthogonalBasis & basis,
                              const UnsignedInteger maximumDimension)
-  : AdaptiveStrategyImplementation(basis, maximumDimension)
+  : AdaptiveStrategyImplementation(basis, maximumDimension, false)
 {
   // Nothing to do
 }

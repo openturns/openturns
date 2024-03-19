@@ -41,14 +41,16 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation()
     addedPsi_k_ranks_(0),
     conservedPsi_k_ranks_(0),
     removedPsi_k_ranks_(0),
-    Psi_k_p_(0)
+    Psi_k_p_(0),
+    isModelSelection_(false)
 {
   // Nothing to do
 }
 
 /* Constructor from an orthogonal basis */
 AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalBasis & basis,
-    const UnsignedInteger maximumDimension)
+    const UnsignedInteger maximumDimension,
+    const Bool isModelSelection)
   : PersistentObject(),
     basis_(basis),
     maximumDimension_(maximumDimension),
@@ -56,7 +58,8 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalB
     addedPsi_k_ranks_(0),
     conservedPsi_k_ranks_(0),
     removedPsi_k_ranks_(0),
-    Psi_k_p_(0)
+    Psi_k_p_(0),
+    isModelSelection_(isModelSelection)
 {
   // Nothing to do
 }
@@ -114,6 +117,12 @@ void AdaptiveStrategyImplementation::updateBasis(const Point &,
 AdaptiveStrategyImplementation::FunctionCollection AdaptiveStrategyImplementation::getPsi() const
 {
   return Psi_k_p_;
+}
+
+/* isModelSelection accessor */
+Bool AdaptiveStrategyImplementation::getIsModelSelection() const
+{
+  return isModelSelection_;
 }
 
 /* Method save() stores the object through the StorageManager */

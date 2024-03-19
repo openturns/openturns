@@ -50,7 +50,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation( x, y, psi, indices )
+  : ApproximationAlgorithmImplementation(x, y, psi, indices, true)
   , basisSequenceFactory_(basisSequenceFactory)
   , fittingAlgorithm_(fittingAlgorithm)
 
@@ -66,7 +66,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi, indices )
+  : ApproximationAlgorithmImplementation(x, y, weight, psi, indices, true)
   , basisSequenceFactory_(basisSequenceFactory)
   , fittingAlgorithm_(fittingAlgorithm)
 {
@@ -193,7 +193,6 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   LOGINFO(OSS() << "optimalResidual=" << optimalResidual);
   LOGINFO(OSS() << "optimalRelativeError=" << optimalRelativeError);
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void LeastSquaresMetaModelSelection::save(Advocate & adv) const

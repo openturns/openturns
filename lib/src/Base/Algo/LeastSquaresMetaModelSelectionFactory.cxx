@@ -37,7 +37,7 @@ static const Factory<LeastSquaresMetaModelSelectionFactory> Factory_LeastSquares
 /* Constructor */
 LeastSquaresMetaModelSelectionFactory::LeastSquaresMetaModelSelectionFactory(const BasisSequenceFactory & fact,
     const FittingAlgorithm & algo)
-  : ApproximationAlgorithmImplementationFactory(),
+  : ApproximationAlgorithmImplementationFactory(true),
     basisSequenceFactory_(fact),
     fittingAlgorithm_(algo)
 {

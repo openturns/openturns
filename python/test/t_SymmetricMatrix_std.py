@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
@@ -127,3 +128,10 @@ symmetricMatrix6 = ot.SymmetricMatrix()
 print("symmetricMatrix0 is empty = ", symmetricMatrix0.isEmpty())
 print("symmetricMatrix1 is empty = ", symmetricMatrix1.isEmpty())
 print("symmetricMatrix5 is empty = ", symmetricMatrix5.isEmpty())
+
+# Check inverse()
+symmetricMatrix6 = ot.SymmetricMatrix([[4.0, 2.0, 1.0], [2.0, 5.0, 3.0], [1.0, 3.0, 6.0]])
+symmetricMatrix7 = symmetricMatrix6.inverse()
+inverseReference = ot.SymmetricMatrix([[21.0, -9.0, 1.0], [-9.0, 23.0, -10.0], [1.0, -10.0, 16.0]])
+inverseReference /= 67.0
+assert_almost_equal(symmetricMatrix7, inverseReference)

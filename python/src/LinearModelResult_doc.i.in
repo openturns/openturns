@@ -31,7 +31,8 @@ cookDistances : sequence of float
     The cook's distances.
 sigma2 : float
     The unbiased noise variance.
-
+isModelSelection : bool
+    True if the model is computed using model selection.
 
 See Also
 --------
@@ -200,3 +201,40 @@ Returns
 -------
 intercept : Bool
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getDesign
+"Returns if intercept is provided in the basis or not.
+
+Returns
+-------
+designMatrix: :class:`~openturns.Matrix`
+    The design matrix :math:`X`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::computeProjectionMatrix
+"Returns if intercept is provided in the basis or not.
+
+Returns
+-------
+projectionMatrix: :class:`~openturns.SymmetricMatrix`
+    The projection matrix:
+
+.. math::
+    H = X \left(X^T X\right)^{-1} X^T."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getIsModelSelection
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+which allows one to best predict the output.
+Model selection can lead to a sparse model.
+
+Returns
+-------
+isModelSelection: bool
+    True if the method involves a model selection method."

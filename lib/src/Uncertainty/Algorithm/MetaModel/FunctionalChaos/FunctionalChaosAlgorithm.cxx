@@ -338,7 +338,15 @@ void FunctionalChaosAlgorithm::run()
     Psi_k.add(basis.build(i));
   }
   // Build the result
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+  const Bool isLeastSquares = projectionStrategy_.getIsLeastSquares();
+  Bool isModelSelection = false;
+  if (adaptiveStrategy_.getImplementation()->getIsModelSelection())
+    isModelSelection = true;
+  else if (projectionStrategy_.getImplementation()->getIsModelSelection())
+    isModelSelection = true;
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_,
+                                  inverseTransformation_, basis, I_k, alpha_k, Psi_k,
+                                  residuals, relativeErrors, isLeastSquares, isModelSelection);
 
   // set selection history
   Collection<Point> coefficientsHistory;

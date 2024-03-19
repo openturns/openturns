@@ -60,12 +60,14 @@
 %include FunctionalChaosAlgorithm.i
 %include FunctionalChaosSobolIndices.i
 %include MetaModelValidation.i
+%include FunctionalChaosValidation.i
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i
 %include KrigingAlgorithm.i
 %include LinearModelStepwiseAlgorithm.i
 %include LinearModelAlgorithm.i
 %include LinearModelAnalysis.i
+%include LinearModelValidation.i
 
 /* Uncertainty/Model */
 %include RandomVector.i

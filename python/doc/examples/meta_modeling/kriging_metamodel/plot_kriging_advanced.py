@@ -229,7 +229,7 @@ else:
 
 # %%
 validation = ot.MetaModelValidation(x_valid, y_valid, krigingMeta)
-validation.computePredictivityFactor()
+validation.computeR2Score()
 
 # %%
 graph = validation.drawValidation()

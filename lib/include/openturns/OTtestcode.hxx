@@ -37,6 +37,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Uniform.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -414,6 +417,177 @@ void assert_equal(const T & a, const T & b, const String errMsg = "")
     throw TestFailed(OSS() << "Value " << a << " is not equal to " << b << " " << errMsg);
   }
 }
+
+class IshigamiUseCase
+{
+  public:
+    /* Default constructor */
+    IshigamiUseCase() : dimension_(3), a_(7.0),b_(0.1)
+    {
+      // Create the Ishigami function
+      Description inputVariables(dimension_);
+      inputVariables[0] = "xi1";
+      inputVariables[1] = "xi2";
+      inputVariables[2] = "xi3";
+      Description formula(1);
+      formula[0] = (OSS() << "sin(xi1) + (" << a_ << ") * (sin(xi2)) ^ 2 + (" << b_ << ") * xi3^4 * sin(xi1)");
+      model_ = SymbolicFunction(inputVariables, formula);
+  
+      // Create the input distribution
+      Collection<Distribution> marginals(dimension_);
+      marginals[0] = Uniform(-M_PI, M_PI);
+      marginals[1] = Uniform(-M_PI, M_PI);
+      marginals[2] = Uniform(-M_PI, M_PI);
+      inputDistribution_ = ComposedDistribution(marginals);
+      
+      // Mean, variance
+      mean_ = a_ / 2;
+      variance_ = pow(b_, 2.0) * pow(M_PI, 8.0) / 18.0 \
+        + b_ * pow(M_PI, 4.0) / 5.0 + pow(a_, 2.0) / 8.0 + 1.0 / 2.0;
+      // Sobol' indices
+      s1_ = (b_ * pow(M_PI, 4.0) / 5.0 + pow(b_, 2.0) * pow(M_PI, 8.0) / 50.0 \
+        + 1.0 / 2.0) /        variance_;
+      s2_ = (pow(a_, 2.0) / 8.0) / variance_;
+      s3_ = 0.0;
+      s12_ = 0.0;
+      s13_ = pow(b_, 2.0) * pow(M_PI, 8.0) * (1.0 / 9.0 - 1.0 / 25.0) / 2.0 / variance_;
+      s23_ = 0.0;
+      s123_ = 0.0;
+      sT1_ = s1_ + s13_;
+      sT2_ = s2_;
+      sT3_ = s3_ + s13_;
+      
+    }
+    Function getModel()
+    {
+      return model_;
+    }
+    UnsignedInteger getDimension()
+    {
+      return dimension_;
+    }
+    Scalar getA()
+    {
+      return a_;
+    }
+    Scalar getB()
+    {
+      return b_;
+    }
+    Distribution getInputDistribution()
+    {
+      return inputDistribution_;
+    }
+    Scalar getMean()
+    {
+      return mean_;
+    }
+    Scalar getVariance()
+    {
+      return variance_;
+    }
+    Point getFirstOrderIndices()
+    {
+      const Point firstOrderIndices({s1_, s2_, s3_});
+      return firstOrderIndices;
+    }
+    Point getTotalIndices()
+    {
+      const Point totalIndices({sT1_, sT2_, sT3_});
+      return totalIndices;
+    }
+    
+
+  private:
+    Function model_;
+    Distribution inputDistribution_;
+    UnsignedInteger dimension_;
+    Scalar a_;
+    Scalar b_;
+    Scalar mean_;
+    Scalar variance_;
+    Scalar s1_;
+    Scalar s2_;
+    Scalar s3_;
+    Scalar s12_;
+    Scalar s13_;
+    Scalar s23_;
+    Scalar s123_;
+    Scalar sT1_;
+    Scalar sT2_;
+    Scalar sT3_;
+
+}; /* class IshigamiUseCase */
+
+class GSobolUseCase
+{
+  public:
+    /* Default constructor */
+    GSobolUseCase(const UnsignedInteger & dimension, const Point & a) :
+    dimension_(dimension), a_(a), mean_(1.0)
+    {
+      // Reference analytical values
+      ;
+      variance_ = 1.0;
+      // Create the gSobol function
+      Description inputVariables(dimension);
+      Description formula(1);
+      formula[0] = "1.0";
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        variance_ *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
+        inputVariables[i] = (OSS() << "xi" << i);
+        formula[0] = (OSS() << formula[0] << " * (abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << ")");
+      }
+      --variance_;
+
+      model_ = SymbolicFunction(inputVariables, formula);
+
+      // Create the input distribution
+      Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
+      inputDistribution_ = ComposedDistribution(marginals);
+      
+    }
+    Function getModel()
+    {
+      return model_;
+    }
+    UnsignedInteger getDimension()
+    {
+      return dimension_;
+    }
+    Distribution getInputDistribution()
+    {
+      return inputDistribution_;
+    }
+    Scalar getMean()
+    {
+      return mean_;
+    }
+    Scalar getVariance()
+    {
+      return variance_;
+    }
+    Scalar computeSobolIndice(const Indices & indices)
+    {
+      Scalar value = 1.0;
+      for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+      {
+        value *= 1.0 / (3.0 * pow(1.0 + a_[indices[i]], 2.0));
+      }
+      return value;
+    }
+    
+
+  private:
+    Function model_;
+    Distribution inputDistribution_;
+    UnsignedInteger dimension_;
+    Point a_;
+    Scalar mean_;
+    Scalar variance_;
+
+}; /* class GSobolUseCase */
 
 } /* namespace Test */
 

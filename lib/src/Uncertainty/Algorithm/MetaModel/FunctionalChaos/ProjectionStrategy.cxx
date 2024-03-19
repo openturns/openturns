@@ -37,8 +37,8 @@ ProjectionStrategy::ProjectionStrategy()
 
 
 /* Parameter constructor */
-ProjectionStrategy::ProjectionStrategy(const Distribution & measure)
-  : TypedInterfaceObject<ProjectionStrategyImplementation>(new ProjectionStrategyImplementation(measure))
+ProjectionStrategy::ProjectionStrategy(const Distribution & measure, const Bool isLeastSquares, const Bool isModelSelection)
+  : TypedInterfaceObject<ProjectionStrategyImplementation>(new ProjectionStrategyImplementation(measure, isLeastSquares, isModelSelection))
 {
   // Nothing to do
 }
@@ -136,6 +136,12 @@ DesignProxy ProjectionStrategy::getDesignProxy() const
   return getImplementation()->getDesignProxy();
 }
 
+/* isLeastSquares accessor */
+Bool ProjectionStrategy::getIsLeastSquares() const
+{
+  return getImplementation()->getIsLeastSquares();
+}
+
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategy::computeCoefficients(const Function & function,
     const FunctionCollection & basis,
@@ -160,6 +166,7 @@ String ProjectionStrategy::__str__(const String & offset) const
 {
   return OSS() << getImplementation()->__str__(offset);
 }
+
 /* String converter */
 String ProjectionStrategy::_repr_html_() const
 {

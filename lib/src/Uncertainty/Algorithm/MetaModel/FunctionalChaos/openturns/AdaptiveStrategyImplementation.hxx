@@ -59,7 +59,8 @@ public:
 
   /** Constructor from an orthogonal basis */
   AdaptiveStrategyImplementation(const OrthogonalBasis & basis,
-                                 const UnsignedInteger maximumDimension);
+                                 const UnsignedInteger maximumDimension,
+                                 const Bool isModelSelection);
 
   /** Virtual constructor */
   AdaptiveStrategyImplementation * clone() const override;
@@ -85,6 +86,9 @@ public:
 
   /** Psi accessor */
   FunctionCollection getPsi() const;
+
+  /** isModelSelection accessor */
+  Bool getIsModelSelection() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -118,6 +122,9 @@ protected:
   /** The full basis */
   FunctionCollection Psi_;
 private:
+
+  /** isModelSelection flag */
+  Bool isModelSelection_;
 
 } ; /* class AdaptiveStrategyImplementation */
 

@@ -1429,9 +1429,19 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput", 1000);
   addAsUnsignedInteger("FunctionalChaosSobolIndices-PrintColumnWidth", 15);
 
+  // FunctionalChaosValidation parameters //
+  addAsUnsignedInteger("FunctionalChaosValidation-DefaultKFoldParameter", 10);
+  addAsBool("FunctionalChaosValidation-NoModelSelection", true);
+
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+
+  // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
+
+  // LinearModelValidation parameters //
+  addAsUnsignedInteger("LinearModelValidation-DefaultKFoldParameter", 10);
+  addAsBool("LinearModelValidation-NoModelSelection", true);
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);

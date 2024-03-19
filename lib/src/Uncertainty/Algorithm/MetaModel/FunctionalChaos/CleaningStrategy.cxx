@@ -50,7 +50,9 @@ CleaningStrategy::CleaningStrategy()
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension)
-  : AdaptiveStrategyImplementation(basis, maximumDimension)
+                                   const Bool verbose)
+  : AdaptiveStrategyImplementation(basis, maximumDimension, true)
+  , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" ))
   , significanceFactor_(ResourceMap::GetAsScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
 {
@@ -62,8 +64,10 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const UnsignedInteger maximumSize,
-                                   const Scalar significanceFactor)
-  : AdaptiveStrategyImplementation(basis, maximumDimension)
+                                   const Scalar significanceFactor,
+                                   const Bool verbose)
+  : AdaptiveStrategyImplementation(basis, maximumDimension, true)
+  , currentVectorIndex_(0)
   , maximumSize_(maximumSize)
   , significanceFactor_(significanceFactor)
 {

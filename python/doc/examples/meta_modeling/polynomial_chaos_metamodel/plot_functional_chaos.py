@@ -2,6 +2,7 @@
 Create a polynomial chaos metamodel from a data set
 ===================================================
 """
+
 # %%
 # In this example, we create a polynomial chaos expansion (PCE) using
 # a data set.
@@ -143,15 +144,15 @@ outputTest = model(inputTest)
 
 # %%
 val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-Q2 = val.computePredictivityFactor()
+r2Score = val.computeR2Score()
 graph = val.drawValidation()
-graph.setTitle("Metamodel validation Q2=" + str(Q2))
+graph.setTitle("Metamodel validation R2=" + str(r2Score))
 view = viewer.View(graph)
 
 # %%
-# The coefficient of predictivity is not extremely satisfactory for the
+# The coefficient of determination is not extremely satisfactory for the
 # first output, but is would be sufficient for a central dispersion study.
-# The second output has a much more satisfactory Q2: only one single
+# The second output has a much more satisfactory R2: only one single
 # extreme point is far from the diagonal of the graphics.
 
 # %%
@@ -213,8 +214,8 @@ ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree
 # This is why we explore the values from 1 to 15.
 
 # %%
-degrees = range(1, 12)
-q2 = ot.Sample(len(degrees), 2)
+degrees = range(5, 12)
+r2Score = ot.Sample(len(degrees), 2)
 for maximumDegree in degrees:
     ot.ResourceMap.SetAsUnsignedInteger(
         "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree
@@ -228,16 +229,17 @@ for maximumDegree in degrees:
         val = ot.MetaModelValidation(
             inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex)
         )
-        q2Value = min(1.0, max(0.0, val.computePredictivityFactor()[0]))  # Get lucky.
-        q2[maximumDegree - degrees[0], outputIndex] = q2Value
+        r2Score[maximumDegree - degrees[0], outputIndex] = min(
+            1.0, max(0.0, val.computeR2Score()[0])
+        )  # Get lucky.
 
 # %%
-graph = ot.Graph("Predictivity", "Total degree", "Q2", True)
-cloud = ot.Cloud([[d] for d in degrees], q2[:, 0])
+graph = ot.Graph("Predictivity", "Total degree", "R2", True)
+cloud = ot.Cloud([[d] for d in degrees], r2Score[:, 0])
 cloud.setLegend("Output #0")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
-cloud = ot.Cloud([[d] for d in degrees], q2[:, 1])
+cloud = ot.Cloud([[d] for d in degrees], r2Score[:, 1])
 cloud.setLegend("Output #1")
 cloud.setColor("red")
 cloud.setPointStyle("bullet")
@@ -249,13 +251,12 @@ plt.subplots_adjust(right=0.7)
 plt.show()
 
 # %%
-# We see that the R2 score increases then gets constant or decreases.
-# A low total polynomial degree is not sufficient to describe
-# the first output with good predictivity.
-# However, the coefficient of predictivity can decrease when the total degree
-# gets greater.
-# The predictivity of the second output seems to be much less
-# satisfactory: a little more work would be required to improve the metamodel.
+# We see that a total degree lower than 9 is not sufficient to describe the
+# first output with good R2 score.
+# However, the coefficient of determination drops when the total degree gets
+# greater than 12.
+# The R2 score of the second output seems to be much less satisfactory:
+# a little more work would be required to improve the metamodel.
 #
 # In this situation, the following methods may be used.
 #

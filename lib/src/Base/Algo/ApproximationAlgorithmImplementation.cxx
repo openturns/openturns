@@ -31,6 +31,12 @@ static const Factory<ApproximationAlgorithmImplementation> Factory_Approximation
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   : PersistentObject()
+  , hasUniformWeight_(true)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
+  , verbose_(false)
+  , isModelSelection_(false)
 {
   // Nothing to do
 }
@@ -39,7 +45,8 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
     const Sample & y,
     const FunctionCollection & psi,
-    const Indices & indices)
+    const Indices & indices,
+    const Bool isModelSelection)
   : PersistentObject()
   , x_(x)
   , y_(y)
@@ -47,6 +54,11 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , hasUniformWeight_(true)
   , psi_(psi)
   , currentIndices_(indices)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
+  , verbose_(false)
+  , isModelSelection_(isModelSelection)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -59,13 +71,19 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
     const Sample & y,
     const Point & weight,
     const FunctionCollection & psi,
-    const Indices & indices)
+    const Indices & indices,
+    const Bool isModelSelection)
   : PersistentObject()
   , x_(x)
   , y_(y)
   , weight_()
   , psi_(psi)
   , currentIndices_(indices)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
+  , verbose_(false)
+  , isModelSelection_(isModelSelection)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -183,6 +201,22 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;
+}
+
+/* Verbosity accessor */
+void ApproximationAlgorithmImplementation::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
+}
+
+Bool ApproximationAlgorithmImplementation::getVerbose() const
+{
+  return verbose_;
+}
+
+Bool ApproximationAlgorithmImplementation::getIsModelSelection() const
+{
+  return isModelSelection_;
 }
 
 /* Method save() stores the object through the StorageManager */

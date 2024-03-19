@@ -39,6 +39,14 @@ ApproximationAlgorithmImplementationFactory::ApproximationAlgorithmImplementatio
   // Nothing to do
 }
 
+/* Default constructor */
+ApproximationAlgorithmImplementationFactory::ApproximationAlgorithmImplementationFactory(const Bool isModelSelection)
+  : PersistentObject(),
+  isModelSelection_(isModelSelection)
+{
+  // Nothing to do
+}
+
 ApproximationAlgorithmImplementationFactory * ApproximationAlgorithmImplementationFactory::clone() const
 
 {
@@ -82,5 +90,10 @@ void ApproximationAlgorithmImplementationFactory::load(Advocate & adv)
   PersistentObject::load(adv);
 }
 
+/* isModelSelection accessor */
+Bool ApproximationAlgorithmImplementationFactory::getIsModelSelection() const
+{
+  return isModelSelection_;
+}
 
 END_NAMESPACE_OPENTURNS

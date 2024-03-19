@@ -32,7 +32,7 @@ static const Factory<PenalizedLeastSquaresAlgorithmFactory> Factory_PenalizedLea
 
 /* Default constructor */
 PenalizedLeastSquaresAlgorithmFactory::PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal)
-  : ApproximationAlgorithmImplementationFactory()
+  : ApproximationAlgorithmImplementationFactory(false)
   , useNormal_(useNormal)
 {
   // Nothing to do
