@@ -29,12 +29,12 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   h(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{z})
+#   h(\vect{z}) = \sum_{\vect{\alpha} \in \mathbb{N}^p}
+#   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z})
 #
-# where :math:`\boldsymbol{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`
-# is a multiindex, :math:`a_{\boldsymbol{\alpha}} \in \mathbb{R}` is the
-# coefficient,  :math:`\psi_{\boldsymbol{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}`
+# where :math:`\vect{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`
+# is a multiindex, :math:`a_{\vect{\alpha}} \in \mathbb{R}` is the
+# coefficient,  :math:`\psi_{\vect{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}`
 # is a multivariate polynomial.
 
 # %%
@@ -52,26 +52,26 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   \mathcal{A}^{d} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p
-#   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d\right\}
+#   \mathcal{A}^{d} = \left\{ \vect{\alpha} \in \mathbb{N}^p
+#   \; | \; \|\vect{\alpha}\|_1 \leq d\right\}
 #
 # where
 #
 # .. math::
 #
-#   \|\boldsymbol{\alpha}\|_d = \alpha_1 + ... + \alpha_p
+#   \|\vect{\alpha}\|_d = \alpha_1 + ... + \alpha_p
 #
-# is the 1-norm of the multi-index :math:`\boldsymbol{\alpha}`.
+# is the 1-norm of the multi-index :math:`\vect{\alpha}`.
 # Therefore, the truncated polynomial chaos expansion is:
 #
 # .. math::
 #
-#   \tidle{h}(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}).
+#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}^{d}}
+#   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z}).
 #
 # In order to ensure a low error, we may choose a large value of the
 # parameter :math:`P`. This, however, leads to a large number of
-# coefficients :math:`\boldsymbol{\alpha} \in \mathcal{A}^{d}` to
+# coefficients :math:`\vect{\alpha} \in \mathcal{A}^{d}` to
 # estimate. More precisely, the number of coefficients to estimate
 # is ([blatman2009]_ page 73) :
 #
@@ -86,31 +86,31 @@ Create a sparse chaos by integration
 #
 # Low-rank polynomial chaos expansion
 # -----------------------------------
-# For any :math:`\boldsymbol{\alpha} \in \mathbb{N}^p`, let
-# :math:`\|\boldsymbol{\alpha}\|_0` be the rank of the multiindex, that is,
+# For any :math:`\vect{\alpha} \in \mathbb{N}^p`, let
+# :math:`\|\vect{\alpha}\|_0` be the rank of the multiindex, that is,
 # the number of nonzero components:
 #
 # .. math::
 #
-#   \|\boldsymbol{\alpha}\|_0 = \sum_{i = 1}^p \boldsymbol{1}_{\alpha_i > 0}
+#   \|\vect{\alpha}\|_0 = \sum_{i = 1}^p \vect{1}_{\alpha_i > 0}
 #
-# where :math:`\boldsymbol{1}` is the indicator function.
+# where :math:`\vect{1}` is the indicator function.
 # The multiindex set of maximum total degree :math:`d \in \mathbb{N}`
 # and maximum rank :math:`j \in \mathbb{N}` is ([blatman2009]_ page 74):
 #
 # .. math::
 #
-#   \mathcal{A}^{d,j} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p
-#   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d, \;
-#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}.
+#   \mathcal{A}^{d,j} = \left\{ \vect{\alpha} \in \mathbb{N}^p
+#   \; | \; \|\vect{\alpha}\|_1 \leq d, \;
+#   \; \|\vect{\alpha}\|_0 \leq j\right\}.
 #
 # Therefore, the rank-`j` polynomial chaos expansion is:
 #
 # .. math::
 #
-#   \tidle{h}(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in
-#   \mathcal{A}^{d,j}} a_{\boldsymbol{\alpha}}
-#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{z}).
+#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in
+#   \mathcal{A}^{d,j}} a_{\vect{\alpha}}
+#   \psi_{\vect{\alpha}}(\vect{z}).
 #
 # The rank is now a hyperparameter of the model: [blatman2009]_ suggests
 # to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol'
@@ -135,40 +135,40 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   \tidle{h}(\boldsymbol{z}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}}
-#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{z})
+#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}}
+#   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z})
 #
 # An enumeration rule is a function from the set of integers :math:`k` to
-# the corresponding set of multiindices :math:`\boldsymbol{\alpha}`. More
+# the corresponding set of multiindices :math:`\vect{\alpha}`. More
 # precisely, let :math:`r : \mathbb{N} \rightarrow \mathbb{N}^p` be the
 # function such that :
 #
 # .. math::
 #
-#   r(k) = \boldsymbol{\alpha}
+#   r(k) = \vect{\alpha}
 #
 # for any :math:`k \geq 0`.
 # Let :math:`K \in \mathbb{N}` be a parameter representing the number of
 # coefficients considered in the selection. Given an enumeration rule for
-# the multiindices :math:`\boldsymbol{\alpha}`, at most :math:`K` multiindices
+# the multiindices :math:`\vect{\alpha}`, at most :math:`K` multiindices
 # will be considered. Let :math:`\mathcal{A}_K` be the corresponding multiindex set :
 #
 # .. math::
 #
-#   \mathcal{A}_K = \left\{ \boldsymbol{\alpha}
-#   \; | \; r^{-1}(\boldsymbol{\alpha}) = k \leq K \right\}.
+#   \mathcal{A}_K = \left\{ \vect{\alpha}
+#   \; | \; r^{-1}(\vect{\alpha}) = k \leq K \right\}.
 #
 #
 # Let :math:`\epsilon > 0` be a parameter representing the minimum relative
-# value of a significant coefficient :math:`a_{\boldsymbol{\alpha}}`.
+# value of a significant coefficient :math:`a_{\vect{\alpha}}`.
 # The :class:`~openturns.CleaningStrategy` uses the following criteria to select the coefficients :
 #
 # .. math::
 #
 #   \mathcal{A}_\epsilon =
 #   \left\{
-#   |a_{\boldsymbol{\alpha}}| \geq \epsilon \max_{ a_{\boldsymbol{\alpha}}
-#   \in \mathcal{A}_K } |a_{\boldsymbol{\alpha}}| \right\}
+#   |a_{\vect{\alpha}}| \geq \epsilon \max_{ a_{\vect{\alpha}}
+#   \in \mathcal{A}_K } |a_{\vect{\alpha}}| \right\}
 #
 # where :math:`\epsilon` is the significance factor, which by default is
 # :math:`\epsilon = 10^{-4}`. This rule selects only the coefficients which
@@ -186,8 +186,8 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   d := \textrm{max}_{\boldsymbol{\alpha} \in \mathcal{A}}
-#   \|\boldsymbol{\alpha}\|_1.
+#   d := \textrm{max}_{\vect{\alpha} \in \mathcal{A}}
+#   \|\vect{\alpha}\|_1.
 #
 # The index of sparsity of :math:`\mathcal{A}` is ([blatman2009]_  eq. 4.42 page 86) :
 #
@@ -469,7 +469,7 @@ printCoefficientsTable(result, threshold=1.0e-14)
 #
 # The `CleaningStrategy` has the following algorithm. On input, it considers
 # only the first `maximumConsideredTerms` coefficients
-# :math:`a_{\boldsymbol{\alpha}}`. On output it selects the `mostSignificant`
+# :math:`a_{\vect{\alpha}}`. On output it selects the `mostSignificant`
 # most significant coefficients. To do this, it uses the
 # `significanceFactor` parameter.
 #
@@ -635,7 +635,7 @@ score_Q2 = compute_cleaning_PCE(
 # - `currentVectorIndex_` : the current value of the index in the full multiindex set, according to the enumeration rule.
 #
 # Each time the selection method is called, it is passed a
-# coefficient :math:`a_{\boldsymbol{\alpha}}` which is a new candidate to be
+# coefficient :math:`a_{\vect{\alpha}}` which is a new candidate to be
 # considered by the algorithm. The first time the method is evaluated, the
 # active multiindex set is empty, so that it must be filled with the first
 # coefficients in the multiindex set, according to the enumeration rule. The
