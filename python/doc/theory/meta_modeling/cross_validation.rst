@@ -304,7 +304,7 @@ get the value of the surrogate linear model:
     \widehat{\vect{y}}
     = \boldsymbol{D} \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T \vect{y}
 
-Let :math:`\boldsymbol{H} \in \Rset^{n \times n}` be the projection ("hat") matrix ([wang2012]_ eq. 16.8 page 472):
+Let :math:`\boldsymbol{H} \in \Rset^{n \times n}` be the projection ("hat") matrix (see [wang2012]_ eq. 16.8 page 472):
 
 .. math::
 
