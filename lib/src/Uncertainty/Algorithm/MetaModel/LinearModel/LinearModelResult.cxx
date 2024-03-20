@@ -128,21 +128,21 @@ String LinearModelResult::__repr_markdown__() const
 {
   OSS oss(false);
   const UnsignedInteger inputDimension = basis_[0].getInputDimension();
-  oss << getClassName() << Os::GetEndOfLine()
-      << "- input dimension=" << inputDimension << Os::GetEndOfLine()
-      << "- basis size=" << basis_.getSize() << Os::GetEndOfLine()
-      << "- design matrix=" << design_.getNbRows() << " x " << design_.getNbColumns() << Os::GetEndOfLine()
-      << "- coefficients=" << coefficients_.getDimension() << Os::GetEndOfLine()
-      << "- formula=" << condensedFormula_ << Os::GetEndOfLine()
-      << "- coefficients names=" << coefficientsNames_ << Os::GetEndOfLine()
-      << "- residuals size=" << sampleResiduals_.getSize() << Os::GetEndOfLine()
-      << "- standard residuals size=" << standardizedResiduals_.getSize() << Os::GetEndOfLine()
-      << "- inverse Gram diagonal=" << diagonalGramInverse_ << Os::GetEndOfLine()
-      << "- leverages size=" << leverages_.getSize() << Os::GetEndOfLine()
-      << "- Cook's distances size=" << cookDistances_.getSize() << Os::GetEndOfLine()
-      << "- variance=" << sigma2_ << Os::GetEndOfLine()
-      << "- has intercept=" << hasIntercept_ << Os::GetEndOfLine();
-  oss << Os::GetEndOfLine();
+  oss << getClassName() << "\n"
+      << "- input dimension=" << inputDimension << "\n"
+      << "- basis size=" << basis_.getSize() << "\n"
+      << "- design matrix=" << design_.getNbRows() << " x " << design_.getNbColumns() << "\n"
+      << "- coefficients=" << coefficients_.getDimension() << "\n"
+      << "- formula=" << condensedFormula_ << "\n"
+      << "- coefficients names=" << coefficientsNames_ << "\n"
+      << "- residuals size=" << sampleResiduals_.getSize() << "\n"
+      << "- standard residuals size=" << standardizedResiduals_.getSize() << "\n"
+      << "- inverse Gram diagonal=" << diagonalGramInverse_ << "\n"
+      << "- leverages size=" << leverages_.getSize() << "\n"
+      << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
+      << "- variance=" << sigma2_ << "\n"
+      << "- has intercept=" << hasIntercept_ << "\n";
+  oss << "\n";
   return oss;
 }
 
