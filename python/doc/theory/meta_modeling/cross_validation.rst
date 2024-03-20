@@ -222,7 +222,7 @@ Fast leave-one-out cross-validation of a linear model
 
 In this section, we present the fast leave-one-out error estimator
 of a linear least squares model.
-In the special case of of a linear least squares model, [stone1974]_ (eq. 3.13 page 121)
+In the special case of a linear least squares model, [stone1974]_ (see eq. 3.13 page 121)
 showed that the leave-one-out residuals have an expression which depends on the diagonal
 of the projection matrix.
 In this case, the evaluation of the leave-one-out mean squared error involves the
