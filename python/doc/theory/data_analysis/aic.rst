@@ -46,7 +46,7 @@ likelihood is high enough to justify the number of parameters used.
 In context of small data, there is a substantial risk that AIC select
 models that have too many parameters. In other words, the risk of
 overfitting is important. To tackle such issue, the AICc criterion was
-developed : it consists in evaluating the AIC with a correction term 
+developed : it consists in evaluating the AIC with a correction term
 (extra penalty) for small data. The formula is as follows:
 
 .. math::

@@ -24,8 +24,8 @@ where :math:`\mat{C} \in \Rset^{n_X \times n_X}` is the input covariance matrix:
     c_{ij} = \Expect{\left(X_i - \Expect{X_i}\right)\left(X_j - \Expect{X_j} \right)}
 
 for :math:`i, j \in \{1, ..., n_X\}`.
-Notice that the diagonal of the covariance matrix, :math:`c_{ii} = \sigma_i^2`, is
-equal to the variance of the input variable :math:`X_i`.
+Notice that each diagonal element of the covariance matrix :math:`c_{ii} = \sigma_i^2`, is
+equal to the variance of an input variable (:math:`X_i`).
 
 Case 1: scalar output
 ~~~~~~~~~~~~~~~~~~~~~
@@ -51,8 +51,8 @@ The expectation and variance of the first-order expansion are:
     \Var{Y} \approx \sum_{i=1}^{d} \sum_{j=1}^{d}
         c_{ij} \frac{\partial h}{\partial x_i}(\vect{\mu}) \frac{\partial h}{\partial x_j}(\vect{\mu}).
 
-In the special case where the input are independent, then
-the covariance expressions simplifies and we get:
+In the special case where the inputs are independent, then
+the variance expression is simplified and we get:
 
 .. math::
 
