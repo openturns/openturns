@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for sensitivity algorithms
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/KernelSmoothing.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -252,8 +252,8 @@ void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & va
   const UnsignedInteger inputDimension = inputDescription_.getSize();
   Point standardDeviationFO(inputDimension);
   Point standardDeviationTO(inputDimension);
-  ComposedDistribution::DistributionCollection marginalsFO(inputDimension);
-  ComposedDistribution::DistributionCollection marginalsTO(inputDimension);
+  JointDistribution::DistributionCollection marginalsFO(inputDimension);
+  JointDistribution::DistributionCollection marginalsTO(inputDimension);
   const Point aggregatedFO(getAggregatedFirstOrderIndices());
   const Point aggregatedTO(getAggregatedTotalOrderIndices());
   Bool allNormalFO = true;
@@ -282,12 +282,12 @@ void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & va
   if (allNormalFO)
     firstOrderIndiceDistribution_ = Normal(aggregatedFO, standardDeviationFO, CorrelationMatrix(inputDimension));
   else
-    firstOrderIndiceDistribution_ = ComposedDistribution(marginalsFO);
+    firstOrderIndiceDistribution_ = JointDistribution(marginalsFO);
 
   if (allNormalTO)
     totalOrderIndiceDistribution_ = Normal(aggregatedTO, standardDeviationTO, CorrelationMatrix(inputDimension));
   else
-    totalOrderIndiceDistribution_ = ComposedDistribution(marginalsTO);
+    totalOrderIndiceDistribution_ = JointDistribution(marginalsTO);
 }
 
 
@@ -301,8 +301,8 @@ Interval SobolIndicesAlgorithmImplementation::getFirstOrderIndicesInterval() con
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     Distribution marginal(distribution.getMarginal(j));
-    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
-    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+    lowerBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 - confidenceLevel_));
+    upperBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 + confidenceLevel_));
   }
   return Interval(lowerBound, upperBound);
 }
@@ -370,8 +370,8 @@ Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() con
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     Distribution marginal(distribution.getMarginal(j));
-    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
-    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+    lowerBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 - confidenceLevel_));
+    upperBound[j] = marginal.computeScalarQuantile(0.5 * (1.0 + confidenceLevel_));
   }
   return Interval(lowerBound, upperBound);
 }

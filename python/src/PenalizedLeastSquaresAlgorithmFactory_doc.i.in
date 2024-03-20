@@ -13,5 +13,5 @@ Notes
 Implementation of an approximation algorithm implementation factory which builds
 an :class:`~openturns.ApproximationAlgorithm`.
 
-This class is not usable because it has sense only whithin the
+This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."

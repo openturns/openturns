@@ -6,5 +6,6 @@
 
 %include HessianImplementation_doc.i
 
+%copyctor OT::HessianImplementation;
+
 %include openturns/HessianImplementation.hxx
-namespace OT { %extend HessianImplementation { HessianImplementation(const HessianImplementation & other) { return new OT::HessianImplementation(other); } } }

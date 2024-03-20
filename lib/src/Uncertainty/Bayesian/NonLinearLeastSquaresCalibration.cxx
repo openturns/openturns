@@ -2,7 +2,7 @@
 /**
  *  @brief Default NonLinearLeastSquaresCalibration
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     const Sample & inputObservations,
     const Sample & outputObservations,
     const Point & startingPoint)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::ActualMaxScalar).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
@@ -304,7 +304,6 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 {
   const Function residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
   LeastSquaresProblem problem(residualFunction);
-  algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
   try
   {

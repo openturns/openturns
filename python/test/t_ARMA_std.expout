@@ -1,14 +1,14 @@
 coefficientsP =  class=ARMACoefficients, shift=0, value=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.2,0.3,0.7,0.4]
 coefficientsQ =  class=ARMACoefficients, shift=0, value=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.1,0,0,0.5]
-dist =  ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2))
+dist =  JointDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2))
 Last values of the process =  0 : [ 0.629877 0.135276 ]
 Last innovations of the process =  0 : [ 0.882805  0.0325028 ]
 process =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
-X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ JointDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
 ARMA process =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
-X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ JointDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
 ARMA process with ARMAstate =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
-X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ JointDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
 One realization=      [ t            X0           X1           ]
  0 : [  0            0.010204    -0.00744086  ]
  1 : [  0.1         -0.00287281  -0.0293307   ]

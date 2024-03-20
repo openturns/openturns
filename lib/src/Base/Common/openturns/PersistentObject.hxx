@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObject saves and reloads the object's internal state
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -109,9 +109,9 @@ public:
    * This method compares objects based on their content.
    */
   inline virtual
-  Bool operator ==(const PersistentObject & /*other*/) const
+  Bool operator ==(const PersistentObject & other) const
   {
-    return true;
+    return this == &other;
   }
 
   /**
@@ -151,6 +151,19 @@ public:
     return OSS() << offset << __repr__();
   }
 
+  /* Markdown converter */
+  inline
+  String __repr_markdown__() const override
+  {
+    return __repr__();
+  }
+
+  /* Html converter */
+  inline
+  String _repr_html_() const override
+  {
+    return __repr__();
+  }
 
   /**
    * Id accessor
@@ -250,12 +263,12 @@ public:
   /** Method save() stores the object through the StorageManager
    * @internal
    */
-  void save(StorageManager & mgr, const String & label, bool fromStudy = false) const;
+  void save(StorageManager & mgr, const String & label, const Bool fromStudy = false) const;
 
   /** Method save() stores the object through the StorageManager
    * @internal
    */
-  void save(StorageManager & mgr, bool fromStudy = false) const;
+  void save(StorageManager & mgr, const Bool fromStudy = false) const;
 
   /** Method save() stores the object through the StorageManager
    *

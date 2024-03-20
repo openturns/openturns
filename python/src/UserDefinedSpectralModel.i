@@ -6,5 +6,6 @@
 
 %include UserDefinedSpectralModel_doc.i
 
+%copyctor OT::UserDefinedSpectralModel;
+
 %include openturns/UserDefinedSpectralModel.hxx
-namespace OT{ %extend UserDefinedSpectralModel { UserDefinedSpectralModel(const UserDefinedSpectralModel & other) { return new OT::UserDefinedSpectralModel(other); } } }

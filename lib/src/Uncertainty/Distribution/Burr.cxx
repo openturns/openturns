@@ -2,7 +2,7 @@
 /**
  *  @brief The Burr distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published bydistributiolib
@@ -189,6 +189,13 @@ Scalar Burr::computeScalarQuantile(const Scalar prob,
 {
   if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
   return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
+}
+
+Scalar Burr::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for GeneralizedExtremeValue distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -172,7 +172,7 @@ public:
         const Scalar c1 = xi * yir;
         if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
         {
-          ll += -std::log(SpecFunc::MaxScalar);
+          ll += -std::log(SpecFunc::ActualMaxScalar);
           continue;
         }
         const Scalar log1pC1 = std::log1p(c1);
@@ -184,7 +184,7 @@ public:
           const Scalar c2 = xi * yik;
           if (c2 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::MaxScalar);
+            ll += -std::log(SpecFunc::ActualMaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c2);
@@ -272,21 +272,20 @@ public:
     // Adapt mu
     const Point cv(constraint(x0));
     if (xi0 < 0.0)
-      {
-        if (cv[0] <= 0.0)
-          x0[0] = zMax_;
-      }
+    {
+      if (cv[0] <= 0.0)
+        x0[0] = zMax_;
+    }
     else
-      {
-        if (cv[1] <= 0.0)
-          x0[0] = zMin_;
-      }
+    {
+      if (cv[1] <= 0.0)
+        x0[0] = zMin_;
+    }
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
-    solver.setVerbose(Log::HasDebug());
     solver.setProblem(problem);
-    solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+    solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
     solver.setStartingPoint(x0);
     try
     {
@@ -343,9 +342,8 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfProfileLike
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
   solver.run();
 
@@ -450,9 +448,8 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
   solver.run();
   const Point optimalParameter(solver.getResult().getOptimalPoint());
@@ -522,7 +519,7 @@ public:
 
       if (sigma <= 0.0)
       {
-        ll += -std::log(SpecFunc::MaxScalar);
+        ll += -std::log(SpecFunc::ActualMaxScalar);
         continue;
       }
 
@@ -532,7 +529,7 @@ public:
       minC1 = std::min(minC1, 1.0 + c1);
       if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
       {
-        ll += -std::log(SpecFunc::MaxScalar);
+        ll += -std::log(SpecFunc::ActualMaxScalar);
         continue;
       }
       const Scalar log1pC1 = std::log1p(c1);
@@ -695,9 +692,8 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
 
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
   solver.run();
   const Point optimalParameter(solver.getResult().getOptimalPoint());
@@ -712,7 +708,7 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
   {
     thetaFunction.setParameter(optimalParameter);
     Point param(thetaFunction(timeStamps[i]));
-    const Scalar pdfIRef = buildAsGeneralizedExtremeValue(param).computePDF(sample[i]);
+    const Scalar pdfIRef = buildAsGeneralizedExtremeValue(param).computeLogPDF(sample[i]);
 
     // evaluate dpdf/dbeta by finite-differences
     Matrix dpdfi(nP, 1);
@@ -721,15 +717,14 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
       Point betaIj(optimalParameter);
       betaIj[j] += epsilon;
       thetaFunction.setParameter(betaIj);
-      const Scalar pdfIj = buildAsGeneralizedExtremeValue(thetaFunction(timeStamps[i])).computePDF(sample[i]);
+      const Scalar pdfIj = buildAsGeneralizedExtremeValue(thetaFunction(timeStamps[i])).computeLogPDF(sample[i]);
       dpdfi(j, 0) = (pdfIj - pdfIRef) / epsilon;
     }
-    dpdfi = dpdfi / pdfIRef;
-    fisher = fisher + dpdfi * dpdfi.transpose() / size;
+    fisher = fisher + dpdfi.computeGram(false);
   }
   thetaFunction.setParameter(optimalParameter); // reset before return
 
-  const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / size).getImplementation());
+  const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP)).getImplementation());
   const Normal parameterDistribution(optimalParameter, covariance);
   const TimeVaryingResult result(*this, sample, thetaFunction, timeStamps, parameterDistribution, normalizationFunction, logLikelihood);
   return result;
@@ -874,9 +869,8 @@ public:
     // solve optimization problem
     Cobyla solver(problem);
     solver.setIgnoreFailure(true);
-    solver.setVerbose(Log::HasDebug());
     solver.setProblem(problem);
-    solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+    solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
     solver.setStartingPoint(x0);
     try
     {
@@ -932,9 +926,8 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   // solve optimization problem
   Cobyla solver(problem);
   solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasDebug());
   solver.setProblem(problem);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber"));
   solver.setStartingPoint(x0);
   solver.run();
 
@@ -964,7 +957,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   Normal parameterDistribution(optimalParameter, CovarianceMatrix(covZm.getImplementation()));
   parameterDistribution.setDescription({"zm", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
-  
+
   // Compute the extreme possible values for zm given the sample and (mu, sigma)
   // As the function xi->zm(xi;mu,sigma,m) is increasing for all m>=2, we get
   // zmMin = mu + sigma * (exp(-xiMin * log(-log(1-1/m))) - 1) / xiMin

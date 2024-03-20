@@ -2,7 +2,7 @@
 /**
  *  @brief The SmoothedUniform distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,10 +67,6 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
-  using RandomMixture::computeDDF;
-  Point computeDDF(const Point & point) const override;
-
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using RandomMixture::computePDF;
   Scalar computePDF(const Point & point) const override;
@@ -91,6 +87,12 @@ public:
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using RandomMixture::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
+
+  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
@@ -148,9 +150,6 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-
-  /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** The main parameter set of the distribution */
   Scalar a_;

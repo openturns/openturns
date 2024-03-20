@@ -1,0 +1,57 @@
+%feature("docstring") OT::BlockIndependentCopula
+"Merge of a collection of independent copulas.
+
+Parameters
+----------
+copulas : list of copulas.
+    The collection of copulas to be merged.
+
+Notes
+-----
+Let's :math:`(C_1\, \dots, C_K)` a collection of :math:`K` copulas respectively defined on :math:`[0,1]^{n_i}` with :math:`n_1 + \dots + n_K = d`.
+
+The  merged copula :math:`C` is defined on :math:`[0,1]^d` by:
+
+.. math::
+
+    C(u_1, \dots, u_d) = C_1(u_1, \dots, u_{n_1}) C_2(u_{n_1+1}, \dots, u_{n_2}) \dots C_K(u_{n_1+\dots + n_{K-1}+1}, \dots, u_d) 
+
+
+It means that the  subvectors :math:`(u_{n_{i-1}+1}, \dots, u_{n_i})_i` are independent.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(3)
+>>> R[0, 1] = 0.5
+>>> R[0, 2] = 0.25
+>>> collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]
+>>> copula = ot.BlockIndependentCopula(collection)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlockIndependentCopula::getCopulaCollection
+"Accessor to the list of the copulas.
+
+Returns
+-------
+copulas : list of copulas
+    The collection of the copulas to be merged."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlockIndependentCopula::setCopulaCollection
+"Accessor to the list of the copulas.
+
+Parameters
+----------
+copulas : list of copulas
+    The collection of copulas to be merged."
+
+

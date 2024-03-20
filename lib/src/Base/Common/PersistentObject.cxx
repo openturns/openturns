@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObject saves and reloads the object's internal state
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(PersistentObject)
 
 /* Method save() stores the object through the StorageManager */
-void PersistentObject::save(StorageManager & mgr, const String & label, bool fromStudy) const
+void PersistentObject::save(StorageManager & mgr, const String & label, const Bool fromStudy) const
 {
   if (! mgr.isSavedObject(getId()))
   {
@@ -41,7 +41,7 @@ void PersistentObject::save(StorageManager & mgr, const String & label, bool fro
 }
 
 /* Method save() stores the object through the StorageManager */
-void PersistentObject::save(StorageManager & mgr, bool fromStudy) const
+void PersistentObject::save(StorageManager & mgr, const Bool fromStudy) const
 {
   if (! mgr.isSavedObject(getId()))
   {

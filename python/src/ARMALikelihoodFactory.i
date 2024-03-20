@@ -6,6 +6,6 @@
 
 %include ARMALikelihoodFactory_doc.i
 
-%include openturns/ARMALikelihoodFactory.hxx
+%copyctor OT::ARMALikelihoodFactory;
 
-namespace OT { %extend ARMALikelihoodFactory { ARMALikelihoodFactory(const ARMALikelihoodFactory & other) { return new OT::ARMALikelihoodFactory(other); } } }
+%include openturns/ARMALikelihoodFactory.hxx

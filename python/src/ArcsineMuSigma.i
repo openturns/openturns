@@ -6,5 +6,6 @@
 
 %include ArcsineMuSigma_doc.i
 
+%copyctor OT::ArcsineMuSigma;
+
 %include openturns/ArcsineMuSigma.hxx
-namespace OT{ %extend ArcsineMuSigma { ArcsineMuSigma(const ArcsineMuSigma & other) { return new OT::ArcsineMuSigma(other); } } }

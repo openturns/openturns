@@ -2,7 +2,7 @@
 /**
  *  @brief XMLH5StorageManager implements xml/h5 storage
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,8 +66,11 @@ public:
   XMLH5StorageManager * clone() const override;
 
 #ifndef SWIG
-  void checkStorageManager() override;
-  void setStorageManager() override;
+  void initialize(const SaveAction caller) override;
+
+  void initialize(const LoadAction caller) override;
+  void finalize(const LoadAction caller) override;
+
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
 
@@ -76,6 +79,9 @@ public:
 #endif /* SWIG */
 
 private:
+  void checkStorageManager() override;
+  void setStorageManager() override;
+
   Pointer<XMLH5StorageManagerImplementation> p_implementation_;
 
 }; /* class H5StorageManager */

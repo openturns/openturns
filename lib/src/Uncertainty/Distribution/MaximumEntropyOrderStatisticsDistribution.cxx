@@ -2,7 +2,7 @@
 /**
  *  @brief The maximum entropy order statistics distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -843,13 +843,13 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
     upperBound[i] = marginalRange.getUpperBound()[0];
     finiteLowerBound[i] = marginalRange.getFiniteLowerBound()[0];
     finiteUpperBound[i] = marginalRange.getFiniteUpperBound()[0];
-    // The description of the ComposedDistribution is built first by using the marginal description
+    // The description of the JointDistribution is built first by using the marginal description
     // then by using the marginal name if the description is empty, which should never occur
     const String marginalDescription(coll[i].getDescription()[0]);
     if (marginalDescription.size() > 0) description[i] = marginalDescription;
     else
     {
-      LOGINFO(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the ComposedDistribution, because the marginal description is empty.");
+      LOGINFO(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the JointDistribution, because the marginal description is empty.");
       const String marginalName(coll[i].getName());
       description[i] = marginalName;
     }
@@ -913,7 +913,7 @@ Distribution MaximumEntropyOrderStatisticsDistribution::getCopula() const
 }
 
 /* Flag to tell if we use approximation for the exponential term */
-void MaximumEntropyOrderStatisticsDistribution::useApproximation(const bool flag)
+void MaximumEntropyOrderStatisticsDistribution::useApproximation(const Bool flag)
 {
   if (flag != useApproximation_)
   {

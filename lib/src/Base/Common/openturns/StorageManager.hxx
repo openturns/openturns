@@ -2,7 +2,7 @@
 /**
  *  @brief StorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,7 +85,7 @@ public:
   };
 
   virtual
-  Pointer<Advocate> registerObject(const PersistentObject & obj, bool fromStudy = false);
+  Pointer<Advocate> registerObject(const PersistentObject & obj, const Bool fromStudy = false);
 
   virtual
   Advocate readObject();
@@ -109,7 +109,7 @@ public:
    * @param obj The object to be saved
    * @param fromStudy Tell if the object was explicitly put in the study or not
    */
-  virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
+  virtual void save(const PersistentObject & obj, const String & label, const Bool fromStudy = false);
 
   /**
    * This method reloads the whole study from the medium

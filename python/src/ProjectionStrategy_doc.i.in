@@ -28,3 +28,5 @@ OT_ProjectionStrategy_getWeights_doc
 OT_ProjectionStrategy_setExperiment_doc
 %feature("docstring") OT::ProjectionStrategy::setMeasure
 OT_ProjectionStrategy_setMeasure_doc
+%feature("docstring") OT::ProjectionStrategy::getDesignProxy
+OT_ProjectionStrategy_getDesignProxy_doc

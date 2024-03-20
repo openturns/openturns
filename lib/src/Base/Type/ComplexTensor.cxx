@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexTensor implements the classical mathematical tensor
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,7 +86,7 @@ String ComplexTensor::__str__(const String & offset) const
   if ( (rows   >= ResourceMap::GetAsUnsignedInteger("ComplexTensor-size-visible-in-str-from")) ||
        (cols   >= ResourceMap::GetAsUnsignedInteger("ComplexTensor-size-visible-in-str-from")) ||
        (sheets >= ResourceMap::GetAsUnsignedInteger("ComplexTensor-size-visible-in-str-from")) )
-    oss << rows << "x" << cols << "x" << sheets << Os::GetEndOfLine();
+    oss << rows << "x" << cols << "x" << sheets << "\n";
 
   size_t lwidth = 0;
   size_t rwidth = 0;
@@ -101,12 +101,12 @@ String ComplexTensor::__str__(const String & offset) const
       }
 
   const char * nl = "";
-  for( UnsignedInteger k = 0; k < sheets; ++k, nl = Os::GetEndOfLine() )
+  for( UnsignedInteger k = 0; k < sheets; ++k, nl = "\n" )
   {
-    oss << nl << "sheet #" << k << Os::GetEndOfLine() << offset;
+    oss << nl << "sheet #" << k << "\n" << offset;
     const char * bracket = "[";
     const char * newline = "";
-    for( UnsignedInteger i = 0; i < rows; ++i, newline = Os::GetEndOfLine(), bracket = " " )
+    for( UnsignedInteger i = 0; i < rows; ++i, newline = "\n", bracket = " " )
     {
       oss << newline << offset << bracket << "[ ";
       const char * sep = "";

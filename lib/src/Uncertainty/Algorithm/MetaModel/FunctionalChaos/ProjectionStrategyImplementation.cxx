@@ -2,7 +2,7 @@
 /**
  *  @brief This is a abstract class for projection strategy implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,7 @@
 #include "openturns/FixedExperiment.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -130,10 +131,61 @@ ProjectionStrategyImplementation * ProjectionStrategyImplementation::clone() con
 /* String converter */
 String ProjectionStrategyImplementation::__repr__() const
 {
-  return OSS() << "class=" << GetClassName()
-         << " measure=" << measure_;
+  OSS oss(false);
+  oss << "class=" << GetClassName()
+      << " alpha_k_p=" << alpha_k_p_
+      << " residual=" << residual_p_
+      << " relativeError=" << relativeError_p_
+      << " measure=" << measure_
+      << " weightedExperiment=" << weightedExperiment_
+      << " inputSample_=" << inputSample_
+      << " outputSample=" << outputSample_
+      << " weights_=" << weights_
+      << " proxy=" << proxy_;
+  return oss;
 }
 
+/* String converter */
+String ProjectionStrategyImplementation::__str__(const String &) const
+{
+  return __repr_markdown__();
+}
+
+/* String converter */
+String ProjectionStrategyImplementation::_repr_html_() const
+{
+  OSS oss(false);
+  oss << GetClassName() << "\n"
+      << "<ul>\n"
+      << "  <li>coefficients: dimension=" << alpha_k_p_.getDimension() << "</li>\n"
+      << "  <li>residual: " << residual_p_ << "</li>\n"
+      << "  <li>relative error: " << relativeError_p_ << "</li>\n"
+      << "  <li>measure: " << measure_.getClassName() << "</li>\n"
+      << "  <li>weighted experiment: " << weightedExperiment_.getClassName() << "</li>\n"
+      << "  <li>input sample: size= " << inputSample_.getSize() << " x dimension= " << inputSample_.getDimension() << "</li>\n"
+      << "  <li>output sample: size= " << outputSample_.getSize() << " x dimension= " << outputSample_.getDimension() << "</li>\n"
+      << "  <li>weights: dimension= " << weights_.getDimension() << "</li>\n"
+      << "  <li>design: size= " << proxy_.getSampleSize() << "</li>\n"
+      << "<ul>\n";
+  return oss;
+}
+
+/* String converter */
+String ProjectionStrategyImplementation::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << GetClassName() << "\n"
+      << "- coefficients: dimension=" << alpha_k_p_.getDimension() << "\n"
+      << "- residual: " << residual_p_ << "\n"
+      << "- relative error: " << relativeError_p_ << "\n"
+      << "- measure: " << measure_.getClassName() << "\n"
+      << "- weighted experiment: " << weightedExperiment_.getClassName() << "\n"
+      << "- input sample: size= " << inputSample_.getSize() << " x dimension= " << inputSample_.getDimension() << "\n"
+      << "- output sample: size= " << outputSample_.getSize() << " x dimension= " << outputSample_.getDimension() << "\n"
+      << "- weights: dimension= " << weights_.getDimension() << "\n"
+      << "- design: size= " << proxy_.getSampleSize() << "\n";
+  return oss;
+}
 
 /* Measure accessor */
 void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
@@ -219,6 +271,12 @@ Point ProjectionStrategyImplementation::getCoefficients() const
   return alpha_k_p_;
 }
 
+/* Design proxy accessor */
+DesignProxy ProjectionStrategyImplementation::getDesignProxy() const
+{
+  return proxy_;
+}
+
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategyImplementation::computeCoefficients(const Function &,
     const FunctionCollection &,
@@ -243,6 +301,16 @@ void ProjectionStrategyImplementation::save(Advocate & adv) const
 void ProjectionStrategyImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+}
+
+Collection<Indices> ProjectionStrategyImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getSelectionHistory";
+}
+
+Point ProjectionStrategyImplementation::getErrorHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getErrorHistory";
 }
 
 END_NAMESPACE_OPENTURNS

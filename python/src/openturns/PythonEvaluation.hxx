@@ -2,7 +2,7 @@
 /**
  * @brief PythonEvaluation declaration
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -102,15 +102,15 @@ private:
   void initializePythonState();
 
   /** The underlying Python callable object */
-  PyObject * pyObj_;
+  PyObject * pyObj_ = nullptr;
 
   /** Tell whether Python callable object define these members */
-  Bool pyObj_has_exec_;
-  Bool pyObj_has_exec_sample_;
-  Bool pyObj_discard_openturns_memoryview_;
+  Bool pyObj_has_exec_ = false;
+  Bool pyObj_has_exec_sample_ = false;
+  Bool pyObj_discard_openturns_memoryview_ = true;
 
   /** Python openturns.memoryview.Buffer class */
-  PyObject * pyBufferClass_;
+  PyObject * pyBufferClass_ = nullptr;
 
 }; /* class PythonEvaluation */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Trapezoidal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -87,15 +87,14 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   solver.setRhoBeg(rhoBeg);
   const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");
   solver.setMaximumAbsoluteError(rhoEnd);
-  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   const Scalar delta = (max - min) / (2.0 + size);
   startingPoint[0] = min + delta;// a
   startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
   startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
   startingPoint[3] = max - delta;// d
   solver.setStartingPoint(startingPoint);
-  solver.setIgnoreFailure(true);
-  solver.setVerbose(Log::HasInfo());
+  solver.setCheckStatus(false);
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint

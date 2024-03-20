@@ -4,7 +4,7 @@
  *        point to field function or between point to field function and
  *        field function
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -118,7 +118,7 @@ String PointToFieldConnection::__repr__() const
 String PointToFieldConnection::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   if (startByPointToFieldFunction_)
   {
     oss << "(" << pointToFieldFunction_ << ")o(";

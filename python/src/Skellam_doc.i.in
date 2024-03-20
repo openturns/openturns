@@ -1,16 +1,17 @@
 %feature("docstring") OT::Skellam
 "Skellam distribution.
 
-Available constructors:
-    Skellam(*lambda1=1.0, lambda2=1.0*)
-
 Parameters
 ----------
 lambda1 : float, :math:`\lambda_1 > 0`
     First :class:`~openturns.Poisson` distribution's parameter.
 
+    Default value is 1.0.
+
 lambda2 : float, :math:`\lambda_2 > 0`
     Second :class:`~openturns.Poisson` distribution's parameter.
+
+    Default value is 1.0.
 
 Notes
 -----
@@ -18,7 +19,7 @@ The Skellan distribution takes its values in :math:`\Zset`.
 It is the distribution of :math:`(X_1 - X_2)` for :math:`(X_1, X_2)` independent
 and respectively distributed according to Poisson(:math:`\lambda_i`).
 
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 
@@ -103,3 +104,23 @@ lambda1 : float, :math:`\lambda_1 >0`
     First Poisson distribution's parameter :math:`\lambda_1`.
 lambda2 : float, :math:`\lambda_2 >0`
     Second Poisson distribution's parameter :math:`\lambda_2`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::getMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the PDF/CDF computation."

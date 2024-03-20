@@ -22,7 +22,6 @@ mats.extend(
 )
 
 for a in mats:
-
     # try conversion
     ref = ot.Matrix([[1.0, 0.0], [0.0, 0.5]])
     iname = a.__class__.__name__
@@ -55,7 +54,7 @@ for a in mats:
         print("no vec mul for", iname)
 
     try:
-        a3 = a ** 3
+        a3 = a**3
         print("a**3=", a3)
     except Exception:
         print("no pow for", iname)

@@ -4,7 +4,8 @@ Export a field to VTK
 """
 # %%
 # The objective here is to create a field and export it as a VTK file.
-# A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n` and a sample of values in :math:`\mathbb{R}^d` associated to each vertex of the mesh.
+# A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n`
+# and a sample of values in :math:`\mathbb{R}^d` associated to each vertex of the mesh.
 #
 # We note :math:`(\underline{t}_0, \dots, \underline{t}_{N-1})` the vertices of :math:`\mathcal{M}`
 # and :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` the associated values in :math:`\mathbb{R}^d`.

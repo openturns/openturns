@@ -59,7 +59,7 @@ ott.assert_almost_equal(
 )
 
 # try MLE on multiple parameters
-pdist = ot.ComposedDistribution(
+pdist = ot.JointDistribution(
     [
         ot.Normal(0.0, 2.0),
         ot.TruncatedNormal(1.0, 2.0, 1e-6, 10.0),
@@ -138,6 +138,20 @@ assert (
     estimator_timevar.getParameterDistribution().getImplementation().__class__.__name__
     == "Normal"
 )
+cov_ref = [
+    [0.000816453, -0.00115985, 0.000123538, -0.00129949],
+    [-0.00115985, 0.00228001, -0.000159825, 0.00166341],
+    [0.000123538, -0.000159825, 0.000130923, -0.000522572],
+    [-0.00129949, 0.00166341, -0.000522572, 0.00733463],
+]
+print(estimator_timevar.getParameterDistribution().getCovariance())
+ott.assert_almost_equal(
+    ot.Matrix(estimator_timevar.getParameterDistribution().getCovariance()),
+    ot.Matrix(cov_ref),
+    2e-3,
+    1e-5,
+)
+
 dist0 = estimator_timevar.getDistribution(t0)
 print(dist0)
 assert dist0.getImplementation().__class__.__name__ == "GeneralizedExtremeValue"

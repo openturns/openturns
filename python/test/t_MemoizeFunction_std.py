@@ -57,11 +57,11 @@ def py_f(X):
 # differences by default
 ot_f = ot.MemoizeFunction(ot.PythonFunction(3, 3, py_f))
 x = [1.0, 2.0, 3.0]
-n_calls_0 = ot_f.getCallsNumber()
+n_calls_0 = ot_f.getEvaluationCallsNumber()
 res_f = ot_f(x)
 res_grad = ot_f.gradient(x)
 res_hess = ot_f.hessian(x)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 # 25=1+6+18
 assert_almost_equal(n_calls_1 - n_calls_0, 25, 0.0, 0.0)
 # Do the computation once again
@@ -69,7 +69,7 @@ n_calls_0 = n_calls_1
 res_f = ot_f(x)
 res_grad = ot_f.gradient(x)
 res_hess = ot_f.hessian(x)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 # 0=everything is reused
 assert_almost_equal(n_calls_1 - n_calls_0, 0, 0.0, 0.0)
 # Now, switch to noncentered gradients to reduce the calls to the minimum
@@ -81,7 +81,7 @@ n_calls_0 = n_calls_1
 res_f = ot_f(x)
 res_grad = ot_f.gradient(x)
 res_hess = ot_f.hessian(x)
-n_calls_1 = ot_f.getCallsNumber()
+n_calls_1 = ot_f.getEvaluationCallsNumber()
 # 22=1+3(3+1 reused)+18
 assert_almost_equal(n_calls_1 - n_calls_0, 22, 0.0, 0.0)
 

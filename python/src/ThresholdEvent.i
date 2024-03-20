@@ -6,5 +6,6 @@
 
 %include ThresholdEvent_doc.i
 
+%copyctor OT::ThresholdEvent;
+
 %include openturns/ThresholdEvent.hxx
-namespace OT { %extend ThresholdEvent { ThresholdEvent(const ThresholdEvent & other) { return new OT::ThresholdEvent(other); } } }

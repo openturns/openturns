@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ public:
   typedef DomainImplementation::BoolCollection BoolCollection;
 
   /** Default constructor */
-  explicit LevelSet(const UnsignedInteger dimension = 1);
+  LevelSet();
 
   /** Parameters constructor, simplified for 1D case */
   explicit LevelSet(const Function & function,

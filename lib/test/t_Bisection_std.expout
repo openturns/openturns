@@ -1,4 +1,4 @@
-myAlgo=class=Bisection derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=0 maximumFunctionEvaluation=100 usedFunctionEvaluation=0
+myAlgo=class=Bisection derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=0 maximumCallsNumber=100 callsNumber=0
 Solve x-cos(2*x)=0 for x
 x=0.51493
-myAlgo=class=Bisection derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=0 maximumFunctionEvaluation=100 usedFunctionEvaluation=19
+myAlgo=class=Bisection derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=0 maximumCallsNumber=100 callsNumber=19

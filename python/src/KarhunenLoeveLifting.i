@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveLifting_doc.i
 
+%copyctor OT::KarhunenLoeveLifting;
+
 %include openturns/KarhunenLoeveLifting.hxx
-namespace OT { %extend KarhunenLoeveLifting { KarhunenLoeveLifting(const KarhunenLoeveLifting & other) { return new OT::KarhunenLoeveLifting(other); } } }

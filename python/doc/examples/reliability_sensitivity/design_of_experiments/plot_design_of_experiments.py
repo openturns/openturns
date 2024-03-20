@@ -1,10 +1,10 @@
 """
-Various design of experiments in OpenTURNS
-==========================================
+Various design of experiments
+=============================
 """
 # %%
 #
-# The goal of this example is to present several design of experiments available in OpenTURNS.
+# The goal of this example is to present several design of experiments available in the library.
 
 # %%
 # Distribution
@@ -23,7 +23,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 dim = 2
 X = [ot.Uniform()] * dim
-distribution = ot.ComposedDistribution(X)
+distribution = ot.JointDistribution(X)
 bounds = distribution.getRange()
 
 # %%
@@ -43,7 +43,7 @@ fig = otv.PlotDesign(sample, bounds)
 # %%
 dim = 3
 X = [ot.Uniform()] * dim
-distribution = ot.ComposedDistribution(X)
+distribution = ot.JointDistribution(X)
 bounds = distribution.getRange()
 
 # %%
@@ -59,7 +59,7 @@ fig.set_size_inches(10, 10)
 # ------------------------
 
 # %%
-distribution = ot.ComposedDistribution([ot.Uniform()] * 3)
+distribution = ot.JointDistribution([ot.Uniform()] * 3)
 samplesize = 5
 experiment = ot.LHSExperiment(distribution, samplesize, False, False)
 sample = experiment.generate()
@@ -83,7 +83,7 @@ fig.set_size_inches(10, 10)
 # -------------
 
 # %%
-distribution = ot.ComposedDistribution([ot.Uniform()] * 3)
+distribution = ot.JointDistribution([ot.Uniform()] * 3)
 samplesize = 10
 
 # %%
@@ -111,14 +111,14 @@ fig.set_size_inches(10, 10)
 
 # %%
 dim = 2
-distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
+distribution = ot.JointDistribution([ot.Uniform()] * dim)
 bounds = distribution.getRange()
 
 # %%
 sequence = ot.SobolSequence(dim)
 
 # %%
-samplesize = 2 ** 5  # Sobol' sequences are in base 2
+samplesize = 2**5  # Sobol' sequences are in base 2
 experiment = ot.LowDiscrepancyExperiment(sequence, distribution, samplesize, False)
 sample = experiment.generate()
 
@@ -126,7 +126,7 @@ sample = experiment.generate()
 samplesize
 
 # %%
-subdivisions = [2 ** 2, 2 ** 1]
+subdivisions = [2**2, 2**1]
 fig = otv.PlotDesign(sample, bounds, subdivisions)
 fig.set_size_inches(6, 6)
 
@@ -141,7 +141,7 @@ fig.set_size_inches(6, 6)
 
 # %%
 dim = 2
-distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
+distribution = ot.JointDistribution([ot.Uniform()] * dim)
 bounds = distribution.getRange()
 
 # %%
@@ -149,7 +149,7 @@ sequence = ot.HaltonSequence(dim)
 
 # %%
 # Halton sequence uses prime numbers 2 and 3 in two dimensions.
-samplesize = 2 ** 2 * 3 ** 2
+samplesize = 2**2 * 3**2
 experiment = ot.LowDiscrepancyExperiment(sequence, distribution, samplesize, False)
 sample = experiment.generate()
 
@@ -157,7 +157,7 @@ sample = experiment.generate()
 samplesize
 
 # %%
-subdivisions = [2 ** 2, 3]
+subdivisions = [2**2, 3]
 fig = otv.PlotDesign(sample, bounds, subdivisions)
 fig.set_size_inches(6, 6)
 

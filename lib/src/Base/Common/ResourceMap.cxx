@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines top-most resourceMap strategies
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -708,7 +708,6 @@ void ResourceMap::loadDefaultConfiguration()
   // DrawableImplementation parameters //
   addAsScalar("Drawable-DefaultLineWidth", 1.0);
   addAsString("Drawable-AlternativePattern", "S");
-  addAsString("Drawable-DefaultColor", "blue");
   addAsString("Drawable-DefaultFillStyle", "solid");
   addAsString("Drawable-DefaultLineStyle", "solid");
   addAsString("Drawable-DefaultPaletteName", "Tableau");
@@ -777,8 +776,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
+  addAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration", -1.0);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
+  addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 
   // Pagmo parameters //
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);
@@ -887,6 +888,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
+  addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
@@ -1037,6 +1039,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber", 50);
 
   // EnclosingSimplexAlgorithm parameters
+  addAsScalar("EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon", 1.0e-12);
   addAsUnsignedInteger("EnclosingSimplexAlgorithm-LargeDimension", 5);
 
   // Matrix parameters
@@ -1073,8 +1076,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
-  // ComposedDistribution parameters //
-  addAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
+  // JointDistribution parameters //
+  addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
 
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
@@ -1128,8 +1131,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel", 0.95);
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
+  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "TNC");
 
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
@@ -1217,6 +1223,11 @@ void ResourceMap::loadDefaultConfiguration()
   // TruncatedNormalFactory parameters //
   addAsScalar("TruncatedNormalFactory-SigmaLowerBound", 1.0e-4);
 
+  // TruncatedOverMesh parameters //
+  addAsString("TruncatedOverMesh-OptimizationAlgorithm", "TNC");
+  addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
+  addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);
@@ -1237,7 +1248,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
-  addAsScalar("QuantileMatchingFactory-QuantileEpsilon", 1.0e-2);
   addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
 
   // Student parameters //
@@ -1250,6 +1260,17 @@ void ResourceMap::loadDefaultConfiguration()
 
   // StudentFactory parameters //
   addAsScalar("StudentFactory-NuMax", 1.0e3);
+
+  // MaximumLikelihoodFactory parameters //
+  addAsScalar("StudentCopulaFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("StudentCopulaFactory-NuMin", 2.0);
+  addAsScalar("StudentCopulaFactory-NuMax", 1e2);
+  addAsScalar("StudentCopulaFactory-NuStart", 5.0);
+  addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber", 1000);
 
   // NonCentralStudent parameters //
   addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
@@ -1319,6 +1340,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SimulationAlgorithm parameters //
   addAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation", 1.0e-1);
   addAsScalar("SimulationAlgorithm-DefaultMaximumStandardDeviation", 0.0);
+  addAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration", -1.0);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultMaximumOuterSampling", 1000);
 
@@ -1340,7 +1362,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin", 400);
 
   // SubsetSampling parameters //
-  addAsScalar("SubsetSampling-DefaultBetaMin", 2.0);
   addAsScalar("SubsetSampling-DefaultConditionalProbability", 0.1);
   addAsScalar("SubsetSampling-DefaultProposalRange", 2.0);
   addAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling", 10000);
@@ -1446,6 +1467,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // WeightedExperimentImplementation parameters //
   addAsUnsignedInteger("WeightedExperiment-DefaultSize", 100);
+
+  // SmolyakExperiment parameters //
+  addAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 1.0e-8);
+  addAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", 1.0e-8);
+  addAsBool("SmolyakExperiment-MergeQuadrature", true);
 
   // GaussProductExperiment parameters //
   addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalSize", 5);
@@ -1619,6 +1645,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
 
+  // SimplicialCubature parameters //
+  addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
+  addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
+  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 10000);
+  addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
+
   // SparseMethod parameters //
   addAsScalar("SparseMethod-ErrorThreshold", 1.0e-3);
   addAsScalar("SparseMethod-MaximumErrorFactor", 2.0);
@@ -1631,12 +1663,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
-
-  // SmolyakExperiment parameters //
-  addAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 1.0e-8);
-  addAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", 1.0e-8);
-  addAsBool("SmolyakExperiment-MergeQuadrature", true);
-
 }
 
 void ResourceMap::reload()

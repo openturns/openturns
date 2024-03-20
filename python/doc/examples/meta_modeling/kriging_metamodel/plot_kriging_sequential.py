@@ -3,7 +3,8 @@ Sequentially adding new points to a kriging
 ===========================================
 """
 # %%
-# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel. In order to create simple graphics, we consider a 1D function.
+# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel.
+# In order to create simple graphics, we consider a 1D function.
 
 # %%
 # Create the function and the design of experiments
@@ -13,7 +14,7 @@ Sequentially adding new points to a kriging
 import openturns as ot
 from openturns.viewer import View
 import numpy as np
-import openturns.viewer as viewer
+from openturns import viewer
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -49,6 +50,7 @@ view = viewer.View(graph)
 # Create the algorithms
 # ---------------------
 
+
 # %%
 def createMyBasicKriging(X, Y):
     """
@@ -71,24 +73,6 @@ def linearSample(xmin, xmax, npoints):
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
-
-
-# %%
-def plot_kriging_bounds(vLow, vUp, n_test):
-    """
-    From two lists containing the lower and upper bounds of the region,
-    create a PolygonArray.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    boundsPoly.setLegend("95% bounds")
-    return boundsPoly
 
 
 # %%
@@ -128,11 +112,8 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     dataUpper = [
         yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
     ]
-    # Coordinates of the vertices of the Polygons
-    vLow = [[xGrid[i, 0], dataLower[i]] for i in range(nbpoints)]
-    vUp = [[xGrid[i, 0], dataUpper[i]] for i in range(nbpoints)]
     # Compute the Polygon graphics
-    boundsPoly = plot_kriging_bounds(vLow, vUp, nbpoints)
+    boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
     mmv = ot.MetaModelValidation(xGrid, yFunction, meta)
@@ -154,7 +135,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     graph.add(graphFonction)
     graph.add(cloudDOE)
     graph.add(graphKriging)
-    graph.setLegendPosition("bottomright")
+    graph.setLegendPosition("lower right")
     graph.setAxes(True)
     graph.setGrid(True)
     graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100 * Q2))
@@ -178,6 +159,7 @@ view = viewer.View(graph)
 
 # %%
 # The following function is the building block of the algorithm. It returns a new point which maximizes the conditional variance.
+
 
 # %%
 def getNewPoint(xMin, xMax, krigResult):

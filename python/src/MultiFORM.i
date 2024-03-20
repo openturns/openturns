@@ -6,5 +6,6 @@
 
 %include MultiFORM_doc.i
 
+%copyctor OT::MultiFORM;
+
 %include openturns/MultiFORM.hxx
-namespace OT { %extend MultiFORM { MultiFORM(const MultiFORM & other) { return new OT::MultiFORM(other); } } }

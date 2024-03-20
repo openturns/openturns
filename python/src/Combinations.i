@@ -6,5 +6,6 @@
 
 %include Combinations_doc.i
 
+%copyctor OT::Combinations;
+
 %include openturns/Combinations.hxx
-namespace OT { %extend Combinations { Combinations(const Combinations & other) { return new OT::Combinations(other); } } }

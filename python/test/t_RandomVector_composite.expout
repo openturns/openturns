@@ -14,4 +14,4 @@ Y realization (second)= class=Point name=Unnamed dimension=2 values=[0.619855,0.
 Y realization (third )= class=Point name=Unnamed dimension=2 values=[2.8838,0.219604]
 Y sample = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=2 description=[y0,y1] data=[[1.50051,0.0377816],[0.834465,0.0103864],[-0.048251,0.0320782],[7.45941,-0.0328878],[0.53899,-0.0490936]]
 Y parameter = class=Point name=Unnamed dimension=14 values=[1,2,1,2,1,2,1,2,0.5,0,0.5,0,0,0.5]
-Y parameter desc = [mean_0,standard_deviation_0,mean_1,standard_deviation_1,mean_2,standard_deviation_2,mean_3,standard_deviation_3,R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2]
+Y parameter desc = [mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,mu_3,sigma_3,R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2]

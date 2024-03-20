@@ -1,0 +1,72 @@
+%feature("docstring") OT::JointDistribution
+"Composed distribution.
+
+Available constructors:
+    JointDistribution(*distributions, copula=ot.IndependentCopula(n)*)
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of :math:`n` marginals of the distribution. Each marginal must be of
+    dimension 1.
+copula : :class:`~openturns.Distribution`
+    A copula. If not mentioned, the copula is set to an
+    :class:`~openturns.IndependentCopula` with the same dimension as
+    *distributions*.
+
+Notes
+-----
+A JointDistribution is a :math:`n`-dimensional distribution which can be
+written in terms of 1-d marginal distribution functions and a copula :math:`C`
+which describes the dependence structure between the variables.
+Its cumulative distribution function :math:`F` is defined by its marginal
+distributions :math:`F_i` and the copula :math:`C` through the relation:
+
+.. math::
+
+    F(x_1, \cdots, x_n) = C(F_1(x_1), \cdots, F_n(x_n))
+
+See also
+--------
+SklarCopula
+
+Examples
+--------
+>>> import openturns as ot
+>>> copula = ot.GumbelCopula(2.0)
+>>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.JointDistribution(marginals, copula)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::getDistributionCollection
+"Get the marginals of the distribution.
+
+Returns
+-------
+distributions : list of :class:`~openturns.Distribution`
+    List of the marginals of the distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::setDistributionCollection
+"Set the marginals of the distribution.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of the marginals of the distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::setCopula
+"Set the copula of the distribution.
+
+Parameters
+----------
+copula : :class:`~openturns.Distribution`
+    Copula of the distribution."

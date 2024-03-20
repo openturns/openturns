@@ -51,7 +51,7 @@ its probability density function is defined as:
         \displaystyle \frac{1}{F_X(b) - F_X(a)}\, p_X(y) & \mbox{for } y\in[a,b]
       \end{array}
 
-and its cumulative density function is defined as:
+and its cumulative distribution function is defined as:
 
 .. math::
 

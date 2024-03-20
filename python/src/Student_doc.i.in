@@ -2,8 +2,6 @@
 "Student distribution.
 
 Available constructors:
-    Student(*nu=3.0, d=1*)
-
     Student(*nu, mu, sigma*)
 
     Student(*nu, mu, sigma, R*)
@@ -13,27 +11,27 @@ Parameters
 d : int, :math:`d \geq 1`
     Dimension.
 
+    Default value is 1.
+
 nu : float, :math:`\nu > 0`
-    Generalised number degrees of freedom.
+    Generalized number of degrees of freedom.
+
+    Default value is 3.0.
 
 mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
-    If :math:`\nu > 1`: mean.
+    Location parameter.
 
-    If :math:`\nu = 1`: location parameter.
-
-    Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+    Default value  is 0.0.
 
 sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
+    Default value  is 1.0.
 
 R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
-    If :math:`\nu > 2`: correlation matrix.
+    Shape matrix.
 
-    If :math:`\nu \leq 2`: generalized correlation matrix.
-
-    By default the identity matrix.
+    Default value is the identity matrix.
 
 Notes
 -----
@@ -112,45 +110,43 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Student::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean.
-    Only defined when the dimension is 1
-    (else, use the :func:`getMean()` method inherited from the
-    EllipticalDistribution class)."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Student::getNu
-"Accessor to the distribution's generalised number degrees of freedom.
+"Accessor to the generalized number of degrees of freedom.
 
 Returns
 -------
 nu : float
-    Generalised number degrees of freedom."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Student::setMu
-"Accessor to the distribution's mean.
-
-Parameters
-----------
-mu : float
-    Mean."
+    The :math:`\nu` parameter."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Student::setNu
-"Accessor to the distribution's generalised number degrees of freedom.
+"Accessor to the generalized number of degrees of freedom.
 
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
-    Generalised number degrees of freedom."
+    The :math:`\nu` parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::getMu
+"Accessor to the :math:`\mu` parameter.
+
+Returns
+-------
+mu : float,
+    The :math:`\mu` parameter."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::setMu
+"Accessor to the :math:`\mu` parameter.
+
+Parameters
+----------
+mu : float,
+    The :math:`\mu` parameter."
 
 

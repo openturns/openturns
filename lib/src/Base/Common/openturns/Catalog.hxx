@@ -2,7 +2,7 @@
 /**
  *  @brief Catalog records all the factories into a dictionary
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,13 +89,14 @@ private:
   friend struct Catalog_init; /* friendship for static member initialization */
 }; /* end class Catalog */
 
+#ifndef SWIG
 /** This class initializes all static members of Catalog */
 struct OT_API Catalog_init
 {
   Catalog_init();
   ~Catalog_init();
 }; /* end struct Catalog_init */
-
+#endif
 
 
 END_NAMESPACE_OPENTURNS

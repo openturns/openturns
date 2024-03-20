@@ -15,7 +15,7 @@ LARS
 Notes
 -----
 BasisSequenceFactory is the interface of the BasisSequenceFactoryImplementation.
-This class is not usable because it has sense only whithin the
+This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::BasisSequenceFactoryImplementation
@@ -36,19 +36,6 @@ OT_BasisSequenceFactory_getMaximumRelativeConvergence_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_BasisSequenceFactory_getVerbose_doc
-"Accessor to the verbosity.
-
-Returns
--------
-v : bool.
-    Verbosity"
-%enddef
-%feature("docstring") OT::BasisSequenceFactoryImplementation::getVerbose
-OT_BasisSequenceFactory_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
 "Accessor to the stopping criterion on the L1-norm of the coefficients.
 
@@ -59,19 +46,6 @@ e : float
 %enddef
 %feature("docstring") OT::BasisSequenceFactoryImplementation::setMaximumRelativeConvergence
 OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_BasisSequenceFactory_setVerbose_doc
-"Accessor to the verbosity.
-
-Parameters
-----------
-v : bool
-    Enable or disable the verbosity."
-%enddef
-%feature("docstring") OT::BasisSequenceFactoryImplementation::setVerbose
-OT_BasisSequenceFactory_setVerbose_doc
 
 // ---------------------------------------------------------------------
 

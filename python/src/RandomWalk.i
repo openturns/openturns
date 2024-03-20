@@ -6,5 +6,6 @@
 
 %include RandomWalk_doc.i
 
+%copyctor OT::RandomWalk;
+
 %include openturns/RandomWalk.hxx
-namespace OT { %extend RandomWalk { RandomWalk(const RandomWalk & other) { return new OT::RandomWalk(other); } } }

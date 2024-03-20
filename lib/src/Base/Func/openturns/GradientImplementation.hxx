@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all numerical math gradient implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,10 +58,8 @@ public:
   GradientImplementation * clone() const override;
 
   /** Comparison operator */
-protected:
-  using PersistentObject::operator ==;
-public:
   Bool operator ==(const GradientImplementation & other) const;
+  using PersistentObject::operator ==;
 
   /** String converter */
   String __repr__() const override;

@@ -2,7 +2,7 @@
 /**
  *  @brief Polygon class for polygon plots
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,6 +84,12 @@ public:
 
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv) override;
+
+  /** Builds a polygon which fills the area between two curves */
+  static Polygon FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2);
+
+  /** Builds a polygon which fills the area between two curves */
+  static Polygon FillBetween(Point const& dataX, Point const& dataY1, Point const& dataY2);
 
 protected:
   /** Check fo data validity */

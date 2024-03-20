@@ -10,5 +10,6 @@
 
 %include OrthogonalUniVariatePolynomialFactory_doc.i
 
+%copyctor OT::OrthogonalUniVariatePolynomialFactory;
+
 %include openturns/OrthogonalUniVariatePolynomialFactory.hxx
-namespace OT{ %extend OrthogonalUniVariatePolynomialFactory { OrthogonalUniVariatePolynomialFactory(const OrthogonalUniVariatePolynomialFactory & other) { return new OT::OrthogonalUniVariatePolynomialFactory(other); } } }

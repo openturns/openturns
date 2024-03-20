@@ -11,6 +11,6 @@ OTDefaultCollectionConvertFunctions(MetropolisHastings)
 OTTypedInterfaceObjectHelper(MetropolisHastings)
 OTTypedCollectionInterfaceObjectHelper(MetropolisHastings)
 
-%include openturns/MetropolisHastings.hxx
+%copyctor OT::MetropolisHastings;
 
-namespace OT { %extend MetropolisHastings { MetropolisHastings(const MetropolisHastings & other) { return new OT::MetropolisHastings(other); } } }
+%include openturns/MetropolisHastings.hxx

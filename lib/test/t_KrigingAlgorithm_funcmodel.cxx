@@ -3,7 +3,7 @@
  *  @brief The test file of KrigingAlgorithm class using
  *  StationaryFunctionalCovarianceModel
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,7 +55,7 @@ int main(int, char *[])
     Collection<Distribution> coll(2);
     coll[0] = Uniform(1.0, 9.0);
     coll[1] = Uniform(1.0, 9.0);
-    ComposedDistribution dist(coll);
+    JointDistribution dist(coll);
 
     const Sample inputValidation(dist.getSample(10));
     const Sample outputValidation(model(inputValidation));

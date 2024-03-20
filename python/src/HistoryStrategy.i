@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(HistoryStrategy)
 
+%copyctor OT::HistoryStrategy;
+
 %include openturns/HistoryStrategy.hxx
-namespace OT{ %extend HistoryStrategy { HistoryStrategy(const HistoryStrategy & other) { return new OT::HistoryStrategy(other); } } }

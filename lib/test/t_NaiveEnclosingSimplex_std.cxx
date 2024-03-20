@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class BoundingVolumeHierarchy for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@ int main(int, char *[])
   Collection<Distribution> coll;
   coll.add(Uniform(-1.0, 11.0));
   coll.add(Uniform(-1.0, 11.0));
-  const Sample test(ComposedDistribution(coll).getSample(100));
+  const Sample test(JointDistribution(coll).getSample(100));
 
   Point coordinates(4);
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)

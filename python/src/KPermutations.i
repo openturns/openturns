@@ -6,5 +6,6 @@
 
 %include KPermutations_doc.i
 
+%copyctor OT::KPermutations;
+
 %include openturns/KPermutations.hxx
-namespace OT { %extend KPermutations { KPermutations(const KPermutations & other) { return new OT::KPermutations(other); } } }

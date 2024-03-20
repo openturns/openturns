@@ -23,6 +23,7 @@ FunctionalChaosSobolIndices
 |     2 | X3            | 0.000248397   | 0.237525      |
 
 
+FunctionalChaosSobolIndices
 <ul>
   <li>input dimension: 3</li>
   <li>output dimension: 1</li>

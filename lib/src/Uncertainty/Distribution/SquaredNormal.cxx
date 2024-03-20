@@ -2,7 +2,7 @@
 /**
  *  @brief The Squared Normal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -118,6 +118,13 @@ Scalar SquaredNormal::computePDF(const Point & point) const
   Scalar sqrtX = std::sqrt(x);
   return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2.0) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2.0))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
 } // computePDF
+
+Scalar SquaredNormal::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
 
 /* Get the characteristic function of the distribution */
 Complex SquaredNormal::computeCharacteristicFunction(const Scalar x) const

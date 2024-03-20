@@ -8,7 +8,7 @@ size = 25
 # Specify if initial LHS is centered or randomized
 centered = True
 # Build standard LHS algorithm
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 lhs = ot.LHSExperiment(distribution, size)
 lhs.setRandomShift(not centered)  # centered
 lhs.setAlwaysShuffle(True)  # randomized

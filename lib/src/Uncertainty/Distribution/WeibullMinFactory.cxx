@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for WeibullMin distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
 
 WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
-  LOGINFO("in WeibullMinFactory, using likelihood maximisation");
+  LOGINFO("in WeibullMinFactory, using likelihood maximization");
   const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
   return buildAsWeibullMin(factory.build(sample).getParameter());
 }

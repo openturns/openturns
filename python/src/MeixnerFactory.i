@@ -6,5 +6,6 @@
 
 %include MeixnerFactory_doc.i
 
+%copyctor OT::MeixnerFactory;
+
 %include openturns/MeixnerFactory.hxx
-namespace OT { %extend MeixnerFactory { MeixnerFactory(const MeixnerFactory & other) { return new OT::MeixnerFactory(other); } } }

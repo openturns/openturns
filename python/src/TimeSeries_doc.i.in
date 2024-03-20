@@ -62,5 +62,5 @@ timeSeries : :class:`~openturns.TimeSeries`, which time grid must match with the
 
 Returns
 -------
-newTimeSeries: :class:`~openturns.TimeSeries`, which regular grid has been extended with a new time stamp or a second time grid, associated to the new values.
+newTimeSeries : :class:`~openturns.TimeSeries`, whose regular grid has been extended with a new time stamp or a second time grid, associated to the new values.
 "

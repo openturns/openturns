@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectHelper(ComparisonOperator)
 
-%include openturns/ComparisonOperator.hxx
+%copyctor OT::ComparisonOperator;
 
-namespace OT { %extend ComparisonOperator { ComparisonOperator(const ComparisonOperator & other) { return new OT::ComparisonOperator(other); } } }
+%include openturns/ComparisonOperator.hxx

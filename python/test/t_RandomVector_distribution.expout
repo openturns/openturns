@@ -6,4 +6,4 @@ vect realization (second)= class=Point name=Unnamed dimension=1 values=[-0.26617
 vect realization (third )= class=Point name=Unnamed dimension=1 values=[0.561734]
 vect sample = class=Sample name=Normal implementation=class=SampleImplementation name=Normal size=5 dimension=1 description=[X0] data=[[2.20548],[-1.18139],[1.35004],[0.644993],[2.43725]]
 vect parameter = class=Point name=Unnamed dimension=2 values=[1,1]
-vect parameter desc = [mean_0,standard_deviation_0]
+vect parameter desc = [mu_0,sigma_0]

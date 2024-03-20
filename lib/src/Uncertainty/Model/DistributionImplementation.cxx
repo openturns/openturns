@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ChiSquare.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/LogNormal.hxx"
 #include "openturns/LogUniform.hxx"
@@ -172,7 +172,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) + other.getMarginal(j);
-  return new ComposedDistribution(marginals);
+  return new JointDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator + (const Scalar value) const
@@ -196,7 +196,7 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) + value;
-  return new ComposedDistribution(marginals, getCopula());
+  return new JointDistribution(marginals, getCopula());
 }
 
 /* Subtraction operator */
@@ -234,7 +234,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
     marginals[j] = getMarginal(j) - other.getMarginal(j);
-  return new ComposedDistribution(marginals);
+  return new JointDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator - (const Scalar value) const
@@ -427,7 +427,6 @@ Distribution maximum(const DistributionImplementation & left,
   return new MaximumDistribution(coll);
 }
 
-
 /* String converter */
 String DistributionImplementation::__repr__() const
 {
@@ -443,6 +442,35 @@ String DistributionImplementation::__str__(const String & ) const
   return __repr__();
 }
 
+String DistributionImplementation::_repr_html_() const
+{
+  OSS oss(false);
+  oss << getClassName() << "\n";
+  oss << "<ul>\n";
+  oss << "  <li>name=" << getName() << "</li>\n";
+  oss << "  <li>dimension=" << dimension_ << "</li>\n";
+  oss << "  <li>weight=" << weight_ << "</li>\n";
+  oss << "  <li>range=" << range_ << "</li>\n";
+  oss << "  <li>description=" << description_ << "</li>\n";
+  oss << "  <li>isParallel=" << isParallel_ << "</li>\n";
+  oss << "  <li>isCopula=" << isCopula_ << "</li>\n";
+  oss << "</ul>\n";
+  return oss;
+}
+
+String DistributionImplementation::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << getClassName() << "\n";
+  oss << "- name=" << getName() << "\n";
+  oss << "- dimension=" << dimension_ << "\n";
+  oss << "- weight=" << weight_ << "\n";
+  oss << "- range=" << range_ << "\n";
+  oss << "- description=" << description_ << "\n";
+  oss << "- isParallel=" << isParallel_ << "\n";
+  oss << "- isCopula=" << isCopula_ << "\n";
+  return oss;
+}
 
 /* Weight accessor */
 void DistributionImplementation::setWeight(const Scalar w)
@@ -599,12 +627,21 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
 {
   static SobolSequence sequence(dimension_);
   SampleImplementation returnSample(size, dimension_);
-  UnsignedInteger shift = 0;
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  const Sample u(sequence.generate(size));
+  if (getDimension() == 1)
   {
-    const Point point(computeSequentialConditionalQuantile(sequence.generate()));
-    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
-    shift += dimension_;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      returnSample(i, 0) = computeScalarQuantile(u(i, 0));
+  }
+  else
+  {
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Point point(computeSequentialConditionalQuantile(u[i]));
+      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      shift += dimension_;
+    }
   }
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
@@ -811,7 +848,6 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
     rightTau = 1.0;
     rightSurvival = 0.0;
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeInverseSurvivalFunction: dimension=" << dimension_ << ", prob=" << prob << ", leftTau=" << leftTau << ", leftSurvival=" << leftSurvival << ", rightTau=" << rightTau << ", rightSurvival=" << rightSurvival);
   // Use Brent's method to compute the quantile efficiently for continuous distributions
   const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(f, prob, leftTau, rightTau, leftSurvival, rightSurvival);
@@ -1017,11 +1053,7 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
     probability = SpecFunc::AccurateSum(probabilities);
   } // not independent
 
-  // clip to [0, 1]
-  probability = std::max(probability, 0.0);
-  probability = std::min(probability, 1.0);
-
-  return probability;
+  return SpecFunc::Clip01(probability);
 }
 
 /* Generic implementation for 1D continuous distributions */
@@ -1062,7 +1094,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
 }
 
 /* Generic implementation for 1D continuous distribution by integration of the PDF */
-Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a, const Scalar b) const
+Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar aa, const Scalar bb) const
 {
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
@@ -1073,6 +1105,9 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
   Sample fi;
   Point ei;
   const Point singularities(getSingularities());
+  // Consider only the intersection with the range
+  const Scalar a = std::max(aa, range_.getLowerBound()[0]);
+  const Scalar b = std::min(bb, range_.getUpperBound()[0]);
   // If no singularity inside of the given reduced interval
   const UnsignedInteger singularitiesNumber = singularities.getSize();
   if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
@@ -1429,7 +1464,6 @@ Sample DistributionImplementation::computeDDF(const Sample & inSample) const
 /* Get the PDF of the distribution */
 Sample DistributionImplementation::computePDFSequential(const Sample & inSample) const
 {
-  LOGDEBUG("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
   SampleImplementation outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computePDF(inSample[i]);
@@ -1460,7 +1494,6 @@ struct ComputePDFPolicy
 
 Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
-  LOGDEBUG("In DistributionImplementation::computePDFParallel(const Sample & inSample)");
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
@@ -2327,9 +2360,9 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar q = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
   const Function f(bindMethod<CDFWrapper, Point, Point>(wrapper, &CDFWrapper::computeCDF, 1, 1));
-  const Scalar leftTau = lower;
+  const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::ActualMaxScalar : lower);
   const Scalar leftCDF = 0.0;
-  const Scalar rightTau = upper;
+  const Scalar rightTau = (std::isinf(upper) ? SpecFunc::ActualMaxScalar : upper);
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   const Scalar root = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
@@ -2734,6 +2767,8 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
     const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
     return result;
   }
+  if (!(prob >= 0.0) || !(prob <= 1.0))
+    throw InvalidArgumentException(HERE) << "The probability must be in [0, 1] here prob=" << prob;
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // If dimension_ == 1 the threshold can be computed analyticaly
@@ -2741,7 +2776,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
   if (dimension_ == 1)
   {
     const CompositeDistribution composite(minimumVolumeLevelSetFunction, *this);
-    minusLogPDFThreshold = composite.computeQuantile(prob)[0];
+    minusLogPDFThreshold = composite.computeScalarQuantile(prob);
     LOGINFO("Compute the minimum volume level set by using a composite distribution quantile (univariate general case)");
   } // dimension == 1
   else
@@ -3103,8 +3138,8 @@ void DistributionImplementation::computeCovarianceGeneral() const
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
     {
       indices[0] = rowIndex;
-      const Scalar mi = marginals[rowIndex]->computeQuantile(0.5)[0];
-      const Scalar di = marginals[rowIndex]->computeQuantile(0.75)[0] - marginals[rowIndex]->computeQuantile(0.25)[0];
+      const Scalar mi = marginals[rowIndex]->computeScalarQuantile(0.5);
+      const Scalar di = marginals[rowIndex]->computeScalarQuantile(0.75) - marginals[rowIndex]->computeScalarQuantile(0.25);
       // We compute the upper triangle in order to avoid indices swap in marginal
       // extraction
       for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
@@ -3113,8 +3148,8 @@ void DistributionImplementation::computeCovarianceGeneral() const
         const Implementation marginalDistribution(getMarginal(indices).getImplementation());
         if (!marginalDistribution->hasIndependentCopula())
         {
-          const Scalar mj = marginals[columnIndex]->computeQuantile(0.5)[0];
-          const Scalar dj = marginals[columnIndex]->computeQuantile(0.75)[0] - marginals[columnIndex]->computeQuantile(0.25)[0];
+          const Scalar mj = marginals[columnIndex]->computeScalarQuantile(0.5);
+          const Scalar dj = marginals[columnIndex]->computeScalarQuantile(0.75) - marginals[columnIndex]->computeScalarQuantile(0.25);
           Point xij(2);
           xij[0] = mi;
           xij[1] = mj;
@@ -3286,7 +3321,7 @@ CorrelationMatrix DistributionImplementation::getShapeMatrix() const
   if (isElliptical()) return getCorrelation();
   // Difficult case: elliptical distribution with nonelliptical marginals
   const Collection<Distribution> ellipticalMarginals(dimension_, getStandardDistribution().getMarginal(0));
-  return ComposedDistribution(ellipticalMarginals, getCopula()).getCorrelation();
+  return JointDistribution(ellipticalMarginals, getCopula()).getCorrelation();
 }
 
 /* Cholesky factor of the correlation matrix accessor */
@@ -3399,7 +3434,7 @@ Point DistributionImplementation::computeShiftedMomentGeneral(const UnsignedInte
     const Implementation marginalDistribution(getMarginal(component).getImplementation());
     const Scalar shiftComponent = shift[component];
     // Central term
-    moment[component] = h * 0.5 * std::pow(marginalDistribution->computeQuantile(0.5)[0], static_cast<int>(n));
+    moment[component] = h * 0.5 * std::pow(marginalDistribution->computeScalarQuantile(0.5), static_cast<int>(n));
     // First block
     for (UnsignedInteger j = 1; j <= N; ++j)
     {
@@ -3515,27 +3550,6 @@ Point DistributionImplementation::getSingularities() const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: cannot ask for PDF singularities for multivariate distributions.";
   return Point(0);
-}
-
-/* Compute the density generator of the elliptical generator, i.e.
- *  the function phi such that the density of the distribution can
- *  be written as p(x) = phi(t(x-mu)R(x-mu))
- */
-Scalar DistributionImplementation::computeDensityGenerator(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGenerator(const Scalar betaSquare) const";
-}
-
-/* Compute the derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorDerivative(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorDerivative(const Scalar betaSquare) const";
-}
-
-/* Compute the seconde derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar ) const
-{
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const";
 }
 
 /* Get the i-th marginal distribution */
@@ -3700,7 +3714,6 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " PDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -3827,7 +3840,6 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
-      cloud.setColor("red");
       graph.add(cloud);
     }
     return graph;
@@ -3877,7 +3889,6 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
     data[2]    = Point(2, 1.0);
     data(3, 1) = 1.0;
     Curve square(data);
-    square.setColor("blue");
     graph.setDrawable(square, 0);
     graph.add(drawable);
   }
@@ -3951,7 +3962,6 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   Graph graphLogPDF(logPdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphLogPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << "log PDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4078,7 +4088,6 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
-      cloud.setColor("red");
       graph.add(cloud);
     }
     return graph;
@@ -4134,7 +4143,6 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
     data(3, 1) = 1.0;
     data[4] = data[0];
     Curve square(data);
-    square.setColor("blue");
     graph.setDrawable(square, 0);
     graph.add(drawable);
   }
@@ -4214,7 +4222,6 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   Graph graphCDF(cdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphCDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " CDF");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4389,7 +4396,6 @@ Graph DistributionImplementation::drawSurvivalFunction(const Scalar xMin,
   Graph graphSurvivalFunction(survivalWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphSurvivalFunction.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " SurvivalFunction");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4537,7 +4543,6 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
   Graph graphQuantile(quantileWrapper.draw(qMin, qMax, pointNumber, scale));
   Drawable drawable(graphQuantile.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " Quantile");
-  drawable.setColor("red");
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
@@ -4559,7 +4564,6 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   const String title(OSS() << getDescription() << " Quantile");
   const Sample data(computeQuantile(qMin, qMax, pointNumber));
   Curve curveQuantile(data);
-  curveQuantile.setColor("red");
   curveQuantile.setLegend(title);
   curveQuantile.setLineStyle("solid");
   curveQuantile.setLineWidth(2);
@@ -4832,7 +4836,7 @@ Scalar DistributionImplementation::getPositionIndicator() const
   catch (...)
   {
     // Second, return the median of the distribution
-    return computeQuantile(0.5)[0];
+    return computeScalarQuantile(0.5);
   }
 }
 
@@ -4848,7 +4852,7 @@ Scalar DistributionImplementation::getDispersionIndicator() const
   catch (...)
   {
     // Second, return the interquartile of the distribution
-    return computeQuantile(0.75)[0] - computeQuantile(0.25)[0];
+    return computeScalarQuantile(0.75) - computeScalarQuantile(0.25);
   }
 }
 
@@ -5071,9 +5075,9 @@ Distribution DistributionImplementation::atanh() const
   // F_Y(y)=P(atanh(X)<y)<->P(X<tanh(y))=F_X(tanh(y))
   // y s.t. F_Y(y)=epsilon<->y=atanh(F_X^{-1}(epsilon))
 
-  Point values(1, a == -1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_)[0]) : SpecFunc::Atanh(a));
+  Point values(1, a == -1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_)) : SpecFunc::Atanh(a));
   bounds.add(b);
-  values.add(b == 1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_, true)[0]) : SpecFunc::Atanh(b));
+  values.add(b == 1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_, true)) : SpecFunc::Atanh(b));
   return new CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values);
 }
 
@@ -5116,7 +5120,7 @@ Distribution DistributionImplementation::log() const
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  Point values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
+  Point values(1, (a == 0.0 ? std::log(computeScalarQuantile(quantileEpsilon_)) : std::log(a)));
   values.add(std::log(b));
   return new CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values);
 }
@@ -5128,7 +5132,6 @@ Distribution DistributionImplementation::ln() const
 
 Distribution DistributionImplementation::pow(const Scalar exponent) const
 {
-  LOGDEBUG(OSS() << "Scalar exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   // First, the case where the exponent is integer
   if (trunc(exponent) == exponent) return pow(static_cast< SignedInteger >(trunc(exponent)));
@@ -5139,7 +5142,7 @@ Distribution DistributionImplementation::pow(const Scalar exponent) const
 
   SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   Point bounds(1, a);
-  Point values(1, (a == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_)[0], exponent) : 0.0) : std::pow(a, exponent)));
+  Point values(1, (a == 0.0 ? (exponent < 0.0 ? std::pow(computeScalarQuantile(quantileEpsilon_), exponent) : 0.0) : std::pow(a, exponent)));
   const Scalar b = range_.getUpperBound()[0];
   bounds.add(b);
   values.add(std::pow(b, exponent));
@@ -5148,7 +5151,6 @@ Distribution DistributionImplementation::pow(const Scalar exponent) const
 
 Distribution DistributionImplementation::pow(const SignedInteger exponent) const
 {
-  LOGDEBUG(OSS() << "Signed integer exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   if (exponent == 0) return new Dirac(Point(1, 1.0));
   if (exponent == 1) return *this;
@@ -5160,11 +5162,10 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   if (a >= 0.0)
   {
     Point bounds(1, a);
-    Point values(1, (a == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_)[0], 1.0 * exponent) : 0.0) : std::pow(a, 1.0 * exponent)));
+    Point values(1, (a == 0.0 ? (exponent < 0.0 ? std::pow(computeScalarQuantile(quantileEpsilon_), 1.0 * exponent) : 0.0) : std::pow(a, 1.0 * exponent)));
     const Scalar b = range_.getUpperBound()[0];
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "a=" << a << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Easy case: b <= 0
@@ -5174,8 +5175,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   if (b <= 0.0)
   {
     bounds.add(b);
-    values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_, true)[0], 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "b=" << b << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
+    values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeScalarQuantile(quantileEpsilon_, true), 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
@@ -5187,7 +5187,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     {
       bounds.add(b);
       values.add(std::pow(b, 1.0 * exponent));
-      LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
       return new CompositeDistribution(toPower, clone(), bounds, values);
     }
     // A singularity at 0 for negative exponent
@@ -5197,7 +5196,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
@@ -5205,7 +5203,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
-  LOGDEBUG(OSS() << "even exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
   return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 
@@ -5234,7 +5231,7 @@ Distribution DistributionImplementation::inverse() const
   // Easy case: a >= 0
   if (a >= 0.0)
   {
-    Point values(1, (a == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_)[0] : 1.0 / a));
+    Point values(1, (a == 0.0 ? 1.0 / computeScalarQuantile(quantileEpsilon_) : 1.0 / a));
     const Scalar b = range_.getUpperBound()[0];
     bounds.add(b);
     if (range_.getFiniteUpperBound()[0])
@@ -5254,7 +5251,7 @@ Distribution DistributionImplementation::inverse() const
   if (b <= 0.0)
   {
     bounds.add(b);
-    values.add(b == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_, true)[0] : 1.0 / b);
+    values.add(b == 0.0 ? 1.0 / computeScalarQuantile(quantileEpsilon_, true) : 1.0 / b);
     return new CompositeDistribution(inverseFunction, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
@@ -5265,9 +5262,9 @@ Distribution DistributionImplementation::inverse() const
   //        [F_X(0) + 1 - F_X(1 / y)]1_{y > 0} +
   //        F_X(0)1_{y = 0}
   // so the bounds for Y are obtained when X->0^- and X->0^+
-  values.add(1.0 / computeQuantile(computeCDF(0.0) - quantileEpsilon_)[0]);
+  values.add(1.0 / computeScalarQuantile(computeCDF(0.0) - quantileEpsilon_));
   bounds.add(0.0);
-  values.add(1.0 / computeQuantile(computeCDF(0.0) + quantileEpsilon_)[0]);
+  values.add(1.0 / computeScalarQuantile(computeCDF(0.0) + quantileEpsilon_));
   bounds.add(b);
   if (range_.getFiniteUpperBound()[0])
     values.add(1.0 / b);
@@ -5325,6 +5322,8 @@ Scalar DistributionImplementation::getQuantileEpsilon() const
 
 void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon)
 {
+  if (!(quantileEpsilon >= 0.0) || !(quantileEpsilon <= 1.0))
+    throw InvalidArgumentException(HERE) << "Quantile epsilon must be in [0, 1] here epsilon=" << quantileEpsilon;
   quantileEpsilon_ = quantileEpsilon;
 }
 

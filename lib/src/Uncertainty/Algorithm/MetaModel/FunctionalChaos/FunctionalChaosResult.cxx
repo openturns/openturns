@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a chaos expansion
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/Curve.hxx"
+#include <unordered_map>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -116,17 +118,17 @@ String FunctionalChaosResult::__repr_markdown__() const
   const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
-  oss << getClassName() << Os::GetEndOfLine()
-      << "- input dimension=" << inputDimension << Os::GetEndOfLine()
-      << "- output dimension=" << outputDimension << Os::GetEndOfLine()
-      << "- distribution dimension=" << distribution_.getDimension() << Os::GetEndOfLine()
-      << "- transformation=" << transformation_.getInputDimension() << " -> " << transformation_.getOutputDimension() << Os::GetEndOfLine()
-      << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << Os::GetEndOfLine()
-      << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << Os::GetEndOfLine()
-      << "- indices size=" << indicesSize << Os::GetEndOfLine()
-      << "- relative errors=" << relativeErrors_ << Os::GetEndOfLine()
-      << "- residuals=" << residuals_ << Os::GetEndOfLine();
-  oss << Os::GetEndOfLine();
+  oss << getClassName() << "\n"
+      << "- input dimension=" << inputDimension << "\n"
+      << "- output dimension=" << outputDimension << "\n"
+      << "- distribution dimension=" << distribution_.getDimension() << "\n"
+      << "- transformation=" << transformation_.getInputDimension() << " -> " << transformation_.getOutputDimension() << "\n"
+      << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
+      << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
+      << "- indices size=" << indicesSize << "\n"
+      << "- relative errors=" << relativeErrors_ << "\n"
+      << "- residuals=" << residuals_ << "\n";
+  oss << "\n";
 
   const Scalar ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
   const UnsignedInteger ell_size = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize");
@@ -149,12 +151,12 @@ String FunctionalChaosResult::__repr_markdown__() const
       intermediateString = OSS() << " Coeff. #" << j;
       oss << OSS::PadString(intermediateString, columnWidth) << "|";
     }
-    oss << Os::GetEndOfLine();
+    oss << "\n";
   }
   else
   {
     if (outputDimension == 1)
-      oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << Os::GetEndOfLine();
+      oss << OSS::PadString(" Coefficient ", columnWidth) << "|" << "\n";
     else
     {
       for (UnsignedInteger j = 0 ; j < outputDimension; ++ j)
@@ -162,15 +164,15 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " Coeff. #" << j;
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     }
   }
   // Print dashes
   String dashesSeparator = String(columnWidth, '-') + "|";
   oss << "|-------|" << dashesSeparator;
-  if (isEllipsisEnabled) oss << OSS::RepeatString(1 + 2 * ell_size, dashesSeparator) << Os::GetEndOfLine();
-  else if (outputDimension == 1) oss << dashesSeparator << Os::GetEndOfLine();
-  else oss << OSS::RepeatString(outputDimension, dashesSeparator) << Os::GetEndOfLine();
+  if (isEllipsisEnabled) oss << OSS::RepeatString(1 + 2 * ell_size, dashesSeparator) << "\n";
+  else if (outputDimension == 1) oss << dashesSeparator << "\n";
+  else oss << OSS::RepeatString(outputDimension, dashesSeparator) << "\n";
   // Print table content: multi-indices
   for (UnsignedInteger i = 0; i < indicesSize; ++ i)
   {
@@ -182,7 +184,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         const String blankColumn(String(columnWidth, ' ') + "|");
         oss << OSS::RepeatString(1 + ell_size, blankColumn)
             << OSS::PadString(" ... ", columnWidth) << "|"
-            << OSS::RepeatString(ell_size, blankColumn) << Os::GetEndOfLine();
+            << OSS::RepeatString(ell_size, blankColumn) << "\n";
         continue;
       }
       else if (i > ell_size && i < indicesSize - ell_size) continue;
@@ -208,7 +210,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " " << alpha_k_[i][j];
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     }
     else
     {
@@ -217,7 +219,7 @@ String FunctionalChaosResult::__repr_markdown__() const
         intermediateString = OSS() << " " << alpha_k_[i][j];
         oss << OSS::PadString(intermediateString, columnWidth) << "|";
       }
-      oss << Os::GetEndOfLine();
+      oss << "\n";
     } // If isEllipsisEnabled
   } // For i in indices size
   return oss;
@@ -283,6 +285,9 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "alpha_k_", alpha_k_ );
   adv.saveAttribute( "Psi_k_", Psi_k_ );
   adv.saveAttribute( "composedMetaModel_", composedMetaModel_ );
+  adv.saveAttribute( "indicesHistory_", indicesHistory_ );
+  adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
+  adv.saveAttribute( "errorHistory_", errorHistory_ );
 }
 
 
@@ -298,8 +303,107 @@ void FunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute( "alpha_k_", alpha_k_ );
   adv.loadAttribute( "Psi_k_", Psi_k_ );
   adv.loadAttribute( "composedMetaModel_", composedMetaModel_ );
+  if (adv.hasAttribute("errorHistory_"))
+  {
+    adv.loadAttribute( "indicesHistory_", indicesHistory_ );
+    adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
+    adv.loadAttribute( "errorHistory_", errorHistory_ );
+  }
 }
 
+IndicesCollection FunctionalChaosResult::getIndicesHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  return IndicesCollection(indicesHistory_);
+}
 
+Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  return coefficientsHistory_;
+}
+
+void FunctionalChaosResult::setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory)
+{
+  indicesHistory_ = indicesHistory;
+  coefficientsHistory_ = coefficientsHistory;
+}
+
+Graph FunctionalChaosResult::drawSelectionHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawSelectionHistory is only available for 1-d output dimension"
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  const UnsignedInteger size = indicesHistory_.getSize();
+  if (!size)
+    throw InvalidArgumentException(HERE) << "No selection history available";
+
+  // compute union of basis terms
+  std::unordered_map <UnsignedInteger, UnsignedInteger> indicesMap;
+  UnsignedInteger coefId = 0;
+  Indices uniqueBasisIndices;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
+      if (indicesMap.find(indicesHistory_[i][j]) == indicesMap.end())
+      {
+        indicesMap[indicesHistory_[i][j]] = coefId;
+        ++ coefId;
+        uniqueBasisIndices.add(indicesHistory_[i][j]);
+      }
+  Sample valuesY(size + 1, coefId);
+  Sample valuesX(size + 1, 1);
+  for (UnsignedInteger i = 0; i < size + 1; ++ i)
+    valuesX(i, 0) = i;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
+      valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
+  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
+  for (UnsignedInteger i = 0; i < coefId; ++ i)
+  {
+    Curve curve(valuesX, valuesY.getMarginal(i));
+    curve.setLegend(OSS() << "Coef. #" << uniqueBasisIndices[i]);
+    result.add(curve);
+  }
+  result.setIntegerXTick(true);
+  return result;
+}
+
+/* Error history accessor */
+void FunctionalChaosResult::setErrorHistory(const Point & errorHistory)
+{
+  errorHistory_ = errorHistory;
+}
+
+Point FunctionalChaosResult::getErrorHistory() const
+{
+  return errorHistory_;
+}
+
+Graph FunctionalChaosResult::drawErrorHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawErrorHistory is only available for 1-d output dimension"
+                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  const UnsignedInteger size = errorHistory_.getSize();
+  if (!size)
+    throw InvalidArgumentException(HERE) << "No error history available";
+
+  Sample values(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    values(i, 0) = i;
+    values(i, 1) = errorHistory_[i];
+  }
+  Graph result("Error history", "iteration", "error", true, "upper right");
+  Curve curve(values);
+  curve.setColor("blue");
+  result.add(curve);
+  result.setIntegerXTick(true);
+  return result;
+}
 
 END_NAMESPACE_OPENTURNS

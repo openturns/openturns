@@ -2,7 +2,7 @@
 /**
  *  @brief StorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StorageManager)
 
 
-Pointer<Advocate> StorageManager::registerObject(const PersistentObject &, bool )
+Pointer<Advocate> StorageManager::registerObject(const PersistentObject &, const Bool)
 {
   return new Advocate(*this, getState(), "object");
 }
@@ -376,7 +376,7 @@ void StorageManager::cleanSavedObjects() const
  *
  * @todo implement StorageManager::save method
  */
-void StorageManager::save(const PersistentObject & obj, const String & label, bool fromStudy)
+void StorageManager::save(const PersistentObject & obj, const String & label, const Bool fromStudy)
 {
 #ifdef SAVELOAD_CHECKING
   try

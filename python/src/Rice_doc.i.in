@@ -1,12 +1,17 @@
 %feature("docstring") OT::Rice
 "Rice distribution.
 
+
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
     Scale parameter.
+
+    Default value is 1.0.
 nu : float, :math:`\nu \geq 0`
     Location parameter.
+
+    Default value is 1.0.
 
 Notes
 -----
@@ -48,7 +53,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rice::getSigma
+%feature("docstring") OT::Rice::getBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
@@ -68,7 +73,7 @@ nu : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Rice::setSigma
+%feature("docstring") OT::Rice::setBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
@@ -85,3 +90,23 @@ Parameters
 ----------
 nu : float, :math:`\nu >= 0`
     Location parameter :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::setMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::getMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."

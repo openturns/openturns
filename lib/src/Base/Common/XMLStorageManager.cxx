@@ -2,7 +2,7 @@
 /**
  *  @brief XMLStorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <cmath>
 #include <iomanip>
 #include <limits>
 #include "openturns/XMLStorageManager.hxx"
@@ -187,7 +188,7 @@ void XMLStorageManager::write()
 /*
  * This method saves the PersistentObject onto the medium
  */
-void XMLStorageManager::save(const PersistentObject & obj, const String & label, bool fromStudy)
+void XMLStorageManager::save(const PersistentObject & obj, const String & label, const Bool fromStudy)
 {
 #ifdef SAVELOAD_CHECKING
   try
@@ -326,11 +327,11 @@ void toStringConverter(const _Tp & value, String & st)
   st = ( OSS() << value );
   PlatformInfo::SetNumericalPrecision(oldPrecision);
 
-  if (SpecFunc::IsNaN(value))
+  if (std::isnan(static_cast<Scalar>(value)))
   {
     st = "nan";
   }
-  else if (SpecFunc::IsInf(value))
+  else if (std::isinf(static_cast<Scalar>(value)))
   {
     st = (value < 0.0) ? "-inf" : "inf";
   }

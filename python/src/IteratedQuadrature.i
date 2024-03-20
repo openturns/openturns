@@ -6,5 +6,6 @@
 
 %include IteratedQuadrature_doc.i
 
+%copyctor OT::IteratedQuadrature;
+
 %include openturns/IteratedQuadrature.hxx
-namespace OT { %extend IteratedQuadrature { IteratedQuadrature(const IteratedQuadrature & other) { return new OT::IteratedQuadrature(other); } } }

@@ -1,12 +1,3 @@
-Testing class TimeSeries
-checkConstructorAndDestructor()
-checkCopyConstructor()
-streamObject(const T & anObject)
-class=TimeSeries name=Unnamed derived from=class=FieldImplementation name=Unnamed mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 description=[t] data=[[0]] simplices=[] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] start=0 timeStep=1 n=1
-streamObject(const T & anObject)
-class=TimeSeries name=Unnamed derived from=class=FieldImplementation name=Unnamed mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 description=[t] data=[[0]] simplices=[] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] start=0 timeStep=1 n=1
-areSameObjects(const T & firstObject, const T & secondObject)
-areDifferentObjects(const T & firstObject, const T & secondObject)
 ts1=class=TimeSeries name=Ts1 derived from=class=FieldImplementation name=Ts1 mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 description=[t] data=[[0],[0],[1],[2]] simplices=[[0,1],[1,2]] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[0,0],[10,11],[20,21],[30,31]] start=0 timeStep=1 n=3
 second element=class=Point name=Unnamed dimension=2 values=[10,11]
 ts1=class=TimeSeries name=Ts1 derived from=class=FieldImplementation name=Ts1 mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 description=[t] data=[[0],[0],[1],[2]] simplices=[[0,1],[1,2]] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[0,0],[10,11],[20,21],[30,31]] start=0 timeStep=1 n=3

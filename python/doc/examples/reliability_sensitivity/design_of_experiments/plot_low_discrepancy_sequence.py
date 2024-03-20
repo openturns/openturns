@@ -13,7 +13,8 @@ Generate low discrepancy sequences
 # - reverse Halton
 # - Haselgrove
 #
-# To illustrate these sequences we generate their first 1024 points and compare with the sequence obtained from the pseudo random generator (Merse Twister) as the latter has a higher discrepancy.
+# To illustrate these sequences we generate their first 1024 points and compare with the sequence obtained from
+# the pseudo random generator (Merse Twister) as the latter has a higher discrepancy.
 
 # %%
 import openturns as ot
@@ -102,7 +103,7 @@ view = viewer.View(graph)
 
 # %%
 # Compare with uniform random sequence
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 sample = distribution.getSample(size)
 print(
     "discrepancy=",

@@ -6,5 +6,6 @@
 
 %include Cloud_doc.i
 
+%copyctor OT::Cloud;
+
 %include openturns/Cloud.hxx
-namespace OT { %extend Cloud { Cloud(const Cloud & other) { return new OT::Cloud(other); } } }

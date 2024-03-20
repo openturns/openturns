@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all drawables
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,9 +61,6 @@ public:
   /** Comparison operator */
   using PersistentObject::operator ==;
   Bool operator == (const DrawableImplementation & other) const;
-
-  /** Code for point style accessor */
-  virtual UnsignedInteger getPointCode(const String & key) const;
 
   /** Legend accessor */
   virtual String getLegend() const;
@@ -259,9 +256,6 @@ protected:
   /** Check validity of pattern parameter */
   static Bool IsValidPattern(const String & pattern);
 
-  /** A map matching keys with R codes for point symbols */
-  static std::map<String, UnsignedInteger> SymbolCodes;
-
   /** A map matching keys with HTML definition for R colors */
   static std::map<String, String> ColorCodes;
 
@@ -271,6 +265,9 @@ protected:
   /** Valid fill styles */
   static Description ValidFillStyles;
 
+  /** Valid point styles */
+  static Description ValidPointStyles;
+
   /** Data accessor */
   virtual void setData(const Sample & data);
   virtual void setData(const Point & data);
@@ -278,6 +275,12 @@ protected:
   /** Check data */
   virtual void checkData(const Sample & data) const;
   virtual void checkData(const Point & data) const;
+
+  /** Explicit color validation flag accessor */
+  virtual Bool isColorExplicitlySet() const;
+
+  /** Color and explicit color validation flag accessor */
+  virtual void setColor(const String & color, const Bool isColorExplicitlySet);
 
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;
@@ -299,6 +302,9 @@ protected:
 
   /** Line width of the curve */
   Scalar lineWidth_;
+
+  /** Explicit color validation flag */
+  Bool isColorExplicitlySet_ = false;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

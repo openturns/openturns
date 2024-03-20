@@ -2,7 +2,7 @@
 /**
  *  @brief Interface class for a nonlinear scalar solver
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -136,6 +136,11 @@ void Solver::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionE
 UnsignedInteger Solver::getMaximumFunctionEvaluation() const
 {
   return getImplementation()->getMaximumFunctionEvaluation();
+}
+
+UnsignedInteger Solver::getCallsNumber() const
+{
+  return getImplementation()->getCallsNumber();
 }
 
 UnsignedInteger Solver::getUsedFunctionEvaluation() const

@@ -6,5 +6,6 @@ OTAutodoc(ConstantGradient)
 #include "openturns/ConstantGradient.hxx"
 %}
 
+%copyctor OT::ConstantGradient;
+
 %include openturns/ConstantGradient.hxx
-namespace OT { %extend ConstantGradient { ConstantGradient(const ConstantGradient & other) { return new OT::ConstantGradient(other); } } }

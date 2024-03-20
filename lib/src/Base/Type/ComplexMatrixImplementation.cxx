@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexMatrixImplementation implements the classical mathematicalComplexMatrixImplementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -209,7 +209,7 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
     oss << "(";
     for (UnsignedInteger j = 0; j < nbColumns_; ++j)
       oss << (j > 0 ? " " : "") << operator()(0, j);
-    oss << ")" << Os::GetEndOfLine();
+    oss << ")" << "\n";
     return oss;
   }
   // Array for the widths of the different components
@@ -226,9 +226,9 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
     oss << (i == 0 ? "/" : (i == nbRows_ - 1 ? "\\" : "|"));
     for (UnsignedInteger j = 0; j < nbColumns_; ++j)
       oss << (j > 0 ? " " : "") << std::setw(widthColumns[j]) << operator()(i, j);
-    if (i == 0) oss << "\\" << Os::GetEndOfLine() << offset;
+    if (i == 0) oss << "\\" << "\n" << offset;
     else if (i == nbRows_ - 1) oss << "/";
-    else oss << "|" << Os::GetEndOfLine() << offset;
+    else oss << "|" << "\n" << offset;
   }
   return oss;
 }

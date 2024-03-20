@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for GeneralizedPareto distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,6 @@
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +38,7 @@ class OT_API GeneralizedParetoFactory
 public:
 
   /** Default constructor */
-  explicit GeneralizedParetoFactory(const OptimizationAlgorithm & solver = TNC());
+  GeneralizedParetoFactory();
 
   /** Virtual constructor */
   GeneralizedParetoFactory * clone() const override;
@@ -67,10 +66,13 @@ public:
   /** Algorithm associated with the method of modified moments */
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const Sample & sample) const;
 
+  /** Mean residual life plot */
+  Graph drawMeanResidualLife(const Sample & sample) const;
+
 private:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class GeneralizedParetoFactory */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The MarshallOlkinCopula distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -97,6 +97,12 @@ String MarshallOlkinCopula::__str__(const String & ) const
 MarshallOlkinCopula * MarshallOlkinCopula::clone() const
 {
   return new MarshallOlkinCopula(*this);
+}
+
+/* Get the PDF of the distribution */
+Scalar MarshallOlkinCopula::computePDF(const Point &) const
+{
+  throw NotYetImplementedException(HERE) << "in MarshallOlkinCopula.computePDF";
 }
 
 /* Get the CDF of the distribution */

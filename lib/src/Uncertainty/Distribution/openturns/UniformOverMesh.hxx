@@ -2,7 +2,7 @@
 /**
  *  @brief The UniformOverMesh distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,7 +59,12 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
 
   /* Interface inherited from Distribution */
 

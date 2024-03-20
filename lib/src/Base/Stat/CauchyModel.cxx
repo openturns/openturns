@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -105,7 +105,7 @@ String CauchyModel::__str__(const String & offset) const
   oss << " amplitude=" << amplitude_
       << " scale=" << scale_;
   if (!isDiagonal_)
-    oss << " spatial correlation=" << Os::GetEndOfLine() << offset << outputCorrelation_.__str__(offset);
+    oss << " spatial correlation=" << "\n" << offset << outputCorrelation_.__str__(offset);
   else
     oss << " no spatial correlation";
   return oss;

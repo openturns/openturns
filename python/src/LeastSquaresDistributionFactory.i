@@ -8,5 +8,6 @@
 
 %ignore OT::LeastSquaresDistributionFactory::buildParameter;
 
+%copyctor OT::LeastSquaresDistributionFactory;
+
 %include openturns/LeastSquaresDistributionFactory.hxx
-namespace OT { %extend LeastSquaresDistributionFactory { LeastSquaresDistributionFactory(const LeastSquaresDistributionFactory & other) { return new OT::LeastSquaresDistributionFactory(other); } } }

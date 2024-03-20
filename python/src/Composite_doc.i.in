@@ -12,7 +12,7 @@ center : sequence of float
     Center of the design of experiments. If not specified, the design of
     experiments is centered on :math:`\vect{0} \in \Rset^n`.
 levels : sequence of float of dimension :math:`n_{level}`
-    The discretisation of directions (the same for each one), without any
+    The discretization of directions (the same for each one), without any
     consideration of unit.
 dimension : positive int
     Dimension :math:`n` of the space where the design of experiments is created.

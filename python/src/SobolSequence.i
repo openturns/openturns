@@ -6,5 +6,6 @@
 
 %include SobolSequence_doc.i
 
+%copyctor OT::SobolSequence;
+
 %include openturns/SobolSequence.hxx
-namespace OT{ %extend SobolSequence { SobolSequence(const SobolSequence & other) { return new OT::SobolSequence(other); } } }

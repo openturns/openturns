@@ -124,7 +124,7 @@ Yobs_sim = np.round(Y_sim / delta) * delta
 
 # %%
 # Plot the simulated dataset.
-graph = ot.Graph("Simulated data", "$X_1$", "$Y$", True, "topleft", 16)
+graph = ot.Graph("Simulated data", "$X_1$", "$Y$", True, "upper left", 16)
 cloud_obs = ot.Cloud(X[:, 1].asPoint(), Yobs_sim)
 cloud_obs.setPointStyle("bullet")
 cloud_sim = ot.Cloud(X[:, 1].asPoint(), Y_sim)
@@ -135,7 +135,6 @@ graph.add(curve)
 graph.add(cloud_sim)
 graph.add(cloud_obs)
 graph.setLegends(["Trend", "$Y^{sim}$", "$Y^{obs}$"])
-graph.setColors(ot.Drawable.BuildDefaultPalette(3))
 _ = View(graph)
 
 
@@ -191,7 +190,7 @@ upper = (Yobs_sim.ravel() + delta).tolist()
 # Global support of the joint distribution: theta, tau, outputs
 support = ot.Interval([-2.0] * p + [1e-4] + lower, [2.0] * p + [1e1] + upper)
 
-prior = ot.ComposedDistribution(
+prior = ot.JointDistribution(
     [ot.Uniform(-2.0, 2.0), ot.Uniform(-2.0, 2.0), ot.Uniform(1e-4, 1e1)]
 )
 
@@ -245,7 +244,7 @@ marginals_trunc = [
     ot.TruncatedNormal(Yobs_sim[i], 1.0, lower[i], upper[i]) for i in range(len(X))
 ]
 
-trunc_cond_Y = ot.ComposedDistribution(marginals_trunc)
+trunc_cond_Y = ot.JointDistribution(marginals_trunc)
 RV_Y = ot.RandomVector(trunc_cond_Y)
 
 
@@ -428,7 +427,7 @@ def py_log_density(x):
     theta = [x[i] for i in range(p)]
     tau = x[p]
     Y = [x[p + 1 + i] for i in range(len(X))]
-    ld = ot.ComposedDistribution(marginals_Y(theta, tau)).computeLogPDF(Y)
+    ld = ot.JointDistribution(marginals_Y(theta, tau)).computeLogPDF(Y)
     return [ld]
 
 

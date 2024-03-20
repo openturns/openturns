@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(ProjectionStrategy)
 
+%copyctor OT::ProjectionStrategy;
+
 %include openturns/ProjectionStrategy.hxx
-namespace OT{ %extend ProjectionStrategy { ProjectionStrategy(const ProjectionStrategy & other) { return new OT::ProjectionStrategy(other); } } }

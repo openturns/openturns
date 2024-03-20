@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by matching quantiles
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,9 +39,9 @@ public:
   QuantileMatchingFactory();
 
   /** Parameters constructor */
-  explicit QuantileMatchingFactory(const Distribution & distribution,
-                                   const Point & probabilities = Point(),
-                                   const Interval & optimizationBounds = Interval());
+  QuantileMatchingFactory(const Distribution & distribution,
+                          const Point & probabilities,
+                          const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
   QuantileMatchingFactory * clone() const override;

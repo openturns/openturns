@@ -6,5 +6,6 @@
 
 %include DomainDifference_doc.i
 
+%copyctor OT::DomainDifference;
+
 %include openturns/DomainDifference.hxx
-namespace OT { %extend DomainDifference { DomainDifference(const DomainDifference & other) { return new OT::DomainDifference(other); } } }

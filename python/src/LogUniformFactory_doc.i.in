@@ -1,9 +1,6 @@
 %feature("docstring") OT::LogUniformFactory
 "Log Uniform factory.
 
-Available constructor:
-    LogUniformFactory()
-
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +17,13 @@ DistributionFactory, LogUniform"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsLogUniform_doc
-"Build the LogUniform distribution.
+%feature("docstring") OT::LogUniformFactory::buildAsLogUniform
+"Estimate the distribution as native distribution.
+
 
 **Available usages**:
+
+    buildAsLogUniform()
 
     buildAsLogUniform(*sample*)
 
@@ -31,16 +31,15 @@ DistributionFactory, LogUniform"
 
 Parameters
 ----------
-sample : 2-d sequence of float
+sample : 2-d sequence of float,
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float,
+   The parameters of the :class:`~openturns.LogUniform`.
 
 Returns
 -------
-dist : :class:`~openturns.LogUniform`
-    The built distribution."
-%enddef
-%feature("docstring") OT::LogUniformFactory::buildAsLogUniform
-OT_DistributionFactory_buildAsLogUniform_doc
+distribution : :class:`~openturns.LogUniform`,
+    The estimated distribution as a LogUniform.
+    
+    In the first usage, the default LogUniform distribution is built."
 

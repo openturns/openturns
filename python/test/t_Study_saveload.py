@@ -112,7 +112,6 @@ try:
     myStudy.add("simulationResult", simulationResult)
 
     cNameList = [
-        "LHS",
         "DirectionalSampling",
         "SimulationSensitivityAnalysis",
         "ProbabilitySimulationAlgorithm",

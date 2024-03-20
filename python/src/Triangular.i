@@ -6,5 +6,6 @@
 
 %include Triangular_doc.i
 
+%copyctor OT::Triangular;
+
 %include openturns/Triangular.hxx
-namespace OT { %extend Triangular { Triangular(const Triangular & other) { return new OT::Triangular(other); } } }

@@ -2,7 +2,7 @@
 /**
  *  @brief The MarshallOlkinCopula distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,6 +58,10 @@ public:
   /* Interface inherited from Distribution */
   /** Virtual constructor */
   MarshallOlkinCopula * clone() const override;
+
+  /** Get the PDF of the distribution */
+  using DistributionImplementation::computePDF;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;

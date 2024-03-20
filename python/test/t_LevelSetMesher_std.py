@@ -10,7 +10,7 @@ try:
         "OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000
     )
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000
+        "OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000
     )
     ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7

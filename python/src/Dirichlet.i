@@ -6,5 +6,6 @@
 
 %include Dirichlet_doc.i
 
+%copyctor OT::Dirichlet;
+
 %include openturns/Dirichlet.hxx
-namespace OT { %extend Dirichlet { Dirichlet(const Dirichlet & other) { return new OT::Dirichlet(other); } } }

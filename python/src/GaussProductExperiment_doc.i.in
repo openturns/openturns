@@ -41,7 +41,7 @@ Examples
 >>> import openturns as ot
 >>> marginal_1 = ot.Exponential()
 >>> marginal_2 = ot.Triangular(-1.0, -0.5, 1.0)
->>> distribution = ot.ComposedDistribution([marginal_1, marginal_2])
+>>> distribution = ot.JointDistribution([marginal_1, marginal_2])
 >>> marginalSizes = [3, 2]
 >>> experiment = ot.GaussProductExperiment(distribution, marginalSizes)
 >>> nodes, weights = experiment.generateWithWeights()
@@ -75,7 +75,7 @@ for the tensor product Gauss quadrature.
 >>> print('Exact integral = ', integral)
 Exact integral =  1.0
 >>> marginal_levels = [7] * dimension
->>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+>>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 >>> experiment = ot.GaussProductExperiment(distribution, marginal_levels)
 >>> nodes, weights = experiment.generateWithWeights()
 >>> number_of_nodes = nodes.getSize()

@@ -6,5 +6,6 @@
 
 %include NearestPointProblem_doc.i
 
+%copyctor OT::NearestPointProblem;
+
 %include openturns/NearestPointProblem.hxx
-namespace OT{ %extend NearestPointProblem { NearestPointProblem(const NearestPointProblem & other) { return new OT::NearestPointProblem(other); } } }

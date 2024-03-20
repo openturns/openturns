@@ -9,7 +9,7 @@
 %template(_ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
 %template(ComplexCollection)                   OT::Collection<OT::Complex>;
-%template(ComplexPersistenCollection)          OT::PersistentCollection<OT::Complex>;
+%template(_ComplexPersistentCollection)          OT::PersistentCollection<OT::Complex>;
 
 %typemap(in) const ComplexCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
@@ -72,10 +72,6 @@ namespace OT {
   OTComplexMatrixGetAccessors()  
   
   ComplexMatrix __rmul__(Complex s) { return s * (*self); }
-
-#if SWIG_VERSION < 0x030011
-  ComplexMatrix __truediv__(Complex s) { return (*self) / s; }
-#endif
 
   ComplexMatrix __matmul__(const ComplexMatrix & other) { return *self * other; }
 

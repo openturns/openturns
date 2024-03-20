@@ -141,7 +141,7 @@ graph_ev_X.setTitle("Input/output eigenvalues comparison")
 graph_ev_X.setYTitle(r"$\lambda_X, \lambda_Y$")
 graph_ev_X.setColors(["blue", "blue", "red", "red"])
 graph_ev_X.setLegends([r"$\lambda_X$", "", r"$\lambda_Y$", ""])
-graph_ev_X.setLegendPosition("topright")
+graph_ev_X.setLegendPosition("upper right")
 view = viewer.View(graph_ev_X)
 
 # %%

@@ -17,4 +17,21 @@ fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
 
 See also
 --------
-LeastSquaresMethod"
+LeastSquaresMethod
+
+Examples
+--------
+>>> import openturns as ot
+>>> basisSize = 3
+>>> sampleSize = 5
+>>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+>>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
+>>> basis = ot.Basis(phis)
+>>> proxy = ot.DesignProxy(X, phis)
+>>> full = range(basisSize)
+>>> design = ot.Matrix(proxy.computeDesign(full))
+>>> method = ot.SparseMethod(ot.QRMethod(proxy, full))
+>>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
+>>> y = normal.getRealization()
+>>> yAt = design.transpose() * y
+>>> x = method.solve(y)"

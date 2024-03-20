@@ -6,5 +6,6 @@
 
 %include MartinezSensitivityAlgorithm_doc.i
 
+%copyctor OT::MartinezSensitivityAlgorithm;
+
 %include openturns/MartinezSensitivityAlgorithm.hxx
-namespace OT{ %extend MartinezSensitivityAlgorithm { MartinezSensitivityAlgorithm(const MartinezSensitivityAlgorithm & other) { return new OT::MartinezSensitivityAlgorithm(other); } } }

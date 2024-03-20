@@ -18,3 +18,7 @@ OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
 OT_EnumerateFunction_inverse_doc
 %feature("docstring") OT::EnumerateFunction::setDimension
 OT_EnumerateFunction_setDimension_doc
+%feature("docstring") OT::EnumerateFunction::setUpperBound
+OT_EnumerateFunction_setUpperBound_doc
+%feature("docstring") OT::EnumerateFunction::getUpperBound
+OT_EnumerateFunction_getUpperBound_doc

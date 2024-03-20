@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -300,6 +300,21 @@ Indices CovarianceModel::getActiveParameter() const
   return getImplementation()->getActiveParameter();
 }
 
+/* Easily activate base parameters: scale, nuggetFactor, amplitude */
+void CovarianceModel::activateScale(const Bool isScaleActive)
+{
+  return getImplementation()->activateScale(isScaleActive);
+}
+
+void CovarianceModel::activateNuggetFactor(const Bool isNuggetFactorActive)
+{
+  return getImplementation()->activateNuggetFactor(isNuggetFactorActive);
+}
+
+void CovarianceModel::activateAmplitude(const Bool isAmplitudeActive)
+{
+  return getImplementation()->activateAmplitude(isAmplitudeActive);
+}
 
 /* setter for the full parameter */
 void CovarianceModel::setFullParameter(const Point & parameter)

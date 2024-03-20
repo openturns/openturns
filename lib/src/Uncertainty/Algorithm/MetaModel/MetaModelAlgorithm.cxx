@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel algorithms
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/HypothesisTest.hxx"
 #include "openturns/UserDefined.hxx"
@@ -246,7 +246,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
     }
   }
 
-  ComposedDistribution distribution(marginals);
+  JointDistribution distribution(marginals);
   if (!isIndependent)
     distribution.setCopula(NormalCopulaFactory().build(inputSample));
   return distribution;

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,11 +35,13 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
+  , checkStatus_(ResourceMap::GetAsBool("OptimizationAlgorithm-DefaultCheckStatus"))
 {
   // Nothing to do
 }
@@ -53,11 +55,13 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , problem_(problem)
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber"))
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumTimeDuration"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
+  , checkStatus_(ResourceMap::GetAsBool("OptimizationAlgorithm-DefaultCheckStatus"))
 {
   // Nothing to do
 }
@@ -101,14 +105,26 @@ void OptimizationAlgorithmImplementation::setMaximumIterationNumber(const Unsign
   maximumIterationNumber_ = maximumIterationNumber;
 }
 
+void OptimizationAlgorithmImplementation::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
+{
+  maximumCallsNumber_ = maximumCallsNumber;
+}
+
+UnsignedInteger OptimizationAlgorithmImplementation::getMaximumCallsNumber() const
+{
+  return maximumCallsNumber_;
+}
+
 void OptimizationAlgorithmImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
 {
-  maximumEvaluationNumber_ = maximumEvaluationNumber;
+  LOGWARN("OptimizationAlgorithm.setMaximumEvaluationNumber is deprecated, use setMaximumCallsNumber");
+  setMaximumCallsNumber(maximumEvaluationNumber);
 }
 
 UnsignedInteger OptimizationAlgorithmImplementation::getMaximumEvaluationNumber() const
 {
-  return maximumEvaluationNumber_;
+  LOGWARN("OptimizationAlgorithm.getMaximumEvaluationNumber is deprecated, use getMaximumCallsNumber");
+  return getMaximumCallsNumber();
 }
 
 /* Maximum absolute error accessor */
@@ -159,6 +175,17 @@ void OptimizationAlgorithmImplementation::setMaximumConstraintError(const Scalar
   maximumConstraintError_ = maximumConstraintError;
 }
 
+/* Maximum time accessor */
+void OptimizationAlgorithmImplementation::setMaximumTimeDuration(const Scalar maximumTime)
+{
+  maximumTimeDuration_ = maximumTime;
+}
+
+Scalar OptimizationAlgorithmImplementation::getMaximumTimeDuration() const
+{
+  return maximumTimeDuration_;
+}
+
 /* String converter */
 String OptimizationAlgorithmImplementation::__repr__() const
 {
@@ -167,12 +194,11 @@ String OptimizationAlgorithmImplementation::__repr__() const
       << " problem=" << problem_
       << " startingPoint=" << startingPoint_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " maximumEvaluationNumber=" << maximumEvaluationNumber_
+      << " maximumCallsNumber=" << maximumCallsNumber_
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_
-      << " verbose=" << verbose_;
+      << " maximumConstraintError=" << maximumConstraintError_;
   return oss;
 }
 
@@ -206,18 +232,6 @@ OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone
   return new OptimizationAlgorithmImplementation(*this);
 }
 
-/* Verbose accessor */
-Bool OptimizationAlgorithmImplementation::getVerbose() const
-{
-  return verbose_;
-}
-
-/* Verbose accessor */
-void OptimizationAlgorithmImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
 /* Method save() stores the object through the StorageManager */
 void OptimizationAlgorithmImplementation::save(Advocate & adv) const
 {
@@ -225,12 +239,13 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "startingPoint_", startingPoint_);
   adv.saveAttribute( "problem_", problem_);
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_);
-  adv.saveAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
+  adv.saveAttribute( "maximumCallsNumber_", maximumCallsNumber_);
   adv.saveAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
-  adv.saveAttribute( "verbose_", verbose_);
+  adv.saveAttribute( "maximumTimeDuration_", maximumTimeDuration_);
+  adv.saveAttribute( "checkStatus_", checkStatus_ );
 }
 
 
@@ -241,12 +256,18 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "startingPoint_", startingPoint_);
   adv.loadAttribute( "problem_", problem_);
   adv.loadAttribute( "maximumIterationNumber_", maximumIterationNumber_);
-  adv.loadAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
+  if (adv.hasAttribute("maximumCallsNumber_")) // OT>=1.23
+    adv.loadAttribute( "maximumCallsNumber_", maximumCallsNumber_);
+  else
+    adv.loadAttribute( "maximumEvaluationNumber_", maximumCallsNumber_);
   adv.loadAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
-  adv.loadAttribute( "verbose_", verbose_);
+  if (adv.hasAttribute("maximumTimeDuration_")) // OT>=1.23
+    adv.loadAttribute( "maximumTimeDuration_", maximumTimeDuration_);
+  if (adv.hasAttribute("checkStatus_"))
+    adv.loadAttribute("checkStatus_", checkStatus_);
 }
 
 
@@ -269,6 +290,13 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   // Update the result
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = inputHistory.getSize();
+  if (outputHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
+  if (getProblem().hasInequalityConstraint() && inequalityHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation inequality constraint history size does not match input size";
+  if (getProblem().hasEqualityConstraint() && equalityHistory.getSize() != size)
+    throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation equality constraint history size does not match input size";
+
   const UnsignedInteger dimension = getProblem().getDimension();
 
   Scalar absoluteError = -1.0;
@@ -280,6 +308,7 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   {
     const Point inP(inputHistory[i]);
     const Point outP(outputHistory[i]);
+
     constraintError = 0.0;
     if (getProblem().hasBounds())
     {
@@ -336,8 +365,23 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
   if (!result_.getOptimalPoint().getDimension())
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
     throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
-  result_.setEvaluationNumber(size);
+  }
+  result_.setCallsNumber(size);
+}
+
+
+/* Check status accessor */
+void OptimizationAlgorithmImplementation::setCheckStatus(const Bool checkStatus)
+{
+  checkStatus_ = checkStatus;
+}
+
+Bool OptimizationAlgorithmImplementation::getCheckStatus() const
+{
+  return checkStatus_;
 }
 
 END_NAMESPACE_OPENTURNS

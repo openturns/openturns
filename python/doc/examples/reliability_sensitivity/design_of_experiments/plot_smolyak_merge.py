@@ -14,7 +14,6 @@ import numpy as np
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
-import matplotlib.pyplot as plt
 
 # %%
 # The following examples shows how to get the relative and absolute tolerances.
@@ -111,15 +110,9 @@ for epsilon in epsilon_array:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
-palette = ot.Drawable.BuildDefaultPalette(number_of_epsilons)
-graph.setColors(palette)
-graph.setLegendPosition("topright")
-otv.View(
-    graph,
-    figure_kw={"figsize": (4.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
-)
-plt.tight_layout()
+graph.setLegendPosition("upper left")
+graph.setLegendCorner([1.0, 1.0])
+view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
 
 # %%
 # We see that changing the tolerance from :math:`10^{-6}` down
@@ -152,16 +145,10 @@ for level in level_list:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
-palette = ot.Drawable.BuildDefaultPalette(number_of_epsilons)
-graph.setColors(palette)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper left")
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-view = otv.View(
-    graph,
-    figure_kw={"figsize": (4.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
-)
-plt.tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
 
 # %%
 # We see that changing the tolerance from :math:`1` down to :math:`10^{-3}`
@@ -192,12 +179,9 @@ for level in level_list:
 graph = ot.Graph("Sensitivity to merge", "Level", "Size decrease", True)
 cloud = ot.Cloud(level_list, size_decrease_list)
 graph.add(cloud)
-view = otv.View(
-    graph,
-    figure_kw={"figsize": (4.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
-)
-plt.tight_layout()
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition("upper left")
+view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
 
 # %%
 # We see that the number of nodes is reduced when the merge algorithm is

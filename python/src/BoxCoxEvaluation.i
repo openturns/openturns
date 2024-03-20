@@ -6,5 +6,6 @@ OTAutodoc(BoxCoxEvaluation)
 #include "openturns/BoxCoxEvaluation.hxx"
 %}
 
+%copyctor OT::BoxCoxEvaluation;
+
 %include openturns/BoxCoxEvaluation.hxx
-namespace OT { %extend BoxCoxEvaluation { BoxCoxEvaluation(const BoxCoxEvaluation & other) { return new OT::BoxCoxEvaluation(other); } } }

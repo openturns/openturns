@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all function implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,8 +46,6 @@ FunctionImplementation::FunctionImplementation()
   , evaluation_(new NoEvaluation)
   , gradient_(new NoGradient)
   , hessian_(new NoHessian)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
 {
   // Nothing to do
 }
@@ -73,8 +71,6 @@ FunctionImplementation::FunctionImplementation(const Evaluation & evaluation,
   , evaluation_(evaluation)
   , gradient_(gradient)
   , hessian_(hessian)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
 {
   // Nothing to do
 }
@@ -110,6 +106,12 @@ String FunctionImplementation::__repr__() const
 String FunctionImplementation::__str__(const String & offset) const
 {
   return evaluation_.__str__(offset);
+}
+
+/* String converter */
+String FunctionImplementation::_repr_html_() const
+{
+  return evaluation_._repr_html_();
 }
 
 /* Description Accessor */
@@ -249,18 +251,21 @@ void FunctionImplementation::setParameterDescription(const Description & descrip
 /* Operator () */
 Point FunctionImplementation::operator() (const Point & inP) const
 {
+  ++ callsNumber_;
   return evaluation_.operator()(inP);
 }
 
 /* Operator () */
 Sample FunctionImplementation::operator() (const Sample & inSample) const
 {
+  callsNumber_ += inSample.getSize();
   return evaluation_.operator()(inSample);
 }
 
 /* Operator () */
 Field FunctionImplementation::operator() (const Field & inField) const
 {
+  callsNumber_ += inField.getValues().getSize();
   return evaluation_.operator()(inField);
 }
 
@@ -351,12 +356,12 @@ Function FunctionImplementation::getMarginal(const Indices & indices) const
 /* Number of calls to the evaluation */
 UnsignedInteger FunctionImplementation::getEvaluationCallsNumber() const
 {
-  return getCallsNumber();
+  return evaluation_.getCallsNumber();
 }
 
 UnsignedInteger FunctionImplementation::getCallsNumber() const
 {
-  return evaluation_.getCallsNumber();
+  return callsNumber_.get();
 }
 
 /* Number of calls to the gradient */
@@ -440,6 +445,7 @@ void FunctionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "hessian_", hessian_ );
   adv.saveAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.saveAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -451,6 +457,12 @@ void FunctionImplementation::load(Advocate & adv)
   adv.loadAttribute( "hessian_", hessian_ );
   adv.loadAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.loadAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
+  if (adv.hasAttribute("callsNumber_"))
+  {
+    UnsignedInteger callsNumber;
+    adv.loadAttribute( "callsNumber_", callsNumber );
+    callsNumber_ = callsNumber;
+  }
 }
 
 

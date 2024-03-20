@@ -25,7 +25,7 @@ cb = cantilever_beam.CantileverBeam()
 # We create the input parameters distribution and make a random vector.
 # For the sake of this example, we consider an independent copula.
 
-distribution = ot.ComposedDistribution([cb.E, cb.F, cb.L, cb.II])
+distribution = ot.JointDistribution([cb.E, cb.F, cb.L, cb.II])
 X = ot.RandomVector(distribution)
 X.setDescription(["E", "F", "L", "I"])
 

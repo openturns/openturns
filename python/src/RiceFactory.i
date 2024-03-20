@@ -6,5 +6,6 @@
 
 %include RiceFactory_doc.i
 
+%copyctor OT::RiceFactory;
+
 %include openturns/RiceFactory.hxx
-namespace OT { %extend RiceFactory { RiceFactory(const RiceFactory & other) { return new OT::RiceFactory(other); } } }

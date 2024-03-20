@@ -98,7 +98,7 @@ const_func = ot.SymbolicFunction(["t"], ["1"])
 linear_func = ot.SymbolicFunction(["t"], ["-t"])
 myBasis = ot.Basis([const_func, linear_func])
 
-coef = ot.ComposedDistribution([R, B])
+coef = ot.JointDistribution([R, B])
 
 R_proc = ot.FunctionalBasisProcess(coef, myBasis, myMesh)
 

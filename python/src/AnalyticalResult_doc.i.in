@@ -1,9 +1,6 @@
 %feature("docstring") OT::AnalyticalResult
 "Analytical result.
 
-Available constructors:
-    AnalyticalResult(*designPoint, limitStateVariable, isInFailureSpace*)
-
 Notes
 -----
 Structure created by the method run() of the :class:`~openturns.Analytical`
@@ -193,12 +190,25 @@ limitStateVariable : :class:`~openturns.RandomVector`
 Returns
 -------
 meanPoint : :class:`~openturns.Point`
-    Mean point of the standard space distribution restricted to the event
-    domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
-    where :math:`E_1` is the spheric univariate distribution of the standard
-    space and :math:`\beta` the reliability index."
+    Mean point in the standrad event domain.
 
+Notes
+-----
+This method is used in the context of the FORM approximation of the probability of an event. Let :math:`\cD` denote the standard event domain.
+
+In the standard space, the transformed random vector :math:`\vect{U}` follows a spherical distribution. All the univariate marginals are identical. Let  :math:`E` denote the CDF of any univariate marginal and :math:`e` its PDF.
+
+Let :math:`\vect{u}^*` denote the design point in the standard space and :math:`\beta_{HL}` the associated Hasofer-Lind reliability index.
+
+By symmetry in the standard space, the mean point in the standard event domain is computed as follows:
+
+.. math::
+
+    \Expect{\vect{U}|\vect{U} \in \cD} = \Expect{\|\vect{U}\| | \|\vect{U}\| \geq \beta_{HL}}   \vect{u}^* =  \frac{1}{E(-\beta_{HL})} \left(\int_{\beta}^{+\infty} u e(u)\, \di{u} \right)\vect{u}^*
+
+
+"
+    
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::AnalyticalResult::setMeanPointInStandardEventDomain
@@ -207,11 +217,8 @@ meanPoint : :class:`~openturns.Point`
 Parameters
 ----------
 meanPoint : sequence of float
-    Mean point of the standard space distribution restricted to the event
-    domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
-    where :math:`E_1` is the spheric univariate distribution of the standard
-    space and :math:`\beta` the reliability index."
+    The mean point of the standard space distribution restricted to the event
+    domain."
 
 // ---------------------------------------------------------------------
 

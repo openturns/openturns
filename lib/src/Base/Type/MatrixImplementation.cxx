@@ -2,7 +2,7 @@
 /**
  *  @brief MatrixImplementation implements the classical mathematical MatrixImplementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -98,7 +98,7 @@ String MatrixImplementation::__str__(const String & offset) const
 
   if ( (nbRows_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) ||
        (nbColumns_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) )
-    oss << nbRows_ << "x" << nbColumns_ << Os::GetEndOfLine();
+    oss << nbRows_ << "x" << nbColumns_ << "\n";
 
   size_t lwidth(0);
   size_t rwidth(0);
@@ -114,7 +114,7 @@ String MatrixImplementation::__str__(const String & offset) const
   const char * bracket("[");
   const char * newline("");
   const char * noffset("");
-  for ( UnsignedInteger i = 0; i < nbRows_; ++i, newline = Os::GetEndOfLine(), noffset = offset.c_str(), bracket = " " )
+  for ( UnsignedInteger i = 0; i < nbRows_; ++i, newline = "\n", noffset = offset.c_str(), bracket = " " )
   {
     oss << newline << noffset << bracket << "[ ";
     const char * sep("");
@@ -711,7 +711,7 @@ void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
 /* Check if the matrix values belong to (-1;1) */
 Bool MatrixImplementation::hasUnitRange() const
 {
-  bool unitRange = true;
+  Bool unitRange = true;
   for (UnsignedInteger i = 0; i < nbRows_; ++i)
     for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     {

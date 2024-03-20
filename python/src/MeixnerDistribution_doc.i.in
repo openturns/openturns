@@ -1,16 +1,25 @@
 %feature("docstring") OT::MeixnerDistribution
 "Meixner distribution.
 
+
 Parameters
 ----------
 beta : float, :math:`\beta > 0`
     Scale parameter.
+    
+    Default value is 1.0.
 alpha : float, :math:`\alpha \in [-\pi; \pi]`
     Skewness parameter.
+    
+    Default value is 0.0.
 delta : float, :math:`\delta > 0`
     Shape parameter.
+    
+    Default value is 1.0.
 gamma : float
     Position parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
 Notes
 -----
@@ -128,3 +137,23 @@ Parameters
 ----------
 gamma : float, :math:`\gamma \in \Rset`
     Position parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the internal sampling bounds."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the internal sampling bounds."

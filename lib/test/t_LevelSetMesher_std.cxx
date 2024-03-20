@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LevelSetMesher for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000 );
-    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000);
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );

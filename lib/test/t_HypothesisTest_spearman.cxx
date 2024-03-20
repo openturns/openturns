@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,9 +52,22 @@ int main(int, char *[])
   // p-value threshold : probability of the critical region, ie P_H0(reject H0)
   // p-value : P_H0(test statistics > observed test statistics)
   // Test = True <=> p-value > p-value threshold
+  
+  // Expected result is SpecFunc::MaxScalar
+  TestResult fullSpearman(HypothesisTest::FullSpearman(sampleX, sampleZ, 0.10)[0]);
+  Scalar testStatistic = fullSpearman.getStatistic();
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
-  fullprint << "FullSpearmanXZ=" << HypothesisTest::FullSpearman(sampleX, sampleZ, 0.10) << std::endl;
-  fullprint << "FullSpearmanYY=" << HypothesisTest::FullSpearman(sampleY, sampleY, 0.10) << std::endl;
+  fullSpearman = HypothesisTest::FullSpearman(sampleX, sampleZ, 0.10)[1];
+  Scalar pValue = fullSpearman.getPValue();
+  testStatistic = fullSpearman.getStatistic();
+  assert_almost_equal(pValue, 0.903, 1e-4, 0.0);
+  assert_almost_equal(testStatistic, 0.1219, 1e-4, 0.0);  
+
+  // Expected result is SpecFunc::MaxScalar
+  fullSpearman = HypothesisTest::FullSpearman(sampleY, sampleY, 0.10)[0];
+  testStatistic = fullSpearman.getStatistic();
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   // Partial Spearman Test : collection of tests of zero correlation between a selection of the 1D marginals of a sample and another 1D sample
   // H0 = zero rank correlation

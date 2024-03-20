@@ -2,7 +2,7 @@
 /**
  *  @brief IpoptProblem implements the Ipopt::TNLP interface
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,7 @@ public:
   /** Constructor with parameters */
   IpoptProblem( const OptimizationProblem & optimProblem,
                 const Point & startingPoint,
-                const UnsignedInteger maximumEvaluationNumber
-              );
+                const UnsignedInteger maximumCallsNumber);
 
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
@@ -137,16 +136,6 @@ public:
                                  const ::Ipopt::IpoptData* ip_data,
                                  ::Ipopt::IpoptCalculatedQuantities* ip_cq);
 
-  Point getOptimalPoint() const
-  {
-    return optimalPoint_;
-  }
-
-  Point getOptimalValue() const
-  {
-    return optimalValue_;
-  }
-
   virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = 0)
   {
     progressCallback_ = std::pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(callBack, state);
@@ -158,18 +147,18 @@ public:
   }
 
 private:
+  // Clip point wrt problem bounds
+  void clip(Point & xPoint) const;
+
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
-  Point optimalPoint_;
-  Point optimalValue_;
+
   // Callbacks
-  UnsignedInteger maximumEvaluationNumber_;
+  UnsignedInteger maximumCallsNumber_ = 0;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
-
-
 };
 
 END_NAMESPACE_OPENTURNS

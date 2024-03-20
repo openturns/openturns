@@ -1,9 +1,8 @@
 %feature("docstring") OT::BernoulliFactory
 "Bernoulli factory.
 
-Available constructor:
-    BernoulliFactory()
-
+Notes
+-----
 We use the following estimator:
 
 .. math::
@@ -16,3 +15,30 @@ We use the following estimator:
 See also
 --------
 DistributionFactory, Bernoulli"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BernoulliFactory::buildAsBernoulli
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsBernoulli()
+
+    buildAsBernoulli(*sample*)
+
+    buildAsBernoulli(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+   The parameters of the :class:`~openturns.Bernoulli`.
+
+Returns
+-------
+distribution : :class:`~openturns.Bernoulli`
+    The estimated distribution as a Bernoulli.
+    
+    In the first usage, the default Bernoulli distribution is built."
+

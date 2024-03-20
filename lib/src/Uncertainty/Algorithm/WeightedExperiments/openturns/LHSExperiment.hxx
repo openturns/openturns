@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an LHSExperiment plane
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,6 @@
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/MarginalTransformationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -80,6 +79,9 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution) override;
 
+  /** Size accessor */
+  void setSize(const UnsignedInteger size) override;
+
   /** AlwaysShuffle accessor */
   Bool getAlwaysShuffle() const;
   void setAlwaysShuffle(const Bool alwaysShuffle);
@@ -102,16 +104,16 @@ private:
   mutable Matrix shuffle_;
 
   // Flag to avoid redundant computation of the shuffle
-  mutable Bool isAlreadyComputedShuffle_;
+  mutable Bool isAlreadyComputedShuffle_ = false;
 
   // Initialization flag
-  Bool alwaysShuffle_;
+  Bool alwaysShuffle_ = false;
 
   // Random shift flag
-  Bool randomShift_;
+  Bool randomShift_ = true;
 
   // Transformation from uniform space to distribution space
-  MarginalTransformationEvaluation transformation_;
+  Function transformation_;
 
 }; /* class LHSExperiment */
 

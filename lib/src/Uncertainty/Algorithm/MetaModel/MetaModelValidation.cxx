@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel validation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/BernsteinCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -134,12 +134,12 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
   if (!smooth)
   {
     const UnsignedInteger dimension = residual_.getDimension();
-    ComposedDistribution::DistributionCollection coll(dimension);
+    JointDistribution::DistributionCollection coll(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       coll[j] = HistogramFactory().build(residual_.getMarginal(j));
     // Estimate a copula only if dimension>1
     if (dimension > 1)
-      return ComposedDistribution(coll, BernsteinCopulaFactory().build(residual_));
+      return JointDistribution(coll, BernsteinCopulaFactory().build(residual_));
     return coll[0];
   }
   return KernelSmoothing().build(residual_);
@@ -163,12 +163,10 @@ GridLayout MetaModelValidation::drawValidation() const
     diagonalPoints[0] = Point(2, minS[j]);
     diagonalPoints[1] = Point(2, maxS[j]);
     Curve diagonal(diagonalPoints);
-    diagonal.setColor("red");
     graph.add(diagonal);
 
     // points
     Cloud cloud(outputSample_.getMarginal(j), yhat.getMarginal(j));
-    cloud.setColor("blue");
     graph.add(cloud);
 
     grid.setGraph(0, j, graph);

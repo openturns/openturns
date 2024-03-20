@@ -6,5 +6,6 @@
 
 %include AdaptiveStieltjesAlgorithm_doc.i
 
+%copyctor OT::AdaptiveStieltjesAlgorithm;
+
 %include openturns/AdaptiveStieltjesAlgorithm.hxx
-namespace OT{ %extend AdaptiveStieltjesAlgorithm { AdaptiveStieltjesAlgorithm(const AdaptiveStieltjesAlgorithm & other) { return new OT::AdaptiveStieltjesAlgorithm(other); } } }

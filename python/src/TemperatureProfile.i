@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(TemperatureProfile)
 
+%copyctor OT::TemperatureProfile;
+
 %include openturns/TemperatureProfile.hxx
-namespace OT { %extend TemperatureProfile { TemperatureProfile(const TemperatureProfile & other) { return new OT::TemperatureProfile(other); } } }

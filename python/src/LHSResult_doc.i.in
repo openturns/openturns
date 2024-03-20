@@ -18,7 +18,7 @@ This class is not intendeted to be built by hand, but returned by optimization a
 Examples
 --------
 >>> import openturns as ot
->>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
 >>> lhs.setAlwaysShuffle(True) # randomized
 >>> profile = ot.GeometricProfile()
 >>> spaceFilling = ot.SpaceFillingC2()

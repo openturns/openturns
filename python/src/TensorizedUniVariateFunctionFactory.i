@@ -6,6 +6,7 @@
 
 %include TensorizedUniVariateFunctionFactory_doc.i
 
+%copyctor OT::TensorizedUniVariateFunctionFactory;
+
 %include openturns/TensorizedUniVariateFunctionFactory.hxx
-namespace OT{ %extend TensorizedUniVariateFunctionFactory { TensorizedUniVariateFunctionFactory(const TensorizedUniVariateFunctionFactory & other) { return new OT::TensorizedUniVariateFunctionFactory(other); } } }
 

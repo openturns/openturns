@@ -69,11 +69,9 @@ def draw_stratas(enum_func):
         cloud.setLegend(str(strata_index))
         cloud.setPointStyle("circle")
         graph.add(cloud)
-    palette = ot.DrawableImplementation.BuildDefaultPalette(maximum_strata_index)
-    graph.setColors(palette)
     graph.setIntegerXTick(True)
     graph.setIntegerYTick(True)
-    graph.setLegendPosition("topright")
+    graph.setLegendPosition("upper right")
     return graph
 
 
@@ -88,13 +86,10 @@ view = otv.View(graph, axes_kw={"aspect": "equal"})
 # for several dimension values.
 # We observe the exponential increase of the number of terms with the dimension
 # :math:`d` (curse of dimensionality).
-graph = ot.Graph(
-    "Linear enumeration", "Total degree", "Number of coefficients", True
-)
+graph = ot.Graph("Linear enumeration", "Total degree", "Number of coefficients", True)
 degree_maximum = 10
 list_of_dimensions = [1, 5, 10, 15, 20]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
 for i in range(len(list_of_dimensions)):
     dimension = list_of_dimensions[i]
     number_of_coeff_array = ot.Sample(degree_maximum, 2)
@@ -104,9 +99,8 @@ for i in range(len(list_of_dimensions)):
     cloud = ot.Cloud(number_of_coeff_array)
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"dim.={dimension}")
-    cloud.setColor(palette[i])
     graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setIntegerXTick(True)
 graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(graph, figure_kw={"figsize": (5, 4)})
@@ -121,7 +115,7 @@ def draw_qnorm(q):
     def qnorm(x):
         norm = 0.0
         for xi in x:
-            norm += xi ** q
+            norm += xi**q
         norm = norm ** (1.0 / q)
         return [norm]
 
@@ -178,7 +172,6 @@ graph = ot.Graph(
 degree_maximum = 10
 q_list = [0.2, 0.4, 0.6, 0.8, 1.0]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
 for i in range(len(q_list)):
     q = q_list[i]
     enum_func = ot.HyperbolicAnisotropicEnumerateFunction(dim, q)
@@ -189,9 +182,8 @@ for i in range(len(q_list)):
     cloud = ot.Cloud(number_of_coeff_array)
     cloud.setPointStyle(point_styles[i])
     cloud.setLegend(f"$q={q}$")
-    cloud.setColor(palette[i])
     graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setIntegerXTick(True)
 graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(graph, figure_kw={"figsize": (5, 4)})

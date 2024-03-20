@@ -3,7 +3,7 @@ Create a Python function
 ========================
 """
 # %%
-# In this example we are going to create a Function object (ie usable in the OpenTURNS context) from a pure Python function.
+# In this example we are going to create a :class:`~openturns.Function` object (ie usable throughout the library) from a pure Python function.
 #
 # The pure Python function to wrap must accept a sequence of floats and return a sequence of float.
 #
@@ -88,7 +88,8 @@ print("xs=", xs, "\nf(xs)=", functionSample(xs))
 print("x=", x, "f(x)=", functionSample(x))
 
 # %%
-# The most efficient solution is to provide evaluations both on Point and Sample.  This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
+# The most efficient solution is to provide evaluations both on Point and Sample.
+# This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
 
 # %%
 functionFast = ot.PythonFunction(3, 2, func=regularFunc, func_sample=regularFuncSample)

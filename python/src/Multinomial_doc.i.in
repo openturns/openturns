@@ -1,21 +1,28 @@
 %feature("docstring") OT::Multinomial
 "Multinomial distribution.
 
-Available constructors:
-    Multinomial(*N=1, P=[0.5]*)
 
 Parameters
 ----------
 N : int
     Number of trials.
+
+    Default value is 1.
 P : sequence of float, :math:`p_i \geq 0, i = 1, \ldots, d` and :math:`\sum_{i = 1}^d p_i \leq 1`
     Component probabilities.
 
+    Default value is [0.5].
+
 Notes
 -----
-This distribution differs from the classical multinomial distribution definition. The classical multinomial distribution is constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by :math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:` q\leq 1` and is supported in general by :math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
 
-Its probability density function is defined as:
+This distribution differs from the classical multinomial distribution definition.
+The classical multinomial distribution is constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by
+:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is
+constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q \leq 1` and is supported in general by
+:math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
+
+Its probability distribution function is defined as:
 
 .. math::
 
@@ -24,9 +31,11 @@ Its probability density function is defined as:
 
 where :math:`s=\sum_{i = 1}^d x_i`.
 
-If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`. In this case, we recover the classical definition of the multinomial distribution.
+If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`.
+In this case, we recover the classical definition of the multinomial distribution.
 
-If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`. It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
+If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`.
+It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
 
 Its first moments are:
 
@@ -66,16 +75,6 @@ N : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Multinomial::getP
-"Accessor to the component probabilities parameter :math:`\vect{p}`.
-
-Returns
--------
-P : :class:`~openturns.Point`
-    Component probabilities :math:`\vect{p}`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Multinomial::setN
 "Accessor to the number of experiments parameter :math:`N`.
 
@@ -86,6 +85,16 @@ N : int, :math:`\sum_{i = 1}^n x_i \leq N`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Multinomial::getP
+"Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Returns
+-------
+P : :class:`~openturns.Point`
+    Component probabilities :math:`\vect{p}`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Multinomial::setP
 "Accessor to the component probabilities parameter :math:`\vect{p}`.
 
@@ -93,3 +102,71 @@ Parameters
 ----------
 P : sequence of float, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
     Component probabilities (all positive with sum less than unity)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getSmallA
+"Accessor to the threshold in generating function computation.
+
+Returns
+-------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setSmallA
+"Accessor to the threshold in generating function computation.
+
+Parameters
+----------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."

@@ -1,4 +1,4 @@
-Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1]]
+Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1]]
 Standard representative= Normal(mu = 0, sigma = 1)
 Distribution  class=Normal name=A normal distribution dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution  Normal(mu = 0, sigma = 1)
@@ -43,7 +43,7 @@ skewness= class=Point name=Unnamed dimension=1 values=[0]
 kurtosis= class=Point name=Unnamed dimension=1 values=[3]
 roughness=0.282095
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1]]
+parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1]]
 density generator=0.352067
 pdf via density generator=0.352067
 density generator derivative     =-0.176034
@@ -51,7 +51,7 @@ density generator derivative (FD)=-0.176034
 density generator second derivative     =0.088017
 density generator second derivative (FD)=0.088017
 Radial CDF(2.000000 )=0.954500
-conditional PDF=0.278333
+conditional PDF=0.333225
 conditional CDF=0.725747
 conditional quantile=0.253347
 sequential conditional PDF= [0.35207]
@@ -66,7 +66,7 @@ chol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1
 invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
+Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
 Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])
 Distribution  class=Normal name=A normal distribution dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
@@ -117,7 +117,7 @@ skewness= class=Point name=Unnamed dimension=2 values=[0,0]
 kurtosis= class=Point name=Unnamed dimension=2 values=[3,3]
 roughness=0.045944
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
-parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
+parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
 density generator=0.123951
 pdf via density generator=0.081091
 density generator derivative     =-0.061976
@@ -152,7 +152,7 @@ chol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2
 invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,-0.57735,0,0.57735]
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
-Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
+Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
 Standard representative= Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])
@@ -189,7 +189,7 @@ skewness= class=Point name=Unnamed dimension=3 values=[0,0,0]
 kurtosis= class=Point name=Unnamed dimension=3 values=[3,3,3]
 roughness=0.005291
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
-parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
+parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
 density generator=0.043639
 pdf via density generator=0.012935
 density generator derivative     =-0.021820
@@ -229,7 +229,7 @@ chol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3
 invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.57735,0.40825,0,0.57735,-0.40825,0,0,0.40825]
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
-Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mean_3,standard_deviation_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
+Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mu_3,sigma_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
 Standard representative= Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
  [ 0 1 0 0 ]
  [ 0 0 1 0 ]
@@ -267,7 +267,7 @@ skewness= class=Point name=Unnamed dimension=4 values=[0,0,0,0]
 kurtosis= class=Point name=Unnamed dimension=4 values=[3,3,3,3]
 roughness=0.000472
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]
-parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mean_3,standard_deviation_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
+parameters= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mu_3,sigma_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
 density generator=0.015364
 pdf via density generator=0.001632
 density generator derivative     =-0.007682

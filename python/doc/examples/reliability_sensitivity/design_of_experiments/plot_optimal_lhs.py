@@ -19,7 +19,7 @@ ot.Log.Show(ot.Log.NONE)
 N = 100
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
 )
 # Random LHS
@@ -47,7 +47,8 @@ print(phip, mindist, phip_inf)
 # - Linear profile: :math:`T_i = T_0 (1-\frac{1}{n_{iter}})`
 # - Geometric profile: :math:`T_i = T_O c^i, 0<c<1`
 #
-# Starting from an LHS design, a new design is built by permuting a random coordinate of two randomly chosen sample points; this new design is also an LHS. but not necessary a more efficient design.
+# Starting from an LHS design, a new design is built by permuting a random coordinate of two randomly chosen sample points;
+# this new design is also an LHS, but not necessarily a more efficient design.
 #
 # A comparison of criteria of the two designs is done, and the new LHS is accepted with probability
 #
@@ -57,7 +58,7 @@ print(phip, mindist, phip_inf)
 
 # %%
 # Considering independent Uniform(0,1) distributions of dimension 3
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 3)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
 lhs.setAlwaysShuffle(True)  # randomized
@@ -69,7 +70,7 @@ design = algo.generate()
 
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
 )
 # Random LHS
@@ -102,7 +103,7 @@ N = 10
 
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
 )
 # Random LHS
@@ -125,7 +126,7 @@ designs = [result.getOptimalDesign(i) for i in range(restart)]
 
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (0,1)^3
-distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 3)
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
 lhs.setAlwaysShuffle(True)  # randomized

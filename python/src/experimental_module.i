@@ -30,9 +30,13 @@
 /* Base/Geom */
 %include BoundaryMesher.i
 
+/* Base/Stat */
+%include LatentVariableModel.i
+
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i
+%import dist_bundle3_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i
@@ -47,14 +51,14 @@
 %import metamodel_module.i
 %include simulation_module.i
 
+/* Base/Algo */
+%include SimplicialCubature.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
-%include LeastSquaresExpansion.i
-%include IntegrationExpansion.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include CrossEntropyResult.i
@@ -63,7 +67,11 @@
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 
 /* Uncertainty/Distribution */
-%include UniformOverMesh.i
+%include SmoothedUniformFactory.i
+%include StudentCopula.i
+%include StudentCopulaFactory.i
+%include TruncatedOverMesh.i
+%include PosteriorDistribution.i
 
 // duplicate helpers
 OTTypedInterfaceObjectHelper(WeightedExperiment)

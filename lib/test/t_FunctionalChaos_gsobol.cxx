@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of FunctionalChaosAlgorithm class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ int main(int, char *[])
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
@@ -87,7 +87,7 @@ int main(int, char *[])
     UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
     UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
     Scalar threshold = 1.0e-6;
-    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
+    listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
     //

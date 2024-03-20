@@ -6,5 +6,6 @@
 
 %include StationaryFunctionalCovarianceModel_doc.i
 
+%copyctor OT::StationaryFunctionalCovarianceModel;
+
 %include openturns/StationaryFunctionalCovarianceModel.hxx
-namespace OT { %extend StationaryFunctionalCovarianceModel { StationaryFunctionalCovarianceModel(const StationaryFunctionalCovarianceModel & other) { return new OT::StationaryFunctionalCovarianceModel(other); } } }

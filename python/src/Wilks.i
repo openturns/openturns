@@ -6,5 +6,6 @@
 
 %include Wilks_doc.i
 
+%copyctor OT::Wilks;
+
 %include openturns/Wilks.hxx
-namespace OT { %extend Wilks { Wilks(const Wilks & other) { return new OT::Wilks(other); } } }

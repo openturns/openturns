@@ -2,7 +2,7 @@
 /**
  * @brief FAST implements the sensivity analysis method based on fourier decomposition
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -135,7 +135,7 @@ void FAST::run() const
           for (UnsignedInteger i = 0; i < nbIn; ++ i)
           {
             const Scalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
-            inputBlock(blockIndex, i) = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
+            inputBlock(blockIndex, i) = inputsDistribution_.getMarginal(i).computeScalarQuantile(ui_s);
           }
         }
         output.add(model_(inputBlock));

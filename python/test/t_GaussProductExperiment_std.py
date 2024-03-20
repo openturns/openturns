@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 # Test default constructor
 print("experiment0=", repr(ot.GaussProductExperiment().generate()))
 
-distribution = ot.ComposedDistribution(
+distribution = ot.JointDistribution(
     [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]
 )
 marginalSizes = [3, 6]

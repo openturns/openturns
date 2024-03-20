@@ -6,5 +6,6 @@ OTAutodoc(SymbolicEvaluation)
 #include "openturns/SymbolicEvaluation.hxx"
 %}
 
+%copyctor OT::SymbolicEvaluation;
+
 %include openturns/SymbolicEvaluation.hxx
-namespace OT { %extend SymbolicEvaluation { SymbolicEvaluation(const SymbolicEvaluation & other) { return new OT::SymbolicEvaluation(other); } } }

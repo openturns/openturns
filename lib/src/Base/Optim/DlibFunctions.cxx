@@ -2,7 +2,7 @@
 /**
  *  @brief Dlib functions interface
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -142,7 +142,7 @@ double DlibFunction::operator() (const DlibMatrix & inP) const
   Point outPoint;
   outPoint = getImplementation()->operator()(inPoint);
 
-  // Update evaluationNumber_ and input/output history
+  // input/output history
   inputHistory_.add(inPoint);
   outputHistory_.add(outPoint);
 
@@ -171,7 +171,7 @@ double DlibFunction::operator() (const UnsignedInteger i,
   else
   {
     outPoint = getImplementation()->operator()(inPoint);
-    // Update evaluationNumber_ and input/output history
+    // input/output history
     inputHistory_.add(inPoint);
     outputHistory_.add(outPoint);
   }
@@ -220,7 +220,7 @@ void DlibFunction::get_derivative_and_hessian(const column_vector x,
 }
 
 /* Accessors to attributes */
-UnsignedInteger DlibFunction::getEvaluationNumber() const
+UnsignedInteger DlibFunction::getCallsNumber() const
 {
   return inputHistory_.getSize();
 }

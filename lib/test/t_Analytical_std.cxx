@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of Analytical class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,7 +75,7 @@ int main(int, char *[])
 
     /* We create an OptimizationAlgorithm algorithm */
     Cobyla myCobyla;
-    myCobyla.setMaximumEvaluationNumber(400);
+    myCobyla.setMaximumCallsNumber(400);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
     myCobyla.setMaximumRelativeError(1.0e-10);
     myCobyla.setMaximumResidualError(1.0e-10);

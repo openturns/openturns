@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseChiSquare distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,6 +96,12 @@ public:
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
+  /** Get the quantile of the distribution */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 
@@ -138,9 +144,6 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-
-  /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

@@ -21,7 +21,7 @@ standard deviation      =class=Point name=Unnamed dimension=1 values=[2.17945]
 skewness      =class=Point name=Unnamed dimension=1 values=[0.869365]
 kurtosis      =class=Point name=Unnamed dimension=1 values=[6.00166]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.75]
-parameters      =[[a : -1, b : 2, mean_0 : 1, standard_deviation_0 : 2]]
+parameters      =[[a : -1, b : 2, mu_0 : 1, sigma_0 : 2]]
 Standard representative=ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
 left=class=Uniform name=Uniform dimension=1 a=-1 b=2
 right=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

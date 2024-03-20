@@ -2,7 +2,7 @@
 /**
  *  @brief The class PlatformInfo gives information about the library
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,6 +68,11 @@ public:
   static Description GetFeatures();
   static Bool HasFeature(const String & feature);
 
+  /** Compiler id GNU/MSVC... */
+  static String GetCompilerId();
+
+  /** Compiler version */
+  static String GetCompilerVersion();
 private:
 
   PlatformInfo();

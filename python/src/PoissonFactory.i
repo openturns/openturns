@@ -6,5 +6,6 @@
 
 %include PoissonFactory_doc.i
 
+%copyctor OT::PoissonFactory;
+
 %include openturns/PoissonFactory.hxx
-namespace OT { %extend PoissonFactory { PoissonFactory(const PoissonFactory & other) { return new OT::PoissonFactory(other); } } }

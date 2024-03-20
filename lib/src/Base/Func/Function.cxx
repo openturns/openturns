@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,6 +107,12 @@ String Function::__repr__() const
 String Function::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
+}
+
+/* String converter */
+String Function::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
 }
 
 /* Description Accessor */
@@ -330,7 +336,7 @@ Function Function::getMarginal(const Indices & indices) const
 /* Number of calls to the evaluation */
 UnsignedInteger Function::getCallsNumber() const
 {
-  return getEvaluationCallsNumber();
+  return getImplementation()->getCallsNumber();
 }
 
 UnsignedInteger Function::getEvaluationCallsNumber() const

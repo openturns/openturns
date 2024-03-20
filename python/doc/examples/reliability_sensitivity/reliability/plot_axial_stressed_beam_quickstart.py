@@ -62,7 +62,7 @@ graph = F.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# In order to create the input distribution, we use the `ComposedDistribution` class which associates
+# In order to create the input distribution, we use the `JointDistribution` class which associates
 # the distribution marginals and a copula.
 # If no copula is supplied to the constructor, it selects the independent copula as default.
 # That is implemented in the data class:
@@ -93,7 +93,7 @@ outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVec
 D = 0.02
 
 # %%
-G = R - F / (D ** 2 / 4 * np.pi)
+G = R - F / (D**2 / 4 * np.pi)
 
 # %%
 G.computeCDF(0.0)

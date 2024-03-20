@@ -2,7 +2,7 @@
 /**
  *  @brief Least Angle Regression Algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ public:
 
 
   /** Default constructor */
-  explicit LARS(const Bool verbose = false);
+  LARS();
 
   /** Virtual constructor */
   LARS * clone() const override;
@@ -68,6 +68,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+
 private:
   Scalar relativeConvergence_;
 
@@ -80,6 +83,11 @@ private:
   Indices inPredictors_;
 
   mutable Matrix mPsiX_;
+
+  /** Selection history */
+  Collection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
+
 }; /* class LARS */
 
 

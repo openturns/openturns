@@ -27,6 +27,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Inherit PythonDistribution :
 
+
 # %%
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[0.0], b=[1.0]):

@@ -8,6 +8,7 @@
 
 OTTypedInterfaceObjectHelper(ARMAFactory)
 
+%copyctor OT::ARMAFactory;
+
 %include openturns/ARMAFactory.hxx
-namespace OT { %extend ARMAFactory { ARMAFactory(const ARMAFactory & other) { return new OT::ARMAFactory(other); } } }
 

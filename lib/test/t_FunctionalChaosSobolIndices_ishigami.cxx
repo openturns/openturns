@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of FunctionalChaosAlgoritm class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -83,7 +83,7 @@ int main(int, char *[])
     marginals[0] = Uniform(-M_PI, M_PI);
     marginals[1] = Uniform(-M_PI, M_PI);
     marginals[2] = Uniform(-M_PI, M_PI);
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

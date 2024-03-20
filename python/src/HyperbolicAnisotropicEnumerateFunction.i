@@ -6,5 +6,6 @@
 
 %include HyperbolicAnisotropicEnumerateFunction_doc.i
 
+%copyctor OT::HyperbolicAnisotropicEnumerateFunction;
+
 %include openturns/HyperbolicAnisotropicEnumerateFunction.hxx
-namespace OT { %extend HyperbolicAnisotropicEnumerateFunction { HyperbolicAnisotropicEnumerateFunction(const HyperbolicAnisotropicEnumerateFunction & other) { return new OT::HyperbolicAnisotropicEnumerateFunction(other); } } }

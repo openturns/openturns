@@ -2,7 +2,7 @@
 /**
  * @brief Union of several events
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,8 +64,14 @@ public:
   /** Realization accessor */
   Point getRealization() const override;
 
+  /** Fixed value accessor */
+  Point getFrozenRealization(const Point & fixedPoint) const override;
+
   /** Sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
+
+  /** Fixed sample accessor */
+  Sample getFrozenSample(const Sample & fixedSample) const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;
@@ -76,25 +82,13 @@ public:
   /** Antecedent accessor */
   RandomVector getAntecedent() const override;
 
-  /** Function accessor */
-  Function getFunction() const override;
-
-  /** Domain accessor */
-  Domain getDomain() const override;
-
-  /** Operator accessor */
-  ComparisonOperator getOperator() const override;
-
-  /** Threshold accessor */
-  Scalar getThreshold() const override;
+  RandomVector asComposedEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-  RandomVector getComposedEvent() const;
 
 private:
 
@@ -103,8 +97,6 @@ private:
 
   /** The antecedent is defined here as the root cause */
   RandomVector antecedent_;
-
-  RandomVector composedEvent_;
 
 }; /* class UnionEvent */
 

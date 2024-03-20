@@ -41,7 +41,7 @@ ot.Log.Show(ot.Log.NONE)
 # is possible to get that state thanks to the methods *getState*.
 # It is possible to create an ARMA with a specific current state. That
 # specific current state is taken into account to generate possible
-# futurs but not to generate realizations (in order to respect the
+# futures but not to generate realizations (in order to respect the
 # stationarity property of the model).
 # At the creation step, we check whether the process
 # :math:`ARMA(p,q)` is stationnary.

@@ -6,5 +6,6 @@
 
 %ignore OT::FiniteBasis::operator[];
 
+%copyctor OT::FiniteBasis;
+
 %include openturns/FiniteBasis.hxx
-namespace OT { %extend FiniteBasis { FiniteBasis(const FiniteBasis & other) { return new OT::FiniteBasis(other); } } }

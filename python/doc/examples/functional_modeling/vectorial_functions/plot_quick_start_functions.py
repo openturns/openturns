@@ -56,7 +56,7 @@ ot.Log.Show(ot.Log.NONE)
 X0 = ot.Normal(0.0, 1.0)
 X1 = ot.Normal(0.0, 1.0)
 X2 = ot.Normal(0.0, 1.0)
-inputDistribution = ot.ComposedDistribution((X0, X1, X2))
+inputDistribution = ot.JointDistribution((X0, X1, X2))
 inputRandomVector = ot.RandomVector(inputDistribution)
 
 
@@ -86,6 +86,7 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 #
 # * `x`: the input of the function, a vector with `nbInputs` dimensions,
 # * `y`: the output of the function, a vector with `nbOutputs` dimensions.
+
 
 # %%
 def mySimulator(x):

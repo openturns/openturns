@@ -54,12 +54,9 @@ problem.setInequalityConstraint(h)
 
 bonminAlgorithm = ot.Bonmin(problem, "B-BB")
 bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
-bonminAlgorithm.setMaximumEvaluationNumber(10000)
+bonminAlgorithm.setMaximumCallsNumber(10000)
 bonminAlgorithm.setProgressCallback(progress)
 bonminAlgorithm.setStopCallback(stop)
-
-# ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
-ot.ResourceMap.AddAsString("Bonmin-mu_oracle", "loqo")
 
 for algo in ot.Bonmin.GetAlgorithmNames():
     print("MINIMIZATION WITH " + algo)

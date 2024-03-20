@@ -37,7 +37,7 @@ graph.add(fTrend.draw(0.0, 10.0))
 graph.add(ot.Cloud(myYField.getMesh().getVertices(), myYField.getValues()))
 graph.setColors(["red", "blue", "black"])
 graph.setLegends(["estimated trend", "real trend", "sample"])
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setYTitle("values")
 graph.setTitle("Trend estimation from a field")
 

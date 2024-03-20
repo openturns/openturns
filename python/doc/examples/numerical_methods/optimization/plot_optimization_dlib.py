@@ -3,7 +3,7 @@ Optimization using dlib
 =======================
 """
 # %%
-# In this example we are going to explore optimization using OpenTURNS' `dlib <http://dlib.net/>`_ interface.
+# In this example we are going to explore optimization using the interface to the `dlib <http://dlib.net/>`_ library.
 
 # %%
 import numpy as np
@@ -38,7 +38,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 algo = ot.Dlib(problem, "cg")
 print("Dlib algorithm, type ", algo.getAlgorithmName())
 print("Maximum iteration number: ", algo.getMaximumIterationNumber())
-print("Maximum evaluation number: ", algo.getMaximumEvaluationNumber())
+print("Maximum evaluation number: ", algo.getMaximumCallsNumber())
 print("Maximum absolute error: ", algo.getMaximumAbsoluteError())
 print("Maximum relative error: ", algo.getMaximumRelativeError())
 print("Maximum residual error: ", algo.getMaximumResidualError())
@@ -53,7 +53,7 @@ print("Maximum constraint error: ", algo.getMaximumConstraintError())
 # %%
 # Adjust number of iterations/evaluations
 algo.setMaximumIterationNumber(1000)
-algo.setMaximumEvaluationNumber(10000)
+algo.setMaximumCallsNumber(10000)
 algo.setMaximumAbsoluteError(1e-3)
 algo.setMaximumRelativeError(1e-3)
 algo.setMaximumResidualError(1e-3)
@@ -71,7 +71,7 @@ result = algo.getResult()
 print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
-print("Evaluation number: ", result.getEvaluationNumber())
+print("Evaluation number: ", result.getCallsNumber())
 print("Absolute error: ", result.getAbsoluteError())
 print("Relative error: ", result.getRelativeError())
 print("Residual error: ", result.getResidualError())
@@ -108,7 +108,7 @@ result = boundedAlgo.getResult()
 print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
-print("Evaluation number: ", result.getEvaluationNumber())
+print("Evaluation number: ", result.getCallsNumber())
 print("Absolute error: ", result.getAbsoluteError())
 print("Relative error: ", result.getRelativeError())
 print("Residual error: ", result.getResidualError())
@@ -169,7 +169,7 @@ result = lsqAlgo.getResult()
 print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
-print("Evaluation number: ", result.getEvaluationNumber())
+print("Evaluation number: ", result.getCallsNumber())
 print("Absolute error: ", result.getAbsoluteError())
 print("Relative error: ", result.getRelativeError())
 print("Residual error: ", result.getResidualError())

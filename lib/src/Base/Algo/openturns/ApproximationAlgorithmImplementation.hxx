@@ -2,7 +2,7 @@
 /**
  *  @brief Regression from a data sample upon a particular basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/IndicesCollection.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -43,7 +43,6 @@ class OT_API ApproximationAlgorithmImplementation
 public:
   typedef Collection<Function> FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;
-
 
   /** Default constructor */
   ApproximationAlgorithmImplementation();
@@ -95,15 +94,15 @@ public:
 
   Scalar getRelativeError();
 
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+  /** Selection/error history accessor */
+  virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+  virtual Point getErrorHistory() const;
 
 protected:
 
@@ -123,27 +122,23 @@ protected:
   Point weight_;
 
   /** Flag to tell if the weights are uniform */
-  Bool hasUniformWeight_;
+  Bool hasUniformWeight_ = false;
 
   /** Basis */
   FunctionPersistentCollection psi_;
   Indices currentIndices_;
 
-  mutable Bool isAlreadyComputedCoefficients_;
+  mutable Bool isAlreadyComputedCoefficients_ = false;
 
-private:
   /** Regression coefficients */
   Point coefficients_;
 
+private:
   /** Residual */
-  Scalar residual_;
+  Scalar residual_ = 0.0;
 
   /** Relative error */
-  Scalar relativeError_;
-
-  /** Verbosity flag */
-  Bool verbose_;
-
+  Scalar relativeError_ = 0.0;
 
 }; /* class ApproximationAlgorithmImplementation */
 

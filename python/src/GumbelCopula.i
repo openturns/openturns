@@ -6,5 +6,6 @@
 
 %include GumbelCopula_doc.i
 
+%copyctor OT::GumbelCopula;
+
 %include openturns/GumbelCopula.hxx
-namespace OT { %extend GumbelCopula { GumbelCopula(const GumbelCopula & other) { return new OT::GumbelCopula(other); } } }

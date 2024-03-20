@@ -6,12 +6,11 @@
 
 %include FunctionalChaosSobolIndices_doc.i
 
+%copyctor OT::FunctionalChaosSobolIndices;
+
 %include openturns/FunctionalChaosSobolIndices.hxx
-namespace OT { %extend FunctionalChaosSobolIndices { FunctionalChaosSobolIndices(const FunctionalChaosSobolIndices & other) { return new OT::FunctionalChaosSobolIndices(other); } } }
 
 %pythoncode %{
-from math import sqrt
-
 def __FunctionalChaosSobolIndices_repr_html(self):
     """Get HTML representation."""
     chaosResult = self.getFunctionalChaosResult()
@@ -32,11 +31,12 @@ def __FunctionalChaosSobolIndices_repr_html(self):
     covarianceMatrix = randomVector.getCovariance()
     stdDev = openturns.Point(outputDimension)
     for i in range(outputDimension):
-        stdDev[i] = sqrt(covarianceMatrix[i, i])
+        stdDev[i] = covarianceMatrix[i, i] ** 0.5
 
     # quick summary
     basisSize = chaosResult.getReducedBasis().getSize()
     html = ""
+    html += f"{self.getClassName()}\n"
     html += "<ul>\n"
     html += f"  <li>input dimension: {inputDimension}</li>\n"
     html += f"  <li>output dimension: {outputDimension}</li>\n"
@@ -105,10 +105,4 @@ def __FunctionalChaosSobolIndices_repr_html(self):
     return html
 
 FunctionalChaosSobolIndices._repr_html_ = __FunctionalChaosSobolIndices_repr_html
-
-def __FunctionalChaosSobolIndices_repr_markdown(self):
-    """Get Markdown representation."""
-    return self.__repr_markdown__()
-
-FunctionalChaosSobolIndices._repr_markdown_ = __FunctionalChaosSobolIndices_repr_markdown
 %}

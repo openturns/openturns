@@ -2,7 +2,7 @@
 /**
  *  @brief The Student distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -160,10 +160,6 @@ public:
   /** Nu accessor */
   void setNu(const Scalar nu);
   Scalar getNu() const;
-
-  /** Mu accessor */
-  void setMu(const Scalar mu);
-  Scalar getMu() const;
 
   /** Compute the density generator of the ellipticalal generator, i.e.
    *  the function phi such that the density of the distribution can

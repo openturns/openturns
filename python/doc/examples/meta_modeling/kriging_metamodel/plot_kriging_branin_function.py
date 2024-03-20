@@ -80,7 +80,7 @@ print(bm.objectiveFunction(sample1))
 # We use the :class:`~openturns.KrigingAlgorithm` class to perform the kriging analysis.
 # We first generate a design of experiments with LHS and store the input trainig points in `xdata`
 experiment = ot.LHSExperiment(
-    ot.ComposedDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
+    ot.JointDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
     28,
     False,
     True,

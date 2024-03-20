@@ -2,7 +2,7 @@
 /**
  *  @brief The test file for Waarts noisy limit state function
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -145,7 +145,7 @@ int main(int, char *[])
     aCopula.setName("Independent copula");
 
     // Instantiate one distribution object
-    ComposedDistribution myDistribution(aCollection, Copula(aCopula));
+    JointDistribution myDistribution(aCollection, Copula(aCopula));
     myDistribution.setName("myDist");
 
     Point start(myDistribution.getMean());
@@ -168,7 +168,7 @@ int main(int, char *[])
     //   #########################################################################################################;
     //   # FORM/SORM Cobyla;
     Cobyla myCobyla;
-    myCobyla.setMaximumEvaluationNumber(100 * dim);
+    myCobyla.setMaximumCallsNumber(100 * dim);
     myCobyla.setMaximumAbsoluteError(1.0e-4);
     myCobyla.setMaximumRelativeError(1.0e-4);
     myCobyla.setMaximumResidualError(1.0e-4);

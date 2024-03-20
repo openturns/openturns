@@ -6,5 +6,6 @@
 
 %include TimeSeries_doc.i
 
+%copyctor OT::TimeSeries;
+
 %include openturns/TimeSeries.hxx
-namespace OT { %extend TimeSeries { TimeSeries(const TimeSeries & other) { return new OT::TimeSeries(other); } } }

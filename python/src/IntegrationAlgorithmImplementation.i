@@ -6,5 +6,6 @@
 
 %include IntegrationAlgorithmImplementation_doc.i
 
+%copyctor OT::IntegrationAlgorithmImplementation;
+
 %include openturns/IntegrationAlgorithmImplementation.hxx
-namespace OT { %extend IntegrationAlgorithmImplementation { IntegrationAlgorithmImplementation(const IntegrationAlgorithmImplementation & other) { return new OT::IntegrationAlgorithmImplementation(other); } } }

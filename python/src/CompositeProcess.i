@@ -6,5 +6,6 @@
 
 %include CompositeProcess_doc.i
 
+%copyctor OT::CompositeProcess;
+
 %include openturns/CompositeProcess.hxx
-namespace OT { %extend CompositeProcess { CompositeProcess(const CompositeProcess & other) { return new OT::CompositeProcess(other); } } }

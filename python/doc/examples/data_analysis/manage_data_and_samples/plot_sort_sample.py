@@ -19,7 +19,7 @@ die_distribution = ot.UserDefined([[i] for i in range(1, 7)])
 
 # %%
 # We consider now an experiment with two independent dice and build the corresponding random vector :
-two_dice_distribution = ot.ComposedDistribution([die_distribution] * 2)
+two_dice_distribution = ot.JointDistribution([die_distribution] * 2)
 
 # %%
 # We now build a sample of size :math:`n=5` from this distribution :
@@ -71,7 +71,8 @@ sorted_marginal = sample.sort(1)
 print(sorted_marginal)
 
 # %%
-# We can sort the sample in place, that is without creating a new sample, as well with sortInPlace. When the dimension is greater than one the sort is made according to the first marginal.
+# We can sort the sample in place, that is without creating a new sample, as well with sortInPlace.
+# When the dimension is greater than one the sort is made according to the first marginal.
 sample.sortInPlace()
 print(sample)
 

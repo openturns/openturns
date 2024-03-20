@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -326,7 +326,7 @@ BoxCoxFactory::BoxCoxFactory()
   const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Virtual constructor */
@@ -359,8 +359,8 @@ BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
 }
 
 BoxCoxTransform BoxCoxFactory::buildWithGraph(const Field & timeSeries,
-                                     const Point & shift,
-                                     Graph & graph) const
+    const Point & shift,
+    Graph & graph) const
 {
   return buildWithGraph(timeSeries.getValues(), shift, graph);
 }
@@ -378,8 +378,8 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
 }
 
 BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
-                                     const Point & shift,
-                                     Graph & graph) const
+    const Point & shift,
+    Graph & graph) const
 {
   // Check the input size
   const UnsignedInteger size = sample.getSize();
@@ -458,11 +458,11 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
 
 /** Build the factory from data by estimating the best generalized linear model */
 BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
-                                     const Sample & outputSample,
-                                     const CovarianceModel & covarianceModel,
-                                     const Basis & basis,
-                                     const Point & shift,
-                                     GeneralLinearModelResult & generalLinearModelResult)
+    const Sample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Basis & basis,
+    const Point & shift,
+    GeneralLinearModelResult & generalLinearModelResult)
 {
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
@@ -517,20 +517,20 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
 }
 
 BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample &inputSample,
-                                     const Sample &outputSample,
-                                     const CovarianceModel &covarianceModel,
-                                     const Point &shift,
-                                     GeneralLinearModelResult &generalLinearModelResult)
+    const Sample &outputSample,
+    const CovarianceModel &covarianceModel,
+    const Point &shift,
+    GeneralLinearModelResult &generalLinearModelResult)
 {
   return buildWithGLM(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
 }
 
 /** Build the factory from data by estimating the best generalized linear model */
 BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
-                                     const Sample &outputSample,
-                                     const Basis &basis,
-                                     const Point &shift,
-                                     LinearModelResult &linearModelResult)
+    const Sample &outputSample,
+    const Basis &basis,
+    const Point &shift,
+    LinearModelResult &linearModelResult)
 {
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
@@ -577,9 +577,9 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
 }
 
 BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
-                                     const Sample &outputSample,
-                                     const Point &shift,
-                                     LinearModelResult &linearModelResult)
+    const Sample &outputSample,
+    const Point &shift,
+    LinearModelResult &linearModelResult)
 {
   const Basis basis(LinearBasisFactory(inputSample.getDimension()).build());
   return buildWithLM(inputSample, outputSample, basis, shift, linearModelResult);

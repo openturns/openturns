@@ -15,6 +15,7 @@ Continuous parametric distributions
 
     Distribution
     DistributionCollection
+    EllipticalDistribution
     PythonDistribution
     ChaospyDistribution
     SciPyDistribution
@@ -81,10 +82,15 @@ Continuous parametric distributions
     Trapezoidal
     Triangular
     TruncatedNormal
+
+    :template: classWithPlot.rst_t
+    experimental.TruncatedOverMesh
+
+    :template: Distribution.rst_t
     Uniform
 
     :template: classWithPlot.rst_t
-    experimental.UniformOverMesh
+    UniformOverMesh
 
     :template: Distribution.rst_t
     VonMises
@@ -135,6 +141,7 @@ Parametrized distributions
     GumbelMuSigma
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
+    LogNormalMuErrorFactor
     UniformMuSigma
     WeibullMaxMuSigma
     WeibullMinMuSigma
@@ -160,7 +167,7 @@ Combining and transforming distributions
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
-    ComposedDistribution
+    JointDistribution
 
     :template: classWithPlot.rst_t
     CompositeDistribution
@@ -169,6 +176,11 @@ Combining and transforming distributions
     ConditionalDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
+
+    :template: class.rst_t
+    MarginalDistribution
+
+    :template: Distribution.rst_t
     MaximumDistribution
 
     :template: classWithPlot.rst_t
@@ -180,7 +192,7 @@ Combining and transforming distributions
 
     MixedHistogramUserDefined
     OrderStatisticsMarginalChecker
-    PosteriorDistribution
+    experimental.PosteriorDistribution
 
 .. autosummary::
     :toctree: _generated/
@@ -218,16 +230,22 @@ Refer to :ref:`copula`.
 
     AliMikhailHaqCopula
     ClaytonCopula
+    EmpiricalBernsteinCopula
     FarlieGumbelMorgensternCopula
     FrankCopula
     GumbelCopula
     IndependentCopula
     PlackettCopula
-    EmpiricalBernsteinCopula
     ExtremeValueCopula
     JoeCopula
     GalambosCopula
+
+    :template: class.rst_t
+
     MarshallOlkinCopula
+
+    :template: Copula.rst_t
+
     MaximumEntropyOrderStatisticsCopula
 
     :template: class.rst_t
@@ -235,6 +253,9 @@ Refer to :ref:`copula`.
 
     :template: Copula.rst_t
     NormalCopula
+
+    :template: class.rst_t
+    experimental.StudentCopula
 
 
 Combining and transforming copulas
@@ -244,7 +265,7 @@ Combining and transforming copulas
     :toctree: _generated/
     :template: DistributionHighDimension.rst_t
 
-    ComposedCopula
+    BlockIndependentCopula
 
     :template: Copula.rst_t
     SklarCopula
@@ -283,25 +304,49 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
     DistFunc.kFactor
     DistFunc.kFactorPooled
     DistFunc.logdBinomial
     DistFunc.logdHypergeometric
-    DistFunc.logdPoisson
-    DistFunc.pHypergeometric
-    DistFunc.pPearsonCorrelation
-    DistFunc.dNormal
     DistFunc.logdNormal
-    DistFunc.pNormal
+    DistFunc.logdPoisson
     DistFunc.logpNormal
+    DistFunc.pBeta
+    DistFunc.pDickeyFullerConstant
+    DistFunc.pDickeyFullerNoConstant
+    DistFunc.pDickeyFullerTrend
+    DistFunc.pGamma
+    DistFunc.pHypergeometric
+    DistFunc.pKolmogorov
+    DistFunc.pNonCentralChiSquare
+    DistFunc.pNonCentralStudent
+    DistFunc.pNormal
+    DistFunc.pNormal2D
+    DistFunc.pNormal3D
+    DistFunc.pPearsonCorrelation
+    DistFunc.pSpearmanCorrelation
+    DistFunc.pStudent
+    DistFunc.qBeta
+    DistFunc.qDickeyFullerConstant
+    DistFunc.qDickeyFullerNoConstant
+    DistFunc.qDickeyFullerTrend
+    DistFunc.qGamma
     DistFunc.qNormal
+    DistFunc.qPoisson
+    DistFunc.qStudent
+    DistFunc.rBeta
     DistFunc.rBinomial
     DistFunc.rDiscrete
+    DistFunc.rGamma
     DistFunc.rHypergeometric
+    DistFunc.rNonCentralChiSquare
+    DistFunc.rNonCentralStudent
     DistFunc.rNormal
     DistFunc.rPoisson
+    DistFunc.rStudent
     DistFunc.rUniformSegment
     DistFunc.rUniformTriangle
     DistFunc.rUniformTetrahedron

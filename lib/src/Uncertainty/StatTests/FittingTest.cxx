@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -371,19 +371,33 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   const Scalar fakeLevel = 0.5;
-  Distribution bestDistribution(factoryCollection[0].build(sample));
-  bestResult = ChiSquared(sample, bestDistribution, fakeLevel, bestDistribution.getParameterDimension());
-  for (UnsignedInteger i = 1; i < size; ++i)
+  Distribution bestDistribution;
+  bestResult = TestResult("", false, -SpecFunc::MaxScalar, 0.0, 0.0);
+  Bool builtAtLeastOne = false;
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Distribution distribution(factoryCollection[i].build(sample));
-    const TestResult result(ChiSquared(sample, distribution, fakeLevel, distribution.getParameterDimension()));
-    if (result.getPValue() > bestResult.getPValue())
+    const DistributionFactory factory(factoryCollection[i]);
+    try
     {
-      bestResult = result;
-      bestDistribution = distribution;
+      LOGINFO(OSS(false) << "Trying factory " << factory);
+      const Distribution distribution(factory.build(sample));
+      const TestResult result(ChiSquared(sample, distribution, fakeLevel, distribution.getParameterDimension()));
+      if (result.getPValue() > bestResult.getPValue())
+      {
+        bestResult = result;
+        bestDistribution = distribution;
+        builtAtLeastOne = true;
+      }
+    }
+    catch (const Exception &ex)
+    {
+      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
-  if ( bestResult.getPValue() == 0.0) LOGWARN(OSS(false) << "Be careful, the best model has a p-value of zero.");
+  if (!builtAtLeastOne)
+    throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
+  if (bestResult.getPValue() == 0.0)
+    LOGWARN(OSS(false) << "Be careful, the best model has a p-value of zero.");
   return bestDistribution;
 }
 
@@ -606,7 +620,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D samples";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   const Distribution distribution(factory.build(sample));
-  if (distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Chi-squared test cannot be applied to a continuous distribution";
+  if (distribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: Chi-squared test cannot be applied to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D distribution";
   estimatedDistribution = distribution;
   return ChiSquared(sample, distribution, level, distribution.getParameterDimension());

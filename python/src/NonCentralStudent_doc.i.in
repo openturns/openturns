@@ -5,10 +5,16 @@ Parameters
 ----------
 nu : float, :math:`\nu > 0`
     Generalised number degree of freedom.
+    
+    Default value is 5.0.
 delta : float
     Non-centrality parameter :math:`\delta`.
+
+    Default value is 0.0.
 gamma : float
     Position parameter :math:`\gamma`.
+
+    Default value is 0.0.
 
 Notes
 -----

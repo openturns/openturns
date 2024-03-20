@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexMatrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -135,7 +135,7 @@ String ComplexMatrix::__str__(const String & offset) const
   const UnsignedInteger cols = getNbColumns();
   if ( (rows >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) ||
        (cols >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) )
-    oss << rows << "x" << cols << Os::GetEndOfLine();
+    oss << rows << "x" << cols << "\n";
 
   size_t lwidth = 0;
   size_t rwidth = 0;
@@ -150,7 +150,7 @@ String ComplexMatrix::__str__(const String & offset) const
 
   const char * bracket = "[";
   const char * newline = "";
-  for( UnsignedInteger i = 0; i < rows; ++i, newline = Os::GetEndOfLine(), bracket = " " )
+  for( UnsignedInteger i = 0; i < rows; ++i, newline = "\n", bracket = " " )
   {
     oss << newline << offset << bracket << "[ ";
     const char * sep = "";

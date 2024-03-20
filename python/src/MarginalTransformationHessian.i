@@ -6,5 +6,6 @@ OTAutodoc(MarginalTransformationHessian)
 #include "openturns/MarginalTransformationHessian.hxx"
 %}
 
+%copyctor OT::MarginalTransformationHessian;
+
 %include openturns/MarginalTransformationHessian.hxx
-namespace OT { %extend MarginalTransformationHessian { MarginalTransformationHessian(const MarginalTransformationHessian & other) { return new OT::MarginalTransformationHessian(other); } } }

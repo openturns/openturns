@@ -6,5 +6,6 @@
 
 %include IndicatorFunction_doc.i
 
+%copyctor OT::IndicatorFunction;
+
 %include openturns/IndicatorFunction.hxx
-namespace OT { %extend IndicatorFunction { IndicatorFunction(const IndicatorFunction & other) { return new OT::IndicatorFunction(other); } } }

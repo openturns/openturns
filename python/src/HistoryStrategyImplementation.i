@@ -6,5 +6,6 @@
 
 %include HistoryStrategyImplementation_doc.i
 
+%copyctor OT::HistoryStrategyImplementation;
+
 %include openturns/HistoryStrategyImplementation.hxx
-namespace OT{ %extend HistoryStrategyImplementation { HistoryStrategyImplementation(const HistoryStrategyImplementation & other) { return new OT::HistoryStrategyImplementation(other); } } }

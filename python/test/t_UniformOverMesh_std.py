@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -13,7 +12,7 @@ domain = ot.LevelSet(function, ot.LessOrEqual(), level)
 lower = [-0.75, -0.5]
 upper = [0.75, 0.5]
 mesh = mesher.build(domain, ot.Interval(lower, upper), False)
-distribution = otexp.UniformOverMesh(mesh)
+distribution = ot.UniformOverMesh(mesh)
 print("Distribution ", distribution)
 
 # Is this distribution elliptical ?

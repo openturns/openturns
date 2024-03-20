@@ -142,3 +142,32 @@ simplices : :class:`~openturns.IndicesCollection`
 %feature("docstring") OT::EnclosingSimplexAlgorithmImplementation::getSimplices
 OT_EnclosingSimplexAlgorithm_getSimplices_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplexAlgorithm_setBarycentricCoordinatesEpsilon_doc
+"Accessor to the tolerance for membership test.
+
+Parameters
+----------
+epsilon : float
+    Tolerance for the membership. A point is in a simplex if its barycentric coordinates :math:`\xi_i` are
+    all in :math:`[-\varepsilon,1+\varepsilon]` and :math:`\sum_{i=1}^d\xi_i\in[-\varepsilon,1+\varepsilon]`."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexAlgorithmImplementation::setBarycentricCoordinatesEpsilon
+OT_EnclosingSimplexAlgorithm_setBarycentricCoordinatesEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplexAlgorithm_getBarycentricCoordinatesEpsilon_doc
+"Accessor to the tolerance for membership test.
+
+Returns
+-------
+epsilon : float
+    Tolerance for the membership. A point is in a simplex if its barycentric coordinates :math:`\xi_i` are
+    all in :math:`[-\varepsilon,1+\varepsilon]` and :math:`\sum_{i=1}^d\xi_i\in[-\varepsilon,1+\varepsilon]`."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexAlgorithmImplementation::getBarycentricCoordinatesEpsilon
+OT_EnclosingSimplexAlgorithm_getBarycentricCoordinatesEpsilon_doc

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,23 +33,17 @@ static const Factory<OptimizationResult> Factory_OptimizationResult;
 OptimizationResult::OptimizationResult()
   : PersistentObject()
 {
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
+
 }
 
 /* Default constructor */
 OptimizationResult::OptimizationResult(const OptimizationProblem & problem)
   : PersistentObject()
+  , inputHistory_(0, problem.getObjective().getInputDimension())
+  , outputHistory_(0, problem.getObjective().getOutputDimension())
   , problem_(problem)
 {
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(problem.getObjective().getInputDimension());
-  outputHistory_.setDimension(problem.getObjective().getOutputDimension());
+
 }
 
 /* Virtual constructor */
@@ -110,15 +104,27 @@ void OptimizationResult::setFinalValues(const Sample & finalValues)
   finalValues_ = finalValues;
 }
 
-/* Evaluation number accessor */
+/* Evaluation calls accessor */
+UnsignedInteger OptimizationResult::getCallsNumber() const
+{
+  return callsNumber_;
+}
+
+void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
+{
+  callsNumber_ = callsNumber;
+}
+
 UnsignedInteger OptimizationResult::getEvaluationNumber() const
 {
-  return evaluationNumber_;
+  LOGWARN("OptimizationResult.getEvaluationNumber is deprecated, use getCallsNumber");
+  return getCallsNumber();
 }
 
 void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
 {
-  evaluationNumber_ = evaluationNumber;
+  LOGWARN("OptimizationResult.setEvaluationNumber is deprecated, use setCallsNumber");
+  setCallsNumber(evaluationNumber);
 }
 
 /* Iteration number accessor */
@@ -140,7 +146,7 @@ Scalar OptimizationResult::getAbsoluteError() const
 
 Sample OptimizationResult::getAbsoluteErrorHistory() const
 {
-  return absoluteErrorHistory_.getSample();
+  return absoluteErrorHistory_;
 }
 
 /* Absolute error accessor */
@@ -157,7 +163,7 @@ Scalar OptimizationResult::getRelativeError() const
 
 Sample OptimizationResult::getRelativeErrorHistory() const
 {
-  return relativeErrorHistory_.getSample();
+  return relativeErrorHistory_;
 }
 
 /* Relative error accessor */
@@ -174,7 +180,7 @@ Scalar OptimizationResult::getResidualError() const
 
 Sample OptimizationResult::getResidualErrorHistory() const
 {
-  return residualErrorHistory_.getSample();
+  return residualErrorHistory_;
 }
 
 /* Residual error accessor */
@@ -191,7 +197,7 @@ Scalar OptimizationResult::getConstraintError() const
 
 Sample OptimizationResult::getConstraintErrorHistory() const
 {
-  return constraintErrorHistory_.getSample();
+  return constraintErrorHistory_;
 }
 
 /* Constraint error accessor */
@@ -202,12 +208,12 @@ void OptimizationResult::setConstraintError(const Scalar constraintError)
 
 Sample OptimizationResult::getInputSample() const
 {
-  return inputHistory_.getSample();
+  return inputHistory_;
 }
 
 Sample OptimizationResult::getOutputSample() const
 {
-  return outputHistory_.getSample();
+  return outputHistory_;
 }
 
 void OptimizationResult::setProblem(const OptimizationProblem & problem)
@@ -225,9 +231,11 @@ String OptimizationResult::__repr__() const
 {
   OSS oss;
   oss << "class=" << OptimizationResult::GetClassName()
+      << " status=" << status_
+      << " statusMessage=" << statusMessage_
       << " optimal point=" << optimalPoint_
       << " optimal value=" << optimalValue_
-      << " evaluationNumber=" << evaluationNumber_
+      << " callsNumber=" << callsNumber_
       << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
@@ -243,25 +251,28 @@ void OptimizationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
-  adv.saveAttribute( "evaluationNumber_", evaluationNumber_ );
+  adv.saveAttribute( "callsNumber_", callsNumber_ );
   adv.saveAttribute( "iterationNumber_", iterationNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
   adv.saveAttribute( "residualError_", residualError_ );
   adv.saveAttribute( "constraintError_", constraintError_ );
 
-  adv.saveAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-  adv.saveAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-  adv.saveAttribute( "residualErrorHistory_", residualErrorHistory_ );
-  adv.saveAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+  adv.saveAttribute( "absoluteErrorHistory_S", absoluteErrorHistory_ );
+  adv.saveAttribute( "relativeErrorHistory_S", relativeErrorHistory_ );
+  adv.saveAttribute( "residualErrorHistory_S", residualErrorHistory_ );
+  adv.saveAttribute( "constraintErrorHistory_S", constraintErrorHistory_ );
 
-  adv.saveAttribute( "inputHistory_", inputHistory_ );
-  adv.saveAttribute( "outputHistory_", outputHistory_ );
+  adv.saveAttribute( "inputHistory_S", inputHistory_ );
+  adv.saveAttribute( "outputHistory_S", outputHistory_ );
 
   adv.saveAttribute( "problem_", problem_ );
   adv.saveAttribute( "finalPoints_", finalPoints_ );
   adv.saveAttribute( "finalValues_", finalValues_ );
   adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
+  adv.saveAttribute( "statusMessage_", statusMessage_ );
+  adv.saveAttribute( "status_", status_ );
+  adv.saveAttribute( "time_", time_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -270,20 +281,36 @@ void OptimizationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "optimalPoint_", optimalPoint_ );
   adv.loadAttribute( "optimalValue_", optimalValue_ );
-  adv.loadAttribute( "evaluationNumber_", evaluationNumber_ );
+  if (adv.hasAttribute("callsNumber_"))
+    adv.loadAttribute( "callsNumber_", callsNumber_ );
+  else
+    adv.loadAttribute( "evaluationNumber_", callsNumber_ );
   adv.loadAttribute( "iterationNumber_", iterationNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );
   adv.loadAttribute( "residualError_", residualError_ );
   adv.loadAttribute( "constraintError_", constraintError_ );
 
-  adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-  adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-  adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
-  adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+  if (adv.hasAttribute("inputHistory_S")) // Sample instead of Compact in 1.23
+  {
+    adv.loadAttribute( "absoluteErrorHistory_S", absoluteErrorHistory_ );
+    adv.loadAttribute( "relativeErrorHistory_S", relativeErrorHistory_ );
+    adv.loadAttribute( "residualErrorHistory_S", residualErrorHistory_ );
+    adv.loadAttribute( "constraintErrorHistory_S", constraintErrorHistory_ );
 
-  adv.loadAttribute( "inputHistory_", inputHistory_ );
-  adv.loadAttribute( "outputHistory_", outputHistory_ );
+    adv.loadAttribute( "inputHistory_S", inputHistory_ );
+    adv.loadAttribute( "outputHistory_S", outputHistory_ );
+  }
+  else
+  {
+    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
+    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
+    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
+    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
+
+    adv.loadAttribute( "inputHistory_", inputHistory_ );
+    adv.loadAttribute( "outputHistory_", outputHistory_ );
+  }
 
   adv.loadAttribute( "problem_", problem_ );
   if (adv.hasAttribute("finalPoints_"))
@@ -291,6 +318,12 @@ void OptimizationResult::load(Advocate & adv)
     adv.loadAttribute( "finalPoints_", finalPoints_ );
     adv.loadAttribute( "finalValues_", finalValues_ );
     adv.loadAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
+  }
+  if (adv.hasAttribute("status_"))
+  {
+    adv.loadAttribute("statusMessage_", statusMessage_);
+    adv.loadAttribute("status_", status_);
+    adv.loadAttribute("time_", time_);
   }
 }
 
@@ -303,13 +336,32 @@ void OptimizationResult::store(const Point & x,
                                const Scalar constraintError,
                                const Scalar maximumConstraintError)
 {
+  // append values (and check dimensions)
+  inputHistory_.add(x);
+  outputHistory_.add(y);
+
+  absoluteErrorHistory_.add(Point(1, absoluteError));
+  relativeErrorHistory_.add(Point(1, relativeError));
+  residualErrorHistory_.add(Point(1, residualError));
+  constraintErrorHistory_.add(Point(1, constraintError));
+
   if (getProblem().getObjective().getOutputDimension() <= 1)
   {
-    const Bool objectiveImproved = (!getOptimalValue().getDimension())
-      || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
+    Bool isNormal = true;
+    for (UnsignedInteger j = 0; j < x.getDimension(); ++ j)
+      if (!SpecFunc::IsNormal(x[j]))
+        isNormal = false;
+    for (UnsignedInteger j = 0; j < y.getDimension(); ++ j)
+      if (std::isnan(y[j]))
+        isNormal = false;
 
-    if ((objectiveImproved && (constraintError <= maximumConstraintError))
-      || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
+    const Bool objectiveImproved = (!getOptimalValue().getDimension())
+                                   || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0]));
+
+    const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
+
+    if ((isNormal && objectiveImproved && insideBounds && (constraintError <= maximumConstraintError))
+        || getProblem().hasLevelFunction()) // consider the last value as optimal for nearest-point algos
     {
       // update values
       absoluteError_ = absoluteError;
@@ -321,15 +373,6 @@ void OptimizationResult::store(const Point & x,
       setOptimalValue(y);
     }
   }
-
-  // append values
-  absoluteErrorHistory_.store(Point(1, absoluteError));
-  relativeErrorHistory_.store(Point(1, relativeError));
-  residualErrorHistory_.store(Point(1, residualError));
-  constraintErrorHistory_.store(Point(1, constraintError));
-
-  inputHistory_.store(x);
-  outputHistory_.store(y);
 }
 
 Graph OptimizationResult::drawErrorHistory() const
@@ -346,7 +389,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve absoluteErrorCurve( data, "absolute error" );
     absoluteErrorCurve.setLegend("absolute error");
-    absoluteErrorCurve.setColor("red");
     result.add( absoluteErrorCurve );
   }
 // Relative error
@@ -355,7 +397,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve relativeErrorCurve( data, "relative error" );
     relativeErrorCurve.setLegend("relative error");
-    relativeErrorCurve.setColor("blue");
     result.add( relativeErrorCurve );
   }
 // Residual error
@@ -364,7 +405,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve residualErrorCurve( data, "residual error" );
     residualErrorCurve.setLegend("residual error");
-    residualErrorCurve.setColor("green");
     result.add( residualErrorCurve );
   }
 // Constraint error
@@ -373,7 +413,6 @@ Graph OptimizationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
-    constraintErrorCurve.setColor("magenta");
     result.add( constraintErrorCurve );
   }
   result.setYMargin(0.0);// tighten the Y axis
@@ -402,7 +441,6 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   }
   Curve optimalValueCurve(data, "optimal value");
   optimalValueCurve.setLegend("optimal value");
-  optimalValueCurve.setColor("red");
   result.add(optimalValueCurve);
   result.setIntegerXTick(true);
   return result;
@@ -496,6 +534,38 @@ IndicesCollection OptimizationResult::getParetoFrontsIndices() const
   if (getProblem().getObjective().getOutputDimension() <= 1)
     throw InvalidArgumentException(HERE) << "No pareto fronts available for mono-objective";
   return paretoFrontsIndices_;
+}
+
+/* Status message accessor */
+void OptimizationResult::setStatusMessage(const String & statusMessage)
+{
+  statusMessage_ = statusMessage;
+}
+
+String OptimizationResult::getStatusMessage() const
+{
+  return statusMessage_;
+}
+
+void OptimizationResult::setStatus(const UnsignedInteger status)
+{
+  status_ = status;
+}
+
+UnsignedInteger OptimizationResult::getStatus() const
+{
+  return status_;
+}
+
+/* Elapsed time accessor */
+void OptimizationResult::setTimeDuration(const Scalar time)
+{
+  time_ = time;
+}
+
+Scalar OptimizationResult::getTimeDuration() const
+{
+  return time_;
 }
 
 END_NAMESPACE_OPENTURNS

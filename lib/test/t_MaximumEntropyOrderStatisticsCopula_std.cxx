@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MaximumEntropyOrderStatisticsCopula for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ int main(int, char *[])
     // Force the use of the approximation to avoid timeout
     ResourceMap::SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", true);
 
-    ComposedDistribution::DistributionCollection coll;
+    JointDistribution::DistributionCollection coll;
     coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
     coll.add(Triangular(3.0, 4.5, 5.0));

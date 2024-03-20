@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation of projection strategy as a leastSquares
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -145,8 +145,9 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
   alpha_k_p_ = approximationAlgorithm.getCoefficients();
   residual_p_ = approximationAlgorithm.getResidual();
   relativeError_p_ = approximationAlgorithm.getRelativeError();
+  indicesHistory_ = approximationAlgorithm.getImplementation()->getSelectionHistory(coefficientsHistory_);
+  errorHistory_ = approximationAlgorithm.getImplementation()->getErrorHistory();
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void LeastSquaresStrategy::save(Advocate & adv) const
@@ -154,7 +155,6 @@ void LeastSquaresStrategy::save(Advocate & adv) const
   ProjectionStrategyImplementation::save(adv);
   adv.saveAttribute( "p_approximationAlgorithmImplementationFactory_", *p_approximationAlgorithmImplementationFactory_ );
 }
-
 
 /* Method load() reloads the object from the StorageManager */
 void LeastSquaresStrategy::load(Advocate & adv)
@@ -165,5 +165,16 @@ void LeastSquaresStrategy::load(Advocate & adv)
   p_approximationAlgorithmImplementationFactory_ = approximationAlgorithmImplementationFactory.clone();
 }
 
+/* Selection history accessor */
+Collection<Indices> LeastSquaresStrategy::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = coefficientsHistory_;
+  return indicesHistory_;
+}
+
+Point LeastSquaresStrategy::getErrorHistory() const
+{
+  return errorHistory_;
+}
 
 END_NAMESPACE_OPENTURNS

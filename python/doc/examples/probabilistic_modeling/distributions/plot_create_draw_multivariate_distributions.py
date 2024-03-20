@@ -12,10 +12,10 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# Create a multivariate model with `ComposedDistribution`
+# Create a multivariate model with `JointDistribution`
 # -------------------------------------------------------
 #
-# In this paragraph we use :math:`~openturns.ComposedDistribution` class to
+# In this paragraph we use :math:`~openturns.JointDistribution` class to
 # build multidimensional distribution described by its marginal distributions and optionally its dependence structure (a particular copula).
 #
 
@@ -42,7 +42,7 @@ view = otv.View(graphGumbelPDF)
 
 # %%
 # We then have the minimum required to create a bivariate distribution, assuming no dependency structure :
-distribution = ot.ComposedDistribution(marginals)
+distribution = ot.JointDistribution(marginals)
 
 # %%
 # We can draw the PDF (here in dimension 2) :
@@ -64,7 +64,7 @@ print(copula)
 
 # %%
 # We create the bivariate distribution with the desired copula and draw it.
-distribution = ot.ComposedDistribution(marginals, copula)
+distribution = ot.JointDistribution(marginals, copula)
 graph = distribution.drawPDF()
 view = otv.View(graph)
 
@@ -115,7 +115,7 @@ view = otv.View(graph)
 
 # %%
 # We first generate random points in the square.
-distUniform2 = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 2)
+distUniform2 = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 2)
 N = 100
 sample = distUniform2.getSample(N)
 

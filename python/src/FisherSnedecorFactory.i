@@ -6,5 +6,6 @@
 
 %include FisherSnedecorFactory_doc.i
 
+%copyctor OT::FisherSnedecorFactory;
+
 %include openturns/FisherSnedecorFactory.hxx
-namespace OT { %extend FisherSnedecorFactory { FisherSnedecorFactory(const FisherSnedecorFactory & other) { return new OT::FisherSnedecorFactory(other); } } }

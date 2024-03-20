@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -264,7 +264,7 @@ String ExponentialModel::__str__(const String & offset) const
   oss << "(scale=" << getScale()
       << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
-    oss << ", spatial correlation=" << Os::GetEndOfLine() << offset << getOutputCorrelation().__str__(offset);
+    oss << ", spatial correlation=" << "\n" << offset << getOutputCorrelation().__str__(offset);
   else
     oss << ", no spatial correlation";
   oss << ")";

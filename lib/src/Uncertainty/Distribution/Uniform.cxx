@@ -2,7 +2,7 @@
 /**
  *  @brief The Uniform distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -202,6 +202,7 @@ Complex Uniform::computeCharacteristicFunction(const Scalar x) const
   else
   {
     const Scalar idenom = 1.0 / (bx - ax);
+    // (i/((b-a)*u)*(exp(i*a*u)-exp(i*b*u))=(i/((b-a)*u)*(exp(i*(a+b)*u/2)*(exp(i*(a-b)/2*u)-exp(i*b*u))
     result = Complex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
@@ -243,6 +244,13 @@ Scalar Uniform::computeScalarQuantile(const Scalar prob,
 {
   if (tail) return b_ - prob * (b_ - a_);
   return a_ + prob * (b_ - a_);
+}
+
+Scalar Uniform::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the entropy of the distribution */

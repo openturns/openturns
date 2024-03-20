@@ -2,7 +2,7 @@
 /**
  *  @brief The class enables to get the coefficients of an ARMA process using the likelihood function
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,10 +77,6 @@ public:
   ARMA build(const TimeSeries & timeSeries) const override;
   ARMA build(const ProcessSample & sample) const override;
 
-  /** Verbosity accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -90,13 +86,13 @@ public:
 private :
 
   /** Parameter g is the maximum of p and q */
-  mutable UnsignedInteger currentG_;
+  mutable UnsignedInteger currentG_ = 0;
 
   /** TimeSeries used to pass data */
   mutable TimeSeries w_;
 
   /** Dimension parameter - only used to pass data */
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 1;
 
   /** only used to pass data to be used in computeLogLikelihood */
   mutable CovarianceMatrix covarianceMatrix_;
@@ -120,15 +116,12 @@ private :
   mutable Matrix blockPhiTThetaTMatrix_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable Scalar sigma2_;
+  mutable Scalar sigma2_ = 1.0;
 
   /** Bool variables */
-  mutable Bool hasInitializedARCoefficients_;
-  mutable Bool hasInitializedMACoefficients_;
-  mutable Bool hasInitializedCovarianceMatrix_;
-
-  /** Verbosity control */
-  Bool verbose_;
+  mutable Bool hasInitializedARCoefficients_ = false;
+  mutable Bool hasInitializedMACoefficients_ = false;
+  mutable Bool hasInitializedCovarianceMatrix_ = false;
 
   /** Method that initialize the size of matrices and vectors depending on the used couple (p, q) */
   void initialize();
@@ -191,7 +184,7 @@ private :
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class ARMALikelihoodFactory */
 

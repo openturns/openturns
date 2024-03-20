@@ -2,7 +2,7 @@
 /**
  *  @brief Functional chaos on field data
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@
 #include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 #include "openturns/HypothesisTest.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/InverseTrendTransform.hxx"
@@ -243,7 +243,7 @@ Distribution FieldToPointFunctionalChaosAlgorithm::BuildDistribution(const Sampl
 {
   // marginals: test Gaussian with fallback to histogram
   const UnsignedInteger dimension = sample.getDimension();
-  ComposedDistribution::DistributionCollection marginals(dimension);
+  JointDistribution::DistributionCollection marginals(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const Sample marginalJ(sample.getMarginal(j));
@@ -266,7 +266,7 @@ Distribution FieldToPointFunctionalChaosAlgorithm::BuildDistribution(const Sampl
     }
   }
 
-  ComposedDistribution distribution(marginals);
+  JointDistribution distribution(marginals);
   if (!isIndependent)
   {
     const String copulaType = ResourceMap::GetAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType");

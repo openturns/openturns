@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an Smolyak experiment
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +54,7 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
     if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
     if (collection_[i].isRandom()) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is random.";
   }
-  const ComposedDistribution distribution(distributionCollection);
+  const JointDistribution distribution(distributionCollection);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 

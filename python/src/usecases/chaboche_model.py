@@ -51,7 +51,7 @@ class ChabocheModel:
     Gamma : :class:`~openturns.Dirac` distribution
         `ot.Dirac(trueGamma)`
 
-    inputDistribution : :class:`~openturns.ComposedDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -113,7 +113,7 @@ class ChabocheModel:
         self.Gamma = ot.Dirac(self.trueGamma)
         self.Gamma.setDescription(["Gamma"])
 
-        self.inputDistribution = ot.ComposedDistribution(
+        self.inputDistribution = ot.JointDistribution(
             [self.Strain, self.R, self.C, self.Gamma]
         )
 

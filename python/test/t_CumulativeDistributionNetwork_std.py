@@ -99,7 +99,7 @@ kendall = distribution.getKendallTau()
 print("kendall=", kendall)
 
 # Build a distribution with no specific implementation of getMarginal()
-atom = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 3)
+atom = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
 graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]])
 distribution = ot.CumulativeDistributionNetwork([atom] * 2, graph)
 
@@ -107,7 +107,7 @@ distribution = ot.CumulativeDistributionNetwork([atom] * 2, graph)
 marginal = distribution.getMarginal([0, 1])
 
 # Build by hands the exact marginal
-atom_ref = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
+atom_ref = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 graph_ref = ot.BipartiteGraph([[0, 1], [0, 1]])
 ref = ot.CumulativeDistributionNetwork([atom_ref] * 2, graph_ref)
 

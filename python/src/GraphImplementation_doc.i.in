@@ -58,7 +58,12 @@ OT_Graph_getDrawables_doc
 Parameters
 ----------
 drawables : list of :class:`~openturns.Drawable`
-    Drawables included in the Graph."
+    Drawables included in the Graph.
+	
+Notes
+-----
+Drawables that do not have an explicitly set color will be assigned the
+default palette color corresponding to their rank in the graph."
 %enddef
 %feature("docstring") OT::GraphImplementation::setDrawables
 OT_Graph_setDrawables_doc
@@ -91,7 +96,12 @@ Parameters
 drawable : :class:`~openturns.Drawable`
     Drawable included in the Graph.
 index : int
-    Position of the Drawable."
+    Position of the Drawable.
+	
+Notes
+-----
+If the drawable does not have an explicitly set color, it will be assigned
+the default palette color corresponding to its rank in the graph."
 %enddef
 %feature("docstring") OT::GraphImplementation::setDrawable
 OT_Graph_setDrawable_doc
@@ -199,7 +209,7 @@ Examples
 >>> import openturns as ot
 >>> fontSize = 1.0
 >>> # Create an empty graph
->>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'topright', fontSize, 0)
+>>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'upper right', fontSize, 0)
 >>> myGraph.setLegendFontSize(1.5)
 >>> print(myGraph.getLegendFontSize())
 1.5"
@@ -238,12 +248,12 @@ position : str
 Examples
 --------
 >>> import openturns as ot
->>> position = 'topright'
+>>> position = 'upper right'
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
->>> myGraph.setLegendPosition('bottomleft')
+>>> myGraph.setLegendPosition('lower left')
 >>> print(myGraph.getLegendPosition())
-bottomleft"
+lower left"
 %enddef
 %feature("docstring") OT::GraphImplementation::setLegendPosition
 OT_Graph_setLegendPosition_doc
@@ -262,7 +272,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Graph.GetValidLegendPositions())
-[,bottomright,bottom,bottomleft,left,topleft,top,topright,right,center]#10"
+[,best,upper right,upper left,lower right,lower left,center right,..."
 %enddef
 %feature("docstring") OT::GraphImplementation::GetValidLegendPositions
 OT_Graph_GetValidLegendPositions_doc
@@ -291,11 +301,54 @@ Examples
 >>> import openturns as ot
 >>> print(ot.Graph.IsValidLegendPosition('lefttop'))
 False
->>> print(ot.Graph.IsValidLegendPosition('topleft'))
+>>> print(ot.Graph.IsValidLegendPosition('upper left'))
 True"
 %enddef
 %feature("docstring") OT::GraphImplementation::IsValidLegendPosition
 OT_Graph_IsValidLegendPosition_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setLegendCorner_doc
+"Accessor to the legend's corner.
+
+Parameters
+----------
+corner : sequence of float
+    Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
+    The position of the legend relatively to this point will depend on the orientation
+    given by the :meth:`getLegendPosition` value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> position = 'upper left'  # the legend's upper left corner with be set below
+>>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
+>>> graph.setLegendCorner([1.0, 1.0])  # legend will begin in top right corner
+
+Notes
+-----
+This enables the legend to be located outside the graph.
+"
+%enddef
+%feature("docstring") OT::GraphImplementation::setLegendCorner
+OT_Graph_setLegendCorner_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLegendCorner_doc
+"Accessor to the legend's corner.
+
+Returns
+-------
+corner : :class:`~openturns.Point`
+    Relative coordinates (in [0,1]x[0,1]) of the legend in the graph bounding box.
+    The position of the legend relatively to this point will depend on the orientation
+    given by the :meth:`getLegendPosition` value.
+"
+%enddef
+%feature("docstring") OT::GraphImplementation::getLegendCorner
+OT_Graph_getLegendCorner_doc
 
 // ---------------------------------------------------------------------
 
@@ -747,6 +800,9 @@ Notes
 It adds the new drawables or graph inside the first one, with their legend.
 It keeps the graphical context of the first graph. Each drawable keeps
 its graphical context.
+Drawables that do not have an explicitly set color will be assigned the default
+palette color corresponding to their rank in the graph.
+
 
 .. warning::
     Different drawables might be colored the same..."

@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -136,7 +136,9 @@ void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & fun
   if (!(outputDimension_ > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the function with index " << i << "has input dimension " << functionsCollection[i].getInputDimension() << ", whereas the function with index 0 has input dimension " << inputDimension;
+    if (functionsCollection[i].getInputDimension() != inputDimension)
+      throw InvalidArgumentException(HERE) << "Error: the function with index " << i << " has input dimension " << functionsCollection[i].getInputDimension()
+	                                   << ", whereas the function with index 0 has input dimension " << inputDimension;
     const UnsignedInteger atomOutputDimension = functionsCollection[i].getOutputDimension();
     if (!(atomOutputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
     outputDimension_ += atomOutputDimension;
@@ -244,16 +246,19 @@ Point AggregatedEvaluation::getParameter() const
 void AggregatedEvaluation::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = functionsCollection_.getSize();
+  UnsignedInteger parameterSize = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    parameterSize += functionsCollection_[i].getParameter().getSize();
+  if (parameter.getSize() != parameterSize)
+    throw InvalidDimensionException(HERE) << "AggregatedEvaluation expected a parameter of size " << parameterSize
+	                                  << " got " << parameter.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     Point marginalParameter(functionsCollection_[i].getParameter());
     const UnsignedInteger marginalDimension = marginalParameter.getDimension();
-    for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
-    {
-      marginalParameter[j] = parameter[index];
-      ++ index;
-    }
+    std::copy(parameter.begin() + index, parameter.begin() + index + marginalDimension, marginalParameter.begin());
+    index += marginalDimension;
     functionsCollection_[i].setParameter(marginalParameter);
   }
 }

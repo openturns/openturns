@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class IterativeMoments for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -234,7 +234,7 @@ void test_SampleSize3_with_zero_variance()
     const Point skewness(iterMoments.getSkewness());
     fullprint << "  skewness  = " << skewness << std::endl;
   }
-  catch (NotDefinedException & ex)
+  catch (const NotDefinedException &)
   {
     fullprint << "Expected skewness exception" << std::endl;
     isSkewnessExceptionGenerated = true;
@@ -278,7 +278,7 @@ void test_SampleSize4_with_zero_variance()
     const Point skewness(iterMoments.getSkewness());
     fullprint << "  skewness  = " << skewness << std::endl;
   }
-  catch (NotDefinedException & ex)
+  catch (const NotDefinedException &)
   {
     fullprint << "Expected skewness exception" << std::endl;
     isSkewnessExceptionGenerated = true;
@@ -290,7 +290,7 @@ void test_SampleSize4_with_zero_variance()
     const Point kurtosis(iterMoments.getKurtosis());
     fullprint << "  kurtosis  = " << kurtosis << std::endl;
   }
-  catch (NotDefinedException & ex)
+  catch (const NotDefinedException &)
   {
     fullprint << "Expected kurtosis exception" << std::endl;
     isKurtosisExceptionGenerated = true;
@@ -312,7 +312,7 @@ int main(int, char *[])
     test_SampleSize3_with_zero_variance();
     test_SampleSize4_with_zero_variance();
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

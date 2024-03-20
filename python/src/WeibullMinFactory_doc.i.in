@@ -8,7 +8,7 @@ DistributionFactory, WeibullMin
 Notes
 -----
 Several estimators to build a WeibullMin distribution from a scalar sample
-are proposed.
+are proposed. The default strategy is using the maximum likelihood estimators.
 
 **Moments based estimator:**
 
@@ -77,17 +77,17 @@ Refer to :class:`~openturns.MaximumLikelihoodFactory`.
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
 distribution : :class:`~openturns.WeibullMin`
-    The estimated distribution
+    The estimated distribution.
 
 Notes
 -----
-The maximisation of the likelihood is initialized with the value of the estimator calculated with the method of moments.
+The maximization of the likelihood is initialized with the value of the estimator calculated with the method of moments.
 "
 // ----------------------------------------------------------------------------
 
@@ -97,52 +97,36 @@ The maximisation of the likelihood is initialized with the value of the estimato
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample : 2-d sequence of float
+    Data.
 
 Returns
 -------
 distribution : :class:`~openturns.WeibullMin`
-    The estimated distribution"
+    The estimated distribution."
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::WeibullMinFactory::buildAsWeibullMin
 "Estimate the distribution as native distribution.
 
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Data
-
-Returns
--------
-distribution : :class:`~openturns.WeibullMin`
-    The estimated distribution"
-// ----------------------------------------------------------------------------
-
-%feature("docstring") OT::WeibullMinFactory::build
-"Estimate the distribution using the default strategy.
-
-
 **Available usages**:
 
-    build(*sample*)
+    buildAsWeibullMin()
 
-    build(*param*)
+    buildAsWeibullMin(*sample*)
 
+    buildAsWeibullMin(*param*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.WeibullMin`.
 
 Returns
 -------
-distribution : :class:`~openturns.Distribution`
-    The estimated distribution
-
-Notes
------
-The default strategy is using the maximum likelihood estimators."
+dist : :class:`~openturns.WeibullMin`
+    The estimated distribution as a WeibullMin.
+    
+    In the first usage, the default WeibullMin distribution is built."

@@ -39,11 +39,10 @@ sigma0s = [0.1, 1.0]
 # if large, the posterior distribution is equivalent to the
 # distribution of the sample mean
 for i in range(len(sigma0s)):
-
     sigma0 = sigma0s[i]
     mean_prior = ot.Normal(mu0, sigma0)
     std_prior = ot.Dirac(2.0)  # standard dev is known
-    prior = ot.ComposedDistribution([mean_prior, std_prior])
+    prior = ot.JointDistribution([mean_prior, std_prior])
     # choose the initial state within the prior
     initialState = prior.getRealization()
 
@@ -63,16 +62,16 @@ for i in range(len(sigma0s)):
     realization = sampler.getRealization()
 
     sigmay = ot.ConditionalDistribution(ot.Normal(), prior).getStandardDeviation()[0]
-    w = size * sigma0 ** 2.0 / (size * sigma0 ** 2.0 + sigmay ** 2.0)
+    w = size * sigma0**2.0 / (size * sigma0**2.0 + sigmay**2.0)
 
-    print("prior variance= %.12g" % (sigma0 ** 2.0))
+    print("prior variance= %.12g" % (sigma0**2.0))
     print("  realization=", realization)
 
     print("  w= %.12g" % w)
 
     # the posterior for mu is analytical
     mu_exp = w * data.computeMean()[0] + (1.0 - w) * mu0
-    sigma_exp = (w * sigmay ** 2.0 / size) ** 0.5
+    sigma_exp = (w * sigmay**2.0 / size) ** 0.5
     print("  expected posterior ~N( %.6g" % mu_exp, ",  %.6g" % sigma_exp, ")")
 
     # try to generate a sample
@@ -160,7 +159,7 @@ print("sigma=", sample.computeStandardDeviation())
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
 target = ot.Normal(3)
-weird_target = ot.ComposedDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
+weird_target = ot.JointDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
 normal0_rwmh = ot.RandomWalkMetropolisHastings(
     target, initial_state, ot.Uniform(-10, 10), [0]
 )  # samples from Normal(0,1)

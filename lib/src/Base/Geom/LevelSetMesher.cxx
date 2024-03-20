@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for levelSets
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -219,16 +219,16 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               {
                 const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
                 const ComposedFunction constraint(function, tToPoint);
-                Brent solver;
+                Brent brent;
                 try
                 {
-                  const Scalar t = solver.solve(constraint, level, 0.0, 1.0);
+                  const Scalar t = brent.solve(constraint, level, 0.0, 1.0);
                   LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t);
                   movedVertices.add(tToPoint(Point(1, t)));
                 }
                 catch(...)
                 {
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << solver << ", using minimization for the projection");
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << brent << ", using minimization for the projection");
                   minimizeDistance = true;
                 }
               } // solveEquation
@@ -239,40 +239,33 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                 shiftFunction.setConstant(currentVertex);
                 ComposedFunction levelFunction(function, shiftFunction);
                 problem.setLevelFunction(levelFunction);
-                solver_.setStartingPoint(delta);
-                solver_.setProblem(problem);
-                OptimizationResult result;
-                // Here we have to catch exceptions raised by the gradient
+                OptimizationAlgorithm solver(solver_);
+                solver.setStartingPoint(delta);
+                solver.setProblem(problem);
+                // Here we have to catch exceptions raised by the algorithm (may be due to e.g the gradient)
                 try
                 {
-                  solver_.run();
-                  result = solver_.getResult();
+                  solver.run();
+                  movedVertices.add(currentVertex + solver.getResult().getOptimalPoint());
                 }
                 catch(...)
                 {
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
-                  // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
-                  const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
-                  levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
-                  problem.setLevelFunction(levelFunction);
-                  solver_.setProblem(problem);
-                  // Try with the new gradients
+                  // There is a problem with this vertex. Try a gradient-free solver
+                  Cobyla cobyla(solver.getProblem());
+                  cobyla.setStartingPoint(delta);
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << cobyla);
                   try
-                  {
-                    solver_.run();
-                    result = solver_.getResult();
-                  }
+                    {
+                      cobyla.run();
+                      movedVertices.add(currentVertex + cobyla.getResult().getOptimalPoint());
+                    }
                   catch(...)
-                  {
-                    // There is definitely a problem with this vertex. Try a gradient-free solver
-                    Cobyla solver(solver_.getProblem());
-                    solver.setStartingPoint(solver_.getStartingPoint());
-                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
-                    solver.run();
-                    result = solver.getResult();
-                  } // Even finite differences gradient failed?
-                } // Gradient failed ?
-                movedVertices.add(currentVertex + result.getOptimalPoint());
+                    {
+                      LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
+                      movedVertices.add(currentVertex + delta);
+                    }
+                } // User-defined solver failed ?
+                // Restore the use of solve-the-equation if we used minimization due to a difficult vertex
                 minimizeDistance = !solveEquation;
               } // minimizeDistance
             } // project

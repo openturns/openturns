@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the ARMA process
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,7 @@ String ARMA::__str__(const String & offset) const
   //  ARMA process
   for (UnsignedInteger d = 0; d < getOutputDimension() ; ++d)
   {
-    if (d > 0) oss << Os::GetEndOfLine() << offset;
+    if (d > 0) oss << "\n" << offset;
     // Writing d-th the marginal process
     oss << "X_{" << d << ",t}" ;
     // decomposition by number of elements

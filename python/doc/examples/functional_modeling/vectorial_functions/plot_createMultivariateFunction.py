@@ -38,9 +38,9 @@ the tensor product of univariate functions. In this example, we present both met
 
 import openturns as ot
 
-f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1^2', 'x2^2'])
-f2 = ot.SymbolicFunction(['x1', 'x2'], ['x1+1.0', '2.0*x2'])
-f3 = ot.SymbolicFunction(['x1', 'x2'], ['cos(x1*x2)', 'x2^3'])
+f1 = ot.SymbolicFunction(["x1", "x2"], ["x1^2", "x2^2"])
+f2 = ot.SymbolicFunction(["x1", "x2"], ["x1+1.0", "2.0*x2"])
+f3 = ot.SymbolicFunction(["x1", "x2"], ["cos(x1*x2)", "x2^3"])
 
 myBasis = ot.Basis([f1, f2, f3])
 f = myBasis.build(1)
@@ -69,25 +69,34 @@ f = myBasis.build(1)
 # - dimension :math:`x_2`: the family of Haar wavelets:  :math:`(x_2 \mapsto \phi^2_k(x_2))_{k \geq 0}`.
 
 univFuncFamily_Mon = ot.MonomialFunctionFactory()
-univFuncFamily_UnivPol = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.JacobiFactory())
+univFuncFamily_UnivPol = ot.OrthogonalUniVariatePolynomialFunctionFactory(
+    ot.JacobiFactory()
+)
 univFuncFamily_Haar = ot.HaarWaveletFactory()
 univFuncFamily_Fourier = ot.FourierSeriesFactory()
 
-familyColl = [univFuncFamily_Mon, univFuncFamily_UnivPol, univFuncFamily_Haar, univFuncFamily_Fourier]
+familyColl = [
+    univFuncFamily_Mon,
+    univFuncFamily_UnivPol,
+    univFuncFamily_Haar,
+    univFuncFamily_Fourier,
+]
 enumerateFunction = ot.LinearEnumerateFunction(len(familyColl))
 
 familyFunction = ot.TensorizedUniVariateFunctionFactory(familyColl, enumerateFunction)
 k = 3
 f = familyFunction.build(k)
-print('input dimension = ', f.getInputDimension())
-print('output dimension = ', f.getOutputDimension())
+print("input dimension = ", f.getInputDimension())
+print("output dimension = ", f.getOutputDimension())
 
 # %%
 # If we want to use an orthogonal univariate polynomials family, then we have to cast the family
 # in the  :class:`~openturns.OrthogonalUniVariatePolynomialFunctionFactory` class.
 #
 # For example, we use the  Jacobi orthogonal univariate polynomials family.
-univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.JacobiFactory())
+univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(
+    ot.JacobiFactory()
+)
 
 
 # %%
@@ -119,15 +128,15 @@ familyColl = [univFuncFamily_Jacobi, univFuncFamily_Hermite]
 enumerateFunction = ot.LinearEnumerateFunction(len(familyColl))
 familyFunction = ot.OrthogonalProductPolynomialFactory(familyColl, enumerateFunction)
 f = familyFunction.build(3)
-print('input dimension = ', f.getInputDimension())
-print('output dimension = ', f.getOutputDimension())
+print("input dimension = ", f.getInputDimension())
+print("output dimension = ", f.getOutputDimension())
 
 # %%
 # We get the measure:
 measure_Jacobi = ot.JacobiFactory().getMeasure()
 measure_Hermite = ot.HermiteFactory().getMeasure()
-print('Measure orthogonal to Jacobi polynomials = ', measure_Jacobi)
-print('Measure orthogonal to Hermite polynomials = ', measure_Hermite)
+print("Measure orthogonal to Jacobi polynomials = ", measure_Jacobi)
+print("Measure orthogonal to Hermite polynomials = ", measure_Hermite)
 
 
 # %%
@@ -168,5 +177,5 @@ f = familyFunction.build(k)
 # We get the measure:
 measure_Haar = ot.HaarWaveletFactory().getMeasure()
 measure_Fourier = ot.FourierSeriesFactory().getMeasure()
-print('Measure orthogonal to Haar wavelets = ', measure_Haar)
-print('Measure orthogonal to Fourier series = ', measure_Fourier)
+print("Measure orthogonal to Haar wavelets = ", measure_Haar)
+print("Measure orthogonal to Fourier series = ", measure_Fourier)

@@ -3,9 +3,9 @@
 
 Parameters
 ----------
-myTrendFunc : :class:`~openturns.Function`
+trend : :class:`~openturns.Function`
     The trend function :math:`f_{trend}` of a process.
-myMesh : :class:`~openturns.Mesh`
+mesh : :class:`~openturns.Mesh`
     The mesh on which :math:`f_{trend}` is applied.
 
 Notes
@@ -52,6 +52,7 @@ Then re-add it:
 "
 
 // ---------------------------------------------------------------------
+
 %feature("docstring") OT::TrendTransform::getInverse
 "Accessor to the inverse trend function.
 
@@ -62,4 +63,13 @@ myInverseTrendTransform : :class:`~openturns.InverseTrendTransform`
 
 "
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::TrendTransform::getTrendFunction
+"Accessor to the trend function.
+
+Returns
+-------
+trend : :class:`~openturns.Function`
+    The trend function :math:`f_{trend}` of a process.
+"

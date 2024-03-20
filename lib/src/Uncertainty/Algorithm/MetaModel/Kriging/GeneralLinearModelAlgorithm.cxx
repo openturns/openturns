@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -188,7 +188,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     const Scalar scaleFactor(ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"));
     if (!(scaleFactor > 0))
       throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
     Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if scale is active
@@ -212,6 +212,11 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
       }
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+
+    // We set the lower bound for the nugget factor to 0.
+    const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < optimizationDimension; ++i)
+      if (activeParametersDescription[i] == "nuggetFactor") lowerBound[i] = 0.0;
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
@@ -263,12 +268,8 @@ void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
-  if (cobyla)
-    cobyla->setIgnoreFailure(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setIgnoreFailure(true);
+  if ((solverName == "Cobyla") || (solverName == "TNC"))
+    solver_.setCheckStatus(false);
 }
 
 /* Virtual constructor */
@@ -449,22 +450,23 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
-  solver_.setProblem(problem);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
   try
   {
     // If the solver is single start, we can use its setStartingPoint method
-    solver_.setStartingPoint(initialParameters);
+    solver.setStartingPoint(initialParameters);
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     // Nothing to do if setStartingPoint is not defined
   }
-  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
-  solver_.run();
-  const OptimizationAlgorithm::Result result(solver_.getResult());
+  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
+  solver.run();
+  const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
+  const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)
@@ -491,10 +493,14 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   Scalar logDeterminant = 0.0;
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
+  LOGDEBUG(OSS(false) << "Set the amplitude ");
   if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
+  LOGDEBUG(OSS(false) << "Set the parameter " << parameters);
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
+  LOGDEBUG(OSS(false) << "First, compute the log-determinant of the Cholesky factor with method " << method_);
+
   if (method_ == LAPACK)
     logDeterminant = computeLapackLogDeterminantCholesky();
   else

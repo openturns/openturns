@@ -109,7 +109,7 @@ aCopula = ot.IndependentCopula(aCollection.getSize())
 aCopula.setName("Independent copula")
 
 # Instantiate one distribution object
-myDistribution = ot.ComposedDistribution(aCollection, aCopula)
+myDistribution = ot.JointDistribution(aCollection, aCopula)
 myDistribution.setName("myDist")
 
 start = myDistribution.getMean()
@@ -132,7 +132,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 # FORM/SORM Cobyla
 myCobyla = ot.Cobyla()
 myCobyla.setRhoBeg(0.1)
-myCobyla.setMaximumEvaluationNumber(1000 * dim)
+myCobyla.setMaximumCallsNumber(1000 * dim)
 myCobyla.setMaximumAbsoluteError(1.0e-4)
 myCobyla.setMaximumRelativeError(1.0e-4)
 myCobyla.setMaximumResidualError(1.0e-4)

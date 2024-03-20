@@ -189,7 +189,7 @@ The tools chosen for the development of the platform are:
 +=======================================+=================================================================================+===================+
 | Configuration                         | `CMake <https://cmake.org/>`_                                                   | 3.13              |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| C/C++ compiler (C99/C++11)            | `GCC <https://gcc.gnu.org/>`_                                                   | 5                 |
+| C/C++ compiler (C99/C++17)            | `GCC <https://gcc.gnu.org/>`_                                                   | 8                 |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Linear algebra                        | `BLAS <http://www.netlib.org/blas/>`_                                           | 3.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -235,9 +235,9 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Python support                        | `Python <http://www.python.org/>`_                                              | 3.6               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 1.3.1             |
+| Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 3.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.0             |
+| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.11            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Version control                       | `Git <https://git-scm.com/>`_                                                   | 2.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -460,4 +460,4 @@ the object.
 
 The Composite pattern is an essential element of the design model for the platform.
 It can be found in several modeling bricks, such as function composition (ComposedFunction)
-random vector composition (CompositeRandomVector), joint distributions (ComposedDistribution), etc.
+random vector composition (CompositeRandomVector), joint distributions (JointDistribution), etc.

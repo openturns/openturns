@@ -46,7 +46,7 @@ coll = [
     ot.Uniform(1120.0, 1680.0),
     ot.Uniform(9855.0, 12045.0),
 ]
-distribution = ot.ComposedDistribution(coll)
+distribution = ot.JointDistribution(coll)
 distribution.setDescription(input_names)
 
 # %%
@@ -78,7 +78,7 @@ print(result.getRelativeErrors())
 # %%
 # Quick summary of sensitivity analysis
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
-print(sensitivityAnalysis)
+sensitivityAnalysis
 
 # %%
 # draw Sobol' indices
@@ -92,10 +92,7 @@ view = viewer.View(graph)
 # so the higher order indices must be all quite close to 0
 for i in range(dimension):
     for j in range(i):
-        print(
-            input_names[i] + " & " + input_names[j],
-            ":",
-            sensitivityAnalysis.getSobolIndex([i, j]),
-        )
+        sij = sensitivityAnalysis.getSobolIndex([i, j])
+        print(f"{input_names[i]} & {input_names[j]}: {sij:.4f}")
 
 plt.show()

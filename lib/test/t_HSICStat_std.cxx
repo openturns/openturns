@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HSICStat, HSICUStat and HSICVStat.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,11 +36,11 @@ int main(int, char *[])
     Uniform X2(-M_PI, M_PI);
     Uniform X3(-M_PI, M_PI);
 
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add(X1);
     aCollection.add(X2);
     aCollection.add(X3);
-    Distribution distX  = ComposedDistribution(aCollection);
+    Distribution distX  = JointDistribution(aCollection);
 
     /* Input sample of size 100 and dimension 3. */
     UnsignedInteger size = 100;

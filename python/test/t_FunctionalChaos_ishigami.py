@@ -11,13 +11,13 @@ a = 7.0
 b = 0.1
 # Reference analytical values
 meanTh = a / 2
-covTh = (b ** 2 * m.pi ** 8) / 18.0 + (b * m.pi ** 4) / 5.0 + (a ** 2) / 8.0 + 1.0 / 2.0
+covTh = (b**2 * m.pi**8) / 18.0 + (b * m.pi**4) / 5.0 + (a**2) / 8.0 + 1.0 / 2.0
 sob_1 = [
-    (b * m.pi ** 4 / 5.0 + b ** 2 * m.pi ** 8 / 50.0 + 1.0 / 2.0) / covTh,
-    (a ** 2 / 8.0) / covTh,
+    (b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0) / covTh,
+    (a**2 / 8.0) / covTh,
     0.0,
 ]
-sob_2 = [0.0, (b ** 2 * m.pi ** 8 / 18.0 - b ** 2 * m.pi ** 8 / 50.0) / covTh, 0.0]
+sob_2 = [0.0, (b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0) / covTh, 0.0]
 sob_3 = [0.0]
 sob_T1 = [
     sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0],
@@ -39,7 +39,7 @@ formula[0] = (
 model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
-distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * dimension)
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
@@ -56,7 +56,7 @@ indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
 basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
-    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold, False)
+    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(

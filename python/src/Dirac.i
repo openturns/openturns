@@ -6,5 +6,6 @@
 
 %include Dirac_doc.i
 
+%copyctor OT::Dirac;
+
 %include openturns/Dirac.hxx
-namespace OT { %extend Dirac { Dirac(const Dirac & other) { return new OT::Dirac(other); } } }

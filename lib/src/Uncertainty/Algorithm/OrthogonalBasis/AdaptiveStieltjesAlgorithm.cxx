@@ -4,7 +4,7 @@
  *         the coefficients of the 3 terms recurrence relation of an
  *         orthonormal polynomial family
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -177,7 +177,7 @@ Point AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
   }
   if (measure_.isDiscrete())
   {
-    static const Sample nodes(measure_.getSupport());
+    const Sample nodes(measure_.getSupport());
     return kernel(nodes).computeMean() * nodes.getSize();
   }
   throw NotYetImplementedException(HERE) << "In AdaptiveStieltjesAlgorithm::computeDotProduct";

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file for Waarts 25 quadratic terms
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -159,7 +159,7 @@ int main(int, char *[])
     //   #########################################################################################################;
     //   # FORM/SORM Cobyla;
     Cobyla myCobyla;
-    myCobyla.setMaximumEvaluationNumber(100 * dim);
+    myCobyla.setMaximumCallsNumber(100 * dim);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
     myCobyla.setMaximumRelativeError(1.0e-10);
     myCobyla.setMaximumResidualError(1.0e-10);

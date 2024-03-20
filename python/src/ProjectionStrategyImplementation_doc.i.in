@@ -249,3 +249,16 @@ m : Distribution
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::setMeasure
 OT_ProjectionStrategy_setMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getDesignProxy_doc
+"Accessor to the design proxy.
+
+Parameters
+----------
+designProxy : :class:`~openturns.DesignProxy`
+    The design matrix."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getDesignProxy
+OT_ProjectionStrategy_getDesignProxy_doc

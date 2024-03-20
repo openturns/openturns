@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building BasisSequence objects
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,9 +32,8 @@ CLASSNAMEINIT(BasisSequenceFactoryImplementation)
 static const Factory<BasisSequenceFactoryImplementation> Factory_BasisSequenceFactoryImplementation;
 
 /* Default constructor */
-BasisSequenceFactoryImplementation::BasisSequenceFactoryImplementation(const Bool verbose)
+BasisSequenceFactoryImplementation::BasisSequenceFactoryImplementation()
   : PersistentObject()
-  , verbose_(verbose)
   , maximumRelativeConvergence_(SpecFunc::MinScalar)
 {
   // Nothing to do
@@ -49,26 +48,13 @@ BasisSequenceFactoryImplementation * BasisSequenceFactoryImplementation::clone()
 /* String converter */
 String BasisSequenceFactoryImplementation::__repr__() const
 {
-  return OSS(true) << "class=" << getClassName()
-         << " verbose=" << verbose_ ;
+  return OSS(true) << "class=" << getClassName();
 }
 
 
 String BasisSequenceFactoryImplementation::__str__(const String & ) const
 {
   return OSS(false) << __repr__();
-}
-
-
-/* Verbosity accessor */
-void BasisSequenceFactoryImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-Bool BasisSequenceFactoryImplementation::getVerbose() const
-{
-  return verbose_;
 }
 
 /* Method to create new BasisSequence objects */
@@ -133,7 +119,6 @@ Scalar BasisSequenceFactoryImplementation::getMaximumRelativeConvergence() const
 void BasisSequenceFactoryImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "verbose_", verbose_ );
   adv.saveAttribute( "maximumRelativeConvergence_", maximumRelativeConvergence_ );
 }
 
@@ -141,9 +126,13 @@ void BasisSequenceFactoryImplementation::save(Advocate & adv) const
 void BasisSequenceFactoryImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "verbose_", verbose_ );
   adv.loadAttribute( "maximumRelativeConvergence_", maximumRelativeConvergence_ );
 }
 
+
+Collection<Indices> BasisSequenceFactoryImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in BasisSequenceFactoryImplementation::getSelectionHistory";
+}
 
 END_NAMESPACE_OPENTURNS

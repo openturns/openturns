@@ -351,7 +351,7 @@ drawQuant = graphQuantile.getDrawable(0)
 drawQuant.setLineStyle("dashed")
 graph.add(drawQuant)
 graph.setLegends(["data", "mean function", "quantile 0.95  function"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 view = otv.View(graph)
 
 # %%

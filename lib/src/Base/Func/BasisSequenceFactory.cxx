@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building BasisSequence objects
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,18 +51,6 @@ String BasisSequenceFactory::__repr__() const
 String BasisSequenceFactory::__str__(const String & offset) const
 {
   return getImplementation()->__str__( offset );
-}
-
-/* Verbosity accessor */
-void BasisSequenceFactory::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose( verbose );
-}
-
-Bool BasisSequenceFactory::getVerbose() const
-{
-  return getImplementation()->getVerbose();
 }
 
 /* Method to create new BasisSequence objects */

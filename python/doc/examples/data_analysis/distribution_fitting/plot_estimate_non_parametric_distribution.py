@@ -3,7 +3,8 @@ Fit a non parametric distribution
 =================================
 """
 # %%
-# In this example we are going to estimate a non parametric distribution using the kernel smoothing method. After a short introductory example we focus on a few basic features of the API :
+# In this example we are going to estimate a non parametric distribution using the kernel smoothing method.
+# After a short introductory example we focus on a few basic features of the API:
 #
 # - kernel selection
 # - bandwidth estimation
@@ -39,10 +40,9 @@ estimated = kernel.build(sample)
 graph = distribution.drawPDF()
 graph.setTitle("Kernel smoothing vs original")
 kernel_plot = estimated.drawPDF().getDrawable(0)
-kernel_plot.setColor("blue")
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -62,10 +62,9 @@ estimated = kernel.build(sample, bandwidth)
 graph = distribution.drawPDF()
 graph.setTitle("Kernel smoothing vs original")
 kernel_plot = estimated.drawPDF().getDrawable(0)
-kernel_plot.setColor("blue")
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS-Silverman"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -119,19 +118,15 @@ graph.setTitle("Different kernel smoothings vs original distribution")
 graph.setGrid(True)
 
 kernel_estimatedNormal_plot = estimatedNormal.drawPDF().getDrawable(0)
-kernel_estimatedNormal_plot.setColor("blue")
 graph.add(kernel_estimatedNormal_plot)
 
 kernel_estimatedTriangular_plot = estimatedTriangular.drawPDF().getDrawable(0)
-kernel_estimatedTriangular_plot.setColor("green")
 graph.add(kernel_estimatedTriangular_plot)
 
 kernel_estimatedEpanechnikov_plot = estimatedEpanechnikov.drawPDF().getDrawable(0)
-kernel_estimatedEpanechnikov_plot.setColor("orange")
 graph.add(kernel_estimatedEpanechnikov_plot)
 
 kernel_estimatedUniform_plot = estimatedUniform.drawPDF().getDrawable(0)
-kernel_estimatedUniform_plot.setColor("black")
 kernel_estimatedUniform_plot.setLineStyle("dashed")
 graph.add(kernel_estimatedUniform_plot)
 
@@ -198,8 +193,7 @@ graph.add(kernelMB_plot)
 
 # %%
 graph.setLegends(["original", "KS-Silverman", "KS-Plugin", "KS-Mixed"])
-graph.setColors(["red", "blue", "green", "black"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -250,16 +244,14 @@ estimated2 = kernel2.build(sample)
 graph.setTitle("Kernel smoothing vs original")
 
 kernel1_plot = estimated1.drawPDF().getDrawable(0)
-kernel1_plot.setColor("blue")
 graph.add(kernel1_plot)
 
 kernel2_plot = estimated2.drawPDF().getDrawable(0)
-kernel2_plot.setColor("green")
 graph.add(kernel2_plot)
 
 
 graph.setLegends(["original", "KS", "KS with boundary correction"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

@@ -2,7 +2,7 @@
 /**
  *  @brief P1 Lagrange piecewise linear function.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -104,8 +104,8 @@ String P1LagrangeEvaluation::__repr__() const
 String P1LagrangeEvaluation::__str__( const String & offset ) const
 {
   OSS oss(false);
-  oss << P1LagrangeEvaluation::GetClassName() << Os::GetEndOfLine()
-      << offset << "field :" << Os::GetEndOfLine()
+  oss << P1LagrangeEvaluation::GetClassName() << "\n"
+      << offset << "field :" << "\n"
       << offset << getField().__str__(offset);
   return oss;
 }

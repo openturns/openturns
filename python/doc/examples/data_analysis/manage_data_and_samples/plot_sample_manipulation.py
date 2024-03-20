@@ -21,7 +21,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # input parameters
-inputDist = ot.ComposedDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
+inputDist = ot.JointDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
 inputDist.setDescription(["X1", "X2"])
 
 # %%
@@ -140,9 +140,9 @@ sample.computeKurtosis()
 # %%
 # Some statistical test for correlation are available :
 #
-# - get the sample Pearson correlation matrix :
+# - get the sample linear correlation matrix :
 #
-sample.computePearsonCorrelation()
+sample.computeLinearCorrelation()
 
 # %%
 # - get  the sample Kendall correlation matrix :

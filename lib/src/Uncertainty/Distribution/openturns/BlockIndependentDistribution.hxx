@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements assembly distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ComposedCopula
+ * @class BlockIndependentCopula
  *
  * The class describes the probabilistic concept of copulas
  * made from a collection of copulas joined by an independent copula
@@ -81,11 +81,11 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /** Get the log-PDF of the ComposedCopula */
+  /** Get the log-PDF of the BlockIndependentCopula */
   using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
-  /** Get the CDF of the ComposedCopula */
+  /** Get the CDF of the BlockIndependentCopula */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 

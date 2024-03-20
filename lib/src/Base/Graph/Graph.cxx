@@ -2,7 +2,7 @@
 /**
  *  @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -319,7 +319,7 @@ String Graph::getLegendPosition() const
 void Graph::setLegendPosition(const String & position)
 {
   copyOnWrite();
-  return getImplementation()->setLegendPosition(position);
+  getImplementation()->setLegendPosition(position);
 }
 
 /* Get the legend font size */
@@ -332,7 +332,7 @@ Scalar Graph::getLegendFontSize() const
 void Graph::setLegendFontSize(const Scalar legendFontSize)
 {
   copyOnWrite();
-  return getImplementation()->setLegendFontSize(legendFontSize);
+  getImplementation()->setLegendFontSize(legendFontSize);
 }
 
 /* check for legend position validity */
@@ -345,6 +345,18 @@ Bool Graph::IsValidLegendPosition(const String & position)
 Description Graph::GetValidLegendPositions()
 {
   return GraphImplementation::GetValidLegendPositions();
+}
+
+/* Legend bounding box accessor */
+void Graph::setLegendCorner(const Point & corner)
+{
+  copyOnWrite();
+  getImplementation()->setLegendCorner(corner);
+}
+
+Point Graph::getLegendCorner() const
+{
+  return getImplementation()->getLegendCorner();
 }
 
 END_NAMESPACE_OPENTURNS

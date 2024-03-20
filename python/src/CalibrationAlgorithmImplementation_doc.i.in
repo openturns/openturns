@@ -90,7 +90,7 @@ OT_CalibrationAlgorithm_run_doc
 
 Returns
 -------
-resCalibration: :class:`~openturns.CalibrationResult`
+resCalibration : :class:`~openturns.CalibrationResult`
     The structure containing all the results of the calibration problem.
 
 Notes

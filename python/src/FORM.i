@@ -6,5 +6,6 @@
 
 %include FORM_doc.i
 
+%copyctor OT::FORM;
+
 %include openturns/FORM.hxx
-namespace OT{ %extend FORM { FORM(const FORM & other) { return new OT::FORM(other); } } }

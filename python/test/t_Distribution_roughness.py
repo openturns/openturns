@@ -14,7 +14,7 @@ def compute_roughness_sampling(distribution, size=500000):
     This allows comparing sampling & integrating methods
     """
     dimension = distribution.getDimension()
-    ot.ComposedDistribution([ot.Uniform(0, 1) for i in range(dimension)])
+    ot.JointDistribution([ot.Uniform(0, 1) for i in range(dimension)])
     sequence = ot.SobolSequence(dimension)
     experiment = ot.LowDiscrepancyExperiment(sequence, distribution, size, False)
     sample = experiment.generate()
@@ -42,7 +42,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u ** 2) ** 2
+            y = self.c * (1 - u**2) ** 2
         return y
 
     def getRange(self):

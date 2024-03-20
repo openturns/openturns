@@ -1,0 +1,87 @@
+%feature("docstring") OT::StudentCopula
+"Student copula.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom.
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`, optional
+    If :math:`\nu > 2`: correlation matrix.
+    If :math:`\nu \leq 2`: generalized correlation matrix.
+    By default the identity matrix.
+
+Notes
+-----
+The Student copula is a multivariate copula defined by:
+
+.. math::
+
+    C(u_1, \cdots, u_n) = \boldsymbol{t}_{\nu,\mat{R}}(\boldsymbol{t}_{\nu}^{-1}(u_1),
+                                               \cdots, \boldsymbol{t}_{\nu}^{-1}(u_n))
+
+where :math:`\boldsymbol{t}_{\nu,\mat{R}}` is the cumulative distribution
+function of the Student distribution with zero mean,
+unit marginal variances and correlation :math:`\mat{R}`
+
+for :math:`(u_1, \cdots, u_n) \in [0, 1]^n`
+
+See also
+--------
+Student, SklarCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> R = ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
+>>> copula = otexp.StudentCopula(2.5, R)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopula::getNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Returns
+-------
+nu : float
+    Generalised number degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopula::setNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopula::setR
+"Accessor to the correlation matrix.
+
+Parameters
+----------
+R : 2-d sequence of float
+    Correlation matrix :math:`\mat{R}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopula::getR
+"Accessor to the correlation matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R}`."

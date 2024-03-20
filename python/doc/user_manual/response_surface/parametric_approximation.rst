@@ -7,7 +7,7 @@ Response surface: Parametric approximation
 Taylor approximation
 ====================
 
-Refer to :ref:`taylor_expansion`.
+Refer to :ref:`Taylor expansion <taylor_expansion>`.
 
 .. autosummary::
     :toctree: _generated/

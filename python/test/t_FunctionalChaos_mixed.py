@@ -9,7 +9,7 @@ continuous_1D_dist = ot.Normal()
 d = 3
 finite_1D_dist = ot.Binomial(d - 1, 0.5)
 marginals = [continuous_1D_dist, finite_1D_dist]
-mixed_2D_dist = ot.ComposedDistribution(marginals)
+mixed_2D_dist = ot.JointDistribution(marginals)
 
 # data
 N = 1000
@@ -41,3 +41,12 @@ assert result.getRelativeErrors()[0] < 1e-10, "relative error too high"
 assert (
     algo.getResult().getMetaModel().getOutputDescription() == y.getDescription()
 ), "wrong output description"
+
+# selection history
+indices = result.getIndicesHistory()
+coefs = result.getCoefficientsHistory()
+assert indices.getSize() > 0, "no indices selection"
+assert indices.getSize() == coefs.getSize(), "not same size"
+print(indices)
+print(coefs)
+graph = result.drawSelectionHistory()

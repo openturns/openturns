@@ -64,7 +64,6 @@ experiment.setAlwaysShuffle(True)
 experiments.append(experiment)
 
 for experiment in experiments:
-
     ot.RandomGenerator.SetSeed(0)
 
     myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)

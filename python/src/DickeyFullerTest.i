@@ -6,5 +6,6 @@
 
 %include DickeyFullerTest_doc.i
 
+%copyctor OT::DickeyFullerTest;
+
 %include openturns/DickeyFullerTest.hxx
-namespace OT { %extend DickeyFullerTest { DickeyFullerTest(const DickeyFullerTest & other) { return new OT::DickeyFullerTest(other); } } }

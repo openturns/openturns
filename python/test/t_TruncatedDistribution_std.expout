@@ -44,10 +44,10 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[1.9933]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[1.9933]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
-parameters      = [class=PointWithDescription name=X0 dimension=4 description=[mean_0,standard_deviation_0,lowerBound,upperBound] values=[2,1.5,1,4]]
+parameters      = [class=PointWithDescription name=X0 dimension=4 description=[mu_0,sigma_0,lowerBound,upperBound] values=[2,1.5,1,4]]
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,4]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,1.5,1,4]
-parameter desc  = [mean_0,standard_deviation_0,lowerBound,upperBound]
+parameter desc  = [mu_0,sigma_0,lowerBound,upperBound]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
 Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
@@ -96,10 +96,10 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[3.23251]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[3.23251]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
-parameters      = [class=PointWithDescription name=X0 dimension=3 description=[mean_0,standard_deviation_0,lowerBound] values=[2,1.5,1]]
+parameters      = [class=PointWithDescription name=X0 dimension=3 description=[mu_0,sigma_0,lowerBound] values=[2,1.5,1]]
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,200]]
 parameter       = class=Point name=Unnamed dimension=3 values=[2,1.5,1]
-parameter desc  = [mean_0,standard_deviation_0,lowerBound]
+parameter desc  = [mu_0,sigma_0,lowerBound]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.4759] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
 Standard representative= TruncatedNormal(mu = -0.98995, sigma = 0.0150754, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
@@ -127,7 +127,7 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.53617]
 Survival(inverseSurvival)=0.950000
 entropy=1.608447
-Minimum volume interval= [-0.536165, 4]
+Minimum volume interval= [-0.53617, 4]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.65813} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4]))
@@ -148,10 +148,10 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[2.84601]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[2.84601]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
-parameters      = [class=PointWithDescription name=X0 dimension=3 description=[mean_0,standard_deviation_0,upperBound] values=[2,1.5,4]]
+parameters      = [class=PointWithDescription name=X0 dimension=3 description=[mu_0,sigma_0,upperBound] values=[2,1.5,4]]
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,-200,4]]
 parameter       = class=Point name=Unnamed dimension=3 values=[2,1.5,4]
-parameter desc  = [mean_0,standard_deviation_0,upperBound]
+parameter desc  = [mu_0,sigma_0,upperBound]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-9.47594] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[0] finite upper bound=[1] thresholdRealization=0.5
 Standard representative= TruncatedNormal(mu = 0.980392, sigma = 0.0147059, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4])
@@ -200,10 +200,10 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[1.9933]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[1.9933]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
-parameters      = [class=PointWithDescription name=X0 dimension=4 description=[mean_0,standard_deviation_0,lowerBound,upperBound] values=[2,1.5,1,4]]
+parameters      = [class=PointWithDescription name=X0 dimension=4 description=[mu_0,sigma_0,lowerBound,upperBound] values=[2,1.5,1,4]]
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,4]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,1.5,1,4]
-parameter desc  = [mean_0,standard_deviation_0,lowerBound,upperBound]
+parameter desc  = [mu_0,sigma_0,lowerBound,upperBound]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
 Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
@@ -243,10 +243,10 @@ kurtosis      = class=Point name=Unnamed dimension=2 values=[2.34902,2.34902]
 kurtosis (ref)= class=Point name=Unnamed dimension=2 values=[3,3]
 covariance      = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.376594,0,0,0.376594]
 covariance (ref)= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
-parameters      = [class=PointWithDescription name=X0 dimension=9 description=[mean_0,standard_deviation_0,mean_1,standard_deviation_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1] values=[0,1,0,1,0,-0.5,-0.5,2,2]]
-parameters (ref)= [class=PointWithDescription name=X0 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=X1 dimension=2 description=[mean_1,standard_deviation_1] values=[0,1],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0]]
+parameters      = [class=PointWithDescription name=X0 dimension=9 description=[mu_0,sigma_0,mu_1,sigma_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1] values=[0,1,0,1,0,-0.5,-0.5,2,2]]
+parameters (ref)= [class=PointWithDescription name=X0 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=X1 dimension=2 description=[mu_1,sigma_1] values=[0,1],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0]]
 parameter       = class=Point name=Unnamed dimension=9 values=[0,1,0,1,0,-0.5,-0.5,2,2]
-parameter desc  = [mean_0,standard_deviation_0,mean_1,standard_deviation_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1]
+parameter desc  = [mu_0,sigma_0,mu_1,sigma_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[2] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
 Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])

@@ -12,7 +12,7 @@ How to fill an area
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+from openturns import viewer
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -46,59 +46,18 @@ y = dist.computePDF(x)
 
 
 # %%
-# The following function uses the `PolygonArray` class to create a area filled with a given color.
+# Compute the bounds to fill: the lower vertical bound is 0 and the upper vertical bound is the PDF.
 
 # %%
-def fillWithColorInBetween(x, yLower, yUpper, color):
-    """
-    Fill an area with a color between two bounds
-
-    Parameters
-    ----------
-    x : ot.Point(n_points)
-        The X coordinates.
-    yLower : ot.Point(n_points)
-        The Y coordinate of the lower bound.
-    yUpper : ot.Point(n_points)
-        The Y coordinate of the upper bound.
-
-    Return
-    ------
-    polygon: ot.Polygon()
-        The colored area.
-    """
-    n_points = x.getDimension()
-    if yLower.getDimension() != n_points:
-        raise ValueError(
-            f"The number of Y lower bounds is equal to {yLower.getDimension()} "
-            f"but the number of X coordinates is {n_points}"
-        )
-    if yUpper.getDimension() != n_points:
-        raise ValueError(
-            f"The number of Y upper bounds is equal to {yUpper.getDimension()} "
-            f"but the number of X coordinates is {n_points}"
-        )
-    n_points = x.getDimension()
-    polyData = [[x[i], yLower[i]] for i in range(n_points)] + \
-        [[x[i], yUpper[i]] for i in range(n_points - 1, -1, -1)]
-    polygon = ot.Polygon(polyData, color, color)
-    return polygon
-
-
-# %%
-# Compute the bounds to fill: the lower vertical bound is zero and the upper vertical bound is the PDF.
-xPoint = x.asPoint()
-yLower = ot.Point(nplot)
-yUpper = y.asPoint()
+vLow = [0.0] * nplot
+vUp = [y[i, 0] for i in range(nplot)]
 
 # %%
 area = dist.computeCDF(b) - dist.computeCDF(a)
 
 # %%
-palette = ot.Drawable.BuildDefaultPalette(2)
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 graph = dist.drawPDF()
-color = palette[0]
-boundsPoly = fillWithColorInBetween(xPoint, yLower, yUpper, color)
 graph.add(boundsPoly)
 graph.setTitle("Area = %.3f" % (area))
 graph.setLegends([""])

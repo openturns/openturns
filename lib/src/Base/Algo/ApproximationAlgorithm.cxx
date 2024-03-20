@@ -2,7 +2,7 @@
 /**
  *  @brief Regression from a data sample upon a particular basis
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,18 +67,6 @@ Point ApproximationAlgorithm::getWeight() const
 Basis ApproximationAlgorithm::getPsi() const
 {
   return getImplementation()->getPsi();
-}
-
-/* Verbosity accessor */
-void ApproximationAlgorithm::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
-}
-
-Bool ApproximationAlgorithm::getVerbose() const
-{
-  return getImplementation()->getVerbose();
 }
 
 /* String converter */

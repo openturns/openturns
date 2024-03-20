@@ -6,5 +6,6 @@
 
 %include LinearTaylor_doc.i
 
+%copyctor OT::LinearTaylor;
+
 %include openturns/LinearTaylor.hxx
-namespace OT { %extend LinearTaylor { LinearTaylor(const LinearTaylor & other) { return new OT::LinearTaylor(other); } } }

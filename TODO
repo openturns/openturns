@@ -1,3 +1,11 @@
-Remove Pagmo.setGenerationNumber
-Remove NLopt.SetSeed
-Remove IterativeThresholdExceedance(dimension, threshold) ctor
+When the OPENTURNS_MAXSCALAR_IS_INF compilation option is removed, some checks marked TODO JM need to be removed as well.
+At the same time, we need to rename MaxScalar to Infinity and ActualMaxScalar to MaxScalar.
+Remove Sample::computePearsonCorrelation
+Remove Sample|CorrelationAnalysis::computePearsonCorrelation
+Remove TNC,Cobya::set/getIgnoreFailure
+Remove OptimizationAlgorithm.set/getMaximumEvaluationNumber
+Remove Solver.set/getMaximumFunctionEvaluation
+Remove Solver.getUsedFunctionEvaluation
+Remove TimerCallback
+Remove ComposedDistribution in some future version
+Remove ComposedCopula in some future version

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Dlib for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,23 +82,23 @@ int main()
 
     // With not constraining bounds
     Dlib notConstrainingBoundsGlobal(notConstrainingBoundsProblem, "global");
-    notConstrainingBoundsGlobal.setMaximumEvaluationNumber(300);
+    notConstrainingBoundsGlobal.setMaximumCallsNumber(300);
     notConstrainingBoundsGlobal.setStartingPoint(Point(2));
     notConstrainingBoundsGlobal.run();
 
     fullprint << "*** Bounded (optimum included) Global run completed:" << std::endl;
-    fullprint << "      -- Evaluation number = " << notConstrainingBoundsGlobal.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << notConstrainingBoundsGlobal.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << notConstrainingBoundsGlobal.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << notConstrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 
     // With constraining bounds
     Dlib constrainingBoundsGlobal(constrainingBoundsProblem, "global");
-    constrainingBoundsGlobal.setMaximumEvaluationNumber(300);
+    constrainingBoundsGlobal.setMaximumCallsNumber(300);
     constrainingBoundsGlobal.setStartingPoint(Point(2));
     constrainingBoundsGlobal.run();
 
     fullprint << "*** Bounded (optimum not included) Global run completed:" << std::endl;
-    fullprint << "      -- Evaluation number = " << constrainingBoundsGlobal.getResult().getEvaluationNumber() << std::endl;
+    fullprint << "      -- Evaluation number = " << constrainingBoundsGlobal.getResult().getCallsNumber() << std::endl;
     fullprint << "      -- optimalPoint = " << constrainingBoundsGlobal.getResult().getOptimalPoint().__str__() << std::endl;
     fullprint << "      -- optimalValue = " << constrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 

@@ -50,8 +50,6 @@ OT_Drawable_getPointStyle_doc
 OT_Drawable_setPointStyle_doc
 %feature("docstring") OT::Drawable::GetValidPointStyles
 OT_Drawable_GetValidPointStyles_doc
-%feature("docstring") OT::Drawable::getPointCode
-OT_Drawable_getPointCode_doc
 %feature("docstring") OT::Drawable::getLabels
 OT_Drawable_getLabels_doc
 %feature("docstring") OT::Drawable::setLabels

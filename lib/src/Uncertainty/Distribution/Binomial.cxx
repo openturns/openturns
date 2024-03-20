@@ -2,7 +2,7 @@
 /**
  *  @brief The Binomial distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -142,7 +142,7 @@ Scalar Binomial::computeComplementaryCDF(const Point & point) const
 
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
-  if (k > n_ + supportEpsilon_) return 0.0;
+  if (k > n_ - supportEpsilon_) return 0.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
   Scalar value = DistFunc::pBeta(floor(k) + 1, n_ - floor(k), p_);
   return value;
@@ -209,10 +209,11 @@ void Binomial::computeCovariance() const
 Sample Binomial::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
-  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), Scalar(n_)));
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(0.0, ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMax = static_cast< SignedInteger > (std::min(static_cast<Scalar>(n_), floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
+  for (SignedInteger k = kMin; k <= kMax; ++ k)
+    result.add(Point(1, k));
   return result;
 }
 

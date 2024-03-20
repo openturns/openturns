@@ -2,7 +2,7 @@
 /**
  *  @brief The class Object is the top-most class of OpenTURNS
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class Object
  *
- * @brief The base classe for almost every object in OpenTURNS.
+ * @brief The base class for almost every object in OpenTURNS.
  *
  * Object defines common methods needed by all classes.
  * These are default constructor, copy constructor, virtual
@@ -80,6 +80,16 @@ public:
    */
   virtual String __repr__() const;
 
+  /**
+   * String HTML converter
+   *
+   * This method shows HTML information of the object. It is used when streaming
+   * the object or for user information.
+   *
+   * @return A string fully describing the object
+   */
+  virtual String _repr_html_() const;
+
 
   /**
    * Pretty string converter
@@ -92,6 +102,16 @@ public:
    */
   virtual String __str__(const String & offset = "") const;
 
+  /**
+   * Markdown string converter
+   *
+   * This method shows Markdown information on the
+   * internal state of an object. It is used for printing the object
+   * and should only show relevant information.
+   *
+   * @return A Markdown string
+   */
+  virtual String __repr_markdown__() const;
 
 protected:
 

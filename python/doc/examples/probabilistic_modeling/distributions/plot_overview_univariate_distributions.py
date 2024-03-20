@@ -199,7 +199,8 @@ view = viewer.View(graph)
 #
 # Another possibility is to define our own `distribution`.
 #
-# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_),
+# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel,
+# see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_),
 # which is sometimes used in the context of kernel smoothing.
 # The PDF of the kernel is defined by:
 #
@@ -228,6 +229,7 @@ view = viewer.View(graph)
 # The only required method is `computeCDF`. Since the PDF is easy to define in our example, we implement it as well.
 # Here, the distribution is defined on the interval :math:`[-1,1]`, so that we define the `getRange` method.
 
+
 # %%
 class Quartic(ot.PythonDistribution):
     """
@@ -254,7 +256,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u ** 2) ** 2
+            y = self.c * (1 - u**2) ** 2
         return y
 
     def getRange(self):

@@ -9,6 +9,6 @@
 OTTypedCollectionInterfaceObjectHelper(Process)
 OTDefaultCollectionConvertFunctions(Process)
 
-%include openturns/AggregatedProcess.hxx
+%copyctor OT::AggregatedProcess;
 
-namespace OT { %extend AggregatedProcess { AggregatedProcess(const AggregatedProcess & other) { return new OT::AggregatedProcess(other); } } }
+%include openturns/AggregatedProcess.hxx

@@ -199,7 +199,7 @@ view = otv.View(graph)
 # We compute here the Pearson :math:`\rho` coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
-pearson_correlation = corr_analysis.computePearsonCorrelation()
+pearson_correlation = corr_analysis.computeLinearCorrelation()
 print(pearson_correlation)
 
 # %%
@@ -357,7 +357,9 @@ print(result.getRelativeErrors())
 # The relative errors are low : this indicates that the PCE model has good accuracy.
 # Then, we exploit the surrogate model to compute the Sobol' indices.
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
-print(sensitivityAnalysis)
+sensitivityAnalysis
+
+# %%
 firstOrder = [sensitivityAnalysis.getSobolIndex(i) for i in range(m.dim)]
 totalOrder = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(m.dim)]
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(inputNames, firstOrder, totalOrder)

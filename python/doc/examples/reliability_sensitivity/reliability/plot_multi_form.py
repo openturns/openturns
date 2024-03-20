@@ -27,7 +27,7 @@ graphPDF = dist.drawPDF([-5, -5], [5, 5])
 graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
-graphPDF.setLegendPosition("bottomright")
+graphPDF.setLegendPosition("lower right")
 view = otv.View(graphPDF)
 
 # %%

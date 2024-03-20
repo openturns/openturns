@@ -6,6 +6,7 @@
 
 %include TranslationFunction_doc.i
 
+%copyctor OT::TranslationFunction;
+
 %include openturns/TranslationFunction.hxx
-namespace OT { %extend TranslationFunction { TranslationFunction(const TranslationFunction & other) { return new OT::TranslationFunction(other); } } }
 

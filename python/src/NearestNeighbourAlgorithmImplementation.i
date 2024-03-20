@@ -6,5 +6,6 @@
 
 %include NearestNeighbourAlgorithmImplementation_doc.i
 
+%copyctor OT::NearestNeighbourAlgorithmImplementation;
+
 %include openturns/NearestNeighbourAlgorithmImplementation.hxx
-namespace OT{ %extend NearestNeighbourAlgorithmImplementation { NearestNeighbourAlgorithmImplementation(const NearestNeighbourAlgorithmImplementation & other) { return new OT::NearestNeighbourAlgorithmImplementation(other); } } }

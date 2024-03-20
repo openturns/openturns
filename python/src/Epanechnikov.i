@@ -6,5 +6,6 @@
 
 %include Epanechnikov_doc.i
 
+%copyctor OT::Epanechnikov;
+
 %include openturns/Epanechnikov.hxx
-namespace OT { %extend Epanechnikov { Epanechnikov(const Epanechnikov & other) { return new OT::Epanechnikov(other); } } }

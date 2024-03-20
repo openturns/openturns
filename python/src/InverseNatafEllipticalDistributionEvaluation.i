@@ -6,5 +6,6 @@ OTAutodoc(InverseNatafEllipticalDistributionEvaluation)
 #include "openturns/InverseNatafEllipticalDistributionEvaluation.hxx"
 %}
 
+%copyctor OT::InverseNatafEllipticalDistributionEvaluation;
+
 %include openturns/InverseNatafEllipticalDistributionEvaluation.hxx
-namespace OT { %extend InverseNatafEllipticalDistributionEvaluation { InverseNatafEllipticalDistributionEvaluation(const InverseNatafEllipticalDistributionEvaluation & other) { return new OT::InverseNatafEllipticalDistributionEvaluation(other); } } }

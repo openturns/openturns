@@ -2,7 +2,7 @@
 /**
  *  @brief Least squares estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,12 +55,11 @@ LeastSquaresDistributionFactory::LeastSquaresDistributionFactory(const Distribut
 {
   solver_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
   solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
-  solver_.setVerbose(Log::HasInfo());
 }
 
 /* Virtual constructor */
@@ -179,92 +178,6 @@ private:
   Point effectiveParameter_;
 };
 
-class LeastSquaresFactoryResidualGradient : public GradientImplementation
-{
-public:
-  LeastSquaresFactoryResidualGradient(const Sample & sample,
-                                      const Distribution & distribution,
-                                      const Point & knownParameterValues,
-                                      const Indices & knownParameterIndices)
-    : GradientImplementation()
-    , sample_(sample)
-    , distribution_(distribution)
-  {
-    // build the unknown indices
-    const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
-    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
-    {
-      if (!knownParameterIndices.contains(j))
-        unknownParameterIndices_.add(j);
-    }
-    effectiveParameter_ = Point(effectiveParameterSize);
-    // set known values
-    for (UnsignedInteger j = 0; j < knownParameterIndices.getSize(); ++ j)
-    {
-      effectiveParameter_[knownParameterIndices[j]] = knownParameterValues[j];
-    }
-  }
-
-  LeastSquaresFactoryResidualGradient * clone() const
-  {
-    return new LeastSquaresFactoryResidualGradient(*this);
-  }
-
-  UnsignedInteger getInputDimension() const
-  {
-    return unknownParameterIndices_.getSize();
-  }
-
-  UnsignedInteger getOutputDimension() const
-  {
-    return sample_.getSize();
-  }
-
-  Description getInputDescription() const
-  {
-    return Description::BuildDefault(getInputDimension(), "theta");
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(getOutputDimension(), "r");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  Matrix gradient(const Point & parameter) const
-  {
-    // Define conditinned distribution
-    Distribution distribution(distribution_);
-    Point effectiveParameter(effectiveParameter_);
-    // set unknown values
-    UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
-    for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
-    {
-      effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
-    }
-    distribution.setParameter(effectiveParameter);
-    // Matrix result
-    MatrixImplementation result(parameter.getSize(), getOutputDimension());
-    // Evaluate the gradient
-    const Sample cdfGradientSample(distribution.computeCDFGradient(sample_).getMarginal(unknownParameterIndices_));
-    const Matrix transposedGradient(cdfGradientSample.getDimension(), cdfGradientSample.getSize(), cdfGradientSample.getImplementation()->data_begin(), cdfGradientSample.getImplementation()->data_end());
-
-    return transposedGradient.transpose();
-  }
-
-private:
-  Sample sample_;
-  Distribution distribution_;
-  Indices unknownParameterIndices_;
-  Point effectiveParameter_;
-};
-
 Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
@@ -300,7 +213,6 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   solver.run();
 
   Point effectiveParameter(effectiveParameterSize);
@@ -385,7 +297,7 @@ OptimizationAlgorithm LeastSquaresDistributionFactory::getOptimizationAlgorithm(
 void LeastSquaresDistributionFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+  if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
   if (!indices.check(distribution_.getParameter().getSize()))
     throw InvalidArgumentException(HERE) << "Know parameters indices must be < parameter dimension";

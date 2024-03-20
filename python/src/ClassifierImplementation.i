@@ -6,5 +6,6 @@
 
 %include ClassifierImplementation_doc.i
 
+%copyctor OT::ClassifierImplementation;
+
 %include openturns/ClassifierImplementation.hxx
-namespace OT { %extend ClassifierImplementation { ClassifierImplementation(const ClassifierImplementation & other) { return new OT::ClassifierImplementation(other); } } }

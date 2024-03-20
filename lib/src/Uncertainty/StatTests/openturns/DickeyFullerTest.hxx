@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,8 +43,7 @@ public:
   DickeyFullerTest();
 
   /** Parameters constructor */
-  explicit DickeyFullerTest(const TimeSeries & series,
-                            const Bool verbose = true);
+  explicit DickeyFullerTest(const TimeSeries & series);
 
   /** Virtual constructor */
   DickeyFullerTest * clone() const override;
@@ -72,10 +71,6 @@ public:
 
   /** Test the nullity of drift coefficient with assumption that there is no unit root */
   TestResult testNoUnitRootAndNoDriftInDriftModel(const Scalar level = 0.05);
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -109,64 +104,61 @@ private:
   TimeSeries timeSeries_;
 
   /** Size of underlying part */
-  UnsignedInteger T_;
-
-  /** Boolean verbose */
-  Bool verbose_;
+  UnsignedInteger T_ = 0;
 
   /** Last model evaluated. Values are 1 (AR) to 3 (trend model) */
-  UnsignedInteger lastModel_;
+  UnsignedInteger lastModel_ = 0;
 
   /** rho value and the variance associated to the estimator */
-  Scalar rho_;
-  Scalar sigmaRho_;
+  Scalar rho_ = 0.0;
+  Scalar sigmaRho_ = 1.0;
 
   /** drift value  associated to the estimator */
-  Scalar drift_;
-  Scalar sigmaDrift_;
+  Scalar drift_ = 0.0;
+  Scalar sigmaDrift_ = 1.0;
 
   /** trend value  associated to the estimator */
-  Scalar trend_;
-  Scalar sigmaTrend_;
+  Scalar trend_ = 0.0;
+  Scalar sigmaTrend_ = 1.0;
 
   /** Boolean - Are the characteristic for model without drift computed? */
-  Bool isComputedNoConstantCharacteristics_;
+  Bool isComputedNoConstantCharacteristics_ = false;
 
   /** Sum of 1/T * y_{t}*y_{t-1}, t=1,,,N  */
-  Scalar sum_yt_yt_minus_one_;
+  Scalar sum_yt_yt_minus_one_ = 0.0;
 
   /** Sum of 1/T * y_{t-1}*y_{t-1}, t=1,,,N  */
-  Scalar sum_squared_yt_minus_one_;
+  Scalar sum_squared_yt_minus_one_ = 0.0;
 
   /** Perform the computation of the previous quantities */
   void computeNoConstantCharacteristics();
 
   /** Boolean - Are the characteristic for model with drift computed? */
-  Bool isComputedDriftCharacteristics_;
+  Bool isComputedDriftCharacteristics_ = false;
 
   /** Sum of 1/T * y_{t-1}, t=1,,,N  */
-  Scalar sum_yt_minus_one_;
+  Scalar sum_yt_minus_one_ = 0.0;
 
   /** Sum of 1/T * y_{t}, t=1,,,N  */
-  Scalar sum_yt_;
+  Scalar sum_yt_ = 0.0;
 
   /** Perform the computation of the previous quantities */
   void computeDriftCharacteristics();
 
   /** Boolean - Are the characteristic for model with trend computed? */
-  Bool isComputedTrendCharacteristics_;
+  Bool isComputedTrendCharacteristics_ = false;
 
   /** Sum of 1/T * y_{t-1}* t, t=1,,,N  */
-  Scalar sum_t_yt_minus_one_;
+  Scalar sum_t_yt_minus_one_ = 0.0;
 
   /** Sum of 1/T * y_{t-1}* t, t=1,,,N  */
-  Scalar sum_t_yt_;
+  Scalar sum_t_yt_ = 0.0;
 
   /** Sum of 1/T * t_i, t=1,,,N  */
-  Scalar sum_ti_;
+  Scalar sum_ti_ = 0.0;
 
   /** Sum of 1/T * t_i * t_i, t=1,,,N  */
-  Scalar sum_ti_ti_;
+  Scalar sum_ti_ti_ = 0.0;
 
   /** Perform the computation of the previous quantity */
   void computeTrendCharacteristics() ;

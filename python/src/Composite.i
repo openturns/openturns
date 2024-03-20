@@ -6,5 +6,6 @@
 
 %include Composite_doc.i
 
+%copyctor OT::Composite;
+
 %include openturns/Composite.hxx
-namespace OT { %extend Composite { Composite(const Composite & other) { return new OT::Composite(other); } } }

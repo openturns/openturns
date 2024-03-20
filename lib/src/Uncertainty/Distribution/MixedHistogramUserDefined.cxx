@@ -2,7 +2,7 @@
 /**
  *  @brief The MixedHistogramUserDefined distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include "openturns/MixedHistogramUserDefined.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Histogram.hxx"
 #include "openturns/Uniform.hxx"
@@ -659,7 +659,7 @@ Mixture MixedHistogramUserDefined::asMixture() const
           else
             subAtoms[j] = Uniform(ticks[k], ticks[k + 1]);
         } // j
-        atoms[i] = ComposedDistribution(subAtoms);
+        atoms[i] = JointDistribution(subAtoms);
       } // i
       mixture = Mixture(atoms, probabilityTable_);
     } // At least one continuous

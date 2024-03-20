@@ -6,5 +6,6 @@ OTAutodoc(NatafEllipticalCopulaEvaluation)
 #include "openturns/NatafEllipticalCopulaEvaluation.hxx"
 %}
 
+%copyctor OT::NatafEllipticalCopulaEvaluation;
+
 %include openturns/NatafEllipticalCopulaEvaluation.hxx
-namespace OT { %extend NatafEllipticalCopulaEvaluation { NatafEllipticalCopulaEvaluation(const NatafEllipticalCopulaEvaluation & other) { return new OT::NatafEllipticalCopulaEvaluation(other); } } }

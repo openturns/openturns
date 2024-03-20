@@ -229,6 +229,7 @@ ot_add_python_module(statistics statistics_module.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
+                      LatentVariableModel.i LatentVariableModel_doc.i.in
                    )
 
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
@@ -366,7 +367,7 @@ ot_add_python_module(func func_module.i
                       P1LagrangeInterpolation.i P1LagrangeInterpolation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
-                      BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
+                      BasisSequenceImplementation.i
                       BasisSequence.i BasisSequence_doc.i.in
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
@@ -424,8 +425,6 @@ ot_add_python_module(optim optim_module.i
                       OptimizationAlgorithm.i OptimizationAlgorithm_doc.i.in
                       OptimizationResult.i OptimizationResult_doc.i.in
                       OptimizationAlgorithmImplementation.i OptimizationAlgorithmImplementation_doc.i.in
-                      NearestPointCheckerResult.i
-                      NearestPointChecker.i
                       AbdoRackwitz.i AbdoRackwitz_doc.i.in
                       Bonmin.i Bonmin_doc.i.in
                       Ceres.i Ceres_doc.i.in
@@ -541,8 +540,8 @@ ot_add_python_module(model_copula model_copula_module.i
                       DistributionFactory.i DistributionFactory_doc.i.in
                       DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
                       DistributionParameters.i DistributionParameters_doc.i.in
-                      ContinuousDistribution.i
-                      EllipticalDistribution.i
+                      ContinuousDistribution.i ContinuousDistribution_doc.i.in
+                      EllipticalDistribution.i EllipticalDistribution_doc.i.in
                       DiscreteDistribution.i DiscreteDistribution_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
@@ -564,8 +563,8 @@ ot_add_python_module(model_copula model_copula_module.i
                       GumbelCopula.i GumbelCopula_doc.i.in
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
                       BlockIndependentDistribution.i BlockIndependentDistribution_doc.i.in
-                      ComposedDistribution.i ComposedDistribution_doc.i.in
-                      ComposedCopula.i ComposedCopula_doc.i.in
+                      JointDistribution.i JointDistribution_doc.i.in
+                      BlockIndependentCopula.i BlockIndependentCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
                       PlackettCopula.i PlackettCopula_doc.i.in
                       PlackettCopulaFactory.i PlackettCopulaFactory_doc.i.in
@@ -695,7 +694,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
                       LogUniformFactory.i LogUniformFactory_doc.i.in
-                      MarginalDistribution.i
+                      MarginalDistribution.i MarginalDistribution_doc.i.in
                       MaximumDistribution.i MaximumDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in
@@ -706,7 +705,6 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
                       ConditionalDistribution.i ConditionalDistribution_doc.i.in
-                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
                       NegativeBinomial.i NegativeBinomial_doc.i.in
@@ -746,6 +744,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
+		      UniformOverMesh.i UniformOverMesh_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
@@ -886,6 +885,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
+		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
+                      IntegrationExpansion.i IntegrationExpansion_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
                    )
 
@@ -950,7 +951,6 @@ ot_add_python_module(simulation simulation_module.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i.in
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
                       Wilks.i Wilks_doc.i.in
-                      LHS.i LHS_doc.i.in
                       PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i.in
                       PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i.in
                       RootStrategyImplementation.i RootStrategyImplementation_doc.i.in
@@ -970,15 +970,6 @@ ot_add_python_module(simulation simulation_module.i
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
                       SobolSimulationResult.i SobolSimulationResult_doc.i.in
-                      HSICStatImplementation.i HSICStatImplementation_doc.i.in
-                      HSICStat.i HSICStat_doc.i.in
-                      HSICUStat.i HSICUStat_doc.i.in
-                      HSICVStat.i HSICVStat_doc.i.in
-                      HSICEstimator.i HSICEstimator_doc.i.in
-                      HSICEstimatorImplementation.i HSICEstimatorImplementation_doc.i.in
-                      HSICEstimatorConditionalSensitivity.i HSICEstimatorConditionalSensitivity_doc.i.in
-                      HSICEstimatorGlobalSensitivity.i HSICEstimatorGlobalSensitivity_doc.i.in
-                      HSICEstimatorTargetSensitivity.i HSICEstimatorTargetSensitivity_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                       NAISResult.i NAISResult_doc.i.in
                       NAIS.i NAIS_doc.i.in
@@ -1011,6 +1002,15 @@ ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
+                      HSICStatImplementation.i HSICStatImplementation_doc.i.in
+                      HSICStat.i HSICStat_doc.i.in
+                      HSICUStat.i HSICUStat_doc.i.in
+                      HSICVStat.i HSICVStat_doc.i.in
+                      HSICEstimator.i HSICEstimator_doc.i.in
+                      HSICEstimatorImplementation.i HSICEstimatorImplementation_doc.i.in
+                      HSICEstimatorConditionalSensitivity.i HSICEstimatorConditionalSensitivity_doc.i.in
+                      HSICEstimatorGlobalSensitivity.i HSICEstimatorGlobalSensitivity_doc.i.in
+                      HSICEstimatorTargetSensitivity.i HSICEstimatorTargetSensitivity_doc.i.in
                       UncertaintyTemplateDefs.i
                     )
 
@@ -1023,11 +1023,14 @@ ot_add_python_module(experimental experimental_module.i
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
-                     LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
-                     IntegrationExpansion.i IntegrationExpansion_doc.i.in
-                     UniformOverMesh.i UniformOverMesh_doc.i.in
+		     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
+                     StudentCopula.i StudentCopula_doc.i.in
+                     StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
+                     TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
+                     PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
+                     SimplicialCubature.i SimplicialCubature_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
@@ -1046,6 +1049,7 @@ if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
 elseif (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 endif ()
+set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 

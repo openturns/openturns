@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an monteCarloExperiment plane
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -144,11 +144,7 @@ void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution
   // restart the low-discrepancy sequence if asked for or mandatory (dimension changed)
   if (restart_ || (dimension != getDistribution().getDimension()))
     sequence_.initialize(dimension);
-  // Build the iso-probabilistic transformation
-  // For distributions with non-indepedent copula, it resorts to using the method
-  // described in:
-  // Mathieu Cambou, Marius Hofert, Christiane Lemieux, "Quasi-Random numbers for copula models", Statistics and Computing, September 2017, Volume 27, Issue 5, pp 1307–1329
-  // preprint here: https://arxiv.org/pdf/1508.03483.pdf
+  // Build the iso-probabilistic transformation using [cambou2017]
   transformation_ = DistributionTransformation(IndependentCopula(dimension), distribution);
   WeightedExperimentImplementation::setDistribution(distribution);
 }

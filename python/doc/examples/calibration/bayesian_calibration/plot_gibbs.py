@@ -118,7 +118,7 @@ sampler1 = ot.RandomVectorMetropolisHastings(
     ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior
 )
 
-big_bernoulli = ot.ComposedDistribution([ot.Bernoulli()] * N)
+big_bernoulli = ot.JointDistribution([ot.Bernoulli()] * N)
 
 sampler2 = ot.RandomVectorMetropolisHastings(
     ot.RandomVector(big_bernoulli), initialState, range(2, N + 2), zposterior
@@ -142,7 +142,7 @@ posterior_sample = s[:, 0:2]
 ks = ot.KernelSmoothing().build(posterior_sample)
 graph = ks.drawPDF()
 graph.setTitle("Posterior density")
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setXTitle(r"$\mu_0$")
 graph.setYTitle(r"$\mu_1$")
 _ = View(graph)

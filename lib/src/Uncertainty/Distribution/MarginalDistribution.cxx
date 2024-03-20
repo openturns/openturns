@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements a generic mechanism to extract marginal distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -333,7 +333,7 @@ MarginalDistribution::PointWithDescriptionCollection MarginalDistribution::getPa
   const PointWithDescriptionCollection allParameters(distribution_.getParametersCollection());
   PointWithDescriptionCollection parametersCollection;
   const UnsignedInteger size = indices_.getSize();
-  // marginal parameters, can be omitted (ComposedCopula)
+  // marginal parameters, can be omitted (BlockIndependentCopula)
   if (allParameters.getSize() == distribution_.getDimension() + 1)
     for (UnsignedInteger i = 0; i < size; ++ i)
       parametersCollection.add(allParameters[indices_[i]]);

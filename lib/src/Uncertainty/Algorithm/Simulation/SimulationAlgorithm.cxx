@@ -2,7 +2,7 @@
 /**
  *  @brief SimulationAlgorithm algorithms base class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ SimulationAlgorithm::SimulationAlgorithm()
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling" ))
   , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation" ))
   , maximumStandardDeviation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation" ))
-  , verbose_(false)
+  , maximumTimeDuration_(ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration"))
 {
   // Nothing to do
 }
@@ -108,18 +108,6 @@ UnsignedInteger SimulationAlgorithm::getBlockSize() const
   return blockSize_;
 }
 
-/* Verbosity accessor */
-void SimulationAlgorithm::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-/* Verbosity accessor */
-Bool SimulationAlgorithm::getVerbose() const
-{
-  return verbose_;
-}
-
 /* String converter */
 String SimulationAlgorithm::__repr__() const
 {
@@ -159,8 +147,8 @@ void SimulationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  adv.saveAttribute("maximumTimeDuration_", maximumTimeDuration_);
   adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -171,8 +159,9 @@ void SimulationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  if (adv.hasAttribute("maximumTimeDuration_")) // OT>=1.23
+    adv.loadAttribute("maximumTimeDuration_", maximumTimeDuration_);
   adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
-  adv.loadAttribute("verbose_", verbose_);
 }
 
 
@@ -187,5 +176,15 @@ void SimulationAlgorithm::setStopCallback(StopCallback callBack, void * state)
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
+/* Maximum time accessor */
+void SimulationAlgorithm::setMaximumTimeDuration(const Scalar maximumTimeDuration)
+{
+  maximumTimeDuration_ = maximumTimeDuration;
+}
+
+Scalar SimulationAlgorithm::getMaximumTimeDuration() const
+{
+  return maximumTimeDuration_;
+}
 
 END_NAMESPACE_OPENTURNS

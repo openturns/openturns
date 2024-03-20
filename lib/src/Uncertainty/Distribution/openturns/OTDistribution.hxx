@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,8 +45,8 @@
 #include "openturns/ChiFactory.hxx"
 #include "openturns/ClaytonCopula.hxx"
 #include "openturns/ClaytonCopulaFactory.hxx"
-#include "openturns/ComposedCopula.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/BlockIndependentCopula.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/ConditionalDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
@@ -157,8 +157,11 @@
 #include "openturns/Skellam.hxx"
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniform.hxx"
+#include "openturns/SmoothedUniformFactory.hxx"
 #include "openturns/SquaredNormal.hxx"
 #include "openturns/Student.hxx"
+#include "openturns/StudentCopula.hxx"
+#include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/Trapezoidal.hxx"

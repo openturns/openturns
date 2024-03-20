@@ -2,7 +2,7 @@
 /**
  *  @brief ParametricEvaluation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -188,8 +188,10 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
 void ParametricEvaluation::setParameter(const Point & parameters)
 {
   const UnsignedInteger parametersDimension = parameters.getDimension();
-  if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
-  for (UnsignedInteger i = 0; i < parametersDimension; ++i) parameter_[i] = parameters[i];
+  if (parametersDimension != parametersPositions_.getSize())
+    throw InvalidArgumentException(HERE) << "ParametricEvaluation expected a parameter of dimension " << parametersPositions_.getSize()
+	                                 << ", got dimension " << parametersDimension;
+  parameter_ = parameters;
 }
 
 /* Parameters positions accessor */

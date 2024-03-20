@@ -6,5 +6,6 @@
 
 %include Trapezoidal_doc.i
 
+%copyctor OT::Trapezoidal;
+
 %include openturns/Trapezoidal.hxx
-namespace OT { %extend Trapezoidal { Trapezoidal(const Trapezoidal & other) { return new OT::Trapezoidal(other); } } }

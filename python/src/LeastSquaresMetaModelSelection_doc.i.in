@@ -9,5 +9,4 @@ ApproximationAlgorithm, PenalizedLeastSquaresAlgorithm
 
 Notes
 -----
-The LeastSquaresMetaModelSelection is built from a least squares metamodel
-selection factory."
+The LeastSquaresMetaModelSelection is built from a :class:`~openturns.LeastSquaresMetaModelSelectionFactory`."

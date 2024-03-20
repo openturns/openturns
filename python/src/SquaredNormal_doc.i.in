@@ -1,20 +1,17 @@
 %feature("docstring") OT::SquaredNormal
 "Squared Normal distribution.
 
-Available constructors:
-    SquaredNormal(*mu=0.0, sigma=1.0*)
-
 Parameters
 ----------
 mu : float :math:`\mu`, optional
     Mean.
 
-    Default is :math:`\mu = 0.0`.
+    Default value is 0.0.
 
 sigma : float :math:`\sigma`, optional
     Standard deviation.
 
-    Default is :math:`\sigma = 1.0`.
+    Default value is 1.0.
 
 Notes
 -----

@@ -6,5 +6,6 @@
 
 %include HMatrixFactory_doc.i
 
+%copyctor OT::HMatrixFactory;
+
 %include openturns/HMatrixFactory.hxx
-namespace OT { %extend HMatrixFactory { HMatrixFactory(const HMatrixFactory & other) { return new OT::HMatrixFactory(other); } } }

@@ -6,5 +6,6 @@ OTAutodoc(NatafEllipticalCopulaGradient)
 #include "openturns/NatafEllipticalCopulaGradient.hxx"
 %}
 
+%copyctor OT::NatafEllipticalCopulaGradient;
+
 %include openturns/NatafEllipticalCopulaGradient.hxx
-namespace OT { %extend NatafEllipticalCopulaGradient { NatafEllipticalCopulaGradient(const NatafEllipticalCopulaGradient & other) { return new OT::NatafEllipticalCopulaGradient(other); } } }

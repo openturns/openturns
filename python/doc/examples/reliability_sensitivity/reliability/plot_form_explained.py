@@ -30,7 +30,7 @@ import numpy as np
 # %%
 distX1 = ot.Exponential(1.0)
 distX2 = ot.Normal()
-distX = ot.ComposedDistribution([distX1, distX2])
+distX = ot.JointDistribution([distX1, distX2])
 
 
 # %%
@@ -40,7 +40,7 @@ graphPDF = distX.drawPDF([0, -10], [10, 10])
 graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
-graphPDF.setLegendPosition("bottomright")
+graphPDF.setLegendPosition("lower right")
 view = otv.View(graphPDF)
 
 
@@ -108,7 +108,7 @@ view = otv.View(myGraph)
 mycontour.setColor("black")
 mycontour.setLabels(["event"])
 graphPDF.add(mycontour)
-graphPDF.setLegendPosition("bottomright")
+graphPDF.setLegendPosition("lower right")
 view = otv.View(graphPDF)
 
 # %%
@@ -236,7 +236,7 @@ cloud.setPointStyle("fcircle")
 cloud.setLegend("origin")
 graphStandardSpace.add(cloud)
 graphStandardSpace.setGrid(True)
-graphStandardSpace.setLegendPosition("bottomright")
+graphStandardSpace.setLegendPosition("lower right")
 
 # Some annotation
 texts = [r"Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
@@ -297,7 +297,7 @@ cloud.setPointStyle("fcircle")
 cloud.setLegend("design point")
 graphStandardSpace.add(cloud)
 graphStandardSpace.setGrid(True)
-graphStandardSpace.setLegendPosition("bottomright")
+graphStandardSpace.setLegendPosition("lower right")
 cc = ot.Curve(
     [0.0, designPointStandardSpace[0]],
     [0.0, designPointStandardSpace[1]],
@@ -446,7 +446,7 @@ pf = (1.0 - ot.Normal().computeCDF(betaHL)) * coeff
 print("SORM : Pf = ", pf)
 
 # %%
-# We can compare with the different estimators implemented in OpenTURNS :
+# We can compare with the different estimators:
 pfBreitung = resultSORM.getEventProbabilityBreitung()
 pfHohenbichler = resultSORM.getEventProbabilityHohenbichler()
 pfTvedt = resultSORM.getEventProbabilityTvedt()

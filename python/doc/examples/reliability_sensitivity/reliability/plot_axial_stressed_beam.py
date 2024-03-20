@@ -100,6 +100,43 @@ graph.setLogScale(ot.GraphImplementation.LOGX)
 view = viewer.View(graph)
 
 # %%
+# Using LHS simulation
+# --------------------
+experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
+algo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
+algo.setMaximumOuterSampling(NbSim)
+algo.setBlockSize(1)
+algo.setMaximumCoefficientOfVariation(cv)
+
+# %%
+# For statistics about the algorithm
+initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
+
+# %%
+# Perform the analysis.
+
+# %%
+algo.run()
+
+# %%
+resultLHS = algo.getResult()
+
+numberOfFunctionEvaluationsLHS = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+probabilityLHS = result.getProbabilityEstimate()
+print("Number of calls to the limit state =", numberOfFunctionEvaluationsLHS)
+print("Pf = ", probabilityLHS)
+print("CV =", result.getCoefficientOfVariation())
+
+# %%
+graph = algo.drawProbabilityConvergence()
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = viewer.View(graph)
+
+
+# %%
 # Using FORM analysis
 # -------------------
 
@@ -108,7 +145,7 @@ view = viewer.View(graph)
 myCobyla = ot.Cobyla()
 # Resolution options:
 eps = 1e-3
-myCobyla.setMaximumEvaluationNumber(100)
+myCobyla.setMaximumCallsNumber(100)
 myCobyla.setMaximumAbsoluteError(eps)
 myCobyla.setMaximumRelativeError(eps)
 myCobyla.setMaximumResidualError(eps)
@@ -206,7 +243,7 @@ dimension
 
 # %%
 myImportance = ot.Normal(dimension)
-myImportance.setMean(standardSpaceDesignPoint)
+myImportance.setMu(standardSpaceDesignPoint)
 myImportance
 
 # %%
@@ -260,6 +297,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 # The following function computes the number of correct base-10 digits in the computed result compared to the exact result.
 
+
 # %%
 def computeLogRelativeError(exact, computed):
     logRelativeError = -np.log10(abs(exact - computed) / abs(exact))
@@ -268,6 +306,7 @@ def computeLogRelativeError(exact, computed):
 
 # %%
 # The following function prints the results.
+
 
 # %%
 def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
@@ -287,6 +326,7 @@ def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
 printMethodSummary(
     "Monte-Carlo", probabilityMonteCarlo, numberOfFunctionEvaluationsMonteCarlo
 )
+printMethodSummary("LHS", probabilityLHS, numberOfFunctionEvaluationsLHS)
 printMethodSummary("FORM", probabilityFORM, numberOfFunctionEvaluationsFORM)
 printMethodSummary(
     "DirectionalSampling",

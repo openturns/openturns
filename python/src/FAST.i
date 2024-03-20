@@ -6,5 +6,6 @@
 
 %include FAST_doc.i
 
+%copyctor OT::FAST;
+
 %include openturns/FAST.hxx
-namespace OT{ %extend FAST { FAST(const FAST & other) { return new OT::FAST(other); } } }

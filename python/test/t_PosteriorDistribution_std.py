@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 
 observationsSize = 5
 # Create a collection of distribution
@@ -8,13 +9,13 @@ conditionedDistribution = ot.Normal()
 conditioningDistributionCollection = []
 # First conditioning distribution: continuous/continuous
 atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
-conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 # Second conditioning distribution: discrete/continuous
 atoms = [ot.Binomial(3, 0.5), ot.Uniform(1.0, 2.0)]
-# conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+# conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 # Third conditioning distribution: dirac/continuous
 atoms = [ot.Dirac(0.0), ot.Uniform(1.0, 2.0)]
-conditioningDistributionCollection.append(ot.ComposedDistribution(atoms))
+conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 
 
 for conditioning in conditioningDistributionCollection:
@@ -22,7 +23,7 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution = ot.Distribution(conditionedDistribution)
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
-    distribution = ot.PosteriorDistribution(
+    distribution = otexp.PosteriorDistribution(
         ot.ConditionalDistribution(conditionedDistribution, conditioning), observations
     )
     dim = distribution.getDimension()
@@ -57,7 +58,7 @@ for conditioning in conditioningDistributionCollection:
     #       print("anotherSample covariance=", anotherSample.computeCovariance())
 
     # Define a point
-    zero = [0.0] * dim
+    zero = [1e-3] * dim
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)

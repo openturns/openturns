@@ -2,7 +2,7 @@
 /**
  *  @brief A file that contains the configure command line arguments
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,5 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 static const char ConfigureDate[]         = "@ot_configure_date@";
 static const char Revision[]              = "@ot_revision@";
 static const char InstallationDirectory[] = "@prefix@";
+static const char CompilerId[]            = "@CMAKE_CXX_COMPILER_ID@";
+static const char CompilerVersion[]       = "@CMAKE_CXX_COMPILER_VERSION@";
 
 END_NAMESPACE_OPENTURNS

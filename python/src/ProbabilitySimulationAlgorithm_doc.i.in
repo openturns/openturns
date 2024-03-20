@@ -4,9 +4,9 @@
 Refer to :ref:`monte_carlo_simulation`, :ref:`importance_simulation`, :ref:`lhs_simulation`, :ref:`qmc_simulation`.
 
 Available constructor:
-    ProbabilitySimulationAlgorithm(*event, experiment, verbose=True, convergenceStrategy=ot.Compact()*)
+    ProbabilitySimulationAlgorithm(*event, experiment, convergenceStrategy=ot.Compact()*)
 
-    ProbabilitySimulationAlgorithm(*event, verbose=True, convergenceStrategy=ot.Compact()*)
+    ProbabilitySimulationAlgorithm(*event, convergenceStrategy=ot.Compact()*)
 
 Parameters
 ----------
@@ -14,8 +14,6 @@ event : :class:`~openturns.RandomVector`
     The event we are computing the probability of, must be composite.
 experiment : :class:`~openturns.WeightedExperiment`
     Sequential experiment
-verbose : bool, optional
-    If *True*, make the computation verbose.
 convergenceStrategy : :class:`~openturns.HistoryStrategy`, optional
     Storage strategy used to store the values of the probability estimator and
     its variance during the simulation algorithm.

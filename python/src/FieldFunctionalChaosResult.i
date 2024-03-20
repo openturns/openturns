@@ -6,10 +6,11 @@
 
 %include FieldFunctionalChaosResult_doc.i
 
-%template(IndicesCollection2) OT::Collection<OT::Indices>;
+%template(_IndicesCollection2) OT::Collection<OT::Indices>;
+
+%copyctor OT::FieldFunctionalChaosResult;
 
 %include openturns/FieldFunctionalChaosResult.hxx
-namespace OT{ %extend FieldFunctionalChaosResult { FieldFunctionalChaosResult(const FieldFunctionalChaosResult & other) { return new OT::FieldFunctionalChaosResult(other); } } }
 
 OTTypedCollectionInterfaceObjectHelper(KarhunenLoeveResult)
 OTDefaultCollectionConvertFunctions(KarhunenLoeveResult)

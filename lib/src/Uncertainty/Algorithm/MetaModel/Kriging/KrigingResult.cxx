@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a kriging estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -493,9 +493,8 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     LOGINFO("Compute interactions Sigma_xx");
     // Only diagonal of the discretization Matrix
     // First set sigmaXX
-    const Point tau(inputDimension);
-    // There is no computeAsScalar(tau) method
-    const Point sigma2(1, covarianceModel_.computeAsScalar(tau));
+    const Point defaultPoint(inputDimension);
+    const Point sigma2(1, covarianceModel_.computeAsScalar(defaultPoint, defaultPoint));
     Sample result(sampleSize, sigma2);
 
 

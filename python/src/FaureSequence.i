@@ -6,5 +6,6 @@
 
 %include FaureSequence_doc.i
 
+%copyctor OT::FaureSequence;
+
 %include openturns/FaureSequence.hxx
-namespace OT{ %extend FaureSequence { FaureSequence(const FaureSequence & other) { return new OT::FaureSequence(other); } } }

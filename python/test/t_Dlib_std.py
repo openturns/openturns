@@ -25,7 +25,7 @@ for bound in [False, True]:
             algo = ot.Dlib(problem, algoName)
             algo.setStartingPoint(start)
             algo.setMaximumIterationNumber(10000)
-            algo.setMaximumEvaluationNumber(100000)
+            algo.setMaximumCallsNumber(100000)
             algo.run()
             result = algo.getResult()
             x = result.getOptimalPoint()

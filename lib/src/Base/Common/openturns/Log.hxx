@@ -2,7 +2,7 @@
 /**
  *  @brief Log records all user information to a file or tty
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -229,14 +229,14 @@ private:
 }; /* end class Log */
 
 
-
+#ifndef SWIG
 /** This struct initializes all static members of Log */
 struct OT_API Log_init
 {
   Log_init();
   ~Log_init();
 }; /* end struct Log_init */
-
+#endif
 
 END_NAMESPACE_OPENTURNS
 

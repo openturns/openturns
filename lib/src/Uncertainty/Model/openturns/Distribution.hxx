@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -121,6 +121,8 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String _repr_html_() const override;
+  String __repr_markdown__() const override;
 
   /** Weight accessor */
   void setWeight(const Scalar w);
@@ -339,17 +341,6 @@ public:
 
   /** Get the PDF singularities inside of the range - 1D only */
   Point getSingularities() const;
-
-  /** Compute the density generator of the elliptical generator, i.e.
-   *  the function phi such that the density of the distribution can
-   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
-
-  /** Compute the derivative of the density generator */
-  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
-
-  /** Compute the seconde derivative of the density generator */
-  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the radial distribution CDF */
   virtual Scalar computeRadialDistributionCDF (const Scalar radius,

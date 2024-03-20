@@ -9,5 +9,6 @@
 %ignore OT::QuantileMatchingFactory::setParallel;
 %ignore OT::QuantileMatchingFactory::buildParameter;
 
+%copyctor OT::QuantileMatchingFactory;
+
 %include openturns/QuantileMatchingFactory.hxx
-namespace OT { %extend QuantileMatchingFactory { QuantileMatchingFactory(const QuantileMatchingFactory & other) { return new OT::QuantileMatchingFactory(other); } } }

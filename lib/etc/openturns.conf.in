@@ -83,7 +83,6 @@
   <!-- OT::DrawableImplementation parameters -->
   <Drawable-DefaultLineWidth    value_float="1.0"          />
   <Drawable-AlternativePattern  value_str="S"              />
-  <Drawable-DefaultColor        value_str="blue"           />
   <Drawable-DefaultFillStyle    value_str="solid"          />
   <Drawable-DefaultLineStyle    value_str="solid"          />
   <Drawable-DefaultPaletteName  value_str="Tableau"        />
@@ -152,8 +151,10 @@
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="1000" />
+  <OptimizationAlgorithm-DefaultMaximumTimeDuration     value_float="-1.0" />
+  <OptimizationAlgorithm-DefaultMaximumCallsNumber      value_int="1000" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
+  <OptimizationAlgorithm-DefaultCheckStatus             value_bool="true" />
 
   <!-- OT::Pagmo parameters -->
   <Pagmo-InitialSeed value_int="0" />
@@ -255,6 +256,7 @@
   <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_int="100" />
   <EfficientGlobalOptimization-DefaultMultiStartNumber          value_int="20"  />
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
+  <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
@@ -412,6 +414,7 @@
   <BoundingVolumeHierarchy-BinNumber value_int="50" />
 
   <!-- OT::EnclosingSimplexAlgorithm parameters -->
+  <EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon value_float="1.0e-12" />
   <EnclosingSimplexAlgorithm-LargeDimension value_int="5" />
 
   <!-- OT::Matrix parameters -->
@@ -448,8 +451,8 @@
   <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
   <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
-  <!-- OT::ComposedDistribution parameters -->
-  <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
+  <!-- OT::JointDistribution parameters -->
+  <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
@@ -505,6 +508,7 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+  <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="TNC" />
 
   <!-- OT::Gibbs parameters -->
   <Gibbs-DefaultUpdatingMethod       value_int="0"     />
@@ -592,6 +596,11 @@
   <!-- OT::TruncatedNormalFactory parameters -->
   <TruncatedNormalFactory-SigmaLowerBound value_float="1.0e-4" />
 
+  <!-- OT::TruncatedOverMesh parameters -->
+  <TruncatedOverMesh-OptimizationAlgorithm value_str="TNC" />
+  <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
+  <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
@@ -612,7 +621,6 @@
   <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <QuantileMatchingFactory-QuantileEpsilon         value_float="1.0e-2"        />
   <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
 
   <!-- OT::Student parameters -->
@@ -626,6 +634,17 @@
   <!-- OT::StudentFactory parameters -->
   <StudentFactory-NuMax value_scalar="1.0e3" />
 
+  <!-- OT::MaximumLikelihoodFactory parameters -->
+  <StudentCopulaFactory-MaximumAbsoluteError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumConstraintError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumObjectiveError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-MaximumRelativeError value_scalar="1.0e-10" />
+  <StudentCopulaFactory-NuMin value_scalar="2.0" />
+  <StudentCopulaFactory-NuMax value_scalar="1e2" />
+  <StudentCopulaFactory-NuStart value_scalar="5.0" />
+  <StudentCopulaFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
+  <StudentCopulaFactory-MaximumEvaluationNumber value_int="1000" />
+  
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value_int="0" />
   
@@ -694,6 +713,7 @@
   <!-- OT::SimulationAlgorithm parameters -->
   <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value_float="1.0e-1"         />
   <SimulationAlgorithm-DefaultMaximumStandardDeviation      value_float="0.0"            />
+  <SimulationAlgorithm-DefaultMaximumTimeDuration           value_float="-1.0" />
   <SimulationAlgorithm-DefaultBlockSize                     value_int="1"    />
   <SimulationAlgorithm-DefaultMaximumOuterSampling          value_int="1000" />
 
@@ -715,7 +735,6 @@
   <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
 
   <!-- OT::SubsetSampling parameters -->
-  <SubsetSampling-DefaultBetaMin                value_float="2.0"             />
   <SubsetSampling-DefaultConditionalProbability value_float="0.1"             />
   <SubsetSampling-DefaultProposalRange          value_float="2.0"             />
   <SubsetSampling-DefaultMaximumOuterSampling   value_int="10000" />
@@ -994,6 +1013,12 @@
   <LeastSquaresMetaModelSelection-MaximumError        value_float="0.5" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
   <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
+
+  <!-- SimplicialCubature parameters -->
+  <SimplicialCubature-DefaultMaximumAbsoluteError value_float="0.0" />
+  <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
+  <SimplicialCubature-DefaultMaximumCallsNumber   value_int="10000" />
+  <SimplicialCubature-DefaultRule value_int="3" />
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />

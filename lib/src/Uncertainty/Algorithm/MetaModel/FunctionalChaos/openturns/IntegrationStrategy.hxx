@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation of projection strategy as a leastSquares
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,6 +75,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection/error history accessor */
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+  Point getErrorHistory() const override;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
@@ -86,7 +89,8 @@ protected:
                            const Indices & removedRanks,
                            const UnsignedInteger marginalIndex = 0) override;
 private:
-
+  Collection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
 } ; /* class IntegrationStrategy */
 
 

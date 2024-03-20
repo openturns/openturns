@@ -6,7 +6,7 @@
 
 %include NLopt_doc.i
 
-%include openturns/NLopt.hxx
+%copyctor OT::NLopt;
 
-namespace OT { %extend NLopt { NLopt(const NLopt & other) { return new OT::NLopt(other); } } }
+%include openturns/NLopt.hxx
 

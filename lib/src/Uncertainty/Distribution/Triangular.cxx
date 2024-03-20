@@ -2,7 +2,7 @@
 /**
  *  @brief The Triangular distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -162,18 +162,41 @@ Scalar Triangular::computeCDF(const Point & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Triangular::computeCharacteristicFunction(const Scalar x) const
 {
-  if (std::abs(x) < pdfEpsilon_) return 1.0;
-  if (std::abs(x) < 1.0e-8) return Complex(1.0, (a_ + b_ + m_) * x / 3.0);
-  const Scalar ba = b_ - a_;
-  const Scalar bm = b_ - m_;
-  const Scalar ma = m_ - a_;
-  const Scalar epsilon = SpecFunc::Precision * ba;
-  const Scalar twoOverX2 = 2.0 / (x * x);
-  const Complex expIAX = std::exp(Complex(0.0, a_ * x));
-  const Complex expIBX = std::exp(Complex(0.0, b_ * x));
-  if (ma < epsilon) return twoOverX2 * (expIAX * Complex(1.0 / ba,  x) - expIBX / ba) / ba;
-  if (bm < epsilon) return twoOverX2 * (expIBX * Complex(1.0 / ba, -x) - expIAX / ba) / ba;
-  return twoOverX2 * (-expIAX / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - expIBX / (ba * bm));
+  // Here we need a high order approximation as the exact formula is ill conditioned for small values of x
+  const Scalar x2 = x * x;
+  const Scalar x3 = x2 * x;
+  const Scalar x4 = x2 * x2;
+  const Scalar a2 = a_ * a_;
+  const Scalar a3 = a2 * a_;
+  const Scalar a4 = a2 * a2;
+  const Scalar b2 = b_ * b_;
+  const Scalar b3 = b2 * b_;
+  const Scalar b4 = b2 * b2;
+  const Scalar m2 = m_ * m_;
+  const Scalar m3 = m2 * m_;
+  const Scalar m4 = m2 * m2;
+  // Here we have to take an even power for the test, as the odd powers
+  // can cancel out due to symmetry
+  const Scalar factor = (a4 + a3 * b_ + a3 * m_ + a2 * b2 + a2 * b_ * m_ + a2 * m2 + a_ * b3 + a_ * b2 * m_ + a_ * b_ * m2 + a_ * m3 + b4 + b3 * m_ + b2 * m2 + b_ * m3 + m4) * x4 / 360.0;
+  Complex value;
+  if (std::abs(factor) < SpecFunc::ScalarEpsilon)
+  {
+    value = Complex(1.0 - x2 * (a2 + a_ * m_ + m2 + b_ * m_ + b2 + a_ * b_) / 12.0 + factor, (a_ + b_ + m_) * x / 3.0 + ((a_ + m_ + b_) * (a2 + m2 + b2) + a_ * m_ * b_) * x3 / 60.0);
+  }
+  else
+  {
+    const Scalar ba = b_ - a_;
+    const Scalar bm = b_ - m_;
+    const Scalar ma = m_ - a_;
+    const Scalar epsilon = SpecFunc::Precision * ba;
+    const Scalar twoOverX2 = 2.0 / x2;
+    const Complex expIAX = std::exp(Complex(0.0, a_ * x));
+    const Complex expIBX = std::exp(Complex(0.0, b_ * x));
+    if (ma < epsilon) value = twoOverX2 * (expIAX * Complex(1.0 / ba,  x) - expIBX / ba) / ba;
+    else if (bm < epsilon) value = twoOverX2 * (expIBX * Complex(1.0 / ba, -x) - expIAX / ba) / ba;
+    else value = twoOverX2 * (-expIAX / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - expIBX / (ba * bm));
+  }
+  return value;
 }
 
 /* Get the PDFGradient of the distribution */
@@ -248,6 +271,13 @@ Scalar Triangular::computeScalarQuantile(const Scalar prob,
   }
   if (ba * prob < ma) return a_ + std::sqrt(prob * ba * ma);
   return b_ - std::sqrt((1.0 - prob) * ba * bm);
+}
+
+Scalar Triangular::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the entropy of the distribution */

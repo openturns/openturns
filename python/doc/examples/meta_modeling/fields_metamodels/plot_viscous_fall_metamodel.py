@@ -43,7 +43,7 @@ distZ0 = ot.Uniform(100.0, 150.0)
 distV0 = ot.Normal(55.0, 10.0)
 distM = ot.Normal(80.0, 8.0)
 distC = ot.Uniform(0.0, 30.0)
-distribution = ot.ComposedDistribution([distZ0, distV0, distM, distC])
+distribution = ot.JointDistribution([distZ0, distV0, distM, distC])
 
 # %%
 dimension = distribution.getDimension()
@@ -55,6 +55,7 @@ dimension
 # In order to compute all altitudes with a vectorized evaluation, we first convert
 # the vertices into a Numpy `array` and use the Numpy functions`exp` and `maximum`:
 # this increases the evaluation performance of the script.
+
 
 # %%
 def AltiFunc(X):

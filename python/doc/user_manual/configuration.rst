@@ -13,10 +13,13 @@ OPENTURNS_CONFIG_PATH
     Path to the `openturns.conf` XML file used by the :class:`~openturns.ResourceMap`.
 
 OPENTURNS_HOME
-    Path to the OpenTURNS installation directory.
+    Path to the library installation directory.
 
 OPENTURNS_LOG_SEVERITY
     The default severity of logs, see the :class:`~openturns.Log` class.
+
+OPENTURNS_NUM_THREADS
+    Number of threads to use for parallel regions, see the :class:`~openturns.TBB` class.
 
 Environment checking and filesystem manipulation
 ================================================

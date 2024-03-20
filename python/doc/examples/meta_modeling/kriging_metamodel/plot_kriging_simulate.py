@@ -80,6 +80,7 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following functions which plots the data.
 
+
 # %%
 def plot_data_train(x_train, y_train):
     """Plot the data (x_train,y_train) as a Cloud, in red"""
@@ -106,11 +107,12 @@ graph.add(plot_data_train(x_train, y_train))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model. This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
+# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model.
+# This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
 dimension = 1
@@ -133,6 +135,7 @@ y_test_MM = krigeageMM(x_test)
 # %%
 # The following function plots the kriging data.
 
+
 # %%
 def plot_data_kriging(x_test, y_test_MM):
     """Plots (x_test,y_test_MM) from the metamodel as a Curve, in blue"""
@@ -150,7 +153,7 @@ graph.add(plot_data_kriging(x_test, y_test_MM))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -183,7 +186,7 @@ graph.add(plot_data_train(x_train, y_train))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setTitle("10 simulated trajectories")
 view = viewer.View(graph)
 plt.show()

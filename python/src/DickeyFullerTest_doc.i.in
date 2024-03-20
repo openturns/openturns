@@ -3,10 +3,12 @@
 
 Refer to :ref:`dickey_fuller`.
 
-Notes
------
 The Dickey-Fuller test checks the stationarity of a scalar time series using one time series.
 
+Parameters
+----------
+series : `~openturns.TimeSeries`
+    Time series to consider
 
 Examples
 --------
@@ -22,7 +24,7 @@ Create an ARMA process and generate a time series:
 >>> realization = ot.TimeSeries(myARMA.getRealization())
 >>> test = ot.DickeyFullerTest(realization)
 
-Test the stationarity of the data without any asumption on the model:
+Test the stationarity of the data without any assumption on the model:
 
 >>> globalRes = test.runStrategy()
 

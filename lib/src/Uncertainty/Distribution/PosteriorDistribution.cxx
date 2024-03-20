@@ -2,7 +2,7 @@
 /**
  *  @brief The PosteriorDistribution distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/GaussLegendre.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,7 +89,7 @@ String PosteriorDistribution::__repr__() const
 String PosteriorDistribution::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(conditional distribution = " << conditionalDistribution_.__str__() << ", observations = " << Os::GetEndOfLine() << offset << observations_.__str__(offset) << ")";
+  oss << getClassName() << "(conditional distribution = " << conditionalDistribution_.__str__() << ", observations =\n" << offset << observations_.__str__(offset) << ")";
   return oss;
 }
 
@@ -102,11 +102,11 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 /* Compute the likelihood of the observations */
 Point PosteriorDistribution::computeLikelihood(const Point & theta) const
 {
-  return Point(1, std::exp(computeLogLikelihood(theta)[0]));
+  return Point(1, std::exp(computeLogLikelihood(theta)));
 }
 
 /* Compute the log-likelihood of the observations */
-Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
+Scalar PosteriorDistribution::computeLogLikelihood(const Point & theta) const
 {
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
   conditionedDistribution.setParameter(theta);
@@ -117,7 +117,7 @@ Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
     const Scalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
     logLikelihood += atomicValue;
   }
-  return Point(1, logLikelihood);
+  return logLikelihood;
 }
 
 /* Get the PDF of the distribution */
@@ -125,7 +125,7 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
+  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
   return std::exp(value);
 }
 
@@ -133,6 +133,10 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 /* Get the CDF of the distribution */
 Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
+  // FIXME: computeExpectation seems to incorrectly compute the CDF of the prior
+  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+    return ContinuousDistribution::computeCDF(point);
+
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   Description inputDescription(getDimension());
@@ -167,6 +171,14 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+
+  // FIXME: tweak normalization factor
+  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+  {
+    GaussLegendre integrationAlgorithm(getDimension());
+    const Scalar iPDF = integrationAlgorithm.integrate(PDFWrapper(this), getRange())[0];
+    logNormalizationFactor_ += std::log(iPDF);
+  }
 }
 
 ConditionalDistribution PosteriorDistribution::getConditionalDistribution() const
@@ -181,8 +193,7 @@ void PosteriorDistribution::setObservations(const Sample & observations)
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
   if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
   observations_ = observations;
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
+  setConditionalDistribution(conditionalDistribution_);
 }
 
 Sample PosteriorDistribution::getObservations() const

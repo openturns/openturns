@@ -2,7 +2,7 @@
 /**
  *  @brief CrossEntropyImportanceSampling implement parent class for Cross Entropy Importance Sampling algorithms
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,8 +42,8 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
     const Scalar quantileLevel)
-  : EventSimulation(event)
-  , initialDistribution_(event.getAntecedent().getDistribution())
+  : EventSimulation(event.getImplementation()->asComposedEvent())
+  , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
   if (quantileLevel > 1.)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
@@ -52,7 +52,7 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVecto
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
 
 
-  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
 /* Virtual constructor */
@@ -93,7 +93,7 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 
 
 // Reset auxiliary distribution parameters
-void CrossEntropyImportanceSampling::resetAuxiliaryDistribution() 
+void CrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::resetAuxiliaryDistribution()";
 }
@@ -104,7 +104,7 @@ void CrossEntropyImportanceSampling::run()
 
   // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
   resetAuxiliaryDistribution();
-  
+
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
@@ -117,7 +117,7 @@ void CrossEntropyImportanceSampling::run()
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
   Point auxiliaryDistributionParameters;
-  
+
   const ComparisonOperator comparator(getEvent().getOperator());
   const Scalar threshold = getEvent().getThreshold();
 

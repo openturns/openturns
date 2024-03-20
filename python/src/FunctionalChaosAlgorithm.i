@@ -6,6 +6,6 @@
 
 %include FunctionalChaosAlgorithm_doc.i
 
-%include openturns/FunctionalChaosAlgorithm.hxx
+%copyctor OT::FunctionalChaosAlgorithm;
 
-namespace OT{ %extend FunctionalChaosAlgorithm { FunctionalChaosAlgorithm(const FunctionalChaosAlgorithm & other) { return new OT::FunctionalChaosAlgorithm(other); } } }
+%include openturns/FunctionalChaosAlgorithm.hxx

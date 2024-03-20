@@ -6,5 +6,6 @@
 
 %include CorrelationAnalysis_doc.i
 
+%copyctor OT::CorrelationAnalysis;
+
 %include openturns/CorrelationAnalysis.hxx
-namespace OT{ %extend CorrelationAnalysis { CorrelationAnalysis(const CorrelationAnalysis & other) { return new OT::CorrelationAnalysis(other); } } }

@@ -34,7 +34,7 @@ Examples
 >>> import openturns as ot
 >>> marginals = [ot.Uniform(-1.0, 1.0), ot.Normal(0.0, 1.0)]
 >>> copula = ot.ClaytonCopula(1.0)
->>> distribution = ot.ComposedDistribution(marginals, copula)
+>>> distribution = ot.JointDistribution(marginals, copula)
 >>> factory = ot.SoizeGhanemFactory(distribution)
 >>> point = [0.5]*2
 >>> for i in range(3):

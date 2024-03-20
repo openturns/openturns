@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -985,17 +985,17 @@ String SampleImplementation::__str__(const String & offset) const
       }
       oss << sep << (*p_description_)[j] << String( twidth - (*p_description_)[j].size(), ' ' );
     }
-    oss << " ]" << Os::GetEndOfLine() << offset;
+    oss << " ]" << "\n" << offset;
   }
 
   const char * newline = "";
-  for( UnsignedInteger i = 0; i < size_; ++i, newline = Os::GetEndOfLine() )
+  for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
   {
     if (ellipsis && (size_ > 2 * printEllipsisSize))
     {
       if (i == printEllipsisSize)
       {
-        oss << Os::GetEndOfLine() << offset <<  "...";
+        oss << "\n" << offset <<  "...";
       }
       if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
       {
@@ -1247,6 +1247,7 @@ Point SampleImplementation::computeVariance() const
  */
 CorrelationMatrix SampleImplementation::computePearsonCorrelation() const
 {
+  LOGWARN("Sample.computePearsonCorrelation is deprecated, use computeLinearCorrelation");
   return computeLinearCorrelation();
 }
 
@@ -1291,19 +1292,17 @@ struct Comparison
   const SampleImplementation & nsi_;
   // Sorting permutation
   Indices permutation_;
-  // True if sample has ties
-  mutable Bool hasTies_;
 
   Comparison(UnsignedInteger first,
              const SampleImplementation & nsi)
-    : first_(first), second_(first), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
+    : first_(first), second_(first), nsi_(nsi), permutation_(nsi_.getSize())
   {
     permutation_.fill();
   }
 
   Comparison(UnsignedInteger first, UnsignedInteger second,
              const SampleImplementation & nsi)
-    : first_(first), second_(second), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
+    : first_(first), second_(second), nsi_(nsi), permutation_(nsi_.getSize())
   {
     permutation_.fill();
   }
@@ -1314,7 +1313,6 @@ struct Comparison
     const Scalar xJ = nsi_( permutation_[j], first_  );
     const Scalar yI = nsi_( permutation_[i], second_ );
     const Scalar yJ = nsi_( permutation_[j], second_ );
-    hasTies_ |= (xI == xJ);
     return ( (xI < xJ) || ((xI == xJ) && (yI < yJ)) );
   }
 }; // struct Comparison
@@ -2384,7 +2382,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
       // manually replace decimal separator
       ss.str("");
       ss << data_[index];
-      std::string str(ss.str());
+      str = ss.str();
       if (numSeparator == ",")
         str = regex_replace(str, std::regex("\\."), ",");
       csvFile << csvSeparator << str;

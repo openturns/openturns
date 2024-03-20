@@ -18,7 +18,7 @@ print("Distribution ", repr(distribution))
 # distribution
 try:
     newR = ot.CorrelationMatrix(2)
-    distribution.setCorrelation(newR)
+    distribution.setR(newR)
     raise
 except Exception:
     pass

@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,8 +39,9 @@ public:
   MethodOfMomentsFactory();
 
   /** Parameters constructor */
-  explicit MethodOfMomentsFactory(const Distribution & distribution,
-                                  const Interval & optimizationBounds = Interval());
+  MethodOfMomentsFactory(const Distribution & distribution,
+                         const Indices & momentOrders,
+                         const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
   MethodOfMomentsFactory * clone() const override;
@@ -80,6 +81,10 @@ public:
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
+  /** Moments orders accessor */
+  void setMomentOrders(const Indices & momentsOrders);
+  Indices getMomentOrders() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -89,6 +94,9 @@ public:
 protected:
   /* The underlying distribution */
   Distribution distribution_;
+
+  /* Moments orders */
+  Indices momentOrders_;
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;

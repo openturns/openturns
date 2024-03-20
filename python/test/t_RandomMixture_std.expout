@@ -77,7 +77,7 @@ kurtosis      = [3]
 kurtosis (ref)= [3]
 covariance      = [[ 9 ]]
 covariance (ref)= [[ 9 ]]
-parameters= [[Normal_mean_0 : 0, Normal_standard_deviation_0 : 1, Normal_mean_0 : 1, Normal_standard_deviation_0 : 2, Normal_mean_0 : -2, Normal_standard_deviation_0 : 2]]
+parameters= [[Normal_mu_0 : 0, Normal_sigma_0 : 1, Normal_mu_0 : 1, Normal_sigma_0 : 2, Normal_mu_0 : -2, Normal_sigma_0 : 2]]
 Standard representative= RandomMixture(Normal(mu = 0, sigma = 1) + Normal(mu = 1, sigma = 2) + Normal(mu = -2, sigma = 2))
 blockMin= 5
 blockMax= 20
@@ -102,7 +102,7 @@ cdf      =0.014388
 cdf (ref)=0.014388
 characteristic function=0.128000 + 0.704000i
 log characteristic function=-0.334715 + 1.390943i
-quantile      = [6.2957]
+quantile      = [6.29579]
 quantile (ref)= [6.29579]
 cdf(quantile)=0.950000
 quantile comp.= [0.817691]

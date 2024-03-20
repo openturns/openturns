@@ -97,7 +97,7 @@ def roundSample(sample, numberOfDigits):
     """
     size = sample.getSize()
     dimension = sample.getDimension()
-    factor = 10.0 ** numberOfDigits
+    factor = 10.0**numberOfDigits
     for i in range(size):
         for j in range(dimension):
             rounded = (int)(factor * sample[i, j])
@@ -168,7 +168,7 @@ def testSmolyakExperiment1():
     #
     distribution = smolyak.getDistribution()
     collection = [ot.Uniform(0.0, 1.0)] * 2
-    expected_distribution = ot.ComposedDistribution(collection)
+    expected_distribution = ot.JointDistribution(collection)
     assert distribution == expected_distribution
 
 
@@ -280,7 +280,7 @@ def testSmolyakExperiment4():
     #
     distribution = smolyak.getDistribution()
     collection = [ot.Uniform(0.0, 1.0)] * 2
-    expected_distribution = ot.ComposedDistribution(collection)
+    expected_distribution = ot.JointDistribution(collection)
     assert distribution == expected_distribution
 
 

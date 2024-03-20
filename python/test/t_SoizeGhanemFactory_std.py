@@ -8,9 +8,9 @@ marginals = [ot.Normal(), ot.Uniform()]
 R = ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
 copula = ot.NormalCopula(R)
 factories = [
-    ot.SoizeGhanemFactory(ot.ComposedDistribution(marginals)),
-    ot.SoizeGhanemFactory(ot.ComposedDistribution(marginals, copula), False),
-    ot.SoizeGhanemFactory(ot.ComposedDistribution(marginals, copula), True),
+    ot.SoizeGhanemFactory(ot.JointDistribution(marginals)),
+    ot.SoizeGhanemFactory(ot.JointDistribution(marginals, copula), False),
+    ot.SoizeGhanemFactory(ot.JointDistribution(marginals, copula), True),
 ]
 x = [0.5] * 2
 kMax = 5

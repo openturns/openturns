@@ -71,7 +71,14 @@ precision : int
 Returns
 -------
 features : :class:`~openturns.Description`
-    Features list."
+    Features list.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.PlatformInfo.GetFeatures())
+[bison,bonmin,...
+"
 
 // ---------------------------------------------------------------------
 
@@ -82,10 +89,35 @@ Parameters
 ----------
 feature : str
     The desired feature, often associated to a software dependency,
-    e.g. 'libxml2' to test whether XML serialization is available.
     Call :meth:`GetFeatures` for the possible feature values.
 
 Returns
 -------
 has_feature : bool
-    Whether the designated feature is available."
+    Whether the designated feature is available.
+
+Examples
+--------
+>>> import openturns as ot
+>>> have_xml_support = ot.PlatformInfo.HasFeature('libxml2')
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetCompilerId
+"Accessor to the compiler id.
+
+Returns
+-------
+id : str
+    Compiler id (GNU, MSVC...)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetCompilerVersion
+"Accessor to the compiler version.
+
+Returns
+-------
+version : str
+    Compiler version."

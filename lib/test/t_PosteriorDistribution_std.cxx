@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class PosteriorDistribution for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,21 +44,21 @@ int main(int, char *[])
       Collection< Distribution > atoms;
       atoms.add(Uniform(0.0, 1.0));
       atoms.add(Uniform(1.0, 2.0));
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Second conditioning distribution: discrete/continuous
     {
       Collection< Distribution > atoms;
       atoms.add(Binomial(3, 0.5));
       atoms.add(Uniform(1.0, 2.0));
-//       conditioningDistributionCollection.add(ComposedDistribution(atoms));
+//       conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     // Third conditioning distribution: dirac/continuous
     {
       Collection< Distribution > atoms;
       atoms.add(Dirac(0.0));
       atoms.add(Uniform(1.0, 2.0));
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {
@@ -101,7 +101,7 @@ int main(int, char *[])
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      Point zero(dim, 0.0);
+      Point zero(dim, 1e-3);
 
       // Show PDF and CDF of zero point
       Scalar zeroPDF = distribution.computePDF(zero);

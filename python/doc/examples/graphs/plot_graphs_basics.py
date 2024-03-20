@@ -83,13 +83,13 @@ corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
 x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
-x_funk = ot.ComposedDistribution([x1, x2], copula)
+x_funk = ot.JointDistribution([x1, x2], copula)
 
 # %%
 # Create a Punk distribution
 x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
-x_punk = ot.ComposedDistribution([x1, x2], copula)
+x_punk = ot.JointDistribution([x1, x2], copula)
 
 # %%
 # Let us mix these two distributions.
@@ -156,6 +156,7 @@ ot.Drawable.GetValidLineStyles()
 # %%
 # In order to use the `Curve` class, it will be easier if we have a method to generate a `Sample` containing points regularly spaced in an interval.
 
+
 # %%
 def linearSample(xmin, xmax, npoints):
     """Returns a sample created from a regular grid
@@ -186,6 +187,7 @@ view = viewer.View(graph)
 # In some situations, we want to create curves with different colors.
 # In this case, the following function generates a color corresponding to the `indexCurve` integer in a ensemble of `maximumNumberOfCurves` curves.
 
+
 # %%
 def createHSVColor(indexCurve, maximumNumberOfCurves):
     """Create a HSV color for the indexCurve-th curve
@@ -200,7 +202,7 @@ def createHSVColor(indexCurve, maximumNumberOfCurves):
 pofa = ot.HermiteFactory()
 
 # %%
-graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "bottomright")
+graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "lower right")
 degreemax = 5
 for k in range(degreemax):
     pk = pofa.build(k)

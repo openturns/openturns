@@ -6,5 +6,6 @@
 
 %include PlackettCopula_doc.i
 
+%copyctor OT::PlackettCopula;
+
 %include openturns/PlackettCopula.hxx
-namespace OT { %extend PlackettCopula { PlackettCopula(const PlackettCopula & other) { return new OT::PlackettCopula(other); } } }

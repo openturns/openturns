@@ -201,32 +201,6 @@ OT_MetropolisHastings_setHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_MetropolisHastings_getVerbose_doc
-"Tell whether the verbose mode is activated or not.
-
-Returns
--------
-isVerbose : bool
-    The verbose mode is activated if it is *True*, desactivated otherwise."
-%enddef
-%feature("docstring") OT::MetropolisHastingsImplementation::getVerbose
-OT_MetropolisHastings_getVerbose_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_MetropolisHastings_setVerbose_doc
-"Set the verbose mode.
-
-Parameters
-----------
-isVerbose : bool
-    The verbose mode is activated if it is *True*, desactivated otherwise."
-%enddef
-%feature("docstring") OT::MetropolisHastingsImplementation::setVerbose
-OT_MetropolisHastings_setVerbose_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_MetropolisHastings_getAcceptanceRate_doc
 "Get acceptance rate.
 

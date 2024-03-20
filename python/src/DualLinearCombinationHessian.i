@@ -6,5 +6,6 @@
 
 %include DualLinearCombinationHessian_doc.i
 
+%copyctor OT::DualLinearCombinationHessian;
+
 %include openturns/DualLinearCombinationHessian.hxx
-namespace OT { %extend DualLinearCombinationHessian { DualLinearCombinationHessian(const DualLinearCombinationHessian & other) { return new OT::DualLinearCombinationHessian(other); } } }

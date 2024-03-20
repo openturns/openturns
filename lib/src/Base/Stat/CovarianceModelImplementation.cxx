@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,9 +54,10 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , isDiagonal_(true)
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + outputDimension_)
+  , activeParameter_(0)
 {
-  activeParameter_.fill();
+  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+    if(i != inputDimension_) activeParameter_.add(i);
   updateOutputCovariance();
 }
 
@@ -74,11 +75,12 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , isDiagonal_(true)
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + outputDimension_)
+  , activeParameter_(0)
 {
   setAmplitude(amplitude);
   setScale(scale);
-  activeParameter_.fill();
+  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+    if(i != inputDimension_) activeParameter_.add(i);
 }
 
 /* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
@@ -96,11 +98,12 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , isDiagonal_(true)
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + outputDimension_)
+  , activeParameter_(0)
 {
   setAmplitude(amplitude);
   setScale(scale);
-  activeParameter_.fill();
+  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+    if(i != inputDimension_) activeParameter_.add(i);
   setOutputCorrelation(spatialCorrelation);
 }
 
@@ -118,7 +121,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , isDiagonal_(spatialCovariance.isDiagonal())
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + outputDimension_)
+  , activeParameter_(0)
 {
   setScale(scale);
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
@@ -136,7 +139,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
       for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
         outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
   } // !isDiagonal
-  activeParameter_.fill();
+  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+    if(i != inputDimension_) activeParameter_.add(i);
 }
 
 /* Virtual constructor */
@@ -947,7 +951,12 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
     scale_[i] = parameter[index];
     ++ index;
   }
-  // Second the amplitude parameter
+  // Second the nugget factor
+  if (!(parameter[index] >= 0.0))
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of nuggetFactor is negative";
+  nuggetFactor_ = parameter[index];
+  ++ index;
+  // Third the amplitude parameter
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
@@ -956,7 +965,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
     ++ index;
   }
   CorrelationMatrix outputCorrelation(outputDimension_);
-  // Third the output correlation parameter, only the lower triangle
+  // Fourth the output correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
@@ -972,9 +981,11 @@ Point CovarianceModelImplementation::getFullParameter() const
   // Here we manage only the generic parameters
   // First the scale parameter
   Point parameter(getScale());
-  // Second the amplitude parameter
+  // Second the nugget factor
+  parameter.add(nuggetFactor_);
+  // Third the amplitude parameter
   parameter.add(getAmplitude());
-  // Third the spatial correation parameter, only the lower triangle
+  // Fourth the spatial correation parameter, only the lower triangle
   if (isDiagonal_)
   {
     if (outputDimension_ > 1)
@@ -995,14 +1006,15 @@ Description CovarianceModelImplementation::getFullParameterDescription() const
   // First the scale parameter
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
     description.add(OSS() << "scale_" << j);
-  // Second the amplitude parameter
+  // Second the nugget factor
+  description.add(OSS() << "nuggetFactor");
+  // Third the amplitude parameter
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
-  // Third the spatial correlation parameter, only the lower triangle
+  // Fourth the spatial correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     for (UnsignedInteger j = 0; j < i; ++j)
       description.add(OSS() << "R_" << i << "_" << j);
-
   return description;
 }
 
@@ -1018,6 +1030,56 @@ Indices CovarianceModelImplementation::getActiveParameter() const
   return activeParameter_;
 }
 
+/* Easily activate base parameters: scale, nuggetFactor, amplitude */
+void CovarianceModelImplementation::activateScale(const Bool isScaleActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  Indices newActiveParameter(0);
+  if (isScaleActive)
+    for (UnsignedInteger j = 0; j < scaleSize; ++j) newActiveParameter.add(j);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+    if (activeParameter[i] >= scaleSize) newActiveParameter.add(activeParameter[i]);
+  setActiveParameter(newActiveParameter);
+}
+
+void CovarianceModelImplementation::activateNuggetFactor(const Bool isNuggetFactorActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  Indices newActiveParameter(0);
+  Indices activeAmplitudeAndNext(0);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+  {
+    if(activeParameter[i] < scaleSize) newActiveParameter.add(activeParameter[i]);
+    else if (activeParameter[i] > scaleSize) activeAmplitudeAndNext.add(activeParameter[i]);
+  }
+  if (isNuggetFactorActive) newActiveParameter.add(scaleSize);
+  newActiveParameter.add(activeAmplitudeAndNext);
+  setActiveParameter(newActiveParameter);
+}
+
+void CovarianceModelImplementation::activateAmplitude(const Bool isAmplitudeActive)
+{
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger scaleSize = getScale().getSize();
+  const UnsignedInteger amplitudeSize = getAmplitude().getSize();
+  Indices newActiveParameter(0);
+  Indices activeAfterAmplitude(0);
+  for (UnsignedInteger i = 0; i < activeParameter.getSize(); ++i)
+  {
+    if(activeParameter[i] <= scaleSize) newActiveParameter.add(activeParameter[i]);
+    else if (activeParameter[i] > scaleSize + amplitudeSize) activeAfterAmplitude.add(activeParameter[i]);
+  }
+  if (isAmplitudeActive) 
+  {
+    Indices amplitudeIndices(amplitudeSize);
+    amplitudeIndices.fill(scaleSize + 1);
+    newActiveParameter.add(amplitudeIndices);
+  }
+  newActiveParameter.add(activeAfterAmplitude);
+  setActiveParameter(newActiveParameter);
+}
 
 void CovarianceModelImplementation::setParameter(const Point & parameter)
 {
@@ -1156,7 +1218,6 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
     Curve curve(data);
     curve.setLineWidth(2);
-    curve.setColor("red");
     graph.add(curve);
     return graph;
   } // asStationary && isStationary()

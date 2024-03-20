@@ -2,7 +2,7 @@
 /**
  * @brief CorrelationAnalysis implements the sensitivity analysis methods based on correlation coefficients
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,13 +68,19 @@ String CorrelationAnalysis::__repr__() const
 }
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D output sample */
+Point CorrelationAnalysis::computeLinearCorrelation() const
+{
+  return ComputeLinearCorrelation(firstSample_, secondSample_);
+}
+
 Point CorrelationAnalysis::computePearsonCorrelation() const
 {
-  return ComputePearsonCorrelation(firstSample_, secondSample_);
+  LOGWARN("CorrelationAnalysis.computePearsonCorrelation is deprecated, use computeLinearCorrelation");
+  return computeLinearCorrelation();
 }
 
 // Compute the Pearson correlation coefficient with arguments
-Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
+Point CorrelationAnalysis::ComputeLinearCorrelation(const Sample & firstSample,
     const Sample & secondSample)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -83,7 +89,7 @@ Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
   {
     Sample pairedSample(firstSample.getMarginal(j));
     pairedSample.stack(secondSample);
-    result[j] = pairedSample.computePearsonCorrelation()(1, 0);
+    result[j] = pairedSample.computeLinearCorrelation()(1, 0);
   }
   return result;
 }
@@ -91,7 +97,7 @@ Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D output sample */
 Point CorrelationAnalysis::computeSpearmanCorrelation() const
 {
-  return ComputePearsonCorrelation(firstSample_.rank(), secondSample_.rank());
+  return ComputeLinearCorrelation(firstSample_.rank(), secondSample_.rank());
 }
 
 /* Compute the Kendall Tau coefficient between the component number index of the input sample and the 1D output sample */
@@ -183,7 +189,7 @@ Point CorrelationAnalysis::ComputePCC(const Sample & firstSample,
     const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getMetaModel()(truncatedInput));
 
     // Compute the correlation between the residuals
-    pcc[index] = ComputePearsonCorrelation(residualOutput, residualRemaining)[0];
+    pcc[index] = ComputeLinearCorrelation(residualOutput, residualRemaining)[0];
   }
   return pcc;
 }

@@ -6,5 +6,6 @@
 
 %include SORMResult_doc.i
 
+%copyctor OT::SORMResult;
+
 %include openturns/SORMResult.hxx
-namespace OT{ %extend SORMResult { SORMResult(const SORMResult & other) { return new OT::SORMResult(other); } } }

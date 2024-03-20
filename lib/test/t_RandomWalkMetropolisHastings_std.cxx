@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class RandomWalkMetropolisHastings
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 
 using namespace OT;
 using namespace OT::Test;
-typedef ComposedDistribution::DistributionCollection DistributionCollection;
+typedef JointDistribution::DistributionCollection DistributionCollection;
 
 int main(int, char *[])
 {
@@ -80,7 +80,7 @@ int main(int, char *[])
     ParametricFunction linkFunction(fun, {2}, {0.0});
     Normal instrumental2({0.0, 0.0}, {0.5, 0.05}, IdentityMatrix(2));
 
-    ComposedDistribution target({Uniform(-100.0, 100.0), Uniform(-100.0, 100.0)});
+    JointDistribution target({Uniform(-100.0, 100.0), Uniform(-100.0, 100.0)});
     RandomWalkMetropolisHastings rwmh(target, {0.0, 0.0}, instrumental2);
     rwmh.setBurnIn(10000);
     Bernoulli conditional;

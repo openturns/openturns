@@ -124,7 +124,7 @@ curve = (
 curve.setLineStyle("dashed")
 curve.setLegend("Linear L.S.")
 graph.add(curve)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = viewer.View(graph)
 plt.show()

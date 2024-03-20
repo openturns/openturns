@@ -2,7 +2,7 @@
 /**
  *  @brief The class Object is the top-most class of OpenTURNS
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,8 +39,19 @@ String Object::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
+String Object::_repr_html_() const
+{
+  return __repr__();
+}
+
 /* Pretty string converter */
 String Object::__str__(const String & ) const
+{
+  return __repr__();
+}
+
+/* Markdown string converter */
+String Object::__repr_markdown__() const
 {
   return __repr__();
 }

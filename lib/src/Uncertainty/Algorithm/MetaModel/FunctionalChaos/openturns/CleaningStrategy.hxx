@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation returning the set of polynomials in sequence
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,15 +44,13 @@ public:
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
-                   const UnsignedInteger maximumDimension,
-                   const Bool verbose = false);
+                   const UnsignedInteger maximumDimension);
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
                    const UnsignedInteger maximumDimension,
                    const UnsignedInteger maximumSize,
-                   const Scalar significanceFactor,
-                   const Bool verbose = false);
+                   const Scalar significanceFactor);
 
   /** Virtual constructor */
   CleaningStrategy * clone() const override;
@@ -79,10 +77,6 @@ public:
   Scalar getSignificanceFactor() const;
   void setSignificanceFactor(const Scalar significanceFactor);
 
-  /** Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -91,16 +85,13 @@ public:
 
 private:
   // Index of the next vector to be generated
-  UnsignedInteger currentVectorIndex_;
+  UnsignedInteger currentVectorIndex_ = 0;
 
   // Maximum size of the current basis
-  UnsignedInteger maximumSize_;
+  UnsignedInteger maximumSize_ = 0;
 
   // Relative significance factor of a vector
-  Scalar significanceFactor_;
-
-  // Verbose
-  Bool verbose_;
+  Scalar significanceFactor_ = 0.0;
 
 } ; /* class CleaningStrategy */
 

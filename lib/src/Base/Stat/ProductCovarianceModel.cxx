@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/AbsoluteExponential.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,11 +44,33 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger inputDimens
     throw InvalidArgumentException(HERE) << "Error: input dimension must be positive, here inputDimension=0";
   // scale parameter
   scale_ = Point(inputDimension, collection_[0].getScale()[0]);
+
+  // nugget factor
+  nuggetFactor_ = collection_[0].getNuggetFactor();
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+  {
+    collection_[i].setNuggetFactor(0.0);
+    const Description description(collection_[i].getParameterDescription());
+    const UnsignedInteger nuggetFactorIndex = description.find("nuggetFactor");
+    if (nuggetFactorIndex < description.getSize()) // nuggetFactor is active, make it unactive
+    {
+      const Indices activeParameter(collection_[i].getActiveParameter());
+      Indices newActiveParameter(description.getSize() - 1);
+      for (UnsignedInteger j = 0; j < description.getSize(); ++j)
+      {
+        if (j < nuggetFactorIndex) newActiveParameter[j] = activeParameter[j];
+        else if (j > nuggetFactorIndex) newActiveParameter[j - 1] = activeParameter[j];
+      }
+      collection_[i].setActiveParameter(newActiveParameter);
+    }
+  }
+
   // Update the default values for the amplitude
   setAmplitude(Point(1, collection_[0].getAmplitude()[0]));
   // Active parameters : scale + amplitude
   activeParameter_ = Indices(inputDimension + 1);
   activeParameter_.fill();
+  activeParameter_[inputDimension] = inputDimension + 1;
   isStationary_ = true;
 }
 
@@ -67,6 +90,8 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   const UnsignedInteger size = collection.getSize();
   if (!(size > 0))
     throw InvalidArgumentException(HERE) << "Error: the collection must have a positive size, here size=0";
+  // Nugget factor
+  nuggetFactor_ = collection[0].getNuggetFactor();
   // Scale & amplitude
   Point scale(0);
   Point amplitude(1, 1.0);
@@ -75,8 +100,13 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   outputDimension_ = 1;
 
   // checking if amplitude parameter should be active
-  // Value is True if one of the marginal models activate it
+  // Value is True if one of the marginal models activates it
   Bool isAmplitudeActive = false;
+
+  // checking if nuggetFactor parameter should be active
+  // Value is True if one of the marginal models activates it
+  Bool isNuggetFactorActive = false;
+
   // Handle 'specific' parameters
   extraParameterNumber_ = Indices(collection.getSize());
 
@@ -108,30 +138,37 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
     inputDimension_ += localInputDimension;
     scale.add(collection[i].getScale());
 
+    // Should we activate the nuggetFactor parameter?
+    isNuggetFactorActive = isNuggetFactorActive || localActiveParameter.contains(collection[i].getScale().getSize());
+
     // Should we activate the amplitude parameter?
-    isAmplitudeActive = isAmplitudeActive || localActiveParameter.contains(collection[i].getScale().getSize());
+    isAmplitudeActive = isAmplitudeActive || localActiveParameter.contains(collection[i].getScale().getSize() + 1);
 
     // Number of specific parameter
-    extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (collection[i].getScale().getSize() + 1);
+    extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (collection[i].getScale().getSize() + 2);
 
     // Check if model is stationary
     if (!collection[i].isStationary())
       isStationary_ = false;
   }
 
-  // Amplitude active
-  if (isAmplitudeActive)
+  // NuggetFactor active
+  if (isNuggetFactorActive)
     activeParameter_.add(scale.getSize());
 
+  // Amplitude active
+  if (isAmplitudeActive)
+    activeParameter_.add(scale.getSize() + 1);
+
   // Handle active extra parameters
-  UnsignedInteger index = scale.getSize() + 1;
+  UnsignedInteger index = scale.getSize() + 2;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Indices localActiveParameter(collection[i].getActiveParameter());
     // if extraParameterNumber_[i] > 0, check if the parameters are active
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
-      if (localActiveParameter.contains(collection[i].getScale().getSize() + j + 1))
+      if (localActiveParameter.contains(collection[i].getScale().getSize() + j + 2))
         activeParameter_.add(index + j);
     }
     // update index
@@ -139,12 +176,35 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   }
   // Set collection
   collection_ = collection;
-  // Set amplitude & scale
+  // Set amplitude & nuggetFactor & scale
   scale_ = scale;
+  nuggetFactor_ = collection[0].getNuggetFactor();
+
   setAmplitude(amplitude);
   // Fix all submodels as correlation models
   for (UnsignedInteger i = 0; i < size; ++i) collection_[i].setAmplitude(Point(1, 1.0));
 
+  // set all marginal model nugget factors to 0 and deactivate them
+  LOGDEBUG(OSS(false) << "Set marginal nugget factors to 0 and deactivate them ");
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    collection_[i].setNuggetFactor(0.0);
+    const Description description(collection_[i].getParameterDescription());
+    const UnsignedInteger nuggetFactorIndex = description.find("nuggetFactor");
+    if (nuggetFactorIndex < description.getSize()) // nuggetFactor is active, make it unactive
+    {
+      const Indices activeParameter(collection_[i].getActiveParameter());
+      Indices newActiveParameter(description.getSize() - 1);
+      for (UnsignedInteger j = 0; j < description.getSize(); ++j)
+      {
+        if (j < nuggetFactorIndex) newActiveParameter[j] = activeParameter[j];
+        else if (j > nuggetFactorIndex) newActiveParameter[j - 1] = activeParameter[j];
+      }
+      collection_[i].setActiveParameter(newActiveParameter);
+      LOGDEBUG(OSS(false) << "Collection[" << i << "] active parameter = " << collection_[i].getActiveParameter());
+      LOGDEBUG(OSS(false) << "Collection[" << i << "] active parameter description = " << collection_[i].getParameterDescription());
+    }
+  }
 }
 
 ProductCovarianceModel::CovarianceModelCollection ProductCovarianceModel::getCollection() const
@@ -177,6 +237,7 @@ Scalar ProductCovarianceModel::computeAsScalar(const Point & tau) const
     rho *= collection_[i].getImplementation()->computeAsScalar(localTau);
     start += collection_[i].getInputDimension();
   }
+  if (tau.norm() <= SpecFunc::ScalarEpsilon) rho *= (1.0 + getNuggetFactor());
   return rho;
 }
 
@@ -184,13 +245,22 @@ Scalar ProductCovarianceModel::computeAsScalar(const Collection<Scalar>::const_i
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar rho = amplitude_[0] * amplitude_[0];
+  Scalar squareNorm = 0.0;
   UnsignedInteger start = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it);
+    squareNorm += dx * dx;
+  }
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     // Compute as scalar returns the correlation function
     rho *= collection_[i].getImplementation()->computeAsScalar(s_begin + start, t_begin + start);
     start += collection_[i].getInputDimension();
   }
+  if (squareNorm <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon) rho *= (1.0 + getNuggetFactor());
   return rho;
 }
 
@@ -200,7 +270,9 @@ Scalar ProductCovarianceModel::computeAsScalar(const Scalar tau) const
     throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
-  return collection_[0].getImplementation()->computeAsScalar(tau);
+  Scalar rho = collection_[0].getImplementation()->computeAsScalar(tau);
+  if (std::abs(tau) <= SpecFunc::ScalarEpsilon) rho *= (1.0 + getNuggetFactor());
+  return rho;
 }
 
 /* Gradient */
@@ -247,7 +319,10 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
 /* Parameters accessor */
 void ProductCovarianceModel::setFullParameter(const Point & parameter)
 {
-  UnsignedInteger parameterDimension = getScale().getSize() + 1;
+  UnsignedInteger scaleSize = getScale().getSize();
+  UnsignedInteger index = scaleSize + 2; // Index for extra parameters
+  // Total parameter dimension
+  UnsignedInteger parameterDimension = index;
   // Increase using the specific parameters
   for (UnsignedInteger i = 0; i < extraParameterNumber_.getSize(); ++i) parameterDimension += extraParameterNumber_[i];
 
@@ -258,9 +333,7 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
   // Scale parameters then amplitude parameter and finally other parameters
 
   UnsignedInteger start = 0;
-  // Index for extra parameters
-  UnsignedInteger index = getScale().getSize() + 1;
-  Point scale(getScale().getSize());
+  Point scale(scaleSize);
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     const UnsignedInteger atomScaleDimension = collection_[i].getScale().getDimension();
@@ -269,6 +342,8 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
     std::copy(parameter.begin() + start, parameter.begin() + stop, atomFullParameter.begin());
     // Duplicate scale
     std::copy(parameter.begin() + start, parameter.begin() + stop, scale.begin() + start);
+    // Add 'local' nuggetFactor
+    atomFullParameter.add(0.0);
     // Add 'local' amplitude
     atomFullParameter.add(1.0);
     // Set extra
@@ -283,18 +358,21 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
   }
   // Copy scale (for get accessor)
   scale_ = scale;
-  setAmplitude(Point(1, parameter[getScale().getSize()]));
+  setNuggetFactor(parameter[scaleSize]);
+  setAmplitude(Point(1, parameter[scaleSize + 1]));
 }
 
 void ProductCovarianceModel::setActiveParameter(const Indices & active)
 {
   // Propagate information to marginal models
+  // First, check if active contains the nuggetFactor.
+  const Bool isNuggetFactorActive = active.contains(getScale().getSize());
   // First, check if active contains the amplitude.
-  const Bool isAmplitudeActive = active.contains(getScale().getSize());
+  const Bool isAmplitudeActive = active.contains(getScale().getSize() + 1);
   // variables that help to read active parameters
   const UnsignedInteger size = collection_.getSize();
   UnsignedInteger scaleSize = 0;
-  UnsignedInteger index = getScale().getSize() + 1;
+  UnsignedInteger index = getScale().getSize() + 2;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const UnsignedInteger localScaleSize = collection_[i].getScale().getSize();
@@ -306,13 +384,15 @@ void ProductCovarianceModel::setActiveParameter(const Indices & active)
         localActiveParameter.add(j);
     }
     scaleSize += localScaleSize;
-    if (isAmplitudeActive)
+    if (isNuggetFactorActive)
       localActiveParameter.add(localScaleSize);
+    if (isAmplitudeActive)
+      localActiveParameter.add(localScaleSize + 1);
     // Handle extra param
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
       if (active.contains(index + j))
-        localActiveParameter.add(localScaleSize + j + 1);
+        localActiveParameter.add(localScaleSize + 2 + j);
     }
     // update index
     index += extraParameterNumber_[i];
@@ -327,6 +407,7 @@ Point ProductCovarianceModel::getFullParameter() const
 {
   // Convention scale + amplitude + extras
   Point result(scale_);
+  result.add(nuggetFactor_);
   result.add(amplitude_);
   const UnsignedInteger size = extraParameterNumber_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -335,7 +416,7 @@ Point ProductCovarianceModel::getFullParameter() const
     {
       const Point localFullParameter(collection_[i].getFullParameter());
       for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++ k)
-        result.add(localFullParameter[collection_[i].getScale().getSize() + 1 + k]);
+        result.add(localFullParameter[collection_[i].getScale().getSize() + 2 + k]);
     }
   }
   return result;
@@ -347,6 +428,7 @@ Description ProductCovarianceModel::getFullParameterDescription() const
   Description description(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     description[i] = OSS() << "scale_" << i;
+  description.add("nuggetFactor");
   // Last element is amplitude
   description.add("amplitude_0");
   for (UnsignedInteger i = 0; i < extraParameterNumber_.getSize(); ++ i)
@@ -355,7 +437,7 @@ Description ProductCovarianceModel::getFullParameterDescription() const
     {
       const Description localFullParameterDescription(collection_[i].getFullParameterDescription());
       for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++ k)
-        description.add(OSS() << localFullParameterDescription[collection_[i].getScale().getSize() + 1 + k] << "_" << i);
+        description.add(OSS() << localFullParameterDescription[collection_[i].getScale().getSize() + 2 + k] << "_" << i);
     }
   }
 

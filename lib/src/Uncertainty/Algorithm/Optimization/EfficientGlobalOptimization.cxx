@@ -2,7 +2,7 @@
 /**
  *  @brief EfficientGlobalOptimization or EGO algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,12 +20,11 @@
  */
 #include "openturns/EfficientGlobalOptimization.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Cobyla.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,8 +36,7 @@ static const Factory<EfficientGlobalOptimization> Factory_EfficientGlobalOptimiz
 /* Constructor with parameters */
 EfficientGlobalOptimization::EfficientGlobalOptimization()
   : OptimizationAlgorithmImplementation()
-  , solver_(new Cobyla)
-  , useDefaultSolver_(true)
+  , solver_(OptimizationAlgorithm::Build(ResourceMap::GetAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm")))
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
@@ -54,8 +52,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
     const Function & noise)
   : OptimizationAlgorithmImplementation(problem)
   , krigingResult_(krigingResult)
-  , solver_(new Cobyla)
-  , useDefaultSolver_(true)
+  , solver_(OptimizationAlgorithm::Build(ResourceMap::GetAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm")))
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
@@ -78,11 +75,13 @@ class ExpectedImprovementEvaluation : public EvaluationImplementation
 public:
   ExpectedImprovementEvaluation (const Scalar optimalValue,
                                  const KrigingResult & metaModelResult,
-                                 const Function & noiseModel)
+                                 const Function & noiseModel,
+                                 const Bool isMinimization)
     : EvaluationImplementation()
     , optimalValue_(optimalValue)
     , metaModelResult_(metaModelResult)
     , noiseModel_(noiseModel)
+    , isMinimization_(isMinimization)
   {
   }
 
@@ -94,10 +93,11 @@ public:
   Point operator()(const Point & x) const
   {
     const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
-    const Scalar fmMk = optimalValue_ - mx;
+    const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
     const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return Point(1, SpecFunc::LowestScalar);
+    if (!SpecFunc::IsNormal(sk))
+      return Point(1, SpecFunc::LowestScalar);
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -142,6 +142,9 @@ protected:
   Scalar optimalValue_;
   KrigingResult metaModelResult_;
   Function noiseModel_;
+
+  // whether the global problem is a miminization (the improvement criterion is always maximized)
+  Bool isMinimization_ = true;
 };
 
 
@@ -169,42 +172,14 @@ void EfficientGlobalOptimization::run()
   UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
 
-  // select the best feasible point
-  Point optimizer;
-  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
-  Point optimizerPrev; // previous optimizer
-  Scalar optimalValuePrev = optimalValue;// previous optimal value
+  // select the best feasible point in the initial DOE
+  OptimizationResult result(getProblem());
   for (UnsignedInteger index = 0; index < size; ++ index)
-  {
-    if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
-      if ((problem.isMinimization() && (outputSample(index, 0) < optimalValue))
-          || (!problem.isMinimization() && (outputSample(index, 0) > optimalValue)))
-      {
-        optimizerPrev = optimizer;
-        optimalValuePrev = optimalValue;
-
-        optimizer = inputSample[index];
-        optimalValue = outputSample(index, 0);
-      }
-  }
-
-  LOGINFO(OSS() << "Optimum so far x=" << optimizer << " f(x)=" << optimalValue);
-
-  // we need the second best to compute convergence criteria
-  if (optimizerPrev.getDimension() == 0)
-  {
-    // then the optimum was the first
-    for (UnsignedInteger index = 1; index < size; ++ index)
-    {
-      if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
-        if ((problem.isMinimization() && (outputSample(index, 0) < optimalValuePrev))
-            || (!problem.isMinimization() && (outputSample(index, 0) > optimalValuePrev)))
-        {
-          optimizerPrev = inputSample[index];
-          optimalValuePrev = outputSample(index, 0);
-        }
-    }
-  }
+    result.store(inputSample[index], outputSample[index], 0.0, 0.0, 0.0, 0.0);
+  Point optimalPoint(result.getOptimalPoint());
+  Point optimalValue(result.getOptimalValue());
+  result = OptimizationResult(getProblem()); // reset to clear history
+  LOGINFO(OSS() << "Initial best x=" << optimalPoint << " f(x)=" << optimalValue);
 
   // compute minimum distance between design points to assess the correlation lengths of the metamodel
   Point minimumDistance(dimension, SpecFunc::MaxScalar);
@@ -226,15 +201,13 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  OptimizationResult result(getProblem());
-
   UnsignedInteger iterationNumber = 0;
   // use the provided kriging result at first iteration
   KrigingResult metaModelResult(krigingResult_);
 
-  while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
+  while ((!exitLoop) && (evaluationNumber < getMaximumCallsNumber()))
   {
-    Scalar optimalValueSubstitute = optimalValue;
+    Scalar optimalValueSubstitute = optimalValue[0];
     if (hasNoise)
     {
       // with noisy objective we don't have access to the real current optimal value
@@ -254,9 +227,10 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
+    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_, problem.isMinimization()));
 
     // use multi-start to optimize the improvement criterion when using the default solver
+    OptimizationAlgorithm solver(solver_);
     if (useDefaultSolver_ && problem.hasBounds())
     {
       // Sample uniformly into the bounds
@@ -265,14 +239,14 @@ void EfficientGlobalOptimization::run()
       const Point upperBound(bounds.getUpperBound());
       const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
       const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-      ComposedDistribution::DistributionCollection coll;
+      JointDistribution::DistributionCollection coll;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
         if (!finiteLowerBound[i] || !finiteUpperBound[i])
           throw InvalidArgumentException(HERE) << "Bounds must be finite";
         coll.add(Uniform(lowerBound[i], upperBound[i]));
       }
-      const ComposedDistribution distribution(coll);
+      const JointDistribution distribution(coll);
       Sample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
       // retain best P/N points as starting points
       improvementExperiment.stack(improvementObjective(improvementExperiment));
@@ -282,7 +256,7 @@ void EfficientGlobalOptimization::run()
       // handle multiStartExperimentSize_ < multiStartNumber_
       const UnsignedInteger pointNumber = std::min(multiStartNumber_, multiStartExperimentSize_);
       const Sample startingPoints(sortedImprovement, multiStartExperimentSize_ - pointNumber, multiStartExperimentSize_);
-      setOptimizationAlgorithm(MultiStart(solver_, startingPoints));
+      solver = MultiStart(solver, startingPoints);
     }
 
     // build improvement criterion optimization problem
@@ -290,18 +264,18 @@ void EfficientGlobalOptimization::run()
     maximizeImprovement.setMinimization(false);
     if (problem.hasBounds())
       maximizeImprovement.setBounds(problem.getBounds());
-    solver_.setProblem(maximizeImprovement);
+    solver.setProblem(maximizeImprovement);
     try
     {
       // If the solver is single start, we can use its setStartingPoint method
-      solver_.setStartingPoint(optimizer);
+      solver.setStartingPoint(optimalPoint);
     }
     catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
     {
       // Nothing to do if setStartingPoint is not defined
     }
-    solver_.run();
-    const OptimizationResult improvementResult(solver_.getResult());
+    solver.run();
+    const OptimizationResult improvementResult(solver.getResult());
 
     // store improvement
     Point improvementValue(improvementResult.getOptimalValue());
@@ -312,29 +286,11 @@ void EfficientGlobalOptimization::run()
     ++ evaluationNumber;
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << " evaluations=" << evaluationNumber);
+    result.store(newPoint, newValue, 0.0, 0.0, 0.0, 0.0);
 
-    // is the new point better ?
-    if ((problem.isMinimization() && (newValue[0] < optimalValue))
-        || (!problem.isMinimization() && (newValue[0] > optimalValue)))
-    {
-      optimizerPrev = optimizer;
-      optimalValuePrev = optimalValue;
-
-      optimizer = newPoint;
-      optimalValue = newValue[0];
-      LOGINFO(OSS() << "Optimum so far x=" << optimizer << " f(x)=" << optimalValue);
-    }
-
-    // algorithm is global so compute convergence criteria on the last 2 optimum instead of last 2 points
-    const Scalar absoluteError = (optimizer - optimizerPrev).normInf();
-    const Scalar relativeError = absoluteError / optimizer.normInf();
-    const Scalar residualError = std::abs(optimalValue - optimalValuePrev);
-    const Scalar constraintError = -1.0;
-
-    result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
-
-    // general convergence criteria
-    exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    optimalPoint = result.getOptimalPoint();
+    optimalValue = result.getOptimalValue();
+    LOGINFO(OSS() << "Optimum so far x=" << result.getOptimalPoint() << " f(x)=" << optimalValue);
 
     // update minimum distance stopping criterion
     if (!hasNoise)
@@ -364,7 +320,7 @@ void EfficientGlobalOptimization::run()
     }
 
     // improvement stopping criterion
-    const Bool improvementStop = (improvementValue[0] < improvementFactor_ * std::abs(optimalValue));
+    const Bool improvementStop = (improvementValue[0] < improvementFactor_ * std::abs(optimalValue[0]));
     if (improvementStop) LOGINFO(OSS() << "Stopped algorithm over the improvement criterion");
     exitLoop = exitLoop || improvementStop;
 
@@ -385,7 +341,7 @@ void EfficientGlobalOptimization::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumCallsNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {
@@ -411,9 +367,6 @@ void EfficientGlobalOptimization::run()
   } // while
 
   krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
-  result.setOptimalPoint(optimizer);
-  result.setOptimalValue(Point(1, optimalValue));
-  result.setEvaluationNumber(evaluationNumber);
   result.setIterationNumber(iterationNumber);
   setResult(result);
 }

@@ -125,7 +125,7 @@ print("Log-relative error in base 10= %.2f" % (lre10))
 numberOfMarginalNodes = 5
 collectionOfMarginalNumberOfNodes = [numberOfMarginalNodes] * dimension
 collection = [ot.Uniform(0.0, 1.0)] * dimension
-distribution = ot.ComposedDistribution(collection)
+distribution = ot.JointDistribution(collection)
 experiment = ot.GaussProductExperiment(distribution, collectionOfMarginalNumberOfNodes)
 nodes, weights = experiment.generateWithWeights()
 size = nodes.getSize()
@@ -215,7 +215,7 @@ def tensorizedGaussQuadrature(g_function, numberOfMarginalNodes):
     """
     dimension = g_function.getInputDimension()
     collection = [ot.Uniform(0.0, 1.0)] * dimension
-    distribution = ot.ComposedDistribution(collection)
+    distribution = ot.JointDistribution(collection)
     collectionOfMarginalNumberOfNodes = [numberOfMarginalNodes] * dimension
     experiment = ot.GaussProductExperiment(
         distribution, collectionOfMarginalNumberOfNodes
@@ -325,7 +325,7 @@ n_max = 11
 curve = drawTensorizedGaussQuadrature(n_max)
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 palette = ot.Drawable.BuildDefaultPalette(4)
 graph.setColors(palette)
 view = otv.View(

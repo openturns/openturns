@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Sample for load and save methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -144,7 +144,7 @@ int main(int, char *[])
       aSample = Sample::ImportFromCSVFile("nosample.csv");
       throw TestFailed( "ERROR: test should have failed. Found CSV file 'nosample.csv' though it should not have been there" );
     }
-    catch (FileNotFoundException & ex)
+    catch (const FileNotFoundException &)
     {
       // Nothing to do
     }

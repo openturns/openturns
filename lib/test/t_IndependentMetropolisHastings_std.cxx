@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class IndependentMetropolisHastings
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 
 using namespace OT;
 using namespace OT::Test;
-typedef ComposedDistribution::DistributionCollection DistributionCollection;
+typedef JointDistribution::DistributionCollection DistributionCollection;
 
 int main(int, char *[])
 {
@@ -37,7 +37,7 @@ int main(int, char *[])
     RandomGenerator::SetSeed(1);
     const Point lower_bound(1);
     const Point upper_bound({2.0 * M_PI});
-    ComposedDistribution::DistributionCollection distributionCollection(2);
+    JointDistribution::DistributionCollection distributionCollection(2);
     distributionCollection[0] = Exponential(1.0);
     distributionCollection[1] = Normal(5.3, 0.4);
     const Point weights({0.9, 0.1});

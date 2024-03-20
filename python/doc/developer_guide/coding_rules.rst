@@ -1102,7 +1102,8 @@ a missing value or the result of an illicit arithmetical operation (:code:`0/0` 
 It has the following properties:
 
 - When standard functions like :code:`sqrt` and :code:`max` are passed NaN as one of their arguments, they return NaN.
-- All comparison operators except :code:`!=` return :code:`False` if either operand is NaN. The boolean :code:`a!=b` is :code:`True` if either :code:`a` or :code:`b` (or even both) is NaN.
+- All comparison operators except :code:`!=` return :code:`False` if either operand is NaN.
+  The boolean :code:`a!=b` is :code:`True` if either :code:`a` or :code:`b` (or even both) is NaN.
 
 Because of this second property, the following example fails to catch a possible NaN value.
 

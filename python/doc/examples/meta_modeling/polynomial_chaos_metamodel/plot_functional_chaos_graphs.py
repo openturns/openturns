@@ -24,7 +24,7 @@ def drawFamily(factory, degreeMax=5):
 
     # Create an empty graph which will be fulfilled
     # with curves
-    graphJacobi = ot.Graph(titleJacobi, "z", "polynomial values", True, "topright")
+    graphJacobi = ot.Graph(titleJacobi, "z", "polynomial values", True, "upper right")
 
     # Fix the number of points for the graph
     pointNumber = 101

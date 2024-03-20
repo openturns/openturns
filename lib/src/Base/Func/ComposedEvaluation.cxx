@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between numerical
  *        math functions implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,10 +84,15 @@ String ComposedEvaluation::__repr__() const
 String ComposedEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   oss << "(" << leftFunction_.__str__(offset) << ")o(";
   oss << rightFunction_.__str__(offset) << ")";
   return oss;
+}
+
+String ComposedEvaluation::_repr_html_() const
+{
+  return __str__();
 }
 
 /* Operator () */

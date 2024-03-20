@@ -2,7 +2,7 @@
 /**
  *  @brief The Hypergeometric distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -223,14 +223,11 @@ void Hypergeometric::computeCovariance() const
 Sample Hypergeometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  UnsignedInteger kMin = (m_ + k_ > n_ ? m_ + k_ - n_ : 0);
-  const Scalar a = ceil(interval.getLowerBound()[0]);
-  if (a > kMin) kMin = static_cast<UnsignedInteger>(a);
-  UnsignedInteger kMax = std::min(k_, m_);
-  const Scalar b = floor(interval.getUpperBound()[0]);
-  if (b < kMax) kMax = static_cast<UnsignedInteger>(b);
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(static_cast<Scalar>(m_ + k_ > n_ ? m_ + k_ - n_ : 0), ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMax = static_cast< SignedInteger > (std::min(static_cast<Scalar>(std::min(k_, m_)), floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
+  for (SignedInteger k = kMin; k <= kMax; ++ k)
+    result.add(Point(1, k));
   return result;
 }
 

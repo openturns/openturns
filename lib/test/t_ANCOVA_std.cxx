@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of ANCOVA method
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,14 +59,14 @@ int main(int, char *[])
     Collection<Distribution> marginals(dimension);
     marginals[0] = Normal();
     marginals[1] = Normal();
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
 
     // Correlated input distribution
     CorrelationMatrix S(2);
     S(1, 0) = 0.3;
     CorrelationMatrix R(NormalCopula::GetCorrelationFromSpearmanCorrelation(S));
     NormalCopula myCopula(R);
-    ComposedDistribution myCorrelatedInputDistribution(marginals, myCopula);
+    JointDistribution myCorrelatedInputDistribution(marginals, myCopula);
 
     Sample sample(myCorrelatedInputDistribution.getSample(2000));
 

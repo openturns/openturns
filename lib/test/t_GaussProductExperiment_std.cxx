@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class GaussProductExperiment for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ int main(int, char *[])
     Collection<Distribution> marginals(0);
     marginals.add(Exponential());
     marginals.add(Triangular(-1.0, -0.5, 1.0));
-    ComposedDistribution distribution(marginals);
+    JointDistribution distribution(marginals);
     Indices marginalSizes = {3, 6};
     // Test the constructor based on marginal degrees
     fullprint << "experiment1=" << GaussProductExperiment(marginalSizes) << std::endl;
@@ -78,7 +78,7 @@ int main(int, char *[])
     Collection<Distribution> marginalsBis(0);
     marginalsBis.add(Normal());
     marginalsBis.add(Uniform());
-    ComposedDistribution distributionBis(marginalsBis);
+    JointDistribution distributionBis(marginalsBis);
     experiment.setDistribution(distributionBis);
     fullprint << "experiment = " << experiment << std::endl;
     Point weightsQuater(0);

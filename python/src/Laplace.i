@@ -6,5 +6,6 @@
 
 %include Laplace_doc.i
 
+%copyctor OT::Laplace;
+
 %include openturns/Laplace.hxx
-namespace OT { %extend Laplace { Laplace(const Laplace & other) { return new OT::Laplace(other); } } }

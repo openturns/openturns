@@ -2,7 +2,7 @@
 /**
  *  @brief First order polynomial response surface by least square
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,12 +46,7 @@ public:
 
   /** Constructor with parameters */
   LinearLeastSquares(const Sample & dataIn,
-                     const Function & inputFunction);
-
-  /** Constructor with parameters */
-  LinearLeastSquares(const Sample & dataIn,
                      const Sample & dataOut);
-
 
   /** Virtual constructor */
   LinearLeastSquares * clone() const override;
@@ -67,9 +62,6 @@ public:
 
   /** Linear accessor */
   Matrix getLinear() const;
-
-  /** Input function accessor */
-  Function getInputFunction() const;
 
   /** Metamodel accessor */
   Function getMetaModel() const;
@@ -90,8 +82,7 @@ protected:
 
 private:
   Sample dataIn_;
-  mutable Sample dataOut_;
-  Function inputFunction_;
+  Sample dataOut_;
   Function responseSurface_;
   Point constant_;
   Matrix linear_;

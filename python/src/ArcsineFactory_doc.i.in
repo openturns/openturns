@@ -1,9 +1,8 @@
 %feature("docstring") OT::ArcsineFactory
 "Arcsine factory.
 
-Available constructor:
-    ArcsineFactory()
-
+Notes
+-----
 The parameters are estimated by method of moments:
 
 .. math::
@@ -20,10 +19,12 @@ DistributionFactory, Arcsine"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsArcsine_doc
-"Build the Arcsine distribution.
+%feature("docstring") OT::ArcsineFactory::buildAsArcsine
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsArcsine()
 
     buildAsArcsine(*sample*)
 
@@ -33,14 +34,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+param : sequence of float
+    The parameters of the  :class:`~openturns.Arcsine`.
 
 Returns
 -------
 dist : :class:`~openturns.Arcsine`
-    The built distribution."
-%enddef
-%feature("docstring") OT::ArcsineFactory::buildAsArcsine
-OT_DistributionFactory_buildAsArcsine_doc
+    The built distribution.
+    
+    In the first usage, the default Arcsine distribution is built."
 

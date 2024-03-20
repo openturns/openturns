@@ -6,7 +6,8 @@
 
 %include GaussianProcess_doc.i
 
+%copyctor OT::GaussianProcess;
+
 %include openturns/GaussianProcess.hxx
-namespace OT { %extend GaussianProcess { GaussianProcess(const GaussianProcess & other) { return new OT::GaussianProcess(other); } } }
 
 

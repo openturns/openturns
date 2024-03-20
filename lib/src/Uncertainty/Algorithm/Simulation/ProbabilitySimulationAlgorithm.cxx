@@ -3,7 +3,7 @@
  *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,20 +36,16 @@ CLASSNAMEINIT(ProbabilitySimulationAlgorithm)
 
 static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbose,
-    const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(verbose, convergenceStrategy)
-  , isExperimentProvided_(false)
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy)
+  : EventSimulation(convergenceStrategy)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
-    const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, verbose, convergenceStrategy)
-  , isExperimentProvided_(false)
+  : EventSimulation(event, convergenceStrategy)
 {
   // Nothing to do
 }
@@ -57,9 +53,8 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVecto
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const WeightedExperiment & experiment,
-    const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, verbose, convergenceStrategy)
+  : EventSimulation(event, convergenceStrategy)
   , isExperimentProvided_(true)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
@@ -109,10 +104,10 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
 {
   Point weights;
   const Sample inputSample(experiment_.generateWithWeights(weights));
-  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
-  const DomainImplementation::BoolCollection isRealized(getEvent().getDomain().contains(blockSample));
+  Sample blockSample(blockSize_, 1);
+  const RandomVector event(getEvent());
   for (UnsignedInteger i = 0; i < blockSize_; ++ i)
-    blockSample(i, 0) = isRealized[i];
+    blockSample[i] = event.getFrozenRealization(inputSample[i]);
   if (!experiment_.hasUniformWeights())
     for (UnsignedInteger i = 0; i < blockSize_; ++ i)
       blockSample(i, 0) *= weights[i];

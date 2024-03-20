@@ -6,5 +6,6 @@
 
 %include MonomialFunctionFactory_doc.i
 
+%copyctor OT::MonomialFunctionFactory;
+
 %include openturns/MonomialFunctionFactory.hxx
-namespace OT{ %extend MonomialFunctionFactory { MonomialFunctionFactory(const MonomialFunctionFactory & other) { return new OT::MonomialFunctionFactory(other); } } }

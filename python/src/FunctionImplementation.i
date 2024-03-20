@@ -6,9 +6,9 @@
 
 %include FunctionImplementation_doc.i
 
-%template(EvaluationImplementation) OT::Pointer<OT::EvaluationImplementation>;
-%template(GradientImplementation)   OT::Pointer<OT::GradientImplementation>;
-%template(HessianImplementation)    OT::Pointer<OT::HessianImplementation>;
+%template(_EvaluationImplementationPointer) OT::Pointer<OT::EvaluationImplementation>;
+%template(_GradientImplementationPointer)   OT::Pointer<OT::GradientImplementation>;
+%template(_HessianImplementationPointer)    OT::Pointer<OT::HessianImplementation>;
 
 %ignore OT::FunctionImplementation::getUseDefaultGradientImplementation;
 %ignore OT::FunctionImplementation::setUseDefaultGradientImplementation;
@@ -17,5 +17,6 @@
 
 %ignore OT::FunctionImplementation::isParallel;
 
+%copyctor OT::FunctionImplementation;
+
 %include openturns/FunctionImplementation.hxx
-namespace OT { %extend FunctionImplementation { FunctionImplementation(const FunctionImplementation & other) { return new OT::FunctionImplementation(other); } } }

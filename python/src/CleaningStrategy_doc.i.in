@@ -4,13 +4,8 @@
 Available constructors:
     CleaningStrategy(*orthogonalBasis, maximumDimension*)
 
-    CleaningStrategy(*orthogonalBasis, maximumDimension, verbose*)
-
     CleaningStrategy(*orthogonalBasis, maximumDimension, maximumSize, 
     significanceFactor*)
-
-    CleaningStrategy(*orthogonalBasis, maximumDimension, maximumSize, 
-    significanceFactor, verbose*)
 
 Parameters
 ----------
@@ -28,9 +23,6 @@ significanceFactor : float
     the basis. The real threshold represents the multiplication of the
     significanceFactor with the maximum magnitude of the current determined 
     coefficients. Its default value is equal to :math:`1e^{-4}`.
-verbose : bool
-    Used for the online monitoring of the current basis updates (removed or
-    added coefficients).
 
 
 See also
@@ -70,7 +62,7 @@ Examples
 >>> inputDim = 1
 >>> model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
 >>> # Create the input distribution
->>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> distribution = ot.JointDistribution([ot.Uniform()]*inputDim)
 >>> # Construction of the multivariate orthonormal basis
 >>> polyColl = [0.0]*inputDim
 >>> for i in range(distribution.getDimension()):
@@ -128,20 +120,6 @@ setSignificanceFactor"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CleaningStrategy::getVerbose
-"Accessor to the verbose.
-
-Returns
--------
-verbose : bool
-    Return if the online monitoring of the current basis updates is enabled or not.
-
-See also
---------
-setVerbose"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::CleaningStrategy::setMaximumSize
 "Accessor to the maximum size of the orthogonal basis.
 
@@ -168,16 +146,3 @@ See also
 --------
 getSignificanceFactor"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CleaningStrategy::setVerbose
-"Accessor to the verbose.
-
-Parameters
-----------
-verbose : bool
-    Enable the online monitoring of the current basis updates or not.
-
-See also
---------
-getVerbose"

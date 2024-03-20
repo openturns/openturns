@@ -6,6 +6,7 @@
 
 %include QuadraticFunction_doc.i
 
+%copyctor OT::QuadraticFunction;
+
 %include openturns/QuadraticFunction.hxx
-namespace OT { %extend QuadraticFunction { QuadraticFunction(const QuadraticFunction & other) { return new OT::QuadraticFunction(other); } } }
 

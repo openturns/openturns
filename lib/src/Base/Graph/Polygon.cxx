@@ -2,7 +2,7 @@
 /**
  *  @brief Polygon class for polygon plots
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,8 +56,8 @@ Polygon::Polygon(const Sample & dataX,
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getSize();
-  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
-  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples of dimension greater than 1.";
+  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two samples with different size.";
+  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two samples of dimension greater than 1.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -77,7 +77,7 @@ Polygon::Polygon(const Point & dataX,
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getDimension();
-  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
+  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two points with different size.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -167,6 +167,31 @@ void Polygon::load(Advocate & adv)
 {
   DrawableImplementation::load(adv);
   adv.loadAttribute( "edgeColor_", edgeColor_ );
+}
+
+/* Builds a polygon which fills the area between two curves */
+Polygon Polygon::FillBetween(const Sample & dataX, const Sample & dataY1, const Sample & dataY2)
+{
+  return FillBetween(dataX.asPoint(), dataY1.asPoint(), dataY2.asPoint());
+}
+
+/* Builds a polygon which fills the area between two curves */
+Polygon Polygon::FillBetween(const Point & dataX, const Point & dataY1, const Point & dataY2)
+{
+  const UnsignedInteger size = dataX.getSize();
+  if ((dataY1.getSize() != size) || (dataY2.getSize() != size))
+    throw InvalidArgumentException(HERE) << "Error: cannot fill between curves based on samples with different size.";
+  Sample dataFull(size * 2, 2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    dataFull(i, 0) = dataX[i];
+    dataFull(i, 1) = dataY1[i];
+    dataFull(i + size, 0) = dataX[size - i - 1];
+    dataFull(i + size, 1) = dataY2[size - i - 1];
+  }
+  Polygon polygon(dataFull);
+  polygon.setLineWidth(0); // To only draw between the curves
+  return polygon;
 }
 
 END_NAMESPACE_OPENTURNS

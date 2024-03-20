@@ -2,7 +2,7 @@
 /**
  *  @brief The TruncatedNormal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -442,6 +442,13 @@ Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
     return DistributionImplementation::computeScalarQuantile(prob, tail);
   if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - prob / normalizationFactor_);
   return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob / normalizationFactor_);
+}
+
+Scalar TruncatedNormal::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

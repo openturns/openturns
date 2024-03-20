@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Normal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #include "openturns/NormalFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/Chi.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -116,12 +116,12 @@ DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) c
   Scalar mu = distribution.getMean()[0];
   Scalar sigma = distribution.getSigma()[0];
   const UnsignedInteger size = sample.getSize();
-  ComposedDistribution::DistributionCollection coll;
+  JointDistribution::DistributionCollection coll;
   Normal muDistribution(mu, sigma / sqrt(1.0 * size));
   coll.add(muDistribution);
   Distribution sigmaDistribution(Chi(size - 1) * (sigma / sqrt(1.0 * size - 1.0)));
   coll.add(sigmaDistribution);
-  ComposedDistribution parametersDistribution(coll);
+  JointDistribution parametersDistribution(coll);
   DistributionFactoryResult result(distribution, parametersDistribution);
   return result;
 }

@@ -6,5 +6,6 @@
 
 %include LegendreFactory_doc.i
 
+%copyctor OT::LegendreFactory;
+
 %include openturns/LegendreFactory.hxx
-namespace OT { %extend LegendreFactory { LegendreFactory(const LegendreFactory & other) { return new OT::LegendreFactory(other); } } }

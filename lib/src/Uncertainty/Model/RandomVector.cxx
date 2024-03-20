@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements all random vectors
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,6 +31,8 @@
 #include "openturns/SymbolicFunction.hxx"
 #endif
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/IntersectionEvent.hxx"
+#include "openturns/UnionEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -126,10 +128,22 @@ Point RandomVector::getRealization() const
   return getImplementation()->getRealization();
 }
 
+/* Fixed value accessor */
+Point RandomVector::getFrozenRealization(const Point & fixedPoint) const
+{
+  return getImplementation()->getFrozenRealization(fixedPoint);
+}
+
 /* Numerical sample accessor */
 Sample RandomVector::getSample(UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
+}
+
+/* Fixed sample accessor */
+Sample RandomVector::getFrozenSample(const Sample & fixedSample) const
+{
+  return getImplementation()->getFrozenSample(fixedSample);
 }
 
 /* Mean accessor */
@@ -235,28 +249,29 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect : not eventDomain";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
     if (!levelSet)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect : not levelSet";
     d1 = *levelSet;
   }
 
+  const RandomVector otherAsComposed(other.getImplementation()->asComposedEvent());
   LevelSet d2;
   try
   {
     // ThresholdEvent
-    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+    d2 = LevelSet(otherAsComposed.getFunction(), otherAsComposed.getOperator(), otherAsComposed.getThreshold());
   }
   catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect : other is not an eventDomain";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
     if (!levelSet)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect : other is not a levelSet";
     d2 = *levelSet;
   }
 
@@ -288,28 +303,29 @@ RandomVector RandomVector::join(const RandomVector & other)
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join : not eventDomain";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
     if (!levelSet)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join : not levelSet";
     d1 = *levelSet;
   }
 
+  const RandomVector otherAsComposed(other.getImplementation()->asComposedEvent());
   LevelSet d2;
   try
   {
     // ThresholdEvent
-    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+    d2 = LevelSet(otherAsComposed.getFunction(), otherAsComposed.getOperator(), otherAsComposed.getThreshold());
   }
   catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join : other is not an eventDomain";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
     if (!levelSet)
-      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+      throw NotYetImplementedException(HERE) << "in RandomVector::join : other is not a levelSet";
     d2 = *levelSet;
   }
 
@@ -317,5 +333,6 @@ RandomVector RandomVector::join(const RandomVector & other)
   CompositeRandomVector composite(d3.getFunction(), getAntecedent());
   return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
+
 
 END_NAMESPACE_OPENTURNS

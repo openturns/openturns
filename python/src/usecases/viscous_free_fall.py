@@ -61,7 +61,7 @@ class ViscousFreeFall:
     distC : `Uniform` distribution of the drag
             ot.Uniform(0.0, 30.0)
 
-    distribution : `ComposedDistribution`
+    distribution : `JointDistribution`
                    The joint distribution of the input parameters.
 
     alti : `PythonPointToFieldFunction`, the exact solution of the fall
@@ -94,7 +94,7 @@ class ViscousFreeFall:
         self.distC = ot.Uniform(0.0, 30.0)
 
         # Joint distribution
-        self.distribution = ot.ComposedDistribution(
+        self.distribution = ot.JointDistribution(
             [self.distZ0, self.distV0, self.distM, self.distC]
         )
 

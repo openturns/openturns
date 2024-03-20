@@ -6,5 +6,6 @@
 
 %include VonMises_doc.i
 
+%copyctor OT::VonMises;
+
 %include openturns/VonMises.hxx
-namespace OT { %extend VonMises { VonMises(const VonMises & other) { return new OT::VonMises(other); } } }

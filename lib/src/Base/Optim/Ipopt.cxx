@@ -2,7 +2,7 @@
 /**
  *  @brief Ipopt optimization solver.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -113,9 +113,9 @@ void Ipopt::run()
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
-
+ 
   // Create BonminProblem
-  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
+  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 
@@ -124,97 +124,127 @@ void Ipopt::run()
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
   app->Options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
+  if (getMaximumConstraintError() > 0.0)
+    app->Options()->SetNumericValue("constr_viol_tol", getMaximumConstraintError());
+  else
+    app->Options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
+  app->Options()->SetNumericValue("bound_relax_factor", 0.0);
+
+  // max_wall_time is only available from ipopt>=3.14
+  if (getMaximumTimeDuration() > 0.0)
+    app->Options()->SetNumericValue("max_wall_time", getMaximumTimeDuration());
   GetOptionsFromResourceMap(app->Options());
-  String optlist;
-  app->Options()->PrintList(optlist);
-  LOGDEBUG(optlist);
 
   // Initialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
   if (status != Solve_Succeeded)
-  {
     throw InternalException(HERE) << "ipopt failed with code " << status;
-  }
 
   // Ask Ipopt to solve the problem
   status = app->OptimizeTNLP(ipoptProblem);
-  String statusString;
-  switch (status)
-  {
-    // info/warning (>0)
-    case Solved_To_Acceptable_Level:
-      statusString = "Solved to acceptable level";
-      break;
-    case Infeasible_Problem_Detected:
-      statusString = "Infeasible problem detected";
-      break;
-    case Search_Direction_Becomes_Too_Small:
-      statusString = "Search direction becomes too small";
-      break;
-    case Diverging_Iterates:
-      statusString = "Diverging iterates";
-      break;
-    case User_Requested_Stop:
-      statusString = "User requested stop";
-      break;
-    case Feasible_Point_Found:
-      statusString = "Feasible point found";
-      break;
-    // errors/exception (<0)
-    case Maximum_Iterations_Exceeded:
-      statusString = "Maximum iterations exceeded";
-      break;
-    case Restoration_Failed:
-      statusString = "Restoration failed";
-      break;
-    case Error_In_Step_Computation:
-      statusString = "Error in step computation";
-      break;
-    case Maximum_CpuTime_Exceeded:
-      statusString = "Maximum CPU time exceeded";
-      break;
-    case Not_Enough_Degrees_Of_Freedom:
-      statusString = "Not enough degrees of freedom";
-      break;
-    case Invalid_Problem_Definition:
-      statusString = "Invalid problem definition";
-      break;
-    case Invalid_Option:
-      statusString = "Invalid option";
-      break;
-    case Invalid_Number_Detected:
-      statusString = "Invalid number detected";
-      break;
-    case Unrecoverable_Exception:
-      statusString = "Unrecoverable exception";
-      break;
-    case NonIpopt_Exception_Thrown:
-      statusString = "NonIpopt exception thrown";
-      break;
-    case Insufficient_Memory:
-      statusString = "Insufficient memory";
-      break;
-    case Internal_Error:
-      statusString = "Internal Error";
-      break;
-    default:
-      statusString = (OSS() << status);
-      break;
-  }
-  if (status > 0)
-  {
-    LOGINFO(OSS() << "Ipopt exited with status: " << statusString);
-  }
-  else if (status < 0)
-  {
-    throw InternalException(HERE) << "Ipopt error: " << statusString;
-  }
+
+  // print used options
+  String optionsLog;
+  app->Options()->PrintList(optionsLog);
+  LOGDEBUG(optionsLog);
 
   const Sample inputHistory(ipoptProblem->getInputHistory());
   setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
+  String statusMessage;
+  switch (status)
+  {
+    case Solve_Succeeded:
+      statusMessage = "Solve succeeded";
+      break;
+    // info/warning (>0)
+    case Solved_To_Acceptable_Level:
+      statusMessage = "Solved to acceptable level";
+      break;
+    case Infeasible_Problem_Detected:
+      statusMessage = "Infeasible problem detected";
+      break;
+    case Search_Direction_Becomes_Too_Small:
+      statusMessage = "Search direction becomes too small";
+      break;
+    case Diverging_Iterates:
+      statusMessage = "Diverging iterates";
+      break;
+    case User_Requested_Stop:
+      statusMessage = "User requested stop";
+      break;
+    case Feasible_Point_Found:
+      statusMessage = "Feasible point found";
+      break;
+    // errors/exception (<0)
+    case Maximum_Iterations_Exceeded:
+      statusMessage = "Maximum iterations exceeded";
+      break;
+    case Restoration_Failed:
+      statusMessage = "Restoration failed";
+      break;
+    case Error_In_Step_Computation:
+      statusMessage = "Error in step computation";
+      break;
+#if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
+    case Maximum_WallTime_Exceeded:
+      statusMessage = "Maximum Wall time exceeded";
+      break;
+#endif
+    case Not_Enough_Degrees_Of_Freedom:
+      statusMessage = "Not enough degrees of freedom";
+      break;
+    case Invalid_Problem_Definition:
+      statusMessage = "Invalid problem definition";
+      break;
+    case Invalid_Option:
+      statusMessage = "Invalid option";
+      break;
+    case Invalid_Number_Detected:
+      statusMessage = "Invalid number detected";
+      break;
+    case Unrecoverable_Exception:
+      statusMessage = "Unrecoverable exception";
+      break;
+    case NonIpopt_Exception_Thrown:
+      statusMessage = "NonIpopt exception thrown";
+      break;
+    case Insufficient_Memory:
+      statusMessage = "Insufficient memory";
+      break;
+    case Internal_Error:
+      statusMessage = "Internal Error";
+      break;
+    default:
+      statusMessage = (OSS() << "Unknown status: "<< status);
+      break;
+  }
+  result_.setStatusMessage(statusMessage);
+
+  if (status > 0)
+  {
+    LOGINFO(OSS() << "Ipopt exited with status: " << statusMessage);
+  }
+#if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
+  else if (status == Maximum_WallTime_Exceeded)
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+  }
+#endif
+  else if (status < 0)
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+  }
+
+  if (status < 0)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Ipopt error: " << statusMessage;
+    else
+      LOGWARN(OSS() << "Ipopt algorithm failed. The error message is " << result_.getStatusMessage());
+  }
 #else
   throw NotYetImplementedException(HERE) << "No Ipopt support";
 #endif

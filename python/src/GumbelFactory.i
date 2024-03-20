@@ -6,5 +6,6 @@
 
 %include GumbelFactory_doc.i
 
+%copyctor OT::GumbelFactory;
+
 %include openturns/GumbelFactory.hxx
-namespace OT { %extend GumbelFactory { GumbelFactory(const GumbelFactory & other) { return new OT::GumbelFactory(other); } } }

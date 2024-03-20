@@ -6,5 +6,6 @@
 
 %include TranslationEvaluation_doc.i
 
+%copyctor OT::TranslationEvaluation;
+
 %include openturns/TranslationEvaluation.hxx
-namespace OT { %extend TranslationEvaluation { TranslationEvaluation(const TranslationEvaluation & other) { return new OT::TranslationEvaluation(other); } } }

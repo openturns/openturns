@@ -1,12 +1,16 @@
 %feature("docstring") OT::VonMises
-"von Mises distribution.
+"Von Mises distribution.
 
 Parameters
 ----------
 mu : float
-    Mean parameter
+    Mean parameter.
+
+    Default value is 0.0.
 kappa : float, :math:`\kappa > 0`
-    Concentration parameter
+    Concentration parameter.
+
+    Default value is 1.0.
 
 Notes
 -----
@@ -69,3 +73,23 @@ Parameters
 ----------
 kappa : float, :math:`\kappa > 0`
     Concentration parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularMean
+"Accessor to the circular mean.
+
+Returns
+-------
+mu : float
+    Circular mean :math:`\mu`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularVariance
+"Accessor to the circular variance.
+
+Returns
+-------
+var : float
+    Circular variance :math:`1-\frac{I_1(\kappa)}{I_0(\kappa)}`"

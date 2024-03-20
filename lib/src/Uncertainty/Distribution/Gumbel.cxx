@@ -2,7 +2,7 @@
 /**
  *  @brief The Gumbel distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -230,6 +230,13 @@ Scalar Gumbel::computeScalarQuantile(const Scalar prob,
 {
   if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0 / beta_);
   return gamma_ - std::log(-std::log(prob)) / (1.0 / beta_);
+}
+
+Scalar Gumbel::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

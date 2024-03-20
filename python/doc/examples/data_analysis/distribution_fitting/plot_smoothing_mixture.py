@@ -133,7 +133,7 @@ curve = fit.drawPDF()
 graph.add(curve)
 graph.setColors(["dodgerblue3", "darkorange1"])
 graph.setLegends(["Mixture", "Kernel smoothing"])
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

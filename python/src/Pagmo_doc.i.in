@@ -20,7 +20,7 @@ startingSample : 2-d sequence of float, optional
 
 Notes
 -----
-The total number of evaluations is the size of the initial population multiplied by the iteration number.
+The total number of evaluations is the size of the initial population multiplied by the iteration number plus one.
 Starting points provided through the *startingSample* parameter should be
 within the bounds of the :class:`~openturns.OptimizationProblem`, but this is not enforced.
 
@@ -89,7 +89,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 
 Sample the initial population inside a box:
 
->>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 2.0)] * dim)
+>>> uniform = ot.JointDistribution([ot.Uniform(-2.0, 2.0)] * dim)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> init_pop = uniform.getSample(5)
 
@@ -117,7 +117,7 @@ Define a multi-objective problem:
 
 Sample the initial population inside a box:
 
->>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 3.0)] * dim)
+>>> uniform = ot.JointDistribution([ot.Uniform(-2.0, 3.0)] * dim)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> init_pop = uniform.getSample(5)
 

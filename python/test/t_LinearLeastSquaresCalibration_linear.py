@@ -15,7 +15,7 @@ ot.RandomGenerator.SetSeed(0)
 
 def modelLineaire(X):
     x, theta1, theta2, theta3 = X
-    y = theta1 + theta2 * x + theta3 * x ** 2
+    y = theta1 + theta2 * x + theta3 * x**2
     return [y]
 
 
@@ -30,7 +30,7 @@ Theta1 = ot.Dirac(trueParameter[0])
 Theta2 = ot.Dirac(trueParameter[1])
 Theta3 = ot.Dirac(trueParameter[2])
 
-inputRandomVector = ot.ComposedDistribution([X, Theta1, Theta2, Theta3])
+inputRandomVector = ot.JointDistribution([X, Theta1, Theta2, Theta3])
 
 candidate = ot.Point([8.0, 9.0, -6.0])
 

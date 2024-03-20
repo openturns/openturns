@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all numerical math function implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,15 +60,13 @@ public:
   EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
-protected:
-  using PersistentObject::operator ==;
-public:
   Bool operator ==(const EvaluationImplementation & other) const;
+  using PersistentObject::operator ==;
 
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
-
+  String _repr_html_() const override;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);

@@ -69,3 +69,9 @@ print("Standard representative=", distribution.getStandardRepresentative())
 alpha = 0.05
 bounds = distribution.computeBilateralConfidenceInterval(1 - alpha)
 print("%.2f%% bilateral confidence interval" % ((1 - alpha) * 100), " =", bounds)
+
+# check survival at upper bound
+distribution = ot.Binomial(10, 1.0)
+assert distribution.computeCDF(10.0) == 1.0
+assert distribution.computeComplementaryCDF(10.0) == 0.0
+assert distribution.computeSurvivalFunction(10.0) == 0.0

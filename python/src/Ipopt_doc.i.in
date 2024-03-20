@@ -74,7 +74,7 @@ Inequality constraints are defined by a function :math:`h` such that :math:`h(x)
 
 >>> algo = ot.Ipopt(problem)
 >>> algo.setStartingPoint([0,0,0,0])
->>> algo.setMaximumEvaluationNumber(1000)
+>>> algo.setMaximumCallsNumber(1000)
 >>> algo.setMaximumIterationNumber(1000)
 >>> ot.ResourceMap.AddAsScalar('Ipopt-max_cpu_time', 5.0)
 

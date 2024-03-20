@@ -2,7 +2,7 @@
 /**
  *  @brief The class enables to get the coefficients of an ARMA process using its spectral density function
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,10 +72,6 @@ public:
   ARMA buildWithCriteria(const ProcessSample & sample,
                          Point & informationCriteriaOut) const;
 
-  /** Verbosity accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
   /** Enable or disable the estimation history */
   void enableHistory() const;
   void disableHistory() const;
@@ -129,9 +125,6 @@ private :
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable Scalar sigma2_;
 
-  /** Verbosity control */
-  Bool verbose_;
-
   /** History flag */
   mutable Bool isHistoryEnabled_;
 
@@ -163,7 +156,7 @@ private :
 protected:
 
   /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
 }; /* class WhittleFactory */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief MetropolisHastingsImplementation base class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -110,10 +110,6 @@ public:
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
 
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
-
   /** Acceptance rate accessor*/
   Scalar getAcceptanceRate() const;
 
@@ -160,9 +156,6 @@ private:
   Function linkFunction_;
   Sample covariates_;
   Sample observations_;
-
-  // verbosity flag
-  Bool verbose_ = false;
 
   // unnormalized log-posterior density of the current state
   mutable Scalar currentLogPosterior_ = 0.0;

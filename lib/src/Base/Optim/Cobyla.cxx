@@ -2,7 +2,7 @@
 /**
  *  @brief Cobyla is an actual implementation for OptimizationAlgorithmImplementation using the cobyla library
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -101,8 +101,8 @@ void Cobyla::run()
   }
 
   Scalar rhoEnd = getMaximumAbsoluteError();
-  int maxFun = getMaximumEvaluationNumber();
-  cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
+  int maxFun = getMaximumCallsNumber();
+  cobyla_message message = (Log::HasDebug() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE);
 
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
@@ -110,6 +110,8 @@ void Cobyla::run()
   equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
   result_ = OptimizationResult(getProblem());
+
+  t0_ = std::chrono::steady_clock::now();
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -131,17 +133,29 @@ void Cobyla::run()
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
   int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
-  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
-  {
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
-    else
-      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
-  }
-  if (!evaluationInputHistory_.getSize())
-    throw InternalException(HERE) << "Cobyla error at starting point x=" << x << " (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
+    result_.setStatus(OptimizationResult::FAILURE);
+
+  // check for timeout
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
+  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << "s");
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "The Cobyla algorithm failed. The error message is " << result_.getStatusMessage());
+  }
 }
 
 /* RhoBeg accessor */
@@ -207,11 +221,26 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   {
     for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
       if (!SpecFunc::IsNormal(inP[i]))
-        throw InvalidArgumentException(HERE) << "Cobyla got a nan input value";
+        throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
-    outP = problem.getObjective().operator()(inP);
+    // evaluate the function on the clipped point (still penalized if outside the bounds) 
+    Point inClip(inP);
+    if (problem.hasBounds())
+    {
+      const Point lowerBound(problem.getBounds().getLowerBound());
+      const Point upperBound(problem.getBounds().getUpperBound());
+      const Scalar maximumConstraintError = algorithm->getMaximumConstraintError();
+      for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
+      {
+        if (problem.getBounds().getFiniteLowerBound()[i])
+          inClip[i] = std::max(inP[i], lowerBound[i] - maximumConstraintError);
+        if (problem.getBounds().getFiniteUpperBound()[i])
+          inClip[i] = std::min(inP[i], upperBound[i] + maximumConstraintError);
+      }
+    }
+    outP = problem.getObjective().operator()(inClip);
 
-    if (!SpecFunc::IsNormal(outP[0]))
+    if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
 
     // cobyla freezes when dealing with SpecFunc::MaxScalar
@@ -230,7 +259,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     // exit gracefully
     return 1;
   }
-
   UnsignedInteger shift = 0;
 
   /* Compute the inequality constraints at inP */
@@ -273,13 +301,19 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, constraintValue.normInf(), algorithm->getMaximumConstraintError());
 
   int returnValue = 0;
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    returnValue = 1;
+
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {
@@ -297,12 +331,14 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
 void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
 {
-  ignoreFailure_ = ignoreFailure;
+  LOGWARN(OSS() << "Cobyla.setIgnoreFailure is deprecated, use setCheckStatus");
+  setCheckStatus(!ignoreFailure);
 }
 
 Bool Cobyla::getIgnoreFailure() const
 {
-  return ignoreFailure_;
+  LOGWARN(OSS() << "Cobyla.getIgnoreFailure is deprecated, use getCheckStatus");
+  return !getCheckStatus();
 }
 
 END_NAMESPACE_OPENTURNS

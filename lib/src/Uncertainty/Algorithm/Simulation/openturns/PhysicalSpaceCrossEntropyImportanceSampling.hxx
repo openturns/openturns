@@ -2,7 +2,7 @@
 /**
  *  @brief PhysicalSpaceCrossEntropyImportanceSampling implements Importance Sampling by Cross Entropy algorithm in Physical Space
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,7 +70,7 @@ protected:
 
   /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
   void resetAuxiliaryDistribution() override;
-  
+
   Point optimizeAuxiliaryDistributionParameters(const Sample &  auxiliaryCriticInputSamples) const override;
 
 private:
@@ -80,7 +80,7 @@ private:
 
   // Initial auxiliary distribution parameters
   Point initialAuxiliaryDistributionParameters_;
-  
+
   // bounds for optimization algorithm
   Interval bounds_;
 

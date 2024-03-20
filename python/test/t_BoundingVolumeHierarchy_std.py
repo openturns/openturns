@@ -22,7 +22,7 @@ for dim in [1, 2, 3]:
     print("bvh=", bvh)
 
     ot.RandomGenerator.SetSeed(0)
-    test = ot.ComposedDistribution([ot.Uniform(-1.0, 11.0)] * dim).getSample(100)
+    test = ot.JointDistribution([ot.Uniform(-1.0, 11.0)] * dim).getSample(100)
 
     for i, vertex in enumerate(test):
         index = bvh.query(vertex)

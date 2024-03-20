@@ -40,7 +40,7 @@ X2 = ot.Normal(0.0, 3.0)
 # Independent marginals
 # ---------------------
 
-distX = ot.ComposedDistribution([X1, X2])
+distX = ot.JointDistribution([X1, X2])
 sample = distX.getSample(1000)
 
 
@@ -106,7 +106,7 @@ graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True,
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
@@ -125,7 +125,7 @@ view = viewer.View(graph)
 
 # %%
 copula = ot.ClaytonCopula(2.5)
-distX = ot.ComposedDistribution([X1, X2], copula)
+distX = ot.JointDistribution([X1, X2], copula)
 
 # %%
 # We generate a sample from the distribution :
@@ -192,7 +192,7 @@ graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True,
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition("bottomright")
+graph.setLegendPosition("lower right")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseNormal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -74,6 +74,9 @@ public:
   /** Get the CDF of the InverseNormal distribution */
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;

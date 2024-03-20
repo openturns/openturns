@@ -2,7 +2,7 @@
 /**
  *  @brief The Wishart distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,7 +86,7 @@ String Wishart::__repr__() const
 String Wishart::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << getClassName() << "(V = " << Os::GetEndOfLine() << offset << getV() << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(V = " << "\n" << offset << getV() << ", nu = " << nu_ << ")";
   return oss;
 }
 

@@ -16,7 +16,7 @@ mesh2DBoundaryOutside = otexp.BoundaryMesher().build(mesh2D, 0.05)
 # Build a thick inside Mesh boundary
 mesh2DBoundaryInside = otexp.BoundaryMesher().build(mesh2D, -0.05)
 # Create a Graph
-graph = ot.Graph("", "", "", True, "bottomright")
+graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2D.draw())
 # Then, draw it
 fig = plt.figure(figsize=(16, 4))
@@ -25,7 +25,7 @@ View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("", "", "", True, "bottomright")
+graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2DBoundary.draw())
 # Then, draw it
 axis = fig.add_subplot(142)
@@ -33,7 +33,7 @@ View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("", "", "", True, "bottomright")
+graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2DBoundaryInside.draw())
 # Then, draw it
 axis = fig.add_subplot(143)
@@ -41,7 +41,13 @@ View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("A 2D mesh with its boundary, its inside thick boundary and its outside thick boundary", "", "", True, "bottomright")
+graph = ot.Graph(
+    "A 2D mesh with its boundary, its inside thick boundary and its outside thick boundary",
+    "",
+    "",
+    True,
+    "lower right",
+)
 graph.add(mesh2DBoundaryOutside.draw())
 # Then, draw it
 axis = fig.add_subplot(144)

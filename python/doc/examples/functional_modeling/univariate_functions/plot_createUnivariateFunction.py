@@ -46,16 +46,16 @@ print(type(f1))
 g = f1.draw(-1.0, 1.0, 256)
 g.add(f2.draw(-1.0, 1.0, 256))
 g.add(f3.draw(-1.0, 1.0, 256))
-g.setLegends([r'$\phi_1(x)$', r'$\phi_2(x)$', r'$\phi_3(x)$'])
-g.setLegendPosition('bottomright')
+g.setLegends([r"$\phi_1(x)$", r"$\phi_2(x)$", r"$\phi_3(x)$"])
+g.setLegendPosition("lower right")
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
-g.setTitle('Legendre Polynomials')
+g.setTitle("Legendre Polynomials")
 view = otv.View(g)
 
 # %%
 # We get the measure associated to the polynomial family:
 measure_Legendre = ot.LegendreFactory().getMeasure()
-print('Measure orthogonal to Legendre polynomials = ', measure_Legendre)
+print("Measure orthogonal to Legendre polynomials = ", measure_Legendre)
 
 # %%
 # Case 2: Univariate polynomials
@@ -81,9 +81,9 @@ print('Measure orthogonal to Legendre polynomials = ', measure_Legendre)
 f = ot.UniVariatePolynomial([1.0, 2.0, 3.0, 4.0])
 g1 = ot.MonomialFunctionFactory().build(3)
 g2 = ot.MonomialFunction(3)
-print('f = ', f)
-print('g1 = ', g1)
-print('g2 = ', g2)
+print("f = ", f)
+print("g1 = ", g1)
+print("g2 = ", g2)
 
 # %%
 # There is no associated measure: if it is uncommented, the following command will fail, as expected.
@@ -111,16 +111,16 @@ f3 = ot.HaarWaveletFactory().build(3)
 g = f1.draw(0.0, 1.0, 256)
 g.add(f2.draw(0.0, 1.0, 256))
 g.add(f3.draw(0.0, 1.0, 256))
-g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
-g.setLegendPosition('topright')
+g.setLegends([r"$\phi_1(x)$", r"$\phi_21(x)$", r"$\phi_3(x)$"])
+g.setLegendPosition("upper right")
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
-g.setTitle('Haar Wavelets')
+g.setTitle("Haar Wavelets")
 view = otv.View(g)
 
 # %%
 # We get the measure: for the Haar Wavelet family, the :math:`\mathcal{U}(0,1)` distribution.
 measure_Haar = ot.HaarWaveletFactory().getMeasure()
-print('Measure orthogonal to Haar wavelets = ', measure_Haar)
+print("Measure orthogonal to Haar wavelets = ", measure_Haar)
 
 # %%
 # For example, we consider a Fourier Series.
@@ -131,16 +131,16 @@ f3 = ot.FourierSeriesFactory().build(3)
 g = f1.draw(-3.0, 3.0, 256)
 g.add(f2.draw(-3.0, 3.0, 256))
 g.add(f3.draw(-3.0, 3.0, 256))
-g.setLegends([r'$\phi_1(x)$', r'$\phi_21(x)$', r'$\phi_3(x)$'])
-g.setLegendPosition('topright')
+g.setLegends([r"$\phi_1(x)$", r"$\phi_21(x)$", r"$\phi_3(x)$"])
+g.setLegendPosition("upper right")
 g.setColors(ot.Drawable.BuildDefaultPalette(3))
-g.setTitle('Fourier Series')
+g.setTitle("Fourier Series")
 view = otv.View(g)
 
 # %%
 # We get the measure: for the Fourier Series, the :math:`\mathcal{U}(-\pi, \pi)` distribution.
 measure_Fourier = ot.FourierSeriesFactory().getMeasure()
-print('Measure orthogonal to Fourier series = ', measure_Fourier)
+print("Measure orthogonal to Fourier series = ", measure_Fourier)
 
 
 # %%

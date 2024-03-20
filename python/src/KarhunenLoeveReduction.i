@@ -6,7 +6,8 @@
 
 %include KarhunenLoeveReduction_doc.i
 
+%copyctor OT::KarhunenLoeveReduction;
+
 %include openturns/KarhunenLoeveReduction.hxx
-namespace OT { %extend KarhunenLoeveReduction { KarhunenLoeveReduction(const KarhunenLoeveReduction & other) { return new OT::KarhunenLoeveReduction(other); } } }
 
 

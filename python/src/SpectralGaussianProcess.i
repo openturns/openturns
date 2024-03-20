@@ -6,8 +6,9 @@
 
 %include SpectralGaussianProcess_doc.i
 
+%copyctor OT::SpectralGaussianProcess;
+
 %include openturns/SpectralGaussianProcess.hxx
-namespace OT { %extend SpectralGaussianProcess { SpectralGaussianProcess(const SpectralGaussianProcess & other) { return new OT::SpectralGaussianProcess(other); } } }
 
 
 

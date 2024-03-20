@@ -4,11 +4,10 @@ import unittest as ut
 from math import log, pi
 
 import openturns as ot
-
-# (value, reference, rtol, atol)
-from openturns.testing import assert_almost_equal
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
+ot.TBB.Disable()
 
 # Prevent from using unittest.TestLoader.loadTestsFromTestCase
 # so as not to get the test execution duration
@@ -94,9 +93,9 @@ class TestInverseWishartMethods(ut.TestCase):
             logPDFx = logPDF(x)
             logPDFx_IW = self.one_dimensional_inverse_wishart.computeLogPDF(x)
             logPDFx_IG = self.inverse_gamma.computeLogPDF(x)
-            assert_almost_equal(logPDFx_IW, logPDFx)
-            assert_almost_equal(logPDFx_IG, logPDFx)
-            assert_almost_equal(logPDFx_IW, logPDFx_IG)
+            ott.assert_almost_equal(logPDFx_IW, logPDFx)
+            ott.assert_almost_equal(logPDFx_IG, logPDFx)
+            ott.assert_almost_equal(logPDFx_IW, logPDFx_IG)
 
     # Not a test
     # The log multi-gamma function appears in the log PDF
@@ -129,7 +128,7 @@ class TestInverseWishartMethods(ut.TestCase):
             inverse_gamma = ot.InverseGamma(2.0 / Scale[d, d], k)
             logdensity = logdensity - inverse_gamma.computeLogPDF(diagX[d, 0])
             logratio = logratio + 0.5 * (1 - dimension) * log(0.5 * Scale[d, d])
-        assert_almost_equal(logdensity, logratio)
+        ott.assert_almost_equal(logdensity, logratio)
 
     # Test InverseWishart.computeLogPDF by evaluating the log PDF
     # at the scale covariance matrix
@@ -141,7 +140,7 @@ class TestInverseWishartMethods(ut.TestCase):
         logPDFatX = -self.logmultigamma(dimension, 0.5 * DoF) - 0.5 * (
             DoF * dimension * log(2.0) + dimension + (dimension + 1) * log(determinant)
         )
-        assert_almost_equal(inverse_wishart.computeLogPDF(Scale), logPDFatX)
+        ott.assert_almost_equal(inverse_wishart.computeLogPDF(Scale), logPDFatX)
 
     # Compare the empirical expectations of a large matrix sample
     # and of the corresponding inverse matrix sample
@@ -170,14 +169,14 @@ class TestInverseWishartMethods(ut.TestCase):
         indice, coefficient = 0, 1.0 / (DoF - d - 1)
         for j in range(d):
             for k in range(j + 1):
-                assert_almost_equal(
+                ott.assert_almost_equal(
                     theoretical_mean_inverse[indice], coefficient * Scale[k, j]
                 )
-                assert_almost_equal(theoretical_mean[indice], DoF * Scale_wishart[k, j])
-                assert_almost_equal(
+                ott.assert_almost_equal(theoretical_mean[indice], DoF * Scale_wishart[k, j])
+                ott.assert_almost_equal(
                     mean_inverse[indice], coefficient * Scale[k, j], 0.15, 1.0e-3
                 )
-                assert_almost_equal(
+                ott.assert_almost_equal(
                     mean[indice], DoF * Scale_wishart[k, j], 0.15, 1.0e-3
                 )
                 indice += 1

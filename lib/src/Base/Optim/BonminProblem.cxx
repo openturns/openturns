@@ -4,7 +4,7 @@
  * for optimization problems. It is derived from Bonmin::TMINLP to ensure
  * compatibility with Bonmin algorithms.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,15 +31,17 @@ BEGIN_NAMESPACE_OPENTURNS
 /** Constructor with parameters */
 BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
                               const Point & startingPoint,
-                              const UnsignedInteger maximumEvaluationNumber)
+                              const UnsignedInteger maximumCallsNumber,
+                              const Scalar maximumTimeDuration,
+                              const std::chrono::steady_clock::time_point & t0)
   : TMINLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
   , evaluationInputHistory_(0, optimProblem.getDimension())
   , evaluationOutputHistory_(0, 1)
-  , optimalPoint_(optimProblem.getDimension())
-  , optimalValue_(1)
-  , maximumEvaluationNumber_(maximumEvaluationNumber)
+  , maximumCallsNumber_(maximumCallsNumber)
+  , maximumTimeDuration_(maximumTimeDuration)
+  , t0_(t0)
   , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
 {
@@ -264,6 +266,7 @@ bool BonminProblem::get_starting_point(int /*n*/,
   return true;
 }
 
+
 bool BonminProblem::eval_f(int n,
                            const double* x,
                            bool /*new_x*/,
@@ -293,10 +296,19 @@ bool BonminProblem::eval_f(int n,
   evaluationInputHistory_.add(xPoint);
   evaluationOutputHistory_.add(yPoint);
 
+  // enforce time limit even before bonmin.time_limit can be taken into account
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  if ((maximumTimeDuration_ > 0.0) && (timeDuration > maximumTimeDuration_))
+  {
+    timeOut_ = true;
+    return false;
+  }
+
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumEvaluationNumber_, progressCallback_.second);
+    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -305,7 +317,7 @@ bool BonminProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumEvaluationNumber_);
+  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
 }
 
 
@@ -419,7 +431,7 @@ bool BonminProblem::eval_jac_g(int n,
     // Convert x to OT::Point
     Point xPoint(n);
     std::copy(x, x + n, xPoint.begin());
-
+    
     // Filling values array
     UnsignedInteger k = 0;
     UnsignedInteger nbEqualityConstraints = 0;
@@ -623,7 +635,7 @@ bool BonminProblem::eval_grad_gi(int n,
   // Convert x to OT::Point
   Point xPoint(n);
   std::copy(x, x + n, xPoint.begin());
-
+  
   // Computing constraint derivative
   nele_grad_gi = n;
 
@@ -670,26 +682,11 @@ bool BonminProblem::eval_grad_gi(int n,
 }
 
 void BonminProblem::finalize_solution( TMINLP::SolverReturn status,
-                                       Ipopt::Index n,
-                                       const Ipopt::Number* x,
-                                       Ipopt::Number obj_value)
+                                       Ipopt::Index /*n*/,
+                                       const Ipopt::Number* /*x*/,
+                                       Ipopt::Number /*obj_value*/)
 {
-  // Check if solver succeeded
-  const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
-                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"
-                                       };
-  if (!(status < bonminExitStatus.getSize()))
-    throw InternalException(HERE) << "Bonmin solver exited with status UNKNOWN ERROR";
-
-  if (status != SUCCESS)
-    throw InternalException(HERE) << "Bonmin solver exited with status " << bonminExitStatus[status];
-
-  // Convert x to OT::Point
-  std::copy(x, x + n, optimalPoint_.begin());
-  if (optimProblem_.isMinimization())
-    optimalValue_[0] = obj_value;
-  else
-    optimalValue_[0] = -obj_value;
+  status_ = status;
 }
 
 

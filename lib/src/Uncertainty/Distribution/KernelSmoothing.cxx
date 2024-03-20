@@ -2,7 +2,7 @@
 /**
  *  @brief This class acts like a KernelMixture factory, implementing a
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -306,7 +306,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
         marginalConstant.add(xmin[j]);
         degenerateDescription.add(description[j]);
       }
-    ComposedDistribution::DistributionCollection coll;
+    JointDistribution::DistributionCollection coll;
     const Indices okIndices(degenerateIndices.complement(dimension));
     const Sample marginalSample(sample.getMarginal(okIndices));
     Distribution okDistribution(build(marginalSample, marginalBandwidth));

@@ -53,7 +53,7 @@ S = ot.CorrelationMatrix(2)
 S[1, 0] = 0.3
 R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(S)
 copula = ot.NormalCopula(R)
-distribution_corr = ot.ComposedDistribution([ot.Normal()] * 2, copula)
+distribution_corr = ot.JointDistribution([ot.Normal()] * 2, copula)
 
 # %%
 # ANCOVA needs a functional decomposition of the model
@@ -70,7 +70,7 @@ X = experiment.generate()
 Y = model(X)
 algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy)
 algo.run()
-result = ot.FunctionalChaosResult(algo.getResult())
+result = algo.getResult()
 
 # %%
 # Create the input sample taking account the correlation

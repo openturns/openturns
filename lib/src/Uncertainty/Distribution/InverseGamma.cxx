@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseGamma distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -299,6 +299,13 @@ void InverseGamma::computeMean() const
   if (!(k_ > 1.0)) throw NotDefinedException(HERE) << "InverseGamma mean is defined only for k > 1, here k=" << k_;
   mean_ = Point(1, 1.0 / (lambda_ * (k_ - 1.0)));
   isAlreadyComputedMean_ = true;
+}
+
+Scalar InverseGamma::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Get the standard deviation of the distribution */

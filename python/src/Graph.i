@@ -36,7 +36,7 @@ namespace OT {
 
 OTTypedInterfaceObjectHelper(Graph)
 
-%template(GraphCollection) OT::Collection<OT::Graph>;
+%template(_GraphCollection) OT::Collection<OT::Graph>;
 
 %include openturns/Graph.hxx
 

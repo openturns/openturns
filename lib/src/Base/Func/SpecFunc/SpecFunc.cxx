@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,16 +67,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 // Some facilities for NaN and inf
-Bool SpecFunc::IsNaN(const Scalar value)
-{
-  return value != value;
-}
-
-Bool SpecFunc::IsInf(const Scalar value)
-{
-  return (value == value) && IsNaN(value - value);
-}
-
 Bool SpecFunc::IsNormal(const Scalar value)
 {
   return value - value == 0.0;

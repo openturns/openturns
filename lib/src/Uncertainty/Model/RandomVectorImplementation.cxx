@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of random vectors
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,6 +89,12 @@ Point RandomVectorImplementation::getRealization() const
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getRealization() const";
 }
 
+/* Fixed value accessor */
+Point RandomVectorImplementation::getFrozenRealization(const Point & fixedPoint) const
+{
+  return fixedPoint;
+}
+
 /* Numerical sample accessor */
 Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
@@ -96,6 +102,12 @@ Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization();
   result.setDescription(getDescription());
   return result;
+}
+
+/* Fixed sample accessor */
+Sample RandomVectorImplementation::getFrozenSample(const Sample & fixedSample) const
+{
+  return fixedSample;
 }
 
 /* Mean accessor */
@@ -182,6 +194,11 @@ Description RandomVectorImplementation::getParameterDescription() const
 Bool RandomVectorImplementation::isEvent() const
 {
   return false;
+}
+
+RandomVector RandomVectorImplementation::asComposedEvent() const
+{
+  throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::asComposedEvent";
 }
 
 /* Method save() stores the object through the StorageManager */

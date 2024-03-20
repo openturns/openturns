@@ -2,7 +2,7 @@
 /**
  *  @brief The class building chaos expansions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,7 +91,7 @@ String ExpertMixture::__repr__() const
 
 String ExpertMixture::__str__(const String & offset) const
 {
-  return OSS(false) << "experts=" << experts_.__str__(offset) << Os::GetEndOfLine() << offset
+  return OSS(false) << "experts=" << experts_.__str__(offset) << "\n" << offset
          << "classifier=" << classifier_.__str__(offset);
 }
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ARMA
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,11 +82,11 @@ int main(int, char *[])
     Distribution dist2 = Normal(0.0, 0.02);
 
     // Create a collection of distribution
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add( dist1 );
     aCollection.add( dist2 );
 
-    Distribution dist  = ComposedDistribution(aCollection);
+    Distribution dist  = JointDistribution(aCollection);
     fullprint << "dist = " << dist << std::endl;
 
     WhiteNoise whiteNoise(dist);

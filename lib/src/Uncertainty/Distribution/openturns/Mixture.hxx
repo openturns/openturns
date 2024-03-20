@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements mixtures
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -92,6 +92,10 @@ public:
   /** Get the CDF of the Mixture */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
+
+  /** Get the complementary CDF of the Mixture */
+  using DistributionImplementation::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the survival function */
   using DistributionImplementation::computeSurvivalFunction;

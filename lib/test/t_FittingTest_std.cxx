@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -145,6 +145,9 @@ int main(int, char *[])
     {
       const Scalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
       resultBIC(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
+      // In the context of this test, inf and 1.79769e+308 are considered equal
+      // TODO JM: remove the check after the use of infs has been thoroughly tested
+      if (resultBIC(i, j) >= SpecFunc::ActualMaxScalar) resultBIC(i, j) *= 2.0;
     }
   }
   fullprint << "resultBIC=" << resultBIC << std::endl;

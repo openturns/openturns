@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for GeneralizedPareto distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,8 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,12 +33,12 @@ CLASSNAMEINIT(GeneralizedParetoFactory)
 static const Factory<GeneralizedParetoFactory> Factory_GeneralizedParetoFactory;
 
 /* Default constructor */
-GeneralizedParetoFactory::GeneralizedParetoFactory(const OptimizationAlgorithm & solver)
+GeneralizedParetoFactory::GeneralizedParetoFactory()
   : DistributionFactoryImplementation()
-  , solver_(solver)
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
+  solver_ = OptimizationAlgorithm::Build(ResourceMap::GetAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumObjectiveError"));
@@ -215,16 +217,13 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   Point parametersUpperBound(dimension,  1.0);
   problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0)));
 
-  solver_.setProblem(problem);
-  solver_.setVerbose(Log::HasInfo());
-  solver_.setStartingPoint(Point(dimension, 0.0));
-
-  // run Optimization problem
-  solver_.run();
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(Point(dimension, 0.0));
+  solver.run();
 
   // optimal point
-  const Scalar xi = solver_.getResult().getOptimalPoint()[0];
-
+  const Scalar xi = solver.getResult().getOptimalPoint()[0];
   const Scalar mean = sample.computeMean()[0] - u;
   // Compute the first probability weighted moment
   Scalar m = 0.0;
@@ -273,11 +272,54 @@ void GeneralizedParetoFactory::setOptimizationAlgorithm(const OptimizationAlgori
   solver_ = solver;
 }
 
-
 OptimizationAlgorithm GeneralizedParetoFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
+Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) const
+{
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Can only draw mean residual life from a sample of dimension 1, here dimension=" << sample.getDimension();
+
+  const Scalar uMin = sample.getMin()[0];
+  const Scalar uMax = sample.getMax()[0] - 1.0;
+  const UnsignedInteger pointsNumber = ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber");
+  Sample u(pointsNumber, 1);
+  Sample mrl(pointsNumber, 1);
+  Sample ciLow(pointsNumber, 1);
+  Sample ciUp(pointsNumber, 1);
+  const Scalar level = ResourceMap::GetAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel");
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+  const Sample sortedSample(sample.sort(0));
+  for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
+  {
+    u(i, 0) = uMin + i * (uMax - uMin) / (pointsNumber - 1);
+
+    // rebuild the sample Xi|Xi>u (no sorting)
+    Sample xu(0, 1);
+    for (UnsignedInteger j = 0; j < sample.getSize(); ++ j)
+      if (sample(j, 0) > u(i, 0))
+        xu.add(sample[j]);
+
+    const UnsignedInteger n = xu.getSize();
+    mrl(i, 0) = xu.computeMean()[0] - u(i, 0);
+    const Scalar variance = xu.computeCovariance()(0, 0);
+    const Scalar ciLength2 = xq * std::sqrt(variance / n);
+    ciLow(i, 0) = mrl(i, 0) - ciLength2;
+    ciUp(i, 0) = mrl(i, 0) + ciLength2;
+  }
+  Curve curveMrl(u, mrl, "mrl");
+  curveMrl.setColor("red");
+  Curve curveCILow(u, ciLow, "CI low");
+  curveCILow.setLineStyle("dashed");
+  Curve curveCIUp(u, ciUp, "CI up");
+  curveCIUp.setLineStyle("dashed");
+  Graph result("Mean residual life plot", "Threshold", "Mean excess", true, "topleft");
+  result.add(curveMrl);
+  result.add(curveCILow);
+  result.add(curveCIUp);
+  return result;
+}
 
 END_NAMESPACE_OPENTURNS

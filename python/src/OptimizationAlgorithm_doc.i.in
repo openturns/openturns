@@ -8,8 +8,8 @@ OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
 OT_OptimizationAlgorithm_getMaximumConstraintError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumIterationNumber
 OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
-%feature("docstring") OT::OptimizationAlgorithm::getMaximumEvaluationNumber
-OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumCallsNumber
+OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumRelativeError
 OT_OptimizationAlgorithm_getMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumResidualError
@@ -28,26 +28,30 @@ OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
 OT_OptimizationAlgorithm_setMaximumConstraintError_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumIterationNumber
 OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
-%feature("docstring") OT::OptimizationAlgorithm::setMaximumEvaluationNumber
-OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumCallsNumber
+OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumRelativeError
 OT_OptimizationAlgorithm_setMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumResidualError
 OT_OptimizationAlgorithm_setMaximumResidualError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumTimeDuration
+OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumTimeDuration
+OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
 %feature("docstring") OT::OptimizationAlgorithm::setProblem
 OT_OptimizationAlgorithm_setProblem_doc
 %feature("docstring") OT::OptimizationAlgorithm::setResult
 OT_OptimizationAlgorithm_setResult_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStartingPoint
 OT_OptimizationAlgorithm_setStartingPoint_doc
-%feature("docstring") OT::OptimizationAlgorithm::setVerbose
-OT_OptimizationAlgorithm_setVerbose_doc
-%feature("docstring") OT::OptimizationAlgorithm::getVerbose
-OT_OptimizationAlgorithm_getVerbose_doc
 %feature("docstring") OT::OptimizationAlgorithm::setProgressCallback
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+%feature("docstring") OT::OptimizationAlgorithm::setCheckStatus
+OT_OptimizationAlgorithm_setCheckStatus_doc
+%feature("docstring") OT::OptimizationAlgorithm::getCheckStatus
+OT_OptimizationAlgorithm_getCheckStatus_doc
 
 // ---------------------------------------------------------------------
 

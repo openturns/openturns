@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -643,9 +643,10 @@ public:
   virtual Point computeStandardDeviation() const;
 
   /**
-   * Gives the Pearson correlation matrix of the sample
+   * Gives the Linear correlation matrix of the sample
    */
   virtual CorrelationMatrix computeLinearCorrelation() const;
+  /* @deprecated */
   virtual CorrelationMatrix computePearsonCorrelation() const;
 
   /**

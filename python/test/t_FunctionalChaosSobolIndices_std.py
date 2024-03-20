@@ -26,7 +26,7 @@ sensitivity = ot.FunctionalChaosSobolIndices(result)
 
 print(sensitivity)
 print(sensitivity._repr_html_())
-print(sensitivity._repr_markdown_())
+print(sensitivity.__repr_markdown__())
 
 # Create consistent PCE of Ishigami
 # build basis

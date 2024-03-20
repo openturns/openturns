@@ -8,33 +8,26 @@ with :math:`\vect{\Theta}=g(\vect{Y})`, :math:`\vect{Y}` follows the distributio
 dimension the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the
 dimension of :math:`\vect{\Theta}`.
 
-Available constructors:
-   ConditionalDistribution(*conditionedDist, conditioningDist, linkFunction*)
-
-   ConditionalDistribution(*conditionedDist, conditioningDist*)
-
-   ConditionalDistribution()
-
 Parameters
 ----------
 
-conditionedDist : :class:`~openturns.Distribution`, the distribution of
-    :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by
-    :math:`g(\vect{Y})`.
-    In the `ConditionalDistribution()` constructor, `conditionedDist` is taken equal to :math:`\vect{X} | \vect{\Theta} \sim` :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
+conditionedDist : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
+    In the default constructor, *conditionedDist* is taken equal to :math:`\vect{X} | \vect{\Theta} \sim`
+    :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
 
-conditioningDist : :class:`~openturns.Distribution`, the distribution of
-    :math:`\vect{Y}`, specified with its parameters.
-    In the `ConditionalDistribution()` constructor,  `conditioningDist` is taken
+conditioningDist : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{Y}`, specified with its parameters.
+    In the default constructor,  *conditioningDist* is taken
     equal to :math:`\vect{Y} \sim` :class:`~openturns.Uniform`:math:`(-1,1)`.
 
-linkFunction : :class:`~openturns.Function`, the function
-    :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
-    `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
-    In the `ConditionalDistribution()` constructor, `linkFunction`  is taken equal
+linkFunction : :class:`~openturns.Function`, optional
+    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+    In the default constructor, *linkFunction* is taken equal
     to :math:`g: \Rset \rightarrow \Rset^2` with :math:`g(y)=(y,y+1)`.
-
-    In the `ConditionalDistribution(conditionedDist, conditioningDist)` constructor, we need :math:`p=q` and `linkFunction`  is taken equal to  :math:`g(\vect{y})=\vect{y}`.
+    When not provided *linkFunction* is taken equal to  :math:`g(\vect{y})=\vect{y}` as we need :math:`p=q`.
 
 
 Notes
@@ -45,13 +38,13 @@ Its probability density function is defined as:
 
     f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}(\vect{y})\di{\vect{y}}
 
-with  :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution
+with :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution
 of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced
 by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
 :math:`g` the linking function.
 
 With the default constructor, the resulting random variable :math:`X` follows a
-trapezoidal distribution parametered by :math:`(-1, 0, 1, 2)`.
+trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 
 Note that a :class:`~openturns.ConditionalDistribution` can be obtained as the
 first marginal distribution of a :class:`~openturns.BayesDistribution`.
@@ -85,67 +78,67 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::getConditionedDistribution
-"Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+"Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
 
 Returns
 -------
-conditionedDistribution : :class:`~openturns.Distribution`, the distribution of
-:math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by
-      :math:`g(\vect{Y})`.
+conditionedDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::getConditioningDistribution
-"Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+"Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
 
 Returns
 -------
-conditioningDistribution : :class:`~openturns.Distribution`, the distribution of
-:math:`\vect{Y}`, specified with its parameters.
+conditioningDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{Y}`, specified with its parameters.
 "
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::getLinkFunction
-"Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+"Accessor to the distribution's conditioned distribution parameter *linkFunction*.
 
 Returns
 -------
-linkFunction : :class:`~openturns.Function`, the function
-      :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
-      `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+linkFunction : :class:`~openturns.Function`
+    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::setConditionedDistribution
-"Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+"Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
 
 Parameters
 ----------
-conditionedDistribution : :class:`~openturns.Distribution`, the distribution of
-    :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by
-    :math:`g(\vect{Y})`.
+conditionedDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::setConditioningDistribution
-"Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+"Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
 
 Parameters
 ----------
-conditioningDistribution : :class:`~openturns.Distribution`, the distribution of
-    :math:`\vect{Y}`, specified with its parameters.
+conditioningDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{Y}`, specified with its parameters.
 "
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionalDistribution::setLinkFunction
-"Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+"Accessor to the distribution's conditioned distribution parameter *linkFunction*.
 
 Parameters
 ----------
-linkFunction : :class:`~openturns.Function`, the function
-    :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
-    `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+linkFunction : :class:`~openturns.Function`
+    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
 "

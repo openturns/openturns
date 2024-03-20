@@ -113,19 +113,19 @@ def testTensorProductExperiment2():
     assert nodes.getDimension() == 3
     size = nodes.getSize()
     assert size == weights.getDimension()
-    assert size == maximumMarginalLevel ** dimension
+    assert size == maximumMarginalLevel**dimension
 
 
 def testTensorProductExperiment3():
     # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
     marginalSizes1 = [3, 2]
     dimension1 = len(marginalSizes1)
-    distribution1 = ot.ComposedDistribution([ot.Uniform()] * dimension1)
+    distribution1 = ot.JointDistribution([ot.Uniform()] * dimension1)
     experiment1 = ot.GaussProductExperiment(distribution1, marginalSizes1)
     # Experiment 2 : Normal * 3 with 2, 2 and 1 nodes.
     marginalSizes2 = [2, 2, 1]
     dimension2 = len(marginalSizes2)
-    distribution2 = ot.ComposedDistribution([ot.Normal()] * dimension2)
+    distribution2 = ot.JointDistribution([ot.Normal()] * dimension2)
     experiment2 = ot.GaussProductExperiment(distribution2, marginalSizes2)
     # Tensor product
     collection = [experiment1, experiment2]

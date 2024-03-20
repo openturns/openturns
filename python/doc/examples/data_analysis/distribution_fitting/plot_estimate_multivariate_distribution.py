@@ -23,14 +23,14 @@ ot.RandomGenerator.SetSeed(0)
 # generate some multivariate data to estimate, with correlation
 cop1 = ot.AliMikhailHaqCopula(0.6)
 cop2 = ot.ClaytonCopula(2.5)
-copula = ot.ComposedCopula([cop1, cop2])
+copula = ot.BlockIndependentCopula([cop1, cop2])
 marginals = [
     ot.Uniform(5.0, 6.0),
     ot.Arcsine(),
     ot.Normal(-40.0, 3.0),
     ot.Triangular(100.0, 150.0, 300.0),
 ]
-distribution = ot.ComposedDistribution(marginals, copula)
+distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
 
 # %%
@@ -51,6 +51,7 @@ estimated_marginals
 
 # %%
 # Find connected components of a graph defined from its adjacency matrix
+
 
 # %%
 def find_neighbours(head, covariance, to_visit, visited):
@@ -116,7 +117,7 @@ blocs = connected_components(C)
 blocs
 
 # %%
-# For each dependent block, we estimate the most accurate non parameteric copula.
+# For each dependent block, we estimate the most accurate parameteric copula.
 #
 # To do this, we first need to transform the sample in such a way as to keep the copula intact but make all marginal samples follow the uniform distribution on [0,1].
 
@@ -144,7 +145,7 @@ estimated_copulas
 # Finally we assemble the copula
 
 # %%
-estimated_copula_perm = ot.ComposedCopula(estimated_copulas)
+estimated_copula_perm = ot.BlockIndependentCopula(estimated_copulas)
 
 # %%
 # Take care of the order of each bloc vs the order of original components !
@@ -163,5 +164,5 @@ estimated_copula
 # We build joint distribution from marginal distributions and dependency structure:
 
 # %%
-estimated_distribution = ot.ComposedDistribution(estimated_marginals, estimated_copula)
+estimated_distribution = ot.JointDistribution(estimated_marginals, estimated_copula)
 estimated_distribution

@@ -28,7 +28,8 @@ vecY = ot.CompositeRandomVector(f, vecX)
 thresholdEvent = ot.ThresholdEvent(vecY, ot.Less(), 1.0)
 
 # %%
-# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1) away from the mean (here 0) account roughly for 68.27% of the set.
+# For the normal distribution, it is a well-known fact that the values lower than one standard deviation (here exactly 1)
+# away from the mean (here 0) account roughly for 68.27% of the set.
 # So the probability of the event is:
 #
 print("Probability of the event : %.4f" % 0.6827)
@@ -43,6 +44,7 @@ print(
 
 # %%
 # The geometric interpretation is simply the area under the PDF of the standard normal distribution for :math:`x \in [-1,1]` which we draw thereafter.
+
 
 # %%
 def linearSample(xmin, xmax, npoints):
@@ -66,25 +68,10 @@ x = linearSample(a, b, nplot)
 y = distX.computePDF(x)
 
 
-def drawInTheBounds(vLow, vUp, n_test):
-    """
-    Draw the area within the bounds.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[0]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
-
-
-vLow = [[x[i, 0], 0.0] for i in range(nplot)]
-vUp = [[x[i, 0], y[i, 0]] for i in range(nplot)]
+vLow = [0.0 for i in range(nplot)]
+vUp = [y[i, 0] for i in range(nplot)]
 area = distX.computeCDF(b) - distX.computeCDF(a)
-boundsPoly = drawInTheBounds(vLow, vUp, nplot)
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 
 # %%
 # We add the colored area to the PDF graph.

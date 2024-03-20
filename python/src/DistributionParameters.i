@@ -8,5 +8,6 @@
 
 OTTypedInterfaceObjectHelper(DistributionParameters)
 
+%copyctor OT::DistributionParameters;
+
 %include openturns/DistributionParameters.hxx
-namespace OT { %extend DistributionParameters { DistributionParameters(const DistributionParameters & other) { return new OT::DistributionParameters(other); } } }

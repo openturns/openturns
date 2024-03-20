@@ -6,5 +6,6 @@
 
 %include LinearLeastSquaresCalibration_doc.i
 
+%copyctor OT::LinearLeastSquaresCalibration;
+
 %include openturns/LinearLeastSquaresCalibration.hxx
-namespace OT { %extend LinearLeastSquaresCalibration { LinearLeastSquaresCalibration(const LinearLeastSquaresCalibration & other) { return new OT::LinearLeastSquaresCalibration(other); } } }

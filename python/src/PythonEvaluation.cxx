@@ -2,7 +2,7 @@
 /**
  * @brief PythonEvaluation implementation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,11 +37,6 @@ static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 /* Default constructor */
 PythonEvaluation::PythonEvaluation()
   : EvaluationImplementation()
-  , pyObj_(NULL)
-  , pyObj_has_exec_(false)
-  , pyObj_has_exec_sample_(false)
-  , pyObj_discard_openturns_memoryview_(true)
-  , pyBufferClass_(NULL)
 {
   // Nothing to do
 }
@@ -51,10 +46,6 @@ PythonEvaluation::PythonEvaluation()
 PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   : EvaluationImplementation()
   , pyObj_(pyCallable)
-  , pyObj_has_exec_(false)
-  , pyObj_has_exec_sample_(false)
-  , pyObj_discard_openturns_memoryview_(true)
-  , pyBufferClass_(NULL)
 {
   Py_XINCREF(pyCallable);
 
@@ -122,11 +113,12 @@ PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
-
+  Py_XINCREF(pyObj_);
+#ifndef Py_LIMITED_API
   ScopedPyObjectPointer pyBufferClone(deepCopy(other.pyBufferClass_));
   pyBufferClass_ = pyBufferClone.get();
-  Py_XINCREF(pyObj_);
   Py_XINCREF(pyBufferClass_);
+#endif
 }
 
 
@@ -142,11 +134,12 @@ PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
     pyObj_has_exec_ = rhs.pyObj_has_exec_;
     pyObj_has_exec_sample_ = rhs.pyObj_has_exec_sample_;
     pyObj_discard_openturns_memoryview_ = rhs.pyObj_discard_openturns_memoryview_;
-
+    Py_XINCREF(pyObj_);
+#ifndef Py_LIMITED_API
     ScopedPyObjectPointer pyBufferClone(deepCopy(rhs.pyBufferClass_));
     pyBufferClass_ = pyBufferClone.get();
-    Py_XINCREF(pyObj_);
     Py_XINCREF(pyBufferClass_);
+#endif
   }
   return *this;
 }
@@ -155,7 +148,9 @@ PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
 PythonEvaluation::~PythonEvaluation()
 {
   Py_XDECREF(pyObj_);
+#ifndef Py_LIMITED_API
   Py_XDECREF(pyBufferClass_);
+#endif
 }
 
 /* Comparison operator */
@@ -199,8 +194,9 @@ Point PythonEvaluation::operator() (const Point & inP) const
   callsNumber_.increment();
 
   ScopedPyObjectPointer result;
-
+#ifndef Py_LIMITED_API
   if (pyObj_discard_openturns_memoryview_)
+#endif
   {
     // Force a memory copy of inP into a Python list
     ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
@@ -211,6 +207,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     else if (! PySequence_Check(result.get()))
       PyErr_SetString(PyExc_TypeError, "_exec return value is not a sequence");
   }
+#ifndef Py_LIMITED_API
   else
   {
     // Wrap inP into a memoryview.Buffer object:
@@ -258,7 +255,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
         PyErr_SetString(PyExc_RuntimeError, "openturns.memoryview.Buffer.augment did not return any value");
     }
   }
-
+#endif
   if (result.isNull())
   {
     handleException();
@@ -299,8 +296,9 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
     callsNumber_.fetchAndAdd(size);
 
     ScopedPyObjectPointer result;
-
+#ifndef Py_LIMITED_API
     if (pyObj_discard_openturns_memoryview_)
+#endif
     {
       // Force a memory copy of inS into a Python list
       ScopedPyObjectPointer inTuple(PyTuple_New(size));
@@ -313,6 +311,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
       ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec_sample"));
       result = PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), inTuple.get(), NULL);
     }
+#ifndef Py_LIMITED_API
     else
     {
       // Wrap inS into a memoryview.Buffer object:
@@ -358,6 +357,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
         }
       }
     }
+#endif
 
     if (result.isNull())
     {
@@ -391,6 +391,7 @@ void PythonEvaluation::initializePythonState()
   pyObj_has_exec_sample_ = (PyObject_HasAttrString(pyObj_, "_has_exec_sample") > 0);
   pyObj_discard_openturns_memoryview_ = (PyObject_HasAttrString(pyObj_, "_discard_openturns_memoryview") > 0);
 
+#ifndef Py_LIMITED_API
   // We do not copy, get a reference to openturns.memoryview.Buffer class
   if (! pyObj_discard_openturns_memoryview_)
   {
@@ -406,6 +407,7 @@ void PythonEvaluation::initializePythonState()
     }
     Py_INCREF(pyBufferClass_);
   }
+#endif
 }
 
 
@@ -478,7 +480,9 @@ void PythonEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
   pickleSave(adv, pyObj_);
+#ifndef Py_LIMITED_API
   pickleSave(adv, pyBufferClass_, "pyBufferClass_");
+#endif
   adv.saveAttribute("pyObj_has_exec_", pyObj_has_exec_);
   adv.saveAttribute("pyObj_has_exec_sample_", pyObj_has_exec_sample_);
   adv.saveAttribute("pyObj_discard_openturns_memoryview_", pyObj_discard_openturns_memoryview_);
@@ -490,7 +494,10 @@ void PythonEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   pickleLoad(adv, pyObj_);
-  pickleLoad(adv, pyBufferClass_, "pyBufferClass_");
+#ifndef Py_LIMITED_API
+  if (adv.hasAttribute("pyBufferClass_"))
+    pickleLoad(adv, pyBufferClass_, "pyBufferClass_");
+#endif
   adv.loadAttribute("pyObj_has_exec_", pyObj_has_exec_);
   adv.loadAttribute("pyObj_has_exec_sample_", pyObj_has_exec_sample_);
   adv.loadAttribute("pyObj_discard_openturns_memoryview_", pyObj_discard_openturns_memoryview_);

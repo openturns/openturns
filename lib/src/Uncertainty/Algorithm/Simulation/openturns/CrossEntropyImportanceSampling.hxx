@@ -2,7 +2,7 @@
 /**
  *  @brief CrossEntropyImportanceSampling implement Importance Sampling by Cross Entropy algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_CROSSENTROPYIMPORTANCESAMPLING_HXX
 
 #include "openturns/EventSimulation.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 #include "openturns/CrossEntropyResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -74,7 +74,7 @@ protected:
 
   /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
   virtual void resetAuxiliaryDistribution();
-  
+
   // Initial distribution
   Distribution initialDistribution_;
 

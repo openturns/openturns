@@ -5,6 +5,8 @@ Parameters
 ----------
 coll : sequence of :class:`~openturns.Distribution`
     The margins, with range verifying :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}`.
+    
+    Default collection is [Unif(-1.0, 0.5), Unif(-0.5, 1.0)].
 
 Notes
 -----

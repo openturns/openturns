@@ -59,8 +59,6 @@
 %include KernelSmoothing.i
 /* Must be after Mixture */
 %include ConditionalDistribution.i
-/* Must be after ConditionalDistribution */
-%include PosteriorDistribution.i
 %include Multinomial.i
 %include MultinomialFactory.i
 %include NegativeBinomial.i

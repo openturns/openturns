@@ -5,8 +5,12 @@ Parameters
 ----------
 mu : float
     Mean parameter :math:`\mu`.
+    
+    Default value is 0.0.
 lambda : float, :math:`\lambda > 0`
     Rate parameter :math:`\lambda`.
+    
+    Default value is 1.0.
 
 Notes
 -----

@@ -2,7 +2,7 @@
 /**
  * @brief Python module to wrap Point and Sample without copy
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,6 +43,7 @@ typedef struct
   BufferView bufferview;
 } Buffer;
 
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030B0000)
 
 static int
 Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
@@ -156,7 +157,7 @@ Buffer_repr(Buffer * self)
 
   if (s)
   {
-    snprintf(s, 100, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
+    snprintf(s, 100, "<read-only buffer at %p shape=(%s)>", (void*)self->bufferview.data, r);
     free(r);
 
     result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
@@ -515,3 +516,6 @@ PyInit_memoryview(void)
 
   return module;
 }
+
+#endif
+

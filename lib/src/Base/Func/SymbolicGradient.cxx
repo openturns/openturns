@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the gradient of an analytical function.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -101,7 +101,7 @@ String SymbolicGradient::__str__(const String & offset) const
     initialize();
     if (isAnalytical_)
     {
-      oss << Os::GetEndOfLine() << offset;
+      oss << "\n" << offset;
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
       const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
@@ -118,7 +118,7 @@ String SymbolicGradient::__str__(const String & offset) const
       {
         for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          oss << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << Os::GetEndOfLine() << offset;
+          oss << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << "\n" << offset;
         }
       }
     } // isAnalytical

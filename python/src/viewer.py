@@ -16,11 +16,6 @@ import openturns as ot
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-
-try:
-    from pkg_resources import parse_version as LooseVersion
-except ImportError:
-    from distutils.version import LooseVersion
 import warnings
 import io
 
@@ -50,7 +45,7 @@ class View:
         The axes to draw on.
 
     plot_kw : dict, optional
-        Used when drawing Cloud, Curve drawables
+        Used when drawing Curve drawables
         Passed on as matplotlib.axes.Axes.plot kwargs
 
     axes_kw : dict, optional
@@ -79,6 +74,10 @@ class View:
     clabel_kw : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.clabel kwargs
+
+    scatter_kw : dict, optional
+        Used when drawing Cloud drawables
+        Passed on to matplotlib.pyplot.scatter kwargs
 
     step_kw : dict, optional
         Used when drawing Staircase drawables
@@ -140,13 +139,13 @@ class View:
         contour_kw=None,
         step_kw=None,
         clabel_kw=None,
+        scatter_kw=None,
         text_kw=None,
         legend_kw=None,
         add_legend=True,
         square_axes=False,
         **kwargs
     ):
-
         if not (
             isinstance(graph, ot.Graph)
             or isinstance(graph, ot.GraphImplementation)
@@ -175,6 +174,7 @@ class View:
         contour_kw_default = self._CheckDict(contour_kw)
         step_kw_default = self._CheckDict(step_kw)
         clabel_kw_default = self._CheckDict(clabel_kw)
+        scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         legend_handles = []
@@ -233,9 +233,8 @@ class View:
                     axes[0].axison = graphij.getAxes()
                     axes[0].set_title(self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
-                    if LooseVersion(matplotlib.__version__) > LooseVersion("3.0"):
-                        axes[0].spines["right"].set_visible(False)
-                        axes[0].spines["top"].set_visible(False)
+                    axes[0].spines["right"].set_visible(False)
+                    axes[0].spines["top"].set_visible(False)
                     View(
                         graphij,
                         figure=self._fig,
@@ -335,11 +334,14 @@ class View:
             contour_kw = dict(contour_kw_default)
             step_kw = dict(step_kw_default)
             clabel_kw = dict(clabel_kw_default)
+            scatter_kw = dict(scatter_kw_default)
             text_kw = dict(text_kw_default)
 
             # set color
             if ("color" not in plot_kw_default) and ("c" not in plot_kw_default):
                 plot_kw["color"] = drawable.getColorCode()
+            if ("color" not in scatter_kw_default) and ("c" not in scatter_kw_default):
+                scatter_kw["color"] = drawable.getColorCode()
             if ("color" not in bar_kw_default) and ("c" not in bar_kw_default):
                 bar_kw["color"] = drawable.getColorCode()
             if ("color" not in step_kw_default) and ("c" not in step_kw_default):
@@ -347,30 +349,6 @@ class View:
             if drawableKind != "Pairs":
                 if ("color" not in text_kw_default) and ("c" not in text_kw_default):
                     text_kw["color"] = drawable.getColorCode()
-
-            # set marker
-            pointStyleDict = {
-                "square": "s",
-                "circle": "o",
-                "triangleup": "^",
-                "plus": "+",
-                "times": "x",
-                "diamond": "d",
-                "triangledown": "v",
-                "star": "*",
-                "fsquare": "s",
-                "fcircle": "o",
-                "ftriangleup": "^",
-                "fdiamond": "d",
-                "bullet": ".",
-                "dot": ",",
-                "none": "None",
-            }
-            if "marker" not in plot_kw_default:
-                try:
-                    plot_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
-                except KeyError:
-                    warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
 
             # set line style
             lineStyleDict = {
@@ -397,6 +375,8 @@ class View:
                 plot_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in step_kw_default) and ("lw" not in step_kw_default):
                 step_kw["linewidth"] = drawable.getLineWidth()
+            if ("linewidth" not in polygon_kw_default) and ("lw" not in polygon_kw_default):
+                polygon_kw["linewidth"] = drawable.getLineWidth()
 
             # retrieve data
             data = drawable.getData()
@@ -409,13 +389,12 @@ class View:
                 self._ax[0].set_xlabel(self._ToUnicode(graph.getXTitle()))
                 self._ax[0].set_ylabel(self._ToUnicode(graph.getYTitle()))
 
-                if (len(drawable.getLegend()) > 0) and (
-                    (drawableKind != "Cloud") or (drawable.getPointStyle() != "none")
-                ):
+                if len(drawable.getLegend()) > 0:
                     label = self._ToUnicode(drawable.getLegend())
                     has_labels = True
                     plot_kw.setdefault("label", label)
                     bar_kw.setdefault("label", label)
+                    scatter_kw.setdefault("label", label)
                     step_kw.setdefault("label", label)
                     polygon_kw.setdefault("label", label)
                     polygoncollection_kw.setdefault("label", label)
@@ -457,10 +436,37 @@ class View:
                     xi += x[i]
 
             elif drawableKind == "Cloud":
-                plot_kw["linestyle"] = "None"
-                lines = self._ax[0].plot(x, y, **plot_kw)
+                # set marker
+                marker = drawable.getPointStyle()
+                rPointStyleDict = {
+                    "square": "s",
+                    "circle": "o",
+                    "triangleup": "^",
+                    "plus": "+",
+                    "times": "x",
+                    "diamond": "d",
+                    "triangledown": "v",
+                    "star": "*",
+                    "fsquare": "s",
+                    "fcircle": "o",
+                    "ftriangleup": "^",
+                    "fdiamond": "d",
+                    "bullet": ".",
+                    "dot": ",",
+                    "none": "None",
+                }
+                # we still accept R markers
+                if marker in rPointStyleDict:
+                    marker = rPointStyleDict[marker]
+                scatter_kw.setdefault("marker", marker)
+
+                # https://github.com/matplotlib/matplotlib/issues/11460
+                if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
+                    scatter_kw["s"] = 1
+                    scatter_kw["linewidths"] = 0.0
+                lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
-                    legend_handles.append(lines[0])
+                    legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
@@ -470,7 +476,6 @@ class View:
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Polygon":
-
                 if ("facecolor" not in polygon_kw_default) and (
                     "fc" not in polygon_kw_default
                 ):
@@ -485,7 +490,6 @@ class View:
                 self._ax[0].add_patch(matplotlib.patches.Polygon(data, **polygon_kw))
 
             elif drawableKind == "PolygonArray":
-
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
                 if (
@@ -618,24 +622,26 @@ class View:
             legend_kw = legend_kw_default
 
             # set legend position
-            if "loc" not in legend_kw:
-                try:
-                    legendPositionDict = {
-                        "bottomright": "lower right",
-                        "bottom": "lower center",
-                        "bottomleft": "lower left",
-                        "left": "center left",
-                        "topleft": "upper left",
-                        "top": "upper center",
-                        "topright": "upper right",
-                        "right": "center right",
-                        "center": "center",
-                    }
-                    legend_kw["loc"] = legendPositionDict[graph.getLegendPosition()]
-                except KeyError:
-                    warnings.warn(
-                        "-- Unknown legend position: " + graph.getLegendPosition()
-                    )
+            loc = graph.getLegendPosition()
+            rPositionDict = {
+                "bottomright": "lower right",
+                "bottom": "lower center",
+                "bottomleft": "lower left",
+                "left": "center left",
+                "topleft": "upper left",
+                "top": "upper center",
+                "topright": "upper right",
+                "right": "center right",
+            }
+            # we still accept old R strings
+            if loc in rPositionDict:
+                loc = rPositionDict[loc]
+            legend_kw.setdefault("loc", loc)
+
+            # set legend bbox
+            if len(graph.getLegendCorner()) == 2:
+                x0, y0 = graph.getLegendCorner()
+                legend_kw.setdefault("bbox_to_anchor", (x0, y0))
 
             # set a single legend point
             legend_kw.setdefault("numpoints", 1)
@@ -654,13 +660,13 @@ class View:
             else:
                 self._ax[0].legend(**legend_kw)
 
+            # re-adjust bbox if legend was set outside graph
+            if "bbox_to_anchor" in legend_kw:
+                self._fig.tight_layout()
+
         # Make squares look like squares
         if square_axes:
-            try:
-                self._ax[0].axis("square")
-            except ValueError:
-                warnings.warn("axis square keyword not supported")
-                plt.gca().set_aspect("equal", adjustable="box")
+            self._ax[0].axis("square")
 
     def show(self, **kwargs):
         """
@@ -704,10 +710,10 @@ class View:
 
         Parameters
         ----------
-        fname: bool, optional
+        fname : bool, optional
             A string containing a path to a filename from which file format is deduced.
 
-        kwargs:
+        kwargs : dict
             See matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
 
         Examples
@@ -840,18 +846,18 @@ def PlotDesign(
     ----------
     design : 2-d sequence of float
         The sample.
-    figure : a Matplotlib figure.
+    figure : a Matplotlib figure, optional
         If this is not None, then create a new figure.
         Otherwise, use the existing figure.
-    axes : a Matplotlib axis.
+    axes : a Matplotlib axis, optional
         If empty, then create new axes.
-    bounds: :class:`~openturns.Interval`
+    bounds : :class:`~openturns.Interval`, optional
         Bounds of the plot. By default, compute the bounds from the sample.
-    subdivisions : a list of integers
+    subdivisions : a list of integers, optional
         Number of subdivisions in the each direction.
         By default, set the number of subdivisions in each direction
         as equal to the sample size.
-    enableTicks :
+    enableTicks : bool, optional
         A boolean. If True, then the ticks are plotted.
 
     Returns
@@ -868,7 +874,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 2
     >>> X = [ot.Uniform()] * dim
-    >>> distribution = ot.ComposedDistribution(X)
+    >>> distribution = ot.JointDistribution(X)
     >>> sampleSize = 10
     >>> sample = distribution.getSample(sampleSize)
     >>> fig = PlotDesign(sample)
@@ -879,7 +885,7 @@ def PlotDesign(
     >>> from openturns.viewer import PlotDesign
     >>> dim = 5
     >>> size = 10
-    >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
+    >>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)]*dim)
     >>> bounds = distribution.getRange()
     >>> lhs = ot.LHSExperiment(distribution, size)
     >>> sample = lhs.generate()

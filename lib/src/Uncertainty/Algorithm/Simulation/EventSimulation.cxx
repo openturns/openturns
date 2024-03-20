@@ -3,7 +3,7 @@
  *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,8 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/CompositeRandomVector.hxx"
+#include "openturns/IntersectionEvent.hxx"
+#include "openturns/UnionEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,24 +44,21 @@ CLASSNAMEINIT(EventSimulation)
 static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
-EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
+EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
-  setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Constructor with parameters */
 EventSimulation::EventSimulation(const RandomVector & event,
-                                 const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(event)
   , result_()
 {
-  setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
   if (!event.isEvent())
     throw InvalidArgumentException(HERE) << "Not an event";
@@ -131,6 +130,8 @@ void EventSimulation::run()
   result_.setOuterSampling(outerSampling);
 
   Bool stop = false;
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   // We loop if there remains some outer sampling and the coefficient of variation is greater than the limit or has not been computed yet.
   while ((outerSampling < getMaximumOuterSampling()) && ((coefficientOfVariation == -1.0) || (coefficientOfVariation > getMaximumCoefficientOfVariation())) && ((standardDeviation == -1.0) || (standardDeviation > getMaximumStandardDeviation())) && !stop)
   {
@@ -159,7 +160,7 @@ void EventSimulation::run()
     result_.setVarianceEstimate(reducedVarianceEstimate);
     result_.setOuterSampling(outerSampling);
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
     // Get the coefficient of variation back
     // We use the result to compute these quantities in order to
     // delegate the treatment of the degenerate cases (i.e. the
@@ -178,20 +179,30 @@ void EventSimulation::run()
       convergencePoint[1] = -1.0;
     convergenceStrategy_.store(convergencePoint);
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO(OSS() << "Maximum time exceeded");
+      stop = true;
+    }
+
     // callbacks
     if (progressCallback_.first)
     {
       progressCallback_.first((100.0 * outerSampling) / getMaximumOuterSampling(), progressCallback_.second);
     }
-    if (stopCallback_.first)
+    if (!stop && stopCallback_.first)
     {
       stop = stopCallback_.first(stopCallback_.second);
       if (stop)
-      {
         LOGINFO(OSS() << "Stopped due to user");
-      }
     } // stopCallback
   } // while
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 }
 
 /* Compute the block sample and the points that realized the event */
@@ -226,14 +237,16 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
       dataUpperBound.add(pt);
     }
   }
-  const Curve estimateCurve(dataEstimate, "red", "solid", 2, "probability estimate");
+  Curve estimateCurve(dataEstimate, "probability estimate");
+  estimateCurve.setLineWidth(2);
   OSS oss;
   oss << getClassName() << " convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
   convergenceGraph.add(estimateCurve);
-  const Curve lowerBoundCurve(dataLowerBound, "green", "solid", 1, "bounds");
-  const Curve upperBoundCurve(dataUpperBound, "green", "solid", 1, "");
+  const Curve lowerBoundCurve(dataLowerBound, "bounds");
+  Curve upperBoundCurve(dataUpperBound);
   convergenceGraph.add(lowerBoundCurve);
+  upperBoundCurve.setColor(convergenceGraph.getDrawable(1).getColor());
   convergenceGraph.add(upperBoundCurve);
   return convergenceGraph;
 }

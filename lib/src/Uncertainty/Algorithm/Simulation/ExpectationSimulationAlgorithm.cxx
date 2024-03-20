@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate an expectation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,6 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
-//   setVerbose(verbose);
 }
 
 /* Constructor with parameters */
@@ -54,7 +53,6 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm(const RandomVecto
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
-//   setVerbose(verbose);
 }
 
 /* Virtual constructor */
@@ -119,6 +117,8 @@ void ExpectationSimulationAlgorithm::run()
   result_.setVarianceEstimate(varianceEstimate);
   result_.setOuterSampling(outerSampling);
 
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   Bool stop = false;
   // We loop if there remains some outer sampling and the coefficient of variation is greater than the limit or has not been computed yet.
   while ((outerSampling < getMaximumOuterSampling()) && !stop)
@@ -154,7 +154,7 @@ void ExpectationSimulationAlgorithm::run()
     result_.setOuterSampling(outerSampling);
 
     // Display the result at each outer sample
-    if (getVerbose()) LOGINFO(result_.__repr__());
+    LOGDEBUG(result_.__repr__());
 
     // compute criterion on standard deviation
     Point standardDeviation(result_.getStandardDeviation());
@@ -199,6 +199,14 @@ void ExpectationSimulationAlgorithm::run()
         convergencePoint[dimension + j] = reducedVarianceEstimate[j];
     convergenceStrategy_.store(convergencePoint);
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO(OSS() << "Maximum time exceeded");
+      stop = true;
+    }
+
     // callbacks
     if (progressCallback_.first)
     {
@@ -213,6 +221,10 @@ void ExpectationSimulationAlgorithm::run()
       }
     }
   }
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+  result_.setTimeDuration(timeDuration);
 }
 
 Scalar ExpectationSimulationAlgorithm::computeCriterion(const String & criterionType, const Point & values)
@@ -322,14 +334,16 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
       dataUpperBound.add(pt);
     }
   }
-  const Curve estimateCurve(dataEstimate, "red", "solid", 2, "expectation estimate");
+  Curve estimateCurve(dataEstimate, "expectation estimate");
+  estimateCurve.setLineWidth(2);
   OSS oss;
   oss << "Expectation convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
   convergenceGraph.add(estimateCurve);
-  const Curve lowerBoundCurve(dataLowerBound, "green", "solid", 1, "bounds");
-  const Curve upperBoundCurve(dataUpperBound, "green", "solid", 1, "");
+  const Curve lowerBoundCurve(dataLowerBound, "bounds");
+  Curve upperBoundCurve(dataUpperBound);
   convergenceGraph.add(lowerBoundCurve);
+  upperBoundCurve.setColor(convergenceGraph.getDrawable(1).getColor());
   convergenceGraph.add(upperBoundCurve);
   return convergenceGraph;
 }

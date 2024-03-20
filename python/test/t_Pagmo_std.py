@@ -29,7 +29,7 @@ ineq = ot.SymbolicFunction(["x1", "x2"], ["x1-x2"])  # x1>x2
 
 # Create the initial population
 size = 100
-dist = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
+dist = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 pop0 = dist.getSample(size)
 
 multi_obj = ["nsga2", "moead", "mhaco", "nspso"]
@@ -55,7 +55,7 @@ for name in multi_obj:
         assert len(fronts) > 0, "no pareto"
         print(name, len(fronts))
         assert (
-            result.getEvaluationNumber() == algo.getMaximumIterationNumber() * size
+            result.getCallsNumber() == (algo.getMaximumIterationNumber() + 1) * size
         ), "wrong size"
 
 # rosenbrock for the other algorithms
@@ -64,7 +64,7 @@ dim = 2
 f = ot.SymbolicFunction(["x1", "x2"], ["1+100*(x2-x1^2)^2+(1-x1)^2"])
 ineq = ot.SymbolicFunction(["x1", "x2"], ["-x2"])  # x2<0
 bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
-pop0 = ot.ComposedDistribution([ot.Uniform(-1.5, 1.5)] * 2).getSample(80)
+pop0 = ot.JointDistribution([ot.Uniform(-1.5, 1.5)] * 2).getSample(80)
 
 for name in ot.Pagmo.GetAlgorithmNames():
     if name in multi_obj:
@@ -164,7 +164,7 @@ def minlp_cstr(x):
 f = ot.PythonFunction(6, 1, minlp_obj)
 bounds = ot.Interval([-5.0] * 6, [5.0] * 6)
 ineq = ot.PythonFunction(6, 6, minlp_cstr)
-pop0 = ot.ComposedDistribution(
+pop0 = ot.JointDistribution(
     [ot.Uniform(-5.0, 5.0)] * 4 + [ot.UserDefined([[i - 5] for i in range(11)])] * 2
 ).getSample(100)
 problem = ot.OptimizationProblem(f)
@@ -198,7 +198,7 @@ ineq = ot.ComposedFunction(
     ot.SymbolicFunction(["y1", "y2"], ["2-y1", "2-y2"]), f
 )  # y1,y2 <2
 zdt1.setInequalityConstraint(ineq)
-dist = ot.ComposedDistribution([ot.Uniform(0.0, 5.0)] * 2)
+dist = ot.JointDistribution([ot.Uniform(0.0, 5.0)] * 2)
 pop0 = dist.getSample(50)
 algo = ot.Pagmo(zdt1, "nsga2", pop0)
 algo.setMaximumIterationNumber(10)

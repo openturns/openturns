@@ -6,5 +6,6 @@
 
 %include KarhunenLoeveValidation_doc.i
 
+%copyctor OT::KarhunenLoeveValidation;
+
 %include openturns/KarhunenLoeveValidation.hxx
-namespace OT { %extend KarhunenLoeveValidation { KarhunenLoeveValidation(const KarhunenLoeveValidation & other) { return new OT::KarhunenLoeveValidation(other); } } }

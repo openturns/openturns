@@ -33,7 +33,7 @@ problem.setEqualityConstraint(g)
 
 algo = ot.Ipopt(problem)
 algo.setStartingPoint([0.5, 1.5])
-algo.setMaximumEvaluationNumber(10000)
+algo.setMaximumCallsNumber(10000)
 algo.setProgressCallback(progress)
 algo.setStopCallback(stop)
 

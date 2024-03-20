@@ -6,5 +6,6 @@
 
 %include HistogramFactory_doc.i
 
+%copyctor OT::HistogramFactory;
+
 %include openturns/HistogramFactory.hxx
-namespace OT { %extend HistogramFactory { HistogramFactory(const HistogramFactory & other) { return new OT::HistogramFactory(other); } } }

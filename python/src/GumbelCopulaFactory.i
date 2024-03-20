@@ -6,5 +6,6 @@
 
 %include GumbelCopulaFactory_doc.i
 
+%copyctor OT::GumbelCopulaFactory;
+
 %include openturns/GumbelCopulaFactory.hxx
-namespace OT { %extend GumbelCopulaFactory { GumbelCopulaFactory(const GumbelCopulaFactory & other) { return new OT::GumbelCopulaFactory(other); } } }

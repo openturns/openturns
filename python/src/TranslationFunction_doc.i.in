@@ -1,9 +1,6 @@
 %feature("docstring") OT::TranslationFunction
 "Translation function.
 
-Available constructors:
-   TranslationFunction(*constant*)
-
 Parameters
 ----------
 constant : sequence of float
@@ -26,3 +23,25 @@ defined as :
 where:
 
 - :math:`\vect{c}` is the :math:`\Rset^n` vector defined by the object *constant*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TranslationFunction::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    Vector :math:`\vect{c}`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TranslationFunction::setConstant
+"Accessor to the constant.
+
+Parameters
+----------
+constant : sequence of float
+    Vector :math:`\vect{c}`
+"

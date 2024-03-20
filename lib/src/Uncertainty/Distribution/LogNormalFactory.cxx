@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for LogNormal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -395,7 +395,6 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample) con
   LeastSquaresProblem problem(residualFunction);
   OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
   solver.setStartingPoint(Point(1, gamma));
-  solver.setVerbose(Log::HasInfo());
   solver.run();
   gamma = solver.getResult().getOptimalPoint()[0];
   return buildMethodOfLeastSquares(sample, gamma);

@@ -6,5 +6,6 @@
 
 %include LogNormalMuErrorFactor_doc.i
 
+%copyctor OT::LogNormalMuErrorFactor;
+
 %include openturns/LogNormalMuErrorFactor.hxx
-namespace OT{ %extend LogNormalMuErrorFactor { LogNormalMuErrorFactor(const LogNormalMuErrorFactor & other) { return new OT::LogNormalMuErrorFactor(other); } } }

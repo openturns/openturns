@@ -6,5 +6,6 @@
 
 %include DomainDisjunctiveUnion_doc.i
 
+%copyctor OT::DomainDisjunctiveUnion;
+
 %include openturns/DomainDisjunctiveUnion.hxx
-namespace OT { %extend DomainDisjunctiveUnion { DomainDisjunctiveUnion(const DomainDisjunctiveUnion & other) { return new OT::DomainDisjunctiveUnion(other); } } }

@@ -10,7 +10,8 @@ Polynomial chaos is sensitive to the degree
 # In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial.
 # More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
 #
-# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule and the family of orthogonal polynomials corresponding to each input variable.
+# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule
+# and the family of orthogonal polynomials corresponding to each input variable.
 
 # %%
 import openturns as ot
@@ -44,7 +45,7 @@ dist_L.setDescription(["L"])
 dist_I = ot.Beta(2.5, 1.5, 310.0, 450.0)  # in cm^4
 dist_I.setDescription(["I"])
 
-myDistribution = ot.ComposedDistribution([dist_E, dist_F, dist_L, dist_I])
+myDistribution = ot.JointDistribution([dist_E, dist_F, dist_L, dist_I])
 
 dim_input = 4  # dimension of the input
 dim_output = 1  # dimension of the output
@@ -52,7 +53,7 @@ dim_output = 1  # dimension of the output
 
 def function_beam(X):
     E, F, L, II = X
-    Y = F * L ** 3 / (3 * E * II)
+    Y = F * L**3 / (3 * E * II)
     return [Y]
 
 
@@ -62,6 +63,7 @@ g.setInputDescription(myDistribution.getDescription())
 
 # %%
 # The following function creates a sparse polynomial chaos with a given total degree.
+
 
 # %%
 def ComputeSparseLeastSquaresChaos(
@@ -113,6 +115,7 @@ def ComputeSparseLeastSquaresChaos(
 # The sparsity rate is the complement of the ratio between the number of coefficients
 # selected from LARS and the total number of coefficients in the full polynomial basis.
 
+
 # %%
 def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     """Compute the sparsity rate, assuming a FixedStrategy."""
@@ -129,6 +132,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 
 # %%
 # The following functions compute and plot the Q2 predictivity coefficients within the validation plot.
+
 
 # %%
 def computeQ2Chaos(chaosResult, inputTest, outputTest):
@@ -150,7 +154,7 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
     graph = val.drawValidation().getGraph(0, 0)
     legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
     graph.setLegends(["", legend1])
-    graph.setLegendPosition("topleft")
+    graph.setLegendPosition("upper left")
     print(
         "Degree=%d, Q2=%.2f%%, Sparsity=%.2f%%"
         % (totalDegree, 100 * Q2, 100 * sparsityRate)
@@ -237,6 +241,7 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
 
 # %%
 # The following function uses a boxplot to see the distribution of the Q2 coefficients.
+
 
 # %%
 def plotQ2Boxplots(Q2sample, N):

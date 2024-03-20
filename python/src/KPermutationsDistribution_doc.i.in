@@ -1,9 +1,6 @@
 %feature("docstring") OT::KPermutationsDistribution
 "KPermutations distribution.
 
-Available constructors:
-    KPermutationsDistribution(*k=1, n=1*)
-
 Parameters
 ----------
 k : int, :math:`k > 0`
@@ -14,7 +11,7 @@ Notes
 :class:`~openturns.KPermutationsDistribution` is the discrete uniform
 distribution on the set of injective functions :math:`(i_0, \hdots, i_{k_1})`
 from :math:`\{0, \hdots, k-1\}` into :math:`\{0, \hdots, n-1\}`.
-Its probability density function is defined as:
+Its probability distribution function is defined as:
 
 .. math::
 

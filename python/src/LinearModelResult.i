@@ -8,5 +8,6 @@
 
 //%rename(LinearModelResult_operator___eq__) OT::operator ==(const LinearModelResult & lhs, const LinearModelResult & rhs);
 
+%copyctor OT::LinearModelResult;
+
 %include openturns/LinearModelResult.hxx
-namespace OT { %extend LinearModelResult { LinearModelResult(const LinearModelResult & other) { return new OT::LinearModelResult(other); } } }

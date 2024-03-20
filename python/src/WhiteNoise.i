@@ -7,5 +7,6 @@
 %include WhiteNoise_doc.i
 
 
+%copyctor OT::WhiteNoise;
+
 %include openturns/WhiteNoise.hxx
-namespace OT { %extend WhiteNoise { WhiteNoise(const WhiteNoise & other) { return new OT::WhiteNoise(other); } } }

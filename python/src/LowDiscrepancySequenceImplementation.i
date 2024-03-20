@@ -6,5 +6,6 @@
 
 %include LowDiscrepancySequenceImplementation_doc.i
 
+%copyctor OT::LowDiscrepancySequenceImplementation;
+
 %include openturns/LowDiscrepancySequenceImplementation.hxx
-namespace OT{ %extend LowDiscrepancySequenceImplementation { LowDiscrepancySequenceImplementation(const LowDiscrepancySequenceImplementation & other) { return new OT::LowDiscrepancySequenceImplementation(other); } } }

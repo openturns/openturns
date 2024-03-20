@@ -55,7 +55,7 @@ Kriging : quick-start
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+from openturns import viewer
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -86,6 +86,7 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following functions which plots the data.
 
+
 # %%
 def plot_data_train(x_train, y_train):
     """Plot the data (x_train,y_train) as a Cloud, in red"""
@@ -112,11 +113,12 @@ graph.add(plot_data_train(x_train, y_train))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model. This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
+# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model.
+# This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
 dimension = 1
@@ -141,6 +143,7 @@ y_test_MM = krigeageMM(x_test)
 # %%
 # The following function plots the kriging data.
 
+
 # %%
 def plot_data_kriging(x_test, y_test_MM):
     """Plots (x_test,y_test_MM) from the metamodel as a Curve, in blue"""
@@ -158,7 +161,7 @@ graph.add(plot_data_kriging(x_test, y_test_MM))
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -230,6 +233,7 @@ view = viewer.View(graph)
 # We now compute the bounds of the confidence interval. For this purpose we define a small function
 # `computeBoundsConfidenceInterval` :
 
+
 # %%
 def computeBoundsConfidenceInterval(quantileAlpha):
     dataLower = [
@@ -243,35 +247,6 @@ def computeBoundsConfidenceInterval(quantileAlpha):
     dataLower = ot.Sample(dataLower)
     dataUpper = ot.Sample(dataUpper)
     return dataLower, dataUpper
-
-
-# %%
-# In order to create the graphics containing the bounds of the confidence
-# interval, we use the `Polygon`.
-# This will create a colored surface associated to the confidence interval.
-# In order to do this, we create the nodes of the polygons at the lower level
-# `vLow` and at the upper level `vUp`.
-# Then we assemble these nodes to create the polygons.
-# That is what we do inside the `plot_kriging_bounds` function.
-
-# %%
-
-
-def plot_kriging_bounds(dataLower, dataUpper, n_test, color=[120, 1.0, 1.0]):
-    """
-    From two lists containing the lower and upper bounds of the region,
-    create a PolygonArray.
-    Default color is green given by HSV values in color list.
-    """
-    vLow = [[x_test[i, 0], dataLower[i, 0]] for i in range(n_test)]
-    vUp = [[x_test[i, 0], dataUpper[i, 0]] for i in range(n_test)]
-    myHSVColor = ot.Polygon.ConvertFromHSV(color[0], color[1], color[2])
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myHSVColor, myHSVColor) for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
 
 
 # %%
@@ -294,14 +269,15 @@ graph.add(plot_data_kriging(x_test, y_test_MM))
 for idx, v in enumerate(alphas):
     quantileAlpha = computeQuantileAlpha(v)
     vLow, vUp = computeBoundsConfidenceInterval(quantileAlpha)
-    boundsPoly = plot_kriging_bounds(vLow, vUp, n_test, mycolors[idx])
+    boundsPoly = ot.Polygon.FillBetween(x_test, vLow, vUp)
+    boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[idx][0], mycolors[idx][1], mycolors[idx][2]))
     boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("topright")
+graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

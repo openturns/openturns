@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all functions mapping points into fields
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -79,7 +79,7 @@ String PointToFieldFunction::__repr__() const
 /* String converter */
 String PointToFieldFunction::__str__(const String & offset) const
 {
-  return OSS(false) << getClassName() << " :" << Os::GetEndOfLine() << offset << "  " << getImplementation()->__str__( offset + "  ");
+  return OSS(false) << getClassName() << " :" << "\n" << offset << "  " << getImplementation()->__str__( offset + "  ");
 }
 
 /* Get the i-th marginal function */

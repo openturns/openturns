@@ -6,5 +6,6 @@
 
 %include DiracCovarianceModel_doc.i
 
+%copyctor OT::DiracCovarianceModel;
+
 %include openturns/DiracCovarianceModel.hxx
-namespace OT{ %extend DiracCovarianceModel { DiracCovarianceModel(const DiracCovarianceModel & other) { return new OT::DiracCovarianceModel(other); } } }

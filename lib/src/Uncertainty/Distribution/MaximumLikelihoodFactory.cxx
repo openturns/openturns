@@ -2,7 +2,7 @@
 /**
  *  @brief Maximum likelihood estimation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,10 +58,9 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   // Initialize optimization solver parameter using the ResourceMap
   String solverName(ResourceMap::GetAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setIgnoreFailure(true);
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
+  if (solverName == "TNC")
+    solver_.setCheckStatus(false);
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
@@ -317,7 +316,6 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
-  solver.setVerbose(Log::HasInfo());
   solver.run();
 
   Point effectiveParameter(effectiveParameterSize);
@@ -400,7 +398,8 @@ OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationAlgorithm() const
 void MaximumLikelihoodFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
+  if (values.getSize() != indices.getSize())
+    throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }
@@ -443,15 +442,15 @@ Distribution MaximumLikelihoodFactory::BuildGaussianEstimator (
   const UnsignedInteger size = sample.getSize();
   const UnsignedInteger parameterDimension = distribution.getParameterDimension();
   Matrix theta(parameterDimension, parameterDimension);
-  const Sample pdf(distribution.computePDF(sample));
-  const Sample dpdf(distribution.computePDFGradient(sample));
+  const Point dpdf(distribution.computeLogPDFGradient(sample).getImplementation()->getData());
+  UnsignedInteger offset = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
-    dpdfi = dpdfi / pdf(i, 0);
-    theta = theta + dpdfi * dpdfi.transpose() / size;
+    const Matrix dpdfi(parameterDimension, 1, dpdf.begin() + offset, dpdf.begin() + offset + parameterDimension);
+    offset += parameterDimension;
+    theta = theta + dpdfi.computeGram(false);
   }
-  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
+  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension)).getImplementation());
   return Normal(distribution.getParameter(), covariance);
 }
 

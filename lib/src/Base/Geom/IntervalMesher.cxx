@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for intervals
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -195,15 +195,11 @@ Mesh IntervalMesher::build(const Interval & interval,
   } // dimension == 2
   if (dimension == 3)
   {
-    // FIXME: https://github.com/openturns/openturns/issues/1670
-    if (diamond)
-      throw NotYetImplementedException(HERE) << "In IntervalMesher::build with 3-d/diamond=true";
-
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
     // First the vertices
-    Sample vertices((m + 1) * (n + 1) * (p + 1) + (diamond ? m * n * p : 0), 3);
+    Sample vertices((m + 1) * (n + 1) * (p + 1) + (diamond ? 4 * m * n * p + m * n + n * p + p * m : 0), 3);
     Point discretizedX(m + 1);
     for (UnsignedInteger i = 0; i <= m; ++i)
       discretizedX[i] = ((m - i) * lowerBound[0] + i * upperBound[0]) / m;
@@ -227,11 +223,80 @@ Mesh IntervalMesher::build(const Interval & interval,
         } // i
       } // j
     } // k
-    // Second the simplices
-    IndicesCollection simplices( (diamond ? 24 : 6) * m * n * p, 4);
+
     const UnsignedInteger mp1 = m + 1;
     const UnsignedInteger np1 = n + 1;
     const UnsignedInteger mp1np1 = mp1 * np1;
+
+    // centers of cube faces at lower bound (ABDC/ACGE/ABFE, see cube schema below) are added first (m*n+p*n+p*m vertices)
+    if (diamond)
+    {
+      // ABDC|k=0
+      UnsignedInteger cellIndex = 0;
+      for (UnsignedInteger j = 0; j < n; ++ j)
+      {
+        for (UnsignedInteger i = 0; i < m; ++ i)
+        {
+          const UnsignedInteger a = cellIndex;
+          const UnsignedInteger b = cellIndex + 1;
+          const UnsignedInteger c = cellIndex + mp1;
+          const UnsignedInteger d = cellIndex + 1 + mp1;
+          ++ cellIndex;
+
+          const UnsignedInteger centerABDCIndex = vertexIndex;
+          ++ vertexIndex;
+          vertices(centerABDCIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0)) * 0.25;
+          vertices(centerABDCIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
+          vertices(centerABDCIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2)) * 0.25;
+        }
+        ++ cellIndex;
+      }
+
+      // ACGE|i=0
+      cellIndex = 0;
+      for (UnsignedInteger k = 0; k < p; ++ k)
+      {
+        for (UnsignedInteger j = 0; j < n; ++ j)
+        {
+          const UnsignedInteger a = cellIndex;
+          const UnsignedInteger c = cellIndex + mp1;
+          const UnsignedInteger e = cellIndex + mp1np1;
+          const UnsignedInteger g = cellIndex + mp1 + mp1np1;
+          cellIndex += mp1;
+
+          const UnsignedInteger centerACGEIndex = vertexIndex;
+          ++ vertexIndex;
+          vertices(centerACGEIndex, 0) = (vertices(a, 0) + vertices(c, 0) + vertices(e, 0) + vertices(g, 0)) * 0.25;
+          vertices(centerACGEIndex, 1) = (vertices(a, 1) + vertices(c, 1) + vertices(e, 1) + vertices(g, 1)) * 0.25;
+          vertices(centerACGEIndex, 2) = (vertices(a, 2) + vertices(c, 2) + vertices(e, 2) + vertices(g, 2)) * 0.25;
+        }
+        cellIndex += mp1;
+      }
+
+      // ABFE|j=0
+      cellIndex = 0;
+      for (UnsignedInteger k = 0; k < p; ++ k)
+      {
+        for (UnsignedInteger i = 0; i < m; ++ i)
+        {
+          const UnsignedInteger a = cellIndex;
+          const UnsignedInteger b = cellIndex + 1;
+          const UnsignedInteger e = cellIndex + mp1np1;
+          const UnsignedInteger f = cellIndex + 1 + mp1np1;
+          ++ cellIndex;
+
+          const UnsignedInteger centerABFEIndex = vertexIndex;
+          ++ vertexIndex;
+          vertices(centerABFEIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(e, 0) + vertices(f, 0)) * 0.25;
+          vertices(centerABFEIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(e, 1) + vertices(f, 1)) * 0.25;
+          vertices(centerABFEIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(e, 2) + vertices(f, 2)) * 0.25;
+        }
+        cellIndex += mp1 * n + 1;
+      }
+    }
+
+    // Second the simplices
+    IndicesCollection simplices((diamond ? 24 : 6) * m * n * p, 4);
     UnsignedInteger simplexIndex = 0;
     UnsignedInteger cellIndex = 0;
     for (UnsignedInteger k = 0; k < p; ++k)
@@ -269,14 +334,13 @@ Mesh IntervalMesher::build(const Interval & interval,
           {
             // Center of the cube (shortcut I)
             const UnsignedInteger centerIndex = vertexIndex;
+            ++ vertexIndex;
             vertices(centerIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0) + vertices(e, 0) + vertices(f, 0) + vertices(g, 0) + vertices(h, 0)) * 0.125;
             vertices(centerIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1) + vertices(e, 1) + vertices(f, 1) + vertices(g, 1) + vertices(h, 1)) * 0.125;
             vertices(centerIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2) + vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.125;
 
-            const UnsignedInteger centerABDCIndex = vertexIndex + 1;
-            vertices(centerABDCIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0)) * 0.25;
-            vertices(centerABDCIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
-            vertices(centerABDCIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2)) * 0.25;
+            // center of faces ABDC were already added, reuse the center of the opposite face of the adjacent cube
+            const UnsignedInteger centerABDCIndex = (k > 0) ? vertexIndex - 4 * n * m : mp1np1*(p + 1) + i + j * m;
             // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
             simplices(simplexIndex, 0) = centerABDCIndex;
             simplices(simplexIndex, 1) = b;
@@ -299,7 +363,8 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
-            const UnsignedInteger centerEFHGIndex = vertexIndex + 2;
+            const UnsignedInteger centerEFHGIndex = vertexIndex;
+            ++ vertexIndex;
             vertices(centerEFHGIndex, 0) = (vertices(e, 0) + vertices(f, 0) + vertices(g, 0) + vertices(h, 0)) * 0.25;
             vertices(centerEFHGIndex, 1) = (vertices(e, 1) + vertices(f, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
             vertices(centerEFHGIndex, 2) = (vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
@@ -325,10 +390,8 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
-            const UnsignedInteger centerACGEIndex = vertexIndex + 3;
-            vertices(centerACGEIndex, 0) = (vertices(a, 0) + vertices(c, 0) + vertices(e, 0) + vertices(g, 0)) * 0.25;
-            vertices(centerACGEIndex, 1) = (vertices(a, 1) + vertices(c, 1) + vertices(e, 1) + vertices(g, 1)) * 0.25;
-            vertices(centerACGEIndex, 2) = (vertices(a, 2) + vertices(c, 2) + vertices(e, 2) + vertices(g, 2)) * 0.25;
+            // center of faces ACGE were already added, reuse the center of the opposite face of the adjacent cube
+            const UnsignedInteger centerACGEIndex = (i > 0) ? vertexIndex - 4 : mp1np1*(p + 1) + m * n + k * n + j;
             // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
             simplices(simplexIndex, 0) = centerACGEIndex;
             simplices(simplexIndex, 1) = c;
@@ -351,7 +414,8 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
-            const UnsignedInteger centerBDHFIndex = vertexIndex + 4;
+            const UnsignedInteger centerBDHFIndex = vertexIndex;
+            ++ vertexIndex;
             vertices(centerBDHFIndex, 0) = (vertices(b, 0) + vertices(d, 0) + vertices(f, 0) + vertices(h, 0)) * 0.25;
             vertices(centerBDHFIndex, 1) = (vertices(b, 1) + vertices(d, 1) + vertices(f, 1) + vertices(h, 1)) * 0.25;
             vertices(centerBDHFIndex, 2) = (vertices(b, 2) + vertices(d, 2) + vertices(f, 2) + vertices(h, 2)) * 0.25;
@@ -377,10 +441,8 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
-            const UnsignedInteger centerABFEIndex = vertexIndex + 5;
-            vertices(centerABFEIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(e, 0) + vertices(f, 0)) * 0.25;
-            vertices(centerABFEIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(e, 1) + vertices(f, 1)) * 0.25;
-            vertices(centerABFEIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(e, 2) + vertices(f, 2)) * 0.25;
+            // center of faces ABFE were already added, reuse the center of the opposite face of the adjacent cube
+            const UnsignedInteger centerABFEIndex = (j > 0) ? vertexIndex - 4 * m : mp1np1*(p + 1) + m * n + p * n + k * m + i;
             // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
             simplices(simplexIndex, 0) = centerABFEIndex;
             simplices(simplexIndex, 1) = a;
@@ -403,7 +465,8 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
-            const UnsignedInteger centerCDHGIndex = vertexIndex + 6;
+            const UnsignedInteger centerCDHGIndex = vertexIndex;
+            ++ vertexIndex;
             vertices(centerCDHGIndex, 0) = (vertices(c, 0) + vertices(d, 0) + vertices(g, 0) + vertices(h, 0)) * 0.25;
             vertices(centerCDHGIndex, 1) = (vertices(c, 1) + vertices(d, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
             vertices(centerCDHGIndex, 2) = (vertices(c, 2) + vertices(d, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
@@ -428,7 +491,6 @@ Mesh IntervalMesher::build(const Interval & interval,
             simplices(simplexIndex, 2) = g;
             simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            vertexIndex += 7;
           }
           else
           {

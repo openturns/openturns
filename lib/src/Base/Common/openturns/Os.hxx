@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides operating system specific variables
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,11 +46,6 @@ public:
    * Return the separator to split directory list.
    */
   static const char * GetDirectoryListSeparator();
-
-  /**
-   * Return the end of line in text files
-   */
-  static const char * GetEndOfLine();
 
   /**
    * Return the command that permit one to snub the output of a command.

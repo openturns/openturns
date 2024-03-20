@@ -8,6 +8,7 @@
 
 OTTypedInterfaceObjectHelper(Process)
 
+%copyctor OT::Process;
+
 %include openturns/Process.hxx
-namespace OT { %extend Process { Process(const Process & other) { return new OT::Process(other); } } }
 

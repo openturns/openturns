@@ -6,5 +6,6 @@
 
 %include ArchimedeanCopula_doc.i
 
+%copyctor OT::ArchimedeanCopula;
+
 %include openturns/ArchimedeanCopula.hxx
-namespace OT { %extend ArchimedeanCopula { ArchimedeanCopula(const ArchimedeanCopula & other) { return new OT::ArchimedeanCopula(other); } } }

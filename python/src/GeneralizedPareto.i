@@ -6,5 +6,6 @@
 
 %include GeneralizedPareto_doc.i
 
+%copyctor OT::GeneralizedPareto;
+
 %include openturns/GeneralizedPareto.hxx
-namespace OT { %extend GeneralizedPareto { GeneralizedPareto(const GeneralizedPareto & other) { return new OT::GeneralizedPareto(other); } } }

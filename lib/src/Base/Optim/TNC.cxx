@@ -2,7 +2,7 @@
 /**
  *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,7 @@ void TNC::run()
     if (!finiteUp[i]) up[i] = HUGE_VAL;
   }
 
-  tnc_message message((getVerbose() ? TNC_MSG_ALL : TNC_MSG_NONE));
+  tnc_message message = (Log::HasDebug() ? TNC_MSG_ALL : TNC_MSG_NONE);
   Point scale(getScale());
   Point offset(getOffset());
   double *refScale(scale.getDimension() == 0 ? NULL : &scale[0]);
@@ -151,6 +151,7 @@ void TNC::run()
   result_ = OptimizationResult(getProblem());
 
   Scalar f = -1.0;
+  t0_ = std::chrono::steady_clock::now();
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -207,20 +208,31 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
-  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
-  {
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
-    else
-      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
-  }
-  if (!evaluationInputHistory_.getSize())
-    throw InternalException(HERE) << "TNC error at starting point x=" << x << " (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
-
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
+  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
+    result_.setStatus(OptimizationResult::FAILURE);
+
+  // check for timeout
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+  result_.setTimeDuration(timeDuration);
+  if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+  {
+    result_.setStatus(OptimizationResult::TIMEOUT);
+    result_.setStatusMessage(OSS() << "TNC optimization timeout after " << timeDuration << "s");
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "Solving problem by TNC method failed (" << result_.getStatusMessage() << ")";
+    else
+      LOGWARN(OSS() << "TNC algorithm failed. The error message is " << result_.getStatusMessage());
+  }
 }
 
 /* Scale accessor */
@@ -380,7 +392,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
     outP = problem.getObjective().operator()(inP);
 
-    if (!SpecFunc::IsNormal(outP[0]))
+    if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "TNC got a nan output value";
 
     *f = problem.isMinimization() ? outP[0] : -outP[0];
@@ -407,13 +419,18 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->evaluationOutputHistory_.add(outP);
 
   // update result
-  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
+  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
+  if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+    return 1;
 
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first)
   {
@@ -421,7 +438,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
     if (p_nfeval)
     {
-      if (stop) *p_nfeval = algorithm->getMaximumEvaluationNumber();
+      if (stop) *p_nfeval = algorithm->getMaximumCallsNumber();
     }
     else
       throw InternalException(HERE) << "Null p_nfeval";
@@ -431,12 +448,14 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
 void TNC::setIgnoreFailure(const Bool ignoreFailure)
 {
-  ignoreFailure_ = ignoreFailure;
+  LOGWARN(OSS() << "TNC.setIgnoreFailure is deprecated, use setCheckStatus");
+  setCheckStatus(!ignoreFailure);
 }
 
 Bool TNC::getIgnoreFailure() const
 {
-  return ignoreFailure_;
+  LOGWARN(OSS() << "TNC.getIgnoreFailure is deprecated, use getCheckStatus");
+  return !getCheckStatus();
 }
 
 END_NAMESPACE_OPENTURNS

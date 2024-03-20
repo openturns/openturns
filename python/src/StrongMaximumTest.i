@@ -6,5 +6,6 @@
 
 %include StrongMaximumTest_doc.i
 
+%copyctor OT::StrongMaximumTest;
+
 %include openturns/StrongMaximumTest.hxx
-namespace OT{ %extend StrongMaximumTest { StrongMaximumTest(const StrongMaximumTest & other) { return new OT::StrongMaximumTest(other); } } }

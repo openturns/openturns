@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -239,6 +239,17 @@ String Distribution::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* String html converter */
+String Distribution::_repr_html_() const
+{
+  return getImplementation()->_repr_html_();
+}
+
+/* String markdown converter */
+String Distribution::__repr_markdown__() const
+{
+  return getImplementation()->__repr_markdown__();
+}
 
 /* Weight accessor */
 void Distribution::setWeight(const Scalar w)
@@ -775,26 +786,6 @@ Point Distribution::getProbabilities() const
 Point Distribution::getSingularities() const
 {
   return getImplementation()->getSingularities();
-}
-
-/* Compute the density generator of the elliptical generator, i.e.
- *  the function phi such that the density of the distribution can
- *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-Scalar Distribution::computeDensityGenerator(const Scalar betaSquare) const
-{
-  return getImplementation()->computeDensityGenerator(betaSquare);
-}
-
-/* Compute the derivative of the density generator */
-Scalar Distribution::computeDensityGeneratorDerivative(const Scalar betaSquare) const
-{
-  return getImplementation()->computeDensityGeneratorDerivative(betaSquare);
-}
-
-/* Compute the seconde derivative of the density generator */
-Scalar Distribution::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
-{
-  return getImplementation()->computeDensityGeneratorSecondDerivative(betaSquare);
 }
 
 /* Compute the radial distribution CDF */

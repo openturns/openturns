@@ -6,5 +6,6 @@
 
 %include SquaredNormal_doc.i
 
+%copyctor OT::SquaredNormal;
+
 %include openturns/SquaredNormal.hxx
-namespace OT { %extend SquaredNormal { SquaredNormal(const SquaredNormal & other) { return new OT::SquaredNormal(other); } } }

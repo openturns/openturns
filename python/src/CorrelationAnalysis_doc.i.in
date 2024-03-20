@@ -23,7 +23,7 @@ Examples
 >>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
 >>> secondSample = model(firstSample)
 >>> corr_analysis = ot.CorrelationAnalysis(firstSample, secondSample)
->>> print(corr_analysis.computePearsonCorrelation())
+>>> print(corr_analysis.computeLinearCorrelation())
 [0.153352,0.537644,-0.760563]"
 
 // ---------------------------------------------------------------------
@@ -54,15 +54,15 @@ coef : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CorrelationAnalysis::computePearsonCorrelation
-"Correlation evaluation based on the Pearson correlation coefficient.
+%feature("docstring") OT::CorrelationAnalysis::computeLinearCorrelation
+"Correlation evaluation based on the linear (Pearson) correlation coefficient.
 
 Refer to :ref:`pearson_coefficient`.
 
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The Pearson coefficients evaluated between the *secondSample*
+    The linear (Pearson) coefficients evaluated between the *secondSample*
     and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------

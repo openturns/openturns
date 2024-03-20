@@ -6,5 +6,6 @@
 
 %include LogNormalMuSigmaOverMu_doc.i
 
+%copyctor OT::LogNormalMuSigmaOverMu;
+
 %include openturns/LogNormalMuSigmaOverMu.hxx
-namespace OT{ %extend LogNormalMuSigmaOverMu { LogNormalMuSigmaOverMu(const LogNormalMuSigmaOverMu & other) { return new OT::LogNormalMuSigmaOverMu(other); } } }

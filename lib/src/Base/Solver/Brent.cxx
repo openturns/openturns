@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         the Brent mixed bisection/linear/inverse quadratic interpolation
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,8 +39,8 @@ static const Factory<Brent> Factory_Brent;
 Brent::Brent(const Scalar absoluteError,
              const Scalar relativeError,
              const Scalar residualError,
-             const UnsignedInteger maximumFunctionEvaluation)
-  : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
+             const UnsignedInteger maximumCallsNumber)
+  : SolverImplementation(absoluteError, relativeError, residualError, maximumCallsNumber)
 {
   // Nothing to do
 }
@@ -69,8 +69,8 @@ Scalar Brent::solve(const UniVariateFunction & function,
                     const Scalar supValue) const
 {
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation = 0;
-  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
+  UnsignedInteger callsNumber = 0;
+  const UnsignedInteger maximumCallsNumber = getMaximumCallsNumber();
   volatile Scalar a = infPoint;
   Scalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
@@ -148,10 +148,10 @@ Scalar Brent::solve(const UniVariateFunction & function,
     fA = fB;
     b += newDelta;
     // If all the evaluation budget has been spent, return the approximation
-    if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
+    if (callsNumber == maximumCallsNumber) break;
     // New evaluation
     fB = function(b) - value;
-    ++usedFunctionEvaluation;
+    ++callsNumber;
     // If the current approximation of the root is good enough, return it
     if (std::abs(fB) <= getResidualError()) break;
     // Enforce that the root is within [b, c]
@@ -161,7 +161,7 @@ Scalar Brent::solve(const UniVariateFunction & function,
       fC = fA;
     }
   } // end Brent loop
-  usedFunctionEvaluation_ = usedFunctionEvaluation;
+  callsNumber_ = callsNumber;
   return b;
 }
 

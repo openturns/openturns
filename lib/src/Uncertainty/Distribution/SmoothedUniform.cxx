@@ -2,7 +2,7 @@
 /**
  *  @brief The SmoothedUniform distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -124,15 +124,6 @@ Sample SmoothedUniform::getSample(const UnsignedInteger size) const
   return result;
 }
 
-/* Get the DDF of the distribution */
-Point SmoothedUniform::computeDDF(const Point & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  return Point(1, 0.0);
-}
-
-
 /* Get the PDF of the distribution */
 Scalar SmoothedUniform::computePDF(const Point & point) const
 {
@@ -154,6 +145,9 @@ Scalar SmoothedUniform::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
+  const Interval range(getRange());
+  if (x < range.getLowerBound()[0]) return 0.0;
+  if (x > range.getUpperBound()[0]) return 1.0;
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
@@ -171,6 +165,9 @@ Scalar SmoothedUniform::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
+  const Interval range(getRange());
+  if (x < range.getLowerBound()[0]) return 1.0;
+  if (x > range.getUpperBound()[0]) return 0.0;
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
@@ -268,6 +265,13 @@ Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
   // If Newton's iteration failed to converge (only due to cumulated rounding effects)
   if (std::abs(dx) > epsilon) return DistributionImplementation::computeScalarQuantile(prob, tail);
   return x;
+}
+
+Scalar SmoothedUniform::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /* Compute the mean of the distribution */

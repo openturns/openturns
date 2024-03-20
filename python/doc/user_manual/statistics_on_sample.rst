@@ -103,6 +103,13 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     SkellamFactory
+
+    :template: class.rst_t
+
+    experimental.SmoothedUniformFactory
+
+    :template: DistributionFactory.rst_t
+
     StudentFactory
     TrapezoidalFactory
     TriangularFactory
@@ -138,6 +145,10 @@ Building copulas from samples
     IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
+
+    :template: class.rst_t
+
+    experimental.StudentCopulaFactory
 
 Sensitivity Analysis
 ====================
@@ -204,6 +215,7 @@ Goodness-of-fit metrics & tests
     FittingTest.AICC
     FittingTest.BIC
     FittingTest.ChiSquared
+    FittingTest.ComputeKolmogorovStatistics
     FittingTest.Kolmogorov
     FittingTest.Lilliefors
     NormalityTest.AndersonDarlingNormal
@@ -223,6 +235,7 @@ Graphical tests
     VisualTest.DrawKendallPlot
     VisualTest.DrawLinearModel
     VisualTest.DrawLinearModelResidual
+    VisualTest.DrawPPplot
     VisualTest.DrawQQplot
     VisualTest.DrawCDFplot
     VisualTest.DrawUpperTailDependenceFunction

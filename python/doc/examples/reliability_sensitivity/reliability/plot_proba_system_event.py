@@ -93,6 +93,7 @@ def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
 # This function creates the trivariate random vector :math:`(R, Y_t^1, Y_t^2)` where :math:`R` is independent from :math:`(Y_t^1, Y_t^2)`.
 # We need to create this random vector because both events  :math:`\mathcal{E}_t^1` and :math:`\mathcal{E}_t^2` must be defined from the same random vector!
 
+
 # %%
 def buildCrossing(b, t, mu_S, covariance, R, delta_t=1e-5):
     normal = buildNormal(b, t, mu_S, covariance, delta_t)
@@ -101,6 +102,7 @@ def buildCrossing(b, t, mu_S, covariance, R, delta_t=1e-5):
 
 # %%
 # This function evaluates the probability using the Monte Carlo sampling. It defines the intersection event :math:`\mathcal{E}_t^1 \cap \mathcal{E}_t^2`.
+
 
 # %%
 def getXEvent(b, t, mu_S, covariance, R, delta_t):
@@ -130,6 +132,7 @@ def computeCrossingProbability_MonteCarlo(
 # %%
 # This function evaluates the probability using the Low Discrepancy sampling.
 
+
 # %%
 def computeCrossingProbability_QMC(
     b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV
@@ -148,6 +151,7 @@ def computeCrossingProbability_QMC(
 
 # %%
 # This function evaluates the probability using the FORM algorithm for event systems..
+
 
 # %%
 def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
@@ -208,12 +212,12 @@ values_FORM = list()
 for tick in times:
     values_MC.append(
         computeCrossingProbability_MonteCarlo(
-            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
         )
     )
     values_QMC.append(
         computeCrossingProbability_QMC(
-            b, tick[0], mu_S, covariance, R, delta_t, 2 ** 12, 2 ** 3, 1e-2
+            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
         )
     )
     values_FORM.append(
@@ -240,7 +244,7 @@ c = ot.Curve(times, [[p] for p in values_FORM])
 g.add(c)
 g.setLegends(["MC", "QMC", "FORM"])
 g.setColors(["red", "blue", "black"])
-g.setLegendPosition("topleft")
+g.setLegendPosition("upper left")
 g.setXTitle("t")
 g.setYTitle("Outcrossing rate")
 view = View(g)

@@ -38,12 +38,12 @@ pvalue
 KSstat = result.getStatistic()
 KSstat
 
-
 # %%
 # Compute exact Kolmogorov PDF.
 
 # %%
 # Create a function which returns the CDF given the KS distance.
+
 
 # %%
 def pKolmogorovPy(x):
@@ -58,17 +58,17 @@ pKolmogorov = ot.PythonFunction(1, 1, pKolmogorovPy)
 # %%
 # Create a function which returns the KS PDF given the KS distance: use the `gradient` method.
 
+
 # %%
 def kolmogorovPDF(x):
     return pKolmogorov.gradient(x)[0, 0]
 
 
 # %%
-def dKolmogorov(x, samplesize):
+def dKolmogorov(x):
     """
     Compute Kolmogorov PDF for given x.
     x : a Sample, the points where the PDF must be evaluated
-    samplesize : the size of the sample
     Reference
     Numerical Derivatives in Scilab, Michael Baudin, May 2009
     """
@@ -92,23 +92,7 @@ def linearSample(xmin, xmax, npoints):
 # %%
 n = 1000  # Number of points in the plot
 s = linearSample(0.001, 0.999, n)
-y = dKolmogorov(s, samplesize)
-
-
-# %%
-def drawInTheBounds(vLow, vUp, n_test):
-    """
-    Draw the area within the bounds.
-    """
-    palette = ot.Drawable.BuildDefaultPalette(2)
-    myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
-    polygonList = [
-        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
-        for i in range(n_test - 1)
-    ]
-    boundsPoly = ot.PolygonArray(polygonList)
-    return boundsPoly
+y = dKolmogorov(s)
 
 
 # %%
@@ -119,14 +103,14 @@ nplot = 100
 x = linearSample(KSstat, 0.6, nplot)
 
 # %%
-# Compute the bounds to fill: the lower vertical bound is zero and the upper vertical bound is the KS PDF.
+# Compute the bounds to fill: the lower vertical bound is 0 and the upper vertical bound is the KS PDF.
 
 # %%
-vLow = [[x[i, 0], 0.0] for i in range(nplot)]
-vUp = [[x[i, 0], pKolmogorov.gradient(x[i])[0, 0]] for i in range(nplot)]
+vLow = [0.0] * nplot
+vUp = [pKolmogorov.gradient(x[i])[0, 0] for i in range(nplot)]
 
 # %%
-boundsPoly = drawInTheBounds(vLow, vUp, nplot)
+boundsPoly = ot.Polygon.FillBetween(x.asPoint(), vLow, vUp)
 boundsPoly.setLegend("pvalue = %.4f" % (pvalue))
 curve = ot.Curve(s, y)
 curve.setLegend("Exact distribution")
@@ -138,7 +122,7 @@ graph = ot.Graph(
     "KS-Statistics",
     "PDF",
     True,
-    "topright",
+    "upper right",
 )
 graph.setLegends(["Empirical distribution"])
 graph.add(curve)

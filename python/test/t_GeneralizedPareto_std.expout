@@ -38,7 +38,7 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[1.05644]
 skewness= class=Point name=Unnamed dimension=1 values=[1.18322]
 kurtosis= class=Point name=Unnamed dimension=1 values=[4.2]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.11607]
-parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,-0.2,0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,u] values=[1.5,-0.2,0.5]]
 Standard representative= GeneralizedPareto(sigma = 1, xi=-0.2, u=0)
 Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0 u=0.5
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)
@@ -80,7 +80,7 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[1.5]
 skewness= class=Point name=Unnamed dimension=1 values=[2]
 kurtosis= class=Point name=Unnamed dimension=1 values=[9]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.25]
-parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0,0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,u] values=[1.5,0,0.5]]
 Standard representative= GeneralizedPareto(sigma = 1, xi=0, u=0)
 Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2 u=0.5
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
@@ -123,5 +123,5 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[2.42061]
 skewness= class=Point name=Unnamed dimension=1 values=[4.64758]
 kurtosis= class=Point name=Unnamed dimension=1 values=[73.8]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
-parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0.2,0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,u] values=[1.5,0.2,0.5]]
 Standard representative= GeneralizedPareto(sigma = 1, xi=0.2, u=0)

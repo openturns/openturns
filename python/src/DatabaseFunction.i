@@ -6,5 +6,6 @@
 
 %include DatabaseFunction_doc.i
 
+%copyctor OT::DatabaseFunction;
+
 %include openturns/DatabaseFunction.hxx
-namespace OT { %extend DatabaseFunction { DatabaseFunction(const DatabaseFunction & other) { return new OT::DatabaseFunction(other); } } }

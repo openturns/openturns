@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all numerical math function implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,14 +80,13 @@ public:
   FunctionImplementation * clone() const override;
 
   /** Comparison operator */
-protected:
-  using PersistentObject::operator ==;
-public:
   Bool operator ==(const FunctionImplementation & other) const;
+  using PersistentObject::operator ==;
 
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String _repr_html_() const override;
 
   /** Function implementation accessors */
   virtual void setEvaluation(const Evaluation & evaluation);
@@ -227,10 +226,13 @@ private:
 protected:
 
   /** Flag to tell if the current gradient is a default implementation */
-  mutable Bool useDefaultGradientImplementation_;
+  mutable Bool useDefaultGradientImplementation_ = false;
 
   /** Flag to tell if the curren hessian is a default implementation */
-  mutable Bool useDefaultHessianImplementation_;
+  mutable Bool useDefaultHessianImplementation_ = false;
+
+  /** Counter for the number of calls */
+  mutable AtomicInt callsNumber_;
 
 }; /* class FunctionImplementation */
 

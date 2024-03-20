@@ -6,5 +6,6 @@
 
 %include TrendTransform_doc.i
 
+%copyctor OT::TrendTransform;
+
 %include openturns/TrendTransform.hxx
-namespace OT { %extend TrendTransform { TrendTransform(const TrendTransform & other) { return new OT::TrendTransform(other); } } }

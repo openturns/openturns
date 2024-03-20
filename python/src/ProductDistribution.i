@@ -6,5 +6,6 @@
 
 %include ProductDistribution_doc.i
 
+%copyctor OT::ProductDistribution;
+
 %include openturns/ProductDistribution.hxx
-namespace OT { %extend ProductDistribution { ProductDistribution(const ProductDistribution & other) { return new OT::ProductDistribution(other); } } }

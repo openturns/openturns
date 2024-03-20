@@ -2,7 +2,7 @@
 /**
  *  @brief The MaximumDistribution distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,7 +75,7 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
       break;
     }
   if (allSame_) setDistribution(collection[0]);
-  else setDistribution(ComposedDistribution(collection));
+  else setDistribution(JointDistribution(collection));
 }
 
 /* Parameters constructor */
@@ -225,7 +225,7 @@ void MaximumDistribution::setDistribution(const Distribution & distribution)
 
 Distribution MaximumDistribution::getDistribution() const
 {
-  if (allSame_) return ComposedDistribution(DistributionCollection(variablesNumber_, distribution_));
+  if (allSame_) return JointDistribution(DistributionCollection(variablesNumber_, distribution_));
   return distribution_;
 }
 

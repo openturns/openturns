@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all evaluation implementations
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -79,6 +79,20 @@ String EvaluationImplementation::__repr__() const
 String EvaluationImplementation::__str__(const String & ) const
 {
   return OSS(false) << "EvaluationImplementation";
+}
+
+/* String converter */
+String EvaluationImplementation::_repr_html_() const
+{
+  OSS oss(true);
+  oss << "<ul>\n";
+  oss << "  <li> " << "Input dimension = " << getInputDimension() << "  </li>\n";
+  oss << "  <li> " << "Input description = " << getInputDescription() << "  </li>\n";
+  oss << "  <li> " << "Output dimension = " << getOutputDimension() << "  </li>\n";
+  oss << "  <li> " << "Output description = " << getOutputDescription() << "  </li>\n";
+  oss << "  <li> " << "Parameter = " << getParameter() << "  </li>\n";
+  oss << "</ul>\n";
+  return oss;
 }
 
 /* Description Accessor */
@@ -411,7 +425,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "topright", 1.0, scale);
+  Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
+  graph.setLegendCorner({1.0, 1.0});
   Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();

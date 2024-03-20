@@ -6,5 +6,6 @@
 
 %include MetaModelAlgorithm_doc.i
 
+%copyctor OT::MetaModelAlgorithm;
+
 %include openturns/MetaModelAlgorithm.hxx
-namespace OT{ %extend MetaModelAlgorithm { MetaModelAlgorithm(const MetaModelAlgorithm & other) { return new OT::MetaModelAlgorithm(other); } } }

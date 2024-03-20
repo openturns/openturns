@@ -1,5 +1,5 @@
 """
-Kriging :configure the optimization solver
+Kriging: configure the optimization solver
 ==========================================
 """
 # %%
@@ -25,7 +25,7 @@ Kriging :configure the optimization solver
 #   Often, the parameter :math:`{\bf \theta}` is a scale parameter.
 #   This step involves an optimization algorithm.
 #
-# All these parameters are estimated with the `GeneralLinearModelAlgorithm` class.
+# All these parameters are estimated with the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 #
 # The estimation of the :math:`{\bf \theta}` parameters is the step which has the highest CPU cost.
 # Moreover, the maximization of likelihood may be associated with difficulties e.g. many local maximums or even the non convergence of the optimization algorithm.
@@ -75,21 +75,22 @@ II = ot.Beta(2.5, 1.5, 310, 450)  # in cm^4
 II.setDescription("I")
 
 # %%
-# Finally, we define the dependency using a `NormalCopula`.
+# Finally, we define the dependency using a :class:`~openturns.NormalCopula`.
 
 # %%
 dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
 myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, II], myCopula)
+myDistribution = ot.JointDistribution([E, F, L, II], myCopula)
 
 # %%
 # Create the design of experiments
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution.
+# We consider a simple Monte-Carlo sampling as a design of experiments.
+# This is why we generate an input sample using the `getSample` method of the distribution.
 # Then we evaluate the output using the `model` function.
 
 # %%
@@ -102,9 +103,9 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class.
+# In order to create the kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class.
 # Then we use a squared exponential covariance model.
-# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel,
+# Finally, we use the :class:`~openturns.KrigingAlgorithm` class to create the kriging metamodel,
 # taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
@@ -132,9 +133,10 @@ result = algo.getResult()
 krigingMetamodel = result.getMetaModel()
 
 # %%
-# The `run` method has optimized the hyperparameters of the metamodel.
+# The :meth:`~openturns.KrigingAlgorithm.run` method has optimized the hyperparameters of the metamodel.
 #
-# We can then print the constant trend of the metamodel, which have been estimated using the least squares method.
+# We can then print the constant trend of the metamodel, which have been
+# estimated using the least squares method.
 
 # %%
 result.getTrendCoefficients()
@@ -151,7 +153,10 @@ print(basic_covariance_model)
 # ---------------------------
 
 # %%
-# The `getOptimizationAlgorithm` method returns the optimization algorithm used to optimize the :math:`{\bf \theta}` parameters of the `SquaredExponential` covariance model.
+# The :meth:`~openturns.KrigingAlgorithm.getOptimizationAlgorithm` method
+# returns the optimization algorithm used to optimize the
+# :math:`{\bf \theta}` parameters of the
+# :class:`~openturns.SquaredExponential` covariance model.
 
 # %%
 solver = algo.getOptimizationAlgorithm()
@@ -164,7 +169,10 @@ solverImplementation = solver.getImplementation()
 solverImplementation.getClassName()
 
 # %%
-# The `getOptimizationBounds` method returns the bounds. The dimension of these bounds correspond to the spatial dimension of the covariance model.
+# The :meth:`~openturns.KrigingAlgorithm.getOptimizationBounds` method
+# returns the bounds.
+# The dimension of these bounds correspond to the spatial dimension of
+# the covariance model.
 # In the metamodeling context, this correspond to the input dimension of the model.
 
 # %%
@@ -182,7 +190,7 @@ print("ubounds")
 print(ubounds)
 
 # %%
-# The `getOptimizeParameters` method returns `True` if these parameters are to be optimized.
+# The :meth:`~openturns.KrigingAlgorithm.getOptimizeParameters` method returns `True` if these parameters are to be optimized.
 
 # %%
 isOptimize = algo.getOptimizeParameters()
@@ -195,7 +203,8 @@ print(isOptimize)
 
 # %%
 # The starting point of the optimization is based on the parameters of the covariance model.
-# In the following example, we configure the parameters of the covariance model to the arbitrary values `[12.,34.,56.,78.]`.
+# In the following example, we configure the parameters of the covariance model to
+# the arbitrary values `[12.0, 34.0, 56.0, 78.0]`.
 
 # %%
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [1.0])
@@ -226,15 +235,16 @@ print(basic_covariance_model)
 
 # %%
 # It is sometimes useful to completely disable the optimization of the parameters.
-# In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,56.,78.]`.
+# In order to see the effect of this, we first initialize the parameters of
+# the covariance model with the arbitrary values `[12.0, 34.0, 56.0, 78.0]`.
 
 # %%
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [91.0])
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 
 # %%
-# The `setOptimizeParameters` method can be used to disable the optimization of the parameters.
+# The :meth:`~openturns.KrigingAlgorithm.setOptimizeParameters` method can be
+# used to disable the optimization of the parameters.
 
 # %%
 algo.setOptimizeParameters(False)
@@ -361,9 +371,13 @@ printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model
 # ----------------------------------------
 
 # %%
-# The following example checks the robustness of the optimization of the kriging algorithm with respect to the optimization of the likelihood function in the covariance model parameters estimation.
-# We use a `MultiStart` algorithm in order to avoid to be trapped by a local minimum.
-# Furthermore, we generate the design of experiments using a `LHSExperiments`, which guarantees that the points will fill the space.
+# The following example checks the robustness of the optimization of the
+# kriging algorithm with respect to the optimization of the likelihood
+# function in the covariance model parameters estimation.
+# We use a :class:`~openturns.MultiStart` algorithm in order to avoid to be trapped by a local minimum.
+# Furthermore, we generate the design of experiments using a
+# :class:`~openturns.LHSExperiments`, which guarantees that the points
+# will fill the space.
 
 # %%
 sampleSize_train = 10
@@ -371,14 +385,17 @@ X_train = myDistribution.getSample(sampleSize_train)
 Y_train = model(X_train)
 
 # %%
-# First, we create a multivariate distribution, based on independent `Uniform` marginals which have the bounds required by the covariance model.
+# First, we create a multivariate distribution, based on independent
+# :class:`~openturns.Uniform` marginals which have the bounds required
+# by the covariance model.
 
 # %%
 distributions = [ot.Uniform(lbounds[i], ubounds[i]) for i in range(dim)]
-boundedDistribution = ot.ComposedDistribution(distributions)
+boundedDistribution = ot.JointDistribution(distributions)
 
 # %%
-# We first generate a Latin Hypercube Sampling (LHS) design made of 25 points in the sample space. This LHS is optimized so as to fill the space.
+# We first generate a Latin Hypercube Sampling (LHS) design made of 25 points in the sample space.
+# This LHS is optimized so as to fill the space.
 
 # %%
 K = 25  # design size
@@ -392,7 +409,8 @@ starting_points = LHS_design.getOptimalDesign()
 starting_points.getSize()
 
 # %%
-# We can check that the minimum and maximum in the sample correspond to the bounds of the design of experiment.
+# We can check that the minimum and maximum in the sample correspond to the
+# bounds of the design of experiment.
 
 # %%
 print(lbounds, ubounds)
@@ -401,14 +419,14 @@ print(lbounds, ubounds)
 starting_points.getMin(), starting_points.getMax()
 
 # %%
-# Then we create a `MultiStart` algorithm based on the LHS starting points.
+# Then we create a :class:`~openturns.MultiStart` algorithm based on the LHS starting points.
 
 # %%
 solver.setMaximumIterationNumber(10000)
 multiStartSolver = ot.MultiStart(solver, starting_points)
 
 # %%
-# Finally, we configure the optimization algorithm so as to use the `MultiStart` algorithm.
+# Finally, we configure the optimization algorithm so as to use the :class:`~openturns.MultiStart` algorithm.
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)

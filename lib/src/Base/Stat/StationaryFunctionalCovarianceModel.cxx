@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -141,7 +141,7 @@ void StationaryFunctionalCovarianceModel::setFullParameter(const Point & paramet
 {
   CovarianceModelImplementation::setFullParameter(parameter);
   Point functionParameter(rho_.getParameter().getDimension());
-  std::copy(parameter.begin() + getInputDimension() + getOutputDimension(), parameter.end(), functionParameter.begin());
+  std::copy(parameter.begin() + getInputDimension() + 1 + getOutputDimension(), parameter.end(), functionParameter.begin());
   rho_.setParameter(functionParameter);
 }
 

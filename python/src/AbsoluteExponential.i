@@ -6,5 +6,6 @@
 
 %include AbsoluteExponential_doc.i
 
+%copyctor OT::AbsoluteExponential;
+
 %include openturns/AbsoluteExponential.hxx
-namespace OT { %extend AbsoluteExponential { AbsoluteExponential(const AbsoluteExponential & other) { return new OT::AbsoluteExponential(other); } } }

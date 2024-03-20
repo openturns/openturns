@@ -1,10 +1,10 @@
 %feature("docstring") OT::StudentFactory
 "Student factory.
 
-Available constructor:
-    StudentFactory()
-
-The parameters are estimated by a mixed method of moments and reduces MLE:
+Notes
+-----
+Some parameters are estimated by the method of moments and others by the maximum reduced 
+likelihood method:
 
 .. math::
     :nowrap:
@@ -25,10 +25,12 @@ DistributionFactory, Student"
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionFactory_buildAsStudent_doc
-"Build the Student distribution.
+%feature("docstring") OT::StudentFactory::buildAsStudent
+"Estimate the distribution as native distribution.
 
 **Available usages**:
+
+    buildAsStudent()
 
     buildAsStudent(*sample*)
 
@@ -37,15 +39,15 @@ DistributionFactory, Student"
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Student`.
 
 Returns
 -------
 dist : :class:`~openturns.Student`
-    The built distribution."
-%enddef
-%feature("docstring") OT::StudentFactory::buildAsStudent
-OT_DistributionFactory_buildAsStudent_doc
+    The estimated distribution as a Student.
+    
+    In the first usage, the default Student distribution is built."
+
 

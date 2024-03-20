@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseNormal distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -134,13 +134,20 @@ Scalar InverseNormal::computeCDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   const Scalar lx = std::sqrt(lambda_ / x);
-  const Scalar phiArg1 = lx * ( x / mu_ - 1.0);
+  const Scalar phiArg1 = std::sqrt(lambda_ * x) / mu_ - lx;
   // Quick return if in the far right tail. The pNormal() function is constant
   // equal to 1 in double precision for argument greater than 8.24, and the
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
   const Scalar phiArg2 = -lx * ( x / mu_ + 1.0);
   return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
+}
+
+Scalar InverseNormal::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */

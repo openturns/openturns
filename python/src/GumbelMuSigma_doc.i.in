@@ -5,11 +5,23 @@ Parameters
 ----------
 mu : float
     Mean.
+
+    Default value is :math:`\gamma_e`.
 sigma : float
     Standard deviation :math:`\sigma > 0`.
 
+    Default value is :math:`\frac{\pi}{\sqrt{6}}`.
+
 Notes
 -----
+Let :math:`X` be a random variable that follows a Gumbel distribution
+such that:
+
+.. math::
+
+    \Expect{X} &= \mu \\
+    \Var{X} &= \sigma^2
+
 The native parameters  :math:`(\beta, \gamma)` are defined as follows:
 
 .. math::
@@ -21,6 +33,10 @@ The native parameters  :math:`(\beta, \gamma)` are defined as follows:
     \end{eqnarray*}
 
 where :math:`\gamma_e` is the Euler-Mascheroni constant.
+
+The default values of :math:`(\mu, \sigma)` are defined so that the associated native parameters
+have the default values: :math:`(\beta, \gamma) = (1.0, 0.0)`.
+
 
 See also
 --------

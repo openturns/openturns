@@ -6,5 +6,6 @@
 
 %include GaussKronrodRule_doc.i
 
+%copyctor OT::GaussKronrodRule;
+
 %include openturns/GaussKronrodRule.hxx
-namespace OT { %extend GaussKronrodRule { GaussKronrodRule(const GaussKronrodRule & other) { return new OT::GaussKronrodRule(other); } } }

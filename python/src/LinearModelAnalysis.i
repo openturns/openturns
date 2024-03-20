@@ -6,5 +6,6 @@
 
 %include LinearModelAnalysis_doc.i
 
+%copyctor OT::LinearModelAnalysis;
+
 %include openturns/LinearModelAnalysis.hxx
-namespace OT { %extend LinearModelAnalysis { LinearModelAnalysis(const LinearModelAnalysis & other) { return new OT::LinearModelAnalysis(other); } } }

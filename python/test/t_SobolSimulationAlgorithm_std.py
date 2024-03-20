@@ -31,12 +31,12 @@ dimension = 3
 # formula += " * ((abs(4.0 * xi" + str(i) + " - 2.0) + " + str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
 # covTh = covTh - 1.0
 # model = ot.SymbolicFunction(inputVariables, [formula])
-# distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+# distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 
 # ishigami
 formula = "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)"
 model = ot.SymbolicFunction(["X1", "X2", "X3"], [formula])
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * dimension)
+distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * dimension)
 
 estimator = ot.SaltelliSensitivityAlgorithm()
 estimator.setUseAsymptoticDistribution(True)

@@ -19,7 +19,7 @@ formulaIshigami[
 
 modelIshigami = ot.SymbolicFunction(inputName, formulaIshigami)
 
-distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * inputDimension)
+distributions = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * inputDimension)
 
 sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 400)
 
@@ -29,13 +29,13 @@ totalOrderIndices = sensitivityAnalysis.getTotalOrderIndices()
 # Comparaison with reference analytical values
 a = 7.0
 b = 0.1
-covTh = (b ** 2 * m.pi ** 8) / 18.0 + (b * m.pi ** 4) / 5.0 + (a ** 2) / 8.0 + 1.0 / 2.0
+covTh = (b**2 * m.pi**8) / 18.0 + (b * m.pi**4) / 5.0 + (a**2) / 8.0 + 1.0 / 2.0
 sob_1 = [
-    (b * m.pi ** 4 / 5.0 + b ** 2 * m.pi ** 8 / 50.0 + 1.0 / 2.0) / covTh,
-    (a ** 2 / 8.0) / covTh,
+    (b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0) / covTh,
+    (a**2 / 8.0) / covTh,
     0.0,
 ]
-sob_2 = [0.0, (b ** 2 * m.pi ** 8 / 18.0 - b ** 2 * m.pi ** 8 / 50.0) / covTh, 0.0]
+sob_2 = [0.0, (b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0) / covTh, 0.0]
 sob_3 = [0.0]
 sob_T1 = [
     sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0],
@@ -82,7 +82,7 @@ for i in range(inputDimension):
 covTh = covTh - 1.0
 modelGSobol = ot.SymbolicFunction(inputName, formulaGSobol)
 
-distributions = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
+distributions = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * inputDimension)
 
 sensitivityAnalysis = ot.FAST(modelGSobol, distributions, 400)
 

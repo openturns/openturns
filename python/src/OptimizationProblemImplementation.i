@@ -6,5 +6,6 @@
 
 %include OptimizationProblemImplementation_doc.i
 
+%copyctor OT::OptimizationProblemImplementation;
+
 %include openturns/OptimizationProblemImplementation.hxx
-namespace OT{ %extend OptimizationProblemImplementation { OptimizationProblemImplementation(const OptimizationProblemImplementation & other) { return new OT::OptimizationProblemImplementation(other); } } }

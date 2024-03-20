@@ -6,5 +6,6 @@
 
 %include ARMAFactoryImplementation_doc.i
 
+%copyctor OT::ARMAFactoryImplementation;
+
 %include openturns/ARMAFactoryImplementation.hxx
-namespace OT { %extend ARMAFactoryImplementation { ARMAFactoryImplementation(const ARMAFactoryImplementation & other) { return new OT::ARMAFactoryImplementation(other); } } }

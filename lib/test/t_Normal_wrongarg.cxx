@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal with wrong arguments
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,20 +55,20 @@ int main(int, char *[])
 
       // We try to set an erroneous covariance matrix (wrong dimension) into distribution
       CorrelationMatrix newR(2);
-      distribution.setCorrelation(newR);
+      distribution.setR(newR);
 
       // Normally, we should never go here
       throw TestFailed("Exception has NOT been thrown or caught !");
 
 
     }
-    catch (InvalidArgumentException & ex)
+    catch (const InvalidArgumentException &)
     {
       // Nothing to do
     }
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

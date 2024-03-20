@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between evaluations or
  *        field to point and point to field functions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -121,7 +121,7 @@ String PointToPointEvaluation::__repr__() const
 String PointToPointEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
+  if (hasVisibleName()) oss << "name=" << getName() << "\n" << offset;
   if (isFunctionComposition_)
   {
     oss << "(" << leftFunction_.__str__(offset) << ")o(";

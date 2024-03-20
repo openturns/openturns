@@ -6,5 +6,6 @@
 
 %include Frechet_doc.i
 
+%copyctor OT::Frechet;
+
 %include openturns/Frechet.hxx
-namespace OT { %extend Frechet { Frechet(const Frechet & other) { return new OT::Frechet(other); } } }

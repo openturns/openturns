@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ImportanceSamplingExperiment for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ int main(int, char *[])
   {
     Normal distribution(4);
     Normal weightingDistribution(distribution);
-    weightingDistribution.setMean(Point(4, 1.0));
+    weightingDistribution.setMu(Point(4, 1.0));
     UnsignedInteger size = 10;
     ImportanceSamplingExperiment experiment(distribution, weightingDistribution, size);
     fullprint << "experiment = " << experiment << std::endl;

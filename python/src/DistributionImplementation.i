@@ -45,12 +45,6 @@ namespace OT {
 
 DistributionImplementation(const DistributionImplementation & other) { return new OT::DistributionImplementation(other); } 
 
-#if SWIG_VERSION < 0x030011
-Distribution __truediv__(const Scalar s) { return (*self) / s; }
-
-Distribution __truediv__(const DistributionImplementation & d) { return (*self) / d; }
-#endif
-
 Distribution __rtruediv__(const Scalar s) { return s / (*self); }
 
 Distribution __rdiv__(const Scalar s) { return s / (*self); }

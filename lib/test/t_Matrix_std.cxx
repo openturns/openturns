@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Matrix for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -298,16 +298,16 @@ int main(int, char *[])
   coll.add(A3);
   for (UnsignedInteger i = 0; i < 3; ++ i)
   {
-    const Matrix A(coll[i]);
-    fullprint << "A = " << A.__str__() << std::endl;
+    const Matrix A4(coll[i]);
+    fullprint << "A = " << A4.__str__() << std::endl;
     for(UnsignedInteger newRow = 1; newRow < 6; ++ newRow)
     {
       for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
       {
-        MatrixImplementation B(*A.getImplementation());
+        MatrixImplementation B4(*A4.getImplementation());
         fullprint << "----------" << newRow << "x" << newCol << std::endl;
-        B.resize(newRow, newCol);
-        fullprint << B.__str__() << std::endl;
+        B4.resize(newRow, newCol);
+        fullprint << B4.__str__() << std::endl;
       }
     }
   }

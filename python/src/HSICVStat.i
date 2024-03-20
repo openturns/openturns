@@ -6,5 +6,6 @@
 
 %include HSICVStat_doc.i
 
+%copyctor OT::HSICVStat;
+
 %include openturns/HSICVStat.hxx
-namespace OT{ %extend HSICVStat { HSICVStat(const HSICVStat & other) { return new OT::HSICVStat(other); } } }

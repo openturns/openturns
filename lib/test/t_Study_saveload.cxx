@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Study for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,6 @@ void compare(const T & savedInstance, const Study & study, const String & tag = 
   fullprint << "saved  " << className << " = " << savedInstance  << std::endl;
   fullprint << "loaded " << className << " = " << loadedInstance << std::endl;
 }
-
 
 
 int main(int, char *[])
@@ -232,11 +231,14 @@ int main(int, char *[])
     ChiSquare chiSquare(1.5);
     study.add("chiSquare", chiSquare);
 
-    UnsignedInteger dim = 2;
-    Point theta(dim + 1);
-    for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
-    Dirichlet dirichlet(theta);
-    study.add("dirichlet", dirichlet);
+    Dirichlet dirichlet;
+    {
+      UnsignedInteger dim = 2;
+      Point theta(dim + 1);
+      for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
+      dirichlet = Dirichlet(theta);
+      study.add("dirichlet", dirichlet);
+    }
 
     Exponential exponential(3.0, -2.0);
     study.add("exponential", exponential);
@@ -303,56 +305,65 @@ int main(int, char *[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    Sample x(3, 1);
-    x[0][0] = 1.0;
-    x[1][0] = 2.0;
-    x[2][0] = 3.0;
-    Point p(3);
-    p[0] = 0.3;
-    p[1] = 0.1;
-    p[2] = 0.6;
-    UserDefined userDefined(x, p);
-    study.add("userDefined", userDefined);
+    UserDefined userDefined;
+    {
+      Sample x(3, 1);
+      x[0][0] = 1.0;
+      x[1][0] = 2.0;
+      x[2][0] = 3.0;
+      Point p(3);
+      p[0] = 0.3;
+      p[1] = 0.1;
+      p[2] = 0.6;
+      userDefined = UserDefined(x, p);
+      study.add("userDefined", userDefined);
+    }
 
     // Create a WeibullMin distribution
     WeibullMin weibull(2.0, 1.5, -0.5);
     study.add("weibullMin", weibull);
 
     // Create a NormalCopula distribution
-    CorrelationMatrix R(3);
-    R(0, 1) = 0.5;
-    R(1, 2) = 0.5;
-    NormalCopula normalCopula(R);
-    study.add("normalCopula", normalCopula);
+    NormalCopula normalCopula;
+    {
+      CorrelationMatrix R(3);
+      R(0, 1) = 0.5;
+      R(1, 2) = 0.5;
+      normalCopula = NormalCopula(R);
+      study.add("normalCopula", normalCopula);
+    }
 
     // Create a Uniform distribution
     Uniform uniform(-1.5, 2.0);
     study.add("uniform", uniform);
 
-    // Create a ComposedDistribution
-    ComposedDistribution::DistributionCollection collection;
+    // Create a JointDistribution
+    JointDistribution::DistributionCollection collection;
     collection.add(beta);
     collection.add(gamma);
     collection.add(logistic);
-    ComposedDistribution composedDistribution(collection, normalCopula);
-    study.add("composedDistribution", composedDistribution);
+    JointDistribution jointDistribution(collection, normalCopula);
+    study.add("jointDistribution", jointDistribution);
 
     // Create an analytical Function
-    Description input(3);
-    input[0] = "a";
-    input[1] = "b";
-    input[2] = "c";
-    Description output(3);
-    output[0] = "squaresum";
-    output[1] = "prod";
-    output[2] = "complex";
-    Description formulas(output.getSize());
-    formulas[0] = "a+b+c";
-    formulas[1] = "a-b*c";
-    formulas[2] = "(a+2*b^2+3*c^3)/6";
-    SymbolicFunction analytical(input, formulas);
-    analytical.setName("analytical");
-    study.add("analytical", analytical);
+    SymbolicFunction analytical;
+    {
+      Description input(3);
+      input[0] = "a";
+      input[1] = "b";
+      input[2] = "c";
+      Description output(3);
+      output[0] = "squaresum";
+      output[1] = "prod";
+      output[2] = "complex";
+      Description formulas(output.getSize());
+      formulas[0] = "a+b+c";
+      formulas[1] = "a-b*c";
+      formulas[2] = "(a+2*b^2+3*c^3)/6";
+      analytical = SymbolicFunction(input, formulas);
+      analytical.setName("analytical");
+      study.add("analytical", analytical);
+    }
 
     // Create an Event Object
     ThresholdEvent event;
@@ -405,7 +416,7 @@ int main(int, char *[])
     // Create a Cobyla algorithm
     Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setMaximumEvaluationNumber(100);
+    cobyla.setMaximumCallsNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
     cobyla.setMaximumResidualError(1.0e-10);
@@ -457,18 +468,18 @@ int main(int, char *[])
       input3.setName("input");
       CompositeRandomVector output3(model, input3);
       output3.setName("output");
-      ThresholdEvent event(output3, Greater(), 1.0);
-      event.setName("failureEvent");
+      ThresholdEvent event2(output3, Greater(), 1.0);
+      event2.setName("failureEvent");
       Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
-      formResult = FORMResult(Point(2, 1.0), event, false);
+      formResult = FORMResult(Point(2, 1.0), event2, false);
       formResult.setName("formResult");
       formResult.getImportanceFactors();
       formResult.getImportanceFactors(AnalyticalResult::CLASSICAL);
       formResult.getImportanceFactors(AnalyticalResult::PHYSICAL);
       formResult.getEventProbabilitySensitivity();
 
-      sormResult = SORMResult (Point(2, 1.0), event, false);
+      sormResult = SORMResult (Point(2, 1.0), event2, false);
       sormResult.setName("sormResult");
       sormResult.getEventProbabilityBreitung();
       sormResult.getEventProbabilityHohenbichler();
@@ -539,10 +550,10 @@ int main(int, char *[])
     {
       Distribution dist1 = Normal(0.0, 0.01);
       Distribution dist2 = Normal(0.0, 0.02);
-      ComposedDistribution::DistributionCollection aCollection;
+      JointDistribution::DistributionCollection aCollection;
       aCollection.add( dist1 );
       aCollection.add( dist2 );
-      Distribution dist  = ComposedDistribution(aCollection);
+      Distribution dist  = JointDistribution(aCollection);
       whiteNoise = WhiteNoise(dist);
       whiteNoise.setTimeGrid(regularGrid);
     }
@@ -706,8 +717,7 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < dim; ++i) inVars[i] = OSS() << "x" << i;
       SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
-      Interval domain(dim);
-      eventDomain = DomainEvent(Y, domain);
+      eventDomain = DomainEvent(Y, Interval(dim));
     }
     study.add("domainEvent", eventDomain);
 
@@ -718,8 +728,7 @@ int main(int, char *[])
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
-      Interval domain(dim);
-      eventProcess = ProcessEvent(X, domain);
+      eventProcess = ProcessEvent(X, Interval(dim));
     }
     study.add("processEvent", eventProcess);
 
@@ -741,14 +750,14 @@ int main(int, char *[])
     FunctionalBasisProcess functionalBasisProcess;
     {
       UnsignedInteger basisDimension = 10;
-      Collection<Function> basis(basisDimension);
+      Collection<Function> basis2(basisDimension);
       Collection<Distribution> coefficients(basisDimension);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
-        basis[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
+        basis2[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
         coefficients[i] = Normal(0.0, (1.0 + i));
       }
-      functionalBasisProcess = FunctionalBasisProcess(ComposedDistribution(coefficients), basis);
+      functionalBasisProcess = FunctionalBasisProcess(JointDistribution(coefficients), basis2);
     }
     study.add("functionalBasisProcess", functionalBasisProcess);
 
@@ -817,13 +826,6 @@ int main(int, char *[])
     // Create an HermitianMatrix
     HermitianMatrix hermitianMatrix(2);
     study.add("hermitianMatrix", hermitianMatrix);
-
-    // Create a LHS
-    LHS lhs(event);
-    lhs.setMaximumOuterSampling(250);
-    lhs.setBlockSize(4);
-    lhs.setMaximumCoefficientOfVariation(0.1);
-    study.add("lhs", lhs);
 
     // Create a Mixture
     Mixture mixture;
@@ -1036,7 +1038,7 @@ int main(int, char *[])
     compare<Chi >( chi, study2 );
     compare<ChiSquare >( chiSquare, study2 );
     compare<Dirichlet >( dirichlet, study2 );
-    compare<ComposedDistribution >( composedDistribution, study2 );
+    compare<JointDistribution >( jointDistribution, study2 );
     compare<Exponential >( exponential, study2 );
     compare<FisherSnedecor >( fisherSnedecor, study2 );
     compare<Gamma >( gamma, study2 );
@@ -1066,7 +1068,6 @@ int main(int, char *[])
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
-    compare<LHS>(lhs, study2, "lhs");
     compare<ProbabilitySimulationResult >( simulationResult, study2 );
 
     // Analytical
@@ -1116,24 +1117,24 @@ int main(int, char *[])
 
     // Create a Study Object by giving its name
     {
-      Study study(fileName);
+      Study study3(fileName);
       Point point(4);
       point[0] = std::numeric_limits<Scalar>::quiet_NaN();
       point[1] = sqrt(-1.0);
       point[2] = std::numeric_limits<Scalar>::infinity();
       point[3] = -std::numeric_limits<Scalar>::infinity();
-      study.add("point", point);
-      study.save();
-      Study study2(fileName);
-      study2.load();
+      study3.add("point", point);
+      study3.save();
+      Study study4(fileName);
+      study4.load();
       Point point2;
-      study2.fillObject("point", point2);
+      study4.fillObject("point", point2);
       for (UnsignedInteger j = 0; j < point2.getDimension(); ++ j)
       {
         std::cout << "j=" << j;
         std::cout << " isnormal=" << SpecFunc::IsNormal(point2[j]);
-        std::cout << " isnan=" << SpecFunc::IsNaN(point2[j]);
-        std::cout << " isinf=" << SpecFunc::IsInf(point2[j]) << std::endl;
+        std::cout << " isnan=" << std::isnan(point2[j]);
+        std::cout << " isinf=" << std::isinf(point2[j]) << std::endl;
       }
       // cleanup
       Os::Remove(fileName);

@@ -2,7 +2,7 @@
 /**
  *  @brief This Penalized Least Squares Algorithm as a functor class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -279,6 +279,17 @@ void PenalizedLeastSquaresAlgorithm::load(Advocate & adv)
   ApproximationAlgorithmImplementation::load(adv);
   adv.loadAttribute( "penalizationFactor_", penalizationFactor_ );
   adv.loadAttribute( "penalizationMatrix_", penalizationMatrix_ );
+}
+
+Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = Collection<Point>(1, coefficients_);
+  return Collection<Indices>(1, currentIndices_);
+}
+
+Point PenalizedLeastSquaresAlgorithm::getErrorHistory() const
+{
+  return Point();  
 }
 
 END_NAMESPACE_OPENTURNS

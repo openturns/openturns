@@ -5,12 +5,16 @@ Parameters
 ----------
 beta : float
     scale parameter :math:`\beta > 0`.
+    
+    Default value is 1.0.
 gamma : float
     position parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
 Notes
 -----
-Its cumulative and probability density functions are defined as:
+Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
     :nowrap:

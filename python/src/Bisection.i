@@ -6,5 +6,6 @@
 
 %include Bisection_doc.i
 
+%copyctor OT::Bisection;
+
 %include openturns/Bisection.hxx
-namespace OT { %extend Bisection { Bisection(const Bisection & other) { return new OT::Bisection(other); } } }

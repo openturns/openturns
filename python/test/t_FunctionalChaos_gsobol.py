@@ -42,7 +42,7 @@ model = ot.SymbolicFunction(inputVariables, formula)
 
 # Create the input distribution
 marginals = [ot.Uniform(0.0, 1.0)] * dimension
-distribution = ot.ComposedDistribution(marginals)
+distribution = ot.JointDistribution(marginals)
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
@@ -57,7 +57,7 @@ indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
 basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
-    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold, False)
+    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(

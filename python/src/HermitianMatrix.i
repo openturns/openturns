@@ -29,9 +29,5 @@ namespace OT {
   HermitianMatrix __rmul__(Complex s) { return s * (*self); }
   ComplexMatrix __rmul__(const ComplexMatrix & m) { return m * (*self); }
 
-#if SWIG_VERSION < 0x030011
-  HermitianMatrix __truediv__(Complex s) { return (*self) / s; }
-#endif
-
 } // HermitianMatrix
 } // OT

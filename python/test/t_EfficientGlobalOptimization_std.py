@@ -44,7 +44,7 @@ kriging.run()
 
 # algo
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
-algo.setMaximumEvaluationNumber(20)
+algo.setMaximumCallsNumber(20)
 algo.setImprovementFactor(0.05)  # stop when improvement is < a% the current optimum
 algo.setAEITradeoff(0.66744898)
 algo.run()
@@ -92,7 +92,7 @@ def ackley(X):
     c = 2.0 * m.pi
     d = len(X)
     f = (
-        -a * m.exp(-b * m.sqrt(sum(x ** 2 for x in X) / d))
+        -a * m.exp(-b * m.sqrt(sum(x**2 for x in X) / d))
         - m.exp(sum(m.cos(c * x) for x in X) / d)
         + a
         + m.exp(1.0)
@@ -126,7 +126,7 @@ kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 # solver = ot.NLopt('GN_ESCH')
 # solver = ot.NLopt('GN_MLSL')
-algo.setMaximumEvaluationNumber(15)
+algo.setMaximumCallsNumber(15)
 algo.setMaximumAbsoluteError(1e-10)
 algo.setMaximumRelativeError(1e-10)
 algo.setMaximumResidualError(1e-10)
@@ -178,8 +178,16 @@ basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-algo.setMaximumEvaluationNumber(2)
+algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()
+
+# check maximization
+problem.setMinimization(False)
+algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo.setMaximumCallsNumber(10)
+algo.run()
+result = algo.getResult()
+assert result.getOptimalValue()[0] >= 650.0
 
 print("OK")

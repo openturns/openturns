@@ -13,7 +13,7 @@ def flooding(X):
     Zd = Zb + Hd
     Q, Ks, Zv, Zm = X
     alpha = (Zm - Zv) / L
-    H = (Q / (Ks * B * alpha ** 0.5)) ** 0.6
+    H = (Q / (Ks * B * alpha**0.5)) ** 0.6
     Zc = H + Zv
     S = Zc - Zd
     return [S]
@@ -26,7 +26,7 @@ Ks = ot.Normal(30.0, 7.5)
 Ks = ot.TruncatedDistribution(Ks, 0.0, ot.SpecFunc.MaxScalar)
 Zv = ot.Uniform(49.0, 51.0)
 Zm = ot.Uniform(54.0, 56.0)
-inputX = ot.ComposedDistribution([Q, Ks, Zv, Zm])
+inputX = ot.JointDistribution([Q, Ks, Zv, Zm])
 inputX.setDescription(["Q", "Ks", "Zv", "Zm"])
 
 size = 5000

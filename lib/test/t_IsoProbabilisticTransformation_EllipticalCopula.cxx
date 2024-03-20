@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class IsoProbabilisticTransformation for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ int main(int, char *[])
   try
   {
     // Create a collection of distribution
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
 
     aCollection.add(Uniform(-1.0, 2.0));
     aCollection.add(Gamma(2.0, 2.0, 0.0));
@@ -67,7 +67,7 @@ int main(int, char *[])
         RCopula(i, j) = (i + j + 1.0) / (2.0 * dim);
       }
     }
-    ComposedDistribution distribution(aCollection, NormalCopula(RCopula));
+    JointDistribution distribution(aCollection, NormalCopula(RCopula));
     // Test for sampling
     UnsignedInteger size = 10000;
     Sample sample = distribution.getSample( size );
@@ -115,55 +115,55 @@ int main(int, char *[])
       Point dTdp;
       {
         // dT/dp0
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[0] = Uniform(-1.0 + eps, 2.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         coll[0] = Uniform(-1.0 - eps, 2.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(0, 0) = dTdp[0];
         gradient(0, 1) = dTdp[1];
       }
       {
         // dT/dp1
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[0] = Uniform(-1.0, 2.0 + eps);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         coll[0] = Uniform(-1.0, 2.0 - eps);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(1, 0) = dTdp[0];
         gradient(1, 1) = dTdp[1];
       }
       {
         // dT/dp2
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0 + eps, 2.0, 0.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0 - eps, 2.0, 0.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(2, 0) = dTdp[0];
         gradient(2, 1) = dTdp[1];
       }
       {
         // dT/dp3
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0, 2.0 + eps, 0.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0, 2.0 - eps, 0.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(3, 0) = dTdp[0];
         gradient(3, 1) = dTdp[1];
       }
       {
         // dT/dp4
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0, 2.0, 0.0 + eps);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0, 2.0, 0.0 - eps);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(4, 0) = dTdp[0];
         gradient(4, 1) = dTdp[1];
@@ -180,55 +180,55 @@ int main(int, char *[])
       Point dTdp;
       {
         // dT/dp0
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[0] = Uniform(-1.0 + eps, 2.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         coll[0] = Uniform(-1.0 - eps, 2.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(0, 0) = dTdp[0];
         gradient(0, 1) = dTdp[1];
       }
       {
         // dT/dp1
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[0] = Uniform(-1.0, 2.0 + eps);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         coll[0] = Uniform(-1.0, 2.0 - eps);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(1, 0) = dTdp[0];
         gradient(1, 1) = dTdp[1];
       }
       {
         // dT/dp2
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0 + eps, 2.0, 0.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0 - eps, 2.0, 0.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(2, 0) = dTdp[0];
         gradient(2, 1) = dTdp[1];
       }
       {
         // dT/dp3
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0, 2.0 + eps, 0.0);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0, 2.0 - eps, 0.0);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(3, 0) = dTdp[0];
         gradient(3, 1) = dTdp[1];
       }
       {
         // dT/dp4
-        ComposedDistribution::DistributionCollection coll(aCollection);
+        JointDistribution::DistributionCollection coll(aCollection);
         coll[1] = Gamma(2.0, 2.0, 0.0 + eps);
-        IsoProbabilisticTransformation left(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation left(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         coll[1] = Gamma(2.0, 2.0, 0.0 - eps);
-        IsoProbabilisticTransformation right(ComposedDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
+        IsoProbabilisticTransformation right(JointDistribution(coll, NormalCopula(RCopula)).getInverseIsoProbabilisticTransformation());
         dTdp = (left(point) - right(point)) * factor;
         gradient(4, 0) = dTdp[0];
         gradient(4, 1) = dTdp[1];

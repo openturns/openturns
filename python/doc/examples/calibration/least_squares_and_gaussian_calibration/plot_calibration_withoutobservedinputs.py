@@ -59,7 +59,7 @@ print(trueParameter)
 # in dimension 3, with Dirac (i.e. constant) marginals.
 
 # %%
-inputRandomVector = ot.ComposedDistribution(
+inputRandomVector = ot.JointDistribution(
     [ot.Dirac(theta) for theta in trueParameter]
 )
 
@@ -157,7 +157,7 @@ xmax = max(abscissas)
 
 npoints = 50
 palette = ot.Drawable.BuildDefaultPalette(4)
-graph = ot.Graph("Calibration without observations", "x", "y", True, "bottomright")
+graph = ot.Graph("Calibration without observations", "x", "y", True, "lower right")
 curve = trueFunction.draw(xmin, xmax, npoints).getDrawable(0)
 curve.setLineStyle("dotted")
 curve.setLegend("True model")

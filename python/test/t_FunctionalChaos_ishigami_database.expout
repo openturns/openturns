@@ -1,6 +1,16 @@
 ###################################
-class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=21
+- residual: 0.0290505
+- relative error: 0.0154051
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.0290505]
 relativeErrors= [0.0154051]
 mean=3.52113827 absolute error=0.0211382679
@@ -20,8 +30,18 @@ Sobol total index [0,2] =0.24415868 absolute error=0.0004750191
 Sobol total index [1,2] =0.00043642 absolute error=0.0004364176
 Sobol total index  [0,1,2] =0.00171843 absolute error=0.0017184293
 ###################################
-class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=10
+- residual: 0.031185
+- relative error: 8.89613e-05
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.031185]
 relativeErrors= [8.89613e-05]
 mean=3.51972123 absolute error=0.0197212272
@@ -41,8 +61,18 @@ Sobol total index [0,2] =0.24436796 absolute error=0.0006842969
 Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol total index  [0,1,2] =0.00000000 absolute error=0.0000000000
 ###################################
-class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=21
+- residual: 0.0782409
+- relative error: 0
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.0782409]
 relativeErrors= [0]
 mean=3.57690572 absolute error=0.0769057245
@@ -62,8 +92,18 @@ Sobol total index [0,2] =0.26319037 absolute error=0.0195067022
 Sobol total index [1,2] =0.01460970 absolute error=0.0146096968
 Sobol total index  [0,1,2] =0.02263050 absolute error=0.0226305044
 ###################################
-class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=84
+- residual: 0.024718
+- relative error: 0.0111528
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.024718]
 relativeErrors= [0.0111528]
 mean=3.52947075 absolute error=0.0294707509
@@ -83,8 +123,18 @@ Sobol total index [0,2] =0.25121369 absolute error=0.0075300230
 Sobol total index [1,2] =0.00251830 absolute error=0.0025182974
 Sobol total index  [0,1,2] =0.00548925 absolute error=0.0054892488
 ###################################
-class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=84
+- residual: 0.0295638
+- relative error: 8.25367e-05
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.0295638]
 relativeErrors= [8.25367e-05]
 mean=3.52361492 absolute error=0.0236149151
@@ -104,8 +154,18 @@ Sobol total index [0,2] =0.24688054 absolute error=0.0031968719
 Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol total index  [0,1,2] =0.00205430 absolute error=0.0020543003
 ###################################
-class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
-class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+ProjectionStrategyImplementation
+- coefficients: dimension=84
+- residual: 0.0865757
+- relative error: 0
+- measure: Distribution
+- weighted experiment: WeightedExperiment
+- input sample: size= 250 x dimension= 3
+- output sample: size= 250 x dimension= 1
+- weights: dimension= 250
+- design: size= 250
+
 residuals= [0.0865757]
 relativeErrors= [0]
 mean=3.57690572 absolute error=0.0769057245

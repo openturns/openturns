@@ -6,5 +6,6 @@
 
 %include ProcessEvent_doc.i
 
+%copyctor OT::ProcessEvent;
+
 %include openturns/ProcessEvent.hxx
-namespace OT { %extend ProcessEvent { ProcessEvent(const ProcessEvent & other) { return new OT::ProcessEvent(other); } } }

@@ -63,7 +63,7 @@ beta_copula = ot.EmpiricalBernsteinCopula(Y, len(Y))
 marginals = [
     ot.KernelSmoothing().build(Y.getMarginal(j)) for j in range(Y.getDimension())
 ]
-beta_dist = ot.ComposedDistribution(marginals, beta_copula)
+beta_dist = ot.JointDistribution(marginals, beta_copula)
 view = viewer.View(draw(beta_dist, Y))
 
 viewer.View.ShowAll()

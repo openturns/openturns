@@ -3,7 +3,7 @@
  *  @brief This class is enables to build an kronecker covariance
  *  model
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -99,6 +99,7 @@ public:
   void setFullParameter(const Point & parameter) override;
   Description getFullParameterDescription() const override;
   void setScale(const Point &scale) override;
+  void setNuggetFactor(const Scalar nuggetFactor) override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

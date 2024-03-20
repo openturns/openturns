@@ -2,7 +2,7 @@
 /**
  *  @brief IterativeThresholdExceedance
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,19 +33,8 @@ static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExc
 
 /* Default constructor */
 IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
-                                                           const Scalar threshold)
-  : IterativeAlgorithmImplementation(dimension)
-  , operator_(Greater())
-  , thresholdValue_(threshold)
-  , data_(dimension_, 0.0)
-{
-  LOGWARN(OSS() << "IterativeThresholdExceedance(dimension, threshold) is deprecated in favor of IterativeThresholdExceedance(dimension, ComparisonOperator, threshold)");
-}
-
-/* Default constructor */
-IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension,
-                                                           const ComparisonOperator & op,
-                                                           const Scalar threshold)
+    const ComparisonOperator & op,
+    const Scalar threshold)
   : IterativeAlgorithmImplementation(dimension)
   , operator_(op)
   , thresholdValue_(threshold)

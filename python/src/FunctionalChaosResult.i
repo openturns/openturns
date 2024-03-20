@@ -6,15 +6,16 @@
 
 %include FunctionalChaosResult_doc.i
 
-%include openturns/FunctionalChaosResult.hxx
+%copyctor OT::FunctionalChaosResult;
 
-namespace OT{ %extend FunctionalChaosResult { FunctionalChaosResult(const FunctionalChaosResult & other) { return new OT::FunctionalChaosResult(other); } } }
+%include openturns/FunctionalChaosResult.hxx
 
 
 %pythoncode %{
 def __FunctionalChaosResult_repr_html(self):
     """Get HTML representation."""
     html = ""
+    html += f"{self.getClassName()}\n"
     coefficients = self.getCoefficients()
     basis = self.getOrthogonalBasis()
     enumerateFunction = basis.getEnumerateFunction()
@@ -100,10 +101,4 @@ def __FunctionalChaosResult_repr_html(self):
     return html
 
 FunctionalChaosResult._repr_html_ = __FunctionalChaosResult_repr_html
-
-def __FunctionalChaosResult_repr_markdown(self):
-    """Get Markdown representation."""
-    return self.__repr_markdown__()
-
-FunctionalChaosResult._repr_markdown_ = __FunctionalChaosResult_repr_markdown
 %}

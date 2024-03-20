@@ -2,7 +2,7 @@
 /**
  *  @brief XMLStorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,7 +86,7 @@ public:
   /**
    * This method saves the PersistentObject onto the medium
    */
-  void save(const PersistentObject & obj, const String & label, bool fromStudy = false) override;
+  void save(const PersistentObject & obj, const String & label, const Bool fromStudy = false) override;
 
   /**
    * This method reloads the PersistentObject from the medium
@@ -111,12 +111,6 @@ public:
    * @internal
    */
   void read() override;
-
-  /** Set/Check which storage manager is being used
-   * @internal
-   */
-  virtual void setStorageManager();
-  virtual void checkStorageManager();
 
   /** Write the internal representation
    * @internal
@@ -209,6 +203,11 @@ public:
 
 
 protected:
+  /** Set/Check which storage manager is being used
+   * @internal
+   */
+  virtual void setStorageManager();
+  virtual void checkStorageManager();
 
   /** Query the manager if the version is correct */
   Bool canManageVersion(UnsignedInteger version) const override;

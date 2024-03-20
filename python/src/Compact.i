@@ -6,5 +6,6 @@
 
 %include Compact_doc.i
 
+%copyctor OT::Compact;
+
 %include openturns/Compact.hxx
-namespace OT{ %extend Compact { Compact(const Compact & other) { return new OT::Compact(other); } } }

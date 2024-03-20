@@ -2,7 +2,7 @@
 /**
  *  @brief @brief Experiment to compute Sobol' indices
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/LowDiscrepancyExperiment.hxx"
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -176,14 +176,14 @@ Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
   // in order to allow for low discrepancy experiments
   Distribution distribution(experiment_.getDistribution());
   const UnsignedInteger dimension = distribution.getDimension();
-  ComposedDistribution::DistributionCollection marginals(2 * dimension);
+  JointDistribution::DistributionCollection marginals(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     marginals[i] = distribution.getMarginal(i);
     marginals[dimension + i] = marginals[i];
     marginals[dimension + i].setDescription(Description(1, marginals[i].getDescription()[0] + "_2"));
   }
-  const ComposedDistribution doubleDistribution(marginals);
+  const JointDistribution doubleDistribution(marginals);
   // Generate a 2xdim sample of needed size
   WeightedExperiment doubleExperiment(experiment_);
   doubleExperiment.setDistribution(doubleDistribution);

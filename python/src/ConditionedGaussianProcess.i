@@ -6,6 +6,7 @@
 
 %include ConditionedGaussianProcess_doc.i
 
+%copyctor OT::ConditionedGaussianProcess;
+
 %include openturns/ConditionedGaussianProcess.hxx
-namespace OT { %extend ConditionedGaussianProcess { ConditionedGaussianProcess(const ConditionedGaussianProcess & other) { return new OT::ConditionedGaussianProcess(other); } } }
 

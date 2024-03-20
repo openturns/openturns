@@ -6,5 +6,6 @@
 
 %include PostAnalyticalControlledImportanceSampling_doc.i
 
+%copyctor OT::PostAnalyticalControlledImportanceSampling;
+
 %include openturns/PostAnalyticalControlledImportanceSampling.hxx
-namespace OT{ %extend PostAnalyticalControlledImportanceSampling { PostAnalyticalControlledImportanceSampling(const PostAnalyticalControlledImportanceSampling & other) { return new OT::PostAnalyticalControlledImportanceSampling(other); } } }

@@ -130,7 +130,7 @@ Parameters
 Xn : float, sequence of float
     Conditional CDF input (last component).
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -163,7 +163,7 @@ Parameters
 Xn : float
     Conditional DDF input (last component).
 Xcond : sequence of float with dimension :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -189,7 +189,7 @@ Parameters
 Xn : float, sequence of float
     Conditional PDF input (last component).
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -215,7 +215,7 @@ Parameters
 p : float, sequence of float, :math:`0 < p < 1`
     Conditional quantile function input.
 Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditionning values for the other components.
+    Conditioning values for the other components.
 
 Returns
 -------
@@ -279,9 +279,12 @@ The sequential conditional derivative density function is defined as follows:
 
 .. math::
 
-    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, 
+    X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
 
-ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of the first component at :math:`x_1`."
+ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,
+\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of 
+the first component at :math:`x_1`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalDDF
@@ -339,7 +342,9 @@ The sequential conditional quantile function is defined as follows:
 
     Q^{seq}_{X_1,\ldots,X_d}(q_1,\ldots,q_d) = \left(F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1}\right)_{i=1,\ldots,d}
 
-where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already computed conditional quantiles."
+where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,
+\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already 
+computed conditional quantiles."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
@@ -374,102 +379,6 @@ function with respect to :math:`\vect{x}`:
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeDDF
 OT_Distribution_computeDDF_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Distribution_computeDensityGenerator_doc
-"Compute the probability density function of the characteristic generator.
-
-PDF of the characteristic generator of the elliptical distribution.
-
-Parameters
-----------
-beta2 : float
-    Density generator input.
-
-Returns
--------
-p : float
-    Density generator value at input :math:`X`.
-
-Notes
------
-This is the function :math:`\phi` such that the probability density function
-rewrites:
-
-.. math::
-
-    f_{\vect{X}}(\vect{x}) =
-        \phi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}
-                      \mat{\Sigma}^{-1}
-                      \left(\vect{x} - \vect{\mu}\right)
-            \right),
-        \quad \vect{x} \in \supp{\vect{X}}
-
-This function only exists for elliptical distributions.
-
-See Also
---------
-isElliptical, computePDF"
-%enddef
-%feature("docstring") OT::DistributionImplementation::computeDensityGenerator
-OT_Distribution_computeDensityGenerator_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Distribution_computeDensityGeneratorDerivative_doc
-"Compute the first-order derivative of the probability density function.
-
-PDF of the characteristic generator of the elliptical distribution.
-
-Parameters
-----------
-beta2 : float
-    Density generator input.
-
-Returns
--------
-p : float
-    Density generator first-order derivative value at input :math:`X`.
-
-Notes
------
-This function only exists for elliptical distributions.
-
-See Also
---------
-isElliptical, computeDensityGenerator"
-%enddef
-%feature("docstring") OT::DistributionImplementation::computeDensityGeneratorDerivative
-OT_Distribution_computeDensityGeneratorDerivative_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Distribution_computeDensityGeneratorSecondDerivative_doc
-"Compute the second-order derivative of the probability density function.
-
-PDF of the characteristic generator of the elliptical distribution.
-
-Parameters
-----------
-beta2 : float
-    Density generator input.
-
-Returns
--------
-p : float
-    Density generator second-order derivative value at input :math:`X`.
-
-Notes
------
-This function only exists for elliptical distributions.
-
-See Also
---------
-isElliptical, computeDensityGenerator"
-%enddef
-%feature("docstring") OT::DistributionImplementation::computeDensityGeneratorSecondDerivative
-OT_Distribution_computeDensityGeneratorSecondDerivative_doc
 
 // ---------------------------------------------------------------------
 
@@ -1769,7 +1678,7 @@ Examples
 >>> graph = distribution.drawQuantile()
 >>> view = View(graph)
 >>> view.show()
->>> distribution = ot.ComposedDistribution([ot.Normal(), ot.Exponential(1.0)], ot.ClaytonCopula(0.5))
+>>> distribution = ot.JointDistribution([ot.Normal(), ot.Exponential(1.0)], ot.ClaytonCopula(0.5))
 >>> graph = distribution.drawQuantile()
 >>> view = View(graph)
 >>> view.show()"
@@ -1861,7 +1770,7 @@ OT_Distribution_getShiftedMoment_doc
 
 Returns
 -------
-L : :class:`~openturns.SquareMatrix`
+L : :class:`~openturns.TriangularMatrix`
     Cholesky factor of the covariance matrix.
 
 See Also
@@ -1883,7 +1792,7 @@ C : :class:`~openturns.Distribution`
 
 See Also
 --------
-ComposedDistribution"
+JointDistribution"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCopula
 OT_Distribution_getCopula_doc
@@ -1891,7 +1800,23 @@ OT_Distribution_getCopula_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getCorrelation_doc
-"**(ditch me?)**"
+" Accessor to the correlation matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    The correlation matrix of the distribution.
+
+Notes
+-----
+
+.. math::
+
+   R_{ij} = \dfrac{C_{ij}}{\sigma_i\sigma_j}
+
+where the :math:`(\sigma_i)` are the margin standard deviations
+and :math:`(C_{ij})` the covariance coefficients.
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCorrelation
 OT_Distribution_getCorrelation_doc
@@ -1973,7 +1898,7 @@ OT_Distribution_getDispersionIndicator_doc
 
 Returns
 -------
-Linv : :class:`~openturns.SquareMatrix`
+Linv : :class:`~openturns.TriangularMatrix`
     Inverse Cholesky factor of the covariance matrix.
 
 See also
@@ -2092,7 +2017,7 @@ OT_Distribution_getIsoProbabilisticTransformation_doc
 
 Returns
 -------
-tau: :class:`~openturns.SquareMatrix`
+tau : :class:`~openturns.CorrelationMatrix`
     Kendall coefficients matrix.
 
 Notes
@@ -2146,7 +2071,7 @@ OT_Distribution_getKurtosis_doc
 
 Parameters
 ----------
-i : int or list of ints, :math:`1 \leq i \leq n`
+i : int or list of ints, :math:`0 \leq i < n`
     Component(s) indice(s).
 
 Returns
@@ -3159,7 +3084,7 @@ OT_Distribution_drawSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`0 \leq i < n`
     The index of the margin of interest.
 x_min : float
     The starting value that is used for meshing the x-axis.
@@ -3199,9 +3124,9 @@ OT_Distribution_drawMarginal1DSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`0 \leq i < n`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq n`
+j : int, :math:`0 \leq i \neq j < n`
     The index of the second margin of interest.
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.

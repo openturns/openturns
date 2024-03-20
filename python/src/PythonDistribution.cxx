@@ -2,7 +2,7 @@
 /**
  * @brief This class binds a Python object to an OpenTURNS' Distribution
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
  *
  */
 #include <Python.h>
+#include <cstdio>
 #include "openturns/swigpyrun.h"
 
 #include "openturns/PythonDistribution.hxx"
@@ -68,6 +69,8 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
   ScopedPyObjectPointer dim(PyObject_CallMethod ( pyObj_,
                             const_cast<char *>( "getDimension" ),
                             const_cast<char *>( "()" ) ));
+  if (dim.isNull())
+    handleException();
   setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
 
   if (!PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDF")))

@@ -1,9 +1,6 @@
 %feature("docstring") OT::DiracFactory
 "Dirac factory.
 
-Available constructor:
-    DiracFactory()
-
 Notes
 -----
 Can only estimate the parameter from a sample that contains the same point.
@@ -11,3 +8,31 @@ Can only estimate the parameter from a sample that contains the same point.
 See also
 --------
 DistributionFactory, Dirac"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiracFactory::buildAsDirac
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsDirac()
+
+    buildAsDirac(*sample*)
+
+    buildAsDirac(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Dirac`.
+
+Returns
+-------
+distribution : :class:`~openturns.Dirac`
+    The estimated distribution as a :class:`openturns.Dirac`.
+    
+    In the first usage, the default :class:`openturns.Dirac` distribution is built."
+
+

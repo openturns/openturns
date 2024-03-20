@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of distribution-based conditional RandomVector class
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,10 +39,10 @@ int main(int, char *[])
     fullprint << "distribution = " << distribution << std::endl;
 
     // Create a collection of distribution
-    ComposedDistribution::DistributionCollection aCollection;
+    JointDistribution::DistributionCollection aCollection;
     aCollection.add(Normal(0.0, 1.0));
     aCollection.add(Uniform(1.0, 1.5));
-    ComposedDistribution distributionParameters(aCollection);
+    JointDistribution distributionParameters(aCollection);
     RandomVector randomParameters(distributionParameters);
 
     fullprint << "random parameters=" << randomParameters << std::endl;

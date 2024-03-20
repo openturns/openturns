@@ -2,7 +2,7 @@
 /**
  *  @brief This class is a Function with history of input and output.
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,12 +84,14 @@ String MemoizeFunction::__repr__() const
 /** Operator () */
 Point MemoizeFunction::operator() (const Point & inPoint) const
 {
+  ++ callsNumber_;
   return getEvaluation().operator()(inPoint);
 }
 
 /** Operator () */
 Sample MemoizeFunction::operator() (const Sample & inSample) const
 {
+  callsNumber_ += inSample.getSize();
   return getEvaluation().operator()(inSample);
 }
 

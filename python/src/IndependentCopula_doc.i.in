@@ -4,7 +4,9 @@
 Parameters
 ----------
 n : int
-    Dimension of the copula, :math:`n \geq 1`. Default is :math:`n=2`.
+    Dimension of the copula, :math:`n \geq 1`.
+    
+    Default value is 2.
 
 Notes
 -----

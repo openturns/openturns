@@ -2,7 +2,7 @@
 /**
  *  @brief This class enables to build a covariance model
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -148,6 +148,10 @@ public:
   void setActiveParameter(const Indices & active);
   Indices getActiveParameter() const;
 
+  /* Easily activate base parameters: scale, nuggetFactor, amplitude */
+  void activateScale(const Bool isScaleActive);
+  void activateNuggetFactor(const Bool isNuggetFactorActive);
+  void activateAmplitude(const Bool isAmplitudeActive);
 
   /* setter for the full parameter */
   virtual void setFullParameter(const Point & parameter);

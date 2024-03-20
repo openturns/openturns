@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LAR for standard methods
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ int main(int, char *[])
   marginalX[0] = Uniform(-M_PI, M_PI);
   marginalX[1] = Uniform(-M_PI, M_PI);
   marginalX[2] = Uniform(-M_PI, M_PI);
-  ComposedDistribution distribution(marginalX);
+  JointDistribution distribution(marginalX);
 
   // Create the orthogonal basis
   Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
@@ -111,7 +111,6 @@ int main(int, char *[])
 
   // run algorithm
   LARS factory;
-  factory.setVerbose(true);
   fullprint << "factory = " << factory << std::endl;
 
   BasisSequence seq = factory.build( u, y, coll, indices);

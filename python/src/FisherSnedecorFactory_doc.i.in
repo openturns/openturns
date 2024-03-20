@@ -1,13 +1,10 @@
 %feature("docstring") OT::FisherSnedecorFactory
 "Fisher-Snedecor factory.
 
-Available constructor:
-    FisherSnedecorFactory()
-
 Notes
 -----
 Several estimators to build a FisherSnedecor distribution from a scalar sample
-are proposed.
+are proposed. The default strategy is using the maximum likelihood estimators.
 
 **Maximum likelihood estimator:**
 
@@ -75,13 +72,13 @@ Refer to :class:`~openturns.MaximumLikelihoodFactory`.
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample :  2-d sequence of float
+    Data.
 
 Returns
 -------
 distribution : :class:`~openturns.FisherSnedecor`
-    The estimated distribution"
+    The estimated distribution."
 
 // ----------------------------------------------------------------------------
 
@@ -91,54 +88,22 @@ distribution : :class:`~openturns.FisherSnedecor`
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
-    Data
+sample :  2-d sequence of float
+    Data.
 
 Returns
 -------
 distribution : :class:`~openturns.FisherSnedecor`
-    The estimated distribution"
+    The estimated distribution."
 
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::FisherSnedecorFactory::buildAsFisherSnedecor
 "Estimate the distribution as native distribution.
 
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Data
-
-Returns
--------
-distribution : :class:`~openturns.FisherSnedecor`
-    The estimated distribution"
-
-// ----------------------------------------------------------------------------
-
-%feature("docstring") OT::FisherSnedecorFactory::build
-"Estimate the distribution using the default strategy.
-
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Data
-
-Returns
--------
-distribution : :class:`~openturns.Distribution`
-    The estimated distribution
-
-Notes
------
-The default strategy is using the maximum likelihood estimators."
-
-// ---------------------------------------------------------------------
-
-%define OT_DistributionFactory_buildAsFisherSnedecor_doc
-"Estimate the distribution using the default strategy.
-
 **Available usages**:
+
+    buildAsFisherSnedecor()
 
     buildAsFisherSnedecor(*sample*)
 
@@ -147,19 +112,13 @@ The default strategy is using the maximum likelihood estimators."
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
+    Data.
+param : sequence of float,
+   The parameters of the :class:`~openturns.FisherSnedecor`.
 
 Returns
 -------
-dist : :class:`~openturns.FisherSnedecor`
-    The built distribution.
-
-Notes
------
-The default strategy is using the maximum likelihood estimators."
-%enddef
-%feature("docstring") OT::FisherSnedecorFactory::buildAsFisherSnedecor
-OT_DistributionFactory_buildAsFisherSnedecor_doc
-
+distribution : :class:`~openturns.FisherSnedecor`
+    The estimated distribution as a FisherSnedecor.
+    
+    In the first usage, the default FisherSnedecor distribution is built."

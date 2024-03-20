@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -186,3 +187,7 @@ for n in range(len(allDistributions)):
     print("skewness=", skewness)
     kurtosis = distribution.getKurtosis()
     print("kurtosis=", kurtosis)
+
+    # computeProba test with bound far away
+    p = distribution.computeProbability(ot.Interval(-ot.MaxScalar, ot.MaxScalar))
+    ott.assert_almost_equal(p, 1.0)

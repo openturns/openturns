@@ -8,7 +8,6 @@ ot.TESTPREAMBLE()
 
 
 def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
-
     inputDimension = myModel.getInputDimension()
     dimension = myModel.getOutputDimension()
 
@@ -425,41 +424,82 @@ ott.assert_almost_equal(
     myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check"
 )
 ott.assert_almost_equal(myModel.getScale(), [1], 0, 0, "in kronecker scale check")
-# full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
+# full param size = 6 (scale(1), nuggetFactor(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
 ott.assert_almost_equal(
     myModel.getFullParameter(),
-    [1, 1, 2, 0.8, 1.5],
+    [1, 1e-12, 1, 2, 0.8, 1.5],
     0,
     0,
     "in kronecker full param check",
 )
 ott.assert_almost_equal(
-    myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check"
+    myModel.getFullParameter().getSize(), 6, 0, 0, "in kronecker param size check"
 )
 ott.assert_almost_equal(
     myModel.getFullParameterDescription().getSize(),
-    5,
+    6,
     0,
     0,
     "in kronecker param description size check",
 )
 ott.assert_almost_equal(
-    myModel.getActiveParameter(), [0, 1, 2], "in kronecker active param check"
+    myModel.getActiveParameter(), [0, 2, 3], "in kronecker active param check"
 )
-myModel.setFullParameter([2, 1, 2, 0.5, 2.5])
+myModel.setFullParameter([2, 0.01, 1, 2, 0.5, 2.5])
 ott.assert_almost_equal(
-    myModel.getFullParameter(), [2, 1, 2, 0.5, 2.5], 0, 0, "in kronecker param check"
+    myModel.getFullParameter(),
+    [2, 0.01, 1, 2, 0.5, 2.5],
+    0,
+    0,
+    "in kronecker param check",
 )
-myModel.setActiveParameter([0, 1, 2, 4])
+myModel.setActiveParameter([0, 1, 2, 3, 5])
 ott.assert_almost_equal(
-    myModel.getActiveParameter(), [0, 1, 2, 4], "in kronecker active param check"
+    myModel.getActiveParameter(), [0, 1, 2, 3, 5], "in kronecker active param check"
 )
 # Now we should get all values except correlation
 ott.assert_almost_equal(
-    myModel.getParameter(), [2, 1, 2, 2.5], 0, 0, "in kronecker param check"
+    myModel.getParameter(), [2, 0.01, 1, 2, 2.5], 0, 0, "in kronecker param check"
+)
+myModel.activateAmplitude(False)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 2.5],
+    0,
+    0,
+    "in kronecker deactivate amplitude check",
+)
+myModel.activateScale(False)
+ott.assert_almost_equal(
+    myModel.getParameter(), [0.01, 2.5], 0, 0, "in kronecker deactivate scale check"
+)
+myModel.activateNuggetFactor(False)
+ott.assert_almost_equal(
+    myModel.getParameter(), [2.5], 0, 0, "in kronecker deactivate nuggetFactor check"
+)
+myModel.activateScale(True)
+ott.assert_almost_equal(
+    myModel.getParameter(), [2, 2.5], 0, 0, "in kronecker activate scale check"
+)
+myModel.activateNuggetFactor(True)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 2.5],
+    0,
+    0,
+    "in kronecker activate nuggetFactor check",
+)
+myModel.activateAmplitude(True)
+ott.assert_almost_equal(
+    myModel.getParameter(),
+    [2, 0.01, 1, 2, 2.5],
+    0,
+    0,
+    "in kronecker activate amplitude check",
 )
 assert myModel.getFullParameterDescription() == [
     "scale_0",
+    "nuggetFactor",
     "amplitude_0",
     "amplitude_1",
     "R_1_0",

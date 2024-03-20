@@ -6,5 +6,6 @@
 
 %include LaplaceFactory_doc.i
 
+%copyctor OT::LaplaceFactory;
+
 %include openturns/LaplaceFactory.hxx
-namespace OT { %extend LaplaceFactory { LaplaceFactory(const LaplaceFactory & other) { return new OT::LaplaceFactory(other); } } }

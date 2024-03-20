@@ -6,5 +6,6 @@ OTAutodoc(IndicatorEvaluation)
 #include "openturns/IndicatorEvaluation.hxx"
 %}
 
+%copyctor OT::IndicatorEvaluation;
+
 %include openturns/IndicatorEvaluation.hxx
-namespace OT { %extend IndicatorEvaluation { IndicatorEvaluation(const IndicatorEvaluation & other) { return new OT::IndicatorEvaluation(other); } } }

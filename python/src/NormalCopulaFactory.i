@@ -6,5 +6,6 @@
 
 %include NormalCopulaFactory_doc.i
 
+%copyctor OT::NormalCopulaFactory;
+
 %include openturns/NormalCopulaFactory.hxx
-namespace OT { %extend NormalCopulaFactory { NormalCopulaFactory(const NormalCopulaFactory & other) { return new OT::NormalCopulaFactory(other); } } }

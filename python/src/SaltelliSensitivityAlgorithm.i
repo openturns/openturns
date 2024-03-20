@@ -6,5 +6,6 @@
 
 %include SaltelliSensitivityAlgorithm_doc.i
 
+%copyctor OT::SaltelliSensitivityAlgorithm;
+
 %include openturns/SaltelliSensitivityAlgorithm.hxx
-namespace OT{ %extend SaltelliSensitivityAlgorithm { SaltelliSensitivityAlgorithm(const SaltelliSensitivityAlgorithm & other) { return new OT::SaltelliSensitivityAlgorithm(other); } } }

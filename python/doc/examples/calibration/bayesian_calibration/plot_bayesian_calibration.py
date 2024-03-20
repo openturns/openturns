@@ -3,7 +3,12 @@ Bayesian calibration of a computer code
 =======================================
 """
 # %%
-# In this example we are going to compute the parameters of a computer model thanks to Bayesian estimation.
+# In this example we compute the parameters of a computer model thanks
+# to Bayesian estimation.
+# We use the :class:`~openturns.RandomWalkMetropolisHastings` and
+# :class:`~openturns.Gibbs` classes
+# and simulate a sample of the posterior distribution using
+# :ref:`metropolis_hastings`.
 #
 # Let us denote :math:`(y_1, \dots, y_n)` the observation sample,
 # :math:`(\vect z_1, \ldots, \vect z_n) = (f(x_1|\vect\theta), \ldots, f(x_n|\vect\theta))` the model prediction,
@@ -14,7 +19,9 @@ Bayesian calibration of a computer code
 #
 # The posterior distribution is given by Bayes theorem:
 #
-# .. math::\pi(\vect\theta | \vect y) \quad \propto \quad L\left(\vect y | \vect\theta\right) \times \pi(\vect\theta):math:``
+# .. math::
+#
+#     \pi(\vect\theta | \vect y) \quad \propto \quad L\left(\vect y | \vect\theta\right) \times \pi(\vect\theta)
 #
 # where :math:`\propto` means "proportional to", regarded as a function of :math:`\vect\theta`.
 #
@@ -69,7 +76,7 @@ Bayesian calibration of a computer code
 # The following objects need to be defined in order to perform Bayesian calibration:
 #
 # - The conditional density :math:`p(y|\vect z)` must be defined as a probability distribution.
-# - The computer model must be implemented thanks to the ParametricFunction class.
+# - The computer model must be implemented thanks to the :class:`~openturns.ParametricFunction` class.
 #   This takes a value of :math:`\vect\theta` as input, and outputs the vector of model predictions :math:`\vect z`,
 #   as defined above (the vector of covariates :math:`\vect x = (x_1, \ldots, x_n)` is treated as a known constant).
 #   When doing that, we have to keep in mind that :math:`\vect z` will be used as the vector of parameters corresponding
@@ -81,9 +88,13 @@ Bayesian calibration of a computer code
 #   Again, this is implemented as a probability distribution.
 # - Metropolis-Hastings algorithm(s), possibly used in tandem with a Gibbs algorithm
 #   in order to sample from the posterior distribution of the calibration parameters.
+#
+# This example uses the :class:`~openturns.ParametricFunction` class.
+# Please read its documentation and
+# :doc:`/auto_functional_modeling/vectorial_functions/plot_parametric_function`
+# for a detailed example.
 
 # %%
-import pylab as pl
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -160,11 +171,9 @@ for i in range(obsSize):
 functionnalModel = ot.ParametricFunction(fullModel, [1, 2, 3], thetaTrue)
 graphModel = functionnalModel.getMarginal(0).draw(xmin, xmax)
 observations = ot.Cloud(x_obs, y_obs)
-observations = ot.Cloud(x_obs, y_obs)
-observations.setColor("red")
 graphModel.add(observations)
 graphModel.setLegends(["Model", "Observations"])
-graphModel.setLegendPosition("topleft")
+graphModel.setLegendPosition("upper left")
 view = viewer.View(graphModel)
 
 # %%
@@ -255,19 +264,64 @@ posterior = kernel.build(sample)
 # %%
 # Display prior vs posterior for each parameter.
 
+
+def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
+    """
+    Plot the prior and posterior distribution of a Bayesian calibration
+
+    Parameters
+    ----------
+    prior : ot.Distribution(dimension)
+        The prior.
+    posterior : ot.Distribution(dimension)
+        The posterior.
+
+    Return
+    ------
+    grid : ot.GridLayout(1, dimension)
+        The prior and posterior PDF for each marginal.
+    """
+    palette = ot.Drawable.BuildDefaultPalette(2)
+    paramDim = prior.getDimension()
+    grid = ot.GridLayout(1, paramDim)
+    parameterNames = prior.getDescription()
+    for parameter_index in range(paramDim):
+        graph = ot.Graph("", parameterNames[parameter_index], "PDF", True)
+        # Prior
+        curve = prior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PriorLineStyle")
+        )
+        curve.setLegend("Prior")
+        graph.add(curve)
+        # Posterior
+        curve = posterior.getMarginal(parameter_index).drawPDF().getDrawable(0)
+        curve.setLineStyle(
+            ot.ResourceMap.GetAsString("CalibrationResult-PosteriorLineStyle")
+        )
+        curve.setLegend("Posterior")
+        graph.add(curve)
+        #
+        if parameter_index < paramDim - 1:
+            graph.setLegends([""])
+        if parameter_index > 0:
+            graph.setYTitle("")
+        graph.setColors(palette)
+        graph.setLegendPosition("upper right")
+        grid.setGraph(0, parameter_index, graph)
+    grid.setTitle("Bayesian calibration")
+    return grid
+
+
 # %%
-
-fig = pl.figure(figsize=(12, 4))
-
-for parameter_index in range(paramDim):
-    graph = posterior.getMarginal(parameter_index).drawPDF()
-    priorGraph = prior.getMarginal(parameter_index).drawPDF()
-    priorGraph.setColors(["blue"])
-    graph.add(priorGraph)
-    graph.setLegends(["Posterior", "Prior"])
-    ax = fig.add_subplot(1, paramDim, parameter_index + 1)
-    _ = ot.viewer.View(graph, figure=fig, axes=[ax])
-
-_ = fig.suptitle("Bayesian calibration")
-
+# sphinx_gallery_thumbnail_number = 2
+grid = plot_bayesian_prior_vs_posterior_pdf(prior, posterior)
+viewer.View(
+    grid,
+    figure_kw={"figsize": (8.0, 3.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
 plt.show()
+
+# %%

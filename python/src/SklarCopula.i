@@ -29,5 +29,6 @@
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, SWIG_POINTER_NO_NULL));
 }
 
+%copyctor OT::SklarCopula;
+
 %include openturns/SklarCopula.hxx
-namespace OT { %extend SklarCopula { SklarCopula(const SklarCopula & other) { return new OT::SklarCopula(other); } } }

@@ -10,7 +10,7 @@ covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
-ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.237539]
 ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.237539]
 log pdf=-0.867507
 pdf     =0.419997
@@ -28,9 +28,9 @@ InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.746443]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.951173, 1.95117]
 threshold= 0.95
-Minimum volume level set= {x | f(x) <= 4.15236} with f=
+Minimum volume level set= {x | f(x) <= 2.38884} with f=
 MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5))
-beta=0.015727
+beta=0.091736
 Bilateral confidence interval= [-0.951173, 1.95117]
 beta=0.95
 Unilateral confidence interval (lower tail)= [-4.32531, 1.74644]

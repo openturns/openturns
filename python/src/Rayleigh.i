@@ -6,5 +6,6 @@
 
 %include Rayleigh_doc.i
 
+%copyctor OT::Rayleigh;
+
 %include openturns/Rayleigh.hxx
-namespace OT { %extend Rayleigh { Rayleigh(const Rayleigh & other) { return new OT::Rayleigh(other); } } }

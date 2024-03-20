@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements assembly distributions
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -161,7 +161,7 @@ private:
   Bool isInBlock(const Point & point,
                  const UnsignedInteger index) const;
 
-  /** The collection of distribution of the ComposedCopula */
+  /** The collection of distribution of the BlockIndependentCopula */
   DistributionPersistentCollection copulaCollection_;
 
   /** Bounds of the ordinal sum */

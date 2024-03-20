@@ -2,7 +2,7 @@
 /**
  *  @brief Pagmo optimization algorithm
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,10 +64,6 @@ public:
 
   void setAlgorithmName(const String & algoName);
   String getAlgorithmName() const;
-
-  /** @deprecated Number of generations to evolve */
-  void setGenerationNumber(const UnsignedInteger generationNumber);
-  UnsignedInteger getGenerationNumber() const;
 
   /** Random generator seed accessor */
   void setSeed(const UnsignedInteger seed);

@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         a mixed bisection/secant scheme
  *
- *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,8 @@ static const Factory<Secant> Factory_Secant;
 Secant::Secant(const Scalar absoluteError,
                const Scalar relativeError,
                const Scalar residualError,
-               const UnsignedInteger maximumFunctionEvaluation)
-  : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
+               const UnsignedInteger maximumCallsNumber)
+  : SolverImplementation(absoluteError, relativeError, residualError, maximumCallsNumber)
 {
   // Nothing to do
 }
@@ -76,8 +76,8 @@ Scalar Secant::solve(const UniVariateFunction & function,
                      const Scalar supValue) const
 {
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation = 0;
-  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
+  UnsignedInteger callsNumber = 0;
+  const UnsignedInteger maximumCallsNumber = getMaximumCallsNumber();
   Scalar a = infPoint;
   Scalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
@@ -142,10 +142,10 @@ Scalar Secant::solve(const UniVariateFunction & function,
       b = h;
     }
     // If all the evaluation budget has been spent, return the approximation
-    if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
+    if (callsNumber == maximumCallsNumber) break;
     // New evaluation
     fB = function(b) - value;
-    ++usedFunctionEvaluation;
+    ++callsNumber;
     if ((fG < 0.0) != (fB < 0.0))
     {
       c = g;
@@ -157,7 +157,7 @@ Scalar Secant::solve(const UniVariateFunction & function,
       fC = fS;
     }
   } // end Secant loop
-  usedFunctionEvaluation_ = usedFunctionEvaluation;
+  callsNumber_ = callsNumber;
   return b;
 }
 

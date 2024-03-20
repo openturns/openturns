@@ -24,7 +24,7 @@ Create a distribution:
 >>> import openturns as ot
 >>> R = ot.CorrelationMatrix(2)
 >>> R[0, 1] = 0.5
->>> d1 =  ot.ComposedDistribution([ot.Uniform(), ot.Triangular(1.0, 2.0, 3.0)], NormalCopula(R))
+>>> d1 =  ot.JointDistribution([ot.Uniform(), ot.Triangular(1.0, 2.0, 3.0)], NormalCopula(R))
 >>> d2 = ot.Normal(2)
 >>> collection = [d1, d2]
 >>> dist = ot.BlockIndependentDistribution(collection)
@@ -46,7 +46,7 @@ distributions : list of distributions
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::BlockIndependentDistribution::setDistributionCollection
-"Accessor to the list of the codistributionspulas.
+"Accessor to the list of the distributions.
 
 Parameters
 ----------

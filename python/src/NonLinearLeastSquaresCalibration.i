@@ -6,5 +6,6 @@
 
 %include NonLinearLeastSquaresCalibration_doc.i
 
+%copyctor OT::NonLinearLeastSquaresCalibration;
+
 %include openturns/NonLinearLeastSquaresCalibration.hxx
-namespace OT { %extend NonLinearLeastSquaresCalibration { NonLinearLeastSquaresCalibration(const NonLinearLeastSquaresCalibration & other) { return new OT::NonLinearLeastSquaresCalibration(other); } } }

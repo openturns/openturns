@@ -137,8 +137,8 @@ The techniques implemented in each distribution are:
 - Chi: Transformation.
 - ChiSquare: See the Gamma distribution.
 - ClaytonCopula: Conditional CDF inversion.
-- ComposedCopula: Simulation of the copula one by one then association.
-- ComposedDistribution: Simulation of the copula and the marginal with CDF inversion.
+- BlockIndependentCopula: Simulation of the copula one by one then association.
+- JointDistribution: Simulation of the copula and the marginal with CDF inversion.
 - Dirac: Return the supporting point.
 - Dirichlet: Transformation.
 - Epanechnikov: CDF inversion.
