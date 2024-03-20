@@ -5,36 +5,36 @@ FORM
 
 The First Order Reliability Method is used under the following
 context: let :math:`\vect{X}` be a probabilistic input vector with
-joint density probability  :math:`\pdf`, let :math:`\vect{d}` be a
-deterministic vector, let  :math:`g(\vect{X}\,,\,\vect{d})` be the
+joint density probability  :math:`\pdf`,
+let  :math:`g(\vect{X}\,,\,\vect{d})` be the
 limit state function of the model and let :math:`\cD_f =
-\{\vect{X} \in \Rset^n \,   / \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be
+\{\vect{X} \in \Rset^d \,   / \, g(\vect{X}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
 
 .. math::
     :label: PfX5
 
-      P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
+      P_f = \Prob{g(\vect{X})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
 
 
 The objective of FORM is to evaluate :math:`P_f`. The method proceeds in three steps:
 
 **Step 1**: Map the probabilistic model in terms of :math:`\vect{X}` thanks to an
 isoprobabilistic transformation :math:`T` which is a diffeomorphism from
-:math:`\supp{\vect{X}}` into :math:`\Rset^n`, such that the distribution of the random vector
+:math:`\supp{\vect{X}}` into :math:`\Rset^d`, such that the distribution of the random vector
 :math:`\vect{U}=T(\vect{X})` has
 the following properties: :math:`\vect{U}` and :math:`\mat{R}\,\vect{U}` have the same
-distribution for all rotations :math:`\mat{R}\in{\cS\cO}_n(\Rset)`.
+distribution for all rotations :math:`\mat{R}\in{\cS\cO}_d(\Rset)`.
 The usual :ref:`isoprobabilistic_transformation` are the Generalized
 Nataf transformation and the Rosenblatt one.
 The mapping of the limit state function is
-:math:`h(\vect{U}\,,\,\vect{d}) =  g(T^{-1}(\vect{U})\,,\,\vect{d})`.
+:math:`h(\vect{U}) =  g(T^{-1}(\vect{U}))`.
 Then, the event probability :math:`P_f` can be written as:
 
 .. math::
     :label: PfU3
 
-    P_f = \Prob{h(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{h(\vect{u}\,,\,\vect{d}\leq 0}
+    P_f = \Prob{h(\vect{U})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{h(\vect{u}\leq 0}
     \,f_{\vect{U}}(\vect{u})\,d\vect{u}
 
 

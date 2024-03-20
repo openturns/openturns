@@ -4,15 +4,15 @@ Latin Hypercube Simulation
 --------------------------
 
 | Let us note
-  :math:`\cD_f = \{\ux \in \Rset^{n} \space | \space  g(\ux,\underline{d}) \leq 0\}`.
+  :math:`\cD_f = \{\ux \in \Rset^{d} \space | \space  g(\ux) \leq 0\}`.
   The goal is to estimate the following probability:
 
   .. math::
 
      \begin{aligned}
-         P_f  &=& \int_{\cD_f} f_{\uX}(\ux)d\ux\\
-         &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux\\
-         &=& \Prob {\{\space g(\uX,\underline{d}) \leq 0 \}}
+         P_f  & = \int_{\cD_f} f_{\uX}(\ux)d\ux\\
+         & = \int_{\Rset^{d}} \mathbf{1}_{\{g(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
+         & = \Prob {\{\space g(\uX) \leq 0 \}}
        \end{aligned}
 
 | LHS or Latin Hypercube Sampling is a sampling method enabling to
@@ -37,7 +37,7 @@ Latin Hypercube Simulation
 
   .. math::
 
-    \hat{P}_{f,LHS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\uX^i,\underline{d}) \leq 0 \}}
+    \hat{P}_{f,LHS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\uX^i) \leq 0 \}}
 
   where the sample of :math:`\{ \uX^i,i=1 \hdots N \}` is obtained as
   described previously.
@@ -63,8 +63,8 @@ Latin Hypercube Simulation
   .. math::
 
      \begin{aligned}
-         \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{x}_i),\underline{d}) \leq 0 \}}\\
-         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\underline{x}^i),\underline{d}) \leq 0 \}} - \mu_N)^2
+         \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{x}_i)) \leq 0 \}}\\
+         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\underline{x}^i)) \leq 0 \}} - \mu_N)^2
        \end{aligned}
 
 the asymptotic confidence interval of order :math:`1-\alpha` associated

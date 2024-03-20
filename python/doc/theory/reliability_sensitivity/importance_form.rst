@@ -4,16 +4,15 @@ Importance factors from FORM method
 -----------------------------------
 
 Importance Factors are evaluated in the following context: let :math:`\vect{X}` be a probabilistic input vector with
-joint density probability  :math:`\pdf`, let :math:`\vect{d}` be a
-deterministic vector, let  :math:`g(\vect{X}\,,\,\vect{d})` be the
+joint density probability  :math:`\pdf`, let  :math:`g(\vect{X})` be the
 limit state function of the model and let :math:`\cD_f =
-\{\vect{X} \in \Rset^n \,   / \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be
+\{\vect{X} \in \Rset^d \,   / \, g(\vect{X}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
 
 .. math::
     :label: PfX10
 
-         P_f =       \int_{g(\vect{X}\,,\,\vect{d}) \le 0}  \pdf\, d\vect{x}
+         P_f =       \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}
 
 In this context, the probability :math:`P_f` can often be
 efficiently estimated by :ref:`form_approximation` or :ref:`sorm_approximation` approximations.
@@ -28,11 +27,11 @@ Let :math:`\mat{R} \in {\cS\cO}_n(\Rset)` be the special orthogonal group which 
 determinant equal to 1.
 The :ref:`isoprobabilistic transformation <isoprobabilistic_transformations>` :math:`T` used in the FORM and
 SORM approximation is a diffeomorphism from
-:math:`\supp{\vect{X}}` into :math:`\Rset^n`, such that the
+:math:`\supp{\vect{X}}` into :math:`\Rset^d`, such that the
 distribution of the random vector :math:`\vect{U}=T(\vect{X})` has the
 following properties: :math:`\vect{U}` and :math:`\mat{R}\,\vect{U}`
 have the same distribution for all rotations
-:math:`\mat{R}\in{\cS\cO}_n(\Rset)`.
+:math:`\mat{R}\in{\cS\cO}_d(\Rset)`.
 
 In the standard space, the design point :math:`\vect{u}^*` is the
 point on the limit state boundary the that is colosest to the origin of the
@@ -54,7 +53,7 @@ This definition implies that the sum of importance factors is equal to 1, i.e.:
 
 .. math::
 
-      \sum_{i=1}^n \alpha_i^2 = 1
+      \sum_{i=1}^d \alpha_i^2 = 1
 
 This definition raises the following difficulties:
 
@@ -87,7 +86,7 @@ uncorrelated. Let :math:`F_i` be the cumulative distribution of the component :m
            E^{-1}\circ F_1(X_1^*) \\
            E^{-1}\circ F_2(X_2^*) \\
            \vdots \\
-           E^{-1}\circ F_n(X_n^*)
+           E^{-1}\circ F_d(X_d^*)
          \end{array}
          \right).\label{varY10}
        \end{aligned}
@@ -103,7 +102,7 @@ This definition still guarantees the relation:
 
 .. math::
 
-    \sum_{i=1}^n \alpha_i^2 = 1
+    \sum_{i=1}^d \alpha_i^2 = 1
 
 
 .. topic:: API:

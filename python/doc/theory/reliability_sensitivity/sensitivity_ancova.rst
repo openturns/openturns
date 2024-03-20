@@ -9,7 +9,7 @@ with correlated input parameters.
 
 Let us consider a model :math:`Y = h(\vect{X})` without making any
 hypothesis on the dependence structure of
-:math:`\vect{X} = \{X^1, \ldots, X^{n_X}\}`, a :math:`n_X`-dimensional
+:math:`\vect{X} = \{X^1, \ldots, X^{d}\}`, a :math:`d`-dimensional
 random vector. The covariance decomposition requires a functional
 decomposition of the model. Thus the model response :math:`Y` is
 expanded as a sum of functions of increasing dimension as follows:
@@ -17,10 +17,10 @@ expanded as a sum of functions of increasing dimension as follows:
 .. math::
   :label: Model
 
-       h(\vect{X}) = h_0 + \sum_{u\subseteq\{1,\dots,n_X\}} h_u(X_u)
+       h(\vect{X}) = h_0 + \sum_{u\subseteq\{1,\dots,d\}} h_u(X_u)
 
 :math:`h_0` is the mean of :math:`Y`. Each function :math:`h_u`
-represents, for any non empty set :math:`u\subseteq\{1, \dots, n_X\}`,
+represents, for any non empty set :math:`u\subseteq\{1, \dots, d\}`,
 the combined contribution of the variables :math:`X_u` to :math:`Y`.
 
 Using the properties of the covariance, the variance of :math:`Y` can be
@@ -29,9 +29,9 @@ decomposed into a variance part and a covariance part as follows:
 .. math::
 
    \begin{aligned}
-       Var[Y] &=& Cov\left[h_0 + \sum_{u\subseteq\{1,\dots,n_X\}} h_u(X_u), h_0 + \sum_{u\subseteq\{1,\dots,n\}} h_u(X_u)\right] \\
-              &=& \sum_{u\subseteq\{1,\dots,n_X\}} Cov\left[h_u(X_u), \sum_{u\subseteq\{1,\dots,n_X\}} h_u(X_u)\right] \\
-              &=& \sum_{u\subseteq\{1,\dots,n_X\}} \left[Var[h_u(X_u)] + Cov[h_u(X_u), \sum_{v\subseteq\{1,\dots,n_X\}, v\cap u=\varnothing} h_v(X_v)]\right]
+       Var[Y] &=& Cov\left[h_0 + \sum_{u\subseteq\{1,\dots,d\}} h_u(X_u), h_0 + \sum_{u\subseteq\{1,\dots,n\}} h_u(X_u)\right] \\
+              &=& \sum_{u\subseteq\{1,\dots,d\}} Cov\left[h_u(X_u), \sum_{u\subseteq\{1,\dots,d\}} h_u(X_u)\right] \\
+              &=& \sum_{u\subseteq\{1,\dots,d\}} \left[Var[h_u(X_u)] + Cov[h_u(X_u), \sum_{v\subseteq\{1,\dots,d\}, v\cap u=\varnothing} h_v(X_v)]\right]
      \end{aligned}
 
 The total part of variance of :math:`Y` due to :math:`X_u` reads:
@@ -53,13 +53,13 @@ due to :math:`X_u`:
 and :math:`S_u^C` is the contribution of the correlation of :math:`X_u`
 with the other parameters:
 
-.. math:: S_u^C = \frac{Cov[h_u(X_u), \displaystyle \sum_{v\subseteq\{1,\dots,n_X\}, v\cap u=\varnothing} h_v(X_v)]}{Var[Y]}
+.. math:: S_u^C = \frac{Cov[h_u(X_u), \displaystyle \sum_{v\subseteq\{1,\dots,d\}, v\cap u=\varnothing} h_v(X_v)]}{Var[Y]}
 
 As the computational cost of the indices with the numerical model
 :math:`h` can be very high, it is suggested to approximate the model
 response with a polynomial chaos expansion. However, for the sake of
 computational simplicity, the latter is constructed considering
-:math:`\mathit{independent}` components :math:`\{X^1,\dots,X^{n_X}\}`.
+:math:`\mathit{independent}` components :math:`\{X^1,\dots,X^{d}\}`.
 Thus the chaos basis is not orthogonal with respect to the correlated
 inputs under consideration, and it is only used as a metamodel to
 generate approximated evaluations of the model response and its summands
@@ -72,7 +72,7 @@ Then one may identify the component functions. For instance, for
 
 .. math:: h_1(X_1) = \sum_{\alpha | \alpha_1 \neq 0, \alpha_{i \neq 1} = 0} y_{\alpha} \Psi_{\alpha}(\vect{X})
 
-where :math:`\alpha` is a set of degrees associated to the :math:`n_X`
+where :math:`\alpha` is a set of degrees associated to the :math:`d`
 univariate polynomial :math:`\psi_i^{\alpha_i}(X_i)`.
 
 Then the model response :math:`Y` is evaluated using a sample

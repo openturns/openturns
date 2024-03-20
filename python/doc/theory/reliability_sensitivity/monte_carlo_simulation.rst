@@ -8,11 +8,10 @@ vector :math:`\vect{X}`, we seek to evaluate the following probability:
 
 .. math::
 
-    P_f = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+    P_f = \Prob{g\left( \vect{X} \right) \leq 0}
 
-Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
-vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
-which enables the definition of the event :math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X},\vect{d}) \le 0\}`.
+Here, :math:`\vect{X}` is a random vector, :math:`g(\vect{X})` the function known as *limit state function*
+which enables the definition of the event :math:`\cD_f = \{\vect{X} \in \Rset^d \, / \, g(\vect{X}) \le 0\}`.
 
 
 If we have the set :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of *N*
@@ -21,10 +20,10 @@ we can estimate :math:`\widehat{P}_f` as follows:
 
 .. math::
 
-    \widehat{P}_f = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }
+    \widehat{P}_f = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{ \left\{ g(\vect{x}_i) \leq 0 \right\} }
 
-where :math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
-describes the indicator function equal to 1 if :math:`g(\vect{x}_i,\vect{d}) \leq 0`
+where :math:`\mathbf{1}_{ \left\{ g(\vect{x}_i) \leq 0 \right\} }`
+describes the indicator function equal to 1 if :math:`g(\vect{x}_i) \leq 0`
 and equal to 0 otherwise; the idea here is in fact to estimate the required
 probability by the proportion of cases, among the *N* samples of :math:`\vect{X}`,
 for which the event :math:`\cD_f` occurs.

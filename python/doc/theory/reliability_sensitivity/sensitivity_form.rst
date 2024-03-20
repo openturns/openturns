@@ -6,18 +6,17 @@ Sensitivity Factors from FORM method
 | Sensitivity Factors are evaluated under the following context:
   :math:`\vect{X}` denotes a random input vector, representing the
   sources of uncertainties, :math:`\pdf` its joint density probability,
-  :math:`\vect{d}` a deterministic vector, representing the fixed
-  variables :math:`g(\vect{X}\,,\,\vect{d})` the limit state function of
+  :math:`g(\vect{X})` the limit state function of
   the model,
-  :math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X}\,,\,\vect{d}) \le 0\}`
-  the event considered here and :math:`{g(\vect{X}\,,\,\vect{d}) = 0}`
+  :math:`\cD_f = \{\vect{X} \in \Rset^d \, / \, g(\vect{X}) \le 0\}`
+  the event considered here and :math:`{g(\vect{X}) = 0}`
   its boundary (also called limit state surface).
 | The probability content of the event :math:`\cD_f` is :math:`P_f`:
 
   .. math::
     :label: PfX11
 
-    P_f = \int_{g(\vect{X}\,,\,\vect{d}) \le 0}  \pdf\, d\vect{x}.
+    P_f = \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}.
 
 | In this context, the probability :math:`P_f` can often be
   efficiently estimated by FORM or SORM approximations.
@@ -47,18 +46,18 @@ reliability index (refer to ) of the value of the parameters used to
 define the distribution of the random vector :math:`\vect{X}`.
 
 Here, the event considered is explicited directly from the limit state
-function :math:`g(\vect{X}\,,\,\vect{d})`: this is the classical
+function :math:`g(\vect{X})`: this is the classical
 structural reliability formulation.
 However, if the event is a threshold exceedance, it is useful to
 explicit the variable of interest
-:math:`Z=\tilde{g}(\vect{X}\,,\,\vect{d})`, evaluated from the model
+:math:`Z=\tilde{g}(\vect{X})`, evaluated from the model
 :math:`\tilde{g}(.)`. In that case, the event considered, associated to
 the threshold :math:`z_s` has the formulation:
-:math:`\cD_f = \{ \vect{X} \in \Rset^n \, / \, Z=\tilde{g}(\vect{X}\,,\,\vect{d}) > z_s \}`
+:math:`\cD_f = \{ \vect{X} \in \Rset^d \, / \, Z=\tilde{g}(\vect{X}) > z_s \}`
 and the limit state function is :
-:math:`g(\vect{X}\,,\,\vect{d}) = z_s - Z = z_s - \tilde{g}(\vect{X}\,,\,\vect{d})`.
+:math:`g(\vect{X}) = z_s - Z = z_s - \tilde{g}(\vect{X})`.
 :math:`P_f` is the threshold exceedance probability, defined as:
-:math:`P_f     =       P(Z \geq z_s) = \int_{g(\vect{X}\,,\,\vect{d}) \le 0}  \pdf\, d\vect{x}`.
+:math:`P_f     =       P(Z \geq z_s) = \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}`.
 Thus, the FORM sensitivity factors offer a way to rank the importance of
 the parameters of the input components with respect to the threshold
 exceedance by the quantity of interest :math:`Z`. They can be seen as a

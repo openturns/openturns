@@ -4,15 +4,15 @@ Importance Simulation
 ---------------------
 
 | Let us note
-  :math:`\cD_f = \{\ux \in \Rset^{n} | g(\ux,\underline{d}) \leq 0\}`.
+  :math:`\cD_f = \{\ux \in \Rset^{d} | g(\ux) \leq 0\}`.
   The goal is to estimate the following probability:
 
   .. math::
 
      \begin{aligned}
-         P_f &=& \int_{\cD_f} f_{\uX}(\ux)d\ux\\
-         &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \:\leq 0\: \}}f_{\uX}(\ux)d\ux\\
-         &=& \Prob {\{g(\uX,\underline{d}) \leq 0\}}
+         P_f & = \int_{\cD_f} f_{\uX}(\ux)d\ux\\
+         & = \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux) \:\leq 0\: \}}f_{\uX}(\ux)d\ux\\
+         & = \Prob {\{g(\uX) \leq 0\}}
        \end{aligned}
 
 | This is a sampling-based method. The main idea of the Importance
@@ -28,8 +28,8 @@ Importance Simulation
 .. math::
 
    \begin{aligned}
-       P_f &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux\\
-       &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}} \frac{f_{\uX}(\ux)}{f_{\underline{Y}}(\ux)}f_{\underline{Y}}(\ux)d\ux
+       P_f &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
+       &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux) \leq 0 \}} \frac{f_{\uX}(\ux)}{f_{\underline{Y}}(\ux)}f_{\underline{Y}}(\ux)d\ux
      \end{aligned}
 
 The estimator built by Importance Sampling method is:
@@ -37,7 +37,7 @@ The estimator built by Importance Sampling method is:
 .. math::
 
    \begin{aligned}
-       \hat{P}_{f,IS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{Y}_{\:i}),\underline{d}) \leq 0 \}}\frac{f_{\uX}(\underline{Y}_{\:i})}{f_{\underline{Y}}(\underline{Y}_{\:i})}
+       \hat{P}_{f,IS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{Y}_{\:i})) \leq 0 \}}\frac{f_{\uX}(\underline{Y}_{\:i})}{f_{\underline{Y}}(\underline{Y}_{\:i})}
      \end{aligned}
 
 where:
@@ -55,8 +55,8 @@ where:
   .. math::
 
      \begin{aligned}
-         \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{y}_{\:i}),\underline{d}) \leq 0 \}}\frac{f_{\uX}(\underline{y}_{\:i})}{f_{\underline{Y}}(\underline{y}_{\:i})}\\
-         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\underline{y}_i),\underline{d}) \leq 0 \}}\frac{f_{\uX}(\underline{y}_{\:i})}{f_{\underline{Y}}(\underline{y}_{\:i})} - \mu_N)^2
+         \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{y}_{\:i})) \leq 0 \}}\frac{f_{\uX}(\underline{y}_{\:i})}{f_{\underline{Y}}(\underline{y}_{\:i})}\\
+         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\underline{y}_i)) \leq 0 \}}\frac{f_{\uX}(\underline{y}_{\:i})}{f_{\underline{Y}}(\underline{y}_{\:i})} - \mu_N)^2
        \end{aligned}
 
 The asymptotic confidence interval of order :math:`1-\alpha` associated

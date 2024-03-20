@@ -29,7 +29,7 @@ with :math:`c_{ii} = \sigma_i^2`.
 
 
 Case 1: :math:`q=1`, :math:`Y = h(\vect{X}) \in \Rset`
-------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second-order Taylor expansion of :math:`h` at the point :math:`\ux = \vect{\mu}` is:
 
@@ -63,7 +63,7 @@ than 2 of the distribution of :math:`\uX`.
 
 
 Case 2: :math:`q>1`, :math:`Y =(Y_1, \dots, Y_q) \in \Rset^q`
--------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second-order Taylor expansion of :math:`h = (h_1, \dots, h_q)` at the point
 :math:`\ux = \vect{\mu}` for each marginal function :math:`h_k` is:

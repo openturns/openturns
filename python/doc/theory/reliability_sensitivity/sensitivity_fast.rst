@@ -6,15 +6,15 @@ Sensitivity analysis by Fourier decomposition
 FAST is a sensitivity analysis method which is based upon the ANOVA
 decomposition of the variance of the model response
 :math:`y = f(\vect{X})`, the latter being represented by its Fourier
-expansion. :math:`\vect{X}=\{X^1,\dots,X^{n_X}\}` is an input random
-vector of :math:`n_X` independent components.
+expansion. :math:`\vect{X}=\{X^1,\dots,X^{d}\}` is an input random
+vector of :math:`d` independent components.
 
 | The extended FAST method consists in computing
   alternately the first order and the total-effect indices of each
   input. This approach relies upon a Fourier decomposition of the model
   response. Its key idea is to recast this representation as a function
   of a :math:`\mathit{scalar}` parameter :math:`s`, by defining
-  parametric curves :math:`s \mapsto x_i(s)`, :math:`i=1, \dots, n_X`
+  parametric curves :math:`s \mapsto x_i(s)`, :math:`i=1, \dots, d`
   exploring the support of the input random vector :math:`\vect{X}`.
 | For each input, the same procedure is realized in three steps:
 
@@ -26,21 +26,21 @@ vector of :math:`n_X` independent components.
    .. math::
 
       x^i_j = \frac{1}{2} + \frac{1}{\pi} \arcsin(\sin(\omega_i s_j + \phi_i)),
-          \quad i=1, \dots, n_X, \, j=1, \dots, N
+          \quad i=1, \dots, d, \, j=1, \dots, N
 
-   where :math:`n_X` is the number of input variables. :math:`N` is the
+   where :math:`d` is the number of input variables. :math:`N` is the
    length of the discretization of the s-space, with :math:`s` varying
    in :math:`(-\pi, \pi)` by step of :math:`2\pi/N`. :math:`\phi_i` is a
    random phase-shift chosen uniformly in :math:`[0, 2\pi]` which
    enables to make the curves start anywhere within the unit hypercube
-   :math:`K^{n_X}=(\vect{X}|0\leq x_i\leq1; i=1, \dots, n_X)`. The
-   selection of the set :math:`\{\phi_1, \dots, \phi_{n_X}\}` induces a
+   :math:`K^{d}=(\vect{X}|0\leq x_i\leq1; i=1, \dots, d)`. The
+   selection of the set :math:`\{\phi_1, \dots, \phi_{d}\}` induces a
    part of randomness in the procedure. So it can be asked to realize
    the procedure :math:`Nr` times and then to calculate the arithmetic
    means of the results over the :math:`Nr` estimates. This operation is
    called :math:`\mathit{resampling}`.
 
-   :math:`\{\omega_i\}, \forall i=1, \dots, n_X` is a set of integer
+   :math:`\{\omega_i\}, \forall i=1, \dots, d` is a set of integer
    frequencies assigned to each input :math:`X^i`. The frequency
    associated with the input of interest is set to the maximum
    admissible frequency satisfying the Nyquist criterion (which ensures
@@ -80,7 +80,7 @@ vector of :math:`n_X` independent components.
    | etc.
 
    The transformation defined above provides a uniformly distributed
-   sample for the :math:`x_i, \forall i=1, \dots, n_X` oscillating
+   sample for the :math:`x_i, \forall i=1, \dots, d` oscillating
    between :math:`0` and :math:`1`. In order to take into account the
    real distributions of the inputs, we apply an isoprobabilistic
    transformation on each :math:`x_i` before the next step of the
@@ -89,7 +89,7 @@ vector of :math:`n_X` independent components.
 -  Simulations:
 
    Output is computed such as:
-   :math:`y = f(s) = f(x_1(s), \dots, x_{n_X}(s))`
+   :math:`y = f(s) = f(x_1(s), \dots, x_{d}(s))`
 
    Then :math:`f(s)` is expanded onto a Fourier series:
 

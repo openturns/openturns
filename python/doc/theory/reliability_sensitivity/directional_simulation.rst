@@ -8,12 +8,11 @@ we seek to evaluate the following probability:
 
 .. math::
 
-    P_f = \Prob{g\left( \vect{X},\vect{d} \right) < 0}
+    P_f = \Prob{g\left( \vect{X} \right) < 0}
 
-Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a
-deterministic vector, :math:`g(\vect{X},\vect{d})` the function known as
+Here, :math:`\vect{X}` is a random vector, :math:`g(\vect{X})` the function known as
 “limit state function” which enables the definition of the event
-:math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\cD_f = \{\vect{X} \in \Rset^d \, / \, g(\vect{X}) \le 0\}`.
 
 The directional simulation method is an accelerated sampling method. It
 implies a preliminary iso-probabilistic transformation, as for FORM and SORM methods;
@@ -32,7 +31,7 @@ iteration, these steps are the following:
 
 -  In the direction starting from the origin and passing through
    :math:`P_i`, solutions of the equation
-   :math:`g(\vect{X},\vect{d}) = 0` (i.e. limits of :math:`\cD_f`) are
+   :math:`g(\vect{X}) = 0` (i.e. limits of :math:`\cD_f`) are
    searched. The set of values of :math:`\underline{u}` that belong to
    :math:`\cD_f` is deduced for these solutions: it is a subset
    :math:`I_i \subset \Rset`.
@@ -132,14 +131,13 @@ the choice of:
       opposite directions so formed.
 
    -  | OrthogonalDirection: this strategy is parameterized by
-        :math:`k\in \{1,\dots,n\}`, where :math:`n` is the dimension of
-        the input random vector :math:`\vect{X}`. We generate one direct
-        ortho-normalized basis :math:`(e_1, \dots, e_n)` uniformly
+        :math:`k\in \{1,\dots,d\}`. We generate one direct
+        ortho-normalized basis :math:`(e_1, \dots, e_d)` uniformly
         distributed in the set of direct orthonormal bases. We consider
         all the normalized linear combinations of :math:`k` vectors
-        chosen within the :math:`n` vectors of the basis, where the
+        chosen within the :math:`d` vectors of the basis, where the
         coefficients of the linear combinations are in
-        :math:`\{+1, -1\}`. This generates :math:`C_n^k 2^k` new vectors
+        :math:`\{+1, -1\}`. This generates :math:`C_d^k 2^k` new vectors
         :math:`v_i`. We sample according to all the directions defined
         by the vectors :math:`v_i`.
       | If :math:`k=1`, we consider all the axes of the standard space.

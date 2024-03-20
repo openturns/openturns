@@ -4,16 +4,16 @@ Quasi Monte Carlo
 -----------------
 
 | Let us note
-  :math:`\cD_f = \{\ux \in \Rset^{n} \: | \:  g(\ux,\underline{d}) \leq 0\}`.
+  :math:`\cD_f = \{\ux \in \Rset^{d} \: | \:  g(\ux) \leq 0\}`.
   The goal is to estimate the following probability:
 
   .. math::
     :label: integ
 
      \begin{aligned}
-         P_f &=& \int_{\cD_f} f_{\uX}(\ux)d\ux\\
-         &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux\\
-         &=& \Prob {\{\:g(\uX,\underline{d}) \leq 0 \}}
+         P_f &= \int_{\cD_f} f_{\uX}(\ux)d\ux\\
+         &= \int_{\Rset^{d}} \mathbf{1}_{\{g(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
+         &= \Prob {\{\:g(\uX) \leq 0 \}}
        \end{aligned}
 
 | Quasi-Monte Carlo is a technique which approximates the integral

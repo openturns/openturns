@@ -5,16 +5,15 @@ Strong Maximum Test
 
 The Strong Maximum Test is used under the following context:  let :math:`\vect{X}` be a
 probabilistic input
-vector with joint density probability  :math:`\pdf`, let :math:`\vect{d}` be a  deterministic
-vector, let :math:`g(\vect{X}\,,\,\vect{d})` be the limit state function of
-the model and let :math:`\cD_f = \{\vect{X} \in \Rset^n \,
-/ \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be an event whose probability
+vector with joint density probability  :math:`\pdf`, let :math:`g(\vect{X})` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{X} \in \Rset^d \,
+/ \, g(\vect{X}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
     :label: PfX12
 
-       P_f =     \int_{{g(\vect{X}\,,\,\vect{d}) \le 0}}  \pdf\, d\vect{x}
+       P_f =     \int_{{g(\vect{X}) \le 0}}  \pdf\, d\vect{x}
 
 The probability :math:`P_f` is evaluated with the  :ref:`form_approximation` and :ref:`sorm_approximation`
 methods. These methods use the Nataf
@@ -23,7 +22,7 @@ probabilistic model in terms of :math:`\vect{X}` onto an equivalent model in ter
 independent standard normal random :math:`\vect{U}` (refer to :ref:`isoprobabilistic_transformation`). In that new
 :math:`\vect{u}`-space,
 the event has the new expression defined from the transformed limit state function of the model :math:`G`:
-:math:`\cD_f = \{\vect{U} \in \Rset^n \, / \, h(\vect{U}\,,\,\vect{d}) \le 0\}`.
+:math:`\cD_f = \{\vect{U} \in \Rset^d \, / \, h(\vect{U}) \le 0\}`.
 
 These analytical methods rely on the assumption that most of the contribution to :math:`P_f`
 comes from points located in the vicinity of a particular point :math:`P^*`, the design point, defined in the
