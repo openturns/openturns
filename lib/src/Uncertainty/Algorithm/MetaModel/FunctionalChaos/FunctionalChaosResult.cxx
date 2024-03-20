@@ -185,10 +185,8 @@ String FunctionalChaosResult::__repr_markdown__() const
       if (i == ell_size)
       {
         oss << "| ...   |";
-        const String blankColumn(String(columnWidth, ' ') + "|");
-        oss << OSS::RepeatString(1 + ell_size, blankColumn)
-            << OSS::PadString(" ... ", columnWidth) << "|"
-            << OSS::RepeatString(ell_size, blankColumn) << "\n";
+        const String ellipsisColumn(OSS::PadString(" ... ", columnWidth) + "|");
+        oss << OSS::RepeatString(1 + outputDimension, ellipsisColumn) << "\n";
         continue;
       }
       else if (i > ell_size && i < indicesSize - ell_size) continue;
