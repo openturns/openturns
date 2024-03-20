@@ -5,7 +5,7 @@ Least squares polynomial response surface
 
 Instead of replacing the model response :math:`\model(\vect{x})` with a
 *local* approximation around a given set :math:`\vect{x}_0` of
-input parameters as in :ref:`taylor_expansion`, one may seek a *global* approximation of
+input parameters as in :ref:`Taylor expansion <taylor_expansion>`, one may seek a *global* approximation of
 :math:`\model(\vect{x})` over its whole domain of definition. A common
 choice to this end is global polynomial approximation. For the sake of
 simplicity, a *scalar* model response :math:`y=\model(\vect{x})` will
