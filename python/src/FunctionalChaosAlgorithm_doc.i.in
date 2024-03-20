@@ -82,8 +82,6 @@ key of the :class:`~openturns.ResourceMap` is used.
   :class:`~openturns.KFold` criteria is used.
 - Otherwise, an exception is produced.
 
-
-
 Examples
 --------
 Create the model:
@@ -145,13 +143,13 @@ There are several methods to define the algorithm: default
 settings are used when the information is not provided by the user.
 The simplest is to set only the input and output samples.
 In this case, the distribution and its parameters are estimated from
-the `inputSample` using the :class:`~openturns.MetaModelAlgorithm.BuildDistribution` class.
+the *inputSample* using the :class:`~openturns.MetaModelAlgorithm.BuildDistribution` class.
 See the :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_build_distribution`
 example for more details on this topic.
 
 >>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
 
-In many cases, the distribution is known and the best is to use this information
+In many cases, the distribution is known and it is best to use this information
 when we have it.
 
 >>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution)
@@ -187,8 +185,7 @@ sparse PCE.
 ...     ot.LARS(), \
 ...     ot.CorrectedLeaveOneOut()
 ... )
->>> projectionStrategy = ot.LeastSquaresStrategy(inputSample, outputSample, \
-...                                              selection)
+>>> projectionStrategy = ot.LeastSquaresStrategy(inputSample, outputSample, selection)
 >>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution, \
 ...                                    adaptiveStrategy, projectionStrategy)"
 
@@ -267,7 +264,7 @@ residual : float
 
 Parameters
 ----------
-strategy : :class:`~openturns.ProjectionStrategy`
+projectionStrategy : :class:`~openturns.ProjectionStrategy`
     Strategy to estimate the coefficients :math:`a_k`."
 
 // ---------------------------------------------------------------------

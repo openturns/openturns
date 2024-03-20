@@ -16,7 +16,7 @@ functional chaos expansion or polynomial chaos expansion (PCE).
 For example, we can get the output mean or the output covariance matrix
 using the coefficients of the expansion.
 
-Moreover, we can use this class to simulation random observations
+Moreover, we can use this class to simulate random observations
 of the output.
 We consider the same notations as in the :class:`~openturns.FunctionalChaosAlgorithm`
 class.
@@ -31,7 +31,7 @@ which can be truncated to the finite set :math:`\cK \subset \Nset`:
 
 .. math::
 
-    \widetilde{h} =  \sum_{k \in \cK} \vect{a}_k \Psi_k 
+    \widetilde{h} =  \sum_{k \in \cK} \vect{a}_k \Psi_k.
 
 The approximation :math:`\widetilde{h}` can be used to build an efficient random 
 generator of :math:`Y` based on the random vector :math:`\vect{Z}`,
@@ -39,13 +39,13 @@ using the equation:
 
 .. math::
 
-    \widetilde{Y} = \widetilde{h}(\vect{Z})
+    \widetilde{Y} = \widetilde{h}(\vect{Z}).
 
 This equation can be used to simulate independent random observations
 from the PCE.
-This can be done by first simulating independent observations from
-the distribution of the standardized random vector $\vect{Z}$,
-then push forward these observations through the expansion.
+This can be done by simulating independent observations from
+the distribution of the standardized random vector :math:`\vect{Z}`,
+which are then pushed forward through the expansion.
 
 See also
 --------
@@ -79,7 +79,7 @@ First, we create the PCE.
 >>> functionalChaosResult = algo.getResult()
 
 Secondly, we get the probabilistic properties of the PCE.
-We can get the output mean :meth:`~openturns.FunctionalChaosRandomVector.getMean`, which produces an estimate of the
+We can get an estimate of the
 mean of the output of the physical model.
 
 >>> functionalChaosRandomVector = ot.FunctionalChaosRandomVector(functionalChaosResult)
@@ -87,14 +87,14 @@ mean of the output of the physical model.
 >>> print(mean)
 [0.301168]
 
-We can get the output covariance matrix, which is an estimate of the
-mean of the output of the physical model using :meth:`~openturns.FunctionalChaosRandomVector.getCovariance`.
+We can get an estimate of the covariance matrix
+of the output of the physical model.
 
 >>> covariance = functionalChaosRandomVector.getCovariance()
 >>> print(covariance)
 [[ 0.0663228 ]]
 
-The `getSample()` generates observations from the PCE random
+We can finally generate observations from the PCE random
 vector.
 
 >>> simulatedOutputSample = functionalChaosRandomVector.getSample(5)

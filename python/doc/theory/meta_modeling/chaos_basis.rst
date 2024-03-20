@@ -3,7 +3,7 @@
 Polynomial chaos basis
 ----------------------
 
-The current section is focused on a specific kind of functional chaos
+This page is focused on a specific kind of functional chaos
 representation that has been implemented, namely
 *polynomial chaos expansions*.
 
@@ -65,14 +65,14 @@ is the Kronecker symbol:
   \end{cases}
 
 Under some hypotheses on the function :math:`h` and the functional basis
-:math:`\{\psi_k\}_{k \geq 0}`, it can be proved that :math:`\vect{Y}` can
+:math:`\{\psi_k\}_{k \geq 0}`, it can be proved that :math:`Y` can
 be expanded onto the PC basis as follows (see [lemaitre2010]_ page 39):
 
 .. math::
     :label: PC
 
     Y = h(\vect{Z})
-    =  \sum_{k \geq 0} \; a_k \; \psi_k(\vect{Z}).
+    =  \sum_{k \geq 0} \; a_k \; \psi_k(\vect{Z}),
 
 where :math:`\{a_k \in \Rset\}_{k \geq 0}` are real coefficients.
 The coefficients :math:`a_k`\ ’s are deterministic coefficients that fully
@@ -80,8 +80,9 @@ characterize the response :math:`\vect{Y}`.
 
 The goal of the next two sections is to present methods to create
 the basis :math:`\{\psi_k \}_{k \geq 0}` in two different cases:
+
 - if the input random vector :math:`\vect{X}` has independent marginals,
-- if the input random vector :math:`\vect{X}` has a non trivial copula.
+- if the input random vector :math:`\vect{X}` has a non-trivial copula.
 
 PC basis with independent random variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,7 +97,7 @@ In practice, the components :math:`X_i` of random vector
 :math:`T_i`, usually referred to as an *isoprobabilistic
 transformation* (see :ref:`isoprobabilistic_transformation` for
 details on this topic).
-The set of standardized random variables reads:
+The set of standardized random variables is:
 
 .. math::
     :label: PC_isotransfo
@@ -121,7 +122,7 @@ For any input marginal index :math:`i \in \{1, ..., n_X\}`,
 let us consider a family :math:`\left\{\pi^{(i)}_j, j \in \Nset\right\}` of
 orthonormal polynomials with respect to :math:`f_{Z_i}` where
 :math:`j` represents the degree of the polynomial :math:`\pi^{(i)}_j`.
-By hypothesis, the polynomials are orthonormal, which implies:
+By hypothesis, the polynomials are orthonormal:
 
 .. math::
     :label: 3.010cinq
@@ -131,7 +132,7 @@ By hypothesis, the polynomials are orthonormal, which implies:
     =  \delta_{j,k}
 
 for any :math:`j, k \in \Nset`.
-More details orthogonal polynomials are presented in
+More details about orthogonal polynomials are presented in
 :ref:`orthogonal_polynomials`.
 We make the hypothesis that :math:`\pi^{(i)}_{0} = 1` for :math:`i=1,\dots,n_X`.
 It can be proved that the *tensor product* of the :math:`n_X` univariate
@@ -150,7 +151,7 @@ a multi-index representing the marginal polynomial degrees.
 PC basis with dependent random variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In case of *dependent* variables, it is possible to build up an
+In the case of *dependent* variables, it is possible to build up an
 orthonormal basis as follows (see [soizeghanem2004]_):
 
 .. math::
@@ -164,7 +165,7 @@ Notice that such a basis is no longer made of polynomials. When
 dealing with independent random variables, each basis element may be recast as in
 :eq:`3.010six`.
 Computing :math:`\psi_{\idx}(\vect{z})` can be expensive.
-This is the reason why we present below other methods for specific types
+This is the reason why we now present other methods for specific types
 of input random vectors.
 
 If :math:`\vect{X}` has an elliptical copula instead of an independent
@@ -172,8 +173,8 @@ one, it may be recast as a random vector :math:`\vect{Z}` with
 independent components using a suitable mapping
 :math:`T : \vect{X} \mapsto \vect{Z}` such as the Nataf transformation
 for example.
-The so-called Rosenblatt transformation may also be applied in case
-of a Gaussian copula.
+The so-called Rosenblatt transformation may also be applied in the case
+of a Normal copula.
 
 Link with classical deterministic polynomial approximation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -181,13 +182,13 @@ Link with classical deterministic polynomial approximation
 In a deterministic setting (i.e. when the input parameters are
 considered to be deterministic), it is of common practice to substitute
 the model function :math:`h` by a polynomial approximation over its
-whole domain of definition as shown in . Actually this approach is
+whole domain of definition. Actually this approach is
 strictly equivalent to:
 
-- Regarding the input parameters as random uniform random variables
+#. Regarding the input parameters as random uniform random variables
 
-- Expanding any quantity of interest provided by the model onto a PC
-  expansion made of Legendre polynomials
+#. Expanding any quantity of interest provided by the model onto a PC
+   expansion made of Legendre polynomials
 
 
 .. topic:: API:

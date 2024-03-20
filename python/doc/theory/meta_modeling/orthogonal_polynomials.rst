@@ -3,19 +3,19 @@
 Orthogonal polynomials
 ----------------------
 
-This section provides some mathematical details on sequences of
+This page provides mathematical details on sequences of
 orthogonal polynomials. Some of these sequences will be used to
 construct the basis of the so-called *polynomial chaos expansion*.
 
 Mathematical framework
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The orthogonal polynomials are associated to an inner product, defined
+Orthogonal polynomials are associated to an inner product, defined
 as follows.
 Given an *interval of orthogonality* :math:`[\alpha,\beta]`
 (:math:`\alpha \in \Rset \cup \{-\infty\}`,
 :math:`\beta \in \Rset \cup \{\infty\}`, :math:`\alpha < \beta`) and a
-weight function :math:`w(x)> 0`, every pair of polynomials :math:`P`
+weight function :math:`w(x)> 0`, the polynomials :math:`P`
 and :math:`Q` are orthogonal if:
 
 .. math::
@@ -60,7 +60,7 @@ relating any three consecutive polynomials as follows:
 Orthogonormal polynomials with respect to usual probability distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Below, a table showing an example of particular (normalized)
+Below is a table showing an example of particular (normalized)
 orthogonal polynomials associated with *continuous* weight functions.
 Note that the orthonormal polynomials are
 orthonormal with respect to the standard representative distribution

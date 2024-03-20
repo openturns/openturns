@@ -13,7 +13,7 @@ Accounting for the joint probability density function (PDF)
 Monte Carlo (MC) simulation, i.e. by evaluating the model :math:`h`
 at a large number of realizations :math:`\vect{x}^{(i)}` of
 :math:`\vect{X}` and then by estimating the empirical
-distribution of the corresponding sample of model output
+distribution of the corresponding model output sample
 :math:`h(\vect{x}^{(i)})`. However, the MC
 method may require a large number of model evaluations, i.e. a great
 computational cost, in order to obtain accurate results.
@@ -51,7 +51,7 @@ where :math:`g: \Rset^{n_X} \rightarrow \Rset^{n_Y}` is the physical model,
 :math:`\mu_{\vect{X}}` is the distribution of the physical input random vector,
 :math:`n_X \in \Nset` is the input dimension,
 :math:`n_Y \in \Nset` is the output dimension.
-We assume that :math:`\vect{Y}` has a finite variance i.e.
+We assume that :math:`\vect{Y}` has finite variance i.e.
 :math:`g\in L_{\mu_{\vect{X}}}^2(\Rset^{n_X}, \Rset^{n_Y})`.
 
 When the dimension of the output is greater than 1, i.e. when
@@ -66,7 +66,8 @@ Iso-probabilistic transformation
 
 Let :math:`T: \Rset^{n_X} \rightarrow \Rset^{n_X}` be an isoprobabilistic transformation
 such that :math:`\vect{Z} = T(\vect{X}) \sim \mu_{\vect{Z}}` where :math:`\mu_{\vect{Z}}` is the
-distribution of the standardized random vector :math:`\vect{Z}`.
+distribution of the standardized random vector :math:`\vect{Z}`,
+i.e. the standard :math:`n_X`-dimensional normal distribution.
 The distribution is called the *measure* below.
 Let :math:`f_{\vect{Z}}` be the probability density function of the standardized
 random vector.
@@ -116,13 +117,13 @@ The functional chaos decomposition of *h* is (see [lemaitre2010]_ page 39):
 
     h = \sum_{k \geq 0} a_k \Psi_k.
 
-Let :math:`\cK \subset \Nset` be a subset of the coefficients
+Let :math:`\cK \subset \Nset` be a finite subset of the coefficients
 representing the truncation of the infinite series.
 Truncating this series can be done using one enumeration rule,
 as presented in :ref:`enumeration_strategy`.
 If the number of coefficients in :math:`\cK` is too large,
 this can lead to *overfitting*.
-This may happen e.g. if we select a too high total polynomial order.
+This may happen e.g. if the total polynomial order we choose is too large.
 In order to limit this effect, one method is to select the coefficients which
 best predict the output, as presented in :ref:`polynomial_sparse_least_squares`.
 
@@ -159,7 +160,7 @@ using the equation:
 
 If the basis :math:`(\Psi_k)_{k \in \Nset}` is based on the tensor product of
 univariate orthonormal polynomials, then the distribution
-:math:`\mu_{\vect{Z}}` writes
+:math:`\mu_{\vect{Z}}` is the product
 :math:`\mu_{\vect{Z}} = \prod_{i=1}^{n_X} \mu_{\vect{Z},i}`.
 In that case only, the Sobol' indices can easily be computed from the
 coefficients :math:`a_k`.
