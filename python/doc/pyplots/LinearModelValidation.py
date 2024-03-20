@@ -8,7 +8,7 @@ func = ot.SymbolicFunction(
 
 dimension = 3
 
-distribution = ot.ComposedDistribution([ot.Normal()] * dimension)
+distribution = ot.JointDistribution([ot.Normal()] * dimension)
 sampleSize = 50
 inputSample = distribution.getSample(sampleSize)
 outputSample = func(inputSample)
