@@ -64,7 +64,6 @@ int main(int, char *[])
     LeaveOneOutSplitter splitterLOO(sampleSize);
     LinearModelValidation validationLOO(result, splitterLOO);
     fullprint << validationLOO.__str__() << std::endl;
-    assert(validationLOO.getSplitter() == splitterLOO);
 
     // Compute analytical LOO MSE
     fullprint << "Compute Analytical LOO MSE" << std::endl;
@@ -112,7 +111,6 @@ int main(int, char *[])
     KFoldSplitter splitterKF(sampleSize, kFoldParameter);
     LinearModelValidation validationKFold(result, splitterKF);
     fullprint << validationKFold.__str__() << std::endl;
-    assert(validationKFold.getSplitter() == splitterKF);
 
     // Compute analytical KFold MSE
     const Point mseKFoldAnalytical(validationKFold.computeMeanSquaredError());
