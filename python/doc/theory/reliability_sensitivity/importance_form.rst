@@ -23,8 +23,9 @@ input components with respect to the realization of the event. They are often se
 of the impact of modeling the
 input components as random variables rather than fixed values. FORM importance factors are defined as follows.
 
-Let :math:`\mat{R}\in{\cS\cO}_n(\Rset)` be the special orthogonal group
-of square orthogonal matrices of dimension :math:`n` with determinant 1.
+Let :math:`\mat{R} \in {\cS\cO}_n(\Rset)` be the special orthogonal group which is the set of square matrices
+:math:`\mat{M} \in \cM_n(\Rset)` such that :math:`\mat{M} \Tr{\mat{M}} = \mat{I}_n` and with
+determinant equal to 1.
 The :ref:`isoprobabilistic transformation <isoprobabilistic_transformations>` :math:`T` used in the FORM and
 SORM approximation is a diffeomorphism from
 :math:`\supp{\vect{X}}` into :math:`\Rset^n`, such that the
