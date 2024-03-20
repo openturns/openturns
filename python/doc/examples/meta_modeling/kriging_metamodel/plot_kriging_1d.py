@@ -6,11 +6,11 @@ Kriging : quick-start
 # Abstract
 # --------
 #
-# In this example, we create a kriging metamodel for a function which has
+# In this example, we create a Kriging metamodel for a function which has
 # scalar real inputs and outputs.
 # We show how to create the learning and the validation samples.
-# We show how to create the kriging metamodel by choosing a trend and a covariance model.
-# Finally, we compute the predicted kriging confidence interval using the conditional variance.
+# We show how to create the Kriging metamodel by choosing a trend and a covariance model.
+# Finally, we compute the predicted Kriging confidence interval using the conditional variance.
 
 # %%
 # Introduction
@@ -40,7 +40,7 @@ Kriging : quick-start
 #  :math:`x_i`  1   3   4   6   7.9   11   11.5
 # ============ === === === === ===== ==== ======
 #
-# We are going to consider a kriging metamodel with:
+# We are going to consider a Kriging metamodel with:
 #
 # * a constant trend,
 # * a Matern covariance model.
@@ -141,7 +141,7 @@ y_test_MM = krigeageMM(x_test)
 
 
 # %%
-# The following function plots the kriging data.
+# The following function plots the Kriging data.
 
 
 # %%
@@ -165,19 +165,19 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We see that the kriging metamodel is interpolating. This is what is meant by *conditioning* a gaussian process.
+# We see that the Kriging metamodel is interpolating. This is what is meant by *conditioning* a gaussian process.
 #
 # We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`),
-# then the kriging metamodel is not close to the function :math:`g`.
+# then the Kriging metamodel is not close to the function :math:`g`.
 # However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`),
-# then the kriging metamodel is quite accurate.
+# then the Kriging metamodel is quite accurate.
 
 # %%
 # Compute confidence bounds
 # -------------------------
 
 # %%
-# In order to assess the quality of the metamodel, we can estimate the kriging variance and compute a 95% confidence interval associated with the conditioned gaussian process.
+# In order to assess the quality of the metamodel, we can estimate the Kriging variance and compute a 95% confidence interval associated with the conditioned gaussian process.
 #
 # We begin by defining the `alpha` variable containing the complementary of the confidence level than we want to compute.
 # Then we compute the quantile of the gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is:
@@ -201,10 +201,10 @@ print("alpha=%f" % (alpha))
 print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
-# In order to compute the kriging error, we can consider the conditional variance.
+# In order to compute the Kriging error, we can consider the conditional variance.
 # The `getConditionalCovariance` method returns the covariance matrix `covGrid`
 # evaluated at each points in the given sample. Then we can use the diagonal
-# coefficients in order to get the marginal conditional kriging variance.
+# coefficients in order to get the marginal conditional Kriging variance.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # However, some coefficients in the diagonal are very close to zero and
