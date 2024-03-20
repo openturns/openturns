@@ -104,7 +104,7 @@ OT_OptimizationAlgorithm_getMaximumConstraintError_doc
 
 Returns
 -------
-N : int
+maximumIterationNumber : int
     Maximum allowed number of iterations."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumIterationNumber
@@ -117,7 +117,7 @@ OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
 
 Returns
 -------
-N : int
+maximumEvaluationNumber : int
     Maximum allowed number of direct objective function calls through the `()` operator.
     Does not take into account eventual indirect calls through finite difference gradient calls."
 %enddef
@@ -181,7 +181,7 @@ OT_OptimizationAlgorithm_run_doc
 
 Parameters
 ----------
-N : int
+maximumIterationNumber : int
     Maximum allowed number of iterations."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumIterationNumber
@@ -194,7 +194,7 @@ OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
 
 Parameters
 ----------
-N : int
+maximumEvaluationNumber : int
     Maximum allowed number of direct objective function calls through the `()` operator.
     Does not take into account eventual indirect calls through finite difference gradient calls."
 %enddef
