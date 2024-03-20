@@ -349,7 +349,7 @@ ProcessSample & ProcessSample::operator -= (const ProcessSample & translation)
 }
 
 /* Sum operator between process sample and sample */
-ProcessSample ProcessSample::operator + (const Sample & translation)
+ProcessSample ProcessSample::operator + (const Sample & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample += translation;
@@ -357,7 +357,7 @@ ProcessSample ProcessSample::operator + (const Sample & translation)
 }
 
 /* Difference operator between process sample and sample */
-ProcessSample ProcessSample::operator - (const Sample & translation)
+ProcessSample ProcessSample::operator - (const Sample & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample -= translation;
@@ -365,7 +365,7 @@ ProcessSample ProcessSample::operator - (const Sample & translation)
 }
 
 /* Sum operator between process sample and point */
-ProcessSample ProcessSample::operator + (const Point & translation)
+ProcessSample ProcessSample::operator + (const Point & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample += translation;
@@ -373,7 +373,7 @@ ProcessSample ProcessSample::operator + (const Point & translation)
 }
 
 /* Difference operator between process sample and point */
-ProcessSample ProcessSample::operator - (const Point & translation)
+ProcessSample ProcessSample::operator - (const Point & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample -= translation;
@@ -381,7 +381,7 @@ ProcessSample ProcessSample::operator - (const Point & translation)
 }
 
 /* Sum operator between process sample and process sample */
-ProcessSample ProcessSample::operator + (const ProcessSample & translation)
+ProcessSample ProcessSample::operator + (const ProcessSample & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample += translation;
@@ -389,7 +389,7 @@ ProcessSample ProcessSample::operator + (const ProcessSample & translation)
 }
 
 /* Difference operator between process sample and process sample */
-ProcessSample ProcessSample::operator - (const ProcessSample & translation)
+ProcessSample ProcessSample::operator - (const ProcessSample & translation) const
 {
   ProcessSample processSample(getImplementation());
   processSample -= translation;

@@ -739,7 +739,7 @@ ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Pr
 }
 
 /* Sum operator between process sample and sample */
-ProcessSampleImplementation ProcessSampleImplementation::operator + (const Sample & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const Sample & translation) const
 {
   ProcessSampleImplementation processSample(*this);
   processSample += translation;
@@ -748,7 +748,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator + (const Sampl
 }
 
 /* Difference operator between process sample and sample */
-ProcessSampleImplementation ProcessSampleImplementation::operator - (const Sample & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const Sample & translation) const
 {
   ProcessSampleImplementation processSample(*this);
   processSample -= translation;
@@ -757,7 +757,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator - (const Sampl
 }
 
 /* Sum operator between process sample and point */
-ProcessSampleImplementation ProcessSampleImplementation::operator + (const Point & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const Point & translation) const
 {
   ProcessSampleImplementation processSample(*this);
   processSample += translation;
@@ -766,7 +766,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator + (const Point
 }
 
 /* Difference operator between process sample and point */
-ProcessSampleImplementation ProcessSampleImplementation::operator - (const Point & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const Point & translation) const
 {
   ProcessSampleImplementation processSample(*this);
   processSample -= translation;
@@ -775,7 +775,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator - (const Point
 }
 
 /* Sum operator between process sample and process sample */
-ProcessSampleImplementation ProcessSampleImplementation::operator + (const ProcessSampleImplementation & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const ProcessSampleImplementation & translation) const
 {
   if (getMesh() != translation.getMesh()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their meshes are not identical.";
   if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";
@@ -788,7 +788,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator + (const Proce
 }
 
 /* Difference operator between process sample and process sample */
-ProcessSampleImplementation ProcessSampleImplementation::operator - (const ProcessSampleImplementation & translation)
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const ProcessSampleImplementation & translation) const
 {
   if (getMesh() != translation.getMesh()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their meshes are not identical.";
   if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";

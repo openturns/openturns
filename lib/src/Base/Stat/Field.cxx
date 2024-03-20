@@ -264,7 +264,7 @@ Field & Field::operator -= (const Sample & translation)
 }
 
 /* Sum operator between field and sample */
-Field Field::operator + (const Sample & translation)
+Field Field::operator + (const Sample & translation) const
 {
   Field field(getImplementation());
   field += translation;
@@ -272,7 +272,7 @@ Field Field::operator + (const Sample & translation)
 }
 
 /* Difference operator between field and sample */
-Field Field::operator - (const Sample & translation)
+Field Field::operator - (const Sample & translation) const
 {
   Field field(getImplementation());
   field -= translation;
@@ -296,7 +296,7 @@ Field & Field::operator -= (const Point & translation)
 }
 
 /* Sum operator between field and point */
-Field Field::operator + (const Point & translation)
+Field Field::operator + (const Point & translation) const
 {
   Field field(getImplementation());
   field += translation;
@@ -304,7 +304,7 @@ Field Field::operator + (const Point & translation)
 }
 
 /* Difference operator between field and point */
-Field Field::operator - (const Point & translation)
+Field Field::operator - (const Point & translation) const
 {
   Field field(getImplementation());
   field -= translation;

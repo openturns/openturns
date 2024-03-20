@@ -185,12 +185,12 @@ public:
   ProcessSampleImplementation & operator -= (const ProcessSampleImplementation & translation);
 
   /** Translate realizations */
-  ProcessSampleImplementation operator + (const Sample & translation);
-  ProcessSampleImplementation operator - (const Sample & translation);
-  ProcessSampleImplementation operator + (const Point & translation);
-  ProcessSampleImplementation operator - (const Point & translation);
-  ProcessSampleImplementation operator + (const ProcessSampleImplementation & translation);
-  ProcessSampleImplementation operator - (const ProcessSampleImplementation & translation);
+  ProcessSampleImplementation operator + (const Sample & translation) const;
+  ProcessSampleImplementation operator - (const Sample & translation) const;
+  ProcessSampleImplementation operator + (const Point & translation) const;
+  ProcessSampleImplementation operator - (const Point & translation) const;
+  ProcessSampleImplementation operator + (const ProcessSampleImplementation & translation) const;
+  ProcessSampleImplementation operator - (const ProcessSampleImplementation & translation) const;
    
   /** Extract the sample of values at the given vertex index */
   Sample getSampleAtVertex(const UnsignedInteger index) const;

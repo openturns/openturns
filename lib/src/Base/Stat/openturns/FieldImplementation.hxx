@@ -153,10 +153,10 @@ public:
   FieldImplementation & operator -= (const Point & translation);
 
   /** Translate realizations */
-  FieldImplementation operator + (const Sample & translation);
-  FieldImplementation operator - (const Sample & translation);
-  FieldImplementation operator + (const Point & translation);
-  FieldImplementation operator - (const Point & translation);
+  FieldImplementation operator + (const Sample & translation) const;
+  FieldImplementation operator - (const Sample & translation) const;
+  FieldImplementation operator + (const Point & translation) const;
+  FieldImplementation operator - (const Point & translation) const;
 
 protected:
 
