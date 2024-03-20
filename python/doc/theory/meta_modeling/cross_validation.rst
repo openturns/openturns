@@ -276,7 +276,7 @@ experimental design :math:`\set{D}`.
 
 Assume that the matrix :math:`\boldsymbol{D}` has full rank.
 The solution of the linear least squares problem is
-given by the normal equations ([Bjorck1996]_ eq. 1.1.15 page 6):
+given by the normal equations (see [Bjorck1996]_ eq. 1.1.15 page 6):
 
 .. math::
 
