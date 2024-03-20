@@ -649,16 +649,16 @@ is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-      x_p  = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+      x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
 
 If the distribution is scalar and discrete, then the quantile of order :math:`p=0` is defined by:
 
 .. math::
 
-    x_0 = \sup \{ x \, |\, F(x)= 0 \}.
+    x_0 = \sup \{ x \in \Rset \, |\, F(x)= 0 \}.
 
 If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension :math:`d>1`, then
-the quantile of order :math:`p`, denoted by :math:`\vect{x}_p`, is such that:
+the quantile of order :math:`p`, denoted by :math:`\vect{x}_p \in \Rset^d`, is such that:
 
 .. math::
 
@@ -726,13 +726,13 @@ is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-      x_p  = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+      x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset \, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
 
 If the distribution is discrete, then the quantile of order :math:`p=0` is defined by:
 
 .. math::
 
-    x_0 = \sup \{ x \, |\, F(x)= 0 \}.
+    x_0 = \sup \{ x \in \Rset \, |\, F(x)= 0 \}.
 
 See Also
 --------
@@ -793,7 +793,8 @@ x : :class:`~openturns.Point`
 
 Notes
 -----
-The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p` where :math:`S( \vect{x}^p) = \Prob{\bigcap_{i=1}^d X_i > x_i^p}`.
+The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p`
+where :math:`S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i = 1}^d \left\{X_i > x_i \right\}}`.
 OpenTURNS returns the point :math:`\vect{x}^p` such that 
 :math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
 
