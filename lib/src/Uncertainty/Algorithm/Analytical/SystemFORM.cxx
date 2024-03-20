@@ -49,6 +49,7 @@ SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   setEvent(event);
 }
 
+
 /* Virtual constructor */
 SystemFORM * SystemFORM::clone() const
 {

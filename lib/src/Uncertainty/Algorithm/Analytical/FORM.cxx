@@ -48,6 +48,7 @@ FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   // Nothing to do
 }
 
+
 /* Virtual constructor */
 FORM * FORM::clone() const
 {

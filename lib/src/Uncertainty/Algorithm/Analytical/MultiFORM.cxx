@@ -52,6 +52,7 @@ MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
   // Nothing to do
 }
 
+
 /* Virtual constructor */
 MultiFORM * MultiFORM::clone() const
 {

@@ -50,6 +50,7 @@ SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   // Nothing to do
 }
 
+
 /* Virtual constructor */
 SORM * SORM::clone() const
 {

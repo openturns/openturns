@@ -34,6 +34,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -57,8 +58,7 @@ public:
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
-
-
+                    
   /** Virtual constructor */
   Analytical * clone() const override;
 
@@ -80,6 +80,11 @@ public:
   /** OptimizationAlgorithm accessor */
   void setNearestPointAlgorithm(const OptimizationAlgorithm & solver);
 
+  /* limitStateTolerance accessors */
+  void setLimitStateTolerance(const Scalar & limitStateTolerance);
+  
+  Scalar getLimitStateTolerance() const;
+  
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
 
@@ -94,6 +99,8 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  
 
 protected:
 
@@ -103,12 +110,12 @@ protected:
   friend class Factory<Analytical>;
 
 private:
-
   OptimizationAlgorithm nearestPointAlgorithm_;
   RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
-
+  Scalar limitStateTolerance_ = 0.0;
+  
 } ; /* class Analytical */
 
 END_NAMESPACE_OPENTURNS
