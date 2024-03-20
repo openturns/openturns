@@ -712,10 +712,13 @@ is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-    \begin{aligned}
-      x_p & = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \}, \quad 0 < p \leq 1\\
-          & = \sup \{ x \, |\, F(x) = 0 \}, \quad p=0
-    \end{aligned}
+      x_p  = F_X^{-1}(p) = \inf \{ x \, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+
+If the distribution is discrete, then the quantile of order :math:`p=0` is defined by:
+
+.. math::
+
+    x_0 = \sup \{ x \, |\, F(x)= 0 \}.
 
 See Also
 --------
