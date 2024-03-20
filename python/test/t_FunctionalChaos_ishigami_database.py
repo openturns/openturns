@@ -101,7 +101,7 @@ assert not projectionStrategy.isModelSelection()
 
 # Check CleaningStrategy
 adaptiveStrategy = ot.CleaningStrategy(
-    productBasis, indexMax, basisDimension, threshold, False
+    productBasis, indexMax, basisDimension, threshold
 )
 assert adaptiveStrategy.isModelSelection()
 

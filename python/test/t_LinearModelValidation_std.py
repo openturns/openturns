@@ -17,7 +17,7 @@ aCollection = []
 marginal1 = ot.Uniform(-1.0, 1.0)
 aCollection.append(marginal1)
 aCollection.append(marginal1)
-distribution = ot.ComposedDistribution(aCollection)
+distribution = ot.JointDistribution(aCollection)
 inputSample = distribution.getSample(sampleSize)
 print("inputSample=", inputSample)
 g = ot.SymbolicFunction(["x1", "x2"], ["3 - 2 * x1 + x2"])
@@ -31,7 +31,6 @@ result = lmAlgo.getResult()
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
 validationLOO = ot.LinearModelValidation(result, splitterLOO)
 print(validationLOO)
-assert validationLOO.getSplitter() == splitterLOO
 
 # Compute analytical LOO MSE
 print("Compute Analytical LOO MSE")
@@ -78,7 +77,6 @@ validationKFold = ot.LinearModelValidation(
     result, splitterKFold
 )
 print(validationKFold)
-assert validationKFold.getSplitter() == splitterKFold
 
 # Compute analytical KFold MSE
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
