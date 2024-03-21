@@ -318,11 +318,9 @@ Scalar LinearModelAnalysis::getFisherPValue() const
 /* Estimator of the standard deviation */
 Scalar LinearModelAnalysis::getResidualsStandardError() const
 {
-  const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
+  const Scalar sumOfSquaredErrors = linearModelResult_.getSampleResiduals().asPoint().normSquare();
   const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
-  const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
-  // TODO: The formula sigma2 * sampleSize / dof is highly suspiscious: this is already unbiased in LinearModelAlgorithm
-  const Scalar stdError = std::sqrt(sigma2 * n / dof);
+  const Scalar stdError = std::sqrt(sumOfSquaredErrors / dof);
   return stdError;
 }
 
