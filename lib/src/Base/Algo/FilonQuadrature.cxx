@@ -67,13 +67,6 @@ FilonQuadrature * FilonQuadrature::clone() const
 Point FilonQuadrature::integrate(const Function & function,
                                  const Interval & interval) const
 {
-  return integrate(function, omega_, interval);
-}
-
-Point FilonQuadrature::integrate(const Function & function,
-                                 const Scalar omega,
-                                 const Interval & interval) const
-{
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a function with input dimension=1, here input dimension=" << function.getInputDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
@@ -82,7 +75,7 @@ Point FilonQuadrature::integrate(const Function & function,
   const Scalar b = interval.getUpperBound()[0];
   const Sample x(RegularGrid(a, (b - a) / (size - 1.0), size).getVertices());
   const Scalar h = (b - a) / (size - 1.0);
-  const Scalar theta = omega * h;
+  const Scalar theta = omega_ * h;
   const Scalar sinTheta = std::sin(theta);
   const Scalar cosTheta = std::cos(theta);
   Scalar alpha;
@@ -117,30 +110,30 @@ Point FilonQuadrature::integrate(const Function & function,
   Point valueSin;
   if (kind_ == 0 || kind_ >= 2)
   {
-    c2n = f[0] * (0.5 * std::cos(omega * x(0, 0)));
+    c2n = f[0] * (0.5 * std::cos(omega_ * x(0, 0)));
     for (UnsignedInteger i = 2; i < size - 1; i += 2)
-      c2n += f[i] * std::cos(omega * x(i, 0));
-    c2n += f[size - 1] * (0.5 * std::cos(omega * x(size - 1, 0)));
+      c2n += f[i] * std::cos(omega_ * x(i, 0));
+    c2n += f[size - 1] * (0.5 * std::cos(omega_ * x(size - 1, 0)));
 
     c2nm1 = Point(outputDimension);
     for (UnsignedInteger i = 1; i < size - 1; i += 2)
-      c2nm1 += f[i] * std::cos(omega * x(i, 0));
+      c2nm1 += f[i] * std::cos(omega_ * x(i, 0));
 
-    valueCos = ((f[size - 1] * std::sin(omega * x(size - 1, 0)) - f[0] * std::sin(omega * x(0, 0))) * alpha + c2n * beta + c2nm1 * gamma) * h;
+    valueCos = ((f[size - 1] * std::sin(omega_ * x(size - 1, 0)) - f[0] * std::sin(omega_ * x(0, 0))) * alpha + c2n * beta + c2nm1 * gamma) * h;
 
     if (kind_ == 0) return valueCos;
   } // cos(t*x) or exp(I*t*x)
   if (kind_ == 1 || kind_ >= 2)
   {
-    s2n = f[0] * (0.5 * std::sin(omega * x(0, 0)));
+    s2n = f[0] * (0.5 * std::sin(omega_ * x(0, 0)));
     for (UnsignedInteger i = 2; i < size - 1; i += 2)
-      s2n += f[i] * std::sin(omega * x(i, 0));
-    s2n += f[size - 1] * (0.5 * std::sin(omega * x(size - 1, 0)));
+      s2n += f[i] * std::sin(omega_ * x(i, 0));
+    s2n += f[size - 1] * (0.5 * std::sin(omega_ * x(size - 1, 0)));
 
     s2nm1 = Point(outputDimension);
     for (UnsignedInteger i = 1; i < size - 1; i += 2)
-      s2nm1 += f[i] * std::sin(omega * x(i, 0));
-    valueSin = ((f[0] * std::cos(omega * x(0, 0)) - f[size - 1] * std::cos(omega * x(size - 1, 0))) * alpha + s2n * beta + s2nm1 * gamma) * h;
+      s2nm1 += f[i] * std::sin(omega_ * x(i, 0));
+    valueSin = ((f[0] * std::cos(omega_ * x(0, 0)) - f[size - 1] * std::cos(omega_ * x(size - 1, 0))) * alpha + s2n * beta + s2nm1 * gamma) * h;
     if (kind_ == 1) return valueSin;
   } // sin(t*x) or exp(I*t*x)
   // Here we know that we integrate wrt exp(I*t*x)
