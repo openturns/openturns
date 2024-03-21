@@ -42,7 +42,7 @@ OT_Distribution_computeCDF_doc
 
 Parameters
 ----------
-X : sequence of float
+x : sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -93,7 +93,7 @@ OT_Distribution_computeCharacteristicFunction_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -126,15 +126,15 @@ OT_Distribution_computeComplementaryCDF_doc
 
 Parameters
 ----------
-Xd : float, sequence of float
+xd : float, sequence of float
     Conditional CDF input (last component).
-Xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
     Conditioning values for the other components.
 
 Returns
 -------
 F : float, sequence of float
-    Conditional CDF value at  :math:`X_d` given :math:`X_{cond}`.
+    Conditional CDF value at  `xd` given `xcond`.
 
 Notes
 -----
@@ -161,14 +161,14 @@ Parameters
 ----------
 Xd : float
     Real in :math:`\Rset`.
-Xcond : sequence of float with dimension :math:`d-1`
+xcond : sequence of float with dimension :math:`d-1`
     Conditioning values.
 
 Returns
 -------
 d : float
-    Conditional DDF value at :math:`X_d`, given :math:`X_{cond}`
-    where :math:`X_d` is the last component of the multivariate distribution.
+    Conditional DDF value at `xd`, given Xcond`
+    where `xd` is the last component of the multivariate distribution.
     
 
 See Also
@@ -187,16 +187,16 @@ Conditional PDF of the last component with respect to the other fixed components
 
 Parameters
 ----------
-Xd : float, sequence of float
+xd : float, sequence of float
     Point in :math:`\Rset`.
-Xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
     Conditioning values.
 
 Returns
 -------
 F : float, sequence of float
-    Conditional PDF at :math:`X_d`, given :math:`X_{cond}`
-    where :math:`X_d` is the last component of the multivariate distribution.
+    Conditional PDF at `xd`, given `xcond`
+    where `xd` is the last component of the multivariate distribution.
 
 See Also
 --------
@@ -222,8 +222,8 @@ Xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
 Returns
 -------
 X1 : float
-    Conditional quantile at input :math:`p` given :math:`X_{cond}`
-    where :math:`X_1` is the first component of the multivariate distribution.
+    Conditional quantile at input :math:`p` given `xcond`
+    where `x1` is the first component of the multivariate distribution.
 
 See Also
 --------
@@ -239,7 +239,7 @@ OT_Distribution_computeConditionalQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the CDF.
 
 Returns
@@ -270,7 +270,7 @@ OT_Distribution_computeSequentialConditionalCDF_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the DDF.
 
 Returns
@@ -302,7 +302,7 @@ OT_Distribution_computeSequentialConditionalDDF_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the PDF.
 
 Returns
@@ -364,7 +364,7 @@ OT_Distribution_computeSequentialConditionalQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -511,7 +511,7 @@ OT_Distribution_computeLogGeneratingFunction_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Point in :math:`\Rset^d` such that the PDF at this point is non equal to 0.
 
 Returns
@@ -529,7 +529,7 @@ OT_Distribution_computeLogPDF_doc
 
 Parameters
 ----------
-X : sequence of float
+x : sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -548,7 +548,7 @@ OT_Distribution_computeLogPDFGradient_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -576,7 +576,7 @@ OT_Distribution_computePDF_doc
 
 Parameters
 ----------
-X : sequence of float
+x : sequence of float
     Point in :math:`\Rset^d`.
 
 Returns
@@ -600,7 +600,7 @@ I : :class:`~openturns.Interval`
 
 Returns
 -------
-P : float
+p : float
     The probability of :math:`I`.
 
 Notes
@@ -753,7 +753,7 @@ x : sequence of float, 2-d sequence of float
 
 Returns
 -------
-S : float, :class:`~openturns.Point`
+s : float, :class:`~openturns.Point`
     Survival function at `x`.
 
 Notes
