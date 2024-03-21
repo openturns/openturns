@@ -220,7 +220,8 @@ class View:
                 axes = self._fig.axes
 
         if isinstance(graph, ot.GridLayout):
-            self._ax = []
+            self._ax = [[None] * graph.getNbColumns()] * graph.getNbRows()
+            self._views = [[None] * graph.getNbColumns()] * graph.getNbRows()
             for i in range(graph.getNbRows()):
                 for j in range(graph.getNbColumns()):
                     graphij = graph.getGraph(i, j)
@@ -239,7 +240,7 @@ class View:
                     # hide frame top/right
                     axes[0].spines["right"].set_visible(False)
                     axes[0].spines["top"].set_visible(False)
-                    View(
+                    self._views[i][j] = View(
                         graphij,
                         figure=self._fig,
                         axes=axes,
@@ -255,12 +256,13 @@ class View:
                         text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
-                    self._ax += axes
+                    self._ax[i][j] = axes[0]
             self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
         drawables = graph.getDrawables()
         n_drawables = len(drawables)
+        self._contoursets = []
         if n_drawables == 0:
             warnings.warn("-- Nothing to draw.")
             return
@@ -273,6 +275,7 @@ class View:
             self._ax = [self._fig.add_subplot(111, **axes_kw)]
         else:
             self._ax = axes
+        self._views = None
 
         # activate axes only if wanted
         self._ax[0].axison = graph.getAxes()
@@ -534,6 +537,7 @@ class View:
                 self._ax[0].pie(x, **pie_kw)
 
             elif drawableKind == "Contour":
+                contour = drawable.getImplementation()
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(
                     drawable.getData(),
@@ -549,9 +553,25 @@ class View:
                         ]
                     except KeyError:
                         warnings.warn("-- Unknown line style")
-                if "colors" not in contour_kw_default:
+                if "cmap" not in contour_kw_default and contour.getColorMap():
+                    contour_kw["cmap"] = contour.getColorMap()
+                if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
-                contourset = self._ax[0].contour(X, Y, Z, **contour_kw)
+                if "alpha" not in contour_kw_default:
+                    contour_kw["alpha"] = contour.getAlpha()
+                if "vmin" not in contour_kw_default and contour.getVmin() is not None:
+                    contour_kw["vmin"] = contour.getVmin()
+                if "vmax" not in contour_kw_default and contour.getVmax() is not None:
+                    contour_kw["vmax"] = contour.getVmax()
+                if "norm" not in contour_kw_default:
+                    contour_kw["norm"] = contour.getNorm()
+                if "extend" not in contour_kw_default:
+                    contour_kw["extend"] = contour.getExtend()
+                if "hatches" not in contour_kw_default and contour.getHatches():
+                    contour_kw["hatches"] = [hatch for hatch in contour.getHatches()]
+                contourset = self._ax[0].contour(X, Y, Z, **contour_kw) if not contour.isFilled()\
+                    else self._ax[0].contourf(X, Y, Z, **contour_kw)
+                self._contoursets.append(contourset)
                 if drawable.getDrawLabels():
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
@@ -573,6 +593,8 @@ class View:
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(artists[0])
                     legend_labels.append(drawable.getLegend())
+                if contour.getColorBarPosition() and len(contour.getLevels()) > 1:
+                    self._fig.colorbar(contourset, location=contour.getColorBarPosition())
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)
@@ -766,7 +788,7 @@ class View:
 
     def getAxes(self):
         """
-        Get the list of Axes objects.
+        Get the matrix of Axes objects if the graph is a GridLayout, the list of Axes objects otherwise.
 
         See matplotlib.axes.Axes for further information.
 
@@ -781,6 +803,39 @@ class View:
         >>> _ = axes[0].set_ylim(-0.1, 1.0);
         """
         return self._ax
+
+    def getContourSets(self):
+        """
+        Get the list of QuadContourSet objects.
+
+        See matplotlib.contour.QuadContourSet for further information.
+
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> f = ot.SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+        >>> view = otv.View(f.draw([0.,0.],[10.,10.],[50]*2))
+        >>> contoursets = view.getContourSets()
+        >>> colorbar = view.getFigure().colorbar(contoursets[0]);
+        """
+        return self._contoursets
+
+    def getSubviews(self):
+        """
+        Get the matrix of View objects if the graph is GridLayout, None otherwise.
+
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> f = ot.SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+        >>> grid = ot.GridLayout(1, 2)
+        >>> grid.setGraphCollection(ot.graph._GraphCollection([f.draw(0, 0, [0., 0.], 0., 10., 50), f.draw([0., 0.], [10., 10.], [50]*2)]))
+        >>> view = otv.View(grid)
+        >>> colorbar = view.getFigure().colorbar(view.getSubviews()[0][1].getContourSets()[0])
+        """
+        return self._views
 
     def close(self):
         """

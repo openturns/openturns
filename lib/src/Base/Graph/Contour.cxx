@@ -38,33 +38,6 @@ Contour::Contour()
   , drawLabels_(true)
 {}
 
-/* Default constructor */
-Contour::Contour(const UnsignedInteger dimX,
-                 const UnsignedInteger dimY,
-                 const Sample & data,
-                 const String & legend)
-  : DrawableImplementation(data, legend)
-  , x_(Sample(dimX, 1))
-  , y_(Sample(dimY, 1))
-  , levels_(Point(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
-  , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
-  , drawLabels_(true)
-{
-  if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
-  if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
-  if (dimX * dimY != data.getSize()) throw InvalidArgumentException(HERE) << "Error: the given dimensions are not compatible with the data";
-  // Check data validity
-  setData(data);
-  // By default, x is assumed to be equally spaced in [0, 1]
-  for (UnsignedInteger i = 0; i < dimX; ++i) x_(i, 0) = Scalar(i) / (dimX - 1.0);
-  // By default, y is assumed to be equally spaced in [0, 1]
-  for (UnsignedInteger i = 0; i < dimY; ++i) y_(i, 0) = Scalar(i) / (dimY - 1.0);
-  // Build the levels
-  buildDefaultLevels();
-  // Build the labels
-  buildDefaultLabels();
-}
-
 /* Constructor with parameters */
 Contour::Contour(const Sample & x,
                  const Sample & y,
@@ -79,6 +52,12 @@ Contour::Contour(const Sample & x,
   , levels_(levels)
   , labels_(labels)
   , drawLabels_(drawLabels)
+  , isFilled_(false)
+  , vmin_(NAN)
+  , vmax_(NAN)
+  , alpha_(1)
+  , norm_("linear")
+  , extend_("both")
 {
   if (levels.getDimension() == 0) buildDefaultLevels();
   if (drawLabels && (labels.getSize() == 0)) buildDefaultLabels();
@@ -86,6 +65,70 @@ Contour::Contour(const Sample & x,
   // Check data validity
   setData(data);
 }
+
+/* Constructor with parameters */
+Contour::Contour(const UnsignedInteger dimX,
+  const UnsignedInteger dimY,
+  const Sample& data,
+  Bool isFilled,
+  const String& colorMap)
+  : DrawableImplementation(data)
+  , x_(Sample(dimX, 1))
+  , y_(Sample(dimY, 1))
+  , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
+  , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
+  , drawLabels_(true)
+  , isFilled_(isFilled)
+  , vmin_(NAN)
+  , vmax_(NAN)
+  , colorMap_(colorMap)
+  , alpha_(1)
+  , norm_("linear")
+  , extend_("both")
+{
+  if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
+  if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
+  if (dimX * dimY != data.getSize()) throw InvalidArgumentException(HERE) << "Error: the given dimensions are not compatible with the data";
+  // Check data validity
+  setData(data);
+  // By default, x is assumed to be equally spaced in [0, 1]
+  for (UnsignedInteger i = 0; i < dimX; ++i) x_(i, 0) = Scalar(i) / (dimX - 1.0);
+  // By default, y is assumed to be equally spaced in [0, 1]
+  for (UnsignedInteger i = 0; i < dimY; ++i) y_(i, 0) = Scalar(i) / (dimY - 1.0);
+  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  // Build the levels
+  buildDefaultLevels();
+  // Build the labels
+  buildDefaultLabels();
+}
+
+/* Constructor with parameters */
+Contour::Contour(const Sample & x,
+                 const Sample & y,
+                 const Sample & data,
+                 Bool isFilled,
+                 const String & colorMap)
+  : DrawableImplementation(data)
+  , x_(x)
+  , y_(y)
+  , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
+  , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
+  , drawLabels_(true)
+  , isFilled_(isFilled)
+  , vmin_(NAN)
+  , vmax_(NAN)
+  , colorMap_(colorMap)
+  , alpha_(1)
+  , norm_("linear")
+  , extend_("both")
+{
+  // Check data validity
+  setData(data);
+  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  buildDefaultLevels();
+  buildDefaultLabels();
+}
+
 
 /* String converter */
 String Contour::__repr__() const
@@ -98,8 +141,23 @@ String Contour::__repr__() const
       << " levels=" << levels_
       << " labels=" << labels_
       << " show labels=" << drawLabels_
+      << " isFilled=" << isFilled_
+      << " colorBarPosition=" << colorBarPosition_
+      << " vmin=" << vmin_
+      << " vmax=" << vmax_
+      << " colorMap=" << colorMap_
+      << " alpha=" << alpha_
+      << " norm=" << norm_
+      << " extend=" << extend_
+      << " hatches=" << hatches_
       << " derived from " << DrawableImplementation::__repr__();
   return oss;
+}
+
+/* Accessor for color overridden to clear colorMap */
+void Contour::setColor(const String& color) {
+  DrawableImplementation::setColor(color);
+  colorMap_.clear();
 }
 
 /* Accessor for first coordinate */
@@ -159,6 +217,97 @@ void Contour::setDrawLabels(const Bool & drawLabels)
   drawLabels_ = drawLabels;
 }
 
+/** Accessor for isFilled */
+Bool Contour::isFilled() const {
+  return isFilled_;
+}
+
+void Contour::setIsFilled(Bool isFilled) {
+  isFilled_ = isFilled;
+}
+
+/** Accessor for colorBarPosition */
+String Contour::getColorBarPosition() const {
+  return colorBarPosition_;
+}
+
+void Contour::setColorBarPosition(const String & colorBarPosition) {
+  if (!IsValidColorBarPosition(colorBarPosition))
+    throw InvalidArgumentException(HERE) << "Given color bar position = " << colorBarPosition << " is incorrect";
+  colorBarPosition_ = colorBarPosition;
+}
+
+/** Accessor for vmin */
+Scalar Contour::getVmin() const {
+  return vmin_;
+}
+
+void Contour::setVmin(Scalar vmin) {
+  vmin_ = vmin;
+}
+
+/** Accessor for vmax */
+Scalar Contour::getVmax() const {
+  return vmax_;
+}
+
+void Contour::setVmax(Scalar vmax) {
+  vmax_ = vmax;
+}
+
+/** Accessor for colorMap */
+String Contour::getColorMap() const {
+  return colorMap_;
+}
+
+void Contour::setColorMap(const String& colorMap) {
+  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  isColorExplicitlySet_ = true;//To avoid being overridden when adding the contour to the graph
+  colorMap_ = colorMap;
+}
+
+/** Accessor for alpha */
+Scalar Contour::getAlpha() const {
+  return alpha_;
+}
+
+void Contour::setAlpha(Scalar alpha) {
+  if (alpha < 0 || alpha>1) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " not in [0, 1]";
+  alpha_ = alpha;
+}
+
+/** Accessor for norm */
+String Contour::getNorm() const {
+  return norm_;
+}
+
+void Contour::setNorm(const String& norm) {
+  if (!IsValidNorm(norm)) throw InvalidArgumentException(HERE) << "Given norm = " << norm << " is incorrect";
+  norm_ = norm;
+}
+
+/** Accessor for extend */
+String Contour::getExtend() const {
+  return extend_;
+}
+void Contour::setExtend(const String& extend) {
+  if (!IsValidExtend(extend)) throw InvalidArgumentException(HERE) << "Given extend = " << extend << " is incorrect";
+  extend_ = extend;
+}
+
+/** Accessor for hatches */
+Description Contour::getHatches() const {
+  return hatches_;
+}
+
+void Contour::setHatches(const Description& hatches) {
+  for(String h:hatches)
+    for(char c:h)
+      if(!strchr("/\\|-+xoO.*",c))
+        throw InvalidArgumentException(HERE) << "Given hatch = " << h << " is incorrect";
+  hatches_ = hatches;
+}
+
 /* Accessor for boundingbox */
 Interval Contour::getBoundingBox() const
 {
@@ -214,7 +363,16 @@ void Contour::save(Advocate & adv) const
   adv.saveAttribute( "y_", y_ );
   adv.saveAttribute( "levels_", levels_ );
   adv.saveAttribute( "labels_", labels_ );
-  adv.saveAttribute( "drawLabels_", drawLabels_ );
+  adv.saveAttribute("drawLabels_", drawLabels_);
+  adv.saveAttribute("isFilled_", isFilled_);
+  adv.saveAttribute("colorBarPosition_", colorBarPosition_);
+  adv.saveAttribute("vmin_", vmin_);
+  adv.saveAttribute("vmax_", vmax_);
+  adv.saveAttribute("colorMap_", colorMap_);
+  adv.saveAttribute("alpha_", alpha_);
+  adv.saveAttribute("norm_", norm_);
+  adv.saveAttribute("extend_", extend_);
+  adv.saveAttribute("hatches_", hatches_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -226,6 +384,42 @@ void Contour::load(Advocate & adv)
   adv.loadAttribute( "levels_", levels_ );
   adv.loadAttribute( "labels_", labels_ );
   adv.loadAttribute( "drawLabels_", drawLabels_ );
+  if (adv.hasAttribute("isFilled_"))
+    adv.loadAttribute("isFilled_", isFilled_);
+  else
+    isFilled_ = false;
+  if (adv.hasAttribute("colorBarPosition_"))
+    adv.loadAttribute("colorBarPosition_", colorBarPosition_);
+  else
+    colorBarPosition_ = "";
+  if (adv.hasAttribute("vmin_"))
+    adv.loadAttribute("vmin_", vmin_);
+  else
+    vmin_ = NAN;
+  if (adv.hasAttribute("vmax_"))
+    adv.loadAttribute("vmax_", vmax_);
+  else
+    vmax_ = NAN;
+  if (adv.hasAttribute("colorMap_"))
+    adv.loadAttribute("colorMap_", colorMap_);
+  else
+    colorMap_.clear();
+  if (adv.hasAttribute("alpha_"))
+    adv.loadAttribute("alpha_", alpha_);
+  else
+    alpha_ = 1;
+  if (adv.hasAttribute("norm_"))
+    adv.loadAttribute("norm_", norm_);
+  else
+    norm_ = "linear";
+  if (adv.hasAttribute("extend_"))
+    adv.loadAttribute("extend_", extend_);
+  else
+    extend_ = "both";
+  if (adv.hasAttribute("hatches_"))
+    adv.loadAttribute("hatches_", hatches_);
+  else
+    hatches_.clear();
 }
 
 

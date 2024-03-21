@@ -173,7 +173,7 @@ cycle of the hue.
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().BuildRainbowPalette(4))
+>>> print(ot.Drawable.BuildRainbowPalette(4))
 [#ff0000,#ccff00,#00ff66,#0066ff]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildRainbowPalette
@@ -204,7 +204,7 @@ linearily depending on the 'Drawable-DefaultPalettePhase' key of the
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().BuildTableauPalette(4))
+>>> print(ot.Drawable.BuildTableauPalette(4))
 [#1f77b4,#ff7f0e,#2ca02c,#d62728]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildTableauPalette
@@ -1106,5 +1106,84 @@ Examples
 %feature("docstring") OT::DrawableImplementation::ConvertToRGBA
 OT_Drawable_ConvertToRGBA_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidColorMaps_doc
+"Return the list of the valid color maps of contour drawables.
+
+Returns
+-------
+validColorMaps : :class:`~openturns.Description`
+    List of the valid color map names of contour drawables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.GetValidColorMaps()[:2])
+[magma,inferno]
+"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidColorMaps
+OT_Drawable_GetValidColorMaps_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidNorms_doc
+"Return the list of the valid norms of contour drawables.
+
+Returns
+-------
+validNorms : :class:`~openturns.Description`
+    List of the valid norms of contour drawables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.GetValidNorms()[:2])
+[asinh,function]
+"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidNorms
+OT_Drawable_GetValidNorms_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidExtends_doc
+"Return the list of the valid coloration extends of contour drawables.
+
+Returns
+-------
+validExtends : :class:`~openturns.Description`
+    List of the valid coloration extends of contour drawables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.GetValidExtends())
+[neither,both,min,max]
+"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidExtends
+OT_Drawable_GetValidExtends_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidColorBarPositions_doc
+"Return the list of the valid color bar positions of contour drawables.
+
+Returns
+-------
+validColorBarPositions : :class:`~openturns.Description`
+    List of the valid color bar positions of contour drawables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.GetValidColorBarPositions())
+[,left,right,top,bottom]
+"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidColorBarPositions
+OT_Drawable_GetValidColorBarPositions_doc
 
 

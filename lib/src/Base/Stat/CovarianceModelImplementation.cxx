@@ -1262,24 +1262,12 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       rowShift += outputDimension_;
     } // i
   } // outputDimension_ > 1
-  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
+  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true);
   graph.setGrid(true);
   Contour contour(pointNumber, pointNumber, data);
-  Contour isoValues(Contour(gridT, gridT, data, Point(0), Description(0), true, ""));
-  isoValues.buildDefaultLevels();
-  isoValues.buildDefaultLabels();
-  const Point levels(isoValues.getLevels());
-  const Description labels(isoValues.getLabels());
-  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
-  {
-    Contour current(isoValues);
-    current.setLevels(Point(1, levels[i]));
-    current.setLabels(Description(1, labels[i]));
-    current.setDrawLabels(false);
-    current.setLegend(labels[i]);
-    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
-    graph.add(current);
-  }
+  Contour isoValues(Contour(gridT, gridT, data));
+  isoValues.setColorBarPosition("right");
+  graph.add(isoValues);
   return graph;
 }
 
