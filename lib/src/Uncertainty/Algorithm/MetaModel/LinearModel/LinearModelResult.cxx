@@ -309,7 +309,10 @@ void LinearModelResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "design_", design_ );
-  adv.loadAttribute( "coefficients_", coefficients_ );
+  if (adv.hasAttribute("beta_"))
+    adv.loadAttribute("beta_", coefficients_);
+  else
+    adv.loadAttribute( "coefficients_", coefficients_ );
   adv.loadAttribute( "condensedFormula_", condensedFormula_ );
   adv.loadAttribute( "coefficientsNames_", coefficientsNames_ );
   adv.loadAttribute( "sampleResiduals_", sampleResiduals_ );
