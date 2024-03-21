@@ -10,6 +10,8 @@ ot.TESTPREAMBLE()
 #ot.RandomGenerator.SetSeed(0)
 
 # %%
+# Test independentMetropolisHastings on Beta-Binomial conjugate model
+
 # Define Beta-binomial model
 a, b, lower, upper = 1.0, 1.0, 0., 1.
 n, p = 10, 0.5
