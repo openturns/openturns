@@ -329,8 +329,8 @@ TestResult LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov() const
 {
   // We check that residuals have a Normal distribution
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Scalar sigma = getResidualsStandardError();
-  const Normal dist(0.0, sigma);
+  const Scalar sigma2 = residuals.computeRawMoment(2)[0];
+  const Normal dist(0.0, std::sqrt(sigma2));
   return FittingTest::Kolmogorov(residuals, dist);
 }
 
