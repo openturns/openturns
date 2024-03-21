@@ -13,12 +13,4 @@ OTTypedCollectionInterfaceObjectMisnamedHelper(UniVariateFunctionFamily, Functio
 
 %include openturns/UniVariateFunctionFamily.hxx
 
-namespace OT{
-
-%extend UniVariateFunctionFamily {
-
-UniVariateFunctionFamily(const UniVariateFunctionFamily & other) { return new OT::UniVariateFunctionFamily(other); }
-
-}
-
-}
+%copyctor OT::UniVariateFunctionFamily;

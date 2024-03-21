@@ -12,9 +12,10 @@
 %ignore OT::SplitterImplementation::generate;
 
 %include openturns/SplitterImplementation.hxx
-namespace OT { %extend SplitterImplementation {
 
-SplitterImplementation(const SplitterImplementation & other) { return new OT::SplitterImplementation(other); } 
+%copyctor OT::SplitterImplementation;
+
+namespace OT { %extend SplitterImplementation {
 
 SplitterImplementation * __iter__()
 {

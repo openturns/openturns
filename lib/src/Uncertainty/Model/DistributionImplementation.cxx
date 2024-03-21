@@ -3708,21 +3708,25 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
   if (isDiscrete()) return drawDiscretePDF(xMin, xMax, logScale);
-  // Discretization of the x axis
-  const PDFWrapper pdfWrapper(this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
-  Drawable drawable(graphPDF.getDrawable(0));
-  const String title(OSS() << getDescription()[0] << " PDF");
-  drawable.setLegend(title);
-  drawable.setLineStyle("solid");
-  drawable.setLineWidth(2);
-  graphPDF.setDrawable(drawable, 0);
-  graphPDF.setXTitle(getDescription()[0]);
-  graphPDF.setYTitle("PDF");
-  graphPDF.setTitle("");
-  graphPDF.setLegendPosition("topright");
-  return graphPDF;
+  if (isContinuous())
+  {
+    // Discretization of the x axis
+    const PDFWrapper pdfWrapper(this);
+    const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+    Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
+    Drawable drawable(graphPDF.getDrawable(0));
+    const String title(OSS() << getDescription()[0] << " PDF");
+    drawable.setLegend(title);
+    drawable.setLineStyle("solid");
+    drawable.setLineWidth(2);
+    graphPDF.setDrawable(drawable, 0);
+    graphPDF.setXTitle(getDescription()[0]);
+    graphPDF.setYTitle("PDF");
+    graphPDF.setTitle("");
+    graphPDF.setLegendPosition("topright");
+    return graphPDF;
+  }
+  throw NotYetImplementedException(HERE) << "Error: the drawPDF() method is defined only for continuous or discrete distributions.";
 }
 
 /* Draw the PDF of the distribution when its dimension is 1 */
@@ -5050,7 +5054,7 @@ Distribution DistributionImplementation::acosh() const
   if (!(a >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Acosh(a), SpecFunc::Acosh(b)};
+  const Point values = {std::acosh(a), std::acosh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values);
 }
 
@@ -5060,7 +5064,7 @@ Distribution DistributionImplementation::asinh() const
   const Scalar a = range_.getLowerBound()[0];
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Asinh(a), SpecFunc::Asinh(b)};
+  const Point values = {std::asinh(a), std::asinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values);
 }
 
@@ -5075,9 +5079,9 @@ Distribution DistributionImplementation::atanh() const
   // F_Y(y)=P(atanh(X)<y)<->P(X<tanh(y))=F_X(tanh(y))
   // y s.t. F_Y(y)=epsilon<->y=atanh(F_X^{-1}(epsilon))
 
-  Point values(1, a == -1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_)) : SpecFunc::Atanh(a));
+  Point values(1, a == -1.0 ? std::atanh(computeScalarQuantile(quantileEpsilon_)) : std::atanh(a));
   bounds.add(b);
-  values.add(b == 1.0 ? SpecFunc::Atanh(computeScalarQuantile(quantileEpsilon_, true)) : SpecFunc::Atanh(b));
+  values.add(b == 1.0 ? std::atanh(computeScalarQuantile(quantileEpsilon_, true)) : std::atanh(b));
   return new CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values);
 }
 
@@ -5296,7 +5300,7 @@ Distribution DistributionImplementation::cbrt() const
   const Scalar a = range_.getLowerBound()[0];
   const Scalar b = range_.getUpperBound()[0];
   const Point bounds = {a, b};
-  const Point values = {SpecFunc::Cbrt(a), SpecFunc::Cbrt(b)};
+  const Point values = {std::cbrt(a), std::cbrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values);
 }
 

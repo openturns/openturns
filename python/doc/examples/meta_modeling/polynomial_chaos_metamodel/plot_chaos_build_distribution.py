@@ -75,7 +75,7 @@ distribution = ot.FunctionalChaosAlgorithm.BuildDistribution(inputSample)
 distribution
 
 # %%
-# We can also analyse its properties in more detail.
+# We can also analyse its properties in more details.
 
 # %%
 for i in range(dimension):

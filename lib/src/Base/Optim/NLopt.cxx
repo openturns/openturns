@@ -344,10 +344,13 @@ void NLopt::run()
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
   if (rc == nlopt::MAXTIME_REACHED)
     result_.setStatus(OptimizationResult::TIMEOUT);
+  else if (rc == nlopt::FORCED_STOP)
+    result_.setStatus(OptimizationResult::INTERRUPTION);
   else if (rc < 0)
     result_.setStatus(OptimizationResult::FAILURE);
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "NLopt raised an exception: " << result_.getStatusMessage();

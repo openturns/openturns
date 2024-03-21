@@ -70,7 +70,7 @@ X = experiment.generate()
 Y = model(X)
 algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy)
 algo.run()
-result = ot.FunctionalChaosResult(algo.getResult())
+result = algo.getResult()
 
 # %%
 # Create the input sample taking account the correlation

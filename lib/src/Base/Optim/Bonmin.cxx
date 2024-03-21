@@ -226,6 +226,9 @@ void Bonmin::run()
   {
     case ::Bonmin::TMINLP::SUCCESS:
       break;
+    case ::Bonmin::TMINLP::USER_INTERRUPT:
+      result_.setStatus(OptimizationResult::INTERRUPTION);
+      break;
     default:
       result_.setStatus(OptimizationResult::FAILURE);
       break;
@@ -233,7 +236,7 @@ void Bonmin::run()
   if (tminlp->getTimeOut())
     result_.setStatus(OptimizationResult::TIMEOUT);
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by Bonmin method failed (" << result_.getStatusMessage() << ")";

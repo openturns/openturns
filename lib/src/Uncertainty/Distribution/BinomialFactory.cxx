@@ -144,14 +144,14 @@ Scalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
 {
   std::map<UnsignedInteger, Scalar> logLikelihoodCache;
   const UnsignedInteger size = sample.getSize();
-  const Scalar logNFactorial = SpecFunc::LnGamma(n + 1.0);
+  const Scalar logNFactorial = SpecFunc::LogGamma(n + 1.0);
   const Scalar logP = std::log(p);
   const Scalar logQ = log1p(-p);
   Scalar logLikelihood = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger k = static_cast<UnsignedInteger>(round(sample(i, 0)));
-    if (logLikelihoodCache.find(k) == logLikelihoodCache.end()) logLikelihoodCache[k] = logNFactorial - SpecFunc::LnGamma(n - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * logP + (n - k) * logQ;
+    if (logLikelihoodCache.find(k) == logLikelihoodCache.end()) logLikelihoodCache[k] = logNFactorial - SpecFunc::LogGamma(n - k + 1.0) - SpecFunc::LogGamma(k + 1.0) + k * logP + (n - k) * logQ;
     logLikelihood += logLikelihoodCache[k];
   }
   return logLikelihood;

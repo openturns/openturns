@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -14,19 +15,16 @@ inputFunction = ot.Description(dim)
 for i in range(dim):
     inputFunction[i] = "s0" + str(i + 1)
 
-outputFunction = ot.Description(1)
-outputFunction[0] = "g"
 
-formulas = ot.Description(outputFunction.getSize())
-formulas[0] = "10.0 - ("
+formula = "10.0 - ("
 for i in range(dim):
-    formulas[0] = (
-        formulas[0] + inputFunction[i] + "^2 / (1.0 + 0.1 * (1.0 + " + str(i) + "))"
-    )
-    if i > 0:
-        formulas[0] = formulas[0] + " + "
+    formula += inputFunction[i] + "^2 / (1.0 + 0.1 * (1.0 + " + str(i) + "))"
+    if i < dim - 1:
+        formula += " + "
+formula += ")"
 
-limitState = ot.SymbolicFunction(inputFunction, outputFunction, formulas)
+
+limitState = ot.SymbolicFunction(inputFunction, [formula])
 
 dim = limitState.getInputDimension()
 
@@ -50,7 +48,7 @@ Covariance = myDistribution.getCovariance()
 
 vect = ot.RandomVector(myDistribution)
 
-output = ot.RandomVector(limitState, vect)
+output = ot.CompositeRandomVector(limitState, vect)
 
 myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
@@ -96,7 +94,8 @@ resultAR2 = myAlgoAR2.getResult()
 #
 # Monte Carlo
 CoV_MC = 0.5
-myMC = ot.MonteCarlo(myEvent)
+experiment = ot.MonteCarloExperiment()
+myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(1000000)
 myMC.setBlockSize(1)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
@@ -105,7 +104,9 @@ myMC.run()
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
+experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myLHS.setMaximumOuterSampling(1000000)
 myLHS.setBlockSize(1)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
@@ -152,8 +153,8 @@ CorrSE = ot.IdentityMatrix(dim)
 myImportanceSE = ot.Normal(meanSE, sigmaSE, CorrSE)
 
 myStandardEvent = ot.StandardEvent(myEvent)
-
-myISS = ot.ImportanceSampling(myStandardEvent, myImportanceSE)
+experiment = ot.ImportanceSamplingExperiment(myImportanceSE)
+myISS = ot.ProbabilitySimulationAlgorithm(myStandardEvent, experiment)
 myISS.setMaximumOuterSampling(1000000)
 myISS.setBlockSize(1)
 myISS.setMaximumCoefficientOfVariation(0.1)
@@ -172,7 +173,8 @@ CorrE = ot.IdentityMatrix(dim)
 
 myImportanceE = ot.Normal(meanE, sigmaE, CorrE)
 
-myIS = ot.ImportanceSampling(myEvent, myImportanceE)
+experiment = ot.ImportanceSamplingExperiment(myImportanceE)
+myIS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myIS.setMaximumOuterSampling(1000000)
 myIS.setBlockSize(1)
 myIS.setMaximumCoefficientOfVariation(0.1)
@@ -238,6 +240,7 @@ PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
 length90MC = ResultMC.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFMC, 0.0869565)
 
 #
 # LHS
@@ -246,6 +249,7 @@ PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
 length90LHS = ResultLHS.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFLHS, 0.126801)
 
 #
 # Directional Sampling
@@ -254,18 +258,21 @@ PFDS1 = ResultDS1.getProbabilityEstimate()
 CVDS1 = ResultDS1.getCoefficientOfVariation()
 Variance_PF_DS1 = ResultDS1.getVarianceEstimate()
 length90DS1 = ResultDS1.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFDS1, 0.119112)
 
 ResultDS2 = myDS2.getResult()
 PFDS2 = ResultDS2.getProbabilityEstimate()
 CVDS2 = ResultDS2.getCoefficientOfVariation()
 Variance_PF_DS2 = ResultDS2.getVarianceEstimate()
 length90DS2 = ResultDS2.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFDS2, 0.205649)
 
 ResultDS3 = myDS3.getResult()
 PFDS3 = ResultDS3.getProbabilityEstimate()
 CVDS3 = ResultDS3.getCoefficientOfVariation()
 Variance_PF_DS3 = ResultDS3.getVarianceEstimate()
 length90DS3 = ResultDS3.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFDS3, 0.093882)
 
 #
 # Importance Sampling
@@ -274,9 +281,11 @@ PFISS = ResultISS.getProbabilityEstimate()
 CVISS = ResultISS.getCoefficientOfVariation()
 Variance_PF_ISS = ResultISS.getVarianceEstimate()
 length90ISS = ResultISS.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFISS, 0.130078)
 
 ResultIS = myIS.getResult()
 PFIS = ResultIS.getProbabilityEstimate()
 CVIS = ResultIS.getCoefficientOfVariation()
 Variance_PF_IS = ResultIS.getVarianceEstimate()
 length90IS = ResultIS.getConfidenceLength(0.90)
+ott.assert_almost_equal(PFIS, 0.00631525)

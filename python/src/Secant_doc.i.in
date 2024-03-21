@@ -1,67 +1,23 @@
 %feature("docstring") OT::Secant
 "Secant algorithm solver for 1D non linear equations.
 
-Available constructor:
-    Secant()
-
-    Secant(*absError, relError, resError, maximumFunctionEvaluation*)
-
 Parameters
 ----------
-absError : positive float
+absError : positive float, optional
     Absolute error: distance between two successive iterates at the end point.
     Default is :math:`10^{-5}`.
-relError : positive float
+relError : positive float, optional
     Relative error: distance between the two last successive iterates with
     regards to the last iterate. Default is :math:`10^{-5}`.
-resError : positive float
+resError : positive float, optional
     Residual error: difference between the last iterate value and the expected
     value. Default is :math:`10^{-8}`.
-maximumFunctionEvaluation : int
+maximumFunctionEvaluation : int, optional
     The maximum number of evaluations of the function. Default is :math:`100`.
 
 See also
 --------
 Solver, Bisection, Brent
-
-Notes
------
-The Secant solver is based on the evaluation of a segment between the two last
-iterated points."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Secant::solve
-"Solve an equation.
-
-**Available usages**:
-
-    solve(*function, value, infPoint, supPoint*)
-
-    solve(*function, value, infPoint, supPoint, infValue, supValue*)
-
-Parameters
-----------
-function : :class:`~openturns.Function`
-    The function of the equation :math:`function(x) = value` to be solved in the
-    interval :math:`[infPoint, supPoint]`.
-value : float
-    The value of which the function must be equal.
-infPoint : float
-    Lower bound of the interval definition of the variable :math:`x`.
-supPoint : float
-    Upper bound of the interval definition of the variable :math:`x`.
-infValue : float
-    The value such that :math:`infValue = function(infPoint)`. It must be of 
-    opposite sign of :math:`supValue`.
-supValue : float
-    The value such that :math:`supValue = function(supPoint)`. It must be of 
-    opposite sign of :math:`infValue`.
-
-Returns
--------
-result : float
-    The result of the root research.
 
 Notes
 -----

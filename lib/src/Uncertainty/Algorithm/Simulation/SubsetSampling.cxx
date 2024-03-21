@@ -126,8 +126,13 @@ void SubsetSampling::run()
       currentLevelSample_[i * blockSize + j] = blockSample[j];
     }
 
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
+
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
-      throw InternalException(HERE) << "User stopped simulation";
+      throw InterruptionException(HERE) << "User stopped simulation";
   }
   ++ numberOfSteps_;
 
@@ -221,8 +226,17 @@ void SubsetSampling::run()
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      LOGINFO("Simulation timeout");
       stop = true;
-    
+    }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+    {
+      LOGINFO("User stopped simulation");
+      stop = true;
+    }
+
     // compute variance estimate
     varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
@@ -419,10 +433,10 @@ void SubsetSampling::generatePoints(Scalar threshold)
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
-      throw InternalException(HERE) << "Maximum time exceeded";
+      throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
-      throw InternalException(HERE) << "User stopped simulation";
+      throw InterruptionException(HERE) << "User stopped simulation";
   }
 }
 

@@ -121,6 +121,8 @@ sphinx_gallery_conf = {
     'min_reported_time': 2,
 }
 
+# TODO: drop jquery in custom search.html
+extensions.append('sphinxcontrib.jquery')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
