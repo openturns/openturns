@@ -425,23 +425,10 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
-  graph.setLegendCorner({1.0, 1.0});
-  Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
-  isoValues.buildDefaultLevels();
-  isoValues.buildDefaultLabels();
-  const Point levels(isoValues.getLevels());
-  const Description labels(isoValues.getLabels());
-  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
-  {
-    Contour current(isoValues);
-    current.setLevels(Point(1, levels[i]));
-    current.setLabels(Description(1, labels[i]));
-    current.setDrawLabels(false);
-    current.setLegend(labels[i]);
-    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
-    graph.add(current);
-  }
+  Graph graph(title, xName, yName, true, "", 1.0, scale);
+  Contour isoValues(Contour(x, y, z));
+  isoValues.setColorBarPosition("right");
+  graph.add(isoValues);
   return graph;
 }
 

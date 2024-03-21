@@ -59,11 +59,21 @@ int main(int, char *[])
     // Create an empty graph
     Graph myGraph("Complex iso lines", "u1", "u2", true, "topright");
 
-    // Create the first cloud
+    // Create the first contour
     Contour myContour(nX + 2, nY + 2, data);
     myContour.setLevels(levels);
     myContour.setColor("red");
     fullprint << "contour=" << myContour << std::endl;
+
+    // Modify it to filled Contour
+    myContour.setColorMap("inferno");
+    myContour.setAlpha(0.5);
+    myContour.setExtend("min");
+    myContour.setColorBarPosition("left");
+    myContour.setNorm("symlog");
+    myContour.setHatches(Description({ "/","\\","+/","*" }));
+    myContour.setIsFilled(true);
+    fullprint << "filled contour=" << myContour << std::endl;
 
     // Then, draw it
     myGraph.add(Drawable(myContour));

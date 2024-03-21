@@ -206,7 +206,7 @@ graph.setColors(col)
 
 # %%
 gIsoLines = g.draw([-8] * 2, [8] * 2, [128] * 2)
-dr = gIsoLines.getDrawable(2)
+dr = gIsoLines.getDrawable(0)
 for i, lv in enumerate(levels):
     dr.setLevels([lv])
     dr.setLineStyle("solid")
