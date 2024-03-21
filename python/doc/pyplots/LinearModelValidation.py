@@ -1,5 +1,6 @@
 import openturns as ot
 from openturns.viewer import View
+import openturns.experimental as otexp
 
 func = ot.SymbolicFunction(
     ['x1', 'x2', 'x3'],
@@ -16,6 +17,6 @@ algo = ot.LinearModelAlgorithm(inputSample, outputSample)
 algo.run()
 result = algo.getResult()
 splitter = ot.LeaveOneOutSplitter(sampleSize)
-validation = ot.LinearModelValidation(result, splitter)
+validation = otexp.LinearModelValidation(result, splitter)
 graph = validation.drawValidation()
 View(graph)

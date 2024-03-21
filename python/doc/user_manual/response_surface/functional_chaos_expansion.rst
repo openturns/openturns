@@ -107,7 +107,7 @@ Results
     FunctionalChaosSobolIndices
 
     :template: classWithPlot.rst_t
-    FunctionalChaosValidation
+    experimental.FunctionalChaosValidation
 
 Functional chaos on fields
 ==========================

@@ -3,6 +3,7 @@
 import openturns as ot
 from openturns.usecases import ishigami_function
 from openturns.testing import assert_almost_equal
+import openturns.experimental as otexp
 
 
 def computeMSENaiveLOO(
@@ -170,7 +171,7 @@ chaosResult = algo.getResult()
 #
 print("1. Analytical leave-one-out")
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = ot.FunctionalChaosValidation(
+validationLOO = otexp.FunctionalChaosValidation(
     chaosResult, splitterLOO
 )
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
@@ -206,13 +207,11 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 #
 print("2. Analytical K-Fold")
 splitterKF = ot.KFoldSplitter(sampleSize, kFoldParameter)
-validationKFold = ot.FunctionalChaosValidation(
+validationKFold = otexp.FunctionalChaosValidation(
     chaosResult, splitterKF
 )
 print("KFold with K = ", kFoldParameter)
 assert validationKFold.getSplitter().getN() == sampleSize
-# TODO: fix this
-# assert validationKFold.getSplitter().getSize() == kFoldParameter
 
 # Compute mean squared error
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
@@ -261,7 +260,7 @@ chaosResult = algo.getResult()
 
 # Analytical leave-one-out
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = ot.FunctionalChaosValidation(
+validationLOO = otexp.FunctionalChaosValidation(
     chaosResult, splitterLOO
 )
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
