@@ -102,6 +102,11 @@ void CrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 void CrossEntropyImportanceSampling::run()
 {
 
+  // First, initialize some parameters
+  inputSample_.clear();
+  outputSample_.clear();
+  thresholdPerStep_.clear();
+
   // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
   resetAuxiliaryDistribution();
 
@@ -116,6 +121,14 @@ void CrossEntropyImportanceSampling::run()
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
+  ++ numberOfSteps_;
+  if (keepSample_)
+  {
+    inputSample_.add(auxiliaryInputSample);
+    outputSample_.add(auxiliaryOutputSample);
+  }
+    
+    
   Point auxiliaryDistributionParameters;
 
   const ComparisonOperator comparator(getEvent().getOperator());
@@ -124,9 +137,11 @@ void CrossEntropyImportanceSampling::run()
   if (comparator(currentQuantile, threshold))
   {
     currentQuantile = threshold;
+    thresholdPerStep_.add(currentQuantile);
   }
   else
   {
+    thresholdPerStep_.add(currentQuantile);
     Indices indiceCritic(0);
 
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
@@ -166,6 +181,14 @@ void CrossEntropyImportanceSampling::run()
         throw InternalException(HERE) << "User stopped simulation";
     } // for i
 
+
+    ++ numberOfSteps_;
+    if (keepSample_)
+    {
+      inputSample_.add(auxiliaryInputSample);
+      outputSample_.add(auxiliaryOutputSample);
+    }
+    
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
@@ -173,9 +196,11 @@ void CrossEntropyImportanceSampling::run()
     if (comparator(currentQuantile, threshold))
     {
       currentQuantile = threshold;
+      thresholdPerStep_.add(currentQuantile);
     }
     else
     {
+      thresholdPerStep_.add(currentQuantile);
       Indices indiceCritic(0);
       for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
@@ -257,5 +282,57 @@ CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
 {
   return crossEntropyResult_;
 }
+
+
+Point CrossEntropyImportanceSampling::getThresholdPerStep() const
+{
+  return thresholdPerStep_;
+}
+
+UnsignedInteger CrossEntropyImportanceSampling::getStepsNumber() const
+{
+  return numberOfSteps_;
+}
+
+/* Event input/output sample accessor */
+Sample CrossEntropyImportanceSampling::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "CrossEntropy keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "CrossEntropy step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "CrossEntropy select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "CrossEntropy keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "CrossEntropy step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "CrossEntropy select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Indices CrossEntropyImportanceSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const
+{
+  Indices result;
+  const Sample outputSample(outputSample_[step]);
+  const Scalar threshold = getThresholdPerStep()[step];
+  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++ i)
+    if (getEvent().getOperator()(outputSample(i, 0), threshold) == status)
+      result.add(i);
+  return result;
+}
+
+/* Keep event sample */
+void CrossEntropyImportanceSampling::setKeepSample(const Bool keepSample)
+{
+  keepSample_ = keepSample;
+}
+
 
 END_NAMESPACE_OPENTURNS

@@ -59,6 +59,13 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/* Keep event sample */
+void NAIS::setKeepSample(const Bool keepSample)
+{
+  keepSample_ = keepSample;
+}
+
+
 // Get quantileLevel
 Scalar NAIS::getQuantileLevel() const
 {
@@ -136,6 +143,14 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
+
+  // First, initialize some parameters
+  inputSample_.clear();
+  outputSample_.clear();
+  thresholdPerStep_.clear();
+  
+  numberOfSteps_ = 0;
+  
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
@@ -145,16 +160,30 @@ void NAIS::run()
   // Evaluation on limit state function
   Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
 
+  ++ numberOfSteps_;
+  
+  if (keepSample_)
+  {
+    inputSample_.add(auxiliaryInputSample);
+    outputSample_.add(auxiliaryOutputSample);
+  }
+    
+    
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
+  
+  
+    
   Distribution auxiliaryDistribution;
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
     currentQuantile = getEvent().getThreshold();
+    thresholdPerStep_.add(currentQuantile);
     auxiliaryDistribution = initialDistribution_;
   }
   else
   {
+    thresholdPerStep_.add(currentQuantile);
     // Computation of weights
     weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution_);
 
@@ -182,6 +211,13 @@ void NAIS::run()
         throw InternalException(HERE) << "User stopped simulation";
     }
 
+    ++ numberOfSteps_;
+    if (keepSample_)
+    {
+      inputSample_.add(auxiliaryInputSample);
+      outputSample_.add(auxiliaryOutputSample);
+    }
+    
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
@@ -189,9 +225,11 @@ void NAIS::run()
     if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
     {
       currentQuantile = getEvent().getThreshold();
+      thresholdPerStep_.add(currentQuantile);
     }
     else
     {
+      thresholdPerStep_.add(currentQuantile);
       // Computation of weights
       weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
 
@@ -247,8 +285,52 @@ void NAIS::run()
   naisResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber + 1));
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
+
 }
 
+/* Event input/output sample accessor */
+Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "NAIS step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "NAIS step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
+  return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Indices NAIS::getSampleIndices(const UnsignedInteger step, const Bool status) const
+{
+  Indices result;
+  const Sample outputSample(outputSample_[step]);
+  const Scalar threshold = getThresholdPerStep()[step];
+  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++ i)
+    if (getEvent().getOperator()(outputSample(i, 0), threshold) == status)
+      result.add(i);
+  return result;
+}
+
+Point NAIS::getThresholdPerStep() const
+{
+  return thresholdPerStep_;
+}
+
+UnsignedInteger NAIS::getStepsNumber() const
+{
+  return numberOfSteps_;
+}
 
 
 // Accessor to naisResult_s
