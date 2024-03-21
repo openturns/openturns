@@ -1,10 +1,43 @@
 #! /usr/bin/env python
+# %%
 
 import openturns as ot
 import openturns.testing as ott
-from math import pi
+import math
 
 ot.TESTPREAMBLE()
+
+#ot.RandomGenerator.SetSeed(0)
+
+# %%
+# Define Beta-binomial model
+a, b, lower, upper = 1.0, 1.0, 0., 1.
+n, p = 10, 0.5
+prior = ot.Beta(a, b, lower, upper)
+model = ot.Binomial(n, p)
+
+# %%
+# Simulate data and compute analytical posterior
+X = model.getSample(1)
+posterior = ot.Beta(a + X[0,0], b + n - X[0,0], lower, upper)
+
+# %%
+# Define IMH sampler
+initialState = [p]
+imh_sampler = ot.IndependentMetropolisHastings(prior, initialState, prior, [0])
+slf = ot.SymbolicFunction(['x'], [str(n),'x'])
+imh_sampler.setLikelihood(model, X, slf)
+
+# %%
+# Generate posterior distribution sample
+N = 10000
+Xsample = imh_sampler.getSample(N)
+
+# %%
+# Compare empirical to theoretical moments
+
+ott.assert_almost_equal(Xsample.computeMean(), posterior.getMean(), 0.0, 10.0 / math.sqrt(N))
+ott.assert_almost_equal(Xsample.computeStandardDeviation(), posterior.getStandardDeviation(), 0.0, 10.0 / math.sqrt(N))
 
 # %%
 # Draw the unnormalized probability density
@@ -13,7 +46,7 @@ ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(1)
 lower_bound = 0.0
 print(lower_bound)
-upper_bound = 2.0 * pi
+upper_bound = 2.0 * math.pi
 print(upper_bound)
 
 # %%

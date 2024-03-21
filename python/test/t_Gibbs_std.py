@@ -6,7 +6,7 @@ import math
 
 ot.TESTPREAMBLE()
 
-ot.RandomGenerator.SetSeed(0)
+#ot.RandomGenerator.SetSeed(0)
 
 # %%
 
@@ -47,15 +47,17 @@ rv_sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [1], 
 gibbs = ot.Gibbs([rwmh_sampler, rv_sampler])
 
 # %%
-# Generate sample
+# Generate posterior distribution sample
 n = 10000
 Xsample = gibbs.getSample(n+rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
 
 # %%
 # Compare empirical to theoretical moments
 
-ott.assert_almost_equal(Xsample.computeMean(), target_mean, 0.0, 10.0 / math.sqrt(n))
-ott.assert_almost_equal(Xsample.computeStandardDeviatiokn, target_std, 0.0, 10.0 / math.sqrt(n))
+ott.assert_almost_equal(Xsample.computeMean(), mean_target, 0.0, 10.0 / math.sqrt(n))
+ott.assert_almost_equal(Xsample.computeStandardDeviation(), std_target, 0.0, 10.0 / math.sqrt(n))
+ott.assert_almost_equal(Xsample.computeLinearCorrelation()[0,1], rho_target, 0.0, 10.0 / math.sqrt(n))
+
 
 # %%
 # # this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
