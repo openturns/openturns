@@ -130,6 +130,23 @@ Returns
 stdError : float
     This is the unbiased estimator :math:`\hat{\sigma}` of the standard deviation
     of the Gaussian observation error of the observed output.
+
+Notes
+-----
+The standard error of the residuals is the *root mean squared error* (also
+called *standard error of regression*), estimated as:
+
+.. math::
+    \widehat{\sigma} = \sqrt{\frac{1}{\operatorname{dof}} SSE}
+
+where :math:`\operatorname{dof}` is the number of degrees of freedom
+and :math:`SSE` is the sum of squared errors:
+
+.. math::
+    SSE = \sum_{i = 1}^n (y_i - \widehat{y}_i)^2
+
+where :math:`\{y_i\}_{i = 1, ..., n}` are the observations and
+:math:`\{\widehat{y}_i\}_{i = 1, ..., n}` are the predictions from the linear model.
 "
 
 // ---------------------------------------------------------------------
