@@ -2,6 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
+import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -29,7 +30,7 @@ result = lmAlgo.getResult()
 
 # Create LOO validation
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = ot.LinearModelValidation(result, splitterLOO)
+validationLOO = otexp.LinearModelValidation(result, splitterLOO)
 print(validationLOO)
 
 # Compute analytical LOO MSE
@@ -73,7 +74,7 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 
 # Create KFold validation
 splitterKFold = ot.KFoldSplitter(sampleSize, kFoldParameter)
-validationKFold = ot.LinearModelValidation(
+validationKFold = otexp.LinearModelValidation(
     result, splitterKFold
 )
 print(validationKFold)

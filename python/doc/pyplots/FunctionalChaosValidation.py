@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.viewer import View
 from openturns.usecases import ishigami_function
+import openturns.experimental as otexp
 
 im = ishigami_function.IshigamiModel()
 sampleSize = 500
@@ -20,8 +21,8 @@ chaosalgo = ot.FunctionalChaosAlgorithm(
 )
 chaosalgo.run()
 result = chaosalgo.getResult()
-validation = ot.FunctionalChaosValidation(
-    result, ot.FunctionalChaosValidation.LEAVEONEOUT
+validation = otexp.FunctionalChaosValidation(
+    result, otexp.FunctionalChaosValidation.LEAVEONEOUT
 )
 graph = validation.drawValidation()
 View(graph)

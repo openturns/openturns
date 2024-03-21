@@ -3,6 +3,7 @@
 import openturns as ot
 from openturns.usecases import ishigami_function
 from openturns.testing import assert_almost_equal
+import openturns.experimental as otexp
 
 
 def computeMSENaiveLOO(
@@ -169,12 +170,12 @@ chaosResult = algo.getResult()
 
 #
 print("1. Analytical leave-one-out")
-validationLOO = ot.FunctionalChaosValidation(
-    chaosResult, ot.FunctionalChaosValidation.LEAVEONEOUT
+validationLOO = otexp.FunctionalChaosValidation(
+    chaosResult, otexp.FunctionalChaosValidation.LEAVEONEOUT
 )
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
-assert validationLOO.getMethod() == ot.FunctionalChaosValidation.LEAVEONEOUT
+assert validationLOO.getMethod() == otexp.FunctionalChaosValidation.LEAVEONEOUT
 
 # Naive leave-one-out
 mseLOOnaive = computeMSENaiveLOO(
@@ -204,12 +205,12 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 
 #
 print("2. Analytical K-Fold")
-validationKFold = ot.FunctionalChaosValidation(
-    chaosResult, ot.FunctionalChaosValidation.KFOLD, kFoldParameter
+validationKFold = otexp.FunctionalChaosValidation(
+    chaosResult, otexp.FunctionalChaosValidation.KFOLD, kFoldParameter
 )
 print("KFold with K = ", kFoldParameter)
 assert validationKFold.getKParameter() == kFoldParameter
-assert validationKFold.getMethod() == ot.FunctionalChaosValidation.KFOLD
+assert validationKFold.getMethod() == otexp.FunctionalChaosValidation.KFOLD
 
 # Compute mean squared error
 mseKFoldAnalytical = validationKFold.computeMeanSquaredError()
@@ -257,8 +258,8 @@ algo.run()
 chaosResult = algo.getResult()
 
 # Analytical leave-one-out
-validationLOO = ot.FunctionalChaosValidation(
-    chaosResult, ot.FunctionalChaosValidation.LEAVEONEOUT
+validationLOO = otexp.FunctionalChaosValidation(
+    chaosResult, otexp.FunctionalChaosValidation.LEAVEONEOUT
 )
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)

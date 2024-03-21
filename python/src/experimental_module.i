@@ -73,6 +73,10 @@
 %include TruncatedOverMesh.i
 %include PosteriorDistribution.i
 
+/* Uncertainty/Algorithm/Metamodel */
+%include FunctionalChaosValidation.i
+%include LinearModelValidation.i
+
 // duplicate helpers
 OTTypedInterfaceObjectHelper(WeightedExperiment)
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
