@@ -27,12 +27,10 @@ static OT::Bool OptimizationAlgorithmImplementation_StopCallback(void * data) {
 %ignore OT::OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * data);
 
 %include openturns/OptimizationAlgorithmImplementation.hxx
+
+%copyctor OT::OptimizationAlgorithmImplementation;
+
 namespace OT{ %extend OptimizationAlgorithmImplementation {
-
-
-OptimizationAlgorithmImplementation(const OptimizationAlgorithmImplementation & other) {
-  return new OT::OptimizationAlgorithmImplementation(other);
-}
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {

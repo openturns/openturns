@@ -149,7 +149,7 @@ void Cobyla::run()
     result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
@@ -315,16 +315,13 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   {
     algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
-  if (algorithm->stopCallback_.first)
+  if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
-    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
-    if (stop)
-    {
-      // This value is passed to algocobyla. Any non-zero value should work but 1
-      // is the most standard value.
-      returnValue = 1;
-      LOGWARN(OSS() << "Cobyla was stopped by user");
-    }
+    // This value is passed to algocobyla. Any non-zero value should work but 1
+    // is the most standard value.
+    returnValue = 1;
+    LOGWARN(OSS() << "Cobyla was stopped by user");
+    algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
   }
   return returnValue;
 }

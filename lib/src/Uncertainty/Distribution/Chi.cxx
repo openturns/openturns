@@ -125,7 +125,7 @@ void Chi::computeRange()
 /** Update the derivative attributes */
 void Chi::update()
 {
-  normalizationFactor_ = (1.0 - 0.5 * nu_) * M_LN2 - SpecFunc::LnGamma(0.5 * nu_);
+  normalizationFactor_ = (1.0 - 0.5 * nu_) * M_LN2 - SpecFunc::LogGamma(0.5 * nu_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -197,7 +197,7 @@ Complex Chi::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = -0.5 * x * x;
   const Scalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
-  const Scalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
+  const Scalar imag = M_SQRT2 * x * std::exp(SpecFunc::LogGamma((nu_ + 1.0) * 0.5) - SpecFunc::LogGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
   const Complex result(real, imag);
   return result;
 }
@@ -251,14 +251,14 @@ Scalar Chi::computeEntropy() const
 
 void Chi::computeMean() const
 {
-  mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LogGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LogGamma(0.5 * nu_)));
   isAlreadyComputedMean_ = true;
 }
 
 void Chi::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = nu_ - 2.0 * std::exp(2.0 * (SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  covariance_(0, 0) = nu_ - 2.0 * std::exp(2.0 * (SpecFunc::LogGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LogGamma(0.5 * nu_)));
   isAlreadyComputedCovariance_ = true;
 }
 

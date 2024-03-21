@@ -72,7 +72,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     algo.setMaximumCallsNumber(100)
     algo.setMaximumIterationNumber(100)
     algo.run()
-    assert algo.getResult().getStatus() == ot.OptimizationResult.SUCCEEDED
+    assert algo.getResult().getStatus() == ot.OptimizationResult.SUCCESS
     print(f"{name}: OK")
 
 

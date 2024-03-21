@@ -1572,7 +1572,7 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
 
-  return rank()->computePearsonCorrelation();
+  return rank()->computeLinearCorrelation();
 }
 
 

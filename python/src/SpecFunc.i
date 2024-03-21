@@ -6,9 +6,6 @@
 
 %include SpecFunc_doc.i
 
-// available in cmath module
-%ignore OT::SpecFunc::Acosh;
-%ignore OT::SpecFunc::Asinh;
-%ignore OT::SpecFunc::Atanh;
+%ignore OT::SpecFunc::BinomialCoefficient; // math.comb
 
 %include openturns/SpecFunc.hxx

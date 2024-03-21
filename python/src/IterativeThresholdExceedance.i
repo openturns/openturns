@@ -8,14 +8,4 @@
 
 %include openturns/IterativeThresholdExceedance.hxx
 
-namespace OT {
-%extend IterativeThresholdExceedance {
-
-IterativeThresholdExceedance(const IterativeThresholdExceedance & other)
-{
-return new OT::IterativeThresholdExceedance(other);
-}
-
-} // IterativeThresholdExceedance
-} // OT
-
+%copyctor OT::IterativeThresholdExceedance;

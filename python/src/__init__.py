@@ -51,7 +51,7 @@ from .typ import *
 from .graph import *
 from .geom import *
 from .func import *
-from .SpecFunc import *
+from . import SpecFunc
 from .statistics import *
 from .diff import *
 from .optim import *
@@ -63,7 +63,7 @@ from .iterative_statistics import *
 
 from .model_copula import *
 from .randomvector import *
-from .DistFunc import *
+from . import DistFunc
 from .dist import *
 from .model_process import *
 from .weightedexperiment import *
@@ -74,11 +74,11 @@ from .transformation import *
 from .analytical import *
 from .simulation import *
 from .stattests import *
-from .FittingTest import *
-from .HypothesisTest import *
-from .LinearModelTest import *
-from .NormalityTest import *
-from .VisualTest import *
+from . import FittingTest
+from . import HypothesisTest
+from . import LinearModelTest
+from . import NormalityTest
+from . import VisualTest
 from .bayesian import *
 from .uncertainty import *
 

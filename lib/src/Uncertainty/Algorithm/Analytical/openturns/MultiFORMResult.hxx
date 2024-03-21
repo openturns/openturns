@@ -66,7 +66,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  Scalar eventProbability_;
+  Scalar eventProbability_ = -1.0;
   FORMResultPersistentCollection formResultCollection_;
 
 }; // class MultiFORMResult

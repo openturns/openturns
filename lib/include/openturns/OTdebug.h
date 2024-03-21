@@ -79,11 +79,11 @@
  * OT_LOCAL is used for non-api symbols. */
 
 #ifndef OT_STATIC /* defined if OT is compiled as a DLL */
-#ifdef OT_DLL_EXPORTS /* defined if we are building the OT DLL (instead of using it) */
+#ifdef OT_EXPORTS /* defined if we are building the OT DLL (instead of using it) */
 #define OT_API OT_HELPER_DLL_EXPORT
 #else
 #define OT_API OT_HELPER_DLL_IMPORT
-#endif /* OT_DLL_EXPORTS */
+#endif /* OT_EXPORTS */
 #define OT_LOCAL OT_HELPER_DLL_LOCAL
 #else /* OT_STATIC is defined: this means OT is a static lib. */
 #define OT_API

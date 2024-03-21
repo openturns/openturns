@@ -393,7 +393,7 @@ OT_OptimizationAlgorithm_getCheckStatus_doc
 // ---------------------------------------------------------------------
 
 %define OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
-"Accessor to check status flag.
+"Accessor to the maximum duration.
 
 Parameters
 ----------
@@ -406,7 +406,7 @@ OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
 // ---------------------------------------------------------------------
 
 %define OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
-"Accessor to check status flag.
+"Accessor to the maximum duration.
 
 Returns
 -------

@@ -191,7 +191,7 @@ void Gamma::update()
   }
   // For small k, the normalization factor is:
   // normalizationFactor = log(lambda/Gamma(k))
-  else normalizationFactor_ = std::log(lambda_) - SpecFunc::LnGamma(k_);
+  else normalizationFactor_ = std::log(lambda_) - SpecFunc::LogGamma(k_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -320,7 +320,7 @@ Point Gamma::computeCDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return cdfGradient;
   const Scalar lambdaX = lambda_ * x;
-  const Scalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
+  const Scalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LogGamma(k_) - lambdaX);
   const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambda_ * x) - DistFunc::pGamma(k_ - eps, lambda_ * x)) / (2.0 * eps);
   cdfGradient[1] = factor / lambda_;

@@ -113,3 +113,13 @@ Create a sample suitable to estimate first, total order and second order Sobol' 
 >>> experiment = ot.SobolIndicesExperiment(distribution, size, computeSecondOrder)
 >>> sample = experiment.generate()"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolIndicesExperiment::getWeightedExperiment
+"Experiment accessor.
+
+Returns
+-------
+experiment : :class:`~openturns.WeightedExperiment`
+    The internal experiment."
+

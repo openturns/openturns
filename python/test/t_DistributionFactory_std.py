@@ -48,3 +48,7 @@ for factory in factories:
             ok = True
         print(weird + ":", "ok" if ok else "fail")
         assert ok, str(factory) + " vs " + weird
+
+factory = ot.DistributionFactory.GetByName("PoissonFactory")
+print(factory)
+assert factory.getImplementation().__class__.__name__ == "PoissonFactory", "wrong name"

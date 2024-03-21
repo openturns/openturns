@@ -50,12 +50,12 @@ namespace OT {
 
 %include openturns/CovarianceMatrix.hxx
 
+%copyctor OT::CovarianceMatrix;
+
 namespace OT {  
 
 %extend CovarianceMatrix {
 
-  CovarianceMatrix(const CovarianceMatrix & other) { return new OT::CovarianceMatrix(other); }
-  
   CovarianceMatrix(PyObject * pyObj) { return new OT::CovarianceMatrix( OT::convert<OT::_PySequence_,OT::CovarianceMatrix>(pyObj) ); }
   
   OTMatrixAccessors()

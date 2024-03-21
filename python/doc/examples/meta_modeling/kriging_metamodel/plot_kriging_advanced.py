@@ -1,5 +1,5 @@
 """
-Advanced kriging
+Advanced Kriging
 ================
 """
 # %%
@@ -58,7 +58,7 @@ graph.setTitle("Sample size = %d" % (n_pt))
 view = viewer.View(graph)
 
 # %%
-# Create the kriging algorithm
+# Create the Kriging algorithm
 # ----------------------------
 
 # 1. basis
@@ -72,7 +72,7 @@ print(basis)
 cov = ot.MaternModel([1.0], [2.5], 1.5)
 print(cov)
 
-# 3. kriging algorithm
+# 3. Kriging algorithm
 algokriging = ot.KrigingAlgorithm(x, y, cov, basis)
 
 # error measure
@@ -127,8 +127,8 @@ graph.add(cloud)
 graph.setLegendPosition("upper left")
 View(graph, axes=[ax1])
 
-# On the right, the conditional kriging variance
-graph = ot.Graph("", "x", "Conditional kriging variance", True, "")
+# On the right, the conditional Kriging variance
+graph = ot.Graph("", "x", "Conditional Kriging variance", True, "")
 # Sample for the data
 sample = ot.Sample(n_pt, 2)
 sample[:, 0] = x

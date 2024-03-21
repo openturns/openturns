@@ -20,3 +20,5 @@ OT_Solver_setRelativeError_doc
 OT_Solver_setResidualError_doc
 %feature("docstring") OT::Solver::getCallsNumber
 OT_Solver_getCallsNumber_doc
+%feature("docstring") OT::Solver::solve
+OT_Solver_solve_doc

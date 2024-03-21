@@ -70,7 +70,7 @@ public:
 private:
 
   UnsignedInteger maximumDesignPointsNumber_;
-  MultiFORMResult result_;
+  MultiFORMResult multiFORMResult_;
 
 } ; /* class MultiFORM */
 

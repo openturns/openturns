@@ -103,7 +103,7 @@ class TestInverseWishartMethods(ut.TestCase):
         """Computes the logarithm of the multi-gamma function at x"""
         logmgpx = 0.25 * p * (p - 1) * log(pi)
         for i in range(1, p + 1):
-            logmgpx = logmgpx + ot.SpecFunc.LnGamma(x + 0.5 * (1 - i))
+            logmgpx = logmgpx + ot.SpecFunc.LogGamma(x + 0.5 * (1 - i))
         return logmgpx
 
     # Test InverseWishart.computeLogPDF in the special case of diagonal matrices
@@ -123,7 +123,7 @@ class TestInverseWishartMethods(ut.TestCase):
         logdensity = inverse_wishart.computeLogPDF(X)
         logratio = -self.logmultigamma(
             dimension, 0.5 * DoF
-        ) + dimension * ot.SpecFunc.LnGamma(0.5 * (DoF + dimension - 1))
+        ) + dimension * ot.SpecFunc.LogGamma(0.5 * (DoF + dimension - 1))
         for d in range(dimension):
             inverse_gamma = ot.InverseGamma(2.0 / Scale[d, d], k)
             logdensity = logdensity - inverse_gamma.computeLogPDF(diagX[d, 0])

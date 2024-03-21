@@ -121,7 +121,7 @@ void ChiSquare::computeRange()
 /** Update the derivative attributes */
 void ChiSquare::update()
 {
-  normalizationFactor_ = -0.5 * nu_ * M_LN2 - SpecFunc::LnGamma(0.5 * nu_);
+  normalizationFactor_ = -0.5 * nu_ * M_LN2 - SpecFunc::LogGamma(0.5 * nu_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }

@@ -7,14 +7,5 @@
 %include IterativeAlgorithmImplementation_doc.i
 
 %include openturns/IterativeAlgorithmImplementation.hxx
-namespace OT {
-%extend IterativeAlgorithmImplementation {
 
-IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
-{
-return new OT::IterativeAlgorithmImplementation(other);
-}
-
-} // IterativeAlgorithmImplementation
-} // OT
-
+%copyctor OT::IterativeAlgorithmImplementation;

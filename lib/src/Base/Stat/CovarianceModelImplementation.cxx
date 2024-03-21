@@ -679,7 +679,6 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
     const Sample &sample) const
 {
-  // TODO : transposeInPlace
   return computeCrossCovariance(sample, point).transpose();
 }
 

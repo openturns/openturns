@@ -8,14 +8,4 @@
 
 %include openturns/IterativeMoments.hxx
 
-namespace OT {
-%extend IterativeMoments {
-
-IterativeMoments(const IterativeMoments & other)
-{
-return new OT::IterativeMoments(other);
-}
-
-} // IterativeMoments
-} // OT
-
+%copyctor OT::IterativeMoments;

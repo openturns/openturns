@@ -81,6 +81,9 @@ public:
   static DistributionFactoryCollection GetUniVariateFactories();
   static DistributionFactoryCollection GetMultiVariateFactories();
 
+  /** Build an instance from name */
+  static DistributionFactory GetByName(const String & name);
+
 private:
 
 }; /* class DistributionFactory */

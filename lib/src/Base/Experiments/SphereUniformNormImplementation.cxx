@@ -96,12 +96,11 @@ public:
   Sample getPoints(const UnsignedInteger distance) const
   {
     // Basic method that uses Sample
-    // TODO use of iterators ?
     if (distance == 0) return Sample(1, 2);
 
     const UnsignedInteger size = getSizeOfLevel(distance);
     Sample points(size, 2);
-    UnsignedInteger iterator = 0;
+    SampleImplementation::data_iterator iterator = points.getImplementation()->data_begin();
     const Scalar cx = distance * stepX_;
     const Scalar cy = distance * stepY_;
     if (isSymmetric())
@@ -109,17 +108,19 @@ public:
       Point element(2, 0.0);
       element[1] = cy;
       // 1) top
-      for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
+      for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix)
       {
         element[0] = ix * stepX_ - cx;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
       // 2) right
       element[0] = cx;
-      for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
+      for (UnsignedInteger iy = 2 * distance; iy > 0; --iy)
       {
         element[1] = iy * stepY_ - cy;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
     }
     else
@@ -127,34 +128,39 @@ public:
       Point element(2, 0.0);
       // 1) left
       element[0] = - cx;
-      for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
+      for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy)
       {
         element[1] = iy * stepY_ - cy;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
       // 2) top
       element[1] = cy;
-      for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
+      for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix)
       {
         element[0] = ix * stepX_ - cx;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
       // 3) right
       element[0] = cx;
-      for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
+      for (UnsignedInteger iy = 2 * distance; iy > 0; --iy)
       {
         element[1] = iy * stepY_ - cy;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
       // 4) bottom
       element[1] = - cy;
-      for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
+      for (UnsignedInteger ix = 2 * distance; ix > 0; --ix)
       {
         element[0] = ix * stepX_ - cx;
-        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
+        std::copy(element.begin(), element.end(), iterator);
+        iterator += 2;
       }
     }
-    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm2D::getPoints. Final value of iterator should be equal to size, but iterator=" << iterator << " and size=" << size;
+    if (iterator != points.getImplementation()->data_end())
+      throw InternalException(HERE) << "SphereUniformNorm2D final value of getPoints iterator should be equal to size";
     return points;
   }
 
@@ -200,12 +206,11 @@ public:
   Sample getPoints(const UnsignedInteger distance) const
   {
     // Basic method that uses Sample
-    // TODO use of iterators ?
     if (distance == 0) return Sample(1, 3);
 
     const UnsignedInteger size = getSizeOfLevel(distance);
     Sample points(size, 3);
-    UnsignedInteger iterator = 0;
+    SampleImplementation::data_iterator iterator = points.getImplementation()->data_begin();
     const Scalar cx = distance * stepX_;
     const Scalar cy = distance * stepY_;
     const Scalar cz = distance * stepZ_;
@@ -218,17 +223,19 @@ public:
         // b) front
         element[0] = cx;
         element[2] = iz * stepZ_ - cz;
-        for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
+        for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy)
         {
           element[1] = iy * stepY_ - cy;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
         // c) right
         element[1] = cy;
-        for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
+        for (UnsignedInteger ix = 2 * distance; ix > 0; --ix)
         {
           element[0] = ix * stepX_ - cx;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
       }
       // 2) top
@@ -236,10 +243,11 @@ public:
       for (UnsignedInteger ix = 1; ix < 2 * distance; ++ix)
       {
         element[0] = ix * stepX_ - cx;
-        for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy, ++iterator)
+        for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy)
         {
           element[1] = iy * stepY_ - cy;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
       }
     }
@@ -252,32 +260,36 @@ public:
         // a) left
         element[1] = - cy;
         element[2] = iz * stepZ_ - cz;
-        for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
+        for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix)
         {
           element[0] = ix * stepX_ - cx;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
         // b) front
         element[0] = cx;
-        for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
+        for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy)
         {
           element[1] = iy * stepY_ - cy;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
         // c) right
         element[1] = cy;
-        for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
+        for (UnsignedInteger ix = 2 * distance; ix > 0; --ix)
         {
           element[0] = ix * stepX_ - cx;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
         // d) rear
         element[0] = - cx;
         element[2] = iz * stepZ_ - cz;
-        for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
+        for (UnsignedInteger iy = 2 * distance; iy > 0; --iy)
         {
           element[1] = iy * stepY_ - cy;
-          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+          std::copy(element.begin(), element.end(), iterator);
+          iterator += 3;
         }
       }
       // 2) squares for |z| = distance
@@ -287,15 +299,17 @@ public:
         for (UnsignedInteger ix = 1; ix < 2 * distance; ++ix)
         {
           element[0] = ix * stepX_ - cx;
-          for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy, ++iterator)
+          for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy)
           {
             element[1] = iy * stepY_ - cy;
-            std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
+            std::copy(element.begin(), element.end(), iterator);
+            iterator += 3;
           }
         }
       }
     } // else not symmetric
-    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm3D::getPoints. Final value of iterator should be equal to size, but iterator=" << iterator << " and size=" << size;
+    if (iterator != points.getImplementation()->data_end())
+      throw InternalException(HERE) << "SphereUniformNorm2D final value of getPoints iterator should be equal to size";
     return points;
   }
 

@@ -40,6 +40,7 @@ Algebra of functions
     :template: class.rst_t
     DistanceToDomainFunction
     DualLinearCombinationFunction
+    IdentityFunction
 
     :template: classWithPlot.rst_t
     IndicatorFunction
@@ -209,9 +210,7 @@ as Python functions.
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
-    SpecFunc.BinomialCoefficient
     SpecFunc.BitCount
-    SpecFunc.Cbrt
     SpecFunc.Clip01
     SpecFunc.Dawson
     SpecFunc.Debye
@@ -243,8 +242,6 @@ as Python functions.
     SpecFunc.IRoot
     SpecFunc.IsNormal
     SpecFunc.LambertW
-    SpecFunc.LnBeta
-    SpecFunc.LnGamma
     SpecFunc.Log1MExp
     SpecFunc.Log1p
     SpecFunc.Log2

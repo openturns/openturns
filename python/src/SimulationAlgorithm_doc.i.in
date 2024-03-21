@@ -191,7 +191,7 @@ storage_strategy : :class:`~openturns.HistoryStrategy`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SimulationAlgorithm::setMaximumTimeDuration
-"Accessor to check status flag.
+"Accessor to the maximum duration.
 
 Parameters
 ----------
@@ -201,7 +201,7 @@ maximumTimeDuration : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SimulationAlgorithm::getMaximumTimeDuration
-"Accessor to check status flag.
+"Accessor to the maximum duration.
 
 Returns
 -------

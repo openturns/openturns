@@ -146,7 +146,7 @@ Point Poisson::computePDFGradient(const Point & point) const
   const Scalar k = point[0];
   Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  return Point(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
+  return Point(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LogGamma(k + 1.0)));
 }
 
 
@@ -157,7 +157,7 @@ Point Poisson::computeCDFGradient(const Point & point) const
 
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return Point(1, 0.0);
-  return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
+  return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LogGamma(floor(k) + 1.0)));
 }
 
 /* Get the quantile of the distribution */

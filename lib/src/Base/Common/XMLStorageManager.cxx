@@ -41,9 +41,12 @@ BEGIN_NAMESPACE_OPENTURNS
 #if defined OPENTURNS_HAVE_LIBXML2
 
 
+const UnsignedInteger XMLStorageManager::Precision_ = 17;
 
-
-const int XMLStorageManager::Precision_ = 17;
+UnsignedInteger XMLStorageManager::GetNumericalPrecision()
+{
+  return Precision_;
+}
 
 CLASSNAMEINIT(XMLStorageManager)
 
@@ -322,9 +325,9 @@ template <typename _Tp>
 static inline
 void toStringConverter(const _Tp & value, String & st)
 {
-  const int oldPrecision(PlatformInfo::GetNumericalPrecision());
-  PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
-  st = ( OSS() << value );
+  const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+  PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
+  st = (OSS() << value);
   PlatformInfo::SetNumericalPrecision(oldPrecision);
 
   if (std::isnan(static_cast<Scalar>(value)))
@@ -456,15 +459,14 @@ void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
   XML::Node child = XML::NewNode( XML_STMGR::numericalcomplex_tag::Get() );
   assert(child);
   XML::SetAttribute( child, XML_STMGR::name_attribute::Get(), name );
-  int oldPrecision(PlatformInfo::GetNumericalPrecision());
-  PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
-  XML::Node real = XML::NewNode( XML_STMGR::real_tag::Get(), OSS() << value.real() );
+  const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+  PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
+  XML::Node real = XML::NewNode(XML_STMGR::real_tag::Get(), OSS() << value.real());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   assert(real);
   XML::AddChild( child, real );
-  oldPrecision = PlatformInfo::GetNumericalPrecision();
-  PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
-  XML::Node imag = XML::NewNode( XML_STMGR::imag_tag::Get(), OSS() << value.imag() );
+  PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
+  XML::Node imag = XML::NewNode(XML_STMGR::imag_tag::Get(), OSS() << value.imag());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   assert(imag);
   XML::AddChild( child, imag );
@@ -527,15 +529,14 @@ void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::num
   XML::Node child = XML::NewNode( XML_STMGR::numericalcomplex_tag::Get() );
   assert(child);
   XML::SetAttribute( child, XML_STMGR::index_attribute::Get(), OSS() << index );
-  int oldPrecision(PlatformInfo::GetNumericalPrecision());
-  PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
-  XML::Node real = XML::NewNode( XML_STMGR::real_tag::Get(), OSS() << value.real() );
+  const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+  PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
+  XML::Node real = XML::NewNode(XML_STMGR::real_tag::Get(), OSS() << value.real());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   assert(real);
   XML::AddChild( child, real );
-  oldPrecision = PlatformInfo::GetNumericalPrecision();
-  PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
-  XML::Node imag = XML::NewNode( XML_STMGR::imag_tag::Get(), OSS() << value.imag() );
+  PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
+  XML::Node imag = XML::NewNode(XML_STMGR::imag_tag::Get(), OSS() << value.imag());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   assert(imag);
   XML::AddChild( child, imag );

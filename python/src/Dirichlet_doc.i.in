@@ -3,10 +3,9 @@
 
 Parameters
 ----------
-theta : sequence of float, :math:`\theta_i > 0, i = 1, \ldots, n+1`
-
-        :math:`\vect{theta}` must be at least bidimensional.
-    
+theta : sequence of float, optional
+        :math:`\vect{\theta}` must be at least bidimensional
+        with :math:`\theta_i > 0, i = 1, \ldots, n+1`.
         Default value is [1.0, 1.0].
 
 Notes

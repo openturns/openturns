@@ -171,6 +171,16 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetMulti
   return collection;
 }
 
+DistributionFactory DistributionFactory::GetByName(const String & name)
+{
+  DistributionFactoryCollection collection(DistributionFactory::GetUniVariateFactories());
+  collection.add(DistributionFactory::GetMultiVariateFactories());
+  for (UnsignedInteger i = 0; i < collection.getSize(); ++ i)
+    if (collection[i].getImplementation()->getClassName() == name)
+      return collection[i];
+  throw InvalidArgumentException(HERE) << "No distribution factory named " << name;
+}
+
 /* Default constructor */
 DistributionFactory::DistributionFactory(const UnsignedInteger bootstrapSize)
   : TypedInterfaceObject<DistributionFactoryImplementation>(new DistributionFactoryImplementation(bootstrapSize))

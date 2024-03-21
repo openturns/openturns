@@ -149,7 +149,7 @@ UnsignedInteger LinearEnumerateFunction::inverse(const Indices & indices) const
 UnsignedInteger LinearEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
   const UnsignedInteger dimension = getDimension();
-  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex) - SpecFunc::LnGamma(dimension) - SpecFunc::LnGamma(strataIndex + 1))));
+  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LogGamma(dimension + strataIndex) - SpecFunc::LogGamma(dimension) - SpecFunc::LogGamma(strataIndex + 1))));
 }
 
 /* The cardinal of the cumulated strata less or equal to the given strata
@@ -159,7 +159,7 @@ UnsignedInteger LinearEnumerateFunction::getStrataCardinal(const UnsignedInteger
 UnsignedInteger LinearEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   const UnsignedInteger dimension = getDimension();
-  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex + 1) - SpecFunc::LnGamma(dimension + 1) - SpecFunc::LnGamma(strataIndex + 1))));
+  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LogGamma(dimension + strataIndex + 1) - SpecFunc::LogGamma(dimension + 1) - SpecFunc::LogGamma(strataIndex + 1))));
 }
 
 /* The index of the strata of degree max < degree */

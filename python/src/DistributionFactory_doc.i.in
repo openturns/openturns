@@ -71,3 +71,17 @@ Returns
 listFactories : collection of :class:`~openturns.DistributionFactory`
     All the valid univariate factories."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetByName
+"Instanciate a distribution factory.
+
+Parameters
+----------
+name : str
+    Factory name
+
+Returns
+-------
+factory : :class:`~openturns.DistributionFactory`
+    An instance of the desired class."

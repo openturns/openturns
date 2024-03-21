@@ -87,7 +87,7 @@ private:
   const Scalar quantileLevel_;
   const UnsignedInteger marginIndex_;
 }; // class WilksEvaluation
-}; // Anonymous namespace
+} // Anonymous namespace
 
 /* Sample size computation */
 UnsignedInteger Wilks::ComputeSampleSize(const Scalar quantileLevel,

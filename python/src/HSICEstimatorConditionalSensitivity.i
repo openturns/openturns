@@ -9,9 +9,4 @@
 
 %include openturns/HSICEstimatorConditionalSensitivity.hxx
 
-namespace OT {
-%extend HSICEstimatorConditionalSensitivity {
-
-HSICEstimatorConditionalSensitivity(const HSICEstimatorConditionalSensitivity & other) { return new OT::HSICEstimatorConditionalSensitivity(other); }
-
-} }
+%copyctor OT::HSICEstimatorConditionalSensitivity;
