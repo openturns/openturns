@@ -26,4 +26,4 @@ Post-processing
 
     :template: classWithPlot.rst_t
 
-    LinearModelValidation
+    experimental.LinearModelValidation

@@ -51,7 +51,7 @@ conditions are met.
   If model selection is involved, the naive methods based on the
   :class:`~openturns.LeaveOneOutSplitter` and :class:`~openturns.KFoldSplitter`
   classes can be used, but this can be much slower than the
-  analytical methods implemented in the :class:`~openturns.FunctionalChaosValidation`
+  analytical methods implemented in the :class:`~openturns.experimental.FunctionalChaosValidation`
   class.
   In many cases, however, the order of magnitude of the estimate from the
   analytical formula applied to a sparse model is correct: the estimate of
@@ -72,15 +72,15 @@ the :math:`i`-th prediction is the prediction of the linear model
 trained using the hold-out sample where the :math:`i`-th observation
 was removed.
 This produces a sample of residuals which can be retrieved using
-the :class:`~openturns.FunctionalChaosValidation.getResidualSample` method.
-The :class:`~openturns.FunctionalChaosValidation.drawValidation` performs
+the :class:`~openturns.experimental.FunctionalChaosValidation.getResidualSample` method.
+The :class:`~openturns.experimental.FunctionalChaosValidation.drawValidation` performs
 similarly.
 
 If the weights of the observations are not equal, the analytical method
 may not necessarily provide an accurate estimator of the mean squared error (MSE).
 This is because LOO and K-Fold cross-validation do not take the weights
 into account.
-Since the :class:`~openturns.FunctionalChaosResult` object does not know
+Since the :class:`~openturns.experimental.FunctionalChaosResult` object does not know
 if the weights are equal, no exception can be generated.
 
 If the sample was not produced from Monte Carlo, then the leave-one-out
@@ -106,6 +106,7 @@ prevents us from using the fast analytical formulas and get an
 accurate estimator of the MSE.
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> from math import pi
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
@@ -128,7 +129,7 @@ accurate estimator of the MSE.
 Validate the polynomial chaos expansion using leave-one-out cross-validation.
 
 >>> splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
->>> validation = ot.FunctionalChaosValidation(result, splitterLOO)
+>>> validation = otexp.FunctionalChaosValidation(result, splitterLOO)
 >>> r2Score = validation.computeR2Score()
 >>> print('R2 = ', r2Score[0])
 R2 =  0.99...
@@ -138,7 +139,7 @@ and set the :math:`k` parameter.
 
 >>> kParameter = 10
 >>> splitterKF = ot.KFoldSplitter(sampleSize, kParameter)
->>> validation = ot.FunctionalChaosValidation(
+>>> validation = otexp.FunctionalChaosValidation(
 ...     result, splitterKF
 ... )
 
