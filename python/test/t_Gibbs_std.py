@@ -1,14 +1,64 @@
 #! /usr/bin/env python
-
+# %%
 import openturns as ot
 import openturns.testing as ott
-import math as m
+import math
 
 ot.TESTPREAMBLE()
 
 ot.RandomGenerator.SetSeed(0)
 
-# this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
+# %%
+
+# Test the Metropolis within Gibbs algorithm to simulate a correlated 2D Gaussian target :
+
+# Define the target law
+mean_target = [0.0, 0.0]
+std_target = [1.0, 1.0]
+rho_target = 0.9
+target_normal = ot.Normal( mean_target, std_target, ot.CorrelationMatrix([[1., rho_target],[rho_target, 1.]]) )
+
+# Initial state of the Gibbs sampler
+initialState = mean_target
+
+# %%
+# Define RWMH sampler for first coordinate
+proposal_std = 0.1
+proposal = ot.Normal(0.0, proposal_std)
+rwmh_sampler = ot.RandomWalkMetropolisHastings(target_normal, initialState, proposal, [0])
+
+# %%
+# Define exacte sampler for second coordinate
+randomVector = ot.RandomVector(ot.Normal())
+# Define link function, implementing the Gaussian conditioning formulae
+# here a Python link function is used. TODO: use a symbolic link function instead
+# %%
+def py_link_function(x):
+    cond_mean = mean_target[1] + rho_target * std_target[1] * (x[0] - mean_target[0]) / std_target[0]
+    cond_std = std_target[1] * math.sqrt(1. -  rho_target**2)
+    return [cond_mean, cond_std]
+
+
+# %%
+plf = ot.PythonFunction(2, 2, py_link_function)
+rv_sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [1], plf)
+
+# Create Gibbs Sampler
+gibbs = ot.Gibbs([rwmh_sampler, rv_sampler])
+
+# %%
+# Generate sample
+n = 10000
+Xsample = gibbs.getSample(n+rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
+
+# %%
+# Compare empirical to theoretical moments
+
+ott.assert_almost_equal(Xsample.computeMean(), target_mean, 0.0, 10.0 / math.sqrt(n))
+ott.assert_almost_equal(Xsample.computeStandardDeviatiokn, target_std, 0.0, 10.0 / math.sqrt(n))
+
+# %%
+# # this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
 # 1.5.3: Inference for the mean or normal data with known variance
 
 # Variable of interest: Y=N(mu, sigma)
@@ -21,7 +71,7 @@ ot.RandomGenerator.SetSeed(0)
 size = 10
 realDist = ot.Normal(31.0, 1.2)
 
-data = realDist.getSample(size)
+data = realDist.getSample(size)0.0
 
 # instrumental distribution
 mean_instrumental = ot.Uniform(-2.0, 2.0)
@@ -37,7 +87,7 @@ sigma0s = [0.1, 1.0]
 # if the prior variance is low (information concernig the mu parameter is strong)
 # then the posterior mean will be equal to the prior mean
 # if large, the posterior distribution is equivalent to the
-# distribution of the sample mean
+# distribution of the sample mean0.0
 for i in range(len(sigma0s)):
     sigma0 = sigma0s[i]
     mean_prior = ot.Normal(mu0, sigma0)
@@ -55,7 +105,7 @@ for i in range(len(sigma0s)):
     )
     mean_sampler.setLikelihood(conditional, data)
     std_sampler = ot.RandomWalkMetropolisHastings(
-        prior, initialState, std_instrumental, [1]
+        prior, initialState, std_instrumental, [1]0.0
     )
     std_sampler.setLikelihood(conditional, data)
     sampler = ot.Gibbs([mean_sampler, std_sampler])
