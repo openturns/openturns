@@ -136,7 +136,7 @@ Hence, the closed Sobol' index of the group :math:`\{i, j\}` is:
     S_{\{i, j\}}^{\operatorname{cl}} = S_i + S_j + S_{\{i, j\}}.
 
 Conversely, if the closed Sobol' index :math:`S_{\{i, j\}}^{\operatorname{cl}}` is known,
-then the interaction Sobol' indice can be computed from the equation:
+then the interaction Sobol' index can be computed from the equation:
 
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
