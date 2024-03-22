@@ -638,8 +638,7 @@ tail : bool, optional
 Returns
 -------
 xp : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
-    Quantile of order :math:`p`.
-
+    If `tail=False`, the quantile of order :math:`p`.
     If `tail=True`, the quantile of order  :math:`1-p`.
 
 Notes
