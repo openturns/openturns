@@ -1473,7 +1473,13 @@ Point MatrixImplementation::triangularVectProd(const Point & pt,
 }
 
 /* Build the Cholesky factorization of the matrix */
-MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact)
+MatrixImplementation MatrixImplementation::computeCholesky() const
+{
+  MatrixImplementation A(*this);
+  return A.computeCholeskyInPlace();
+}
+
+MatrixImplementation MatrixImplementation::computeCholeskyInPlace()
 {
   int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
@@ -1481,17 +1487,13 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
   char uplo = 'L';
   int luplo = 1;
 
-  MatrixImplementation L;
-  if (keepIntact) L = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? L : *this;
-
-  dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
+  dpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
   if (info != 0) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the matrix is not definite positive.";
   // ensure upper triangle is zero
   for (UnsignedInteger j = 1; j < (UnsignedInteger)(n); ++ j)
-    std::fill_n(&A(0, j), j, 0.0);
-  A.setName("");
-  return A;
+    std::fill_n(&(*this)(0, j), j, 0.0);
+  setName("");
+  return *this;
 }
 
 MatrixImplementation MatrixImplementation::computeRegularizedCholesky() const
@@ -1508,7 +1510,7 @@ MatrixImplementation MatrixImplementation::computeRegularizedCholesky() const
   {
     try
     {
-      choleskyFactor = work.computeCholesky(false);
+      choleskyFactor = work.computeCholeskyInPlace();
       continuationCondition = false;
     }
     // If the factorization failed regularize the matrix
