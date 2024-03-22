@@ -655,7 +655,7 @@ If the distribution is scalar and discrete, then the quantile of order :math:`p=
 
 .. math::
 
-    x_0 = \sup \{ x \in \Rset \, |\, F(x)= 0 \}.
+    x_0 = \sup \{ x \in \Rset \, |\, F(x) = 0 \}.
 
 If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension :math:`d>1`, then
 the quantile of order :math:`p`, denoted by :math:`\vect{x}_p \in \Rset^d`, is such that:
