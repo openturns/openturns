@@ -1137,32 +1137,34 @@ Scalar MatrixImplementation::computeTrace() const
 }
 
 /* Compute the eigenvalues of a square matrix */
-MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare() const
 {
-  int n(nbRows_);
+  MatrixImplementation A(*this);
+  return A.computeEigenValuesSquareInPlace();
+}
+
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquareInPlace()
+{
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
-  char jobvl('N');
-  char jobvr('N');
+  char jobvl = 'N';
+  char jobvr = 'N';
   Point wr(n, 0.0);
   Point wi(n, 0.0);
   double vl = 0.;
   double vr = 0.;
-  int ldvl(1);
-  int ldvr(1);
-  int lwork(-1);
+  int ldvl = 1;
+  int ldvr = 1;
+  int lwork = -1;
   double lwork_d = -1.;
   int info = -1;
-  int ljobvl(1);
-  int ljobvr(1);
+  int ljobvl = 1;
+  int ljobvr = 1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
-  dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+  dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+  dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   ComplexCollection eigenValues(n);
@@ -1170,33 +1172,34 @@ MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValues
   return eigenValues;
 }
 
-MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (ComplexMatrixImplementation & v,
-    const Bool keepIntact)
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare(ComplexMatrixImplementation & v) const
 {
-  int n(nbRows_);
+  MatrixImplementation A(*this);
+  return A.computeEVSquareInPlace(v);
+}
+
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquareInPlace(ComplexMatrixImplementation & v)
+{
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
-  char jobvl('N');
-  char jobvr('V');
+  char jobvl = 'N';
+  char jobvr = 'V';
   Point wr(n, 0.0);
   Point wi(n, 0.0);
-  double vl;
+  double vl = 0.0;
   MatrixImplementation vr(n, n);
-  int ldvl(1);
-  int ldvr(n);
-  int lwork(-1);
-  double lwork_d;
-  int info;
-  int ljobvl(1);
-  int ljobvr(1);
+  int ldvl = 1;
+  int ldvr = n;
+  int lwork = -1;
+  double lwork_d = -1.0;
+  int info = -1;
+  int ljobvl = 1;
+  int ljobvr = 1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
-  dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+  dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+  dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   // Cast the eigenvalues into OpenTURNS data structures
   ComplexCollection eigenValues(n);
@@ -1231,57 +1234,61 @@ MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (C
 }
 
 /* Compute the eigenvalues of a symmetric matrix */
-Point MatrixImplementation::computeEigenValuesSym (const Bool keepIntact)
+Point MatrixImplementation::computeEigenValuesSym() const
 {
-  int n(nbRows_);
+  MatrixImplementation A(*this);
+  return A.computeEigenValuesSymInPlace();
+}
+
+Point MatrixImplementation::computeEigenValuesSymInPlace()
+{
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
-  char jobz('N');
-  char uplo('L');
+  char jobz = 'N';
+  char uplo = 'L';
   Point w(n, 0.0);
-  int lwork(-1);
-  double lwork_d;
-  int info;
-  int ljobz(1);
-  int luplo(1);
+  int lwork = -1;
+  double lwork_d = -1.0;
+  int info = -1;
+  int ljobz = 1;
+  int luplo = 1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
-  dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+  dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
+  dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   return w;
 }
 
-Point MatrixImplementation::computeEVSym (MatrixImplementation & v,
-    const Bool keepIntact)
+
+Point MatrixImplementation::computeEVSym(MatrixImplementation & v) const
 {
-  int n(nbRows_);
+  MatrixImplementation A(*this);
+  return A.computeEVSymInPlace(v);
+}
+
+Point MatrixImplementation::computeEVSymInPlace(MatrixImplementation & v)
+{
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
-  char jobz('V');
-  char uplo('L');
+  char jobz = 'V';
+  char uplo = 'L';
   Point w(n, 0.0);
-  int lwork(-1);
-  double lwork_d;
-  int info;
-  int ljobz(1);
-  int luplo(1);
+  int lwork = -1;
+  double lwork_d = -1.0;
+  int info = -1;
+  int ljobz = 1;
+  int luplo = 1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
-  dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+  dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
-  v = A;
+  dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
+  v = *this;
   return w;
 }
 

@@ -283,14 +283,26 @@ Scalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
 }
 
 /* Compute eigenvalues */
-Point SymmetricMatrix::computeEigenValues(const Bool keepIntact)
+Point SymmetricMatrix::computeEigenValues() const
 {
-  return getImplementation()->computeEigenValuesSym(keepIntact);
+  return getImplementation()->computeEigenValuesSym();
 }
-Point SymmetricMatrix::computeEV(SquareMatrix & v,
-                                 const Bool keepIntact)
+
+Point SymmetricMatrix::computeEigenValuesInPlace()
 {
-  return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeEigenValuesSymInPlace();
+}
+
+Point SymmetricMatrix::computeEV(SquareMatrix & v) const
+{
+  return getImplementation()->computeEVSym(*(v.getImplementation()));
+}
+
+Point SymmetricMatrix::computeEVInPlace(SquareMatrix & v)
+{
+  copyOnWrite();
+  return getImplementation()->computeEVSymInPlace(*(v.getImplementation()));
 }
 
 /* Compute the largest eigenvalue module using power iterations, symmetric matrix */

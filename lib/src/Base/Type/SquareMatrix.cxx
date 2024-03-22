@@ -205,16 +205,28 @@ Scalar SquareMatrix::computeTrace() const
 }
 
 /* Compute eigenvalues */
-SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues() const
 {
-  return getImplementation()->computeEigenValuesSquare(keepIntact);
+  return getImplementation()->computeEigenValuesSquare();
 }
 
-SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
-    const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValuesInPlace()
 {
-  return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeEigenValuesSquareInPlace();
 }
+
+SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v) const
+{
+  return getImplementation()->computeEVSquare(*(v.getImplementation()));
+}
+
+SquareMatrix::ComplexCollection SquareMatrix::computeEVInPlace(SquareComplexMatrix & v)
+{
+  copyOnWrite();
+  return getImplementation()->computeEVSquareInPlace(*(v.getImplementation()));
+}
+
 
 /* Compute the largest eigenvalue module using power iterations */
 Scalar SquareMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
