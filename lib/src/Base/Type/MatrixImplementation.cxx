@@ -1646,9 +1646,13 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
    with Q a mxm matrix, R1 a mxm upper triangular matrix, R2 a mx(m-n) matrix.
    If fullQR == true or false, the matrices [Q] and [R1 R2] are returned
 */
-MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
-    const Bool fullQR,
-    const Bool keepIntact)
+MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, const Bool fullQR) const
+{
+  MatrixImplementation A(*this);
+  return A.computeQRInPlace(R, fullQR);
+}
+
+MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation & R, const Bool fullQR)
 {
   int m = nbRows_;
   int n = nbColumns_;
@@ -1660,18 +1664,15 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   int lwork = -1;
   int info = -1;
   double lwork_d = -1.;
-  MatrixImplementation A;
-  if (keepIntact) A = MatrixImplementation(*this);
-  MatrixImplementation & Q = keepIntact ? A : *this;
 
   // First call to dgeqrf to get the optimal size for the working space
-  dgeqrf_(&m, &n, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+  dgeqrf_(&m, &n, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
   // Here is the optimal size of the working space
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
   // Second call to compute the decomposition
-  dgeqrf_(&m, &n, &Q[0], &lda, &tau[0], &work[0], &lwork, &info);
+  dgeqrf_(&m, &n, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
 
   // Rebuild R
@@ -1679,13 +1680,13 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   R = MatrixImplementation(p, n);
   for ( UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k) ; ++ i )
     for ( UnsignedInteger j = i; j < static_cast<UnsignedInteger>(n); ++ j )
-      R(i, j) = Q(i, j);
+      R(i, j) = operator()(i, j);
 
   // Rebuild Q
   // It is done using the product of the reflectors computed by dgeqrf
   // First call to dorgqr to get the optimal size for the working space
   lwork = -1;
-  dorgqr_(&m, &p, &k, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+  dorgqr_(&m, &p, &k, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
   // Here is the optimal size of the working space
   lwork = static_cast<int>(lwork_d);
@@ -1694,21 +1695,21 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   if (fullQR && (m > n))
   {
     // Here we must copy Q into a larger matrix to get the desired mxm Q factor before the call to dorgqr
-    Q.resize(m * m);
-    Q.nbRows_ = m;
-    Q.nbColumns_ = m;
+    resize(m * m);
+    nbRows_ = m;
+    nbColumns_ = m;
   }
-  dorgqr_(&m, &p, &k, &Q[0], &lda, &tau[0], &work[0], &lwork, &info);
+  dorgqr_(&m, &p, &k, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
   if (m < n)
   {
     // Here we must copy Q into a smaller matrix to get the desired mxm Q factor after the call to dorgqr
-    Q.resize(m * m);
-    Q.nbRows_ = m;
-    Q.nbColumns_ = m;
+    resize(m * m);
+    nbRows_ = m;
+    nbColumns_ = m;
   }
   if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
-  Q.setName("");
-  return Q;
+  setName("");
+  return *this;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -1723,7 +1724,6 @@ void MatrixImplementation::save(Advocate & adv) const
 void MatrixImplementation::load(Advocate & adv)
 {
   PersistentCollection<Scalar>::load(adv);
-
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
 }

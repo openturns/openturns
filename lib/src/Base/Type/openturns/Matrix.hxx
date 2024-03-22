@@ -169,9 +169,8 @@ public:
                           const Bool fullSVD = false);
 
   /** Build the QR factorization of the matrix */
-  virtual Matrix computeQR(Matrix & ROut,
-                           const Bool fullQR = false,
-                           const Bool keepIntact = true);
+  virtual Matrix computeQR(Matrix & ROut, const Bool fullQR = false) const;
+  virtual Matrix computeQRInPlace(Matrix & ROut, const Bool fullQR = false);
 
   /** Compute the associated Gram matrix */
   virtual CovarianceMatrix computeGram(const Bool transpose = true) const;
