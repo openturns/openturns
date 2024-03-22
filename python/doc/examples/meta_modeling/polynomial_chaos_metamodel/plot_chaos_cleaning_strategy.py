@@ -13,19 +13,19 @@ Create a sparse chaos by integration
 #
 # Let :math:`g : \mathcal{D} \rightarrow \mathbb{R}` be a function
 # where :math:`\mathcal{D} \subseteq \mathbb{R}^p` is the domain of :math:`g`.
-# We consider :math:`\vect{X}` a random vector in :math:`\mathcal{D}` which
+# We consider :math:`\vect{X}` a random vector which
 # probability density function is denoted by :math:`f`.
 # We assume that :math:`g(\vect{X})` has a finite second order moment.
-# Let :math:`T` be an isoprobabilistic transformation such that :math:`\vect{Z} = T(\vect{X})`
+# Let :math:`T` be an iso-probabilistic transformation such that :math:`\vect{Z} = T(\vect{X})`
 # follows a distribution uniquely defined by all its moments.
-# We consider :math:`h` the function defined by:
+# Let :math:`h` be the function defined by:
 #
 # .. math::
 #
 #   h = g \circ T^{-1}.
 #
 # The polynomial chaos decomposition of :math:`h` with respect to the measure of
-# :math:`\vect{Z}` is ([blatman2009]_ page 73) :
+# :math:`\vect{Z}` is (see [blatman2009]_ page 73) :
 #
 # .. math::
 #
@@ -66,14 +66,14 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}^{d}}
+#   \widetilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}^{d}}
 #   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z}).
 #
 # In order to ensure a low error, we may choose a large value of the
 # parameter :math:`P`. This, however, leads to a large number of
 # coefficients :math:`\vect{\alpha} \in \mathcal{A}^{d}` to
 # estimate. More precisely, the number of coefficients to estimate
-# is ([blatman2009]_ page 73) :
+# is (see [blatman2009]_ page 73) :
 #
 # .. math::
 #
@@ -108,7 +108,7 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in
+#   \widetilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in
 #   \mathcal{A}^{d,j}} a_{\vect{\alpha}}
 #   \psi_{\vect{\alpha}}(\vect{z}).
 #
@@ -125,7 +125,7 @@ Create a sparse chaos by integration
 # If :math:`\textrm{card}\left(\mathcal{A}^{d}\right)` is large, many coefficients
 # may be poorly estimated, which may reduce the quality of the metamodel. We may
 # want to select a subset of the coefficients which best predict the output.
-# In other words, we may compute a subset :
+# In other words, we may compute a subset:
 #
 # .. math::
 #
@@ -135,7 +135,7 @@ Create a sparse chaos by integration
 #
 # .. math::
 #
-#   \tilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}}
+#   \widetilde{h}(\vect{z}) = \sum_{\vect{\alpha} \in \mathcal{A}}
 #   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z})
 #
 # An enumeration rule is a function from the set of integers :math:`k` to
