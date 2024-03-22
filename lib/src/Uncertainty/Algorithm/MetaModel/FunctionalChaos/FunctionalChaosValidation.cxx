@@ -65,7 +65,7 @@ FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a polynomial chaos expansion involving model selection";
   if (!functionalChaosResult.isLeastSquares())
-    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from regression.";  
+    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from least squares.";  
 }
 
 /* Virtual constructor */
