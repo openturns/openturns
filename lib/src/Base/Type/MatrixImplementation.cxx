@@ -1342,7 +1342,13 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
 }
 
 /* Compute the singular values of a matrix */
-Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
+Point MatrixImplementation::computeSingularValues() const
+{
+  MatrixImplementation A(*this);
+  return A.computeSingularValuesInPlace();
+}
+
+Point MatrixImplementation::computeSingularValuesInPlace()
 {
   int m = nbRows_;
   int n = nbColumns_;
@@ -1366,16 +1372,12 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
   int info = 0;
   int ljobz = 1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
   // First call to compute the optimal work size
-  dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+  dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   lwork = static_cast<int>(work[0]);
   work = Point(lwork, 0.0);
   // Second call to compute the SVD
-  dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+  dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
 
   if (info != 0) throw InternalException(HERE) << "Error: the updating process failed.";
   return S;
