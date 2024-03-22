@@ -58,6 +58,8 @@ Refer to :ref:`orthogonal_polynomials`.
     OrthogonalUniVariatePolynomial
     OrthogonalUniVariatePolynomialFamily
     StandardDistributionPolynomialFactory
+    OrthogonalUniVariatePolynomialFactory
+    UniVariateFunctionFamily
 
 .. autosummary::
     :toctree: _generated/

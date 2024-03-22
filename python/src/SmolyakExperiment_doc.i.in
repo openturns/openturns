@@ -215,9 +215,9 @@ Therefore,
     - S_\ell(g)\right|
     = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
 
-See also
+See Also
 --------
-WeightedExperiment
+openturns.WeightedExperiment
 
 Examples
 --------

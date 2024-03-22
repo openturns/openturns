@@ -157,7 +157,7 @@ distribution : :class:`~openturns.Pareto`
 
 Notes
 -----
-Refer to :class:`~openturns.LeastSquaresFactory`.
+Refer to :class:`~openturns.LeastSquaresDistributionFactory`.
 
 Parameters
 ----------

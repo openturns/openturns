@@ -58,7 +58,7 @@ sampleFields : :class:`~openturns.ProcessSample`
 
 Returns
 -------
-covEst : :class:`~openturns.CovarianceModelImplementation`
+covEst : :class:`~openturns.CovarianceModel`
     The estimated covariance model.
 
 Examples

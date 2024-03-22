@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-myGaussKronrodPair : :class:`~openturns.GaussKronrodPair`
+myGaussKronrodPair : int
     It encodes the selected rule. 
 
     Available rules: 
@@ -56,7 +56,7 @@ m : int
 
 Returns
 -------
-gkPair : :class:`~openturns.GaussKronrodPair`
+gkPair : int
     Id of the Gauss-Kronrod rule."
 
 // ---------------------------------------------------------------------

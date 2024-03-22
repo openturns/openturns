@@ -86,7 +86,7 @@ Sampling’.
 
 .. topic:: API:
 
-    - See :class:`~openturns.LHS`
+    - See :class:`~openturns.LHSExperiment`
 
 
 .. topic:: Examples:

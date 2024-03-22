@@ -1,9 +1,6 @@
 %feature("docstring") OT::AggregatedProcess
 "Aggregation of several processes in one process.
 
-Available constructor:
-    AggregatedProcess(*collProc*)
-
 Parameters
 ----------
 collProc : sequence of :class:`~openturns.Process`

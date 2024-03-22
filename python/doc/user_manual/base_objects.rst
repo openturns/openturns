@@ -4,6 +4,13 @@ Base objects
 
 .. currentmodule:: openturns
 
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    PersistentObject
+    InterfaceObject
+
 Combinatorial structures
 ========================
 
@@ -94,10 +101,21 @@ Vectors
     Description
     Indices
     IndicesCollection
+    UnsignedIntegerCollection
     Point
     PointWithDescription
     ComplexCollection
     ScalarCollection
+    FunctionCollection
+    PolynomialCollection
+    OptimizationResultCollection
+    RandomVectorCollection
+    DistributionFactoryCollection
+    SquareMatrixCollection
+    HermitianMatrixCollection
+    CovarianceMatrixCollection
+    ProcessCollection
+    TestResultCollection
 
 Comparison operators
 ====================

@@ -821,7 +821,9 @@ Only valid for univariate and bivariate distributions.
 
 See Also
 --------
-computeCDF, viewer.View, ResourceMap
+openturns.Distribution.computeCDF
+openturns.viewer.View
+openturns.ResourceMap
 
 Examples
 --------
@@ -869,7 +871,10 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeCDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeCDF
+openturns.Distribution.getMarginal
+openturns.viewer.View
+openturns.ResourceMap
 
 Examples
 --------
@@ -1302,7 +1307,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computePDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computePDF
+openturns.Distribution.getMarginal
 
 Examples
 --------
@@ -1341,7 +1347,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeLogPDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeLogPDF
+openturns.Distribution.getMarginal
 
 Examples
 --------
@@ -1385,7 +1392,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeCDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeCDF
+openturns.Distribution.getMarginal
 
 Examples
 --------
@@ -1429,7 +1437,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computePDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computePDF
+openturns.Distribution.getMarginal
 
 Examples
 --------
@@ -1473,7 +1482,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeLogPDF, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeLogPDF
+openturns.Distribution.getMarginal
 
 Examples
 --------
@@ -1537,7 +1547,7 @@ Only valid for univariate and bivariate distributions.
 
 See Also
 --------
-computePDF, viewer.View, ResourceMap
+openturns.Distribution.computePDF
 
 Examples
 --------
@@ -1610,7 +1620,9 @@ Only valid for univariate and bivariate distributions.
 
 See Also
 --------
-computeLogPDF, viewer.View, ResourceMap
+openturns.Distribution.computeLogPDF
+openturns.viewer.View
+openturns.ResourceMap
 
 Examples
 --------
@@ -1668,7 +1680,9 @@ In the case of bivariate distributions, defined by its CDF :math:`F` and its mar
 
 See Also
 --------
-computeQuantile, viewer.View, ResourceMap
+openturns.Distribution.computeQuantile
+openturns.viewer.View
+openturns.ResourceMap
 
 Examples
 --------
@@ -1792,7 +1806,7 @@ C : :class:`~openturns.Distribution`
 
 See Also
 --------
-JointDistribution"
+openturns.JointDistribution"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCopula
 OT_Distribution_getCopula_doc
@@ -1903,7 +1917,7 @@ Linv : :class:`~openturns.TriangularMatrix`
 
 See also
 --------
-getCholesky"
+openturns.Distribution.getCholesky"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getInverseCholesky
 OT_Distribution_getInverseCholesky_doc
@@ -1931,7 +1945,7 @@ The inverse iso-probabilistic transformation is defined as follows:
 
 See also
 --------
-getIsoProbabilisticTransformation"
+openturns.Distribution.getIsoProbabilisticTransformation"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getInverseIsoProbabilisticTransformation
 OT_Distribution_getInverseIsoProbabilisticTransformation_doc
@@ -2005,7 +2019,9 @@ To be more specific:
 
 See also
 --------
-getInverseIsoProbabilisticTransformation, isElliptical, hasEllipticalCopula"
+openturns.Distribution.getInverseIsoProbabilisticTransformation
+openturns.Distribution.isElliptical
+openturns.Distribution.hasEllipticalCopula"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getIsoProbabilisticTransformation
 OT_Distribution_getIsoProbabilisticTransformation_doc
@@ -2293,7 +2309,7 @@ point : :class:`~openturns.Point`
 
 See Also
 --------
-getSample, getSampleByInversion, getSampleByQMC, RandomGenerator"
+getSample, getSampleByInversion, getSampleByQMC"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getRealization
 OT_Distribution_getRealization_doc
@@ -2341,7 +2357,7 @@ sample : :class:`~openturns.Sample`
 
 See Also
 --------
-getRealization, RandomGenerator, getSampleByInversion, getSampleByQMC"
+getRealization, getSampleByInversion, getSampleByQMC"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSample
 OT_Distribution_getSample_doc
@@ -2363,7 +2379,10 @@ sample : :class:`~openturns.Sample`
 
 See Also
 --------
-getRealization, RandomGenerator, getSample, getSampleByQMC"
+openturns.Distribution.getRealization
+openturns.RandomGenerator
+openturns.Distribution.getSample
+openturns.Distribution.getSampleByQMC"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSampleByInversion
 OT_Distribution_getSampleByInversion_doc
@@ -2386,7 +2405,10 @@ sample : :class:`~openturns.Sample`
 
 See Also
 --------
-getRealization, RandomGenerator, getSample, getSampleByInversion"
+openturns.Distribution.getRealization
+openturns.RandomGenerator
+openturns.Distribution.getSample
+openturns.Distribution.getSampleByInversion"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSampleByQMC
 OT_Distribution_getSampleByQMC_doc
@@ -3054,7 +3076,7 @@ Only valid for univariate and bivariate distributions.
 
 See Also
 --------
-computeSurvivalFunction, viewer.View, ResourceMap
+openturns.Distribution.computeSurvivalFunction
 
 Examples
 --------
@@ -3102,7 +3124,10 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeSurvivalFunction, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeSurvivalFunction
+openturns.Distribution.getMarginal
+openturns.viewer.View
+openturns.ResourceMap
 
 Examples
 --------
@@ -3147,7 +3172,8 @@ graph : :class:`~openturns.Graph`
 
 See Also
 --------
-computeSurvivalFunction, getMarginal, viewer.View, ResourceMap
+openturns.Distribution.computeSurvivalFunction
+openturns.Distribution.getMarginal
 
 Examples
 --------

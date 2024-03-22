@@ -199,7 +199,7 @@ OT_LeastSquaresMethod_getGramInverseDiag_doc
 
 Returns
 -------
-x : :class:`~openturns.Scalar`
+x : float
     The trace of inverse Gram matrix."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace

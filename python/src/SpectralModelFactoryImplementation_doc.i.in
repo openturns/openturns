@@ -1,13 +1,6 @@
 %define OT_SpectralModelFactory_doc
 "Base class for spectral model factory.
 
-Parameters
-----------
-mySpectralModelFactoryImplementation : :class:`~openturns.SpectralModelFactoryImplementation`
-    One spectral factory algorithm.
-
-    By default, the Welch factory algorithm :class:`~openturns.WelchFactory`.
-   
 Notes
 -----
 Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
@@ -23,11 +16,10 @@ The bilateral spectral density function :math:`S : \Rset^n \rightarrow \mathcal{
 
 where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
 
-Depending on the available data, we proceed differently :
+Depending on the available data, we proceed differently:
 
-    -if the data correspond to  several independent  realizations of the  process, the estimation is done using the empirical estimator;
-
-    - if the data correspond to one realization of the  process,  we suppose the process is ergodic to split the realization into several ones.
+- if the data correspond to several independent realizations of the process, the estimation is done using the empirical estimator;
+- if the data correspond to one realization of the process, we suppose the process is ergodic to split the realization into several ones.
 "
 
 %enddef

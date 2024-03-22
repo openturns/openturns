@@ -508,7 +508,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \end{array}
    \right)
 
-Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
+Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`~openturns.SobolIndicesAlgorithm` implementations:
 
 - :class:`~openturns.SaltelliSensitivityAlgorithm` based on [saltelli2002]_,
 - :class:`~openturns.JansenSensitivityAlgorithm` based on [jansen1999]_,
