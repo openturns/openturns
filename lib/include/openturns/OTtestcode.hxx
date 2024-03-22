@@ -28,6 +28,8 @@
 #include <sstream>        // for std::ostringstream
 #include <cstdlib>        // for exit codes
 #include <cstring>        // for strcmp
+#define _USE_MATH_DEFINES
+#include <cmath>          // For M_PI
 
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
