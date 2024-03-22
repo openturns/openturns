@@ -44,7 +44,7 @@ The model response may be approximated by a finite number of coefficients as fol
 .. math::
   :label: 5-2.1
 
-    h(\vect{x}) \, \, \approx \, \, \widehat{h}(\vect{x}) \, \, = \, \, \sum_{j=0}^{P-1} \; a_{j} \; \psi_{j}(\vect{x})
+    h(\vect{x}) \, \, \approx \, \, \widetilde{h}(\vect{x}) \, \, = \, \, \sum_{j=0}^{P-1} \; a_{j} \; \psi_{j}(\vect{x})
 
 where :math:`\{\psi_{j} : \Rset^{n_X} \rightarrow \Rset\}_{j = 0, ..., P - 1}` is a multivariate
 functional basis.
