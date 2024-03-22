@@ -601,7 +601,7 @@ interval : :class:`~openturns.Interval`
 Returns
 -------
 p : float
-    The probability of :math:`I`.
+    The probability of :math:`interval`.
 
 Notes
 -----
