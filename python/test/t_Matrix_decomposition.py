@@ -16,7 +16,10 @@ def quadM(m, n):
 def testQR(m, n, full, keep):
     matrix1 = quadM(m, n)
     print("M=", matrix1)
-    Q, R = matrix1.computeQR(full, keep)
+    if keep:
+        Q, R = matrix1.computeQR(full)
+    else:
+        Q, R = matrix1.computeQRInPlace(full)
     print("full=", full, "keep=", keep)
     print("Q= ", Q)
     print("R=", R)

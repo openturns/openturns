@@ -600,7 +600,7 @@ Scalar LinearModelStepwiseAlgorithm::computeLogLikelihood()
   const UnsignedInteger size = currentX_.getNbRows();
   const UnsignedInteger p = currentX_.getNbColumns();
   Matrix R;
-  currentQ_ = currentX_.computeQR(R, size < p, true);
+  currentQ_ = currentX_.computeQR(R, size < p);
   const MatrixImplementation b(*IdentityMatrix(p).getImplementation());
   //                                                                    lower, transposed
   currentInvRt_ = R.getImplementation()->solveLinearSystemTriInPlace(b, false, true);

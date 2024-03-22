@@ -310,9 +310,8 @@ public:
 #endif
 
   /** Build the QR factorization of the matrix */
-  virtual MatrixImplementation computeQR(MatrixImplementation & ROut,
-                                         const Bool fullQR = false,
-                                         const Bool keepIntact = true);
+  virtual MatrixImplementation computeQR(MatrixImplementation & ROut, const Bool fullQR = false) const;
+  virtual MatrixImplementation computeQRInPlace(MatrixImplementation & ROut, const Bool fullQR = false);
 
   /** Compute the Gram matrix associated to the matrix. If transpose == true, compute M^T.M, else M.M^T. */
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;

@@ -73,8 +73,9 @@ cleaned_matrix : :class:`~openturns.Matrix`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Matrix::computeQR
-"Compute the QR factorization. By default, it is the *economic* decomposition which is computed.
+"Compute the QR factorization.
 
+By default, it is the *economic* decomposition which is computed.
 The economic QR factorization of a rectangular matrix :math:`\mat{M}` with
 :math:`n_r \geq n_c` (more rows than columns) is defined as follows:
 
@@ -96,9 +97,6 @@ Parameters
 full_qr : bool, optional
     A flag telling whether `Q`, `R` or `Q1`, `R1` are returned.
     Default is *False* and returns `Q1`, `R1`.
-keep_intact : bool, optional
-    A flag telling whether the present matrix is preserved or not in the computation of the decomposition.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -162,6 +160,14 @@ Examples
 >>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> print(M.computeSingularValues())
 [9.52552,0.514301]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeQRInPlace
+"Compute the QR factorization in place.
+
+Similar to :meth:`computeQR`
+"
 
 // ---------------------------------------------------------------------
 
