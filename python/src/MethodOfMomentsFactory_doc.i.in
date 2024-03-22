@@ -14,17 +14,41 @@ Notes
 -----
 This method fits a scalar distribution to data of dimension 1, using the method of moments.
 
-Let :math:`(\vect{x}_1, \dots, \vect{x}_n)` denote the sample, :math:`F_{\vect{\theta}}`
+Let :math:`\vect{x} = (\vect{x}_1, \dots, \vect{x}_n)` denote the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
-and :math:`\vect{\theta} \in  \Theta \subset\Rset^p`  its parameter vector.
+and :math:`\vect{\theta} \in  \Theta \subset\Rset^K`  its parameter vector.
 
-Let :math:`K` denote the number of parameters of the distribution and we assume that 
+Then :math:`K` denotes the number of parameters of the distribution and we assume that
 the :math:`K` first moments of the distribution exist.
 
-Let :math:`(\mu_1, \dots, \mu_K)` denote the :math:`K` first central moments of the sample and
-and :math:`(m_1, \dots, m_K)` those of the parametric model.
+Let :math:`(m_1, \dots, m_K)` those coming from the parametric model which
+can be expressed as a function of the :math:`K` parameters:
 
-The estimator :math:`\hat{\theta}` minimizes the sum of slacks between
+.. math::
+
+    \mu_i =  \Expect{X^i} = g_i(\theta_1, \dots, \theta_K).
+
+
+Let :math:`(\mu_1, \dots, \mu_K)` be the :math:`K` first empirical non centered  moments
+evaluated on the sample :math:`\vect{x}`:
+
+.. math::
+
+    \mu_k = \dfrac{1}{n} \sum_{i=1}^K x_i^k.
+
+
+Then the estimator :math:`\hat{\theta} = (\hat{\theta}_1, \dots, \hat{\theta}_K)` built by
+the method of moments is solution of the following nonlinear system:
+
+.. math::
+    :label: MethMomSyst
+
+    \mu_1 & = m_1 = g_1(\theta_1, \dots, \theta_K) \\
+    \mu_2 & = m_2 = g_2(\theta_1, \dots, \theta_K) \\
+    \dots & = \dots \\
+    \mu_K & = m_K = g_K(\theta_1, \dots, \theta_K)
+
+To solve the non linear :eq:`MethMomSyst`, OpenTURNS minimizes the sum of slacks between
 :math:`(\mu_1, \dots, \mu_K)` and :math:`(m_1, \dots, m_K)`. It is defined by:
 
 .. math::
