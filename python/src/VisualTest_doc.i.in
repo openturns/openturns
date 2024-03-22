@@ -48,7 +48,8 @@ The Henry plot is a special case of the more general QQ-plot.
 
 See Also
 --------
-VisualTest.DrawQQplot, FittingTest.Kolmogorov
+openturns.VisualTest.DrawQQplot
+openturns.FittingTest.Kolmogorov
 
 Examples
 --------

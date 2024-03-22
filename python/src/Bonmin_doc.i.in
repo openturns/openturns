@@ -41,7 +41,7 @@ Notes
 
   Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html>`_.
   These parameters can be modified using the :class:`~openturns.ResourceMap`.
-  For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
+  For every option ``optionName``, simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
 
     >>> import openturns as ot
     >>> ot.ResourceMap.AddAsUnsignedInteger('Bonmin-bonmin.node_limit', 10000)

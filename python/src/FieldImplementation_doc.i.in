@@ -325,7 +325,7 @@ Returns
 values : :class:`~openturns.Sample`
     Values associated to the mesh. The size of the sample is the number of
     vertices of the mesh and the dimension is the dimension of the values
-    (:math:`d`). Identical to :meth:`getSample`."
+    (:math:`d`)."
 %enddef
 %feature("docstring") OT::FieldImplementation::getValues
 OT_Field_getValues_doc

@@ -154,14 +154,14 @@ field : :class:`~openturns.Field`
 
 Returns
 -------
-covEst : :class:`~openturns.CovarianceModelImplementation`
+covEst : :class:`~openturns.CovarianceModel`
     The estimated covariance model.
 
 Notes
 -----
 The fields must be time series, ie the underlying mesh must be a 1D lattice.
 
-The estimated :class:`~openturns.CovarianceModelImplementation` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension *d* where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
+The estimated :class:`~openturns.CovarianceModel` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension *d* where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
 
 When estimated from a time series, the :class:`~openturns.UserDefinedStationaryCovarianceModel` may have a  time grid different from the initial time grid of the time series.
 

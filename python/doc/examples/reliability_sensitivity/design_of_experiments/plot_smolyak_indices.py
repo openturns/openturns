@@ -33,10 +33,10 @@ from matplotlib import pylab as plt
 # In the first example, we print the indices involved in
 # Smolyak-Legendre quadrature of level 3.
 # The multi-indices are computed using the
-# :meth:`~openturns.SmolyakExperiment.computeCombination` method.
+# :py:meth:`openturns.experimental.SmolyakExperiment.computeCombination` method.
 # Actually, the multi-indices do not actually depend on the
 # underlying univariate quadratures, but this is required for
-# the :class:`~openturns.SmolyakExperiment` class.
+# the :class:`openturns.experimental.SmolyakExperiment` class.
 
 collection = [ot.GaussProductExperiment()] * 2
 level = 3

@@ -14,7 +14,7 @@ mesh : :class:`~openturns.Mesh`
 
 See also
 --------
-UniformOverMesh
+openturns.UniformOverMesh
 
 Notes
 -----

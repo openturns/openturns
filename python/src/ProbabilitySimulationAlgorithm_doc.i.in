@@ -75,7 +75,7 @@ A ProbabilitySimulationAlgorithm object makes sense with the following sequentia
 
 - :class:`~openturns.LowDiscrepancyExperiment`
 
-- :class:`~openturns.LHSExperiment` (for the non randomized version see :class:`~openturns.LHS`)
+- :class:`~openturns.LHSExperiment`
 
 The estimator built by Monte Carlo method is:
 

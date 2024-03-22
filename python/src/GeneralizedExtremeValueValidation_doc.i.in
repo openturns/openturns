@@ -14,7 +14,7 @@ sample : 2-d sequence of float
 
 See also
 --------
-GeneralizedExtremeValueFactory"
+openturns.GeneralizedExtremeValueFactory"
 
 // ---------------------------------------------------------------------
 

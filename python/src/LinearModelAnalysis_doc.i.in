@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearModelAnalysis
 "Analyse a linear model.
 
-Available constructors:
-    LinearModelAnalysis(linearModelResult)
-
 Parameters
 ----------
 linearModelResult : :class:`~openturns.LinearModelResult`
@@ -131,7 +128,7 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.FittingTest::Kolmogorov`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.FittingTest.Kolmogorov`."
 
 // ---------------------------------------------------------------------
 
@@ -147,7 +144,7 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::AndersonDarling`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`."
 
 // ---------------------------------------------------------------------
 
@@ -164,7 +161,7 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::CramerVonMisesNormal`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`."
 
 // ---------------------------------------------------------------------
 

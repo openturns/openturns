@@ -12,7 +12,7 @@ Parameters
 ----------
 event : :class:`~openturns.RandomVector`
     An event which it composite (test is with the method
-    :meth:`isComposite <openturns.Event.isComposite>`).
+    :meth:`isComposite <openturns.RandomVector.isComposite>`).
 inputSample, outputSample : 2-d sequence of float
     Input sample and output sample of a model evaluated apart.
 simulationRes : :class:`~openturns.ProbabilitySimulationResult`
@@ -61,8 +61,8 @@ where
 
     \vect{U}^* = T(\vect{X}^*_{event})
 
-Be careful: this notion is only valid for :class:`~openturns.MonteCarlo` or
-:class:`~openturns.LHS` sampling as the mean is evaluated from the equation
+Be careful: this notion is only valid for :class:`~openturns.MonteCarloExperiment` or
+:class:`~openturns.LHSExperiment` sampling as the mean is evaluated from the equation
 :eq:`importance_factor` (only uniform weights over the realizations
 :math:`\vect{X}_i`."
 

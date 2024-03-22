@@ -308,7 +308,7 @@ As a result, the pair :math:`(\chi_L, \bar{\chi}_L)` can be used as a summary of
     - See :py:func:`~openturns.Distribution.drawLowerTailDependenceFunction`
     - See :py:func:`~openturns.Distribution.drawLowerExtremalDependenceFunction`
     - See :py:func:`~openturns.Distribution.computeUpperTailDependenceMatrix`
-    - See :py:func:`~openturns.Distribution.computeExtremalDependenceMatrix`
+    - See :py:func:`~openturns.Distribution.computeUpperExtremalDependenceMatrix`
     - See :py:func:`~openturns.Distribution.computeLowerTailDependenceMatrix`
     - See :py:func:`~openturns.Distribution.computeLowerExtremalDependenceMatrix`
 
