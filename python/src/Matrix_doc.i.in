@@ -144,9 +144,6 @@ fullSVD : bool, optional
     Whether the null parts of the orthogonal factors are explicitly stored
     or not.
     Default is *False* and computes a reduced SVD.
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -163,8 +160,16 @@ Examples
 --------
 >>> import openturns as ot
 >>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
->>> print(M.computeSingularValues(True))
+>>> print(M.computeSingularValues())
 [9.52552,0.514301]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeSingularValuesInPlace
+"Compute the singular values in place.
+
+Similar to :meth:`computeSingularValues` but the matrix is modified in place to avoid copy.
+"
 
 // ---------------------------------------------------------------------
 

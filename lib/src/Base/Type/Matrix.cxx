@@ -248,9 +248,15 @@ Matrix Matrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute singular values */
-Point Matrix::computeSingularValues(const Bool keepIntact)
+Point Matrix::computeSingularValues() const
 {
-  return getImplementation()->computeSingularValues(keepIntact);
+  return getImplementation()->computeSingularValues();
+}
+
+Point Matrix::computeSingularValuesInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeSingularValuesInPlace();
 }
 
 /* Compute singular values */

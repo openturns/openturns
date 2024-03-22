@@ -261,7 +261,8 @@ public:
                                          const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Compute singular values */
-  Point computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues() const;
+  Point computeSingularValuesInPlace ();
 
   /** Build the singular value decomposition */
   Point computeSVD(MatrixImplementation & uOut,
