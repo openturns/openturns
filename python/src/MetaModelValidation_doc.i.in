@@ -1,10 +1,6 @@
 %feature("docstring") OT::MetaModelValidation
 "Score a metamodel and perform validation.
 
-Available constructors:
-    MetaModelValidation(*outputValidationSample, outputPredictionSample*)
-
-
 Parameters
 ----------
 inputValidationSample, outputValidationSample : 2-d sequence of float
