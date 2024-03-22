@@ -96,6 +96,8 @@ Contour::Contour(const UnsignedInteger dimX,
   // By default, y is assumed to be equally spaced in [0, 1]
   for (UnsignedInteger i = 0; i < dimY; ++i) y_(i, 0) = Scalar(i) / (dimY - 1.0);
   if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  if (!colorMap.empty())
+    isColorExplicitlySet_ = true;
   // Build the levels
   buildDefaultLevels();
   // Build the labels
@@ -125,6 +127,8 @@ Contour::Contour(const Sample & x,
   // Check data validity
   setData(data);
   if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  if (!colorMap.empty())
+    isColorExplicitlySet_ = true;
   buildDefaultLevels();
   buildDefaultLabels();
 }

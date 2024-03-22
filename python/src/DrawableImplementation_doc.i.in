@@ -1119,8 +1119,8 @@ validColorMaps : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable.GetValidColorMaps()[:2])
-[magma,inferno]
+>>> print(ot.Drawable.GetValidColorMaps()[:3])
+[,magma,inferno]
 "
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidColorMaps
