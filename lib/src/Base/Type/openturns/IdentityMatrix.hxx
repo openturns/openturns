@@ -102,9 +102,11 @@ public:
 
   Point computeSVD(Matrix & uOut,
                    Matrix & vTOut,
-                   const Bool fullSVD = false,
-                   const Bool keepIntact = true);
+                   const Bool fullSVD = false) const;
 
+  Point computeSVDInPlace(Matrix & uOut,
+                          Matrix & vTOut,
+                          const Bool fullSVD = false);
 protected:
 
 
