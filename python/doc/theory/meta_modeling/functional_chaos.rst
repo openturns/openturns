@@ -29,8 +29,8 @@ respect to the PDF :math:`f_{\vect{X}}(\vect{x})`.
 Precisely, an expansion of the model response onto an orthonormal
 basis of :math:`L^2` is of interest.
 
-The principles of the building of a (infinite numerable) basis of this
-space, i.e. the PC basis, are described in the sequel.
+The principles of the building of an infinite countable basis of this
+space, i.e. the PC basis, are hereafter described.
 
 Principle of the functional chaos expansion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,7 +40,7 @@ Consider a model :math:`h` depending on a set of *random* variables
 functional chaos expansion the class of spectral methods which gathers
 all types of response surface that can be seen as a projection of the
 physical model in an orthonormal basis. This class of methods uses the
-Hilbertian space (square-integrable space: :math:`L^2`) to construct
+square-integrable (:math:`L^2`) Hilbertian space to construct
 the response surface.
 Assuming that the physical model has a finite second order measure
 (i.e. :math:`E\left( \|h(\vect{X})\|^2\right)< + \infty`), it may
@@ -52,16 +52,16 @@ basis as follows:
       h(\vect{x})= \sum_{i=0}^{+\infty}  \vect{y}_{i}\Phi_{i}(\vect{x}).
 
 where the
-:math:`\vect{y}_{i} = (y_{i,1},\dots,y_{i,n_Y})^{\textsf{T}}`\ ’s
+:math:`\vect{y}_{i} = (y_{i,1},\dots,y_{i,n_Y})^{\textsf{T}}`
 are deterministic vectors that fully characterize the random vector
-:math:`\vect{Y}`, and the :math:`\Phi_{i}`\ ’s are given basis
+:math:`\vect{Y}`, and the :math:`\Phi_{i}` are given basis
 functions (e.g. orthonormal polynomials, wavelets).
 
-The orthonormality property of the functional chaos basis reads:
+The orthonormality property of the functional chaos basis can be written:
 
   .. math::
 
-     \langle \Phi_{i},\Phi_{j}\rangle = \int_{D}\Phi_{i}(\vect{x}) \Phi_{j}(\vect{x})~f_{\vect{X}}(\vect{x}) d \vect{x} = \delta_{i,j}.
+     \langle \Phi_{i},\Phi_{j}\rangle = \int_{D}\Phi_{i}(\vect{x}) \Phi_{j}(\vect{x})~f_{\vect{X}}(\vect{x}) d \vect{x} = \delta_{i,j}
 
 where :math:`\delta_{i,j} =1` if :math:`i=j` and 0 otherwise. The
 metamodel :math:`\widehat{h}(\vect{x})` is represented by a
