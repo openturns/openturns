@@ -1431,7 +1431,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FunctionalChaosValidation parameters //
   addAsUnsignedInteger("FunctionalChaosValidation-DefaultKFoldParameter", 10);
-  addAsBool("FunctionalChaosValidation-NoModelSelection", true);
+  addAsBool("FunctionalChaosValidation-ModelSelection", false);
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
@@ -1441,7 +1441,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelValidation parameters //
   addAsUnsignedInteger("LinearModelValidation-DefaultKFoldParameter", 10);
-  addAsBool("LinearModelValidation-NoModelSelection", true);
+  addAsBool("LinearModelValidation-ModelSelection", false);
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);

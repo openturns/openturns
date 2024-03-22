@@ -67,7 +67,7 @@ LinearModelValidation::LinearModelValidation(const LinearModelResult & linearMod
   if ((splitter_.getN() != sampleSize))
     throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
         << " but the sample size is " << sampleSize;
-  if (ResourceMap::GetAsBool("LinearModelValidation-NoModelSelection") && \
+  if (not ResourceMap::GetAsBool("LinearModelValidation-ModelSelection") && \
     linearModelResult.isModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a linear model involving model selection";
@@ -85,7 +85,7 @@ LinearModelValidation::LinearModelValidation(const LinearModelResult & linearMod
   if ((splitter_.getN() != sampleSize))
     throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
         << " but the sample size is " << sampleSize;
-  if (ResourceMap::GetAsBool("LinearModelValidation-NoModelSelection") && \
+  if (not ResourceMap::GetAsBool("LinearModelValidation-ModelSelection") && \
     linearModelResult.isModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a linear model involving model selection";
