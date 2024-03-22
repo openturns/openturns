@@ -25,7 +25,7 @@ In the case of continuous marginal distributions, for all :math:`\vect{u}\in[0,1
           & = \Prob{U_1 \leq u_1, \hdots, U_d \leq u_d}
     \end{aligned}
 
-where :math:`U_i = F_i(X_i)` is the random variate following the uniform distribution on :math:`[0,1]`.
+where :math:`U_i = F_i(X_i)` is a random variable following the uniform distribution on :math:`[0,1]`.
 
 A copula of dimension :math:`d` is the restriction to the unit cube :math:`[0,1]^d` of a
 multivariate distribution function with uniform univariate marginals on :math:`[0,1]`.
