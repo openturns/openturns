@@ -286,7 +286,8 @@ public:
   virtual MatrixImplementation cleanSym(const Scalar threshold) const;
 
   /** Build the Cholesky factorization of the matrix */
-  virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
+  virtual MatrixImplementation computeCholesky() const;
+  virtual MatrixImplementation computeCholeskyInPlace();
 
   /** Build the regularized Cholesky factorization of the matrix */
   virtual MatrixImplementation computeRegularizedCholesky() const;

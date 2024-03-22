@@ -174,7 +174,12 @@ Bool IdentityMatrix::isPositiveDefinite() const
 }
 
 /* Build the Cholesky factorization of the matrix */
-TriangularMatrix IdentityMatrix::computeCholesky(const Bool )
+TriangularMatrix IdentityMatrix::computeCholesky() const
+{
+  return getImplementation();
+}
+
+TriangularMatrix IdentityMatrix::computeCholeskyInPlace()
 {
   return getImplementation();
 }

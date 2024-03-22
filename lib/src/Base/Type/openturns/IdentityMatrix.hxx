@@ -95,7 +95,8 @@ public:
   Bool isPositiveDefinite() const override;
 
   /** Build the Cholesky factorization of the matrix */
-  TriangularMatrix computeCholesky(const Bool keepIntact = true) override;
+  TriangularMatrix computeCholesky() const override;
+  TriangularMatrix computeCholeskyInPlace() override;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
