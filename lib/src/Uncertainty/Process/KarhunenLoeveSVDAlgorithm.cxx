@@ -235,7 +235,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       LOGINFO("Compute the SVD of C");
       MatrixImplementation Uc;
       MatrixImplementation VTc;
-      svd = C.computeSVD(Uc, VTc, false, false);
+      svd = C.computeSVDInPlace(Uc, VTc, false);
       LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
       LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
       // Restore A singular vectors
@@ -280,7 +280,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       LOGINFO("Create SVD of T");
       MatrixImplementation Uc;
       MatrixImplementation VTc;
-      svd = T.computeSVD(Uc, VTc, false, false);
+      svd = T.computeSVDInPlace(Uc, VTc, false);
       LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
       LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
       LOGINFO("Create U");
@@ -299,8 +299,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     // The singular values are given in decreasing order
     // Last two arguments are:
     //   * fullSVD = false, we only want kTilde columns of U
-    //   * keepIntact = false, designMatrix is no more used afterwards
-    svd = designMatrix.computeSVD(U, Vt,  false, false);
+    svd = designMatrix.computeSVDInPlace(U, Vt,  false);
   }
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
   Scalar cumulatedVariance = 0.0;

@@ -266,8 +266,10 @@ public:
   /** Build the singular value decomposition */
   Point computeSVD(MatrixImplementation & uOut,
                    MatrixImplementation & vTOut,
-                   const Bool fullSVD = false,
-                   const Bool keepIntact = true);
+                   const Bool fullSVD = false) const;
+  Point computeSVDInPlace(MatrixImplementation & uOut,
+                          MatrixImplementation & vTOut,
+                          const Bool fullSVD = false);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;

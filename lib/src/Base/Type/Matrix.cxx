@@ -256,10 +256,17 @@ Point Matrix::computeSingularValues(const Bool keepIntact)
 /* Compute singular values */
 Point Matrix::computeSVD(Matrix & u,
                          Matrix & vT,
-                         const Bool fullSVD,
-                         const Bool keepIntact)
+                         const Bool fullSVD) const
 {
-  return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
+  return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD);
+}
+
+Point Matrix::computeSVDInPlace(Matrix & u,
+                         Matrix & vT,
+                         const Bool fullSVD)
+{
+  copyOnWrite();
+  return getImplementation()->computeSVDInPlace(*(u.getImplementation()), *(vT.getImplementation()), fullSVD);
 }
 
 
