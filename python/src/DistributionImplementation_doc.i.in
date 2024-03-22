@@ -595,7 +595,7 @@ OT_Distribution_computePDFGradient_doc
 
 Parameters
 ----------
-I : :class:`~openturns.Interval`
+interval : :class:`~openturns.Interval`
     An interval in :math:`\Rset^d`.
 
 Returns
