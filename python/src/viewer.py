@@ -543,7 +543,7 @@ class View:
                     drawable.getData(),
                     (drawable.getX().getSize(), drawable.getY().getSize()),
                 )
-                if len(drawable.getLevels())>0:
+                if len(drawable.getLevels()) > 0:
                     contour_kw.setdefault("levels", drawable.getLevels())
                 if ("linestyles" not in contour_kw_default) and (
                     "ls" not in contour_kw_default

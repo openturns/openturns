@@ -21,7 +21,7 @@ import openturns.viewer as viewer
 # We build a bidimensional function (function of x and y), define the study domain and the sample size
 
 # %%
-f = ot . SymbolicFunction (['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+f = ot . SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
 XMin = -5.
 XMax = 5.
 YMin = -5.
@@ -47,8 +47,8 @@ print(type(contour).__name__)
 # Another way to build the contour is to build the data sample and give it to the constructor of the `Contour` class
 
 # %%
-inputData = ot.Box ([NX , NY]).generate()
-inputData *= [XMax - XMin, YMax -YMin]
+inputData = ot.Box([NX, NY]).generate()
+inputData *= [XMax - XMin, YMax - YMin]
 inputData += [XMin, YMin]
 data = f(inputData)
 
@@ -89,7 +89,7 @@ viewer.View(graph)
 
 # %%
 contour.setAlpha(0.3)
-contour.setHatches(['/','\\','/\\','+','*'])
+contour.setHatches(['/', '\\', '/\\', '+', '*'])
 graph.setDrawables([ot.Drawable(contour)])
 viewer.View(graph)
 
