@@ -208,7 +208,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       // Orthonormalize Y columns
       LOGINFO("Orthonormalize Y columns");
       MatrixImplementation R;
-      Y = Y.computeQR(R, false, false);
+      Y = Y.computeQRInPlace(R, false);
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Y=" << Y.getNbRows() << "x" << Y.getNbColumns());
       // B = A.Y
@@ -224,7 +224,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       MatrixImplementation Z(B.genProd(P, false, false));
       // Orthonormalize Z columns
       LOGINFO("Orthonormalize Z columns");
-      Z = Z.computeQR(R, false, false);
+      Z = Z.computeQRInPlace(R, false);
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Z=" << Z.getNbRows() << "x" << Z.getNbColumns());
       // C = Z'.B
@@ -271,7 +271,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       }
       LOGINFO("Create QR decomposition of H");
       MatrixImplementation R;
-      MatrixImplementation Q(H.computeQR(R, false));
+      MatrixImplementation Q(H.computeQRInPlace(R, false));
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Q=" << Q.getNbRows() << "x" << Q.getNbColumns());
       LOGINFO("Create T = A.Q");

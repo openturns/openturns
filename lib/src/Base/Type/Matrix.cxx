@@ -277,13 +277,16 @@ Point Matrix::computeSVDInPlace(Matrix & u,
 
 
 /* Build the QR factorization of the matrix */
-Matrix Matrix::computeQR(Matrix & R,
-                         const Bool fullQR,
-                         const Bool keepIntact)
+Matrix Matrix::computeQR(Matrix & R, const Bool fullQR) const
 {
-  return getImplementation()->computeQR(*(R.getImplementation()), fullQR, keepIntact);
+  return getImplementation()->computeQR(*(R.getImplementation()), fullQR);
 }
 
+Matrix Matrix::computeQRInPlace(Matrix & R, const Bool fullQR)
+{
+  copyOnWrite();
+  return getImplementation()->computeQRInPlace(*(R.getImplementation()), fullQR);
+}
 
 /* Empty returns true if there is no element in the matrix */
 Bool Matrix::isEmpty() const
