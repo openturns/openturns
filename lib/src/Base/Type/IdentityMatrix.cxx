@@ -143,7 +143,12 @@ Point IdentityMatrix::computeEV(SquareMatrix & v,
 }
 
 /* Compute singular values */
-Point IdentityMatrix::computeSingularValues(const Bool )
+Point IdentityMatrix::computeSingularValues() const
+{
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeSingularValuesInPlace()
 {
   return Point(getNbRows(), 1.0);
 }

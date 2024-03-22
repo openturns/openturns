@@ -158,7 +158,8 @@ public:
   Matrix solveLinearSystem(const Matrix & b) const;
 
   /** Compute singular values */
-  Point computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues() const;
+  Point computeSingularValuesInPlace();
 
   Point computeSVD(Matrix & uOut,
                    Matrix & vTOut,
