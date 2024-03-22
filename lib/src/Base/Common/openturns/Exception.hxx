@@ -309,6 +309,8 @@ NEW_EXCEPTION( ObjectNotInStudyException );
  */
 NEW_EXCEPTION( ConfigurationFileParsingException );
 
+// on timeout
+NEW_EXCEPTION(TimeoutException);
 
 #undef NEW_EXCEPTION
 

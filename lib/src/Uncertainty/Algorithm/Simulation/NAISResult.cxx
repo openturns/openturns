@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(NAISResult);
+CLASSNAMEINIT(NAISResult)
 
 static const Factory<NAISResult> Factory_NAISResult;
 

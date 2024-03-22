@@ -139,9 +139,15 @@ Bibliography
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
     `pdf <https://web.archive.org/web/20141222122431id_/http://www.stat.unm.edu:80/~storlie/st579/articles/RESS_2003_LHS.pdf>`__
+.. [hotelling1933] Hotelling, H. (1933).
+    *Analysis of a complex of statistical variables into principal components.*
+    Journal of educational psychology, 24(6):417.
 .. [iooss2015] Iooss B., Lemaître P. (2015) *A review on global sensitivity
     analysis methods.* In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithms and Applications, Springer.
     `pdf <https://arxiv.org/pdf/1404.2405>`__
+.. [jackson1991] Jackson, J. E. (1991).
+    *A user’s guide to principal components.*
+    John Wiley & Sons.
 .. [janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.
@@ -156,6 +162,9 @@ Bibliography
 .. [johnson1990] Johnson M, Moore L and Ylvisaker D (1990).
     *Minimax and maximin distance design.*
     Journal of Statistical Planning and Inference 26(2): 131-148.
+.. [jolliffe2002] Jolliffe, I. T. (2002).
+    *Principal component analysis.*
+    Springer.
 .. [jones1998] Donald R. Jones, Matthias Schonlau and William J Welch.
     *Global optimization of expensive black-box functions*,
     Journal of Global Optimization, 13(4), 455-492, 1998.
@@ -223,7 +232,10 @@ Bibliography
     Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
-.. [luke] https://www.luke-g.com/math/spearman/index.html
+.. [luke] Luke Gustafson. The Spearman Rho null distribution. https://www.luke-g.com/math/spearman/index.html
+.. [luo2018] Zhendong Luo, Goong Chen
+    *Proper Orthogonal Decomposition Methods for Partial Differential Equations.*
+    (2018) Academic Press.
 .. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
     polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
     `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
@@ -291,6 +303,10 @@ Bibliography
 .. [park1990] Byeong U. Park and J. S. Marron.
     *Comparison of data-driven bandwidth selectors.*
     Journal of the American Statistical Association, 85(409) :66–72, 1990.
+.. [pearson1907] Pearson, K. (1901).
+    *On lines and planes of closest fit to systems of points in space.*
+    The London, Edinburgh, and Dublin philosophical magazine and journal of
+    science, 2(11):559–572.
 .. [pelamatti2020] Pelamatti, J., Brevault, L., Balesdent, M., Talbi, E. G., & Guerin, Y. (2020).
     *Overview and comparison of gaussian process-based surrogate models for mixed continuous and discrete variables: Application on aerospace design problems.*
     High-Performance Simulation-Based Optimization, 189-224.

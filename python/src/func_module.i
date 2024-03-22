@@ -79,6 +79,7 @@
 %include SymbolicFunction.i
 %include LinearCombinationFunction.i
 %include ComposedFunction.i
+%include IdentityFunction.i
 %include ParametricFunction.i
 %include DualLinearCombinationFunction.i
 %include FieldFunctionImplementation.i

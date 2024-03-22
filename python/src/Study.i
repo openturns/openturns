@@ -10,4 +10,8 @@
 
 %copyctor OT::Study;
 
+// for getLabels
+%include "std_vector.i"
+%template(_StringVector) std::vector<OT::String>;
+
 %include openturns/Study.hxx

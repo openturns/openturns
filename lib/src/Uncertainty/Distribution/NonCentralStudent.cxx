@@ -147,7 +147,7 @@ Scalar NonCentralStudent::computeProbability(const Interval & interval) const
 void NonCentralStudent::computeMean() const
 {
   if (!(nu_ > 1.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
-  mean_ = Point(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
+  mean_ = Point(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LogGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LogGamma(0.5 * nu_)) * delta_ + gamma_);
   isAlreadyComputedMean_ = true;
 }
 

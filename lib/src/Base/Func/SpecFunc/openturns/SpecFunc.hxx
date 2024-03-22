@@ -113,8 +113,6 @@ OT_API Scalar RegularizedIncompleteBetaInverse(const Scalar a,
     const Scalar x,
     const Bool tail = false);
 // Natural logarithm of the beta function
-OT_API Scalar LnBeta(const Scalar a,
-                     const Scalar b);
 OT_API Scalar LogBeta(const Scalar a,
                       const Scalar b);
 // Dawson function: Dawson(x) = \exp(-x^2) * \int_0^x \exp(t^2) dt
@@ -145,7 +143,6 @@ OT_API Scalar GammaCorrection(const Scalar a);
 // Complex gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
 OT_API Complex Gamma(const Complex & a);
 // Natural logarithm of the gamma function
-OT_API Scalar LnGamma(const Scalar a);
 OT_API Scalar LogGamma(const Scalar a);
 OT_API Scalar LogGamma1p(const Scalar a);
 OT_API Complex LogGamma(const Complex & a);
@@ -236,12 +233,6 @@ OT_API UnsignedInteger Log2(const Unsigned64BitsInteger n);
 // Compute the number of bits sets to 1 in n
 // Best known algorithm for 64 bits n and fast multiply
 OT_API UnsignedInteger BitCount(const Unsigned64BitsInteger n);
-
-// Missing functions in cmath wrt math.h as of C++98
-OT_API Scalar Acosh(const Scalar x);
-OT_API Scalar Asinh(const Scalar x);
-OT_API Scalar Atanh(const Scalar x);
-OT_API Scalar Cbrt(const Scalar x);
 
 // binomial coefficient C(n, k)
 OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,

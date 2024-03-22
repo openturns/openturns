@@ -191,7 +191,10 @@ public:
    */
   void fillObject(const String & name, InterfaceObject  & io) const;
 
-  /** Print all the labels in the study */
+  /** Labels accessor */
+  std::vector<String> getLabels() const;
+
+  /** @deprecated Print all the labels in the study */
   String printLabels() const;
 
 protected:

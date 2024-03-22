@@ -27,6 +27,32 @@ DistributionFactory, StudentCopula
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::StudentCopulaFactory::buildAsStudentCopula
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsStudentCopula()
+
+    buildAsStudentCopula(*sample*)
+
+    buildAsStudentCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.StudentCopula`.
+
+Returns
+-------
+dist : :class:`~openturns.Uniform`
+    The estimated distribution as a :class:`~openturns.StudentCopula`.
+    In the first usage, the default :class:`~openturns.StudentCopula` distribution is built."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::StudentCopulaFactory::setOptimizationAlgorithm
 "Accessor to the optimization solver.
 

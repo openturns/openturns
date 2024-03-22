@@ -885,7 +885,7 @@ Scalar DistFunc::dNonCentralChiSquare(const Scalar nu,
   if (x <= 0.0) return 0.0;
   const Scalar halfNu = 0.5 * nu;
   // Early exit for lambda == 0, central ChiSquare PDF
-  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
+  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LogGamma(halfNu) - halfNu * M_LN2);
   // Case lambda <> 0
   const Scalar halfLambda = 0.5 * lambda;
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
@@ -1478,7 +1478,7 @@ UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
   const Scalar hatCenter = lambda + 0.5;
   const Scalar mode = floor(lambda);
   const Scalar logLambda = std::log(lambda);
-  const Scalar pdfMode = mode * logLambda - SpecFunc::LnGamma(mode + 1.0);
+  const Scalar pdfMode = mode * logLambda - SpecFunc::LogGamma(mode + 1.0);
   // 2.943035529371538572764190 = 8 / e
   // 0.898916162058898740826254 = 3 - 2 sqr(3 / e)
   const Scalar hatWidth = std::sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254;
@@ -1489,7 +1489,7 @@ UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
     const Scalar x = hatCenter + hatWidth * (RandomGenerator::Generate() - 0.5) / u;
     if (x < 0 || x >= safetyBound) continue;
     const UnsignedInteger k = static_cast< UnsignedInteger >(floor(x));
-    const Scalar logPdf = k * logLambda - SpecFunc::LnGamma(k + 1.0) - pdfMode;
+    const Scalar logPdf = k * logLambda - SpecFunc::LogGamma(k + 1.0) - pdfMode;
     // Quick acceptance
     if (logPdf >= u * (4.0 - u) - 3.0) return k;
     // Quick rejection

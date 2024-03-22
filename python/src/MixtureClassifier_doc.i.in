@@ -1,9 +1,6 @@
 %feature("docstring") OT::MixtureClassifier
 "Particular classifier based on a mixture distribution.
 
-Available constructors:
-    MixtureClassifier(*mixtDist*)
-
 Parameters
 ----------
 mixtDist : :class:`~openturns.Mixture`

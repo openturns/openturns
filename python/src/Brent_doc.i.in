@@ -1,23 +1,18 @@
 %feature("docstring") OT::Brent
 "Brent algorithm solver for 1D non linear equations.
 
-Available constructor:
-    Brent()
-
-    Brent(*absError, relError, resError, maximumFunctionEvaluation*)
-
 Parameters
 ----------
-absError : positive float
+absError : positive float, optional
     Absolute error: distance between two successive iterates at the end point.
     Default is :math:`10^{-5}`.
-relError : positive float
+relError : positive float, optional
     Relative error: distance between the two last successive iterates with
     regards to the last iterate. Default is :math:`10^{-5}`.
-resError : positive float
+resError : positive float, optional
     Residual error: difference between the last iterate value and the expected
     value. Default is :math:`10^{-8}`.
-maximumFunctionEvaluation : int
+maximumFunctionEvaluation : int, optional
     The maximum number of evaluations of the function. Default is :math:`100`.
 
 See also
@@ -29,6 +24,12 @@ Notes
 The Brent solver is a mix of Bisection, Secant and inverse quadratic
 interpolation.
 
+If the function :math:`f` is continuous, the Brent solver will
+converge towards a root of the equation :math:`function(x) = value` in
+:math:`[infPoint, supPoint]`. If not, it will converge towards either a root or
+a discontinuity point of :math:`f` on :math:`[infPoint, supPoint]`.
+Bisection guarantees convergence.
+
 Examples
 --------
 
@@ -39,44 +40,3 @@ Examples
 >>> solver = ot.Brent()
 >>> root = solver.solve(f, 0.0, xMin, xMax)"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Brent::solve
-"Solve an equation.
-
-**Available usages**:
-
-    solve(*function, value, infPoint, supPoint*)
-
-    solve(*function, value, infPoint, supPoint, infValue, supValue*)
-
-Parameters
-----------
-function : :class:`~openturns.Function`
-    The function of the equation :math:`function(x) = value` to be solved in the
-    interval :math:`[infPoint, supPoint]`.
-value : float
-    The value of which the function must be equal.
-infPoint : float
-    Lower bound of the interval definition of the variable :math:`x`.
-supPoint : float
-    Upper bound of the interval definition of the variable :math:`x`.
-infValue : float
-    The value such that :math:`infValue = function(infPoint)`. It must be of 
-    opposite sign of :math:`supValue`.
-supValue : float
-    The value such that :math:`supValue = function(supPoint)`. It must be of 
-    opposite sign of :math:`infValue`.
-
-Returns
--------
-result : float
-    The result of the root research.
-
-Notes
------
-If the function :math:`f` is continuous, the Brent solver will
-converge towards a root of the equation :math:`function(x) = value` in
-:math:`[infPoint, supPoint]`. If not, it will converge towards either a root or
-a discontinuity point of :math:`f` on :math:`[infPoint, supPoint]`. Bisection
-guarantees a convergence."

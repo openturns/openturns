@@ -28,7 +28,17 @@ initialTheta = [5.70, 0.1, 0.0, 75.0e3, 5.0e3]
 myISphysical = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxDistribution, activeParameters, initialTheta, bounds, 0.3
 )
+
+myISphysical.setKeepSample(True)
 myISphysical.setOptimizationAlgorithm(ot.TNC())
 myISphysical.run()
 myResult = myISphysical.getResult()
 assert_almost_equal(myResult.getProbabilityEstimate(), 0.00012452, 1.0e-2, 0.0)
+
+# check that the event sample is right
+stepsNumber = myISphysical.getStepsNumber()
+inputEventSample = myISphysical.getInputSample(stepsNumber - 1, myISphysical.EVENT1)
+outputEventSample = myISphysical.getOutputSample(stepsNumber - 1, myISphysical.EVENT1)
+outputG = model(inputEventSample)
+diffSample = outputG - outputEventSample
+assert_almost_equal(diffSample.computeMean(), [0.0])

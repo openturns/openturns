@@ -279,6 +279,9 @@ protected:
   /** Explicit color validation flag accessor */
   virtual Bool isColorExplicitlySet() const;
 
+  /** Color and explicit color validation flag accessor */
+  virtual void setColor(const String & color, const Bool isColorExplicitlySet);
+
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;
 

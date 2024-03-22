@@ -323,6 +323,7 @@ ot_add_python_module(func func_module.i
                       AggregatedFunction.i AggregatedFunction_doc.i.in
                       SymbolicFunction.i SymbolicFunction_doc.i.in
                       ComposedFunction.i ComposedFunction_doc.i.in
+                      IdentityFunction.i IdentityFunction_doc.i.in
                       DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i
                       FieldFunctionImplementation.i FieldFunctionImplementation_doc.i.in
@@ -1170,7 +1171,5 @@ endif ()
 
 # wheel files
 configure_file (METADATA.in METADATA @ONLY)
-configure_file (WHEEL.in WHEEL @ONLY)
-install (DIRECTORY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns-${PACKAGE_VERSION}.dist-info)
-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/METADATA ${CMAKE_CURRENT_BINARY_DIR}/WHEEL
+install (FILES ${CMAKE_CURRENT_BINARY_DIR}/METADATA
 	 DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns-${PACKAGE_VERSION}.dist-info)

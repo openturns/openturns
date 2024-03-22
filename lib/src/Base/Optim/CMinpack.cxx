@@ -202,14 +202,10 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   {
     algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
-  if (algorithm->stopCallback_.first)
+  if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
-    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
-    if (stop)
-    {
-      LOGWARN("CMinpack was stopped by user");
-      return -1;
-    }
+    LOGWARN("CMinpack was stopped by user");
+    return -1;
   }
   return 0;
 }
@@ -403,6 +399,7 @@ void CMinpack::run()
   {
     case -1:
       // user stop
+      result_.setStatus(OptimizationResult::INTERRUPTION);
       result_.setStatusMessage("user stop");
       break;
     case 0:

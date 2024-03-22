@@ -296,7 +296,7 @@ void KPermutationsDistribution::setK(const UnsignedInteger k)
   if (k != k_)
   {
     k_ = k;
-    logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+    logPDFValue_ = SpecFunc::LogGamma(n_ - k_ + 1) - SpecFunc::LogGamma(n_ + 1);
     setDimension(k);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -318,7 +318,7 @@ void KPermutationsDistribution::setN(const UnsignedInteger n)
   if (n != n_)
   {
     n_ = n;
-    logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+    logPDFValue_ = SpecFunc::LogGamma(n_ - k_ + 1) - SpecFunc::LogGamma(n_ + 1);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -340,7 +340,7 @@ void KPermutationsDistribution::setKN(const UnsignedInteger k,
   k_ = k;
   setDimension(k);
   n_ = n;
-  logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+  logPDFValue_ = SpecFunc::LogGamma(n_ - k_ + 1) - SpecFunc::LogGamma(n_ + 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();

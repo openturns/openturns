@@ -9,3 +9,4 @@ Remove Solver.getUsedFunctionEvaluation
 Remove TimerCallback
 Remove ComposedDistribution in some future version
 Remove ComposedCopula in some future version
+Remove Study.printLabels

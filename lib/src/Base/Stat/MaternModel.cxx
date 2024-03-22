@@ -188,8 +188,8 @@ void MaternModel::setFullParameter(const Point & parameter)
   We should check that totalSize = generic totalSize + 1
   */
   // Check the size
-  const UnsignedInteger totalSize = inputDimension_ + outputDimension_  + 1;
-  if (!(parameter.getSize() >= totalSize))
+  const UnsignedInteger totalSize = inputDimension_ + outputDimension_  + 2;
+  if (parameter.getSize() != totalSize)
     throw InvalidArgumentException(HERE) << "In MaternModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
   // First set the generic parameter using CovarianceModelImplementation::setFullParameter

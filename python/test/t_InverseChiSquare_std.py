@@ -162,5 +162,5 @@ for n in range(len(allDistributions)):
     print("kurtosis=", kurtosis)
 
     # computeProba test with bound far away
-    p = distribution.computeProbability(ot.Interval(-ot.MaxScalar, ot.MaxScalar))
+    p = distribution.computeProbability(ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar))
     ott.assert_almost_equal(p, 1.0)

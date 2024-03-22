@@ -1,13 +1,5 @@
 %define OT_Classifier_doc
-"Classifier.
-
-Available constructors:
-    Classifier(*classifierImp*)
-
-Parameters
-----------
-classifierImp : classifier implementation
-    A classifier implementation. It can be a :class:`~openturns.MixtureClassifier`.
+"Base class for classification algorithms.
 
 See also
 --------

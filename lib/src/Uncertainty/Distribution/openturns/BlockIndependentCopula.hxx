@@ -175,6 +175,12 @@ class OT_API ComposedCopula
 {
 CLASSNAME
 public:
+  ComposedCopula()
+    : BlockIndependentCopula() {}
+
+  /** Default constructor */
+  explicit ComposedCopula(const DistributionCollection & coll)
+    : BlockIndependentCopula(coll) {}
 };
 
 END_NAMESPACE_OPENTURNS
