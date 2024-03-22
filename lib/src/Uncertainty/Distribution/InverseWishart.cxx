@@ -356,7 +356,7 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   // vInverse = T'.T, non const because we compute its Cholesky factor
   CovarianceMatrix vInverse(T.computeGram(true));
   // Flag false means that vInverse is not preserved, non const because we solve a linear system with this matrix
-  TriangularMatrix vInverseCholesky(vInverse.computeCholesky(false));
+  TriangularMatrix vInverseCholesky(vInverse.computeCholeskyInPlace());
   inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystemInPlace(IdentityMatrix(p)).getImplementation();
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;

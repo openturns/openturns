@@ -232,7 +232,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureAlgorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
-  TriangularMatrix cholesky(gram.computeCholesky(false));
+  TriangularMatrix cholesky(gram.computeCholeskyInPlace());
 
   // Discretize the covariance model
   LOGINFO("Discretize the covariance matrix");

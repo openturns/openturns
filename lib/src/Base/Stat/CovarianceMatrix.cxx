@@ -105,9 +105,15 @@ Bool CovarianceMatrix::isPositiveDefinite() const
 }
 
 /* Build the Cholesky factorization of the matrix */
-TriangularMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
+TriangularMatrix CovarianceMatrix::computeCholesky() const
 {
-  return Implementation(getImplementation()->computeCholesky(keepIntact).clone());
+  return getImplementation()->computeCholesky();
+}
+
+TriangularMatrix CovarianceMatrix::computeCholeskyInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeCholeskyInPlace();
 }
 
 /* Build the regularized Cholesky factorization of the matrix */

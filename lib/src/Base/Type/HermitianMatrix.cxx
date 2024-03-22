@@ -275,9 +275,14 @@ HermitianMatrix HermitianMatrix::power(const UnsignedInteger n) const
 }
 
 /* Build the Cholesky factorization of the hermitian matrix */
-TriangularComplexMatrix HermitianMatrix::computeCholesky(const Bool keepIntact)
+TriangularComplexMatrix HermitianMatrix::computeCholesky() const
 {
-  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholesky(keepIntact).clone()), true);
+  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholesky().clone()), true);
+}
+
+TriangularComplexMatrix HermitianMatrix::computeCholeskyInPlace()
+{
+  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholeskyInPlace().clone()), true);
 }
 
 END_NAMESPACE_OPENTURNS

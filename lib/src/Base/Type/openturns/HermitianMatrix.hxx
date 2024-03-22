@@ -173,7 +173,8 @@ public:
   HermitianMatrix operator / (const Complex s) const;
 
   /** Compute the Cholesky factor  */
-  TriangularComplexMatrix computeCholesky(const Bool keepIntact = true);
+  TriangularComplexMatrix computeCholesky() const;
+  TriangularComplexMatrix computeCholeskyInPlace();
 
 private:
 

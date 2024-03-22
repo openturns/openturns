@@ -206,7 +206,8 @@ public:
   virtual Bool isHermitianPositiveDefinite(const Bool keepIntact = true);
 
   /** Build the Cholesky factorization of the matrix */
-  virtual ComplexMatrixImplementation computeCholesky(const Bool keepIntact = true);
+  virtual ComplexMatrixImplementation computeCholesky() const;
+  virtual ComplexMatrixImplementation computeCholeskyInPlace();
 
   /** Comparison operators */
   using PersistentCollection::operator ==;

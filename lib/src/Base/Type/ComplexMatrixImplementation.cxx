@@ -929,28 +929,30 @@ Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepInt
 }
 
 /* Build the Cholesky factorization of the hermitian matrix */
-ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const Bool keepIntact)
+ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky() const
+{
+  ComplexMatrixImplementation A(*this);
+  return A.computeCholeskyInPlace();
+}
+
+ComplexMatrixImplementation ComplexMatrixImplementation::computeCholeskyInPlace()
 {
   // Exception for null dimension
   if (!(getDimension() > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
-  int info;
-  int n(nbRows_);
-  char uplo('L');
-  int luplo(1);
+  int info = 0;
+  int n = nbRows_;
+  char uplo = 'L';
+  int luplo = 1;
 
-  ComplexMatrixImplementation Q;
-  if (keepIntact) Q = ComplexMatrixImplementation(*this);
-  ComplexMatrixImplementation & A = keepIntact ? Q : *this;
-
-  zpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
+  zpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
   if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
   for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
     for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-      A(i, j) = 0.0;//Complex(0.0, 0.0);
+      operator()(i, j) = 0.0;//Complex(0.0, 0.0);
   // Check return code from Lapack
   if(info != 0)
     throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;
-  return A;
+  return *this;
 }
 
 /* Comparison operator */
