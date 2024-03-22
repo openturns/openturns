@@ -188,9 +188,6 @@ fullSVD : bool, optional
     Whether the null parts of the orthogonal factors are explicitly stored
     or not.
     Default is *False* and computes a reduced SVD.
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -217,6 +214,15 @@ Examples
 >>> for i in range(singular_values.getSize()):
 ...     Sigma[i, i] = singular_values[i]
 >>> np.testing.assert_array_almost_equal(U * Sigma * VT, M)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeSVDInPlace
+"Compute the singular values decomposition (SVD).
+
+Unlike computeSVD, this modifies the matrix in place and avoids a copy.
+"
 
 // ---------------------------------------------------------------------
 

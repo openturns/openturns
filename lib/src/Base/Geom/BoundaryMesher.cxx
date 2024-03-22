@@ -155,7 +155,7 @@ struct ComputeNormalPolicy
       try
       {
         // Compute the face normal
-        (void) M.computeSVD(U, VT, true, false);
+        (void) M.computeSVDInPlace(U, VT, true);
         Point normal(dimension_);
         // The normal is the last row of VT
         for (UnsignedInteger j = 0; j < dimension_; ++j)

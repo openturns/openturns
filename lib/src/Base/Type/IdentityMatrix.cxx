@@ -151,8 +151,16 @@ Point IdentityMatrix::computeSingularValues(const Bool )
 /* Compute singular values */
 Point IdentityMatrix::computeSVD(Matrix & u,
                                  Matrix & vT,
-                                 const Bool,
-                                 const Bool )
+                                 const Bool) const
+{
+  u = *this;
+  vT = *this;
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeSVDInPlace(Matrix & u,
+                                        Matrix & vT,
+                                        const Bool)
 {
   u = *this;
   vT = *this;

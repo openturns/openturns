@@ -1384,38 +1384,43 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 /* Compute the singular values and singular decomposition of a matrix */
 Point MatrixImplementation::computeSVD(MatrixImplementation & u,
                                        MatrixImplementation & vT,
-                                       const Bool fullSVD,
-                                       const Bool keepIntact)
+                                       const Bool fullSVD) const
 {
-  int m(nbRows_);
-  int n(nbColumns_);
-  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values decomposition of an empty matrix";
-  char jobz( fullSVD ? 'A' : 'S');
-  int ldu(m);
-  u = MatrixImplementation(m, ( fullSVD ? m : std::min(m, n)));
-  int ldvt = (fullSVD ? n : std::min(m, n));
-  vT = MatrixImplementation(( fullSVD ? n : std::min(m, n)), n);
-  Point S(std::min(m, n), 0.0);
-  Point work(1, 0.0);
-  int lwork(-1);
-  std::vector<int> iwork(8 * std::min(m, n));
-  int info(0);
-  int ljobz(1);
+  MatrixImplementation Q(*this);
+  return Q.computeSVDInPlace(u, vT, fullSVD);
+}
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
+Point MatrixImplementation::computeSVDInPlace(MatrixImplementation & u,
+                                              MatrixImplementation & vT,
+                                              const Bool fullSVD)
+{
+  int m = nbRows_;
+  int n = nbColumns_;
+  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values decomposition of an empty matrix";
+  char jobz = (fullSVD ? 'A' : 'S');
+  int ldu = m;
+  u = MatrixImplementation(m, (fullSVD ? m : std::min(m, n)));
+  int ldvt = (fullSVD ? n : std::min(m, n));
+  vT = MatrixImplementation((fullSVD ? n : std::min(m, n)), n);
+  Point S(std::min(m, n), 0.0);
+  Point work = {0.0};
+  int lwork = -1;
+  std::vector<int> iwork(8 * std::min(m, n));
+  int info = 0;
+  int ljobz = 1;
 
   // First call to compute the optimal work size
-  dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+  dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   lwork = static_cast<int>(work[0]);
   work = Point(lwork, 0.0);
   // Second call to compute the SVD
-  dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+  dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
 
   if (info != 0) throw InternalException(HERE) << "Error: LAPACK trouble in computing SVD decomposition, return code is " << info;
   return S;
 }
+
+
 
 
 /* Check if the matrix is SPD */
