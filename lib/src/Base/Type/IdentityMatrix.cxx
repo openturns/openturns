@@ -130,13 +130,23 @@ Scalar IdentityMatrix::computeDeterminant(const Bool )
 }
 
 /* Compute eigenvalues */
-Point IdentityMatrix::computeEigenValues(const Bool )
+Point IdentityMatrix::computeEigenValues() const
 {
   return Point(getNbRows(), 1.0);
 }
 
-Point IdentityMatrix::computeEV(SquareMatrix & v,
-                                const Bool )
+Point IdentityMatrix::computeEigenValuesInPlace()
+{
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeEV(SquareMatrix & v) const
+{
+  v = *this;
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeEVInPlace(SquareMatrix & v)
 {
   v = *this;
   return Point(getNbRows(), 1.0);
