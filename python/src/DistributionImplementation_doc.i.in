@@ -793,9 +793,8 @@ x : :class:`~openturns.Point`
 
 Notes
 -----
-The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p`
-where :math:`S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i = 1}^d \left\{X_i > x_i \right\}}`.
-OpenTURNS returns the point :math:`\vect{x}^p` such that 
+Among the points :math:`\vect{x}` that satisfy :math:`S_{\vect{X}}(\vect{x}) = p`,
+the method returns the one which also satisfies
 :math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
 
 See Also
