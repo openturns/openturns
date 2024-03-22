@@ -20,6 +20,7 @@
  */
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include "openturns/Contour.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
