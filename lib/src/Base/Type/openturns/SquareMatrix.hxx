@@ -135,9 +135,12 @@ public:
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  ComplexCollection computeEigenValues(const Bool keepIntact = true);
-  ComplexCollection computeEV(SquareComplexMatrix & vOut,
-                              const Bool keepIntact = true);
+  ComplexCollection computeEigenValues() const;
+  ComplexCollection computeEigenValuesInPlace();
+
+  ComplexCollection computeEV(SquareComplexMatrix & vOut) const;
+  ComplexCollection computeEVInPlace(SquareComplexMatrix & vOut);
+
   /** Compute the largest eigenvalue module using power iterations */
   virtual Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
       const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;

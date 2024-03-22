@@ -312,7 +312,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   SquareMatrix eigenVectors;
   // Last time we need C, so we can overwrite it by eigenVectors
   LOGINFO("Solve the standard eigenvalues problem");
-  Point eigenValues(C.computeEV(eigenVectors, false));
+  Point eigenValues(C.computeEVInPlace(eigenVectors));
   const UnsignedInteger augmentedDimension = eigenVectors.getDimension();
   // Transform the eigenvectors to the generalized ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors

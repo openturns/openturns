@@ -246,12 +246,18 @@ public:
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  ComplexCollection computeEVSquare(ComplexMatrixImplementation & vOut,
-                                    const Bool keepIntact = true);
-  Point computeEigenValuesSym(const Bool keepIntact = true);
-  Point computeEVSym(MatrixImplementation & vOut,
-                     const Bool keepIntact = true);
+  ComplexCollection computeEigenValuesSquare() const;
+  ComplexCollection computeEigenValuesSquareInPlace();
+
+  ComplexCollection computeEVSquare(ComplexMatrixImplementation & vOut) const;
+  ComplexCollection computeEVSquareInPlace(ComplexMatrixImplementation & vOut);
+
+  Point computeEigenValuesSym() const;
+  Point computeEigenValuesSymInPlace();
+
+  Point computeEVSym(MatrixImplementation & vOut) const;
+  Point computeEVSymInPlace(MatrixImplementation & vOut);
+
   /** Compute the largest eigenvalue module using power iterations */
   Bool computeLargestEigenValueModuleSquare(Scalar & maximumModule,
       const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),

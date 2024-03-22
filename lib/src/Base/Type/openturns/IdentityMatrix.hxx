@@ -87,9 +87,10 @@ public:
   Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
-  Point computeEigenValues(const Bool keepIntact = true);
-  Point computeEV(SquareMatrix & vOut,
-                  const Bool keepIntact = true);
+  Point computeEigenValues() const;
+  Point computeEigenValuesInPlace();
+  Point computeEV(SquareMatrix & vOut) const;
+  Point computeEVInPlace(SquareMatrix & vOut);
 
   /** Check if the matrix is SPD */
   Bool isPositiveDefinite() const override;
