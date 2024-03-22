@@ -113,6 +113,7 @@ prevents us from using the fast analytical formulas and get an
 accurate estimator of the MSE.
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> from math import pi
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
@@ -134,21 +135,21 @@ accurate estimator of the MSE.
 
 Validate the polynomial chaos expansion using leave-one-out cross-validation.
 
->>> validation = ot.FunctionalChaosValidation(result, ot.FunctionalChaosValidation.LEAVEONEOUT)
+>>> validation = otexp.FunctionalChaosValidation(result, otexp.FunctionalChaosValidation.LEAVEONEOUT)
 >>> r2Score = validation.computeR2Score()
 >>> print('R2 = ', r2Score[0])
 R2 =  0.99...
 
 Validate the polynomial chaos expansion using K-Fold cross-validation.
 
->>> validation = ot.FunctionalChaosValidation(result, ot.FunctionalChaosValidation.KFOLD)
+>>> validation = otexp.FunctionalChaosValidation(result, otexp.FunctionalChaosValidation.KFOLD)
 
 Validate the polynomial chaos expansion using K-Fold cross-validation
 and set the :math:`k` parameter.
 
 >>> kParameter = 10
->>> validation = ot.FunctionalChaosValidation(
-...     result, ot.FunctionalChaosValidation.KFOLD, kParameter
+>>> validation = otexp.FunctionalChaosValidation(
+...     result, otexp.FunctionalChaosValidation.KFOLD, kParameter
 ... )
 
 Draw the validation graph.
