@@ -605,7 +605,7 @@ p : float
 
 Notes
 -----
-This computes the probability that the random vector :math:`\vect{X}` lies in :math:`I`.
+This computes the probability that the random vector :math:`\vect{X}` lies in :math:`interval`.
 
 If :math:`I = \bigcap\limits_{i=1}^d [a_i, b_i]`, then we have:
 
