@@ -53,8 +53,8 @@ where :math:`x_{j1}=a_j` and :math:`x_{j2}=b_j` for all :math:`j \in \{1,\dots,d
 The copula represents the part of the joint cumulative density function which is not described by the
 marginal distributions. It models the dependence structure of the input variables.
 
-In the probabilistic modelisation issue, the choice of the dependence structure is disconnected from the
-choice of the marginal distributions.
+Note that a multivariate distribution is characterized by its marginal distributions and its copula.
+Therefore, a multivariate distribution can be built by choosing the marginals and the copula independently.
 
 .. topic:: API:
 
