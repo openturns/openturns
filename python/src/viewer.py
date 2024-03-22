@@ -543,7 +543,8 @@ class View:
                     drawable.getData(),
                     (drawable.getX().getSize(), drawable.getY().getSize()),
                 )
-                contour_kw.setdefault("levels", drawable.getLevels())
+                if len(drawable.getLevels())>0:
+                    contour_kw.setdefault("levels", drawable.getLevels())
                 if ("linestyles" not in contour_kw_default) and (
                     "ls" not in contour_kw_default
                 ):
@@ -593,7 +594,7 @@ class View:
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(artists[0])
                     legend_labels.append(drawable.getLegend())
-                if contour.getColorBarPosition() and len(contour.getLevels()) > 1:
+                if contour.getColorBarPosition():
                     self._fig.colorbar(contourset, location=contour.getColorBarPosition())
 
             elif drawableKind == "Staircase":
