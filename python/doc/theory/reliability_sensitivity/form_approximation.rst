@@ -14,7 +14,7 @@ an event whose probability :math:`P_f` is defined as:
 .. math::
     :label: PfX5
 
-      P_f = \Prob{g(\vect{X})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
+      P_f = \Prob{\model(\vect{X})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
 
 
 The objective of FORM is to evaluate :math:`P_f`. The method proceeds in three steps:
