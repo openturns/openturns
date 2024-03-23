@@ -28,8 +28,8 @@ where :math:`\mat{C} \in \Rset^{\inputDim \times \inputDim}` is the input covari
 with :math:`c_{ii} = \sigma_i^2`.
 
 
-Case 1: :math:`q=1`, :math:`Y = \model (\inputRV) \in \Rset`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 1: :math:`q=1`, :math:`Y = \model(\inputRV) \in \Rset`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second-order Taylor expansion of :math:`\model` at the point :math:`\ux = \vect{\mu}` is:
 
@@ -62,10 +62,10 @@ order derivatives of :math:`\model` and the knowledge of moments of order strict
 than 2 of the distribution of :math:`\uX`.
 
 
-Case 2: :math:`q>1`, :math:`Y =(Y_1, \dots, Y_\outputDim) \in \Rset^\outputDim`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 2: :math:`q>1`, :math:`Y =(Y_1, \dots, Y_{\outputDim}) \in \Rset^{\outputDim}`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The second-order Taylor expansion of :math:`\model = (\model_1, \dots, \model_q)` at the point
+The second-order Taylor expansion of :math:`\model = (\model_1, \dots, \model_{\outputDim})` at the point
 :math:`\ux = \vect{\mu}` for each marginal function :math:`h_k` is:
 
 .. math::

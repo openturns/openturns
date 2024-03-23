@@ -50,14 +50,14 @@ function :math:`\model`: this is the classical
 structural reliability formulation.
 However, if the event is a threshold exceedance, it is useful to
 explicit the variable of interest
-:math:`Z=\tilde{g}(\inputRV)`, evaluated from the model
-:math:`\tilde{g}(.)`. In that case, the event considered, associated to
+:math:`Z=\tilde{\model}(\inputRV)`, evaluated from the model
+:math:`\tilde{\model}(.)`. In that case, the event considered, associated to
 the threshold :math:`z_s` has the formulation:
-:math:`\cD_f = \{ \vect{x} \in \Rset^\inputDim \, / \, Z=\tilde{g}(\vect{x}) > z_s \}`
+:math:`\cD_f = \{ \vect{x} \in \Rset^\inputDim \, / \, Z=\tilde{\model}(\vect{x}) > z_s \}`
 and the limit state function is :
-:math:`g(\vect{x}) = z_s - Z = z_s - \tilde{g}(\vect{x})`.
+:math:`\model(\vect{x}) = z_s - Z = z_s - \tilde{\model}(\vect{x})`.
 :math:`P_f` is the threshold exceedance probability, defined as:
-:math:`P_f     =       P(Z \geq z_s) = \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}`.
+:math:`P_f     =       P(Z \geq z_s) = \int_{\model(\vect{X}) \le 0}  \pdf\, d\vect{x}`.
 Thus, the FORM sensitivity factors offer a way to rank the importance of
 the parameters of the input components with respect to the threshold
 exceedance by the quantity of interest :math:`Z`. They can be seen as a

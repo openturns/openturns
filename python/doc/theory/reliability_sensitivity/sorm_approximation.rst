@@ -6,13 +6,13 @@ SORM
 The Second Order Reliability Method is used under the following context: let :math:`\inputRV` be a probabilistic
 input vector with joint density probability  :math:`\pdf`, let :math:`\model` be the limit state function of
 the model and let :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \,
-/ \, g(\vect{x}) \le 0\}` be an event whose probability
+/ \, \model(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
   :label: PfX4
 
-  P_f = \Prob{g(\vect{X})\leq 0} = \int_{\cD_f}  \pdf\, d\vect{x}
+  P_f = \Prob{\model(\inputRV)\leq 0} = \int_{\cD_f}  \pdf\, d\vect{x}
 
 The principle is the same as for :ref:`form_approximation`: we map the physical space into the standard space
 through an :ref:`isoprobabilistic transformation <isoprobabilistic_transformation>`).
