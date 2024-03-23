@@ -20,11 +20,11 @@ As a result, Sobol' indices can be obtained analytically from the
 coefficients of the PCE (see [sudret2006]_, [sudret2008]_).
 
 Consider the input random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{d} \right)`
-and the output random variable :math:`Y` of the physical model:
+:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)`
+and the output random variable :math:`Y` of the model:
 
 .. math::
-    Y = \operatorname{g}(\vect{X}).
+    Y =  \model(\inputRV).
 
 Variance and part of variance of a PCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,7 +32,7 @@ Variance and part of variance of a PCE
 Let :math:`d` be the dimension of the input random vector.
 Let :math:`P \in \Nset` be the number of coefficients in the functional
 basis.
-Let :math:`\mathcal{J}_P \subseteq \Nset^{d}` the set of multi-indices up
+Let :math:`\mathcal{J}_P \subseteq \Nset^{\inputDim}` the set of multi-indices up
 to the index :math:`P`.
 Depending on the way the coefficients are computed, the set of multi-indices
 is the consequence of the choice of the polynomial degree, the enumeration rule,
@@ -51,7 +51,7 @@ functional basis.
 The variance of the polynomial chaos expansion is:
 
 .. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
+    \Var{\metaModel(\RVZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
 
 In the previous expression, let us emphasise that the variance is a sum
 of squares, excepted the :math:`a_0` coefficient.
@@ -59,13 +59,13 @@ If the polynomial basis is orthonormal, the expression is particularly
 simple (see [legratiet2017]_ eq. 38.43 page 1301):
 
 .. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
+    \Var{\metaModel(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
 
 The part of variance of the multi-index :math:`\idx` is:
 
 .. math::
     \operatorname{PoV}_\idx
-    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\bdZ)}}.
 
 The sum of the part of variances of all multi-indices is equal to 1:
 
@@ -92,7 +92,7 @@ to the multi-indices :math:`\mathcal{J}^S`, defined by:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\bdZ)}}.
 
 Then any Sobol' index :math:`S` can be defined by the equation:
 
@@ -103,7 +103,7 @@ If the polynomial basis is orthonormal, therefore:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\metaModel(\bdZ)}}.
 
 
 Hence, in the methods presented below, each Sobol' index is defined
@@ -116,7 +116,7 @@ First order Sobol' index of a single variable
 
 See :ref:`reliability_sensitivity_first_order_variable` for the
 mathematical definition of this sensitivity index.
-Let :math:`i \in \{0, ..., d - 1\}` the index of an input
+Let :math:`i \in \{0, ..., \inputDim - 1\}` the index of an input
 variable.
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
 :math:`\alpha_i > 0` and the other components of the multi-indices are
