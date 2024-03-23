@@ -107,7 +107,7 @@ The complementary cumulative distribution function.
 
 .. math::
 
-    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i = 1}^d \left\{X_i \leq x_i \right\}}, \qquad \boldsymbol{x} \in \Rset^d
+    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i = 1}^d \left\{X_i \leq x_i \right\}}, \qquad \vect{x} \in \Rset^d
 
 .. warning::
     This is not the survival function (except for scalar distributions).
