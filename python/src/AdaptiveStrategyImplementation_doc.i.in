@@ -1,11 +1,6 @@
 %define OT_AdaptiveStrategy_doc
 "Base class for the construction of the truncated multivariate orthogonal basis.
 
-Available constructors:
-    AdaptiveStrategy(*orthogonalBasis, dimension*)
-
-    AdaptiveStrategy(*adaptiveStrategyImplementation*)
-
 Parameters
 ----------
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
@@ -13,9 +8,6 @@ orthogonalBasis : :class:`~openturns.OrthogonalBasis`
 dimension : positive int
     Number of terms of the basis. This first usage has the same implementation
     as the second with a :class:`~openturns.FixedStrategy`. 
-adaptiveStrategyImplementation : AdaptiveStrategyImplementation
-    Adaptive strategy implementation which is a :class:`~openturns.FixedStrategy` 
-    or a :class:`~openturns.CleaningStrategy`.
 
 See also
 --------
