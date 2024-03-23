@@ -4,58 +4,58 @@ Sensitivity Factors from FORM method
 ------------------------------------
 
 | Sensitivity Factors are evaluated under the following context:
-  :math:`\vect{X}` denotes a random input vector, representing the
+  :math:`\inputRV` denotes a random input vector, representing the
   sources of uncertainties, :math:`\pdf` its joint density probability,
-  :math:`g(\vect{X})` the limit state function of
+  :math:`\model` the limit state function of
   the model,
-  :math:`\cD_f = \{\vect{X} \in \Rset^d \, / \, g(\vect{X}) \le 0\}`
-  the event considered here and :math:`{g(\vect{X}) = 0}`
+  :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \, / \, \model(\vect{x}) \le 0\}`
+  the event considered here and :math:`{\model(\inputRV) = 0}`
   its boundary (also called limit state surface).
 | The probability content of the event :math:`\cD_f` is :math:`P_f`:
 
   .. math::
     :label: PfX11
 
-    P_f = \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}.
+    P_f = \int_{\model(\inputRV) \le 0}  \pdf\, d\vect{x}.
 
 | In this context, the probability :math:`P_f` can often be
   efficiently estimated by FORM or SORM approximations.
 | The FORM importance factors offer a way to analyze the sensitivity of
   the probability the realization of the event with respect to the
-  parameters of the probability distribution of :math:`\vect{X}`.
+  parameters of the probability distribution of :math:`\inputRV`.
 
 | A sensitivity factor is defined as the derivative of the Hasofer-Lind
   reliability index with respect to the parameter :math:`\theta`. The
   parameter :math:`\theta` is a parameter in a distribution of the
-  random vector :math:`\vect{X}`.
+  random vector :math:`\inputRV`.
 | If :math:`\vect{\theta}` represents the vector of all the parameters
-  of the distribution of :math:`\vect{X}` which appear in the definition
+  of the distribution of :math:`\inputRV` which appear in the definition
   of the isoprobabilistic transformation :math:`T`, and
-  :math:`U_{\vect{\theta}}^{*}` the design point associated to the event
+  :math:`\vect{U}_{\vect{\theta}}^{*}` the design point associated to the event
   considered in the :math:`U`-space, and if the mapping of the limit
   state function by the :math:`T` is noted
-  :math:`h(\vect{U}\,,\,\vect{\theta}) =  g[T^{-1}(\vect{U}\,,\,\vect{\theta}), \vect{d}]`,
+  :math:`h(\vect{U}\,,\,\vect{\theta}) =  \model[T^{-1}(\vect{U}\,,\,\vect{\theta})]`,
   then the sensitivity factors vector is defined as:
 
   .. math::
 
-      \nabla_{\vect{\theta}} \beta_{HL} =  \displaystyle +\frac{1}{||\nabla_{\vect{\theta}} h(U_{\vect{\theta}}^{*}, \vect{d})||} \nabla_{\vect{u}} G(U_{\vect{\theta}}^{*}, \vect{d}).
+      \nabla_{\vect{\theta}} \beta_{HL} =  \displaystyle +\frac{1}{||\nabla_{\vect{\theta}} h(U_{\vect{\theta}}^{*})||} \nabla_{\vect{u}} G(U_{\vect{\theta}}^{*}).
 
 The sensitivity factors indicate the importance on the Hasofer-Lind
 reliability index (refer to ) of the value of the parameters used to
-define the distribution of the random vector :math:`\vect{X}`.
+define the distribution of the random vector :math:`\inputRV`.
 
 Here, the event considered is explicited directly from the limit state
-function :math:`g(\vect{X})`: this is the classical
+function :math:`\model`: this is the classical
 structural reliability formulation.
 However, if the event is a threshold exceedance, it is useful to
 explicit the variable of interest
-:math:`Z=\tilde{g}(\vect{X})`, evaluated from the model
+:math:`Z=\tilde{g}(\inputRV)`, evaluated from the model
 :math:`\tilde{g}(.)`. In that case, the event considered, associated to
 the threshold :math:`z_s` has the formulation:
-:math:`\cD_f = \{ \vect{X} \in \Rset^d \, / \, Z=\tilde{g}(\vect{X}) > z_s \}`
+:math:`\cD_f = \{ \vect{x} \in \Rset^\inputDim \, / \, Z=\tilde{g}(\vect{x}) > z_s \}`
 and the limit state function is :
-:math:`g(\vect{X}) = z_s - Z = z_s - \tilde{g}(\vect{X})`.
+:math:`g(\vect{x}) = z_s - Z = z_s - \tilde{g}(\vect{x})`.
 :math:`P_f` is the threshold exceedance probability, defined as:
 :math:`P_f     =       P(Z \geq z_s) = \int_{g(\vect{X}) \le 0}  \pdf\, d\vect{x}`.
 Thus, the FORM sensitivity factors offer a way to rank the importance of
