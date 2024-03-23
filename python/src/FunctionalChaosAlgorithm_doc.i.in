@@ -108,7 +108,8 @@ We choose all the polynomials of degree lower or equal to 4.
 >>> print(indexMax)
 5
 
-We keep all the polynomials of degree <= 4 (which corresponds to the 5 first ones):
+We keep all the polynomials of degree lower or equal to 4 (which corresponds
+to the 5 first ones):
 
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
 
@@ -122,8 +123,9 @@ Define the evaluation strategy of the  coefficients:
 
 Create the chaos algorithm:
 
->>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution, \
-...                                    adaptiveStrategy, projectionStrategy)
+>>> algo = ot.FunctionalChaosAlgorithm(
+...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
+... )
 >>> algo.run()
 
 Get the result:
@@ -167,27 +169,27 @@ to consider in the expansion, up to the total degree equal to 10.
 >>> polynomialsList = []
 >>> for i in range(inputDimension):
 ...     marginalDistribution = distribution.getMarginal(i)
-...     marginalPolynomial = ot.StandardDistributionPolynomialFactory( \
-...         marginalDistribution
-...     )
+...     marginalPolynomial = ot.StandardDistributionPolynomialFactory(marginalDistribution)
 ...     polynomialsList.append(marginalPolynomial)
 >>> basis = ot.OrthogonalProductPolynomialFactory(polynomialsList, enumerateFunction)
 >>> adaptiveStrategy = ot.FixedStrategy(basis, totalSize)
->>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution, \
-...                                    adaptiveStrategy)
+>>> algo = ot.FunctionalChaosAlgorithm(
+...     inputSample, outputSample, distribution, adaptiveStrategy
+... )
 
 The most involved method is to define the way to compute the coefficients,
 thanks to the :class:`~openturns.ProjectionStrategy`.
 In the next example, we use :class:`~openturns.LARS` to create a
 sparse PCE.
 
->>> selection = ot.LeastSquaresMetaModelSelectionFactory( \
-...     ot.LARS(), \
+>>> selection = ot.LeastSquaresMetaModelSelectionFactory(
+...     ot.LARS(),
 ...     ot.CorrectedLeaveOneOut()
 ... )
 >>> projectionStrategy = ot.LeastSquaresStrategy(inputSample, outputSample, selection)
->>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution, \
-...                                    adaptiveStrategy, projectionStrategy)"
+>>> algo = ot.FunctionalChaosAlgorithm( 
+...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
+... )"
 
 // ---------------------------------------------------------------------
 
