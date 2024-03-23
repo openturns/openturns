@@ -4,7 +4,7 @@ Estimating moments with Monte Carlo
 -----------------------------------
 
 Let us denote
-:math:`\outputRV = \model\left( \inputRV,\vect{d} \right) = \left( Y^1,\ldots,Y^\outputDim \right)`,
+:math:`\outputRV = \model\left( \inputRV \right) = \left( Y^1,\ldots,Y^{\outputDim} \right)`,
 where :math:`\inputRV= \left( X^1,\ldots,X^{\inputDim} \right)` is a random
 vector. We seek here to
 evaluate, the characteristics of the central part (central tendency and
@@ -27,13 +27,13 @@ where :math:`f_{Y^i}` represents the probability density function of
 :math:`Y^i`.
 
 Suppose now that we have the sample
-:math:`\left\{ y^i_1,\ldots,y^i_{\sampleSize \right\}` of :math:`{\sampleSize` values randomly
+:math:`\left\{ y^i_1,\ldots,y^i_\sampleSize \right\}` of :math:`\sampleSize` values randomly
 and independently sampled from the probability distribution
-:math:`f_{Y^i}`; this sample can be obtained by drawing a :math:`{\sampleSize`
-sample :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_{\sampleSize \right\}` of the
+:math:`f_{Y^i}`; this sample can be obtained by drawing a :math:`\sampleSize`
+sample :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_\sampleSize \right\}` of the
 random vector :math:`\inputRV` (the distribution of which is known) and
 by computing
-:math:`\vect{y}_j =  \model \left( \vect{x}_j,\vect{d} \right) \ \forall 1 \leq j \leq {\sampleSize`.
+:math:`\vect{y}_j =  \model \left( \vect{x}_j \right) \ \forall 1 \leq j \leq \sampleSize`.
 Then, the Monte-Carlo estimations for the mean and standard deviation
 are the empirical mean and standard deviations of the sample:
 
