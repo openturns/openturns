@@ -31,7 +31,7 @@ iteration, these steps are the following:
 
 -  In the direction starting from the origin and passing through
    :math:`P_i`, solutions of the equation
-   :math:`g(\vect{X}) = 0` (i.e. limits of :math:`\cD_f`) are
+   :math:`\model(\vect{X}) = 0` (i.e. limits of :math:`\cD_f`) are
    searched. The set of values of :math:`\underline{u}` that belong to
    :math:`\cD_f` is deduced for these solutions: it is a subset
    :math:`I_i \subset \Rset`.
