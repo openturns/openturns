@@ -34,7 +34,7 @@ NY = 75
 
 # %%
 graph = f.draw([YMin, YMin], [XMax, YMax], [NX, NY])
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # The graph contains an unique drawable whose implementation is of class `Contour`
@@ -60,7 +60,7 @@ contour = ot.Contour(ot.Box([NX]).generate() * [XMax - XMin] + [XMin], ot.Box([N
 # %%
 graph = ot.Graph('Complex iso lines', 'u1', 'u2', True)
 graph.add(contour)
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # The previous graph does not show the associated color bar.
@@ -72,7 +72,7 @@ contour.setColorBarPosition('right')
 contour.setColorMap('inferno')
 contour.buildDefaultLevels(5)
 graph.setDrawables([ot.Drawable(contour)])
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # For such a function, contour lines are not easy to interpret.
@@ -80,7 +80,7 @@ viewer.View(graph)
 contour.setIsFilled(True)
 contour.setDrawLabels(False)
 graph.setDrawables([ot.Drawable(contour)])
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # Sometimes the colors are not very distinct because some levels are very close while others are very far apart.
@@ -91,7 +91,7 @@ viewer.View(graph)
 contour.setAlpha(0.3)
 contour.setHatches(['/', '\\', '/\\', '+', '*'])
 graph.setDrawables([ot.Drawable(contour)])
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # When the function takes values very different in magnitude, it may be useful to change the norm which is
@@ -105,6 +105,6 @@ contour.setExtend('neither')
 contour.setVmin(0.5)
 contour.setVmax(2)
 graph.setDrawables([ot.Drawable(contour)])
-viewer.View(graph)
+view = viewer.View(graph)
 
 viewer.View.ShowAll()

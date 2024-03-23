@@ -258,7 +258,7 @@ getAlpha"
 
 Returns
 -------
-alpha : float
+vmin : float
     The vmin value of the Contour element.
 
 Examples
@@ -280,7 +280,7 @@ setVmin"
 
 Parameters
 ----------
-alpha : float
+vmin : float
     The vmin value of the Contour element.
 
 See Also
@@ -294,7 +294,7 @@ getVmin"
 
 Returns
 -------
-alpha : float
+vmax : float
     The vmax value of the Contour element.
 
 Examples
@@ -316,7 +316,7 @@ setVmax"
 
 Parameters
 ----------
-alpha : float
+vmax : float
     The vmax value of the Contour element.
 
 See Also
@@ -367,7 +367,7 @@ getNorm, GetValidNorms"
 
 Returns
 -------
-norm : str
+extend : str
     Determines the color filling of values that are outside the levels range.
     If 'neither', values outside the levels range are not colored. If 'min',
     'max' or 'both', color the values below, above or below and above the levels range.
@@ -389,7 +389,7 @@ setExtend, GetValidExtends"
 
 Parameters
 ----------
-norm : str
+extend : str
     Determines the color filling of values that are outside the levels range.
     If 'neither', values outside the levels range are not colored. If 'min',
     'max' or 'both', color the values below, above or below and above the levels range.
