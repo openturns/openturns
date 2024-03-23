@@ -3,10 +3,10 @@
 SORM
 ----
 
-The Second Order Reliability Method is used under the following context: let :math:`\vect{X}` be a probabilistic
-input vector with joint density probability  :math:`\pdf`, let :math:`g(\vect{X})` be the limit state function of
-the model and let :math:`\cD_f = \{\vect{X} \in \Rset^d \,
-/ \, g(\vect{X}) \le 0\}` be an event whose probability
+The Second Order Reliability Method is used under the following context: let :math:`\inputRV` be a probabilistic
+input vector with joint density probability  :math:`\pdf`, let :math:`\model` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \,
+/ \, g(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
@@ -22,19 +22,19 @@ The integral :eq:`PfX4` can be written as:
 .. math::
     :label: PfU2
 
-    P_f = \Prob{h(\vect{U})\leq 0} = \int_{\Rset^d} \boldsymbol{1}_{h(\vect{u}) \leq 0}
-    \,f_{\vect{U}}(\vect{u})\,d\vect{u}
+    P_f = \Prob{h(\RVU)\leq 0} = \int_{\Rset^d} \boldsymbol{1}_{h(\vect{u}) \leq 0}
+    \,f_{\RVU}(\vect{u})\,d\vect{u}
 
-where :math:`f_{\vect{U}}` is the density function of the   distribution in the standard space: that distribution is
-spherical (invariant by rotation by definition). That property implies that :math:`f_{\vect{U}}` is a function of
-:math:`||\vect{U}||^2` only.
+where :math:`f_{\RVU}` is the density function of the   distribution in the standard space: that distribution is
+spherical (invariant by rotation by definition). That property implies that :math:`f_{\RVU}` is a function of
+:math:`||\RVU||^2` only.
 
 Furthermore, we suppose that outside the sphere which tangents the limit state surface in the standard
-space, :math:`f_{\vect{U}}` is decreasing.
+space, :math:`f_{\RVU}` is decreasing.
 
 The difference with FORM comes from the approximation of the limit state surface at the design point :math:`P^*` in
 the standard space: SORM approximates it by a quadratic surface that has the same main curvatures at the design point.
-Let  :math:`(\kappa_i)_{1 \leq i \leq d-1}` the :math:`(n-1)` main curvatures of the limit state function at the design
+Let  :math:`(\kappa_i)_{1 \leq i \leq \inputDim-1}` the :math:`(n-1)` main curvatures of the limit state function at the design
 point in the standard space.
 Several approximations are available,
 detailed here in the case where the origin of the standard
@@ -54,7 +54,7 @@ density function of the spherical distributions in the standard space:
 
 
 where :math:`\Phi` is the cumulative distribution function of the standard 1D normal
-distribution and  :math:`(\kappa_1^0, \dots, \kappa_d^0)` the main curvatures of the
+distribution and  :math:`(\kappa_1^0, \dots, \kappa_\inputDim^0)` the main curvatures of the
 homothetic of the failure domain at distance 1 from the origin.
 
 **Hohenbichler’s formula** is an approximation of :eq:`PfSORM_B`:
