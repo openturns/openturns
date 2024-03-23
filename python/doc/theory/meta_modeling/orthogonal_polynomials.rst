@@ -20,21 +20,21 @@ and :math:`Q` are orthogonal if:
 
 .. math::
 
-    \langle P,Q \rangle = \int_{\alpha}^{\beta}P(x)Q(x)~w(x) dx = 0
+    \scalarproduct{P}{Q} = \int_{\alpha}^{\beta}P(x)Q(x)~w(x) dx = 0
 
 Therefore, a sequence of orthogonal polynomials :math:`(P_n)_{n\geq 0}`
 (:math:`P_n`: polynomial of degree :math:`n`) verifies:
 
 .. math::
 
-    \langle P_m,P_n\rangle = 0 \text{~~for every~~} m \neq n
+    \scalarproduct{P_m}{P_n} = 0 \text{~~for every~~} m \neq n
 
 The chosen inner product induces a norm on polynomials in the usual
 way:
 
 .. math::
 
-    \parallel P_n\parallel=\langle P_n,P_n \rangle^{1/2}
+    \parallel P_n\parallel = \scalarproduct{P_n}{P_n}^{1/2}
 
 In the following, we consider weight functions :math:`w(x)`
 corresponding to *probability density functions*, which satisfy:
@@ -99,21 +99,23 @@ To sum up, the distribution type are reported in
 the table below together with the associated families of orthonormal
 polynomials.
 
-+-------------------------------------+-------------------------+----------------------------------+
-| Distribution                        | Support                 | Polynomial                       |
-+=====================================+=========================+==================================+
-| Normal :math:`\cN(0,1)`             | :math:`\Rset`           | Hermite                          |
-+-------------------------------------+-------------------------+----------------------------------+
-| Uniform :math:`\cU(-1,1)`           | :math:`[-1,1]`          | Legendre                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Gamma :math:`\Gamma(k,1,0)`         | :math:`(0,+\infty)`     | Laguerre                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Beta :math:`B(\alpha,\beta,-1,1)`   | :math:`(-1,1)`          | Jacobi                           |
-+-------------------------------------+-------------------------+----------------------------------+
-| Poisson :math:`\cP(\lambda)`        | :math:`\Nset`           | Charlier                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Binomial :math:`\cB(m,p)`           | :math:`\{0,\dots,m\}`   | Krawtchouk\ :math:`^{\dagger}`   |
-+-------------------------------------+-------------------------+----------------------------------+
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Distribution                           | Support                 | Polynomial family                |   In the library                      |
++========================================+=========================+==================================+=======================================+
+| Normal :math:`\cN(0,1)`                | :math:`\Rset`           | Hermite                          | :class:`~openturns.HermiteFactory`    |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Uniform :math:`\cU(-1,1)`              | :math:`[-1,1]`          | Legendre                         | :class:`~openturns.LegendreFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Gamma :math:`\Gamma(k,1,0)`            | :math:`(0,+\infty)`     | Laguerre                         | :class:`~openturns.LaguerreFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Beta :math:`B(\alpha,\beta,-1,1)`      | :math:`(-1,1)`          | Jacobi                           | :class:`~openturns.JacobiFactory`     |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Poisson :math:`\cP(\lambda)`           | :math:`\Nset`           | Charlier                         | :class:`~openturns.CharlierFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Binomial :math:`\cB(m,p)`              | :math:`\{0,\dots,m\}`   | Krawtchouk\ :math:`^{\dagger}`   | :class:`~openturns.KrawtchoukFactory` |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Negative Binomial :math:`\cN \cB(m,p)` | :math:`\Nset`           | Meixner                          | :class:`~openturns.MeixnerFactory`    |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
 
 Orthogonal polynomials with respect to arbitrary probability distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
