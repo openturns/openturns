@@ -8,7 +8,7 @@ context: let :math:`\vect{X}` be a probabilistic input vector with
 joint density probability  :math:`\pdf`,
 let  :math:`\model(\vect{X})` be the
 limit state function of the model and let :math:`\cD_f =
-\{\vect{X} \in \Rset^d \,   / \, g(\vect{X}) \le 0\}` be
+\{\vect{X} \in \Rset^d \,   / \, \model(\vect{X}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
 
 .. math::
