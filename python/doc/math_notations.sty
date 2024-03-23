@@ -6,36 +6,30 @@
 
 % The physical model
 \newcommand{\model}{g}
+\newcommand{\inputDim}{{d}}
+\newcommand{\outputDim}{{d_Y}}
+% domaine
+\newcommand{\inputDomain}{\mathcal{D}}
+% The surrogate model
+\newcommand{\metaModel}{\widetilde{\model}}
 
-% The input random vector
+% Probabilistic modeling
 \newcommand{\inputRV}{\vect{X}}
 \newcommand{\outputRV}{\vect{Y}}
+\newcommand{\inputMeasure}{\mu_{\inputRV}}
+\newcommand{\outputMeasure}{\mu_{\outputRV}}
 % Realization of the random vetor
 \newcommand{\inputReal}{\vect{x}}
 \newcommand{\outputReal}{\vect{y}}
-\newcommand{\inputDim}{d}
-\newcommand{\outputDim}{{d_Y}}
 \newcommand{\RVZ}{\vect{Z}}
 \newcommand{\RVU}{\vect{U}}
 \newcommand{\dimZ}{{d_Z}}
 \newcommand{\dimU}{{d_U}}
 \newcommand{\realZ}{\vect{z}}
 \newcommand{\realU}{\vect{u}}
-
-
-% The measure of the input random vector
-\newcommand{\inputMeasure}{\mu_{\inputRV}}
-\newcommand{\outputMeasure}{\mu_{\outputRV}}
-
-% domaine
-\newcommand{\inputDomain}{\mathcal{D}}
-
-
-% The surrogate model
-\newcommand{\metaModel}{\widetilde{\model}}
-
-% The sample size
+\newcommand{\supp}[1] {{\rm supp}\left(#1\right)}
 \newcommand{\sampleSize}{n}
+
 
 % For matrixes and vectors
 \newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}
@@ -43,7 +37,7 @@
 \newcommand{\Tr}[1]{{#1}^\top}
 
 
-% Probabilistic modeling
+% Probabilistic operators
 \newcommand{\muX}{\vect{\mu}_{\:X}}
 \newcommand{\Var}[1]{{\rm Var}\left( #1 \right)}
 \newcommand{\Cov}[1]{{\rm Cov}\left( #1 \right)}
@@ -58,7 +52,6 @@
 \newcommand{\fcar}[2] {{\mathbf 1}_{#1}(#2)}
 
 % Mathematics operators
-\newcommand{\supp}[1] {{\rm supp}\left(#1\right)}
 \newcommand{\di}[1] {{\,\mathrm{d}#1}}
 \newcommand{\norm}[1] {\left\|#1\right\|}
 \newcommand{\tendto}[2]{\xrightarrow[#1\rightarrow#2]{}}
