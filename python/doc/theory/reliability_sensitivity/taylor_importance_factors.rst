@@ -9,8 +9,8 @@ the inputs for central dispersion analysis.
 
 We consider the Taylor expansion of a function. We use the notations introduced in
 :ref:`Taylor Expansion <taylor_expansion>`. Let :math:`\uX` be the input random vector. We assume that
-the marginals of :math:`\uX` are independent. Let :math:`Y = h(\ux)` with
-:math:`h: \Rset^d \rightarrow \Rset` be a function with a scalar output.
+the marginals of :math:`\uX` are independent. Let :math:`Y = \model(\ux)` with
+:math:`\model: \Rset^\inputDim \rightarrow \Rset` be a function with a scalar output.
 
 Refer to :ref:`Taylor Expansion <taylor_expansion>` for details on the expressions
 of the first-order and second-order Taylor expansions and to
@@ -21,13 +21,13 @@ The importance factor of :math:`X_i` is defined by:
 
 .. math::
 
-    \eta_i = \frac{ \left(\frac{\partial h}{\partial x_i}(\vect{\mu})\right)^2 \sigma_i^2}{\Var Y}.
+    \eta_i = \frac{ \left(\frac{\partial \model}{\partial x_i}(\vect{\mu})\right)^2 \sigma_i^2}{\Var Y}.
 
 If the model is linear (i.e. if the model is equal to its first-order Taylor expansion), then the importance factors sum to one:
 
 .. math::
 
-    \eta_1 + \eta_2 + \ldots + \eta_{d} = 1
+    \eta_1 + \eta_2 + \ldots + \eta_\inputDim = 1
 
 These importance factors are also called *importance factors derived from perturbation methods*.
 
