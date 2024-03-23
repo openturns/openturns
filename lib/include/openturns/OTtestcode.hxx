@@ -570,7 +570,7 @@ class GSobolUseCase
     {
       return variance_;
     }
-    Scalar computeSobolIndice(const Indices & indices)
+    Scalar computeSobolIndex(const Indices & indices)
     {
       Scalar value = 1.0;
       for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
