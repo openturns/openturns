@@ -45,7 +45,7 @@ In many cases, however, the order of magnitude of the estimate from the
 analytical formula applied to a sparse model is correct: the estimate of
 the MSE is only slightly lower than the true value.
 In order to enable the calculation of the analytical MSE estimator
-on a sparse model, please set the `LinearModelValidation-NoModelSelection`
+on a sparse model, please set the `LinearModelValidation-ModelSelection`
 key of the :class:`~openturns.ResourceMap` to `False`: use this
 option at your own risks.
 

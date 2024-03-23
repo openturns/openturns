@@ -242,9 +242,9 @@ atolKFold = 0.0
 assert_almost_equal(r2ScoreReference, r2ScoreKFold[0], rtolKFold, atolKFold)
 
 #
-print("3. Setting FunctionalChaosValidation-NoModelSelection to false")
+print("3. Setting FunctionalChaosValidation-ModelSelection to false")
 # enables to do LOO CV on a sparse model.
-ot.ResourceMap.SetAsBool("FunctionalChaosValidation-NoModelSelection", False)
+ot.ResourceMap.SetAsBool("FunctionalChaosValidation-ModelSelection", False)
 selectionAlgorithm = (
     ot.LeastSquaresMetaModelSelectionFactory()
 )  # Get a sparse PCE (i.e. with model selection).

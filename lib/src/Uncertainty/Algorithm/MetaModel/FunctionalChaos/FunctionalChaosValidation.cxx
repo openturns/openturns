@@ -60,7 +60,7 @@ FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult
     throw InvalidArgumentException(HERE) << "Cannot set k parameter of K-Fold method to " << kParameter 
       << " which is larger than the sample size =" << sampleSize;
   kParameter_ = kParameter;
-  if (not ResourceMap::GetAsBool("FunctionalChaosValidation-ModelSelection") && \
+  if (!ResourceMap::GetAsBool("FunctionalChaosValidation-ModelSelection") && \
     functionalChaosResult_.isModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
       << "with a polynomial chaos expansion involving model selection";
