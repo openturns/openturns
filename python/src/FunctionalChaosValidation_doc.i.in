@@ -90,7 +90,7 @@ into account.
 Since the :class:`~openturns.FunctionalChaosResult` object does not know
 if the weights are equal, no exception can be generated.
 
-If the sample was not produced from Monte-Carlo, then the leave-one-out
+If the sample was not produced from Monte Carlo, then the leave-one-out
 cross-validation method may not necessarily provide an accurate estimator
 of the MSE.
 Indeed, one assumption for cross validation using LOO or K-Fold is to have

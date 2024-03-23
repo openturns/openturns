@@ -40,7 +40,7 @@ of the random vector :math:`\vect{X}`.
 In this section, we present the cross-validation of linear least squares
 models, as presented in [wang2012]_ page 485.
 
-The fraction of variance unexplained is:
+The fraction of variance unexplained (FVU) is:
 
 .. math::
 
