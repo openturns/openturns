@@ -3,7 +3,7 @@
 Optimal LHS design
 ^^^^^^^^^^^^^^^^^^
 
-Let :math:`\inutRV \in \Rset^{:math:`\sampleSize`}` be a random vector of input parameters.
+Let :math:`\inputRV \in \Rset^{\inputDim}` be a random vector of input parameters.
 Latin Hypercube Sample (LHS) is a way to distribute N sample points: each
 parameter range is divided into N equal intervals, and sample points are
 chosen such that any hyperplane in that dimension contains one and only one
