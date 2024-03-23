@@ -3,22 +3,22 @@
 Strong Maximum Test
 -------------------
 
-The Strong Maximum Test is used under the following context:  let :math:`\vect{X}` be a
+The Strong Maximum Test is used under the following context:  let :math:`\inputRV` be a
 probabilistic input
-vector with joint density probability  :math:`\pdf`, let :math:`g(\vect{X})` be the limit state function of
-the model and let :math:`\cD_f = \{\vect{X} \in \Rset^d \,
-/ \, g(\vect{X}) \le 0\}` be an event whose probability
+vector with joint density probability  :math:`\pdf`, let :math:`\model` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \,
+/ \, g(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
     :label: PfX12
 
-       P_f =     \int_{{g(\vect{X}) \le 0}}  \pdf\, d\vect{x}
+       P_f =     \int_{{g(\inputRV) \le 0}}  \pdf\, d\vect{x}
 
 The probability :math:`P_f` is evaluated with the  :ref:`form_approximation` and :ref:`sorm_approximation`
 methods. These methods use the Nataf
 isoprobabilistic transformation which maps the
-probabilistic model in terms of :math:`\vect{X}` onto an equivalent model in terms of :math:`n`
+probabilistic model in terms of :math:`\inputRV` onto an equivalent model in terms of :math:`n`
 independent standard normal random :math:`\vect{U}` (refer to :ref:`isoprobabilistic_transformation`). In that new
 :math:`\vect{u}`-space,
 the event has the new expression defined from the transformed limit state function of the model :math:`G`:
