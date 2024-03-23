@@ -63,11 +63,6 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         estimator: str
             The estimator.
             Available estimators are "variance" or "standard-deviation".
-
-        Returns
-        -------
-        None.
-
         """
         super(SampleEstimatorLinearRegression, self).__init__(1)
         self.sample_size = sample_size
