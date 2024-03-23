@@ -4,15 +4,15 @@ Sensitivity analysis using Sobol' indices
 -----------------------------------------
 
 Consider the input random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{d} \right)`
+:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)`
 and let :math:`\vect{Y} = \left( Y_1,\ldots,Y_{d'} \right)`
 be the output of the physical model:
 
 .. math::
-    \vect{Y} = \operatorname{g}(\vect{X}).
+    \vect{y} = \model(\vect{x}).
 
 We consider the output :math:`Y_k` for any index :math:`k \in \{1, \ldots, d'\}`.
-Sobol' indices measure the influence of the input :math:`\vect{X}`
+Sobol' indices measure the influence of the input :math:`\inputRV`
 to the output :math:`Y_k`.
 The method considers the part of the variance of the output :math:`Y_k` produced by
 the different inputs :math:`X_i`.
@@ -22,18 +22,18 @@ scalar output :math:`Y_k`.
 Hence, the model is simplified to:
 
 .. math::
-    Y = \operatorname{g}(\vect{X}).
+    Y = \metaModel(\vect{x}).
 
 In the second part of the document, we consider the general case where the
 output is multivariate.
 In this case, aggregated Sobol' indices can be used [gamboa2013]_.
 
 The Sobol' decomposition is described more easily when the domain of the input
-is the unit interval :math:`[0,1]^{d}`.
+is the unit interval :math:`[0,1]^\inputDim`.
 It can be easily extended to any input domain using expectations, variances
 and variance of conditional expectations.
 
-We assume that the input marginal variables :math:`X_1,\ldots,X_{d}` are
+We assume that the input marginal variables :math:`X_1,\ldots,X_\inputDim` are
 independent.
 This restrictive hypothesis implies that the only copula of the input
 random vector :math:`\bdX` for which the
@@ -47,7 +47,7 @@ Partition of the input
 For any  :math:`i\in\{1,\ldots, d\}`, let :math:`\bdx_{\overline{\{i\}}} \in [0,1]^{d - 1}` be
 the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)\in [0,1]^{d }` which
 indices are different from :math:`i`.
-Hence, if :math:`\bdx\in[0,1]^{d}`, then:
+Hence, if :math:`\bdx\in[0,1]^\inputDim`, then:
 
 .. math::
     \bdx_{\overline{\{i\}}} = (x_1,x_2,\ldots,x_{i-1},x_{i+1},\ldots,x_p)^T\in [0,1]^{d - 1}.
@@ -57,7 +57,7 @@ Consider the function :math:`\operatorname{g}` defined by the equation:
 .. math::
     y = \operatorname{g}(\bdx)
 
-where :math:`\bdx=(x_1,\ldots,x_p)^T \in [0,1]^{d}`.
+where :math:`\bdx=(x_1,\ldots,x_p)^T \in [0,1]^\inputDim`.
 With this notation, we can partition the input of :math:`g`:
 
 .. math::
@@ -85,7 +85,7 @@ Sobol' decomposition
 ~~~~~~~~~~~~~~~~~~~~
 
 In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
-If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^{d}`, then there is a unique
+If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^\inputDim`, then there is a unique
 decomposition:
 
 .. math::
@@ -106,7 +106,7 @@ Extension to any input distribution with independent marginals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we extend the previous definitions to an input random vector
-that is not necessarily defined on the input unit cube :math:`[0,1]^{d}`.
+that is not necessarily defined on the input unit cube :math:`[0,1]^\inputDim`.
 To do this, we define the functions :math:`h_\bdu` using conditional
 expectations.
 
@@ -116,7 +116,7 @@ The functions :math:`h_\bdu` satisfy the equality:
     \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx) d\bdx_{\overline{\bdu}}
     = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv),
 
-for any group of variables :math:`\bdu \subseteq \{1,2,\ldots,d\}` with
+for any group of variables :math:`\bdu \subseteq \{1,2,\ldots,\inputDim\}` with
 size lower or equal to :math:`d`, where :math:`|\overline{\bdu}|` is the
 cardinal of the subset :math:`\overline{\bdu}`.
 The functions :math:`h_\bdu` can be defined recursively, using groups of
@@ -128,7 +128,7 @@ variables of lower dimensionality:
     -  \sum_{\bdv \subsetneq \bdu} h_\bdv(\bdx_\bdv)
 
 where :math:`\subsetneq` denotes a proper subset.
-Let :math:`\boldsymbol{x} \in [0,1]^{d}` be a point and
+Let :math:`\boldsymbol{x} \in [0,1]^\inputDim` be a point and
 let :math:`\bdu \subseteq \{1, \ldots, d\}` be a group of variables.
 Therefore:
 
@@ -152,8 +152,8 @@ The variance of the function :math:`\operatorname{g}` can be
 decomposed into:
 
 .. math::
-    \Var{Y}=\sum_{i=1}^{d} V_{i}
-    + \sum_{1\leq i < j\leq d} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,d\}}
+    \Var{Y}=\sum_{i=1}^\inputDim V_{i}
+    + \sum_{1\leq i < j\leq d} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,\inputDim\}}
 
 where the interaction variances are:
 
@@ -275,7 +275,7 @@ For any :math:`i=1,\ldots,d`, let us define
 .. math::
 
     V_i^T   & = \sum_{\bdu \ni i} V_\bdu \\
-    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{d}} }.
+    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_\inputDim} }.
 
 Total Sobol' indices satisfy the equality:
 
@@ -383,10 +383,10 @@ Let us summarize the properties of the Sobol' indices.
 - If :math:`S_i < S^T_i`, there are interactions between the variable :math:`X_i` and other variables.
 
 - If :math:`S_i = S^T_i` for :math:`i = 1, \ldots, d`, then the function is additive, i.e.
-  the function :math:`g` is the sum of functions :math:`g_1, \ldots, g_{d}` of input dimension 1:
+  the function :math:`g` is the sum of functions :math:`g_1, \ldots, g_\inputDim` of input dimension 1:
 
 .. math::
-    Y = \sum_{i = 1}^{d} g_i(X_i).
+    Y = \sum_{i = 1}^\inputDim g_i(X_i).
 
 Example
 ~~~~~~~
@@ -533,7 +533,7 @@ For the sake of stability, computations are performed with centered output.
 Let :math:`\overline{\vect{g}}` be the mean of the combined samples
 :math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
 Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
-for any :math:`\vect{x} \in \Rset^{d}`, by:
+for any :math:`\vect{x} \in \Rset^\inputDim`, by:
 
 .. math::
 
