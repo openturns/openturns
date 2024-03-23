@@ -96,7 +96,7 @@ of the MSE.
 Indeed, one assumption for cross validation using LOO or K-Fold is to have
 independent observations, which is required to state that the LOO sample MSE
 is an estimator of the true MSE.
-For example, using cross-validation on a quasi Monte-Carlo (QMC) experiment may
+For example, using cross-validation on a quasi-Monte Carlo (QMC) experiment may
 not necessarily provide an accurate estimate of the MSE, because the
 internal structure of the QMC is broken by the different splits:
 the elementary volumes are not filled as expected anymore and the
