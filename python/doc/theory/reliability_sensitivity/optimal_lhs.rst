@@ -25,7 +25,8 @@ In practice, we look for a design in the space :math:`[0,1]^{\inputDim}` and we 
 iso-probabilistic transformation to get the result in the original domain.
 
 Let :math:`\phi : [0,1]^{\inputDim} \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
-Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates from a perfectly uniform one.
+Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates
+from a perfectly uniform one.
 We denote by :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)` the experiment design with :math:`\sampleSize`
 points where the :math:`i` -th point is :math:`\vect{x}^i = (x_1^i, \dots, x_{\inputDim}^i)`.`
 
@@ -53,30 +54,38 @@ This criterion is to be maximized.
 .. math::
   \phi_p((\vect{x}^1, \dots, \vect{x}^\sampleSize)) = \left( \sum_{1\leq i < j \leq \sampleSize} ||x^{(i)} - x^{(j)}||^{-p}_{L^2} \right)^{\frac{1}{p}}
 
-This is supposed to be more robust. When p tends to infinity, optimizing a design with :math:`\phi_p` is equivalent to optimizing a design with *mindist*.
+This is supposed to be more robust. When p tends to infinity, optimizing a design with :math:`\phi_p`
+is equivalent to optimizing a design with *mindist*.
 This criterion is to be minimized to get an optimal design.
 
-The objective is to generate an LHS design :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)` that minimizes a space filling criterion :math:`\phi` (or maximizes mindist).
+The objective is to generate an LHS design :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)`
+that minimizes a space filling criterion :math:`\phi` (or maximizes mindist).
 For that purpose, two techniques are implemented and presented
 hereafter.
 
 Monte Carlo
 ~~~~~~~~~~~
-This problem can be approximated by a Monte Carlo algorithm: a fixed number of designs are generated, and the optimal one is kept.
+This problem can be approximated by a Monte Carlo algorithm: a fixed number of designs are generated, and
+the optimal one is kept.
 This algorithm is trivial and available in :class:`~openturns.MonteCarloLHS`.
-One of the major drawbacks of Monte Carlo sampling is the CPU time consumption, because the number of generated designs must be high.
+One of the major drawbacks of Monte Carlo sampling is the CPU time consumption, because the number of
+generated designs must be high.
 
 Simulated Annealing
 ~~~~~~~~~~~~~~~~~~~
-An alternate solution is to use an adapted simulated annealing method, available in :class:`~openturns.SimulatedAnnealingLHS`, which we will now describe.
-Starting from an LHS design, a new design is obtained by permuting one random coordinate of two randomly chosen elements; by construction, this design is also an LHS design.
+An alternate solution is to use an adapted simulated annealing method, available in
+:class:`~openturns.SimulatedAnnealingLHS`, which we will now describe.
+Starting from an LHS design, a new design is obtained by permuting one random coordinate of two
+randomly chosen elements; by construction, this design is also an LHS design.
 If the new design is better than the previous one, it is kept.
-If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile T which decreases over time.
+If it is worse, it may anyway be kept with some probability, which depends on how these designs compare,
+but also on a temperature profile T which decreases over time.
 This means that jumping away from local extrema becomes less probable over time.
 
 It is important to highlight here that this specific permutation has been chosen in this algorithm
 because it allows highly efficient computations of criterion during simulated annealing process.
-he naive criterion evaluation, as is done in Monte Carlo algorithm, has a complexity of :math:`\mathcal{O}(d\times \sampleSize^2)` for :math:`C_2` and :math:`\phi_p` criteria.
+he naive criterion evaluation, as is done in Monte Carlo algorithm, has a complexity of
+:math:`\mathcal{O}(d\times \sampleSize^2)` for :math:`C_2` and :math:`\phi_p` criteria.
 
 
 Let us first illustrate with the :math:`C_2` criterion. We set :math:`z_{ik}=x_{ik}-0.5`, equation rewrites:
