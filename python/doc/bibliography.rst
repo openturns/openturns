@@ -61,6 +61,8 @@ Bibliography
     http://ceres-solver.org
 .. [chacon2018] Chacón, J. E., & Duong, T. (2018).
     *Multivariate kernel smoothing and its applications.* CRC Press.
+.. [chihara1978] Chihara, T. S. (1978).
+    *An introduction to orthogonal polynomials.* Dover publications.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -113,9 +115,14 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gautschi2004] Gautschi, W. (2004).
+    *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
+.. [ghanem1991] Ghanem and P. Spanos, 1991,
+    *Stochastic finite elements – A spectral approach*,
+    Springer Verlag. (Reedited by Dover Publications, 2003).
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
@@ -410,6 +417,9 @@ Bibliography
     Microcosm, Inc. Torrance, CA.,1999.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
+.. [xiu2010] Xiu, D. (2010).
+    *Numerical methods for stochastic computations: a spectral method approach.*
+    Princeton university press.
 .. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012
 .. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*
