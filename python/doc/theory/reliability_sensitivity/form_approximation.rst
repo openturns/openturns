@@ -6,7 +6,7 @@ FORM
 The First Order Reliability Method is used under the following
 context: let :math:`\vect{X}` be a probabilistic input vector with
 joint density probability  :math:`\pdf`,
-let  :math:`g(\vect{X}\,,\,\vect{d})` be the
+let  :math:`\model(\vect{X})` be the
 limit state function of the model and let :math:`\cD_f =
 \{\vect{X} \in \Rset^d \,   / \, g(\vect{X}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
