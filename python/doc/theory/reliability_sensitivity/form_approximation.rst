@@ -28,7 +28,7 @@ distribution for all rotations :math:`\mat{R}\in{\cS\cO}_d(\Rset)`.
 The usual :ref:`isoprobabilistic_transformation` are the Generalized
 Nataf transformation and the Rosenblatt one.
 The mapping of the limit state function is
-:math:`h(\vect{U}) =  g(T^{-1}(\vect{U}))`.
+:math:`h(\vect{U}) =  \model(T^{-1}(\vect{U}))`.
 Then, the event probability :math:`P_f` can be written as:
 
 .. math::
