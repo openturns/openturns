@@ -8,7 +8,7 @@ context: let :math:`\inputRV` be a random input vector with
 joint density probability  :math:`\pdf`,
 let  :math:`\model` be the
 limit state function of the model and let :math:`\cD_f =
-\{\vect{x} \in \Rset^\inputDim \,   / \, \model(\vect{x}) \le 0\}` be
+\{\vect{x} \in \Rset^{\inputDim} \,   / \, \model(\vect{x}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
 
 .. math::
@@ -21,7 +21,7 @@ The objective of FORM is to evaluate :math:`P_f`. The method proceeds in three s
 
 **Step 1**: Map the probabilistic model in terms of :math:`\inputRV` thanks to an
 isoprobabilistic transformation :math:`T` which is a diffeomorphism from
-:math:`\supp{\inputRV}` into :math:`\Rset^\inputDim`, such that the distribution of the random vector
+:math:`\supp{\inputRV}` into :math:`\Rset^{\inputDim}`, such that the distribution of the random vector
 :math:`\RVU=T(\inputRV)` has
 the following properties: :math:`\RVU` and :math:`\mat{R}\,\RVU` have the same
 distribution for all rotations :math:`\mat{R}\in{\cS\cO}_d(\Rset)`.

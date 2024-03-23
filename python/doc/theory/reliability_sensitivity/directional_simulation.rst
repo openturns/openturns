@@ -12,7 +12,7 @@ we seek to evaluate the following probability:
 
 Here, :math:`\inputRV` is a random vector, :math:`\model` the function known as
 “limit state function” which enables the definition of the event
-:math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \, / \, \model(\vect{x}) \le 0\}`.
+:math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, / \, \model(\vect{x}) \le 0\}`.
 
 The directional simulation method is an accelerated sampling method. It
 implies a preliminary iso-probabilistic transformation, as for FORM and SORM methods;

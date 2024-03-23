@@ -5,7 +5,7 @@ Uncertainty ranking: PCC and PRCC
 
 Partial Correlation Coefficients
 deal with analyzing the influence the random vector
-:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)` has on a random
+:math:`\inputRV = \left( X_1,\ldots,X_{\inputDim} \right)` has on a random
 variable :math:`Y` which is being studied for uncertainty. Here we
 attempt to measure linear relationships that exist between :math:`Y`
 and the different components :math:`X_i`.
@@ -13,7 +13,7 @@ and the different components :math:`X_i`.
 The basic method of hierarchical ordering using Pearson’s coefficients
 deals with the case where the variable :math:`Y` linearly
 depends on :math:`\inputDim` variables
-:math:`\left\{ X_1,\ldots,X_\inputDim \right\}` but this can be misleading
+:math:`\left\{ X_1,\ldots,X_{\inputDim} \right\}` but this can be misleading
 when statistical dependencies or interactions between the variables
 :math:`X_i` (e.g. a crossed term :math:`X_i \times X_j`) exist. In such
 a situation, the partial correlation coefficients can be more useful in
@@ -25,8 +25,8 @@ of :math:`X_i` on :math:`Y` once influences from all other variables
 
 The estimation for each partial correlation coefficient
 :math:`\textrm{PCC}_{X_i,Y}` uses a sample of size :math:`\sampleSize` denoted by
-:math:`\left\{ \left(y^{(1)},x_1^{(1)},\ldots,x_\inputDim^{(1)} \right),\ldots, \left(y^{(\sampleSize)},x_1^{(\sampleSize)},\ldots,x_\inputDim^{(\sampleSize)} \right) \right\}`
-of the vector :math:`(Y,X_1,\ldots,X_\inputDim)`. This requires the
+:math:`\left\{ \left(y^{(1)},x_1^{(1)},\ldots,x_{\inputDim}^{(1)} \right),\ldots, \left(y^{(\sampleSize)},x_1^{(\sampleSize)},\ldots,x_{\inputDim}^{(\sampleSize)} \right) \right\}`
+of the vector :math:`(Y,X_1,\ldots,X_{\inputDim})`. This requires the
 following three steps to be carried out:
 
 #. Determine the effect of other variables
@@ -61,14 +61,14 @@ following three steps to be carried out:
    estimated for the variables :math:`Y-\widehat{Y}` and
    :math:`X_i-\widehat{X}_i` on the :math:`\sampleSize`-sample of simulations.
 
-One can then class the :math:`d` variables :math:`X_1,\ldots, X_\inputDim`
+One can then class the :math:`d` variables :math:`X_1,\ldots, X_{\inputDim}`
 according to the absolute value of the partial correlation coefficients:
 the higher the value of :math:`\left| \textrm{PCC}_{X_i,Y} \right|`,
 the greater the impact the variable :math:`X_i` has on :math:`Y`.
 
 Partial *Rank* Correlation Coefficients (PRCC) are PRC coefficients
 computed on the ranked input variables
-:math:`r\inputRV = \left( rX_1,\ldots,rX_\inputDim \right)`
+:math:`r\inputRV = \left( rX_1,\ldots,rX_{\inputDim} \right)`
 and the ranked output variable :math:`rY`.
 
 

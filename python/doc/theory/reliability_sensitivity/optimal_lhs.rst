@@ -3,7 +3,7 @@
 Optimal LHS design
 ^^^^^^^^^^^^^^^^^^
 
-Let :math:`\inutRV \in \Rset^{\inputDim` be a random vector of input parameters.
+Let :math:`\inutRV \in \Rset^{:math:`\sampleSize`}` be a random vector of input parameters.
 Latin Hypercube Sample (LHS) is a way to distribute N sample points: each
 parameter range is divided into N equal intervals, and sample points are
 chosen such that any hyperplane in that dimension contains one and only one
@@ -21,13 +21,13 @@ We may notice two types of LHS designs:
 
 Let the input vector :math:`\inputRV` whose marginals are independent and associated probabilistic measure :math:`\mathcal{L}_{\inputRV}`
 
-In practice, we look for a design in the space :math:`[0,1]^\inputDim` and we use an inverse
+In practice, we look for a design in the space :math:`[0,1]^{\inputDim}` and we use an inverse
 iso-probabilistic transformation to get the result in the original domain.
 
-Let :math:`\phi : [0,1]^\inputDim \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
+Let :math:`\phi : [0,1]^{\inputDim} \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
 Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates from a perfectly uniform one.
 We denote by :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)` the experiment design with :math:`\sampleSize`
-points where the :math:`i` -th point is :math:`\vect{x}^i = (x_1^i, \dots, x_\inputDim^i)`.`
+points where the :math:`i` -th point is :math:`\vect{x}^i = (x_1^i, \dots, x_{\inputDim}^i)`.`
 
 Two space filling criteria are implemented:
 
@@ -150,7 +150,7 @@ These :math:`f_{ij}` coefficients satisfy the same conditions, so the same compu
       - 2\sum_{\substack{1\leq j\leq \sampleSize\\j\neq i_1,i_2}} (f_{i_1j}+f_{i_2j})
 
 In practice, a marginal transformation is performed to map the initial multivariate distribution into :math:`[0,1]^d`.
-Optimization is performed in :math:`[0,1]^\inputDim` and the inverse transformation maps the design into the initial space.
+Optimization is performed in :math:`[0,1]^{\inputDim}` and the inverse transformation maps the design into the initial space.
 
 .. topic:: API:
 

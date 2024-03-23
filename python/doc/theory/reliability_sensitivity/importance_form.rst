@@ -6,7 +6,7 @@ Importance factors from FORM method
 Importance Factors are evaluated in the following context: let :math:`\inputRV` be a probabilistic input vector with
 joint density probability  :math:`\pdf`, let  :math:`\model` be the
 limit state function of the model and let :math:`\cD_f =
-\{\vect{x} \in \Rset^\inputDim \,   / \, \model(\vect{x}) \le 0\}` be
+\{\vect{x} \in \Rset^{\inputDim} \,   / \, \model(\vect{x}) \le 0\}` be
 an event whose probability :math:`P_f` is defined as:
 
 .. math::
@@ -22,12 +22,12 @@ input components with respect to the realization of the event. They are often se
 of the impact of modeling the
 input components as random variables rather than fixed values. FORM importance factors are defined as follows.
 
-Let :math:`\mat{R} \in {\cS\cO}_\inputDim(\Rset)` be the special orthogonal group which is the set of square matrices
-:math:`\mat{M} \in \cM_\inputDim(\Rset)` such that :math:`\mat{M} \Tr{\mat{M}} = \mat{I}_\inputDim` and with
+Let :math:`\mat{R} \in {\cS\cO}_{\inputDim}(\Rset)` be the special orthogonal group which is the set of square matrices
+:math:`\mat{M} \in \cM_{\inputDim}(\Rset)` such that :math:`\mat{M} \Tr{\mat{M}} = \mat{I}_{\inputDim}` and with
 determinant equal to 1.
 The :ref:`isoprobabilistic transformation <isoprobabilistic_transformations>` :math:`T` used in the FORM and
 SORM approximation is a diffeomorphism from
-:math:`\supp{\inputRV}` into :math:`\Rset^\inputDim`, such that the
+:math:`\supp{\inputRV}` into :math:`\Rset^{\inputDim}`, such that the
 distribution of the random vector :math:`\RVU=T(\inputRV)` has the
 following properties: :math:`\RVU` and :math:`\mat{R}\,\RVU`
 have the same distribution for all rotations
@@ -53,7 +53,7 @@ This definition implies that the sum of importance factors is equal to 1, i.e.:
 
 .. math::
 
-      \sum_{i=1}^\inputDim \alpha_i^2 = 1
+      \sum_{i=1}^{\inputDim} \alpha_i^2 = 1
 
 This definition raises the following difficulties:
 
@@ -86,7 +86,7 @@ uncorrelated. Let :math:`F_i` be the cumulative distribution of the component :m
            E^{-1}\circ F_1(X_1^*) \\
            E^{-1}\circ F_2(X_2^*) \\
            \vdots \\
-           E^{-1}\circ F_d(X_\inputDim^*)
+           E^{-1}\circ F_d(X_{\inputDim}^*)
          \end{array}
          \right).\label{varY10}
        \end{aligned}
@@ -102,7 +102,7 @@ This definition still guarantees the relation:
 
 .. math::
 
-    \sum_{i=1}^\inputDim \alpha_i^2 = 1
+    \sum_{i=1}^{\inputDim} \alpha_i^2 = 1
 
 
 .. topic:: API:

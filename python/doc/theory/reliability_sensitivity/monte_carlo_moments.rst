@@ -5,8 +5,8 @@ Estimating moments with Monte Carlo
 
 Let us denote
 :math:`\outputRV = \model\left( \inputRV,\vect{d} \right) = \left( Y^1,\ldots,Y^\outputDim \right)`,
-where :math:`\inputRV= \left( X^1,\ldots,X^\inputDim \right)` is a random
-vector, and :math:`\inputDim` a deterministic vector. We seek here to
+where :math:`\inputRV= \left( X^1,\ldots,X^{\inputDim} \right)` is a random
+vector. We seek here to
 evaluate, the characteristics of the central part (central tendency and
 spread i.e. mean and variance) of the probability distribution of a
 variable :math:`Y^i`, using the probability distribution of the random

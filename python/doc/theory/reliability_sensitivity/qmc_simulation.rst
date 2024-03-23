@@ -12,7 +12,7 @@ Quasi Monte Carlo
 
      \begin{aligned}
          P_f &= \int_{\cD_f} f_{\uX}(\ux)d\ux\\
-         &= \int_{\Rset\inputDim} \mathbf{1}_{\{\model(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
+         &= \int_{\Rset{\inputDim}} \mathbf{1}_{\{\model(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
          &= \Prob {\{\:\model(\uX) \leq 0 \}}
        \end{aligned}
 

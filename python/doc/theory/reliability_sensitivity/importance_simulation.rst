@@ -4,7 +4,7 @@ Importance Simulation
 ---------------------
 
 | Let us note
-  :math:`\cD_f = \{\ux \in \Rset^\inputDim | \model(\ux) \leq 0\}`.
+  :math:`\cD_f = \{\ux \in \Rset^{\inputDim} | \model(\ux) \leq 0\}`.
   The goal is to estimate the following probability:
 
   .. math::
