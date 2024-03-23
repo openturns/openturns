@@ -25,7 +25,7 @@ from matplotlib import pylab as plt
 # The model is the real function:
 #
 # .. math::
-#    \model(x) = x \sin \left( \frac{x}{2} \right)
+#    \physicalmodel(x) = x \sin \left( \frac{x}{2} \right)
 #
 # for any :math:`x \in [0,10]`.
 # We consider the :class:`~openturns.MaternModel` covariance kernel

@@ -20,7 +20,13 @@ Non-parametric
 
     MetaModelAlgorithm
     MetaModelResult
+
+    :template: classWithPlot.rst_t
+
     MetaModelValidation
+
+    :template: class.rst_t
+
     Classifier
 
     :template: classWithPlot.rst_t

@@ -68,7 +68,6 @@ void LARS::initialize()
   predictors_.clear();
   inPredictors_.clear();
   mPsiX_ = Matrix();
-
   indicesHistory_.clear();
   coefficientsHistory_.clear();
 }

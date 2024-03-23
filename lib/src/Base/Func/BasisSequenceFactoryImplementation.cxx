@@ -51,10 +51,20 @@ String BasisSequenceFactoryImplementation::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
-
 String BasisSequenceFactoryImplementation::__str__(const String & ) const
 {
   return OSS(false) << __repr__();
+}
+
+/* Verbosity accessor */
+void BasisSequenceFactoryImplementation::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
+}
+
+Bool BasisSequenceFactoryImplementation::getVerbose() const
+{
+  return verbose_;
 }
 
 /* Method to create new BasisSequence objects */
@@ -98,7 +108,6 @@ void BasisSequenceFactoryImplementation::initialize()
   removedPsi_k_ranks_.clear();
 }
 
-
 void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod &, const Sample & )
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
@@ -128,7 +137,6 @@ void BasisSequenceFactoryImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "maximumRelativeConvergence_", maximumRelativeConvergence_ );
 }
-
 
 Collection<Indices> BasisSequenceFactoryImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
 {

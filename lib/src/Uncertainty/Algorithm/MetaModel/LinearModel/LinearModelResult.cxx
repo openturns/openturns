@@ -122,7 +122,19 @@ String LinearModelResult::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
          << " beta=" << beta_
-         << " formula=" << condensedFormula_;
+         << " formula=" << condensedFormula_
+         << " basis size=" << basis_.getSize()
+         << " design dimension=" << design_.getNbRows() << " x " << design_.getNbColumns()
+         << " beta dimension=" << beta_.getDimension()
+         << " coefficientsNames=" << coefficientsNames_
+         << " sampleResiduals dimension=" << sampleResiduals_.getSize() << " x " << sampleResiduals_.getDimension()
+         << " standardizedResiduals dimension=" << standardizedResiduals_.getSize() << " x " << standardizedResiduals_.getDimension()
+         << " diagonalGramInverse dimension=" << diagonalGramInverse_.getDimension()
+         << " leverages dimension=" << leverages_.getDimension()
+         << " cookDistances dimension=" << cookDistances_.getDimension()
+         << " sigma2= " << sigma2_
+         << " hasIntercept=" << hasIntercept_
+         << " isModelSelection=" << isModelSelection_;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -245,6 +257,31 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
   return standardErrors;
 }
 
+Matrix LinearModelResult::getDesign() const
+{
+  return design_;
+}
+
+SymmetricMatrix LinearModelResult::computeProjectionMatrix() const
+{
+  SymmetricMatrix gram(design_.computeGram());
+  SymmetricMatrix inverseGram(gram.inverse());
+  Matrix projection(design_ * inverseGram * design_.transpose());
+  return projection.getImplementation();
+}
+
+/* isModelSelection accessor */
+Bool LinearModelResult::isModelSelection() const
+{
+  return isModelSelection_;
+}
+
+/* isModelSelection accessor */
+void LinearModelResult::setIsModelSelection(const Bool isModelSelection)
+{
+  isModelSelection_ = isModelSelection;
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearModelResult::save(Advocate & adv) const
 {
@@ -260,6 +297,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "leverages_", leverages_ );
   adv.saveAttribute( "cookDistances_", cookDistances_ );
   adv.saveAttribute( "sigma2_", sigma2_ );
+  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
 }
 
 
@@ -278,6 +316,10 @@ void LinearModelResult::load(Advocate & adv)
   adv.loadAttribute( "leverages_", leverages_ );
   adv.loadAttribute( "cookDistances_", cookDistances_ );
   adv.loadAttribute( "sigma2_", sigma2_ );
+  if (adv.hasAttribute("isModelSelection_"))
+    adv.loadAttribute("isModelSelection_", isModelSelection_);
+  else
+    isModelSelection_ = true;
 }
 
 END_NAMESPACE_OPENTURNS

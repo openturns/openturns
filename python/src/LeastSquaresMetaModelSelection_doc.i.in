@@ -10,3 +10,43 @@ ApproximationAlgorithm, PenalizedLeastSquaresAlgorithm
 Notes
 -----
 The LeastSquaresMetaModelSelection is built from a :class:`~openturns.LeastSquaresMetaModelSelectionFactory`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresMetaModelSelection::getBasisSequenceFactory
+"Accessor to the basis sequence factory.
+
+Returns
+-------
+basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
+    Basis sequence factory."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresMetaModelSelection::setBasisSequenceFactory
+"Set the basis sequence factory.
+
+Parameters
+----------
+basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
+    Basis sequence factory."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresMetaModelSelection::getFittingAlgorithm
+"Accessor to the fitting algorithm.
+
+Returns
+-------
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
+    Fitting algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresMetaModelSelection::setFittingAlgorithm
+"Set the fitting algorithm.
+
+Parameters
+----------
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
+    Fitting algorithm."

@@ -71,6 +71,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
 }; /* class ApproximationAlgorithmImplementationFactory */
 
 

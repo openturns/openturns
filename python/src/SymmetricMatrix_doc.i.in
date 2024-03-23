@@ -36,7 +36,7 @@ Get or set terms
 [[ 1 ]
  [ 2 ]]
 
-Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
+Create a matrix from a **symmetric** Numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
@@ -153,3 +153,22 @@ Examples
 
 %feature("docstring") OT::SymmetricMatrix::checkSymmetry
 "Check if the internal representation is really symmetric."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::inverse
+"Compute the inverse of the matrix.
+
+Returns
+-------
+inverseMatrix : :class:`~openturns.SymmetricMatrix`
+    The inverse of the matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SymmetricMatrix([[4.0, 2.0, 1.0], [2.0, 5.0, 3.0], [1.0, 3.0, 6.0]])
+>>> print(67.0 * M.inverse())
+[[  21  -9   1 ]
+ [  -9  23 -10 ]
+ [   1 -10  16 ]]"

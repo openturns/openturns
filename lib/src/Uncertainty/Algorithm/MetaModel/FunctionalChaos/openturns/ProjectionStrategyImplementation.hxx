@@ -34,8 +34,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
  * @class ProjectionStrategyImplementation
  *
@@ -104,7 +102,7 @@ public:
   /** Relative error accessor */
   virtual Scalar getRelativeError() const;
 
-  /** Relative error accessor */
+  /** Coefficients accessor */
   virtual Point getCoefficients() const;
 
   /** Experiment accessors */
@@ -122,6 +120,12 @@ public:
 
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
+
+  /** isLeastSquares accessor */
+  virtual Bool isLeastSquares() const;
+
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
@@ -142,7 +146,7 @@ protected:
   /** Relative error */
   Scalar relativeError_p_;
 
-  /** The measureing function for projection */
+  /** The measure function for projection */
   Distribution measure_;
 
   // An  experiment that will be used to discretize the L2 integral

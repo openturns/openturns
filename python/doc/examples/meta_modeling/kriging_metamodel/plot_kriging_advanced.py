@@ -228,8 +228,9 @@ else:
     y_valid = np.array(ref_func(X_valid))
 
 # %%
-validation = ot.MetaModelValidation(x_valid, y_valid, krigingMeta)
-validation.computePredictivityFactor()
+metamodelPredictions = krigingMeta(x_valid)
+validation = ot.MetaModelValidation(y_valid, metamodelPredictions)
+validation.computeR2Score()
 
 # %%
 graph = validation.drawValidation()

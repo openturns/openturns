@@ -32,6 +32,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -893,6 +894,40 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare(const MatrixI
 {
   MatrixImplementation A(*this);
   return A.solveLinearSystemSquareInPlace(b);
+}
+
+/* Square matrix inverse */
+MatrixImplementation MatrixImplementation::inverseSquareInPlace()
+{
+  if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
+  MatrixImplementation identity(nbRows_, nbColumns_);
+  for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    identity(i, i) = 1.0;
+  const MatrixImplementation inverseMatrix(solveLinearSystemSquareInPlace(identity));
+  return inverseMatrix;
+}
+
+MatrixImplementation MatrixImplementation::inverseSquare() const
+{
+  MatrixImplementation A(*this);
+  return A.inverseSquareInPlace();
+}
+
+/* Symmetric matrix inverse */
+MatrixImplementation MatrixImplementation::inverseSymInPlace()
+{
+  if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
+  MatrixImplementation identity(nbRows_, nbColumns_);
+  for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    identity(i, i) = 1.0;
+  const MatrixImplementation inverseMatrix(solveLinearSystemSymInPlace(identity));
+  return inverseMatrix;
+}
+
+MatrixImplementation MatrixImplementation::inverseSym() const
+{
+  MatrixImplementation A(*this);
+  return A.inverseSymInPlace();
 }
 
 /* Resolution of a linear system : square matrix */

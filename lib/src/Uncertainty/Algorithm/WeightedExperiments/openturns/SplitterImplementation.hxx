@@ -47,7 +47,7 @@ public:
   SplitterImplementation * clone() const override;
 
   /** Generate next set of indices */
-  virtual Indices generate(Indices & indices2Out) const;
+  virtual Indices generate(Indices & indicesTest) const;
 
   /** Reset sequence state */
   virtual void reset() const;

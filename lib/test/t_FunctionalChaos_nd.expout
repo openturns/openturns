@@ -8,6 +8,8 @@ FunctionalChaosResult
 - indices size=36
 - relative errors=[0.0107646,0.0196501]
 - residuals=[0.00527094,0.0324338]
+- isLeastSquares=true
+- isModelSelection=true
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
@@ -44,6 +46,29 @@ FunctionalChaosResult
 |    30 | [0,6,0]       | 0.0312335     | 1.37507       |
 |    31 | [0,5,1]       | 0             | -0.0974743    |
 |    32 | [0,4,2]       | -0.0304591    | 0             |
+|    33 | [0,2,4]       | -0.0214549    | 0             |
+|    34 | [0,1,5]       | 0             | -0.054361     |
+|    35 | [0,0,6]       | 0.0281456     | 0.0572165     |
+
+FunctionalChaosResult
+- input dimension=3
+- output dimension=2
+- distribution dimension=3
+- transformation=3 -> 3
+- inverse transformation=3 -> 3
+- orthogonal basis dimension=3
+- indices size=36
+- relative errors=[0.0107646,0.0196501]
+- residuals=[0.00527094,0.0324338]
+- isLeastSquares=true
+- isModelSelection=true
+
+| Index | Multi-index   | Coeff. #0     | Coeff. #1     |
+|-------|---------------|---------------|---------------|
+|     0 | [0,0,0]       | 0.999222      | 3.54043       |
+|     1 | [1,0,0]       | 0             | 1.60758       |
+|     2 | [2,0,0]       | 0.558561      | 0             |
+| ...   | ...           | ...           | ...           |
 |    33 | [0,2,4]       | -0.0214549    | 0             |
 |    34 | [0,1,5]       | 0             | -0.054361     |
 |    35 | [0,0,6]       | 0.0281456     | 0.0572165     |
@@ -97,6 +122,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.00708265,0.0115021]
 - residuals=[0.0042755,0.0248145]
+- isLeastSquares=true
+- isModelSelection=false
 
 | Index | Multi-index   | Coeff. #0     | Coeff. #1     |
 |-------|---------------|---------------|---------------|
@@ -181,6 +208,29 @@ FunctionalChaosResult
 |    78 | [0,5,1]       | 0.00950269    | -0.100701     |
 |    79 | [0,4,2]       | -0.0199696    | 0.0017457     |
 |    80 | [0,3,3]       | -0.00604802   | -0.0655698    |
+|    81 | [0,2,4]       | -0.0176426    | 0.0120149     |
+|    82 | [0,1,5]       | 0.00515853    | -0.0221676    |
+|    83 | [0,0,6]       | 0.0274736     | 0.0753037     |
+
+FunctionalChaosResult
+- input dimension=3
+- output dimension=2
+- distribution dimension=3
+- transformation=3 -> 3
+- inverse transformation=3 -> 3
+- orthogonal basis dimension=3
+- indices size=84
+- relative errors=[0.00708265,0.0115021]
+- residuals=[0.0042755,0.0248145]
+- isLeastSquares=true
+- isModelSelection=false
+
+| Index | Multi-index   | Coeff. #0     | Coeff. #1     |
+|-------|---------------|---------------|---------------|
+|     0 | [0,0,0]       | 0.993422      | 3.48613       |
+|     1 | [1,0,0]       | 0.00557453    | 1.69316       |
+|     2 | [0,1,0]       | 0.00646329    | 0.0272783     |
+| ...   | ...           | ...           | ...           |
 |    81 | [0,2,4]       | -0.0176426    | 0.0120149     |
 |    82 | [0,1,5]       | 0.00515853    | -0.0221676    |
 |    83 | [0,0,6]       | 0.0274736     | 0.0753037     |

@@ -50,23 +50,23 @@ KFoldSplitter * KFoldSplitter::clone() const
   return new KFoldSplitter(*this);
 }
 
-Indices KFoldSplitter::generate(Indices & indices2Out) const
+Indices KFoldSplitter::generate(Indices & indicesTest) const
 {
   if (currentIndex_ >= k_)
     throw OutOfBoundException(HERE) << "end of KFold set";
 
-  Indices indices1;
-  indices2Out.clear();
+  Indices indicesTrain;
+  indicesTest.clear();
   for (UnsignedInteger i = 0; i < N_; ++ i)
   {
     const UnsignedInteger si = shuffle_.getSize() ? shuffle_[i] : i;
     if (i % k_ != currentIndex_)
-      indices1.add(si);
+      indicesTrain.add(si);
     else
-      indices2Out.add(si);
+      indicesTest.add(si);
   }
   ++ currentIndex_;
-  return indices1;
+  return indicesTrain;
 }
 
 void KFoldSplitter::setRandomize(const Bool randomize)

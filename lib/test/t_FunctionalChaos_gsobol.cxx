@@ -24,16 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-Scalar sobol(const Indices & indices,
-             const Point & a)
-{
-  Scalar value = 1.0;
-  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
-  {
-    value *= 1.0 / (3.0 * pow(1.0 + a[indices[i]], 2.0));
-  }
-  return value;
-}
 
 int main(int, char *[])
 {
@@ -46,25 +36,15 @@ int main(int, char *[])
 
     // Problem parameters
     UnsignedInteger dimension = 5;
-
-    // Reference analytical values
-    Scalar meanTh = 1.0;
-    Scalar covTh = 1.0;
     Point a(dimension);
-    // Create the gSobol function
-    Description inputVariables(dimension);
-    Description formula(1);
-    formula[0] = "1.0";
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       a[i] = 0.5 * i;
-      covTh *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
-      inputVariables[i] = (OSS() << "xi" << i);
-      formula[0] = (OSS() << formula[0] << " * ((abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << "))");
     }
-    --covTh;
-
-    SymbolicFunction model(inputVariables, formula);
+    GSobolUseCase usecase(dimension, a);
+    Function model(usecase.getModel());
+    Scalar meanTh = usecase.getMean();
+    Scalar covTh = usecase.getVariance();
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
@@ -145,7 +125,7 @@ int main(int, char *[])
           {
             indices[0] = i;
             Scalar value = sensitivity.getSobolIndex(i);
-            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
+            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - usecase.computeSobolIndice(indices) / covTh) << std::endl;
           }
           indices = Indices(2);
           UnsignedInteger k = 0;
@@ -156,14 +136,14 @@ int main(int, char *[])
             {
               indices[1] = j;
               Scalar value = sensitivity.getSobolIndex(indices);
-              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
+              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - usecase.computeSobolIndice(indices) / covTh) << std::endl;
               k = k + 1;
             }
           }
           indices = Indices(3);
           indices.fill();
           Scalar value = sensitivity.getSobolIndex(indices);
-          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
+          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - usecase.computeSobolIndice(indices) / covTh) << std::endl;
 
         }
       }

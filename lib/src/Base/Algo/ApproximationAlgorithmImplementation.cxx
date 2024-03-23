@@ -31,6 +31,10 @@ static const Factory<ApproximationAlgorithmImplementation> Factory_Approximation
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
   : PersistentObject()
+  , hasUniformWeight_(true)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
 {
   // Nothing to do
 }
@@ -47,6 +51,9 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , hasUniformWeight_(true)
   , psi_(psi)
   , currentIndices_(indices)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -66,6 +73,9 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , weight_()
   , psi_(psi)
   , currentIndices_(indices)
+  , isAlreadyComputedCoefficients_(false)
+  , residual_(0.0)
+  , relativeError_(0.0)
 {
   UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
@@ -142,19 +152,16 @@ String ApproximationAlgorithmImplementation::__repr__() const
          << " psi=" << psi_;
 }
 
-
 String ApproximationAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
-
 
 void ApproximationAlgorithmImplementation::setCoefficients(const Point & coefficients)
 {
   coefficients_ = coefficients;
   isAlreadyComputedCoefficients_ = true;
 }
-
 
 Point ApproximationAlgorithmImplementation::getCoefficients()
 {
@@ -183,6 +190,11 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;
+}
+
+Bool ApproximationAlgorithmImplementation::isModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::isModelSelection()";
 }
 
 /* Method save() stores the object through the StorageManager */

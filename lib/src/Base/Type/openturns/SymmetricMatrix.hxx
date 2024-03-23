@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SymmetricMatrix implements the classical mathematical symmetric matrix
+ *  @brief SymmetricMatrix implements the symmetric matrix
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -31,7 +31,7 @@ class IdentityMatrix;
 /**
  * @class SymmetricMatrix
  *
- * SymmetricMatrix implements the classical mathematical square matrix
+ * SymmetricMatrix implements the symmetric matrix
  */
 
 class OT_API SymmetricMatrix :
@@ -163,6 +163,9 @@ public:
 
   /** Sum all coefficients */
   Scalar computeSumElements() const override;
+
+  /** Inverse matrix*/
+  SymmetricMatrix inverse() const;
 
 protected:
 

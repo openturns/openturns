@@ -8,10 +8,12 @@ ot_add_source_file (LinearModelResult.cxx)
 ot_add_source_file (LinearModelAlgorithm.cxx)
 ot_add_source_file (LinearModelStepwiseAlgorithm.cxx)
 ot_add_source_file (LinearModelAnalysis.cxx)
+ot_add_source_file (LinearModelValidation.cxx)
 
 ot_install_header_file (LinearModelResult.hxx)
 ot_install_header_file (LinearModelAlgorithm.hxx)
 ot_install_header_file (LinearModelStepwiseAlgorithm.hxx)
 ot_install_header_file (LinearModelAnalysis.hxx)
+ot_install_header_file (LinearModelValidation.hxx)
 
 ot_install_header_file (OTLinearModel.hxx)

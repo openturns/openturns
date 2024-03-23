@@ -104,6 +104,9 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
 
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
 protected:
 
   void setCoefficients(const Point & coefficients);

@@ -88,6 +88,10 @@ public:
   /** Selection history accessor */
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
 
+  /** Verbose accessor */
+  Bool getVerbose() const;
+  void setVerbose(const Bool verbose);
+
 protected:
   /** Stopping criterion on the L1-norm of the coefficients */
   Scalar maximumRelativeConvergence_ = 0.0;
@@ -103,6 +107,10 @@ protected:
 
   /** The ranks of the removed vectors in the previous partial basis */
   Indices removedPsi_k_ranks_;
+
+  /** Verbosity flag */
+  Bool verbose_;
+
 }; /* class BasisSequenceFactoryImplementation */
 
 
