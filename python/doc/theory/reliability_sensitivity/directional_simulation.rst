@@ -10,7 +10,7 @@ we seek to evaluate the following probability:
 
     P_f = \Prob{g\left( \vect{X} \right) < 0}
 
-Here, :math:`\vect{X}` is a random vector, :math:`g(\vect{X})` the function known as
+Here, :math:`\vect{X}` is a random vector, :math:`\model(\vect{X})` the function known as
 “limit state function” which enables the definition of the event
 :math:`\cD_f = \{\vect{X} \in \Rset^d \, / \, \model(\vect{X}) \le 0\}`.
 
