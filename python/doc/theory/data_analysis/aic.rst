@@ -33,7 +33,7 @@ The principle is to rank :math:`\cM_1,\dots,\cM_K` according to the following qu
 .. math::
 
    \begin{aligned}
-       \textrm{AIC}_i = -2 \frac{\log(L_i)}{n} + \frac{2 p_i}{n}
+       \operatorname{AIC}_i = -2 \frac{\log(L_i)}{n} + \frac{2 p_i}{n}
      \end{aligned}
 
 where :math:`p_i` denotes the number of parameters being adjusted for
@@ -46,13 +46,13 @@ likelihood is high enough to justify the number of parameters used.
 In context of small data, there is a substantial risk that AIC select
 models that have too many parameters. In other words, the risk of
 overfitting is important. To tackle such issue, the AICc criterion was
-developed : it consists in evaluating the AIC with a correction term (
-extra penalty) for small data. The formula is as follows :
+developed : it consists in evaluating the AIC with a correction term
+(extra penalty) for small data. The formula is as follows:
 
 .. math::
 
    \begin{aligned}
-       \textrm{AICC}_i = AIC + \frac{(2 p_i)(p_i + 1)}{n - p_i - 1}
+       \operatorname{AICC}_i = \operatorname{AIC}_i + \frac{(2 p_i)(p_i + 1)}{n - p_i - 1}
      \end{aligned}
 
 One might notice that the extra term penalty vanishes for

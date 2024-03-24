@@ -62,7 +62,7 @@ view = otv.View(graphConvergence)
 
 # %%
 # The result obtained with the previous algorithm is an instance of the
-# :class:~openturns.ExpectationSimulationResult` class.
+# :class:`~openturns.ExpectationSimulationResult` class.
 
 # %%
 # The expected value of the mean is given by the `getExpectationEstimate` method :

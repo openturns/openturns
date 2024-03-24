@@ -1,11 +1,13 @@
 .. _taylor_expansion:
 
+Taylor expansion
+----------------
 
 Let :math:`h: \Rset^d \rightarrow \Rset^q` be a function, let :math:`\ux \in \Rset^{n_X}`
 be an input point and let :math:`\uy=h(\ux)` be the corresponding output.
 
 First-order Taylor expansion
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first-order Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function
 :math:`\widehat{h}: \Rset^d \rightarrow \Rset^q` defined for each marginal function
@@ -33,7 +35,7 @@ for :math:`i \in \{1, ..., q\}` and :math:`j \in \{1, ..., d\}`.
 
 
 Second-order Taylor expansion
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second-order Taylor expansion of :math:`h` at the point :math:`\ux_0` is the function
 :math:`\widehat{h}: \Rset^d \rightarrow \Rset^q` defined for each marginal function
@@ -59,7 +61,7 @@ where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq d, 1\leq k \leq q}` is the Hes
 
 .. math::
 
-    Q_{ijk} = \left(\frac{\partial^2 h_k}{\partial x_i\partial x_j}\right)(\ux_0)
+    Q_{ijk} = \frac{\partial^2 h_k}{\partial x_i \partial x_j} (\ux_0)
 
 for :math:`i, j \in \{1, ..., d\}` and :math:`k \in \{1, ..., q\}`.
 

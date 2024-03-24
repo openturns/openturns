@@ -45,7 +45,7 @@ See :class:`~openturns.PythonFunction` for further details.
 
 Create a *Function* from a Python class:
 
->>> class FUNC(OpenTURNSPythonFunction):
+>>> class FUNC(ot.OpenTURNSPythonFunction):
 ...     def __init__(self):
 ...         super(FUNC, self).__init__(2, 1)
 ...         self.setInputDescription(['R', 'S'])
