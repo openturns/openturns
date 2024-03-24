@@ -8,7 +8,7 @@ One way to evaluate the central dispersion (expectation and variance) of the
 variable :math:`\uY=\model(\uX)`
 is to use the Taylor expansion of the function
 :math:`\model: \Rset^\inputDim \rightarrow \Rset^q` at
-the mean point :math:`\vect{\mu} = \Expect{\uX}`. Depending on the order of the Taylor expansion 
+the mean point :math:`\vect{\mu} = \Expect{\uX}`. Depending on the order of the Taylor expansion
 (classically first or second order), we get different approximations
 of the mean and variance of :math:`Y`.
 
