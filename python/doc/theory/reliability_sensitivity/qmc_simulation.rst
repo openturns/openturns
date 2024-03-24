@@ -52,7 +52,7 @@ quality is given by the Koksma-Hlawka inequality that we recall here :
 .. math::
 
    \begin{aligned}
-       \left\lvert \frac{1}{\sampleSize}\sum_{i=1}^\sampleSizef(\vect{x}_i) - \int_If(\vect{x})d\vect{x} \right\rvert \le Var(f)D^\sampleSize(\vect{x}_1, ..., \vect{x}_\sampleSize)
+       \left\lvert \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize f(\vect{x}_i) - \int_If(\vect{x})d\vect{x} \right\rvert \le Var(f)D^\sampleSize(\vect{x}_1, ..., \vect{x}_\sampleSize)
      \end{aligned}
 
 where :math:`D^\sampleSize(\vect{x}_1, ..., \vect{x}_\sampleSize)` is the discrepancy of
