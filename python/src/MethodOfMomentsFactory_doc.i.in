@@ -26,7 +26,7 @@ can be expressed as a function of the :math:`d_\theta` parameters:
 
 .. math::
 
-    \mu_i =  \Expect{X^i} = g_i(\theta_1, \dots, \theta_K).
+    \mu_i =  \Expect{X^i} = g_i(\theta_1, \dots, \theta_{d_\theta}).
 
 
 Let :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_K)` be the :math:`K` first empirical
