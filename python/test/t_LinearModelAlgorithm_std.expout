@@ -14,7 +14,7 @@ LinearModelResult
 - inverse Gram diagonal=[0.0864939,0.0184756,0.000172994]
 - leverages size=100
 - Cook's distances size=100
-- variance=0.00991604
+- residuals variance=0.00991604
 - has intercept=true
 
 
@@ -31,7 +31,7 @@ LinearModelResult
 - inverse Gram diagonal=[0.0864939,0.0184756,0.000172994]
 - leverages size=100
 - Cook's distances size=100
-- variance=0.00991604
+- residuals variance=0.00991604
 - has intercept=true
 
 
