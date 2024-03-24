@@ -39,7 +39,7 @@ evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_n)`:
 
 for :math:`k \in \{1, ..., d_\theta\}`.
 Then the estimator :math:`\widehat{\theta} = \left(\widehat{\theta}_1,
-\dots, \widehat{\theta}_K\right)` built by the method of moments is solution of the
+\dots, \widehat{\theta}_{d_\theta}\right)` built by the method of moments is solution of the
 following nonlinear system:
 
 .. math::
