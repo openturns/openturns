@@ -37,7 +37,7 @@ evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_n)`:
 
     \widehat{\mu}_k = \dfrac{1}{n} \sum_{i=1}^n x_i^k.
 
-
+for :math:`k \in \{1, ..., d_\theta\}`.
 Then the estimator :math:`\widehat{\theta} = \left(\widehat{\theta}_1,
 \dots, \widehat{\theta}_K\right)` built by the method of moments is solution of the
 following nonlinear system:
