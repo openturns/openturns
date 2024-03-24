@@ -98,12 +98,7 @@ Examples
 >>> outputSample = func(inputSample)
 >>> algo = ot.LinearModelAlgorithm(inputSample, outputSample)
 >>> algo.run()
->>> result = algo.getResult()
->>> design = result.getDesign()
->>> gram = design.computeGram()
->>> inverseGram = gram.inverse()
->>> projection = result.computeProjectionMatrix()
->>> leverages = result.getLeverages()"
+>>> result = algo.getResult()"
 
 // ---------------------------------------------------------------------
 
