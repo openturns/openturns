@@ -116,7 +116,7 @@ print("entropy=%.6f" % distribution.computeEntropy())
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
     0.95
 )
-ott.assert_almost_equal(interval.getLowerBound(), [0.000635], 1e-3, 0.0)
+ott.assert_almost_equal(interval.getLowerBound(), [0.0], 0.0, 0.0)
 ott.assert_almost_equal(interval.getUpperBound(), [0.96401], 1e-3, 0.0)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)

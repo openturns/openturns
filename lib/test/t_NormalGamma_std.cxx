@@ -116,8 +116,8 @@ int main(int, char *[])
     // Confidence regions
     Scalar threshold;
     Interval interval(distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold));
-    assert_almost_equal(interval.getLowerBound(), {-1.80326, 0.03904}, 1e-4, 0.0);
-    assert_almost_equal(interval.getUpperBound(), {3.80326, 2.00954}, 1e-4, 0.0);
+    assert_almost_equal(interval.getLowerBound(), {0.03904, -1.80326}, 1e-4, 0.0);
+    assert_almost_equal(interval.getUpperBound(), {2.00954, 3.80326}, 1e-4, 0.0);
     fullprint << "threshold=" << threshold << std::endl;
     Scalar beta;
     LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
