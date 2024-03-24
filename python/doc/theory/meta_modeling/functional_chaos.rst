@@ -122,7 +122,7 @@ for any :math:`k, \ell \geq 0` where :math:`\delta_{k, \ell}` is the Kronecker s
   0 & \textrm{otherwise.}
   \end{cases}
 
-See :ref:`orthogonal basis <orthogonal_basis>` for more details on the available
+See :class:`~openturns.StandardDistributionPolynomialFactory` for more details on the available
 orthonormal bases.
 
 In the library, we choose a basis :math:`\left(\Psi_k\right)_{k \geq 0}` which is orthonormal
@@ -312,11 +312,13 @@ The meta model of *g* can be defined using the isoprobabilistic transformation :
 
     \widetilde{g} = \widetilde{h} \circ T.
 
-See  :ref:`response_surface` to get more details on:
+More details are available on these topics.
 
-- the available constructions of the truncated multivariate orthogonal basis,
+- See :class:`~openturns.StandardDistributionPolynomialFactory` for more details on the
+  available constructions of the truncated multivariate orthogonal basis
 
-- the computation of the coefficients.
+- See :class:`~openturns.FunctionalChaosAlgorithm` for more details on the computation
+  of the coefficients.
 
 The approximation :math:`\widetilde{\model}` can be used to build an efficient
 random generator of :math:`Y` based on the random vector :math:`\vect{X}`,
