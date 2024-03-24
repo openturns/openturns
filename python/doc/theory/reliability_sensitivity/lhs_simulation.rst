@@ -37,7 +37,7 @@ Latin Hypercube Simulation
 
   .. math::
 
-    \hat{P}_{f,LHS}^\sampleSize = \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{g(\uX^i) \leq 0 \}}
+    \hat{P}_{f,LHS}^\sampleSize = \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{\model(\uX^i) \leq 0 \}}
 
   where the sample of :math:`\{ \uX^i,i=1 \hdots \sampleSize \}` is obtained as
   described previously.
