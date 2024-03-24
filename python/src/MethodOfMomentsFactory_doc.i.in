@@ -31,7 +31,7 @@ can be expressed as a function of the :math:`d_\theta` parameters:
 
 Let :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})` be the :math:`d_\theta` first empirical
 non centered  moments
-evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_n)`:
+evaluated on the sample :math:`(\vect{x}^{(1)}, \dots, \vect{x}^{(n)})`:
 
 .. math::
 
