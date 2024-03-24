@@ -106,8 +106,8 @@ public:
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
 
-  /** Sigma2 accessor */
-  virtual Scalar getSigma2() const;
+  /** residualsVariance accessor */
+  virtual Scalar getResidualsVariance() const;
 
   Bool hasIntercept() const;
 
@@ -157,8 +157,8 @@ private:
   /** Cook's distances */
   Point cookDistances_;
 
-  /** Sigma2 */
-  Scalar sigma2_;
+  /** Residuals variance */
+  Scalar residualsVariance_;
 
   /** hasIntercept */
   Bool hasIntercept_;

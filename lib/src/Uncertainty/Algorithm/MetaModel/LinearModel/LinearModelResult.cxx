@@ -53,7 +53,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & diagonalGramInverse,
                                      const Point & leverages,
                                      const Point & cookDistances,
-                                     const Scalar sigma2)
+                                     const Scalar residualsVariance)
   : MetaModelResult(inputSample, outputSample, metaModel, Point(1, 0.0), Point(1, 0.0))
   , basis_(basis)
   , design_(design)
@@ -65,7 +65,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   , diagonalGramInverse_(diagonalGramInverse)
   , leverages_(leverages)
   , cookDistances_(cookDistances)
-  , sigma2_(sigma2)
+  , residualsVariance_(residualsVariance)
   , hasIntercept_(false)
 {
   const UnsignedInteger size = inputSample.getSize();
@@ -140,7 +140,7 @@ String LinearModelResult::__repr_markdown__() const
       << "- inverse Gram diagonal=" << diagonalGramInverse_ << "\n"
       << "- leverages size=" << leverages_.getSize() << "\n"
       << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
-      << "- variance=" << sigma2_ << "\n"
+      << "- residuals variance=" << residualsVariance_ << "\n"
       << "- has intercept=" << hasIntercept_ << "\n";
   oss << "\n";
   return oss;
@@ -207,7 +207,7 @@ Normal LinearModelResult::getNoiseDistribution() const
   const SignedInteger dof = getDegreesOfFreedom();
   if (dof <= 0)
     throw NotDefinedException(HERE) << "The noise variance is undefined when DOF is null";
-  return Normal(0, std::sqrt(sigma2_));
+  return Normal(0, std::sqrt(residualsVariance_));
 }
 
 Sample LinearModelResult::getStandardizedResiduals() const
@@ -230,9 +230,9 @@ Point LinearModelResult::getCookDistances() const
   return cookDistances_;
 }
 
-Scalar LinearModelResult::getSigma2() const
+Scalar LinearModelResult::getResidualsVariance() const
 {
-  return sigma2_;
+  return residualsVariance_;
 }
 
 /* R-squared test */
@@ -299,7 +299,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "diagonalGramInverse_", diagonalGramInverse_ );
   adv.saveAttribute( "leverages_", leverages_ );
   adv.saveAttribute( "cookDistances_", cookDistances_ );
-  adv.saveAttribute( "sigma2_", sigma2_ );
+  adv.saveAttribute( "residualsVariance_", residualsVariance_ );
 }
 
 
@@ -320,7 +320,10 @@ void LinearModelResult::load(Advocate & adv)
   adv.loadAttribute( "diagonalGramInverse_", diagonalGramInverse_ );
   adv.loadAttribute( "leverages_", leverages_ );
   adv.loadAttribute( "cookDistances_", cookDistances_ );
-  adv.loadAttribute( "sigma2_", sigma2_ );
+  if (adv.hasAttribute("residualsVariance_"))
+    adv.loadAttribute( "residualsVariance_", residualsVariance_ );
+  else
+    adv.loadAttribute( "sigma2_", residualsVariance_ );
 }
 
 END_NAMESPACE_OPENTURNS

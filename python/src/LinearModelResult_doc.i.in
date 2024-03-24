@@ -211,10 +211,10 @@ intercept : Bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelResult::getSigma2
-"Accessor to the unbiased sample variance.
+%feature("docstring") OT::LinearModelResult::getResidualsVariance
+"Accessor to the unbiased sample variance of the residuals.
 
 Returns
 -------
-sigma2 : float
+residualsVariance : float
 "

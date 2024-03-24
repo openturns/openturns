@@ -20,7 +20,7 @@ Distribution of estimators in linear regression
 # We are interested in the estimators of the variance :math:`\sigma^2`
 # and the standard deviation :math:`\sigma`:
 #
-# - the variance :math:`\sigma^2` is estimated from :meth:`~openturns.LinearModelResult.getSigma2`;
+# - the variance of the residuals, :math:`\sigma^2`, is estimated from :meth:`~openturns.LinearModelResult.getResidualsVariance`;
 # - the standard deviation :math:`\sigma` is estimated from :meth:`~openturns.LinearModelAnalysis.getResidualsStandardError`.
 #
 # The asymptotic distribution of these estimators is known (see [vaart2000]_)
@@ -89,7 +89,7 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         algo = ot.LinearModelAlgorithm(self.input_sample, noisy_output_sample)
         lmResult = algo.getResult()
         if self.estimator == "variance":
-            output = lmResult.getSigma2()
+            output = lmResult.getResidualsVariance()
         elif self.estimator == "standard-deviation":
             lmAnalysis = ot.LinearModelAnalysis(lmResult)
             output = lmAnalysis.getResidualsStandardError()
