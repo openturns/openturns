@@ -56,7 +56,7 @@ where:
 
      \begin{aligned}
          \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{\model(\outputReal_{\:i})) \leq 0 \}}\frac{f_{\uX}(\outputReal_{\:i})}{f_{\outputRV}(\outputReal_{\:i})}\\
-         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\outputReal_i)) \leq 0 \}}\frac{f_{\uX}(\outputReal_{\:i})}{f_{\outputRV}(\outputReal_{\:i})} - \mu_N)^2
+         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{\model(\outputReal_i)) \leq 0 \}}\frac{f_{\uX}(\outputReal_{\:i})}{f_{\outputRV}(\outputReal_{\:i})} - \mu_N)^2
        \end{aligned}
 
 The asymptotic confidence interval of order :math:`1-\alpha` associated
