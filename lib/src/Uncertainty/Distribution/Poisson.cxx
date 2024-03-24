@@ -164,6 +164,8 @@ Point Poisson::computeCDFGradient(const Point & point) const
 Scalar Poisson::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return DistFunc::qPoisson(lambda_, prob, tail);
 }
 

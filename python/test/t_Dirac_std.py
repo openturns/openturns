@@ -66,6 +66,12 @@ print("characteristic function= (%.12g%+.12gj)" % (CF.real, CF.imag))
 GF = distribution.computeGeneratingFunction(0.5 + 0.3j)
 print("generating function= (%.12g%+.12gj)" % (GF.real, GF.imag))
 quantile = distribution.computeQuantile(0.95)
+# Test invalid quantile
+try:
+    q12 = distribution.computeScalarQuantile(1.2)
+    raise ValueError("Expected a TypeError but got quantile(1.2) = {}".format(q12))
+except TypeError:
+    pass
 print("quantile=", quantile)
 print("cdf(quantile)=", distribution.computeCDF(quantile))
 print("entropy=%.6f" % distribution.computeEntropy())
