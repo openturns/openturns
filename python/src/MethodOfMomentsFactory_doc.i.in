@@ -20,7 +20,6 @@ the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^K`  its parameter vector.
 Then :math:`K` denotes the number of parameters of the distribution and we assume that
 the :math:`K` first moments of the distribution exist.
-
 Let :math:`(\mu_1, \dots, \mu_K)` those coming from the parametric model which
 can be expressed as a function of the :math:`K` parameters:
 
