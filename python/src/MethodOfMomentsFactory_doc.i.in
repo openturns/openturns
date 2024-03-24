@@ -45,10 +45,10 @@ following nonlinear system:
 .. math::
     :label: MethMomSyst
 
-    \widehat{\mu}_1 & =  g_1(\theta_1, \dots, \theta_K) \\
-    \widehat{\mu}_2 & = g_2(\theta_1, \dots, \theta_K) \\
+    \widehat{\mu}_1 & =  g_1(\theta_1, \dots, \theta_{d_\theta}) \\
+    \widehat{\mu}_2 & = g_2(\theta_1, \dots, \theta_{d_\theta}) \\
     \vdots &  \\
-    \widehat{\mu}_K & = g_K(\theta_1, \dots, \theta_K)
+    \widehat{\mu}_K & = g_K(\theta_1, \dots, \theta_{d_\theta})
 
 To solve the non linear :eq:`MethMomSyst`, OpenTURNS minimizes the sum of slacks between
 :math:`(\mu_1, \dots, \mu_K)` and :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_K)`. It is defined by:
