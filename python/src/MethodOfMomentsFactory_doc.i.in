@@ -18,7 +18,6 @@ Let :math:`(\vect{x}_k)_{1 \leq k \leq n}` be
 the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^K`  its parameter vector.
-
 Then :math:`K` denotes the number of parameters of the distribution and we assume that
 the :math:`K` first moments of the distribution exist.
 
