@@ -1,7 +1,7 @@
 %feature("docstring") OT::TNC
 "Truncated Newton Constrained solver.
 
-Trunrcated-Newton method Non-linear optimizer.
+Truncated-Newton method Non-linear optimizer.
 This solver uses no derivative information and only supports bound constraints.
 
 Available constructors:
