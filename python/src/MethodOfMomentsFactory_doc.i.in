@@ -52,11 +52,11 @@ following nonlinear system:
     \widehat{\mu}_K & = g_K(\theta_1, \dots, \theta_K)
 
 To solve the non linear :eq:`MethMomSyst`, OpenTURNS minimizes the sum of slacks between
-:math:`(\mu_1, \dots, \mu_K)` and :math:`(m_1, \dots, m_K)`. It is defined by:
+:math:`(\mu_1, \dots, \mu_K)` and :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_K)`. It is defined by:
 
 .. math::
 
-    \Delta = \argmin_{\vect{\theta} \in \Rset^K} \left[ \dfrac{|\mu_1-\widehat{\mu}_1|}{\sigma} \right]^2 + \sum_{i=2}^K \left[ \dfrac{|\mu_i|^{1/i}-|\widehat{\mu}_i|^{1/i}}{\sigma} \right]^2
+    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^K} \left[ \dfrac{|\mu_1-\widehat{\mu}_1|}{\sigma} \right]^2 + \sum_{i=2}^K \left[ \dfrac{|\mu_i|^{1/i}-|\widehat{\mu}_i|^{1/i}}{\sigma} \right]^2
 
 
 See also
