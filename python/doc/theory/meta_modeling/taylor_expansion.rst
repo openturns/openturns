@@ -60,7 +60,7 @@ where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq d, 1\leq k \leq q}` is the Hes
 
 .. math::
 
-    Q_{ijk} = \left(\frac{\partial^2 h_k}{\partial x_i\partial x_j}\right)(\ux_0)
+    Q_{ijk} = \frac{\partial^2 h_k}{\partial x_i \partial x_j} (\ux_0)
 
 for :math:`i, j \in \{1, ..., d\}` and :math:`k \in \{1, ..., q\}`.
 

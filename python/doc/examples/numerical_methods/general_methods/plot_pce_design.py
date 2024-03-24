@@ -178,7 +178,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # .. math::
 #
-#     \boldsymbol{\Psi}_{ik} = \psi_k\left(\vect{x}^{(j)}\right)
+#     \boldsymbol{\Psi}_{jk} = \psi_k\left(\vect{x}^{(j)}\right)
 #
 # for :math:`j = 1, ..., n` and :math:`k = 1, ..., m`.
 # The matrix :math:`\boldsymbol{\Psi}` is mathematically equal to the
@@ -342,10 +342,11 @@ print("Inverse Gram : ", inverseGram.getNbRows(), "x", inverseGram.getNbColumns(
 # -----------------------------------
 # In this section, we show how to compute the raw leave-one-out
 # error using the naive formula.
-# To do this, we could use implement the :class:~openturns.KFoldSplitter` class
-# with `K = N`.
+# To do this, we could use the :class:`~openturns.LeaveOneOutSplitter` class
+# or the :class:`~openturns.KFoldSplitter` class with `K = N`.
 # Since this would complicate the script and obscure its purpose,
-# we implement the leave-one-out method naively.
+# we implement the leave-one-out method naively using the `pop` method of the
+# `list` Python object.
 
 # %%
 # Compute leave-one-out error

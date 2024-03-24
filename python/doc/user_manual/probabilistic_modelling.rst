@@ -59,7 +59,6 @@ Continuous parametric distributions
     InverseGamma
     InverseNormal
     InverseWishart
-    KPermutationsDistribution
     Laplace
     Logistic
     LogNormal
@@ -115,6 +114,7 @@ Discrete parametric distributions
     Geometric
     Hypergeometric
     Multinomial
+    KPermutationsDistribution
 
     :template: classWithPlot.rst_t
     NegativeBinomial

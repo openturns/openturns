@@ -4,7 +4,6 @@ The Ishigami function
 =====================
 
 The Ishigami function of Ishigami & Homma (1990) is  recurrent test case for sensitivity analysis methods and uncertainty.
-
 Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function
 
 .. math::
@@ -12,7 +11,6 @@ Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. 
 
 
 for any :math:`X_1,X_2,X_3\in[-\pi,\pi]`
-
 We assume that the random variables :math:`X_1,X_2,X_3` are independent and have the uniform marginal distribution in the interval from :math:`-\pi` to :math:`\pi`:
 
 .. math::
@@ -25,13 +23,13 @@ Analysis
 The expectation and the variance of :math:`Y` are
 
 .. math::
-    E(Y)  = \frac{a}{2}
+    \Expect{Y}  = \frac{a}{2}
 
 
 and
 
 .. math::
-    V(Y) = \frac{1}{2} +  \frac{a^2}{8} +  \frac{b^2 \pi^8}{18} +  \frac{b\pi^4}{5}.
+    \Var{Y} = \frac{1}{2} +  \frac{a^2}{8} +  \frac{b^2 \pi^8}{18} +  \frac{b\pi^4}{5}.
 
 
 The Sobol' decomposition variances are
@@ -70,7 +68,7 @@ References
 * Sobol', I. M., & Levitan, Y. L. (1999). On the use of variance reducing multipliers in Monte Carlo computations of a global sensitivity index.
   Computer Physics Communications, 117(1), 52-61.
 
-* Saltelli, A., Chan, K., & Scott, E. M. (Eds.). (2000). Sensitivity analysis (Vol. 134). New York: Wiley.
+* [saltelli2000]_
 
 * Crestaux, T., Martinez, J.-M., Le Maitre, O., & Lafitte, O. (2007). Polynomial chaos expansion for uncertainties quantification and sensitivity analysis. SAMO 2007, http://samo2007.chem.elte.hu/lectures/Crestaux.pdf.
 
