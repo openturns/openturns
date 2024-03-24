@@ -14,7 +14,7 @@ Notes
 -----
 This method fits a scalar distribution to data of dimension 1, using the method of moments.
 
-Let :math:`(\vect{x}_k)_{1 \leq k \leq sampleSize}` be
+Let :math:`(\vect{x}_k)_{1 \leq k \leq n}` be
 the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^K`  its parameter vector.
@@ -32,11 +32,11 @@ can be expressed as a function of the :math:`K` parameters:
 
 Let :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_K)` be the :math:`K` first empirical
 non centered  moments
-evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)`:
+evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_n)`:
 
 .. math::
 
-    \widehat{\mu}_k = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i^k.
+    \widehat{\mu}_k = \dfrac{1}{n} \sum_{i=1}^n x_i^k.
 
 
 Then the estimator :math:`\widehat{\theta} = \left(\widehat{\theta}_1,
