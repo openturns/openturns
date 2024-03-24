@@ -14,7 +14,7 @@ Notes
 -----
 This method fits a scalar distribution to data of dimension 1, using the method of moments.
 
-Let :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}` be
+Let :math:`(\vect{x}_k)_{1 \leq k \leq sampleSize}` be
 the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^K`  its parameter vector.
