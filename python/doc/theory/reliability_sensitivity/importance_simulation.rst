@@ -37,7 +37,7 @@ The estimator built by Importance Sampling method is:
 .. math::
 
    \begin{aligned}
-       \hat{P}_{f,IS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\outputRV_{\:i})) \leq 0 \}}\frac{f_{\uX}(\outputRV_{\:i})}{f_{\outputRV}(\outputRV_{\:i})}
+       \hat{P}_{f,IS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{\model(\outputRV_{\:i})) \leq 0 \}}\frac{f_{\uX}(\outputRV_{\:i})}{f_{\outputRV}(\outputRV_{\:i})}
      \end{aligned}
 
 where:
