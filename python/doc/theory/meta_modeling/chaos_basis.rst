@@ -30,8 +30,8 @@ where :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_d)` is the multi-index rep
 :math:`\Psi_{\alpha_i}^{(i)}` is the :math:`i`-th marginal univariate
 orthonormal polynomial of degree :math:`\alpha_i`.
 The orthonormal polynomial basis with respect to the marginal :math:`\mu_i` is known for some distributions: see
-:ref:`orthogonal_polynomial`
-to get some usual orthonornal polynomial families.
+:ref:`orthogonal_polynomials`
+to get some usual orthonormal polynomial families.
 
 For classical polynomials, the :class:`~openturns.StandardDistributionPolynomialFactory` class
 implements the three-term recurrence.
@@ -64,4 +64,4 @@ at any point (see :class:`~openturns.OrthogonalUniVariatePolynomial`).
     - [ghanem1991]_
     - [lemaitre2010]_
     - [dahlquist2008]_
-    - [dudin1987]_
+    - [rudin1987]_
