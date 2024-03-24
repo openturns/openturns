@@ -55,7 +55,7 @@ To solve the non linear :eq:`MethMomSyst`, OpenTURNS minimizes the sum of slacks
 
 .. math::
 
-    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^K} \left[ \dfrac{|\mu_1-\widehat{\mu}_1|}{\sigma} \right]^2 + \sum_{i=2}^K \left[ \dfrac{|\mu_i|^{1/i}-|\widehat{\mu}_i|^{1/i}}{\sigma} \right]^2
+    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}} \left[ \dfrac{|\mu_1-\widehat{\mu}_1|}{\sigma} \right]^2 + \sum_{i=2}^{d_\theta} \left[ \dfrac{|\mu_i|^{1/i}-|\widehat{\mu}_i|^{1/i}}{\sigma} \right]^2
 
 
 See also
