@@ -37,7 +37,6 @@ cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0101307,0.0037
 cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
 quantile=class=Point name=Unnamed dimension=1 values=[3.2027]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0385599] upper bound=class=Point name=Unnamed dimension=1 values=[3.21723] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(FisherSnedecor(d1 = 5.5, d2 = 10.5)) gradientImplementation=MinimumVolumeLevelSetGradient(FisherSnedecor(d1 = 5.5, d2 = 10.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(FisherSnedecor(d1 = 5.5, d2 = 10.5)) level=3.14683
 beta=0.0429883
@@ -45,7 +44,6 @@ Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower boun
 beta=0.95
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[3.2027] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.230549] upper bound=class=Point name=Unnamed dimension=1 values=[2048] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=1.10025
 entropy (MC)=1.10067
