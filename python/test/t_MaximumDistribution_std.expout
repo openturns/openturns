@@ -25,7 +25,6 @@ quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
 cdf (tail)=0.95
-Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
@@ -37,9 +36,7 @@ MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0,0,0], sig
 beta=0.085027
 Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
-Unilateral confidence interval (lower tail)= [-0.112778, 2.50221]
 beta=0.95
-Unilateral confidence interval (upper tail)= [-0.112778, 2.50221]
 beta=0.95
 mean= [1.16296]
 standard deviation= [0.66898]
@@ -77,16 +74,13 @@ quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
 cdf (tail)=0.95
-Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
 beta=0.085027
 Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
-Unilateral confidence interval (lower tail)= [-0.112778, 2.50221]
 beta=0.95
-Unilateral confidence interval (upper tail)= [-0.112778, 2.50221]
 beta=0.95
 mean= [1.16296]
 standard deviation= [0.66898]
@@ -119,16 +113,13 @@ quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
 cdf (tail)=0.95
-Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
 beta=0.085027
 Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
-Unilateral confidence interval (lower tail)= [-0.112778, 2.50221]
 beta=0.95
-Unilateral confidence interval (upper tail)= [-0.112778, 2.50221]
 beta=0.95
 mean= [1.16296]
 standard deviation= [0.66898]
