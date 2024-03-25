@@ -82,6 +82,9 @@
 /* Define to 1 if you have the CMinpack library. */
 #cmakedefine OPENTURNS_HAVE_CMINPACK
 
+/* Define to 1 if you have the nanoflann library. */
+#cmakedefine OPENTURNS_HAVE_NANOFLANN
+
 /* Define to 1 if you have the OpenMP specification. */
 #cmakedefine OPENTURNS_HAVE_OPENMP
 

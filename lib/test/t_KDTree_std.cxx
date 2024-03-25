@@ -45,7 +45,7 @@ int main(int, char *[])
 
   const Sample sample(Normal(3).getSample(10));
   const KDTree tree(sample);
-  fullprint << "tree=" << tree << std::endl;
+  // fullprint << "tree=" << tree << std::endl;
   const Sample test(Normal(3).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {

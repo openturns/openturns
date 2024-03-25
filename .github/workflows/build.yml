@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v4
     - run: |
         brew upgrade
-        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo
+        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
@@ -42,7 +42,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel hmat-oss cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel hmat-oss cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
