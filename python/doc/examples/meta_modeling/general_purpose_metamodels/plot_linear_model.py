@@ -33,7 +33,7 @@ regression model.
 #
 #     Y = \model(x,y) + \epsilon
 #
-# where :math:`\epsilon \sim \cN(0, \sigma^2)` where :math:`\sigma > 0`
+# where :math:`\epsilon \sim \cN(0, \sigma^2)` with :math:`\sigma > 0`
 # is the standard deviation.
 # In our example, we use :math:`\sigma = 0.1`.
 #
@@ -120,16 +120,17 @@ analysis
 #   Hence, we can reject the hypothesis that any coefficient is zero.
 #   In other words, all the coefficients are significantly nonzero.
 # - The R2 score is close to 1.
-#   Furthermore, the adjusted R2 value, which takes into account the data set
-#   size and the number of hyperparameters, is similar to R2.
+#   Furthermore, the adjusted R2 value, which takes into account the size of
+#   the data set and the number of hyperparameters, is similar to the
+#   unadjusted R2 score.
 #   Most of the variance is explained by the linear model.
-# - The F-test tests if all the coefficients are simultaneously zero.
+# - The F-test tests if all coefficients are simultaneously zero.
 #   The `Fisher-Snedecor` p-value is lower than 1%.
 #   Hence, there is at least one nonzero coefficient.
 # - The normality test checks that the residuals have a normal distribution.
 #   The normality assumption can be rejected if the p-value is close to zero.
 #   The p-values are larger than 0.05: the normality assumption of the
-#   residuals is accepted.
+#   residuals is not rejected.
 #
 
 # %%
@@ -180,7 +181,6 @@ view = viewer.View(graph)
 # High-leverage points are far from their closest neighbors, so the fitted
 # linear regression model must pass close to them.
 
-# %%
 # sphinx_gallery_thumbnail_number = 6
 graph = analysis.drawResidualsVsLeverages()
 view = viewer.View(graph)

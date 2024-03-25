@@ -7,15 +7,15 @@ Distribution of estimators in linear regression
 # Introduction
 # ~~~~~~~~~~~~
 #
-# In this example, we are interested by the distribution of the estimator of the variance
+# In this example, we are interested in the distribution of the estimator of the variance
 # of the observation error in linear regression.
 # We are also interested in the estimator of the standard deviation of the
 # observation error.
-# We show how to use the :class:`~openturns.PythonRandomVector` in order to
+# We show how to use the :class:`~openturns.PythonRandomVector` class in order to
 # perform a study of the sample distribution of these estimators.
 #
 # In the general linear regression model, the observation error :math:`\epsilon` has the
-# Gaussian distribution :math:\cN(0, \sigma^2)` where :math:`\sigma > 0`
+# normal distribution :math:`\cN(0, \sigma^2)` where :math:`\sigma > 0`
 # is the standard deviation.
 # We are interested in the estimators of the variance :math:`\sigma^2`
 # and the standard deviation :math:`\sigma`:
@@ -38,7 +38,7 @@ import pylab as pl
 # %%
 # The simulation engine
 # ~~~~~~~~~~~~~~~~~~~~~
-# The simulation is based on the :class`~openturns.PythonRandomVector` class,
+# The simulation is based on the :class:`~openturns.PythonRandomVector` class,
 # which simulates independent observations of a random vector.
 # The `getRealization()` method implements the simulation of the observation
 # of the estimator.
@@ -57,7 +57,7 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         sample_size : int
             The sample size n.
         true_standard_deviation : float
-            The standard deviation of the gaussian observation error.
+            The standard deviation of the Gaussian observation error.
         coefficients: sequence of p floats
             The coefficients of the linear model.
         estimator: str
@@ -79,7 +79,7 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         self.errorDistribution = ot.Normal(0.0, true_standard_deviation)
         self.estimator = estimator
         # In classical linear regression, the input is deterministic.
-        # Here, we set it once for all.
+        # Here, we set it once and for all.
         self.input_sample = self.distribution.getSample(self.sample_size)
         self.output_sample = self.linearModel(self.input_sample)
 
@@ -173,8 +173,8 @@ pl.subplots_adjust(bottom=0.25)
 # %%
 # If we use a sample size equal to :math:`n = 6` with
 # :math:`p = 3` parameters, the distribution is not symmetric.
-# The mean of the observations of the sample variances still is close to
-# the true value, that is :math:`0.1^2 = 0.01`.
+# The mean of the observations of the sample variances remains close to
+# the true value :math:`0.1^2 = 0.01`.
 
 # %%
 # Then we increase the sample size :math:`n`.
@@ -195,7 +195,7 @@ pl.subplots_adjust(bottom=0.25)
 # %%
 # If we use a sample size equal to :math:`n = 6` with
 # :math:`p = 3` parameters, the distribution is almost symmetric and
-# almost Gaussian.
+# almost normal.
 
 # %%
 # Distribution of the standard deviation estimator
@@ -241,5 +241,5 @@ pl.subplots_adjust(bottom=0.25)
 
 # %%
 # If we use a sample size equal to :math:`n = 100` with
-# :math:`p = 3` parameters, we see that the distribution is almost Gaussian.
+# :math:`p = 3` parameters, we see that the distribution is almost normal.
 # We notice that the bias disappeared.
