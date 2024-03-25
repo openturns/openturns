@@ -62,6 +62,21 @@ jobs:
           docker pull openturns/debian-aarch64
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull openturns/archlinux-python
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_coverage.sh `id -u` `id -g`
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: openturns/openturns
+          file: ./coverage/coverage.info
+
   mindeps:
     runs-on: ubuntu-latest
     steps:
