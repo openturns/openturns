@@ -1148,7 +1148,7 @@ Notes
 -----
 We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
-The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product
+The bilateral confidence interval :math:`I^*_{\alpha}` is the Cartesian product
 :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]`
 such that there exists :math:`\beta` which verifies :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)`
 for all :math:`i` and :math:`\mu(I^*_{\alpha}) = \alpha`.
