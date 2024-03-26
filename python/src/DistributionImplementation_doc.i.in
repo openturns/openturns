@@ -794,7 +794,7 @@ Notes
 -----
 Among the points :math:`\vect{x}` that satisfy :math:`S_{\vect{X}}(\vect{x}) = p`,
 the method returns the one which also satisfies
-:math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
+:math:`\Prob{X_1 > x_1}   =  \dots = \Prob{X_d > x_d}`.
 
 See Also
 --------
