@@ -629,7 +629,7 @@ OT_Distribution_computeProbability_doc
 
 Parameters
 ----------
-p : float (or sequence of float), :math:`p \in [0; 1]`
+p : float (or sequence of float), :math:`p \in [0, 1]`
     A probability.
 tail : bool, optional
     `True` indicates that the order considered is :math:`1-p`.
