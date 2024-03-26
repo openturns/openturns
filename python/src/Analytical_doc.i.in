@@ -80,8 +80,15 @@ The result of the optimization problem is recoverable thanks to the method
 The unicity and the strongness of the design point can be checked thanks to the
 :class:`Strong Maximum Test <openturns.StrongMaximumTest>`.
 
-A tolerance on the limit state (in the physical space) is implemented to check if the found design point can be used to estimate the failure probability, that is if
-:math:`g(\vect{x}^*,\vect{d}) = 0`.
+An absolute tolerance on the limit state (in the physical space) is implemented to
+check if the design point found by the algorithm can be used to accurately
+estimate the failure probability, that is if:
+
+.. math::
+    \left| \model(\vect{x}^*) - s\right|\leq \epsilon_t
+
+where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :math:`\epsilon_t`
+is the absolute tolerance.
 Default value is defined by the :class:`~openturns.ResourceMap` key named `Analytical-DefaultLimitStateTolerance`. 
 
 
