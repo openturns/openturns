@@ -171,6 +171,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
     result = profileLikelihoodFunction_.draw(xMin, xMax);
   }
   result.setLegends({"likelihood"});
+  result.setColors({"blue"});
   String inputVar(profileLikelihoodFunction_.getInputDescription()[0]);
   // use latex syntax
   String base(inputVar);
@@ -281,7 +282,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 String ProfileLikelihoodResult::__repr__() const
 {
   return OSS() << DistributionFactoryLikelihoodResult::__repr__()
-         << " confidenceLevel_=" << confidenceLevel_;
+               << " confidenceLevel=" << confidenceLevel_;
 }
 
 Function ProfileLikelihoodResult::getProfileLikelihoodFunction() const

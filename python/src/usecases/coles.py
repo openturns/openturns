@@ -13,22 +13,24 @@ class Coles:
 
     Attributes
     ----------
-    portpirie : :class:`~openturns.Sample`
+    dowjones : str
+        Dow Jones Index dataset path
+    fremantle : :class:`~openturns.Sample`
         Sea levels dataset
-    venice : :class:`~openturns.Sample`
+    portpirie : :class:`~openturns.Sample`
         Sea levels dataset
     racetime : :class:`~openturns.Sample`
         Race time dataset
-    fremantle : :class:`~openturns.Sample`
-        Sea levels dataset
     rain : :class:`~openturns.Sample`
         Daily rainfall dataset
+    venice : :class:`~openturns.Sample`
+        Sea levels dataset
     wavesurge : :class:`~openturns.Sample`
         Wave and surge heights dataset
     wind : :class:`~openturns.Sample`
         Wind speeds dataset
-    wooster : :class:`~openturns.Sample`
-        Temperatures dataset
+    wooster : str
+        Temperatures dataset path
 
     Examples
     --------
@@ -37,18 +39,15 @@ class Coles:
     >>> print(data[:3])
     """
 
-    def __init__(self):
+    def __getattr__(self, name):
+        if name not in ["dowjones", "portpirie", "venice", "racetime",
+                        "fremantle", "rain", "wavesurge", "wind", "wooster"]:
+            raise AttributeError(f"'Coles' object has no attribute '{name}'")
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        for name in [
-            "portpirie",
-            "venice",
-            "racetime",
-            "fremantle",
-            "rain",
-            "wavesurge",
-            "wind",
-            "wooster",
-        ]:
-            fn = os.path.join(current_dir, name + ".csv")
+        fn = os.path.join(current_dir, name + ".csv")
+        if name in ["wooster", "dowjones"]:
+            # cannot read sample with date column
+            dataset = fn
+        else:
             dataset = ot.Sample.ImportFromCSVFile(fn, ",")
-            setattr(self, name, dataset)
+        return dataset

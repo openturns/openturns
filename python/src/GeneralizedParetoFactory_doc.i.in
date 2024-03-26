@@ -246,10 +246,10 @@ The mean of excesses of :math:`X` for :math:`u>u_s` is
 
     M_n(u) = \Expect{X-u|X>u} = \frac{\sigma_s+\xi_u}{1-\xi}
 
-So for all :math:`u>u_s` M_n(u) is linear wrt. :math:`u`.
+So for all :math:`u>u_s` :math:`M_n(u)` is linear wrt. :math:`u`.
 The threshold :math:`u_s` is the smallest value of :math:`u` for which the curve is linear.
 
-The quantity :math:`M_n(u)` is estimater par the empirical estimator of the mean:
+The quantity :math:`M_n(u)` is estimated by the empirical estimator of the mean:
 
 .. math::
 
@@ -275,3 +275,571 @@ The confidence level can be set using the :class:`~openturns.ResourceMap` key
 The number of threshold points in the graph can be set with the key
 `GeneralizedParetoFactory-MeanResidualLifePointNumber`.
 "
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfLikelihoodMaximization
+"Estimate the distribution with the maximum likelihood method.
+
+Let :math:`u` a given threshold, we define the excesses values
+
+.. math::
+
+    z_i = x_i - u, for all :math:`1 \leq i \leq n` such as z_i > 0
+
+The estimator of :math:`(\sigma, \xi)` maximizes  the log-likelihood defined as:
+
+If :math:`\xi \neq 0`, then:
+
+.. math::
+    :label: llgpdR1
+
+    \ell(\sigma, \xi) = -n \log \sigma - \sum_{i=1}^n  \log \left(1 + \xi \frac{z_i}{\sigma}\right)
+
+defined on :math:`(\sigma, \xi)` such that :math:`1+\xi \left( \frac{z_i - u}{\sigma} \right) > 0` for all :math:`1 \leq i \leq n`.
+
+If :math:`\xi = 0`, then:
+
+.. math::
+    :label: llgpdR2
+
+    \ell(\sigma, \xi) = -n \log \sigma - \sigma^{-1} \sum_{i=1}^n \exp z_i
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Block maxima grouped in a sample of size :math:`n` and dimension :math:`R`.
+u : float
+    Given threshold value
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValue`
+    The estimated distribution."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfLikelihoodMaximizationEstimator
+"Estimate the distribution and the parameter distribution with the maximum likelihood method.
+
+The estimators are defined using the profile log-likelihood  as detailed in
+:meth:`buildMethodOfLikelihoodMaximization`.
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{\sigma}, \hat{\xi}, u)`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample
+u : float
+    Given threshold value
+
+Returns
+-------
+result : :class:`~openturns.DistributionFactoryLikelihoodResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfXiProfileLikelihood
+"Estimate the distribution with the profile likelihood.
+
+
+The estimator :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})` is defined using a nested numerical optimization of the log-likelihood:
+
+.. math::
+
+    \ell_p (\xi) = \max_{(\sigma)} \ell (\sigma, \xi, u)
+
+where :math:`\ell (\sigma, \xi, u)` is detailed in equations :eq:`llgpdR1` and :eq:`llgpdR2`.
+
+The estimator is given by:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+    \hat{\xi} & =  \argmax_{\xi} \ell_p(\xi)\\
+    \hat{\sigma} & = \argmax_{\sigma} \ell(\sigma, \hat{\xi}, u)
+    \end{align*}
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima sample of dimension 1.
+u : float
+    Given threshold value
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedPareto`
+    The estimated distribution.
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfXiProfileLikelihoodEstimator
+"Estimate the distribution and the parameter distribution with the profile likelihood.
+
+
+The estimators are defined in :meth:`buildMethodOfXiProfileLikelihood`.
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{\sigma}, \hat{\xi}, u)`,
+- the profile log-likelihood function :math:`\xi \mapsto \ell_p(\xi)`,
+- the optimal profile log-likelihood value :math:`\ell_p(\hat{\xi})`,
+- confidence intervals of level :math:`(1-\alpha)` of :math:`\xi`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima sample of dimension 1.
+u : float
+    Given threshold value
+
+Returns
+-------
+result : :class:`~openturns.ProfileLikelihoodResult`
+    The result class."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::drawParameterThresholdStability
+"Draw the parameter threshold stability.
+
+This method is complementary to :meth:`drawMeanResidualLife` as a method of threshold
+selection by fitting the GPD over a range of thresholds and seeks to look stability of
+parameters estimates.
+
+Let :math:`X` a random variable defined so the excess of a threshold :math:`u_s`
+follow a Generalized Pareto distribution :math:`GPD(\xi, \sigma_s)`.
+
+Then the excesses of :math:`X`above :math:`u>u_s`, ie the distribution :math:`X-u|X>u`
+also follow a GPD :math:`GPD(\xi, \sigma_u)` where:
+
+.. math::
+
+    \sigma_u = \sigma_s + \xi (u - u_s)
+
+We reparametrize the scale parameter with a modified standard deviation that does not depend on :math:`u`:
+
+.. math::
+
+    \sigma_u^{\ast} = \sigma_u - \xi u
+
+This means estimates of :math:`(\xi, \sigma_u)` should be constant
+(or stable accounting for sampling variability) for valid thresholds above :math:`u>u_s`.
+
+The methodology suggested here is to plot :math:`\hat{\sigma_u}^{\ast}` and :math:`\hat{\xi}` (and their confidence intervals) against :math:`u` and retain the lowest value of u for which
+the estimates remain near-constant.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+uRange : :class:`~openturns.Interval`
+    The range of the threshold :math:`u`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graphs of :math:`\hat{\sigma_u}^{\ast}` and :math:`\hat{\xi}` versus :math:`u` and their confidence interval.
+
+Notes
+-----
+The confidence level can be set using the :class:`~openturns.ResourceMap` key
+`GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel`
+The number of threshold points in the graph can be set with the key
+`GeneralizedParetoFactory-ThresholdStabilityPointNumber`.
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildCovariates
+"Estimate a non stationary GPD from covariates data.
+
+We consider a non stationary GPD model to describe the distribution of :math:`Z_y`:
+
+.. math::
+
+    Z_y \sim \mbox{GPD}(\mu(y), \sigma(y), \xi(y))
+
+We have the values of :math:`Z_y` for each of the covariates :math:`(y_1, \dots, y_n)`.
+
+For numerical reasons, it is recommended to normalize the covariates.
+The following mapping is applied:
+
+.. math::
+
+    y^v = \dfrac{y-c}{d}
+
+and with three ways of defining :math:`(c,d)`:
+
+- the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n y_i` is the covariate mean
+  and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the covariates;
+- the *MinMax* method where :math:`c = y_1` is the first covariate and :math:`d = y_n-y_1` the range of the covariates;
+- the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
+
+
+Each of :math:`\sigma(y), \xi(y)`  has an expression in terms of a parameter vector and covariates:
+
+.. math::
+
+    \theta(y)  = h\left(\sum_{i=1}^{d_{\theta}} \beta_i^{\theta} \varphi_i^{\theta}(y^v)\right)
+
+where:
+
+- :math:`h: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function*. The function :math:`\theta(y)` denotes
+  either :math:`\sigma(y)` or :math:`\xi(y)`,
+- each :math:`\varphi_i^{\theta}` is a scalar function :math:`\Rset \mapsto \Rset`,
+- each :math:`\beta_i^{j} \in \Rset`.
+
+
+We denote by :math:`d_{\mu}`, :math:`d_{\sigma}` and :math:`d_{\xi}` the number of covariates involded in
+:math:`\mu`, :math:`\sigma` and :math:`\xi` respectively. We denote by
+:math:`\vect{\beta} = (\beta_1^{\sigma}, \dots, \beta_{d_{\sigma}}^{\sigma}, \beta_1^{\xi}, \dots, \beta_{d_{\xi}}^{\xi})`
+the complete vector of parameters.
+
+The estimator of  :math:`\vect{\beta}` maximizes  the likelihood of the non stationary model which is defined by:
+
+.. math::
+
+    L(\vect{\beta}) = \prod_{i=1}^{n} g(z_{y_i};\sigma(y_i), \xi(y_i), u)
+
+where :math:`g(z_{y};\mu(y), \sigma(y), \xi(y))` denotes the GPD density function with parameters
+:math:`\mu(y), \sigma(y), \xi(y)` evaluated at :math:`z_y`.
+
+Then, if none of the :math:`\xi(y)` is zero, the log-likelihood is defined by:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{i=1}^{n} \left\{ \log(\sigma(y_i)) + (1 + 1 / \xi(y_i) ) \log\left[ 1+\xi(y_i) \left( \frac{z_{y_i} - \mu(y_i)}{\sigma(y_i)}\right) \right] + \left[ 1 + \xi(y_i) \left( \frac{z_t- \mu(y_i)}{\sigma(y_i)} \right) \right]^{-1 / \xi(y_i)} \right\}
+
+defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_{y_i} - \mu}{\sigma} \right) > 0`
+for all :math:`y_i`.
+
+And if any of the :math:`\xi(y_i)` is equal to 0, the log-likelihood is defined as:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{i=1}^{n} \left\{ \log(\sigma(y_i)) + \frac{z_t - \mu(y_i)}{\sigma(y_i)} + \exp \left\{ - \frac{z_{y_i} - \mu(y_i)}{\sigma(y_i)} \right\} \right\}
+
+The initialization of the optimization problem is crucial.
+Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
+
+- the *Gumbel* initial point: in that case, we assume that the GPD is a stationary Gumbel distribution and we deduce
+  :math:`(\mu_0, \sigma_0)` from the mean :math:`\hat{M}` and standard variation :math:`\hat{\sigma}` of the data:
+  :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma \sigma_0` where
+  :math:`\gamma` is Euler's constant;
+- the *Static* initial point: in that case, we assume that the GPD is stationary and :math:`(\mu_0, \sigma_0, \xi_0)`
+  is the maximum likelihood estimate resulting from that assumption.
+
+
+The result class produced by the method provides:
+
+- the estimator :math:`\hat{\vect{\beta}}`,
+- the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
+- the parameter functions :math:`y \mapsto \vect{\theta}(y)`,
+- the normalizing function :math:`y \mapsto y^v`,
+- the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
+- the GPD distribution at covariate :math:`y`,
+- the quantile functions of order :math:`p`: :math:`y \mapsto q_p(\mbox{GPD}(\hat{\mu}(y), \hat{\sigma}(y), \hat{\xi}(y))`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima grouped in a sample of size :math:`m` and one dimension.
+u : float
+    The location parameter
+covariates : 2-d sequence of float
+    Covariates sample
+    A constant column is automatically added if none is not provided
+sigmaIndices : sequence of int, optional
+    Indices of covariates considered for parameter :math:`\sigma`
+    It defaults to an empty sequence, and the index of the constant covariate is added
+    if empty or if the covariates do not initially contain a constant column.
+xiIndices : sequence of int, optional
+    Indices of covariates considered for parameter :math:`\xi`
+    It defaults to an empty sequence, and the index of the constant covariate is added
+    if empty or if the covariates do not initially contain a constant column.
+sigmaLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\sigma}` function.
+    By default it is chosen as the identity function.
+xiLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\xi}` function.
+    By default it is chosen as the identity function.
+initializationMethod : str, optional
+    The initialization method for the optimization problem: *Gumbel* or *Static*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+normalizationMethod : str, optional
+    The data normalization method: *CenterReduce*, *MinMax* or *None*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+
+Returns
+-------
+result : :class:`~openturns.CovariatesResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildTimeVarying
+"Estimate a non stationary GPD from a time-dependent parametric model.
+
+We consider a non stationary GPD model to describe the distribution of :math:`Z_t`:
+
+.. math::
+
+    Z_t \sim \mbox{GPD}(\mu(t), \sigma(t), \xi(t))
+
+We have the values of :math:`Z_t` on the time stamps :math:`(t_1, \dots, t_n)`.
+
+For numerical reasons, it is recommended to normalize the time stamps.
+The following mapping is applied:
+
+.. math::
+
+    \tau(t) = \dfrac{t-c}{d}
+
+and with three ways of defining :math:`(c,d)`:
+
+- the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n t_i` is the mean time stamps
+  and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
+- the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the range of the time stamps;
+- the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
+
+
+Each of :math:`\mu(t), \sigma(t), \xi(t)`  has an expression in terms of a parameter vector and time functions:
+
+.. math::
+
+    \theta(t)  = h\left(\sum_{i=1}^{d_{\theta}} \beta_i^{\theta} \varphi_i^{\theta}(\tau(t))\right)
+
+where:
+
+- :math:`h: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function*. The function :math:`\theta(t)` denotes
+  either :math:`\mu(t)`, :math:`\sigma(t)` or :math:`\xi(t)`,
+- each :math:`\varphi_i^{\theta}` is a scalar function :math:`\Rset \mapsto \Rset`,
+- each :math:`\beta_i^{j} \in \Rset`.
+
+
+We denote by :math:`d_{\sigma}` and :math:`d_{\xi}` the size of the functional basis of
+:math:`\mu`, :math:`\sigma` and :math:`\xi` respectively. We denote by
+:math:`\vect{\beta} = (\beta_1^{\mu}, \dots, \beta_{d_{\mu}}^{\mu}, \beta_1^{\sigma}, \dots, \beta_{d_{\sigma}}^{\sigma}, \beta_1^{\xi}, \dots, \beta_{d_{\xi}}^{\xi})`
+the complete vector of parameters.
+
+The estimator of  :math:`\vect{\beta}` maximizes  the likelihood of the non stationary model which is defined by:
+
+.. math::
+
+    L(\vect{\beta}) = \prod_{t=1}^{n} g(z_{t};\sigma(t), \xi(t), u)
+
+where :math:`g(z_{t};\sigma(t), \xi(t))` denotes the GPD density function with parameters
+:math:`\mu(t), \sigma(t), \xi(t)` evaluated at :math:`z_t`.
+
+Then, if none of the :math:`\xi(t)` is zero, the log-likelihood is defined by:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{t=1}^{n} \left\{ \log(\sigma(t)) + (1 + 1 / \xi(t) ) \log\left[ 1+\xi(t) \left( \frac{z_t - \mu(t)}{\sigma(t)}\right) \right] + \left[ 1 + \xi(t) \left( \frac{z_t- \mu(t)}{\sigma(t)} \right) \right]^{-1 / \xi(t)} \right\}
+
+defined on :math:`(\mu, \sigma, \xi)` such that :math:`1+\xi \left( \frac{z_t - \mu}{\sigma} \right) > 0`
+for all :math:`t`.
+
+And if any of the :math:`\xi(t)` is equal to 0, the log-likelihood is defined as:
+
+.. math::
+
+    \ell (\vect{\beta}) = -\sum_{t=1}^{n} \left\{ \log(\sigma(t)) + \frac{z_t - \mu(t)}{\sigma(t)} + \exp \left\{ - \frac{z_t - \mu(t)}{\sigma(t)} \right\} \right\}
+
+The initialization of the optimization problem is crucial.
+Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
+
+- the *Gumbel* initial point: in that case, we assume that the GPD is a stationary Gumbel distribution and we deduce
+  :math:`(\mu_0, \sigma_0)` from the mean :math:`\hat{M}` and standard variation :math:`\hat{\sigma}` of the data:
+  :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma \sigma_0` where
+  :math:`\gamma` is Euler's constant;
+- the *Static* initial point: in that case, we assume that the GPD is stationary and :math:`(\mu_0, \sigma_0, \xi_0)`
+  is the maximum likelihood estimate resulting from that assumption.
+
+
+The result class produced by the method provides:
+
+- the estimator :math:`\hat{\vect{\beta}}`,
+- the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
+- the parameter functions :math:`t \mapsto \vect{\theta}(t)`,
+- the normalizing function :math:`t \mapsto \tau(t)`,
+- the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
+- the GPD distribution at time :math:`t`,
+- the quantile functions of order :math:`p`: :math:`t \mapsto q_p(\mbox{GPD}(\hat{\sigma}(t), \hat{\xi}(t), u)`.
+
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The block maxima grouped in a sample of size :math:`m` and one dimension.
+u : float
+    The location parameter
+timeStamps : 2-d sequence of float
+    Values of :math:`t`.
+basis : :class:`~openturns.Basis`
+    Functional basis respectively for :math:`\mu(t)`, :math:`\sigma(t)` and :math:`\xi(t)`.
+sigmaIndices : sequence of int, optional
+    Indices of basis terms considered for parameter :math:`\sigma`
+xiIndices : sequence of int, optional
+    Indices of basis terms considered for parameter :math:`\xi`
+sigmaLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\sigma}` function.
+    By default it is chosen as the identity function.
+xiLink : :class:`~openturns.Function`, optional
+    The :math:`h_{\xi}` function.
+    By default it is chosen as the identity function.
+initializationMethod : str, optional
+    The initialization method for the optimization problem: *Gumbel* or *Static*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+normalizationMethod : str, optional
+    The data normalization method: *CenterReduce*, *MinMax* or *None*.
+    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+
+Returns
+-------
+result : :class:`~openturns.TimeVaryingResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelEstimator
+"Estimate a return level and its distribution from the GPD parameters.
+
+The :math:`m`-return level :math:`x_m` is the level exceeded on average once every :math:`m` blocks.
+The parameter :math:`m` is referred to as the *return period*.
+For example, if the GPD distribution is the distribution of the annual maxima,
+then :math:`x_{100}` is the 100-year return period and is exceeded on average once in every century.
+
+The :math:`m`-return level is defined as the quantile of order :math:`1-p=1-1/m` of the GPD distribution.
+
+
+If :math:`\xi \neq 0`:
+
+.. math::
+    :label: xm1
+
+    x_m = u + \frac{\sigma}{\xi}\left[(m \zeta_u)^{\xi} - 1 \right]
+
+If :math:`\xi = 0`:
+
+.. math::
+    :label: xm2
+
+    x_m = u + \sigma \log(m \zeta_u)
+
+with :math:`zeta_u` the ratio of samples exceeding the threshold :math:`u`.
+
+The estimator :math:`\hat{x}_m` of :math:`x_m` is deduced from the estimator
+:math:`(\hat{\sigma}, \hat{\xi}, \hat{\zeta_u})` of :math:`(\sigma, \xi, \zeta_u)`.
+
+The asymptotic distribution of :math:`\hat{x_m}` is obtained by the Delta method from the asymptotic distribution of
+:math:`(\hat{\sigma}, \hat{\xi}, \hat{\zeta_u})`. It is a normal distribution with mean :math:`\hat{x}_m` and variance:
+
+.. math::
+
+    \Var{z_m} = (\nabla x_m)^T \mat{V}_n \nabla x_m
+
+where :math:`\nabla x_m = (\frac{\partial x_m}{\partial \mu}, \frac{\partial x_m}{\partial \sigma}, \frac{\partial x_m}{\partial \xi})`
+and :math:`\mat{V}_n` is the asymptotic covariance of :math:`(\hat{\sigma}, \hat{\xi}, \hat{\mu})`.
+
+Parameters
+----------
+result : :class:`~openturns.DistributionFactoryResult`
+    Likelihood estimation result of a :class:`~openturns.GeneralizedPareto`
+m : float
+    The return period expressed in terms of number of blocks.
+sample : 2-d sequence of float
+    The same sample used for the likelihood estimation (to compute :math:`\zeta_u`).
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The asymptotic distribution of :math:`\hat{x}_m`."
+
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator
+"Estimate :math:`(z_m, \xi)` and its distribution with the profile likelihood.
+
+The estimators are defined in :meth:`buildReturnLevelProfileLikelihood`.
+
+The parameter estimates are given by:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+    \hat{z}_m = \argmax_{z_m} \ell_p(z_m)\\
+    \hat{\xi} = \argmax_{(\xi)} \ell(\hat{z}_m, \xi)
+    \end{align*}
+
+The result class produced by the method provides:
+
+- the GPD distribution associated to :math:`(\hat{z}_m, \hat{\xi}, u)`,
+- the asymptotic distribution of :math:`(\hat{z}_m, \hat{\xi}, u)`,
+- the profile log-likelihood function :math:`z_m \mapsto \ell_p(z_m)`,
+- the optimal profile log-likelihood value :math:`\ell_p(\hat{z}_m)`,
+- confidence intervals of level :math:`(1-\alpha)` of :math:`\hat{z}_m`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+m : float
+    The return period, defines the level of the quantile as :math:`1-1/m`.
+u : float
+    The location parameter
+
+Returns
+-------
+result : :class:`~openturns.ProfileLikelihoodResult`
+    The result class."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildReturnLevelProfileLikelihood
+"Estimate a return level and its distribution with the profile likelihood.
+
+The estimator is defined using a nested numerical optimization of the log-likelihood:
+
+.. math::
+
+    \ell_p (z_m) = \max_{(\xi)} \ell (z_m, \xi, u)
+
+where :math:`\ell (z_m, \xi, u)` is the log-likelihood detailed in :eq:`llR1` and :eq:`llR2` where we substitued
+:math:`\sigma` for :math:`z_m` using equations :eq:`xm1` or :eq:`xm2`.
+
+The estimator :math:`\hat{z}_m` of :math:`z_m` is defined by:
+
+.. math::
+
+    \hat{z}_m = \argmax_{z_m} \ell_p(z_m)
+
+The asymptotic distribution of :math:`\hat{z}_m` is normal.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    A sample of dimension 1.
+u : float
+    The location parameter
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of :math:`\hat{z}_m`.
+
+Notes
+-----
+The starting point of the optimization is initialized from the regular maximum likelihood method."

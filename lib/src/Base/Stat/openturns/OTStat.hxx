@@ -41,6 +41,7 @@
 #include "openturns/Null.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/SampleImplementation.hxx"
+#include "openturns/SamplePartition.hxx"
 #include "openturns/FieldImplementation.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Field.hxx"

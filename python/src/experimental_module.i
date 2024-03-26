@@ -32,6 +32,7 @@
 
 /* Base/Stat */
 %include LatentVariableModel.i
+%include SamplePartition.i
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
@@ -77,3 +78,4 @@
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
 %include SmolyakExperiment.i
 %include GeneralizedExtremeValueValidation.i
+%include GeneralizedParetoValidation.i

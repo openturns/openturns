@@ -52,7 +52,7 @@ ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2
 )
 
-estimated_prof_mle = factory.buildMethodOfProfileLikelihoodMaximization(sample)
+estimated_prof_mle = factory.buildMethodOfXiProfileLikelihood(sample, 1)
 print("Estimated GeneralizedExtremeValue (profile MLE)=", estimated_prof_mle)
 ott.assert_almost_equal(
     estimated_mle.getParameter(), distribution.getParameter(), 1e-2, 1e-2
@@ -87,7 +87,7 @@ assert (
     == "Normal"
 )
 
-estimator_prof_mle = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
+estimator_prof_mle = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
 assert (
     estimator_prof_mle.getParameterDistribution().getImplementation().__class__.__name__
     == "Normal"
@@ -97,7 +97,7 @@ assert (
 xi = estimator_prof_mle.getParameter()
 try:
     ci = estimator_prof_mle.getParameterConfidenceInterval()
-    print("profile MLE estimator xsi=", xi, ci)
+    print("profile MLE estimator xi=", xi, ci)
     assert [xi] in ci, "xi should be inside confidence interval"
 except Exception as exception:
     print(exception)
@@ -120,38 +120,51 @@ assert (
     == "Normal"
 )
 
-# specific check for time-varying
+# specific check for covariates
 fremantle = coles.Coles().fremantle
+timeStamps = fremantle[:, 0]
+muIndices = [0]  # linear
+sigmaIndices = []  # stationary
+xiIndices = []  # stationary
+muLink = ot.SymbolicFunction(["x"], ["1.0*x"])
+estimator_covariate = factory.buildCovariates(fremantle[:, 1], timeStamps, muIndices, sigmaIndices, xiIndices, muLink)
+beta = estimator_covariate.getOptimalParameter()
+print("beta*=", beta)
+ott.assert_almost_equal(beta, [0.00203333, -2.4751, 0.124301, -0.125008], 1e-2, 1e-2)
+beta_dist = estimator_covariate.getParameterDistribution()
+print("beta dist=", beta_dist)
+assert beta_dist.getImplementation().__class__.__name__ == "Normal", "wrong distribution"
+cov_ref = [
+    [3.11388e-09, -6.05561e-06, -1.99653e-08, 2.10413e-07],
+    [-6.05561e-06, 0.0117791, 3.93182e-05, -0.000414466],
+    [-1.99653e-08, 3.93182e-05, 1.51924e-06, -6.06597e-06],
+    [2.10413e-07, -0.000414466, -6.06597e-06, 8.53944e-05]]
+ott.assert_almost_equal(ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3)
+graph_mu1d = estimator_covariate.drawParameterFunction1D(0)
+graph_mu2d = estimator_covariate.drawParameterFunction2D(0)
+graph_q_mu1d = estimator_covariate.drawQuantileFunction1D(0.9)
+graph_q_mu2d = estimator_covariate.drawQuantileFunction2D(0.9)
+
+# functional
 t0 = fremantle[0, 0]  # year of first record
-mesh = fremantle[:, 0]
 constant = ot.SymbolicFunction(["t"], ["1.0"])
-basis_mu = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])  # linear trend
-basis_sigma = ot.Basis([constant])  # stationary
-basis_xi = ot.Basis([constant])  # stationary
-basis_coll = [basis_mu, basis_sigma, basis_xi]
-estimator_timevar = factory.buildTimeVarying(fremantle[:, 1], mesh, basis_coll)
+basis = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
+muIndices = [0, 1]  # linear
+sigmaIndices = [0]  # stationary
+xiIndices = [0]  # stationary
+estimator_timevar = factory.buildTimeVarying(fremantle[:, 1], timeStamps, basis, muIndices, sigmaIndices, xiIndices)
 beta = estimator_timevar.getOptimalParameter()
 print("beta*=", beta)
 ott.assert_almost_equal(beta, [1.38216, 0.187033, 0.124317, -0.125086], 1e-2, 1e-2)
-print("beta dist=", estimator_timevar.getParameterDistribution())
-assert (
-    estimator_timevar.getParameterDistribution().getImplementation().__class__.__name__
-    == "Normal"
-)
+beta_dist = estimator_timevar.getParameterDistribution()
+print("beta dist=", beta_dist)
+assert (beta_dist.getImplementation().__class__.__name__ == "Normal"), "wrong distribution"
 cov_ref = [
-    [0.000816453, -0.00115985, 0.000123538, -0.00129949],
-    [-0.00115985, 0.00228001, -0.000159825, 0.00166341],
-    [0.000123538, -0.000159825, 0.000130923, -0.000522572],
-    [-0.00129949, 0.00166341, -0.000522572, 0.00733463],
-]
-print(estimator_timevar.getParameterDistribution().getCovariance())
-ott.assert_almost_equal(
-    ot.Matrix(estimator_timevar.getParameterDistribution().getCovariance()),
-    ot.Matrix(cov_ref),
-    2e-3,
-    1e-5,
-)
-
+    [9.49362e-06, -1.34867e-05, 1.43649e-06, -1.51103e-05],
+    [-1.34867e-05, 2.65117e-05, -1.85843e-06, 1.93419e-05],
+    [1.43649e-06, -1.85843e-06, 1.52237e-06, -6.07642e-06],
+    [-1.51103e-05, 1.93419e-05, -6.07642e-06, 8.52864e-05]]
+ott.assert_almost_equal(ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3)
 dist0 = estimator_timevar.getDistribution(t0)
 print(dist0)
 assert dist0.getImplementation().__class__.__name__ == "GeneralizedExtremeValue"
@@ -169,8 +182,8 @@ assert not result_deviance.getBinaryQualityMeasure(), "H0 (stationary model) acc
 
 # specific check for return level
 zm = factory.buildReturnLevelEstimator(estimator_mle, 10.0)
-print("zm=", zm.getMean())
-ott.assert_almost_equal(zm.getMean(), [1.73377], 1e-2, 1e-2)
+print("zm=", zm)
+ott.assert_almost_equal(zm, ot.Normal(1.73377, 0.0228792), 1e-2, 1e-2)
 
 # specific check for return level via profile likelihood
 estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(

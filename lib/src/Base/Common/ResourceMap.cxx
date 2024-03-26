@@ -1111,13 +1111,16 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValue-MMax", 1.0e3);
 
   // GeneralizedExtremeValueFactory parameters //
-  addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber", 10000);
-  addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
-  addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
+  addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumCallsNumber", 10000);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumAbsoluteError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
   addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
   addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);
@@ -1126,16 +1129,24 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ProfileLikelihoodResult-TextMargin", 0.03);
   addAsScalar("ProfileLikelihoodResult-StartingScaling", 1e-2);
 
+  // GeneralizedPareto parameters //
+  addAsScalar("GeneralizedPareto-MMin", 1.05);
+  addAsScalar("GeneralizedPareto-MMax", 1.0e3);
+
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel", 0.95);
+  addAsScalar("GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel", 0.95);
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
+  addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
-  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "TNC");
+  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic");
+  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);

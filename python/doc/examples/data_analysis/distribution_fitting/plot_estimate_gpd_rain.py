@@ -1,17 +1,15 @@
 """
-Estimate a GEV on the Port Pirie sea-levels data
-================================================
+Estimate a GPD on the daily rainfall data
+=========================================
 """
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
-# to the annual maximum sea-levels recorded in Port Pirie, north of Adelaide,
-# south Australia, over the period
-# 1923-1987.
+# to the daily rainfall accumulations in south-west England, over the period 1914-1962.
 # Readers should refer to [coles2001]_ to get more details.
 #
 # We illustrate techniques to:
 #
-# - estimate a stationary and a non stationary GEV,
+# - estimate a stationary and a non stationary GPD,
 # - estimate a return level,
 #
 # using:
@@ -19,42 +17,54 @@ Estimate a GEV on the Port Pirie sea-levels data
 # - the log-likelihood function,
 # - the profile log-likelihood function.
 #
-# First, we load the Port pirie dataset of the annual maximum sea-levels. We start by looking at them
-# through time.
 import openturns as ot
-import openturns.viewer as otv
 import openturns.experimental as otexp
+import openturns.viewer as otv
 from openturns.usecases import coles
 
-data = coles.Coles().portpirie
-print(data[:5])
+# %%
+# First, we load the Rain dataset. We start by looking at it through time.
+sample = coles.Coles().rain
+print(sample[:10])
 graph = ot.Graph(
-    "Annual maximum sea-levels at Port Pirie", "year", "level (m)", True, ""
+    "Daily rainfall accumulations SW England", "day", "level (mm)", True, ""
 )
-cloud = ot.Cloud(data[:, :2])
+days = ot.Sample([[i] for i in range(len(sample))])
+cloud = ot.Cloud(days, sample)
 cloud.setColor("red")
+cloud.setPointStyle(",")
 graph.add(cloud)
 graph.setIntegerXTick(True)
 view = otv.View(graph)
 
 # %%
-# We select the sea levels column
-sample = data[:, 1]
+# Draw the mean residual life plot
+# The curve becomes linear from a threshold :math:`u_s=60`
+factory = ot.GeneralizedParetoFactory()
+graph = factory.drawMeanResidualLife(sample)
+view = otv.View(graph)
 
 # %%
-# **Stationary GEV modeling via the log-likelihood function**
+# Draw the parameter stability plots
+# The perturbations appear small relative to sampling errors and a smaller threshold can be chosen :math:`u_s=60`.
+u_range = ot.Interval(0.5, 50.0)
+graph = factory.drawParameterThresholdStability(sample, u_range)
+view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
+
+# %%
+# **Stationary GPD modeling via the log-likelihood function**
 #
 # We first assume that the dependence through time is negligible, so we first model the data as
-# independent observations over the observation period. We estimate the parameters of the
-# GEV distribution by maximizing the log-likelihood of the data.
-factory = ot.GeneralizedExtremeValueFactory()
-result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(sample)
+# independent observations over the observation period.
+# We estimate the parameters of the GPD distribution by maximizing the log-likelihood of the data for a given threshold u.
+u = 30
+result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(sample, u)
 
 # %%
-# We get the fitted GEV and its parameters of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
-fitted_GEV = result_LL.getDistribution()
-desc = fitted_GEV.getParameterDescription()
-param = fitted_GEV.getParameter()
+# We get the fitted GPD and its parameters of :math:`(\hat{\sigma}, \hat{\xi}, u)`.
+fitted_GPD = result_LL.getDistribution()
+desc = fitted_GPD.getParameterDescription()
+param = fitted_GPD.getParameter()
 print(", ".join([f"{p}: {value:.3f}" for p, value in zip(desc, param)]))
 print("log-likelihood = ", result_LL.getLogLikelihood())
 
@@ -66,28 +76,28 @@ print("Asymptotic distribution of the estimator : ")
 print(parameterEstimate)
 
 # %%
-# We get the covariance matrix  and the standard deviation of :math:`(\hat{\mu}, \hat{\sigma}, \hat{\xi})`.
+# We get the covariance matrix and the standard deviation of :math:`(\hat{\sigma}, \hat{\xi}, \hat{\xi})`.
 print("Cov matrix = \n", parameterEstimate.getCovariance())
 print("Standard dev = ", parameterEstimate.getStandardDeviation())
 
 # %%
 # We get the marginal confidence intervals of order 0.95.
 order = 0.95
-for i in range(3):
+for i in range(2):  # exclude u parameter (fixed)
     ci = parameterEstimate.getMarginal(i).computeBilateralConfidenceInterval(order)
     print(desc[i] + ":", ci)
 
 # %%
-# At last, we can validate the inference result thanks the 4 usual diagnostic plots.
-validation = otexp.GeneralizedExtremeValueValidation(result_LL, sample)
+# At last, we can validate the inference result thanks to the 4 usual diagnostic plots.
+validation = otexp.GeneralizedParetoValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 
 # %%
-# **Stationary GEV modeling via the profile log-likelihood function**
+# **Stationary GPD modeling via the profile log-likelihood function**
 #
-# Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GEV.
-result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
+# Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GPD.
+result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
 
 # %%
 # The following graph allows one to get the profile log-likelihood plot.
@@ -110,62 +120,62 @@ except Exception as ex:
     pass
 
 # %%
-# **Return level estimate from the estimated stationary GEV**
+# **Return level estimate from the estimated stationary GPD**
 #
 # We estimate the :math:`m`-block return level :math:`z_m`: it is computed as a particular quantile of the
-# GEV model estimated using the log-likelihood function. We just have to use the maximum log-likelihood
+# GPD model estimated using the log-likelihood function. We just have to use the maximum log-likelihood
 # estimator built in the previous section.
 #
-# As the data are annual sea-levels, each block corresponds to one year: the 10-year return level
-# corresponds to :math:`m=10` and the 100-year return level corresponds to :math:`m=100`.
+# As the data are daily records, each block corresponds to one day: the 10-year return level
+# corresponds to :math:`m=10*365` and the 100-year return level corresponds to :math:`m=100*365`.
 #
 # The method also provides the asymptotic distribution of the estimator :math:`\hat{z}_m`.
-zm_10 = factory.buildReturnLevelEstimator(result_LL, 10.0)
+zm_10 = factory.buildReturnLevelEstimator(result_LL, 10.0 * 365, sample)
 return_level_10 = zm_10.getMean()
 print("Maximum log-likelihood function : ")
 print(f"10-year return level = {return_level_10}")
 return_level_ci10 = zm_10.computeBilateralConfidenceInterval(0.95)
 print(f"CI = {return_level_ci10}")
 
-zm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0)
+zm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 365, sample)
 return_level_100 = zm_100.getMean()
 print(f"100-year return level = {return_level_100}")
 return_level_ci100 = zm_100.computeBilateralConfidenceInterval(0.95)
 print(f"CI = {return_level_ci100}")
 
 # %%
-# **Return level estimate via the profile log-likelihood function of a stationary GEV**
+# **Return level estimate via the profile log-likelihood function of a stationary GPD**
 #
 # We can estimate the :math:`m`-block return level :math:`z_m` directly from the data using the profile
 # likelihood with respect to :math:`z_m`.
-result_zm_10_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, 10.0)
-zm_10_PLL = result_zm_10_PLL.getParameter()
-print(f"10-year return level (profile) = {zm_10_PLL}")
+result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, u, 100.0 * 365)
+zm_100_PLL = result_zm_100_PLL.getParameter()
+print(f"10-year return level (profile) = {zm_100_PLL}")
 
 # %%
-# We can get the confidence interval of :math:`z_m`:  once more, it appears to be a bit smaller
+# We can get the confidence interval of :math:`z_m`: once more, it appears to be a bit smaller
 # than the interval obtained from the log-likelihood function.
-result_zm_10_PLL.setConfidenceLevel(0.95)
-return_level_ci10 = result_zm_10_PLL.getParameterConfidenceInterval()
+result_zm_100_PLL.setConfidenceLevel(0.95)
+return_level_ci100 = result_zm_100_PLL.getParameterConfidenceInterval()
 print("Maximum profile log-likelihood function : ")
-print(f"CI={return_level_ci10}")
+print(f"CI={return_level_ci100}")
 
 # %%
 # We can also plot the profile log-likelihood function and get the confidence interval, the optimal value
 # of :math:`z_m` and its confidence interval.
-view = otv.View(result_zm_10_PLL.drawProfileLikelihoodFunction())
+view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 
 # %%
-# **Non stationary GEV modeling via the log-likelihood function**
+# **Non stationary GPD modeling via the log-likelihood function**
 #
 # Now, we want to see whether it is necessary to model the time dependence over
 # the observation period.
 #
-# We have to define the functional basis for each parameter of the GEV model. Even if we have
-# the possibility to affect a time-varying model to each of the 3 parameters :math:`(\mu, \sigma, \xi)`,
+# We have to define the functional basis for each parameter of the GPD model. Even if we have
+# the possibility to affect a time-varying model to each of the 2 parameters :math:`(\sigma, \xi)`,
 # it is strongly recommended not to vary the parameter :math:`\xi`.
 #
-# We suppose that :math:`\mu` is linear with time, and that the other parameters remain constant.
+# We suppose that :math:`\sigma` is linear with time, and that the other parameters remain constant.
 #
 # For numerical reasons, it is strongly recommended to normalize all the data as follows:
 #
@@ -184,58 +194,29 @@ view = otv.View(result_zm_10_PLL.drawProfileLikelihoodFunction())
 #     :nowrap:
 #
 #     \begin{align*}
-#       \mu(t) & = \beta_1 + \beta_2\tau(t) \\
-#       \sigma(t) & = \beta_3 \\
-#       \xi(t) & = \beta_4
+#       \sigma(t) & = \beta_1 + \beta_2\tau(t) \\
+#       \xi(t) & = \beta_3
 #     \end{align*}
 #
 constant = ot.SymbolicFunction(["t"], ["1.0"])
-basis = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
+basis = ot.Basis([ot.SymbolicFunction(["t"], ["t"]), constant])
 # basis for mu, sigma, xi
-muIndices = [0, 1]  # linear
-sigmaIndices = [0]  # stationary
-xiIndices = [0]  # stationary
+sigmaIndices = [0, 1]  # linear
+xiIndices = [1]  # stationary
 
 # %%
-# We need to get the time stamps (in years here).
-timeStamps = data[:, 0]
+# We need to get the time stamps (in days here).
+timeStamps = ot.Sample([[i + 1] for i in range(len(sample))])
 
 # %%
-# We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3, \beta_4)` using
+# We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3)` using
 # the log-likelihood of the data.
-# We test the 3 normalizing methods and both initial points in order to evaluate their impact on the results.
-# We can see that:
-#
-# - both normalization methods lead to the same result for :math:`\beta_1`, :math:`\beta_3` and :math:`\beta_4`
-#   (note that :math:`\beta_2` depends on the normalization function),
-# - both initial points lead to the same result when the data have been normalized,
-# - it is very important to normalize all the data: if not, the result strongly depends on the initial point
-#   and it differs from the result obtained with normalized data. The results are not optimal in that case
-#   since the associated log-likelihood are much smaller than those obtained with normalized data.
-#
-print("Linear mu(t) model: ")
-for normMeth in ["MinMax", "CenterReduce", "None"]:
-    for initPoint in ["Gumbel", "Static"]:
-        print(f"normMeth = {normMeth}, initPoint = {initPoint}")
-        # The ot.Function() is the identity function.
-        result = factory.buildTimeVarying(
-            sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-            ot.Function(), ot.Function(), ot.Function(), initPoint, normMeth
-        )
-        beta = result.getOptimalParameter()
-        print(f"beta = {beta}")
-        print(f"Max log-likelihood = {result.getLogLikelihood()}")
-
-# %%
-# According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
-# This initial point is cheaper than the *Static* one as it requires no optimization computation.
-result_NonStatLL = factory.buildTimeVarying(sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices)
+result_NonStatLL = factory.buildTimeVarying(sample, u, timeStamps, basis, sigmaIndices, xiIndices)
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
-print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau")
-print(f"sigma = {beta[2]:.4f}")
-print(f"xi = {beta[3]:.4f}")
-
+print(f"sigma(t) = {beta[1]:.4f} * t + {beta[0]:.4f}")
+print(f"xi = {beta[2]:.4f}")
+print(f"Max log-likelihood = {result_NonStatLL.getLogLikelihood()}")
 
 # %%
 # We get the asymptotic distribution of :math:`\vect{\beta}` to compute some confidence intervals of
@@ -277,18 +258,18 @@ functionTheta = result_NonStatLL.getParameterFunction()
 # stationary model does not really improve the quality of the modeling.
 print("Max log-likelihood: ")
 print("Stationary model =  ", result_LL.getLogLikelihood())
-print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood())
+print("Non stationary linear sigma(t) model =  ", result_NonStatLL.getLogLikelihood())
 
 # %%
 # In order to draw some diagnostic plots similar to those drawn in the stationary case, we refer to the
-# following result: if :math:`Z_t` is a non stationary GEV model parametrized by :math:`(\mu(t), \sigma(t), \xi(t))`,
-# then the standardized variables :math:`\hat{Z}_t` defined by:
+# following result: if :math:`Y_t` is a non stationary GPD model parametrized by :math:`(\sigma(t), \xi(t), u)`,
+# then the standardized variables :math:`\hat{Y}_t` defined by:
 #
 # .. math::
 #
-#    \hat{Z}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right]
+#    \hat{Y}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Y_t-u}{\sigma(t)} \right)\right]
 #
-# have the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
+# have the Exponential distribution which is the GPD model with :math:`(\sigma, \xi, u) = (1, 0, 0)`.
 #
 # As a result, we can validate the inference result thanks the 4 usual diagnostic plots:
 #
@@ -297,47 +278,38 @@ print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood
 # - the return level plot,
 # - the data histogram and the density of the fitted model.
 #
-# using the transformed data compared to the Gumbel model. We can see that the adequation seems similar to the graph
+# using the transformed data compared to the Exponential model. We can see that the adequation seems similar to the graph
 # of the stationary model.
 graph = result_NonStatLL.drawDiagnosticPlot()
 view = otv.View(graph)
 
 # %%
-# We can draw the mean function  :math:`t \mapsto \Expect{\mbox{GEV}(t)}`. Be careful, it is not the function
-# :math:`t \mapsto \mu(t)`. As a matter of fact, the mean is defined for :math:`\xi <1` only and in that case,
-# for :math:`\xi \neq 0`, we have:
+# We can draw the mean function :math:`t \mapsto \Expect{\mbox{GPD}(t)}`, defined for :math:`\xi <1` only:
 #
 # .. math::
-#     \Expect{\mbox{GEV}(t)} = \mu(t) + \dfrac{\sigma(t)}{\xi(t)} (\Gamma(1-\xi(t))-1)
-#
-# and for :math:`\xi = 0`, we have:
-#
-# .. math::
-#     \Expect{\mbox{GEV}(t)} = \mu(t) + \sigma(t)\gamma
-#
-# where :math:`\gamma` is the Euler constant.
+#     \Expect{\mbox{GPD}(t)} = u + \dfrac{\sigma(t)}{1 - \xi(t)}
 #
 # We can also draw the function :math:`t \mapsto q_p(t)` where :math:`q_p(t)` is the quantile of
-# order :math:`p` of the GEV distribution at time :math:`t`.
-# Here, :math:`\mu(t)` is a linear function and the other parameters are constant, so the mean and the quantile
+# order :math:`p` of the GPD distribution at time :math:`t`.
+# Here, :math:`\sigma(t)` is a linear function and the other parameters are constant, so the mean and the quantile
 # functions are also linear functions.
 graph = ot.Graph(
-    r"Maximum annual sea-levels at Port Pirie - Linear $\mu(t)$",
-    "year",
-    "level (m)",
+    r"Maximum rain - Linear $\sigma(t)$",
+    "day",
+    "level (mm)",
     True,
     "",
 )
 graph.setIntegerXTick(True)
 # data
-cloud = ot.Cloud(data[:, :2])
+cloud = ot.Cloud(timeStamps, sample)
 cloud.setColor("red")
 graph.add(cloud)
 # mean function
 meandata = [
-    result_NonStatLL.getDistribution(t).getMean()[0] for t in data[:, 0].asPoint()
+    result_NonStatLL.getDistribution(t).getMean()[0] for t in timeStamps.asPoint()
 ]
-curve_meanPoints = ot.Curve(data[:, 0].asPoint(), meandata)
+curve_meanPoints = ot.Curve(timeStamps.asPoint(), meandata)
 graph.add(curve_meanPoints)
 # quantile function
 graphQuantile = result_NonStatLL.drawQuantileFunction(0.95)
@@ -362,8 +334,8 @@ view = otv.View(graph)
 # This test confirms that there is no evidence of a linear trend for :math:`\mu`.
 llh_LL = result_LL.getLogLikelihood()
 llh_NonStatLL = result_NonStatLL.getLogLikelihood()
-modelM0_Nb_param = 3
-modelM1_Nb_param = 4
+modelM0_Nb_param = 2
+modelM1_Nb_param = 3
 resultLikRatioTest = ot.HypothesisTest.LikelihoodRatioTest(
     modelM0_Nb_param, llh_LL, modelM1_Nb_param, llh_NonStatLL, 0.05
 )
