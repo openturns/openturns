@@ -615,7 +615,7 @@ If the interval is rectangular, i.e. if :math:`I = \bigcap\limits_{i=1}^d [a_i, 
             F_{\vect{X}}\left(\vect{c}\right)
 
 where the sum runs over the :math:`2^d` vectors such that
-:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, d)}` with :math:`c_i \in [a_i, b_i]`,
+:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, d)}` with :math:`c_i \in \{a_i, b_i\}`,
 and :math:`n(\vect{c})` is the number of components in
 :math:`\vect{c}` such that :math:`c_i = a_i`."
 %enddef
