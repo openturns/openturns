@@ -21,7 +21,6 @@
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SampleImplementation.hxx"
