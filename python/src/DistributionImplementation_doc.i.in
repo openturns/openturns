@@ -214,7 +214,7 @@ Conditional quantile with respect to the other fixed components.
 
 Parameters
 ----------
-p : float, sequence of float, :math:`p \in [0; 1]`
+p : float, sequence of float, :math:`p \in [0, 1]`
     Conditional quantile.
 Xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
     Conditioning values.
