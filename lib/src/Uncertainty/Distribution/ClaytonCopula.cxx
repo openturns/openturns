@@ -385,14 +385,19 @@ Point ClaytonCopula::computeQuantile(const Scalar prob,
                                      const Bool tail) const
 {
   if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  const Scalar q = tail ? 1.0 - prob : prob;
-  // Special case for boarding values
-  if (q == 0.0) return getRange().getLowerBound();
-  if (q == 1.0) return getRange().getUpperBound();
+  // Special case for boundary values
+  if (prob == 0.0) return tail ? getRange().getUpperBound() : getRange().getLowerBound();
+  if (prob == 1.0) return tail ? getRange().getLowerBound() : getRange().getUpperBound();
   // Independent case
-  if (theta_ == 0.0) return Point(2, std::sqrt(q));
+  if (theta_ == 0.0) return Point(2, std::sqrt(tail ? 1.0 - prob : prob));
   // General case
-  return Point(2, std::exp((M_LN2 - log1p(std::pow(q, -theta_))) / theta_));
+  if (tail)
+  {
+    if (prob < std::sqrt(SpecFunc::ScalarEpsilon)) return Point(2, 1.0 - prob / 2.0);
+    return Point(2, std::exp((M_LN2 - log1p(std::exp(-theta_ * log1p(-prob)))) / theta_));
+  }
+  if (1.0 - prob < std::sqrt(SpecFunc::ScalarEpsilon)) return Point(2, (1.0 + prob) / 2.0);
+  return Point(2, std::exp((M_LN2 - log1p(std::pow(prob, -theta_))) / theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

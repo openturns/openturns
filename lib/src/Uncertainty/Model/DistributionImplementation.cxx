@@ -4579,6 +4579,11 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
 {
   const String title(OSS() << getDescription() << " Quantile");
   const Sample data(computeQuantile(qMin, qMax, pointNumber));
+  LOGWARN(OSS() << "data = " << data);
+  LOGWARN(OSS() << "qMin =" << qMin << " ; qMax-1 = " << qMax - 1.0);
+  LOGWARN(OSS() << "quantile(qMin) = " << computeQuantile(qMin));
+  LOGWARN(OSS() << "quantile(qMax) = " << computeQuantile(qMax));
+  LOGWARN(OSS() << "copula_quantile(qMax)[0]-1 = " << getCopula().computeQuantile(qMax)[0] - 1.0);
   Curve curveQuantile(data);
   curveQuantile.setLegend(title);
   curveQuantile.setLineStyle("solid");
