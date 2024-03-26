@@ -7,7 +7,7 @@ Introduction
 ~~~~~~~~~~~~
 
 The Hilbert-Schmidt Indepencence Criterion deals with analyzing the influence that the random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{d} \right)` has on a random variable
+:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)` has on a random variable
 :math:`Y`, which is being studied for uncertainty. Here, we attempt to evaluate the influence
 through the dependence between the two random variables :math:`Y` and :math:`X^i`.
 In practice, we compute the dependence between :math:`Y` and :math:`X^i` as the
@@ -15,22 +15,21 @@ distance between the joint distribution :math:`P_{Y,X^i}` and the
 product of the marginal distributions :math:`P_{X^i}P_{Y}`.
 
 In the following paragraphs, we consider an independent and identically distributed
-learning sample of size :math:`n`, which can for instance be obtained through
-Monte Carlo sampling or real life observations:
+learning sample of size :math:`\sampleSize`:
 
 .. math::
 
-    \left(\mathbf{X}^{(j)}, Y^{(j)}\right)_{(1\leq j\leq n)} = \left(X_1^{(j)}, X_2^{(j)}, \dots, X_d^{(j)}, Y^{(j)}\right)_{(1\leq j\leq n)}
+    \left(\mathbf{X}^{(j)}, Y^{(j)}\right)_{(1\leq j\leq \sampleSize)} = \left(X_1^{(j)}, X_2^{(j)}, \dots, X_d^{(j)}, Y^{(j)}\right)_{(1\leq j\leq \sampleSize)}
 
-where :math:`\mathbf{X}` and :math:`Y` respectively follow :math:`P_{\mathbf{X}}` and :math:`P_{Y}`.
-In many cases, only :math:`\mathbf{X}` is sampled, while :math:`P_{Y}` is obtained
-as the output of a computer code: :math:`Y^{(j)} = \mathcal{M}\left(X_1^{(j)}, X_2^{(j)}, \dots, X_d^{(j)}\right)`
+where :math:`\inputRV` and :math:`Y` respectively follow :math:`P_{\mathbf{\inputRV}}` and :math:`P_{Y}`.
+In many cases, only :math:`\mathbf{\inputRV}` is sampled, while :math:`P_{Y}` is obtained
+as the output of a computer code: :math:`Y^{(j)} = \mathcal{M}\left(X_1^{(j)}, X_2^{(j)}, \dots, X_\inputDim^{(j)}\right)`
 
 
 HSIC definition
 ~~~~~~~~~~~~~~~
 
-Suppose :math:`\cX_{i} \ \forall i \ \in \{1,\dots,d\}` and :math:`\cY` are measurable spaces.
+Suppose :math:`\cX_{i} \ \forall i \ \in \{1,\dots,\inputDim\}` and :math:`\cY` are measurable spaces.
 Let :math:`\cF_{i} : \cX_i \rightarrow \Rset` and :math:`\cG : \cY \rightarrow \Rset`
 be two (universal) Reproducing Kernel Hilbert Spaces (RKHS).
 These functional spaces are equipped with their characteristic kernels: (resp.)

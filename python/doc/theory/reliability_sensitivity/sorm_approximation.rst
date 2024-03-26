@@ -3,17 +3,16 @@
 SORM
 ----
 
-The Second Order Reliability Method is used under the following context: let :math:`\vect{X}` be a probabilistic
-input vector with joint density probability  :math:`\pdf`, let
-:math:`\vect{d}` be a  deterministic vector, let :math:`g(\vect{X}\,,\,\vect{d})` be the limit state function of
-the model and let :math:`\cD_f = \{\vect{X} \in \Rset^n \,
-/ \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be an event whose probability
+The Second Order Reliability Method is used under the following context: let :math:`\inputRV` be a probabilistic
+input vector with joint density probability  :math:`\pdf`, let :math:`\model` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \,
+/ \, \model(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
   :label: PfX4
 
-  P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0} = \int_{\cD_f}  \pdf\, d\vect{x}
+  P_f = \Prob{\model(\inputRV)\leq 0} = \int_{\cD_f}  \pdf\, d\vect{x}
 
 The principle is the same as for :ref:`form_approximation`: we map the physical space into the standard space
 through an :ref:`isoprobabilistic transformation <isoprobabilistic_transformation>`).
@@ -23,20 +22,19 @@ The integral :eq:`PfX4` can be written as:
 .. math::
     :label: PfU2
 
-    P_f = \Prob{h(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{h(\vect{u}\,,\,\vect{d}) \leq 0}
-    \,f_{\vect{U}}(\vect{u})\,d\vect{u}
+    P_f = \Prob{h(\RVU)\leq 0} = \int_{\Rset^d} \boldsymbol{1}_{h(\vect{u}) \leq 0}
+    \,f_{\RVU}(\vect{u})\,d\vect{u}
 
-where :math:`f_{\vect{U}}` is the density function of the   distribution in the standard space: that distribution is
-spherical (invariant by rotation by definition). That property implies that :math:`f_{\vect{U}}` is a function of
-:math:`||\vect{U}||^2` only.
+where :math:`f_{\RVU}` is the density function of the   distribution in the standard space: that distribution is
+spherical (invariant by rotation by definition). That property implies that :math:`f_{\RVU}` is a function of
+:math:`||\RVU||^2` only.
 
 Furthermore, we suppose that outside the sphere which tangents the limit state surface in the standard
-space, :math:`f_{\vect{U}}` is decreasing.
+space, :math:`f_{\RVU}` is decreasing.
 
 The difference with FORM comes from the approximation of the limit state surface at the design point :math:`P^*` in
 the standard space: SORM approximates it by a quadratic surface that has the same main curvatures at the design point.
-Let  :math:`n` be the dimension of the random vector :math:`\vect{X}` and
-:math:`(\kappa_i)_{1 \leq i \leq n-1}` the :math:`(n-1)` main curvatures of the limit state function at the design
+Let  :math:`(\kappa_i)_{1 \leq i \leq \inputDim-1}` the :math:`(n-1)` main curvatures of the limit state function at the design
 point in the standard space.
 Several approximations are available,
 detailed here in the case where the origin of the standard
@@ -51,12 +49,12 @@ density function of the spherical distributions in the standard space:
 .. math::
   :label: PfSORM_B
 
-    P_{Breitung}^{generalized}  \stackrel{\beta\rightarrow\infty}{=} \Phi(-\beta)\prod_{i=1}^{n-1}\frac{1}
+    P_{Breitung}^{generalized}  \stackrel{\beta\rightarrow\infty}{=} \Phi(-\beta)\prod_{i=1}^{d-1}\frac{1}
     {\sqrt{1+\kappa_i^0}}
 
 
 where :math:`\Phi` is the cumulative distribution function of the standard 1D normal
-distribution and  :math:`(\kappa_1^0, \dots, \kappa_d^0)` the main curvatures of the
+distribution and  :math:`(\kappa_1^0, \dots, \kappa_\inputDim^0)` the main curvatures of the
 homothetic of the failure domain at distance 1 from the origin.
 
 **Hohenbichler’s formula** is an approximation of :eq:`PfSORM_B`:
@@ -64,7 +62,7 @@ homothetic of the failure domain at distance 1 from the origin.
 .. math::
     :label: PfSORM_HB
 
-       P_{Hohenbichler} = \Phi(-\beta) \prod_{i=1}^{n-1} \left( 1+\frac{\phi(-\beta)}{\beta \Phi(-\beta)}\kappa_i^0
+       P_{Hohenbichler} = \Phi(-\beta) \prod_{i=1}^{d-1} \left( 1+\frac{\phi(-\beta)}{\beta \Phi(-\beta)}\kappa_i^0
        \right)  ^{-1/2}
 
 Recording to the Mill's ratio, :math:`\frac{\phi(-\beta)}{\beta \Phi(-\beta)}` tends to 1 when :math:`\beta` tends
@@ -88,12 +86,12 @@ where :math:`A_1`, :math:`A_2` and :math:`A_3` are defined by:
 
 .. math::
 
-   A_1  & =    \Phi(-\beta) \prod_{j=1}^{N-1} \left( 1+ \kappa_j^0 \right) ^{-1/2}\\
-   A_2 & =    \left[ \beta  \Phi(-\beta) -  \phi(\beta)\right ]  \left[  \prod_{j=1}^{N-1}  \left( 1+\kappa_j^0
-   \right) ^{-1/2} -    \prod_{j=1}^{N-1}  \left( 1+(1 / \beta + 1) \kappa_j^0 \right) ^{-1/2} \right] \\
+   A_1  & =    \Phi(-\beta) \prod_{j=1}^{d-1} \left( 1+ \kappa_j^0 \right) ^{-1/2}\\
+   A_2 & =    \left[ \beta  \Phi(-\beta) -  \phi(\beta)\right ]  \left[  \prod_{j=1}^{d-1}  \left( 1+\kappa_j^0
+   \right) ^{-1/2} -    \prod_{j=1}^{d-1}  \left( 1+(1 / \beta + 1) \kappa_j^0 \right) ^{-1/2} \right] \\
    A_3 & =   (1 + \beta) \left[ \beta  \Phi(-\beta) -  \phi(\beta)\right ] \\
-       & \quad \times \left[  \prod_{j=1}^{N-1}  \left( 1+\kappa_j^0 \right)^{-1/2} - \operatorname{Re}
-       \left(\prod_{j=1}^{N-1}\left( 1+(\imath / \beta + 1) \kappa_j^0 \right) ^{-1/2} \right) \right]
+       & \quad \times \left[  \prod_{j=1}^{d-1}  \left( 1+\kappa_j^0 \right)^{-1/2} - \operatorname{Re}
+       \left(\prod_{j=1}^{d-1}\left( 1+(\imath / \beta + 1) \kappa_j^0 \right) ^{-1/2} \right) \right]
 
 where :math:`{\cR}e(z)` is the real part of the complex number
 :math:`z` and :math:`\imath` the complex number such that

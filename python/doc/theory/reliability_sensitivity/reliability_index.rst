@@ -2,17 +2,16 @@ Reliability Index
 -----------------
 
 The generalized reliability index :math:`\beta_{gen}` is used under the
-following context: let :math:`\vect{X}` be a probabilistic input
-vector with joint density probability  :math:`\pdf`, let
-:math:`\vect{d}` be a  deterministic vector, let :math:`g(\vect{X}\,,\,\vect{d})` be the limit state function of
-the model and let :math:`\cD_f = \{\vect{X} \in \Rset^n \,
-/ \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be an event whose probability
+following context: let :math:`\inputRV` be a probabilistic input
+vector with joint density probability  :math:`\pdf`, let :math:`\model(\inputRV)` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{x} \in \Rset^d \,
+/ \, \model(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
     :label: PfX6
 
-    P_f = \int_{g(\vect{X}\,,\,\vect{d}) \le 0}  \pdf\, d\vect{x}.
+    P_f = \int_{\model(\vect{x}) \le 0}  \pdf\, d\vect{x}.
 
 The generalized reliability index is defined as:
 

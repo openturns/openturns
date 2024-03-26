@@ -104,18 +104,18 @@ and for :math:`s=2,\hdots,m` :
 
 where :math:`\Phi_d` is the usual standard unit Gaussian PDF in dimension :math:`d`.
 
-The associated estimators are given, respectively for :math:`\{ U_1^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d` by:
+The associated estimators are given, respectively for :math:`\{ U_1^{(j)} \}_{j=1}^\sampleSize \overset{i.i.d.}{\sim} \Phi_d` by:
 
 .. math::
-   \hat{p_1} = \frac{1}{N} \sum_{j=1}^N \mathbf{1}_{ \mathcal{F}_{u,1} }(U_1^{(j)})
+   \hat{p_1} = \frac{1}{\sampleSize} \sum_{j=1}^\sampleSize \mathbf{1}_{ \mathcal{F}_{u,1} }(U_1^{(j)})
 
-and, for :math:`\{ U_s^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})`, :math:`s \geq 2`, by:
+and, for :math:`\{ U_s^{(j)} \}_{j=1}^\sampleSize \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})`, :math:`s \geq 2`, by:
 
 .. math::
-   \hat{p_s} = \frac{1}{N} \sum_{j=1}^N \mathbf{1}_{ \mathcal{F}_{u,s} }(U_s^{(j)})
+   \hat{p_s} = \frac{1}{\sampleSize} \sum_{j=1}^\sampleSize \mathbf{1}_{ \mathcal{F}_{u,s} }(U_s^{(j)})
 
 
-where :math:`N` denotes the number of samples, supposed to be a constant for each level :math:`y_s`, and the indicator function satisfies
+where :math:`\sampleSize` denotes the number of samples, supposed to be a constant for each level :math:`y_s`, and the indicator function satisfies
 :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 1` if :math:`\overset{\circ}{g}(u) \leq y_{s-1}` and :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 0` otherwise.
 
 
