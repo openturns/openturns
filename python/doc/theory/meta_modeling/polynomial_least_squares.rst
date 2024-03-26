@@ -12,7 +12,7 @@ simplicity, a *scalar* model response :math:`y=\model(\vect{x})` will
 be considered from now on. Nonetheless, the following derivations hold
 for a vector-valued response.
 
-In the sequel, one considers global approximations of the model
+In the following, one considers global approximations of the model
 response using:
 
 - a linear function, i.e. a polynomial of degree one;
@@ -47,7 +47,7 @@ cross-terms :math:`x_i x_j` as well as the monomials of degree two
 :math:`\vect{a}  =  (a_{0} , \dots , a_{P-1} )^{\textsf{T}}`
 and
 :math:`\vect{\psi}(\vect{x})  =  (\psi_{0}(\vect{x}) , \dots , \psi_{P-1}(\vect{x}) )^{\textsf{T}}`,
-this rewrites:
+this can be rewritten:
 
   .. math::
 
@@ -56,7 +56,7 @@ this rewrites:
 A *global* approximation of the model response over its whole
 definition domain is sought. To this end, the coefficients :math:`a_j`
 may be computed using a least squares regression approach. In this
-context, an experimental design that is, a set of observations of
+context, an experimental design, that is, a set of observations of
 input parameters, is required:
 
 .. math::
@@ -96,7 +96,7 @@ coefficients to estimate. In practice, it is not recommended to
 directly invert
 :math:`\boldsymbol{\Psi}^{\textsf{T}} \boldsymbol{\Psi}`
 since the solution may be particularly sensitive to an
-ill-conditioning of the matrix. The least-square problem is rather
+ill-conditioned matrix. The least-square problem is rather
 solved using more robust numerical methods such as *singular value
 decomposition* (SVD) or *QR-decomposition*.
 

@@ -21,8 +21,8 @@ where:
   basis functions,
 - :math:`\{a_k \in \Rset\}_{k = 1, ..., p}` are the coefficients,
 - :math:`\epsilon \sim \cN(0, \sigma^2)` where
-  :math:`\cN` is the Gaussian distribution and
-  :math:`\sigma > 0` is the standard deviation.
+  :math:`\cN` is a normal distribution and
+  :math:`\sigma > 0` is its standard deviation.
 
 Caution
 ~~~~~~~
@@ -44,7 +44,7 @@ but not all books use the same convention:
 Experimental design
 ~~~~~~~~~~~~~~~~~~~
 
-A set of observations of input parameters, is required:
+A set of observations of the input parameters is required:
 
 .. math::
 
