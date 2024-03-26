@@ -7,13 +7,13 @@ The Strong Maximum Test is used under the following context:  let :math:`\inputR
 probabilistic input
 vector with joint density probability  :math:`\pdf`, let :math:`\model` be the limit state function of
 the model and let :math:`\cD_f = \{\vect{x} \in \Rset^\inputDim \,
-/ \, g(\vect{x}) \le 0\}` be an event whose probability
+/ \, \model(\vect{x}) \le 0\}` be an event whose probability
 :math:`P_f` is defined as:
 
 .. math::
     :label: PfX12
 
-       P_f =     \int_{{g(\inputRV) \le 0}}  \pdf\, d\vect{x}
+       P_f =     \int_{{\model(\inputRV) \le 0}}  \pdf\, d\vect{x}
 
 The probability :math:`P_f` is evaluated with the  :ref:`form_approximation` and :ref:`sorm_approximation`
 methods. These methods use the Nataf

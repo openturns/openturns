@@ -11,7 +11,7 @@ vector :math:`\inputRV`, we seek to evaluate the following probability:
     P_f = \Prob{g\left( \inputRV \right) \leq 0}
 
 Here, :math:`\inputRV` is a random vector, :math:`\model` the function known as *limit state function*
-which enables the definition of the event :math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, / \, g(\inputRV) \le 0\}`.
+which enables the definition of the event :math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, / \, \model(\inputRV) \le 0\}`.
 
 
 If we have the set :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_\sampleSize \right\}` of :math:`\sampleSize`
@@ -20,7 +20,7 @@ we can estimate :math:`\widehat{P}_f` as follows:
 
 .. math::
 
-    \widehat{P}_f = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize \mathbf{1}_{ \left\{ g(\vect{x}_i) \leq 0 \right\} }
+    \widehat{P}_f = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize \mathbf{1}_{ \left\{ \model(\vect{x}_i) \leq 0 \right\} }
 
 where :math:`\mathbf{1}_{ \left\{ \model(\vect{x}_i) \leq 0 \right\} }`
 describes the indicator function equal to 1 if :math:`\model(\vect{x}_i) \leq 0`
