@@ -1,10 +1,12 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
 cov1D = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveP1Algorithm(mesh, cov1D, 0.0)
+algo.setNbModes(8)
 algo.run()
 result = algo.getResult()
 lambd = result.getEigenvalues()
@@ -19,12 +21,22 @@ print("KL functions=", KLFunctions)
 print("KL lift=", result.lift(coefficients[0]))
 print("KL lift as field=", result.liftAsField(coefficients[0]))
 
+# check spectra variant
+if ot.PlatformInfo.HasFeature("spectra"):
+    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
+    algo.run()
+    result2 = algo.getResult()
+    lambd2 = result2.getEigenvalues()
+    ott.assert_almost_equal(lambd2, lambd)
+    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "LAPACK")
+
 R = ot.CorrelationMatrix(2)
 R[0, 1] = 0.5
 scale = [1.0]
 amplitude = [1.0, 2.0]
 cov2D = ot.ExponentialModel(scale, amplitude, R)
 algo = ot.KarhunenLoeveP1Algorithm(mesh, cov2D, 0.0)
+algo.setNbModes(18)
 algo.run()
 result = algo.getResult()
 lambd = result.getEigenvalues()
