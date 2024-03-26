@@ -158,7 +158,7 @@ private:
   Point cookDistances_;
 
   /** Residuals variance */
-  Scalar residualsVariance_;
+  Scalar residualsVariance_ = 0.0;
 
   /** hasIntercept */
   Bool hasIntercept_;
