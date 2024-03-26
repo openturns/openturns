@@ -51,7 +51,7 @@ this can be rewritten:
 
   .. math::
 
-      y  \approx  \widehat{\model}(\vect{x})  =  \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x})
+      y  \approx  \widehat{\model}(\vect{x})  =  \Tr{\vect{a}}\vect{\psi}(\vect{x})
 
 A *global* approximation of the model response over its whole
 definition domain is sought. To this end, the coefficients :math:`a_j`
@@ -73,7 +73,7 @@ The following minimization problem has to be solved:
 
 .. math::
 
-    \mbox{Find} \quad \widehat{\vect{a}} \quad \mbox{that minimizes} \quad \cJ(\vect{a})  =  \sum_{i=1}^N \left( y^{(i)} - \vect{a}^{\textsf{T}}  \vect{\psi}\left(\vect{x}^{(i)}\right) \right)^2
+    \mbox{Find} \quad \widehat{\vect{a}} \quad \mbox{that minimizes} \quad \cJ(\vect{a})  =  \sum_{i=1}^N \left( y^{(i)} - \Tr{\vect{a}} \vect{\psi}\left(\vect{x}^{(i)}\right) \right)^2
 
 Let :math:`\vect{y} = (y^{(1)},\dots,y^{(N)})^T \in \Rset^{N}` be the
 vector of output observations.
@@ -81,20 +81,20 @@ The solution is given by the normal equations:
 
 .. math::
 
-    \widehat{\vect{a}}  =  \left( \boldsymbol{\Psi}^{\textsf{T}} \boldsymbol{\Psi}  \right)^{-1} \boldsymbol{\Psi}^{\textsf{T}}  \vect{y}
+    \widehat{\vect{a}}  =  \left( \mat{\Psi}^{\textsf{T}} \mat{\Psi}  \right)^{-1} \Tr{\mat{\Psi}}  \vect{y}
 
 where:
 
 .. math::
 
-    \boldsymbol{\Psi}  =  (\psi_{j}\left(\vect{x}^{(i)}\right) , i=1,\dots,N , j = 0,\dots,P-1)
+    \mat{\Psi}  =  (\psi_{j}\left(\vect{x}^{(i)}\right) , i=1,\dots,N , j = 0,\dots,P-1)
 
 It is clear that the above equation is only valid for a full rank
 information matrix. A necessary condition is that the size :math:`N`
 of the experimental design is not less than the number :math:`P` of
 coefficients to estimate. In practice, it is not recommended to
 directly invert
-:math:`\boldsymbol{\Psi}^{\textsf{T}} \boldsymbol{\Psi}`
+:math:`\mat{\Psi}^{\textsf{T}} \mat{\Psi}`
 since the solution may be particularly sensitive to an
 ill-conditioned matrix. The least-square problem is rather
 solved using more robust numerical methods such as *singular value
