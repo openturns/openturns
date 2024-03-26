@@ -50,7 +50,8 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     SquaredExponential
     TensorizedCovarianceModel
     StationaryFunctionalCovarianceModel
-
+    SumCovarianceModel
+    
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
 
