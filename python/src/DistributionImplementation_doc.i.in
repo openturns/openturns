@@ -1041,7 +1041,8 @@ Notes
 We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
 The minimum volume confidence interval :math:`I^*_{\alpha}` is the cartesian product
-:math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)`
+:math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where
+:math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)`
 and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`.
 
 This problem resorts to solving :math:`d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
