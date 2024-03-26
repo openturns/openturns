@@ -119,7 +119,7 @@ these algorithms:
 - 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
   singular values to compute. By default it is set to 1000.	
 - 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
-  'halko2010' for [halko2010]_ (the default) or 'halko2011' for [halko2011]_.
+  'Halko2010' for [halko2010]_ (the default) or 'Halko2011' for [halko2011]_.
   These two algorithms have very similar structures, the first one being based
   on a random compression of both the rows and columns of :math:`\mat{Y}`, the
   second one being based on an iterative compressed sampling of the columns of

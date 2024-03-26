@@ -41,11 +41,8 @@ static const Factory<KarhunenLoeveSVDAlgorithm> Algorithm_KarhunenLoeveSVDAlgori
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm()
   : KarhunenLoeveAlgorithmImplementation()
   , sample_()
-  , centeredSample_(false)
   , verticesWeights_(0)
-  , uniformVerticesWeights_(true)
   , sampleWeights_(0)
-  , uniformSampleWeights_(true)
 {
   // Nothing to do
 }
@@ -60,7 +57,6 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
   , verticesWeights_(0)
   , uniformVerticesWeights_(false)
   , sampleWeights_(sample.getSize(), 1.0 / sample.getSize())
-  , uniformSampleWeights_(true)
 {
   // Set the vertices weights in order to check their uniformity and positivity
   setVerticesWeights(sample.getMesh().computeWeights());
@@ -75,9 +71,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
   , sample_(sample)
   , centeredSample_(centeredSample)
   , verticesWeights_(0)
-  , uniformVerticesWeights_(true)
   , sampleWeights_(sample.getSize(), 1.0 / sample.getSize())
-  , uniformSampleWeights_(true)
 {
   // Set the vertices weights in order to check their uniformity and positivity
   setVerticesWeights(verticesWeights);
@@ -245,7 +239,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       // Vt is not needed for the algorithm
       // Vt = Y * Vt;
     }
-    else
+    else if (ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant") == "Halko2011")
     {
       // Here we use the algorithm described in:
       // Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert, "An algorithm for the principal component analysis of large data sets", arXiv:1007.5510v2
@@ -292,6 +286,8 @@ void KarhunenLoeveSVDAlgorithm::run()
       U = Q.genProd(W, false, false);
       LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
     }
+    else
+      throw InvalidArgumentException(HERE) << "Unknow random SVD variant: " << ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant");
   }
   else
   {
