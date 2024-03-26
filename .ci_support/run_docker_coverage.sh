@@ -19,20 +19,20 @@ mkdir build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
+      -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
       -DSWIG_COMPILE_FLAGS="-O1" \
       -DUSE_SPHINX=OFF \
       ${source_dir}
 make install
-OPENTURNS_NUM_THREADS=2 ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
+OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 200 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
 #OPENTURNS_NUM_THREADS=2 ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 
 # coverage
 gcov `find lib/src/ -name "*.gcno"`
 lcov --capture --directory ./lib/src/ -o coverage.info
-lcov --remove coverage.info "/usr/include/*" -o coverage.info
-genhtml -ignore-errors unmapped --output-directory coverage coverage.info
+lcov --remove coverage.info "/usr/include/*" "*/csv_lexer.ll" "*/lib/src/*.hxx" -o coverage.info
+genhtml --rc geninfo_unexecuted_blocks=1 --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
 if test -n "${uid}" -a -n "${gid}"
