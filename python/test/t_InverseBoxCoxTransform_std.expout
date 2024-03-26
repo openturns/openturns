@@ -107,5 +107,8 @@ output time series =
 48 : [ 4.8      0.558239 ]
 49 : [ 4.9      0.662843 ]
 50 : [ 5        0.5487   ]
+gradient= [[ 0.0625 ]]
+hessian= sheet #0
+[[ 0.1 ]]
 myBoxCox =  BoxCox(lambda=[0.2], shift=[0])
 number of call(s) :  51
