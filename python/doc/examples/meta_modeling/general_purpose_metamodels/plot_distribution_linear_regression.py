@@ -135,6 +135,13 @@ def plot_sample_by_kernel_smoothing(
 
     graph = ot.KernelSmoothing().build(sample_estimator).drawPDF()
     graph.setLegends(["Sample"])
+    bb = graph.getBoundingBox()
+    ylb = bb.getLowerBound()[1]
+    yub = bb.getUpperBound()[1]
+    curve = ot.Curve([true_standard_deviation ** 2] * 2, [ylb, yub])
+    curve.setLegend("Exact")
+    curve.setLineWidth(2.0)
+    graph.add(curve)
     graph.setTitle(
         "Size = %d, True S.D. = %.4f, Mean = %.4f, Rep. = %d"
         % (
