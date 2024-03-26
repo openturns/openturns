@@ -17,22 +17,24 @@ AdaptiveStrategy, CleaningStrategy
 
 Notes
 -----
-The so-called fixed strategy simply consists in retaining the first :math:`P`
+The so-called fixed strategy simply consists in selecting the first :math:`P`
 elements of the PC basis, the latter being ordered according to a given
 :class:`~openturns.EnumerateFunction` (hyperbolic or not). The retained set is
 built in a single pass. The truncated PC expansion is given by:
 
 .. math::
     
-    \hat{h} (\uX) = \sum_{j=0}^{P-1} \vect{a}_j \Psi_j (\uX)
+    \widehat{h} (\uZ) = \sum_{j=0}^{P-1} \vect{a}_j \Psi_j (\uZ)
 
 In case of a :class:`~openturns.LinearEnumerateFunction`, for a given natural
-integer :math:`p`, a usual choice is to set :math:`P` equals to:
+integer :math:`p` representing the total polynomial degree, the number of
+coefficients is equal to:
 
 .. math::
     
     P = \binom{n_X + p}{p} = \frac{(n_X + p)!}{n_X!\,p!}
 
+where :math:`n_X` is the input dimension.
 This way the set of retained basis functions :math:`\{\Psi_j, j = 0, \ldots, P-1\}`
 gathers all the polynomials with total degree not greater than :math:`p`.
 The number of terms :math:`P` grows polynomially both in :math:`n_X` and :math:`p`
@@ -63,3 +65,21 @@ Examples
 >>> # We keep all the polynomials of degree <= 4
 >>> # which corresponds to the 5 first ones
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FixedStrategy::updateBasis
+"Update the basis for the next iteration of approximation.
+
+No changes are made to the basis in the fixed strategy.
+Hence, the number of functions in the basis is equal to *dimension*,
+whatever the number of calls to the *updateBasis* method.
+
+Parameters
+----------
+alpha_k : sequence of floats
+    The coefficients of the expansion at this step.
+residual : float
+    The current value of the residual.
+relativeError : float
+    The relative error."
