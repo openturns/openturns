@@ -2605,7 +2605,7 @@ OT_Distribution_getProbabilities_doc
 "Accessor to the singularities of the PDF function.
 
 It is defined for univariate distributions only, and gives all the singularities
-(ie discontinuities of any order) strictly inside of the range of the distribution.
+(i.e. discontinuities of any order) strictly inside of the range of the distribution.
 
 Returns
 -------
