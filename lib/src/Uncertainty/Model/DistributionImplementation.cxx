@@ -2308,6 +2308,8 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   // This test allows one to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
   Scalar lower = range_.getLowerBound()[0];
   Scalar upper = range_.getUpperBound()[0];
@@ -2436,11 +2438,11 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
 {
   const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
-  // Special case for bording values
-  if (prob < quantileEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
-  if (prob >= 1.0 - quantileEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, tail));
+  // Special case for border values
+  if (prob < cdfEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
+  if (prob >= 1.0 - cdfEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for independent copula
   if (hasIndependentCopula())
   {
@@ -4567,6 +4569,11 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
 {
   const String title(OSS() << getDescription() << " Quantile");
   const Sample data(computeQuantile(qMin, qMax, pointNumber));
+  LOGWARN(OSS() << "data = " << data);
+  LOGWARN(OSS() << "qMin =" << qMin << " ; qMax-1 = " << qMax - 1.0);
+  LOGWARN(OSS() << "quantile(qMin) = " << computeQuantile(qMin));
+  LOGWARN(OSS() << "quantile(qMax) = " << computeQuantile(qMax));
+  LOGWARN(OSS() << "copula_quantile(qMax)[0]-1 = " << getCopula().computeQuantile(qMax)[0] - 1.0);
   Curve curveQuantile(data);
   curveQuantile.setLegend(title);
   curveQuantile.setLineStyle("solid");

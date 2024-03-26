@@ -212,6 +212,8 @@ Point Arcsine::computeCDFGradient(const Point & point) const
 Scalar Arcsine::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar proba = tail ? 1.0 - prob : prob;
   const Scalar quantile = 0.5 * (b_ - a_) * std::sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_);
   return quantile;

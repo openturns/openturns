@@ -150,6 +150,8 @@ Point Bernoulli::computeCDFGradient(const Point & point) const
 Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (prob < 1.0 - p_) return (tail ? 1.0 : 0.0);
   return (tail ? 0.0 : 1.0);
 }

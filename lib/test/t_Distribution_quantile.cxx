@@ -36,18 +36,30 @@ int main(int, char *[])
     {
       Distribution dist = factories[i].build();
       Scalar q0 = dist.computeQuantile(0.0)[0];
-      Scalar qm1 = dist.computeQuantile(-1.0)[0];
-      if (q0 != qm1)
-        fullprint << dist.getClassName() << " <0" << ", q0=" << q0 << ", qm1=" << qm1 << std::endl;
+      try
+      {
+        Scalar qm1 = dist.computeQuantile(-1.0)[0];
+        throw InternalException(HERE) << "Expected an InvalidArgumentException with dist = " << dist.getClassName() << " got quantile(-1) = " << qm1;
+      }
+      catch (const InvalidArgumentException &)
+      {
+        // Nothing to do
+      }
       Scalar q1 = dist.computeQuantile(1.0)[0];
       Scalar q0p = dist.computeQuantile(SpecFunc::MinScalar)[0];
-      if (q0 != q0p)
+      if (!(q0 <= q0p))
         fullprint << dist.getClassName() << " 0+" << ", q0=" << q0 << ", q0p=" << q0p << std::endl;
-      Scalar q2 = dist.computeQuantile(2.0)[0];
-      if (q1 != q2)
-        fullprint << dist.getClassName() << " >1" << ", q1=" << q1 << ", q2=" << q2 << std::endl;
+      try
+      {
+        Scalar q2 = dist.computeQuantile(2.0)[0];
+        throw InternalException(HERE) << "Expected an InvalidArgumentException with dist = " << dist.getClassName() << " got quantile(2) = " << q2;
+      }
+      catch (const InvalidArgumentException &)
+      {
+        // Nothing to do
+      }
       Scalar q1m = dist.computeQuantile(1.0 - SpecFunc::ScalarEpsilon)[0];
-      if (q1m != q1)
+      if (!(q1m <= q1))
         fullprint << dist.getClassName() << " 1-" << ", q1m=" << q1m << ", q1=" << q1 << std::endl;
     } // i
   } // try

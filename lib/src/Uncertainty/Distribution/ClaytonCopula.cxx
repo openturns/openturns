@@ -392,6 +392,7 @@ Point ClaytonCopula::computeQuantile(const Scalar prob,
   // Independent case
   if (theta_ == 0.0) return Point(2, std::sqrt(q));
   // General case
+  LOGWARN(OSS() << "In ClaytonCopula::computeQuantile: q = " << q << " and return value - 1 = " << std::exp((M_LN2 - log1p(std::pow(q, -theta_))) / theta_) - 1.0);
   return Point(2, std::exp((M_LN2 - log1p(std::pow(q, -theta_))) / theta_));
 }
 

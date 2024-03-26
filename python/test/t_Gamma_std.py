@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -149,7 +150,12 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
         interval,
         threshold,
     ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
+    if distribution.getK() == 1.5:
+        ott.assert_almost_equal(interval.getLowerBound(), [-0.49937], 1e-4, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [1.06337], 1e-4, 0.0)
+    elif distribution.getK() == 15.0:
+        ott.assert_almost_equal(interval.getLowerBound(), [3.1431], 1e-4, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [9.09027], 1e-4, 0.0)
     print("threshold=", ot.Point(1, threshold))
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)

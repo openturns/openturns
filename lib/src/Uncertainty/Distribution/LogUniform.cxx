@@ -207,6 +207,8 @@ Point LogUniform::computeCDFGradient(const Point & point) const
 Scalar LogUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
   return std::exp(aLog_ + prob * (bLog_ - aLog_));
 }

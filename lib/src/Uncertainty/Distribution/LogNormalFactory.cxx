@@ -297,7 +297,7 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     dataIn(i, 0) = std::log(sample(i, 0) - gamma);
-    dataOut(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]));
+    dataOut(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]) - 0.5 / size);
   }
   LinearLeastSquares leastSquares(dataIn, dataOut);
   leastSquares.run();
@@ -320,7 +320,7 @@ public:
     dataOut_ = Sample(size, 1);
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      dataOut_(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]));
+      dataOut_(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]) - 0.5 / size);
     }
   }
 

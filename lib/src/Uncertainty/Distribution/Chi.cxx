@@ -233,6 +233,8 @@ Point Chi::computeCDFGradient(const Point & point) const
 Scalar Chi::computeScalarQuantile(const Scalar prob,
                                   const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
 }
 
