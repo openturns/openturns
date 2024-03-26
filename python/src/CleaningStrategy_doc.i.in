@@ -109,7 +109,7 @@ index : integer
 
 Returns
 -------
-maximumSize : integer
+maximumSize : int
     Maximum number of significant terms of the basis.
 
 See also
@@ -137,7 +137,7 @@ setSignificanceFactor"
 
 Parameters
 ----------
-maximumSize : integer
+maximumSize : int
     Maximum number of significant terms of the basis.
 
 See also
@@ -158,19 +158,6 @@ See also
 --------
 getSignificanceFactor"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CleaningStrategy::setVerbose
-"Accessor to the verbose.
-
-Parameters
-----------
-verbose : bool
-    Enable the online monitoring of the current basis updates or not.
-
-See also
---------
-getVerbose"
 
 // ---------------------------------------------------------------------
 
@@ -182,11 +169,11 @@ are ignored.
 
 Parameters
 ----------
-alpha_k: sequence of floats
+alpha_k : sequence of floats
     The coefficients of the expansion at this step.
-residual: float
+residual : float
     The current value of the residual. Ignored.
-relativeError: float
+relativeError : float
     The relative error. Ignored.
 
 Examples

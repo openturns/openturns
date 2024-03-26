@@ -74,7 +74,7 @@ OT_AdaptiveStrategy_getBasis_doc
 
 Returns
 -------
-maximumDimension : integer
+maximumDimension : int
     Maximum dimension of the truncated basis."
 
 %enddef
@@ -115,7 +115,7 @@ OT_AdaptiveStrategy_getPsi_doc
 
 Parameters
 ----------
-maximumDimension : integer
+maximumDimension : int
     Maximum dimension of the truncated basis."
 
 %enddef

@@ -77,9 +77,9 @@ whatever the number of calls to the *updateBasis* method.
 
 Parameters
 ----------
-alpha_k: sequence of floats
+alpha_k : sequence of floats
     The coefficients of the expansion at this step.
-residual: float
+residual : float
     The current value of the residual.
-relativeError: float
+relativeError : float
     The relative error."
