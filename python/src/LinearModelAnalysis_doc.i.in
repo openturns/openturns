@@ -21,7 +21,7 @@ By default, on graphs, labels of the 3 most significant points are displayed.
 This number can be changed by modifying the ResourceMap key
 (``LinearModelAnalysis-Identifiers``).
 
-The class has a pretty-print method which can be triggered by using 
+The class has a pretty-print method which is triggered by
 the `print()` function.
 This prints the following results, where we focus on the properties
 of a satisfactory regression model.
@@ -31,7 +31,7 @@ of a satisfactory regression model.
   we can reject the hypothesis that this coefficient is zero.
 - The R2 score measures how the predicted output values are close to the
   observed values.
-  If the R2, is close to 1 (e.g. larger than 0.95), then the predictions are
+  If the R2 is close to 1 (e.g. larger than 0.95), then the predictions are
   accurate on average.
   Furthermore, the adjusted R2 value takes into account the data set
   size and the number of hyperparameters.
@@ -44,7 +44,7 @@ of a satisfactory regression model.
 
 The essentials of regression theory are presented in :ref:`regression_analysis`.
 The goodness of fit tests for normality are presented in :ref:`graphical_fitting_test`, 
-:ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test` and :ref:`cramer_vonmises_test`,
+:ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`  and
 :ref:`anderson_darling_test`.
 
 Examples
