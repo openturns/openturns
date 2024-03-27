@@ -13,8 +13,8 @@ outputSample : 2-d sequence of float
    The output sample of a model.
 metaModel : :class:`~openturns.Function`
     The meta model.
-trendCoefficients : sequence of float
-    The trend coeffients associated to the linearmodel. 
+coefficients : sequence of float
+    The trend coefficients associated to the linear model. 
 formula : str
      The formula description. 
 coefficientsNames : sequence of str
@@ -28,9 +28,9 @@ diagonalGramInverse : sequence of float
 leverages : sequence of float
     The leverage score. 
 cookDistances : sequence of float
-    The cook's distances.
+    Cook's distances.
 sigma2 : float
-    The unbiased noise variance.
+    The unbiased variance estimator of the output observation error.
 
 
 See Also
@@ -46,7 +46,15 @@ LinearModelAlgorithm
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    The basis which had been passed to the constructor."
+    The basis."
+
+%feature("docstring") OT::LinearModelResult::getDesign
+"Accessor to the design matrix.
+
+Returns
+-------
+design: :class:`~openturns.Matrix`
+    The design matrix."
 
 // ---------------------------------------------------------------------
 
@@ -65,7 +73,7 @@ outputSample : :class:`~openturns.Sample`
 
 Returns
 -------
-beta : :class:`~openturns.Point`
+coefficients : :class:`~openturns.Point`
 "
 
 // ---------------------------------------------------------------------
@@ -199,4 +207,14 @@ adjustedRSquared : float
 Returns
 -------
 intercept : Bool
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getResidualsVariance
+"Accessor to the unbiased sample variance of the residuals.
+
+Returns
+-------
+residualsVariance : float
 "

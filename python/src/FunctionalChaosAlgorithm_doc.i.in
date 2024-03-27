@@ -195,6 +195,7 @@ Create the chaos algorithm:
 Get the result:
 
 >>> functionalChaosResult = algo.getResult()
+>>> # print(functionalChaosResult)  # Pretty-print
 >>> metamodel = functionalChaosResult.getMetaModel()
 
 Test it:

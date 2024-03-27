@@ -52,7 +52,7 @@ public:
                     const Matrix & design,
                     const Sample & outputSample,
                     const Function & metaModel,
-                    const Point & trendCoefficients,
+                    const Point & coefficients,
                     const String & formula,
                     const Description & coefficientsNames,
                     const Sample & sampleResiduals,
@@ -67,10 +67,13 @@ public:
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
+  String __repr_markdown__() const override;
 
   /** Sample accessors */
   virtual Basis getBasis() const;
   virtual Sample getFittedSample() const;
+  virtual Matrix getDesign() const;
 
   /** Condensed formula accessor */
   virtual Point getCoefficients() const;
@@ -103,6 +106,9 @@ public:
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
 
+  /** residualsVariance accessor */
+  virtual Scalar getResidualsVariance() const;
+
   Bool hasIntercept() const;
 
   /** R-squared */
@@ -127,8 +133,8 @@ private:
   /** input data */
   Matrix design_;
 
-  /** Intercept and trend coefficients */
-  Point beta_;
+  /** Coefficients */
+  Point coefficients_;
 
   /** The formula description */
   String condensedFormula_;
@@ -151,8 +157,8 @@ private:
   /** Cook's distances */
   Point cookDistances_;
 
-  /** Sigma2 */
-  Scalar sigma2_;
+  /** Residuals variance */
+  Scalar residualsVariance_ = 0.0;
 
   /** hasIntercept */
   Bool hasIntercept_;

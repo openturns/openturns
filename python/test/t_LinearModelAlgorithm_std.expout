@@ -1,6 +1,38 @@
 Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)
 trend coefficients =  [3.01168,-2.00025]
 Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points
+result = 
+LinearModelResult
+- input dimension=2
+- basis size=3
+- design matrix=100 x 3
+- coefficients=3
+- formula=Basis( [[v0,v1]->[1],[v0,v1]->[v0],[v0,v1]->[v1]] )
+- coefficients names=[[v0,v1]->[1],[v0,v1]->[v0],[v0,v1]->[v1]]
+- residuals size=100
+- standard residuals size=100
+- inverse Gram diagonal=[0.0864939,0.0184756,0.000172994]
+- leverages size=100
+- Cook's distances size=100
+- residuals variance=0.00991604
+- has intercept=true
+
+
 trend coefficients =  [0.978992,0.110565,9.99924]
-class=LinearModelResult beta=class=Point name=Unnamed dimension=3 values=[0.978992,0.110565,9.99924] formula=Basis( [[X0,X1]->[1],[X0,X1]->[X0],[X0,X1]->[X1]] )
+LinearModelResult
+- input dimension=2
+- basis size=3
+- design matrix=100 x 3
+- coefficients=3
+- formula=Basis( [[X0,X1]->[1],[X0,X1]->[X0],[X0,X1]->[X1]] )
+- coefficients names=[[X0,X1]->[1],[X0,X1]->[X0],[X0,X1]->[X1]]
+- residuals size=100
+- standard residuals size=100
+- inverse Gram diagonal=[0.0864939,0.0184756,0.000172994]
+- leverages size=100
+- Cook's distances size=100
+- residuals variance=0.00991604
+- has intercept=true
+
+
 [-2,4] 0 [0]
