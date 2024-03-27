@@ -52,8 +52,8 @@ Iso-probabilistic transformation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`T: \Rset^{n_X} \rightarrow \Rset^{n_X}` be an *isoprobabilistic transformation*
-(see :ref:`isoprobabilistic_transformation`) such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`
-where :math:`\mu` is the distribution of the standardized random vector :math:`\vect{Z}`.
+(see :ref:`isoprobabilistic_transformation`) such that :math:`\vect{Z} = T(\vect{X}) \sim \mu_{\vect{Z}}`
+where :math:`\mu_{\vect{Z}}` is the distribution of the standardized random vector :math:`\vect{Z}`.
 The distribution is called the *measure* below.
 As we will see soon, this distribution defines the scalar product that defines
 the orthogonality property of the functional basis.
@@ -71,20 +71,20 @@ We introduce the *scalar product*:
 
   .. math::
 
-        \scalarproduct{h_1}{h_2} _{L^2\left(\mu_{\vect{Z}}\right)}
+        \scalarproduct{h_1}{h_2}_{L^2\left(\mu_{\vect{Z}}\right)}
         = \Expect{h_1(\vect{Z}) h_2(\vect{Z})}
 
 for any :math:`(h_1,h_2) \in L^2\left(\mu_{\vect{Z}}\right)`.
 For a continuous random variable, the scalar product is:
 
   .. math::
-        \scalarproduct{h_1}{h_2} _{L^2\left(\mu_{\vect{Z}}\right)}
+        \scalarproduct{h_1}{h_2}_{L^2\left(\mu_{\vect{Z}}\right)}
         & =  \int h_1(\vect{z}) h_2(\vect{z})\, \mu_{\vect{Z}}(\vect{z}) d\vect{z}.
 
 For a discrete random variable, the scalar product is:
 
   .. math::
-        \scalarproduct{h_1}{h_2} _{L^2\left(\mu_{\vect{Z}}\right)}
+        \scalarproduct{h_1}{h_2}_{L^2\left(\mu_{\vect{Z}}\right)}
         & = \sum_\vect{z} h_1(\vect{z}) h_2(\vect{z})\, \Prob{\vect{Z} = \vect{z}}.
 
 The associated norm is defined by:
@@ -109,7 +109,7 @@ This set is *orthonormal* with respect to :math:`\mu_{\vect{Z}}` if:
 .. math::
    :label: orthonorm
 
-    \scalarproduct{\Psi_k}{\Psi_{\ell}}  =  \delta_{k,\ell}
+    \scalarproduct{\Psi_k}{\Psi_{\ell}}_{L^2\left(\mu_{\vect{Z}}\right)}  =  \delta_{k,\ell}
 
 for any :math:`k, \ell \geq 0` where :math:`\delta_{k, \ell}` is the Kronecker symbol:
 
@@ -159,8 +159,8 @@ The *functional chaos expansion* of *h* is (see [lemaitre2010]_ page 39):
     h = \sum_{k \geq 0} a_k \Psi_k
 
 where :math:`\left(a_k \in \Rset\right)_{k\geq 0}` is a set of coefficients.
-
-We cannot compute an infinite set of coefficients.
+We cannot compute an infinite set of coefficients: we can only compute a finite
+subset of these.
 The *truncated functional chaos expansion* is:
 
 .. math::
@@ -188,29 +188,32 @@ The orthonormal expansion of any function :math:`h \in L^2\left(\mu_{\vect{Z}}\r
 converges in norm to :math:`h`, i.e.:
 
   .. math::
-      \lim_{P \rightarrow \infty} \left\|h - \sum_{k = 0}^{P} a_k \Psi_k\right\|_{L^2\left(\mu_{\vect{Z}}\right)} = 0
+      \lim_{P \rightarrow \infty} \left\|h -
+      \sum_{k = 0}^{P} a_k \Psi_k\right\|_{L^2\left(\mu_{\vect{Z}}\right)} = 0
 
 if and only if the basis :math:`\left(\Psi_k\right)_{k \geq 0}` is a *complete
 orthonormal system* (see [sullivan2015]_, page 139, [dahlquist2008]_,
 theorem 4.5.16 page 456 and [rudin1987]_, section 4.24 page 85).
-
-In other words:
+In other words, the closure of the vector space spanned by the orthogonal functions
+is equal to the whole set of square integrable functions with respect to
+:math:`\mu_{\vect{Z}}`:
 
   .. math::
        :label: fermeturePn
 
-       \operatorname{span}\left(\left(\Psi_k\right)_{k \geq 0}\right) = L^2\left(\mu_{\vect{Z}}\right).
+       \overline{\operatorname{span}\left(\left(\Psi_k\right)_{k \geq 0}\right)} = L^2\left(\mu_{\vect{Z}}\right).
 
 There are known sufficient conditions which ensure this property.
 For example, if the support of :math:`\mu_{\vect{Z}}` is bounded, then
 the basis is a complete orthonormal system.
 
-There are known examples of infinite set of orthonormal polynomials
+There exists some infinite set of orthonormal polynomials
 which are not complete, e.g. those derived from the log-normal distribution
 (see [ernst2012]_).
 In this case, the expansion may not converge to the function.
 Nevertheless, even without any guarantee, it
-is possible that the meta model built using the basis :math:`\left(\Psi_k\right)_{k \in \cK}` may be a good approximation of :math:`h`.
+is possible that the meta model built using the basis
+:math:`\left(\Psi_k\right)_{k \in \{0, ..., P\}}` may be a good approximation of :math:`h`.
 
 Compute the coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -222,25 +225,27 @@ problem*:
 
      \vect{a}^\star  = \argmin_{\vect{a} \in \Rset^{P + 1}} \left\| h - \sum_{k = 0}^{P} a_k \Psi_k \right\|^2_{L^2\left(\mu_{\vect{Z}}\right)}.
 
-Equation :eq:`metaModeleh` means that the coefficients :math:`(a_k)_{k \geq 0}`
+Equation :eq:`metaModeleh` means that the coefficients :math:`(a_k)_{k = 0, ..., P}`
 minimize the quadratic error between the model and the polynomial approximation.
 For more details of the PCE based on regression, see the :class:`~openturns.LeastSquaresStrategy` class.
 
-If the basis :math:`\left(\Psi_k\right)_{k \in \cK}` is orthonormal,
-then the least squares problem :eq:`metaModeleh` is well-conditioned.
-In particular, the choice of basis has a major influence on the
-conditioning of the least-squares problem :eq:`metaModeleh` (for example, using an orthonormal basis makes well-condtioned the
-discretized problem).
+The choice of basis has a major impact on the conditioning of the least-squares
+problem :eq:`metaModeleh`.
+Indeed, if the basis :math:`\left(\Psi_k\right)_{k \in \{0, ..., P\}}` is orthonormal,
+then the design matrix of the least squares problem is well-conditioned.
 
-The problem can be equivalently solved using the equations (see
+The problem can be equivalently solved using the scalar product (see
 [dahlquist2008]_ theorem 4.5.13 page 454):
 
 .. math::
     :label: scalProd
 
-    a_k^\star = \scalarproduct{h}{\Psi_k}
+    a_k^\star = \scalarproduct{h}{\Psi_k}_{L^2\left(\mu_{\vect{Z}}\right)}
 
 for :math:`k = 0, ..., P`.
+These equations express the coefficients of the orthogonal projection of the
+function :math:`h` onto the vector space spanned by the orthogonal functions
+in the basis.
 Since the definition of the scalar product is based on an expectation,
 this amounts to evaluate integrals.
 
@@ -248,7 +253,7 @@ Equation :eq:`scalProd` means that each coefficient :math:`a_k` is the scalar pr
 model with the *k-th* element of the orthonormal basis :math:`\left(\Psi_k\right)_{k \geq 0}`.
 For more details on the PCE based on quadrature, see the :class:`~openturns.IntegrationStrategy` class.
 
-Several algorithms are available to compute the coefficients :math:`(a_k)_{k \geq 0}`:
+Several algorithms are available to compute the coefficients :math:`(a_k)_{k = 0, ..., P}`:
 
 - see :class:`~openturns.IntegrationExpansion` for an algorithm based on quadrature,
 - see :class:`~openturns.LeastSquaresExpansion` for an algorithm based on the
@@ -295,12 +300,12 @@ on this topic.
 
 **Step 2 - Truncate the multivariate orthonormal basis**: a
 strategy must be chosen for the selection of the different terms of the
-multivariate basis. The selected terms are gathered in the subset *K*.
+multivariate basis. The selected terms are gathered in the subset :math:`\{0, ..., P\}`.
 For information about the possible strategies, see :class:`~openturns.FixedStrategy`
 and :class:`~openturns.CleaningStrategy`.
 
 **Step 3 -  Evaluate the coefficients**: a *projectionStrategy* must be chosen
-for the estimation of the coefficients :math:`a_k`.
+for the estimation of the coefficients :math:`\left(a_k\right)_{k = 0, ..., P}`.
 
 The meta model
 ~~~~~~~~~~~~~~
@@ -320,13 +325,22 @@ More details are available on these topics.
 - See :class:`~openturns.FunctionalChaosAlgorithm` for more details on the computation
   of the coefficients.
 
-The approximation :math:`\widetilde{\model}` can be used to build an efficient
+There are many ways to use the functional chaos expansion.
+In the next two sections, we present two examples:
+
+- using the expansion as a random vector generator,
+- performing the sensitivity analysis of the expansion.
+
+Using the expansion as a random vector generator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The approximation :math:`\widetilde{h}` can be used to build an efficient
 random generator of :math:`Y` based on the random vector :math:`\vect{X}`,
 using the equation:
 
 .. math::
 
-    \widetilde{Y} = \widetilde{\model}(\vect{X}).
+    \widetilde{Y} = \widetilde{h}(\vect{Z}).
 
 This equation can be used to simulate independent random observations
 from the PCE.
@@ -343,9 +357,8 @@ Assume that the input random vector has independent marginals and
 that the basis :math:`\left(\Psi_k\right)_{k \geq 0}` is computed using
 the tensor product of univariate orthonormal functions.
 In that case, the Sobol' indices can easily be deduced from the coefficients
-:math:`a_k`.
+:math:`\left(a_k\right)_{k = 0, ..., P}`.
 Please see :class:`~openturns.FunctionalChaosSobolIndices` for more details on this topic.
-
 
 Polynomial chaos expansion for independent variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -357,6 +370,10 @@ See :ref:`chaos_basis` for more details on polynomial chaos expansion.
 Other chaos expansions for independent variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+While the polynomial chaos expansion is a classical method, the functions
+in the basis do not necessarily have to be polynomials: provided the functions
+are orthogonal with respect to the measure :math:`\mu_{\vect{Z}}`, most of
+the theory still holds.
 The library enables one to use the Haar wavelet functions or the Fourier series
 as orthonormal basis with respect to each margin :math:`\mu_i`.
 The Haar wavelets basis is orthonormal with respect to the the :math:`\cU(0,1)` measure (see
@@ -372,26 +389,28 @@ independent, we can use an iso-probabilistic transformation to map :math:`\vect{
 into :math:`\vect{Z}` with independent components.
 
 Whatever the dependency in the standardized random vector :math:`\vect{Z}`,
-it is also possible to build up a multivariate orthonormal basis with respect to
+the following multivariate functions are orthonormal with respect to
 :math:`\mu_{\vect{Z}}`:
 
   .. math::
 
       \Psi_{\idx}(\vect{z})
-      = \dfrac{\mu_{Z_1}(z_1) \cdots \mu_{Z_{n_X}}(z_{n_X})}{\mu_{\vect{X}}(\vect{z})} \;
+      = \left( \dfrac{\mu_{Z_1}(z_1) \cdots \mu_{Z_{n_X}}(z_{n_X})}{\mu_{\vect{Z}}(\vect{z})} \right)^{\frac{1}{2}}\;
       \prod_{i=1}^{n_X} \pi^{(i)}_{\alpha_{i}}(z_{i})
 
 
-where :math:`\mu_i` is the :math:`i` -th marginal of :math:`\mu_{\vect{X}}`
+where :math:`\mu_{Z_i}` is the :math:`i` -th marginal of :math:`\mu_{\vect{Z}}`
 and :math:`\pi^{(i)}_{\alpha_{i}}` is the degree :math:`\alpha_i` orthonormal
 family of polynomial for the :math:`i`-th marginal.
+If the random vector :math:`\vect{Z}` has a non-trivial dependency, the
+previous functions are not necessarily polynomials.
 Notice that:
 
   .. math::
     :label: soizeghanem
 
      \dfrac{\mu_{Z_1}(z_1) \cdots \mu_{Z_{n_X}}(z_{n_X})}{\mu_{\vect{Z}}(\vect{z})}
-     = \dfrac{1}{\sqrt{c(\vect{z})}}
+     = \dfrac{1}{c(\vect{z})}
 
 
 where :math:`c` is the density of the copula of :math:`\vect{Z}`.
