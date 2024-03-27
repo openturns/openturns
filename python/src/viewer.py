@@ -18,6 +18,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import warnings
 import io
+try:
+    from pkg_resources import parse_version
+except ImportError:
+    from packaging.version import Version as parse_version
 
 __all__ = ["View", "PlotDesign"]
 
@@ -322,6 +326,7 @@ class View:
 
         has_labels = False
 
+        zorder = 1
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
@@ -336,6 +341,19 @@ class View:
             clabel_kw = dict(clabel_kw_default)
             scatter_kw = dict(scatter_kw_default)
             text_kw = dict(text_kw_default)
+
+            # use drawable order over default patch/line/text order
+            plot_kw["zorder"] = zorder
+            bar_kw["zorder"] = zorder
+            polygon_kw["zorder"] = zorder
+            polygoncollection_kw["zorder"] = zorder
+            contour_kw["zorder"] = zorder
+            step_kw["zorder"] = zorder
+            if parse_version(matplotlib.__version__) >= parse_version("3.3"):
+                clabel_kw["zorder"] = zorder
+            scatter_kw["zorder"] = zorder
+            text_kw["zorder"] = zorder
+            zorder += 1
 
             # set color
             if ("color" not in plot_kw_default) and ("c" not in plot_kw_default):
@@ -656,9 +674,12 @@ class View:
             legend_kw.setdefault("prop", {"size": 10})
 
             if len(legend_handles) > 0:
-                self._ax[0].legend(legend_handles, legend_labels, **legend_kw)
+                legend = self._ax[0].legend(legend_handles, legend_labels, **legend_kw)
             else:
-                self._ax[0].legend(**legend_kw)
+                legend = self._ax[0].legend(**legend_kw)
+
+            # legend must be on top of drawables
+            legend.set_zorder(zorder + 1)
 
             # re-adjust bbox if legend was set outside graph
             if "bbox_to_anchor" in legend_kw:
