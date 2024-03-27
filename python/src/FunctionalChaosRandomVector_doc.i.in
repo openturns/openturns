@@ -9,10 +9,102 @@ Parameters
 functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
     A result from a functional chaos decomposition.
 
+Notes
+-----
+This class can be used to get probabilistic properties of a
+functional chaos expansion or polynomial chaos expansion (PCE).
+For example, we can get the output mean or the output covariance matrix
+using the coefficients of the expansion.
+
+Moreover, we can use this class to simulate random observations
+of the output.
+We consider the same notations as in the :class:`~openturns.FunctionalChaosAlgorithm`
+class.
+The functional chaos decomposition of *h* is:
+
+.. math::
+
+    h = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{a}_k \Psi_k 
+
+
+which can be truncated to the finite set :math:`\cK \subset \Nset`:
+
+.. math::
+
+    \widetilde{h} =  \sum_{k \in \cK} \vect{a}_k \Psi_k.
+
+The approximation :math:`\widetilde{h}` can be used to build an efficient random 
+generator of :math:`Y` based on the random vector :math:`\vect{Z}`,
+using the equation:
+
+.. math::
+
+    \widetilde{Y} = \widetilde{h}(\vect{Z}).
+
+This equation can be used to simulate independent random observations
+from the PCE.
+This can be done by simulating independent observations from
+the distribution of the standardized random vector :math:`\vect{Z}`,
+which are then pushed forward through the expansion.
+
 See also
 --------
 FunctionalChaosAlgorithm, FunctionalChaosResult
-"
+
+Examples
+--------
+First, we create the PCE.
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> inputDimension = 1
+>>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
+>>> distribution = ot.ComposedDistribution([ot.Uniform()] * inputDimension)
+>>> polyColl = [0.0] * inputDimension
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> degree = 4
+>>> indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+>>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
+>>> samplingSize = 50
+>>> experiment = ot.MonteCarloExperiment(distribution, samplingSize)
+>>> inputSample = experiment.generate()
+>>> outputSample = model(inputSample)
+>>> projectionStrategy = ot.LeastSquaresStrategy()
+>>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, \
+...     distribution, adaptiveStrategy, projectionStrategy)
+>>> algo.run()
+>>> functionalChaosResult = algo.getResult()
+
+Secondly, we get the probabilistic properties of the PCE.
+We can get an estimate of the
+mean of the output of the physical model.
+
+>>> functionalChaosRandomVector = ot.FunctionalChaosRandomVector(functionalChaosResult)
+>>> mean = functionalChaosRandomVector.getMean()
+>>> print(mean)
+[0.301168]
+
+We can get an estimate of the covariance matrix
+of the output of the physical model.
+
+>>> covariance = functionalChaosRandomVector.getCovariance()
+>>> print(covariance)
+[[ 0.0663228 ]]
+
+We can finally generate observations from the PCE random
+vector.
+
+>>> simulatedOutputSample = functionalChaosRandomVector.getSample(5)
+>>> print(simulatedOutputSample)
+    [ v0         ]
+0 : [ 0.302951   ]
+1 : [ 0.0664952  ]
+2 : [ 0.0257105  ]
+3 : [ 0.00454319 ]
+4 : [ 0.149589   ]"
 
 // ---------------------------------------------------------------------
 
@@ -63,7 +155,7 @@ in the expansion:
 
 .. math::
 
-      \Expect{\widetilde{Y}_i} = a_{i,0}
+      \Expect{\widetilde{Y}_i} = a_{0,i}
 
 for :math:`i = 1, ..., n_Y`.
 
@@ -187,7 +279,6 @@ Examples
 >>> chaosAlgo.run()
 >>> chaosResult = chaosAlgo.getResult()
 >>> randomVector = ot.FunctionalChaosRandomVector(chaosResult)
->>> covarianceMatrix = randomVector.getCovariance()
 >>> covarianceMatrix = randomVector.getCovariance()
 >>> print('covarianceMatrix=', covarianceMatrix[0, 0])
 covarianceMatrix= 13.8...
