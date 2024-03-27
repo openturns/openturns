@@ -62,12 +62,6 @@ Basic linear algebra operations (provided the dimensions are compatible)
 %feature("docstring") OT::SquareMatrix::computeDeterminant
 "Compute the determinant.
 
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
-
 Returns
 -------
 determinant : float
@@ -79,6 +73,14 @@ Examples
 >>> A = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> A.computeDeterminant()
 -2.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeDeterminantInPlace
+"Compute the determinant in place.
+
+Similar to :meth:`computeDeterminant` but modifies the matrix in place to avoid copy.
+"
 
 // ---------------------------------------------------------------------
 
@@ -194,12 +196,6 @@ Examples
 %feature("docstring") OT::SquareMatrix::computeLogAbsoluteDeterminant
 "Compute the logarithm of the absolute value of the determinant.
 
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
-
 Returns
 -------
 determinant : float
@@ -213,6 +209,14 @@ Examples
 >>> A = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> A.computeLogAbsoluteDeterminant()
 [0.693147..., -1.0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeLogAbsoluteDeterminantInPlace
+"Compute the determinant in place.
+
+Similar to :meth:`computeLogAbsoluteDeterminant` but modifies the matrix in place to avoid copy.
+"
 
 // ---------------------------------------------------------------------
 
