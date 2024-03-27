@@ -906,26 +906,23 @@ Bool ComplexMatrixImplementation::isHermitian() const
 
 
 /* Check if the matrix is HPD */
-Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepIntact)
+Bool ComplexMatrixImplementation::isHermitianPositiveDefinite() const
+{
+  ComplexMatrixImplementation A(*this);
+  return A.isHermitianPositiveDefiniteInPlace();
+}
+
+Bool ComplexMatrixImplementation::isHermitianPositiveDefiniteInPlace()
 {
   // Exception for null dimension
   if (getDimension() == 0) throw InvalidDimensionException(HERE) << "Cannot check the hermitian definite positiveness of an empty matrix";
-  int info;
-  int n(nbRows_);
-  char uplo('L');
-  int luplo(1);
-  if (keepIntact)
-  {
-    ComplexMatrixImplementation A(*this);
-    zpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
-    if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
-  }
-  else
-  {
-    zpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
-    if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
-  }
-  return (info == 0) ;
+  int info = -1;
+  int n = nbRows_;
+  char uplo = 'L';
+  int luplo = 1;
+  zpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+  if (info < 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
+  return (info == 0);
 }
 
 /* Build the Cholesky factorization of the hermitian matrix */
