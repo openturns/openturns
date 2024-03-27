@@ -75,16 +75,15 @@ public:
 #endif
 
   /** Resolution of a linear system */
-  Point solveLinearSystem(const Point & b,
-                          const Bool keepIntact = true);
-
-  Matrix solveLinearSystem(const Matrix & b,
-                           const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b) const;
+  Matrix solveLinearSystemInPlace(const Matrix & b);
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
 
   /** Compute eigenvalues */
   Point computeEigenValues() const;

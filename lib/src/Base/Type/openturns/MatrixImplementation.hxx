@@ -235,12 +235,17 @@ public:
                                       const char uplo = 'L') const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
-  Scalar computeLogAbsoluteDeterminantSym(Scalar & signOut,
-                                          const Bool keepIntact = true);
-  Scalar computeDeterminantSym(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
+
+  Scalar computeLogAbsoluteDeterminantSym(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantSymInPlace(Scalar & signOut);
+
+  Scalar computeDeterminantSym() const;
+  Scalar computeDeterminantSymInPlace();
 
   /** Compute trace */
   Scalar computeTrace() const;

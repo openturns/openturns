@@ -104,27 +104,35 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 }
 
 /* Resolution of a linear system */
-Point IdentityMatrix::solveLinearSystem(const Point & b,
-                                        const Bool )
+Point IdentityMatrix::solveLinearSystem(const Point & b) const
 {
   return b;
 }
 
-Matrix IdentityMatrix::solveLinearSystem(const Matrix & b,
-    const Bool )
+Matrix IdentityMatrix::solveLinearSystemInPlace(const Matrix & b)
 {
   return b;
 }
 
 /* Compute determinant */
-Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool )
+Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
   sign = 1.0;
   return 0.0;
 }
 
-Scalar IdentityMatrix::computeDeterminant(const Bool )
+Scalar IdentityMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
+{
+  sign = 1.0;
+  return 0.0;
+}
+
+Scalar IdentityMatrix::computeDeterminant() const
+{
+  return 1.0;
+}
+
+Scalar IdentityMatrix::computeDeterminantInPlace()
 {
   return 1.0;
 }

@@ -1002,10 +1002,15 @@ Point MatrixImplementation::solveLinearSystemCov(const Point & b) const
 }
 
 /* Compute determinant */
-Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
-    const Bool keepIntact)
+Scalar MatrixImplementation::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  int n(nbRows_);
+  MatrixImplementation A(*this);
+  return A.computeLogAbsoluteDeterminantInPlace(sign);
+}
+
+Scalar MatrixImplementation::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
+{
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
   Scalar logAbsoluteDeterminant = 0.0;
   sign = 1.0;
@@ -1030,17 +1035,13 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
     std::vector<int> ipiv (n);
     int info = -1;
 
-    MatrixImplementation Q;
-    if (keepIntact) Q = MatrixImplementation(*this);
-    MatrixImplementation & A = keepIntact ? Q : *this;
-
     // LU Factorization with LAPACK
-    dgetrf_(&n, &n, &A[0], &n, &ipiv[0], &info);
+    dgetrf_(&n, &n, &(*this)[0], &n, &ipiv[0], &info);
     if (info > 0) return SpecFunc::LowestScalar;
     // Determinant computation
     for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
     {
-      const Scalar pivot = A[i * (ipiv.size() + 1)];
+      const Scalar pivot = (*this)[i * (ipiv.size() + 1)];
       if (std::abs(pivot) == 0.0)
       {
         logAbsoluteDeterminant = SpecFunc::LowestScalar;
@@ -1058,22 +1059,33 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
 }
 
 /* Compute determinant */
-Scalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
+Scalar MatrixImplementation::computeDeterminant() const
+{
+  MatrixImplementation A(*this);
+  return A.computeDeterminantInPlace();
+}
+
+Scalar MatrixImplementation::computeDeterminantInPlace()
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
   Scalar sign = 0.0;
-  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
+  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminantInPlace(sign);
   if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
 
 /* Compute determinant for a symmetric matrix */
-Scalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Scalar & sign,
-    const Bool keepIntact)
+Scalar MatrixImplementation::computeLogAbsoluteDeterminantSym(Scalar & sign) const
+{
+  MatrixImplementation A(*this);
+  return A.computeLogAbsoluteDeterminantSymInPlace(sign);
+}
+
+Scalar MatrixImplementation::computeLogAbsoluteDeterminantSymInPlace(Scalar & sign)
 {
   symmetrize();
-  return computeLogAbsoluteDeterminant(sign, keepIntact);
+  return computeLogAbsoluteDeterminantInPlace(sign);
   /* The implementation based on dsytrf does not uses the 2x2 diagonal blocks correctly
      int n(nbRows_);
      if (n == 0) throw InvalidDimensionException(HERE);
@@ -1118,12 +1130,19 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Scalar & sign,
 }
 
 /* Compute determinant for a symmetric matrix */
-Scalar MatrixImplementation::computeDeterminantSym (const Bool keepIntact)
+Scalar MatrixImplementation::computeDeterminantSym() const
+{
+  MatrixImplementation A(*this);
+  return A.computeDeterminantSymInPlace();
+}
+
+
+Scalar MatrixImplementation::computeDeterminantSymInPlace()
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(1, 0);
   Scalar sign = 0.0;
-  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
+  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminantInPlace(sign);
   if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }

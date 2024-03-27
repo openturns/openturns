@@ -127,9 +127,11 @@ public:
   Matrix solveLinearSystem(const Matrix & b) const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
 
   /** Compute trace */
   Scalar computeTrace() const;

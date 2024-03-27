@@ -271,15 +271,26 @@ Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute determinant */
-Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool keepIntact)
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  return getImplementation()->computeLogAbsoluteDeterminantSym(sign, keepIntact);
+  return getImplementation()->computeLogAbsoluteDeterminantSym(sign);
 }
 
-Scalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
 {
-  return getImplementation()->computeDeterminantSym(keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeLogAbsoluteDeterminantSymInPlace(sign);
+}
+
+Scalar SymmetricMatrix::computeDeterminant() const
+{
+  return getImplementation()->computeDeterminantSym();
+}
+
+Scalar SymmetricMatrix::computeDeterminantInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeDeterminantSymInPlace();
 }
 
 /* Compute eigenvalues */

@@ -187,15 +187,26 @@ Matrix SquareMatrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute determinant */
-Scalar SquareMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool keepIntact)
+Scalar SquareMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  return getImplementation()->computeLogAbsoluteDeterminant(sign, keepIntact);
+  return getImplementation()->computeLogAbsoluteDeterminant(sign);
 }
 
-Scalar SquareMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SquareMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
 {
-  return getImplementation()->computeDeterminant(keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeLogAbsoluteDeterminantInPlace(sign);
+}
+
+Scalar SquareMatrix::computeDeterminant() const
+{
+  return getImplementation()->computeDeterminant();
+}
+
+Scalar SquareMatrix::computeDeterminantInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeDeterminantInPlace();
 }
 
 /* Compute trace */
