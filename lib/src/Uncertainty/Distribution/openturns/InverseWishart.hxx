@@ -127,13 +127,13 @@ private:
 
   /** The main parameter set of the distribution */
   TriangularMatrix cholesky_;
-  Scalar nu_;
+  Scalar nu_ = 1.0;
 
   /** The inverse of the Cholesky factor of the inverse of the scale matrix V */
   TriangularMatrix inverseCholeskyInverse_;
 
   /** The log-normalization factor */
-  Scalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_ = 0.0;
 
 }; /* class InverseWishart */
 
