@@ -140,7 +140,7 @@ Examples
 >>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', 100)
 >>> algo.run()
 >>> result = algo.getResult()
->>> metamodel = result.getFieldToPointMetamodel()
+>>> metamodel = result.getFieldToPointMetaModel()
 >>> y0hat = metamodel(x[0])
 >>> ot.ResourceMap.Reload()
 "

@@ -4,7 +4,7 @@ Define a connection function with a field output
 """
 # %%
 # In this example, we define a function which has a vector input and a field output.
-# The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions.
+# The goal of this example is to show how to use :class:`~openturns.PointToFieldConnection` class to combine two functions.
 # A detailed explanation of the model is presented :ref:`here <use-case-viscous-fall>`.
 
 # %%
@@ -13,104 +13,44 @@ Define a connection function with a field output
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import numpy as np
+import openturns.viewer as otv
+from openturns.usecases import viscous_free_fall
 
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first define the time grid associated with the model.
-
-# %%
-tmin = 0.0  # Minimum time
-tmax = 12.0  # Maximum time
-gridsize = 100  # Number of time steps
-mesh = ot.IntervalMesher([gridsize - 1]).build(ot.Interval(tmin, tmax))
-
-# %%
-vertices = mesh.getVertices()
-
-# %%
-# Creation of the input distribution.
-
-# %%
-distZ0 = ot.Uniform(100.0, 150.0)
-distV0 = ot.Normal(55.0, 10.0)
-distM = ot.Normal(80.0, 8.0)
-distC = ot.Uniform(0.0, 30.0)
-distribution = ot.JointDistribution([distZ0, distV0, distM, distC])
-
-# %%
-dimension = distribution.getDimension()
-dimension
-
-
-# %%
-# Then we define the Python function which computes the altitude at each time value. This function has 5 inputs: `z0`, `v0`, `m`, `c` and `zmin`.
-
-
-# %%
-def AltiFunc(X):
-    g = 9.81
-    z0 = X[0]
-    v0 = X[1]
-    m = X[2]
-    c = X[3]
-    zmin = X[4]
-    tau = m / c
-    vinf = -m * g / c
-    t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
-    z = np.maximum(z, zmin)
-    return [[zeta[0]] for zeta in z]
-
-
-# %%
-outputDimension = 1
-altitudeWithFiveInputs = ot.PythonPointToFieldFunction(
-    5, mesh, outputDimension, AltiFunc
-)
+# Load the viscous free fall example.
+vff = viscous_free_fall.ViscousFreeFall()
+distribution = vff.distribution
+model = vff.model
 
 # %%
 # Restrict the number of inputs
 # -----------------------------
 
 # %%
-# We define a function which has 4 inputs and 5 outputs: the 5th output `zmin` is set to zero.
+# We define a function which has input only `z0` as input to *freeze* the 3 other inputs of the original model:
+fz0 = ot.SymbolicFunction(["z0"], ["z0", "55", "80", "15"])
 
 # %%
-projectionFunction = ot.SymbolicFunction(
-    ["z0", "v0", "m", "c"], ["z0", "v0", "m", "c", "0.0"]
-)
-
-# %%
-# Then we use the `PointToFieldConnection` to create a function which has 4 inputs and returns the output field.
-
-# %%
-altitudeWithFourInputs = ot.PointToFieldConnection(
-    altitudeWithFiveInputs, projectionFunction
-)
+# Then we use the :class:`~openturns.PointToFieldConnection` to compose it with the original model.
+model_z0 = ot.PointToFieldConnection(model, fz0)
 
 # %%
 # Sample trajectories
 # --------------------
 
 # %%
-# In order to sample trajectories, we use the `getSample` method of the input distribution and apply the field function.
-
-# %%
+# In order to sample trajectories, we use the `getSample` method of the distribution of `z0` and apply the field function.
 size = 10
-inputSample = distribution.getSample(size)
-outputSample = altitudeWithFourInputs(inputSample)
+inputSample = vff.distZ0.getSample(size)
+outputSample = model_z0(inputSample)
 
 # %%
-# Draw some curves.
-
-# %%
+# Draw viscous free fall trajectories.
 graph = outputSample.drawMarginal(0)
 graph.setTitle("Viscous free fall: %d trajectories" % (size))
 graph.setXTitle(r"$t$")
 graph.setYTitle(r"$z$")
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+otv.View.ShowAll()

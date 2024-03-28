@@ -14,8 +14,7 @@ def AltiFunc(X):
     c = X[3]
     tau = m / c
     vinf = -m * g / c
-    global vertices
-    t = np.array(vertices)
+    t = np.array(AltiFunc.vertices)
     z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
     z = np.maximum(z, 0.0)
     return [[zeta[0]] for zeta in z]
@@ -64,7 +63,7 @@ class ViscousFreeFall:
     distribution : `JointDistribution`
                    The joint distribution of the input parameters.
 
-    alti : `PythonPointToFieldFunction`, the exact solution of the fall
+    model : `PythonPointToFieldFunction`, the exact solution of the fall
            ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
 
 
@@ -85,6 +84,7 @@ class ViscousFreeFall:
         self.mesh = ot.IntervalMesher([self.gridsize - 1]).build(
             ot.Interval(self.tmin, self.tmax)
         )
+        AltiFunc.vertices = self.mesh.getVertices()
         self.vertices = self.mesh.getVertices()
 
         # Marginals
@@ -97,8 +97,13 @@ class ViscousFreeFall:
         self.distribution = ot.JointDistribution(
             [self.distZ0, self.distV0, self.distM, self.distC]
         )
+        description = ["z0", "v0", "m", "c"]
+        self.distribution.setDescription(description)
 
         # Exact solution
-        self.alti = ot.PythonPointToFieldFunction(
+        self.model = ot.PythonPointToFieldFunction(
             self.dim, self.mesh, self.outputDimension, AltiFunc
         )
+        self.model.setInputDescription(description)
+        self.model.setOutputDescription(["z"])
+        self.alti = self.model  # deprecated

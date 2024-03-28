@@ -67,7 +67,7 @@ algo.setThreshold(4e-2)
 algo.setRecompress(True)
 algo.run()
 result = algo.getResult()
-bi = result.getBlockIndices()
+bi = result.getInputBlockIndices()
 print(f"block indices={bi}")
 assert len(bi) == 4, "wrong number of blocks"
 
