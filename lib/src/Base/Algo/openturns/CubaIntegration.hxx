@@ -89,25 +89,25 @@ private:
   friend int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
 
   /* The number of dimensions of the integral */
-  UnsignedInteger nDim_;
+  UnsignedInteger nDim_ = 0;
 
   /* The number of components of the integrand */
-  UnsignedInteger nComp_;
+  UnsignedInteger nComp_ = 0;
 
   /* The requested relative accuracy */
-  Scalar epsRel_;
+  Scalar epsRel_ = 1.E-4;
 
   /* The requested absolute accuracy */
-  Scalar epsAbs_;
+  Scalar epsAbs_ = 1.E-4;
 
   /* The name of the optimization routine to use */
   String optRoutine_;
 
   /* The maximal number of evaluations of the integrand */
-  UnsignedInteger maxeval_;
+  UnsignedInteger maxeval_ = 1000000;
 
   /* The flags to use for the integration */
-  UnsignedInteger flags_;
+  UnsignedInteger flags_ = 2;
 } ; /* class CubaIntegration */
 
 END_NAMESPACE_OPENTURNS
