@@ -32,7 +32,7 @@ outputSample : 2-d sequence of float
 weights : sequence of float
     Numerical point that are the weights associated to the input sample points
     such that the corresponding weighted experiment is a good approximation of
-    :math:`\mu`. If not precised, all weights are equals to 
+    :math:`\mu`. If not provided, all weights are equal to 
     :math:`\omega_i = \frac{1}{n}`, where :math:`n` is the size of the
     sample.
 
