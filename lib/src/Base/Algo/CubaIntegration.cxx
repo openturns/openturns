@@ -105,9 +105,9 @@ Point CubaIntegration::integrate(const Function & function,
   int nregions;
   int neval;
   int fail;
-  Scalar* integral = new Scalar[outputDimension];
-  Scalar* error = new Scalar[outputDimension];
-  Scalar* prob = new Scalar[outputDimension];
+  Point integral(outputDimension);
+  Point error(outputDimension);
+  Point prob(outputDimension);
 
   /* Providing the integrator with pointers to the function and to the integration interval */
   void* ppFunctionInterval[2];
@@ -128,7 +128,9 @@ Point CubaIntegration::integrate(const Function & function,
     Cuhre(inputDimension, outputDimension, computeIntegrand,
             (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
             mineval, maxeval_, key, NULL, NULL, &nregions, &neval, &fail,
-            integral, error, prob);
+            const_cast<double*>(integral.data()),
+            const_cast<double*>(error.data()),
+            const_cast<double*>(prob.data()));
   }
   else if (optRoutine_ == "divonne")
   {
@@ -147,7 +149,10 @@ Point CubaIntegration::integrate(const Function & function,
               (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
               seed, mineval, maxeval_, key1, key2, key3, maxpass, border,
               maxchisq, mindeviation, ngiven, inputDimension, NULL, nextra,
-              NULL, NULL, NULL, &nregions, &neval, &fail, integral, error, prob);
+              NULL, NULL, NULL, &nregions, &neval, &fail,
+              const_cast<double*>(integral.data()),
+              const_cast<double*>(error.data()),
+              const_cast<double*>(prob.data()));
   }
   else if (optRoutine_ == "suave")
   {
@@ -159,7 +164,8 @@ Point CubaIntegration::integrate(const Function & function,
     Suave(inputDimension, outputDimension, computeIntegrand,
             (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
             seed, mineval, maxeval_, nnew, nmin, flatness, NULL, NULL,
-            &nregions, &neval, &fail, integral, error, prob);
+            &nregions, &neval, &fail, const_cast<double*>(integral.data()),
+            const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
   else if (optRoutine_ == "vegas")
   {
@@ -172,30 +178,20 @@ Point CubaIntegration::integrate(const Function & function,
     Vegas(inputDimension, outputDimension, computeIntegrand,
             (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
             seed, mineval, maxeval_, nstart, nincrease, nbatch, gridno, NULL,
-            NULL, &neval, &fail, integral, error, prob);
+            NULL, &neval, &fail, const_cast<double*>(integral.data()),
+            const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
   else
   {
     throw InvalidArgumentException(HERE) << "Integration has been required with an unknown routine name: " << optRoutine_;
   }
 
-  /* Getting the values of the computed integrals, for each component */
-  Point integralValues(outputDimension);
-  if (fail == 0)
-  {
-    std::copy(integral, integral + outputDimension, integralValues.begin());
-  }
-
-  delete[] integral;
-  delete[] error;
-  delete[] prob;
-
   if (fail != 0)
   {
     throw InternalException(HERE) << "Error: integration failed: Cuba error code is " << fail << ".";
   }
 
-  return integralValues;
+  return integral;
 #else
   throw NotYetImplementedException(HERE) << "No Cuba support";
 #endif
