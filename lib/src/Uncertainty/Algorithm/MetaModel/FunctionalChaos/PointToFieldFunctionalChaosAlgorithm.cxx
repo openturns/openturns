@@ -247,10 +247,7 @@ void PointToFieldFunctionalChaosAlgorithm::run()
   if (recompress_)
   {
     const Scalar cumulatedVariance = eigenValues.norm1();
-    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b)
-    {
-      return a > b;
-    });
+    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b) { return a > b; });
     const UnsignedInteger nbModesMax = std::min(nbModes_, eigenValues.getSize());
     // Find the cut-off in the eigenvalues
     UnsignedInteger K = 0;

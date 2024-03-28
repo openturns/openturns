@@ -221,11 +221,21 @@ void FieldFunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute("inputKLResultCollection_", inputKLResultCollection_);
   adv.loadAttribute("outputKLResultCollection_", outputKLResultCollection_);
   adv.loadAttribute("fceResult_", fceResult_);
-  adv.loadAttribute("inputBlockIndices_", inputBlockIndices_);
-  adv.loadAttribute("outputBlockIndices_", outputBlockIndices_);
-  adv.loadAttribute("fieldToPointMetaModel_", fieldToPointMetaModel_);
-  adv.loadAttribute("pointToFieldMetaModel_", pointToFieldMetaModel_);
-  adv.loadAttribute("fieldMetaModel_", fieldMetaModel_);
+  if (adv.hasAttribute("inputBlockIndices_")) // OT>=1.23
+  {
+    adv.loadAttribute("inputBlockIndices_", inputBlockIndices_);
+    adv.loadAttribute("outputBlockIndices_", outputBlockIndices_);
+    adv.loadAttribute("fieldToPointMetaModel_", fieldToPointMetaModel_);
+    adv.loadAttribute("pointToFieldMetaModel_", pointToFieldMetaModel_);
+    adv.loadAttribute("fieldMetaModel_", fieldMetaModel_);
+  }
+  else
+  {
+    adv.loadAttribute("blockIndices_", inputBlockIndices_);
+    adv.loadAttribute("fieldToPointMetamodel_", fieldToPointMetaModel_);
+    adv.loadAttribute("pointToFieldMetamodel_", pointToFieldMetaModel_);
+    adv.loadAttribute("fieldMetamodel_", fieldMetaModel_);
+  }
   adv.loadAttribute("inputProcessSample_", inputProcessSample_);
   adv.loadAttribute("outputProcessSample_", outputProcessSample_);
   adv.loadAttribute("inputSample_", inputSample_);

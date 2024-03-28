@@ -53,7 +53,7 @@ assert residuals.norm() < 5e-3, "residual too large"
 kl_results = result.getOutputKLResultCollection()
 n_modes = [len(res.getEigenvalues()) for res in kl_results]
 print(f"n_modes={n_modes}")
-# assert sum(n_modes) == 6, "wrong modes"
+assert sum(n_modes) == 3, "wrong modes"
 
 # separate components {0,1} from {2} and rerun
 blockIndices = [[0, 1], [2]]

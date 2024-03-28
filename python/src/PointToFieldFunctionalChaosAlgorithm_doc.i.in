@@ -15,10 +15,11 @@ The present algorithm allows one to build a response surface of the application 
       \end{array}
     \right.
 
-The application :math:`h` is known from :math:`n` vector :math:`(\mat{X_1}, \dots, \mat{X_n})`
-of the associated input process :math:`\mat{X}`
-and :math:`n` fields :math:`(\vect{Y_1},\dots,\vect{Y_n})`
-that fully characterize the output process :math:`\vect{Y}`
+with :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`.
+
+The application :math:`h` is known from :math:`n` vector :math:`(\vect{X_1}, \dots, \vect{X_n})`
+of the associated input variable :math:`\mat{X}` and :math:`n` fields :math:`(\vect{Y_1},\dots,\vect{Y_n})`
+that fully characterize the output process :math:`\mat{Y}`
 
 The linear projection function :math:`\pi_{ \vect{\lambda}, \vect{\varphi}}` of
 the Karhunen-Loeve decomposition by SVD is used to project the output fields,
