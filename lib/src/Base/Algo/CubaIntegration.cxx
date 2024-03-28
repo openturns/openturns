@@ -41,11 +41,7 @@ static const Factory<CubaIntegration> Factory_CubaIntegration;
 /* Constructor without parameters */
 CubaIntegration::CubaIntegration()
   : IntegrationAlgorithmImplementation()
-  , epsRel_(1.E-4)
-  , epsAbs_(1.E-4)
   , optRoutine_("vegas")
-  , maxeval_(1000000)
-  , flags_(2)
 {
   // Nothing to do
 }
@@ -53,11 +49,7 @@ CubaIntegration::CubaIntegration()
 /* Parameters constructor */
 CubaIntegration::CubaIntegration(const String optRoutine)
   : IntegrationAlgorithmImplementation()
-  , epsRel_(1.E-4)
-  , epsAbs_(1.E-4)
   , optRoutine_(optRoutine)
-  , maxeval_(1000000)
-  , flags_(2)
 {
   // Check the name of the routine
   if (optRoutine != "cuhre" && optRoutine != "divonne" && optRoutine != "suave" && optRoutine != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optRoutine;
