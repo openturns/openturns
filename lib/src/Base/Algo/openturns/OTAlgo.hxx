@@ -54,6 +54,7 @@
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/FilonQuadrature.hxx"
+#include "openturns/CubaIntegration.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/GaussLegendre.hxx"
