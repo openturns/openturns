@@ -43,10 +43,10 @@ beta=0.95
 entropy=-0.369531
 entropy (MC)=-0.36834
 mean=class=Point name=Unnamed dimension=1 values=[0.333333]
-standard deviation=class=Point name=Unnamed dimension=1 values=[1]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.471405]
 skewness=class=Point name=Unnamed dimension=1 values=[18.5998]
 kurtosis=class=Point name=Unnamed dimension=1 values=[1074.6]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.222222]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
