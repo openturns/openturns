@@ -18,11 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cuba.h>
-
 #include "openturns/CubaIntegration.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+
+#ifdef OPENTURNS_HAVE_CUBA
+#include <cuba.h>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,6 +102,7 @@ int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double
 Point CubaIntegration::integrate(const Function & function,
                                  const Interval & interval) const
 {
+#ifdef OPENTURNS_HAVE_CUBA
   if (function.getInputDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: interval dimension and input dimension have to match, here interval dimension="<< interval.getDimension() << " and input dimension=" << function.getInputDimension();
   const UnsignedInteger inputDimension = interval.getDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
@@ -201,6 +204,9 @@ Point CubaIntegration::integrate(const Function & function,
   }
 
   return integralValues;
+#else
+  throw NotYetImplementedException(HERE) << "No Cuba support";
+#endif
 }
 
 /* epsRel accessor */
