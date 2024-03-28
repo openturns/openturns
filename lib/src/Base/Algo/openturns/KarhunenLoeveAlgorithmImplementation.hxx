@@ -85,8 +85,8 @@ protected:
    *  The number of modes computed by 'run' method can be defined:
    *  - by specifying the threshold of spectrum cut-off
    *  - by specifying the number of modes to compute */
-  Scalar threshold_;
-  UnsignedInteger nbModes_;
+  Scalar threshold_ = 0.0;
+  UnsignedInteger nbModes_ = 0;
 
 
   /** Result */

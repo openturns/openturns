@@ -202,7 +202,7 @@ void FractionalBrownianMotionModel::setExponentEtaRho(const Point & exponent,
     } // i
     try
     {
-      const TriangularComplexMatrix C(A.computeCholesky(false));
+      const TriangularComplexMatrix C(A.computeCholeskyInPlace());
     }
     catch (const InvalidArgumentException &)
     {

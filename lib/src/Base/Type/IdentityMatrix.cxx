@@ -104,46 +104,69 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 }
 
 /* Resolution of a linear system */
-Point IdentityMatrix::solveLinearSystem(const Point & b,
-                                        const Bool )
+Point IdentityMatrix::solveLinearSystem(const Point & b) const
 {
   return b;
 }
 
-Matrix IdentityMatrix::solveLinearSystem(const Matrix & b,
-    const Bool )
+Matrix IdentityMatrix::solveLinearSystemInPlace(const Matrix & b)
 {
   return b;
 }
 
 /* Compute determinant */
-Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool )
+Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
   sign = 1.0;
   return 0.0;
 }
 
-Scalar IdentityMatrix::computeDeterminant(const Bool )
+Scalar IdentityMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
+{
+  sign = 1.0;
+  return 0.0;
+}
+
+Scalar IdentityMatrix::computeDeterminant() const
+{
+  return 1.0;
+}
+
+Scalar IdentityMatrix::computeDeterminantInPlace()
 {
   return 1.0;
 }
 
 /* Compute eigenvalues */
-Point IdentityMatrix::computeEigenValues(const Bool )
+Point IdentityMatrix::computeEigenValues() const
 {
   return Point(getNbRows(), 1.0);
 }
 
-Point IdentityMatrix::computeEV(SquareMatrix & v,
-                                const Bool )
+Point IdentityMatrix::computeEigenValuesInPlace()
+{
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeEV(SquareMatrix & v) const
+{
+  v = *this;
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeEVInPlace(SquareMatrix & v)
 {
   v = *this;
   return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-Point IdentityMatrix::computeSingularValues(const Bool )
+Point IdentityMatrix::computeSingularValues() const
+{
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeSingularValuesInPlace()
 {
   return Point(getNbRows(), 1.0);
 }
@@ -151,8 +174,16 @@ Point IdentityMatrix::computeSingularValues(const Bool )
 /* Compute singular values */
 Point IdentityMatrix::computeSVD(Matrix & u,
                                  Matrix & vT,
-                                 const Bool,
-                                 const Bool )
+                                 const Bool) const
+{
+  u = *this;
+  vT = *this;
+  return Point(getNbRows(), 1.0);
+}
+
+Point IdentityMatrix::computeSVDInPlace(Matrix & u,
+                                        Matrix & vT,
+                                        const Bool)
 {
   u = *this;
   vT = *this;
@@ -166,7 +197,12 @@ Bool IdentityMatrix::isPositiveDefinite() const
 }
 
 /* Build the Cholesky factorization of the matrix */
-TriangularMatrix IdentityMatrix::computeCholesky(const Bool )
+TriangularMatrix IdentityMatrix::computeCholesky() const
+{
+  return getImplementation();
+}
+
+TriangularMatrix IdentityMatrix::computeCholeskyInPlace()
 {
   return getImplementation();
 }

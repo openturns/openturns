@@ -59,12 +59,6 @@ The Cholesky factor of a covariance (real symmetric positive definite) matrix
 
     \mat{C} = \mat{L} \Tr{\mat{L}}
 
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
-
 Notes
 -----
 This uses LAPACK's `DPOTRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dpotrf.f.html>`_.
@@ -73,6 +67,14 @@ Returns
 -------
 cholesky_factor : :class:`~openturns.TriangularMatrix`
     The left (lower) Cholesky factor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovarianceMatrix::computeCholeskyInPlace
+"Compute the Cholesky factor in place.
+
+Similar to :meth:`computeCholesky` but modifies the matrix in place to avoid a copy.
+"
 
 // ---------------------------------------------------------------------
 

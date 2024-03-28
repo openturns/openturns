@@ -296,7 +296,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
     }
 
     // Computation of EigenValues without keeping intact (matrix not used after)
-    const Collection<Complex> eigenValues(matrix.computeEigenValues(false));
+    const Collection<Complex> eigenValues(matrix.computeEigenValuesInPlace());
 
     // Find the largest eigenvalue module
     Scalar s = std::norm(eigenValues[0]);
@@ -330,7 +330,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
     }
 
     // Computation of EigenValues without keeping intact (matrix not used after)
-    const Collection<Complex> eigenValues(matrix.computeEigenValues(false));
+    const Collection<Complex> eigenValues(matrix.computeEigenValuesInPlace());
 
     // Find the largest eigenvalue module
     Scalar s = std::norm(eigenValues[0]);
@@ -351,7 +351,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
     }
   }
   // Computation of EigenValues without keeping intact (matrix not used after)
-  const Point eigenValues(covarianceMatrix.computeEigenValues(false));
+  const Point eigenValues(covarianceMatrix.computeEigenValuesInPlace());
 
   // Find the largest eigenvalue module
   Scalar s = eigenValues[0];

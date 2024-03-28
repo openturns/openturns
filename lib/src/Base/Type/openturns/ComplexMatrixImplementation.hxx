@@ -203,10 +203,12 @@ public:
   virtual Bool isHermitian() const;
 
   /** Check if the matrix is HPD */
-  virtual Bool isHermitianPositiveDefinite(const Bool keepIntact = true);
+  virtual Bool isHermitianPositiveDefinite() const;
+  virtual Bool isHermitianPositiveDefiniteInPlace();
 
   /** Build the Cholesky factorization of the matrix */
-  virtual ComplexMatrixImplementation computeCholesky(const Bool keepIntact = true);
+  virtual ComplexMatrixImplementation computeCholesky() const;
+  virtual ComplexMatrixImplementation computeCholeskyInPlace();
 
   /** Comparison operators */
   using PersistentCollection::operator ==;

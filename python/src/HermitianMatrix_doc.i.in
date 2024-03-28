@@ -32,6 +32,14 @@ G : :class:`~openturns.ComplexMatrix`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::HermitianMatrix::computeCholeskyInPlace
+"Compute the Cholesky factor in place.
+
+Similar to :meth:`computeCholesky` but modifies the matrix in place to avoid a copy.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::HermitianMatrix::getDimension
 "Accessor to the matrix dimension.
 

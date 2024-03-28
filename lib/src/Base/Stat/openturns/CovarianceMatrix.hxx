@@ -77,7 +77,8 @@ public:
   virtual Bool isPositiveDefinite() const;
 
   /** Build the Cholesky factorization of the matrix */
-  virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
+  virtual TriangularMatrix computeCholesky() const;
+  virtual TriangularMatrix computeCholeskyInPlace();
 
   /** Build the regularize Cholesky factorization of the matrix */
   virtual TriangularMatrix computeRegularizedCholesky() const;

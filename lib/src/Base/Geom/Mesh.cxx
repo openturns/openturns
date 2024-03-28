@@ -330,7 +330,7 @@ Point Mesh::computeSimplicesVolume() const
     for (UnsignedInteger index = 0; index < nrSimplices; ++index)
     {
       buildSimplexMatrix(index, matrix);
-      result[index] = exp(matrix.computeLogAbsoluteDeterminant(sign, false) - logGamma);
+      result[index] = exp(matrix.computeLogAbsoluteDeterminantInPlace(sign) - logGamma);
     }
   }
   return result;
@@ -464,7 +464,7 @@ void Mesh::fixOrientation(const UnsignedInteger & index,
   }
   buildSimplexMatrix(index, matrix);
   Scalar sign = 0.0;
-  (void) matrix.computeLogAbsoluteDeterminant(sign, false);
+  (void) matrix.computeLogAbsoluteDeterminantInPlace(sign);
   // In odd dimension the positive orientation is for a negative determinant of
   // the simplex matrix
   if ((sign > 0.0) == (dimension_ % 2 == 1)) return;

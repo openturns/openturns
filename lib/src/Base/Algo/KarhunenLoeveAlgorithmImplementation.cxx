@@ -33,10 +33,7 @@ static const Factory<KarhunenLoeveAlgorithmImplementation> Factory_KarhunenLoeve
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
   : PersistentObject()
-  , covariance_()
-  , threshold_(0.0)
   , nbModes_(std::numeric_limits<UnsignedInteger>::max())
-  , result_()
 {
   // Nothing to do
 }
@@ -48,7 +45,6 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const
   , covariance_(covariance)
   , threshold_(threshold)
   , nbModes_(std::numeric_limits<UnsignedInteger>::max())
-  , result_()
 {
   // Nothing to do
 }

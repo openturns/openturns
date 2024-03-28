@@ -75,36 +75,40 @@ public:
 #endif
 
   /** Resolution of a linear system */
-  Point solveLinearSystem(const Point & b,
-                          const Bool keepIntact = true);
-
-  Matrix solveLinearSystem(const Matrix & b,
-                           const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b) const;
+  Matrix solveLinearSystemInPlace(const Matrix & b);
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
 
   /** Compute eigenvalues */
-  Point computeEigenValues(const Bool keepIntact = true);
-  Point computeEV(SquareMatrix & vOut,
-                  const Bool keepIntact = true);
+  Point computeEigenValues() const;
+  Point computeEigenValuesInPlace();
+  Point computeEV(SquareMatrix & vOut) const;
+  Point computeEVInPlace(SquareMatrix & vOut);
 
   /** Check if the matrix is SPD */
   Bool isPositiveDefinite() const override;
 
   /** Build the Cholesky factorization of the matrix */
-  TriangularMatrix computeCholesky(const Bool keepIntact = true) override;
+  TriangularMatrix computeCholesky() const override;
+  TriangularMatrix computeCholeskyInPlace() override;
 
   /** Compute singular values */
-  Point computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues() const;
+  Point computeSingularValuesInPlace();
 
   Point computeSVD(Matrix & uOut,
                    Matrix & vTOut,
-                   const Bool fullSVD = false,
-                   const Bool keepIntact = true);
+                   const Bool fullSVD = false) const;
 
+  Point computeSVDInPlace(Matrix & uOut,
+                          Matrix & vTOut,
+                          const Bool fullSVD = false);
 protected:
 
 

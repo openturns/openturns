@@ -79,7 +79,11 @@ inline void testQR(UnsignedInteger m, UnsignedInteger n, Bool full, Bool keep)
   Matrix matrix1(quadM(m, n));
   fullprint << "M= " << matrix1.__str__() << std::endl;
   Matrix R;
-  Matrix Q(matrix1.computeQR(R, full, keep));
+  Matrix Q;
+  if (keep)
+    Q = matrix1.computeQR(R, full);
+  else
+    Q = matrix1.computeQRInPlace(R, full);
   fullprint << "full= " << (full ? "true" : "false") << std::endl;
   fullprint << "keep= " << (keep ? "true" : "false") << std::endl;
   fullprint << "Q= " << Q.__str__() << std::endl;
