@@ -179,6 +179,12 @@ Description PlatformInfo::GetFeatures()
 #else
     Features_["bison"] = false;
 #endif
+
+#ifdef OPENTURNS_HAVE_CUBA
+    Features_["cuba"] = true;
+#else
+    Features_["cuba"] = false;
+#endif
   }
 
   Description keys;
