@@ -23,10 +23,10 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{\vect{Y}|\vect{X}=\vect{x}}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}}(x_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}'}(x_i) d \vect{y}'}
+    f_{\vect{Y}|X_1=x_1, ..., X_n = x_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}}(x_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}'}(x_i) d \vect{y}'}
 
 with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
-:math:`f_{\vect{Y}}` the PDF of the conditioning distribution :math:`\vect{Y}`,
+:math:`f_{\vect{Y}}` the PDF of the conditioning distribution, i.e. the marginal distribution of :math:`\vect{Y}`,
 :math:`x_i` the observations of the conditional distribution.
 
 Examples
