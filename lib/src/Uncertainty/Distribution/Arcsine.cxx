@@ -244,19 +244,19 @@ void Arcsine::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-Point Arcsine::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Arcsine::getStandardDeviation() const
 {
   return Point(1, 0.5 * (b_ - a_) * M_SQRT1_2);
 }
 
 /* Get the skewness of the distribution */
-Point Arcsine::getSkewness() const /*throw(NotDefinedException)*/
+Point Arcsine::getSkewness() const
 {
   return Point(1, 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-Point Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
+Point Arcsine::getKurtosis() const
 {
   Scalar standardDeviation4 = getStandardDeviation()[0];
   standardDeviation4 *= standardDeviation4;
