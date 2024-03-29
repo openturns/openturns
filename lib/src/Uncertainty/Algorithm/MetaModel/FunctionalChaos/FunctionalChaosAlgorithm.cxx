@@ -139,7 +139,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
   const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize");
-  const UnsignedInteger totalSize = basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+  const UnsignedInteger totalSize = std::min(inputSample.getSize(), basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree));
   LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a basis size of " << totalSize);
   adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
