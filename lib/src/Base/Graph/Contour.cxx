@@ -54,8 +54,10 @@ Contour::Contour(const Sample & x,
   , labels_(labels)
   , drawLabels_(drawLabels)
   , isFilled_(false)
-  , vmin_(std::numeric_limits<Scalar>::quiet_NaN())
-  , vmax_(std::numeric_limits<Scalar>::quiet_NaN())
+  , isVminUsed_(false)
+  , vmin_(0)
+  , isVmaxUsed_(false)
+  , vmax_(0)
   , alpha_(1)
   , norm_("linear")
   , extend_("both")
@@ -80,8 +82,10 @@ Contour::Contour(const UnsignedInteger dimX,
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
   , drawLabels_(true)
   , isFilled_(isFilled)
-  , vmin_(std::numeric_limits<Scalar>::quiet_NaN())
-  , vmax_(std::numeric_limits<Scalar>::quiet_NaN())
+  , isVminUsed_(false)
+  , vmin_(0)
+  , isVmaxUsed_(false)
+  , vmax_(0)
   , colorMap_(colorMap)
   , alpha_(1)
   , norm_("linear")
@@ -118,8 +122,10 @@ Contour::Contour(const Sample & x,
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
   , drawLabels_(true)
   , isFilled_(isFilled)
-  , vmin_(std::numeric_limits<Scalar>::quiet_NaN())
-  , vmax_(std::numeric_limits<Scalar>::quiet_NaN())
+  , isVminUsed_(false)
+  , vmin_(0)
+  , isVmaxUsed_(false)
+  , vmax_(0)
   , colorMap_(colorMap)
   , alpha_(1)
   , norm_("linear")
@@ -148,7 +154,9 @@ String Contour::__repr__() const
       << " show labels=" << drawLabels_
       << " isFilled=" << isFilled_
       << " colorBarPosition=" << colorBarPosition_
+      << " isVminUsed=" << isVminUsed_
       << " vmin=" << vmin_
+      << " isVmaxUsed=" << isVmaxUsed_
       << " vmax=" << vmax_
       << " colorMap=" << colorMap_
       << " alpha=" << alpha_
@@ -242,21 +250,45 @@ void Contour::setColorBarPosition(const String & colorBarPosition) {
   colorBarPosition_ = colorBarPosition;
 }
 
+/** Accessor for isVminUsed */
+Bool Contour::isVminUsed() const {
+  return isVminUsed_;
+}
+
+void Contour::setIsVminUsed(Bool used) {
+  isVminUsed_ = used;
+}
+
 /** Accessor for vmin */
 Scalar Contour::getVmin() const {
+  if(!isVminUsed_)
+    throw InternalException(HERE) << "Vmin value is not used";
   return vmin_;
 }
 
 void Contour::setVmin(Scalar vmin) {
+  isVminUsed_ = true;
   vmin_ = vmin;
+}
+
+/** Accessor for isVmaxUsed */
+Bool Contour::isVmaxUsed() const {
+  return isVmaxUsed_;
+}
+
+void Contour::setIsVmaxUsed(Bool used) {
+  isVmaxUsed_ = used;
 }
 
 /** Accessor for vmax */
 Scalar Contour::getVmax() const {
+  if(!isVmaxUsed_)
+    throw InternalException(HERE) << "Vmax value is not used";
   return vmax_;
 }
 
 void Contour::setVmax(Scalar vmax) {
+  isVmaxUsed_ = true;
   vmax_ = vmax;
 }
 
@@ -267,7 +299,7 @@ String Contour::getColorMap() const {
 
 void Contour::setColorMap(const String& colorMap) {
   if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
-  isColorExplicitlySet_ = true;//To avoid being overridden when adding the contour to the graph
+  isColorExplicitlySet_ = true; // To avoid being overridden when adding the contour to the graph
   colorMap_ = colorMap;
 }
 
@@ -371,7 +403,9 @@ void Contour::save(Advocate & adv) const
   adv.saveAttribute("drawLabels_", drawLabels_);
   adv.saveAttribute("isFilled_", isFilled_);
   adv.saveAttribute("colorBarPosition_", colorBarPosition_);
+  adv.saveAttribute("isVminUsed_", isVminUsed_);
   adv.saveAttribute("vmin_", vmin_);
+  adv.saveAttribute("isVmaxUsed_", isVmaxUsed_);
   adv.saveAttribute("vmax_", vmax_);
   adv.saveAttribute("colorMap_", colorMap_);
   adv.saveAttribute("alpha_", alpha_);
@@ -397,14 +431,22 @@ void Contour::load(Advocate & adv)
     adv.loadAttribute("colorBarPosition_", colorBarPosition_);
   else
     colorBarPosition_ = "";
-  if (adv.hasAttribute("vmin_"))
+  if(adv.hasAttribute("isVminUsed_"))
+    adv.loadAttribute("isVminUsed_", isVminUsed_);
+  else
+    isVminUsed_ = false;
+  if(adv.hasAttribute("vmin_"))
     adv.loadAttribute("vmin_", vmin_);
   else
-    vmin_ = NAN;
+    vmin_ = 0;
+  if(adv.hasAttribute("isVmaxUsed_"))
+    adv.loadAttribute("isVmaxUsed_", isVmaxUsed_);
+  else
+    isVmaxUsed_ = false;
   if (adv.hasAttribute("vmax_"))
     adv.loadAttribute("vmax_", vmax_);
   else
-    vmax_ = NAN;
+    vmax_ = 0;
   if (adv.hasAttribute("colorMap_"))
     adv.loadAttribute("colorMap_", colorMap_);
   else

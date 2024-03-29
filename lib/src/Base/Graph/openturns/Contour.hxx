@@ -109,9 +109,17 @@ public:
   String getColorBarPosition() const;
   void setColorBarPosition(const String & colorBarPosition);
 
+  /** Accessor for isVminUsed */
+  Bool isVminUsed() const;
+  void setIsVminUsed(Bool used);
+
   /** Accessor for vmin */
   Scalar getVmin() const;
   void setVmin(Scalar vmin);
+
+  /** Accessor for isVmaxUsed */
+  Bool isVmaxUsed() const;
+  void setIsVmaxUsed(Bool used);
 
   /** Accessor for vmax */
   Scalar getVmax() const;
@@ -183,8 +191,14 @@ private:
   /** Color bar position */
   String colorBarPosition_;
 
+  /** use of vmin value */
+  Bool isVminUsed_;
+
   /** Min value of color map */
   Scalar vmin_;
+
+  /** use of vmax value */
+  Bool isVmaxUsed_;
 
   /** Max value of color map */
   Scalar vmax_;

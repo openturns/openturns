@@ -1140,7 +1140,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Drawable.GetValidNorms()[:2])
-[asinh,function]
+[asinh,linear]
 "
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidNorms

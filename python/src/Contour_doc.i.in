@@ -253,6 +253,41 @@ getAlpha"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Contour::isVminUsed
+"Accessor to the flag isVminUsed of the Contour element.
+
+Returns
+-------
+isVminUsed : bool
+    The flag isVminUsed of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> print(contour.isVminUsed())
+False
+
+See Also
+--------
+setIsVminUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setIsVminUsed
+"Accessor to the flag isVminUsed of the Contour element.
+
+Parameters
+----------
+used : bool
+    The flag isVminUsed of the Contour element.
+
+See Also
+--------
+isVminUsed"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Contour::getVmin
 "Accessor to the vmin value of the Contour element.
 
@@ -286,6 +321,41 @@ vmin : float
 See Also
 --------
 getVmin"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::isVmaxUsed
+"Accessor to the flag isVmaxUsed of the Contour element.
+
+Returns
+-------
+isVmaxUsed : bool
+    The flag isVmaxUsed of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> print(contour.isVmaxUsed())
+False
+
+See Also
+--------
+setIsVmaxUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setIsVmaxUsed
+"Accessor to the flag isVmaxUsed of the Contour element.
+
+Parameters
+----------
+used : bool
+    The flag isVmaxUsed of the Contour element.
+
+See Also
+--------
+isVmaxUsed"
 
 // ---------------------------------------------------------------------
 

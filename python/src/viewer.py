@@ -373,12 +373,13 @@ class View:
 
             # set line style
             lineStyleDict = {
+                "blank": "",
                 "solid": "-",
                 "dashed": "--",
                 "dotted": ":",
                 "dotdash": "-.",
-                "longdash": "--",
-                "twodash": "--",
+                "longdash": (0, (10, 3)),
+                "twodash": (0, (10, 3, 5, 3))
             }
             if ("linestyle" not in plot_kw_default) and ("ls" not in plot_kw_default):
                 try:
@@ -421,26 +422,17 @@ class View:
                     polygoncollection_kw.setdefault("label", label)
 
             if drawableKind == "BarPlot":
-                # linestyle for bar() is different than the one for plot()
-                if "linestyle" in bar_kw_default:
-                    bar_kw.pop("linestyle")
-                if ("linestyle" not in plot_kw_default) and (
-                    "ls" not in plot_kw_default
+                if ("linestyle" not in bar_kw_default) and (
+                    "ls" not in bar_kw_default
                 ):
-                    lineStyleDict = {
-                        "solid": "-",
-                        "dashed": "--",
-                        "dotted": ":",
-                        "dotdash": "-.",
-                        "longdash": "--",
-                        "twodash": "--",
-                    }
                     if drawable.getLineStyle() in lineStyleDict:
                         bar_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
                     else:
                         warnings.warn(
                             "-- Unknown line style: " + drawable.getLineStyle()
                         )
+                if "linewidth" not in bar_kw_default and "lw" not in bar_kw_default:
+                    bar_kw["linewidth"] = drawable.getLineWidth()
 
                 # fillstyle
                 if drawable.getFillStyle() == "shaded":
@@ -545,24 +537,37 @@ class View:
                 )
                 if len(drawable.getLevels()) > 0:
                     contour_kw.setdefault("levels", drawable.getLevels())
-                if ("linestyles" not in contour_kw_default) and (
+                if not contour.isFilled() and ("linestyles" not in contour_kw_default) and (
                     "ls" not in contour_kw_default
                 ):
+                    # Contours do not accept all styles
+                    contourLineStyleDict = {
+                        "solid": "-",
+                        "dashed": "--",
+                        "dotted": ":",
+                        "dotdash": "-.",
+                        "longdash": "--",
+                        "twodash": "--"
+                    }
                     try:
-                        contour_kw["linestyles"] = lineStyleDict[
+                        contour_kw["linestyles"] = contourLineStyleDict[
                             drawable.getLineStyle()
                         ]
                     except KeyError:
                         warnings.warn("-- Unknown line style")
+                if not contour.isFilled() and ("linewidths" not in contour_kw_default) and (
+                    "lw" not in contour_kw_default
+                ):
+                    contour_kw["linewidths"] = drawable.getLineWidth()
                 if "cmap" not in contour_kw_default and contour.getColorMap():
                     contour_kw["cmap"] = contour.getColorMap()
                 if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
                 if "alpha" not in contour_kw_default:
                     contour_kw["alpha"] = contour.getAlpha()
-                if "vmin" not in contour_kw_default and contour.getVmin() is not None:
+                if "vmin" not in contour_kw_default and contour.isVminUsed():
                     contour_kw["vmin"] = contour.getVmin()
-                if "vmax" not in contour_kw_default and contour.getVmax() is not None:
+                if "vmax" not in contour_kw_default and contour.isVmaxUsed():
                     contour_kw["vmax"] = contour.getVmax()
                 if "norm" not in contour_kw_default:
                     contour_kw["norm"] = contour.getNorm()
@@ -573,7 +578,7 @@ class View:
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kw) if not contour.isFilled()\
                     else self._ax[0].contourf(X, Y, Z, **contour_kw)
                 self._contoursets.append(contourset)
-                if drawable.getDrawLabels():
+                if drawable.getDrawLabels() and not contour.isFilled():  # Matplotlib does not support labels in filled contours well
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
                     fmt = {}
@@ -581,7 +586,8 @@ class View:
                         np.array(drawable.getLevels()), drawable.getLabels()
                     ):
                         fmt[lv] = s
-                    clabel_kw.setdefault("fmt", fmt)
+                    if fmt:
+                        clabel_kw.setdefault("fmt", fmt)
                     try:
                         plt.clabel(contourset, **clabel_kw)
                     except KeyError:
@@ -595,7 +601,10 @@ class View:
                     legend_handles.append(artists[0])
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
-                    self._fig.colorbar(contourset, location=contour.getColorBarPosition())
+                    format = None
+                    if contour.getNorm() != "linear" and contour.getLevels():
+                        format = matplotlib.ticker.FixedFormatter(["{:.6g}".format(level) for level in contour.getLevels()])
+                    self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format=format)
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)

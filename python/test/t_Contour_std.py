@@ -41,8 +41,10 @@ myContour.setAlpha(0.5)
 myContour.setExtend("min")
 myContour.setColorBarPosition("left")
 myContour.setNorm("symlog")
+myContour.setVmin(3)
 myContour.setHatches(ot.Description(["/", "\\", "+/", "*"]))
 myContour.setIsFilled(True)
+print("filled contour=", myContour.__repr__())
 
 # Then, draw it
 myGraph.add(myContour)

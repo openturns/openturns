@@ -245,9 +245,10 @@ Graph EvaluationProxy::draw(const UnsignedInteger firstInputMarginal,
                             const Point & xMin,
                             const Point & xMax,
                             const Indices & pointNumber,
-                            const GraphImplementation::LogScale scale) const
+                            const GraphImplementation::LogScale scale,
+                            const Bool isFilled) const
 {
-  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale, isFilled);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */

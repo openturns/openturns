@@ -379,7 +379,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Point & xMin,
                                      const Point & xMax,
                                      const Indices & pointNumber,
-                                     const GraphImplementation::LogScale scale) const
+                                     const GraphImplementation::LogScale scale,
+                                     const Bool isFilled) const
 {
   if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
   if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
@@ -452,7 +453,9 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     // Compute the output sample, using possible parallelism
     const Sample z((*this)(inputSample).getMarginal(outputMarginal));
     Contour isoValues(x, y, z);
+    isoValues.setIsFilled(isFilled);
     isoValues.setColorBarPosition("right");
+    isoValues.setDrawLabels(false);
     graph.add(isoValues);
   }
   else
