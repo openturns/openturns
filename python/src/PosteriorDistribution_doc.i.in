@@ -10,7 +10,7 @@ Parameters
 conditional : :class:`~openturns.ConditionalDistribution`
     The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
 observations : 2-d sequence of float
-    Observations :math:`x_i`.
+    Observations :math:`\vect{x}_i`.
 
 See Also
 --------
@@ -23,11 +23,11 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{\vect{Y}|X_1=x_1, ..., X_n = x_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}}(x_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{X|\vect{\Theta}=\vect{y}'}(x_i) d \vect{y}'}
+    f_{\vect{Y}|\vect{X}_1=\vect{x}_1, ..., \vect{X}_n = \vect{x}_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}'}
 
 with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
 :math:`f_{\vect{Y}}` the PDF of the conditioning distribution, i.e. the marginal distribution of :math:`\vect{Y}`,
-:math:`x_i` the observations of the conditional distribution.
+:math:`\vect{x}_i` the observations of the conditional distribution.
 
 Examples
 --------
