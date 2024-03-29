@@ -94,11 +94,12 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  // KrigingAlgorithm::run could ask for the Cholesky factor
-  friend class KrigingAlgorithm;
 
   // GaussianProcessFitter::run could set the Cholesky factor
   friend class GaussianProcessFitter;
+
+  // GaussianProcessFitter::run could set the Cholesky factor
+  friend class GaussianProcessConditionalCovariance;
 
   // GaussianProcessRegressionResult could use Cholesky setters
   friend class GaussianProcessRegression;

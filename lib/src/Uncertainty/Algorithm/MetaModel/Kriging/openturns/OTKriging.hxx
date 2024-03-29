@@ -32,5 +32,6 @@
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/GaussianProcessRegression.hxx"
+#include "openturns/GaussianProcessConditionalCovariance.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */
