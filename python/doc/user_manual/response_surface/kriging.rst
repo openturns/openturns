@@ -30,6 +30,7 @@ Gaussian Process Regression
     :template: class.rst_t
     experimental.GaussianProcessRegressionResult
     experimental.GaussianProcessFitterResult
+    experimental.GaussianProcessConditionalCovariance
 
 
 Construction of the regression basis
