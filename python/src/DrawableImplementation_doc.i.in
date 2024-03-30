@@ -223,7 +223,7 @@ n : int :math:`n > 0` and :math:`n < 10`
 Returns
 -------
 listColors : :class:`~openturns.Description`
-    List of n color codes defined according to the viridis palette.
+    List of *n* color codes defined according to the viridis palette.
 
 Notes
 -----
@@ -252,7 +252,7 @@ n : int :math:`n > 0` and :math:`n < 10`
 Returns
 -------
 listColors : :class:`~openturns.Description`
-    List of n color codes defined according to the gray scale palette.
+    List of *n* color codes defined according to the gray scale palette.
 
 Notes
 -----
