@@ -365,7 +365,7 @@ OT_Distribution_computeSequentialConditionalQuantile_doc
 Parameters
 ----------
 x : sequence of float, 2-d sequence of float
-    Point in :math:`\Rset^d`.
+    The input value where the conditional derivative density function must be evaluated.
 
 Returns
 -------
