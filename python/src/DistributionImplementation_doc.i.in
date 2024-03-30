@@ -167,7 +167,7 @@ xcond : sequence of float with dimension :math:`d-1`
 Returns
 -------
 d : float
-    Conditional DDF value at *xd*, given Xcond
+    Conditional DDF value at *xd*, given *xcond*
     where *xd* is the last component of the multivariate distribution.
     
 
