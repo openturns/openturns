@@ -753,7 +753,7 @@ x : sequence of float, 2-d sequence of float
 Returns
 -------
 s : float, :class:`~openturns.Point`
-    Survival function at *x*.
+    Value of the survival function at point *x*.
 
 Notes
 -----
