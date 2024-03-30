@@ -159,7 +159,7 @@ With respect to the other fixed components.
 
 Parameters
 ----------
-Xd : float
+xd : float
     Real in :math:`\Rset`.
 xcond : sequence of float with dimension :math:`d-1`
     Conditioning values.
