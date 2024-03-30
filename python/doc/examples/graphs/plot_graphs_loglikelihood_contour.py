@@ -6,7 +6,8 @@ Plot the log-likelihood contours of a distribution
 # %%
 
 # %%
-# In this example, we show how to plot the bidimensionnal log-likelihood contours of function given a sample.
+# In this example, we show how to plot the bidimensionnal log-likelihood
+# contours of function given a sample.
 
 # %%
 from matplotlib import pylab as plt
