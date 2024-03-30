@@ -188,7 +188,7 @@ Conditional PDF of the last component with respect to the other fixed components
 Parameters
 ----------
 xd : float, sequence of float
-    Point in :math:`\Rset`.
+    The input value where the conditional CDF must be evaluated.
 xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
     Conditioning values.
 
