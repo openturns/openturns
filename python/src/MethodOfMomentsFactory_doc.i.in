@@ -51,7 +51,8 @@ following nonlinear system:
     \widehat{\mu}_K & = g_K(\theta_1, \dots, \theta_{d_\theta})
 
 To solve the non linear equation :eq:`MethMomSyst`, the library minimizes the sum of slacks between
-:math:`(\mu_1, \dots, \mu_K)` and :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})`. It is defined by:
+:math:`(\mu_1, \dots, \mu_K)` and :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})`.
+The optimization problem is:
 
 .. math::
 
