@@ -14,7 +14,7 @@ Parameters
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
 scale : sequence of float
-    Scaling factors to apply to each variables.
+    Scaling factors to apply to each variable.
 offset : sequence of float
     Constant to subtract to each variable.
 maxCGit : int
@@ -22,7 +22,7 @@ maxCGit : int
 eta : float
     Severity of the line search.
 stepmx : float
-    Maximum step for the line search. may be increased during call.
+    Maximum step for the line search, may be increased during call.
 accuracy : float
     Relative precision for finite difference calculations.
 fmin : float
