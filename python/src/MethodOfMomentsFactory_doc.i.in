@@ -55,7 +55,8 @@ which is equivalent to the solution of the following optimlization problem:
 
 .. math::
 
-    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{i=1}^{d_\theta} \left( \mu_i^{1/i}-\widehat{\mu}_i^{1/i}} \right)^2
+    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{i=1}^{d_\theta} \left( \mu_i^{1/i}-\widehat{\mu}_i^{1/i}
+    \right)^2
 
 
 See also
