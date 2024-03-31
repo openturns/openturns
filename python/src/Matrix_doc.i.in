@@ -81,14 +81,14 @@ The economic QR factorization of a rectangular matrix :math:`\mat{M}` with
 .. math::
 
     \mat{M} = \mat{Q} \mat{R}
-            = \mat{Q} \begin{bmatrix} \mat{R_1} \\ \mat{0} \end{bmatrix}
-            = \begin{bmatrix} \mat{Q_1}, \mat{Q_2} \end{bmatrix}
-              \begin{bmatrix} \mat{R_1} \\ \mat{0} \end{bmatrix}
-            = \mat{Q_1} \mat{R_1}
+            = \mat{Q} \begin{bmatrix} \mat{R}_1 \\ \mat{0} \end{bmatrix}
+            = \begin{bmatrix} \mat{Q}_1, \mat{Q}_2 \end{bmatrix}
+              \begin{bmatrix} \mat{R}_1 \\ \mat{0} \end{bmatrix}
+            = \mat{Q}_1 \mat{R}_1
 
-where :math:`\mat{R_1}` is an :math:`n_c \times n_c` upper triangular matrix,
-:math:`\mat{Q_1}` is :math:`n_r \times n_c`, :math:`\mat{Q_2}` is
-:math:`n_r \times (n_r - n_c)`, and :math:`\mat{Q_1}` and :math:`\mat{Q_2}`
+where :math:`\mat{R}_1` is an :math:`n_c \times n_c` upper triangular matrix,
+:math:`\mat{Q}_1` is :math:`n_r \times n_c`, :math:`\mat{Q}_2` is
+:math:`n_r \times (n_r - n_c)`, and :math:`\mat{Q}_1` and :math:`\mat{Q}_2`
 both have orthogonal columns.
 
 Parameters
@@ -120,7 +120,7 @@ least-square sense because it implies solving a (simple) triangular system:
 .. math::
 
     \vect{\hat{x}} = \arg\min\limits_{\vect{x} \in \Rset^{n_r}} \|\mat{M} \vect{x} - \vect{b}\|
-                   = \mat{R_1}^{-1} (\Tr{\mat{Q_1}} \vect{b})
+                   = \mat{R}_1^{-1} (\Tr{\mat{Q}_1} \vect{b})
 
 This uses LAPACK's `DGEQRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dgeqrf.f.html>`_
 and `DORGQR <http://www.netlib.org/lapack/lapack-3.1.1/html/dorgqr.f.html>`_.
@@ -406,8 +406,8 @@ MMT : :class:`~openturns.Matrix`
 
 Notes
 -----
-When transposed is set to `True`, the method computes :math:`cM^t \times \cM`.
-Otherwise it computes :math:`\cM \ times \cM^t`
+When `transposed` is `True`, compute :math:`\Tr{M} M`.
+Otherwise, compute :math:`M \Tr{M}`.
 
 Examples
 --------
@@ -458,12 +458,15 @@ C : :class:`~openturns.Matrix`
 Notes
 -----
 
-The matrix :math:`\cC` resulting from the Hadamard product of the matrices
-:math:`\cA` and :`\cB` is as follows:
+The matrix :math:`\mat{C} \in \Rset^{m \times n}` resulting from the Hadamard product (
+also known as the elementwise product) of the matrices
+:math:`\mat{A} \in \Rset^{m \times n}` and :math:`\mat{B} \in \Rset^{m \times n}` is:
 
 .. math::
 
-    \cC_{i,j} = \cA_{i,j} * \cB_{i,j}
+    c_{i,j} = a_{i,j} b_{i,j}
+
+for any :math:`i = 1, \cdots, m` and :math:`j = 1, \cdots, n`.
 
 Examples
 --------
@@ -491,11 +494,11 @@ sum : a float
 Notes
 -----
 
-We compute here the sum of elements of the matrix :math:`\cM`, that defines as:
+Compute the sum of elements of the matrix :math:`\mat{A} \in \Rset^{m \times n}`:
 
 .. math::
 
-    s = \sum_{i=1}^{nRows}\sum_{j=1}^{nColumns} \cM_{i,j}
+    s = \sum_{i=1}^{m} \sum_{j=1}^{n} a_{i,j}
 
 Examples
 --------

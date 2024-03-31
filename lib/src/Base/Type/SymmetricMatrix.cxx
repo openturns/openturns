@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/SymmetricMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -325,5 +326,10 @@ Scalar SymmetricMatrix::computeSumElements() const
   return getImplementation()->computeSumElements();
 }
 
+/** Compute inverse */
+SymmetricMatrix SymmetricMatrix::inverse() const
+{
+  return getImplementation()->inverseSym();
+}
 
 END_NAMESPACE_OPENTURNS

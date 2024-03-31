@@ -241,4 +241,11 @@ Bool SquareMatrix::isDiagonal() const
   return true;
 }
 
+
+/** Compute inverse */
+SquareMatrix SquareMatrix::inverse() const
+{
+  return getImplementation()->inverseSquare();
+}
+
 END_NAMESPACE_OPENTURNS
