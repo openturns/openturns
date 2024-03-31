@@ -17,16 +17,19 @@ This method fits a distribution to data of dimension 1, using the method of mome
 Let :math:`(x_1, \dots, x_n)` be
 the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
-and :math:`\vect{\theta} \in  \Theta \subset\Rset^{d_\theta}`  its parameter vector
-where :math:`{d_\theta} \in \Nset` is the number of parameters.
-Then :math:`d_\theta` denotes the number of parameters of the distribution and we assume that
-the :math:`d_\theta` first moments of the distribution exist.
-Let :math:`(\mu_1, \dots, \mu_{d_\theta})` be those coming from the parametric model which
-can be expressed as a function of the :math:`d_\theta` parameters:
+and :math:`\vect{\theta} = (\theta_1, \dots, \theta_{d_{\theta}}) \in \Rset^{d_\theta}`
+its parameter vector
+where :math:`{d_\theta} \in \Nset` is the number of parameters of the parametric model.
+
+We assume that
+the :math:`d_\theta` first moments of the distribution exist. Let :math:`(\mu_1, \dots, \mu_{d_\theta})`
+be the mean and the :math:`(d_\theta -1)`
+first centered  moments of the parametric model. They can be
+can be expressed as a function of the :math:`\vect{\theta}`:
 
 .. math::
 
-    \mu_1 =  \Expect{X^i} = g_1(\theta_1, \dots, \theta_{d_\theta})
+    \mu_1 =  \Expect{X} = g_1(\theta_1, \dots, \theta_{d_\theta})  \\
     \mu_k =  \Expect{(X - \mu_1)^k} = g_k(\theta_1, \dots, \theta_{d_\theta}), \quad 2 \leq k \leq d_\theta.
 
 
@@ -36,7 +39,7 @@ evaluated on the sample :math:`(x_1, \dots, x_n)`:
 
 .. math::
 
-    \widehat{\mu}_1 = \dfrac{1}{n} \sum_{i=1}^n x_i
+    \widehat{\mu}_1 = \dfrac{1}{n} \sum_{i=1}^n x_i \\
     \widehat{\mu}_k = \dfrac{1}{n} \sum_{i=1}^n (x_i - \widehat{\mu}_1)^k, \quad 2 \leq k \leq d_\theta.
 
 Then the estimator :math:`\widehat{\theta} = \left(\widehat{\theta}_1,
@@ -51,12 +54,12 @@ following nonlinear system:
     \vdots &  \\
     \widehat{\mu}_{d_\theta} & = g_{d_\theta}(\theta_1, \dots, \theta_{d_\theta})
 
-which is equivalent to the solution of the following optimlization problem:
+which is equivalent to the solution of the following optimization problem:
 
 .. math::
 
-    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{i=1}^{d_\theta} \left( \mu_i^{1/i}-\widehat{\mu}_i^{1/i}
-    \right)^2
+    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{k=1}^{d_\theta} \left[ \left( g_k(\vect{\theta}) \right)^{1/k}-
+    \widehat{\mu}_k^{1/k} \right]^2
 
 
 See also
