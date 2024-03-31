@@ -1,0 +1,163 @@
+%feature("docstring") OT::CubaIntegration
+"Multidimensional integration algorithms.
+
+Parameters
+----------
+optRoutine : str
+    The name of the optimization routine to use. It must be 'cuhre', 'divonne',
+    'suave', or 'vegas'.
+
+Notes
+-----
+The Cuba algorithms enable one to approximate the definite integral:
+
+.. math::
+
+    \int_{I_n} f(x_1, ..., x_n) \di{x_1}...\di{x_n}
+
+
+which takes values in :math:`\Rset^p`, with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`I_n=[a_1, b_1]\times\cdots\times[a_n, b_n]\subset\Rset^n`, having :math:`a_i<b_i` for all :math:`i=1,...,n`.
+
+The four available optimization routines work on vector integrands. While Cuhre
+is deterministic, the three other ones use Monte Carlo methods. Cuhre employs a
+cubature rule for subregion estimation in an adaptative subdivision scheme.
+Divonne works by stratified sampling. Suave combines techniques from importance
+sampling and subregion sampling. Vegas uses importance sampling for variance
+reduction. The result is returned as a :class:`~openturns.Point` of dimension
+:math:`p`, which is the number of components of the return value of the
+:class:`~openturns.Function` that one will integrate.
+
+Examples
+--------
+Create a Cuba algorithm:
+
+>>> import openturns as ot
+>>> algo = ot.CubaIntegration('vegas')
+>>> algo = ot.CubaIntegration('divonne')"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::integrate
+"Evaluation of the integral of :math:`f w` on an interval.
+
+Available usages:
+    integrate(*f, interval*)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^n \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \subset \Rset^n` 
+    The integration domain.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral. Its dimension is :math:`p`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import math
+>>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['sin(x) * cos(y) * exp(z)'])
+>>> lbIntegration = ot.Point((0., 0., 0.))
+>>> ubIntegration = ot.Point((1., 1., 1.))
+>>> algoC = ot.CubaIntegration('suave')
+>>> value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
+>>> print(value[0])
+0.664...
+>>> algoC = ot.CubaIntegration('vegas')
+>>> value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
+>>> print(value[0])
+0.664...
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::getEpsRel
+"Accessor to the relative accuracy required in the integration.
+
+Returns
+-------
+epsRel : float
+    The relative accuracy that the *integrate* method attemps to achieve."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::setEpsRel
+"Accessor to the relative accuracy required in the integration.
+
+Parameters
+----------
+epsRel : float
+    The relative accuracy that the *integrate* method attemps to achieve."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::getEpsAbs
+"Accessor to the absolute accuracy required in the integration.
+
+Returns
+-------
+epsAbs : float
+    The absolute accuracy that the *integrate* method attemps to achieve."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::setEpsAbs
+"Accessor to the absolute accuracy required in the integration.
+
+Parameters
+----------
+epsAns : float
+    The absolute accuracy that the *integrate* method attemps to achieve."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::getOptRoutine
+"Accessor to the name of the optimization routine to be used.
+
+Returns
+-------
+optRoutine : str
+    The name of the optimization routine used by the algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::setOptRoutine
+"Accessor to the name of the optimization routine to be used.
+
+Parameters
+----------
+optRoutine : str
+    The name of the optimization routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::getMaxeval
+"Accessor to the maximal number of integrand evaluations.
+
+Returns
+-------
+maxeval : integer
+    The maximal number of times the algorithm will attempt to evaluate the integrand."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::setMaxeval
+"Accessor to the maximal number of integrand evaluations.
+
+Parameters
+----------
+maxeval : integer, :math:`maxeval>0`
+    The maximal number of times the algorithm will attempt to evaluate the integrand."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::getFlags
+"Accessor to the flags that are passed to the optimization routine.
+
+Returns
+-------
+flags : integer
+    The flags that influence the behavior of the algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::CubaIntegration::setFlags
+"Accessor to the flags that are passed to the optimization routine.
+
+Parameters
+----------
+flags : integer
+    The flags that influence the behavior of the algorithm."
+
