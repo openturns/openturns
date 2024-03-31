@@ -245,7 +245,6 @@ UnsignedInteger CubaIntegration::getMaxeval() const
 
 void CubaIntegration::setMaxeval(const UnsignedInteger maxeval)
 {
-  if (maxeval < 0) throw InvalidArgumentException(HERE) << "Error: maxeval must be positive, here maxeval=" << maxeval;
   maxeval_ = maxeval;
 }
 
@@ -257,7 +256,6 @@ UnsignedInteger CubaIntegration::getFlags() const
 
 void CubaIntegration::setFlags(const UnsignedInteger flags)
 {
-  if (flags < 0) throw InvalidArgumentException(HERE) << "Error: flags must be positive, here flags=" << flags;
   flags_ = flags;
 }
 
