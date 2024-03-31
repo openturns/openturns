@@ -12,32 +12,33 @@ bounds : :class:`~openturns.Interval`, optional
 
 Notes
 -----
-This method fits a scalar distribution to data of dimension 1, using the method of moments.
+This method fits a distribution to data of dimension 1, using the method of moments.
 
-Let :math:`(\vect{x}^{(j)})_{1 \leq j \leq n}` be
+Let :math:`(x_1, \dots, x_n)` be
 the sample, :math:`F_{\vect{\theta}}`
 the  cumulative distribution function we want to fit to the sample,
 and :math:`\vect{\theta} \in  \Theta \subset\Rset^{d_\theta}`  its parameter vector
 where :math:`{d_\theta} \in \Nset` is the number of parameters.
 Then :math:`d_\theta` denotes the number of parameters of the distribution and we assume that
-the :math:`K` first moments of the distribution exist.
+the :math:`d_\theta` first moments of the distribution exist.
 Let :math:`(\mu_1, \dots, \mu_{d_\theta})` be those coming from the parametric model which
 can be expressed as a function of the :math:`d_\theta` parameters:
 
 .. math::
 
-    \mu_i =  \Expect{X^i} = g_i(\theta_1, \dots, \theta_{d_\theta}).
+    \mu_1 =  \Expect{X^i} = g_1(\theta_1, \dots, \theta_{d_\theta})
+    \mu_k =  \Expect{(X - \mu_1)^k} = g_k(\theta_1, \dots, \theta_{d_\theta}), \quad 2 \leq k \leq d_\theta.
 
 
-Let :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})` be the :math:`d_\theta` first empirical
-non centered  moments
-evaluated on the sample :math:`(\vect{x}^{(1)}, \dots, \vect{x}^{(n)})`:
+Let :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})` be the empirical mean and the
+:math:`(d_\theta -1)` first empirical centered  moments
+evaluated on the sample :math:`(x_1, \dots, x_n)`:
 
 .. math::
 
-    \widehat{\mu}_k = \dfrac{1}{n} \sum_{i=1}^n x_i^k.
+    \widehat{\mu}_1 = \dfrac{1}{n} \sum_{i=1}^n x_i
+    \widehat{\mu}_k = \dfrac{1}{n} \sum_{i=1}^n (x_i - \widehat{\mu}_1)^k, \quad 2 \leq k \leq d_\theta.
 
-for :math:`k \in \{1, ..., d_\theta\}`.
 Then the estimator :math:`\widehat{\theta} = \left(\widehat{\theta}_1,
 \dots, \widehat{\theta}_{d_\theta}\right)` built by the method of moments is solution of the
 following nonlinear system:
@@ -48,15 +49,13 @@ following nonlinear system:
     \widehat{\mu}_1 & =  g_1(\theta_1, \dots, \theta_{d_\theta}) \\
     \widehat{\mu}_2 & = g_2(\theta_1, \dots, \theta_{d_\theta}) \\
     \vdots &  \\
-    \widehat{\mu}_K & = g_K(\theta_1, \dots, \theta_{d_\theta})
+    \widehat{\mu}_{d_\theta} & = g_{d_\theta}(\theta_1, \dots, \theta_{d_\theta})
 
-To solve the non linear equation :eq:`MethMomSyst`, the library minimizes the sum of slacks between
-:math:`(\mu_1, \dots, \mu_K)` and :math:`(\widehat{\mu}_1, \dots, \widehat{\mu}_{d_\theta})`.
-The optimization problem is:
+which is equivalent to the solution of the following optimlization problem:
 
 .. math::
 
-    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}} \left[ \dfrac{|\mu_1-\widehat{\mu}_1|}{\sigma} \right]^2 + \sum_{i=2}^{d_\theta} \left[ \dfrac{|\mu_i|^{1/i}-|\widehat{\mu}_i|^{1/i}}{\sigma} \right]^2
+    \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{i=1}^{d_\theta} \left( \mu_i^{1/i}-\widehat{\mu}_i^{1/i}} \right)^2
 
 
 See also
