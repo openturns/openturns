@@ -32,7 +32,6 @@
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
