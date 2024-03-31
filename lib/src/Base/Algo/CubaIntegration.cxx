@@ -76,7 +76,7 @@ int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double
   const Scalar intervalVolume = pInterval->getVolume();
   const Point lb = pInterval->getLowerBound();
   const Point ub = pInterval->getUpperBound();
-  for (UnsignedInteger i = 0 ; i < *ndim ; i++)
+  for (UnsignedInteger i = 0 ; i < static_cast<UnsignedInteger>(*ndim) ; i++)
   {
     ptIn[i] = lb[i] + (ub[i] - lb[i]) * *(x + i);
   }
