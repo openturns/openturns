@@ -1745,7 +1745,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise central moment of order :math:`k`.
+    Componentwise central moment of order *k*.
 
 Notes
 -----
@@ -1778,7 +1778,7 @@ shift : sequence of float
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise central moment of order *k*`.
+    Componentwise central moment of order *k*.
 
 Notes
 -----
@@ -2149,7 +2149,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise moment of order *k*`.
+    Componentwise moment of order *k*.
 
 Notes
 -----
