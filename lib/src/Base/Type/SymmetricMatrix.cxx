@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/SymmetricMatrix.hxx"
-#include "openturns/IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
