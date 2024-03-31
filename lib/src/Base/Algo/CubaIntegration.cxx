@@ -83,6 +83,10 @@ int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double
   /* Cuba computes an integral over the unit hypercube, one has to multiply its
      output by the volume of the true integration interval. */
   const Point ptOut(intervalVolume * (*pFunction)(ptIn));
+  if (ptOut.getSize() != static_cast<UnsignedInteger>(*ncomp))
+  {
+    throw InvalidArgumentException(HERE) << "Error: expected number of components and dimension of the function output do not match, here expected number of components= " << *ncomp << " and dimension of the function output=" << ptOut.getSize();
+  }
   std::copy(ptOut.begin(), ptOut.end(), f);
 
   return 0;
