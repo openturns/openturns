@@ -149,4 +149,4 @@ Integration
     :toctree: _generated/
     :template: class.rst_t
 
-    ExperimentIntegration
+    experimental.ExperimentIntegration

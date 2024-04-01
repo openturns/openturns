@@ -4,6 +4,7 @@ import openturns as ot
 import openturns.testing as ott
 import math
 from openturns.usecases import ishigami_function
+import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -11,7 +12,7 @@ ot.TESTPREAMBLE()
 im = ishigami_function.IshigamiModel()
 sampleSize = 100000
 experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
-integration = ot.ExperimentIntegration(experiment)
+integration = otexp.ExperimentIntegration(experiment)
 approximatedOutputMean = integration.integrate(im.model)
 rtol = 0.0
 atol = 1.0 / math.sqrt(sampleSize)
@@ -44,7 +45,7 @@ ott.assert_almost_equal(functionError[0], exactError, rtol, atol)
 functionCollection = [im.model, im.model, im.model]
 multivariateIshigami = ot.AggregatedFunction(functionCollection)
 experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
-integration = ot.ExperimentIntegration(experiment)
+integration = otexp.ExperimentIntegration(experiment)
 approximatedOutputMean = integration.integrate(multivariateIshigami)
 rtol = 0.0
 atol = 10.0 / math.sqrt(sampleSize)
