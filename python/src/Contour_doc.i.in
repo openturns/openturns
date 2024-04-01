@@ -478,7 +478,7 @@ Returns
 -------
 hatches : :class:`~openturns.Description`
     A list of cross hatch patterns to use on the filled areas.
-    Hatches can use folowing characters : /\|-+xoO.*"
+    Hatches can use following characters : /\|-+xoO.*"
 
 // ---------------------------------------------------------------------
 
@@ -489,4 +489,4 @@ Parameters
 ----------
 hatches : sequence of str
     A list of cross hatch patterns to use on the filled areas.
-    Hatches can use folowing characters : /\|-+xoO.*"
+    Hatches can use following characters : /\|-+xoO.*"

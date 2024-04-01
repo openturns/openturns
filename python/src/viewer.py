@@ -16,6 +16,7 @@ import openturns as ot
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.colors as cls
 import warnings
 import io
 try:
@@ -570,7 +571,18 @@ class View:
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
                     contour_kw["vmax"] = contour.getVmax()
                 if "norm" not in contour_kw_default:
-                    contour_kw["norm"] = contour.getNorm()
+                    if not hasattr(cls, 'AsinhNorm'):  # matplotlib before 3.6 does not support norms as strings
+                        try:
+                            normDict = {
+                                'linear': cls.Normalize(),
+                                'log': cls.LogNorm(),
+                                'symlog': cls.SymLogNorm(linthresh=0.03, base=10)
+                            }
+                            contour_kw["norm"] = normDict[contour.getNorm()]
+                        except KeyError:
+                            warnings.warn("-- Unknown norm " + contour.getNorm())
+                    else:
+                        contour_kw["norm"] = contour.getNorm()
                 if "extend" not in contour_kw_default:
                     contour_kw["extend"] = contour.getExtend()
                 if "hatches" not in contour_kw_default and contour.getHatches():
