@@ -3168,7 +3168,7 @@ j : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
 xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-xMax : list of 2 floats,
+xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
 nPoints : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
