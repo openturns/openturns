@@ -4,6 +4,9 @@
 Simulation method where the original distribution is replaced by the
 distribution in the standard space centered around the provided design point.
 
+This method, based on importance sampling, uses a normal instrumental 
+distribution in the standard space (see [lemaire2009]_ page 255, [melchers1990]_).
+
 Parameters
 ----------
 analyticalResult : :class:`~openturns.AnalyticalResult`
@@ -13,7 +16,7 @@ analyticalResult : :class:`~openturns.AnalyticalResult`
 
 See also
 --------
-PostAnalyticalControlledImportanceSampling
+PostAnalyticalControlledImportanceSampling, NAIS, experimental.CrossEntropyImportanceSampling
 
 Examples
 --------
