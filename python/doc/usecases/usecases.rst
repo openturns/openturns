@@ -27,3 +27,4 @@ Contents
    use_case_oscillator
    coles
    use_case_linthurst
+   use_case_stiffened_panel
