@@ -186,6 +186,8 @@ Bibliography
 .. [knio2010] Le Maître, O., & Knio, O. M. (2010). *Spectral methods for uncertainty
     quantification: with applications to computational fluid dynamics.* Springer
     Science & Business Media.
+.. [ko1994] William L. Ko, Raymond H. Jackson,
+    *Share Buckling Analysis of a Hat-Stiffend Panel*, NASA Technical Memorandum 4644 (November 1994).
 .. [koay2006] Koay C.G., Basser P.J.,
     *Analytically exact correction scheme for signal extraction from noisy magnitude MR signals*,
     Journal of magnetics Resonance 179, 317-322, 2006.
