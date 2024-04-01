@@ -59,8 +59,8 @@ Examples
 >>> import openturns as ot
 >>> import math
 >>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['sin(x) * cos(y) * exp(z)'])
->>> lbIntegration = ot.Point((0., 0., 0.))
->>> ubIntegration = ot.Point((1., 1., 1.))
+>>> lbIntegration = ot.Point((0.0, 0.0, 0.0))
+>>> ubIntegration = ot.Point((1.0, 1.0, 1.0))
 >>> algoC = ot.CubaIntegration('suave')
 >>> value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
 >>> print(value[0])
