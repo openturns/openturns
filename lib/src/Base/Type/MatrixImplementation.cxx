@@ -896,37 +896,27 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare(const MatrixI
 }
 
 /* Square matrix inverse */
-MatrixImplementation MatrixImplementation::inverseSquareInPlace()
+MatrixImplementation MatrixImplementation::inverseSquare() const
 {
   if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
   MatrixImplementation identity(nbRows_, nbColumns_);
   for(UnsignedInteger i = 0; i < nbRows_; ++i)
     identity(i, i) = 1.0;
-  const MatrixImplementation inverseMatrix(solveLinearSystemSquareInPlace(identity));
-  return inverseMatrix;
-}
-
-MatrixImplementation MatrixImplementation::inverseSquare() const
-{
   MatrixImplementation A(*this);
-  return A.inverseSquareInPlace();
+  const MatrixImplementation inverseMatrix(A.solveLinearSystemSquareInPlace(identity));
+  return inverseMatrix;
 }
 
 /* Symmetric matrix inverse */
-MatrixImplementation MatrixImplementation::inverseSymInPlace()
+MatrixImplementation MatrixImplementation::inverseSym() const
 {
   if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
   MatrixImplementation identity(nbRows_, nbColumns_);
   for(UnsignedInteger i = 0; i < nbRows_; ++i)
     identity(i, i) = 1.0;
-  const MatrixImplementation inverseMatrix(solveLinearSystemSymInPlace(identity));
-  return inverseMatrix;
-}
-
-MatrixImplementation MatrixImplementation::inverseSym() const
-{
   MatrixImplementation A(*this);
-  return A.inverseSymInPlace();
+  const MatrixImplementation inverseMatrix(A.solveLinearSystemSymInPlace(identity));
+  return inverseMatrix;
 }
 
 /* Resolution of a linear system : square matrix */
