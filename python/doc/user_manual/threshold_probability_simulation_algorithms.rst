@@ -80,6 +80,7 @@ Non linear solvers
     Bisection
     Brent
     Secant
+    LsqSolver
 
 Simulation result
 =================
