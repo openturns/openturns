@@ -139,13 +139,12 @@ p : float, sequence of float
 Notes
 -----
 The conditional cumulative distribution function of the component :math:`X_j`
-given that the components of indices :math:`k \leq j-1` are fixed. It is defined as follows:
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})` is defined by:
 
 .. math::
 
-    p = F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}},
-        \quad x_j \in \Rset
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
 For :math:`j=1` it
 reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
@@ -174,17 +173,21 @@ ddf : float,
 
 Notes
 -----
-The conditional derivative density function is defined as follows:
+The conditional derivative density function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
 
 .. math::
 
-    \dfrac{d^2}{d\,x_j^2}\Prob{X_j \leq x_j \mid X_1=x_1, \ldots,
-    X_{j-1}=x_{j-1}}
+     \dfrac{d^2}{d\,x_j^2}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
 
-ie the :math:`j`-th component is the conditional DDF of :math:`X_j` at :math:`x_j` given that :math:`X_1=x_1,
-\ldots,X_{j-1}=x_{j-1}`. For :math:`j=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of
+where for :math:`2 \leq j \leq d`:
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`, ie the DDF of
 the first component at :math:`x_1`.
-    
 
 See Also
 --------
@@ -211,6 +214,24 @@ Returns
 -------
 cpdf : float, sequence of float
     Conditional PDF at *xd*, given *xcond*.
+
+Notes
+-----
+The conditional probability density function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
+
+.. math::
+
+     \dfrac{d}{d\,x_j}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
+
+where for :math:`2 \leq j \leq d`:
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1` it
+reduces to :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`.
 
 See Also
 --------
@@ -239,7 +260,20 @@ xj : float
     Conditional quantile of order *p* of the component :math:`X_j`
     given that the components of indices :math:`k \leq j-1` are fixed and
     equal to *xcond*.
-    
+
+Notes
+-----
+The conditional quantile of order :math:`p` of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
+
+.. math::
+
+     F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p; x_1, \dots, x_{j-1})
+
+where the generalized inverse is defined in :eq:`quantileDef`.
+For :math:`j=1` it
+reduces to :math:`F^{-1}_{X_1}(p)`.
 
 See Also
 --------
@@ -269,11 +303,14 @@ The sequential conditional cumulative distribution function is defined as follow
 
 .. math::
 
-    \left(\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
+    \left(F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})\right)_{j=1,\ldots,d}
 
-ie the :math:`i`-th component is the conditional CDF of :math:`X_i` at :math:`x_i` given
-that :math:`X_1=x_1,\ldots,X_{i-1}=x_{i-1}`. For :math:`i=1` it
-reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1}`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalCDF
@@ -296,17 +333,19 @@ ddf : sequence of float
 
 Notes
 -----
-The sequential conditional derivative density function is defined as follows:
+The sequential conditional derivative density function is defined by:
 
 .. math::
 
-    \left(\dfrac{d^2}{d\,x_i^2}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots,
-    X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
+    \left(\dfrac{d^2}{d\,x_j^2}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
+    \right)_{j=1,\ldots,d}
 
-ie the :math:`i`-th component is the conditional DDF of :math:`X_i` at :math:`x_i` given that :math:`X_1=x_1,
-\ldots,X_{i-1}=x_{i-1}`. For :math:`i=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of
-the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
 
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalDDF
 OT_Distribution_computeSequentialConditionalDDF_doc
@@ -332,11 +371,14 @@ The sequential conditional density function is defined as follows:
 
 .. math::
 
-    \left(\dfrac{d}{d\,x_i}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
+    \left(\dfrac{d}{d\,x_j}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})\right)_{j=1,\ldots,d}
 
-ie the :math:`i`-th component is the conditional PDF of :math:`X_i` at :math:`x_i` given
-that :math:`X_1=x_1,\ldots,X_{i-1}=x_{i-1}`. For :math:`i=1` it reduces to
-:math:`\dfrac{d}{d\,x_1}\Prob{X_1 \leq x_1}`, ie the PDF of the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalPDF
@@ -349,26 +391,26 @@ OT_Distribution_computeSequentialConditionalPDF_doc
 
 Parameters
 ----------
-q : sequence of float in :math:`[0,1]`, with size :math:`d`
+p : sequence of float in :math:`[0,1]`, with size :math:`d`
     Values to be taken sequentially as the argument of the conditional quantile.
 
 Returns
 -------
 Q : sequence of float
-    Sequance of conditional quantiles values at *q*
+    Sequence of conditional quantiles values at *p*
 
 Notes
 -----
-The sequential conditional quantile function is defined as follows:
+The sequential conditional quantile function is defined by:
 
 .. math::
 
-    \left(F^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i-1}\right)_{i=1,\ldots,d}
+    \left(F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p_j; x_1, \dots, x_{j-1})\right)_{i=1,\ldots,d}
 
-where :math:`x_1,\ldots,x_{i-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and for :math:`2\leq i \leq d`,
-:math:`x_i=F_i^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i-1})`: the conditioning part is the set of already
+where the generalized inverse is defined in :eq:`quantileDef` and
+where :math:`x_1,\ldots,x_{j-1}` are defined recursively as :math:`x_1=F_1^{-1}(p_1)` and for :math:`2\leq j \leq d`,
+:math:`x_j=F_{X_j}^{-1}(p_j|X_1=x_1,\ldots,X_{j-1}=x_{j-1})`: the conditioning part is the set of already
 computed conditional quantiles."
-
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
 OT_Distribution_computeSequentialConditionalQuantile_doc
@@ -578,8 +620,8 @@ The probability density function is defined as follows:
 
 .. math::
 
-    f_{\vect{X}}(\vect{x}) = \frac{\partial^n F_{\vect{X}}(\vect{x})}
-                                  {\prod_{i=1}^n \partial x_i},
+    f_{\vect{X}}(\vect{x}) = \frac{\partial^d F_{\vect{X}}(\vect{x})}
+                                  {\prod_{i=1}^d \partial x_i},
                              \quad \vect{x} \in \Rset^d"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDF
@@ -599,7 +641,16 @@ Returns
 -------
 dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the PDF with respect to the distribution
-    parameters at input *x*."
+    parameters at input *x*.
+
+Notes
+-----
+Let :math:`\vect{\theta}` be the vector of parameters of the distribution. Then
+the gradient of the probability density function :math:`f_{\vect{X})` is defined by:
+
+.. math::
+
+    (\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_d})"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDFGradient
 OT_Distribution_computePDFGradient_doc
@@ -663,6 +714,7 @@ If the underlying variable :math:`X` is scalar, then the quantile of order :math
 is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
+      :label: quantileDef
 
       x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
 
