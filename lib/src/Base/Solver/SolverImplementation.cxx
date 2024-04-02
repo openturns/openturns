@@ -237,8 +237,8 @@ Scalar SolverImplementation::solve(const UniVariateFunction &,
 }
 
 /** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 */
-Point SolverImplementation::solve(const Function & function,
-                                  const Point & startingPoint) const
+Point SolverImplementation::solve(const Function &,
+                                  const Point &) const
 {
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const UniVariateFunction & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";
 
