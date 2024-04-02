@@ -126,26 +126,26 @@ OT_Distribution_computeComplementaryCDF_doc
 
 Parameters
 ----------
-xd : float, sequence of float
-    Conditional CDF input (last component).
-xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
-    Conditioning values for the other components.
+xj : float, sequence of float,
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
 
 Returns
 -------
-F : float, sequence of float
-    Conditional CDF value at  *xd* given *xcond*.
+p : float, sequence of float
+    Conditional CDF value at  *xj* given *xcond*.
 
 Notes
 -----
-The conditional cumulative distribution function of the last component with
-respect to the other fixed components is defined as follows:
+The conditional cumulative distribution function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed. It is defined as follows:
 
 .. math::
 
-    F_{X_d \mid X_1, \ldots, X_{d - 1}}(x_d) =
-        \Prob{X_d \leq x_d \mid X_1=x_1, \ldots, X_{d-1}=x_{d-1}},
-        \quad x_d \in \Rset"
+    p = F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; (x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}},
+        \quad x_j \in \Rset"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalCDF
 OT_Distribution_computeConditionalCDF_doc
@@ -159,16 +159,15 @@ With respect to the other fixed components.
 
 Parameters
 ----------
-xd : float
-    Real number.
-xcond : sequence of float with dimension :math:`d-1`
-    Conditioning values.
+xj : float, sequence of float,
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
 
 Returns
 -------
-d : float
-    Conditional DDF value at *xd*, given *xcond*
-    where *xd* is the last component of the multivariate distribution.
+ddf : float,
+    Conditional DDF value at  *xj* given *xcond*.
     
 
 See Also
@@ -187,16 +186,15 @@ Conditional PDF of the last component with respect to the other fixed components
 
 Parameters
 ----------
-xd : float, sequence of float
-    The input value where the conditional CDF must be evaluated.
-xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
-    Conditioning values.
+xj : float, sequence of float,
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
 
 Returns
 -------
-F : float, sequence of float
-    Conditional PDF at *xd*, given *xcond*
-    where *xd* is the last component of the multivariate distribution.
+cpdf : float, sequence of float
+    Conditional PDF at *xd*, given *xcond*.
 
 See Also
 --------
@@ -216,14 +214,16 @@ Parameters
 ----------
 p : float, sequence of float, :math:`p \in [0, 1]`
     Conditional quantile.
-xcond : sequence of float, 2-d sequence of float with size :math:`d-1`
-    Conditioning values.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
 
 Returns
 -------
-x1 : float
-    Conditional quantile at input :math:`p` given *xcond*
-    where *x1* is the first component of the multivariate distribution.
+xj : float
+    Conditional quantile of order *p* of the component :math:`X_j`
+    given that the components of indices :math:`k \leq j-1` are fixed and
+    equal to *xcond*.
+    
 
 See Also
 --------
