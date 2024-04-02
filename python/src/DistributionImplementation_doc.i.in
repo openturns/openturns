@@ -126,9 +126,9 @@ OT_Distribution_computeComplementaryCDF_doc
 
 Parameters
 ----------
-xj : float, sequence of float,
+xj : float, sequence of float
     Conditional CDF input.
-xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
     Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
@@ -138,6 +138,7 @@ p : float, sequence of float
 
 Notes
 -----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
 The conditional cumulative distribution function of the component :math:`X_j`
 given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})` is defined by:
 
@@ -161,9 +162,9 @@ With respect to the other fixed components.
 
 Parameters
 ----------
-xj : float, sequence of float,
+xj : float, sequence of float
     Conditional CDF input.
-xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
     Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
@@ -173,6 +174,7 @@ ddf : float,
 
 Notes
 -----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
 The conditional derivative density function of the component :math:`X_j`
 given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
 is defined by:
@@ -205,9 +207,9 @@ Conditional PDF of the last component with respect to the other fixed components
 
 Parameters
 ----------
-xj : float, sequence of float,
+xj : float, sequence of float, 
     Conditional CDF input.
-xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
     Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
@@ -217,6 +219,7 @@ cpdf : float, sequence of float
 
 Notes
 -----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
 The conditional probability density function of the component :math:`X_j`
 given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
 is defined by:
@@ -251,7 +254,7 @@ Parameters
 ----------
 p : float, sequence of float, :math:`p \in [0, 1]`
     Conditional quantile.
-xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
     Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
@@ -263,6 +266,7 @@ xj : float
 
 Notes
 -----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
 The conditional quantile of order :math:`p` of the component :math:`X_j`
 given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
 is defined by:
@@ -271,7 +275,7 @@ is defined by:
 
      F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p; x_1, \dots, x_{j-1})
 
-where the generalized inverse is defined in :eq:`quantileDef`.
+where the generalized inverse is defined in :eq:`quantileDefinition`.
 For :math:`j=1` it
 reduces to :math:`F^{-1}_{X_1}(p)`.
 
@@ -407,7 +411,7 @@ The sequential conditional quantile function is defined by:
 
     \left(F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p_j; x_1, \dots, x_{j-1})\right)_{i=1,\ldots,d}
 
-where the generalized inverse is defined in :eq:`quantileDef` and
+where the generalized inverse is defined in :eq:`quantileDefinition` and
 where :math:`x_1,\ldots,x_{j-1}` are defined recursively as :math:`x_1=F_1^{-1}(p_1)` and for :math:`2\leq j \leq d`,
 :math:`x_j=F_{X_j}^{-1}(p_j|X_1=x_1,\ldots,X_{j-1}=x_{j-1})`: the conditioning part is the set of already
 computed conditional quantiles."
@@ -714,7 +718,7 @@ If the underlying variable :math:`X` is scalar, then the quantile of order :math
 is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
-      :label: quantileDef
+      :label: quantileDefinition
 
       x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
 
