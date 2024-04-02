@@ -95,10 +95,10 @@ private:
   UnsignedInteger nComp_ = 0;
 
   /* The requested relative accuracy */
-  Scalar epsRel_ = 1.E-4;
+  Scalar epsRel_ = 1.e-4;
 
   /* The requested absolute accuracy */
-  Scalar epsAbs_ = 1.E-4;
+  Scalar epsAbs_ = 1.e-4;
 
   /* The name of the optimization routine to use */
   String optRoutine_;

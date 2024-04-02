@@ -45,7 +45,7 @@ int main(int, char *[])
       {
           CubaIntegration algo(routines[i]);
           const Point value(algo.integrate(f, Interval(lbIntegration, ubIntegration)));
-          assert_almost_equal(value[0], valueRef, 1.E-3, 1.E-3);
+          assert_almost_equal(value[0], valueRef, 1.e-3, 1.e-3);
       }
     }
 
@@ -65,12 +65,12 @@ int main(int, char *[])
           if (routines[i] == "vegas")
           {
             /* Vegas seemingly needs more favorable parameters there */
-            algo.setEpsAbs(5.E-3);
-            algo.setEpsRel(1.E-3);
+            algo.setEpsAbs(5.e-3);
+            algo.setEpsRel(1.e-3);
             algo.setMaxeval(10000000);
           }
           const Point value(algo.integrate(f, Interval(lbIntegration, ubIntegration)));
-          assert_almost_equal(value, valueRef, 1.E-3, 1.E-3);
+          assert_almost_equal(value, valueRef, 1.e-3, 1.e-3);
       }
     }
 

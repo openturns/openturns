@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implement the CUba mathod for multidimensional integration
+ *  @brief Implement the Cuba mathod for multidimensional integration
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
