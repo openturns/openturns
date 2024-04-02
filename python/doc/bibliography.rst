@@ -27,6 +27,7 @@ Bibliography
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
     `pdf <https://arxiv.org/pdf/1501.05242>`__
+.. [baron2014] Baron, M. (2019). *Probability and statistics for computer scientists*. CRC press.
 .. [beirlant2004] Beirlant J., Goegebeur Y., Teugels J., Segers J.,
     *Statistics of extremes: theory and applications*, Wiley, 2004
 .. [benton2003] Benton D. and Krishnamoorthy K. (2003). *Computing
@@ -50,6 +51,8 @@ Bibliography
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
+.. [bingham2010] Bingham, N. H., & Fry, J. M. (2010).
+    *Regression: Linear models in statistics*. Springer.
 .. [cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
     `pdf <https://arxiv.org/pdf/1508.03483.pdf>`__
 .. [caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
@@ -105,6 +108,7 @@ Bibliography
     `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
+.. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
 .. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density
     estimator: L2 theory*, December 1981, Probability Theory and Related Fields.
     57 (4): 453–476.
@@ -361,6 +365,8 @@ Bibliography
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [sen1990] Sen, A., & Srivastava, M. (1990). *Regression analysis: theory, methods, and applications*.
+    Springer.
 .. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).
     *A reliable data-based bandwidth selection method for kernel density estimation.*
     Journal of the Royal Statistical Society. Series B (Methodological),
@@ -402,6 +408,7 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*

@@ -61,8 +61,17 @@ Detection and quantification of dependencies
     spearman_coefficient
     spearman_test
     chi2_independence_test
-    linear_regression
     tail_dependence
+
+Regression
+----------
+
+.. toctree::
+    :maxdepth: 1
+
+
+    linear_regression
+    regression_analysis
 
 Estimating a quantile
 ---------------------
