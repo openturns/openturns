@@ -453,6 +453,7 @@ ot_add_python_module(solver solver_module.i
                       RungeKutta.i RungeKutta_doc.i.in
                       Fehlberg.i Fehlberg_doc.i.in
                       BaseSolverTemplateDefs.i
+                      LsqSolver.i LsqSolver_doc.i.in
                    )
 
 ot_add_python_module(algo algo_module.i
