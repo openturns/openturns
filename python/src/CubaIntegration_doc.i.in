@@ -72,39 +72,39 @@ Examples
 "
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::getEpsRel
+%feature("docstring") OT::CubaIntegration::getMaximumRelativeError
 "Accessor to the relative accuracy required in the integration.
 
 Returns
 -------
-epsRel : float
+maximumRelativeError : float
     The relative accuracy that the *integrate* method attemps to achieve."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::setEpsRel
+%feature("docstring") OT::CubaIntegration::setMaximumRelativeError
 "Accessor to the relative accuracy required in the integration.
 
 Parameters
 ----------
-epsRel : float
+maximumRelativeError : float
     The relative accuracy that the *integrate* method attemps to achieve."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::getEpsAbs
+%feature("docstring") OT::CubaIntegration::getMaximumAbsoluteError
 "Accessor to the absolute accuracy required in the integration.
 
 Returns
 -------
-epsAbs : float
+maximumAbsoluteError : float
     The absolute accuracy that the *integrate* method attemps to achieve."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::setEpsAbs
+%feature("docstring") OT::CubaIntegration::setMaximumAbsoluteError
 "Accessor to the absolute accuracy required in the integration.
 
 Parameters
 ----------
-epsAns : float
+maximumAbsoluteError : float
     The absolute accuracy that the *integrate* method attemps to achieve."
 
 // ---------------------------------------------------------------------
@@ -126,21 +126,21 @@ optRoutine : str
     The name of the optimization routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::getMaxeval
+%feature("docstring") OT::CubaIntegration::getMaximumEvaluationNumber
 "Accessor to the maximal number of integrand evaluations.
 
 Returns
 -------
-maxeval : integer
+N : integer
     The maximal number of times the algorithm will attempt to evaluate the integrand."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::setMaxeval
+%feature("docstring") OT::CubaIntegration::setMaximumEvaluationNumber
 "Accessor to the maximal number of integrand evaluations.
 
 Parameters
 ----------
-maxeval : integer, :math:`maxeval>0`
+N : integer, :math:`N>0`
     The maximal number of times the algorithm will attempt to evaluate the integrand."
 
 // ---------------------------------------------------------------------

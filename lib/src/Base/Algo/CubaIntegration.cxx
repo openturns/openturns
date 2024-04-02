@@ -130,8 +130,9 @@ Point CubaIntegration::integrate(const Function & function,
     const UnsignedInteger key = 0; /* Default integration rule */
 
     Cuhre(inputDimension, outputDimension, computeIntegrand,
-            (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
-            mineval, maxeval_, key, NULL, NULL, &nregions, &neval, &fail,
+            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+            maximumAbsoluteError_, flags_, mineval, maximumEvaluationNumber_,
+            key, NULL, NULL, &nregions, &neval, &fail,
             const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()),
             const_cast<double*>(prob.data()));
@@ -150,8 +151,9 @@ Point CubaIntegration::integrate(const Function & function,
     const SignedInteger nextra = 0; /* No peakfinder routine */
 
     Divonne(inputDimension, outputDimension, computeIntegrand,
-              (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
-              seed, mineval, maxeval_, key1, key2, key3, maxpass, border,
+              (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+              maximumAbsoluteError_, flags_, seed, mineval,
+              maximumEvaluationNumber_, key1, key2, key3, maxpass, border,
               maxchisq, mindeviation, ngiven, inputDimension, NULL, nextra,
               NULL, NULL, NULL, &nregions, &neval, &fail,
               const_cast<double*>(integral.data()),
@@ -166,8 +168,9 @@ Point CubaIntegration::integrate(const Function & function,
     const Scalar flatness = 25.; /* Type of norm used to compute the fluctuation in a sample */
 
     Suave(inputDimension, outputDimension, computeIntegrand,
-            (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
-            seed, mineval, maxeval_, nnew, nmin, flatness, NULL, NULL,
+            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+            maximumAbsoluteError_, flags_, seed, mineval,
+            maximumEvaluationNumber_, nnew, nmin, flatness, NULL, NULL,
             &nregions, &neval, &fail, const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
@@ -180,8 +183,9 @@ Point CubaIntegration::integrate(const Function & function,
     const SignedInteger gridno = 0; /* Slot in the internal grid table */
 
     Vegas(inputDimension, outputDimension, computeIntegrand,
-            (void*)(ppFunctionInterval), nvec, epsRel_, epsAbs_, flags_,
-            seed, mineval, maxeval_, nstart, nincrease, nbatch, gridno, NULL,
+            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+            maximumAbsoluteError_, flags_, seed, mineval,
+            maximumEvaluationNumber_, nstart, nincrease, nbatch, gridno, NULL,
             NULL, &neval, &fail, const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
@@ -201,28 +205,28 @@ Point CubaIntegration::integrate(const Function & function,
 #endif
 }
 
-/* epsRel accessor */
-Scalar CubaIntegration::getEpsRel() const
+/* maximumRelativeError accessor */
+Scalar CubaIntegration::getMaximumRelativeError() const
 {
-  return epsRel_;
+  return maximumRelativeError_;
 }
 
-void CubaIntegration::setEpsRel(const Scalar epsRel)
+void CubaIntegration::setMaximumRelativeError(const Scalar maximumRelativeError)
 {
-  if (!(epsRel > 0)) throw InvalidArgumentException(HERE) << "Error: epsRel must be positive, here epsRel=" << epsRel;
-  epsRel_ = epsRel;
+  if (!(maximumRelativeError > 0)) throw InvalidArgumentException(HERE) << "Error: maximumRelativeError must be positive, here maximumRelativeError=" << maximumRelativeError;
+  maximumRelativeError_ = maximumRelativeError;
 }
 
-/* epsAbs accessor */
-Scalar CubaIntegration::getEpsAbs() const
+/* maximumAbsoluteError accessor */
+Scalar CubaIntegration::getMaximumAbsoluteError() const
 {
-  return epsAbs_;
+  return maximumAbsoluteError_;
 }
 
-void CubaIntegration::setEpsAbs(const Scalar epsAbs)
+void CubaIntegration::setMaximumAbsoluteError(const Scalar maximumAbsoluteError)
 {
-  if (!(epsAbs > 0)) throw InvalidArgumentException(HERE) << "Error: epsAbs must be positive, here epsAbs=" << epsAbs;
-  epsAbs_ = epsAbs;
+  if (!(maximumAbsoluteError > 0)) throw InvalidArgumentException(HERE) << "Error: maximumAbsoluteError must be positive, here maximumAbsoluteError=" << maximumAbsoluteError;
+  maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
 /* optRoutine accessor */
@@ -237,15 +241,15 @@ void CubaIntegration::setOptRoutine(const String optRoutine)
   optRoutine_ = optRoutine;
 }
 
-/* maxeval accessor */
-UnsignedInteger CubaIntegration::getMaxeval() const
+/* maximumEvaluationNumber accessor */
+UnsignedInteger CubaIntegration::getMaximumEvaluationNumber() const
 {
-  return maxeval_;
+  return maximumEvaluationNumber_;
 }
 
-void CubaIntegration::setMaxeval(const UnsignedInteger maxeval)
+void CubaIntegration::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
 {
-  maxeval_ = maxeval;
+  maximumEvaluationNumber_ = maximumEvaluationNumber;
 }
 
 /* flags accessor */
@@ -264,10 +268,10 @@ String CubaIntegration::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << CubaIntegration::GetClassName()
-      << ", epsRel=" << epsRel_
-      << ", epsAbs=" << epsAbs_
+      << ", maximumRelativeError=" << maximumRelativeError_
+      << ", maximumAbsoluteError=" << maximumAbsoluteError_
       << ", optRoutine=" << optRoutine_
-      << ", maxeval=" << maxeval_
+      << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
       << ", flags=" << flags_;
   return oss;
 }
@@ -277,10 +281,10 @@ String CubaIntegration::__str__(const String & ) const
 {
   OSS oss(false);
   oss << CubaIntegration::GetClassName()
-      << "(epsRel=" << epsRel_
-      << ", epsAbs=" << epsAbs_
+      << "(maximumRelativeError=" << maximumRelativeError_
+      << ", maximumAbsoluteError=" << maximumAbsoluteError_
       << ", optRoutine=" << optRoutine_
-      << ", maxeval=" << maxeval_
+      << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
       << ", flags=" << flags_
       << ")";
   return oss;
@@ -290,10 +294,10 @@ String CubaIntegration::__str__(const String & ) const
 void CubaIntegration::save(Advocate & adv) const
 {
   IntegrationAlgorithmImplementation::save(adv);
-  adv.saveAttribute("epsRel_", epsRel_);
-  adv.saveAttribute("epsAbs_", epsAbs_);
+  adv.saveAttribute("maximumRelativeError_", maximumRelativeError_);
+  adv.saveAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
   adv.saveAttribute("optRoutine_", optRoutine_);
-  adv.saveAttribute("maxeval_", maxeval_);
+  adv.saveAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.saveAttribute("flags_", flags_);
 }
 
@@ -301,10 +305,10 @@ void CubaIntegration::save(Advocate & adv) const
 void CubaIntegration::load(Advocate & adv)
 {
   IntegrationAlgorithmImplementation::load(adv);
-  adv.loadAttribute("epsRel_", epsRel_);
-  adv.loadAttribute("epsAbs_", epsAbs_);
+  adv.loadAttribute("maximumRelativeError_", maximumRelativeError_);
+  adv.loadAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
   adv.loadAttribute("optRoutine_", optRoutine_);
-  adv.loadAttribute("maxeval_", maxeval_);
+  adv.loadAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.loadAttribute("flags_", flags_);
 }
 

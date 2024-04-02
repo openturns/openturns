@@ -51,21 +51,21 @@ public:
   Point integrate(const Function & function,
                   const Interval & interval) const override;
 
-  /** epsRel accessor */
-  Scalar getEpsRel() const;
-  void setEpsRel(const Scalar epsRel);
+  /** maximumRelativeError accessor */
+  Scalar getMaximumRelativeError() const;
+  void setMaximumRelativeError(const Scalar maximumRelativeError);
 
-  /** epsAbs accessor */
-  Scalar getEpsAbs() const;
-  void setEpsAbs(const Scalar epsAbs);
+  /** maximumAbsoluteError accessor */
+  Scalar getMaximumAbsoluteError() const;
+  void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** optRoutine accessor */
   String getOptRoutine() const;
   void setOptRoutine(const String optRoutine);
 
-  /** maxeval accessor */
-  UnsignedInteger getMaxeval() const;
-  void setMaxeval(const UnsignedInteger maxEval);
+  /** maximumEvaluationNumber accessor */
+  UnsignedInteger getMaximumEvaluationNumber() const;
+  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
 
   /** flags accessor */
   UnsignedInteger getFlags() const;
@@ -95,16 +95,16 @@ private:
   UnsignedInteger nComp_ = 0;
 
   /* The requested relative accuracy */
-  Scalar epsRel_ = 1.e-4;
+  Scalar maximumRelativeError_ = 1.e-4;
 
   /* The requested absolute accuracy */
-  Scalar epsAbs_ = 1.e-4;
+  Scalar maximumAbsoluteError_ = 1.e-4;
 
   /* The name of the optimization routine to use */
   String optRoutine_;
 
   /* The maximal number of evaluations of the integrand */
-  UnsignedInteger maxeval_ = 1000000;
+  UnsignedInteger maximumEvaluationNumber_ = 1000000;
 
   /* The flags to use for the integration */
   UnsignedInteger flags_ = 2;

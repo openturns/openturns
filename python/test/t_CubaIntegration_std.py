@@ -35,8 +35,8 @@ for r in routines:
     algoC = ot.CubaIntegration(r)
     if r == "vegas":
         # Vegas seemingly needs more favorable parameters there
-        algoC.setEpsAbs(5.0e-3)
-        algoC.setEpsRel(1.0e-3)
-        algoC.setMaxeval(10000000)
+        algoC.setMaximumRelativeError(5.0e-3)
+        algoC.setMaximumAbsoluteError(5.0e-3)
+        algoC.setMaximumEvaluationNumber(10000000)
     value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
     ott.assert_almost_equal(value, valueRef, 1.0e-3, 1.0e-3)
