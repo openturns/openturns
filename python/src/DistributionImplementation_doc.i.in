@@ -275,7 +275,7 @@ is defined by:
 
      F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p; x_1, \dots, x_{j-1})
 
-where the generalized inverse is defined in :eq:`quantileDefinition`.
+where :math:`F^{-1}` is the quantile function.
 For :math:`j=1` it
 reduces to :math:`F^{-1}_{X_1}(p)`.
 
@@ -411,7 +411,7 @@ The sequential conditional quantile function is defined by:
 
     \left(F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p_j; x_1, \dots, x_{j-1})\right)_{i=1,\ldots,d}
 
-where the generalized inverse is defined in :eq:`quantileDefinition` and
+where :math:`F^{-1}` is the quantile function and
 where :math:`x_1,\ldots,x_{j-1}` are defined recursively as :math:`x_1=F_1^{-1}(p_1)` and for :math:`2\leq j \leq d`,
 :math:`x_j=F_{X_j}^{-1}(p_j|X_1=x_1,\ldots,X_{j-1}=x_{j-1})`: the conditioning part is the set of already
 computed conditional quantiles."
@@ -718,9 +718,8 @@ If the underlying variable :math:`X` is scalar, then the quantile of order :math
 is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
-      :label: quantileDefinition
 
-      x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+     x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
 
 If the distribution is scalar and discrete, then the quantile of order :math:`p=0` is defined by:
 
