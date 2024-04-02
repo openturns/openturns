@@ -143,7 +143,7 @@ given that the components of indices :math:`k \leq j-1` are fixed. It is defined
 
 .. math::
 
-    p = F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; (x_1, \dots, x_{j-1}) =
+    p = F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
         \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}},
         \quad x_j \in \Rset
 
@@ -300,7 +300,7 @@ The sequential conditional derivative density function is defined as follows:
 
 .. math::
 
-    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_i^2}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots,
+    \left(\dfrac{d^2}{d\,x_i^2}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots,
     X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
 
 ie the :math:`i`-th component is the conditional DDF of :math:`X_i` at :math:`x_i` given that :math:`X_1=x_1,
@@ -363,10 +363,10 @@ The sequential conditional quantile function is defined as follows:
 
 .. math::
 
-    \left(F^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i_1}\right)_{i=1,\ldots,d}
+    \left(F^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i-1}\right)_{i=1,\ldots,d}
 
 where :math:`x_1,\ldots,x_{i-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and for :math:`2\leq i \leq d`,
-:math:`x_i=F_i^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i_1})`: the conditioning part is the set of already
+:math:`x_i=F_i^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i-1})`: the conditioning part is the set of already
 computed conditional quantiles."
 
 %enddef
@@ -385,7 +385,7 @@ x : sequence of float, 2-d sequence of float
 
 Returns
 -------
-d : :class:`~openturns.Point`, :class:`~openturns.Sample`
+ddf : :class:`~openturns.Point`, :class:`~openturns.Sample`
     DDF value at *x*.
 
 Notes
@@ -396,8 +396,8 @@ function with respect to :math:`\vect{x}`:
 .. math::
 
     \vect{\nabla}_{\vect{x}} f_{\vect{X}}(\vect{x}) =
-        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_i},
-                  \quad i = 1, \ldots, n\right)},
+        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_1},
+                 \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_d}\right)},
         \quad \vect{x} \in \Rset^d"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeDDF
