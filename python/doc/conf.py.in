@@ -53,6 +53,9 @@ todo_include_todos = True
 
 extensions.append('sphinx.ext.coverage')
 
+extensions.append('sphinx.ext.intersphinx')
+intersphinx_mapping = {'matplotlib': ('https://matplotlib.org/stable/', (None, 'matplotlib-objects.inv'))}
+
 extensions.append('sphinx.ext.imgmath')
 imgmath_latex_preamble = r'\usepackage{{{0}math_notations}}'.format(
     os.path.dirname(__file__) + os.sep)
@@ -359,3 +362,6 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# If true, Sphinx will warn about all references where the target cannot be found.
+nitpicky = True

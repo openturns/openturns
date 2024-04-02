@@ -29,7 +29,7 @@ namespace OT {
 %include CovarianceMatrix_doc.i
 
 %apply const ScalarCollection & { const OT::CovarianceMatrix::ScalarCollection & };
-%template(_CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
+%template(CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
 %template(_CovarianceMatrixPersistentCollection) OT::PersistentCollection<OT::CovarianceMatrix>;
 
 %typemap(in) const CovarianceMatrix & ($1_basetype temp) {

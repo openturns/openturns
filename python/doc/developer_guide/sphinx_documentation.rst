@@ -18,7 +18,7 @@ Sphinx extensions
 ~~~~~~~~~~~~~~~~~
 
 numpydoc
-    The `numpydoc <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_
+    The `numpydoc <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_
     Sphinx extension is used for a structured semi-automatic generation of the
     :ref:`User Manual <user_manual>` from the :ref:`docstrings <contribute_docstrings>`
     of OpenTURNS objects.
@@ -66,7 +66,7 @@ Docstring conventions
 ~~~~~~~~~~~~~~~~~~~~~
 
 Please follow `PEP257 <https://www.python.org/dev/peps/pep-0257>`_ and
-`numpydoc <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_
+`numpydoc <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_
 guidelines for writing the docstrings as well as `PEP8 <http://legacy.python.org/dev/peps/pep-0008/>`_
 recommendations for the Examples section (for instance, please don't
 ``from openturns import *``, indent with 4 spaces, etc. ...).
@@ -144,7 +144,7 @@ SPHINX_EXECUTABLE
 
 SPHINX_FLAGS
     This is passed as the options of the sphinx-build command (see
-    `sphinx-build invocation <http://sphinx-doc.org/invocation.html#invocation-of-sphinx-build>`_).
+    `sphinx-build invocation <https://www.sphinx-doc.org/en/master/man/sphinx-build.html>`_).
 
 All these targets depend on the rst files located in the sources
 (:file:`$OT_SOURCE_DIR/python/doc/*.rst`).

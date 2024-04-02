@@ -5,7 +5,6 @@ Bibliography
 ============
 .. [aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
     Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
-    `pdf <https://www.nr.no/files/samba/bff/SAMBA2204b.pdf>`__
 .. [abate1992] Abate, J. and Whitt, W. (1992). *The Fourier-series method for
     inverting transforms of probability distributions*.
     Queueing Systems 10, 5--88., 1992, formula 5.5.
@@ -84,9 +83,8 @@ Bibliography
     *Modelling under risk and uncertainty.* John Wiley & Sons.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
-    `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
-.. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
-    `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
+    `pdf <http://luc.devroye.org/handbooksimulation1.pdf>`__
+.. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*
 .. [diebolt2008] Diebolt J., *Improving probability-weighted moment methods for the generalized extreme value distribution*,
     REVSTAT Statistical Journal, 2008.
     `pdf <https://www.ine.pt/revstat/pdf/rs080103.pdf>`__
@@ -225,13 +223,13 @@ Bibliography
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
-    `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
+    `pdf <http://www.bios.unc.edu/~mhudgens/bios/662/2008fall/Backup/lilliefors1967.pdf>`__
 .. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
     *Uncertainty analysis using evidence theory–confronting level-1 and
     level-2 approaches with data availability and computational constraints.*
     Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
-    `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+    `pdf <https://www.r-project.org/doc/reports/CLoader-dbinom-2002.pdf>`__
 .. [luke] Luke Gustafson. The Spearman Rho null distribution. https://www.luke-g.com/math/spearman/index.html
 .. [luo2018] Zhendong Luo, Goong Chen
     *Proper Orthogonal Decomposition Methods for Partial Differential Equations.*
@@ -397,7 +395,7 @@ Bibliography
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
-    `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+    `pdf <https://zhilin.math.ncsu.edu/TEACHING/MA580/Stoer_Bulirsch.pdf>`__
 .. [sudret2006] Sudret, B. (2006). *Global sensitivity analysis using polynomial
     chaos expansions.* In. Proceedings of the 5th International Conference
     on Computational Stochastic Mechanics (CSM5), Rhodos (2006)

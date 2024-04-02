@@ -12,9 +12,10 @@ conditional : :class:`~openturns.ConditionalDistribution`
 observations : 2-d sequence of float
     Observations :math:`x_i`.
 
-See also
+See Also
 --------
-ConditionalDistribution, MetropolisHastings
+openturns.ConditionalDistribution
+openturns.MetropolisHastings
 
 Notes
 -----

@@ -79,7 +79,7 @@ The unicity and the strongness of the design point can be checked thanks to the
 
 See also
 --------
-FORM, SORM, StrongMaximumTest, Event, StandardEvent, AnalyticalResult
+FORM, SORM, StrongMaximumTest, StandardEvent, AnalyticalResult
 
 Examples
 --------

@@ -218,7 +218,7 @@ print("Confidence interval MC : [%.4f, %.4f]" % (prb - 0.5 * cl, prb + 0.5 * cl)
 # Usage with SystemFORM
 # ---------------------
 #
-# The :class:`SystemFORM` class implements an approximation method suitable for system events.
+# The :class:`~openturns.SystemFORM` class implements an approximation method suitable for system events.
 # The event must be in its disjunctive normal form (union of intersections, or a single intersection).
 
 # %%
@@ -282,7 +282,7 @@ event = ot.UnionEvent(
 print("Probability of the event : %.4f" % event.getSample(10000).computeMean()[0])
 
 # %%
-# We can also run a :class:`~openturns.systemFORM` algorithm to estimate the probability differently.
+# We can also run a :class:`~openturns.SystemFORM` algorithm to estimate the probability differently.
 
 # %%
 # We first set up a solver to find the design point.

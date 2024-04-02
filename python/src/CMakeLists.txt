@@ -1095,6 +1095,7 @@ if (SPHINX_FOUND)
   list (APPEND doc_formats doctest)
   list (APPEND doc_formats qthelp)
   list (APPEND doc_formats devhelp)
+  list (APPEND doc_formats linkcheck)
 
   set (SPHINX_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/sphinx_build)
   set (SPHINX_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../doc)

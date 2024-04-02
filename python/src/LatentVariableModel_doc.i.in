@@ -54,7 +54,7 @@ rely on a constant functional basis: please use the :class:`~openturns.ConstantB
 
 See Also
 --------
-CovarianceModel
+openturns.CovarianceModel
 
 Examples
 --------

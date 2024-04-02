@@ -26,7 +26,7 @@ result : float"
 
 See also
 --------
-SpecFunc.BesselI0
+openturns.SpecFunc.BesselI0
 
 Parameters
 ----------
@@ -66,7 +66,7 @@ result : float"
 
 See also
 --------
-SpecFunc.BesselI1
+openturns.SpecFunc.BesselI1
 
 Parameters
 ----------
@@ -126,7 +126,7 @@ result : float"
 
 See also
 --------
-SpecFunc.BesselK
+openturns.SpecFunc.BesselK
 
 Parameters
 ----------
@@ -149,7 +149,8 @@ result : float"
 
 See also
 --------
-SpecFunc.BesselI0, SpecFunc.BesselI1
+openturns.SpecFunc.BesselI0
+openturns.SpecFunc.BesselI1
 
 Parameters
 ----------
@@ -189,7 +190,7 @@ result : float"
 
 See also
 --------
-SpecFunc.Beta
+openturns.SpecFunc.Beta
 
 Parameters
 ----------
@@ -234,7 +235,8 @@ result : float
 
 See also
 --------
-SpecFunc.IncompleteBeta, SpecFunc.RegularizedIncompleteBetaInverse
+openturns.SpecFunc.IncompleteBeta
+openturns.SpecFunc.RegularizedIncompleteBetaInverse
 
 Parameters
 ----------
@@ -265,7 +267,8 @@ Beta function.
 
 See also
 --------
-SpecFunc.IncompleteBeta, SpecFunc.Beta
+openturns.SpecFunc.IncompleteBeta
+openturns.SpecFunc.Beta
 
 Parameters
 ----------
@@ -292,7 +295,7 @@ result : float
 
 See also
 --------
-SpecFunc.RegularizedIncompleteBeta
+openturns.SpecFunc.RegularizedIncompleteBeta
 
 Parameters
 ----------
@@ -374,7 +377,7 @@ result : float or complex (same as z)"
 
 See also
 --------
-SpecFunc.LogFactorial
+openturns.SpecFunc.LogFactorial
 
 Parameters
 ----------
@@ -398,7 +401,7 @@ with :math:`ErfC` the complementary error function.
 
 See also
 --------
-SpecFunc.ErfC
+openturns.SpecFunc.ErfC
 
 Parameters
 ----------
@@ -420,7 +423,7 @@ result : complex"
 
 See also
 --------
-SpecFunc.Faddeeva
+openturns.SpecFunc.Faddeeva
 
 Parameters
 ----------
@@ -460,7 +463,7 @@ result : float or complex"
 
 See also
 --------
-SpecFunc.Gamma
+openturns.SpecFunc.Gamma
 
 Parameters
 ----------
@@ -484,7 +487,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma
+openturns.SpecFunc.Gamma
 
 Parameters
 ----------
@@ -528,7 +531,7 @@ result : float
 
 See also
 --------
-SpecFunc.IncompleteGamma
+openturns.SpecFunc.IncompleteGamma
 
 Parameters
 ----------
@@ -556,7 +559,8 @@ result : float
 
 See also
 --------
-SpecFunc.Gamma, SpecFunc.IncompleteGamma
+openturns.SpecFunc.Gamma
+openturns.SpecFunc.IncompleteGamma
 
 Parameters
 ----------
@@ -583,7 +587,8 @@ result : float
 
 See also
 --------
-SpecFunc.Gamma, SpecFunc.RegularizedIncompleteGamma
+openturns.SpecFunc.Gamma
+openturns.SpecFunc.RegularizedIncompleteGamma
 
 Parameters
 ----------
@@ -611,7 +616,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma
+openturns.SpecFunc.Gamma
 
 Parameters
 ----------
@@ -634,7 +639,8 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma, SpecFunc.DiGamma
+openturns.SpecFunc.Gamma
+openturns.SpecFunc.DiGamma
 
 Parameters
 ----------
@@ -655,7 +661,7 @@ result : float or complex"
 
 See also
 --------
-SpecFunc.DiGamma
+openturns.SpecFunc.DiGamma
 
 Parameters
 ----------
@@ -678,7 +684,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma
+openturns.SpecFunc.Gamma
 
 Parameters
 ----------
@@ -720,7 +726,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc.Gamma
+openturns.SpecFunc.Gamma
 
 Parameters
 ----------
@@ -823,7 +829,7 @@ with :math:`Erf` the error function.
 
 See also
 --------
-SpecFunc.Erf
+openturns.SpecFunc.Erf
 
 Parameters
 ----------
@@ -845,7 +851,7 @@ result : float or complex"
 
 See also
 --------
-SpecFunc.Erf
+openturns.SpecFunc.Erf
 
 Parameters
 ----------
@@ -869,7 +875,7 @@ with :math:`ErfC` the complementary error function.
 
 See also
 --------
-SpecFunc.ErfC
+openturns.SpecFunc.ErfC
 
 Parameters
 ----------
@@ -893,7 +899,7 @@ with :math:`Erf` the error function.
 
 See also
 --------
-SpecFunc.Erf
+openturns.SpecFunc.Erf
 
 Parameters
 ----------
@@ -1142,7 +1148,7 @@ result : bool"
 
 See also
 --------
-SpecFunc.Stirlerr
+openturns.SpecFunc.Stirlerr
 
 Parameters
 ----------
@@ -1164,7 +1170,7 @@ result : float"
 
 See also
 --------
-SpecFunc.LogFactorial
+openturns.SpecFunc.LogFactorial
 
 Parameters
 ----------

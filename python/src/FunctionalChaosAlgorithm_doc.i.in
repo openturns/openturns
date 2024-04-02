@@ -48,32 +48,33 @@ Thus, the algorithm is detailed here for a scalar output :math:`Y` and
 :math:`g: \Rset^d \rightarrow \Rset`.
 
 Let :math:`T: \Rset^d \rightarrow \Rset^d` be an isoprobabilistic transformation
-such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`. We note :math:`f = g \circ T^{-1}`, then :math:`f \in L_{\mu}^2(\Rset^d, \Rset)`.
+such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`.
+We note :math:`h = g \circ T^{-1}`, then :math:`f \in L_{\mu}^2(\Rset^d, \Rset)`.
 
 Let :math:`(\Psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
 :math:`L^2_{\mu}(\Rset^d,\Rset)`.
 
-Then the functional chaos decomposition of *f* writes:
+Then the functional chaos decomposition of *h* is:
 
 .. math::
 
-    f = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{\alpha}_k \Psi_k 
+    h = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{\alpha}_k \Psi_k 
 
 
 which can be truncated to the finite set :math:`K \in \Nset`:
 
 .. math::
 
-    \tilde{f} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k 
+    \tilde{h} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k 
 
 
-The approximation :math:`\tilde{f}` can be used to build an efficient random 
+The approximation :math:`\tilde{h}` can be used to build an efficient random 
 generator of :math:`Y` based on the random vector :math:`\vect{Z}`. 
 It writes:
 
 .. math::
 
-    \tilde{Y} = \tilde{f}(\vect{Z})
+    \tilde{Y} = \tilde{h}(\vect{Z})
 
 For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
 
@@ -82,7 +83,7 @@ which writes:
 
 .. math::
 
-    \tilde{g} = \tilde{f} \circ T
+    \tilde{g} = \tilde{h} \circ T
 
 If the basis :math:`(\Psi_k)_{k \in \Nset}` has been obtained by tensorisation of
 univariate orthonormal basis, then the distribution :math:`\mu` writes  
@@ -98,17 +99,17 @@ as the tensor product of orthonormal univariate families.
 
 The univariate bases may be:
 
-    - *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
-      Note that it is possible to build the polynomial family orthonormal to any univariate 
-      distribution :math:`\mu_i` under some conditions. 
-      For more details, see :class:`~openturns.StandardDistributionPolynomialFactory`;
+- *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
+  Note that it is possible to build the polynomial family orthonormal to any univariate 
+  distribution :math:`\mu_i` under some conditions. 
+  For more details, see :class:`~openturns.StandardDistributionPolynomialFactory`;
 
-    - Haar wavelets: they enable to approximate functions with discontinuities.
-      For more details, see :class:`~openturns.HaarWaveletFactory`,;
+- Haar wavelets: they enable to approximate functions with discontinuities.
+  For more details, see :class:`~openturns.HaarWaveletFactory`;
 
-    - Fourier series: for more details, see :class:`~openturns.FourierSeriesFactory`.
+- Fourier series: for more details, see :class:`~openturns.FourierSeriesFactory`.
 
-Furthermore, the numerotation of the multivariate orthonormal basis :math:`(\Psi_k(\vect{z}))_k` 
+Furthermore, the ordering of the multivariate orthonormal basis :math:`(\Psi_k(\vect{z}))_{k \in \Nset}` 
 is given by an enumerate function which defines a regular way to generate the collection of degres 
 used for the univariate polynomials : an enumerate function represents a bijection 
 :math:`\Nset \rightarrow \Nset^d`. See :class:`~openturns.LinearEnumerateFunction` or :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` 
@@ -135,15 +136,15 @@ or
 .. math::
     :label: scalProd
 
-    \alpha_k =  <g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z})>_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
+    \alpha_k =  \left\langle g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z}) \right\rangle_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
 
-where the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
+where the mean :math:`\Expect{\cdot}` is evaluated with respect to the measure :math:`\mu`.
 
-Relation :eq:`quadEr` means that the coefficients :math:`(\alpha_k)_{k \in K}`
+The equation :eq:`quadEr` means that the coefficients :math:`(\alpha_k)_{k \in K}`
 minimize the quadratic error between the model and the polynomial approximation.
 For more details, see :class:`~openturns.LeastSquaresStrategy`.
 
-Relation  :eq:`scalProd` means that :math:`\alpha_k` is the scalar product of the
+The equation  :eq:`scalProd` means that :math:`\alpha_k` is the scalar product of the
 model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
 For more details, see :class:`~openturns.IntegrationStrategy`.
 

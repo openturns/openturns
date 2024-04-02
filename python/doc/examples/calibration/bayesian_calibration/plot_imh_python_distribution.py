@@ -53,7 +53,7 @@ graph.setLegends(["Unnormalized target density", "Instrumental PDF"])
 _ = View(graph)
 
 # %%
-# :class:`~MetropolisHastings` and derived classes can work directly with the logarithm of the target density.
+# :class:`~openturns.MetropolisHastings` and derived classes can work directly with the logarithm of the target density.
 
 log_density = ot.ComposedFunction(ot.SymbolicFunction("x", "log(x)"), f)
 
