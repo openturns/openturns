@@ -129,7 +129,7 @@ Parameters
 xj : float, sequence of float,
     Conditional CDF input.
 xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
-    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
@@ -145,7 +145,10 @@ given that the components of indices :math:`k \leq j-1` are fixed. It is defined
 
     p = F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; (x_1, \dots, x_{j-1}) =
         \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}},
-        \quad x_j \in \Rset"
+        \quad x_j \in \Rset
+
+For :math:`j=1` it
+reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalCDF
 OT_Distribution_computeConditionalCDF_doc
@@ -162,12 +165,25 @@ Parameters
 xj : float, sequence of float,
     Conditional CDF input.
 xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
-    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
 ddf : float,
     Conditional DDF value at  *xj* given *xcond*.
+
+Notes
+-----
+The conditional derivative density function is defined as follows:
+
+.. math::
+
+    \dfrac{d^2}{d\,x_j^2}\Prob{X_j \leq x_j \mid X_1=x_1, \ldots,
+    X_{j-1}=x_{j-1}}
+
+ie the :math:`j`-th component is the conditional DDF of :math:`X_j` at :math:`x_j` given that :math:`X_1=x_1,
+\ldots,X_{j-1}=x_{j-1}`. For :math:`j=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of
+the first component at :math:`x_1`.
     
 
 See Also
@@ -189,7 +205,7 @@ Parameters
 xj : float, sequence of float,
     Conditional CDF input.
 xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
-    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
@@ -215,7 +231,7 @@ Parameters
 p : float, sequence of float, :math:`p \in [0, 1]`
     Conditional quantile.
 xcond : sequence of float, 2-d sequence of float with size :math:`j-1`
-    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1}`.
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
@@ -253,7 +269,7 @@ The sequential conditional cumulative distribution function is defined as follow
 
 .. math::
 
-    F^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
+    \left(\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
 
 ie the :math:`i`-th component is the conditional CDF of :math:`X_i` at :math:`x_i` given
 that :math:`X_1=x_1,\ldots,X_{i-1}=x_{i-1}`. For :math:`i=1` it
@@ -308,7 +324,7 @@ x : sequence of float, with size :math:`d`
 Returns
 -------
 pdf : sequence of float
-    Conditional PDF values at *x*.
+    Sequence of conditional PDF values at *x*.
 
 Notes
 -----
@@ -316,7 +332,7 @@ The sequential conditional density function is defined as follows:
 
 .. math::
 
-    pdf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d}{d\,x_i}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
+    \left(\dfrac{d}{d\,x_i}\Prob{X_i \leq x_i \mid X_1=x_1, \ldots, X_{i-1}=x_{i-1}}\right)_{i=1,\ldots,d}
 
 ie the :math:`i`-th component is the conditional PDF of :math:`X_i` at :math:`x_i` given
 that :math:`X_1=x_1,\ldots,X_{i-1}=x_{i-1}`. For :math:`i=1` it reduces to
@@ -339,7 +355,7 @@ q : sequence of float in :math:`[0,1]`, with size :math:`d`
 Returns
 -------
 Q : sequence of float
-    Conditional quantiles values at input.
+    Sequance of conditional quantiles values at *q*
 
 Notes
 -----
@@ -347,7 +363,7 @@ The sequential conditional quantile function is defined as follows:
 
 .. math::
 
-    Q^{seq}_{X_1,\ldots,X_d}(q_1,\ldots,q_d) = \left(F^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i_1}\right)_{i=1,\ldots,d}
+    \left(F^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i_1}\right)_{i=1,\ldots,d}
 
 where :math:`x_1,\ldots,x_{i-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and for :math:`2\leq i \leq d`,
 :math:`x_i=F_i^{-1}(q_i|X_1=x_1,\ldots,X_{i-1}=x_{i_1})`: the conditioning part is the set of already
