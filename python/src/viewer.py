@@ -571,15 +571,14 @@ class View:
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
                     contour_kw["vmax"] = contour.getVmax()
                 if "norm" not in contour_kw_default:
-                    if not hasattr(cls, 'AsinhNorm'):  # matplotlib before 3.6 does not support norms as strings
+                    if not hasattr(cls, 'AsinhNorm'):
+                        # matplotlib before 3.6 does not support norms as strings
                         try:
-                            symlog_kw = {"linthresh: 0.03"}
-                            if matplotlib.__version__ >= "3.2.0":
-                                symlog_kw["base"] = 10
                             normDict = {
                                 'linear': cls.Normalize(),
                                 'log': cls.LogNorm(),
-                                'symlog': cls.SymLogNorm(symlog_kw)
+                                'symlog': cls.SymLogNorm(linthresh=0.03) if matplotlib.__version__ < "3.2.0"
+                                else cls.SymLogNorm(linthresh=0.03, base=10)
                             }
                             contour_kw["norm"] = normDict[contour.getNorm()]
                         except KeyError:
@@ -593,7 +592,8 @@ class View:
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kw) if not contour.isFilled()\
                     else self._ax[0].contourf(X, Y, Z, **contour_kw)
                 self._contoursets.append(contourset)
-                if drawable.getDrawLabels() and not contour.isFilled():  # Matplotlib does not support labels in filled contours well
+                if drawable.getDrawLabels() and not contour.isFilled():
+                    # Matplotlib does not support labels in filled contours well
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
                     fmt = {}
