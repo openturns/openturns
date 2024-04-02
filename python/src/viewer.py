@@ -616,10 +616,14 @@ class View:
                     legend_handles.append(artists[0])
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
-                    format = None
-                    if contour.getNorm() != "linear" and contour.getLevels():
-                        format = matplotlib.ticker.FixedFormatter(["{:.6g}".format(level) for level in contour.getLevels()])
-                    self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format=format)
+                    if matplotlib.__version__ >= "3.7.0":
+                        format = None
+                        if contour.getNorm() != "linear" and contour.getLevels():
+                            format = matplotlib.ticker.FixedFormatter(["{:.6g}".format(level) for level in contour.getLevels()])
+                        self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format=format)
+                    else:
+                        self._fig.colorbar(contourset)
+                        warnings.warn("-- location was not used")
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)
