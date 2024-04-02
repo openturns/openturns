@@ -573,10 +573,13 @@ class View:
                 if "norm" not in contour_kw_default:
                     if not hasattr(cls, 'AsinhNorm'):  # matplotlib before 3.6 does not support norms as strings
                         try:
+                            symlog_kw = {"linthresh: 0.03"}
+                            if matplotlib.__version__ >= "3.2.0":
+                                symlog_kw["base"] = 10
                             normDict = {
                                 'linear': cls.Normalize(),
                                 'log': cls.LogNorm(),
-                                'symlog': cls.SymLogNorm(linthresh=0.03, base=10)
+                                'symlog': cls.SymLogNorm(symlog_kw)
                             }
                             contour_kw["norm"] = normDict[contour.getNorm()]
                         except KeyError:
@@ -585,7 +588,7 @@ class View:
                         contour_kw["norm"] = contour.getNorm()
                 if "extend" not in contour_kw_default:
                     contour_kw["extend"] = contour.getExtend()
-                if "hatches" not in contour_kw_default and contour.getHatches():
+                if contour.isFilled() and "hatches" not in contour_kw_default and contour.getHatches():
                     contour_kw["hatches"] = [hatch for hatch in contour.getHatches()]
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kw) if not contour.isFilled()\
                     else self._ax[0].contourf(X, Y, Z, **contour_kw)
