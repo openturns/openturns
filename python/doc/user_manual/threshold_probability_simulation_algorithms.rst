@@ -75,12 +75,13 @@ Non linear solvers
     :template: class.rst_t
 
     Solver
-
+    LsqSolver
+    
     :template: Solver.rst_t
     Bisection
     Brent
     Secant
-    LsqSolver
+    
 
 Simulation result
 =================
