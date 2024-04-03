@@ -80,6 +80,10 @@ public:
   using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
+  /** Compute the inverse survival function */
+  using DistributionImplementation::computeInverseSurvivalFunction;
+  Point computeInverseSurvivalFunction(const Scalar prob) const override;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 

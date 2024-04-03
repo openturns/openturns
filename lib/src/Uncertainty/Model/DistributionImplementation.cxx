@@ -818,6 +818,8 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
   // So
   // InverseSurvivalFunction(q) = 2mu-Quantile(q)
   if (isElliptical()) return getMean() * 2.0 - computeQuantile(prob, false, marginalProb);
+  // If the distribution is not continuous, no generic implementation is available at this point
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeInverseSurvivalFunction: no generic implementation for noncontinuous distributions.";
   // Extract the marginal distributions
   Collection<Implementation> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i).getImplementation();
@@ -1078,6 +1080,8 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   const Interval reducedInterval(interval.intersect(range_));
   if (reducedInterval.isEmpty()) return 0.0;
   if (reducedInterval == range_) return 1.0;
+  if (dimension_ == 1)
+    return computeProbabilityContinuous1D(reducedInterval.getLowerBound()[0], reducedInterval.getUpperBound()[0]);
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
   Scalar probability = 1.0;
@@ -1110,7 +1114,8 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
   const Scalar b = std::min(bb, range_.getUpperBound()[0]);
   // If no singularity inside of the given reduced interval
   const UnsignedInteger singularitiesNumber = singularities.getSize();
-  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
+  const GaussKronrod gkAlgo;
+  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = gkAlgo.integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
   else
   {
     Scalar lower = a;
@@ -1119,14 +1124,14 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
       const Scalar upper = singularities[i];
       if (upper > a && upper < b)
       {
-        probability += GaussKronrod().integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
+        probability += gkAlgo.integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
         lower = upper;
       }
       // Exit the loop if no more singularities inside of the reduced interval
       if (upper >= b) break;
     } // for
     // Last contribution
-    probability += GaussKronrod().integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
+    probability += gkAlgo.integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
   } // else
   return SpecFunc::Clip01(probability);
 }
@@ -2314,7 +2319,6 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   // This test allows one to know if the range has already been computed. If not, it is the role of the computeScalarQuantile() to do it.
   if (lower > upper)
   {
-    LOGDEBUG("DistributionImplementation::computeScalarQuantile: look for a bracketing of the bounds of the range");
     // Find a rough estimate of the lower bound and the upper bound
     Scalar step = 1.0;
     Scalar cdf = computeCDF(lower);
@@ -2354,7 +2358,6 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
       ccdf = computeComplementaryCDF(upper);
     }
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: lower=" << lower << ", upper=" << upper);
   if (prob < 0.0) return (tail ? upper : lower);
   if (prob >= 1.0) return (tail ? lower : upper);
   const Scalar q = tail ? 1.0 - prob : prob;
@@ -2479,7 +2482,6 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
     rightTau = 1.0;
     rightCDF = 1.0;
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeQuantile: dimension=" << dimension_ << ", q=" << q << ", leftTau=" << leftTau << ", leftCDF=" << leftCDF << ", rightTau=" << rightTau << ", rightCDF=" << rightCDF);
   // Use Brent's method to compute the quantile efficiently for continuous distributions
   const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);

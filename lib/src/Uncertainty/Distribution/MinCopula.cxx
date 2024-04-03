@@ -135,6 +135,12 @@ Point MinCopula::computeQuantile(const Scalar prob,
   return Point(getDimension(), q);
 }
 
+/* Compute the inverse survival function */
+Point MinCopula::computeInverseSurvivalFunction(const Scalar prob) const
+{
+  return computeQuantile(prob, true);
+}
+
 /* Compute the entropy of the distribution */
 Scalar MinCopula::computeEntropy() const
 {
