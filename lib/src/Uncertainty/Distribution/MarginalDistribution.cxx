@@ -22,6 +22,7 @@
 
 #include "openturns/MarginalDistribution.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/ParametricFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -141,10 +142,10 @@ void MarginalDistribution::setDistributionAndIndices(const Distribution & distri
   setDimension(dimension);
   // Compute the range
   // From the underlying distribution
-  Point distributionLowerBound(distribution.getRange().getLowerBound());
+  const Point distributionLowerBound(distribution.getRange().getLowerBound());
   lowerBound_ = distributionLowerBound;
   Interval::BoolCollection distributionFiniteLowerBound(distribution.getRange().getFiniteLowerBound());
-  Point distributionUpperBound(distribution.getRange().getUpperBound());
+  const Point distributionUpperBound(distribution.getRange().getUpperBound());
   upperBound_ = distributionUpperBound;
   Interval::BoolCollection distributionFiniteUpperBound(distribution.getRange().getFiniteUpperBound());
   // For the marginal distribution
@@ -192,15 +193,47 @@ Sample MarginalDistribution::getSample(const UnsignedInteger size) const
   return distribution_.getSample(size).getMarginal(indices_);
 }
 
+/* Get the PDF of the MarginalDistribution */
+Scalar MarginalDistribution::computePDF(const Point & point) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << getDimension() << ", got dimension=" << point.getDimension();
+  // First, check if the marginal distribution is just a reordering of the underlying distribution
+  if (distribution_.getDimension() == getDimension())
+    return distribution_.computePDF(expandPoint(point));
+  if (usePDF_)
+    {
+      if (isContinuous())
+        {
+          // Build the relevant parametric function to be integrated over the remaining parameters
+          const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), indices_, point);
+          const Interval marginalInterval(distribution_.getRange().getMarginal(indices_.complement(distribution_.getDimension())));
+          return integrationAlgorithm_.integrate(kernel, marginalInterval)[0];
+        }
+      if (isDiscrete())
+        {
+          const Point probabilities(distribution_.getProbabilities());
+          // We modify the support in-place to speed-up the computation
+          Sample support(distribution_.getImplementation()->getSupport());
+          for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+              for (UnsignedInteger j = 0; j < indices_.getSize(); ++j)
+                support(i, indices_[j]) = point[j];
+          return distribution_.computePDF(support).asPoint().dot(probabilities);
+        }
+    } // use PDF
+  return DistributionImplementation::computePDF(point);
+}
+
 /* Get the CDF of the MarginalDistribution */
 Scalar MarginalDistribution::computeCDF(const Point & point) const
 {
-  return distribution_.computeCDF(expandPoint(point));
+  const Scalar cdf = distribution_.computeCDF(expandPoint(point));
+  return cdf;
 }
 
 Scalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
 {
-  return distribution_.computeSurvivalFunction(expandPoint(point, false));
+  const Scalar survival = distribution_.computeSurvivalFunction(expandPoint(point, false));
+  return survival;
 }
 
 /* Compute the probability content of an interval */
@@ -270,7 +303,7 @@ CorrelationMatrix MarginalDistribution::getSpearmanCorrelation() const
   return spearmanCorrelation;
 }
 
-/* Get the Spearman correlation of the distribution */
+/* Get the Kendall tau of the distribution */
 CorrelationMatrix MarginalDistribution::getKendallTau() const
 {
   const UnsignedInteger dimension = getDimension();
@@ -306,7 +339,9 @@ Distribution MarginalDistribution::getMarginal(const Indices & indices) const
   Indices marginalIndices(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
     marginalIndices[i] = indices_[indices[i]];
-  return new MarginalDistribution(distribution_, marginalIndices);
+  MarginalDistribution marginal(distribution_, marginalIndices);
+  marginal.setIntegrationAlgorithm(getIntegrationAlgorithm());
+  return marginal.clone();
 }
 
 /* Get the isoprobabilistic transformation */
@@ -381,6 +416,48 @@ Bool MarginalDistribution::isIntegral() const
   return distribution_.isIntegral();
 }
 
+/* UsePDF accessor */
+void MarginalDistribution::setUsePDF(const Bool usePDF)
+{
+  usePDF_ = usePDF;
+}
+
+Bool MarginalDistribution::getUsePDF() const
+{
+  return usePDF_;
+}
+
+/* AlgoIntegration accessor */
+void MarginalDistribution::setIntegrationAlgorithm(const IntegrationAlgorithm & algo)
+{
+  integrationAlgorithm_ = algo;
+}
+
+IntegrationAlgorithm MarginalDistribution::getIntegrationAlgorithm() const
+{
+  return integrationAlgorithm_;
+}
+
+/* Get the support of a discrete distribution that intersect a given interval */
+Sample MarginalDistribution::getSupport(const Interval & interval) const
+{
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
+  const Interval extendedInterval(expandPoint(interval.getLowerBound(), false), expandPoint(interval.getUpperBound()));
+  return distribution_.getSupport(extendedInterval).getMarginal(indices_);
+}
+
+/* Get the support on the whole range */
+Sample MarginalDistribution::getSupport() const
+{
+  return distribution_.getSupport().getMarginal(indices_);
+}
+
+/* Get the discrete probability levels */
+Point MarginalDistribution::getProbabilities() const
+{
+  return distribution_.getProbabilities();
+}
+
 /* Method to expand a given point in the marginal space to a point in the underlying distribution space */
 Point MarginalDistribution::expandPoint(const Point & point,
                                         const Bool upper) const
@@ -410,6 +487,8 @@ void MarginalDistribution::save(Advocate & adv) const
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "indices_", indices_ );
+  adv.saveAttribute( "usePDF_", usePDF_ );
+  adv.saveAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -421,6 +500,10 @@ void MarginalDistribution::load(Advocate & adv)
   adv.loadAttribute( "distribution_", distribution );
   adv.loadAttribute( "indices_", indices );
   setDistributionAndIndices(distribution, indices);
+  if (adv.hasAttribute("usePDF_"))
+    adv.loadAttribute("usePDF_", usePDF_);
+  if (adv.hasAttribute("integrationAlgorithm_"))
+    adv.loadAttribute("integrationAlgorithm_", integrationAlgorithm_);
 }
 
 END_NAMESPACE_OPENTURNS

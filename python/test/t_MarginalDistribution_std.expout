@@ -1,35 +1,88 @@
-Distribution  class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
-Distribution  Beta(r = 2, t = 5, a = -1, b = 2)
-Elliptical =  False
+Test indices accessors True
+Test distribution accessors True
+Distribution  class=MarginalDistribution name=MarginalDistribution dimension=3 distribution=class=Normal name=Normal dimension=5 mean=class=Point name=Unnamed dimension=5 values=[0,0,0,0,0] sigma=class=Point name=Unnamed dimension=5 values=[1,1,1,1,1] correlationMatrix=class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1] indices=[2,0,1]
+Distribution  MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]), indices=[2,0,1])
+Elliptical =  True
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[0.456966]
-oneSample first= class=Point name=Unnamed dimension=1 values=[-0.504347]  last= class=Point name=Unnamed dimension=1 values=[-0.367645]
-mean= class=Point name=Unnamed dimension=1 values=[0.203901]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.365788]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
-ddf     = class=Point name=Unnamed dimension=1 values=[-0.444444]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.444444]
-log pdf=-1.216395
-pdf     =0.296296
-pdf (FD)=0.296296
-cdf=0.888889
-ccdf=0.111111
-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
-cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
-quantile= class=Point name=Unnamed dimension=1 values=[1.25419]
-cdf(quantile)=0.950000
-mean= class=Point name=Unnamed dimension=1 values=[0.2]
-standard deviation= class=Point name=Unnamed dimension=1 values=[0.6]
-skewness= class=Point name=Unnamed dimension=1 values=[0.285714]
-kurtosis= class=Point name=Unnamed dimension=1 values=[2.35714]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.36]
-parameters= [class=PointWithDescription name=marginal 1 dimension=4 description=[r,t,a,b] values=[2,5,-1,2]]
-Standard representative= Beta(r = 2, t = 5, a = -1, b = 1)
-mu=0.200000
-sigma=0.600000
-r from (mu, sigma)=2.000000
-t from (mu, sigma)=5.000000
+Discrete =  False
+Integral =  False
+oneRealization= [-0.438266,0.608202,-1.26617]
+oneSample first= [1.43725,0.350042,-0.355007]  last= [0.859992,-2.2281,0.884963]
+mean= [-0.000164216,0.00955544,0.000744822]
+covariance= [[  1.00735     0.0155386  -0.00400052 ]
+ [  0.0155386   1.02164    -0.0214975  ]
+ [ -0.00400052 -0.0214975   0.997907   ]]
+Point=  [1.0, 1.0, 1.0]
+ddf     = [-0.0141673,-0.0141673,-0.0141673]
+log pdf=-4.25682e+00
+pdf     =1.41673e-02
+cdf     =5.95555e-01
+ccdf    =4.04445e-01
+survival=3.99359e-03
+Inverse survival= [-2.1212,-2.1212,-2.1212]
+Survival(inverse survival)=9.50000e-01
+quantile= [2.1212,2.1212,2.1212]
+cdf(quantile)=9.50000e-01
+quantile (tail)= [-0.336086,-0.336086,-0.336086]
+cdf (tail)=9.50000e-01
+mean= [0,0,0]
+standard deviation= [1,1,1]
+skewness= [0,0,0]
+kurtosis= [3,3,3]
+covariance= [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]]
+correlation= [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]]
+spearman= [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]]
+kendall= [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]]
+Standard representative= MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]), indices=[2,0,1])
+Test indices accessors True
+Test distribution accessors True
+Distribution  class=MarginalDistribution name=MarginalDistribution dimension=3 distribution=class=Multinomial name=Multinomial dimension=5 p=class=Point name=Unnamed dimension=5 values=[0.142857,0.142857,0.142857,0.142857,0.142857] n=10 indices=[2,0,1]
+Distribution  MarginalDistribution(distribution=Multinomial(n = 10, p = [0.142857,0.142857,0.142857,0.142857,0.142857]), indices=[2,0,1])
+Elliptical =  False
+Continuous =  False
+Discrete =  True
+Integral =  True
+oneRealization= [2,3,0]
+oneSample first= [2,3,1]  last= [1,1,0]
+mean= [1.4254,1.434,1.4148]
+covariance= [[  1.22176  -0.210245 -0.186975 ]
+ [ -0.210245  1.24377  -0.217845 ]
+ [ -0.186975 -0.217845  1.21306  ]]
+Point=  [1.0, 1.0, 1.0]
+pdf     =2.50271e-03
+cdf     =1.35956e-01
+ccdf    =8.64044e-01
+survival=4.57828e-01
+quantile= [4,4,4]
+cdf(quantile)=9.76008e-01
+quantile (tail)= [1,1,1]
+cdf (tail)=9.96288e-01
+mean= [1.42857,1.42857,1.42857]
+standard deviation= [1.10657,1.10657,1.10657]
+skewness= [0.645497,0.645497,0.645497]
+kurtosis= [3.21667,3.21667,3.21667]
+covariance= [[  1.22449  -0.204082 -0.204082 ]
+ [ -0.204082  1.22449  -0.204082 ]
+ [ -0.204082 -0.204082  1.22449  ]]
+correlation= [[  1        -0.166667 -0.166667 ]
+ [ -0.166667  1        -0.166667 ]
+ [ -0.166667 -0.166667  1        ]]
+Standard representative= MarginalDistribution(distribution=Multinomial(n = 10, p = [0.142857,0.142857,0.142857,0.142857,0.142857]), indices=[2,0,1])
