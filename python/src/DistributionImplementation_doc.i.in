@@ -147,8 +147,8 @@ given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
         \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
-For :math:`j=1` it
-reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
+For :math:`j=1`, it
+reduces to :math:`F_{X_1}(x_1)`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalCDF
 OT_Distribution_computeConditionalCDF_doc
@@ -185,10 +185,12 @@ is defined by:
 
 where for :math:`2 \leq j \leq d`:
 
-    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+.. math::
 
-For :math:`j=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`, ie the DDF of
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1`, it reduces to :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`, ie the DDF of
 the first component at :math:`x_1`.
 
 See Also
@@ -230,10 +232,12 @@ is defined by:
 
 where for :math:`2 \leq j \leq d`:
 
-    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+.. math::
 
-For :math:`j=1` it
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1`, it
 reduces to :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`.
 
 See Also
@@ -276,7 +280,7 @@ is defined by:
      F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p; x_1, \dots, x_{j-1})
 
 where :math:`F^{-1}` is the quantile function.
-For :math:`j=1` it
+For :math:`j=1`, it
 reduces to :math:`F^{-1}_{X_1}(p)`.
 
 See Also
@@ -311,8 +315,10 @@ The sequential conditional cumulative distribution function is defined as follow
 
 where for :math:`2 \leq j \leq d`:
 
+.. math::
+
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
 The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1)`."
 
@@ -346,8 +352,10 @@ The sequential conditional derivative density function is defined by:
 
 where for :math:`2 \leq j \leq d`:
 
+.. math::
+
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
 The first term, for :math:`j=1`, is :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`."
 %enddef
@@ -379,8 +387,10 @@ The sequential conditional density function is defined as follows:
 
 where for :math:`2 \leq j \leq d`:
 
+.. math::
+
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
-        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
 The first term, for :math:`j=1`, is :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`."
 
