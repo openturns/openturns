@@ -94,7 +94,12 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
+  Sample getSupport() const override;
   Sample getSupport(const Interval & interval) const override;
+
+  /** Get the discrete probability levels */
+  using DistributionImplementation::getProbabilities;
+  Point getProbabilities() const override;
 
   /** Tell if the distribution is integer valued */
   Bool isIntegral() const override;
