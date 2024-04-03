@@ -37,7 +37,8 @@ static const Factory<IteratedQuadrature> Factory_IteratedQuadrature;
 /* Constructor without parameters */
 IteratedQuadrature::IteratedQuadrature()
   : IntegrationAlgorithmImplementation()
-  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsScalar("IteratedQuadrature-MaximumError"), GaussKronrodRule(GaussKronrodRule::G3K7)))
+    // It must be initialized here in order to avoid a recursive call to IteratedQuadrature::IteratedQuadrature()
+  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsScalar("IteratedQuadrature-MaximumError"), GaussKronrod::GetRuleFromName(ResourceMap::GetAsString("IteratedQuadrature-Rule"))))
 {
   // Nothing to do
 }
@@ -108,6 +109,17 @@ Point IteratedQuadrature::integrate(const Function & function,
     upperBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, Point(1, upper[i])));
   }
   return integrate(function, a, b, lowerBounds, upperBounds, false);
+}
+
+/** Accessors to the underlying integration algorithm */
+IntegrationAlgorithm IteratedQuadrature::getAlgorithm() const
+{
+  return algorithm_;
+}
+
+void IteratedQuadrature::setAlgorithm(const IntegrationAlgorithm & algorithm)
+{
+  algorithm_ = algorithm;
 }
 
 /* String converter */

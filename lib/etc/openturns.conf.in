@@ -286,6 +286,7 @@
 
   <!-- OT::IteratedQuadrature parameters -->
   <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
+  <IteratedQuadrature-MaximumSubIntervals value_str="G3K7" />
   <IteratedQuadrature-MaximumSubIntervals value_int="32" />
 
   <!-- OT::Fehlberg parameters -->

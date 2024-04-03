@@ -11,13 +11,7 @@ a = -2.5
 b = 4.5
 # Default parameters
 algo = ot.GaussKronrod()
-rules = [
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G15K31),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G25K51),
-]
+rules = ot.GaussKronrod.GetRules()
 for i in range(len(rules)):
     algo.setRule(rules[i])
     print("Algo=", algo)
@@ -50,13 +44,9 @@ f = ot.SymbolicFunction("x", "abs(sin(x))")
 a = -2.5
 b = 4.5
 algo = ot.GaussKronrod()
-rules = [
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G15K31),
-    ot.GaussKronrodRule(ot.GaussKronrodRule.G25K51),
-]
+rules = ot.GaussKronrod.GetRules()
+rules[0] = ot.GaussKronrod.GetRuleFromName("G3K7")
+
 for i in range(len(rules)):
     algo.setRule(rules[i])
     print("Algo=", algo)

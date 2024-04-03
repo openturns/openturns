@@ -2,3 +2,5 @@ dim= 1 , volume= 2 , calls= 14
 dim= 2 , volume= 3.141592723 , calls= 3724
 dim= 3 , volume= 4.18879029858 , calls= 50960
 value= [16,16] , calls= 2744
+Algo is based on class=IntegrationAlgorithm implementation=GaussKronrod(maximum sub intervals=20, maximum error=1e-06, rule=GaussKronrodRule(pair=G3K7))
+Algo is now based on class=IntegrationAlgorithm implementation=GaussLegendre([10])

@@ -33,6 +33,9 @@ CLASSNAMEINIT(GaussKronrod)
 
 static const Factory<GaussKronrod> Factory_GaussKronrod;
 
+/* Map to associate rule names and rules */
+std::map<String, GaussKronrodRule> GaussKronrod::RuleNames_;
+
 /* Constructor without parameters */
 GaussKronrod::GaussKronrod()
   : IntegrationAlgorithmImplementation()
@@ -302,6 +305,36 @@ GaussKronrodRule GaussKronrod::getRule() const
 void GaussKronrod::setRule(const GaussKronrodRule & rule)
 {
   rule_ = rule;
+}
+
+/* Static method to initialize the rule names/GKrule pairing in GaussKronrod */
+void GaussKronrod::InitializeRules()
+{
+  if (!RuleNames_.empty()) return;
+  RuleNames_["G1K3"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G1K3);
+  RuleNames_["G3K7"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G3K7);
+  RuleNames_["G7K15"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G7K15);
+  RuleNames_["G11K23"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G11K23);
+  RuleNames_["G15K31"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G15K31);
+  RuleNames_["G25K51"] = GaussKronrodRule(GaussKronrodRule::GaussKronrodPair::G25K51);
+}
+
+/* GaussKronrod rules accessor */
+Collection<GaussKronrodRule> GaussKronrod::GetRules()
+{
+  InitializeRules();
+  Collection<GaussKronrodRule> allRules;
+  for(std::map<String, GaussKronrodRule>::iterator it = RuleNames_.begin(); it != RuleNames_.end(); ++it)
+      allRules.add(it->second);
+  return allRules;
+}
+
+GaussKronrodRule GaussKronrod::GetRuleFromName(const String & name)
+{
+  InitializeRules();
+  const std::map<String, GaussKronrodRule>::const_iterator it(RuleNames_.find(name));
+  if (it == RuleNames_.end()) throw InvalidArgumentException(HERE) << "Error: the given GaussKronrod rule name=" << name << " is unknown.";
+  return it->second;
 }
 
 /* String converter */

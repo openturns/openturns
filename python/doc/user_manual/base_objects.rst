@@ -116,6 +116,7 @@ Vectors
     CovarianceMatrixCollection
     ProcessCollection
     TestResultCollection
+    GaussKronrodRuleCollection
 
 Comparison operators
 ====================

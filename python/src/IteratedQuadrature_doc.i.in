@@ -4,8 +4,15 @@
 Parameters
 ----------
 univariateQuadrature : :class:`~openturns.IntegrationAlgorithm`
-    By default, the integration algorithm is the Gauss-Kronrod algorithm (:class:`~openturns.GaussKronrod`)  with the following parameters: maximumSubIntervals=32, maximumError= :math:`1e-7` and GKRule = G3K7. 
-    Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class leads to a more precise evaluation of the integral but the cost is greater. It is recommended to increase the order of the quadratic rule and the number of sub intervals if the integrand or one of the bound functions is smooth but with many oscillations. 
+    By default, the integration algorithm is the Gauss-Kronrod
+    algorithm (:class:`~openturns.GaussKronrod`)  with the parameters
+    `IteratedQuadrature-MaximumSubIntervals`,
+    `IteratedQuadrature-MaximumError`, `IteratedQuadrature-Rule` in :class:`~openturns.ResourceMap`.
+    Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
+    leads to a more precise evaluation of the integral but the cost is
+    greater. It is recommended to increase the order of the quadratic
+    rule and the number of sub intervals if the integrand or one of
+    the bound functions is smooth but with many oscillations. 
 
 Notes
 -----
@@ -111,3 +118,20 @@ Returns
 value : :class:`~openturns.Point`
     Approximation of the integral."
 
+// ---------------------------------------------------------------------
+%feature("docstring") OT::IteratedQuadrature::getAlgorithm
+"Accessor to the underlying 1D integration algorithm.
+
+Returns
+-------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The 1D integration algorithm used recursively over the dimensions of the integration domain."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::IteratedQuadrature::setAlgorithm
+"Set the underlying 1D integration algorithm.
+
+Parameters
+----------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The 1D integration algorithm used recursively over the dimensions of the integration domain."

@@ -33,3 +33,6 @@ formulas = ["x0^2 + 2*x1^2 + 3*x2^2", "x2^2 + 2*x1^2 + 3*x0^2"]
 integrand = ot.SymbolicFunction(vars, formulas)
 value = algo.integrate(integrand, bounds)
 print("value=", value, ", calls=", integrand.getCallsNumber())
+print("Algo is based on", algo.getAlgorithm())
+algo.setAlgorithm(ot.GaussLegendre([10]))
+print("Algo is now based on", algo.getAlgorithm())

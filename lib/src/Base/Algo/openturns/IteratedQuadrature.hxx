@@ -58,7 +58,7 @@ public:
   Point integrate(const Function & function,
                   const Interval & interval) const override;
 
-  // This method allows one to get the estimated integration error as a scalar
+  /** This method allows one to get the estimated integration error as a scalar */
   Point integrate(const Function & function,
                   const Scalar a,
                   const Scalar b,
@@ -66,6 +66,11 @@ public:
                   const FunctionCollection & upperBounds,
                   const Bool check = true) const;
 
+  /** Accessors to the underlying integration algorithm */
+  IntegrationAlgorithm getAlgorithm() const;
+
+  void setAlgorithm(const IntegrationAlgorithm & algorithm);
+  
   /** String converter */
   String __repr__() const override;
 
@@ -77,6 +82,7 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
 private:
 
   // Class to compute in a recursive way a multidimensional integral

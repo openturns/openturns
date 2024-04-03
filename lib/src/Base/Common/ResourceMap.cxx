@@ -910,7 +910,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber", 64);
 
   // IteratedQuadrature parameters //
-  addAsScalar("IteratedQuadrature-MaximumError",    1.0e-7);
+  addAsScalar("IteratedQuadrature-MaximumError", 1.0e-7);
+  addAsString("IteratedQuadrature-Rule", "G3K7");
   addAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals", 32);
 
   // Fehlberg parameters //
