@@ -650,7 +650,7 @@ dfdtheta : :class:`~openturns.Point`
 Notes
 -----
 Let :math:`\vect{\theta}` be the vector of parameters of the distribution. Then
-the gradient of the probability density function :math:`f_{\vect{X})` is defined by:
+the gradient of the probability density function :math:`f_{\vect{X}}` is defined by:
 
 .. math::
 
