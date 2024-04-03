@@ -314,7 +314,7 @@ where for :math:`2 \leq j \leq d`:
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
         \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
-The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1}`."
+The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1)`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalCDF
