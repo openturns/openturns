@@ -340,6 +340,18 @@ Sample UserDefined::getSupport(const Interval & interval) const
   return result;
 }
 
+/* Get the support on the whole range */
+Sample UserDefined::getSupport() const
+{
+  return points_;
+}
+
+/* Get the discrete probability levels */
+Point UserDefined::getProbabilities() const
+{
+  return probabilities_;
+}
+
 /* Tell if the distribution is integer valued */
 Bool UserDefined::isIntegral() const
 {
