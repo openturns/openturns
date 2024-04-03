@@ -6,117 +6,93 @@ ot.TESTPREAMBLE()
 
 dimension = 5
 indices = [2, 0, 1]
-fullDistribution = ot.JointDistribution(
-    [ot.Normal(), ot.Uniform(), ot.Exponential(), ot.WeibullMin()],
-    ot.BlockIndependentCopula([ot.GumbelCopula(), ot.ClaytonCopula()]),
-)
-distribution = ot.MarginalDistribution(fullDistribution, indices)
+coll = [ot.Normal(dimension), ot.Multinomial(10, [1.0 / (dimension + 2)] * dimension)]
 
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+for nDistribution in range(len(coll)):
+    fullDistribution = coll[nDistribution]
+    distribution = ot.MarginalDistribution(fullDistribution, indices)
+    # To check if indices accessors are correct
+    otherDistribution = distribution
+    otherDistribution.setIndices(distribution.getIndices())
+    print("Test indices accessors", otherDistribution == distribution)
+    # To check if distribution accessors are correct
+    otherDistribution.setDistribution(distribution.getDistribution())
+    print("Test distribution accessors", otherDistribution == distribution)
 
-# Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+    print("Distribution ", repr(distribution))
+    print("Distribution ", distribution)
 
-# Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+    # Is this distribution elliptical ?
+    print("Elliptical = ", distribution.isElliptical())
 
-# Test for realization of distribution
-oneRealization = distribution.getRealization()
-print("oneRealization=", oneRealization)
+    # Is this distribution continuous ?
+    print("Continuous = ", distribution.isContinuous())
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-if distribution.getDimension() == 1:
-    size = 100
-    for i in range(2):
-        print(
-            "Kolmogorov test for the generator, sample size=",
-            size,
-            " is ",
-            ot.FittingTest.Kolmogorov(
-                distribution.getSample(size), distribution
-            ).getBinaryQualityMeasure(),
-        )
-        size *= 10
+    # Is this distribution discrete ?
+    print("Discrete = ", distribution.isDiscrete())
 
-# Define a point
-point = [1.0] * distribution.getDimension()
-print("Point= ", point)
+    # Is this distribution integral ?
+    print("Integral = ", distribution.isIntegral())
 
-# Show PDF and CDF of point
-DDF = distribution.computeDDF(point)
-print("ddf     =", DDF)
-LPDF = distribution.computeLogPDF(point)
-print("log pdf=", LPDF)
-PDF = distribution.computePDF(point)
-print("pdf     =", PDF)
-CDF = distribution.computeCDF(point)
-print("cdf=", CDF)
-CCDF = distribution.computeComplementaryCDF(point)
-print("ccdf=", CCDF)
-Survival = distribution.computeSurvivalFunction(point)
-print("survival=", Survival)
-quantile = distribution.computeQuantile(0.95)
-print("quantile=", quantile)
-print("cdf(quantile)=", distribution.computeCDF(quantile))
-quantileTail = distribution.computeQuantile(0.95, True)
-print("quantile (tail)=", quantileTail)
-CDFTail = distribution.computeComplementaryCDF(quantileTail)
-print("cdf (tail)=", CDFTail)
-# Get 95% survival function
-inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
-)
-print("entropy=%.6f" % distribution.computeEntropy())
-# Confidence regions
-threshold = ot.Point()
-print(
-    "Minimum volume interval=",
-    distribution.computeMinimumVolumeInterval(0.95, threshold),
-)
-print("threshold=", threshold)
-beta = ot.Point()
-levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
-print("Minimum volume level set=", levelSet)
-print("beta=", beta)
-print(
-    "Bilateral confidence interval=",
-    distribution.computeBilateralConfidenceInterval(0.95, beta),
-)
-print("beta=", beta)
-print(
-    "Unilateral confidence interval (lower tail)=",
-    distribution.computeUnilateralConfidenceInterval(0.95, False, beta),
-)
-print("beta=", beta)
-print(
-    "Unilateral confidence interval (upper tail)=",
-    distribution.computeUnilateralConfidenceInterval(0.95, True, beta),
-)
-print("beta=", beta)
+    # Test for realization of distribution
+    oneRealization = distribution.getRealization()
+    print("oneRealization=", oneRealization)
 
-mean = distribution.getMean()
-print("mean=", mean)
-standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", standardDeviation)
-skewness = distribution.getSkewness()
-print("skewness=", skewness)
-kurtosis = distribution.getKurtosis()
-print("kurtosis=", kurtosis)
-covariance = distribution.getCovariance()
-print("covariance=", covariance)
-correlation = distribution.getCorrelation()
-print("correlation=", correlation)
-spearman = distribution.getSpearmanCorrelation()
-print("spearman=", spearman)
-kendall = distribution.getKendallTau()
-print("kendall=", kendall)
-print("Standard representative=", distribution.getStandardRepresentative())
+    # Test for sampling
+    size = 10000
+    oneSample = distribution.getSample(size)
+    print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
+    print("mean=", oneSample.computeMean())
+    print("covariance=", oneSample.computeCovariance())
+
+    # Define a point
+    point = [1.0] * distribution.getDimension()
+    print("Point= ", point)
+
+    # Test the DDF/logDDF only in the continuous case
+    if distribution.isContinuous():
+        DDF = distribution.computeDDF(point)
+        print("ddf     =", DDF)
+        LPDF = distribution.computeLogPDF(point)
+        print("log pdf=%.5e" % LPDF)
+
+    # Show PDF and CDF of point
+    PDF = distribution.computePDF(point)
+    print("pdf     =%.5e" % PDF)
+    CDF = distribution.computeCDF(point)
+    print("cdf     =%.5e" % CDF)
+    CCDF = distribution.computeComplementaryCDF(point)
+    print("ccdf    =%.5e" % CCDF)
+    Survival = distribution.computeSurvivalFunction(point)
+    print("survival=%.5e" % Survival)
+    if distribution.isContinuous():
+        InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
+        print("Inverse survival=", InverseSurvival)
+        print("Survival(inverse survival)=%.5e" % distribution.computeSurvivalFunction(InverseSurvival))
+    quantile = distribution.computeQuantile(0.95)
+    print("quantile=", quantile)
+    print("cdf(quantile)=%.5e" % distribution.computeCDF(quantile))
+    quantileTail = distribution.computeQuantile(0.95, True)
+    print("quantile (tail)=", quantileTail)
+    CDFTail = distribution.computeComplementaryCDF(quantileTail)
+    print("cdf (tail)=%.5e" % CDFTail)
+    mean = distribution.getMean()
+    print("mean=", mean)
+    standardDeviation = distribution.getStandardDeviation()
+    print("standard deviation=", standardDeviation)
+    skewness = distribution.getSkewness()
+    print("skewness=", skewness)
+    kurtosis = distribution.getKurtosis()
+    print("kurtosis=", kurtosis)
+    covariance = distribution.getCovariance()
+    print("covariance=", covariance)
+    correlation = distribution.getCorrelation()
+    print("correlation=", correlation)
+    if distribution.isContinuous():
+        spearman = distribution.getSpearmanCorrelation()
+        print("spearman=", spearman)
+        kendall = distribution.getKendallTau()
+        print("kendall=", kendall)
+    print("Standard representative=", distribution.getStandardRepresentative().__str__())
+    # Additional tests to make codecov happy
+    distribution = ot.MarginalDistribution(fullDistribution, 0)

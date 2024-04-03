@@ -1169,6 +1169,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LogNormalFactory-EstimationMethod", 0);
   addAsUnsignedInteger("LogNormalFactory-MaximumIteration", 50);
 
+  // MarginalDistribution parameters //
+  addAsBool("MarginalDistribution-UsePDF", true);
+  addAsScalar("MarginalDistribution-MaximumError", 1.0e-7);
+  addAsString("MarginalDistribution-Rule", "G15K31");
+  addAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals", 128);
+
   // Meixner parameters //
   addAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-12);
   addAsScalar("MeixnerDistribution-MaximumConstraintError", 1.0e-12);

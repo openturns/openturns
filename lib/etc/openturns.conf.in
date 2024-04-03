@@ -285,9 +285,9 @@
   <FejerAlgorithm-DefaultMarginalIntegrationPointsNumber  value_int="64" />
 
   <!-- OT::IteratedQuadrature parameters -->
-  <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
-  <IteratedQuadrature-MaximumSubIntervals value_str="G3K7" />
-  <IteratedQuadrature-MaximumSubIntervals value_int="32" />
+  <IteratedQuadrature-MaximumError            value_float="1.0e-7" />
+  <IteratedQuadrature-IteratedQuadrature-Rule value_str="G3K7"     />
+  <IteratedQuadrature-MaximumSubIntervals     value_int="32"       />
 
   <!-- OT::Fehlberg parameters -->
   <Fehlberg-InitialStep    value_float="1.0e-7"                       />
@@ -541,6 +541,12 @@
   <LogNormalFactory-ResidualPrecision value_float="1e-12"        />
   <LogNormalFactory-MaximumIteration  value_int="50" />
   <LogNormalFactory-EstimationMethod  value_int="0"  />
+
+  <!-- MarginalDistribution parameters -->
+  <MarginalDistribution-UsePDF              value_bool="true"         />
+  <MarginalDistribution-MaximumError        value_float="1.0e-7"      />
+  <MarginalDistribution-MaximumSubIntervals value_int="128"           />
+  <MarginalDistribution-Rule                value_str="G15K31"         />
 
   <!-- Meixner parameters -->
   <MeixnerDistribution-MaximumAbsoluteError      value_float="1.0e-12"         />

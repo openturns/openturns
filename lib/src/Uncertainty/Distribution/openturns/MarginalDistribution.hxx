@@ -23,6 +23,9 @@
 
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
+#include "openturns/IntegrationAlgorithm.hxx"
+#include "openturns/IteratedQuadrature.hxx"
+#include "openturns/GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,7 +70,24 @@ public:
   void setIndices(const Indices & indices);
   Indices getIndices() const;
 
-private:
+  /** UsePDF accessor */
+  void setUsePDF(const Bool usePDF);
+  Bool getUsePDF() const;
+
+  /** Integration algorithm accessor */
+  void setIntegrationAlgorithm(const IntegrationAlgorithm & algo);
+  IntegrationAlgorithm getIntegrationAlgorithm() const;
+
+  /** Get the support of a discrete distribution that intersect a given interval */
+  using DistributionImplementation::getSupport;
+  Sample getSupport() const override;
+  Sample getSupport(const Interval & interval) const override;
+
+  /** Get the discrete probability levels */
+  using DistributionImplementation::getProbabilities;
+  Point getProbabilities() const override;
+  
+ private:
   /** Set the distribution and the indices in one shot */
   void setDistributionAndIndices(const Distribution & distribution,
                                  const Indices & indices);
@@ -81,6 +101,10 @@ public:
   /** Get one realization of the MarginalDistribution */
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
+
+  /** Get the PDF of the MarginalDistribution */
+  using DistributionImplementation::computePDF;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;
@@ -176,6 +200,17 @@ private:
 
   /** The upper bound of the underlying distribution */
   Point upperBound_;
+
+  /** Flag to tell if the computations have to be done using the CDF or the PDF
+      of the underlying distribution */
+  Bool usePDF_ = ResourceMap::GetAsBool("MarginalDistribution-UsePDF");
+
+  /** Integration algorithm used to compute the PDF. By default it is an IteratedQuadrature. */
+  IntegrationAlgorithm integrationAlgorithm_ = IteratedQuadrature(
+                                                                  GaussKronrod(ResourceMap::GetAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals"),
+                                                                               ResourceMap::GetAsScalar("MarginalDistribution-MaximumError"),
+                                                                               GaussKronrod::GetRuleFromName(ResourceMap::GetAsString("MarginalDistribution-Rule"))
+                                                                               ));
 
 }; /* class MarginalDistribution */
 
