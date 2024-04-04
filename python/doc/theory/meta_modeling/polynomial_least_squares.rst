@@ -80,30 +80,32 @@ where :math:`\cJ(\vect{a})` is the cost function, defined as:
 .. math::
     \cJ(\vect{a}) = \sum_{i=1}^N \left( y^{(i)} - \Tr{\vect{a}} \vect{\psi}\left(\vect{x}^{(i)}\right) \right)^2.
 
-Let :math:`\vect{y} = (y^{(1)},\dots,y^{(N)})^T \in \Rset^{N}` be the
+Let :math:`\vect{y} = \Tr{(y^{(1)},\dots,y^{(N)})} \in \Rset^{N}` be the
 vector of output observations.
-The solution is given by the normal equations:
+If the design matrix :math:`\mat{\Psi}` has full rank,
+then the solution is given by the normal equations:
 
 .. math::
+    :label: solutionLLS
 
-    \widehat{\vect{a}}  =  \left( \mat{\Psi}^{\textsf{T}} \mat{\Psi}  \right)^{-1} \Tr{\mat{\Psi}}  \vect{y}
+    \widehat{\vect{a}}  =  \left( \Tr{\mat{\Psi}} \mat{\Psi}  \right)^{-1} \Tr{\mat{\Psi}}  \vect{y}
 
 where:
 
 .. math::
 
-    \mat{\Psi}  =  (\psi_{j}\left(\vect{x}^{(i)}\right) , i=1,\dots,N , j = 0,\dots,P-1)
+    \mat{\Psi}_{ij}  =  \psi_{j}\left(\vect{x}^{(i)}\right)
 
-It is clear that the above equation is only valid for a full rank
-information matrix.
-A necessary condition is that the size :math:`N` of the experimental design
-is not less than the number :math:`P` of coefficients to estimate.
-In practice, directly inverting :math:`\mat{\Psi}^{\textsf{T}} \mat{\Psi}`
-is not necessarily the best method since the solution may be particularly
-sensitive to an ill-conditioned matrix.
-The least-square problem is rather solved using more robust numerical methods
-such as *singular value decomposition* (SVD) or *QR-decomposition*.
-
+for :math:`i = 1, \dots, N` and :math:`j = 0, \dots, P - 1`.
+A necessary condition for having a solution is that the size :math:`N`
+of the experimental design is not less than the number :math:`P` of
+coefficients to estimate.
+The Gram matrix :math:`\Tr{\mat{\Psi}} \mat{\Psi}` can be
+ill-conditionned.
+Hence, the best method is not necessarily to invert the Gram matrix,
+because the solution may be particularly sensitive to rounding errors.
+The least-squares problem is rather solved using more robust numerical methods
+such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
 .. topic:: API:
 
@@ -116,5 +118,5 @@ such as *singular value decomposition* (SVD) or *QR-decomposition*.
 
 .. topic:: References:
 
-    - A. Bjorck, 1996, "Numerical methods for least squares problems", SIAM Press, Philadelphia, PA.
+    - [bjork1996]_
 

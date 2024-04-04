@@ -37,6 +37,8 @@ Bibliography
     https://www.sciencedirect.com/science/article/abs/pii/S0167947302002839
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
+.. [bjork1996] A. Bjorck (1996),
+    *Numerical methods for least squares problems*, SIAM Press, Philadelphia.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
     uncertainty propagation and sensitivity analysis.*, PhD thesis.
     Blaise Pascal University-Clermont II, France, 2009.
