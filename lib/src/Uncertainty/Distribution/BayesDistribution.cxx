@@ -45,11 +45,8 @@ BayesDistribution::BayesDistribution()
   , conditioningDistribution_()
   , linkFunction_()
 {
-  const Description inVars(Description::BuildDefault(1, "y"));
-  Description formulas(2);
-  formulas[0] = inVars[0];
-  formulas[1] = String(OSS() << inVars[0] << " + 1");
-  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), SymbolicFunction(inVars, formulas));
+  const SymbolicFunction linkFunction(Description({"y0"}), Description({"y0", "y0 + 1"}));
+  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
   setName("BayesDistribution");
   isParallel_ = false;
 }
@@ -101,21 +98,17 @@ Bool BayesDistribution::equals(const DistributionImplementation & other) const
 void BayesDistribution::computeRange()
 {
   // First, the conditioning distribution
-  const Point lowerBoundConditioning(conditioningDistribution_.getRange().getLowerBound());
-  const Interval::BoolCollection finiteLowerBoundConditioning(conditioningDistribution_.getRange().getFiniteLowerBound());
-  const Point upperBoundConditioning(conditioningDistribution_.getRange().getUpperBound());
-  const Interval::BoolCollection finiteUpperBoundConditioning(conditioningDistribution_.getRange().getFiniteUpperBound());
+  Point lowerBound(conditioningDistribution_.getRange().getLowerBound());
+  Interval::BoolCollection finiteLowerBound(conditioningDistribution_.getRange().getFiniteLowerBound());
+  Point upperBound(conditioningDistribution_.getRange().getUpperBound());
+  Interval::BoolCollection finiteUpperBound(conditioningDistribution_.getRange().getFiniteUpperBound());
+
   // Then, the conditioned distribution
   const ConditionalDistribution deconditioned(conditionedDistribution_, conditioningDistribution_, linkFunction_);
-  Point lowerBound(deconditioned.getRange().getLowerBound());
-  Interval::BoolCollection finiteLowerBound(deconditioned.getRange().getFiniteLowerBound());
-  Point upperBound(deconditioned.getRange().getUpperBound());
-  Interval::BoolCollection finiteUpperBound(deconditioned.getRange().getFiniteUpperBound());
-  // Merge everything
-  lowerBound.add(lowerBoundConditioning);
-  finiteLowerBound.add(finiteLowerBoundConditioning);
-  upperBound.add(upperBoundConditioning);
-  finiteUpperBound.add(finiteUpperBoundConditioning);
+  lowerBound.add(deconditioned.getRange().getLowerBound());
+  finiteLowerBound.add(deconditioned.getRange().getFiniteLowerBound());
+  upperBound.add(deconditioned.getRange().getUpperBound());
+  finiteUpperBound.add(deconditioned.getRange().getFiniteUpperBound());
 
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
@@ -136,7 +129,7 @@ String BayesDistribution::__repr__() const
 String BayesDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << getClassName() << "(Y, X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 
@@ -149,12 +142,11 @@ BayesDistribution * BayesDistribution::clone() const
 /* Get one realization of the distribution */
 Point BayesDistribution::getRealization() const
 {
-  const Point y(conditioningDistribution_.getRealization());
+  Point yx(conditioningDistribution_.getRealization());
   Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParameter(linkFunction_(y));
-  Point x(deconditioned.getRealization());
-  x.add(y);
-  return x;
+  deconditioned.setParameter(linkFunction_(yx));
+  yx.add(deconditioned.getRealization());
+  return yx;
 }
 
 /* Get the PDF of the distribution */
@@ -165,14 +157,14 @@ Scalar BayesDistribution::computePDF(const Point & point) const
   const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Point y(conditioningDimension);
-  std::copy(point.begin() + conditionedDimension, point.end(), y.begin());
+  std::copy(point.begin(), point.begin() + conditioningDimension, y.begin());
   const Scalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
   const Point parameters(linkFunction_(y));
   deconditioned.setParameter(parameters);
   Point x(conditionedDimension);
-  std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
+  std::copy(point.begin() + conditioningDimension, point.end(), x.begin());
   const Scalar deconditionedPDF = deconditioned.computePDF(x);
   return deconditionedPDF * conditioningPDF;
 }
@@ -181,7 +173,8 @@ Scalar BayesDistribution::computePDF(const Point & point) const
 void BayesDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
 {
   if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
-  if (conditionedDistribution != conditionedDistribution_) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution_, linkFunction_);
+  if (conditionedDistribution != conditionedDistribution_)
+    setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution_, linkFunction_);
 }
 
 Distribution BayesDistribution::getConditionedDistribution() const
@@ -194,7 +187,8 @@ Distribution BayesDistribution::getConditionedDistribution() const
 void BayesDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
 {
   if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
-  if (conditioningDistribution != conditioningDistribution_) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution, linkFunction_);
+  if (conditioningDistribution != conditioningDistribution_)
+    setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution, linkFunction_);
 }
 
 Distribution BayesDistribution::getConditioningDistribution() const
@@ -205,7 +199,8 @@ Distribution BayesDistribution::getConditioningDistribution() const
 /* Link function accessor */
 void BayesDistribution::setLinkFunction(const Function & linkFunction)
 {
-  if (!(linkFunction == linkFunction_)) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
+  if (!(linkFunction == linkFunction_))
+    setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
 }
 
 Function BayesDistribution::getLinkFunction() const
@@ -222,7 +217,8 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
   const UnsignedInteger conditionedParametersDimension = conditionedDistribution.getParameterDimension();
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
-  if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";
+  if (conditioningDimension != linkFunction.getInputDimension())
+    throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";
   conditionedDistribution_ = conditionedDistribution;
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
@@ -237,30 +233,32 @@ Distribution BayesDistribution::getMarginal(const UnsignedInteger i) const
   // Special case for dimension 1
   if (getDimension() == 1) return clone();
   // General case
-  // If the index is in the conditioned part
-  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
-  if (i < conditionedDimension) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i);
-  return conditioningDistribution_.getMarginal(i - conditionedDimension);
+  // If the index is in the conditioning part
+  const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
+  if (i < conditioningDimension) return conditioningDistribution_.getMarginal(i);
+  return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i - conditioningDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution BayesDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
+  if (!indices.check(dimension))
+    throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  // If the indices are in the conditioned part
-  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
-  if (indices.check(conditionedDimension)) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(indices);
   // If the indices are in the conditioning part
-  Indices conditioningIndices(0);
+  const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
+  if (indices.check(conditioningDimension)) return conditioningDistribution_.getMarginal(indices);
+  // If the indices are in the conditioned part
+  Indices conditionedIndices(0);
   const UnsignedInteger size = indices.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-    if (indices[i] >= conditionedDimension)
-      conditioningIndices.add(indices[i] - conditionedDimension);
-  if (conditioningIndices.getSize() == size) return conditioningDistribution_.getMarginal(conditioningIndices);
+    if (indices[i] >= conditioningDimension)
+      conditionedIndices.add(indices[i] - conditioningDimension);
+  if (conditionedIndices.getSize() == size)
+    return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(conditionedIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 
@@ -274,7 +272,8 @@ Point BayesDistribution::getParameter() const
 
 void BayesDistribution::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
+  if (parameter.getSize() != getParameter().getSize())
+    throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
   const Scalar w = getWeight();
   Point::const_iterator start = parameter.begin();
   const UnsignedInteger linkParameterSize = linkFunction_.getParameterDimension();
@@ -307,13 +306,13 @@ Description BayesDistribution::getParameterDescription() const
 /* Compute the mean of the distribution */
 void BayesDistribution::computeMean() const
 {
-  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
-  Indices lower(conditionedDimension);
+  const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
+  Indices lower(conditioningDimension);
   lower.fill();
   mean_ = getMarginal(lower).getMean();
-  const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
-  Indices upper(conditioningDimension);
-  upper.fill(conditionedDimension, 1);
+  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
+  Indices upper(conditionedDimension);
+  upper.fill(conditioningDimension);
   mean_.add(getMarginal(upper).getMean());
   isAlreadyComputedMean_ = true;
 }
@@ -328,6 +327,7 @@ public:
     : EvaluationImplementation()
     , distribution_(distribution)
     , dimension_(distribution.getDimension())
+    , conditioningDimension_(distribution.getConditioningDistribution().getDimension())
     , conditionedDimension_(distribution.getConditionedDistribution().getDimension())
     , outputDimension_(conditionedDimension_ * (2 * dimension_ - conditionedDimension_ + 3) / 2)
     , mu_(distribution.getMean())
@@ -345,14 +345,14 @@ public:
     Point value(outputDimension_);
     const Scalar pdf(distribution_.computePDF(point));
     UnsignedInteger index = 0;
-    for (UnsignedInteger i = 0; i < conditionedDimension_; ++i)
+    for (UnsignedInteger i = conditioningDimension_; i < dimension_; ++ i)
     {
       const Scalar deltaI(point[i] - mu_[i]);
-      for (UnsignedInteger j = i; j < dimension_; ++j)
+      for (UnsignedInteger j = 0; j <= i; ++ j)
       {
         const Scalar deltaJ(point[j] - mu_[j]);
         value[index] = pdf * deltaI * deltaJ;
-        ++index;
+        ++ index;
       } // j
     } // i
     return value;
@@ -391,6 +391,7 @@ public:
 private:
   const BayesDistribution & distribution_;
   const UnsignedInteger dimension_;
+  const UnsignedInteger conditioningDimension_;
   const UnsignedInteger conditionedDimension_;
   const UnsignedInteger outputDimension_;
   const Point mu_;
@@ -403,29 +404,28 @@ void BayesDistribution::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
-  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   const Function integrand(BayesDistributionFunctions::KernelCovariance(*this));
   const Bool useAdaptiveAlgorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
   IntegrationAlgorithm integrator;
   if (useAdaptiveAlgorithm) integrator = IteratedQuadrature(GaussKronrod());
   else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)))));
-  // Integrate over the interval (-inf, y] of the conditioning Gamma distribution
-  const Point upperCovariance(integrator.integrate(integrand, getRange()));
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < conditionedDimension; ++i)
-    for (UnsignedInteger j = i; j < dimension; ++j)
-    {
-      covariance_(i, j) = upperCovariance[index];
-      ++index;
-    }
+
   // The conditioning covariance can be reused as is
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
-  Indices upper(conditioningDimension);
-  upper.fill(conditionedDimension);
-  const CovarianceMatrix conditioningCovariance(getMarginal(upper).getCovariance());
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    for (UnsignedInteger j = i; j < conditioningDimension; ++j)
-      covariance_(conditionedDimension + i, conditionedDimension + j) = conditioningCovariance(i, j);
+  const CovarianceMatrix conditioningCovariance(conditioningDistribution_.getCovariance());
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+      covariance_(i, j) = conditioningCovariance(i, j);
+
+  // Complete the lower part
+  const Point upperCovariance(integrator.integrate(integrand, getRange()));
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = conditioningDimension; i < dimension; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+    {
+      covariance_(i, j) = upperCovariance[index];
+      ++ index;
+    }
   isAlreadyComputedCovariance_ = true;
 }
 
