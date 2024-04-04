@@ -622,8 +622,11 @@ class View:
                             format = matplotlib.ticker.FixedFormatter(["{:.6g}".format(level) for level in contour.getLevels()])
                         self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format=format)
                     else:
-                        self._fig.colorbar(contourset)
-                        warnings.warn("-- location was not used")
+                        try:
+                            self._fig.colorbar(contourset)
+                            warnings.warn("-- colorbar location was not used in matplotlib < 3.7.0")
+                        except ZeroDivisionError:
+                            warnings.warn("figure.colorbar likely failed on boundary levels")
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)
