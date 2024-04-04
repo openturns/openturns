@@ -41,9 +41,6 @@ static const Factory<BayesDistribution> Factory_BayesDistribution;
 /* Default constructor */
 BayesDistribution::BayesDistribution()
   : ContinuousDistribution()
-  , conditionedDistribution_()
-  , conditioningDistribution_()
-  , linkFunction_()
 {
   const SymbolicFunction linkFunction(Description({"y0"}), Description({"y0", "y0 + 1"}));
   setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
@@ -54,29 +51,17 @@ BayesDistribution::BayesDistribution()
 /* Parameters constructor */
 BayesDistribution::BayesDistribution(const Distribution & conditionedDistribution,
                                      const Distribution & conditioningDistribution,
-                                     const Function & linkFunction)
+                                     const Function & linkFunction0)
   : ContinuousDistribution()
-  , conditionedDistribution_(conditionedDistribution)
-  , conditioningDistribution_(conditioningDistribution)
-  , linkFunction_(linkFunction)
 {
   if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
   if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
-  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
-  setName("BayesDistribution");
-  isParallel_ = false;
-}
 
-BayesDistribution::BayesDistribution(const Distribution & conditionedDistribution,
-                                     const Distribution & conditioningDistribution)
-  : ContinuousDistribution()
-  , conditionedDistribution_(conditionedDistribution)
-  , conditioningDistribution_(conditioningDistribution)
-  , linkFunction_(IdentityFunction(conditioningDistribution.getDimension()))
-{
-  if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
-  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
-  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction_);
+  Function linkFunction(linkFunction0);
+  if (!linkFunction.getEvaluation().getImplementation()->isActualImplementation())
+    linkFunction = IdentityFunction(conditioningDistribution.getDimension());
+
+  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
   setName("BayesDistribution");
   isParallel_ = false;
 }
@@ -224,6 +209,17 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
   linkFunction_ = linkFunction;
   setDimension(conditioningDimension + conditionedDistribution.getDimension());
   computeRange();
+
+  Description description(conditioningDistribution.getDescription());
+  description.add(conditionedDistribution.getDescription());
+  // avoid description warning with identical entries
+  Description::const_iterator it = std::unique(description.begin(), description.end());
+  if (it != description.end())
+  {
+    description = Description::BuildDefault(conditioningDistribution.getDimension(), "Y");
+    description.add(Description::BuildDefault(conditionedDistribution.getDimension(), "X"));
+  }
+  setDescription(description);
 }
 
 /* Get the i-th marginal distribution */
