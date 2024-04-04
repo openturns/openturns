@@ -149,19 +149,19 @@ private:
   void computeCovariance() const override;
 
   /** The prior mean */
-  Scalar mu_;
+  Scalar mu_ = 0.0;
 
   /** The prior precision scale */
-  Scalar kappa_;
+  Scalar kappa_ = 1.0;
 
   /** The prior shape */
-  Scalar alpha_;
+  Scalar alpha_ = 1.0;
 
   /** The prior rate */
-  Scalar beta_;
+  Scalar beta_ = 1.0;
 
   /** Log-normalization factor of the PDF */
-  Scalar logNormalization_;
+  Scalar logNormalization_ = 0.0;
 }; /* class NormalGamma */
 
 
