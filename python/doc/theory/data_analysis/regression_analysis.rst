@@ -161,7 +161,7 @@ ANOVA F-test
 
 The F-statistic is based on the hypothesis that all coefficients
 are simultaneously zero (see [baron2014]_ page 400).
-The ANOVA F-test is based on the hypothesis:
+More precisely, the ANOVA F-test is based on the hypothesis:
 
 .. math::
 
@@ -186,7 +186,9 @@ distribution :math:`F_{p, n - p - 1}` (see [baron2014]_ page 400, [faraway2014]_
 T-test for individual coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`\hat{\sigma}^2` be the estimator of the variance (see [baron2014]_ page 400):
+The T-test is based on the hypothesis that one single coefficient is zero.
+More precisely, let :math:`\hat{\sigma}^2` be the estimator of the variance
+(see [baron2014]_ page 400):
 
 .. math::
 
