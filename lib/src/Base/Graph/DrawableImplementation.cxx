@@ -1634,7 +1634,7 @@ Description DrawableImplementation::BuildViridisPalette(const UnsignedInteger si
   palette[size - 1] = ViridisColors[ViridisColors.getSize() - 1];
   if (size > 1)
   {
-    Scalar step = (ViridisColors.getSize() - 1.) / (size - 1);
+    const Scalar step = (ViridisColors.getSize() - 1.0) / (size - 1);
     for (UnsignedInteger i = 0; i + 1 < size; i++)
       palette[i] = ViridisColors[static_cast<UnsignedInteger>(round(i * step))];
   }
@@ -1647,14 +1647,14 @@ Description DrawableImplementation::BuildGrayScalePalette(const UnsignedInteger 
 {
   if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
   Description palette(size);
-  UnsignedInteger firstValue = 255 - std::min(255UL, ResourceMap::GetAsUnsignedInteger("Drawable-WhiteMargin")),
+  const UnsignedInteger firstValue = 255 - std::min(255UL, ResourceMap::GetAsUnsignedInteger("Drawable-WhiteMargin")),
     lastValue = std::min(255UL, ResourceMap::GetAsUnsignedInteger("Drawable-BlackMargin"));
   if (size > 1)
   {
-    Scalar step = (lastValue - (Scalar)firstValue) / (size - 1);
+    const Scalar step = (lastValue - (Scalar)firstValue) / (size - 1);
     for (UnsignedInteger i = 0; i < size; i++)
     {
-      UnsignedInteger val = std::min(255UL, static_cast<UnsignedInteger>(round(firstValue + i * step)));
+      const UnsignedInteger val = std::min(255UL, static_cast<UnsignedInteger>(round(firstValue + i * step)));
       palette[i] = ConvertFromRGB(val, val, val);
     }
   }
