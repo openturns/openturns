@@ -240,7 +240,7 @@ Scalar SolverImplementation::solve(const UniVariateFunction &,
 Point SolverImplementation::solve(const Function &,
                                   const Point &) const
 {
-  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const UniVariateFunction & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point)";
 
 }
 END_NAMESPACE_OPENTURNS
