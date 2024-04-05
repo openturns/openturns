@@ -18,11 +18,11 @@ maximumFunctionEvaluation : int
 
 See also
 --------
-Solver, OptimizationAlgorithm, Dlib
+Solver, OptimizationAlgorithm
 
 Notes
 -----
-The LsqSolver is based on the Dlib implementation of the least squares algorithm."
+LsqSolver might fail and not obtain a result lower than the specified threshold, in this case an error is thrown."
 
 // ---------------------------------------------------------------------
 
@@ -47,5 +47,4 @@ result : Point
 
 Notes
 -----
-The LsqSolver is an unbounded solver based on the Dlib implementation of the least square optimization algorithm.
 LsqSolver might fail and not obtain a result lower than the specified threshold, in this case an error is thrown."

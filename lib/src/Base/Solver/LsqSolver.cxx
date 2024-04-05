@@ -65,7 +65,6 @@ String LsqSolver::__repr__() const
 }
 
 /* Solve attempt to find one root to the system of non-linear equations function(x) = 0 given a starting point x with a least square optimization method.
-   The Least Square Optimization method is based on the DLib implementation in OpenTurns.
 */
 Point LsqSolver::solve(const Function & function,
                      const Point & startingPoint) const
