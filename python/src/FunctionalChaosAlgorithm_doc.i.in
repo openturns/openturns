@@ -18,19 +18,23 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : 2-d sequence of float
-    Sample of the input - output random vectors
+inputSample: 2-d sequence of float
+    Sample of the input random vectors with size :math:`n` and dimension :math:`n_X`.
+outputSample: 2-d sequence of float
+    Sample of the output random vectors with size :math:`n` and dimension :math:`n_Y`.
 distribution : :class:`~openturns.Distribution`
-    Distribution of the random vector :math:`\vect{X}`
+    Distribution of the random vector :math:`\vect{X}` of dimension :math:`n_X`.
+    When the *distribution* is unspecified, the
+    :meth:`~openturns.MetaModelAlgorithm.BuildDistribution` static
+    method is evaluated on the *inputSample*.
 adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
     Strategy of selection of the different terms of the multivariate basis.
 projectionStrategy : :class:`~openturns.ProjectionStrategy`
-    Strategy of evaluation of the coefficients :math:`\alpha_k`
+    Strategy of evaluation of the coefficients :math:`a_k`
 weights : sequence of float
-    Weights :math:`\omega_i` associated to the data base
-
-    Default values are :math:`\omega_i = \frac{1}{N}` where 
-    *N=inputSample.getSize()*
+    Weights :math:`(w_i)_{i = 1, ..., n}` associated to the output
+    sample, where :math:`n` is the sample size.
+    Default values are :math:`w_i = \frac{1}{n}` for :math:`i = 1, ..., n`. 
 
 See also
 --------
@@ -38,115 +42,45 @@ FunctionalChaosResult
 
 Notes
 -----
-Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`, 
-:math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance: 
-:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+This class creates a functional chaos expansion or polynomial
+chaos expansion (PCE) based on an input and output
+sample of the physical model.
+More details on this type of surrogate models are presented in :ref:`functional_chaos`.
+Once the expansion is computed, the :class:`~openturns.FunctionalChaosRandomVector`
+class provides methods to get the mean and variance of the PCE.
+Moreover, the :class:`~openturns.FunctionalChaosSobolIndices` provides Sobol' indices
+of the PCE.
 
-When  :math:`p>1`, the functional chaos algorithm is used on each marginal 
-of :math:`\vect{Y}`, using the same multivariate orthonormal basis for all the marginals. 
-Thus, the algorithm is detailed here for a scalar output :math:`Y` and 
-:math:`g: \Rset^d \rightarrow \Rset`.
+**Default settings for the adaptive strategy**
 
-Let :math:`T: \Rset^d \rightarrow \Rset^d` be an isoprobabilistic transformation
-such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`.
-We note :math:`h = g \circ T^{-1}`, then :math:`f \in L_{\mu}^2(\Rset^d, \Rset)`.
+When the *adaptiveStrategy* is unspecified, the `FunctionalChaosAlgorithm-QNorm` parameter
+of the :class:`~openturns.ResourceMap` is used.
+If this parameter is equal to 1, then the :class:`~openturns.LinearEnumerateFunction` class
+is used.
+Otherwise, the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` class is used.
+If the `FunctionalChaosAlgorithm-BasisSize` key of the :class:`~openturns.ResourceMap` is nonzero,
+then this parameter sets the basis size.
+Otherwise, the `FunctionalChaosAlgorithm-MaximumTotalDegree` key of the
+:class:`~openturns.ResourceMap` is used to compute the basis size using the `getBasisSizeFromTotalDegree`
+method of the orthogonal basis.
+Finally, the :class:`~openturns.FixedStrategy` class is used.
 
-Let :math:`(\Psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
-:math:`L^2_{\mu}(\Rset^d,\Rset)`.
+**Default settings for the projection strategy**
 
-Then the functional chaos decomposition of *h* is:
+When the *projectionStrategy* is unspecified, the 
+`FunctionalChaosAlgorithm-Sparse` key of the :class:`~openturns.ResourceMap` is used.
+If it is false, then the :class:`~openturns.LeastSquaresStrategy` class is
+used, which produces a full PCE, without model selection.
+Otherwise, a :class:`~openturns.LARS` PCE is created, i.e.
+a sparse PCE is computed using model selection.
+In this case, the `FunctionalChaosAlgorithm-FittingAlgorithm`
+key of the :class:`~openturns.ResourceMap` is used.
 
-.. math::
-
-    h = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{\alpha}_k \Psi_k 
-
-
-which can be truncated to the finite set :math:`K \in \Nset`:
-
-.. math::
-
-    \tilde{h} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k 
-
-
-The approximation :math:`\tilde{h}` can be used to build an efficient random 
-generator of :math:`Y` based on the random vector :math:`\vect{Z}`. 
-It writes:
-
-.. math::
-
-    \tilde{Y} = \tilde{h}(\vect{Z})
-
-For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
-
-The functional chaos decomposition can be used to build a meta model of *g*, 
-which writes:
-
-.. math::
-
-    \tilde{g} = \tilde{h} \circ T
-
-If the basis :math:`(\Psi_k)_{k \in \Nset}` has been obtained by tensorisation of
-univariate orthonormal basis, then the distribution :math:`\mu` writes  
-:math:`\mu = \prod_{i=1}^d \mu_i`. In that case only, the Sobol indices can
-easily be deduced from the coefficients :math:`\alpha_k`.
-
-We detail here all the steps required in order to create a functional chaos 
-algorithm.
-
-**Step 1 - Construction of the multivariate orthonormal basis**: the
-multivariate orthonornal basis :math:`(\Psi_k(\vect{x}))_{k \in \Nset}` is built
-as the tensor product of orthonormal univariate families.
-
-The univariate bases may be:
-
-- *polynomials*: the associated distribution :math:`\mu_i` is continuous or discrete. 
-  Note that it is possible to build the polynomial family orthonormal to any univariate 
-  distribution :math:`\mu_i` under some conditions. 
-  For more details, see :class:`~openturns.StandardDistributionPolynomialFactory`;
-
-- Haar wavelets: they enable to approximate functions with discontinuities.
-  For more details, see :class:`~openturns.HaarWaveletFactory`;
-
-- Fourier series: for more details, see :class:`~openturns.FourierSeriesFactory`.
-
-Furthermore, the ordering of the multivariate orthonormal basis :math:`(\Psi_k(\vect{z}))_{k \in \Nset}` 
-is given by an enumerate function which defines a regular way to generate the collection of degres 
-used for the univariate polynomials : an enumerate function represents a bijection 
-:math:`\Nset \rightarrow \Nset^d`. See :class:`~openturns.LinearEnumerateFunction` or :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` 
-for more details.
-
-**Step 2 - Truncation strategy of the multivariate orthonormal basis**: a
-strategy must be chosen for the selection of the different terms of the
-multivariate basis. The selected terms are gathered in the subset *K*.
-
-For more details on the possible strategies, see :class:`~openturns.FixedStrategy`
-and :class:`~openturns.CleaningStrategy`.
-
-**Step 3 -  Evaluation strategy of the coefficients**: a
-strategy must be chosen for the estimation of te coefficients :math:`\alpha_k`. 
-The vector :math:`\vect{\alpha} = (\alpha_k)_{k \in K}` is equivalently defined by:
-
-.. math::
-    :label: quadEr
-
-    \vect{\alpha} = \argmin_{\vect{\alpha} \in \Rset^K}\Expect{\left( g \circ T^{-1}(\vect{Z}) - \sum_{k \in K} \alpha_k \Psi_k (\vect{Z})\right)^2}
-
-or
-
-.. math::
-    :label: scalProd
-
-    \alpha_k =  \left\langle g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z}) \right\rangle_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
-
-where the mean :math:`\Expect{\cdot}` is evaluated with respect to the measure :math:`\mu`.
-
-The equation :eq:`quadEr` means that the coefficients :math:`(\alpha_k)_{k \in K}`
-minimize the quadratic error between the model and the polynomial approximation.
-For more details, see :class:`~openturns.LeastSquaresStrategy`.
-
-The equation  :eq:`scalProd` means that :math:`\alpha_k` is the scalar product of the
-model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
-For more details, see :class:`~openturns.IntegrationStrategy`.
+- If this key is equal to 'CorrectedLeaveOneOut', then the
+  :class:`~openturns.CorrectedLeaveOneOut` criteria is used.
+- If this key is equal to 'KFold', then the
+  :class:`~openturns.KFold` criteria is used.
+- Otherwise, an exception is produced.
 
 Examples
 --------
@@ -154,27 +88,28 @@ Create the model:
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> inputDim = 1
->>> model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
->>> distribution = ot.JointDistribution([ot.Uniform()]*inputDim)
+>>> inputDimension = 1
+>>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
+>>> distribution = ot.ComposedDistribution([ot.Uniform()] * inputDimension)
 
 Build the multivariate orthonormal basis:
 
->>> polyColl = [0.0]*inputDim
+>>> polyColl = [0.0] * inputDimension
 >>> for i in range(distribution.getDimension()):
 ...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
->>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 Define the  strategy to truncate the multivariate orthonormal basis:
-We choose all the polynomials of degree <= 4
+We choose all the polynomials of degree lower or equal to 4.
 
 >>> degree = 4
->>> indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
+>>> indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 >>> print(indexMax)
 5
 
-We keep all the polynomials of degree <= 4 (which corresponds to the 5 first ones):
+We keep all the polynomials of degree lower or equal to 4 (which corresponds
+to the 5 first ones):
 
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
 
@@ -182,14 +117,15 @@ Define the evaluation strategy of the  coefficients:
 
 >>> samplingSize = 50
 >>> experiment = ot.MonteCarloExperiment(distribution, samplingSize)
->>> X = experiment.generate()
->>> Y = model(X)
+>>> inputSample = experiment.generate()
+>>> outputSample = model(inputSample)
 >>> projectionStrategy = ot.LeastSquaresStrategy()
 
 Create the chaos algorithm:
 
->>> algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy,
-...                                    projectionStrategy)
+>>> algo = ot.FunctionalChaosAlgorithm(
+...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
+... )
 >>> algo.run()
 
 Get the result:
@@ -204,7 +140,57 @@ Test it:
 >>> print(model(X))
 [0.239713]
 >>> print(metamodel(X))
-[0.239514]"
+[0.239514]
+
+There are several methods to define the algorithm: default 
+settings are used when the information is not provided by the user.
+The simplest is to set only the input and output samples.
+In this case, the distribution and its parameters are estimated from
+the *inputSample* using the :class:`~openturns.MetaModelAlgorithm.BuildDistribution` class.
+See the :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_build_distribution`
+example for more details on this topic.
+
+>>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
+
+In many cases, the distribution is known and it is best to use this information
+when we have it.
+
+>>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, distribution)
+
+A more involved method is to define the method to set the orthogonal basis of functions or
+polynomials.
+We use the :class:`~openturns.OrthogonalProductPolynomialFactory` class to define the
+orthogonal basis of polynomials.
+Then we use the :class:`FixedStrategy` to define the maximum number of candidate polynomials
+to consider in the expansion, up to the total degree equal to 10.
+
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
+>>> maximumTotalDegree = 10
+>>> totalSize = enumerateFunction.getBasisSizeFromTotalDegree(maximumTotalDegree)
+>>> polynomialsList = []
+>>> for i in range(inputDimension):
+...     marginalDistribution = distribution.getMarginal(i)
+...     marginalPolynomial = ot.StandardDistributionPolynomialFactory(marginalDistribution)
+...     polynomialsList.append(marginalPolynomial)
+>>> basis = ot.OrthogonalProductPolynomialFactory(polynomialsList, enumerateFunction)
+>>> adaptiveStrategy = ot.FixedStrategy(basis, totalSize)
+>>> algo = ot.FunctionalChaosAlgorithm(
+...     inputSample, outputSample, distribution, adaptiveStrategy
+... )
+
+The most involved method is to define the way to compute the coefficients,
+thanks to the :class:`~openturns.ProjectionStrategy`.
+In the next example, we use :class:`~openturns.LARS` to create a
+sparse PCE.
+
+>>> selection = ot.LeastSquaresMetaModelSelectionFactory(
+...     ot.LARS(),
+...     ot.CorrectedLeaveOneOut()
+... )
+>>> projectionStrategy = ot.LeastSquaresStrategy(inputSample, outputSample, selection)
+>>> algo = ot.FunctionalChaosAlgorithm( 
+...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
+... )"
 
 // ---------------------------------------------------------------------
 
@@ -281,7 +267,7 @@ residual : float
 
 Parameters
 ----------
-strategy : :class:`~openturns.ProjectionStrategy`
-    Strategy to estimate the coefficients :math:`\alpha_k`."
+projectionStrategy : :class:`~openturns.ProjectionStrategy`
+    Strategy to estimate the coefficients :math:`a_k`."
 
 // ---------------------------------------------------------------------
