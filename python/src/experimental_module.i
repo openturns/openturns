@@ -33,6 +33,9 @@
 /* Base/Stat */
 %include LatentVariableModel.i
 
+/* Base/Solver */
+%include LsqSolver.i
+
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i
