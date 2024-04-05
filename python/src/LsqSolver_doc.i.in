@@ -1,10 +1,6 @@
 %feature("docstring") OT::LsqSolver
 "Least Square Solver (LsqSolver) for a system of non-linear equations.
 
-Available constructor:
-    LsqSolver()
-
-    LsqSolver(*absError, relError, resError, maximumFunctionEvaluation*)
 
 Parameters
 ----------
