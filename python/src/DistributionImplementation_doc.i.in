@@ -15,13 +15,13 @@ OT_Distribution_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
-    CDF input(s).
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 F : float, :class:`~openturns.Point`
-    CDF value(s) at input(s) :math:`X`.
+    CDF value at *x*.
 
 Notes
 -----
@@ -30,7 +30,7 @@ The cumulative distribution function is defined as:
 .. math::
 
     F_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i \leq x_i},
-                             \quad \vect{x} \in \supp{\vect{X}}"
+                             \quad \vect{x} \in \Rset^d"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDF
 OT_Distribution_computeCDF_doc
@@ -42,14 +42,14 @@ OT_Distribution_computeCDF_doc
 
 Parameters
 ----------
-X : sequence of float
-    CDF input.
+x : sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 dFdtheta : :class:`~openturns.Point`
     Partial derivatives of the CDF with respect to the distribution
-    parameters at input :math:`X`."
+    parameters at *x*."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDFGradient
 OT_Distribution_computeCDFGradient_doc
@@ -67,7 +67,7 @@ t : float
 Returns
 -------
 phi : complex
-    Characteristic function value at input :math:`t`.
+    Characteristic function value at input *t*.
 
 Notes
 -----
@@ -93,13 +93,13 @@ OT_Distribution_computeCharacteristicFunction_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
-    Complementary CDF input(s).
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 C : float, :class:`~openturns.Point`
-    Complementary CDF value(s) at input(s) :math:`X`.
+    Complementary CDF value at *x*.
 
 Notes
 -----
@@ -107,11 +107,10 @@ The complementary cumulative distribution function.
 
 .. math::
 
-    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i=1}^n X_i \leq x_i}, \quad \vect{x} \in \supp{\vect{X}}
+    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i = 1}^d \left\{X_i \leq x_i \right\}}, \qquad \vect{x} \in \Rset^d
 
 .. warning::
-    This is not the survival function (except for 1-dimensional
-    distributions).
+    The complementary CDF is different from the survival function (except for scalar distributions).
 
 See Also
 --------
@@ -127,26 +126,29 @@ OT_Distribution_computeComplementaryCDF_doc
 
 Parameters
 ----------
-Xn : float, sequence of float
-    Conditional CDF input (last component).
-Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditioning values for the other components.
+xj : float, sequence of float
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
-F : float, sequence of float
-    Conditional CDF value(s) at input :math:`X_n`, :math:`X_{cond}`.
+p : float, sequence of float
+    Conditional CDF value at  *xj* given *xcond*.
 
 Notes
 -----
-The conditional cumulative distribution function of the last component with
-respect to the other fixed components is defined as follows:
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
+The conditional cumulative distribution function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})` is defined by:
 
 .. math::
 
-    F_{X_n \mid X_1, \ldots, X_{n - 1}}(x_n) =
-        \Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}},
-        \quad x_n \in \supp{X_n}"
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+        \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1`, it
+reduces to :math:`F_{X_1}(x_1)`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalCDF
 OT_Distribution_computeConditionalCDF_doc
@@ -160,15 +162,36 @@ With respect to the other fixed components.
 
 Parameters
 ----------
-Xn : float
-    Conditional DDF input (last component).
-Xcond : sequence of float with dimension :math:`n-1`
-    Conditioning values for the other components.
+xj : float, sequence of float
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
-d : float
-    Conditional DDF value at input :math:`X_n`, :math:`X_{cond}`.
+ddf : float,
+    Conditional DDF value at  *xj* given *xcond*.
+
+Notes
+-----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
+The conditional derivative density function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
+
+.. math::
+
+     \dfrac{d^2}{d\,x_j^2}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
+
+where for :math:`2 \leq j \leq d`:
+
+.. math::
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1`, it reduces to :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`, ie the DDF of
+the first component at :math:`x_1`.
 
 See Also
 --------
@@ -186,15 +209,36 @@ Conditional PDF of the last component with respect to the other fixed components
 
 Parameters
 ----------
-Xn : float, sequence of float
-    Conditional PDF input (last component).
-Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditioning values for the other components.
+xj : float, sequence of float, 
+    Conditional CDF input.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
-F : float, sequence of float
-    Conditional PDF value(s) at input :math:`X_n`, :math:`X_{cond}`.
+cpdf : float, sequence of float
+    Conditional PDF at *xd*, given *xcond*.
+
+Notes
+-----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
+The conditional probability density function of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
+
+.. math::
+
+     \dfrac{d}{d\,x_j}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
+
+where for :math:`2 \leq j \leq d`:
+
+.. math::
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+For :math:`j=1`, it
+reduces to :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`.
 
 See Also
 --------
@@ -212,15 +256,32 @@ Conditional quantile with respect to the other fixed components.
 
 Parameters
 ----------
-p : float, sequence of float, :math:`0 < p < 1`
-    Conditional quantile function input.
-Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
-    Conditioning values for the other components.
+p : float, sequence of float, :math:`p \in [0, 1]`
+    Conditional quantile.
+xcond : sequence of float, 2-d sequence of float with size :math:`j-1`, :math:`j \leq d`
+    Conditioning values for the components :math:`(X_{1}, \dots, X_{j-1})`.
 
 Returns
 -------
-X1 : float
-    Conditional quantile at input :math:`p`, :math:`X_{cond}`.
+xj : float
+    Conditional quantile of order *p* of the component :math:`X_j`
+    given that the components of indices :math:`k \leq j-1` are fixed and
+    equal to *xcond*.
+
+Notes
+-----
+Let :math:`\vect{X}` be a random vector of dimension :math:`d`.
+The conditional quantile of order :math:`p` of the component :math:`X_j`
+given that the components of indices :math:`k \leq j-1` are fixed to :math:`(x_1, \dots, x_{j-1})`
+is defined by:
+
+.. math::
+
+     F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p; x_1, \dots, x_{j-1})
+
+where :math:`F^{-1}` is the quantile function.
+For :math:`j=1`, it
+reduces to :math:`F^{-1}_{X_1}(p)`.
 
 See Also
 --------
@@ -236,13 +297,13 @@ OT_Distribution_computeConditionalQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the CDF.
 
 Returns
 -------
 F : sequence of float
-    Conditional CDF values at input.
+    Conditional CDF values at *x*.
 
 Notes
 -----
@@ -250,9 +311,16 @@ The sequential conditional cumulative distribution function is defined as follow
 
 .. math::
 
-    F^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+    \left(F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})\right)_{j=1,\ldots,d}
 
-ie its :math:`n`-th component is the conditional CDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
+
+.. math::
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1)`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalCDF
@@ -265,27 +333,31 @@ OT_Distribution_computeSequentialConditionalCDF_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the DDF.
 
 Returns
 -------
 ddf : sequence of float
-    Conditional DDF values at input.
+    Conditional DDF values at *x*.
 
 Notes
 -----
-The sequential conditional derivative density function is defined as follows:
+The sequential conditional derivative density function is defined by:
 
 .. math::
 
-    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, 
-    X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+    \left(\dfrac{d^2}{d\,x_j^2}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})
+    \right)_{j=1,\ldots,d}
 
-ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,
-\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of 
-the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
 
+.. math::
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`\dfrac{d^2}{d\,x_1^2}F_{X_1}(x_1)`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalDDF
 OT_Distribution_computeSequentialConditionalDDF_doc
@@ -297,13 +369,13 @@ OT_Distribution_computeSequentialConditionalDDF_doc
 
 Parameters
 ----------
-X : sequence of float, with size :math:`d`
+x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the PDF.
 
 Returns
 -------
 pdf : sequence of float
-    Conditional PDF values at input.
+    Sequence of conditional PDF values at *x*.
 
 Notes
 -----
@@ -311,9 +383,16 @@ The sequential conditional density function is defined as follows:
 
 .. math::
 
-    pdf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d}{d\,x_n}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+    \left(\dfrac{d}{d\,x_j}F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1})\right)_{j=1,\ldots,d}
 
-ie its :math:`n`-th component is the conditional PDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d}{d\,x_1}\Prob{X_1 \leq x_1}`, ie the PDF of the first component at :math:`x_1`."
+where for :math:`2 \leq j \leq d`:
+
+.. math::
+
+    F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
+    \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
+
+The first term, for :math:`j=1`, is :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`."
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalPDF
@@ -326,26 +405,26 @@ OT_Distribution_computeSequentialConditionalPDF_doc
 
 Parameters
 ----------
-q : sequence of float in :math:`[0,1]`, with size :math:`d`
+p : sequence of float in :math:`[0,1]`, with size :math:`d`
     Values to be taken sequentially as the argument of the conditional quantile.
 
 Returns
 -------
 Q : sequence of float
-    Conditional quantiles values at input.
+    Sequence of conditional quantiles values at *p*
 
 Notes
 -----
-The sequential conditional quantile function is defined as follows:
+The sequential conditional quantile function is defined by:
 
 .. math::
 
-    Q^{seq}_{X_1,\ldots,X_d}(q_1,\ldots,q_d) = \left(F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1}\right)_{i=1,\ldots,d}
+    \left(F^{-1}_{X_j \mid X_1, \ldots, X_{j - 1}}(p_j; x_1, \dots, x_{j-1})\right)_{i=1,\ldots,d}
 
-where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,
-\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already 
+where :math:`F^{-1}` is the quantile function and
+where :math:`x_1,\ldots,x_{j-1}` are defined recursively as :math:`x_1=F_1^{-1}(p_1)` and for :math:`2\leq j \leq d`,
+:math:`x_j=F_{X_j}^{-1}(p_j|X_1=x_1,\ldots,X_{j-1}=x_{j-1})`: the conditioning part is the set of already
 computed conditional quantiles."
-
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
 OT_Distribution_computeSequentialConditionalQuantile_doc
@@ -357,13 +436,13 @@ OT_Distribution_computeSequentialConditionalQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
-    PDF input(s).
+x : sequence of float, 2-d sequence of float
+    The input value where the conditional derivative density function must be evaluated.
 
 Returns
 -------
-d : :class:`~openturns.Point`, :class:`~openturns.Sample`
-    DDF value(s) at input(s) :math:`X`.
+ddf : :class:`~openturns.Point`, :class:`~openturns.Sample`
+    DDF value at *x*.
 
 Notes
 -----
@@ -373,9 +452,9 @@ function with respect to :math:`\vect{x}`:
 .. math::
 
     \vect{\nabla}_{\vect{x}} f_{\vect{X}}(\vect{x}) =
-        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_i},
-                  \quad i = 1, \ldots, n\right)},
-        \quad \vect{x} \in \supp{\vect{X}}"
+        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_1},
+                 \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_d}\right)},
+        \quad \vect{x} \in \Rset^d"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeDDF
 OT_Distribution_computeDDF_doc
@@ -420,7 +499,7 @@ z : float or complex
 Returns
 -------
 g : float
-    Probability-generating function value at input :math:`X`.
+    Probability-generating function value at input *z*.
 
 Notes
 -----
@@ -453,7 +532,7 @@ t : float
 Returns
 -------
 phi : complex
-    Logarithm of the characteristic function value at input :math:`t`.
+    Logarithm of the characteristic function value at input *t*.
 
 Notes
 -----
@@ -483,7 +562,7 @@ z : float or complex
 Returns
 -------
 lg : float
-    Logarithm of the probability-generating function value at input :math:`X`.
+    Logarithm of the probability-generating function value at input *z*.
 
 Notes
 -----
@@ -504,13 +583,13 @@ OT_Distribution_computeLogGeneratingFunction_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
-    PDF input(s).
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^d` such that the PDF at this point is non equal to 0.
 
 Returns
 -------
 f : float, :class:`~openturns.Point`
-    Logarithm of the PDF value(s) at input(s) :math:`X`."
+    Logarithm of the PDF at *x*."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeLogPDF
 OT_Distribution_computeLogPDF_doc
@@ -522,14 +601,14 @@ OT_Distribution_computeLogPDF_doc
 
 Parameters
 ----------
-X : sequence of float
-    PDF input.
+x : sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the logPDF with respect to the distribution
-    parameters at input :math:`X`."
+    parameters at input *x*."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeLogPDFGradient
 OT_Distribution_computeLogPDFGradient_doc
@@ -541,13 +620,13 @@ OT_Distribution_computeLogPDFGradient_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
-    PDF input(s).
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 f : float, :class:`~openturns.Point`
-    PDF value(s) at input(s) :math:`X`.
+    PDF value at *x*.
 
 Notes
 -----
@@ -555,9 +634,9 @@ The probability density function is defined as follows:
 
 .. math::
 
-    f_{\vect{X}}(\vect{x}) = \frac{\partial^n F_{\vect{X}}(\vect{x})}
-                                  {\prod_{i=1}^n \partial x_i},
-                             \quad \vect{x} \in \supp{\vect{X}}"
+    f_{\vect{X}}(\vect{x}) = \frac{\partial^d F_{\vect{X}}(\vect{x})}
+                                  {\prod_{i=1}^d \partial x_i},
+                             \quad \vect{x} \in \Rset^d"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDF
 OT_Distribution_computePDF_doc
@@ -569,14 +648,23 @@ OT_Distribution_computePDF_doc
 
 Parameters
 ----------
-X : sequence of float
-    PDF input.
+x : sequence of float
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
 dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the PDF with respect to the distribution
-    parameters at input :math:`X`."
+    parameters at input *x*.
+
+Notes
+-----
+Let :math:`\vect{\theta}` be the vector of parameters of the distribution. Then
+the gradient of the probability density function :math:`f_{\vect{X}}` is defined by:
+
+.. math::
+
+    (\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_d})"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDFGradient
 OT_Distribution_computePDFGradient_doc
@@ -589,27 +677,26 @@ OT_Distribution_computePDFGradient_doc
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    An interval, possibly multivariate.
+    An interval in :math:`\Rset^d`.
 
 Returns
 -------
-P : float
-    Interval probability.
+p : float
+    The probability of *interval*.
 
 Notes
 -----
-This computes the probability that the random vector :math:`\vect{X}` lies in
-the hyper-rectangular region formed by the vectors :math:`\vect{a}` and
-:math:`\vect{b}`:
+This computes the probability that the random vector :math:`\vect{X}` lies in :math:`interval`.
+
+If the interval is rectangular, i.e. if :math:`I = \bigcap\limits_{i=1}^d [a_i, b_i]`, then we have:
 
 .. math::
 
-    \Prob{\bigcap\limits_{i=1}^n a_i < X_i \leq b_i} =
-        \sum\limits_{\vect{c}} (-1)^{n(\vect{c})}
+    \Prob{\vect{X} \in I} = \sum\limits_{\vect{c}} (-1)^{n(\vect{c})}
             F_{\vect{X}}\left(\vect{c}\right)
 
-where the sum runs over the :math:`2^n` vectors such that
-:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, n)}` with :math:`c_i \in [a_i, b_i]`,
+where the sum runs over the :math:`2^d` vectors such that
+:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, d)}` with :math:`c_i \in \{a_i, b_i\}`,
 and :math:`n(\vect{c})` is the number of components in
 :math:`\vect{c}` such that :math:`c_i = a_i`."
 %enddef
@@ -623,25 +710,46 @@ OT_Distribution_computeProbability_doc
 
 Parameters
 ----------
-p : float (or sequence of float), :math:`0 < p < 1`
-    Quantile function input (a probability).
-tail : bool, optional (default=False)
-    Whether p should be interpreted as the complementary probability.
+p : float (or sequence of float), :math:`p \in [0, 1]`
+    A probability.
+tail : bool, optional
+    `True` indicates that the order considered is :math:`1-p`.
+    Default value is `False`.
 
 Returns
 -------
-X : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
-    Quantile at probability level :math:`p`.
+xp : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
+    If `tail=False`, the quantile of order :math:`p`.
+    If `tail=True`, the quantile of order  :math:`1-p`.
 
 Notes
 -----
-The quantile function is also known as the inverse cumulative distribution
-function:
+If the underlying variable :math:`X` is scalar, then the quantile of order :math:`p`, denoted by :math:`x_p`,
+is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-    Q_{\vect{X}}(p) = F_{\vect{X}}^{-1}(p),
-                      \quad p \in [0; 1]"
+     x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset\, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+
+If the distribution is scalar and discrete, then the quantile of order :math:`p=0` is defined by:
+
+.. math::
+
+    x_0 = \sup \{ x \in \Rset \, |\, F(x) = 0 \}.
+
+If the underlying variable :math:`\vect{X} = (X_1, \dots, X_d)` is of dimension :math:`d>1`, then
+the quantile of order :math:`p`, denoted by :math:`\vect{x}_p \in \Rset^d`, is such that:
+
+.. math::
+
+    \begin{aligned}
+        F_{\vect{X}}(\vect{x}_p) & =  p \\    
+        F_{X_i}(\vect{x}_{p,i}) & =  F_{X_j}(\vect{x}_{p,j}) \quad \forall (i,j)
+    \end{aligned}
+
+where :math:`F_{X_i}` is the :math:`i`-th marginal cdf. The last condition means that the quantile of order :math:`p`
+is such that all the components are associated to the same order of quantile of their margin.
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeQuantile
 OT_Distribution_computeQuantile_doc
@@ -656,13 +764,13 @@ distributions only).
 
 Parameters
 ----------
-r2 : float, :math:`0 \leq r^2`
+r2 : float, :math:`0 \leq R^2`
     Squared radius.
 
 Returns
 -------
 F : float
-    CDF value at input :math:`r^2`.
+    CDF value at input *r2*.
 
 Notes
 -----
@@ -683,22 +791,28 @@ OT_Distribution_computeRadialDistributionCDF_doc
 
 Parameters
 ----------
-p : float, :math:`0 < p < 1`
-    Quantile function input (a probability).
+p : float, :math:`p \in [0; 1]`
+    A probability.
 
 Returns
 -------
-X : float
-    Quantile at probability level :math:`p`.
+xp : float
+    Quantile of order *p*.
 
 Notes
 -----
-The quantile function is also known as the inverse cumulative distribution
-function:
+The quantile of order :math:`p`, denoted by :math:`x_p`,
+is defined as the generalized inverse of its cumulative distribution function:
 
 .. math::
 
-    Q_X(p) = F_X^{-1}(p), \quad p \in [0; 1]
+      x_p  = F_X^{-1}(p) = \inf \{ x \in \Rset \, |\, F(x) \geq p \}, \quad 0 \leq p \leq 1.
+
+If the distribution is discrete, then the quantile of order :math:`p=0` is defined by:
+
+.. math::
+
+    x_0 = \sup \{ x \in \Rset \, |\, F(x)= 0 \}.
 
 See Also
 --------
@@ -715,27 +829,25 @@ OT_Distribution_computeScalarQuantile_doc
 Parameters
 ----------
 x : sequence of float, 2-d sequence of float
-    Survival function input(s).
+    Point in :math:`\Rset^d`.
 
 Returns
 -------
-S : float, :class:`~openturns.Point`
-    Survival function value(s) at input(s) `x`.
+s : float, :class:`~openturns.Point`
+    Value of the survival function at point *x*.
 
 Notes
 -----
-The survival function of the random vector :math:`\vect{X}` is defined as follows:
+The survival function of the random vector :math:`\vect{X}` of dimension :math:`d` is defined as follows:
 
 .. math::
 
- 
-    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^d X_i > x_i}
-             \quad \forall \vect{x} \in \Rset^d
+    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i = 1}^d \left\{X_i > x_i \right\}}, \qquad \vect{x} \in \Rset^d
 
 .. warning::
 
-    This is not the complementary cumulative distribution function (except for
-    1-dimensional distributions).
+    This is not the complementary cumulative distribution function except for
+    scalar distributions.
 
 See Also
 --------
@@ -752,7 +864,7 @@ OT_Distribution_computeSurvivalFunction_doc
 Parameters
 ----------
 p : float, :math:`p \in [0; 1]`
-    Level of the survival function.
+    Value of the survival function.
 
 Returns
 -------
@@ -761,8 +873,9 @@ x : :class:`~openturns.Point`
 
 Notes
 -----
-The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p` where :math:`S( \vect{x}^p) = \Prob{\bigcap_{i=1}^d X_i > x_i^p}`. OpenTURNS returns the point :math:`\vect{x}^p` such that 
-:math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
+Among the points :math:`\vect{x}` that satisfy :math:`S_{\vect{X}}(\vect{x}) = p`,
+the method returns the one which also satisfies
+:math:`\Prob{X_1 > x_1}   =  \dots = \Prob{X_d > x_d}`.
 
 See Also
 --------
@@ -785,11 +898,11 @@ Available constructors:
 
 Parameters
 ----------
-x_min : float, optional
+xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
-x_max : float, optional, :math:`x_{\max} > x_{\min}`
+xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
@@ -853,13 +966,13 @@ OT_Distribution_drawCDF_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the margin of interest.
-x_min : float
+xMin : float
     The starting value that is used for meshing the x-axis.
-x_max : float, :math:`x_{\max} > x_{\min}`
+xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-n_points : int
+nPoints : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -902,7 +1015,7 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 levelSet : :class:`~openturns.LevelSet`
-    The minimum volume domain of measure :math:`\alpha`.
+    The minimum volume domain of measure *alpha*.
 
 Notes
 -----
@@ -969,7 +1082,7 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 levelSet : :class:`~openturns.LevelSet`
-    The minimum volume domain of measure :math:`\alpha`.
+    The minimum volume domain of measure *alpha*.
 level : float
     The value :math:`p_{\alpha}` of the density function defining the frontier of the domain.
 
@@ -1007,13 +1120,16 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 confInterval : :class:`~openturns.Interval`
-    The confidence interval of level :math:`\alpha`.
+    The confidence interval of level *alpha*.
 
 Notes
 -----
 We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
-The minimum volume confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)` and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. 
+The minimum volume confidence interval :math:`I^*_{\alpha}` is the Cartesian product
+:math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where
+:math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)`
+and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`.
 
 This problem resorts to solving :math:`d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
 
@@ -1071,7 +1187,7 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 confInterval : :class:`~openturns.Interval`
-    The confidence interval of level :math:`\alpha`.
+    The confidence interval of level *alpha*.
 marginalProb : float
     The value :math:`\beta` which is the common marginal probability of each marginal interval.
 
@@ -1112,30 +1228,30 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 confInterval : :class:`~openturns.Interval`
-    The confidence interval of level :math:`\alpha`.
+    The confidence interval of level *alpha*.
 
 Notes
 -----
 We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
-The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all :math:`i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+The bilateral confidence interval :math:`I^*_{\alpha}` is the Cartesian product
+:math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]`
+such that there exists :math:`\beta \in [0,1]` which satisfies the equations :math:`a_i = F_i^{-1}((1 - \beta) / 2)` and :math:`b_i = F_i^{-1}((1 + \beta) / 2)`
+for all :math:`i` and :math:`\mu(I^*_{\alpha}) = \alpha`.
 
 Examples
 --------
-Create a sample from a Normal distribution:
+We consider a Normal(2) distribution with zero mean, unit standard deviation and independent components.
+We note :math:`\Phi_2` its cdf. Due to
+symetries of the distribution, the bilateral confidence interval is :math:`I^*_{\alpha} = [-a, a] \times \times [-a, a]`
+where :math:`a = \Phi^{-1}((1+\beta)/2)` where :math:`\Phi` is the marginal cdf of each component. Then :math:`\beta` is such that
+:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = _beta^2`,
+then, :math:`\beta` is equal to :math:`\beta = \sqrt{\alpha} \simeq 0.9486`
+and :math:`a \simeq -1.9488`.
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
-
-Fit a Normal distribution and extract the asymptotic parameters distribution:
-
->>> fittedRes = ot.NormalFactory().buildEstimator(sample)
->>> paramDist = fittedRes.getParameterDistribution()
-
-Determine the bilateral confidence interval at level 0.9:
-
->>> confInt = paramDist.computeBilateralConfidenceInterval(0.9)"
+>>> dist = ot.Normal(2)
+>>> confInt = dist.computeBilateralConfidenceInterval(0.9)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceInterval
 OT_Distribution_computeBilateralConfidenceInterval_doc
@@ -1155,26 +1271,23 @@ alpha : float, :math:`\alpha \in [0,1]`
 Returns
 -------
 confInterval : :class:`~openturns.Interval`
-    The confidence interval of level :math:`\alpha`.
-marginalProb : float
-    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+    The confidence interval of level *\alpha*.
+beta : float
+    The probability :math:`\beta`.
 
 Examples
 --------
-Create a sample from a Normal distribution:
+We consider a Normal(2) distribution with zero mean, unit standard deviation and independent components.
+We note :math:`\Phi_2` its cdf. Due to
+symetries of the distribution, the bilateral confidence interval is :math:`I^*_{\alpha} = [-a, a] \times [-a, a]`
+where :math:`a = \Phi^{-1}((1 + \beta) / 2)` where :math:`\Phi` is the marginal cdf of each 1D marginal standard Gaussian component. Then :math:`\beta` is such that
+:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = \beta^2`,
+then, :math:`\beta` is equal to :math:`\beta = \sqrt{\alpha} = 0.9486`
+and :math:`a = -1.9488` with 4 significant digits.
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
-
-Fit a Normal distribution and extract the asymptotic parameters distribution:
-
->>> fittedRes = ot.NormalFactory().buildEstimator(sample)
->>> paramDist = fittedRes.getParameterDistribution()
-
-Determine the bilateral confidence interval at level 0.9 with marginal probability:
-
->>> confInt, marginalProb = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
+>>> dist = ot.Normal(2)
+>>> confInt, beta = dist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability
 OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
@@ -1252,7 +1365,7 @@ tail : boolean
 Returns
 -------
 confInterval : :class:`~openturns.Interval`
-    The unilateral confidence interval of level :math:`\alpha`.
+    The unilateral confidence interval of level *alpha*.
 marginalProb : float
     The value :math:`\beta` which is the common marginal probability of each marginal interval.
 
@@ -1289,16 +1402,17 @@ OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the margin of interest.
-x_min : float
+xMin : float
     The starting value that is used for meshing the x-axis.
-x_max : float, :math:`x_{\max} > x_{\min}`
+xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-n_points : int
+nPoints : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
-    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
+    Flag to tell if the plot is done on a logarithmic scale.
+    Default is *False*.
 
 Returns
 -------
@@ -1329,13 +1443,13 @@ OT_Distribution_drawMarginal1DPDF_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the margin of interest.
-x_min : float
+xMin : float
     The starting value that is used for meshing the x-axis.
-x_max : float, :math:`x_{\max} > x_{\min}`
+xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-n_points : int
+nPoints : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1369,15 +1483,15 @@ OT_Distribution_drawMarginal1DLogPDF_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq n`
+j : int, :math:`1 \leq i \neq j \leq d`
     The index of the second margin of interest.
-x_min : list of 2 floats
+xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-n_points : list of 2 ints
+nPoints : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -1414,15 +1528,15 @@ OT_Distribution_drawMarginal2DCDF_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq n`
+j : int, :math:`1 \leq i \neq j \leq d`
     The index of the second margin of interest.
-x_min : list of 2 floats
+xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-n_points : list of 2 ints
+nPoints : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -1459,15 +1573,15 @@ OT_Distribution_drawMarginal2DPDF_doc
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq n`
+i : int, :math:`1 \leq i \leq d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq n`
+j : int, :math:`1 \leq i \neq j \leq d`
     The index of the second margin of interest.
-x_min : list of 2 floats
+xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-n_points : list of 2 ints
+nPoints : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -1511,11 +1625,11 @@ Available constructors:
 
 Parameters
 ----------
-x_min : float, optional
+xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
-x_max : float, optional, :math:`x_{\max} > x_{\min}`
+xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
@@ -1584,11 +1698,11 @@ Available constructors:
 
 Parameters
 ----------
-x_min : float, optional
+xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
-x_max : float, optional, :math:`x_{\max} > x_{\min}`
+xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
@@ -1652,11 +1766,11 @@ OT_Distribution_drawLogPDF_doc
 
 Parameters
 ----------
-q_min : float, in :math:`[0,1]`
+qmin : float, in :math:`[0,1]`
     The min value of the mesh of the x-axis.
-q_max : float, in :math:`[0,1]`
+qmax : float, in :math:`[0,1]`
     The max value of the mesh of the x-axis.
-n_points : int, optional
+nPoints : int, optional
     The number of points that is used for meshing the quantile curve.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
     :class:`~openturns.ResourceMap`.
@@ -1726,7 +1840,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise central moment of order :math:`k`.
+    Componentwise central moment of order *k*.
 
 Notes
 -----
@@ -1759,7 +1873,7 @@ shift : sequence of float
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise central moment of order :math:`k`.
+    Componentwise central moment of order *k*.
 
 Notes
 -----
@@ -2087,7 +2201,7 @@ OT_Distribution_getKurtosis_doc
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < n`
+i : int or list of ints, :math:`0 \leq i < d`
     Component(s) indice(s).
 
 Returns
@@ -2132,7 +2246,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise moment of order :math:`k`.
+    Componentwise moment of order *k*.
 
 Notes
 -----
@@ -2140,7 +2254,7 @@ The componentwise moment of order :math:`k` is defined as:
 
 .. math::
 
-    \vect{m}^{(k)} = \Tr{\left(\Expect{X_i^k}, \quad i = 1, \ldots, n\right)}"
+    \vect{m}^{(k)} = \Tr{\left(\Expect{X_i^k}, \quad i = 1, \ldots, d\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getMoment
 OT_Distribution_getMoment_doc
@@ -2248,9 +2362,9 @@ Pearson's correlation is defined as the normalized covariance matrix:
 .. math::
 
     \mat{\rho} & = \left[\frac{\Cov{X_i, X_j}}{\sqrt{\Var{X_i}\Var{X_j}}},
-                         \quad i,j = 1, \ldots, n\right] \\
+                         \quad i,j = 1, \ldots, d\right] \\
                & = \left[\frac{\Sigma_{i,j}}{\sqrt{\Sigma_{i,i}\Sigma_{j,j}}},
-                         \quad i,j = 1, \ldots, n\right]"
+                         \quad i,j = 1, \ldots, d\right]"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getPearsonCorrelation
 OT_Distribution_getPearsonCorrelation_doc
@@ -2452,7 +2566,7 @@ The skewness is the third-order central moment standardized by the standard devi
 
     \vect{\delta} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
                                                  {\sigma_i}\right)^3},
-                              \quad i = 1, \ldots, n\right)}"
+                              \quad i = 1, \ldots, d\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSkewness
 OT_Distribution_getSkewness_doc
@@ -2476,7 +2590,7 @@ of the copula (ie that of the uniform margins):
 
     \mat{\rho_S} = \left[\frac{\Cov{F_{X_i}(X_i), F_{X_j}(X_j)}}
                               {\sqrt{\Var{F_{X_i}(X_i)} \Var{F_{X_j}(X_j)}}},
-                         \quad i,j = 1, \ldots, n\right]
+                         \quad i,j = 1, \ldots, d\right]
 
 See Also
 --------
@@ -2539,7 +2653,10 @@ std_repr_dist : :class:`~openturns.Distribution`
 
 Notes
 -----
-The standard representative distribution is defined on a distribution by distribution basis, most of the time by scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (ie zero mean, unit variance) the distributions with unbounded support. It is the member of the family for which orthonormal polynomials will be built using generic algorithms of orthonormalization."
+The standard representative distribution is defined on a distribution-by-distribution basis, most of the time by
+scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (ie zero mean, unit variance) the
+distributions with unbounded support. It is the member of the family for which orthonormal polynomials will be built using
+generic algorithms of orthonormalization (see :class:`~openturns.StandardDistributionPolynomialFactory`)."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
@@ -2557,11 +2674,12 @@ interval : :class:`~openturns.Interval`
 Returns
 -------
 support : :class:`~openturns.Interval`
-    The intersection of the support of the discrete part of the distribution with the given `interval`.
+    The intersection of the support of the discrete part of the distribution with the given *interval*.
 
 Notes
 -----
-The mathematical support :math:`\supp{\vect{X}}` of the discrete part of a distribution is the collection of points with nonzero probability.
+The mathematical support :math:`\supp{\vect{X}}` of the discrete part of a distribution is the
+collection of points with nonzero probability.
 
 This is yet implemented for discrete distributions only.
 
@@ -2590,7 +2708,8 @@ OT_Distribution_getProbabilities_doc
 %define OT_Distribution_getSingularities_doc
 "Accessor to the singularities of the PDF function.
 
-It is defined for univariate distributions only, and gives all the singularities (ie discontinuities of any order) strictly inside of the range of the distribution.
+It is defined for univariate distributions only, and gives all the singularities
+(i.e. discontinuities of any order) strictly inside of the range of the distribution.
 
 Returns
 -------
@@ -2692,7 +2811,7 @@ function is of the form:
 
     \phi(\vect{t}) = \exp\left(i \Tr{\vect{t}} \vect{\mu}\right)
                      \Psi\left(\Tr{\vect{t}} \mat{\Sigma} \vect{t}\right),
-                     \quad \vect{t} \in \Rset^n
+                     \quad \vect{t} \in \Rset^d
 
 for specified vector :math:`\vect{\mu}` and positive-definite matrix
 :math:`\mat{\Sigma}`. The function :math:`\Psi` is known as the
@@ -3040,11 +3159,11 @@ Available constructors:
 
 Parameters
 ----------
-x_min : float, optional
+xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
-x_max : float, optional, :math:`x_{\max} > x_{\min}`
+xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
     `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
@@ -3106,13 +3225,13 @@ OT_Distribution_drawSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`0 \leq i < n`
+i : int, :math:`0 \leq i < d`
     The index of the margin of interest.
-x_min : float
+xMin : float
     The starting value that is used for meshing the x-axis.
-x_max : float, :math:`x_{\max} > x_{\min}`
+xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-n_points : int
+nPoints : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -3149,15 +3268,15 @@ OT_Distribution_drawMarginal1DSurvivalFunction_doc
 
 Parameters
 ----------
-i : int, :math:`0 \leq i < n`
+i : int, :math:`0 \leq i < d`
     The index of the first margin of interest.
-j : int, :math:`0 \leq i \neq j < n`
+j : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
-x_min : list of 2 floats
+xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-n_points : list of 2 ints
+nPoints : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
