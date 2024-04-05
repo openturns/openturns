@@ -21,8 +21,8 @@
 
 #include "openturns/LsqSolver.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
-#include "openturns/Dlib.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include <cmath>
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -76,7 +76,7 @@ Point LsqSolver::solve(const Function & function,
   const Scalar relativeError = getRelativeError();
   const Scalar residualError = getResidualError();
   LeastSquaresProblem lsqProblem(function);
-  Dlib lsqAlgorithm(lsqProblem, "least_squares");
+  OptimizationAlgorithm lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
   lsqAlgorithm.setStartingPoint(startingPoint);
   lsqAlgorithm.setMaximumCallsNumber(maximumCallsNumber);
   lsqAlgorithm.setMaximumAbsoluteError(absoluteError);
