@@ -16,6 +16,7 @@ LinearModelResult
 - Cook's distances size=100
 - residuals variance=0.00991604
 - has intercept=true
+- is model selection=false
 
 
 trend coefficients =  [0.978992,0.110565,9.99924]
@@ -33,6 +34,7 @@ LinearModelResult
 - Cook's distances size=100
 - residuals variance=0.00991604
 - has intercept=true
+- is model selection=false
 
 
 [-2,4] 0 [0]

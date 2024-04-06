@@ -98,7 +98,15 @@ Examples
 >>> outputSample = func(inputSample)
 >>> algo = ot.LinearModelAlgorithm(inputSample, outputSample)
 >>> algo.run()
->>> result = algo.getResult()"
+>>> result = algo.getResult()
+>>> design = result.getDesign()
+>>> gram = design.computeGram()
+>>> leverages = result.getLeverages()
+
+In order to access the projection matrix, we build the least squares method.
+
+>>> lsMethod = result.buildMethod()
+>>> projectionMatrix = lsMethod.getH()"
 
 // ---------------------------------------------------------------------
 

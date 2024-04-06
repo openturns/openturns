@@ -61,13 +61,11 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalB
   // Nothing to do
 }
 
-
 /* Virtual constructor */
 AdaptiveStrategyImplementation * AdaptiveStrategyImplementation::clone() const
 {
   return new AdaptiveStrategyImplementation(*this);
 }
-
 
 /* String converter */
 String AdaptiveStrategyImplementation::__repr__() const
@@ -76,13 +74,11 @@ String AdaptiveStrategyImplementation::__repr__() const
          << " maximumDimension=" << maximumDimension_;
 }
 
-
 /* Basis accessor */
 OrthogonalBasis AdaptiveStrategyImplementation::getBasis() const
 {
   return basis_;
 }
-
 
 /* Maximum dimension accessor */
 void AdaptiveStrategyImplementation::setMaximumDimension(const UnsignedInteger maximumDimension)
@@ -94,7 +90,6 @@ UnsignedInteger AdaptiveStrategyImplementation::getMaximumDimension() const
 {
   return maximumDimension_;
 }
-
 
 /* Compute initial basis for the approximation */
 void AdaptiveStrategyImplementation::computeInitialBasis()
@@ -116,6 +111,12 @@ AdaptiveStrategyImplementation::FunctionCollection AdaptiveStrategyImplementatio
   return Psi_k_p_;
 }
 
+/* isModelSelection accessor */
+Bool AdaptiveStrategyImplementation::isModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "in AdaptiveStrategyImplementation::isModelSelection";
+}
+
 /* Method save() stores the object through the StorageManager */
 void AdaptiveStrategyImplementation::save(Advocate & adv) const
 {
@@ -123,14 +124,11 @@ void AdaptiveStrategyImplementation::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void AdaptiveStrategyImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "basis_", basis_ );
 }
-
-
 
 END_NAMESPACE_OPENTURNS

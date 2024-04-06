@@ -103,7 +103,9 @@ String FunctionalChaosResult::__repr__() const
          << " residuals=" << residuals_
          << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
-         << " metaModel=" << metaModel_;
+         << " metaModel=" << metaModel_
+         << " isLeastSquares=" << isLeastSquares_
+         << " isModelSelection=" << isModelSelection_;
 }
 
 String FunctionalChaosResult::__str__(const String & /*offset*/) const
@@ -127,10 +129,12 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
       << "- indices size=" << indicesSize << "\n"
       << "- relative errors=" << relativeErrors_ << "\n"
-      << "- residuals=" << residuals_ << "\n";
+      << "- residuals=" << residuals_ << "\n"
+      << "- is least squares=" << isLeastSquares_ << "\n"
+      << "- is model selection=" << isModelSelection_ << "\n";
   oss << "\n";
 
-  const Scalar ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
+  const UnsignedInteger ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
   const UnsignedInteger ell_size = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize");
   const UnsignedInteger columnWidth = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintColumnWidth");
   const UnsignedInteger ellipsis = (indicesSize * outputDimension > ell_threshold);
@@ -181,10 +185,8 @@ String FunctionalChaosResult::__repr_markdown__() const
       if (i == ell_size)
       {
         oss << "| ...   |";
-        const String blankColumn(String(columnWidth, ' ') + "|");
-        oss << OSS::RepeatString(1 + ell_size, blankColumn)
-            << OSS::PadString(" ... ", columnWidth) << "|"
-            << OSS::RepeatString(ell_size, blankColumn) << "\n";
+        const String ellipsisColumn(OSS::PadString(" ... ", columnWidth) + "|");
+        oss << OSS::RepeatString(1 + outputDimension, ellipsisColumn) << "\n";
         continue;
       }
       else if (i > ell_size && i < indicesSize - ell_size) continue;
@@ -273,6 +275,38 @@ Function FunctionalChaosResult::getComposedMetaModel() const
   return composedMetaModel_;
 }
 
+/* Residuals accessor */
+Sample FunctionalChaosResult::getSampleResiduals() const
+{
+  const Sample predictionsSample(metaModel_(inputSample_));
+  const Sample residualsSample(outputSample_ - predictionsSample);
+  return residualsSample;
+}
+
+/* isLeastSquares accessor */
+Bool FunctionalChaosResult::isLeastSquares() const
+{
+  return isLeastSquares_;
+}
+
+/* isModelSelection accessor */
+Bool FunctionalChaosResult::isModelSelection() const
+{
+  return isModelSelection_;
+}
+
+/* isLeastSquares accessor */
+void FunctionalChaosResult::setIsLeastSquares(const Bool isLeastSquares)
+{
+  isLeastSquares_ = isLeastSquares;
+}
+
+/* isModelSelection accessor */
+void FunctionalChaosResult::setIsModelSelection(const Bool isModelSelection)
+{
+  isModelSelection_ = isModelSelection;
+}
+
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosResult::save(Advocate & adv) const
 {
@@ -288,6 +322,8 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "indicesHistory_", indicesHistory_ );
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
+  adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
+  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
 }
 
 
@@ -308,6 +344,11 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "indicesHistory_", indicesHistory_ );
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
+  }
+  if (adv.hasAttribute("isLeastSquares_"))
+  {
+    adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
+    adv.loadAttribute( "isModelSelection_", isModelSelection_ );
   }
 }
 

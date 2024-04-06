@@ -1,6 +1,6 @@
 Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)
 result = 
-class=LinearModelResult beta=class=Point name=Unnamed dimension=2 values=[3.01168,-2.00025] formula=Basis( [[v0]->[1],[v0]->[v0]] )
+class=LinearModelResult coefficients_=class=Point name=Unnamed dimension=2 values=[3.01168,-2.00025] formula=Basis( [[v0]->[1],[v0]->[v0]] ) basis size=2 design dimension=20 x 2 coefficients dimension=2 coefficientsNames=[[v0]->[1],[v0]->[v0]] sampleResiduals dimension=20 x 1 standardizedResiduals dimension=20 x 1 diagonalGramInverse dimension=2 leverages dimension=20 cookDistances dimension=20 residuals variance= 0.00141733 hasIntercept=true isModelSelection=false
 LinearModelResult
 - input dimension=1
 - basis size=2
@@ -15,6 +15,7 @@ LinearModelResult
 - Cook's distances size=20
 - residuals variance=0.00141733
 - has intercept=true
+- is model selection=false
 
 
 trend coefficients = class=Point name=Unnamed dimension=2 values=[3.01168,-2.00025]

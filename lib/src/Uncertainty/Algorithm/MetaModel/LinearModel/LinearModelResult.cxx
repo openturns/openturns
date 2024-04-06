@@ -25,6 +25,7 @@
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SampleImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -140,7 +141,8 @@ String LinearModelResult::__repr_markdown__() const
       << "- leverages size=" << leverages_.getSize() << "\n"
       << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
       << "- residuals variance=" << residualsVariance_ << "\n"
-      << "- has intercept=" << hasIntercept_ << "\n";
+      << "- has intercept=" << hasIntercept_ << "\n"
+      << "- is model selection=" << isModelSelection_ << "\n";
   oss << "\n";
   return oss;
 }
@@ -149,8 +151,20 @@ String LinearModelResult::__repr_markdown__() const
 String LinearModelResult::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-         << " beta=" << coefficients_
-         << " formula=" << condensedFormula_;
+         << " coefficients_=" << coefficients_
+         << " formula=" << condensedFormula_
+         << " basis size=" << basis_.getSize()
+         << " design dimension=" << design_.getNbRows() << " x " << design_.getNbColumns()
+         << " coefficients dimension=" << coefficients_.getDimension()
+         << " coefficientsNames=" << coefficientsNames_
+         << " sampleResiduals dimension=" << sampleResiduals_.getSize() << " x " << sampleResiduals_.getDimension()
+         << " standardizedResiduals dimension=" << standardizedResiduals_.getSize() << " x " << standardizedResiduals_.getDimension()
+         << " diagonalGramInverse dimension=" << diagonalGramInverse_.getDimension()
+         << " leverages dimension=" << leverages_.getDimension()
+         << " cookDistances dimension=" << cookDistances_.getDimension()
+         << " residuals variance= " << residualsVariance_
+         << " hasIntercept=" << hasIntercept_
+         << " isModelSelection=" << isModelSelection_;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -284,6 +298,31 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
   return standardErrors;
 }
 
+LeastSquaresMethod LinearModelResult::buildMethod() const
+{
+  LeastSquaresMethod leastSquaresMethod;
+  leastSquaresMethod = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), design_);
+  const UnsignedInteger basisSize =  design_.getNbColumns();
+  Indices addedIndices(basisSize);
+  addedIndices.fill();
+  Indices conservedIndices(0);
+  Indices removedIndices(0);
+  leastSquaresMethod.update(addedIndices, conservedIndices, removedIndices);
+  return leastSquaresMethod;
+}
+
+/* isModelSelection accessor */
+Bool LinearModelResult::isModelSelection() const
+{
+  return isModelSelection_;
+}
+
+/* isModelSelection accessor */
+void LinearModelResult::setIsModelSelection(const Bool isModelSelection)
+{
+  isModelSelection_ = isModelSelection;
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearModelResult::save(Advocate & adv) const
 {
@@ -299,6 +338,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "leverages_", leverages_ );
   adv.saveAttribute( "cookDistances_", cookDistances_ );
   adv.saveAttribute( "residualsVariance_", residualsVariance_ );
+  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
 }
 
 
@@ -323,6 +363,8 @@ void LinearModelResult::load(Advocate & adv)
     adv.loadAttribute( "residualsVariance_", residualsVariance_ );
   else
     adv.loadAttribute( "sigma2_", residualsVariance_ );
+  if (adv.hasAttribute("isModelSelection_"))
+    adv.loadAttribute("isModelSelection_", isModelSelection_);
 }
 
 END_NAMESPACE_OPENTURNS

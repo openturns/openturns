@@ -90,6 +90,20 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < leverageFirstElements.getSize(); ++i)
         leverageFirstElements[i] = leverages[i];
       assert_almost_equal(leverageFirstElements, leverages_reference, 1e-6, 0.0);
+
+      LeastSquaresMethod lsMethod(result.buildMethod());
+      SymmetricMatrix projectionMatrix(lsMethod.getH());
+      assert_equal(projectionMatrix.getNbRows(), size);
+      assert_equal(projectionMatrix.getNbColumns(), size);
+      Point predictionsReference(result.getFittedSample().asPoint());
+      Point predictionsFromProjection(projectionMatrix * Y.asPoint());
+      assert_almost_equal(predictionsFromProjection, predictionsReference);
+
+      Sample residuals(result.getSampleResiduals());
+      assert_equal(residuals.getSize(), size);
+      assert_equal(residuals.getDimension(), (UnsignedInteger) 1);
+      Point residualsReference(Y.asPoint() - predictionsReference);
+      assert_almost_equal(residuals.asPoint(), residualsReference);
     }
   }
   catch (TestFailed &ex)

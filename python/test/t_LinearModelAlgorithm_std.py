@@ -33,6 +33,7 @@ X *= [10]
 X2 = ot.Sample(X)
 for i in range(size):
     X2[i, 0] = X[i, 0] * X2[i, 0]
+
 X.stack(X2)
 # Define y
 Y = ot.Sample(size, 1)
@@ -40,6 +41,7 @@ for i in range(size):
     Y[i, 0] = (
         1.0 + 0.1 * X[i, 0] + 10.0 * X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
     )
+
 test = ot.LinearModelAlgorithm(X, Y)
 result = test.getResult()
 print("result = ")
@@ -54,6 +56,20 @@ ott.assert_almost_equal(cook[0:6], cook_reference, 1e-5, 0.0)
 leverages = result.getLeverages()
 leverages_reference = [0.0864939, 0.0797831, 0.0735447, 0.0677578, 0.0624023, 0.0574582]
 ott.assert_almost_equal(leverages[0:6], leverages_reference, 1e-6, 0.0)
+
+lsMethod = result.buildMethod()
+projectionMatrix = lsMethod.getH()
+assert projectionMatrix.getNbRows() == size
+assert projectionMatrix.getNbColumns() == size
+predictionsReference = result.getFittedSample().asPoint()
+predictionsFromProjection = projectionMatrix * Y.asPoint()
+ott.assert_almost_equal(predictionsFromProjection, predictionsReference)
+
+residuals = result.getSampleResiduals()
+assert residuals.getSize() == size
+assert residuals.getDimension() == 1
+residualsReference = Y.asPoint() - predictionsReference
+ott.assert_almost_equal(residuals.asPoint(), residualsReference)
 
 # with invalid sample description
 X.setDescription(["X0", "price (euros)"])

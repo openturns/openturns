@@ -104,6 +104,9 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
 
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
 protected:
 
   void setCoefficients(const Point & coefficients);
@@ -135,10 +138,10 @@ protected:
 
 private:
   /** Residual */
-  Scalar residual_ = 0.0;
+  Scalar residual_ = -1.0;
 
   /** Relative error */
-  Scalar relativeError_ = 0.0;
+  Scalar relativeError_ = -1.0;
 
 }; /* class ApproximationAlgorithmImplementation */
 

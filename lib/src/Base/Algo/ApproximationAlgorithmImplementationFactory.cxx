@@ -45,7 +45,6 @@ ApproximationAlgorithmImplementationFactory * ApproximationAlgorithmImplementati
   return new ApproximationAlgorithmImplementationFactory( *this );
 }
 
-
 ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & x,
     const Sample & y,
     const FunctionCollection & psi,
@@ -82,5 +81,10 @@ void ApproximationAlgorithmImplementationFactory::load(Advocate & adv)
   PersistentObject::load(adv);
 }
 
+/* isModelSelection accessor */
+Bool ApproximationAlgorithmImplementationFactory::isModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::isModelSelection()";
+}
 
 END_NAMESPACE_OPENTURNS

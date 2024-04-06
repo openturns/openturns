@@ -188,7 +188,6 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   relativeError_p_ = 0.0;
 }
 
-
 /* Method save() stores the object through the StorageManager */
 void IntegrationStrategy::save(Advocate & adv) const
 {
@@ -212,6 +211,18 @@ Collection<Indices> IntegrationStrategy::getSelectionHistory(Collection<Point> &
 Point IntegrationStrategy::getErrorHistory() const
 {
   return Point();
+}
+
+/* isLeastSquares accessor */
+Bool IntegrationStrategy::isLeastSquares() const
+{
+  return false;
+}
+
+/* isModelSelection accessor */
+Bool IntegrationStrategy::isModelSelection() const
+{
+  return false;
 }
 
 END_NAMESPACE_OPENTURNS

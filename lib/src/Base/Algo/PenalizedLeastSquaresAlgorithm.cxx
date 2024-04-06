@@ -48,7 +48,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Indices & indices,
     const Scalar penalizationFactor,
     const Bool useNormal)
-  : ApproximationAlgorithmImplementation( x, y, psi, indices )
+  : ApproximationAlgorithmImplementation(x, y, psi, indices)
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(0)
   , useNormal_(useNormal)
@@ -70,7 +70,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Indices & indices,
     const Scalar penalizationFactor,
     const Bool useNormal)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi, indices )
+  : ApproximationAlgorithmImplementation(x, y, weight, psi, indices)
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(0)
   , useNormal_(useNormal)
@@ -92,7 +92,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Scalar penalizationFactor,
     const CovarianceMatrix & penalizationMatrix,
     const Bool useNormal)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi, indices )
+  : ApproximationAlgorithmImplementation(x, y, weight, psi, indices)
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(penalizationMatrix)
   , useNormal_(useNormal)
@@ -290,6 +290,11 @@ Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collecti
 Point PenalizedLeastSquaresAlgorithm::getErrorHistory() const
 {
   return Point();  
+}
+
+Bool PenalizedLeastSquaresAlgorithm::isModelSelection() const
+{
+  return false;
 }
 
 END_NAMESPACE_OPENTURNS

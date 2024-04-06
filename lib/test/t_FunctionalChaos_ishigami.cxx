@@ -140,6 +140,12 @@ int main(int, char *[])
           fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
           Point relativeErrors(result.getRelativeErrors());
           fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
+          Bool isLeastSquaresPCE = result.isLeastSquares();
+          Bool isLeastSquaresProjection = projectionStrategy.isLeastSquares();
+          assert_equal(isLeastSquaresProjection, isLeastSquaresPCE);
+          Bool isModelSelectionPCE = result.isModelSelection();
+          Bool isModelSelection = projectionStrategy.isModelSelection() || adaptiveStrategy.getImplementation()->isModelSelection();
+          assert_equal(isModelSelection, isModelSelectionPCE);
 
           // Post-process the results
           FunctionalChaosRandomVector vector(result);

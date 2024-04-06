@@ -87,6 +87,12 @@ public:
   /** Design proxy accessor */
   virtual DesignProxy getDesignProxy() const;
 
+  /** isLeastSquares accessor */
+  virtual Bool isLeastSquares() const;
+
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
   /** String converter */
   String __repr__() const override;
 

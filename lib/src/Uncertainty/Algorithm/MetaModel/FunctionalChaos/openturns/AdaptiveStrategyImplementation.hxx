@@ -86,6 +86,9 @@ public:
   /** Psi accessor */
   FunctionCollection getPsi() const;
 
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -117,8 +120,6 @@ protected:
 
   /** The full basis */
   FunctionCollection Psi_;
-private:
-
 } ; /* class AdaptiveStrategyImplementation */
 
 

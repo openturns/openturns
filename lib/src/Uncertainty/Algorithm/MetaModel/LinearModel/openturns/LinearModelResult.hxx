@@ -27,6 +27,7 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -60,7 +61,7 @@ public:
                     const Point & diagonalGramInverse,
                     const Point & leverages,
                     const Point & cookDistances,
-                    const Scalar sigma2);
+                    const Scalar residualsVariance);
 
   /** Virtual constructor */
   LinearModelResult * clone() const override;
@@ -116,6 +117,15 @@ public:
 
   /** Adjusted R-squared */
   Scalar getAdjustedRSquared() const;
+  
+  /** Least squares method accessor */
+  virtual LeastSquaresMethod buildMethod() const;
+
+  /** isModelSelection accessor */
+  virtual Bool isModelSelection() const;
+
+  /** isModelSelection accessor */
+  virtual void setIsModelSelection(const Bool isModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -163,6 +173,9 @@ private:
   /** hasIntercept */
   Bool hasIntercept_;
 
+  /** isModelSelection */
+  Bool isModelSelection_ = false;
+  
 }; /* class LinearModelResult */
 
 END_NAMESPACE_OPENTURNS
