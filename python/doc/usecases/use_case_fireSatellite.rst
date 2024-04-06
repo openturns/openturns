@@ -25,86 +25,86 @@ This test case is composed of nine random variables.
 These variables are distributed according to truncated Normal distribution :math:`\mathcal{TN}(\mu,\sigma,a,b)`.
 The hyperparameters are :math:`\mu` the mean, :math:`\sigma` the standard deviation, :math:`a` the lower bound and :math:`b` the upper bound.
 
-- :math:`H \sim \mathcal{TN}(18e6, 1e6, 15e6, 21e6)`: the altitude (m)
+- :math:`H \sim \mathcal{TN}(\num{18e6}, \num{1e6}, \num{15e6}, \num{21e6})`: the altitude (:math:`\unit{\m}`)
 
-- :math:`P_{other} \sim \mathcal{TN}(1000, 50, 850, 1150)`: the power other than attitude control system (W)
+- :math:`P_{other} \sim \mathcal{TN}(1000, 50, 850, 1150)`: the power other than attitude control system (:math:`\unit{\W}`)
 
-- :math:`F_{s} \sim \mathcal{TN}(1400, 20, 1340, 1460)`: the average solar flux (W/m2)
+- :math:`F_{s} \sim \mathcal{TN}(1400, 20, 1340, 1460)`: the average solar flux (:math:`\unit{\W\per\m^2}`)
 
-- :math:`\theta \sim \mathcal{TN}(15, 1, 12, 18)`: the deviation of moment axis (deg)
+- :math:`\theta \sim \mathcal{TN}(15, 1, 12, 18)`: the deviation of moment axis (:math:`\unit[angle-symbol-degree=deg]{\degree}`)
 
-- :math:`L_{sp} \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for radiation torque (m)
+- :math:`L_{sp} \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for radiation torque (:math:`\unit{\m}`)
 
 - :math:`q \sim \mathcal{TN}(0.5, 0.1, 0.2, 0.8)`: the reflectance factor (-)
 
-- :math:`R_D \sim \mathcal{TN}(5, 1, 2, 8)`: the residual dipole of spacecraft (A.m2)
+- :math:`R_D \sim \mathcal{TN}(5, 1, 2, 8)`: the residual dipole of spacecraft (:math:`\unit{\A\m^2}`)
 
-- :math:`L_\alpha \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for aerodynamic torque (m)
+- :math:`L_\alpha \sim \mathcal{TN}(2, 0.4, 0.8, 3.2)`: the moment arm for aerodynamic torque (:math:`\unit{\m}`)
 
 - :math:`C_d \sim \mathcal{TN}(1, 0.3, 0.1, 1.9)`: the drag coefficient (-)
 
 
 The three outputs of interest are:
 
-- :math:`\tau_{torque}`: the total torque of the satellite (N.m)
+- :math:`\tau_{torque}`: the total torque of the satellite (:math:`\unit{\N\m}`)
 
-- :math:`P_{tot}`: the total power of the satellite (W)
+- :math:`P_{tot}`: the total power of the satellite (:math:`\unit{\W}`)
 
-- :math:`A_{sa}`: the area of the solar array (m2)
+- :math:`A_{sa}`: the area of the solar array (:math:`\unit{\m^2}`)
 
 
 
 Different deterministic quantities are also present:
 
-- :math:`c`:  the speed of light, 2.9979e8 m/s
+- :math:`c`:  the speed of light, :math:`\qty{2.9979e8}{\m\per\s}`
 
-- :math:`\omega_{max}`: the maximum rotational velocity of reaction wheel, 6000 rpm
+- :math:`\omega_{max}`: the maximum rotational velocity of reaction wheel, :math:`\qty{6000}{\rpm}`
 
 - :math:`n`: the number of reaction wheels that could be active, 3
 
-- :math:`\delta_{\theta_{slew}}`: the slewing time period, 760 s
+- :math:`\delta_{\theta_{slew}}`: the slewing time period, :math:`\qty{760}{\s}`
 
-- :math:`A_s`: the area reflecting radiation, 13.85 m2
+- :math:`A_s`: the area reflecting radiation, :math:`\qty{13.85}{\m^2}`
 
-- :math:`i`: the sun incidence angle, 0 deg
+- :math:`i`: the sun incidence angle, :math:`\qty{0}{\deg}`
 
-- :math:`M`:  the magnetic moment of earth, 7.96e15 A.m2
+- :math:`M`:  the magnetic moment of earth, :math:`\qty{7.96e15}{\A\m^2}`
 
-- :math:`\rho`: the atmospheric density, 5.1480e-11 kg/m3
+- :math:`\rho`: the atmospheric density, :math:`\qty{5.1480e-11}{\kg\per\m^3}`
 
-- :math:`A`: the cross-sectional in flight direction, 13.85 m2
+- :math:`A`: the cross-sectional in flight direction, :math:`\qty{13.85}{\m^2}`
 
-- :math:`P_{hold}`: the holding power, 20 W
+- :math:`P_{hold}`: the holding power, :math:`\qty{20}{\W}`
 
-- :math:`\mu`:  the Earth gravity constant, 398600.4418e9 m3/s2
+- :math:`\mu`:  the Earth gravity constant, :math:`\qty{398600.4418e9}{\m^3\per\s^2}`
 
 - :math:`Id`: the inherent degradation of array, 0.77
 
-- :math:`t`: the thickness of solar panels, 0.005 m
+- :math:`t`: the thickness of solar panels, :math:`\qty{0.005}{\m}`
 
 - :math:`n_{sa}`: the number of solar arrays, 3
 
-- :math:`\epsilon_{deg}`: the degradation in power production capability, 0.0375 percent per year
+- :math:`\epsilon_{deg}`: the degradation in power production capability, :math:`\qty{0.0375}{\percent\per\year}`
 
-- :math:`LT`: the lifetime of spacecraft, 15 years
+- :math:`LT`: the lifetime of spacecraft, :math:`\qty{15}{\year}`
 
 - :math:`r_{lw}`: the length to width ratio of solar array, 3
 
-- :math:`D`: the distance between panels, 2 m
+- :math:`D`: the distance between panels, :math:`\qty{2}{\m}`
 
-- :math:`I_{bodyX}`: the inertia of body, X axis, 6200 kg.m2
+- :math:`I_{bodyX}`: the inertia of body, X axis, :math:`\qty{6200}{\kg\m^2}`
 
-- :math:`I_{bodyY}`: the inertia of body, Y axis, 6200 kg.m2
+- :math:`I_{bodyY}`: the inertia of body, Y axis, :math:`\qty{6200}{\kg\m^2}`
 
-- :math:`I_{bodyZ}`: the inertia of body, Z axis, 4700 kg.m2
+- :math:`I_{bodyZ}`: the inertia of body, Z axis, :math:`\qty{4700}{\kg\m^2}`
 
-- :math:`\rho_{sa}`: the average mass density to arrays, 700 kg.m3
+- :math:`\rho_{sa}`: the average mass density to arrays, :math:`\qty{700}{\kg\m^3}`
 
 - :math:`\eta`:  the power efficiency, 0.22
 
-- :math:`\phi_{target}`: the target diameter, 235000 m
+- :math:`\phi_{target}`: the target diameter, :math:`\qty{235000}{\m}`
 
-- :math:`R_E`: the Earth radius, 6378140 m
+- :math:`R_E`: the Earth radius, :math:`\qty{6378140}{\m}`
 
 We assume that the input variables are independent.
 
