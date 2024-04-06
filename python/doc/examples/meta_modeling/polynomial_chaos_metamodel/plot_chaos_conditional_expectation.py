@@ -12,16 +12,16 @@ Conditional expectation of a polynomial chaos expansion
 # %%
 # Introduction
 # ~~~~~~~~~~~~
-# Let :math:`\physicalInputDimension \in \Nset`
+# Let :math:`\inputDim \in \Nset`
 # be the dimension of the input random vector.
-# Let :math:`\Expect{\physicalInputRandomVector} \in \Rset^\physicalInputDimension`
-# be the mean of the input random vector :math:`\physicalInputRandomVector`.
+# Let :math:`\Expect{\inputRV} \in \Rset^\inputDim`
+# be the mean of the input random vector :math:`\inputRV`.
 # Let :math:`\model` be the physical model:
 #
 # .. math::
-#     \model : \Rset^\physicalInputDimension \rightarrow \Rset.
+#     \model : \Rset^\inputDim \rightarrow \Rset.
 #
-# Given :math:`\vect{u} \subseteq \{1, ..., \physicalInputDimension\}` a group
+# Given :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` a group
 # of input variables, we want to create a new function :math:`\widehat{\model}`:
 #
 # .. math::
@@ -54,23 +54,23 @@ Conditional expectation of a polynomial chaos expansion
 #
 # .. math::
 #
-#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \physicalInputDimension\}.
+#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \inputDim\}.
 #
 # The parametric function with reduced dimension is:
 #
 # .. math::
 #
-#   \widehat{\model}(\physicalInputObservation_{\vect{u}})
-#   = \model\left(\physicalInputObservation_{\vect{u}},
-#            \physicalInputObservation_{\overline{\vect{u}}}
-#            = \Expect{\physicalInputRandomVector_{\overline{\vect{u}}}}\right)
+#   \widehat{\model}(\inputReal_{\vect{u}})
+#   = \model\left(\inputReal_{\vect{u}},
+#            \inputReal_{\overline{\vect{u}}}
+#            = \Expect{\inputRV_{\overline{\vect{u}}}}\right)
 #
-# for any :math:`\physicalInputObservation_{\vect{u}} \in \Rset^{|\vect{u}|}`.
+# for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 # The previous function is a parametric function based on the function :math:`\model`
-# where the parameter is :math:`\Expect{\physicalInputRandomVector_{\overline{\vect{u}}}}`.
+# where the parameter is :math:`\Expect{\inputRV_{\overline{\vect{u}}}}`.
 # Assuming that the input random vector has an independent copula,
-# computing :math:`\Expect{\physicalInputRandomVector_{\overline{\vect{u}}}}`
-# can be done by selecting the corresponding indices in :math:`\Expect{\physicalInputRandomVector}`.
+# computing :math:`\Expect{\inputRV_{\overline{\vect{u}}}}`
+# can be done by selecting the corresponding indices in :math:`\Expect{\inputRV}`.
 # This function can be created using the :class:`~openturns.ParametricFunction`
 # class.
 
@@ -78,12 +78,12 @@ Conditional expectation of a polynomial chaos expansion
 # Parametric PCE
 # ~~~~~~~~~~~~~~
 #
-# If the physical model is a PCE, then the associated parametric model is also
+# If the physical model is a PCE, then the associated parametric model is also a
 # PCE.
 # Its coefficients and the associated functional basis can be computed from
 # the original PCE.
 # A significant fact, however, is that the coefficients of the parametric
-# PCE are *not* the one of the original PCE: the coefficients of the parametric
+# PCE are *not* the ones of the original PCE: the coefficients of the parametric
 # PCE have to be multiplied by factors which depend on the
 # value of the discarded basis functions on the parameter vector.
 # This feature is not currently available in the library.
@@ -92,58 +92,61 @@ Conditional expectation of a polynomial chaos expansion
 # differently from the corresponding parametric PCE.
 
 # %%
+# Let :math:`\cJ^P \subseteq \Nset^{\inputDim}` be the set of
+# multi-indices corresponding to the truncated polynomial chaos expansion
+# up to the :math:`P`-th coefficient.
 # Let :math:`h` be the PCE in the standard space:
 #
 # .. math::
 #
-#     h(\standardInputObservation) = \sum_{\boldsymbol{\alpha} \in \cJ^P}
-#         a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\standardInputObservation).
+#     h(\standardReal) = \sum_{\vect{\alpha} \in \cJ^P}
+#         a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\standardReal).
 #
-# Let :math:`\vect{u} \subseteq \{1, ..., \physicalInputDimension\}` be a group of variables,
+# Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` be a group of variables,
 # let :math:`\overline{\vect{u}}` be its complementary set such that
 #
 # .. math::
 #
-#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \physicalInputDimension\}
+#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \inputDim\}
 #
 # i.e. the groups :math:`\vect{u}` and :math:`\overline{\vect{u}}` create a disjoint partition
-# of the set :math:`\{1, ..., \physicalInputDimension\}`.
-# Let :math:`|\vect{u}| \in \mathbb{N}` be the number of elements
+# of the set :math:`\{1, ..., \inputDim\}`.
+# Let :math:`|\vect{u}| \in \Nset` be the number of elements
 # in the group :math:`\vect{u}`.
-# Hence, we have :math:`|\vect{u}| + |\overline{\vect{u}}| = \physicalInputDimension`.
+# Hence, we have :math:`|\vect{u}| + |\overline{\vect{u}}| = \inputDim`.
 
 # %%
-# Let :math:`\standardInputObservation_{\vect{u}}^{(0)} \in \Rset^{|\vect{u}|}`
+# Let :math:`\standardReal_{\vect{u}}^{(0)} \in \Rset^{|\vect{u}|}`
 # be a given point.
 # We are interested in the function :
 #
 # .. math::
 #
-#     \widehat{h}(\standardInputObservation_{\overline{\vect{u}}})
-#     = h\left(\standardInputObservation_{\overline{\vect{u}}},
-#     \standardInputObservation_{\vect{u}}^{(0)}\right)
+#     \widehat{h}(\standardReal_{\overline{\vect{u}}})
+#     = h\left(\standardReal_{\overline{\vect{u}}},
+#     \standardReal_{\vect{u}}^{(0)}\right)
 #
-# for any :math:`\standardInputObservation_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
+# for any :math:`\standardReal_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
 # We assume that the polynomial basis uses tensor product:
 #
 # .. math::
 #
-#     \psi_{\boldsymbol{\alpha}}\left(\standardInputObservation\right)
-#     = \prod_{i = 1}^{\physicalInputDimension}
-#     \pi_{\alpha_i}^{(i)}\left(\standardInputObservation\right)
+#     \psi_{\vect{\alpha}}\left(\standardReal\right)
+#     = \prod_{i = 1}^{\inputDim}
+#     \pi_{\alpha_i}^{(i)}\left(\standardReal\right)
 #
-# for any :math:`\standardInputObservation \in \standardInputSpace`
+# for any :math:`\standardReal \in \standardInputSpace`
 # where :math:`\pi_{\alpha_i}^{(i)}` is the polynomial of degree
 # :math:`\alpha_i` of the :math:`i`-th input standard variable.
 #
-# We denote :math:`(u_i)_{i = 1, ..., |\vect{u}|}` the components of the
+# Let :math:`\vect{u} = (u_i)_{i = 1, ..., |\vect{u}|}` denote the components of the
 # group :math:`\vect{u}` where :math:`|\vect{u}|` is the number of elements in the group.
-# Similarly, we denote :math:`(\overline{\vect{u}}_i)_{i = 1, ..., |\overline{\vect{u}}|}` the
+# Similarly, let :math:`\overline{\vect{u}} = (\overline{u}_i)_{i = 1, ..., |\overline{\vect{u}}|}` denote the
 # components of the complementary group :math:`\overline{\vect{u}}`.
-# The components of :math:`\standardInputObservation \in \Rset^{\physicalInputDimension}`
+# The components of :math:`\standardReal \in \Rset^{\inputDim}`
 # which are in the group :math:`\vect{u}` are :math:`\left(z_{u_i}^{(0)}\right)_{i = 1, ..., |\vect{u}|}`
 # and the complementary components are
-# :math:`\left(z_{\overline{\vect{u}}_i}\right)_{i = 1, ..., |\overline{\vect{u}}|}`.
+# :math:`\left(z_{\overline{u}_i}\right)_{i = 1, ..., |\overline{\vect{u}}|}`.
 
 # %%
 # Let :math:`\overline{\psi}_{\overline{\vect{\alpha}}}` be the reduced polynomial:
@@ -153,16 +156,16 @@ Conditional expectation of a polynomial chaos expansion
 #
 #     \overline{\psi}_{\overline{\vect{\alpha}}}(z_{\overline{\vect{u}}})
 #     = \left(\prod_{i = 1}^{|\overline{\vect{u}}|}
-#        \pi_{\alpha_{\overline{\vect{u}}_i}}^{(\overline{\vect{u}}_i)}
-#        \left(\standardInputObservation_{\overline{u}_i}\right) \right).
+#        \pi_{\alpha_{\overline{u}_i}}^{(\overline{u}_i)}
+#        \left(\standardReal_{\overline{u}_i}\right) \right)
 #
-# where :math:`\overline{\vect{\alpha}} \in \mathbb{N}^{|\vect{u}|}` is the reduced multi-index
-# defined from the multi-index :math:`\boldsymbol{\alpha}\in \mathbb{N}^{\physicalInputDimension}`
+# where :math:`\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}` is the reduced multi-index
+# defined from the multi-index :math:`\vect{\alpha}\in \Nset^{\inputDim}`
 # by the equation:
 #
 # .. math::
 #
-#     \overline{\vect{\alpha}}_i = \alpha_{\overline{\vect{u}}_i}
+#     \overline{\alpha}_i = \alpha_{\overline{u}_i}
 #
 # for :math:`i = 1, ..., |\overline{\vect{u}}|`.
 # The components of the reduced multi-index :math:`\overline{\vect{\alpha}}` which corresponds
@@ -170,26 +173,26 @@ Conditional expectation of a polynomial chaos expansion
 
 # %%
 # We must then gather the reduced multi-indices.
-# Let :math:`\overline{\cJ}` be the set of unique reduced multi-indices:
+# Let :math:`\overline{\cJ}^P` be the set of unique reduced multi-indices:
 #
 # .. math::
 #    :label: PCE_CE_2
 #
-#     \overline{\cJ} = \left\{\overline{\vect{\alpha}} \in \mathbb{N}^{|\vect{u}|}
-#     \; | \; \alpha \in \cJ^P\right\}.
+#     \overline{\cJ}^P = \left\{\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}
+#     \; | \; \vect{\alpha} \in \cJ^P\right\}.
 #
-# For any reduced multi-index :math:`\overline{\vect{\alpha}} \in \overline{\cJ}`
+# For any reduced multi-index :math:`\overline{\vect{\alpha}} \in \overline{\cJ}^P`
 # of dimension :math:`|\overline{\vect{u}}|`,
-# we note :math:`\cJ_{\overline{\vect{\alpha}}}`
+# we note :math:`\cJ_{\overline{\vect{\alpha}}}^P`
 # the set of corresponding (un-reduced) multi-indices of
-# dimension :math:`\physicalInputDimension`:
+# dimension :math:`\inputDim`:
 #
 # .. math::
 #    :label: PCE_CE_3
 #
-#     \cJ_{\overline{\vect{\alpha}}}
-#     = \left\{\alpha \in \cJ^P \; |\; \overline{\vect{\alpha}}_i
-#     = \alpha_{\overline{\vect{u}}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
+#     \cJ_{\overline{\vect{\alpha}}}^P
+#     = \left\{\vect{\alpha} \in \cJ^P \; |\; \overline{\alpha}_i
+#     = \alpha_{\overline{u}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
 #
 # Each aggregated coefficient :math:`\overline{a}_{\overline{\vect{\alpha}}} \in \Rset`
 # is defined by the equation:
@@ -198,21 +201,21 @@ Conditional expectation of a polynomial chaos expansion
 #    :label: PCE_CE_5
 #
 #     \overline{a}_{\overline{\vect{\alpha}}}
-#     = \sum_{\boldsymbol{\alpha} \in \cJ^P_{\overline{\vect{\alpha}}}}
-#     a_{\boldsymbol{\alpha}} \left(\prod_{i = 1}^{|\vect{u}|}
-#     \pi_{\alpha_{u_i}}^{(u_i)}\left(\standardInputObservation_{u_i}^{(0)}\right) \right).
+#     = \sum_{\vect{\alpha} \in \cJ^P_{\overline{\vect{\alpha}}}}
+#     a_{\vect{\alpha}} \left(\prod_{i = 1}^{|\vect{u}|}
+#     \pi_{\alpha_{u_i}}^{(u_i)}\left(\standardReal_{u_i}^{(0)}\right) \right).
 #
 # Finally:
 #
 # .. math::
 #    :label: PCE_CE_4
 #
-#     \widehat{h}(\standardInputObservation_{\overline{\vect{u}}})
-#     = \sum_{\overline{\boldsymbol{\alpha}} \in \overline{\cJ}}
+#     \widehat{h}(\standardReal_{\overline{\vect{u}}})
+#     = \sum_{\overline{\vect{\alpha}} \in \overline{\cJ}^P}
 #     \overline{a}_{\overline{\vect{\alpha}}}
 #     \overline{\psi}(z_{\overline{\vect{u}}})
 #
-# for any :math:`\standardInputObservation_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
+# for any :math:`\standardReal_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
 
 # %%
 # The method is the following.
@@ -233,15 +236,15 @@ Conditional expectation of a polynomial chaos expansion
 #
 # .. math::
 #
-#   \widehat{\model}(\physicalInputObservation_{\vect{u}})
-#   = \Expect{\model(\physicalInputObservation)
-#            \; | \; \physicalInputRandomVector_{\vect{u}}
-#            = \physicalInputObservation_{\vect{u}}}
+#   \widehat{\model}(\inputReal_{\vect{u}})
+#   = \Expect{\model(\inputReal)
+#            \; | \; \inputRV_{\vect{u}}
+#            = \inputReal_{\vect{u}}}
 #
-# for any :math:`\physicalInputObservation_{\vect{u}} \in \Rset^{|\vect{u}|}`.
+# for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 # In general, there is no dedicated method to create such a conditional expectation
 # in the library.
-# We can, however, compute efficiently the conditional expectation of a polynomial
+# We can, however, efficiently compute the conditional expectation of a polynomial
 # chaos expansion.
 # In turn, this conditional chaos expansion (PCE) is a polynomial chaos expansion
 # which can be computed using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`
@@ -263,7 +266,7 @@ import matplotlib.pyplot as plt
 
 
 # %%
-def MeanParametricPCE(chaosResult, indices):
+def meanParametricPCE(chaosResult, indices):
     """
     Return the parametric PCE of Y with given input marginals set to the mean.
 
@@ -300,7 +303,7 @@ def MeanParametricPCE(chaosResult, indices):
     # Create the parametric function
     pceFunction = chaosResult.getMetaModel()
     xMean = inputDistribution.getMean()
-    referencePoint = [xMean[i] for i in indices]
+    referencePoint = xMean[indices]
     parametricPCEFunction = ot.ParametricFunction(pceFunction, indices, referencePoint)
     return parametricPCEFunction
 
@@ -310,7 +313,7 @@ def MeanParametricPCE(chaosResult, indices):
 
 
 # %%
-def ComputeSparseLeastSquaresFunctionalChaos(
+def computeSparseLeastSquaresFunctionalChaos(
     inputTrain,
     outputTrain,
     multivariateBasis,
@@ -442,7 +445,7 @@ print("Basis size = ", basisSize)
 # algorithm.
 
 # %%
-chaosResult = ComputeSparseLeastSquaresFunctionalChaos(
+chaosResult = computeSparseLeastSquaresFunctionalChaos(
     inputSample,
     outputSample,
     multivariateBasis,
@@ -473,7 +476,7 @@ plt.subplots_adjust(wspace=0.4, bottom=0.25)
 # and the other variables are set to their mean values.
 # We can show that a parametric PCE is, again, a PCE.
 # The library does not currently implement this feature.
-# In the next cell, we create it from the `MeanParametricPCE` we defined
+# In the next cell, we create it from the `meanParametricPCE` we defined
 # previously.
 
 # %%
@@ -481,18 +484,17 @@ plt.subplots_adjust(wspace=0.4, bottom=0.25)
 # In the next cell, we create the parametric PCE function
 # where :math:`X_1` is active while :math:`X_2` and :math:`X_3` are
 # set to their mean values.
-pceFunction = chaosResult.getMetaModel()
 indices = [1, 2]
-parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+parametricPCEFunction = meanParametricPCE(chaosResult, indices)
 print(parametricPCEFunction.getInputDimension())
 
 
 # %%
-# Now that we know how the `MeanParametricPCE` works, we loop over
+# Now that we know how the `meanParametricPCE` works, we loop over
 # the input marginal indices and consider the three functions
-# :math:`\widehat{\model}_1(\physicalInputObservation_1)`,
-# :math:`\widehat{\model}_2(\physicalInputObservation_2)` and
-# :math:`\widehat{\model}_3(\physicalInputObservation_3)`.
+# :math:`\widehat{\model}_1(\inputReal_1)`,
+# :math:`\widehat{\model}_2(\inputReal_2)` and
+# :math:`\widehat{\model}_3(\inputReal_3)`.
 # For each marginal index `i`, we we plot the output :math:`Y`
 # against the input marginal :math:`X_i` of the sample.
 # Then we plot the parametric function depending on :math:`X_i`.
@@ -523,7 +525,7 @@ for i in range(inputDimension):
     # Set all indices except i
     indices = list(range(inputDimension))
     indices.pop(i)
-    parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+    parametricPCEFunction = meanParametricPCE(chaosResult, indices)
     xiMin = inputLowerBound[i]
     xiMax = inputUpperBound[i]
     curve = parametricPCEFunction.draw(xiMin, xiMax, npPoints).getDrawable(0)
@@ -556,7 +558,7 @@ plt.subplots_adjust(wspace=0.4, right=0.7, bottom=0.25)
 
 # %%
 # In the next cell, we create the conditional expectation function
-# :math:`\Expect{\model(\physicalInputObservation) \; | \; \physicalInputRandomVector_1 = \physicalInputObservation_1}`.
+# :math:`\Expect{\model(\inputReal) \; | \; \inputRV_1 = \inputReal_1}`.
 
 # %%
 conditionalPCE = chaosResult.getConditionalExpectation([0])
@@ -572,7 +574,7 @@ conditionalPCE
 
 # %%
 # In the next cell, we create the conditional expectation function
-# :math:`\Expect{\model(\physicalInputObservation) \; | \; \physicalInputRandomVector_2 = \physicalInputObservation_2, \physicalInputRandomVector_3 = \physicalInputObservation_3}`.
+# :math:`\Expect{\model(\inputReal) \; | \; \inputRV_2 = \inputReal_2, \inputRV_3 = \inputReal_3}`.
 
 # %%
 conditionalPCE = chaosResult.getConditionalExpectation([1, 2])
@@ -586,7 +588,6 @@ conditionalPCE
 # In the next cell, we compare the parametric PCE and the conditional
 # expectation of the PCE.
 
-# %%
 # sphinx_gallery_thumbnail_number = 3
 inputDimension = im.distributionX.getDimension()
 npPoints = 100
@@ -611,7 +612,7 @@ for i in range(inputDimension):
     # Set all indices except i to the mean
     indices = list(range(inputDimension))
     indices.pop(i)
-    parametricPCEFunction = MeanParametricPCE(chaosResult, indices)
+    parametricPCEFunction = meanParametricPCE(chaosResult, indices)
     # Draw the parametric function
     curve = parametricPCEFunction.draw(xiMin, xiMax, npPoints).getDrawable(0)
     curve.setLineWidth(2.0)
