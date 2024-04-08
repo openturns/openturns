@@ -117,9 +117,6 @@ graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
-# A part of the graphics is hidden by the legends. This is why we fine tune the graphics in the next examples.
-
-# %%
 # Getting the level values
 # ------------------------
 
@@ -128,10 +125,7 @@ view = viewer.View(graphBasic)
 
 # %%
 drawables = graphBasic.getDrawables()
-levels = []
-for i in range(len(drawables)):
-    contours = drawables[i]
-    levels.append(contours.getLevels()[0])
+levels = drawables[0].getLevels()
 levels
 
 # %%
@@ -140,16 +134,16 @@ levels
 
 # %%
 # We first configure the contour plot.
-# By default each level is a dedicated contour in order to have one color per contour,
-# but they all share the same grid and data.
 # We use the `getDrawable` method to take the first contour as the only one with multiple levels.
-# Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves.
+# Then we use the `setLevels` method: we could have changed the levels.
+# We use the `setColor` method to get a monochrome contour.
 # In order to inline the level values labels, we use the `setDrawLabels` method.
 
 # %%
 contours = graphBasic.getDrawable(0)
 contours.setLevels(levels)
 contours.setDrawLabels(True)
+contours.setColor('red')
 
 # %%
 # Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
@@ -157,7 +151,6 @@ contours.setDrawLabels(True)
 # %%
 graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
 graphFineTune.setDrawables([contours])
-graphFineTune.setLegendPosition("")  # Remove the legend
 view = viewer.View(graphFineTune)
 
 # %%
@@ -166,10 +159,8 @@ view = viewer.View(graphFineTune)
 
 # %%
 # The previous contour plot is fine, but lacks of colors.
-# It is not obvious that the colors make the plot clearer given that the values
-# in the contour plot are so different: some adjacent contours have close
-# levels, while others are very different.
-# Anyway, it is obviously nicer to get a colored graphics.
+# When colors are assigned by matplotlib using the color table, the curves can be very similar colors.
+# Here we will show how to assign explicit colors to the different contour lines.
 #
 # The following script first creates a palette of colors with the `BuildDefaultPalette` class.
 # Before doing so, we configure the `Drawable-DefaultPalettePhase` `ResourceMap` key so
@@ -178,7 +169,9 @@ view = viewer.View(graphFineTune)
 
 # %%
 # Take the first contour as the only one with multiple levels
-contour = graphBasic.getDrawable(0)
+contour = graphBasic.getDrawable(0).getImplementation()
+# Hide the color bar
+contour.setColorBarPosition("")
 # Build a range of colors
 ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
