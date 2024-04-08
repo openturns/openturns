@@ -13,6 +13,7 @@
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
 #include "openturns/OTSimulation.hxx"
+#include "openturns/OTSolver.hxx"
 %}
 
 %include typemaps.i
