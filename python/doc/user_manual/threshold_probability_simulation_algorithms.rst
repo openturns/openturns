@@ -75,7 +75,7 @@ Non linear solvers
     :template: class.rst_t
 
     Solver
-    LsqSolver
+    experimental.LsqSolver
     
     :template: Solver.rst_t
     Bisection
