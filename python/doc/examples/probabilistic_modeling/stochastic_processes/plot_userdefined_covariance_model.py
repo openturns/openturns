@@ -43,7 +43,7 @@ covmodel = ot.UserDefinedCovarianceModel(mesh, covariance)
 
 
 # %%
-# Draw the covariance model
+# Draw the covariance model as a function
 def f(x):
     return [covmodel([x[0]], [x[1]])[0, 0]]
 
@@ -53,4 +53,17 @@ func.setDescription(["$s$", "$t$", "$cov$"])
 cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
 cov_graph.setLegendPosition("")
 view = viewer.View(cov_graph)
+
+
+# %%
+# Draw the covariance model as a matrix
+plt.matshow(covariance)
+
+# %%
+# Draw the covariance model as a matrix with the correct axes
+# To obtain the correct orientation of the y axis we use the origin argument
+# To obtain the correct graduations we use the extent argument
+# We also change the colormap used
+pas = 2 * a / (N - 1)
+plt.matshow(covariance, cmap='gray', origin='lower', extent=(-a - pas / 2, a + pas / 2, -a - pas / 2, a + pas / 2))
 plt.show()
