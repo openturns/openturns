@@ -80,6 +80,7 @@
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
 %include PosteriorDistribution.i
+%include UniformOrderStatistics.i
 
 // duplicate helpers
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
