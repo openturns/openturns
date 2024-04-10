@@ -193,8 +193,6 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
 {
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
   if (bootstrapSize_ > 0)
   {
     // Temporary samples that stores the first/total indices
@@ -742,7 +740,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
 
   /* build labels and colors for the pie */
-  Description palette(dimension);
   Description labels(dimension);
   Description description(names);
   // If no description has been given for the input distribution components, give standard ones

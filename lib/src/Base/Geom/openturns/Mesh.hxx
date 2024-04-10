@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a mesh
  */
-class OT_API Mesh
+class OT_API OT_WARN_UNUSED Mesh
   : public PersistentObject
 {
   CLASSNAME

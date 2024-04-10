@@ -305,7 +305,6 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   Sample ciUp(pointsNumber, 1);
   const Scalar level = ResourceMap::GetAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel");
   const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
-  const Sample sortedSample(sample.sort(0));
   for (UnsignedInteger i = 0; i < pointsNumber; ++ i)
   {
     u(i, 0) = uMin + i * (uMax - uMin) / (pointsNumber + 1);

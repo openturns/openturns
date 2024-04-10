@@ -344,8 +344,8 @@ int main(int, char *[])
     // The segfault was triggered during the construction...
     RandomMixture mixture2(Collection<Distribution>(1, Dirac()));
     // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
-    Graph graphPDF(mixture2.drawPDF());
-    Graph graphCDF(mixture2.drawCDF());
+    mixture2.drawPDF();
+    mixture2.drawCDF();
     // Test computeQuantile for the specific case of an analytical 1D mixture
     RandomMixture case1(Collection<Distribution>(1, ChiSquare()), Point(1, 0.1));
     Scalar q = case1.computeQuantile(0.95)[0];

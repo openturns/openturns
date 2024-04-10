@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a collection of indices
  */
-class OT_API Indices :
+class OT_API OT_WARN_UNUSED Indices :
   public PersistentCollection<UnsignedInteger>
 {
   CLASSNAME

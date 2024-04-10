@@ -31,8 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Description is a collection of string for human usage
  */
 
-class OT_API Description :
-  public PersistentCollection<String>
+class OT_API OT_WARN_UNUSED Description : public PersistentCollection<String>
 {
   CLASSNAME
 public:

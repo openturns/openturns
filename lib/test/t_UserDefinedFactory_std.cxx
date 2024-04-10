@@ -40,12 +40,9 @@ int main(int, char *[])
     sample[2][0] = 3.0;
     sample[2][1] = 3.5;
     UserDefinedFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Sample                =" << sample << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     UserDefined estimatedUserDefined(factory.buildAsUserDefined(sample));

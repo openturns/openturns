@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CovarianceMatrix
  */
 
-class OT_API CovarianceMatrix
+class OT_API OT_WARN_UNUSED CovarianceMatrix
   : public SymmetricMatrix
 {
   CLASSNAME

@@ -743,7 +743,6 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     graph.add(text);
   }
   const Interval boundingBox(graph.getBoundingBox());
-  const Point lowerBound(boundingBox.getLowerBound());
   const Point upperBound(boundingBox.getUpperBound());
   // Add contour plot
   Point isovalues(6);

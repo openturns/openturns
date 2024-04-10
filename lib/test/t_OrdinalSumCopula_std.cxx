@@ -81,8 +81,7 @@ int main(int, char *[])
     //Scalar eps(1e-5);
     Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    Point ddfFD(dim);
-    Scalar PDF = copula.computePDF( point );
+    Scalar PDF = copula.computePDF(point);
     fullprint << "pdf     =" << PDF << std::endl;
     Scalar CDF = copula.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;

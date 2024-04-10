@@ -38,25 +38,25 @@ int main(int, char *[])
       Mesh mesh(IntervalMesher(Indices(1, 10)).build(Interval(-2.0, 2.0)));
       SymbolicFunction function("x", "x");
       Field field(mesh, function(mesh.getVertices()));
-      Graph graph(field.draw());
-      graph = field.drawMarginal(0, false);
-      graph = field.drawMarginal(0, true);
+      field.draw();
+      field.drawMarginal(0, false);
+      field.drawMarginal(0, true);
     }
     // A 2D->1D field
     {
       Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(Point(2, -2.0), Point(2, 2.0))));
       SymbolicFunction function(Description::BuildDefault(2, "x"), Description(1, "x0+x1"));
       Field field(mesh, function(mesh.getVertices()));
-      Graph graph(field.draw());
-      graph = field.drawMarginal(0, false);
-      graph = field.drawMarginal(0, true);
+      field.draw();
+      field.drawMarginal(0, false);
+      field.drawMarginal(0, true);
     }
     // A 2D->2D field
     {
       Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(Point(2, -2.0), Point(2, 2.0))));
       SymbolicFunction function(Description::BuildDefault(2, "x"), Description::BuildDefault(2, "x"));
       Field field(mesh, function(mesh.getVertices()));
-      Graph graph(field.draw());
+      field.draw();
     }
   }
   catch (TestFailed & ex)

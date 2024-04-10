@@ -273,10 +273,6 @@ Scalar Student::computeProbability(const Interval & interval) const
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval
-  Point lower(normalize(interval.getLowerBound()));
-  Point upper(normalize(interval.getUpperBound()));
-  const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
   /* General case */
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))

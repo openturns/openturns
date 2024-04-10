@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Drawable is an interface to implement graphics
  */
 
-class OT_API Drawable :
+class OT_API OT_WARN_UNUSED Drawable :
   public TypedInterfaceObject<DrawableImplementation>
 {
   CLASSNAME

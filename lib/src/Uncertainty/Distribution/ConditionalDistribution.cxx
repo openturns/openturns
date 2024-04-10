@@ -198,7 +198,6 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   linkFunction_ = linkFunction;
   setDimension(conditioningDimension + conditionedDistribution.getDimension());
   // Start the discretisation into a Mixture
-  const Interval bounds(conditioningDistribution.getRange());
   // Here, implements some knowledge based selection of the integration method
   // For now, only basic Legendre
   // Gather the indices of the discrete marginals

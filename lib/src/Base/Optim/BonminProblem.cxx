@@ -92,11 +92,8 @@ bool BonminProblem::get_nlp_info(int & n,
   return true;
 }
 
-bool BonminProblem::get_variables_types( int n,
-    VariableTypeTable var_types)
+bool BonminProblem::get_variables_types(int n, VariableTypeTable var_types)
 {
-  Indices variablesTypes(optimProblem_.getVariablesType());
-
   // Conversion from OptimizationProblemImplementation::VariableType to TMINLP::VariableType
   for (int i = 0; i < n; ++i)
   {

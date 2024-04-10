@@ -356,7 +356,6 @@ void GaussianNonLinearCalibration::run()
     inputIndices.fill();
     Indices outputIndices(outputObservations_.getDimension());
     outputIndices.fill(inputIndices.getSize());
-    Sample empty;
     for (UnsignedInteger i = 0; i < bootstrapSize_; ++i)
     {
       const Sample joinedSample(bootstrap.generate());

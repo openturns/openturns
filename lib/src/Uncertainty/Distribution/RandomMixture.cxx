@@ -1452,7 +1452,6 @@ Sample RandomMixture::computePDF(const Point & xMin,
     return pdf;
   } // dimension == 1 && size == 2
   const Point mu(getMean());
-  const Interval bounds(xMin, xMax);
   //if (!bounds.contains(mu)) throw InvalidArgumentException(HERE) << "Error: requested interval does not contain mean=" << mu;
 
   const Point sigma(getStandardDeviation());

@@ -35,8 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * TestResult implements the result of a statistical test
  */
 
-class OT_API TestResult :
-  public PersistentObject
+class OT_API OT_WARN_UNUSED TestResult : public PersistentObject
 {
   CLASSNAME
 

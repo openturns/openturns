@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistoryStrategy
  */
 
-class OT_API HistoryStrategy
+class OT_API OT_WARN_UNUSED HistoryStrategy
   : public TypedInterfaceObject<HistoryStrategyImplementation>
 {
 

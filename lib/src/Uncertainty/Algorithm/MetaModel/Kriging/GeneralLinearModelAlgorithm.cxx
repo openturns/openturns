@@ -432,7 +432,6 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
 {
   // initial guess
   Point initialParameters(reducedCovarianceModel_.getParameter());
-  Indices initialActiveParameters(reducedCovarianceModel_.getActiveParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
   Function reducedLogLikelihoodFunction(getObjectiveFunction());
   const Bool noNumericalOptimization = initialParameters.getSize() == 0;

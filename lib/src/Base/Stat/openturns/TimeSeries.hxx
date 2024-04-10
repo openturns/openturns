@@ -38,8 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TimeSeries
  */
 
-class OT_API TimeSeries
-  : public FieldImplementation
+class OT_API OT_WARN_UNUSED TimeSeries : public FieldImplementation
 {
   CLASSNAME
 

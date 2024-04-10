@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Sample
  */
 
-class OT_API Sample
+class OT_API OT_WARN_UNUSED Sample
   : public TypedInterfaceObject<SampleImplementation>
 {
   CLASSNAME

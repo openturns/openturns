@@ -37,8 +37,6 @@ int main(int, char *[])
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(sample, 0);
@@ -47,7 +45,6 @@ int main(int, char *[])
     fullprint << "Estimated distribution (modified moments)=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(sample, 2);
     fullprint << "Estimated distribution (moments)=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());

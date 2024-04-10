@@ -48,6 +48,7 @@ int main(int, char *[])
 
     /** Copy constructor */
     Function newFunc(myFunc);
+    (void)newFunc;
 
     fullprint << "myFunc=" << myFunc << std::endl;
     Point point(myFunc.getInputDimension(), 1.2);

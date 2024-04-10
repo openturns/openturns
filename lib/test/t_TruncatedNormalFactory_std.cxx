@@ -51,12 +51,9 @@ int main(int, char *[])
       UnsignedInteger size = 10000;
       Sample sample(distribution.getSample(size));
       TruncatedNormalFactory factory;
-      CovarianceMatrix covariance;
-      // Distribution estimatedDistribution(factory.build(sample, covariance));
       Distribution estimatedDistribution(factory.build(sample));
       fullprint << "Distribution          =" << distribution << std::endl;
       fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-      // fullprint << "Covariance=" << covariance << std::endl;
       estimatedDistribution = factory.build();
       fullprint << "Default distribution=" << estimatedDistribution << std::endl;
       estimatedDistribution = factory.build(distribution.getParameter());
@@ -72,7 +69,6 @@ int main(int, char *[])
     // Test for constant sample
     TruncatedNormalFactory factory;
     UnsignedInteger size = 10000;
-    Sample sample(size, Point(1, 0.0));
     // buildMethodOfMoments
     fullprint << "buildMethodOfMoments" << std::endl;
     TruncatedNormal distribution(2.0, 3.0, -1.0, 4.0);

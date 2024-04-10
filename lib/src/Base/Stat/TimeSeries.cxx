@@ -159,8 +159,8 @@ TimeSeries & TimeSeries::add(const Sample & sample)
 /* Append another time series to the collection. The time grids must match (one follows the other) */
 TimeSeries & TimeSeries::add(const TimeSeries & continuer)
 {
-  Sample vertices(mesh_.getVertices());
-  if ((timeStep_ != continuer.timeStep_) || (start_ + n_ * timeStep_ != continuer.start_)) LOGWARN(OSS() << "The continuer does not have a compatible time grid. Using the values only.");
+  if ((timeStep_ != continuer.timeStep_) || (start_ + n_ * timeStep_ != continuer.start_))
+    LOGWARN(OSS() << "The continuer does not have a compatible time grid. Using the values only.");
   return add(continuer.getValues());
 }
 

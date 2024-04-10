@@ -546,7 +546,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
         val = &temp;
       }
       assert(val);
-      OT::Sample result(size, self->getDimension());
       for (Py_ssize_t i = 0; i < size; ++ i)
         self->at(start + i*step) = val->at(i);
     }
@@ -562,7 +561,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
         val = &temp;
       }
       assert(val);
-      OT::Sample result(size, self->getDimension());
       for (Py_ssize_t i = 0; i < size; ++ i)
       {
         PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
@@ -745,7 +743,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
       // case 2.3: [slice/sequence] <= Sample
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
       Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
-      OT::Sample result(size1, size2);
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {

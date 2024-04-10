@@ -270,9 +270,6 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
   // First rank the factories according to the biased Kolmogorov test,
   // which is optimistic wrt the p-value
   const Scalar fakeLevel = 0.5;
-  DistributionCollection bestEstimates(size);
-  // The value -1.0 means that the model has not been built
-  Point pValues(size, -1.0);
   Bool builtAtLeastOne = false;
   Distribution distribution;
   // There is no need to store the best estimates as the relevant ones will be recomputed during the Lilliefors loop

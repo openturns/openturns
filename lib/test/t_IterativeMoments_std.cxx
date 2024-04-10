@@ -83,7 +83,7 @@ void test_MainFeatures()
   Point referenceMixedMean = mixedSample.computeMean();
   Point referenceMixedVariance = mixedSample.computeVariance();
   Point referenceMixedSkewness = mixedSample.computeSkewness();
-  Point referenceMixedKurtosis = mixedSample.computeKurtosis();
+  //Point referenceMixedKurtosis = mixedSample.computeKurtosis();
 
   /* Here we declare an iterative object of maximum order 3 */
   IterativeMoments iterMoments3(3, dimension);

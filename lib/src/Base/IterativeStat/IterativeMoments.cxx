@@ -141,7 +141,6 @@ Point IterativeMoments::getKurtosis() const
 
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
-  const Point skewnessEstimator(getSkewness());
   const UnsignedInteger n = iteration_;
 
   const Scalar factor1 = n * (n + 1.0) / ((n - 1.0) * (n - 2.0) * (n - 3.0));

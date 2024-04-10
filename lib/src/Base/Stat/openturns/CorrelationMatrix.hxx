@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CorrelationMatrix
  */
 
-class OT_API CorrelationMatrix
+class OT_API OT_WARN_UNUSED CorrelationMatrix
   : public CovarianceMatrix
 {
   CLASSNAME

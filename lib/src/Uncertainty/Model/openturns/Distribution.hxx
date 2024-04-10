@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * distribution, can compute PDF or CDF, etc.
  * They are the actual key component of RandomVectors.
  */
-class OT_API Distribution
+class OT_API OT_WARN_UNUSED Distribution
   : public TypedInterfaceObject<DistributionImplementation>
 {
   CLASSNAME

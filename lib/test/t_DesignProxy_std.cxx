@@ -38,8 +38,6 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
       X(i, 0) = i + 1.0;
 
-    Sample Y(sampleSize, 1);
-
     Collection<Function> phis;
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       phis.add(SymbolicFunction("x", String(OSS() << "x^" << j + 1)));
