@@ -84,6 +84,9 @@ Bibliography
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
     Springer, 2001.
+.. [crombecq2011] Crombecq, K., *Surrogate Modelling of Computer Experiments with Sequential Experimental Design*,
+    PhD thesis, Universiteit Gent, Belgium, 2011.
+    `pdf <https://backoffice.biblio.ugent.be/download/1970716/1971191>`__
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
     Marcel Dekker, Inc., New York, 1986.
 .. [dahlquist2008] Dahlquist, G. and Björck, A. *Numerical methods in scientific computing*,

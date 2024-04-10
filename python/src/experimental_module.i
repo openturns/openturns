@@ -51,6 +51,11 @@
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include ExperimentIntegration.i
 
+/* Uncertainty/Algorith/Optimization */
+%include SequentialSamplingAlgorithmImplementation.i
+%include SequentialSamplingAlgorithm.i
+%include LOLAVoronoi.i
+
 /* Uncertainty */
 %import bayesian_module.i
 %import metamodel_module.i
@@ -65,6 +70,11 @@
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
+
+/* Uncertainty/Algorithm */
+%include SequentialSamplingAlgorithmImplementation.i
+%include SequentialSamplingAlgorithm.i
+%include LOLAVoronoi.i
 
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
