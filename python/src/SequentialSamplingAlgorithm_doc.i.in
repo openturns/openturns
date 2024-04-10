@@ -1,0 +1,14 @@
+// SequentialSamplingAlgorithm docstrings are defined in SequentialSamplingAlgorithmImplementation_doc.i.in
+
+%feature("docstring") OT::SequentialSamplingAlgorithm
+OT_AdaptiveSamplingAlgorithm_doc
+%feature("docstring") OT::SequentialSamplingAlgorithm::getX
+OT_AdaptiveSamplingAlgorithm_getX_doc
+%feature("docstring") OT::SequentialSamplingAlgorithm::getY
+OT_AdaptiveSamplingAlgorithm_getY_doc
+%feature("docstring") OT::SequentialSamplingAlgorithm::generate
+OT_AdaptiveSamplingAlgorithm_generate_doc
+%feature("docstring") OT::SequentialSamplingAlgorithm::update
+OT_AdaptiveSamplingAlgorithm_update_doc
+%feature("docstring") OT::SequentialSamplingAlgorithm::getGenerationIndices
+OT_AdaptiveSamplingAlgorithm_getGenerationIndices_doc
