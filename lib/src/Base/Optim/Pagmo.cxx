@@ -75,7 +75,6 @@ struct PagmoProblem
 
     // pagmo wants the integer components grouped at the end, so renumbering is in order
     Indices renum;
-    Indices renum_inv;
     const Indices types(algorithm_->getProblem().getVariablesType());
     for (UnsignedInteger i = 0; i < types.getSize(); ++ i)
       if (types[i] == OptimizationProblemImplementation::CONTINUOUS)

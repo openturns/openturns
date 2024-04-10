@@ -37,21 +37,18 @@ int main(int, char *[])
     xi[1] = 0.0;
     xi[2] = 0.75;
     UnsignedInteger size = 10000;
-    CovarianceMatrix covariance;
     GeneralizedParetoFactory factory;
     GeneralizedPareto distribution;
     for (UnsignedInteger i = 0; i < 3; ++i)
     {
       distribution = GeneralizedPareto(2.5, xi[i], 0.5);
       Sample sample(distribution.getSample(size));
-      // Distribution estimatedDistribution(factory.build(sample, covariance));
       Distribution estimatedDistribution(factory.build(sample));
       fullprint << "Distribution          =" << distribution << std::endl;
       fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
       GeneralizedPareto estimatedGeneralizedPareto(factory.buildAsGeneralizedPareto(sample));
       fullprint << "GeneralizedPareto          =" << distribution << std::endl;
       fullprint << "Estimated generalizedPareto=" << estimatedGeneralizedPareto << std::endl;
-      // fullprint << "Covariance=" << covariance << std::endl;
     }
     Distribution estimatedDistribution(factory.build());
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;

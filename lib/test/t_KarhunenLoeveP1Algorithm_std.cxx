@@ -120,10 +120,10 @@ int main(int, char *[])
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       Point lambda(result.getEigenvalues());
-      ProcessSample KLModesPS(result.getModesAsProcessSample());
+      //ProcessSample KLModesPS(result.getModesAsProcessSample());
       // The output is hidden due to near-zero nonreproducible values
       //fullprint << "KL modes (process sample)=" << KLModesPS << std::endl;
-      ProcessSample KLScaledModesPS(result.getScaledModesAsProcessSample());
+      //ProcessSample KLScaledModesPS(result.getScaledModesAsProcessSample());
       // The output is hidden due to near-zero nonreproducible values
       //fullprint << "KL scaled modes (process sample)=" << KLScaledModesPS << std::endl;
       Basis KLModes(result.getModes());

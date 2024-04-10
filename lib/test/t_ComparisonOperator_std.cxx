@@ -59,7 +59,6 @@ int main(int, char *[])
     //     fullprint << "Greater.compare(20,20) = " << p_operator->compare(20,20) << std::endl;
     //     fullprint << "Greater.compare(30,20) = " << p_operator->compare(30,20) << std::endl;
 
-    ComparisonOperator comparisonOperator;
     ComparisonOperator less = Less();
     fullprint << "Less(10,20) = " << less(10, 20) << std::endl;
     fullprint << "Less(20,20) = " << less(20, 20) << std::endl;

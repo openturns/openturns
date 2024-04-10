@@ -205,7 +205,6 @@ void KrigingResult::computePhi() const
 {
   // Nothing to do if the design matrix has already been computed
   if (Gt_.getNbRows() != 0) return;
-  Matrix Q;
   LOGINFO("Solve linear system  L * phi= F");
   Matrix phi;
   if (0 != covarianceCholeskyFactor_.getNbRows())
@@ -215,7 +214,7 @@ void KrigingResult::computePhi() const
   // Compute QR decomposition of Phi_
   LOGINFO("Compute the QR decomposition of phi");
   Matrix G;
-  Q = phi.computeQR(G);
+  phi.computeQR(G);
   Gt_ = G.transpose();
   phiT_ = phi.transpose();
 }

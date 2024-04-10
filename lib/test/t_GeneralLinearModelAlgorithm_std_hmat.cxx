@@ -67,7 +67,7 @@ int main(int, char *[])
       Y(i, 0) += 0.01 * DistFunc::rNormal();
     }
     // Add a small noise to data
-    Sample Y2 = model(X2);
+    model(X2);
 
     Basis basis = LinearBasisFactory(inputDimension).build();
     DiracCovarianceModel covarianceModel(inputDimension);
@@ -77,7 +77,7 @@ int main(int, char *[])
     // perform an evaluation
     GeneralLinearModelResult result = algo.getResult();
     Function metaModel = result.getMetaModel();
-    CovarianceModel conditionalCovariance = result.getCovarianceModel();
+    result.getCovarianceModel();
     const Sample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCentralMoment(2), Point(1, 0.00013144), 1e-5, 1e-5);
     std::cout << "Test Ok" << std::endl;

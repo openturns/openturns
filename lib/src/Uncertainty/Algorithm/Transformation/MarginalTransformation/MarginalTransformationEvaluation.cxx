@@ -592,7 +592,6 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   OSS oss(false);
   const String name(getName());
   if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << "\n" << offset;
-  const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
   UnsignedInteger length = 0;
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)

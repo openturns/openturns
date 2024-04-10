@@ -2273,7 +2273,6 @@ Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
 Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q) const
 {
   Point result(0);
-  Point y(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     result.add(computeConditionalQuantile(q[i], result));
   return result;

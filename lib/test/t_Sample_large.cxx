@@ -73,7 +73,7 @@ int main(int, char *[])
       try
       {
         // We try to access past the last element of the point
-        Point err( sample.at(2) );
+        sample.at(2);
 
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");

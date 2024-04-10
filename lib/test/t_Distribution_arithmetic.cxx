@@ -33,7 +33,6 @@ int main(int, char *[])
   try
   {
     Normal dist1(1.0, 0.5);
-    Graph graph;
     fullprint << "dist1:" << Distribution(dist1) << std::endl;
     Distribution result;
     result = dist1 + 2.0;

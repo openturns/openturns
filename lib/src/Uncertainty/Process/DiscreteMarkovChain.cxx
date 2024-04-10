@@ -185,9 +185,6 @@ Field DiscreteMarkovChain::getRealization() const
 /* Compute the next steps of a Markov chain */
 TimeSeries DiscreteMarkovChain::getFuture(const UnsignedInteger stepNumber) const
 {
-  // TimeGrid of the process
-  RegularGrid timeGrid(getTimeGrid());
-
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
 
   // TimeGrid associated with the possible future

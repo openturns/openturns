@@ -224,7 +224,6 @@ void MeixnerDistribution::computeRange()
   }
   // Find the numerical upper bound based on the PDF value
   Point upperBound(mu);
-  Point stepUpper(sigma);
   Scalar logPDFUpper = logPDF;
   while (logPDFUpper > logPDFEpsilon)
   {

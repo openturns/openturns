@@ -69,10 +69,7 @@ int main()
         Function(),
         constrainingBounds);
     /** REFERENCE POINTS **/
-    Point unboundedRefPoint(2, 0.0);
-    Point boundedRefPoint(2);
-    boundedRefPoint[0] = 0.0;
-    boundedRefPoint[1] = -1.0;
+    Point boundedRefPoint = {0.0, -1.0};
 
 // ============================================================================================================================= //
 

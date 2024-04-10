@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for time series
  */
-class OT_API ProcessSample
+class OT_API OT_WARN_UNUSED ProcessSample
   : public TypedInterfaceObject<ProcessSampleImplementation>
 {
   CLASSNAME

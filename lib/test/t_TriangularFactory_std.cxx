@@ -36,12 +36,9 @@ int main(int, char *[])
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     TriangularFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
@@ -49,7 +46,6 @@ int main(int, char *[])
     Triangular estimatedTriangular(factory.buildAsTriangular(sample));
     fullprint << "Triangular          =" << distribution << std::endl;
     fullprint << "Estimated triangular=" << estimatedTriangular << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedTriangular = factory.buildAsTriangular();
     fullprint << "Default triangular=" << estimatedTriangular << std::endl;
     estimatedTriangular = factory.buildAsTriangular(distribution.getParameter());

@@ -66,9 +66,6 @@ int main()
     variablesUpperBounds[3] = 5;
     Interval variablesBounds(variablesLowerBounds, variablesUpperBounds, variablesFiniteLowerBounds, variablesFiniteUpperBounds) ;
 
-    // No equality constraints
-    Function equalityConstraints;
-
     // Definition of inequality constraints:
     // Bonmin constraints are defined as g_l <= g(x) <= g_u
     // OpenTURNS' are defined as g(x) >= 0

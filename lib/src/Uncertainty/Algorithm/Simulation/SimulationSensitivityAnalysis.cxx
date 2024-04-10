@@ -288,12 +288,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
         try
         {
           importanceFactors = getTransformation()(accumulator / accumulated).normalizeSquare();
-          const Point ref(computeImportanceFactors(currentThreshold));
           for (UnsignedInteger j = 0; j < inputDimension; ++j)
           {
-            Point point(2);
-            point[0] = xValue;
-            point[1] = 100.0 * importanceFactors[j];
+            const Point point = {xValue, 100.0 * importanceFactors[j]};
             dataCollection[j].add(point);
           }
         }

@@ -91,7 +91,7 @@ OStream & operator << (OStream & OS,
 
 
 template <class T>
-class Collection
+class OT_WARN_UNUSED Collection
 {
 public:
 

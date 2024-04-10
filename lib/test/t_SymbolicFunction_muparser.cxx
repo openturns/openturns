@@ -380,7 +380,7 @@ int main(int, char *[])
       x[1] = 3.0;
       x[2] = 4.0;
       x[3] = 5.0;
-      Point y(f(x));
+      f(x);
       fullprint << f.__str__() << " should throw" << std::endl;
     }
     catch (NotYetImplementedException &)

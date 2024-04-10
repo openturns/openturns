@@ -57,7 +57,6 @@ int main(int, char *[])
     sob_T2[0] = sob_2[0] + sob_2[1] + sob_3[0];
     sob_T2[1] = sob_2[0] + sob_2[2] + sob_3[0];
     sob_T2[2] = sob_2[1] + sob_2[2] + sob_3[0];
-    Point sob_T3(sob_3);
     // Create the Ishigami function
     Description inputVariables(dimension);
     inputVariables[0] = "xi1";

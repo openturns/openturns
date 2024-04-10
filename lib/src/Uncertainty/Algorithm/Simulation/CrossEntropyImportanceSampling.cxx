@@ -164,8 +164,7 @@ void CrossEntropyImportanceSampling::run()
 
   while ((comparator(threshold, currentQuantile)) && (currentQuantile != threshold))
   {
-    ++iterationNumber ;
-    Point currentAuxiliaryDistributionParameters = auxiliaryDistributionParameters;
+    ++ iterationNumber;
 
     // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());

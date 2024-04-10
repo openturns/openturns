@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a domain
  */
-class OT_API Domain
+class OT_API OT_WARN_UNUSED Domain
   : public TypedInterfaceObject<DomainImplementation>
 {
   CLASSNAME

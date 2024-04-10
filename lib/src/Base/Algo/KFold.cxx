@@ -71,12 +71,9 @@ Scalar KFold::run(const Sample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-Scalar KFold::run(LeastSquaresMethod & method,
-                  const Sample & y) const
+Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
-  const FunctionCollection basis(method.getBasis());
-
   const UnsignedInteger sampleSize = x.getSize();
   const Scalar variance = y.computeVariance()[0];
 

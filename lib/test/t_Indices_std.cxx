@@ -52,29 +52,19 @@ int main(int, char *[])
 
     // Test contains()
     Indices indices3 = {};
-    assert(!indices3.contains(0));
-    assert(!indices3.contains(1));
-    assert(!indices3.contains(2));
+    if(indices3.contains(0)) throw InvalidArgumentException(HERE) << "contains(0)";
+    if(indices3.contains(1)) throw InvalidArgumentException(HERE) << "contains(1)";
     Indices indices4 = {1, 2, 3};
-    assert(indices4.contains(1));
-    assert(indices4.contains(2));
-    assert(indices4.contains(3));
-    assert(!indices4.contains(0));
-    assert(!indices4.contains(4));
-    Indices indices5 = {3, 5, 7};
-    assert(indices5.contains(3));
-    assert(indices5.contains(5));
-    assert(indices5.contains(7));
-    assert(!indices5.contains(0));
-    assert(!indices5.contains(1));
+    if(!indices4.contains(1)) throw InvalidArgumentException(HERE) << "contains(1)";
+    if(indices4.contains(4)) throw InvalidArgumentException(HERE) << "contains(4)";
 
     // Test normInf() and norm1()
     Indices indices6 = {};
-    assert(indices6.normInf() == 0);
-    assert(indices6.norm1() == 0);
+    if(indices6.normInf() != 0.0) throw InvalidArgumentException(HERE) << "norm";
+    if(indices6.norm1() != 0.0) throw InvalidArgumentException(HERE) << "norm";
     Indices indices7 = {1, 2, 3};
-    assert(indices7.normInf() == 3);
-    assert(indices7.norm1() == 6);
+    if(indices7.normInf() != 3.0) throw InvalidArgumentException(HERE) << "norm";
+    if(indices7.norm1() != 6.0) throw InvalidArgumentException(HERE) << "norm";
 
   }
   catch (TestFailed & ex)

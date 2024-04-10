@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CovarianceModel
  */
 
-class OT_API CovarianceModel
+class OT_API OT_WARN_UNUSED CovarianceModel
   : public TypedInterfaceObject<CovarianceModelImplementation>
 {
 

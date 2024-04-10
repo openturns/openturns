@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  * @see FunctionImplementation
  */
-class OT_API Function
+class OT_API OT_WARN_UNUSED Function
   : public TypedInterfaceObject<FunctionImplementation>
 {
   CLASSNAME

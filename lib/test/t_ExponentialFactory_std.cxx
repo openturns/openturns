@@ -36,12 +36,9 @@ int main(int, char *[])
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     ExponentialFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
@@ -49,7 +46,6 @@ int main(int, char *[])
     Exponential estimatedExponential(factory.buildAsExponential(sample));
     fullprint << "Exponential          =" << distribution << std::endl;
     fullprint << "Estimated exponential=" << estimatedExponential << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedExponential = factory.buildAsExponential();
     fullprint << "Default exponential=" << estimatedExponential << std::endl;
     estimatedExponential = factory.buildAsExponential(distribution.getParameter());

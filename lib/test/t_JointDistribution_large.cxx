@@ -65,8 +65,8 @@ int main(int, char *[])
     fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for sampling
-    UnsignedInteger size = 10;
-    Sample anotherSample = distribution.getSample( size );
+    const UnsignedInteger size = 10;
+    distribution.getSample(size);
 
     // Define a point
     Point zero(dimension, 0.0);

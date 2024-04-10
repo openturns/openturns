@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and manages drawables to be plotted on the same window
  */
 
-class OT_API Graph :
+class OT_API OT_WARN_UNUSED Graph :
   public TypedInterfaceObject<GraphImplementation>
 {
 

@@ -107,7 +107,6 @@ Function DistributionTransformation::Build (const Distribution & distribution,
       {
         LOGINFO("Different standard space for input vector and basis");
         Function TX;
-        Function invTX;
         if (distribution.getStandardDistribution().hasIndependentCopula())
         {
           LOGINFO("Normal standard space for input vector");
@@ -118,7 +117,6 @@ Function DistributionTransformation::Build (const Distribution & distribution,
           LOGINFO("Non-normal standard space for input vector");
           TX = Function(FunctionImplementation(RosenblattEvaluation(distribution.getImplementation()).clone()));
         }
-        Function TZ;
         Function invTZ;
         if (measure.getStandardDistribution().hasIndependentCopula())
         {

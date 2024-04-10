@@ -57,7 +57,8 @@ int main(int, char *[])
     UserDefinedCovarianceModel myCovarianceModel(myFactory.buildAsUserDefinedCovarianceModel(sample));
 
     // Get the frequency grid of the model
-    RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
+    myCovarianceModel.getTimeGrid();
+
     for (UnsignedInteger i = 0 ; i < size ; ++i)
     {
       const Scalar t = timeGrid.getValue(i);

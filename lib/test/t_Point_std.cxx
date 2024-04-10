@@ -180,8 +180,8 @@ int main(int, char *[])
     // empty point operators test
     {
       Point point0;
-      Point point0mul(point0 * 5.0);
-      Point point0div(point0 / 2.0);
+      point0 * 5.0;
+      point0 / 2.0;
       point0 *= 5.0;
       point0 /= 2.0;
       fullprint << "point0=" << point0 << std::endl;

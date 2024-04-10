@@ -51,7 +51,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   setIntegrationNodesNumber(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber"));
   // To insure that the nodes will be already computed when calling computeCDF() in parallel
   Point weights;
-  Point nodes(getGaussNodesAndWeights(weights));
+  getGaussNodesAndWeights(weights);
 }
 
 /* Parameters constructor */
@@ -68,7 +68,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   setIntegrationNodesNumber(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber"));
   // To insure that the nodes will be already computed when calling computeCDF() in parallel
   Point weights;
-  Point nodes(getGaussNodesAndWeights(weights));
+  getGaussNodesAndWeights(weights);
 }
 
 /* Parameters constructor */
@@ -93,7 +93,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   setIntegrationNodesNumber(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber"));
   // To insure that the nodes will be already computed when calling computeCDF() in parallel
   Point weights;
-  Point nodes(getGaussNodesAndWeights(weights));
+  getGaussNodesAndWeights(weights);
 }
 
 /* Comparison operator */
@@ -349,7 +349,7 @@ PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::interpolat
   Point localErrors;
   Scalar error = -1.0;
   // We integrate the exponential factor in order to detect all the singularities using polynomial approximations of different order
-  const Point tmp(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G1K3)).integrate(phi, xMin, xMax, error, lowerBounds, upperBounds, contributions, localErrors));
+  GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G1K3)).integrate(phi, xMin, xMax, error, lowerBounds, upperBounds, contributions, localErrors);
   // Now, we have to sort the intervals in order to build the approximation
   std::sort(upperBounds.begin(), upperBounds.end());
   // Here we have to subdivide the intervals to take into account the poorer approximation given by Hermite polynomials

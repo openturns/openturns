@@ -235,7 +235,7 @@ int main(int, char *[])
     {
       // We get the tenth element of the sample
       // THIS SHOULD NORMALLY FAIL
-      Point tenthElement = sample1.at(9);
+      sample1.at(9);
 
       // Normally, we should never go here
       throw TestFailed("Exception has NOT been thrown or caught !");

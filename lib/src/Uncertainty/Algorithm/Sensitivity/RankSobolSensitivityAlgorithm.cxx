@@ -287,8 +287,6 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
 {
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const Point FirstOrder(getFirstOrderIndices());
-
   if (bootstrapSize_ > 0)
   {
     // Temporary samples that stores the first/total indices

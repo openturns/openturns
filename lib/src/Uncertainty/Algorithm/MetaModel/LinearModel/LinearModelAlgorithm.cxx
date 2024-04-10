@@ -58,7 +58,7 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   try
   {
     // the sample description may contain invalid variable names
-    const SymbolicFunction constant(inputDescription, Description(1, "1"));
+    SymbolicFunction(inputDescription, Description({"1"}));
   }
   catch (const InvalidArgumentException &)
   {

@@ -39,7 +39,7 @@ class Sample;
  * Matrix implements the classical mathematical matrix
  */
 
-class OT_API Matrix :
+class OT_WARN_UNUSED OT_API Matrix :
   public TypedInterfaceObject<MatrixImplementation>
 {
   CLASSNAME

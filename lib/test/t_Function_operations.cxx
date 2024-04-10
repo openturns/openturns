@@ -64,7 +64,6 @@ int main(int, char *[])
       // Sum/difference
       // First, build two functions from R^3->R^2
       Description inVar(Description::BuildDefault(3, "x"));
-      Description outVar(Description::BuildDefault(2, "y"));
       Description formula(2);
       formula[0] = "x0 + 2 * x1 * x2 + 3 * x2";
       formula[1] = "x2 - x0 + x1 * x0";
