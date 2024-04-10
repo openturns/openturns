@@ -1,9 +1,6 @@
 %feature("docstring") OT::ExperimentIntegration
 "Create a quadrature rule for numerical integration based on a weighted experiment.
 
-Available constructors:
-    ExperimentIntegration(*weightedExperiment*)
-
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
@@ -33,7 +30,8 @@ Integrate the Ishigami physical model.
 >>> import openturns.experimental as otexp
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
->>> sampleSize = 100000
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sampleSize = 32768
 >>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> approximatedOutputMean = integration.integrate(im.model)
@@ -47,7 +45,8 @@ Compute the L2 norm of a function.
 ...     ['x1', 'x2', 'x3'],
 ...     ['sin(x1) + 7 * (sin(x2)) ^ 2 + 0.1 * x3^4 * sin(x1) - 3.5']
 ... )
->>> sampleSize = 100000
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sampleSize = 32768
 >>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
@@ -62,7 +61,8 @@ instances of the :class:`~openturns.Function` class.
 >>> partOfIshigamiFunction = ot.SymbolicFunction(
 ...     ['x1', 'x2', 'x3'], ['7 * (sin(x2)) ^ 2 + 0.1 * x3^4 * sin(x1)']
 ... )
->>> sampleSize = 100000
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sampleSize = 32768
 >>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> functionError = integration.computeL2Norm(im.model - partOfIshigamiFunction)
@@ -87,7 +87,7 @@ function of the input random vector :math:`\inputRV`.
 
 Parameters
 ----------
-g : ot.Function
+g : :class:`~openturns.Function`
     The function to integrate.
 
 Returns
@@ -133,7 +133,7 @@ function of the input random vector.
 
 Parameters
 ----------
-g : ot.Function
+g : :class:`~openturns.Function`
     The function which norm is to be computed.
 
 Returns
