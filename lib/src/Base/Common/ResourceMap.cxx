@@ -905,6 +905,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
   addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
+  // LOLAVoronoi parameters //
+  addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
+
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
 

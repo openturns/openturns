@@ -273,6 +273,10 @@
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
   <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
+  <!-- OT::LOLAVoronoi parameters -->
+  <LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber value_int="15" />
+  <LOLAVoronoi-DefaultVoronoiSamplingSize value_int="1000" />
+
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
   
