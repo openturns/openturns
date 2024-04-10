@@ -9,6 +9,7 @@
 ==== New classes ====
  * New LeastSquaresEquationsSolver class (openturns.experimental)
  * CombinationsDistribution (openturns.experimental)
+ * LOLAVoronoi sequential experiment (openturns.experimental)
 
 ==== API changes ====
 

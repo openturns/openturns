@@ -895,6 +895,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
   addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
+  // LOLAVoronoi parameters //
+  addAsBool("LOLAVoronoi-UseTruncatedDistribution", false);
+  addAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 100);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
+  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky");
+  addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum");
+
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
 

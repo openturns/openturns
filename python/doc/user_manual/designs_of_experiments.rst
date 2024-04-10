@@ -142,3 +142,13 @@ Used to control the optimization in :class:`~openturns.SimulatedAnnealingLHS`.
     TemperatureProfile
     LinearProfile
     GeometricProfile
+
+Sequential experiments
+======================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.SequentialSamplingAlgorithm
+    experimental.LOLAVoronoi
