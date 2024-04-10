@@ -1,9 +1,6 @@
 #! /usr/bin/env python
 
-import openturns as ot
-
-ot.TESTPREAMBLE()
-
+from scipy.stats import kstwo
 
 # Kolmogorov related functions
 nValues = [
@@ -45,14 +42,13 @@ xValues = [
     20.0,
     50.0,
 ]
-for i in range(len(nValues)):
-    n = nValues[i]
-    for j in range(len(xValues)):
-        x = xValues[j]
-        cdf = ot.DistFunc.pKolmogorov(n, x)
+for n in nValues:
+    rv = kstwo(n)
+    for x in xValues:
+        cdf = rv.cdf(x)
         if cdf < 1e-16:
             cdf = 0.0
-        ccdf = ot.DistFunc.pKolmogorov(n, x, True)
+        ccdf = 1.0 - cdf
         if ccdf < 1e-16:
             ccdf = 0.0
         print(f"pKolmogorov( {n} ,  {x:.12g} )={cdf:.6g} , complementary={ccdf:.6g}")

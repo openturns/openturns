@@ -29,6 +29,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/KFactorFunctions.hxx"
+#include "openturns/KolmogorovFunctions.hxx"
 #include "openturns/Normal2DCDF.hxx"
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/Exception.hxx"
@@ -39,9 +40,6 @@
 #include <boost/math/distributions/poisson.hpp>
 
 #endif
-
-// The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
-#include "KolmogorovSmirnovDist.h"
 
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/OTconfig.hxx"
@@ -844,14 +842,12 @@ Indices DistFunc::rHypergeometric(const UnsignedInteger n,
 /* CDF
    The algorithms and the selection strategy is described in:
    Simard, R. and L'Ecuyer, P. "Computing the Two-Sided Kolmogorov-Smirnov Distribution", Journal of Statistical Software, 2010.
-   The implementation is from the first author, initially published under the GPL v3 license but used here with written permission of the author.
 */
 Scalar DistFunc::pKolmogorov(const UnsignedInteger n,
                              const Scalar x,
                              const Bool tail)
 {
-  if (tail) return KSfbar(n, x);
-  else return KScdf(n, x);
+  return KolmogorovFunctions::_kolmogn(n, x, !tail);
 }
 
 /***************************************************************************************************************/
