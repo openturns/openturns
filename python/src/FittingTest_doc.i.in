@@ -413,9 +413,9 @@ TypeError :
 Notes
 -----
 The distribution is supposed to be fully specified, i.e. no parameter
-has been estimated from the given sample.  This uses an external C
-implementation of the Kolmogorov cumulative distribution function
-by [simard2011]_.
+has been estimated from the given sample.
+The implementation of the Kolmogorov cumulative distribution function
+follows the algorithm described in [simard2011]_.
 
 Examples
 --------

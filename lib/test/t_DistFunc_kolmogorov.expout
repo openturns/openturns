@@ -126,8 +126,8 @@ pKolmogorov(200, 0.002000)=0.000000, complementary=1.000000
 pKolmogorov(200, 0.005000)=0.000000, complementary=1.000000
 pKolmogorov(200, 0.010000)=0.000000, complementary=1.000000
 pKolmogorov(200, 0.020000)=0.000005, complementary=0.999995
-pKolmogorov(200, 0.050000)=0.319737, complementary=0.680263
-pKolmogorov(200, 0.100000)=0.965890, complementary=0.034110
+pKolmogorov(200, 0.050000)=0.319738, complementary=0.680262
+pKolmogorov(200, 0.100000)=0.965905, complementary=0.034095
 pKolmogorov(200, 0.200000)=1.000000, complementary=0.000000
 pKolmogorov(200, 0.500000)=1.000000, complementary=0.000000
 pKolmogorov(200, 1.000000)=1.000000, complementary=0.000000
@@ -146,8 +146,8 @@ pKolmogorov(500, 0.002000)=0.000000, complementary=1.000000
 pKolmogorov(500, 0.005000)=0.000000, complementary=1.000000
 pKolmogorov(500, 0.010000)=0.000000, complementary=1.000000
 pKolmogorov(500, 0.020000)=0.014013, complementary=0.985987
-pKolmogorov(500, 0.050000)=0.841337, complementary=0.158663
-pKolmogorov(500, 0.100000)=0.999917, complementary=0.000083
+pKolmogorov(500, 0.050000)=0.841341, complementary=0.158659
+pKolmogorov(500, 0.100000)=0.999919, complementary=0.000083
 pKolmogorov(500, 0.200000)=1.000000, complementary=0.000000
 pKolmogorov(500, 0.500000)=1.000000, complementary=0.000000
 pKolmogorov(500, 1.000000)=1.000000, complementary=0.000000
@@ -166,7 +166,7 @@ pKolmogorov(1000, 0.002000)=0.000000, complementary=1.000000
 pKolmogorov(1000, 0.005000)=0.000000, complementary=1.000000
 pKolmogorov(1000, 0.010000)=0.000050, complementary=0.999950
 pKolmogorov(1000, 0.020000)=0.189103, complementary=0.810897
-pKolmogorov(1000, 0.050000)=0.986988, complementary=0.013012
+pKolmogorov(1000, 0.050000)=0.986989, complementary=0.013012
 pKolmogorov(1000, 0.100000)=1.000000, complementary=0.000000
 pKolmogorov(1000, 0.200000)=1.000000, complementary=0.000000
 pKolmogorov(1000, 0.500000)=1.000000, complementary=0.000000
