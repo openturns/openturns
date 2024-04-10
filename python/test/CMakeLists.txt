@@ -314,6 +314,7 @@ endif ()
 ot_pyinstallcheck_test (EfficientGlobalOptimization_std IGNOREOUT)
 ot_pyinstallcheck_test (SQP_std IGNOREOUT)
 ot_pyinstallcheck_test (TNC_std)
+ot_pyinstallcheck_test (LOLAVoronoi_std IGNOREOUT)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)
