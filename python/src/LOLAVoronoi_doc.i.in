@@ -1,0 +1,107 @@
+%feature("docstring") OT::LOLAVoronoi
+"LOLA-Voronoi sequential design algorithm.
+
+This class implements the sequential design algorithm described in [crombecq2011]_ which allows one
+to sequentially generate new input samples to an existing design built from input/output samples.
+It combines an exploration criterion based on Voronoi tesselation to identify
+undersampled input design regions and an exploitation criterion based on a measure
+of the nonlinearity of the response surface.
+
+Input sample Voronoi cell relative volumes are estimated by Monte Carlo:
+
+.. math::
+
+    V(\vect{p}_i) = \int_{\vect{x} \in \Rset^d} 1_{i = \argmin_{j \in [1, N]} ||\vect{p}_j - \vect{x}||_2} dx
+
+The number of samples is given by the :class:`~openturns.ResourceMap` entry `LOLAVoronoi-DefaultVoronoiSamplingSize`.
+
+For the nonlinearity criterion the algorithm only uses the data available and chooses a
+set of neighbouring samples :math:`N(\vect{p}_i) = {\vect{p}_{i1}, \hdots, \vect{p}_{im}}`
+with :math:`m = 2 d` to build the gradient approximation :math:`\vect{g}`.
+
+The LOLA algorithm local nonlinearity score is given by:
+
+.. math::
+
+    E(\vect{p}_r) = \sum_{i=1}^m |f(\vect{p}_{ri}) - (f(\vect{p}_{r}) + \vect{g} \times (\vect{p}_{ri} - \vect{p}_{r}))|
+
+Now the two metrics are combined into the hybrid score given by:
+
+.. math::
+
+    H(\vect{p}_i) = V(\vect{p}_i) + \frac{E(\vect{p}_i)}{\sum_{j=1}^n E(\vect{p}_j)}
+
+To generate :math:`n_new` samples, a number of random points are generated close to
+the :math:`n_new` existing points with highest hybrid score.
+The random points selected are the ones inside the Voronoi cells and the farthest
+away from :math:`\vect{p}_i` and its neighbours.
+
+Parameters
+----------
+x : 2-d sequence of float
+    Initial input sample
+y : 2-d sequence of float
+    Initial output sample
+distribution : :class:`~openturns.Distribution`
+    Distribution to generate new input samples
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> f1 = ot.SymbolicFunction(['a0', 'a1'], ['-4 * exp((-25 / 8) * (a0^2 + a1^2)) + 7 * exp((-125 / 4) * (a0^2 + a1^2))'])
+>>> distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 2)
+>>> x0 = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, 10).generate()
+>>> y0 = f1(x0)
+>>> algo = otexp.LOLAVoronoi(x0, y0, distribution)
+>>> for i in range(2):
+...     x = algo.generate(3)
+...     y = f1(x)
+...     algo.update(x, y)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::setVoronoiSamplingSize
+"Voronoi sampling size accessor.
+
+Parameters
+----------
+voronoiSamplingSize : int
+    The sampling size to estimate the Voronoi cells relative volume.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::getVoronoiSamplingSize
+"Voronoi sampling size accessor.
+
+Returns
+-------
+voronoiSamplingSize : int
+    The sampling size to estimate the Voronoi cells relative volume.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::setNeighbourhoodCandidatesNumber
+"Neighbourhood candidates number accessor.
+
+Parameters
+----------
+neighbourhoodCandidatesNumber : int
+    The number of extra closest neighbour points to consider
+    during the neighbourhood update step needed for the LOLA criterion.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::getNeighbourhoodCandidatesNumber
+"Neighbourhood candidates number accessor.
+
+Returns
+-------
+neighbourhoodCandidatesNumber : int
+    The number of extra closest neighbour points to consider
+    during the neighbourhood update step needed for the LOLA criterion.
+"
