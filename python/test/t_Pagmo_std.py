@@ -187,6 +187,30 @@ for name in ["gaco", "ihs", "sga"]:
         assert y[0] < 200.0, str(y)
 
 
+# check internal reordering of integer components
+def minlp_obj2(x):
+    x1, x2, x3 = x
+    return [x1 + 100 * (x3 - x2**2)**2 + (1 - x2)**2]
+
+
+f = ot.PythonFunction(3, 1, minlp_obj2)
+bounds = ot.Interval([-5.0] * 3, [5.0] * 3)
+pop0 = ot.JointDistribution([ot.Poisson()] + [ot.Uniform(-5.0, 5.0)] * 2).getSample(100)
+problem = ot.OptimizationProblem(f)
+problem.setBounds(bounds)
+problem.setVariablesType(
+    [ot.OptimizationProblemImplementation.INTEGER,
+     ot.OptimizationProblemImplementation.CONTINUOUS,
+     ot.OptimizationProblemImplementation.CONTINUOUS]
+)
+algo = ot.Pagmo(problem, "gaco", pop0)
+algo.run()
+result = algo.getResult()
+x = result.getOptimalPoint()
+y = result.getOptimalValue()
+print("gaco reorder", x, y)
+assert abs(-5.0 - y[0]) < 1e-4, "wrong value"
+
 # check we don't expose penalized values
 f = ot.SymbolicFunction(
     ["x1", "x2"], ["x1", "var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))"]
@@ -209,5 +233,5 @@ y = result.getFinalValues()
 for i in range(y.getSize()):
     assert y[i, 1] < 100.0, "penalized y value"
 fi0 = result.getParetoFrontsIndices()[0]
-print(fi0)
+print("penalized", fi0)
 assert len(fi0) <= 6, "pareto indices " + str(fi0)
