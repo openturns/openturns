@@ -102,6 +102,7 @@ void DrawableImplementation::InitializeValidParameterList()
   ValidPointStyles.add("None");
 
   /* Accepted colors */
+  ColorCodes["transparent"]          = "#FFFFFF00";
   ColorCodes["white"]                = "#FFFFFF";
   ColorCodes["aliceblue"]            = "#F0F8FF";
   ColorCodes["antiquewhite"]         = "#FAEBD7";
