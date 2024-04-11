@@ -22,12 +22,8 @@
 #include "openturns/Collection.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/KPermutations.hxx"
-#include "openturns/Binomial.hxx"
-#include "openturns/Poisson.hxx"
-#include "openturns/TruncatedDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/DistFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -208,8 +204,8 @@ Distribution KPermutationsDistribution::getMarginal(const UnsignedInteger i) con
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(1, n_));
-  marginal->setDescription(Description(1, getDescription()[i]));
+  KPermutationsDistribution marginal(1, n_);
+  marginal.setDescription({getDescription()[i]});
   return marginal;
 }
 
@@ -222,8 +218,8 @@ Distribution KPermutationsDistribution::getMarginal(const Indices & indices) con
   if (dimension == 1) return clone();
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(outputDimension, n_));
-  marginal->setDescription(getDescription().select(indices));
+  KPermutationsDistribution marginal(outputDimension, n_);
+  marginal.setDescription(getDescription().select(indices));
   return marginal;
 }
 
