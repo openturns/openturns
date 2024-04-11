@@ -3,7 +3,7 @@
 QQ-plot
 -------
 
-The Quantile - Quantile - Plot (QQ Plot) allows one to validate whether
+The Quantile - Quantile - Plot (QQ Plot) enables to validate whether
 two given samples of data
 are drawn from the same continuous distribution of dimension 1.
 
