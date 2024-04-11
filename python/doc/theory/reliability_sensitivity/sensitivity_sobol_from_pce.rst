@@ -37,13 +37,13 @@ to the index :math:`P`.
 Depending on the way the coefficients are computed, the set of multi-indices
 is the consequence of the choice of the polynomial degree, the enumeration rule,
 and, if necessary, the selection method (e.g. the LARS selection method).
-Let :math:`\metamodel(\standardRV)` be the polynomial chaos expansion:
+Let :math:`\metaModel(\standardRV)` be the polynomial chaos expansion:
 
 .. math::
-    \tilde{h}(\bdZ)
-    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\bdZ)
+    \tilde{h}(\standardRV)
+    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\standardRV)
 
-where :math:`\bdZ` is the standardized input random vector,
+where :math:`\standardRV` is the standardized input random vector,
 :math:`\{a_\idx\}_{\idx \in \mathcal{J}_P}` are the coefficients
 and :math:`\{\psi_\idx\}_{\idx \in \mathcal{J}_P}` are the functions in the
 functional basis.
@@ -59,13 +59,13 @@ If the polynomial basis is orthonormal, the expression is particularly
 simple (see [legratiet2017]_ eq. 38.43 page 1301):
 
 .. math::
-    \Var{\metaModel(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
+    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
 
 The part of variance of the multi-index :math:`\idx` is:
 
 .. math::
     \operatorname{PoV}_\idx
-    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\bdZ)}}.
+    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\standardRV)}}.
 
 The sum of the part of variances of all multi-indices is equal to 1:
 
@@ -92,7 +92,7 @@ to the multi-indices :math:`\mathcal{J}^S`, defined by:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\standardRV)}}.
 
 Then any Sobol' index :math:`S` can be defined by the equation:
 
@@ -103,7 +103,7 @@ If the polynomial basis is orthonormal, therefore:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\metaModel(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\metaModel(\standardRV)}}.
 
 
 Hence, in the methods presented below, each Sobol' index is defined
