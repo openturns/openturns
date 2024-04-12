@@ -2374,7 +2374,7 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   LOGDEBUG(OSS() << "root=" << root);
 
   // special case non strictly increasing CDF: retain the inf of the interval veryfing F(x)=p
-  if (computeCDF(root - quantileEpsilon_) == prob)
+  if (root > quantileEpsilon_ && computeCDF(root - quantileEpsilon_) == prob)
   {
     solver.setResidualError(0.5 * cdfEpsilon_);
     root = solver.solve(f, p - cdfEpsilon_, leftTau, root, leftCDF, prob);
