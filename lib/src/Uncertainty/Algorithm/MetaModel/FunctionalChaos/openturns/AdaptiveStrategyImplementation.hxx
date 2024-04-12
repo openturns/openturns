@@ -86,8 +86,8 @@ public:
   /** Psi accessor */
   FunctionCollection getPsi() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

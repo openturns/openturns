@@ -292,7 +292,7 @@ Point PenalizedLeastSquaresAlgorithm::getErrorHistory() const
   return Point();  
 }
 
-Bool PenalizedLeastSquaresAlgorithm::isModelSelection() const
+Bool PenalizedLeastSquaresAlgorithm::involvesModelSelection() const
 {
   return false;
 }

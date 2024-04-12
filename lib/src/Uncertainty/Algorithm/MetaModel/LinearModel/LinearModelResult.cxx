@@ -142,7 +142,7 @@ String LinearModelResult::__repr_markdown__() const
       << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
       << "- residuals variance=" << residualsVariance_ << "\n"
       << "- has intercept=" << hasIntercept_ << "\n"
-      << "- is model selection=" << isModelSelection_ << "\n";
+      << "- is model selection=" << involvesModelSelection_ << "\n";
   oss << "\n";
   return oss;
 }
@@ -164,7 +164,7 @@ String LinearModelResult::__repr__() const
          << " cookDistances dimension=" << cookDistances_.getDimension()
          << " residuals variance= " << residualsVariance_
          << " hasIntercept=" << hasIntercept_
-         << " isModelSelection=" << isModelSelection_;
+         << " involvesModelSelection=" << involvesModelSelection_;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -311,16 +311,16 @@ LeastSquaresMethod LinearModelResult::buildMethod() const
   return leastSquaresMethod;
 }
 
-/* isModelSelection accessor */
-Bool LinearModelResult::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool LinearModelResult::involvesModelSelection() const
 {
-  return isModelSelection_;
+  return involvesModelSelection_;
 }
 
-/* isModelSelection accessor */
-void LinearModelResult::setIsModelSelection(const Bool isModelSelection)
+/* involvesModelSelection accessor */
+void LinearModelResult::setInvolvesModelSelection(const Bool involvesModelSelection)
 {
-  isModelSelection_ = isModelSelection;
+  involvesModelSelection_ = involvesModelSelection;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -338,7 +338,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "leverages_", leverages_ );
   adv.saveAttribute( "cookDistances_", cookDistances_ );
   adv.saveAttribute( "residualsVariance_", residualsVariance_ );
-  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
+  adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
 }
 
 
@@ -363,8 +363,8 @@ void LinearModelResult::load(Advocate & adv)
     adv.loadAttribute( "residualsVariance_", residualsVariance_ );
   else
     adv.loadAttribute( "sigma2_", residualsVariance_ );
-  if (adv.hasAttribute("isModelSelection_"))
-    adv.loadAttribute("isModelSelection_", isModelSelection_);
+  if (adv.hasAttribute("involvesModelSelection_"))
+    adv.loadAttribute("involvesModelSelection_", involvesModelSelection_);
 }
 
 END_NAMESPACE_OPENTURNS

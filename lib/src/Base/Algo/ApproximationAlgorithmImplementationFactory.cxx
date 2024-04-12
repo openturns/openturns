@@ -81,10 +81,10 @@ void ApproximationAlgorithmImplementationFactory::load(Advocate & adv)
   PersistentObject::load(adv);
 }
 
-/* isModelSelection accessor */
-Bool ApproximationAlgorithmImplementationFactory::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool ApproximationAlgorithmImplementationFactory::involvesModelSelection() const
 {
-  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::isModelSelection()";
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::involvesModelSelection()";
 }
 
 END_NAMESPACE_OPENTURNS

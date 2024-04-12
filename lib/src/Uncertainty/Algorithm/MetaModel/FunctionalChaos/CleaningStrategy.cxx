@@ -255,8 +255,8 @@ void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
   significanceFactor_ = significanceFactor;
 }
 
-/* isModelSelection accessor */
-Bool CleaningStrategy::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool CleaningStrategy::involvesModelSelection() const
 {
   return true;
 }

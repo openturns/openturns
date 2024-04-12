@@ -342,8 +342,8 @@ void FunctionalChaosAlgorithm::run()
                                   inverseTransformation_, basis, I_k, alpha_k, Psi_k,
                                   residuals, relativeErrors);
   result_.setIsLeastSquares(projectionStrategy_.isLeastSquares());
-  result_.setIsModelSelection(adaptiveStrategy_.getImplementation()->isModelSelection() || 
-    projectionStrategy_.getImplementation()->isModelSelection());
+  result_.setInvolvesModelSelection(adaptiveStrategy_.getImplementation()->involvesModelSelection() || 
+    projectionStrategy_.getImplementation()->involvesModelSelection());
 
   // set selection history
   Collection<Point> coefficientsHistory;

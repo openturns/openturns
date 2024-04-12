@@ -573,7 +573,7 @@ void LinearModelStepwiseAlgorithm::run()
   result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
                               regression, currentFunctions.__str__(), coefficientsNames, residualSample, standardizedResiduals,
                               diagonalGramInverse, leverages, cookDistances, sigma2[0]);
-  result_.setIsModelSelection(true);
+  result_.setInvolvesModelSelection(true);
   hasRun_ = true;
 }
 

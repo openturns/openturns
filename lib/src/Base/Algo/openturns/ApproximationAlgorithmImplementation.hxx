@@ -104,8 +104,8 @@ public:
   virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
   virtual Point getErrorHistory() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
 protected:
 

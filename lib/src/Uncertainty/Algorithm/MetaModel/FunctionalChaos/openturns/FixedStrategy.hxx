@@ -57,8 +57,8 @@ public:
                    const Scalar residual,
                    const Scalar relativeError) override;
 
-  /** isModelSelection accessor */
-  Bool isModelSelection() const override;
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
 
   /** String converter */
   String __repr__() const override;

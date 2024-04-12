@@ -89,8 +89,8 @@ String FixedStrategy::__repr__() const
          << " derived from " << AdaptiveStrategyImplementation::__repr__();
 }
 
-/* isModelSelection accessor */
-Bool FixedStrategy::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool FixedStrategy::involvesModelSelection() const
 {
   return false;
 }

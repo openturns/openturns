@@ -87,6 +87,6 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
 
     isLeastSquaresPCE = result.isLeastSquares()
     assert isLeastSquaresPCE
-    isModelSelectionPCE = result.isModelSelection()
-    isModelSelection = adaptiveStrategy.isModelSelection() or projectionStrategy.isModelSelection()
-    assert isModelSelection == isModelSelectionPCE
+    involvesModelSelectionPCE = result.involvesModelSelection()
+    involvesModelSelection = adaptiveStrategy.involvesModelSelection() or projectionStrategy.involvesModelSelection()
+    assert involvesModelSelection == involvesModelSelectionPCE

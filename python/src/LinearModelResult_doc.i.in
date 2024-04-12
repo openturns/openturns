@@ -232,7 +232,7 @@ leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelResult::isModelSelection
+%feature("docstring") OT::LinearModelResult::involvesModelSelection
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -241,7 +241,7 @@ Model selection can lead to a sparse model.
 
 Returns
 -------
-isModelSelection: bool
+involvesModelSelection: bool
     True if the method involves a model selection method."
 
 // ---------------------------------------------------------------------
@@ -255,5 +255,5 @@ Model selection can lead to a sparse model.
 
 Parameters
 ----------
-isModelSelection: bool
+involvesModelSelection: bool
     True if the method involves a model selection method."

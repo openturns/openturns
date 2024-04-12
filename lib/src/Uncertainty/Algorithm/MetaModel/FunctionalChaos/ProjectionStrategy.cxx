@@ -142,10 +142,10 @@ Bool ProjectionStrategy::isLeastSquares() const
   return getImplementation()->isLeastSquares();
 }
 
-/* isModelSelection accessor */
-Bool ProjectionStrategy::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool ProjectionStrategy::involvesModelSelection() const
 {
-  return getImplementation()->isModelSelection();
+  return getImplementation()->involvesModelSelection();
 }
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

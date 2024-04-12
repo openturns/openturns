@@ -256,7 +256,7 @@ isLeastSquares : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosResult::isModelSelection
+%feature("docstring") OT::FunctionalChaosResult::involvesModelSelection
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -265,7 +265,7 @@ Model selection can lead to a sparse functional chaos expansion.
 
 Returns
 -------
-isModelSelection: bool
+involvesModelSelection: bool
     True if the method involves a model selection method."
 
 // ---------------------------------------------------------------------
@@ -289,7 +289,7 @@ Model selection can lead to a sparse functional chaos expansion.
 
 Parameters
 ----------
-isModelSelection: bool
+involvesModelSelection: bool
     True if the method involves a model selection method."
 
 // ---------------------------------------------------------------------

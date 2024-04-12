@@ -183,10 +183,10 @@ Bool LeastSquaresStrategy::isLeastSquares() const
   return true;
 }
 
-/* isModelSelection accessor */
-Bool LeastSquaresStrategy::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool LeastSquaresStrategy::involvesModelSelection() const
 {
-  return p_approximationAlgorithmImplementationFactory_.getImplementation()->isModelSelection();
+  return p_approximationAlgorithmImplementationFactory_.getImplementation()->involvesModelSelection();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -219,8 +219,8 @@ Bool IntegrationStrategy::isLeastSquares() const
   return false;
 }
 
-/* isModelSelection accessor */
-Bool IntegrationStrategy::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool IntegrationStrategy::involvesModelSelection() const
 {
   return false;
 }

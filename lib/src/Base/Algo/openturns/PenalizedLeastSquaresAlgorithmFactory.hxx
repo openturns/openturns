@@ -57,8 +57,8 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** isModelSelection accessor */
-  Bool isModelSelection() const override;
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

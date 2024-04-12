@@ -143,9 +143,9 @@ int main(int, char *[])
           Bool isLeastSquaresPCE = result.isLeastSquares();
           Bool isLeastSquaresProjection = projectionStrategy.isLeastSquares();
           assert_equal(isLeastSquaresProjection, isLeastSquaresPCE);
-          Bool isModelSelectionPCE = result.isModelSelection();
-          Bool isModelSelection = projectionStrategy.isModelSelection() || adaptiveStrategy.getImplementation()->isModelSelection();
-          assert_equal(isModelSelection, isModelSelectionPCE);
+          Bool involvesModelSelectionPCE = result.involvesModelSelection();
+          Bool involvesModelSelection = projectionStrategy.involvesModelSelection() || adaptiveStrategy.getImplementation()->involvesModelSelection();
+          assert_equal(involvesModelSelection, involvesModelSelectionPCE);
 
           // Post-process the results
           FunctionalChaosRandomVector vector(result);

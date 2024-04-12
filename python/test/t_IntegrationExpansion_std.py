@@ -449,7 +449,7 @@ for doe in doeList:
     # Check the coefficients
     result = algo.getResult()
     assert not result.isLeastSquares()
-    assert not result.isModelSelection()
+    assert not result.involvesModelSelection()
     coeffs = result.getCoefficients().asPoint()
     ref = expectedCoefficientsLinear[: coeffs.getSize()]
     err = (coeffs - ref).norm()

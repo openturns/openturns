@@ -182,9 +182,9 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
   return relativeError_;
 }
 
-Bool ApproximationAlgorithmImplementation::isModelSelection() const
+Bool ApproximationAlgorithmImplementation::involvesModelSelection() const
 {
-  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::isModelSelection()";
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::involvesModelSelection()";
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -218,7 +218,7 @@ Point LeastSquaresMetaModelSelection::getErrorHistory() const
   return errorHistory_;
 }
 
-Bool LeastSquaresMetaModelSelection::isModelSelection() const
+Bool LeastSquaresMetaModelSelection::involvesModelSelection() const
 {
   return true;
 }

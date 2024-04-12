@@ -105,7 +105,7 @@ String FunctionalChaosResult::__repr__() const
          << " composedMetaModel=" << composedMetaModel_
          << " metaModel=" << metaModel_
          << " isLeastSquares=" << isLeastSquares_
-         << " isModelSelection=" << isModelSelection_;
+         << " involvesModelSelection=" << involvesModelSelection_;
 }
 
 String FunctionalChaosResult::__str__(const String & /*offset*/) const
@@ -131,7 +131,7 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- relative errors=" << relativeErrors_ << "\n"
       << "- residuals=" << residuals_ << "\n"
       << "- is least squares=" << isLeastSquares_ << "\n"
-      << "- is model selection=" << isModelSelection_ << "\n";
+      << "- is model selection=" << involvesModelSelection_ << "\n";
   oss << "\n";
 
   const UnsignedInteger ell_threshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
@@ -289,10 +289,10 @@ Bool FunctionalChaosResult::isLeastSquares() const
   return isLeastSquares_;
 }
 
-/* isModelSelection accessor */
-Bool FunctionalChaosResult::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool FunctionalChaosResult::involvesModelSelection() const
 {
-  return isModelSelection_;
+  return involvesModelSelection_;
 }
 
 /* isLeastSquares accessor */
@@ -301,10 +301,10 @@ void FunctionalChaosResult::setIsLeastSquares(const Bool isLeastSquares)
   isLeastSquares_ = isLeastSquares;
 }
 
-/* isModelSelection accessor */
-void FunctionalChaosResult::setIsModelSelection(const Bool isModelSelection)
+/* involvesModelSelection accessor */
+void FunctionalChaosResult::setInvolvesModelSelection(const Bool involvesModelSelection)
 {
-  isModelSelection_ = isModelSelection;
+  involvesModelSelection_ = involvesModelSelection;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -323,7 +323,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
-  adv.saveAttribute( "isModelSelection_", isModelSelection_ );
+  adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
 }
 
 
@@ -348,7 +348,7 @@ void FunctionalChaosResult::load(Advocate & adv)
   if (adv.hasAttribute("isLeastSquares_"))
   {
     adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
-    adv.loadAttribute( "isModelSelection_", isModelSelection_ );
+    adv.loadAttribute( "involvesModelSelection_", involvesModelSelection_ );
   }
 }
 

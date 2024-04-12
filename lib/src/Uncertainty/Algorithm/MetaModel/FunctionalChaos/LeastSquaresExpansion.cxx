@@ -165,7 +165,7 @@ void LeastSquaresExpansion::run()
   // Build the result
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors);
   result_.setIsLeastSquares(true);
-  result_.setIsModelSelection(false);
+  result_.setInvolvesModelSelection(false);
 }
 
 /* Method to get/set the active functions */

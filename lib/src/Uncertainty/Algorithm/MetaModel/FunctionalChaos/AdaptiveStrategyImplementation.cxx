@@ -111,10 +111,10 @@ AdaptiveStrategyImplementation::FunctionCollection AdaptiveStrategyImplementatio
   return Psi_k_p_;
 }
 
-/* isModelSelection accessor */
-Bool AdaptiveStrategyImplementation::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool AdaptiveStrategyImplementation::involvesModelSelection() const
 {
-  throw NotYetImplementedException(HERE) << "in AdaptiveStrategyImplementation::isModelSelection";
+  throw NotYetImplementedException(HERE) << "in AdaptiveStrategyImplementation::involvesModelSelection";
 }
 
 /* Method save() stores the object through the StorageManager */

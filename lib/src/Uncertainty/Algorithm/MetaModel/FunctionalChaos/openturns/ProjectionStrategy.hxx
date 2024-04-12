@@ -90,8 +90,8 @@ public:
   /** isLeastSquares accessor */
   virtual Bool isLeastSquares() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
   /** String converter */
   String __repr__() const override;

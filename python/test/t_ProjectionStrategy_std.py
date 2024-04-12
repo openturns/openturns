@@ -27,8 +27,8 @@ print(leastSquaresStrategy.__repr__())
 print("leastSquaresStrategy (html)")
 print(leastSquaresStrategy._repr_html_())
 assert leastSquaresStrategy.isLeastSquares()
-assert leastSquaresStrategy.isModelSelection()
-assert selectionAlgorithm.isModelSelection()
+assert leastSquaresStrategy.involvesModelSelection()
+assert selectionAlgorithm.involvesModelSelection()
 
 enumerateFunction = basis.getEnumerateFunction()
 basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
@@ -43,7 +43,7 @@ print("projectionStrategy (repr)")
 print(projectionStrategy.__repr__())
 print("projectionStrategy (html)")
 print(projectionStrategy._repr_html_())
-assert not adaptiveStrategy.isModelSelection()
+assert not adaptiveStrategy.involvesModelSelection()
 
 
 #

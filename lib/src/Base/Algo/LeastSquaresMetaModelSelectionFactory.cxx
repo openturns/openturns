@@ -75,8 +75,8 @@ LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelectionFactory::build(co
   return new LeastSquaresMetaModelSelection( x, y, weight, psi, indices, basisSequenceFactory_, fittingAlgorithm_ );
 }
 
-/* isModelSelection accessor */
-Bool LeastSquaresMetaModelSelectionFactory::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool LeastSquaresMetaModelSelectionFactory::involvesModelSelection() const
 {
   return true;
 }

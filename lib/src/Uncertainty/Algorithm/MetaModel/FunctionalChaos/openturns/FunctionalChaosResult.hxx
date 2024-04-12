@@ -106,14 +106,14 @@ public:
   /** isLeastSquares_ accessor */
   virtual Bool isLeastSquares() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
   /** isLeastSquares_ accessor */
   virtual void setIsLeastSquares(const Bool isLeastSquares);
 
-  /** isModelSelection accessor */
-  virtual void setIsModelSelection(const Bool isModelSelection);
+  /** involvesModelSelection accessor */
+  virtual void setInvolvesModelSelection(const Bool involvesModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -170,7 +170,7 @@ private:
   Bool isLeastSquares_ = true;
 
   /** Is model selection? */
-  Bool isModelSelection_ = false;
+  Bool involvesModelSelection_ = false;
 
 } ; /* class FunctionalChaosResult */
 

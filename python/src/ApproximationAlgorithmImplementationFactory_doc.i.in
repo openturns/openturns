@@ -26,7 +26,7 @@ PenalizedLeastSquaresAlgorithmFactory, LeastSquaresMetaModelSelectionFactory"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ApproximationAlgorithmImplementationFactory::isModelSelection
+%feature("docstring") OT::ApproximationAlgorithmImplementationFactory::involvesModelSelection
 "Get the model selection flag.
 
 A model selection method can be used to select the coefficients
@@ -35,7 +35,7 @@ Model selection leads to a sparse functional chaos expansion.
 
 Returns
 -------
-isModelSelection: bool
+involvesModelSelection: bool
     True if the method involves a model selection method."
 
 // ---------------------------------------------------------------------

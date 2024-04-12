@@ -317,10 +317,10 @@ Bool ProjectionStrategyImplementation::isLeastSquares() const
   throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::isLeastSquares()";
 }
 
-/* isModelSelection accessor */
-Bool ProjectionStrategyImplementation::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool ProjectionStrategyImplementation::involvesModelSelection() const
 {
-  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::isModelSelection()";
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::involvesModelSelection()";
 }
 
 END_NAMESPACE_OPENTURNS

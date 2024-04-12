@@ -89,8 +89,8 @@ public:
   /** isLeastSquares accessor */
   Bool isLeastSquares() const override;
 
-  /** isModelSelection accessor */
-  Bool isModelSelection() const override;
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */

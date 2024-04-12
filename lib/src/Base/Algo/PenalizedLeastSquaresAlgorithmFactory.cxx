@@ -61,8 +61,8 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
   return new PenalizedLeastSquaresAlgorithm(x, y, weight, psi, indices, 0.0, useNormal_);
 }
 
-/* isModelSelection accessor */
-Bool PenalizedLeastSquaresAlgorithmFactory::isModelSelection() const
+/* involvesModelSelection accessor */
+Bool PenalizedLeastSquaresAlgorithmFactory::involvesModelSelection() const
 {
   return false;
 }

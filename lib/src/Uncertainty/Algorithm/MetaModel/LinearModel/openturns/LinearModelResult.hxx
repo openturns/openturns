@@ -121,11 +121,11 @@ public:
   /** Least squares method accessor */
   virtual LeastSquaresMethod buildMethod() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
-  /** isModelSelection accessor */
-  virtual void setIsModelSelection(const Bool isModelSelection);
+  /** involvesModelSelection accessor */
+  virtual void setInvolvesModelSelection(const Bool involvesModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -173,8 +173,8 @@ private:
   /** hasIntercept */
   Bool hasIntercept_;
 
-  /** isModelSelection */
-  Bool isModelSelection_ = false;
+  /** involvesModelSelection */
+  Bool involvesModelSelection_ = false;
   
 }; /* class LinearModelResult */
 

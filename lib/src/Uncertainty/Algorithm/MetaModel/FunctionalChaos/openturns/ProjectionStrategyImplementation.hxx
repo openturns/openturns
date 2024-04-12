@@ -124,8 +124,8 @@ public:
   /** isLeastSquares accessor */
   virtual Bool isLeastSquares() const;
 
-  /** isModelSelection accessor */
-  virtual Bool isModelSelection() const;
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
 
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
