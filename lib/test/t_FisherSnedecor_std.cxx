@@ -121,7 +121,7 @@ int main(int, char *[])
     CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point) -
                   FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-    Point quantile = distribution.  computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile(0.95);
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     // Confidence regions

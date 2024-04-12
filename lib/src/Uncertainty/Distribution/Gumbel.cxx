@@ -21,7 +21,7 @@
 #include <cmath>
 #include "openturns/Gumbel.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/SpecFunc.hxx" 
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Distribution.hxx"
 
