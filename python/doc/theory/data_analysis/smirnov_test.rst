@@ -1,7 +1,7 @@
 .. _smirnov_test:
 
-Kolmogorov-Smirnov test
------------------------
+Two-sample Kolmogorov-Smirnov test
+----------------------------------
 
 The Kolmogorov-Smirnov test is a statistical test that can be used
 to test whether two given samples of data are drawn from the same

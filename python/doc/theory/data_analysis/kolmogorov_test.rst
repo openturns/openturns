@@ -1,7 +1,7 @@
 .. _kolmogorov_smirnov_test:
 
-Kolmogorov-Smirnov test
------------------------
+The Kolmogorov-Smirnov goodness of fit test for continuous data
+---------------------------------------------------------------
 
 The Kolmogorov-Smirnov test is a statistical test of whether a given sample of data is drawn from a given
 probability distribution which is of dimension 1 and continuous.
