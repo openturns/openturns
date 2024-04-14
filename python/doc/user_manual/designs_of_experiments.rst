@@ -80,6 +80,7 @@ Sample splitting
     :toctree: _generated/
     :template: class.rst_t
 
+    SplitterImplementation
     KFoldSplitter
     LeaveOneOutSplitter
 

@@ -48,22 +48,22 @@ LeaveOneOutSplitter * LeaveOneOutSplitter::clone() const
   return new LeaveOneOutSplitter(*this);
 }
 
-Indices LeaveOneOutSplitter::generate(Indices & indices2Out) const
+Indices LeaveOneOutSplitter::generate(Indices & indicesTest) const
 {
   if (currentIndex_ >= N_)
     throw OutOfBoundException(HERE) << "end of LOO set";
 
-  Indices indices1;
-  indices2Out.clear();
+  Indices indicesTrain;
+  indicesTest.clear();
   for (UnsignedInteger i = 0; i < N_; ++ i)
   {
     if (i != currentIndex_)
-      indices1.add(i);
+      indicesTrain.add(i);
     else
-      indices2Out.add(i);
+      indicesTest.add(i);
   }
   ++ currentIndex_;
-  return indices1;
+  return indicesTrain;
 }
 
 /* Number of indices pairs accessor */
