@@ -20,7 +20,7 @@ the the order statistics :math:`X_{(1)}, \ldots , X_{(\sampleSize)}` by:
 
 .. math::
 
-   X_{(1)} \leq \dots \leq X_{(\sampleSize)}
+   X_{(1)} \leq \dots \leq X_{(\sampleSize)}.
 
 The test statistic is defined by:
 
