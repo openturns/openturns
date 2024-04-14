@@ -47,7 +47,7 @@ large (asymptotic distribution: this is the Kolmogorov distribution) or for
 :math:`\sampleSize` small (exact distribution). Then we can use that
 distribution to apply the test as follows.
 We fix a risk :math:`\alpha`  (error type I) and we evaluate the associated critical value :math:`d_\alpha` which is the quantile of order
-:math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
+:math:`1-\alpha` of :math:`D_{\sampleSize}`.
 
 Then a decision is made, either by comparing the test statistic to the theoretical threshold :math:`d_\alpha`
 (or equivalently

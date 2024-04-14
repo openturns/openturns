@@ -20,7 +20,7 @@ Letting :math:`X_1, \ldots , X_{\sampleSize}`  be independent random variables r
 
     F_{\sampleSize}(x) & = \sum_{i=1}^{\sampleSize} 1_{X_i \leq x}
 
-for all :math:` x \in \Rset`. The test statistic is defined by:
+for all :math:`x \in \Rset`. The test statistic is defined by:
 
 .. math::
 
@@ -42,7 +42,7 @@ large (asymptotic distribution: this is the Kolmogorov distribution) or for
 distribution to apply the test as follows.
 We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical
 value :math:`d_\alpha` which is the quantile of order
-:math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
+:math:`1-\alpha` of :math:`D_{\sampleSize}`.
 
 Then a decision is made, either by comparing the test statistic to the theoretical
 threshold :math:`d_\alpha`

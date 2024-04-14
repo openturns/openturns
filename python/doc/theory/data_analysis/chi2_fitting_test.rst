@@ -9,7 +9,6 @@ distributions of dimension 1.
 
 We denote by :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}` a sample of dimension 1.
 Let :math:`F` be  the (unknown) cumulative distribution function of the discrete distribution.
-
 We want to
 test whether the sample is drawn from the discrete distribution characterized by the
 probabilities :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}` and
@@ -22,13 +21,13 @@ theoretical mean one evaluated from the discrete distribution.
 Let :math:`X_1, \ldots , X_{\sampleSize}` be i.i.d. random variables following the
 distribution with CDF :math:`F`. According to the tested distribution :math:`G`,
 the theoretical mean number of values equal to :math:`x` is :math:`\sampleSize p(x;\vect{\theta})`
-whereas the number evaluated from the :math:`X_1, \ldots , X_{\sampleSize}` is
+whereas the number evaluated from :math:`X_1, \ldots , X_{\sampleSize}` is
 :math:`N(x) = \sum_{i=1}^{\sampleSize} 1_{X_i=x}`.
 Then the test statistic is defined by:
 
   .. math::
 
-         D_{\sampleSize} = \sum_{x \in \cE} \frac{\left[\sampleSize p(x)-N(x)\right]^2}{N(x)}
+         D_{\sampleSize} = \sum_{x \in \cE} \frac{\left[\sampleSize p(x)-N(x)\right]^2}{N(x)}.
 
 If some values of :math:`x` have not been observed in the sample, we have to gather values in
 classes so that they contain at least 5 data points (empirical rule). Then the theoretical
@@ -37,7 +36,6 @@ theoretical probability of the class.
 
 Let :math:`d_{\sampleSize}` be the realization of the test statistic :math:`d_{\sampleSize}`
 on the sample :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}`.
-
 Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`,
 the distribution of the test statistic :math:`D_{\sampleSize}` is
 known: this is the :math:`\chi^2(J-1)` distribution, where :math:`J` is the number
@@ -45,8 +43,7 @@ of distinct values in the support of :math:`G`.
 We apply the test as follows.
 
 We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value
-:math:`d_\alpha` which is the quantile of order :math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
-
+:math:`d_\alpha` which is the quantile of order :math:`1-\alpha` of :math:`D_{\sampleSize}`.
 Then a decision is made, either by comparing the test statistic to the theoretical threshold
 :math:`d_\alpha` (or equivalently by evaluating the p-value of the sample  defined as
 :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing it to :math:`\alpha`):
