@@ -44,7 +44,7 @@ the test as follows.
 
 We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value
 :math:`d_\alpha` which is the quantile of order
-:math:`(1-\alpha)` of :math:`D_{\sampleSize}^{(i)}`.
+:math:`1-\alpha` of :math:`D_{\sampleSize}^{(i)}`.
 
 Then a decision is made, either by comparing the test statistic to the theoretical threshold
 :math:`d_\alpha^{(i)}` (or equivalently by evaluating the p-value of the sample  defined as

@@ -38,7 +38,7 @@ asymptotically known i.e. when :math:`\sampleSize \rightarrow +\infty`.
 If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution to apply the
 test as follows.
 We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value :math:`d_\alpha` which is the quantile of order
-:math:`(1-\alpha)` of :math:`D_{\sampleSize}`.
+:math:`1-\alpha` of :math:`D_{\sampleSize}`.
 
 Then a decision is made, either by comparing the test statistic to the theoretical threshold :math:`d_\alpha`
 (or equivalently

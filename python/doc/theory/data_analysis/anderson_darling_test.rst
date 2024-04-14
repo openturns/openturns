@@ -33,7 +33,7 @@ but gives more weight to deviations of tail values. The empirical value of the t
 
 .. math::
 
-   x_{(1)} \leq \dots \leq x_{(\sampleSize)}
+   x_{(1)} \leq \dots \leq x_{(\sampleSize)}.
 
 Under the null hypothesis :math:`\mathcal{H}_0 = \{ F = \Phi\}`, the asymptotic distribution of the test statistic :math:`D_{\sampleSize}` is known i.e. when :math:`\sampleSize \rightarrow +\infty`.
 If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution to apply the test
@@ -46,7 +46,7 @@ Then a decision is made, either by comparing the test statistic to the theoretic
 by evaluating the p-value of the sample  defined as :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing
 it to :math:`\alpha`):
 
--  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \leq \alpha`),
+-  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} < \alpha`),
    then we reject the normal distribution,
 
 -  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \geq \alpha`),

@@ -31,7 +31,7 @@ The BIC of the model :math:`\cM_i` is defined in the library by:
        \operatorname{BIC}(\cM_i) = -2 \frac{\log(L_i)}{\sampleSize} + \frac{k_i \log(\sampleSize)}{\sampleSize}
      \end{aligned}
 
-where :math:`k_i` denotes the number of parameters of the model :math:`\cM_i`
+where :math:`k_i \in \Nset` denotes the number of parameters of the model :math:`\cM_i`
 that have been inferred from the sample. The smaller :math:`\textrm{BIC}(\cM_i)`, the better
 the model:
 
@@ -50,7 +50,7 @@ the quantity :math:`\operatorname{BIC}(\cM_i)`. In a Bayesian context, the unkno
 does not have any informative prior information on which model is more
 relevant among :math:`\cM_1, \dots, \cM_K`; all the models are thus
 equally likely from the point of view of the user. Then, one can show
-that :math:`\textrm{BIC}(\cM_i)` is an approximation of the posterior
+that :math:`\operatorname{BIC}(\cM_i)` is an approximation of the posterior
 distribution's logarithm for the model :math:`\cM_i`.
 
 This criterion is a valuable criterion to reject
