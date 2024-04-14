@@ -29,16 +29,22 @@ The test statistic is defined by:
 
 This distance is a quadratic
 type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
-but gives more weight to deviations of tail values. The empirical value of the test statistic denoted by :math:`d_{\sampleSize}` is evaluated from the sample sorted in ascending order:
+but gives more weight to deviations of tail values. The empirical value of the
+test statistic denoted by :math:`d_{\sampleSize}` is evaluated from the sample sorted
+in ascending order:
 
 .. math::
 
    x_{(1)} \leq \dots \leq x_{(\sampleSize)}.
 
-Under the null hypothesis :math:`\mathcal{H}_0 = \{ F = \Phi\}`, the asymptotic distribution of the test statistic :math:`D_{\sampleSize}` is known i.e. when :math:`\sampleSize \rightarrow +\infty`.
-If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution to apply the test
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ F = \Phi\}`, the asymptotic
+distribution of the test statistic :math:`D_{\sampleSize}` is known i.e. when
+:math:`\sampleSize \rightarrow +\infty`.
+If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution
+to apply the test
 as follows.
-We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical value :math:`d_\alpha` which is the quantile of order
+We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical
+value :math:`d_\alpha` which is the quantile of order
 :math:`1-\alpha` of :math:`D_{\sampleSize}`.
 
 Then a decision is made, either by comparing the test statistic to the theoretical threshold :math:`d_\alpha`

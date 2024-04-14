@@ -11,8 +11,9 @@ We denote by :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}` a sample of dime
 Let :math:`F` be  the (unknown) cumulative distribution function of the discrete distribution.
 We want to
 test whether the sample is drawn from the discrete distribution characterized by the
-probabilities :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}` and
-which cumulative distribution function is denoted by :math:`G`.
+probabilities :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}` where
+:math:`\vect{\theta}` is the set of parameters of the distribution and 
+and :math:`\cE` its support. Let :math:`G` be the cumulative distribution function of this candidate distribution.
 
 This test  involves the calculation of the test statistic which is
 the distance between the empirical number of values equal to :math:`x` in the sample and the

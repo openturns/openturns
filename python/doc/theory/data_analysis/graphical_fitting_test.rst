@@ -82,8 +82,8 @@ false.
     View(graph)
 
 
-Henry’s line
-~~~~~~~~~~~~
+Normal probability plot (Henry’s line)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This test is dedicated to the normal distribution.
 
