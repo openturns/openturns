@@ -70,12 +70,12 @@ algo.run()
 result = algo.getResult()
 
 # MetaModelValidation - SPC
-metaModelValidationSPC = ot.MetaModelValidation(
-    inputValidation, outputValidation, result.getMetaModel()
-)
+metamodel = result.getMetaModel()
+metamodelPredictions = metamodel(inputValidation)
+metaModelValidationSPC = ot.MetaModelValidation(outputValidation, metamodelPredictions)
 print("")
 print("Sparse chaos scoring")
-print("Q2 = ", metaModelValidationSPC.computePredictivityFactor())
+print("R2 = ", metaModelValidationSPC.computeR2Score())
 print("Residual sample = ", repr(metaModelValidationSPC.getResidualSample()))
 
 # 2) Kriging algorithm
@@ -89,12 +89,12 @@ algo2.run()
 result2 = algo2.getResult()
 
 # MetaModelValidation - KG
-metaModelValidationKG = ot.MetaModelValidation(
-    inputValidation, outputValidation, result2.getMetaModel()
-)
+metamodel = result2.getMetaModel()
+metamodelPredictions = metamodel(inputValidation)
+metaModelValidationKG = ot.MetaModelValidation(outputValidation, metamodelPredictions)
 print("")
 print("Kriging scoring")
-print("Q2 = ", metaModelValidationKG.computePredictivityFactor())
+print("R2 = ", metaModelValidationKG.computeR2Score())
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("Residual sample = ", repr(metaModelValidationKG.getResidualSample()))
 
@@ -104,8 +104,9 @@ model = ot.SymbolicFunction(["x"], ["sin(x)", "cos(x)"])
 metaModel = ot.SymbolicFunction(["x"], ["x - x^3/6.0 + x^5/120.0", "cos(1.2*x)"])
 x = dist.getSample(1000)
 y = model(x)
-val = ot.MetaModelValidation(x, y, metaModel)
-q2 = val.computePredictivityFactor()
+metamodelPredictions = metaModel(x)
+val = ot.MetaModelValidation(y, metamodelPredictions)
+q2 = val.computeR2Score()
 residual = val.getResidualSample()
 residual_dist_smooth = val.getResidualDistribution()
 residual_dist = val.getResidualDistribution(False)

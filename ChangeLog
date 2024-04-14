@@ -11,6 +11,9 @@
  * SmoothedUniformFactory (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)
+ * Deprecated MetaModelValidation::computePredictivityFactor method, use computeR2Score
+ * Deprecated MetaModelValidation::getInputSample method
  * Removed deprecated Pagmo.setGenerationNumber
  * Removed deprecated NLopt.SetSeed
  * Removed deprecated IterativeThresholdExceedance(dimension, threshold) ctor
