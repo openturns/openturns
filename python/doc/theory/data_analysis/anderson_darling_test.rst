@@ -7,7 +7,6 @@ The Anderson-Darling test is a statistical test of whether a given sample of dat
 probability distribution. The library only provides the Anderson-Darling test for normal distributions.
 
 Let :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` be a sample of dimension 1 drawn from the (unknown) cumulative distribution function :math:`F` assumed to be continuous.
-
 We want to test  whether the sample is drawn from a normal distribution ie whether
 :math:`F_X = \Phi`, where :math:`\Phi` is the cumulative distribution function of the normal
 distribution.

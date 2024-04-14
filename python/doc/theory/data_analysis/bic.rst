@@ -28,7 +28,7 @@ The BIC of the model :math:`\cM_i` is defined in the library by:
 .. math::
 
    \begin{aligned}
-       \textrm{BIC}(\cM_i) = -2 \frac{\log(L_i)}{\sampleSize} + \frac{k_i \log(\sampleSize)}{\sampleSize}
+       \operatorname{BIC}(\cM_i) = -2 \frac{\log(L_i)}{\sampleSize} + \frac{k_i \log(\sampleSize)}{\sampleSize}
      \end{aligned}
 
 where :math:`k_i` denotes the number of parameters of the model :math:`\cM_i`
@@ -37,7 +37,7 @@ the model:
 
 .. math::
 
-   \cM_{BIC} = \argmin_{\cM_i, 1\leq i \leq K} {BIC}(\cM_i)
+   \cM_{\operatorname{BIC}} = \argmin_{\cM_i \in \{\cM_1, ..., \cM_K\}} \operatorname{BIC}(\cM_i)
 
 The idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
@@ -45,7 +45,7 @@ model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
 The term "Bayesian Information Criterion" comes from the interpretation of
-the quantity :math:`\textrm{BIC}(\cM_i)`. In a bayesian context, the unknown
+the quantity :math:`\operatorname{BIC}(\cM_i)`. In a Bayesian context, the unknown
 "true" model may be seen as a random variable. Suppose now that the user
 does not have any informative prior information on which model is more
 relevant among :math:`\cM_1, \dots, \cM_K`; all the models are thus

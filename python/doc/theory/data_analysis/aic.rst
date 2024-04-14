@@ -39,7 +39,7 @@ the model:
 
 .. math::
 
-   \cM_{AIC} = \argmin_{\cM_i, 1\leq i \leq K} {AIC}(\cM_i)
+   \cM_{\operatorname{AIC}} = \argmin_{\cM_i \in \{\cM_1, ..., \cM_K\}} \operatorname{AIC}(\cM_i).
 
 The idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
@@ -55,7 +55,7 @@ developed: it consists in evaluating the AIC with a correction term
 .. math::
 
    \begin{aligned}
-       \operatorname{AICc}(\cM_i) = \operatorname{AIC}(\cM_i) + \frac{(2 k_i)(k_i + 1)}{\sampleSize - k_i - 1}
+       \operatorname{AICc}(\cM_i) = \operatorname{AIC}(\cM_i) + \frac{2 k_i (k_i + 1)}{\sampleSize - k_i - 1}.
      \end{aligned}
 
 One should notice that the extra term penalty vanishes for
