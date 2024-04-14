@@ -27,7 +27,7 @@ The test statistic is defined by:
 .. math::
 
        D_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \Phi(X_{(i)})+\log\left(1-\Phi(X_{(\sampleSize+1-i)})\right)\right]
-     
+
 This distance is a quadratic
 type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
 but gives more weight to deviations of tail values. The empirical value of the test statistic denoted by :math:`d_{\sampleSize}` is evaluated from the sample sorted in ascending order:
