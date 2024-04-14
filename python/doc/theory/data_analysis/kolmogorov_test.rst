@@ -6,26 +6,32 @@ The Kolmogorov-Smirnov goodness of fit test for continuous data
 The Kolmogorov-Smirnov test is a statistical test of whether a given sample of data is drawn from a given
 probability distribution which is of dimension 1 and continuous.
 
-We denote by :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` the data of dimension 1.
-Let :math:`F` be  the (unknown) cumulative distribution function of the continuous distribution.
+Let :math:`\left\{ x_1,\ldots, x_{\sampleSize} \right\}` be a sample of dimension 1 drawn from the (unknown) cumulative distribution function :math:`F`.
 
-We want to test  whether the sample is drawn from the cumulative distribution function :math:`G`.
+We want to test  whether the sample is drawn from the cumulative distribution function
+:math:`G`.
 
 This test involves the calculation of the test statistic which is the weighted maximum
 distance between the empirical cumulative distribution function
-:math:`\widehat{F}` built from the sample and :math:`G`.
-Letting :math:`X_1, \ldots , X_\sampleSize` be i.i.d. random variables following
-the distribution with CDF :math:`F`, the test statistic is defined by:
+:math:`F_{\sampleSize}` and :math:`G`.
+Letting :math:`X_1, \ldots , X_{\sampleSize}`  be independent random variables respectively distributed according to :math:`F`, then :math:`F_{\sampleSize}` is defined by:
 
 .. math::
 
-    D_{\sampleSize} = \sqrt{\sampleSize} \sup_{1 \leq i \leq \sampleSize} \left|\widehat{F}\left(X_i \right) - G\left(X_i \right)\right|
+    F_{\sampleSize}(x) & = \sum_{i=1}^{\sampleSize} 1_{X_i \leq x}
 
-The empirical value of the test statistic, evaluated from the sample is:
+for all :math:` x \in \Rset`. The test statistic is defined by:
 
 .. math::
 
-    d_{\sampleSize} = \sqrt{\sampleSize} \sup_{1 \leq i \leq \sampleSize} \left|\widehat{F}\left(x_i\right) - G\left(x_i\right)\right|
+    D_{\sampleSize} = \sqrt{\sampleSize} \sup_{x} \left|F_{\sampleSize}\left(x \right) - G\left(x \right)\right|
+
+The empirical value of the test statistic is denoted by :math:`d`, using the realization of
+:math:`F_{\sampleSize}` on the sample:
+
+.. math::
+
+    F_{\sampleSize}(x) & = \dfrac{\mbox{number of } x_i \leq x \mbox{ in the sample}}{\sampleSize}
 
 Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`, the distribution of
 the test statistic :math:`D_{\sampleSize}` is

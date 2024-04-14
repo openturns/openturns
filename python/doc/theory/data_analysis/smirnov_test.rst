@@ -7,36 +7,39 @@ The Kolmogorov-Smirnov test is a statistical test that can be used
 to test whether two given samples of data are drawn from the same
 distribution which is of dimension 1 and continuous.
 
-We denote by :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}`
-and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}` two given samples of dimension 1.
-Let :math:`F` be  the (unknown) cumulative distribution function of
-:math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` and :math:`G` the one
-of :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}`.
+Let :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}`
+be two samples of dimension 1 respectively drawn from the (unknown)
+distribution functions :math:`F_X` and  :math:`F_Y`.
 
-We want to test  whether both samples are drawn from the same distribution, ie whether :math:`F=G`.
-
+We want to test  whether both samples are drawn from the same distribution, ie whether :math:`F_X=F_Y`.
 
 This test involves the calculation of the test statistic which is the weighted maximum
-distance between both empirical cumulative distribution functions
-:math:`\widehat{F}_{X}` and :math:`\widehat{F}_{Y}` built respectively from
-:math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}`
-and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}`.
-Letting :math:`X_1, \ldots , X_\sampleSize` be i.i.d. random variables following the distribution
-with CDF :math:`F`, and :math:`Y_1, \ldots , Y_\sampleSize` be i.i.d. random variables following
-the distribution with CDF :math:`G`, the test statistic is defined by:
+distance between both empirical cumulative distribution function
+:math:`F_{\sampleSize, X}`  and :math:`F_{\sampleSize, Y}`.
+Letting :math:`X_1, \ldots , X_{\sampleSize}` and :math:`Y_1, \ldots , Y_{\sampleSize}`  be independent random variables respectively distributed
+according to :math:`X` and :math:`Y`, both empirical cumulative distribution
+functions are defined by:
 
 .. math::
 
-    D_{\sampleSize} = \sqrt{\sampleSize} \sup_x \left|\widehat{F}_{X}\left(x\right) - \widehat{F}_{Y}\left(x\right)\right|
+    F_{\sampleSize, X}(x) & = \sum_{i=1}^{\sampleSize} 1_{X_i \leq x} \\
+    F_{\sampleSize, Y}(x) & = \sum_{i=1}^{\sampleSize} 1_{Y_i \leq x}
 
-The empirical value of the test statistic, evaluated from the sample is:
+for all :math:` x \in \Rset`. The test statistic is defined by:
 
 .. math::
 
-    d = \sqrt{\sampleSize} \sup_{x_i}
-    \left|\widehat{F}_{X}\left(x_i\right) - \widehat{F}_{Y}\left(y_i\right)\right|
+    D_{\sampleSize} = \sqrt{\sampleSize} \sup_x \left|F_{\sampleSize, X}\left(x\right) - F_{\sampleSize, Y}\left(x\right)\right|
 
-Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`, the distribution of the
+The empirical value of the test statistic is denoted by :math:`d`, using the realization of
+:math:`F_{\sampleSize, X}`  and :math:`F_{\sampleSize, Y}` on the samples:
+
+.. math::
+
+    F_{\sampleSize, X}(x) & = \dfrac{\mbox{number of } x_i \leq x \mbox{ in the sample}}{\sampleSize}\\
+    F_{\sampleSize, Y}(x) & = \dfrac{\mbox{number of } x_i \leq x  \mbox{ in the sample}}{\sampleSize}
+
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ F_X = F_Y\}`, the distribution of the
 test statistic :math:`D_{\sampleSize}` is
 known: algorithms are available to compute the distribution of :math:`\widehat{D}`
 both for :math:`\sampleSize`

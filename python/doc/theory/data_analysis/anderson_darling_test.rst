@@ -6,40 +6,37 @@ Anderson-Darling test
 The Anderson-Darling test is a statistical test of whether a given sample of data is drawn from a given
 probability distribution. The library only provides the Anderson-Darling test for normal distributions.
 
-We denote by :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` the data of dimension 1.
-Let :math:`F` be  the (unknown) cumulative distribution function of the continuous distribution.
+Let :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` be a sample of dimension 1 drawn from the (unknown) cumulative distribution function :math:`F` assumed to be continuous.
 
-We want to test  whether the sample is drawn from a normal distribution which cumulative distribution function is denoted by :math:`\Phi`.
+We want to test  whether the sample is drawn from a normal distribution ie whether
+:math:`F_X = \Phi`, where :math:`\Phi` is the cumulative distribution function of the normal
+distribution.
 
 This test involves the calculation of the test statistic which is
 the distance between the empirical cumulative distribution function
-:math:`\widehat{F}` built from the sample and :math:`\Phi`. The probability density function of the normal distribution is denoted by :math:`\phi`.
-
-Letting :math:`X_1, \ldots , X_\sampleSize` be i.i.d. random variables following the distribution with CDF :math:`F`, the test statistic is defined by:
+:math:`F_{\sampleSize}` and :math:`\Phi`. Letting :math:`X_1, \ldots , X_{\sampleSize}`
+be independent random variables respectively distributed according to :math:`F`, we define
+the the order statistics :math:`X_{(1)}, \ldots , X_{(\sampleSize)}` by:
 
 .. math::
 
-   \begin{aligned}
-       D_{\sampleSize} = \int^{\infty}_{-\infty} \frac{\displaystyle \left[\Phi\left(x\right) - \widehat{F}\left(x\right)\right]^2 }{\displaystyle \Phi(x) \left( 1-\Phi(x) \right) } \, \phi(x)\, dx
-     \end{aligned}
+   X_{(1)} \leq \dots \leq X_{(\sampleSize)}
 
+The test statistic is defined by:
+
+.. math::
+
+       D_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \Phi(X_{(i)})+\log\left(1-\Phi(X_{(\sampleSize+1-i)})\right)\right]
+     
 This distance is a quadratic
 type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
-but gives more weight to deviations of extreme values. The empirical value of the test statistic, evaluated from the sample is:
-
-.. math::
-
-   \begin{aligned}
-       d_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \Phi(x_{(i)})+\log\left(1-\Phi(x_{(N+1-i)})\right)\right]
-     \end{aligned}
-
-where :math:`\left\{x_{(1)}, \ldots, x_{(\sampleSize)}\right\}` is the sample sorted in ascending order:
+but gives more weight to deviations of tail values. The empirical value of the test statistic denoted by :math:`d_{\sampleSize}` is evaluated from the sample sorted in ascending order:
 
 .. math::
 
    x_{(1)} \leq \dots \leq x_{(\sampleSize)}
 
-Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = \Phi\}`, the distribution of the test statistic :math:`D_{\sampleSize}` is
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ F = \Phi\}`, the distribution of the test statistic :math:`D_{\sampleSize}` is
 asymptotically known i.e. when :math:`\sampleSize \rightarrow +\infty`.
 If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution to apply the test
 as follows.

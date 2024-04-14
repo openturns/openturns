@@ -40,7 +40,7 @@ on the sample :math:`\left\{ x_1,\dots,x_{\sampleSize} \right\}`.
 
 Under the null hypothesis :math:`\mathcal{H}_0 = \{ G = F\}`,
 the distribution of the test statistic :math:`D_{\sampleSize}` is
-known: this is the :math:`chi^2(J-1)` distribution, where :math:`J` is the number
+known: this is the :math:`\chi^2(J-1)` distribution, where :math:`J` is the number
 of distinct values in the support of :math:`G`.
 We apply the test as follows.
 
