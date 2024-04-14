@@ -26,7 +26,7 @@ The test statistic is defined by:
 
 .. math::
 
-       D_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \Phi(X_{(i)})+\log\left(1-\Phi(X_{(\sampleSize+1-i)})\right)\right]
+       D_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \left( \Phi(X_{(i)}) \right) + \log\left(1-\Phi(X_{(\sampleSize+1-i)})\right)\right].
 
 This distance is a quadratic
 type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
