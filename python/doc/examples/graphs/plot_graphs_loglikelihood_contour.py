@@ -117,6 +117,23 @@ graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
+# Fill the contour graph
+# ----------------------
+
+# %%
+# Areas between contour lines can be colored by requesting a filled outline.
+contour = graphBasic.getDrawable(0).getImplementation()
+contour.buildDefaultLevels(50)
+contour.setIsFilled(True)
+
+# %%
+# To make the color variation clearer around 13, we use a normalization based on the rank of the level curve and not on its value.
+contour.setNorm("rank")
+filledGraph = ot.Graph()
+filledGraph.add(contour)
+view = viewer.View(filledGraph)
+
+# %%
 # Getting the level values
 # ------------------------
 
@@ -163,33 +180,15 @@ view = viewer.View(graphFineTune)
 # Here we will show how to assign explicit colors to the different contour lines.
 #
 # The following script first creates a palette of colors with the `BuildDefaultPalette` class.
-# Before doing so, we configure the `Drawable-DefaultPalettePhase` `ResourceMap` key so
-# that the number of generated colors corresponds to the number of levels.
-# Then we create the `drawables` list, where each item is a single contour with its own level and color.
 
-# %%
 # Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0).getImplementation()
 # Hide the color bar
 contour.setColorBarPosition("")
 # Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
-# Create the drawables list, appending each contour with its own color
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
-    # Inline the level values
-    contour.setDrawLabels(True)
-    # We have to copy the drawable because a Python list stores only pointers
-    drawables.append(ot.Drawable(contour))
+view = viewer.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
 
-# %%
-graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
-graphFineTune.setDrawables(drawables)  # Replace the drawables
-graphFineTune.setLegendPosition("")  # Remove the legend
-graphFineTune.setColors(palette)  # Add colors
-view = viewer.View(graphFineTune)
 plt.show()
 
 # %%

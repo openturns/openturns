@@ -28,7 +28,7 @@ graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("lower right")
-view = otv.View(graphPDF)
+view = otv.View(graphPDF, contour_kw={"colors": ot.Drawable.BuildRainbowPalette(8)})
 
 # %%
 # We then define a model :math:`f` which maps a 2D-vector X = (X_1,X_2) to a

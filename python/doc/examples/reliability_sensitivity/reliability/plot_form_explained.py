@@ -41,6 +41,9 @@ graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("lower right")
+contours = graphPDF.getDrawable(0).getImplementation()
+contours.setNorm("rank")  # To assign colors based on rank
+graphPDF.setDrawable(contours, 0)
 view = otv.View(graphPDF)
 
 

@@ -29,32 +29,18 @@ graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
 
 # %%
 # We get the values of all isolines :
-drawables = graphBasic.getDrawables()
-levels = []
-for contours in drawables:
-    levels.append(contours.getLevels()[0])
+levels = graphBasic.getDrawables()[0].getLevels()
 
 # %%
 # We now build fancy isolines :
 
-# Take the first contour as the only one with multiple levels
-contour = graphBasic.getDrawable(0)
 # Build a range of colors
 ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
-# Create the drawables list, appending each contour with its own color
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
-    # Inline the level values
-    contour.setDrawLabels(True)
-    # We have to copy the drawable because a Python list stores only pointers
-    drawables.append(ot.Drawable(contour))
 
 graphFineTune = ot.Graph("The exact Branin model", r"$x_1$", r"$x_2$", True, "")
-graphFineTune.setDrawables(drawables)  # Replace the drawables
+graphFineTune.setDrawables([graphBasic.getDrawable(0)])
 graphFineTune.setLegendPosition("")  # Remove the legend
-graphFineTune.setColors(palette)  # Add colors
 
 
 # %%
@@ -62,7 +48,8 @@ graphFineTune.setColors(palette)  # Add colors
 sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
 cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
-view = otv.View(graphFineTune)
+# Draw the graph with the palette assigned to the contour
+view = otv.View(graphFineTune, contour_kw={"colors": palette})
 
 #
 # The values of the exact model at these points are :
@@ -119,37 +106,26 @@ metamodel = result.getMetaModel()
 
 
 graphBasic = metamodel.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
-drawables = graphBasic.getDrawables()
-levels = []
-for i in range(len(drawables)):
-    contours = drawables[i]
-    levels.append(contours.getLevels()[0])
+# Take the first drawable as the only contour with multiple levels
+contours = graphBasic.getDrawable(0).getImplementation()
+contours.setColorBarPosition("")  # Hide the color bar
+contours.setDrawLabels(True)  # Draw the labels
+levels = contours.getLevels()
 
-# Take the first contour as the only one with multiple levels
-contour = graphBasic.getDrawable(0)
 # Build a range of colors
 ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
-# Create the drawables list, appending each contour with its own color
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
-    # Inline the level values
-    contour.setDrawLabels(True)
-    # We have to copy the drawable because a Python list stores only pointers
-    drawables.append(ot.Drawable(contour))
 
 graphFineTune = ot.Graph("Branin metamodel (mean)", r"$x_1$", r"$x_2$", True, "")
-graphFineTune.setDrawables(drawables)
+graphFineTune.setDrawables([contours])
 graphFineTune.setLegendPosition("")
-graphFineTune.setColors(palette)
 
 # %%
 # We also represent the location of the minima of the Branin function :
 sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
 cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
-view = otv.View(graphFineTune)
+view = otv.View(graphFineTune, contour_kw={"colors": palette})
 
 # %%
 # We evaluate the metamodel at the minima locations :

@@ -799,7 +799,7 @@ void DrawableImplementation::InitializeValidParameterList()
   ValidColorMaps.setName("ValidColorMaps");
 
   /* Accepted norms */
-  ValidNorms = Description({ "asinh", "linear", "log", "logit", "symlog"});
+  ValidNorms = Description({ "asinh", "linear", "log", "logit", "symlog", "rank"});
   ValidNorms.setName("ValidNorms");
 
   /* Accepted extends */

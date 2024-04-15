@@ -27,6 +27,55 @@ except ImportError:
 __all__ = ["View", "PlotDesign"]
 
 
+class RankNormalize(cls.Normalize):
+    """
+    Color distribution normalization class to obtain a distribution based on rank and not value.
+
+    This class is used to manage the "rank" norm for Contour drawables
+    """
+    def _changed(self):
+        if self._levels is not None and self.vmin is not None and self.vmax is not None:
+            below_threshold = sum(1 if level < self.vmin else 0 for level in self._levels)
+            above_threshold = sum(1 if level > self.vmax else 0 for level in self._levels)
+            active = len(self._levels) - below_threshold - above_threshold
+            if active <= 0:
+                raise ValueError("No active level; check vmin and vmax")
+            self._ranks = np.linspace(-below_threshold / active, 1.0 + above_threshold / active, len(self._levels))
+        if hasattr(cls.Normalize, "_changed"):
+            cls.Normalize._changed(self)
+
+    """
+    Construct the normalization based on rank
+
+    Parameters
+    ----------
+    levels : list of floats
+        List of level values.
+
+    vmin : float, optional
+        Minimum value for color distribution
+
+    vmax : float, optional
+        Maximum value for color distribution
+
+    clip : bool, optional
+        Indicator for cutting color distribution out of vmin and vmax
+    """
+    def __init__(self, levels, vmin=None, vmax=None, clip=False):
+        super().__init__(vmin, vmax, clip)
+        self._levels = None if levels is None else np.array(levels)
+        self._ranks = None
+        self._changed()
+
+    def __call__(self, value, clip=None):
+        if self._levels is None and hasattr(value, "__iter__"):
+            self._levels = np.array([level for level in value])
+            self._changed()
+        if self._levels is not None and self._ranks is None:
+            self._ranks = np.linspace(0.0, 1.0, len(self._levels))
+        return 1. if self._levels is None else np.ma.masked_array(np.interp(value, self._levels, self._ranks))
+
+
 class View:
 
     """
@@ -560,7 +609,7 @@ class View:
                     "lw" not in contour_kw_default
                 ):
                     contour_kw["linewidths"] = drawable.getLineWidth()
-                if "cmap" not in contour_kw_default and contour.getColorMap():
+                if "cmap" not in contour_kw_default and "colors" not in contour_kw_default and contour.getColorMap():
                     contour_kw["cmap"] = contour.getColorMap()
                 if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
@@ -575,6 +624,7 @@ class View:
                         # matplotlib before 3.6 does not support norms as strings
                         try:
                             normDict = {
+                                'rank': 'rank',
                                 'linear': cls.Normalize(),
                                 'log': cls.LogNorm(),
                                 'symlog': cls.SymLogNorm(linthresh=0.03) if matplotlib.__version__ < "3.2.0"
@@ -585,12 +635,16 @@ class View:
                             warnings.warn("-- Unknown norm " + contour.getNorm())
                     else:
                         contour_kw["norm"] = contour.getNorm()
+                if contour_kw.get("norm") == "rank":
+                    contour_kw["norm"] = RankNormalize(contour_kw.get("levels"))
                 if "extend" not in contour_kw_default:
                     contour_kw["extend"] = contour.getExtend()
                 if contour.isFilled() and "hatches" not in contour_kw_default and contour.getHatches():
                     contour_kw["hatches"] = [hatch for hatch in contour.getHatches()]
-                contourset = self._ax[0].contour(X, Y, Z, **contour_kw) if not contour.isFilled()\
-                    else self._ax[0].contourf(X, Y, Z, **contour_kw)
+                if contour.isFilled():
+                    contourset = self._ax[0].contourf(X, Y, Z, **contour_kw)
+                else:
+                    contourset = self._ax[0].contour(X, Y, Z, **contour_kw)
                 self._contoursets.append(contourset)
                 if drawable.getDrawLabels() and not contour.isFilled():
                     # Matplotlib does not support labels in filled contours well
@@ -616,17 +670,17 @@ class View:
                     legend_handles.append(artists[0])
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
+                    colorbar = None
                     if matplotlib.__version__ >= "3.7.0":
-                        format = None
-                        if contour.getNorm() != "linear" and contour.getLevels():
-                            format = matplotlib.ticker.FixedFormatter(["{:.6g}".format(level) for level in contour.getLevels()])
-                        self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format=format)
+                        colorbar = self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format="%.3g")
                     else:
                         try:
-                            self._fig.colorbar(contourset)
+                            colorbar = self._fig.colorbar(contourset, format="%.3g")
                             warnings.warn("-- colorbar location was not used in matplotlib < 3.7.0")
                         except ZeroDivisionError:
                             warnings.warn("figure.colorbar likely failed on boundary levels")
+                    if colorbar is not None and contour.getLevels():
+                        colorbar.formatter.minor_thresholds = (10., 0.4)  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)

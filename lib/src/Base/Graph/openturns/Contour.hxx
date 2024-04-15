@@ -50,22 +50,22 @@ public:
           const Sample & data,
           const Point & levels,
           const Description & labels,
-          const Bool drawLabels = true,
+          const Bool drawLabels = ResourceMap::GetAsBool("Contour-DrawLabels"),
           const String & legend = "");
 
   /** Constructor with parameters */
   Contour(const UnsignedInteger dimX,
           const UnsignedInteger dimY,
           const Sample & data,
-          Bool isFilled = false,
-          const String & colorMap = "viridis");
+          Bool isFilled = ResourceMap::GetAsBool("Contour-IsFilled"),
+          const String & colorMap = ResourceMap::GetAsString("Contour-ColorMap"));
 
   /** Constructor with parameters */
   Contour(const Sample & x,
           const Sample & y,
           const Sample & data,
-          Bool isFilled = false,
-          const String & colorMap = "viridis");
+          Bool isFilled = ResourceMap::GetAsBool("Contour-IsFilled"),
+          const String & colorMap = ResourceMap::GetAsString("Contour-ColorMap"));
 
   /** Constructor with parameters
       Contour(const Sample & xy,

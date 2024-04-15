@@ -1265,7 +1265,6 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true);
   graph.setGrid(true);
   Contour isoValues(Contour(gridT, gridT, data));
-  isoValues.setColorBarPosition("right");
   isoValues.setDrawLabels(false);
   graph.add(isoValues);
   return graph;

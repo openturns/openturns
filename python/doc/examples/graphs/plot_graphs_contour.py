@@ -52,7 +52,9 @@ inputData *= [XMax - XMin, YMax - YMin]
 inputData += [XMin, YMin]
 data = f(inputData)
 
-contour = ot.Contour(ot.Box([NX]).generate() * [XMax - XMin] + [XMin], ot.Box([NY]).generate() * [YMax - YMin] + [YMin], data)
+x = ot.Box([NX]).generate() * [XMax - XMin] + [XMin]
+y = ot.Box([NY]).generate() * [YMax - YMin] + [YMin]
+contour = ot.Contour(x, y, data)
 
 # %%
 # By creating an empty graph and adding the contour we can display the whole.
@@ -133,16 +135,30 @@ mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%
 graph = mixture.drawPDF([-5.0, -5.0], [5.0, 5.0])
+# Add level lines above filled contour
 contour = graph.getDrawable(0).getImplementation()
 contour.setColor('black')
 contour.setColorBarPosition("")
 contour.setLineWidth(3)
 contour.setLineStyle('dotdash')
 graph.add(contour)
+# Modify previous contour to fill the graph and use log norm
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.setNorm('log')
 graph.setDrawable(contour, 0)
+view = viewer.View(graph)
+
+# %%
+# If the color bar is not sufficiently meaningful, it is possible to add the labels of the values of each level line on the drawing.
+# Here the labels are reformatted to use scientific notation and define precision.
+contour = graph.getDrawable(0).getImplementation()
+contour.setColorBarPosition("")  # Hide color bar
+graph.setDrawable(contour, 0)
+contour = graph.getDrawable(1).getImplementation()
+contour.setDrawLabels(True)
+contour.setLabels(['{:.3g}'.format(level) for level in contour.getLevels()])
+graph.setDrawable(contour, 1)
 view = viewer.View(graph)
 
 viewer.View.ShowAll()
