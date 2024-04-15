@@ -27,9 +27,6 @@ assert_almost_equal(interval.getLowerBound()[0], 0.117529, 1.0e-4, 1.0e-2)
 assert_almost_equal(interval.getLowerBound()[1], 0.409689, 1.0e-4, 1.0e-2)
 assert_almost_equal(interval.getLowerBound()[2], -0.176039, 1.0e-4, 1.0e-2)
 
-
 assert_almost_equal(interval.getUpperBound()[0], 0.340675, 1.0e-4, 1.0e-2)
 assert_almost_equal(interval.getUpperBound()[1], 0.560271, 1.0e-4, 1.0e-2)
 assert_almost_equal(interval.getUpperBound()[2], 0.0857027, 1.0e-4, 1.0e-2)
-
-
