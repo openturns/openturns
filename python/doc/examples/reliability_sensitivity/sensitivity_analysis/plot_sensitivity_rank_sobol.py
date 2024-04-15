@@ -39,7 +39,7 @@ indices = mySobol.getFirstOrderIndices()
 print('First order indices:', indices)
 
 # %%
-# Draw Sobol' indices. 
+# Draw Sobol' indices.
 #
 # Options for confidence interval estimation can be defined.
 ot.ResourceMap.SetAsUnsignedInteger('SobolIndicesAlgorithm-DefaultBootstrapSize', 200)

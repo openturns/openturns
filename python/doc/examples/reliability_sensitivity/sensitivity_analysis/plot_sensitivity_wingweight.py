@@ -371,7 +371,7 @@ view = otv.View(graph)
 
 # %%
 # Furthermore, first order Sobol' indices can also been estimated in a data-driven way using a rank-based sensitivity algorithm.
-# In such a way, the estimation of sensitivity indices does not involve any surrogate model. 
+# In such a way, the estimation of sensitivity indices does not involve any surrogate model.
 sizeRankSobol = 800
 inputDesignRankSobol = m.distributionX.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
