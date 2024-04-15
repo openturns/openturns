@@ -81,26 +81,26 @@ public:
   virtual Interval getTotalOrderIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
-  Point getAggregatedFirstOrderIndices() const;
+  virtual Point getAggregatedFirstOrderIndices() const;
 
   /** Aggregated total order indices accessor for multivariate samples */
-  Point getAggregatedTotalOrderIndices() const;
+  virtual Point getAggregatedTotalOrderIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   /** Setters for confidence level */
-  Scalar getConfidenceLevel() const;
+  virtual Scalar getConfidenceLevel() const;
   void setConfidenceLevel(const Scalar confidenceLevel);
 
   /** Whether to use bootstrap or asymptotic distribution */
-  void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
-  Bool getUseAsymptoticDistribution() const;
+  virtual void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
+  virtual Bool getUseAsymptoticDistribution() const;
 
   /** Estimator distribution accessor */
-  Distribution getFirstOrderIndicesDistribution() const;
-  Distribution getTotalOrderIndicesDistribution() const;
+  virtual Distribution getFirstOrderIndicesDistribution() const;
+  virtual Distribution getTotalOrderIndicesDistribution() const;
 
   /** String converter */
   String __repr__() const override;
@@ -141,7 +141,7 @@ public:
   virtual Graph draw(UnsignedInteger marginalIndex) const;
 
   /** Design accessor */
-  void setDesign(const Sample & inputDesign,
+  virtual void setDesign(const Sample & inputDesign,
                  const Sample & outputDesign,
                  const UnsignedInteger size);
 protected:
@@ -160,7 +160,7 @@ protected:
                                  Point & aggregatedTotal) const;
 
   /** void method that computes bootstrap confidence interval */
-  void computeBootstrapDistribution() const;
+  virtual void computeBootstrapDistribution() const;
 
   /** void method that computes asymptotic confidence interval */
   virtual void computeAsymptoticDistribution() const;

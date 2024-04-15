@@ -940,6 +940,7 @@ ot_add_python_module(simulation simulation_module.i
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
                       SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
+                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                       JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
                       MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in

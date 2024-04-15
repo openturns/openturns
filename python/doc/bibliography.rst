@@ -113,6 +113,8 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gamboa2022] Gamboa, F., Gremaud, P., Klein, T. & Lagnoux, A. *Global sensitivity analysis: 
+   A novel generation of mighty estimators based on rank statistics* Bernoulli 28(4): 2345-2374, 2022.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__

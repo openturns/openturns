@@ -28,6 +28,7 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
+  TBB::Disable();
   try
   {
 

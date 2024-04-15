@@ -47,6 +47,7 @@
 %include JansenSensitivityAlgorithm.i
 %include MauntzKucherenkoSensitivityAlgorithm.i
 %include SobolIndicesExperiment.i
+%include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include SimulationResult.i
