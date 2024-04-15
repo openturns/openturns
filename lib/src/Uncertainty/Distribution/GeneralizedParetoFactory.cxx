@@ -1276,7 +1276,7 @@ TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & samp
 
 /* Return level */
 Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const DistributionFactoryResult & result,
-                                                                 const Scalar m, const Sample & sample) const
+                                                                 const Scalar m, const Sample & sample, const Scalar theta) const
 {
   // see coles2001 4.3.3 p81
   if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedPareto")
@@ -1296,7 +1296,8 @@ Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const Distribut
       ++ k;
   if (!k)
     throw InvalidArgumentException(HERE) << "Return level estimation requires sample values > u";
-  const Scalar zeta = k * 1.0 / size;
+  const Scalar zeta_u = k * 1.0 / size;
+  const Scalar zeta = zeta_u * theta;
 
   // (sigma, xi) are Gaussian, u can be a Dirac
   if (result.getParameterDistribution().getMarginal(Indices({0, 1})).getImplementation()->getClassName() == "Normal")

@@ -62,7 +62,7 @@ for season in full_season:
 # which filters the dependent observations exceeding a given threshold to obtain a
 # set of threshold excesses that can be assumed independent.
 #
-# First, we specify a threshold :mat:`u`.
+# First, we specify a threshold :math:`u`.
 # Consecutive exceedances of the threshold belong to the same cluster. Two distinct
 # clusters are separated by :math:`r` consecutive observations under the
 # threshold. Within each cluster, we select the maximum value that will be used to
@@ -84,7 +84,7 @@ view = otv.View(graph)
 # %%
 # Here, we illustrate the effect of different choices for :math:`u`
 # and :math:`r` on the estimate of the GPD distriution. We focus on the winter
-# season. We erform the following steps, for each :math:`(u, r)`: 
+# season. We perform the following steps, for each :math:`(u, r)`:
 #
 # - we extract the clusters and the associated peaks,
 # - we fit a GPD distribution on te excesses by the maximum likelihood method,
@@ -98,6 +98,7 @@ view = otv.View(graph)
 # inference is robust despite the subjective choices that need to be made
 # on :math:`(u, r)`.
 winter = full_season["winter"]
+winter_sample = ot.Sample.BuildFromDataFrame(winter)
 
 # partition the aggregated winter sample according to indices (enforces separation of seasons from different years)
 part = otexp.SamplePartition.ExtractFromDataFrame(full, winter)
@@ -112,7 +113,7 @@ for u in [-10.0, -20.0]:
         # fit a stationary gpd on the clusters and estimate the return level
         theta = nc / nu
         result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(peaks, u)
-        xm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 365 * theta, peaks)
+        xm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 90, winter_sample, theta)
         sigma, xi, _ = result_LL.getParameterDistribution().getMean()
         sigma_stddev, xi_stddev, _ = result_LL.getParameterDistribution().getStandardDeviation()
         print(f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})", end=" ")

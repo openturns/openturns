@@ -53,7 +53,7 @@ view = otv.View(graph)
 
 # %%
 # To support that choice, we draw the parameter stability plots.
-# We see tat the perturbations appear small relative to sampling errors. 
+# We see tat the perturbations appear small relative to sampling errors.
 # We can see that the change in pattern observed in the mean
 # residual life plot is still apparent here for high thresholds.
 # Hence, we choose the threshold :math:`u_s=30`.
