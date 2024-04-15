@@ -115,11 +115,14 @@ public:
                                      const String & normalizationMethod = ResourceMap::GetAsString("GeneralizedParetoFactory-NormalizationMethod")) const;
 
   /** Return level */
-  Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Sample & sample, const Scalar m, const Scalar theta = 1.0) const;
+  Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Sample & sample,
+                                         const Scalar m, const Scalar theta = 1.0) const;
 
   /** Return level via profiled likelihood */
-  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u, const Scalar m) const;
-  GeneralizedPareto buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u, const Scalar m) const;
+  ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample,
+                                                                     const Scalar u, const Scalar m, const Scalar theta = 1.0) const;
+  GeneralizedPareto buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u,
+                                                      const Scalar m, const Scalar theta = 1.0) const;
 
 private:
 

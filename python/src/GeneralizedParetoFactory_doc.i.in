@@ -807,6 +807,9 @@ m : float
     The :math:`m`-observation return period.
 u : float
     The location parameter
+theta : float, optional
+    When clustering is performed, this is the ratio :math:`\theta = \frac{n_c}{n_u}` of number
+    of clusters over number of exceedances, otherwise defaults to 1.
 
 Returns
 -------
@@ -841,6 +844,9 @@ sample : 2-d sequence of float
     A sample of dimension 1.
 u : float
     The location parameter
+theta : float, optional
+    When clustering is performed, this is the ratio :math:`\theta = \frac{n_c}{n_u}` of number
+    of clusters over number of exceedances, otherwise defaults to 1.
 
 Returns
 -------

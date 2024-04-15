@@ -1462,8 +1462,8 @@ private:
   OptimizationAlgorithm solver_;
 };
 
-ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample,
-                                                                                             const Scalar u, const Scalar m) const
+ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u,
+                                                                                             const Scalar m, const Scalar theta) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 3";
@@ -1481,7 +1481,8 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelih
       ++ k;
   if (!k)
     throw InvalidArgumentException(HERE) << "Return level estimation requires sample values > u";
-  const Scalar zeta = k * 1.0 / size;
+  const Scalar zeta_u = k * 1.0 / size;
+  const Scalar zeta = zeta_u * theta;
 
   // start from maximum likelihood
   const Distribution ref(buildMethodOfLikelihoodMaximization(sample, u));
@@ -1537,9 +1538,10 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelih
   return result;
 }
 
-GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u, const Scalar m) const
+GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u,
+                                                                              const Scalar m, const Scalar theta) const
 {
-  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, u, m).getDistribution());
+  const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, u, m, theta).getDistribution());
   return buildAsGeneralizedPareto(distribution.getParameter());
 }
 
