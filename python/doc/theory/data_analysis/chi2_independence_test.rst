@@ -51,7 +51,7 @@ Then a decision is made, either by comparing the test statistic to the theoretic
 :math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}}` and by comparing it to :math:`\alpha`):
 
 -  if :math:`d_{\sampleSize}^{(i)}>d_{\alpha}^{(i)}` (or equivalently
-   :math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}} \leq \alpha`),
+   :math:`\Prob{D_{\sampleSize}^{(i)} > d_{\sampleSize}^{(i)}} < \alpha`),
    then we reject the independence between the components,
 
 -  if :math:`d_{\sampleSize}^{(i)} \leq d_{\alpha}^{(i)}` (or equivalently
