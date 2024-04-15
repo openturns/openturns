@@ -111,15 +111,15 @@ private:
                                  const Point & variance) const;
                                  
   /** Constructor with distribution / model parameters */
-  RankSobolSensitivityAlgorithm(const Distribution & distribution,
-                                const UnsignedInteger size,
-                                const Function & model,
-                                const Bool computeSecondOrder = false){};
+  RankSobolSensitivityAlgorithm(const Distribution & ,
+                                const UnsignedInteger ,
+                                const Function & ,
+                                const Bool ){};
 
   /** Constructor with experiment / model parameters */
-  RankSobolSensitivityAlgorithm(const WeightedExperiment & experiment,
-                                const Function & model,
-                                const Bool computeSecondOrder = false){};
+  RankSobolSensitivityAlgorithm(const WeightedExperiment & ,
+                                const Function & ,
+                                const Bool ){};
                                
   /** void method that computes asymptotic distribution */
   void computeAsymptoticDistribution() const override {};

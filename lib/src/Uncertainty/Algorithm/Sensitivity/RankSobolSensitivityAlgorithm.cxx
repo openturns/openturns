@@ -363,12 +363,12 @@ Sample RankSobolSensitivityAlgorithm::computeIndices(const Sample & , Sample & )
 }
 
 
-SymmetricMatrix RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger marginalIndex) const
+SymmetricMatrix RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger) const
 {
  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const";
 }
 
-Point RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+Point RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger) const
 {
  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const";
 }
@@ -397,7 +397,7 @@ Distribution RankSobolSensitivityAlgorithm::getTotalOrderIndicesDistribution() c
 
 
 /** Method that draw  the sensitivity graph of a fixed marginal */
-Graph RankSobolSensitivityAlgorithm::draw(UnsignedInteger marginalIndex) const 
+Graph RankSobolSensitivityAlgorithm::draw(UnsignedInteger) const 
 {
  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::draw(UnsignedInteger marginalIndex) const ";
 }
