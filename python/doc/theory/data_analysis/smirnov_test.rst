@@ -55,7 +55,7 @@ by evaluating the p-value of the sample  defined as :math:`\Prob{D_{\sampleSize}
 it to :math:`\alpha`):
 
 -  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently
-   :math:`\Prob{D_{\sampleSize} >  d_{\sampleSize}} \leq \alpha`), then we reject the
+   :math:`\Prob{D_{\sampleSize} >  d_{\sampleSize}} < \alpha`), then we reject the
    null hypothesis according to which both samples are drawn from the same distribution,
 
 -  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently
