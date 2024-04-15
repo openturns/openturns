@@ -82,7 +82,7 @@ public:
   Point getAggregatedTotalOrderIndices() const override;
   
   /** Whether to use bootstrap or asymptotic distribution */
-  void setUseAsymptoticDistribution(Bool useAsymptoticDistribution) override {};
+  void setUseAsymptoticDistribution(Bool ) override {};
   Bool getUseAsymptoticDistribution() const override;
 
   /** Estimator distribution accessor */
