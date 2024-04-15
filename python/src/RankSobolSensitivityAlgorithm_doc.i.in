@@ -12,7 +12,7 @@ N : int
 
 Notes
 -----
-This method allows to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
+This method allows one to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
 
 Considering the input random vector :math:`\vect{X} = (X_1,\dots,X_{n_X})` and let :math:`\vect{Y} = (Y_1,\dots,Y_{n_Y})` be the output of the physical model:
 
