@@ -765,6 +765,9 @@ m : float
     The return period expressed in terms of number of observations.
 sample : 2-d sequence of float
     The same sample used for the likelihood estimation (to compute :math:`\zeta_u`).
+theta : float, optional
+    When clustering is performed, this is the ratio :math:`\theta = \frac{n_c}{n_u}` of number
+    of clusters over number of exceedances, otherwise defaults to 1.
 
 Returns
 -------
