@@ -163,7 +163,7 @@ Refer to :ref:`sensitivity_sobol`.
     ANCOVA
     FAST
     RankSobolSensitivityAlgorithm
-    
+
     :template: classWithPlot.rst_t
 
     SobolIndicesAlgorithm
@@ -171,7 +171,6 @@ Refer to :ref:`sensitivity_sobol`.
     SaltelliSensitivityAlgorithm
     JansenSensitivityAlgorithm
     MauntzKucherenkoSensitivityAlgorithm
-    
 
     :template: class.rst_t
 
