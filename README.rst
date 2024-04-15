@@ -4,6 +4,9 @@
 .. image:: https://github.com/openturns/openturns/actions/workflows/build.yml/badge.svg?branch=master
     :target: https://github.com/openturns/openturns/actions/workflows/build.yml
 
+.. image:: https://codecov.io/gh/openturns/openturns/graph/badge.svg?token=EczU7Uo18P
+    :target: https://codecov.io/gh/openturns/openturns
+
 .. image:: https://badges.gitter.im/openturns/community.svg
     :target: https://gitter.im/openturns/community
 

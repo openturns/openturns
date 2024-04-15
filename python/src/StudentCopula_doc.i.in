@@ -31,7 +31,7 @@ for :math:`(u_1, \cdots, u_n) \in [0, 1]^n`
 
 See also
 --------
-Student, SklarCopula
+openturns.Student, openturns.SklarCopula
 
 Examples
 --------

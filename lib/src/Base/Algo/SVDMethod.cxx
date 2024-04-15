@@ -111,7 +111,7 @@ void SVDMethod::update(const Indices& addedIndices,
     // Here we compute an economic SVD
     // thus in case of least squares (nr > nc)
     // the U is not orthogonal
-    singularValues_ = psiAk.computeSVD(u_, vT_, false, false); // fullSVD, keepIntact
+    singularValues_ = psiAk.computeSVDInPlace(u_, vT_, false); // fullSVD
 
     // check eigenvalues
     const UnsignedInteger svdSize = singularValues_.getSize();

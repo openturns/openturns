@@ -42,7 +42,7 @@ OT_UniVariatePolynomial_doc
 
 Returns
 -------
-derivated_polynomial : :class:`~openturns.Univariate`
+derivated_polynomial : :class:`~openturns.UniVariatePolynomial`
     The first-order derivated polynomial.
 
 Examples

@@ -160,7 +160,7 @@ void GraphImplementation::add(const Drawable & aDrawable)
   Drawable&drawable = drawablesCollection_[drawableCount];
   /* TODO: It would be more efficient to have a method to obtain the ith color from a palette */
   if (!drawable.getImplementation()->isColorExplicitlySet())
-    drawable.setColor(DrawableImplementation::BuildDefaultPalette(drawableCount + 1)[drawableCount]);
+    drawable.getImplementation()->setColor(DrawableImplementation::BuildDefaultPalette(drawableCount + 1)[drawableCount], false);
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
@@ -196,7 +196,7 @@ void GraphImplementation::setDrawables(const DrawableCollection & drawableCollec
   {
     Drawable & drawable = drawablesCollection_[i];
     if (!drawable.getImplementation()->isColorExplicitlySet())
-      drawable.setColor(palette[i]);
+      drawable.getImplementation()->setColor(palette[i], false);
   }
 }
 

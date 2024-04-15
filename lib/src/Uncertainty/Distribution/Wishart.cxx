@@ -244,7 +244,7 @@ Scalar Wishart::computeEntropy() const
 }
 
 /* Get the standard deviation of the distribution */
-Point Wishart::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Wishart::getStandardDeviation() const
 {
   const UnsignedInteger p = cholesky_.getDimension();
   Point sigma(getDimension());

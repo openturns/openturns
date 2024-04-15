@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -14,20 +15,9 @@ def cleanScalar(inScalar):
 #
 # Modele physique
 #
-
-inputFunction = ot.Description(2)
-inputFunction[0] = "x1"
-inputFunction[1] = "x2"
-
-outputFunction = ot.Description(1)
-outputFunction[0] = "g"
-
-formula = ot.Description(outputFunction.getSize())
-formula[0] = "if( x2 <= x1,-0.5+sqrt(x1-x2),-0.5 )"
-
-EtatLimite = ot.SymbolicFunction(inputFunction, outputFunction, formula)
-
-dim = EtatLimite.getInputDimension()
+formula = ["if( x2 <= x1,-0.5+sqrt(x1-x2),-0.5 )"]
+limitState = ot.SymbolicFunction(["x1", "x2"], formula)
+dim = limitState.getInputDimension()
 print(dim)
 
 #
@@ -55,7 +45,7 @@ Covariance = myDistribution.getCovariance()
 
 vect = ot.RandomVector(myDistribution)
 
-output = ot.RandomVector(EtatLimite, vect)
+output = ot.CompositeRandomVector(limitState, vect)
 
 myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
@@ -102,16 +92,21 @@ resultAR2 = myAlgoAR2.getResult()
 #
 # Monte Carlo
 CoV_MC = 0.5
-myMC = ot.MonteCarlo(myEvent)
+experiment = ot.MonteCarloExperiment()
+myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(10000000)
 myMC.setBlockSize(10000)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
+result = myMC.getResult()
+ott.assert_almost_equal(result.getProbabilityEstimate(), 5e-05)
 
 #
 # LHS
 CoV_LHS = 0.1
-myLHS = ot.LHS(myEvent)
+experiment = ot.LHSExperiment()
+experiment.setAlwaysShuffle(True)
+myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myLHS.setMaximumOuterSampling(100000)
 myLHS.setBlockSize(100)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)

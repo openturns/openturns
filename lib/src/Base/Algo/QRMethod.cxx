@@ -94,7 +94,7 @@ void QRMethod::update(const Indices & addedIndices,
       Matrix psiAk(computeWeightedDesign());
       const UnsignedInteger m = psiAk.getNbRows();
       const UnsignedInteger n = psiAk.getNbColumns();
-      q_ = psiAk.computeQR(r_, m < n, false);
+      q_ = psiAk.computeQRInPlace(r_, m < n);
     } // row modification
     else
     {
@@ -103,7 +103,7 @@ void QRMethod::update(const Indices & addedIndices,
       Matrix psiAk(computeWeightedDesign());
       const UnsignedInteger m = psiAk.getNbRows();
       const UnsignedInteger n = psiAk.getNbColumns();
-      q_ = psiAk.computeQR(r_, m < n, false);
+      q_ = psiAk.computeQRInPlace(r_, m < n);
     } // column modification
   } // Something has changed
 }

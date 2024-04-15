@@ -111,7 +111,7 @@ Scalar NegativeBinomial::computePDF(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
-  return std::exp(SpecFunc::LnGamma(k + r_) - SpecFunc::LnGamma(r_) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + r_ * log1p(-p_));
+  return std::exp(SpecFunc::LogGamma(k + r_) - SpecFunc::LogGamma(r_) - SpecFunc::LogGamma(k + 1.0) + k * std::log(p_) + r_ * log1p(-p_));
 }
 
 

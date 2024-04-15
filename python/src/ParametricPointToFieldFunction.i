@@ -8,10 +8,4 @@
 
 %include openturns/ParametricPointToFieldFunction.hxx
 
-namespace OT {
-%extend ParametricPointToFieldFunction {
-
-ParametricPointToFieldFunction(const ParametricPointToFieldFunction & other) { return new OT::ParametricPointToFieldFunction(other); }
-
-}}
-
+%copyctor OT::ParametricPointToFieldFunction;

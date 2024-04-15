@@ -13,8 +13,6 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
-specificParameters : :class:`~openturns.TNCSpecificParameters`
-    Parameters for this solver.
 scale : sequence of float
     Scaling factors to apply to each variables
 offset : sequence of float

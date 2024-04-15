@@ -69,21 +69,11 @@ public:
    * @see Catalog
    * @internal
    */
-  void registerMe(const String & className) const
-  {
-    Catalog::Add(className, this);
-  }
+  void registerMe(const String & className) const;
 
   /** Accessor to PersistentObject's shadowed id */
-  void setShadowedId(PersistentObject & obj, Id id) const
-  {
-    obj.setShadowedId(id);
-  }
-
-  Id getShadowedId(PersistentObject & obj) const
-  {
-    return obj.getShadowedId();
-  }
+  void setShadowedId(PersistentObject & obj, Id id) const;
+  Id getShadowedId(PersistentObject & obj) const;
 
 protected:
 

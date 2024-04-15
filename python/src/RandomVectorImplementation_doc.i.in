@@ -13,7 +13,7 @@ A :class:`~openturns.RandomVector` provides at least a way to generate realizati
 See also
 --------
 UsualRandomVector, CompositeRandomVector, ConditionalRandomVector,
-ConstantRandomVector, FunctionalChaosRandomVector, Event,
+ConstantRandomVector, FunctionalChaosRandomVector, ThresholdEvent,
 PythonRandomVector"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation
@@ -211,7 +211,7 @@ realizations : :class:`~openturns.Sample`
 
 See also
 --------
-getRealization
+openturns.RandomVector.getRealization
 
 Examples
 --------
@@ -250,8 +250,8 @@ realization : :class:`~openturns.Point`
 
 See also
 --------
-getRealization
-getFrozenSample
+openturns.RandomVector.getRealization
+openturns.RandomVector.getFrozenSample
 
 Examples
 --------
@@ -291,8 +291,8 @@ sample : :class:`~openturns.Sample`
 
 See also
 --------
-getSample
-getFrozenRealization
+openturns.RandomVector.getSample
+openturns.RandomVector.getFrozenRealization
 
 Examples
 --------
@@ -382,7 +382,7 @@ OT_RandomVector_setDescription_doc
 
 Returns
 -------
-aRealization : :class:`~openturns.Point`
+realization : :class:`~openturns.Point`
     Sequence of values randomly determined from the RandomVector definition.
     In the case of an event: one realization of the event (considered as a
     Bernoulli variable) which is a boolean value (1 for the realization of the
@@ -390,7 +390,7 @@ aRealization : :class:`~openturns.Point`
 
 See also
 --------
-getSample
+openturns.RandomVector.getSample
 
 Examples
 --------

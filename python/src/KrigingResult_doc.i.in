@@ -113,7 +113,7 @@ covCoeff : :class:`~openturns.Sample`
 
 Returns
 -------
-trendCoef : sequence of float
+trendCoef : :class:`~openturns.Point`
     The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
 "
 

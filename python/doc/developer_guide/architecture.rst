@@ -247,6 +247,8 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Sphinx extension (optional for doc)   | `sphinxcontrib.jquery <https://github.com/sphinx-contrib/jquery/>`_             | 4.1               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
@@ -277,8 +279,6 @@ We would like to acknowledge the following codes that are included into the libr
 | FFT                                   | `KissFFT <https://github.com/mborgerding/kissfft>`_                             |
 +---------------------------------------+---------------------------------------------------------------------------------+
 | KS distribution                       | `KolmogorovSmirnovDist <https://www.jstatsoft.org/article/view/v039i11>`_       |
-+---------------------------------------+---------------------------------------------------------------------------------+
-| Poisson inverse CDF                   | `poissinv <http://people.maths.ox.ac.uk/gilesm/codes/poissinv/>`_               |
 +---------------------------------------+---------------------------------------------------------------------------------+
 | Optimization                          | `TNC <http://js2007.free.fr/code/index.html#TNC>`_                              |
 +---------------------------------------+---------------------------------------------------------------------------------+

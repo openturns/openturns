@@ -324,12 +324,16 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
     LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, final quantile=" << quantile);
     return quantile;
   }
+  oldCDF = cdf;
   while (cdf < prob)
   {
     quantile += step;
+    oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
     LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, forward search, quantile=" << quantile << ", cdf=" << cdf);
   }
+  if (cdf >= oldCDF)
+    quantile -= step;
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, final quantile=" << quantile);
   return quantile;
 }

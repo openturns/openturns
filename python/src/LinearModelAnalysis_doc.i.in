@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearModelAnalysis
 "Analyse a linear model.
 
-Available constructors:
-    LinearModelAnalysis(linearModelResult)
-
 Parameters
 ----------
 linearModelResult : :class:`~openturns.LinearModelResult`
@@ -15,13 +12,37 @@ LinearModelResult
 
 Notes
 -----
-This class relies on a linear model result structure and performs diagnostic 
-of linearity. This diagnostic mainly relies on graphics and a `summary` like
-function (pretty-print)
+This class relies on a linear model result structure and analyses the results.
 
 By default, on graphs, labels of the 3 most significant points are displayed.
 This number can be changed by modifying the ResourceMap key
 (``LinearModelAnalysis-Identifiers``).
+
+The class has a pretty-print method which is triggered by
+the `print()` function.
+This prints the following results, where we focus on the properties
+of a satisfactory regression model.
+
+- Each row of the table of coefficients tests if one single coefficient is zero.
+  For a single coefficient, if the p-value of the T-test is close to zero,
+  we can reject the hypothesis that this coefficient is zero.
+- The R2 score measures how the predicted output values are close to the
+  observed values.
+  If the R2 is close to 1 (e.g. larger than 0.95), then the predictions are
+  accurate on average.
+  Furthermore, the adjusted R2 value takes into account the data set
+  size and the number of hyperparameters.
+- The F-test tests if all the coefficients are simultaneously zero.
+  If the p-value is close to zero, then we can reject this hypothesis:
+  there is at least one nonzero coefficient.
+- The normality test checks that the residuals have a normal distribution.
+  The normality assumption can be accepted (or, more precisely, cannot be
+  rejected) if the p-value is larger than a threshold (e.g. 0.05).
+
+The essentials of regression theory are presented in :ref:`regression_analysis`.
+The goodness of fit tests for normality are presented in :ref:`graphical_fitting_test`, 
+:ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`  and
+:ref:`anderson_darling_test`.
 
 Examples
 --------
@@ -34,7 +55,7 @@ Examples
 >>> algo = ot.LinearModelAlgorithm(Ysample, Xsample)
 >>> result = algo.getResult()
 >>> analysis = ot.LinearModelAnalysis(result)
-"
+>>> # print(analysis)  # Pretty-print"
 
 // ---------------------------------------------------------------------
 
@@ -79,7 +100,7 @@ confidenceInterval : :class:`~openturns.Interval`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getFisherScore
-"Accessor to the Fisher test.
+"Accessor to the Fisher statistics.
 
 Returns
 -------
@@ -98,9 +119,38 @@ fisherPValue : float
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LinearModelAnalysis::getResidualsStandardError
+"Accessor to the standard error of the residuals.
+
+Returns
+-------
+stdError : float
+    This is the unbiased estimator :math:`\hat{\sigma}` of the standard deviation
+    of the Gaussian observation error of the observed output.
+
+Notes
+-----
+The standard error of the residuals is the *root mean squared error* (also
+called *standard error of regression*), estimated as:
+
+.. math::
+    \widehat{\sigma} = \sqrt{\frac{1}{\operatorname{dof}} SSE}
+
+where :math:`\operatorname{dof}` is the number of degrees of freedom
+and :math:`SSE` is the sum of squared errors:
+
+.. math::
+    SSE = \sum_{i = 1}^n (y_i - \widehat{y}_i)^2
+
+where :math:`\{y_i\}_{i = 1, ..., n}` are the observations and
+:math:`\{\widehat{y}_i\}_{i = 1, ..., n}` are the predictions from the linear model.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultChiSquared
 "Performs Chi-Square test.
-The statistical test checks the Gaussian assumption of the model (null hypothesis).
+The statistical test checks the Gaussian assumption of the residuals.
 
 Returns
 -------
@@ -121,7 +171,7 @@ the :meth:`~openturns.FittingTest.ChiSquared` to check the normality.
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov
 "Performs Kolmogorov test.
 
-Performs Kolmogorov test to check Gaussian assumption of the model (null hypothesis).
+Performs Kolmogorov test to check Gaussian assumption of the residuals.
 
 Returns
 -------
@@ -131,13 +181,13 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.FittingTest::Kolmogorov`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.FittingTest.Kolmogorov`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultAndersonDarling
 "Performs Anderson-Darling test.
-The statistical test checks the Gaussian assumption of the model (null hypothesis).
+The statistical test checks the Gaussian assumption of the residuals.
 
 Returns
 -------
@@ -147,7 +197,7 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::AndersonDarling`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`."
 
 // ---------------------------------------------------------------------
 
@@ -164,7 +214,7 @@ testResult : :class:`~openturns.TestResult`
 
 Notes
 -----
-We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::CramerVonMisesNormal`."
+We check that the residual is Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`."
 
 // ---------------------------------------------------------------------
 

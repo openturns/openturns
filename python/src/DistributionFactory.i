@@ -13,11 +13,4 @@ OTTypedCollectionInterfaceObjectHelper(DistributionFactory)
 
 %include openturns/DistributionFactory.hxx
 
-namespace OT {
-
-%extend DistributionFactory {
-
-DistributionFactory(const DistributionFactory & other) { return new OT::DistributionFactory(other); }
-
-}
-}
+%copyctor OT::DistributionFactory;

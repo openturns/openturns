@@ -116,6 +116,6 @@ startingPoint : :class:`~openturns.Point`
 
 Returns
 -------
-name : :class:`~openturns.String`
+name : str
     Name of least-squares method used for the resolution."
 

@@ -6,7 +6,7 @@ Create a Bayes distribution
 # In this example we are going to build the distribution of the random vector
 #
 # .. math::
-#    ( \underline{X}|\underline{\Theta}, \underline{Y})
+#    (\underline{Y}, \underline{X}|\underline{\Theta})
 #
 # with X conditioned by the random variable Theta obtained with the random variable Y through a function f
 #

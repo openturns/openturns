@@ -116,7 +116,7 @@ axes : bool
 
 Returns
 -------
-coll : :class:`~openturns.Collection` of :class:`~openturns.Graph`
+coll : Collection of :class:`~openturns.Graph`
     The graphs stored into the :class:`~openturns.GridLayout`."
 
 // ---------------------------------------------------------------------

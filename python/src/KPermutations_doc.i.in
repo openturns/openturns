@@ -17,7 +17,7 @@ n : integer
 
 See also
 --------
-CombinatorialGenerator, Combinations, Tuples
+KPermutationsDistribution, CombinatorialGenerator, Combinations, Tuples
 
 Notes
 -----

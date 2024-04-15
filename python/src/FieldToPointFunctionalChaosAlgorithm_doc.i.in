@@ -22,7 +22,7 @@ that fully characterize the output vector :math:`\vect{Y}`
 
 The linear projection function :math:`\pi_{ \vect{\lambda}, \vect{\varphi}}` of
 the Karhunen-Loeve decomposition by SVD is used to project the input fields,
-see :class:`~openturns.KarhunenLoeveSVDAlgorithm` and :class:`~openturns.KarhunenLoeveAlgorithm` for the notations.
+see :class:`~openturns.KarhunenLoeveSVDAlgorithm` for the notations.
 
 .. math::
     \pi_{\vect{\lambda}, \vect{\varphi}}: \left|
@@ -93,7 +93,9 @@ y : :class:`~openturns.Sample`
 
 See also
 --------
-FieldFunctionalChaosSobolIndices, KarhunenLoeveAlgorithm, FunctionalChaosAlgorithm
+openturns.experimental.FieldFunctionalChaosSobolIndices
+openturns.KarhunenLoeveAlgorithm
+openturns.FunctionalChaosAlgorithm
 
 Notes
 -----
@@ -180,7 +182,7 @@ It computes the response surfaces and creates a
 
 Returns
 -------
-result : :class:`~openturns.FieldFunctionalChaosResult`
+result : :class:`openturns.experimental.FieldFunctionalChaosResult`
     Result class."
 
 // ---------------------------------------------------------------------

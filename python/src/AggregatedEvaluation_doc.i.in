@@ -1,9 +1,6 @@
 %feature("docstring") OT::AggregatedEvaluation
 "Aggregated numerical math evaluation implementation.
 
-Available constructors:
-    AggregatedEvaluation(*functionsCollection*)
-
 Parameters
 ----------
 functionsCollection : sequence of :class:`~openturns.Function`

@@ -36,13 +36,13 @@
 #ifdef OPENTURNS_HAVE_BOOST
 
 #include <boost/math/distributions/hypergeometric.hpp>
+#include <boost/math/distributions/poisson.hpp>
 
 #endif
 
 // The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
 #include "KolmogorovSmirnovDist.h"
-// The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
-#include "poissinv_cpu.h"
+
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/OTconfig.hxx"
 
@@ -885,7 +885,7 @@ Scalar DistFunc::dNonCentralChiSquare(const Scalar nu,
   if (x <= 0.0) return 0.0;
   const Scalar halfNu = 0.5 * nu;
   // Early exit for lambda == 0, central ChiSquare PDF
-  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
+  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LogGamma(halfNu) - halfNu * M_LN2);
   // Case lambda <> 0
   const Scalar halfLambda = 0.5 * lambda;
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
@@ -1432,21 +1432,27 @@ Scalar DistFunc::dPoisson(const Scalar lambda,
   return std::exp(-SpecFunc::Stirlerr(k) - bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
 }
 
-/* Quantile function
-   We use the algorithm described in:
-   Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf or http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf
-   It is the Author's implementation, used in OpenTURNS with his written permission, see COPYING.poissinv
-*/
+/* Poisson Quantile function */
 Scalar DistFunc::qPoisson(const Scalar lambda,
                           const Scalar p,
                           const Bool tail)
 {
-  Scalar r = tail ? 1.0 - p : p;
-  if (r <= SpecFunc::MinScalar) r = SpecFunc::MinScalar;
-  if (r >= 1.0 - SpecFunc::ScalarEpsilon) r = 1.0 - SpecFunc::ScalarEpsilon;
-  // We use the scalar version
-  return poissinv_scalar(r, lambda);
+  if ((!tail && (p <= 0.0)) || (tail && (p > 1.0 - SpecFunc::ScalarEpsilon))) return 0.0;
+  const Scalar cp = std::min(std::max(p, SpecFunc::MinScalar), 1.0 - SpecFunc::ScalarEpsilon);
+#ifdef OPENTURNS_HAVE_BOOST
+  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_up;
+  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_down;
+  if (tail)
+    return boost::math::quantile(complement(boost::math::poisson_distribution<Scalar, integer_round_down >(lambda), cp));
+  else
+    return boost::math::quantile(boost::math::poisson_distribution<Scalar, integer_round_up >(lambda), cp);
+#else
+  const Scalar q = std::floor(SpecFunc::RegularizedIncompleteGammaInverse(lambda, cp, tail));
+  const Scalar pq = pGamma(q + 1.0, lambda, !tail);
+  return ((!tail && (pq < p)) || (tail && (pq > p))) ? (q + 1.0) : q;
+#endif
 }
+
 /* Random number generation
    For the small values of lambda, we use the method of inversion by sequential search described in:
    Luc Devroye, "Non-Uniform RandomVariate Generation", Springer-Verlag, 1986, available online at:
@@ -1478,7 +1484,7 @@ UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
   const Scalar hatCenter = lambda + 0.5;
   const Scalar mode = floor(lambda);
   const Scalar logLambda = std::log(lambda);
-  const Scalar pdfMode = mode * logLambda - SpecFunc::LnGamma(mode + 1.0);
+  const Scalar pdfMode = mode * logLambda - SpecFunc::LogGamma(mode + 1.0);
   // 2.943035529371538572764190 = 8 / e
   // 0.898916162058898740826254 = 3 - 2 sqr(3 / e)
   const Scalar hatWidth = std::sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254;
@@ -1489,7 +1495,7 @@ UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
     const Scalar x = hatCenter + hatWidth * (RandomGenerator::Generate() - 0.5) / u;
     if (x < 0 || x >= safetyBound) continue;
     const UnsignedInteger k = static_cast< UnsignedInteger >(floor(x));
-    const Scalar logPdf = k * logLambda - SpecFunc::LnGamma(k + 1.0) - pdfMode;
+    const Scalar logPdf = k * logLambda - SpecFunc::LogGamma(k + 1.0) - pdfMode;
     // Quick acceptance
     if (logPdf >= u * (4.0 - u) - 3.0) return k;
     // Quick rejection

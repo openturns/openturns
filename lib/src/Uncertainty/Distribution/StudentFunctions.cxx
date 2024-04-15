@@ -438,8 +438,8 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // The initialization corresponds to the terme of index k.
   const Scalar commonExponent = -halfDelta2 + k * logHalfDelta2;
   LOGDEBUG(OSS() << "commonExponent=" << commonExponent);
-  Scalar pForward = 0.5 * std::exp(commonExponent - SpecFunc::LnGamma(k + 1));
-  Scalar qForward = 0.5 * del / M_SQRT2 * std::exp(commonExponent - SpecFunc::LnGamma(k + 1.5));
+  Scalar pForward = 0.5 * std::exp(commonExponent - SpecFunc::LogGamma(k + 1));
+  Scalar qForward = 0.5 * del / M_SQRT2 * std::exp(commonExponent - SpecFunc::LogGamma(k + 1.5));
   LOGDEBUG(OSS() << "pForward=" << pForward << ", qForward=" << qForward);
   Scalar betaPForward = DistFunc::pBeta(k + 0.5, halfNu, xi);
   Scalar betaQForward = DistFunc::pBeta(k + 1, halfNu, xi);
@@ -448,12 +448,12 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // the corresponding betaP and betaQ factors to go to the value associated with the current iteration.
   // They are thus initialized such that after one update, they will change the betaP and betaQ factors
   // to their values associated with the iteration (k-1):
-  const Scalar commonFactor = (k - 0.5) * logXi + halfNu * std::log(nu / (nu + x2)) - SpecFunc::LnGamma(halfNu);
+  const Scalar commonFactor = (k - 0.5) * logXi + halfNu * std::log(nu / (nu + x2)) - SpecFunc::LogGamma(halfNu);
   LOGDEBUG(OSS() << "commonFactor=" << commonFactor);
   // correctionBetaPForward = Gamma(k - 1/2 + nu/2) / Gamma(k + 1/2) / Gamma(nu/2) * xi^(k - 1/2) * (1 - xi)^(nu/2)
-  Scalar correctionBetaPForward = -std::exp(SpecFunc::LnGamma(k - 0.5 + halfNu) - SpecFunc::LnGamma(k + 0.5) + commonFactor);
+  Scalar correctionBetaPForward = -std::exp(SpecFunc::LogGamma(k - 0.5 + halfNu) - SpecFunc::LogGamma(k + 0.5) + commonFactor);
   // correctionBetaPForward = Gamma(k + nu/2) / Gamma(k + 1) / Gamma(nu/2) * xi^k * (1 - xi)^(nu/2)
-  Scalar correctionBetaQForward = -std::exp(SpecFunc::LnGamma(k + halfNu) - SpecFunc::LnGamma(k + 1) + commonFactor + 0.5 * logXi);
+  Scalar correctionBetaQForward = -std::exp(SpecFunc::LogGamma(k + halfNu) - SpecFunc::LogGamma(k + 1) + commonFactor + 0.5 * logXi);
   LOGDEBUG(OSS() << "correctionBetaPForward=" << correctionBetaPForward << ", correctionBetaQForward=" << correctionBetaQForward);
   Scalar pBackward = pForward;
   Scalar qBackward = qForward;
@@ -540,8 +540,8 @@ Scalar NonCentralStudentPDF(const Scalar nu,
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
-  if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
-  if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
+  if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
+  if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
   return std::max(0.0, nu / x * (NonCentralStudentCDF(nu + 2, delta, x * std::sqrt(1.0 + 2.0 / nu)) - NonCentralStudentCDF(nu, delta, x)));
 }
 
@@ -570,7 +570,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
-  if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
+  if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
   // Case delta <> 0
 #ifdef OPENTURNS_HAVE_BOOST
   (void) maximumIteration;
@@ -578,9 +578,9 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
 #else
   const Scalar halfNu = 0.5 * nu;
   const Scalar halfNup1_2 = halfNu + 0.5;
-  const Scalar logConstant = -0.5 * delta * delta - SpecFunc::LnGamma(halfNu) - 0.5 * std::log(M_PI * nu);
+  const Scalar logConstant = -0.5 * delta * delta - SpecFunc::LogGamma(halfNu) - 0.5 * std::log(M_PI * nu);
   // Early exit for x == 0
-  if (std::abs(x) < precision) return std::exp(logConstant + SpecFunc::LnGamma(halfNup1_2));
+  if (std::abs(x) < precision) return std::exp(logConstant + SpecFunc::LogGamma(halfNup1_2));
   // For x <> 0
   const Scalar x2 = x * x;
   const Scalar w = 1.0 / (nu + x2);
@@ -604,8 +604,8 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   // Loop forward and backward starting from k
   // Initialization
   const Scalar kLogZ = k * std::log(z);
-  Scalar pForwardEven = std::exp(logFactor + SpecFunc::LnGamma(halfNup1_2 + k) - SpecFunc::LnGamma(2 * k + 1) + kLogZ);
-  Scalar pForwardOdd = omega * std::exp(logFactor + SpecFunc::LnGamma(halfNu + k + 1) - SpecFunc::LnGamma(2 * k + 2) + kLogZ);
+  Scalar pForwardEven = std::exp(logFactor + SpecFunc::LogGamma(halfNup1_2 + k) - SpecFunc::LogGamma(2 * k + 1) + kLogZ);
+  Scalar pForwardOdd = omega * std::exp(logFactor + SpecFunc::LogGamma(halfNu + k + 1) - SpecFunc::LogGamma(2 * k + 2) + kLogZ);
   Scalar pBackwardEven = pForwardEven;
   Scalar pBackwardOdd = pForwardOdd;
   Scalar value = pForwardOdd + pForwardEven;

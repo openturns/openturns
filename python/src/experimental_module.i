@@ -78,8 +78,6 @@
 %include PosteriorDistribution.i
 
 // duplicate helpers
-OTTypedInterfaceObjectHelper(WeightedExperiment)
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
-OTTypedCollectionInterfaceObjectHelper(WeightedExperiment)
 %include SmolyakExperiment.i
 %include GeneralizedExtremeValueValidation.i

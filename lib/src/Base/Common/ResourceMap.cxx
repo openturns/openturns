@@ -1435,7 +1435,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+  
+  // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
+  addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
+  addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
+  addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
