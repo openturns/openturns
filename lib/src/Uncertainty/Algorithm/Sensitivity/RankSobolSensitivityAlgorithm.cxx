@@ -357,7 +357,7 @@ Point RankSobolSensitivityAlgorithm::getAggregatedFirstOrderIndices() const
 
 /** Methods of base class that are not yet implemented **/
 
-Sample RankSobolSensitivityAlgorithm::computeIndices(const Sample & sample, Sample & VTi) const
+Sample RankSobolSensitivityAlgorithm::computeIndices(const Sample & , Sample & ) const
 {
  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::computeIndices(const Sample & sample, Sample & VTi) const";
 }
