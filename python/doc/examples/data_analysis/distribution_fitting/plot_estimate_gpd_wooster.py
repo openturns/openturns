@@ -113,7 +113,7 @@ for u in [-10.0, -20.0]:
         # fit a stationary gpd on the clusters and estimate the return level
         theta = nc / nu
         result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(peaks, u)
-        xm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 90, winter_sample, theta)
+        xm_100 = factory.buildReturnLevelEstimator(result_LL, winter_sample, 100.0 * 90, theta)
         sigma, xi, _ = result_LL.getParameterDistribution().getMean()
         sigma_stddev, xi_stddev, _ = result_LL.getParameterDistribution().getStandardDeviation()
         print(f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})", end=" ")

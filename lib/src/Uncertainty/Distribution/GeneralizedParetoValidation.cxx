@@ -75,7 +75,7 @@ Graph GeneralizedParetoValidation::drawReturnLevel() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Scalar mi = rlData(i, 0);
-    const Distribution zDistribution(factory.buildReturnLevelEstimator(result_, mi, sample_));
+    const Distribution zDistribution(factory.buildReturnLevelEstimator(result_, sample_, mi));
     const Interval zCI(zDistribution.computeBilateralConfidenceInterval(confidenceLevel_));
     rlCILO(i, 0) = zCI.getLowerBound()[0];
     rlCIUP(i, 0) = zCI.getUpperBound()[0];

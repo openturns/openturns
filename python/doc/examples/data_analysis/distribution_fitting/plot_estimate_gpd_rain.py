@@ -149,14 +149,14 @@ except Exception as ex:
 # corresponds to :math:`m=10*365` and the 100-year return level corresponds to :math:`m=100*365`.
 #
 # The method also provides the asymptotic distribution of the estimator :math:`\hat{z}_m`.
-zm_10 = factory.buildReturnLevelEstimator(result_LL, 10.0 * 365, sample)
+zm_10 = factory.buildReturnLevelEstimator(result_LL, sample, 10.0 * 365)
 return_level_10 = zm_10.getMean()
 print("Maximum log-likelihood function : ")
 print(f"10-year return level = {return_level_10}")
 return_level_ci10 = zm_10.computeBilateralConfidenceInterval(0.95)
 print(f"CI = {return_level_ci10}")
 
-zm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 365, sample)
+zm_100 = factory.buildReturnLevelEstimator(result_LL, sample, 100.0 * 365)
 return_level_100 = zm_100.getMean()
 print(f"100-year return level = {return_level_100}")
 return_level_ci100 = zm_100.computeBilateralConfidenceInterval(0.95)

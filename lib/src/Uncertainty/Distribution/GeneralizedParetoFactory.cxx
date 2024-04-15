@@ -1275,8 +1275,8 @@ TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & samp
 
 
 /* Return level */
-Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const DistributionFactoryResult & result,
-                                                                 const Scalar m, const Sample & sample, const Scalar theta) const
+Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const DistributionFactoryResult & result, const Sample & sample,
+                                                                 const Scalar m, const Scalar theta) const
 {
   // see coles2001 4.3.3 p81
   if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedPareto")

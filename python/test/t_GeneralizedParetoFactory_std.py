@@ -117,7 +117,7 @@ graph_param = estimator_timevar.drawParameterFunction(0)
 graph_quantile = estimator_timevar.drawQuantileFunction(0.99)
 
 # specific check for return level, see coles2001 p86
-xm = factory.buildReturnLevelEstimator(estimator_mle, 100.0 * 365.0, sample)
+xm = factory.buildReturnLevelEstimator(estimator_mle, sample, 100.0 * 365.0)
 print("xm=", xm)
 ott.assert_almost_equal(xm.getMean(), [106.284], 1e-2, 1e-2)
 ott.assert_almost_equal(xm.getCovariance()[0, 0], 433.145, 1e-2, 1e-2)
