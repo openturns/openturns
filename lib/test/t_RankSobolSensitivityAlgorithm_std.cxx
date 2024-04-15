@@ -49,15 +49,10 @@ int main()
     marginals[2] = Uniform(-1.0, 1.0);
     //     marginals[2].setDescription("Marginal 3");
     JointDistribution maDistribution(JointDistribution(marginals, IndependentCopula(inputDimension)));
-
-
-    const UnsignedInteger size = 250;
-    const UnsignedInteger nr_bootstrap = 100;
-    const Scalar confidence_level = 0.95;
-     
+    
+    const UnsignedInteger size = 250;  
     const Sample inputDesign(maDistribution.getSample(size));
-    const Sample outputDesign(model(inputDesign));
-      
+    const Sample outputDesign(model(inputDesign)); 
     RankSobolSensitivityAlgorithm rankAlgorithm(inputDesign, outputDesign, size);
     
     const Point firstOrderIndices(rankAlgorithm.getFirstOrderIndices());
