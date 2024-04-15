@@ -20,30 +20,30 @@ As a result, Sobol' indices can be obtained analytically from the
 coefficients of the PCE (see [sudret2006]_, [sudret2008]_).
 
 Consider the input random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)`
-and the output random variable :math:`Y` of the physical model:
+:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)`
+and the output random variable :math:`Y` of the model:
 
 .. math::
-    Y = \operatorname{g}(\vect{X}).
+    Y =  \model(\inputRV).
 
 Variance and part of variance of a PCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`n_X` be the dimension of the input random vector.
+Let :math:`d` be the dimension of the input random vector.
 Let :math:`P \in \Nset` be the number of coefficients in the functional
 basis.
-Let :math:`\mathcal{J}_P \subseteq \Nset^{n_X}` the set of multi-indices up
+Let :math:`\mathcal{J}_P \subseteq \Nset^{\inputDim}` the set of multi-indices up
 to the index :math:`P`.
 Depending on the way the coefficients are computed, the set of multi-indices
 is the consequence of the choice of the polynomial degree, the enumeration rule,
 and, if necessary, the selection method (e.g. the LARS selection method).
-Let :math:`\tilde{h}(\bdZ)` be the polynomial chaos expansion:
+Let :math:`\metaModel(\standardRV)` be the polynomial chaos expansion:
 
 .. math::
-    \tilde{h}(\bdZ)
-    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\bdZ)
+    \tilde{h}(\standardRV)
+    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\standardRV)
 
-where :math:`\bdZ` is the standardized input random vector,
+where :math:`\standardRV` is the standardized input random vector,
 :math:`\{a_\idx\}_{\idx \in \mathcal{J}_P}` are the coefficients
 and :math:`\{\psi_\idx\}_{\idx \in \mathcal{J}_P}` are the functions in the
 functional basis.
@@ -51,7 +51,7 @@ functional basis.
 The variance of the polynomial chaos expansion is:
 
 .. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
+    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
 
 In the previous expression, let us emphasise that the variance is a sum
 of squares, excepted the :math:`a_0` coefficient.
@@ -59,13 +59,13 @@ If the polynomial basis is orthonormal, the expression is particularly
 simple (see [legratiet2017]_ eq. 38.43 page 1301):
 
 .. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
+    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
 
 The part of variance of the multi-index :math:`\idx` is:
 
 .. math::
     \operatorname{PoV}_\idx
-    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\standardRV)}}.
 
 The sum of the part of variances of all multi-indices is equal to 1:
 
@@ -92,7 +92,7 @@ to the multi-indices :math:`\mathcal{J}^S`, defined by:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\metaModel(\standardRV)}}.
 
 Then any Sobol' index :math:`S` can be defined by the equation:
 
@@ -103,7 +103,7 @@ If the polynomial basis is orthonormal, therefore:
 
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\metaModel(\standardRV)}}.
 
 
 Hence, in the methods presented below, each Sobol' index is defined
@@ -116,7 +116,7 @@ First order Sobol' index of a single variable
 
 See :ref:`reliability_sensitivity_first_order_variable` for the
 mathematical definition of this sensitivity index.
-Let :math:`i \in \{0, ..., n_X - 1\}` the index of an input
+Let :math:`i \in \{0, ..., \inputDim - 1\}` the index of an input
 variable.
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
 :math:`\alpha_i > 0` and the other components of the multi-indices are
@@ -145,7 +145,7 @@ Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
 
 .. math::
     \mathcal{J}_i^T
-    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{n_X - 1}) \in \mathcal{J}_P, \quad
+    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{\inputDim - 1}) \in \mathcal{J}_P, \quad
     \alpha_i > 0 \right\}.
 
 Therefore, the total Sobol' index :math:`S^T_i` is:
@@ -160,7 +160,7 @@ Interaction Sobol' index of a group of variables
 
 See :ref:`reliability_sensitivity_interaction_group` for the
 mathematical definition of this sensitivity index.
-Let :math:`\bdu \subseteq \{0, ..., n_X - 1\}` the list of variable indices
+Let :math:`\bdu \subseteq \{0, ..., \inputDim - 1\}` the list of variable indices
 in the group.
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
@@ -170,7 +170,7 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
     \quad \idx \neq \boldsymbol{0}, \quad
     \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
     \alpha_i = 0 \textrm{ if } i \not \in \bdu, \quad
-    i = 1, \ldots, n_X \right\}.
+    i = 1, \ldots, \inputDim \right\}.
 
 Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is:
 
@@ -190,7 +190,7 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
     \mathcal{J}_\bdu^{T, i}
     = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, \quad
     \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
-    i = 1, \ldots, n_X \right\}.
+    i = 1, \ldots, \inputDim \right\}.
 
 Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is:
 
@@ -212,7 +212,7 @@ each component of :math:`\idx` is contained in the group :math:`\bdu`:
     = \left\{\idx \in \mathcal{J}_P, \quad
       \idx \neq \boldsymbol{0}, \quad \alpha_i = 0 \quad \textrm{ if } \quad
       i \not \in \bdu, \quad
-      i = 1, \ldots, n_X \right\}.
+      i = 1, \ldots, \inputDim \right\}.
 
 Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu`
 is:
@@ -233,7 +233,7 @@ Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 .. math::
     \mathcal{J}_\bdu^T
     = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad
-      \exists i \in \{1, \ldots, n_X\} \quad
+      \exists i \in \{1, \ldots, \inputDim\} \quad
       \textrm{s.t.}  \quad i \in \bdu \textrm{ and } \alpha_i > 0 \right\}.
 
 Therefore, the total Sobol' index :math:`S^T_\bdu` is:
@@ -248,21 +248,21 @@ Summary
 
 The next table presents the multi-indices involved in each Sobol' index.
 
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Single variable or group            | Sensitivity Index    | Multi-indices                                                                                                            |
-+=====================================+======================+==========================================================================================================================+
-| One single variable :math:`i`       | First order          | :math:`\alpha_j > 0 \textrm{ if } j = i, \textrm{ and } \alpha_j = 0 \textrm{ if } j \neq i, \quad j=1, \ldots, n_X`     |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                     | Total                | :math:`\alpha_i > 0`                                                                                                     |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Interaction of a group :math:`\bdu` | First order          | :math:`\alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu`                          |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                     | Total interaction    | :math:`\alpha_i >0 \textrm{ if } i \in \bdu`                                                                             |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Group (closed) :math:`\bdu`         | First order (closed) | :math:`\alpha_i = 0 \textrm{ if } i \not\in \bdu, \quad i = 1, \ldots, n_X`                                              |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                     | Total                | :math:`\exists i\in\{1,\ldots, n_X\} \quad \textrm{s.t.} \quad i \in \bdu \textrm{ and } \alpha_i > 0`                   |
-+-------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+| Single variable or group           | Sensitivity Index   | Multi-indices                                                                                                             |
++====================================+=====================+===========================================================================================================================+
+| One single variable :math:`i`      | First order         | :math:`\alpha_j > 0 \textrm{ if } j = i, \textrm{ and } \alpha_j = 0 \textrm{ if } j \neq i, \quad j=1, \ldots, \inputDim`|
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+|                                    | Total               | :math:`\alpha_i > 0`                                                                                                      |
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+| Interaction of a group :math:`\bdu`| First order         | :math:`\alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu`                           |
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+|                                    | Total interaction   | :math:`\alpha_i >0 \textrm{ if } i \in \bdu`                                                                              |
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+| Group (closed) :math:`\bdu`        | First order (closed)| :math:`\alpha_i = 0 \textrm{ if } i \not\in \bdu, \quad i = 1, \ldots, \inputDim`                                         |
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+|                                    | Total               | :math:`\exists i\in\{1,\ldots, \inputDim\} \quad \textrm{s.t.} \quad i \in \bdu \textrm{ and } \alpha_i > 0`              |
++------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
 
 **Table 1.** Multi-indices involved in the first order and total Sobol' indices of a single variable :math:`i` or a group :math:`\bdu`.
 

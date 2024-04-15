@@ -3,60 +3,63 @@
 Akaike Information Criterion (AIC)
 ----------------------------------
 
-This method deals with the modelling of a probability distribution of a
-random variable :math:`X`. It seeks to rank variable candidate
-distributions by using a sample of data
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`.
+This method can be used to rank candidate distributions with respect to data
+:math:`\left\{ \inputReal_1,\inputReal_2,\ldots,\inputReal_{\sampleSize} \right\}`.
 
-We denote by :math:`\cM_1`,…, :math:`\cM_K` the parametric models
-envisaged by user among the :ref:`parametric models <parametric_distribution_factories>`.
-We suppose here that the parameters of these models have been estimated
-previously by :ref:`Maximum Likelihood <maximum_likelihood>`
-the on the basis of the sample
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_n \right\}`. We
-denote by :math:`L_i` the maximized likelihood for the model
-:math:`\cM_i`.
+We denote by :math:`\cM_1, \dots, \cM_K` the :math:`K` parametric models we want to test
+(see :ref:`parametric models <parametric_distribution_factories>`).
+We suppose here that the parameters of these models have been estimated from the sample (see
+:ref:`Maximum Likelihood <maximum_likelihood>`). We
+denote by :math:`L_i` the maximized likelihood of the sample with respect to
+the model :math:`\cM_i`.
 
 By definition of the likelihood, the higher :math:`L_i`, the better the
-model describes the sample. However, using the likelihood as a criterion
-to rank the candidate probability distributions would involve a risk:
-one would almost always favor complex models involving many parameters.
-If such models provide indeed a large numbers of degrees-of-freedom that
-can be used to fit the sample, one has to keep in mind that complex
-models may be less robust that simpler models with less parameters.
-Actually, the limited available information (:math:`N` data points) does
-not allow one to estimate robustly too many parameters.
+model describes the sample. However, by relying entirely on the value of the likelihood one
+runs the risk of systematically selecting the model with the most parameters. As a matter of fact,
+the greater the number of parameters, the easier it is for the distribution to adapt to the data.
 
-The Akaike Information Criterion (AIC) can be used to avoid this problem.
-The principle is to rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
+The Akaike Information Criterion (AIC) can be used to avoid this problem. Like the Bayesian information
+criterion (see :ref:`bic`), it allows models to be penalized according to the number of parameters, in order
+to satisfy the parsimony criterion. Note that the library divides the AIC
+defined in the literature by the sample size, which has no impact on the selection of the best model.
+
+The AIC of the model :math:`\cM_i` is defined in the library by:
 
 .. math::
 
    \begin{aligned}
-       \operatorname{AIC}_i = -2 \frac{\log(L_i)}{n} + \frac{2 p_i}{n}
+       \operatorname{AIC}(\cM_i) = -2 \frac{\log(L_i)}{\sampleSize} + \frac{2 k_i}{\sampleSize}
      \end{aligned}
 
-where :math:`p_i` denotes the number of parameters being adjusted for
-the model :math:`\cM_i`. The smaller :math:`\textrm{AIC}_i`, the better
-the model. Note that the idea is to introduce a penalization term that
+where :math:`k_i` denotes the number of parameters of the model :math:`\cM_i`
+that have been inferred from the sample.
+
+The smaller :math:`\textrm{AIC}(\cM_i)`, the better
+the model:
+
+.. math::
+
+   \cM_{\operatorname{AIC}} = \argmin_{\cM_i \in \{\cM_1, ..., \cM_K\}} \operatorname{AIC}(\cM_i).
+
+The idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
-In context of small data, there is a substantial risk that AIC select
-models that have too many parameters. In other words, the risk of
-overfitting is important. To tackle such issue, the AICc criterion was
-developed : it consists in evaluating the AIC with a correction term
-(extra penalty) for small data. The formula is as follows:
+In context of small data, there is a substantial risk that AIC still might systematically
+select the models that have the most parameters. In other words, the risk of
+overfitting is important. To tackle such an issue, the *corrected* AIC  criterion (AICc) was
+developed: it consists in evaluating the AIC with a correction term
+(extra penalty) for small data. The AICc of the model :math:`\cM_i` is defined by:
 
 .. math::
 
    \begin{aligned}
-       \operatorname{AICC}_i = \operatorname{AIC}_i + \frac{(2 p_i)(p_i + 1)}{n - p_i - 1}
+       \operatorname{AICc}(\cM_i) = \operatorname{AIC}(\cM_i) + \frac{2 k_i (k_i + 1)}{\sampleSize - k_i - 1}.
      \end{aligned}
 
-One might notice that the extra term penalty vanishes for
-:math:`n \rightarrow \infty`.
+One should notice that the extra term penalty vanishes for
+:math:`\sampleSize \rightarrow \infty`.
 
 
 .. topic:: API:

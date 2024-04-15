@@ -1,23 +1,24 @@
 .. _arma_process:
 
 ARMA stochastic process
-=======================
+-----------------------
 
-| Consider a stationary multivariate stochastic process
-  :math:`X: \Omega \times[0,T] \rightarrow \Rset^d` of dimension
-  :math:`d`, where :math:`X_t : \Omega \rightarrow \Rset^d` is the
-  random variable at time :math:`t`. Under some general
-  conditions,\ :math:`X` can be modeled by an :math:`ARMA(p,q)` model
-  defined at the time stamp :math:`t` by:
+Consider a stationary multivariate stochastic process
+:math:`X: \Omega \times[0,T] \rightarrow \Rset^{\inputDim}` of dimension
+:math:`d`, where :math:`X_t : \Omega \rightarrow \Rset^{\inputDim}` is the
+random variable at time :math:`t`. Under some general
+conditions,\ :math:`X` can be modeled by an :math:`ARMA(p,q)` model
+defined at the time stamp :math:`t` by:
 
-  .. math::
+.. math::
      :label: dimn
 
-       X_t + \mat{A}_{\, 1}   \, X_{t-1} + \hdots +  \mat{A}_{\, p} \,   X_{t-p} =
-       \varepsilon_{t}+  \mat{B}_ {\, 1} \,  \varepsilon_{t-1}+   \hdots + \mat{B}_{\, q}  \, \varepsilon_{t-q}
+      X_t + \mat{A}_{\, 1}   \, X_{t-1} + \hdots +  \mat{A}_{\, p} \,   X_{t-p} =
+      \varepsilon_{t}+  \mat{B}_ {\, 1} \,  \varepsilon_{t-1}+   \hdots + \mat{B}_{\, q}  \,
+      \varepsilon_{t-q}
 
 where the coefficients of the recurrence are matrix in
-:math:`\Rset^d` and :math:`(\varepsilon_t)_t`\ is white noise
+:math:`\Rset^{\inputDim}` and :math:`(\varepsilon_t)_t` is white noise
 discretized on the same time grid as the process :math:`X`.
 
 The coefficients :math:`(\mat{A}_{\, 1} , \hdots, \mat{A}_{\, p} )`
@@ -27,7 +28,7 @@ Moving Average (MA) part.
 
 We introduce the homogeneous system associated to :eq:`dimn`:
 
-  .. math::
+.. math::
      :label: dimnHom
 
        X_t + \mat{A}_{\, 1}   \,  X_{t-1} + \hdots +  \mat{A}_{\, p} \,  X_{t-p} = 0
@@ -66,10 +67,10 @@ eigenvalues of the matrix :math:`\mat{M}` which writes in dimension
 
      \mat{M} = \left(
      \begin{array}{cccccc}
-       \mat{0}_{\, d} & \mat{1}_{\, d} & \mat{0}_{\, d} & \hdots & \mat{0}_{\, d} & \mat{0}_{\, d} \\
-       \mat{0}_{\, d} & \mat{0}_{\, d} & \mat{1}_{\, d} & \hdots & \mat{0}_{\, d} & \mat{0}_{\, d}\\
+       \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} \\
+       \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim}\\
        \hdots \\
-       \mat{0}_{\, d} & \mat{0}_{\, d} & \mat{0}_{\, d} & \hdots & \mat{0}_{\, d} & \mat{1}_{\, d}\\
+       \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim}\\
        - \mat{A}_{\, 1} & -\mat{A}_{\, 2} & - \mat{A}_{\, 3}& \hdots  & -\mat{A}_{\, p-1}& -\mat{A}_{\, p}
      \end{array}
      \right)

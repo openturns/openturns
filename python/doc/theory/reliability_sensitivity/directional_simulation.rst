@@ -3,22 +3,21 @@
 Directional Simulation
 ----------------------
 
-Using the probability distribution of a random vector :math:`\vect{X}`,
+Using the probability distribution of a random vector :math:`\inputRV`,
 we seek to evaluate the following probability:
 
 .. math::
 
-    P_f = \Prob{g\left( \vect{X},\vect{d} \right) < 0}
+    P_f = \Prob{g\left( \inputRV \right) < 0}
 
-Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a
-deterministic vector, :math:`g(\vect{X},\vect{d})` the function known as
+Here, :math:`\inputRV` is a random vector, :math:`\model` the function known as
 “limit state function” which enables the definition of the event
-:math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, / \, \model(\vect{x}) \le 0\}`.
 
 The directional simulation method is an accelerated sampling method. It
 implies a preliminary iso-probabilistic transformation, as for FORM and SORM methods;
 however, it remains based on sampling and is thus not an approximation method.
-In the transformed space, the (transformed) uncertain variables :math:`\vect{U}` are
+In the transformed space, the (transformed) uncertain variables :math:`\RVU` are
 independent standard Gaussian variables (mean equal to zero and standard
 deviation equal to 1).
 
@@ -32,14 +31,14 @@ iteration, these steps are the following:
 
 -  In the direction starting from the origin and passing through
    :math:`P_i`, solutions of the equation
-   :math:`g(\vect{X},\vect{d}) = 0` (i.e. limits of :math:`\cD_f`) are
-   searched. The set of values of :math:`\underline{u}` that belong to
+   :math:`\model(\vect{x}) = 0` (i.e. limits of :math:`\cD_f`) are
+   searched. The set of values of :math:`\vect{u}` that belong to
    :math:`\cD_f` is deduced for these solutions: it is a subset
    :math:`I_i \subset \Rset`.
 
 -  Then, one calculates the probability
-   :math:`q_i = \Prob{ ||\vect{U}|| \in I_i }`. By property of
-   independent standard variable, :math:`||\vect{U}||^2` is a random
+   :math:`q_i = \Prob{ ||\RVU|| \in I_i }`. By property of
+   independent standard variable, :math:`||\RVU||^2` is a random
    variable distributed according to a chi-square distribution, which
    makes the computation effortless.
 
@@ -131,18 +130,17 @@ the choice of:
       according to the uniform distribution and we consider both
       opposite directions so formed.
 
-   -  | OrthogonalDirection: this strategy is parameterized by
-        :math:`k\in \{1,\dots,n\}`, where :math:`n` is the dimension of
-        the input random vector :math:`\vect{X}`. We generate one direct
-        ortho-normalized basis :math:`(e_1, \dots, e_n)` uniformly
-        distributed in the set of direct orthonormal bases. We consider
-        all the normalized linear combinations of :math:`k` vectors
-        chosen within the :math:`n` vectors of the basis, where the
-        coefficients of the linear combinations are in
-        :math:`\{+1, -1\}`. This generates :math:`C_n^k 2^k` new vectors
-        :math:`v_i`. We sample according to all the directions defined
-        by the vectors :math:`v_i`.
-      | If :math:`k=1`, we consider all the axes of the standard space.
+   -  OrthogonalDirection: this strategy is parameterized by
+      :math:`k\in \{1,\dots,d\}`. We generate one direct
+      ortho-normalized basis :math:`(e_1, \dots, e_d)` uniformly
+      distributed in the set of direct orthonormal bases. We consider
+      all the normalized linear combinations of :math:`k` vectors
+      chosen within the :math:`\inputDim` vectors of the basis, where the
+      coefficients of the linear combinations are in
+      :math:`\{+1, -1\}`. This generates :math:`C_\inputDim^k 2^k` new vectors
+      :math:`v_i`. We sample according to all the directions defined
+      by the vectors :math:`v_i`.
+      If :math:`k=1`, we consider all the axes of the standard space.
 
 
 .. topic:: API:

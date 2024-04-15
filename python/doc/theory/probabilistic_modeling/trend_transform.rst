@@ -4,12 +4,12 @@ Trend computation
 -----------------
 
 A multivariate stochastic process
-:math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension :math:`d`
+:math:`X: \Omega \times\cD \rightarrow \Rset^{\inputDim}` of dimension :math:`\inputDim`
 where :math:`\cD \in \Rset^n` may write as the sum of a trend function
-:math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a centered
+:math:`f_{trend}: \Rset^n \rightarrow \Rset^{\inputDim}` and a centered
 multivariate stochastic process
-:math:`X_{c}: \Omega \times\cD \rightarrow \Rset^d` of dimension
-:math:`d` as follows:
+:math:`X_{c}: \Omega \times\cD \rightarrow \Rset^{\inputDim}` of dimension
+:math:`\inputDim` as follows:
 
 .. math::
   :label: tsDecomposition
