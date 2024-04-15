@@ -108,7 +108,7 @@ view = otv.View(graph)
 # The extremal index theta=0.86 suggest a week dependence between extreme levels.
 theta = nc / nu
 result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(peaks, u)
-xm_100 = factory.buildReturnLevelEstimator(result_LL, 100.0 * 365 * theta, peaks)
+xm_100 = factory.buildReturnLevelEstimator(result_LL, sample, 100.0 * 365, theta)
 sigma, xi, _ = result_LL.getParameterDistribution().getMean()
 sigma_stddev, xi_stddev, _ = result_LL.getParameterDistribution().getStandardDeviation()
 print(f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})", end=" ")
