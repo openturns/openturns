@@ -45,7 +45,7 @@ Then a decision is made, either by comparing the test statistic to the theoretic
 by evaluating the p-value of the sample  defined as :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing
 it to :math:`\alpha`):
 
--  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \leq \alpha`),
+-  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} < \alpha`),
    then we reject :math:`G`,
 
 -  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \geq \alpha`),
