@@ -35,7 +35,7 @@ We want to estimate the first order Sobol' index :math:`S_k` with respect to :ma
 
     S_k = \frac{\mathbb{V}(\mathbb{E}[Y|X_k])}{\mathbb{V}(Y)}
 
-Let's consider a N-sample of the input/output pair :math:`(X_k,Y)` given by:
+Let's consider a i.i.d. N-sample of the input/output pair :math:`(X_k,Y)` given by:
 
 .. math::
 
