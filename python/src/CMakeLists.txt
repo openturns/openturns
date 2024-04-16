@@ -789,6 +789,7 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       BootstrapExperiment.i BootstrapExperiment_doc.i.in
                       FixedExperiment.i FixedExperiment_doc.i.in
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
+                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
                       TensorProductExperiment.i TensorProductExperiment_doc.i.in
                       LHSExperiment.i LHSExperiment_doc.i.in

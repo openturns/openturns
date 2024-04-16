@@ -30,6 +30,7 @@
 %include FixedExperiment.i
 %include GaussProductExperiment.i
 %include ImportanceSamplingExperiment.i
+%include ExperimentIntegration.i
 %include LHSExperiment.i
 %include TemperatureProfileImplementation.i
 %include TemperatureProfile.i

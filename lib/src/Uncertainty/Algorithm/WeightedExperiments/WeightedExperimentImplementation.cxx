@@ -30,7 +30,6 @@ CLASSNAMEINIT(WeightedExperimentImplementation)
 
 static const Factory<WeightedExperimentImplementation> Factory_WeightedExperimentImplementation;
 
-
 /* Default constructor */
 WeightedExperimentImplementation::WeightedExperimentImplementation()
   : ExperimentImplementation()
