@@ -112,16 +112,7 @@ Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(Sample inputDesig
         
         for (UnsignedInteger k = 0; k < size; ++k) 
         {
-        
-            // Concatenate the overall vector with first dimension at the last column
-            if (k < size - 1)
-            {
-                sum += outputDesign(idSort[k], j) * outputDesign(idSort[k+1], j);
-            }
-            else
-            {
-                sum += outputDesign(idSort[k], j) * outputDesign(idSort[0], j);
-            }        
+            sum += outputDesign(idSort[k], j) * outputDesign(idSort[(k + 1) % size], j);    
         }
         // Compute the marginal variance
         marginalVar(j,i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j];  
