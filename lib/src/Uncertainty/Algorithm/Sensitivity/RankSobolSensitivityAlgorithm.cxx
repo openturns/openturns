@@ -93,7 +93,7 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
 }
 
 /** Internal method that compute Vi  **/
-Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(Sample inputDesign, Sample outputDesign) const
+Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(const Sample & inputDesign, const Sample & outputDesign) const
 {
   const UnsignedInteger size = inputDesign.getSize();
   

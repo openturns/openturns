@@ -104,7 +104,7 @@ private:
   /** Internal method that compute Vi/VTi using a sample */
   Sample computeIndices(const Sample & sample, Sample & VTi) const override;
   
-  Sample computeIndicesFromSample(const Sample, const Sample) const;
+  Sample computeIndicesFromSample(const Sample &, const Sample &) const;
   
   /** Function that computes aggregated indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
@@ -128,7 +128,7 @@ private:
   Point getAggregatedFirstOrderIndices() const override;
 
   /** Method that draw  the sensitivity graph of a fixed marginal */
-  Graph draw(UnsignedInteger marginalIndex) const override;
+  Graph draw(const UnsignedInteger marginalIndex) const override;
     
   /** Designs : input & output designs */
   Sample inputDesign_;
