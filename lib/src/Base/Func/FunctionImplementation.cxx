@@ -436,6 +436,11 @@ Graph FunctionImplementation::draw(const Point & xMin,
   return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
+void FunctionImplementation::setStopCallback(StopCallback callBack, void * state)
+{
+  evaluation_.setStopCallback(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void FunctionImplementation::save(Advocate & adv) const
 {

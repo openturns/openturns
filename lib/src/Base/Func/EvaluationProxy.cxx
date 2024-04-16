@@ -268,6 +268,10 @@ Graph EvaluationProxy::draw(const Point & xMin,
   return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
+void EvaluationProxy::setStopCallback(StopCallback callBack, void * state)
+{
+  evaluation_.setStopCallback(callBack, state);
+}
 
 /* Method save() stores the object through the StorageManager */
 void EvaluationProxy::save(Advocate & adv) const

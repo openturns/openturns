@@ -161,7 +161,12 @@ Sample EvaluationImplementation::operator() (const Sample & inSample) const
   Sample outSample(size, getOutputDimension());
   // Simple loop over the evaluation operator based on point
   // The calls number is updated by these calls
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = operator()(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    outSample[i] = operator()(inSample[i]);
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InterruptionException(HERE) << "User stopped evaluation";
+  }
   outSample.setDescription(getOutputDescription());
   return outSample;
 }
@@ -559,6 +564,10 @@ Graph EvaluationImplementation::draw(const Point & xMin,
   return draw(0, 1, 0, Point(2), xMin, xMax, pointNumber, scale);
 }
 
+void EvaluationImplementation::setStopCallback(StopCallback callBack, void * state)
+{
+  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
+}
 
 /* Method save() stores the object through the StorageManager */
 void EvaluationImplementation::save(Advocate & adv) const

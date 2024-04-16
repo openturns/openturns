@@ -818,3 +818,19 @@ linear : bool
 %enddef
 %feature("docstring") OT::FunctionImplementation::isLinearlyDependent
 OT_Function_isLinearlyDependent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setStopCallback_doc
+"Set up a stop callback.
+
+Can be used to programmatically stop an evaluation.
+
+Parameters
+----------
+callback : callable
+    Returns a bool deciding whether to stop or continue.
+"
+%enddef
+%feature("docstring") OT::FunctionImplementation::setStopCallback
+OT_Function_setStopCallback_doc

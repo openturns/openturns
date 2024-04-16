@@ -301,6 +301,11 @@ Description ParametricEvaluation::getOutputDescription() const
   return function_.getOutputDescription();
 }
 
+void ParametricEvaluation::setStopCallback(StopCallback callBack, void * state)
+{
+  function_.setStopCallback(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ParametricEvaluation::save(Advocate & adv) const
 {

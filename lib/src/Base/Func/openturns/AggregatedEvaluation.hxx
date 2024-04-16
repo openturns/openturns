@@ -93,12 +93,15 @@ public:
   /** Is it safe to call in parallel? */
   Bool isParallel() const override;
 
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
 
 private:
 
@@ -110,7 +113,7 @@ private:
   FunctionPersistentCollection functionsCollection_;
 
   // The output dimension
-  UnsignedInteger outputDimension_;
+  UnsignedInteger outputDimension_ = 0;
 
 } ; /* class AggregatedEvaluation */
 

@@ -215,5 +215,11 @@ Bool ComposedEvaluation::isParallel() const
   return leftFunction_.getImplementation()->isParallel() && rightFunction_.getImplementation()->isParallel();
 }
 
+void ComposedEvaluation::setStopCallback(StopCallback callBack, void * state)
+{
+  leftFunction_.setStopCallback(callBack, state);
+  rightFunction_.setStopCallback(callBack, state);
+}
+
 
 END_NAMESPACE_OPENTURNS

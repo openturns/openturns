@@ -44,3 +44,5 @@ OT_Evaluation_isLinearlyDependent_doc
 OT_Evaluation_setCheckOutput_doc
 %feature("docstring") OT::Evaluation::getCheckOutput
 OT_Evaluation_getCheckOutput_doc
+%feature("docstring") OT::Evaluation::setStopCallback
+OT_Evaluation_setStopCallback_doc
