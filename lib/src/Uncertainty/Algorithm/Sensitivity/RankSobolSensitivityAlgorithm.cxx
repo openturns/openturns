@@ -412,12 +412,16 @@ String RankSobolSensitivityAlgorithm::__repr__() const
 void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
 {
   SobolIndicesAlgorithmImplementation::save(adv);
+  adv.saveAttribute("inputDesign_ ", inputDesign_ );
+  adv.saveAttribute("outputDesign_ ", outputDesign_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RankSobolSensitivityAlgorithm::load(Advocate & adv)
 {
   SobolIndicesAlgorithmImplementation::load(adv);
+  adv.loadAttribute("inputDesign_ ", inputDesign_ );
+  adv.loadAttribute("outputDesign_ ", outputDesign_);
 }
 
 END_NAMESPACE_OPENTURNS
