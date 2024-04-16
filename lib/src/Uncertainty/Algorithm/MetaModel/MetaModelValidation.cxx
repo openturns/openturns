@@ -218,26 +218,23 @@ void MetaModelValidation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "outputSample_", outputSample_ );
-  if (adv.hasAttribute("metaModelPredictions_"))
-    adv.loadAttribute( "metaModelPredictions_", metaModelPredictions_ );
-  else
-    adv.loadAttribute( "outputSample_", metaModelPredictions_ );
   adv.loadAttribute( "residual_", residual_ );
-  if (adv.hasAttribute("r2Score_"))
-    adv.loadAttribute( "r2Score_", r2Score_ );
-  else
-    adv.loadAttribute( "q2_", r2Score_ );
-  if (adv.hasAttribute("meanSquaredError_"))
-    adv.loadAttribute( "meanSquaredError_", meanSquaredError_ );
-  else
+  if (adv.hasAttribute("metaModelPredictions_") && \
+    adv.hasAttribute("meanSquaredError_") && \
+    adv.hasAttribute("r2Score_"))
   {
-    const UnsignedInteger outputDimension = outputSample_.getDimension();
-    if (r2Score_.getDimension() != outputDimension)
-      throw NotDefinedException(HERE) << "The dimension of the R2 score is " << r2Score_.getDimension() 
-                                      << " but the dimension of the output sample is " << outputDimension;
-    const Point sampleVariance(outputSample_.computeCentralMoment(2));
-    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
-      meanSquaredError_[j] = sampleVariance[j] * (1.0 - r2Score_[j]);
+    adv.loadAttribute( "metaModelPredictions_", metaModelPredictions_ );
+    adv.loadAttribute( "meanSquaredError_", meanSquaredError_ );
+    adv.loadAttribute( "r2Score_", r2Score_ );
+  }
+  else  // Old version of the object
+  {
+    // Recompute everything as meanSquaredError_ has to be recomputed in any case
+    Sample inputSample;
+    Function metaModel;
+    adv.loadAttribute( "inputSample_", inputSample );
+    adv.loadAttribute( "metaModel_", metaModel );
+    *this = MetaModelValidation(outputSample_, metaModel(inputSample));
   }
 }
 
