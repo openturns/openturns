@@ -440,7 +440,7 @@ void Contour::load(Advocate & adv)
   if (adv.hasAttribute("isFilled_"))
     adv.loadAttribute("isFilled_", isFilled_);
   else
-    isFilled_ = false;
+    isFilled_ = ResourceMap::GetAsBool("Contour-IsFilled");
   if (adv.hasAttribute("colorBarPosition_"))
     adv.loadAttribute("colorBarPosition_", colorBarPosition_);
   else
@@ -472,11 +472,11 @@ void Contour::load(Advocate & adv)
   if (adv.hasAttribute("norm_"))
     adv.loadAttribute("norm_", norm_);
   else
-    norm_ = "linear";
+    norm_ = ResourceMap::GetAsString("Contour-Norm");
   if (adv.hasAttribute("extend_"))
     adv.loadAttribute("extend_", extend_);
   else
-    extend_ = "both";
+    extend_ = ResourceMap::GetAsString("Contour-Extend");
   if (adv.hasAttribute("hatches_"))
     adv.loadAttribute("hatches_", hatches_);
   else

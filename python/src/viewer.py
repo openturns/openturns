@@ -29,7 +29,7 @@ __all__ = ["View", "PlotDesign"]
 
 class RankNormalize(cls.Normalize):
     """
-    Color distribution normalization class to obtain a distribution based on rank and not value.
+    Color distribution normalization class based on rank and not value.
 
     This class is used to manage the "rank" norm for Contour drawables
     """
@@ -44,24 +44,24 @@ class RankNormalize(cls.Normalize):
         if hasattr(cls.Normalize, "_changed"):
             cls.Normalize._changed(self)
 
-    """
-    Construct the normalization based on rank
-
-    Parameters
-    ----------
-    levels : list of floats
-        List of level values.
-
-    vmin : float, optional
-        Minimum value for color distribution
-
-    vmax : float, optional
-        Maximum value for color distribution
-
-    clip : bool, optional
-        Indicator for cutting color distribution out of vmin and vmax
-    """
     def __init__(self, levels, vmin=None, vmax=None, clip=False):
+        """
+        Construct the normalization based on rank
+
+        Parameters
+        ----------
+        levels : list of floats
+            List of level values.
+
+        vmin : float, optional
+            Minimum value for color distribution
+
+        vmax : float, optional
+            Maximum value for color distribution
+
+        clip : bool, optional
+            Indicator for cutting color distribution out of vmin and vmax
+        """
         super().__init__(vmin, vmax, clip)
         self._levels = None if levels is None else np.array(levels)
         self._ranks = None
@@ -676,7 +676,8 @@ class View:
                     else:
                         try:
                             colorbar = self._fig.colorbar(contourset, format="%.3g")
-                            warnings.warn("-- colorbar location was not used in matplotlib < 3.7.0")
+                            if contour.getColorBarPosition() != "right":
+                                warnings.warn("-- colorbar location was not used in matplotlib < 3.7.0")
                         except ZeroDivisionError:
                             warnings.warn("figure.colorbar likely failed on boundary levels")
                     if colorbar is not None and contour.getLevels():

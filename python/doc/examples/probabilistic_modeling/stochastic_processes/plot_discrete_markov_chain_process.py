@@ -33,6 +33,8 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 
+# %%
+# Define a generic function to plot matrices
 def plotMatrix(matrix, texts=False, origin=None, colorbar=False, extent=None, **kwargs):
     """Generic procedure for displaying a matrix with or without text overlay and color bar"""
     res = plt.matshow(matrix, origin=origin, extent=extent, **kwargs)
@@ -44,7 +46,8 @@ def plotMatrix(matrix, texts=False, origin=None, colorbar=False, extent=None, **
         for i in range(matrix.getNbColumns()):
             for j in range(matrix.getNbRows()):
                 c = round(matrix[j if origin == 'lower' else (matrix.getNbRows() - j - 1), i], 2)
-                plt.text(i * x_step + extent[0] + x_step / 2, j * y_step + extent[2] + y_step / 2, str(c), va='center', ha='center')
+                plt.text(i * x_step + extent[0] + x_step / 2, j * y_step + extent[2] + y_step / 2,
+                         str(c), va='center', ha='center')
     if colorbar:
         plt.colorbar(res)
 
@@ -55,7 +58,10 @@ origin = ot.Dirac(0.0)
 
 # %%
 # Define the transition matrix
-transition = ot.SquareMatrix([[0.1, 0.3, 0.5, 0.1], [0.6, 0.1, 0.2, 0.1], [0.4, 0.3, 0.1, 0.2], [0.2, 0.0, 0.1, 0.7]])
+transition = ot.SquareMatrix([[0.1, 0.3, 0.5, 0.1],
+                             [0.6, 0.1, 0.2, 0.1],
+                             [0.4, 0.3, 0.1, 0.2],
+                             [0.2, 0.0, 0.1, 0.7]])
 
 # %%
 # Visualize the transition matrix
