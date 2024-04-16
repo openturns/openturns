@@ -410,5 +410,10 @@ Graph Function::draw(const Point & xMin,
   return getImplementation()->draw(xMin, xMax, pointNumber, scale);
 }
 
+void Function::setStopCallback(StopCallback callBack, void * state)
+{
+  copyOnWrite();
+  getImplementation()->setStopCallback(callBack, state);
+}
 
 END_NAMESPACE_OPENTURNS

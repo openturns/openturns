@@ -155,6 +155,10 @@ public:
              const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
              const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

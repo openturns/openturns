@@ -321,5 +321,10 @@ void AggregatedEvaluation::load(Advocate & adv)
   adv.loadAttribute( "outputDimension_", outputDimension_ );
 }
 
+void AggregatedEvaluation::setStopCallback(StopCallback callBack, void * state)
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    functionsCollection_[i].setStopCallback(callBack, state);
+}
 
 END_NAMESPACE_OPENTURNS

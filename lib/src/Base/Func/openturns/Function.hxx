@@ -216,6 +216,10 @@ public:
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = nullptr);
+
 }; /* class Function */
 
 

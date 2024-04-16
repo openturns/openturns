@@ -64,3 +64,5 @@ OT_Function_parameterGradient_doc
 OT_Function_isLinear_doc
 %feature("docstring") OT::Function::isLinearlyDependent
 OT_Function_isLinearlyDependent_doc
+%feature("docstring") OT::Function::setStopCallback
+OT_Function_setStopCallback_doc

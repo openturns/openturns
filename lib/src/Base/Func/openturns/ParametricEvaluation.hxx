@@ -96,6 +96,10 @@ public:
   Description getOutputDescription() const override;
   void setOutputDescription(const Description & outputDescription) override;
 
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

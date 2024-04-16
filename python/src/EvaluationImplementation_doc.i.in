@@ -430,3 +430,19 @@ check_output : bool
 %enddef
 %feature("docstring") OT::EvaluationImplementation::getCheckOutput
 OT_Evaluation_getCheckOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_setStopCallback_doc
+"Set up a stop callback.
+
+Can be used to programmatically stop an evaluation.
+
+Parameters
+----------
+callback : callable
+    Returns a bool deciding whether to stop or continue.
+"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setStopCallback
+OT_Evaluation_setStopCallback_doc
