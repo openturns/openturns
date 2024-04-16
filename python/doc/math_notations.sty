@@ -10,6 +10,12 @@
 \DeclareSIUnit{\rpm}{rpm}
 \DeclareSIUnit{\year}{y}
 
+% A random variable is upcase.
+% An observation of a random variable (or a real number) is downcase.
+% A random vector is in latin, upcase, letter.
+% A vector is in latin, downcase, letter.
+% A set is in latin, caligraphic, upcase, letter.
+
 % The physical model
 \newcommand{\model}{g}
 \newcommand{\inputDim}{d}  % The input dimension of the model
@@ -25,17 +31,28 @@
 % Realization of the random vetor
 \newcommand{\inputReal}{\vect{x}}  % An observation of the input random vector of the model
 \newcommand{\outputReal}{\vect{y}}  % An observation of the output random vector of the model
-\newcommand{\standardRV}{\vect{Z}}
+\newcommand{\standardRV}{\vect{Z}}  % The standard random vector (e.g. for polynomial chaos expansion)
 \newcommand{\RVU}{\vect{U}}
-\newcommand{\standardDim}{d_Z}
+\newcommand{\standardDim}{d_Z}  % The dimension of the standard random vector
 \newcommand{\dimU}{d_U}
-\newcommand{\standardReal}{\vect{z}}
+\newcommand{\standardReal}{\vect{z}}  % An observation of the standard random vector
 \newcommand{\realU}{\vect{u}}
 \newcommand{\supp}[1] {\operatorname{supp}\left(#1\right)}  % The support of a distribution
-\newcommand{\sampleSize}{n}
-
+\newcommand{\sampleSize}{n}  % The sample size
 
 \newcommand{\scalarproduct}[2]{\left\langle #1, #2 \right\rangle}
+
+% The probability density function of the input random vector
+\newcommand{\inputProbabilityDensityFunction}{f}
+
+% A set
+\newcommand{\set}[1]{\mathcal{#1}}
+% The set of standard input random observations
+\newcommand{\standardInputSpace}{\set{Z}}
+% The set of physical input random observations
+\newcommand{\physicalInputSpace}{\set{X}}
+% The set of physical output random observations
+\newcommand{\physicalOutputSpace}{\set{Y}}
 
 % For matrixes and vectors
 \newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}

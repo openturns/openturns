@@ -21,11 +21,29 @@ importanceDistribution : :class:`~openturns.Distribution`
 
 Notes
 -----
-ImportanceSamplingExperiment is a random weighted design of experiments to get a sample 
-:math:`(X_i)_{1 \leq i \leq size}`
-independently according to the distribution :math:`\mu`. 
+ImportanceSamplingExperiment is a random weighted design of experiments.
+We can use it to generate a sample :math:`(\inputReal_i)_{1 \leq i \leq \sampleSize}`
+based on independent observations from the distribution :math:`\inputMeasure`
+(see [hammersley1961]_ page 57, [lemieux2009]_ page 11). 
+Importance sampling is a variance reduction method i.e. it aims at 
+reducing the variance of the estimator of the weighted integral.
 The sample is generated from the importance distribution :math:`p` and each realization is weighted by   
-:math:`\frac{\mu(X_i)}{p(X_i)}`
+:math:`w_i = \frac{\inputProbabilityDensityFunction(\inputReal_i)}{p(\inputReal_i)}` where
+:math:`\inputProbabilityDensityFunction` is the probability density function of the 
+input random vector.
+
+There is no general method in the library to provide the importance distribution, 
+which must be specified by the user.
+In the specific case of rare event estimation, [morio2015]_ page 53 provides 
+different methods to compute the instrumental distribution, 
+including simple changes of measure and exponential twisting.
+The :class:`~openturns.PostAnalyticalImportanceSampling` class combines the :class:`~openturns.FORM` class
+and importance sampling to estimate a probability.
+
+The `ImportanceSamplingExperiment` class is nonadaptive, i.e. the parameters of the instrumental distribution are 
+set once for all.
+See :class:`~openturns.NAIS` for an adaptive importance sampling algorithm 
+and :class:`~openturns.experimental.CrossEntropyImportanceSampling` for another algorithm.
 
 See also
 --------

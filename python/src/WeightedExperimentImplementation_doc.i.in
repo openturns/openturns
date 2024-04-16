@@ -9,47 +9,70 @@ Parameters
 distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` used to generate the set of input data.
 size : positive int
-    Number :math:`cardI` of points that will be generated in the experiment.
+    Number :math:`\sampleSize` of points that will be generated in the experiment.
 
 Notes
 -----
-WeightedExperiment is used to generate the points :math:`\Xi_i` so that the
-mean :math:`E_{\mu}` is approximated as follows:
+This class is used to generate nodes and their associated weights
+to approximate the weighted integral of a physical model with respect
+to a distribution (see [sullivan2015]_ chapter 9 page 165).
+
+Let :math:`\model : \physicalInputSpace \rightarrow \physicalOutputSpace` 
+be a function where :math:`\physicalInputSpace \subseteq \Rset^{\inputDim}` 
+is the input space and :math:`\physicalOutputSpace \subseteq \Rset^{\outputDim}`
+is the output space.
+Let :math:`\inputRV` be a random vector with dimension :math:`\outputDim`. 
+We are interested in the expected value of the physical model:
 
 .. math::
 
-    \Expect{ f(\vect{Z})}_{\mu} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
+    \Expect{ \model(\inputRV)}
+    = \int_{\physicalInputSpace} \model(\inputReal) 
+    d\inputMeasure(\inputReal)
 
-where :math:`\mu` is a distribution, :math:`f` is a function :math:`L_1(\mu)`
-and :math:`\omega_i` are the weights associated with the points. By default,
-all the weights are equal to :math:`1/cardI`.
+where :math:`\inputMeasure` is the distribution of the input random vector.
+If the input has a probability density function, then:
 
-A WeightedExperiment object can be created only through its derived classes
-which are distributed in three groups:
+.. math::
 
-1. The first category is made up of the random patterns, where the set of input
+    \Expect{ \model(\inputRV)}
+    = \int_{\physicalInputSpace} \model(\inputReal) 
+    \inputProbabilityDensityFunction(\inputReal) d\inputReal
+
+where :math:`\inputProbabilityDensityFunction` is the probability density 
+function of the input random vector.
+
+The class computes the weights :math:`\{w_i \in \Rset\}_{i = 1, ..., \sampleSize}`
+and the nodes :math:`\{\inputReal_i \in \Rset^{\inputDim}\}_{i = 1, ..., \sampleSize}`
+such that 
+
+.. math::
+
+    \Expect{ \model(\inputRV)}
+    \approx \sum_{i = 1}^\sampleSize w_i \model\left(\inputReal_i\right)
+
+By default, all the weights are equal to :math:`w_i = \frac{1}{\sampleSize}`.
+Some quadrature rules e.g. the tensorised Gauss product rule guarantee 
+that all nodes are non negative, but not all rules have that 
+property.
+
+A `WeightedExperiment` object can be created only through its derived classes
+which are in three groups:
+
+1. The random patterns, where the set of input
    data is generated from the joint distribution of the input random vector,
-   according to these sampling techniques:
+   e.g. 
+   :class:`Monte Carlo <openturns.MonteCarloExperiment>`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `True`.
 
-   - :class:`Monte Carlo <openturns.MonteCarloExperiment>`
+2. The :class:`low discrepancy sequences
+   <openturns.LowDiscrepancySequence>` e.g. 
+   :class:`~openturns.SobolSequence`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
 
-   - :class:`LHS <openturns.LHSExperiment>`
-
-   - :class:`Bootstrap <openturns.BootstrapExperiment>`
-
-   - :class:`Importance Sampling <openturns.ImportanceSamplingExperiment>`
-
-2. The second category contains the :class:`low discrepancy sequences
-   <openturns.LowDiscrepancySequence>`. OpenTURNS proposes the Faure, Halton,
-   Haselgrove, Reverse Halton and Sobol sequences.
-
-3. The third category consists of deterministic patterns:
-
-   - :class:`Gauss product <openturns.GaussProductExperiment>`
-
-   - :class:`~openturns.FixedExperiment`
-
-   - :class:`~openturns.LowDiscrepancyExperiment`"
+3. The deterministic patterns or *quadrature rules* e.g.
+   :class:`Gauss product <openturns.GaussProductExperiment>`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation
 OT_WeightedExperiment_doc
@@ -62,9 +85,9 @@ OT_WeightedExperiment_doc
 Returns
 -------
 sample : :class:`~openturns.Sample`
-    Points :math:`(\Xi_i)_{i \in I}` which constitute the design of experiments
-    with :math:`card I = size`. The sampling method is defined by the nature of
-    the weighted experiment.
+    Points :math:`(\inputReal_i)_{i = 1, ..., \sampleSize}` 
+    of the design of experiments. 
+    The sampling method is defined by the type of the weighted experiment.
 
 Examples
 --------
@@ -91,11 +114,11 @@ OT_WeightedExperiment_generate_doc
 Returns
 -------
 sample : :class:`~openturns.Sample`
-    The points which constitute the design of experiments. The sampling method
+    The points of the design of experiments. The sampling method
     is defined by the nature of the experiment.
-weights : :class:`~openturns.Point` of size :math:`cardI`
-    Weights :math:`(\omega_i)_{i \in I}` associated with the points. By default,
-    all the weights are equal to :math:`1/cardI`.
+weights : :class:`~openturns.Point` of size :math:`\sampleSize`
+    Weights :math:`(w_i)_{i = 1, ..., \sampleSize}` associated with the points. By default,
+    all the weights are equal to :math:`\frac{1}{\sampleSize}`.
 
 Examples
 --------
@@ -124,7 +147,7 @@ OT_WeightedExperiment_generateWithWeights_doc
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution used to generate the set of input data."
+    Distribution of the input random vector."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::getDistribution
 OT_WeightedExperiment_getDistribution_doc
@@ -137,7 +160,7 @@ OT_WeightedExperiment_getDistribution_doc
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-    Distribution used to generate the set of input data."
+    Distribution of the input random vector."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::setDistribution
 OT_WeightedExperiment_setDistribution_doc
@@ -150,7 +173,7 @@ OT_WeightedExperiment_setDistribution_doc
 Returns
 -------
 size : positive int
-    Number :math:`cardI` of points constituting the design of experiments."
+    Number :math:`\sampleSize` of points constituting the design of experiments."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::getSize
 OT_WeightedExperiment_getSize_doc
@@ -163,7 +186,7 @@ OT_WeightedExperiment_getSize_doc
 Parameters
 ----------
 size : positive int
-    Number :math:`cardI` of points constituting the design of experiments."
+    Number :math:`\sampleSize` of points constituting the design of experiments."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::setSize
 OT_WeightedExperiment_setSize_doc
@@ -194,3 +217,4 @@ isRandom : bool
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::isRandom
 OT_WeightedExperiment_isRandom_doc
+

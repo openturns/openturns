@@ -235,6 +235,36 @@ def ComputeSparseLeastSquaresFunctionalChaos(
     distribution,
     sparse=True,
 ):
+    """
+    Create a sparse polynomial chaos based on least squares.
+
+    * Uses the enumerate rule in multivariateBasis.
+    * Uses the LeastSquaresStrategy to compute the coefficients based on
+      least squares.
+    * Uses LeastSquaresMetaModelSelectionFactory to use the LARS selection method.
+    * Uses FixedStrategy in order to keep all the coefficients that the
+      LARS method selected.
+
+    Parameters
+    ----------
+    inputTrain : ot.Sample
+        The input design of experiments.
+    outputTrain : ot.Sample
+        The output design of experiments.
+    multivariateBasis : ot.Basis
+        The multivariate chaos basis.
+    basisSize : int
+        The size of the function basis.
+    distribution : ot.Distribution.
+        The distribution of the input variable.
+    sparse: bool
+        If True, create a sparse PCE.
+
+    Returns
+    -------
+    result : ot.PolynomialChaosResult
+        The estimated polynomial chaos.
+    """
     if sparse:
         selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
     else:

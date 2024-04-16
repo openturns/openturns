@@ -148,6 +148,8 @@ Bibliography
 .. [halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
     *An algorithm for the principal component analysis of large data sets*,
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
+.. [hammersley1961] Hammersley, J. M., & Handscomb, D. C. (1961).
+    *Monte Carlo Methods.* Chapman and Hall. Monographs on Statistics and Applied Probability.
 .. [helton2003] Helton, J.C., and Davis, F. J.,
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
@@ -233,6 +235,8 @@ Bibliography
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [lemaitre2010] Le Maître, O., & Knio, O. M. (2010).
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
+.. [lemieux2009] Lemieux, C. (2009). *Monte Carlo and Quasi-Monte Carlo Sampling*.
+    Springer. Springer Series in Statistics.
 .. [liu2006] Liu, R., & Owen, A. B. (2006). *Estimating mean dimensionality of
     analysis of variance decompositions.* Journal of the American Statistical
     Association, 101 (474), 712-721.
@@ -279,6 +283,8 @@ Bibliography
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
     `pdf <https://www.asc.ohio-state.edu/statistics/comp_exp/jour.club/McKayConoverBeckman.pdf>`__
+.. [melchers1990] Melchers, R. E. (1990).
+    *Radial importance sampling for structural reliability.* Journal of engineering mechanics, 116(1), 189-203.
 .. [minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
@@ -369,6 +375,8 @@ Bibliography
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
 .. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.*
     Journal of Mechanical Design, 134(3):031008, 2012.
+.. [santner2003] Santner, T. J., Williams, B. J., Notz, W. I., & Williams, B. J. (2003).
+    *The design and analysis of computer experiments*. New York: Springer.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] Scott, D. W. (1992). *Multivariate density estimation*,
@@ -413,6 +421,8 @@ Bibliography
     discrete random variates*. Journal of Computational and Applied Mathematics,
     vol. 31, no. 1, pp. 181-189, 1990.
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
+.. [stein1987] Stein, M. (1987). *Large sample properties of simulations using Latin hypercube sampling.*
+    Technometrics, 29(2), 143-151.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <https://zhilin.math.ncsu.edu/TEACHING/MA580/Stoer_Bulirsch.pdf>`__

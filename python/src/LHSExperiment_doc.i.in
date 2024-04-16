@@ -25,16 +25,17 @@ randomShift : bool
 
 Notes
 -----
-LHSExperiment is a random weighted design of experiments.
-The method generates a sample of points :math:`\Xi_i` according to the
-distribution :math:`\mu` with the LHS technique: some cells are determined,
+LHSExperiment is a random weighted design of experiments ([stein1987]_, [santner2003]_ page 127).
+The method generates a sample of points :math:`\inputReal_i` according to the
+distribution :math:`\inputMeasure` with the Latin Hypercube Sample (LHS) technique: some cells are determined,
 with the same probabilistic content according to the distribution, each line
 and each column contains exactly one cell, then points are selected among these
 selected cells. The weights associated to the points are all equal to
-:math:`1/\mathrm{card}\,I`. When recalled, the :meth:`generate` method generates a new
+:math:`\frac{1}{\sampleSize}` where :math:`\sampleSize` is the sample size.
+When recalled, the :meth:`generate` method generates a new
 sample: the point selection within the cells changes but not the cells
-selection. To change the cell selection, it is necessary to create a new LHS
-Experiment.
+selection. To change the cell selection, it is necessary to create a new 
+`LHSExperiment`.
 
 .. warning::
 
