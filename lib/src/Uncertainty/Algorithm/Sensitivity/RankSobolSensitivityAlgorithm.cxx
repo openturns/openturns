@@ -99,29 +99,29 @@ Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(Sample inputDesig
   
   Sample marginalVar(outputDesign.getDimension(),inputDesign.getDimension());
   
-  Point meanOutputDesign = outputDesign.computeMean();
+  const Point meanOutputDesign = outputDesign.computeMean();
   
   for (UnsignedInteger j = 0; j < outputDesign.getDimension(); ++j) 
   {
       for (UnsignedInteger i = 0; i < inputDesign.getDimension(); ++i)
       {
         // Sorting samples with respect to the input dimension
-        Indices idSort = inputDesign.getMarginal(i).argsort();
+        const Indices idSort = inputDesign.getMarginal(i).argsort();
         
-        float sum = 0.;
+        Scalar sum = 0.;
         
-        for (UnsignedInteger k = 0; k < inputDesign.getSize(); ++k) 
+        for (UnsignedInteger k = 0; k < size; ++k) 
         {
         
             // Concatenate the overall vector with first dimension at the last column
-            if (k < inputDesign.getSize()-1)
-                {
+            if (k < size - 1)
+            {
                 sum += outputDesign(idSort[k], j) * outputDesign(idSort[k+1], j);
-                }
+            }
             else
-                {
+            {
                 sum += outputDesign(idSort[k], j) * outputDesign(idSort[0], j);
-                }        
+            }        
         }
         // Compute the marginal variance
         marginalVar(j,i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j];  
@@ -312,16 +312,16 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     const UnsignedInteger modulo = bootstrapSize_ % blockSize;
     const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize : modulo;
     
+    // Use of KPermutations to perform bootstrap without replication
+    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size);
+      
     for(UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++outerSampling)
     {
       // the last block can be smaller
       const UnsignedInteger effectiveBlockSize = (outerSampling + 1) < maximumOuterSampling ? blockSize : lastBlockSize;
 
       Sample bsFOpartial(effectiveBlockSize, inputDimension);
-
-      // Use of KPermutations to perform bootstrap without replication
-      Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size);
-           
+ 
       const Sample randomIndices = KPermutation.getSample(effectiveBlockSize);
       
       const RankSobolBootstrapPolicy policy( *this, randomIndices, bsFOpartial );
