@@ -54,7 +54,7 @@ where the permutation is defined such that :math:`Y_{(k,N+1)} = Y_{(k,1)}`.
 
 Confidence intervals are obtained via bootstrap without replacement. 
 
-The ratio of the bootstrap' sample size with respect to the total size of the input sample is fixed in the `RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio` ResourceMap key."
+The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the `RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio` ResourceMap key."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RankSobolSensitivityAlgorithm::draw
