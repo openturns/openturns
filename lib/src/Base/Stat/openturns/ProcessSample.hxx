@@ -173,6 +173,10 @@ public:
   /** Draw correlation between all marginals */
   GridLayout drawCorrelation() const;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<ProcessSampleImplementation>::operator ==;
+  Bool operator ==(const ProcessSample & other) const;
+  
   /** Translate realizations in-place */
   ProcessSample & operator += (const Sample & translation);
   ProcessSample & operator -= (const Sample & translation);

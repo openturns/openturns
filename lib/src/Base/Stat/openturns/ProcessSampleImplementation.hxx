@@ -176,6 +176,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Comparison operator */
+  using PersistentObject::operator ==;
+  Bool operator ==(const ProcessSampleImplementation & other) const;
+  
   /** Translate realizations in-place */
   ProcessSampleImplementation & operator += (const Sample & translation);
   ProcessSampleImplementation & operator -= (const Sample & translation);

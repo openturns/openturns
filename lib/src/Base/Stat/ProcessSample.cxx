@@ -300,6 +300,12 @@ GridLayout ProcessSample::drawCorrelation() const
   return getImplementation()->drawCorrelation();
 }
 
+/* Comparison operator */
+Bool ProcessSample::operator ==(const ProcessSample & other) const
+{
+  return *getImplementation() == *(other.getImplementation());
+}
+
 /* In place sum operator between process sample and sample */
 ProcessSample & ProcessSample::operator += (const Sample & translation)
 {

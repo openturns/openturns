@@ -684,6 +684,13 @@ void ProcessSampleImplementation::load(Advocate & adv)
   adv.loadAttribute( "data_", data_ );
 }
 
+/* Comparison function */
+Bool ProcessSampleImplementation::operator ==(const ProcessSampleImplementation & other) const
+{
+  if (this == &other) return true;
+  return (mesh_ == other.mesh_) && (data_ == other.data_);
+}
+
 /* In place sum operator between process sample and sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sample & translation)
 {
