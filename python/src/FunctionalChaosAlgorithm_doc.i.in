@@ -19,11 +19,11 @@ Available constructors:
 Parameters
 ----------
 inputSample: 2-d sequence of float
-    Sample of the input random vectors with size :math:`n` and dimension :math:`n_X`.
+    Sample of the input random vectors with size :math:`\sampleSize` and dimension :math:`\inputDim`.
 outputSample: 2-d sequence of float
-    Sample of the output random vectors with size :math:`n` and dimension :math:`n_Y`.
+    Sample of the output random vectors with size :math:`\sampleSize` and dimension :math:`\outputDim`.
 distribution : :class:`~openturns.Distribution`
-    Distribution of the random vector :math:`\vect{X}` of dimension :math:`n_X`.
+    Distribution of the random vector :math:`\inputRV` of dimension :math:`\inputDim`.
     When the *distribution* is unspecified, the
     :meth:`~openturns.MetaModelAlgorithm.BuildDistribution` static
     method is evaluated on the *inputSample*.
@@ -32,9 +32,9 @@ adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
 projectionStrategy : :class:`~openturns.ProjectionStrategy`
     Strategy of evaluation of the coefficients :math:`a_k`
 weights : sequence of float
-    Weights :math:`(w_i)_{i = 1, ..., n}` associated to the output
-    sample, where :math:`n` is the sample size.
-    Default values are :math:`w_i = \frac{1}{n}` for :math:`i = 1, ..., n`. 
+    Weights :math:`(w_i)_{i = 1, ..., \sampleSize}` associated to the output
+    sample, where :math:`\sampleSize` is the sample size.
+    Default values are :math:`w_i = \frac{1}{\sampleSize}` for :math:`i = 1, ..., \sampleSize`. 
 
 See also
 --------
