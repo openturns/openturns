@@ -61,3 +61,20 @@ Examples
 >>> optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, spaceFilling, geomProfile)"
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulatedAnnealingLHS::generateWithRestart
+"Generate sample with restart.
+
+Randomly generate several samples from an initial state
+and select the one that has the best score.
+
+Parameters
+----------
+nRestart : int
+    Number of restarts
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The best scored sample across restarts
+"
