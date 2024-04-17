@@ -60,15 +60,15 @@ TimeVaryingResult::TimeVaryingResult(const DistributionFactory & factory,
   , logLikelihood_(logLikelihood)
 {
   if (data.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the data should be of dimension 1";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the data should be of dimension 1 got " << data.getDimension();
   if (data.getSize() != timeGrid.getSize())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid size must match the data size";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid size (" << timeGrid.getSize() << ") must match the data size (" << data.getSize() << ")";
   if (timeGrid.getDimension() != normalizationFunction.getInputDimension())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid dimension must match the normalization function input dimension";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid dimension (" << timeGrid.getDimension() << ") must match the normalization function input dimension (" << normalizationFunction.getInputDimension() << ")";
   if (normalizationFunction.getInputDimension() != normalizationFunction.getOutputDimension())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the normalization function must have the same input and output dimensions";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the normalization function must have the same input dimension (" << normalizationFunction.getInputDimension() << ") as output dimension ("<< normalizationFunction.getOutputDimension() << ")";
   if (parameterDistribution.getDimension() != parameterFunction.getParameter().getDimension())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the parameter distribution dimension must match the parameter function parameter dimension";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the parameter distribution dimension (" << parameterDistribution.getDimension() << ") must match the parameter function parameter dimension ("<< parameterFunction.getParameter().getDimension() <<")";
 }
 
 TimeVaryingResult * TimeVaryingResult::clone() const
