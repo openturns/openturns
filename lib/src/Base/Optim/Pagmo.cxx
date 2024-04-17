@@ -120,7 +120,7 @@ struct PagmoProblem
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
     if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
-      throw InternalException(HERE) << "Time is " << timeDuration << ", exceeds maximum authorized time " << algorithm_->getMaximumTimeDuration();
+      throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << algorithm_->getMaximumTimeDuration() << " s)";
 
     // callbacks
     if (algorithm_->progressCallback_.first)
@@ -128,12 +128,8 @@ struct PagmoProblem
       const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
       algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
     }
-    if (algorithm_->stopCallback_.first)
-    {
-      const Bool stop = algorithm_->stopCallback_.first(algorithm_->stopCallback_.second);
-      if (stop)
-        throw InternalException(HERE) << "User stopped optimization";
-    }
+    if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
+      throw InterruptionException(HERE) << "User stopped optimization";
     return outP.toStdVector();
   }
 
@@ -210,7 +206,7 @@ struct PagmoProblem
       std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
       const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
       if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
-        throw InternalException(HERE) << "Time is " << timeDuration << ", exceeds maximum authorized time " << algorithm_->getMaximumTimeDuration();
+        throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << algorithm_->getMaximumTimeDuration() << " s)";
 
       // callbacks
       if (algorithm_->progressCallback_.first)
@@ -218,12 +214,8 @@ struct PagmoProblem
         const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
         algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
       }
-      if (algorithm_->stopCallback_.first)
-      {
-        const Bool stop = algorithm_->stopCallback_.first(algorithm_->stopCallback_.second);
-        if (stop)
-          throw InternalException(HERE) << "User stopped optimization";
-      }
+      if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
+        throw InterruptionException(HERE) << "User stopped optimization";
     }
     return outS.getImplementation()->getData().toStdVector();
   }

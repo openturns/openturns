@@ -29,7 +29,7 @@ Examples
 
 Returns
 -------
-coll : :class:`~openturns.Collection` of :class:`~openturns.Indices`
+coll : Collection of :class:`~openturns.Indices`
     Collection containing the permutations used to scramble each component of the sequence.
     Its size is the dimension of the sequence."
 

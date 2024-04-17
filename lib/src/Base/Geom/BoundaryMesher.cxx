@@ -155,7 +155,7 @@ struct ComputeNormalPolicy
       try
       {
         // Compute the face normal
-        (void) M.computeSVD(U, VT, true, false);
+        (void) M.computeSVDInPlace(U, VT, true);
         Point normal(dimension_);
         // The normal is the last row of VT
         for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -182,7 +182,7 @@ struct ComputeNormalPolicy
         simplexMatrix(dimension_, j) = 1.0;
       }
       Scalar sign = 0.0;
-      (void) simplexMatrix.computeLogAbsoluteDeterminant(sign, false);
+      (void) simplexMatrix.computeLogAbsoluteDeterminantInPlace(sign);
       // In odd dimension the positive orientation is for a negative determinant of
       // the simplex matrix
       if ((sign > 0.0) != (dimension_ % 2 == 1))

@@ -53,9 +53,8 @@ f = myBasis.build(1)
 # In that case, the univariate functions are not necessarily orthogonal with respect to a measure.
 #
 # We have the family of functions: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`.. The :meth:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction`
-# class stores the way the
-# multivariate basis is enumerated: *enumerate(n)* is a multi-index
+# for :math:`1 \leq i \leq d`.. The :class:`~openturns.EnumerateFunction` class
+# stores the way the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number :math:`n` is:
 #
 # .. math::
@@ -106,8 +105,7 @@ univFuncFamily_Jacobi = ot.OrthogonalUniVariatePolynomialFunctionFactory(
 # In that case, the univariate polynomials are orthogonal with respect to a measure :math:`\mu`.
 #
 # We have the family of polynomials: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`. The :meth:`enumerate` function stores of the
-# :class:`~openturns.LinearEnumerateFunction` class the way
+# for :math:`1 \leq i \leq d`. The :class:`~openturns.EnumerateFunction` class decides the way
 # the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`(\ell_1, \dots, \ell_d)` such that the function number :math:`n`
 # is:
@@ -146,9 +144,8 @@ print("Measure orthogonal to Hermite polynomials = ", measure_Hermite)
 # In that case, the univariate functions are orthogonal with respect to a measure :math:`\mu`.
 #
 # We have the family of functions: :math:`(x_i \mapsto \phi^i_k(x_i))_{k \geq 0}`
-# for :math:`1 \leq i \leq d`. The :math:`enumerate` function of the :class:`~openturns.LinearEnumerateFunction`
-# class stores the way
-# the multivariate basis is enumerated: *enumerate(n)* is a multi-index
+# for :math:`1 \leq i \leq d`. The :class:`~openturns.EnumerateFunction` class
+# stores the way the multivariate basis is enumerated: *enumerate(n)* is a multi-index
 # :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_d)` such that the function number *n* is:
 #
 # .. math::

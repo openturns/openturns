@@ -44,6 +44,7 @@
  * Deprecated ComposedDistribution in favor of JointDistribution
  * Deprecated ComposedCopula in favor of BlockIndependentCopula
  * Added Polygon::FillBetween static method to fill the surface between two curves
+ * Deprecated Study.printLabels (see getLabels)
 
 === Documentation ===
 

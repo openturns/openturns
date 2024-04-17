@@ -8,4 +8,4 @@
 
 %include openturns/MetaModelValidation.hxx
 
-namespace OT {%extend MetaModelValidation {MetaModelValidation(const MetaModelValidation & other){return new OT::MetaModelValidation(other);}}}
+%copyctor OT::MetaModelValidation;

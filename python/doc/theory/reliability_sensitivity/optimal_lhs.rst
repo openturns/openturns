@@ -3,7 +3,7 @@
 Optimal LHS design
 ^^^^^^^^^^^^^^^^^^
 
-Let :math:`X=(x_1,\cdots, x_d)` be a random vector of input parameters.
+Let :math:`\inputRV \in \Rset^{\inputDim}` be a random vector of input parameters.
 Latin Hypercube Sample (LHS) is a way to distribute N sample points: each
 parameter range is divided into N equal intervals, and sample points are
 chosen such that any hyperplane in that dimension contains one and only one
@@ -19,13 +19,16 @@ We may notice two types of LHS designs:
 - Centered design is obtained by choosing for each point the center of the corresponding cell
 - Randomized LHS is obtained by adding random perturbations inside each cell
 
-Let the input vector X whose marginals are independent and associated probabilistic measure :math:`\mathcal{L}_{X}(x_1,...,x_d)`
+Let the input vector :math:`\inputRV` whose marginals are independent and associated probabilistic measure :math:`\mathcal{L}_{\inputRV}`
 
-In practice, we look for a design in the space :math:`[0,1]^d` and we use an inverse
+In practice, we look for a design in the space :math:`[0,1]^{\inputDim}` and we use an inverse
 iso-probabilistic transformation to get the result in the original domain.
 
-Let :math:`\phi : [0,1]^d \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
-Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates from a perfectly uniform one.
+Let :math:`\phi : [0,1]^{\inputDim} \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
+Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates
+from a perfectly uniform one.
+We denote by :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)` the experiment design with :math:`\sampleSize`
+points where the :math:`i` -th point is :math:`\vect{x}^i = (x_1^i, \dots, x_{\inputDim}^i)`.`
 
 Two space filling criteria are implemented:
 
@@ -33,14 +36,19 @@ Two space filling criteria are implemented:
 
 .. math::
 
-    C_2(X_{d}^N)^2 = \left(\frac{13}{12}\right)^{d} - \frac{2}{N} \sum_{i=1}^{N} \prod_{k=1}^{d} \left( 1 + \frac{1}{2} |x_k^{(i)} - 0.5| - \frac{1}{2} |x_k^{(i)} - 0.5|^2 \right)\\
-                + \frac{1}{N^2} \sum_{i,j=1}^{N} \prod_{k=1}^{d} \left( 1 + \frac{1}{2} |x_k^{(i)} - 0.5| + \frac{1}{2} |x_k^{(j)} - 0.5| - \frac{1}{2} |x_k^{(i)} - x_k^{(j)}| \right)
+    C_2((\vect{x}^1, \dots, \vect{x}^\sampleSize))^2 = \left(\frac{13}{12}\right)^{\inputDim} -
+    \frac{2}{\sampleSize} \sum_{i=1}^{\sampleSize} \prod_{k=1}^{\inputDim} \left( 1 +
+    \frac{1}{2} |x_k^{(i)} - 0.5| - \frac{1}{2} |x_k^{(i)} - 0.5|^2 \right)\\
+                + \frac{1}{\sampleSize^2} \sum_{i,j=1}^{N} \prod_{k=1}^{\inputDim}
+                \left( 1 + \frac{1}{2} |x_k^{(i)} - 0.5| + \frac{1}{2} |x_k^{(j)} - 0.5| - \frac{1}{2} |x_k^{(i)} - x_k^{(j)}| \right)
 
 This discrepancy is to be minimized to get an optimal design.
 
 - The mindist criterion (minimal distance between two points in the design):
 
-.. math:: \phi(X) = min_{} ||x^{(i)} - x^{(j)} ||_{L^2}, \forall i\neq j=1,\cdots N
+.. math::
+  \phi((\vect{x}^1, \dots, \vect{x}^\sampleSize)) = min_{} ||x^{(i)} - x^{(j)} ||_{L^2},
+  \forall i\neq j=1,\cdots \sampleSize
 
 
 This criterion is to be maximized.
@@ -48,39 +56,48 @@ This criterion is to be maximized.
 - In practice, the :math:`\phi_p` criterion is used instead of mindist and writes:
 
 .. math::
-  \phi_p(X) = \left( \sum_{1\leq i < j \leq N} ||x^{(i)} - x^{(j)}||^{-p}_{L^2} \right)^{\frac{1}{p}}
+  \phi_p((\vect{x}^1, \dots, \vect{x}^\sampleSize)) = \left(
+  \sum_{1\leq i < j \leq \sampleSize} ||x^{(i)} - x^{(j)}||^{-p}_{L^2} \right)^{\frac{1}{p}}
 
-This is supposed to be more robust. When p tends to infinity, optimizing a design with :math:`\phi_p` is equivalent to optimizing a design with *mindist*.
+This is supposed to be more robust. When p tends to infinity, optimizing a design with :math:`\phi_p`
+is equivalent to optimizing a design with *mindist*.
 This criterion is to be minimized to get an optimal design.
 
-The objective is to generate an LHS design :math:`X_{d}^{N}` that minimizes a space filling criterion :math:`\phi` (or maximizes mindist).
+The objective is to generate an LHS design :math:`(\vect{x}^1, \dots, \vect{x}^\sampleSize)`
+that minimizes a space filling criterion :math:`\phi` (or maximizes mindist).
 For that purpose, two techniques are implemented and presented
 hereafter.
 
 Monte Carlo
 ~~~~~~~~~~~
-This problem can be approximated by a Monte Carlo algorithm: a fixed number of designs are generated, and the optimal one is kept.
+This problem can be approximated by a Monte Carlo algorithm: a fixed number of designs are generated, and
+the optimal one is kept.
 This algorithm is trivial and available in :class:`~openturns.MonteCarloLHS`.
-One of the major drawbacks of Monte Carlo sampling is the CPU time consumption, because the number of generated designs must be high.
+One of the major drawbacks of Monte Carlo sampling is the CPU time consumption, because the number of
+generated designs must be high.
 
 Simulated Annealing
 ~~~~~~~~~~~~~~~~~~~
-An alternate solution is to use an adapted simulated annealing method, available in :class:`~openturns.SimulatedAnnealingLHS`, which we will now describe.
-Starting from an LHS design, a new design is obtained by permuting one random coordinate of two randomly chosen elements; by construction, this design is also an LHS design.
+An alternate solution is to use an adapted simulated annealing method, available in
+:class:`~openturns.SimulatedAnnealingLHS`, which we will now describe.
+Starting from an LHS design, a new design is obtained by permuting one random coordinate of two
+randomly chosen elements; by construction, this design is also an LHS design.
 If the new design is better than the previous one, it is kept.
-If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile T which decreases over time.
+If it is worse, it may anyway be kept with some probability, which depends on how these designs compare,
+but also on a temperature profile T which decreases over time.
 This means that jumping away from local extrema becomes less probable over time.
 
 It is important to highlight here that this specific permutation has been chosen in this algorithm
-because it allows highly efficient computations of criterion during simulated annealing process.
-he naive criterion evaluation, as is done in Monte Carlo algorithm, has a complexity of :math:`\mathcal{O}(d\times N^2)` for :math:`C_2` and :math:`\phi_p` criteria.
+because it allows highly efficient computations of the criterion during the simulated annealing process.
+The naive criterion evaluation, as is done in Monte Carlo algorithm, has a complexity of
+:math:`\mathcal{O}(d\times \sampleSize^2)` for :math:`C_2` and :math:`\phi_p` criteria.
 
 
 Let us first illustrate with the :math:`C_2` criterion. We set :math:`z_{ik}=x_{ik}-0.5`, equation rewrites:
 
 .. math::
 
-    C_2(X_{d}^N)^2 = \left(\frac{13}{12}\right)^{d} +\sum_{i=1}^{N}\sum_{j=1}^{N} c_{ij}
+    C_2(X_{d}^\sampleSize)^2 = \left(\frac{13}{12}\right)^{d} +\sum_{i=1}^{\sampleSize}\sum_{j=1}^{\sampleSize} c_{ij}
 
 with:
 
@@ -89,12 +106,15 @@ with:
 
     c_{ij}= \,\,\,\left \{
     \begin{aligned}
-    &\frac{1}{N^2}\prod_{k=1}^{d}\frac{1}{2}(2+|z_{ik}|+|z_{jk}|-|z_{ik}-z_{jk}|)\,\,\,\, \textrm{if}\,\, i\neq j \\
-    &\frac{1}{N^2}\prod_{k=1}^{d}(1+|z_{ik}|)-\frac{2}{N}\prod_{k=1}^{d}(1+\frac{1}{2}|z_{ik}|-\frac{1}{2}z_{ik}^2) \,\,\,\,\textrm{otherwise} \\
+    &\frac{1}{\sampleSize^2}\prod_{k=1}^{d}\frac{1}{2}(2+|z_{ik}|+|z_{jk}|-|z_{ik}-z_{jk}|)\,\,\,\, \textrm{if}\,\, i\neq j \\
+    &\frac{1}{\sampleSize^2}\prod_{k=1}^{d}(1+|z_{ik}|)-\frac{2}
+    {\sampleSize}\prod_{k=1}^{d}(1+\frac{1}{2}|z_{ik}|-\frac{1}{2}z_{ik}^2) \,\,\,\,\textrm{otherwise} \\
     \end{aligned}
     \right.
 
-We set :math:`c^{\prime}` the elements of a new design :math:`X^{\prime N}_{d}` obtained by permuting a coordinate of sample points :math:`i_1` and :math:`i_2`.
+We set :math:`c^{\prime}` the elements of a new design
+:math:`(\vect{x \prime}^1, \dots, \vect{x \prime}^\sampleSize)` obtained by
+permuting a coordinate of sample points :math:`i_1` and :math:`i_2`.
 We can see that
 
 .. math::
@@ -102,9 +122,9 @@ We can see that
 
     \left \{
     \begin{aligned}
-    & c^{\prime}_{ij}=c_{ij} \;\forall i, j \text{ such that } 1\leq i,j\leq N,\, i\notin \{i_1,i_2\},\, j\notin \{i_1,i_2\}\\
+    & c^{\prime}_{ij}=c_{ij} \;\forall i, j \text{ such that } 1\leq i,j\leq \sampleSize,\, i\notin \{i_1,i_2\},\, j\notin \{i_1,i_2\}\\
     & c^{\prime}_{i_1i_2}=c_{i_1i_2}\\
-    & c_{ij}=c_{ji} \;\forall 1\leq i,j\leq N
+    & c_{ij}=c_{ji} \;\forall 1\leq i,j\leq \sampleSize
     \end{aligned}
     \right.
 
@@ -112,20 +132,23 @@ and thus, :math:`C_2(X')` becomes:
 
 .. math::
 
-    C_2(X^{\prime N}_{d})^2 = C_2(X^N_d)^2
-        + c^{\prime}_{i_1i_1} + c^{\prime}_{i_2i_2} + 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (c^{\prime}_{i_1j}+c^{\prime}_{i_2j})\\
-      {} - c_{i_1i_1} - c_{i_2i_2} - 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (c_{i_1j}+c_{i_2j})
+    C_2(X^{\prime \sampleSize}_{d})^2 = C_2(X^N_d)^2
+        + c^{\prime}_{i_1i_1} + c^{\prime}_{i_2i_2} + 2\sum_{\substack{1\leq j\leq
+        \sampleSize\\j\neq i_1,i_2}} (c^{\prime}_{i_1j}+c^{\prime}_{i_2j})\\
+      {} - c_{i_1i_1} - c_{i_2i_2} - 2\sum_{\substack{1\leq j\leq \sampleSize\\j\neq i_1,i_2}} (c_{i_1j}+c_{i_2j})
 
-Updating :math:`C_2` criterion can be performed by a :math:`\mathcal{O}(N)` algorithm, which has a much better complexity than a naive computation.
+Updating :math:`C_2` criterion can be performed by a :math:`\mathcal{O}(\sampleSize)`
+algorithm, which has a much better complexity than a naive computation.
 
 The same trick can also be applied on :math:`\phi_p` criterion, because we can write
 
 .. math::
 
     \phi_p(X)^p
-    = \sum_{1\leq i < j \leq N} ||x^{(i)} - x^{(j)}||^{-p}_{L^2}
-    = \frac{1}{2} \sum_{i=1}^N \sum_{\substack{1\leq j\leq N\\j\neq i}} ||x^{(i)} - x^{(j)}||^{-p}_{L^2}
-    = \sum_{i=1}^N \sum_{j=1}^N f_{ij}
+    = \sum_{1\leq i < j \leq \sampleSize} ||x^{(i)} - x^{(j)}||^{-p}_{L^2}
+    = \frac{1}{2} \sum_{i=1}^\sampleSize
+    \sum_{\substack{1\leq j\leq \sampleSize\\j\neq i}} ||x^{(i)} - x^{(j)}||^{-p}_{L^2}
+    = \sum_{i=1}^\sampleSize \sum_{j=1}^\sampleSize f_{ij}
 
 with
 
@@ -142,12 +165,13 @@ These :math:`f_{ij}` coefficients satisfy the same conditions, so the same compu
 
 .. math::
 
-    \phi_p(X_{d}^{\prime N})^p = \phi_p(X_{d}^N)^p
-      + 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (f^{\prime}_{i_1j}+f^{\prime}_{i_2j})
-      - 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (f_{i_1j}+f_{i_2j})
+    \phi_p(X_{d}^{\prime \sampleSize})^p = \phi_p(X_{d}^\sampleSize)^p
+      + 2\sum_{\substack{1\leq j\leq \sampleSize\\j\neq i_1,i_2}} (f^{\prime}_{i_1j}+f^{\prime}_{i_2j})
+      - 2\sum_{\substack{1\leq j\leq \sampleSize\\j\neq i_1,i_2}} (f_{i_1j}+f_{i_2j})
 
-In practice, a marginal transformation is performed to map the initial multivariate distribution into :math:`[0,1]^d`.
-Optimization is performed in :math:`[0,1]^d` and the inverse transformation maps the design into the initial space.
+In practice, a marginal transformation is performed to map the initial multivariate distribution into :math:`[0,1]^{\inputDim}`.
+Optimization is performed in :math:`[0,1]^{\inputDim}` and the inverse transformation maps
+the design into the initial space.
 
 .. topic:: API:
 

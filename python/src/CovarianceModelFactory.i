@@ -10,11 +10,4 @@ OTTypedInterfaceObjectHelper(CovarianceModelFactory)
 
 %include openturns/CovarianceModelFactory.hxx
 
-namespace OT { 
-
-  %extend CovarianceModelFactory {
-
-     CovarianceModelFactory(const CovarianceModelFactory & other) { return new OT::CovarianceModelFactory(other); }
-
-   }
- }
+%copyctor OT::CovarianceModelFactory;

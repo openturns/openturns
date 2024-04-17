@@ -15,8 +15,8 @@ More precisely, consider:
 
    \vect{Y}=\vect{y}_0+\mat{M}\,\vect{X}
 
-where :math:`\vect{y}_0 \in \Rset^d` is a deterministic vector with
-:math:`d \in \{1,2,3\}`, :math:`\mat{M} \in \mathcal{M}_{d,n}(\Rset)` is a
+where :math:`\vect{y}_0 \in \Rset^{\inputDim}` is a deterministic vector with
+:math:`\inputDim \in \{1,2,3\}`, :math:`\mat{M} \in \mathcal{M}_{\inputDim,n}(\Rset)` is a
 deterministic matrix and :math:`\left(X_k\right)_{ 1 \leq k \leq n}` are
 independent random variables.
 In this case, it is possible to directly evaluate the distribution of
@@ -37,10 +37,10 @@ easily defined from the characteristic function of :math:`X_k` denoted
 .. math::
   :label: CharactFuncY
 
-   \phi_{\vect{Y}}(u_1,\hdots,u_d)
-   = \prod_{j=1}^d e^{iu_j{y_0}_j} \prod_{k=1}^n\phi_{X_k}\left(\left(M^t u\right)_k\right),
+   \phi_{\vect{Y}}(u_1,\hdots,u_{\inputDim})
+   = \prod_{j=1}^{\inputDim} e^{iu_j{y_0}_j} \prod_{k=1}^n\phi_{X_k}\left(\left(M^t u\right)_k\right),
 
-for any :math:`\vect{u} \in \Rset^d`.
+for any :math:`\vect{u} \in \Rset^{\inputDim}`.
 Once :math:`\phi_{\vect{Y}}` is evaluated, it is possible to evaluate the
 probability density function of :math:`\vect{Y}`, denoted :math:`p_{\vect{Y}}` :
 several techniques are possible, as the inversion of the Fourier
@@ -50,12 +50,12 @@ We can alternatively use the Poisson summation formula:
 .. math::
   :label: PoissonSum
 
-   & \sum_{j_1 \in \Zset}\hdots\sum_{j_d \in \Zset} p_{\vect{Y}}\left(y_1+\frac{2\pi j_1}{h_1},\hdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
-   & = \left(\prod_{j=1}^d \frac{h_j}{2 \pi} \right) \sum_{k_1 \in \Zset}\hdots\sum_{k_d \in \Zset}\phi\left(k_1h_1,\hdots,k_dh_d\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
+   & \sum_{j_1 \in \Zset}\hdots\sum_{j_{\inputDim} \in \Zset} p_{\vect{Y}}\left(y_1+\frac{2\pi j_1}{h_1},\hdots,y_{\inputDim}+\frac{2\pi j_{\inputDim}}{h_{\inputDim}}\right) \\
+   & = \left(\prod_{j=1}^{\inputDim} \frac{h_j}{2 \pi} \right) \sum_{k_1 \in \Zset}\hdots\sum_{k_{\inputDim} \in \Zset}\phi\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right)e^{-\imath \left(\sum_{m=1}^{\inputDim}k_m h_m y_m\right)}
 
-where :math:`h_1, \hdots, h_d \in \Rset` and
+where :math:`h_1, \hdots, h_{\inputDim} \in \Rset` and
 :math:`\imath` is the complex imaginary number, i.e. :math:`\imath^2 = -1`.
-If :math:`h_1,\hdots,h_d` are close to zero, then:
+If :math:`h_1,\hdots,h_{\inputDim}` are close to zero, then:
 
 .. math:: \frac{2k\pi}{h_j} \approx + \in fty
 
@@ -65,12 +65,12 @@ and:
 
 because of the decreasing properties of :math:`p_{\vect{Y}}`. Thus the nested sums of the left
 term of :eq:`PoissonSum` are reduced to the central term
-:math:`j_1=\hdots=j_d = 0`: the left term is approximately equal to
+:math:`j_1=\hdots=j_{\inputDim} = 0`: the left term is approximately equal to
 :math:`p_{\vect{Y}}(y)`.
 Furthermore, the right term of :eq:`PoissonSum` is a series which
 converges very fast: few terms of the series are enough to get
 machine-precision accuracy. Let us note that the factors
-:math:`\phi_{\vect{Y}}(k_1 h_1,\hdots,k_d,h_d)`, which are expensive to
+:math:`\phi_{\vect{Y}}(k_1 h_1,\hdots,k_{\inputDim},h_{\inputDim})`, which are expensive to
 evaluate, do not depend on :math:`y` and are evaluated once only.
 
 It is also possible to greatly improve the performance of the
@@ -86,20 +86,20 @@ subtraction:
     :label: algoPoisson
 
      p_{\vect{Y}}\left(y\right)
-     & = \sum_{j \in \Zset^d} q_Y\left(y_1+\frac{2\pi j_1}{h_1},\cdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
-     & \quad + \frac{H}{2^d\pi^d}\sum_{|k_1|\leq N}\cdots\sum_{|k_d|\leq N} \delta_Y\left(k_1h_1,\cdots,k_dh_d\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
+     & = \sum_{j \in \Zset^{\inputDim}} q_Y\left(y_1+\frac{2\pi j_1}{h_1},\cdots,y_{\inputDim}+\frac{2\pi j_{\inputDim}}{h_{\inputDim}}\right) \\
+     & \quad + \frac{H}{2^{\inputDim}\pi^{\inputDim}}\sum_{|k_1|\leq N}\cdots\sum_{|k_{\inputDim}|\leq N} \delta_Y\left(k_1h_1,\cdots,k_{\inputDim}h_{\inputDim}\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
 
-where :math:`H = h_1\times\cdots\times h_d`,
-:math:`j=(j_1,\cdots,j_d)` and :math:`\delta_Y:=\phi_{\vect{Y}} - \psi_Y`.
+where :math:`H = h_1\times\cdots\times h_{\inputDim}`,
+:math:`j=(j_1,\cdots,j_{\inputDim})` and :math:`\delta_Y:=\phi_{\vect{Y}} - \psi_Y`.
 In the case where :math:`n \gg 1`, using the limit central theorem,
 the law of :math:`\vect{Y}` tends to the normal distribution density
 :math:`q`, which will drastically reduce :math:`N`. The sum on
 :math:`q` will become the most CPU-intensive part, because in the
 general case we will have to keep more terms than the central one in
-this sum, since the parameters :math:`h_1, \dots  h_d` were
+this sum, since the parameters :math:`h_1, \dots  h_{\inputDim}` were
 calibrated with respect to :math:`p` and not :math:`q`.
 
-The parameters :math:`h_1, \dots  h_d` are calibrated using the
+The parameters :math:`h_1, \dots  h_{\inputDim}` are calibrated using the
 following formula:
 
 .. math::  h_\ell = \frac{2\pi}{(\beta+4\alpha)\sigma_\ell}
@@ -137,27 +137,27 @@ The regular grid is:
 
    \:y_{r,m}=\mu_r+b\left(\frac{2m+1}{M} - 1\right)\sigma_r
 
-for all :math:`r \in \{1,\hdots,d\}` and :math:`m \in \{0,\hdots,M-1\}`.
-Denoting :math:`p_{m_1,\hdots,m_d}=p_{\vect{Y}}(y_{1,m_1},\hdots,y_{d,m_d})`:
+for all :math:`r \in \{1,\hdots,\inputDim\}` and :math:`m \in \{0,\hdots,M-1\}`.
+Denoting :math:`p_{m_1,\hdots,m_{\inputDim}}=p_{\vect{Y}}(y_{1,m_1},\hdots,y_{d,m_{\inputDim}})`:
 
 .. math::
 
-   p_{m_1,\hdots,m_d}= Q_{m_1,\hdots,m_d}+S_{m_1,\hdots,m_d}
+   p_{m_1,\hdots,m_{\inputDim}}= Q_{m_1,\hdots,m_{\inputDim}}+S_{m_1,\hdots,m_{\inputDim}}
 
-for which the term :math:`S_{m_1,\hdots,m_d}` is the most CPU
+for which the term :math:`S_{m_1,\hdots,m_{\inputDim}}` is the most CPU
 consuming. This term rewrites:
 
 .. math::
 
-   S_{m_1,\hdots,m_d}=&\frac{H}{2^d\pi^d}\sum_{k_1=-N}^{N}\hdots\sum_{k_d=-N}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right)
-   E_{m_1,\hdots,m_d}(k_1,\hdots,k_d)
+   S_{m_1,\hdots,m_{\inputDim}}=&\frac{H}{2^{\inputDim}\pi^{\inputDim}}\sum_{k_1=-N}^{N}\hdots\sum_{k_{\inputDim}=-N}^{N}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right)
+   E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim})
 
 with:
 
 .. math::
 
-   \delta\left(k_1h_1,\hdots,k_dh_d\right) & = (\phi-\psi)\left(k_1h_1,\hdots,k_dh_d\right)\\
-   E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) & = e^{-i\sum_{j=1}^d k_jh_j\left(\mu_j+b\left(\frac{2m_j+1}{M}-1\right)\sigma_j\right)}
+   \delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) & = (\phi-\psi)\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right)\\
+   E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) & = e^{-i\sum_{j=1}^{\inputDim} k_jh_j\left(\mu_j+b\left(\frac{2m_j+1}{M}-1\right)\sigma_j\right)}
 
 The aim is to rewrite the previous expression as a :math:`d`- discrete
 Fourier transform, in order to apply Fast Fourier Transform (*FFT*) for
@@ -177,10 +177,10 @@ We obtain:
 
 .. math::
 
-   & E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
+   & E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
    & = e^{-i\sum_{j=1}^{d} k_jh_jb\sigma_j\left(\frac{\mu_j}{b\sigma_j}+\frac{2m_j}{N}+\frac{1}{N}-1\right)}\\
    & = e^{-2i\pi\left(\frac{\sum_{j=1}^{d}k_j m_j}{N}\right)}e^{-i\pi\sum_{j=1}^{d} k_j\left(\tau_j-1+\frac{1}{N}\right)} \\
-   & = e^{-2i\pi\left(\frac{\sum_{j=1}^{d}k_j m_j}{N}\right)} f_1(k_1-1) \times \hdots \times f_d(k_d-1)
+   & = e^{-2i\pi\left(\frac{\sum_{j=1}^{d}k_j m_j}{N}\right)} f_1(k_1-1) \times \hdots \times f_{\inputDim}(k_{\inputDim}-1)
 
 For performance reasons, we want to use the discrete Fourier transform
 with the following convention in dimension 1:
@@ -199,10 +199,10 @@ We decompose sums of on the interval :math:`[-N,N]` into three parts:
 .. math::
  :label: decomposition-sum
 
-     & \sum_{k_j=-N}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
-     & = \sum_{k_j=-N}^{-1} \delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
-     & \quad + \delta\left(k_1h_1,\hdots,0,\hdots,k_dh_d\right) E_{m_1,\hdots,0,\hdots,m_d}(k_1,\hdots,0,\hdots,k_d) \\
-     & \quad+ \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d)
+     & \sum_{k_j=-N}^{N}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
+     & = \sum_{k_j=-N}^{-1} \delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
+     & \quad + \delta\left(k_1h_1,\hdots,0,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,0,\hdots,m_{\inputDim}}(k_1,\hdots,0,\hdots,k_{\inputDim}) \\
+     & \quad+ \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim})
 
 If we compute :math:`E` for dimension :math:`d-1`, then the
 middle term in this sum is trivial.
@@ -211,57 +211,57 @@ To compute the last sum, we apply a change of variable :math:`k_j' = k_j-1`:
 
 .. math::
 
-     & \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
-     & = \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j+1)h_j,\hdots,k_dh_d\right) \times\\
-     & \quad E_{m_1,\hdots,m_d}(k_1,\hdots,k_j+1,\hdots,k_d)
+     & \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
+     & = \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j+1)h_j,\hdots,k_{\inputDim}h_{\inputDim}\right) \times\\
+     & \quad E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_j+1,\hdots,k_{\inputDim})
 
 This implies:
 
 .. math::
 
-     & E_{m_1,\hdots,m_d}(k_1, \hdots, k_j+1, \hdots, k_d) \\
+     & E_{m_1,\hdots,m_{\inputDim}}(k_1, \hdots, k_j+1, \hdots, k_{\inputDim}) \\
      &= e^{-2i\pi\left(\frac{\sum_{l = 1}^{d}k_l m_l}{N} +\frac{m_j}{N}\right)}
-         f_1(k_1 - 1)\times \hdots \times f_j(k_j) \times \hdots \times f_d(k_d - 1) \\
+         f_1(k_1 - 1)\times \hdots \times f_j(k_j) \times \hdots \times f_{\inputDim}(k_{\inputDim} - 1) \\
      &= e^{-2i\pi\left(\frac{m_j}{N}\right)}
          e^{-2i\pi\left(\frac{\sum_{l = 1}^{d}k_l m_l}{N}\right)}
-         f_1(k_1 - 1)\times \hdots \times f_j(k_j) \times \hdots \times f_d(k_d - 1)
+         f_1(k_1 - 1)\times \hdots \times f_j(k_j) \times \hdots \times f_{\inputDim}(k_{\inputDim} - 1)
 
 Thus:
 
 .. math::
 
-     & \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
-     & = e^{-2i\pi\left(\frac{m_j}{N}\right)} \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j+1)h_j,\hdots,k_dh_d\right) \times \\
+     & \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
+     & = e^{-2i\pi\left(\frac{m_j}{N}\right)} \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j+1)h_j,\hdots,k_{\inputDim}h_{\inputDim}\right) \times \\
      & \quad e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N}\right)}
-         f_1(k_1-1)\times \hdots \times f_j(k_j)\times \hdots \times f_d(k_d-1)
+         f_1(k_1-1)\times \hdots \times f_j(k_j)\times \hdots \times f_{\inputDim}(k_{\inputDim}-1)
 
 To compute the first sum of equation, we apply a change of variable
 :math:`k_j'=N+k_j`:
 
 .. math::
 
-     & \sum_{k_j=-N}^{-1}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \\
-     &=  \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j-N)h_j,\hdots,k_dh_d\right) \times \\
-       & \quad  E_{m_1,\hdots,m_d}(k_1,\hdots,k_j-N,\hdots,k_d)
+     & \sum_{k_j=-N}^{-1}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_{\inputDim}) \\
+     &=  \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j-N)h_j,\hdots,k_{\inputDim}h_{\inputDim}\right) \times \\
+       & \quad  E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_j-N,\hdots,k_{\inputDim})
 
 This implies:
 
 .. math::
 
-     & E_{m_1,\hdots,m_d}(k_1,\hdots,k_j-N,\hdots,k_d) \\
+     & E_{m_1,\hdots,m_{\inputDim}}(k_1,\hdots,k_j-N,\hdots,k_{\inputDim}) \\
      &= e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N} -m_j\right)}
-         f_1(k_1-1)\times \hdots \times f_j(k_j-1-N)\times \hdots \times f_d(k_d-1) \\
+         f_1(k_1-1)\times \hdots \times f_j(k_j-1-N)\times \hdots \times f_{\inputDim}(k_{\inputDim}-1) \\
      & = e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N}\right)}
-         f_1(k_1-1)\times \hdots \times \overline{f}_j(N-1-k_j)\times \hdots \times f_d(k_d-1)
+         f_1(k_1-1)\times \hdots \times \overline{f}_j(N-1-k_j)\times \hdots \times f_{\inputDim}(k_{\inputDim}-1)
 
 Thus:
 
 .. math::
 
-     & \sum_{k_j=-N}^{-1}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d} (k_1,\hdots,k_d) \\
-     & = \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j-N)h_j,\hdots,k_dh_d\right) \times \\
+     & \sum_{k_j=-N}^{-1}\delta\left(k_1h_1,\hdots,k_{\inputDim}h_{\inputDim}\right) E_{m_1,\hdots,m_{\inputDim}} (k_1,\hdots,k_{\inputDim}) \\
+     & = \sum_{k_j=0}^{N-1}\delta\left(k_1h_1,\hdots,(k_j-N)h_j,\hdots,k_{\inputDim}h_{\inputDim}\right) \times \\
      & \quad e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N}\right)}
-         f_1(k_1-1)\times \hdots \times \overline{f}_j(N-1-k_j)\times \hdots \times f_d(k_d-1)
+         f_1(k_1-1)\times \hdots \times \overline{f}_j(N-1-k_j)\times \hdots \times f_{\inputDim}(k_{\inputDim}-1)
 
 To summarize:
 

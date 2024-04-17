@@ -5,7 +5,6 @@ Bibliography
 ============
 .. [aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
     Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
-    `pdf <https://www.nr.no/files/samba/bff/SAMBA2204b.pdf>`__
 .. [abate1992] Abate, J. and Whitt, W. (1992). *The Fourier-series method for
     inverting transforms of probability distributions*.
     Queueing Systems 10, 5--88., 1992, formula 5.5.
@@ -28,6 +27,7 @@ Bibliography
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
     `pdf <https://arxiv.org/pdf/1501.05242>`__
+.. [baron2014] Baron, M. (2019). *Probability and statistics for computer scientists*. CRC press.
 .. [beirlant2004] Beirlant J., Goegebeur Y., Teugels J., Segers J.,
     *Statistics of extremes: theory and applications*, Wiley, 2004
 .. [benton2003] Benton D. and Krishnamoorthy K. (2003). *Computing
@@ -37,6 +37,8 @@ Bibliography
     https://www.sciencedirect.com/science/article/abs/pii/S0167947302002839
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
+.. [bjork1996] A. Bjorck (1996),
+    *Numerical methods for least squares problems*, SIAM Press, Philadelphia.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
     uncertainty propagation and sensitivity analysis.*, PhD thesis.
     Blaise Pascal University-Clermont II, France, 2009.
@@ -51,6 +53,8 @@ Bibliography
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
+.. [bingham2010] Bingham, N. H., & Fry, J. M. (2010).
+    *Regression: Linear models in statistics*. Springer.
 .. [cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
     `pdf <https://arxiv.org/pdf/1508.03483.pdf>`__
 .. [caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
@@ -61,12 +65,16 @@ Bibliography
     http://ceres-solver.org
 .. [chacon2018] Chacón, J. E., & Duong, T. (2018).
     *Multivariate kernel smoothing and its applications.* CRC Press.
+.. [chihara1978] Chihara, T. S. (1978).
+    *An introduction to orthogonal polynomials.* Dover publications.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
     Springer, 2001.
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
     Marcel Dekker, Inc., New York, 1986.
+.. [dahlquist2008] Dahlquist, G. and Björck, A. *Numerical methods in scientific computing*,
+   volume I. Society for Industrial and Applied Mathematics. 2008
 .. [damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
@@ -84,9 +92,8 @@ Bibliography
     *Modelling under risk and uncertainty.* John Wiley & Sons.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
-    `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
-.. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
-    `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
+    `pdf <http://luc.devroye.org/handbooksimulation1.pdf>`__
+.. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*
 .. [diebolt2008] Diebolt J., *Improving probability-weighted moment methods for the generalized extreme value distribution*,
     REVSTAT Statistical Journal, 2008.
     `pdf <https://www.ine.pt/revstat/pdf/rs080103.pdf>`__
@@ -105,23 +112,29 @@ Bibliography
 .. [dubourg2011] Dubourg, V. *Adaptative surrogate models for reliability and reliability-based design optimization*,
     University Blaise Pascal - Clermont II, 2011.
     `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
+.. [ernst2012] Ernst, O. G., Mugler, A., Starkloff, H. J., & Ullmann, E. (2012).
+    *On the convergence of generalized polynomial chaos expansions.*
+    ESAIM: Mathematical Modelling and Numerical Analysis, 46(2), 317-339.
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
+.. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
 .. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density
     estimator: L2 theory*, December 1981, Probability Theory and Related Fields.
     57 (4): 453–476.
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gautschi2004] Gautschi, W. (2004).
+    *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
+.. [ghanem1991] Ghanem R. and P. Spanos, 1991,
+    *Stochastic finite elements – A spectral approach*,
+    Springer Verlag. (Reedited by Dover Publications, 2003).
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
-.. [giles2013] Mike Giles, *Fast evaluation of the inverse Poisson CDF*, university of Oxford,
-    Ninth IMACS Seminar on Monte Carlo Methods, 2013.
-    `pdf <http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf>`__
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
@@ -135,6 +148,8 @@ Bibliography
 .. [halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
     *An algorithm for the principal component analysis of large data sets*,
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
+.. [hammersley1961] Hammersley, J. M., & Handscomb, D. C. (1961).
+    *Monte Carlo Methods.* Chapman and Hall. Monographs on Statistics and Applied Probability.
 .. [helton2003] Helton, J.C., and Davis, F. J.,
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
@@ -188,6 +203,8 @@ Bibliography
 .. [knio2010] Le Maître, O., & Knio, O. M. (2010). *Spectral methods for uncertainty
     quantification: with applications to computational fluid dynamics.* Springer
     Science & Business Media.
+.. [ko1994] William L. Ko, Raymond H. Jackson,
+    *Share Buckling Analysis of a Hat-Stiffend Panel*, NASA Technical Memorandum 4644 (November 1994).
 .. [koay2006] Koay C.G., Basser P.J.,
     *Analytically exact correction scheme for signal extraction from noisy magnitude MR signals*,
     Journal of magnetics Resonance 179, 317-322, 2006.
@@ -218,6 +235,8 @@ Bibliography
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [lemaitre2010] Le Maître, O., & Knio, O. M. (2010).
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
+.. [lemieux2009] Lemieux, C. (2009). *Monte Carlo and Quasi-Monte Carlo Sampling*.
+    Springer. Springer Series in Statistics.
 .. [liu2006] Liu, R., & Owen, A. B. (2006). *Estimating mean dimensionality of
     analysis of variance decompositions.* Journal of the American Statistical
     Association, 101 (474), 712-721.
@@ -225,13 +244,13 @@ Bibliography
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
-    `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
+    `pdf <http://www.bios.unc.edu/~mhudgens/bios/662/2008fall/Backup/lilliefors1967.pdf>`__
 .. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
     *Uncertainty analysis using evidence theory–confronting level-1 and
     level-2 approaches with data availability and computational constraints.*
     Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
-    `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+    `pdf <https://www.r-project.org/doc/reports/CLoader-dbinom-2002.pdf>`__
 .. [luke] Luke Gustafson. The Spearman Rho null distribution. https://www.luke-g.com/math/spearman/index.html
 .. [luo2018] Zhendong Luo, Goong Chen
     *Proper Orthogonal Decomposition Methods for Partial Differential Equations.*
@@ -264,6 +283,8 @@ Bibliography
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
     `pdf <https://www.asc.ohio-state.edu/statistics/comp_exp/jour.club/McKayConoverBeckman.pdf>`__
+.. [melchers1990] Melchers, R. E. (1990).
+    *Radial importance sampling for structural reliability.* Journal of engineering mechanics, 116(1), 189-203.
 .. [minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
@@ -341,6 +362,7 @@ Bibliography
     Z. Wahrseheinlichkeitstheorie, volume 2, pages 340-368.
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <https://kgut.ac.ir/useruploads/1509987964985oqk.pdf>`__
+.. [rudin1987] Rudin, W. *Real and complex analysis* 1987.
 .. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
@@ -353,6 +375,8 @@ Bibliography
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
 .. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.*
     Journal of Mechanical Design, 134(3):031008, 2012.
+.. [santner2003] Santner, T. J., Williams, B. J., Notz, W. I., & Williams, B. J. (2003).
+    *The design and analysis of computer experiments*. New York: Springer.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] Scott, D. W. (1992). *Multivariate density estimation*,
@@ -363,6 +387,8 @@ Bibliography
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [sen1990] Sen, A., & Srivastava, M. (1990). *Regression analysis: theory, methods, and applications*.
+    Springer.
 .. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).
     *A reliable data-based bandwidth selection method for kernel density estimation.*
     Journal of the Royal Statistical Society. Series B (Methodological),
@@ -395,21 +421,27 @@ Bibliography
     discrete random variates*. Journal of Computational and Applied Mathematics,
     vol. 31, no. 1, pp. 181-189, 1990.
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
+.. [stein1987] Stein, M. (1987). *Large sample properties of simulations using Latin hypercube sampling.*
+    Technometrics, 29(2), 143-151.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
-    `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+    `pdf <https://zhilin.math.ncsu.edu/TEACHING/MA580/Stoer_Bulirsch.pdf>`__
 .. [sudret2006] Sudret, B. (2006). *Global sensitivity analysis using polynomial
     chaos expansions.* In. Proceedings of the 5th International Conference
     on Computational Stochastic Mechanics (CSM5), Rhodos (2006)
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
+.. [xiu2010] Xiu, D. (2010).
+    *Numerical methods for stochastic computations: a spectral method approach.*
+    Princeton university press.
 .. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012
 .. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*

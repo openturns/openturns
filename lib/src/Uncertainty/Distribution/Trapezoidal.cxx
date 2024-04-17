@@ -338,13 +338,13 @@ void Trapezoidal::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-Point Trapezoidal::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getStandardDeviation() const
 {
   return Point(1, getSigma());
 }
 
 /* Get the skewness of the distribution */
-Point Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getSkewness() const
 {
   const Scalar a2 = a_ * a_;
   const Scalar a3 = a2 * a_;
@@ -372,7 +372,7 @@ Point Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
 }
 
 /* Get the kurtosis of the distribution */
-Point Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getKurtosis() const
 {
   const Scalar a2 = a_ * a_;
   const Scalar a3 = a2 * a_;

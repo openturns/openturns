@@ -4,31 +4,31 @@ Uncertainty ranking: SRC and SRRC
 ---------------------------------
 
 Standard Regression Coefficients (SRC) deal with analyzing the influence the random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)` has on a random
+:math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)` has on a random
 variable :math:`Y`.
 We measure linear relationships that exist between :math:`Y`
 and the different input variables :math:`X_i`.
 
 The principle of the multiple linear regression model consists in
 attempting to find the function that links the
-variable :math:`Y` to the :math:`n_x` variables
-:math:`X_1,\ldots,X_{n_X}` by means of a linear model:
+variable :math:`Y` to the :math:`\inputDim` variables
+:math:`X_1,\ldots,X_\inputDim` by means of a linear model:
 
 .. math::
 
-    Y = a_0 + \sum_{i=1}^{n_X} a_i X_i + \varepsilon,
+    Y = a_0 + \sum_{i=1}^\inputDim a_i X_i + \varepsilon,
 
-where :math:`(a_i)_{i = 0, 1, ..., n_X}` are constant parameters and
+where :math:`(a_i)_{i = 0, 1, ..., \inputDim}` are constant parameters and
 :math:`\varepsilon` is a random variable with zero mean
 and standard deviation :math:`\sigma_{\varepsilon}` independent of the
 input variables :math:`X_i`. If the random variables
-:math:`X_1,\ldots,X_{n_X}` are independent and with finite variance
+:math:`X_1,\ldots,X_\inputDim` are independent and with finite variance
 :math:`\Var{X_i}`, the variance of :math:`Y` can be
 estimated as follows:
 
 .. math::
 
-    \Var{Y} = \sum_{i=1}^n a_i^2 \Var{X_i} + \sigma_{\varepsilon}^2 = \sigma^2.
+    \Var{Y} = \sum_{i=1}^\inputDim a_i^2 \Var{X_i} + \sigma_{\varepsilon}^2 = \sigma^2.
 
 The SRC coefficient is defined by (see [borgonovo2017]_ page 131, eq. 14.3):
 
@@ -36,11 +36,11 @@ The SRC coefficient is defined by (see [borgonovo2017]_ page 131, eq. 14.3):
 
     \operatorname{SRC}_i = a_i \sqrt{\frac{\Var{X_i}}{\Var{Y}}}
 
-for :math:`i = 1, ..., n_X`.
+for :math:`i = 1, ..., d`.
 The estimators for the regression coefficients
-:math:`a_0,\ldots,a_{n_X}`, and the standard deviation
+:math:`a_0,\ldots,a_\inputDim`, and the standard deviation
 :math:`\sigma` are obtained from a sample of
-:math:`(Y,X_1,\ldots,X_{n_X})`.
+:math:`(Y,X_1,\ldots,X_\inputDim)`.
 The SRC coefficients are defined as the estimators :math:`\widehat{\operatorname{SRC}}_i`
 of the coefficients :math:`SRC_i`:
 
@@ -48,7 +48,7 @@ of the coefficients :math:`SRC_i`:
 
     \widehat{\operatorname{SRC}}_i = \widehat{a}_i \frac{\widehat{\sigma}_i}{\widehat{\sigma}},
 
-for :math:`i = 1, ..., n_X`,
+for :math:`i = 1, ..., \inputDim`,
 where :math:`\widehat{a}_i` is the estimate of the regression coefficient :math:`a_i`,
 :math:`\widehat{\sigma}_i` is the sample standard
 deviation of the sample of the input variable :math:`X_i`
@@ -80,7 +80,7 @@ This importance factor is also named "squared SRC" coefficient
 
     \operatorname{SRC}_i^2 = a_i^2 \frac{\Var{X_i}}{\Var{Y}}
 
-for :math:`i = 1, ..., n_X`.
+for :math:`i = 1, ..., \inputDim`.
 The squared SRC coefficients of a linear model are equal to its
 :ref:`Sobol' indices <sensitivity_sobol>`.
 If the model is linear, the first-order Sobol' index is equal
@@ -88,7 +88,7 @@ to the total Sobol' index since there is no interaction.
 See the :class:`~openturns.CorrelationAnalysis.computeSquaredSRC` method to compute the squared SRC
 coefficients.
 
-If the input random variables :math:`(X_i)_{i = 1, ..., n_X}` are dependent,
+If the input random variables :math:`(X_i)_{i = 1, ..., \inputDim}` are dependent,
 then the SRC is not a valid importance measure anymore (see [daveiga2022]_ remark 4
 page 33).
 In this case, the partial correlation coefficient (PCC) has been suggested, but
@@ -99,10 +99,10 @@ dependent case (see [daveiga2022]_ page 33).
 
 Standard *Rank* Regression Coefficients (SRRC) are SRC coefficients
 computed on the ranked input variables
-:math:`\operatorname{rank}(\vect{X}) = \left( \operatorname{rank}(X_1), \ldots, \operatorname{rank}(X_{n_X}) \right)`
+:math:`\operatorname{rank}(\inputRV) = \left( \operatorname{rank}(X_1), \ldots, \operatorname{rank}(X_\inputDim) \right)`
 and the ranked output variable :math:`\operatorname{rank}(Y)`.
 They are useful when the relationship between :math:`Y`
-and :math:`\vect{X}` is not linear (so SRC cannot be used),
+and :math:`\inputRV` is not linear (so SRC cannot be used),
 but only monotonic.
 See the :class:`~openturns.CorrelationAnalysis.computeSRRC` method to compute the SRRC
 coefficients.

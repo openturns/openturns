@@ -39,7 +39,7 @@ print("anotherSample mean=", anotherSample.computeMean())
 print("anotherSample covariance=", anotherSample.computeCovariance())
 
 # Define a point
-point = [1.0, 0.5, 1.5]
+point = [0.5, 1.5, 1.0]
 
 # Show PDF and CDF of point point
 pointPDF = distribution.computePDF(point)

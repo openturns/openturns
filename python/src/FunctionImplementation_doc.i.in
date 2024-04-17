@@ -45,7 +45,7 @@ See :class:`~openturns.PythonFunction` for further details.
 
 Create a *Function* from a Python class:
 
->>> class FUNC(OpenTURNSPythonFunction):
+>>> class FUNC(ot.OpenTURNSPythonFunction):
 ...     def __init__(self):
 ...         super(FUNC, self).__init__(2, 1)
 ...         self.setInputDescription(['R', 'S'])
@@ -151,6 +151,17 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 >>> print(myFunction2([1, 2, 3]))
 [25,35]
 
+If the input and output dimensions of two functions are equal
+then we can perform arithmetic operations on these functions
+using the `+`, `-` and `*` operators.
+
+>>> g1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1 + 2 * x2 + x3'])
+>>> g2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1^2 + x2'])
+>>> g_sum = g1 + g2
+>>> g_difference = g1 - g2
+>>> g_product = g1 * g2
 
 Create a *Function* from values of the inputs and the outputs:
 

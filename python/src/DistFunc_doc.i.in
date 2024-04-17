@@ -703,40 +703,6 @@ Returns
 q : float
     The quantile of order :math:`p` or :math:`(1-p)`.
 
-Notes
------
-This method is based on Mikes Giles' algorithm, described in [giles2013]_.
-
-Examples
---------
->>> import openturns as ot
->>> q = ot.DistFunc.qPoisson(2.0, 0.95)"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::DistFunc::qPoisson
-"Quantile of a Poisson distribution.
-
-Parameters
-----------
-lambda : float, :math:`\lambda \geq 0`
-    The intensity of the Poisson distribution.
-p : float, in :math:`[0,1]`
-    The probability.
-tail : bool, optional
-    Tail flag.
-    Default value is False.
-    If True, the quantile associated to :math:`(1-p)` is computed.
-
-Returns
--------
-q : float
-    The quantile of order :math:`p` or :math:`(1-p)`.
-
-Notes
------
-This method is based on Mikes Giles' algorithm, described in [giles2013]_.
-
 Examples
 --------
 >>> import openturns as ot

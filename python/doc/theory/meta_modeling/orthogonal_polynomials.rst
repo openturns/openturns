@@ -3,36 +3,38 @@
 Orthogonal polynomials
 ----------------------
 
-| This section provides some mathematical details on sequences of
-  orthogonal polynomials. Some of these sequences will be used to
-  construct the basis of the so-called *polynomial chaos expansion*.
-| **Mathematical framework**
+This page provides mathematical details on sequences of
+orthogonal polynomials. Some of these sequences will be used to
+construct the basis of the so-called *polynomial chaos expansion*.
 
-| The orthogonal polynomials are associated to an inner product, defined
-  as follows:
-| Given an *interval of orthogonality* :math:`[\alpha,\beta]`
-  (:math:`\alpha \in \Rset \cup \{-\infty\}`,
-  :math:`\beta \in \Rset \cup \{\infty\}`, :math:`\alpha < \beta`) and a
-  weight function :math:`w(x)> 0`, every pair of polynomials :math:`P`
-  and :math:`Q` are orthogonal if:
+Mathematical framework
+~~~~~~~~~~~~~~~~~~~~~~
 
-  .. math::
+Orthogonal polynomials are associated to an inner product, defined
+as follows.
+Given an *interval of orthogonality* :math:`[\alpha,\beta]`
+(:math:`\alpha \in \Rset \cup \{-\infty\}`,
+:math:`\beta \in \Rset \cup \{\infty\}`, :math:`\alpha < \beta`) and a
+weight function :math:`w(x)> 0`, the polynomials :math:`P`
+and :math:`Q` are orthogonal if:
 
-      \langle P,Q \rangle = \int_{\alpha}^{\beta}P(x)Q(x)~w(x) dx = 0
+.. math::
+
+    \scalarproduct{P}{Q} = \int_{\alpha}^{\beta}P(x)Q(x)~w(x) dx = 0
 
 Therefore, a sequence of orthogonal polynomials :math:`(P_n)_{n\geq 0}`
 (:math:`P_n`: polynomial of degree :math:`n`) verifies:
 
 .. math::
 
-    \langle P_m,P_n\rangle = 0 \text{~~for every~~} m \neq n
+    \scalarproduct{P_m}{P_n} = 0 \text{~~for every~~} m \neq n
 
 The chosen inner product induces a norm on polynomials in the usual
 way:
 
 .. math::
 
-    \parallel P_n\parallel=\langle P_n,P_n \rangle^{1/2}
+    \parallel P_n\parallel = \scalarproduct{P_n}{P_n}^{1/2}
 
 In the following, we consider weight functions :math:`w(x)`
 corresponding to *probability density functions*, which satisfy:
@@ -48,21 +50,21 @@ Moreover, we consider families of *orthonormal* polynomials
 
     \|P_n\| \, \, = \, \, 1
 
-| Any sequence of orthogonal polynomials has a recurrence formula
-  relating any three consecutive polynomials as follows:
+Any sequence of orthogonal polynomials has a recurrence formula
+relating any three consecutive polynomials as follows:
 
-  .. math::
+.. math::
 
-      P_{n+1}\ =\ (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}
+    P_{n+1}\ =\ (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}
 
-| **Orthogonormal polynomials with respect to usual probability
-  distributions**
+Orthogonormal polynomials with respect to usual probability distributions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| Below, a table showing an example of particular (normalized)
-  orthogonal polynomials associated with *continuous* weight functions.
-| Note that the orthonormal polynomials are
-  orthonormal with respect to the standard representative distribution
-  of the given distribution.
+Below is a table showing an example of particular (normalized)
+orthogonal polynomials associated with *continuous* weight functions.
+Note that the orthonormal polynomials are
+orthonormal with respect to the standard representative distribution
+of the given distribution.
 
 +-----------------+------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Ortho. poly.    | :math:`P_n(x)`                                                                           | Weight :math:`w(x)^{\strut}`                                                                                        | Recurrence coefficients :math:`(a_n,b_n,c_n)`                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -88,43 +90,44 @@ the so-called Charlier and Krawtchouk polynomials:
 | Krawtchouk\ :math:`^{\dagger}`   | :math:`\begin{array}{c} Kr^{(m,p)}_n(x) \\ \\ m \in \Nset~,~p \in [0,1] \\ \end{array}`   | :math:`\begin{array}{c} \displaystyle{\binom{m}{k}p^k (1-p)^{m-k}} \\ \\ k=0,1,2,\dots \\ \end{array}`         | :math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \\   \\  b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \\ \\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \end{array}`    |
 +----------------------------------+-------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-| :math:`^{\dagger}` The Krawtchouk polynomials are only defined up to a
-  degree :math:`n` equal to :math:`m-1`. Indeed, for :math:`n=m`, some
-  factors of the denominators of the recurrence coefficients would be
-  equal to zero.
-| To sum up, the distribution type are reported in
-  the table below together with the associated families of orthonormal
-  polynomials.
+Notice that the Krawtchouk polynomials are only defined up to a
+degree :math:`n` equal to :math:`m-1`. Indeed, for :math:`n=m`, some
+factors of the denominators of the recurrence coefficients would be
+equal to zero.
 
-+-------------------------------------+-------------------------+----------------------------------+
-| Distribution                        | Support                 | Polynomial                       |
-+=====================================+=========================+==================================+
-| Normal :math:`\cN(0,1)`             | :math:`\Rset`           | Hermite                          |
-+-------------------------------------+-------------------------+----------------------------------+
-| Uniform :math:`\cU(-1,1)`           | :math:`[-1,1]`          | Legendre                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Gamma :math:`\Gamma(k,1,0)`         | :math:`(0,+\infty)`     | Laguerre                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Beta :math:`B(\alpha,\beta,-1,1)`   | :math:`(-1,1)`          | Jacobi                           |
-+-------------------------------------+-------------------------+----------------------------------+
-| Poisson :math:`\cP(\lambda)`        | :math:`\Nset`           | Charlier                         |
-+-------------------------------------+-------------------------+----------------------------------+
-| Binomial :math:`\cB(m,p)`           | :math:`\{0,\dots,m\}`   | Krawtchouk\ :math:`^{\dagger}`   |
-+-------------------------------------+-------------------------+----------------------------------+
+To sum up, the distribution type are reported in
+the table below together with the associated families of orthonormal
+polynomials.
 
-| :math:`^{\dagger}` It is recalled that the Krawtchouk polynomials are
-  only defined up to a degree :math:`n` equal to :math:`m-1`.
-| **Orthogonal polynomials with respect to arbitrary probability
-  distributions**
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Distribution                           | Support                 | Polynomial family                |   In the library                      |
++========================================+=========================+==================================+=======================================+
+| Normal :math:`\cN(0,1)`                | :math:`\Rset`           | Hermite                          | :class:`~openturns.HermiteFactory`    |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Uniform :math:`\cU(-1,1)`              | :math:`[-1,1]`          | Legendre                         | :class:`~openturns.LegendreFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Gamma :math:`\Gamma(k,1,0)`            | :math:`(0,+\infty)`     | Laguerre                         | :class:`~openturns.LaguerreFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Beta :math:`B(\alpha,\beta,-1,1)`      | :math:`(-1,1)`          | Jacobi                           | :class:`~openturns.JacobiFactory`     |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Poisson :math:`\cP(\lambda)`           | :math:`\Nset`           | Charlier                         | :class:`~openturns.CharlierFactory`   |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Binomial :math:`\cB(m,p)`              | :math:`\{0,\dots,m\}`   | Krawtchouk\ :math:`^{\dagger}`   | :class:`~openturns.KrawtchoukFactory` |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
+| Negative Binomial :math:`\cN \cB(m,p)` | :math:`\Nset`           | Meixner                          | :class:`~openturns.MeixnerFactory`    |
++----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
 
-| It is also possible to generate a family of orthonormal polynomials
-  with respect to an arbitrary probability distribution :math:`w(x)`.
-  The well-known *Gram-Schmidt* algorithm can be used to this end. Note
-  that this algorithm gives a constructive proof of the existence of
-  orthonormal bases.
-| However it is known to be numerically unstable, so alternative
-  procedures are often used in practice. The available orthonormalization
-  algorithm is the *Stieltjes* algorithm.
+Orthogonal polynomials with respect to arbitrary probability distributions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is also possible to generate a family of orthonormal polynomials
+with respect to an arbitrary probability distribution :math:`w(x)`.
+The *Gram-Schmidt* algorithm can be used to this end. Note
+that this algorithm gives a constructive proof of the existence of
+orthonormal bases.
+However it is known to be numerically unstable, so alternative
+procedures are often used in practice. The available orthonormalization
+algorithm is the *Stieltjes* algorithm.
 
 
 .. topic:: API:
@@ -135,4 +138,11 @@ the so-called Charlier and Krawtchouk polynomials:
 .. topic:: Examples:
 
     - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
+
+
+.. topic:: References:
+
+    - [gautschi2004]_
+    - [chihara1978]_
+    - [sullivan2015]_ chapter 8 page 133
 

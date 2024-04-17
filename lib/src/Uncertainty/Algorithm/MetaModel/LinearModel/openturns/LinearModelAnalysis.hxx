@@ -71,16 +71,19 @@ public:
   Scalar getFisherScore() const;
   Scalar getFisherPValue() const;
 
-  /** Kolmogorov-Smirnov normality test */
+  /** Estimator of the standard deviation */
+  Scalar getResidualsStandardError() const;
+
+  /** Kolmogorov-Smirnov normality test of the residuals */
   TestResult getNormalityTestResultKolmogorovSmirnov() const;
 
-  /** Anderson-Darling normality test */
+  /** Anderson-Darling normality test of the residuals */
   TestResult getNormalityTestResultAndersonDarling() const;
 
-  /** Chi-Squared normality test */
+  /** Chi-Squared normality test of the residuals */
   TestResult getNormalityTestResultChiSquared() const;
 
-  /** Cramer Von mises normality test */
+  /** Cramer Von mises normality test of the residuals */
   TestResult getNormalityTestCramerVonMises() const;
 
   /* [0] Draw model versus fitted values */

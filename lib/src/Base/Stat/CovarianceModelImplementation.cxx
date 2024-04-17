@@ -679,7 +679,6 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
     const Sample &sample) const
 {
-  // TODO : transposeInPlace
   return computeCrossCovariance(sample, point).transpose();
 }
 
@@ -710,7 +709,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     // The loop is over the lower block-triangular part
     TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     // Compute the Cholesky
-    return covarianceMatrix.computeCholesky(false);
+    return covarianceMatrix.computeCholeskyInPlace();
   }
   else
   {

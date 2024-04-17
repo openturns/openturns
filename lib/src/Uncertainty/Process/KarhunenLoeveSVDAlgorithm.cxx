@@ -41,11 +41,8 @@ static const Factory<KarhunenLoeveSVDAlgorithm> Algorithm_KarhunenLoeveSVDAlgori
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm()
   : KarhunenLoeveAlgorithmImplementation()
   , sample_()
-  , centeredSample_(false)
   , verticesWeights_(0)
-  , uniformVerticesWeights_(true)
   , sampleWeights_(0)
-  , uniformSampleWeights_(true)
 {
   // Nothing to do
 }
@@ -60,7 +57,6 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
   , verticesWeights_(0)
   , uniformVerticesWeights_(false)
   , sampleWeights_(sample.getSize(), 1.0 / sample.getSize())
-  , uniformSampleWeights_(true)
 {
   // Set the vertices weights in order to check their uniformity and positivity
   setVerticesWeights(sample.getMesh().computeWeights());
@@ -75,9 +71,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
   , sample_(sample)
   , centeredSample_(centeredSample)
   , verticesWeights_(0)
-  , uniformVerticesWeights_(true)
   , sampleWeights_(sample.getSize(), 1.0 / sample.getSize())
-  , uniformSampleWeights_(true)
 {
   // Set the vertices weights in order to check their uniformity and positivity
   setVerticesWeights(verticesWeights);
@@ -208,7 +202,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       // Orthonormalize Y columns
       LOGINFO("Orthonormalize Y columns");
       MatrixImplementation R;
-      Y = Y.computeQR(R, false, false);
+      Y = Y.computeQRInPlace(R, false);
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Y=" << Y.getNbRows() << "x" << Y.getNbColumns());
       // B = A.Y
@@ -224,7 +218,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       MatrixImplementation Z(B.genProd(P, false, false));
       // Orthonormalize Z columns
       LOGINFO("Orthonormalize Z columns");
-      Z = Z.computeQR(R, false, false);
+      Z = Z.computeQRInPlace(R, false);
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Z=" << Z.getNbRows() << "x" << Z.getNbColumns());
       // C = Z'.B
@@ -235,7 +229,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       LOGINFO("Compute the SVD of C");
       MatrixImplementation Uc;
       MatrixImplementation VTc;
-      svd = C.computeSVD(Uc, VTc, false, false);
+      svd = C.computeSVDInPlace(Uc, VTc, false);
       LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
       LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
       // Restore A singular vectors
@@ -245,7 +239,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       // Vt is not needed for the algorithm
       // Vt = Y * Vt;
     }
-    else
+    else if (ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant") == "Halko2011")
     {
       // Here we use the algorithm described in:
       // Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert, "An algorithm for the principal component analysis of large data sets", arXiv:1007.5510v2
@@ -271,7 +265,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       }
       LOGINFO("Create QR decomposition of H");
       MatrixImplementation R;
-      MatrixImplementation Q(H.computeQR(R, false));
+      MatrixImplementation Q(H.computeQRInPlace(R, false));
       LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
       LOGINFO(OSS() << "Q=" << Q.getNbRows() << "x" << Q.getNbColumns());
       LOGINFO("Create T = A.Q");
@@ -280,7 +274,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       LOGINFO("Create SVD of T");
       MatrixImplementation Uc;
       MatrixImplementation VTc;
-      svd = T.computeSVD(Uc, VTc, false, false);
+      svd = T.computeSVDInPlace(Uc, VTc, false);
       LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
       LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
       LOGINFO("Create U");
@@ -292,6 +286,8 @@ void KarhunenLoeveSVDAlgorithm::run()
       U = Q.genProd(W, false, false);
       LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
     }
+    else
+      throw InvalidArgumentException(HERE) << "Unknow random SVD variant: " << ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant");
   }
   else
   {
@@ -299,8 +295,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     // The singular values are given in decreasing order
     // Last two arguments are:
     //   * fullSVD = false, we only want kTilde columns of U
-    //   * keepIntact = false, designMatrix is no more used afterwards
-    svd = designMatrix.computeSVD(U, Vt,  false, false);
+    svd = designMatrix.computeSVDInPlace(U, Vt,  false);
   }
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
   Scalar cumulatedVariance = 0.0;

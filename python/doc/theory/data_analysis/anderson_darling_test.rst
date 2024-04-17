@@ -1,68 +1,64 @@
 .. _anderson_darling_test:
 
-Anderson-Darling goodness-of-fit test
--------------------------------------
+Anderson-Darling test
+---------------------
 
-This method deals with the modelling of a probability distribution of a
-random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
-seeks to verify the compatibility between a sample of data
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
-candidate probability distribution previous chosen. The Anderson-Darling
-Goodness-of-Fit test allows one to answer this
-question in the one dimensional case :math:`n_X =1`, and with a
-continuous distribution. The current version is limited to the case of
-the Normal distribution.
+The Anderson-Darling test is a statistical test of whether a given sample of data is drawn from a given
+probability distribution. The library only provides the Anderson-Darling test for normal distributions.
 
-Let us limit the case to :math:`n_X = 1`. Thus we denote
-:math:`\vect{X} = X^1 = X`. This goodness-of-fit test is based on the
-distance between the cumulative distribution function
-:math:`\widehat{F}_N` of the sample
-:math:`\left\{ x_1,x_2,\ldots,x_N \right\}` and that of the
-candidate distribution, denoted :math:`F`. This distance is a quadratic
+Let :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` be a sample of dimension 1 drawn from the (unknown) cumulative distribution function :math:`F` assumed to be continuous.
+We want to test  whether the sample is drawn from a normal distribution ie whether
+:math:`F_X = \Phi`, where :math:`\Phi` is the cumulative distribution function of the normal
+distribution.
+
+This test involves the calculation of the test statistic which is
+the distance between the empirical cumulative distribution function
+:math:`F_{\sampleSize}` and :math:`\Phi`. Letting :math:`X_1, \ldots , X_{\sampleSize}`
+be independent random variables respectively distributed according to :math:`F`, we define
+the the order statistics :math:`X_{(1)}, \ldots , X_{(\sampleSize)}` by:
+
+.. math::
+
+   X_{(1)} \leq \dots \leq X_{(\sampleSize)}.
+
+The test statistic is defined by:
+
+.. math::
+
+       D_{\sampleSize} = -\sampleSize-\sum^{\sampleSize}_{i=1} \frac{2i-1}{\sampleSize} \left[\log \left( \Phi(X_{(i)}) \right) + \log\left(1-\Phi(X_{(\sampleSize+1-i)})\right)\right].
+
+This distance is a quadratic
 type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
-but gives more weight to deviations of extreme values:
+but gives more weight to deviations of tail values. The empirical value of the
+test statistic denoted by :math:`d_{\sampleSize}` is evaluated from the sample sorted
+in ascending order:
 
 .. math::
 
-   \begin{aligned}
-       D = \int^{\infty}_{-\infty} \frac{\displaystyle \left[F\left(x\right) - \widehat{F}_N\left(x\right)\right]^2 }{\displaystyle F(x) \left( 1-F(x) \right) } \, dF(x)
-     \end{aligned}
+   x_{(1)} \leq \dots \leq x_{(\sampleSize)}.
 
-With a sample :math:`\left\{ x_1,x_2,\ldots,x_N \right\}`, the distance
-is estimated by:
+Under the null hypothesis :math:`\mathcal{H}_0 = \{ F = \Phi\}`, the asymptotic
+distribution of the test statistic :math:`D_{\sampleSize}` is known i.e. when
+:math:`\sampleSize \rightarrow +\infty`.
+If :math:`\sampleSize` is sufficiently large, we can use the asymptotic distribution
+to apply the test
+as follows.
+We fix a risk :math:`\alpha` (error type I) and we evaluate the associated critical
+value :math:`d_\alpha` which is the quantile of order
+:math:`1-\alpha` of :math:`D_{\sampleSize}`.
 
-.. math::
+Then a decision is made, either by comparing the test statistic to the theoretical threshold :math:`d_\alpha`
+(or equivalently
+by evaluating the p-value of the sample  defined as :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}}` and by comparing
+it to :math:`\alpha`):
 
-   \begin{aligned}
-       \widehat{D}_N = -N-\sum^{N}_{i=1} \frac{2i-1}{N} \left[\ln F(x_{(i)})+\ln\left(1-F(x_{(N+1-i)})\right)\right]
-     \end{aligned}
+-  if :math:`d_{\sampleSize}>d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} < \alpha`),
+   then we reject the normal distribution,
 
-where :math:`\left\{x_{(1)}, \ldots, x_{(N)}\right\}` describes the
-sample placed in increasing order.
+-  if :math:`d_{\sampleSize} \leq d_{\alpha}` (or equivalently :math:`\Prob{D_{\sampleSize} > d_{\sampleSize}} \geq \alpha`),
+   then the normal distribution is considered acceptable.
 
-The probability distribution of the distance :math:`\widehat{D}_N` is
-asymptotically known (i.e. as the size of the sample tends to infinity).
-If :math:`N` is sufficiently large, this means that for a probability
-:math:`\alpha` and a candidate distribution type, one can calculate the
-threshold / critical value :math:`d_\alpha` such that:
 
--  if :math:`\widehat{D}_N>d_{\alpha}`, we reject the candidate
-   distribution with a risk of error :math:`\alpha`,
-
--  if :math:`\widehat{D}_N \leq d_{\alpha}`, the candidate distribution
-   is considered acceptable.
-
-Note that :math:`d_\alpha` depends on the candidate distribution
-:math:`F` being tested; the current version is limited to
-the case of the Normal distribution.
-
-An important notion is the so-called “:math:`p`-value” of the test. This
-quantity is equal to the limit error probability
-:math:`\alpha_\textrm{lim}` under which the candidate distribution is
-rejected. Thus, the candidate distribution will be accepted if and only
-if :math:`\alpha_\textrm{lim}` is greater than the value :math:`\alpha`
-desired by the user. Note that the higher
-:math:`\alpha_\textrm{lim} - \alpha`, the more robust the decision.
 
 
 .. topic:: API:

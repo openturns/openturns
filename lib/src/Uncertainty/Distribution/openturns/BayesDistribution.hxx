@@ -47,11 +47,7 @@ public:
   /** Parameters constructor */
   BayesDistribution(const Distribution & conditionedDistribution,
                     const Distribution & conditioningDistribution,
-                    const Function & linkFunction);
-
-  /** Parameters constructor */
-  BayesDistribution(const Distribution & conditionedDistribution,
-                    const Distribution & conditioningDistribution);
+                    const Function & linkFunction = Function());
 
   /** Comparison operator */
   using ContinuousDistribution::operator ==;

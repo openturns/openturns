@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymbolicParserImplementation);
+CLASSNAMEINIT(SymbolicParserImplementation)
 
 static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImplementation;
 

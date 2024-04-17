@@ -59,17 +59,52 @@ set (OPENTURNS_SWIG_INCLUDE_DIRS "@PACKAGE_OPENTURNS_SWIG_INCLUDE_DIRS@")
 set (OPENTURNS_SWIG_DEFINITIONS   "@OPENTURNS_SWIG_DEFINITIONS@" )
 set (OPENTURNS_PYTHON_MODULE_PATH "@PACKAGE_PYTHON_MODULE_PATH@")
 
-if ("1" STREQUAL "@HMAT_FOUND@")
-  set (HMAT_DIR "@HMAT_DIR@")
+# static libraries dependencies are transitive so imported targets must be defined
+if (NOT @BUILD_SHARED_LIBS@)
+  include(CMakeFindDependencyMacro)
 
-  # if CMAKE_FIND_ROOT_PATH is defined and CMAKE_FIND_ROOT_PATH_MODE_PACKAGE set to ONLY
-  # hardcoded PATHS guesses must be relative to CMAKE_FIND_ROOT_PATH
-  if (DEFINED CMAKE_FIND_ROOT_PATH)
-    file (RELATIVE_PATH HMAT_DIR "${CMAKE_FIND_ROOT_PATH}" "${HMAT_DIR}")
-    set (HMAT_DIR "/${HMAT_DIR}")
+  if ("1" STREQUAL "@Ceres_FOUND@")
+    find_dependency(Ceres CONFIG)
   endif ()
 
-  find_package (HMAT REQUIRED NO_MODULE PATHS ${HMAT_DIR} NO_DEFAULT_PATH)
+  if ("1" STREQUAL "@CMinpack_FOUND@")
+    find_dependency(CMinpack CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@dlib_FOUND@")
+    find_dependency(dlib CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@HMAT_FOUND@")
+    find_dependency (HMAT CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@LibXml2_FOUND@")
+    find_dependency (LibXml2 CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@NLopt_FOUND@")
+    find_dependency(NLopt CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@Pagmo_FOUND@")
+    find_dependency(Pagmo CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@primesieve_FOUND@")
+    find_dependency(primesieve CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@Spectra_FOUND@")
+    find_dependency(Spectra CONFIG)
+
+    # https://github.com/yixuan/spectra/pull/140
+    find_dependency(Eigen3 CONFIG)
+  endif ()
+
+  if ("1" STREQUAL "@TBB_FOUND@")
+    find_dependency(TBB CONFIG)
+  endif ()
 endif ()
 
 # Our library dependencies (contains definitions for IMPORTED targets)

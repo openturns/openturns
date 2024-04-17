@@ -207,5 +207,8 @@ output time series =
  98 : [  9.8      3.74423 ]
  99 : [  9.9      2.44009 ]
 100 : [ 10        2.01835 ]
+gradient= [[ 1.7411 ]]
+hessian= sheet #0
+[[ -2.78576 ]]
 myInverseBoxCox =  InverseBoxCox(lambda=[0.2], shift=[0])
 number of call(s) :  101

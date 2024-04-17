@@ -40,7 +40,7 @@ namespace OT {
 
 %}
 
-%template(_TestResultCollection) OT::Collection<OT::TestResult>;
+%template(TestResultCollection) OT::Collection<OT::TestResult>;
 
 %include TestResult_doc.i
 

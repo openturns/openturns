@@ -26,7 +26,8 @@ These are then used to initialize a numerical maximum likelihood step.
 
 See also
 --------
-DistributionFactory, SmoothedUniform"
+openturns.DistributionFactory
+openturns.SmoothedUniform"
 
 // ---------------------------------------------------------------------
 

@@ -1,73 +1,54 @@
 .. _qqplot_graph:
 
-Using QQ-plot to compare two samples
-------------------------------------
+QQ-plot
+-------
 
-Let :math:`X` be a scalar uncertain variable modeled as a random
-variable. This method deals with the construction of a dataset prior to
-the choice of a probability distribution for :math:`X`. A QQ-plot (where
-“QQ” stands for “quantile-quantile”) is a tool that may be used to
-compare two samples :math:`\left\{x_1,\ldots,x_N \right\}` and
-:math:`\left\{x'_1,\ldots,x'_M \right\}`; the goal is to determine
-graphically whether these two samples come from the same probability
-distribution or not. If this is the case, the two samples should be
-aggregated in order to increase the robustness of further statistical
-analysis.
+The Quantile - Quantile - Plot (QQ Plot) enables to validate whether
+two given samples of data
+are drawn from the same continuous distribution of dimension 1.
 
-A QQ-plot is based on the notion of quantile. The
-:math:`\alpha`-quantile :math:`q_{X}(\alpha)` of :math:`X`, where
-:math:`\alpha \in (0, 1)`, is defined as follows:
+We denote by :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}`
+and :math:`\left\{ y_1,\ldots,y_{\sampleSize} \right\}` two given samples of dimension 1.
+
+A QQ-Plot is based on the comparison of some empirical quantiles. Let :math:`q_{X}(\alpha)`
+be the quantile of order
+:math:`\alpha` of the distribution :math:`F`, with :math:`\alpha \in (0, 1)`. It is defined by:
 
 .. math::
 
    \begin{aligned}
-       \Prob{ X \leq q_{X}(\alpha)} = \alpha
+       q_{X}(\alpha) = \inf \{ x \in \Rset \, |\, F(x) \geq \alpha \}
      \end{aligned}
 
-If a sample :math:`\left\{x_1,\ldots,x_N \right\}` of :math:`X` is
-available, the quantile can be estimated empirically:
+The empirical quantile of order :math:`\alpha` built on the sample is defined by:
 
-#. the sample :math:`\left\{x_1,\ldots,x_N \right\}` is first placed in
-   ascending order, which gives the sample
-   :math:`\left\{ x_{(1)},\ldots,x_{(N)} \right\}`;
+.. math::
 
-#. then, an estimate of the :math:`\alpha`-quantile is:
+    \begin{aligned}
+            \widehat{q}_{X}(\alpha) = x_{([\sampleSize \alpha]+1)}
+    \end{aligned}
 
-   .. math::
+where :math:`[\sampleSize\alpha]` denotes the integral part of :math:`\sampleSize \alpha`
+and :math:`\left\{ x_{(1)},\ldots,x_{(\sampleSize)} \right\}` is the sample sorted in ascended order:
 
-      \begin{aligned}
-            \widehat{q}_{X}(\alpha) = x_{([N\alpha]+1)}
-          \end{aligned}
+.. math::
 
-where :math:`[N\alpha]` denotes the integral part of
-:math:`N\alpha`.
+    x_{(1)} \leq \dots \leq x_{(\sampleSize)}
 
 Thus, the :math:`j^\textrm{th}` smallest value of the sample
 :math:`x_{(j)}` is an estimate :math:`\widehat{q}_{X}(\alpha)` of the
-:math:`\alpha`-quantile where :math:`\alpha = (j-1)/N`
-(:math:`1 < j \leq N`). Let us then consider our second sample
-:math:`\left\{x'_1,\ldots,x'_M \right\}`; this one also provides an
-estimate :math:`\widehat{q}'_{X}(\alpha)` of this same quantile:
+:math:`\alpha`-quantile where :math:`\alpha = (j-1)/\sampleSize`, for :math:`1 < j \leq \sampleSize`.
 
-.. math::
+The QQ-plot draws the couples of empirical quantiles of the same order from both samples:
+:math:`(x_{(j)}, y_{(j)})_{1 < j \leq \sampleSize}`.
+If both samples follow the same distribution, then the points should be close to the diagonal.
 
-   \begin{aligned}
-       \widehat{q}'_{X}(\alpha) = x'_{([M\times(j-1)/N]+1)}
-     \end{aligned}
-
-If both samples correspond to the same probability distribution,
-then :math:`\widehat{q}_{X}(\alpha)` and
-:math:`\widehat{q}'_{X}(\alpha)` should be close. Thus, graphically, the
-points
-:math:`\left\{ \left( \widehat{q}_{X}(\alpha),\widehat{q}'_{X}(\alpha)\right),\  \alpha = (j-1)/N,\ 1 < j \leq N \right\}`
-should be close to the diagonal.
-
-The following figure illustrates the principle of a QQ-plot with two
-samples of size :math:`M=50` and :math:`N=50`. Note that the unit of the
-two axis is that of the variable :math:`X` studied. In this example, the
-points remain close to the diagonal and the hypothesis “the two samples
-come from the same distribution” does not seem irrelevant, even if a
-more quantitative analysis should be carried out to confirm this.
+The following figure illustrates a QQ-plot with two
+samples of size :math:`\sampleSize=50`. In this example, the
+points remain close to the diagonal and the hypothesis
+“Both samples are drawn from the same distribution” does not seem false,
+even if a more quantitative analysis should be
+carried out to confirm this.
 
 .. plot::
 

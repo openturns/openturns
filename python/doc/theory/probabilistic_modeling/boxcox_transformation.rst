@@ -1,21 +1,21 @@
 .. _boxcox_transformation:
 
 Box Cox transformation
-======================
+----------------------
 
-| We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d` a
-  multivariate stochastic process of dimension :math:`d` where
-  :math:`\cD \in \Rset^n` and :math:`\omega \in \Omega` is an event. We
-  suppose that the process is :math:`\cL^2(\Omega)`.
-| We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` the random
-  variable at the vertex :math:`\vect{t} \in \cD` defined by
-  :math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})`.
-| If the variance of :math:`X_{\vect{t}}` depends on the vertex
-  :math:`\vect{t}`, the Box Cox transformation maps the process
-  :math:`X` into the process :math:`Y` such that the variance of
-  :math:`Y_{\vect{t}}` is constant (at the first order at least) with
-  respect to :math:`\vect{t}`.
-| We present here:
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` a
+multivariate stochastic process of dimension :math:`d` where
+:math:`\cD \in \Rset^n` and :math:`\omega \in \Omega` is an event. We
+suppose that the process is :math:`\cL^2(\Omega)`.
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\inputDim}` the random
+variable at the vertex :math:`\vect{t} \in \cD` defined by
+:math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})`.
+If the variance of :math:`X_{\vect{t}}` depends on the vertex
+:math:`\vect{t}`, the Box Cox transformation maps the process
+:math:`X` into the process :math:`Y` such that the variance of
+:math:`Y_{\vect{t}}` is constant (at the first order at least) with
+respect to :math:`\vect{t}`.
+We present here:
 
 -  the estimation of the Box Cox transformation from a given field of
    the process :math:`X`,
@@ -23,40 +23,42 @@ Box Cox transformation
 -  the action of the Box Cox transformation on a field generated from
    :math:`X`.
 
-| We note :math:`h: \Rset^d \rightarrow \Rset^d` the Box Cox
-  transformation which maps the process :math:`X` into the process
-  :math:`Y: \Omega \times \cD \rightarrow \Rset^d`, where
-  :math:`Y=h(X)`, such that :math:`\Var{Y_{\vect{t}}}` is independent of
-  :math:`\vect{t}` at the first order.
-| We suppose that :math:`X_{\vect{t}}` is a positive random variable for
-  any :math:`\vect{t}`. To verify that constraint, it may be needed to
-  consider the shifted process :math:`X+\vect{\alpha}`.
-| We illustrate some usual Box Cox transformations :math:`h` in the
-  scalar case (:math:`d`\ =1), using the Taylor development of
-  :math:`h: \Rset \rightarrow \Rset` at the mean point of
-  :math:`X_{\vect{t}}`.
-| In the multivariate case, we estimate the Box Cox transformation
-  component by component and we define the multivariate Box Cox
-  transformation as the aggregation of the marginal Box Cox
-  transformations.
+We note :math:`h: \Rset^{\inputDim} \rightarrow \Rset^{\inputDim}` the Box Cox
+transformation which maps the process :math:`X` into the process
+:math:`Y: \Omega \times \cD \rightarrow \Rset^{\inputDim}`, where
+:math:`Y=h(X)`, such that :math:`\Var{Y_{\vect{t}}}` is independent of
+:math:`\vect{t}` at the first order.
+We suppose that :math:`X_{\vect{t}}` is a positive random variable for
+any :math:`\vect{t}`. To verify that constraint, it may be needed to
+consider the shifted process :math:`X+\vect{\alpha}`.
+We illustrate some usual Box Cox transformations :math:`h` in the
+scalar case (:math:`\inputDim = 1`), using the Taylor development of
+:math:`h: \Rset \rightarrow \Rset` at the mean point of
+:math:`X_{\vect{t}}`.
+In the multivariate case, we estimate the Box Cox transformation
+component by component and we define the multivariate Box Cox
+transformation as the aggregation of the marginal Box Cox
+transformations.
 
-| **Marginal Box Cox transformation:**
-| The first order Taylor development of :math:`h` around
-  :math:`\Expect{Y_{\vect{t}}}` writes:
+Marginal Box Cox transformation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  .. math::
+The first order Taylor development of :math:`h` around
+:math:`\Expect{Y_{\vect{t}}}` writes:
+
+.. math::
 
       \forall \vect{t} \in \cD, h(X_{\vect{t}}) = h(\Expect{X_{\vect{t}}}) + (X_{\vect{t}} - \Expect{X_{\vect{t}}})h'(\Expect{X_{\vect{t}}})
 
 which leads to:
 
-  .. math::
+.. math::
 
       \Expect{h(X_{\vect{t}})} = h(\Expect{X_{\vect{t}}})
 
 and then:
 
-  .. math::
+.. math::
 
       \Var{h(X_{\vect{t}})} = h'(\Expect{X_{\vect{t}}})^2  \Var{X_{\vect{t}}}
 
@@ -111,22 +113,24 @@ The inverse Box Cox transformation is defined by:
      \end{array}
      \right.
 
-| **Estimation of the Box Cox transformation:**
-| The parameter :math:`\lambda` is estimated from a given field of the
-  process :math:`X` as follows.
-| The estimation of :math:`\lambda` given below is optimized in the case
-  when :math:`h_\lambda(X_{\vect{t}}) \sim \cN(\beta , \sigma^2 )` at
-  each vertex :math:`\vect{t}`. If it is not the case, that estimation
-  can be considered as a proposition, with no guarantee.
-| The parameters :math:`(\beta,\sigma,\lambda)` are then estimated by
-  the maximum likelihood estimators. We note
-  :math:`\Phi_{\beta, \sigma}` and :math:`\phi_{\beta, \sigma}`
-  respectively the cumulative distribution function and the density
-  probability function of the :math:`\cN(\beta , \sigma^2)`
-  distribution.
-| For all vertices :math:`\vect{t}`, we have:
+Estimation of the Box Cox transformation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  .. math::
+The parameter :math:`\lambda` is estimated from a given field of the
+process :math:`X` as follows.
+The estimation of :math:`\lambda` given below is optimized in the case
+when :math:`h_\lambda(X_{\vect{t}}) \sim \cN(\beta , \sigma^2 )` at
+each vertex :math:`\vect{t}`. If it is not the case, that estimation
+can be considered as a proposition, with no guarantee.
+The parameters :math:`(\beta,\sigma,\lambda)` are then estimated by
+the maximum likelihood estimators. We note
+:math:`\Phi_{\beta, \sigma}` and :math:`\phi_{\beta, \sigma}`
+respectively the cumulative distribution function and the density
+probability function of the :math:`\cN(\beta , \sigma^2)`
+distribution.
+For all vertices :math:`\vect{t}`, we have:
+
+.. math::
     :label: cdfYt
 
       \forall v \geq 0, \, \Prob{ X_{\vect{t}} \leq v } = \Prob{ h_\lambda(X_{\vect{t}}) \leq h_\lambda(v) } \\
@@ -141,27 +145,27 @@ from which we derive the density probability function :math:`p` of
     p(v) = h_\lambda'(v)\phi_{\beta, \sigma}(v) = v^{\lambda - 1}\phi_{\beta, \sigma}(v)
 
 Using :eq:`pdfYt`, the likelihood of the values
-:math:`(x_0, \dots, x_{N-1})` with respect to the model :eq:`cdfYt`
+:math:`(x_0, \dots, x_{\sampleSize-1})` with respect to the model :eq:`cdfYt`
 writes:
 
 .. math::
   :label: LKH
 
      L(\beta,\sigma,\lambda) =
-     \underbrace{ \frac{1}{(2\pi)^{N/2}}
+     \underbrace{ \frac{1}{(2\pi)^{\sampleSize/2}}
        \times
-       \frac{1}{(\sigma^2)^{N/2}}
+       \frac{1}{(\sigma^2)^{\sampleSize/2}}
        \times
        \exp\left[
          -\frac{1}{2\sigma^2}
-         \sum_{k=0}^{N-1}
+         \sum_{k=0}^{\sampleSize-1}
          \left(
          h_\lambda(x_k)-\beta
          \right)^2
          \right]
      }_{\Psi(\beta, \sigma)}
      \times
-     \prod_{k=0}^{N-1} x_k^{\lambda - 1}
+     \prod_{k=0}^{\sampleSize-1} x_k^{\lambda - 1}
 
 We notice that for each fixed :math:`\lambda`, the likelihood equation
 is proportional to the likelihood equation which estimates
@@ -172,8 +176,8 @@ are:
 .. math::
   :label: eqBetaSigma
 
-    \hat{\beta}(\lambda) = \frac{1}{N} \sum_{k=1}^{N} h_{\lambda}(x_k) \\
-    \hat{\sigma}^2(\lambda) = \frac{1}{N} \sum_{k=1}^{N} (h_{\lambda}(x_k) - \beta(\lambda))^2
+    \hat{\beta}(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} h_{\lambda}(x_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} (h_{\lambda}(x_k) - \beta(\lambda))^2
 
 | Substituting :eq:`eqBetaSigma` into :eq:`LKH` and taking the
   :math:`\log-`\ likelihood, we obtain:
@@ -191,11 +195,12 @@ where :math:`C` is a constant.
 
 The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)` defined in :eq:`lLambda`.
 
-| **Estimation of the Box Cox transformation in the frame of general linear model:**
+Case 1: General linear models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the frame of the general linear model, we consider a functional relation between some input and
 output values. Let us consider the following dataset:
-:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
+:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, \sampleSize\right)`.
 
 The general linear model aims at assessing the following
 prior model :
@@ -229,19 +234,19 @@ we get the following log-likelihood function to be optimized:
     :label: lLambdaglm
 
     \ell(\lambda) = \log L( \hat{\beta}(\lambda), \hat{\sigma}(\lambda),\lambda ) = C -
-    \frac{m}{2}
+    \frac{\sampleSize}{2}
     \log\left[\hat{\sigma}^2(\lambda)\right]
     \;+\;
-    \left(\lambda - 1 \right) \sum_{k=1}^{m} \log(y_k)\,,
+    \left(\lambda - 1 \right) \sum_{k=1}^{\sampleSize} \log(y_k)\,,
 
 where :math:`C` is a constant,
 
    .. math::
     :label: betasigmaglm
 
-    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...m \\
-    \hat{\beta}(\lambda) = \frac{1}{m} \sum_{k=1}^{m} h_{\lambda}(\epsilon_k) \\
-    \hat{\sigma}^2(\lambda) = \frac{1}{m} \sum_{k=1}^{m} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
+    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...\sampleSize \\
+    \hat{\beta}(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} h_{\lambda}(\epsilon_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
 
 Remarks :
 
@@ -253,11 +258,12 @@ Note that such estimate might be heavy as we get a double loop optimization. Ind
 the parameters of the underlying general linear model. Some practitioners are used to freeze the first general linear model parameters
 and then preform a one loop optimization selecting only the best :math:`\lambda` value.
 
-| **Estimation of the Box Cox transformation in the frame of linear models:**
+Case 2: Linear models
+~~~~~~~~~~~~~~~~~~~~~
 
 In the frame of linear models, we consider a functional relation between some input and
 output values. Let us consider the following dataset:
-:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
+:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, \sampleSize\right)`.
 
 The general linear model aims at assessing the following
 prior model :
@@ -284,19 +290,19 @@ we get the following log-likelihood function to be optimized:
     :label: lLambdalm
 
     \ell(\lambda) = \log L( \hat{\beta}(\lambda), \hat{\sigma}(\lambda),\lambda ) = C -
-    \frac{m}{2}
+    \frac{\sampleSize}{2}
     \log\left[\hat{\sigma}^2(\lambda)\right]
     \;+\;
-    \left(\lambda - 1 \right) \sum_{k=1}^{m} \log(y_k)\,,
+    \left(\lambda - 1 \right) \sum_{k=1}^{\sampleSize} \log(y_k)\,,
 
 where :math:`C` is a constant,
 
    .. math::
     :label: betasigmalm
 
-    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...m \\
-    \hat{\beta}(\lambda) = \frac{1}{m} \sum_{k=1}^{m} h_{\lambda}(\epsilon_k) \\
-    \hat{\sigma}^2(\lambda) = \frac{1}{m} \sum_{k=1}^{m} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
+    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...\sampleSize \\
+    \hat{\beta}(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} h_{\lambda}(\epsilon_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{\sampleSize} \sum_{k=1}^{\sampleSize} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
 
 As a remark, the above case is a particular case of :eq:`lLambdalm`. Indeed if a linear model is a specific case of general linear model
 where the correlation model is a Dirac covariance model (White noise model).

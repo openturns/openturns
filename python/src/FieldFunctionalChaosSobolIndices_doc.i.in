@@ -51,7 +51,7 @@ This generalizes to higher order indices.
 
 Parameters
 ----------
-result : :class:`~openturns.FieldFunctionalChaosResult`
+result : :class:`openturns.experimental.FieldFunctionalChaosResult`
     Result.
 
 See also

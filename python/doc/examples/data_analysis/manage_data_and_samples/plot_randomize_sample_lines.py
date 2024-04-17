@@ -17,7 +17,7 @@ sample = distribution.getSample(N)
 
 # %%
 # We print the sample :
-print(sample)
+sample
 
 # %%
 # A new set of randomly mixed indices is a realization of a permutation of N elements amongst N :

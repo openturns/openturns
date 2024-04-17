@@ -36,8 +36,6 @@ static const Factory<InverseWishart> Factory_InverseWishart;
 /* Default constructor */
 InverseWishart::InverseWishart()
   : ContinuousDistribution()
-  , cholesky_()
-  , nu_(1.0)
 {
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
@@ -49,7 +47,6 @@ InverseWishart::InverseWishart()
 InverseWishart::InverseWishart(const CovarianceMatrix & v,
                                const Scalar nu)
   : ContinuousDistribution()
-  , cholesky_()
   , nu_(-1.0) // implies nu_ != nu: see setNu
 {
   setName("InverseWishart");
@@ -249,7 +246,7 @@ void InverseWishart::computeCovariance() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       UnsignedInteger indexColumn = 0;
-      for (UnsignedInteger m = 0; m < i; ++m)
+      for (UnsignedInteger m = 0; m <= i; ++m)
         for (UnsignedInteger n = 0; n <= j; ++n)
         {
           covariance_(indexRow, indexColumn) = (2.0 * V(i, j) * V(m, n) + (nu_ - p - 1.0) * (V(i, m) * V(j, n) + V(i, n) * V(m, j))) / den;
@@ -261,7 +258,7 @@ void InverseWishart::computeCovariance() const
 }
 
 /* Get the standard deviation of the distribution */
-Point InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point InverseWishart::getStandardDeviation() const
 {
   Point sigma(getDimension());
   // If the covariance has already been computed, use it
@@ -288,7 +285,7 @@ Point InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*
 
 Point InverseWishart::getParameter() const
 {
-  const CovarianceMatrix V(getCovariance());
+  const CovarianceMatrix V(getV());
   const UnsignedInteger p = V.getDimension();
   Point point((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
@@ -356,7 +353,7 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   // vInverse = T'.T, non const because we compute its Cholesky factor
   CovarianceMatrix vInverse(T.computeGram(true));
   // Flag false means that vInverse is not preserved, non const because we solve a linear system with this matrix
-  TriangularMatrix vInverseCholesky(vInverse.computeCholesky(false));
+  TriangularMatrix vInverseCholesky(vInverse.computeCholeskyInPlace());
   inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystemInPlace(IdentityMatrix(p)).getImplementation();
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;
