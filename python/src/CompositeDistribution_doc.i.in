@@ -107,3 +107,25 @@ Parameters
 ----------
 distX : :class:`~openturns.Distribution`, univariate
    Distribution of the antecedent :math:`distX`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::setSolver
+"Solver accessor.
+
+Parameters
+----------
+solver : :class:`~openturns.Solver`
+    The solver used for PDF/CDF computations.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::getSolver
+"Solver accessor.
+
+Returns
+-------
+solver : :class:`~openturns.Solver`
+    The solver used for PDF/CDF computations.
+"
