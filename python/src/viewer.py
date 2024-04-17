@@ -326,7 +326,7 @@ class View:
 
         has_labels = False
 
-        zorder = 1
+        zorder = 2
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
@@ -353,7 +353,7 @@ class View:
                 clabel_kw["zorder"] = zorder
             scatter_kw["zorder"] = zorder
             text_kw["zorder"] = zorder
-            zorder += 1
+            zorder += 1 / (len(drawables) + 1)
 
             # set color
             if ("color" not in plot_kw_default) and ("c" not in plot_kw_default):
