@@ -11,7 +11,7 @@ DistributionFactory, UserDefined"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BurrFactory::buildAsUserDefined
+%feature("docstring") OT::UserDefinedFactory::buildAsUserDefined
 "Estimate the distribution as native distribution.
 
 **Available usages**:
