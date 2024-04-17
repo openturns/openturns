@@ -62,7 +62,7 @@ public:
 
   /** Compute design method **/
   Sample generateWithWeights(Point & weightsOut) const override;
-  Sample generateWithRestart(UnsignedInteger nRestart) const;
+  Sample generateWithRestart(const UnsignedInteger nRestart) const;
 
   /** String converter */
   String __repr__() const override;
