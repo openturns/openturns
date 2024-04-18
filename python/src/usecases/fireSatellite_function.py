@@ -327,7 +327,6 @@ class FireSatelliteModel:
         :inputs: dictionary of inputs of the Power discipline
 
         """
-        theta = m.pi / 180 * inputs["theta"]
         Fs = inputs["Fs"]
         P_ACS = inputs["P_ACS"]
         P_other = inputs["P_other"]
