@@ -25,8 +25,8 @@ s = vals1[0]
 p = ot.Point((1, 2, 3))
 
 # ProcessSample operations
-sumVals = [vals1[0]+vals2[0], vals1[1]+vals2[1]]
-diffVals = [vals1[0]-vals2[0], vals1[1]-vals2[1]]
+sumVals = [vals1[0] + vals2[0], vals1[1] + vals2[1]]
+diffVals = [vals1[0] - vals2[0], vals1[1] - vals2[1]]
 
 psSum = ot.ProcessSample(mesh, sumVals)
 psDiff = ot.ProcessSample(mesh, diffVals)
@@ -40,8 +40,8 @@ psInPlaceSum -= ps2
 ott.assert_almost_equal(psInPlaceSum, ps1)
 
 # ProcessSample  and Field operations
-sumVals = [vals1[0]+vals1[0], vals1[1]+vals1[0]]
-diffVals = [vals1[0]-vals1[0], vals1[1]-vals1[0]]
+sumVals = [vals1[0] + vals1[0], vals1[1] + vals1[0]]
+diffVals = [vals1[0] - vals1[0], vals1[1] - vals1[0]]
 
 psSum = ot.ProcessSample(mesh, sumVals)
 psDiff = ot.ProcessSample(mesh, diffVals)
@@ -64,8 +64,8 @@ psInPlaceSum -= s
 ott.assert_almost_equal(psInPlaceSum, ps1)
 
 # ProcessSample and point operations
-sumVals = [vals1[0]+p, vals1[1]+p]
-diffVals = [vals1[0]-p, vals1[1]-p]
+sumVals = [vals1[0] + p, vals1[1] + p]
+diffVals = [vals1[0] - p, vals1[1] - p]
 
 psSum = ot.ProcessSample(mesh, sumVals)
 psDiff = ot.ProcessSample(mesh, diffVals)
@@ -79,8 +79,8 @@ psInPlaceSum -= p
 ott.assert_almost_equal(psInPlaceSum, ps1)
 
 # Field operations
-fSum = ot.Field(mesh, vals1[0]+vals2[0])
-fDiff = ot.Field(mesh,vals1[0]-vals2[0])
+fSum = ot.Field(mesh, vals1[0] + vals2[0])
+fDiff = ot.Field(mesh, vals1[0] - vals2[0])
 
 ott.assert_almost_equal(f1 + f2, fSum)
 ott.assert_almost_equal(f1 - f2, fDiff)
@@ -91,8 +91,8 @@ fInPlaceSum -= f2
 ott.assert_almost_equal(fInPlaceSum, f1)
 
 # Field and Sample operations
-fSum = ot.Field(mesh, vals1[0]+vals1[0])
-fDiff = ot.Field(mesh,vals1[0]-vals1[0])
+fSum = ot.Field(mesh, vals1[0] + vals1[0])
+fDiff = ot.Field(mesh, vals1[0] - vals1[0])
 
 ott.assert_almost_equal(f1 + s, fSum)
 ott.assert_almost_equal(f1 - s, fDiff)
@@ -103,8 +103,8 @@ fInPlaceSum -= s
 ott.assert_almost_equal(fInPlaceSum, f1)
 
 # Field and Point operations
-fSum = ot.Field(mesh, vals1[0]+p)
-fDiff = ot.Field(mesh,vals1[0]-p)
+fSum = ot.Field(mesh, vals1[0] + p)
+fDiff = ot.Field(mesh, vals1[0] - p)
 
 ott.assert_almost_equal(f1 + p, fSum)
 ott.assert_almost_equal(f1 - p, fDiff)
