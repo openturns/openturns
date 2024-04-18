@@ -37,6 +37,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/ProcessSample.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
