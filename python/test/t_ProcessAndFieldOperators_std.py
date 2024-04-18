@@ -1,7 +1,10 @@
+#! /usr/bin/env python
+
+import copy
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-
 mesh = ot.RegularGrid(0, 1, 4)
 vals1 = [
     ot.Sample([[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6]]),
@@ -21,66 +24,92 @@ f2 = ot.Field(mesh, vals2[0])
 s = vals1[0]
 p = ot.Point((1, 2, 3))
 
-# ProcessSample and ProcessSample operators
-sumVals = [
-    ot.Sample([[2, 4, 6], [4, 6, 8], [6, 8, 10], [8, 10, 12]]),
-    ot.Sample([[10, 12, 14], [12, 14, 16], [14, 16, 18], [16, 18, 20]]),
-]
+# ProcessSample operations
+sumVals = [vals1[0]+vals2[0], vals1[1]+vals2[1]]
+diffVals = [vals1[0]-vals2[0], vals1[1]-vals2[1]]
+
 psSum = ot.ProcessSample(mesh, sumVals)
-psDiff = ot.ProcessSample(mesh, 2, 3)
+psDiff = ot.ProcessSample(mesh, diffVals)
 
-print("Sum between ProcessSamples", ps1 + ps2)
-print("Difference between ProcessSamples", ps1 - ps2)
-ps1 += ps2
-print(ps1)
-ps1 -= ps2
-print(ps1)
+ott.assert_almost_equal(ps1 + ps2, psSum)
+ott.assert_almost_equal(ps1 - ps2, psDiff)
+psInPlaceSum = copy.deepcopy(ps1)
+psInPlaceSum += ps2
+ott.assert_almost_equal(psInPlaceSum, psSum)
+psInPlaceSum -= ps2
+ott.assert_almost_equal(psInPlaceSum, ps1)
 
-print("Sum between ProcessSample and Field", ps1 + f1)
-print("Difference between ProcessSample and Field", ps1 - f1)
+# ProcessSample  and Field operations
+sumVals = [vals1[0]+vals1[0], vals1[1]+vals1[0]]
+diffVals = [vals1[0]-vals1[0], vals1[1]-vals1[0]]
 
-ps1 += f1
-print(ps1)
-ps1 -= f1
-print(ps1)
+psSum = ot.ProcessSample(mesh, sumVals)
+psDiff = ot.ProcessSample(mesh, diffVals)
 
-print("Sum between ProcessSample and Sample", ps1 + s)
-print("Difference between ProcessSample and Sample", ps1 - s)
+ott.assert_almost_equal(ps1 + f1, psSum)
+ott.assert_almost_equal(ps1 - f1, psDiff)
+psInPlaceSum = copy.deepcopy(ps1)
+psInPlaceSum += f1
+ott.assert_almost_equal(psInPlaceSum, psSum)
+psInPlaceSum -= f1
+ott.assert_almost_equal(psInPlaceSum, ps1)
 
-ps1 += s
-print(ps1)
-ps1 -= s
-print(ps1)
+# ProcessSample and Sample operations
+ott.assert_almost_equal(ps1 + s, psSum)
+ott.assert_almost_equal(ps1 - s, psDiff)
+psInPlaceSum = copy.deepcopy(ps1)
+psInPlaceSum += s
+ott.assert_almost_equal(psInPlaceSum, psSum)
+psInPlaceSum -= s
+ott.assert_almost_equal(psInPlaceSum, ps1)
 
-print("Sum between ProcessSample and Point", ps1 + p)
-print("Difference between ProcessSample and Point", ps1 - p)
+# ProcessSample and point operations
+sumVals = [vals1[0]+p, vals1[1]+p]
+diffVals = [vals1[0]-p, vals1[1]-p]
 
-ps1 += p
-print(ps1)
-ps1 -= p
-print(ps1)
+psSum = ot.ProcessSample(mesh, sumVals)
+psDiff = ot.ProcessSample(mesh, diffVals)
 
+ott.assert_almost_equal(ps1 + p, psSum)
+ott.assert_almost_equal(ps1 - p, psDiff)
+psInPlaceSum = copy.deepcopy(ps1)
+psInPlaceSum += p
+ott.assert_almost_equal(psInPlaceSum, psSum)
+psInPlaceSum -= p
+ott.assert_almost_equal(psInPlaceSum, ps1)
 
-print("Sum between Fields", f1 + f2)
-print("Difference between Fields", f1 - f2)
+# Field operations
+fSum = ot.Field(mesh, vals1[0]+vals2[0])
+fDiff = ot.Field(mesh,vals1[0]-vals2[0])
 
-f1 += f2
-print(f1)
-f1 -= f2
-print(f1)
+ott.assert_almost_equal(f1 + f2, fSum)
+ott.assert_almost_equal(f1 - f2, fDiff)
+fInPlaceSum = copy.deepcopy(f1)
+fInPlaceSum += f2
+ott.assert_almost_equal(fInPlaceSum, fSum)
+fInPlaceSum -= f2
+ott.assert_almost_equal(fInPlaceSum, f1)
 
-print("Sum between Field and Sample", f1 + s)
-print("Difference between Field and Sample", f1 - s)
+# Field and Sample operations
+fSum = ot.Field(mesh, vals1[0]+vals1[0])
+fDiff = ot.Field(mesh,vals1[0]-vals1[0])
 
-f1 += s
-print(f1)
-f1 -= s
-print(f1)
+ott.assert_almost_equal(f1 + s, fSum)
+ott.assert_almost_equal(f1 - s, fDiff)
+fInPlaceSum = copy.deepcopy(f1)
+fInPlaceSum += s
+ott.assert_almost_equal(fInPlaceSum, fSum)
+fInPlaceSum -= s
+ott.assert_almost_equal(fInPlaceSum, f1)
 
-print("Sum between Field and Point", f1 + p)
-print("Difference between Field and Point", f1 - p)
+# Field and Point operations
+fSum = ot.Field(mesh, vals1[0]+p)
+fDiff = ot.Field(mesh,vals1[0]-p)
 
-f1 += p
-print(f1)
-f1 -= p
-print(f1)
+ott.assert_almost_equal(f1 + p, fSum)
+ott.assert_almost_equal(f1 - p, fDiff)
+fInPlaceSum = copy.deepcopy(f1)
+fInPlaceSum += p
+ott.assert_almost_equal(fInPlaceSum, fSum)
+fInPlaceSum -= p
+ott.assert_almost_equal(fInPlaceSum, f1)
