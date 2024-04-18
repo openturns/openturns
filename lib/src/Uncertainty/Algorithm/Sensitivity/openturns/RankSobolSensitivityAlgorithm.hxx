@@ -107,23 +107,7 @@ private:
   /** Function that computes aggregated indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
                                  const Point & variance) const;
-                                 
-  /** Constructor with distribution / model parameters */
-  RankSobolSensitivityAlgorithm(const Distribution & ,
-                                const UnsignedInteger ,
-                                const Function & ,
-                                const Bool ){};
-
-  /** Constructor with experiment / model parameters */
-  RankSobolSensitivityAlgorithm(const WeightedExperiment & ,
-                                const Function & ,
-                                const Bool ){};
-                                
-  /** Constructor with parameters */
-  RankSobolSensitivityAlgorithm(const Sample & ,
-                                const Sample & , 
-                                const UnsignedInteger ){};
-                                
+                                                        
                                 
   void setDesign(const Sample & ,
                  const Sample & ,

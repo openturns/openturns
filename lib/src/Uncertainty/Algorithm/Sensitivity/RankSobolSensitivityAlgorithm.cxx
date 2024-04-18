@@ -289,14 +289,14 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     Sample bsFO(0, inputDimension);
 
     UnsignedInteger bootstrapSampleSize(ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio")*size_);
-        
+    const UnsignedInteger size = size_;
     const UnsignedInteger blockSize = std::min(bootstrapSize_, ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize"));
     const UnsignedInteger maximumOuterSampling = bootstrapSize_ / blockSize;
     const UnsignedInteger modulo = bootstrapSize_ % blockSize;
     const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize : modulo;
 
     // Use of KPermutations to perform bootstrap without replication
-    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size_);
+    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size);
 
     for(UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++outerSampling)
     {
