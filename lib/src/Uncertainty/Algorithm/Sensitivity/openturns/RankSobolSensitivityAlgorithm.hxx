@@ -121,12 +121,12 @@ private:
                                 
   /** Constructor with parameters */
   RankSobolSensitivityAlgorithm(const Sample & ,
-                                const Sample &, 
+                                const Sample & , 
                                 const UnsignedInteger ){};
                                 
                                 
-  void setDesign(const Sample & inputDesign,
-                 const Sample & outputDesign,
+  void setDesign(const Sample & ,
+                 const Sample & ,
                  const UnsignedInteger ) override {};
                                
   /** void method that computes asymptotic distribution */
