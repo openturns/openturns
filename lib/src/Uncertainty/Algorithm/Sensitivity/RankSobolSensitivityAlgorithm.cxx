@@ -289,14 +289,14 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     Sample bsFO(0, inputDimension);
 
     UnsignedInteger bootstrapSampleSize(ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio")*size_);
-    const UnsignedInteger size = size_;
+
     const UnsignedInteger blockSize = std::min(bootstrapSize_, ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize"));
     const UnsignedInteger maximumOuterSampling = bootstrapSize_ / blockSize;
     const UnsignedInteger modulo = bootstrapSize_ % blockSize;
     const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize : modulo;
 
     // Use of KPermutations to perform bootstrap without replication
-    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size);
+    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size_);
 
     for(UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++outerSampling)
     {
@@ -405,7 +405,6 @@ void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
   SobolIndicesAlgorithmImplementation::save(adv);
   adv.saveAttribute("inputDesign_", inputDesign_ );
   adv.saveAttribute("outputDesign_", outputDesign_);
-  adv.saveAttribute("size_", size_);
   adv.saveAttribute("outputDimension_", outputDimension_); 
 }
 
@@ -415,7 +414,6 @@ void RankSobolSensitivityAlgorithm::load(Advocate & adv)
   SobolIndicesAlgorithmImplementation::load(adv);
   adv.loadAttribute("inputDesign_", inputDesign_ );
   adv.loadAttribute("outputDesign_", outputDesign_);
-  adv.loadAttribute("size_", size_);
   adv.loadAttribute("outputDimension_", outputDimension_);
 }
 

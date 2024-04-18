@@ -125,7 +125,6 @@ private:
   /** Designs : input & output designs */
   Sample inputDesign_;
   Sample outputDesign_;
-  UnsignedInteger size_;
   UnsignedInteger outputDimension_;
   
 }; /* class RankSobolSensitivityAlgorithm */
