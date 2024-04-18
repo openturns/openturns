@@ -351,7 +351,7 @@ class FireSatelliteModel:
         Ptot = P_ACS + P_other
 
         # power production capability at beginning of life
-        P_BOL = eta * Fs * Id * m.cos(theta)
+        P_BOL = eta * Fs * Id * m.cos(self.i)
 
         # power production capability at end of life
         P_EOL = P_BOL * (1 - epsilon_deg) ** (LT)
