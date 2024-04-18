@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LSQSOLVER_HXX
-#define OPENTURNS_LSQSOLVER_HXX
+#ifndef OPENTURNS_LEASTSQUARESEQUATIONSSOLVER_HXX
+#define OPENTURNS_LEASTSQUARESEQUATIONSSOLVER_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/SolverImplementation.hxx"
@@ -28,25 +28,25 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LsqSolver
+ * @class LeastSquaresEquationsSolver
  *
  * This class is an interface for the 1D nonlinear solverImplementations
  */
-class OT_API LsqSolver :
+class OT_API LeastSquaresEquationsSolver :
   public SolverImplementation
 {
   CLASSNAME
 public:
 
   /** Parameter constructor */
-  explicit LsqSolver(const Scalar absoluteError = ResourceMap::GetAsScalar("Solver-DefaultAbsoluteError"),
+  explicit LeastSquaresEquationsSolver(const Scalar absoluteError = ResourceMap::GetAsScalar("Solver-DefaultAbsoluteError"),
                   const Scalar relativeError = ResourceMap::GetAsScalar("Solver-DefaultRelativeError"),
                   const Scalar residualError = ResourceMap::GetAsScalar("Solver-DefaultResidualError"),
                   const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation"));
 
 
   /** Virtual constructor */
-  LsqSolver * clone() const override;
+  LeastSquaresEquationsSolver * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -58,7 +58,7 @@ public:
 
 private:
 
-}; /* Class LsqSolver */
+}; /* Class LeastSquaresEquationsSolver */
 
 END_NAMESPACE_OPENTURNS
 

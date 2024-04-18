@@ -35,7 +35,7 @@
 %include LatentVariableModel.i
 
 /* Base/Solver */
-%include LsqSolver.i
+%include LeastSquaresEquationsSolver.i
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */

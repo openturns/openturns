@@ -207,7 +207,7 @@ ot_check_test (MultiStart_std)
 # Solver
 ot_check_test (Bisection_std)
 ot_check_test (Brent_std)
-ot_check_test (LsqSolver_std IGNOREOUT)
+ot_check_test (LeastSquaresEquationsSolver_std IGNOREOUT)
 ot_check_test (Secant_std)
 ot_check_test (RungeKutta_std)
 ot_check_test (Fehlberg_std)

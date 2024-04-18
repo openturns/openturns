@@ -1032,7 +1032,7 @@ ot_add_python_module(experimental experimental_module.i
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
-                     LsqSolver.i LsqSolver_doc.i.in
+                     LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

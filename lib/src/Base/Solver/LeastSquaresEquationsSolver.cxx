@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/LsqSolver.hxx"
+#include "openturns/LeastSquaresEquationsSolver.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
@@ -30,17 +30,17 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LsqSolver
+ * @class LeastSquaresEquationsSolver
  *
- * This class is an interface for the nonlinear LsqSolver
+ * This class is an interface for the nonlinear LeastSquaresEquationsSolver
  */
 
-CLASSNAMEINIT(LsqSolver)
+CLASSNAMEINIT(LeastSquaresEquationsSolver)
 
-static const Factory<LsqSolver> Factory_LsqSolver;
+static const Factory<LeastSquaresEquationsSolver> Factory_LeastSquaresEquationsSolver;
 
 /* Parameter constructor */
-LsqSolver::LsqSolver(const Scalar absoluteError,
+LeastSquaresEquationsSolver::LeastSquaresEquationsSolver(const Scalar absoluteError,
                const Scalar relativeError,
                const Scalar residualError,
                const UnsignedInteger maximumCallsNumber)
@@ -50,23 +50,23 @@ LsqSolver::LsqSolver(const Scalar absoluteError,
 }
 
 /* Virtual constructor */
-LsqSolver * LsqSolver::clone() const
+LeastSquaresEquationsSolver * LeastSquaresEquationsSolver::clone() const
 {
-  return new LsqSolver(*this);
+  return new LeastSquaresEquationsSolver(*this);
 }
 
 /* String converter */
-String LsqSolver::__repr__() const
+String LeastSquaresEquationsSolver::__repr__() const
 {
   OSS oss;
-  oss << "class=" << LsqSolver::GetClassName()
+  oss << "class=" << LeastSquaresEquationsSolver::GetClassName()
       << " derived from " << SolverImplementation::__repr__();
   return oss;
 }
 
 /* Solve attempt to find one root to the system of non-linear equations function(x) = 0 given a starting point x with a least square optimization method.
 */
-Point LsqSolver::solve(const Function & function,
+Point LeastSquaresEquationsSolver::solve(const Function & function,
                      const Point & startingPoint) const
 { 
   UnsignedInteger callsNumber = 0;

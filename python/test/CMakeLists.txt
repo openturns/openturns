@@ -318,7 +318,7 @@ ot_pyinstallcheck_test (Secant_std)
 ot_pyinstallcheck_test (Solver_hard)
 ot_pyinstallcheck_test (RungeKutta_std)
 ot_pyinstallcheck_test (Fehlberg_std)
-ot_pyinstallcheck_test (LsqSolver_std IGNOREOUT)
+ot_pyinstallcheck_test (LeastSquaresEquationsSolver_std IGNOREOUT)
 
 
 # Algo

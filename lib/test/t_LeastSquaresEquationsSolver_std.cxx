@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class LsqSolver for standard methods
+ *  @brief The test file of class LeastSquaresEquationsSolver for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -36,7 +36,7 @@ int main(int, char *[])
     Description formulas = {"y*x-sin(2*x)","1 + cos(y) + x"};
 
     SymbolicFunction analytical(input, formulas);
-    LsqSolver myAlgo;
+    LeastSquaresEquationsSolver myAlgo;
     myAlgo.setResidualError(1e-5);
     fullprint << "myAlgo=" << myAlgo << std::endl;
     Point startingPoint = {2.0,1.0};
