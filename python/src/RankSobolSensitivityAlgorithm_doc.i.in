@@ -7,8 +7,6 @@ inputDesign : :class:`~openturns.Sample`
     The input sample used for the Sobol' sensitivity analysis
 outputDesign : :class:`~openturns.Sample`
     The output sample used for the Sobol' sensitivity analysis
-N : int
-    Size of samples
 
 Notes
 -----

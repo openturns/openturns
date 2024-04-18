@@ -43,8 +43,7 @@ public:
 
   /** Constructor with parameters */
   RankSobolSensitivityAlgorithm(const Sample & inputDesign,
-                                const Sample & outputDesign,
-                                const UnsignedInteger size);
+                                const Sample & outputDesign);
 
   /** Virtual constructor */
   RankSobolSensitivityAlgorithm * clone() const override;
@@ -54,8 +53,7 @@ public:
   
   /** Design accessor */
   void setDesign(const Sample & inputDesign,
-                 const Sample & outputDesign,
-                 const UnsignedInteger size) override;
+                 const Sample & outputDesign);
                                  
   /** First order indices accessor */
   Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
@@ -120,6 +118,16 @@ private:
   RankSobolSensitivityAlgorithm(const WeightedExperiment & ,
                                 const Function & ,
                                 const Bool ){};
+                                
+  /** Constructor with parameters */
+  RankSobolSensitivityAlgorithm(const Sample & ,
+                                const Sample &, 
+                                const UnsignedInteger ){};
+                                
+                                
+  void setDesign(const Sample & inputDesign,
+                 const Sample & outputDesign,
+                 const UnsignedInteger ) override {};
                                
   /** void method that computes asymptotic distribution */
   void computeAsymptoticDistribution() const override {};
@@ -129,11 +137,11 @@ private:
 
   /** Method that draw  the sensitivity graph of a fixed marginal */
   Graph draw(const UnsignedInteger marginalIndex) const override;
-    
+      
   /** Designs : input & output designs */
   Sample inputDesign_;
   Sample outputDesign_;
-  
+  UnsignedInteger size_;
 }; /* class RankSobolSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

@@ -34,7 +34,7 @@ Y = im.model(X)
 
 # %%
 # Estimate Sobol' first order indices via rank-based algorithm.
-mySobol = otexp.RankSobolSensitivityAlgorithm(X, Y, size)
+mySobol = otexp.RankSobolSensitivityAlgorithm(X, Y)
 indices = mySobol.getFirstOrderIndices()
 print('First order indices:', indices)
 

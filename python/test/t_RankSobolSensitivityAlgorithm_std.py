@@ -14,7 +14,7 @@ sampleY = im.model(sampleX)
 
 ot.ResourceMap.SetAsUnsignedInteger('SobolIndicesAlgorithm-DefaultBootstrapSize', 100)
 
-mySobol = otexp.RankSobolSensitivityAlgorithm(sampleX, sampleY, n)
+mySobol = otexp.RankSobolSensitivityAlgorithm(sampleX, sampleY)
 indices = mySobol.getFirstOrderIndices()
 
 assert_almost_equal(indices[0], 0.208654, 1.0e-4, 1.0e-2)

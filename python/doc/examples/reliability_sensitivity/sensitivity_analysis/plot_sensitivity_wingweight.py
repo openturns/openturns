@@ -375,7 +375,7 @@ view = otv.View(graph)
 sizeRankSobol = 800
 inputDesignRankSobol = m.distributionX.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
-myRankSobol = otexp.RankSobolSensitivityAlgorithm(inputDesignRankSobol, outputDesignankSobol, sizeRankSobol)
+myRankSobol = otexp.RankSobolSensitivityAlgorithm(inputDesignRankSobol, outputDesignankSobol)
 indicesrankSobol = myRankSobol.getFirstOrderIndices()
 print('First order indices:', indicesrankSobol)
 graph = myRankSobol.draw()

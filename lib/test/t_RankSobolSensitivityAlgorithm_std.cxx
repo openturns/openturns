@@ -53,7 +53,7 @@ int main()
     const UnsignedInteger size = 250;  
     const Sample inputDesign(maDistribution.getSample(size));
     const Sample outputDesign(model(inputDesign)); 
-    RankSobolSensitivityAlgorithm rankAlgorithm(inputDesign, outputDesign, size);
+    RankSobolSensitivityAlgorithm rankAlgorithm(inputDesign, outputDesign);
     
     const Point firstOrderIndices(rankAlgorithm.getFirstOrderIndices());
     OT::Test::assert_almost_equal(firstOrderIndices[0], 0.208654,1e-4,1e-2);

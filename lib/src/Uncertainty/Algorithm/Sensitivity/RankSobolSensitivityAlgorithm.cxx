@@ -44,32 +44,31 @@ RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm()
 
 /** Constructor with parameters */
 RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm(const Sample & inputDesign,
-    const Sample & outputDesign,
-    const UnsignedInteger size)
+    const Sample & outputDesign)
 {
-  setDesign(inputDesign, outputDesign, size);
+  setDesign(inputDesign, outputDesign);
 }
 
 /* Design accessor */
 void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
-    const Sample & outputDesign,
-    const UnsignedInteger size)
+                                              const Sample & outputDesign)
 {
-  if (!(size > 1))
+
+  inputDesign_  = inputDesign;
+  outputDesign_ = outputDesign;
+  size_ = inputDesign_.getSize();
+  inputDescription_ = inputDesign.getDescription();
+  referenceVariance_ = outputDesign_.computeVariance();
+  
+  if (!(size_ > 1))
     throw InvalidArgumentException(HERE) << "Sobol design size must be > 1";
   
-  if (inputDesign.getSize() != outputDesign.getSize())
-    throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << inputDesign.getSize()
+  if (size_ != outputDesign.getSize())
+    throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << size_
                                          << " vs " << outputDesign.getSize() << ")";
   if (!outputDesign.getDimension())
     throw InvalidArgumentException(HERE) << "Output sample dimension is null";
 
-  inputDescription_ = inputDesign.getDescription();
-  size_ = size;
-  inputDesign_  = inputDesign;
-  outputDesign_ = outputDesign;
-  referenceVariance_ = outputDesign_.computeVariance();
-  
   for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
     if (!(referenceVariance_[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Null output sample variance";
@@ -94,11 +93,10 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
 
 /** Internal method that compute Vi  **/
 Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(const Sample & inputDesign, const Sample & outputDesign) const
-{
-  const UnsignedInteger size = inputDesign.getSize();
-  
+{  
   Sample marginalVar(outputDesign.getDimension(),inputDesign.getDimension());
   
+  UnsignedInteger size = inputDesign.getSize();
   const Point meanOutputDesign = outputDesign.computeMean();
   
   for (UnsignedInteger j = 0; j < outputDesign.getDimension(); ++j) 
@@ -107,7 +105,6 @@ Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(const Sample & in
       {
         // Sorting samples with respect to the input dimension
         const Indices idSort = inputDesign.getMarginal(i).argsort();
-        
         Scalar sum = 0.;
         
         for (UnsignedInteger k = 0; k < size; ++k) 
@@ -115,7 +112,7 @@ Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(const Sample & in
             sum += outputDesign(idSort[k], j) * outputDesign(idSort[(k + 1) % size], j);    
         }
         // Compute the marginal variance
-        marginalVar(j,i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j];  
+        marginalVar(j,i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j]; 
       }
   }
   
@@ -147,23 +144,20 @@ struct RankSobolBootstrapPolicy
 
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
-
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
     {
       Indices index(randomIndices_.getDimension());
-
       for (UnsignedInteger l =0; l<randomIndices_.getDimension(); l++)
       {
         index[l] = static_cast <OT::UnsignedInteger>(randomIndices_(k, l));
       }
- 
       const Point variance(sai_.outputDesign_.select(index).computeVariance());
-      
       // Compute indices using this collection
       const Sample Vi(sai_.computeIndicesFromSample(sai_.inputDesign_.select(index), sai_.outputDesign_.select(index)));
       // Compute aggregated indices
       bsFO_[k] = sai_.computeAggregatedIndices(Vi, variance);
     }
+
   }
 }; /* end struct BootstrapPolicy */
 
@@ -294,18 +288,16 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     const UnsignedInteger inputDimension = inputDescription_.getSize();
     Sample bsFO(0, inputDimension);
 
-    const UnsignedInteger size = size_;
-    
-    UnsignedInteger bootstrapSampleSize(ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio")*inputDesign_.getSize());
+    UnsignedInteger bootstrapSampleSize(ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio")*size_);
         
     const UnsignedInteger blockSize = std::min(bootstrapSize_, ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize"));
     const UnsignedInteger maximumOuterSampling = bootstrapSize_ / blockSize;
     const UnsignedInteger modulo = bootstrapSize_ % blockSize;
     const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize : modulo;
-    
+
     // Use of KPermutations to perform bootstrap without replication
-    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size);
-      
+    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size_);
+
     for(UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++outerSampling)
     {
       // the last block can be smaller
@@ -314,10 +306,9 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
       Sample bsFOpartial(effectiveBlockSize, inputDimension);
  
       const Sample randomIndices = KPermutation.getSample(effectiveBlockSize);
-      
+
       const RankSobolBootstrapPolicy policy( *this, randomIndices, bsFOpartial );
       TBBImplementation::ParallelFor( 0, effectiveBlockSize, policy );
-
       bsFO.add(bsFOpartial);
 
     }
@@ -412,16 +403,18 @@ String RankSobolSensitivityAlgorithm::__repr__() const
 void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
 {
   SobolIndicesAlgorithmImplementation::save(adv);
-  adv.saveAttribute("inputDesign_ ", inputDesign_ );
-  adv.saveAttribute("outputDesign_ ", outputDesign_);
+  adv.saveAttribute("inputDesign_", inputDesign_ );
+  adv.saveAttribute("outputDesign_", outputDesign_);
+  adv.saveAttribute("size_", size_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RankSobolSensitivityAlgorithm::load(Advocate & adv)
 {
   SobolIndicesAlgorithmImplementation::load(adv);
-  adv.loadAttribute("inputDesign_ ", inputDesign_ );
-  adv.loadAttribute("outputDesign_ ", outputDesign_);
+  adv.loadAttribute("inputDesign_", inputDesign_ );
+  adv.loadAttribute("outputDesign_", outputDesign_);
+  adv.loadAttribute("size_", size_);
 }
 
 END_NAMESPACE_OPENTURNS
