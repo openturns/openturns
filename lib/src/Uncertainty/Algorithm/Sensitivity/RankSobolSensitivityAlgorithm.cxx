@@ -56,6 +56,7 @@ void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
 
   inputDesign_  = inputDesign;
   outputDesign_ = outputDesign;
+  outputDimension_ = outputDesign.getDimension();
   size_ = inputDesign_.getSize();
   inputDescription_ = inputDesign.getDescription();
   referenceVariance_ = outputDesign_.computeVariance();
@@ -82,10 +83,10 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
     // Invoke the method to compute first order indices
     varianceI_ = computeIndices();
   }
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  if (marginalIndex >= outputDimension)
+
+  if (marginalIndex >= outputDimension_)
     throw InvalidArgumentException(HERE) << "In RankSobolSensitivityAlgorithm::getFirstOrderIndices, marginalIndex should be in [0," 
-                                         << outputDimension - 1;
+                                         << outputDimension_ - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   return firstOrderSensitivity;
@@ -260,7 +261,6 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
 {
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
-  const UnsignedInteger outputDimension = Vi.getSize();
   if (inputDimension == 1)
   {
     return Point(Vi[0]);
@@ -270,7 +270,7 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
   Scalar sumVariance = variance.norm1();
 
   // Compute aggregated indices
-  return Point(Vi.computeMean() * (outputDimension / sumVariance));
+  return Point(Vi.computeMean() * (outputDimension_ / sumVariance));
 }
 
 
@@ -406,6 +406,7 @@ void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("inputDesign_", inputDesign_ );
   adv.saveAttribute("outputDesign_", outputDesign_);
   adv.saveAttribute("size_", size_);
+  adv.saveAttribute("outputDimension_", outputDimension_); 
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -415,6 +416,7 @@ void RankSobolSensitivityAlgorithm::load(Advocate & adv)
   adv.loadAttribute("inputDesign_", inputDesign_ );
   adv.loadAttribute("outputDesign_", outputDesign_);
   adv.loadAttribute("size_", size_);
+  adv.loadAttribute("outputDimension_", outputDimension_);
 }
 
 END_NAMESPACE_OPENTURNS

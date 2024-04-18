@@ -142,6 +142,8 @@ private:
   Sample inputDesign_;
   Sample outputDesign_;
   UnsignedInteger size_;
+  UnsignedInteger outputDimension_;
+  
 }; /* class RankSobolSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS
