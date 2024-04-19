@@ -10,10 +10,9 @@ ot.TESTPREAMBLE()
 f = ot.SymbolicFunction(["x", "y", "z"], ["sin(x) * cos(y) * exp(z)"])
 lbIntegration = ot.Point((0.0, 0.0, 0.0))
 ubIntegration = ot.Point((1.0, 1.0, 1.0))
-routines = ["cuhre", "divonne", "suave", "vegas"]
 valueRef = -math.sin(1.0) * (math.cos(1.0) - 1.0) * (math.e - 1.0)
 
-for r in routines:
+for r in ot.CubaIntegration.GetAlgorithmNames():
     algoC = ot.CubaIntegration(r)
     value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
     ott.assert_almost_equal(value[0], valueRef, 1.0e-3, 1.0e-3)
@@ -28,10 +27,12 @@ f = ot.SymbolicFunction(
 )
 lbIntegration = ot.Point((0.0, 0.0, 1.0))
 ubIntegration = ot.Point((2.0, 3.0, 4.0))
-routines = ["cuhre", "divonne", "vegas"]
 valueRef = ot.Point((0.108972129575688278, -0.375))
 
-for r in routines:
+for r in ot.CubaIntegration.GetAlgorithmNames():
+    if r == "suave":
+      # Suave is quite inaccurate with these integrands, skipping.
+      continue
     algoC = ot.CubaIntegration(r)
     if r == "vegas":
         # Vegas seemingly needs more favorable parameters there

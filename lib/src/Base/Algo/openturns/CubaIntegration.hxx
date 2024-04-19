@@ -71,6 +71,9 @@ public:
   UnsignedInteger getFlags() const;
   void setFlags(const UnsignedInteger flags);
 
+  /** Return the available algorithms'names */
+  static Description GetAlgorithmNames();
+
   /** String converter */
   String __repr__() const override;
 

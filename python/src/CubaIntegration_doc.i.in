@@ -117,6 +117,18 @@ optAlgo : str
     The name of the optimization routine used by the algorithm."
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::GetAlgorithmNames
+"Retrieves the names of the available integration algorithms.
+
+Returns
+-------
+algoName : :class:`~openturns.Description`
+    The names of the available integration algorithms."
+
+// ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
 %feature("docstring") OT::CubaIntegration::setAlgorithmName
 "Accessor to the name of the optimization routine to be used.
 

@@ -263,6 +263,17 @@ void CubaIntegration::setFlags(const UnsignedInteger flags)
   flags_ = flags;
 }
 
+/* Return the names of the available integration algorithms */
+Description CubaIntegration::GetAlgorithmNames()
+{
+  Description names;
+  names.add("cuhre");
+  names.add("divonne");
+  names.add("suave");
+  names.add("vegas");
+  return names;
+}
+
 /* String converter */
 String CubaIntegration::__repr__() const
 {
