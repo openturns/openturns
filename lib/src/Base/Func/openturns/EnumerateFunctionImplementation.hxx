@@ -26,6 +26,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class EnumerateFunction;
+
 /**
  * @class EnumerateFunctionImplementation
  *
@@ -68,6 +71,12 @@ public:
 
   /** Basis size from total degree */
   virtual UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
+
+  /** The marginal enumerate function */
+  virtual EnumerateFunction getMarginal(const Indices & indices) const;
+
+  /** The marginal enumerate function */
+  virtual EnumerateFunction getMarginal(const UnsignedInteger i) const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);
