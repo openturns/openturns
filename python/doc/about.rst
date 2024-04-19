@@ -62,7 +62,7 @@ Meetings
 --------
 Each year a users day event is planned at the beginning of the summer allowing users to
 exchange on their use of the library and keep up with the new features.
-The 2022 edition was held at EDF Lab Saclay (France) on the 10th of June.
+The 2023 edition was held at EDF Lab Saclay (France) on the 23th of June.
 
 Citing OpenTURNS
 ----------------
