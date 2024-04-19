@@ -107,7 +107,7 @@ private:
   UnsignedInteger maximumEvaluationNumber_ = 1000000;
 
   /* The flags to use for the integration */
-  UnsignedInteger flags_ = 2;
+  UnsignedInteger flags_ = 0;
 } ; /* class CubaIntegration */
 
 END_NAMESPACE_OPENTURNS
