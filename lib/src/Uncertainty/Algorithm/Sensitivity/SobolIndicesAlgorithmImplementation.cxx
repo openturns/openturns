@@ -902,6 +902,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDesign_", outputDesign_ );
+  adv.saveAttribute( "inputDesign_", inputDesign_ );
   adv.saveAttribute( "size_", size_ );
   adv.saveAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.saveAttribute( "confidenceLevel_", confidenceLevel_ );
@@ -923,6 +924,7 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDesign_", outputDesign_ );
+  adv.loadAttribute( "inputDesign_", inputDesign_ );
   adv.loadAttribute( "size_", size_ );
   adv.loadAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.loadAttribute( "confidenceLevel_", confidenceLevel_ );

@@ -136,8 +136,8 @@ struct RankSobolBootstrapPolicy
   Sample & bsFO_;
   
   RankSobolBootstrapPolicy( const RankSobolSensitivityAlgorithm & sai,
-                   const Sample & randomIndices,
-                   Sample & bsFO)
+                            const Sample & randomIndices,
+                            Sample & bsFO)
     : sai_(sai)
     , randomIndices_(randomIndices)
     , bsFO_(bsFO)
@@ -148,7 +148,7 @@ struct RankSobolBootstrapPolicy
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
     {
       Indices index(randomIndices_.getDimension());
-      for (UnsignedInteger l =0; l<randomIndices_.getDimension(); l++)
+      for (UnsignedInteger l = 0; l < randomIndices_.getDimension(); l++)
       {
         index[l] = static_cast <OT::UnsignedInteger>(randomIndices_(k, l));
       }
@@ -403,8 +403,6 @@ String RankSobolSensitivityAlgorithm::__repr__() const
 void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
 {
   SobolIndicesAlgorithmImplementation::save(adv);
-  adv.saveAttribute("inputDesign_", inputDesign_ );
-  adv.saveAttribute("outputDesign_", outputDesign_);
   adv.saveAttribute("outputDimension_", outputDimension_); 
 }
 
@@ -412,8 +410,6 @@ void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
 void RankSobolSensitivityAlgorithm::load(Advocate & adv)
 {
   SobolIndicesAlgorithmImplementation::load(adv);
-  adv.loadAttribute("inputDesign_", inputDesign_ );
-  adv.loadAttribute("outputDesign_", outputDesign_);
   adv.loadAttribute("outputDimension_", outputDimension_);
 }
 

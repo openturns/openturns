@@ -194,7 +194,7 @@ protected:
   /** Designs : input & output designs */
   Description inputDescription_;
   Sample outputDesign_;
-
+  Sample inputDesign_;
   /** Simulation size */
   UnsignedInteger size_ = 0;
 

@@ -123,8 +123,6 @@ private:
   Graph draw(const UnsignedInteger marginalIndex) const override;
       
   /** Designs : input & output designs */
-  Sample inputDesign_;
-  Sample outputDesign_;
   UnsignedInteger outputDimension_;
   
 }; /* class RankSobolSensitivityAlgorithm */
