@@ -152,9 +152,12 @@ struct RankSobolBootstrapPolicy
       {
         index[l] = static_cast <OT::UnsignedInteger>(randomIndices_(k, l));
       }
-      const Point variance(sai_.outputDesign_.select(index).computeVariance());
+      
+      const Sample selectedOutput = sai_.outputDesign_.select(index);
+      
+      const Point variance(selectedOutput.computeVariance());
       // Compute indices using this collection
-      const Sample Vi(sai_.computeIndicesFromSample(sai_.inputDesign_.select(index), sai_.outputDesign_.select(index)));
+      const Sample Vi(sai_.computeIndicesFromSample(sai_.inputDesign_.select(index), selectedOutput));
       // Compute aggregated indices
       bsFO_[k] = sai_.computeAggregatedIndices(Vi, variance);
     }
