@@ -85,7 +85,6 @@
 %include KarhunenLoeveProjection.i
 %include KarhunenLoeveLifting.i
 %include KarhunenLoeveValidation.i
-%include CubaIntegration.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

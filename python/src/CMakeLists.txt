@@ -509,7 +509,6 @@ ot_add_python_module(algo algo_module.i
                       KarhunenLoeveP1Algorithm.i KarhunenLoeveP1Algorithm_doc.i.in
                       KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
                       KarhunenLoeveValidation.i KarhunenLoeveValidation_doc.i.in
-                      CubaIntegration.i CubaIntegration_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
 
@@ -1038,6 +1037,8 @@ ot_add_python_module(experimental experimental_module.i
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in)
+                     CubaIntegration.i CubaIntegration_doc.i.in
+                    )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 

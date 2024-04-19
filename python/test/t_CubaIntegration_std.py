@@ -3,6 +3,7 @@
 import openturns as ot
 import math
 import openturns.testing as ott
+import openturns.experimental
 
 ot.TESTPREAMBLE()
 
