@@ -27,6 +27,8 @@ reduction. The result is returned as a :class:`~openturns.Point` of dimension
 :math:`p`, which is the number of components of the return value of the
 :class:`~openturns.Function` that one will integrate.
 
+All the optimization routines and the parameters are discussed in [hahn2005].
+
 Examples
 --------
 Create a Cuba algorithm:
