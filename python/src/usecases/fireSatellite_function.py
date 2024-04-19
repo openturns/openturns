@@ -327,7 +327,6 @@ class FireSatelliteModel:
         :inputs: dictionary of inputs of the Power discipline
 
         """
-        theta = m.pi / 180 * inputs["theta"]
         Fs = inputs["Fs"]
         P_ACS = inputs["P_ACS"]
         P_other = inputs["P_other"]
@@ -351,7 +350,7 @@ class FireSatelliteModel:
         Ptot = P_ACS + P_other
 
         # power production capability at beginning of life
-        P_BOL = eta * Fs * Id * m.cos(theta)
+        P_BOL = eta * Fs * Id * m.cos(self.i)
 
         # power production capability at end of life
         P_EOL = P_BOL * (1 - epsilon_deg) ** (LT)
