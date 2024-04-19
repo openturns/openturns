@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include "openturns/EnumerateFunction.hxx"
 #include "openturns/NormInfEnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -141,6 +142,16 @@ UnsignedInteger NormInfEnumerateFunction::getStrataCumulatedCardinal(const Unsig
 UnsignedInteger NormInfEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   return maximumDegree / getDimension();
+}
+
+/* The marginal enumerate function */
+EnumerateFunction NormInfEnumerateFunction::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger inputDimension = getDimension();
+  indices.check(inputDimension);
+  const UnsignedInteger activeDimension = indices.getSize();
+  const NormInfEnumerateFunction enumerateFunctionMarginal(activeDimension);
+  return enumerateFunctionMarginal;
 }
 
 /* Method save() stores the object through the StorageManager */
