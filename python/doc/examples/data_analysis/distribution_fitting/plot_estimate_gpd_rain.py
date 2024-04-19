@@ -24,13 +24,13 @@ from openturns.usecases import coles
 
 # %%
 # First, we load the Rain dataset. We start by looking at it through time.
-sample = coles.Coles().rain
-print(sample[:10])
+dataRain = coles.Coles().rain
+print(dataRain[:10])
 graph = ot.Graph(
     "Daily rainfall accumulations SW England", "day", "level (mm)", True, ""
 )
-days = ot.Sample([[i] for i in range(len(sample))])
-cloud = ot.Cloud(days, sample)
+days = ot.Sample([[i] for i in range(len(dataRain))])
+cloud = ot.Cloud(days, dataRain)
 cloud.setColor("red")
 cloud.setPointStyle(",")
 graph.add(cloud)
@@ -38,27 +38,28 @@ graph.setIntegerXTick(True)
 view = otv.View(graph)
 
 # %%
-# In order to select a threshold upon which the GPD model will be fitted, we draw the mean residual life plot with approximate :math:`95\%` confidence interval.
+# In order to select a threshold upon which the GPD model will be fitted, we draw
+# the mean residual life plot with approximate :math:`95\%` confidence interval.
 # It appears that the graph is linear from the threshold around
-# :math:`u_s=30`. Then, it decays sharply although with a linear trend. We
-# should be tempted to choose :math:`u_s=60` but there are only 6
-# exceedances of the threshold :math:`u_s=60`. So it is not enough
+# :math:`u=30`. Then, it decays sharply although with a linear trend. We
+# should be tempted to choose :math:`u=60` but there are only 6
+# exceedances of the threshold :math:`u=60`. So it is not enough
 # to make meaningful inferences. Moreover, the graph is not reliable
 # for large values of :math:`u` due to the limited amount of data on
 # which the estimate and the confidence interval are based.
-# For all these reasons, it appear preferable to chose :math:`u_s=30`.
+# For all these reasons, it appears preferable to chose :math:`u=30`.
 factory = ot.GeneralizedParetoFactory()
-graph = factory.drawMeanResidualLife(sample)
+graph = factory.drawMeanResidualLife(dataRain)
 view = otv.View(graph)
 
 # %%
 # To support that choice, we draw the parameter stability plots.
-# We see tat the perturbations appear small relative to sampling errors.
+# We see that the perturbations appear small relatively to sampling errors.
 # We can see that the change in pattern observed in the mean
 # residual life plot is still apparent here for high thresholds.
-# Hence, we choose the threshold :math:`u_s=30`.
+# Hence, we choose the threshold :math:`u=30`.
 u_range = ot.Interval(0.5, 50.0)
-graph = factory.drawParameterThresholdStability(sample, u_range)
+graph = factory.drawParameterThresholdStability(dataRain, u_range)
 view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
 
 # %%
@@ -67,9 +68,9 @@ view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
 # We first assume that the dependence through time is negligible, so we first model the data as
 # independent observations over the observation period.
 # We estimate the parameters of the GPD distribution by maximizing
-# the log-likelihood of the data for the selecte threshold :math:`u_s=30`.
+# the log-likelihood of the data for the selecte threshold :math:`u=30`.
 u = 30
-result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(sample, u)
+result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(dataRain, u)
 
 # %%
 # We get the fitted GPD and its parameters of :math:`(\hat{\sigma}, \hat{\xi}, u)`.
@@ -106,7 +107,7 @@ for i in range(2):  # exclude u parameter (fixed)
 # - the return level plot,
 # - the data histogram and the density of the fitted model.
 #
-validation = otexp.GeneralizedParetoValidation(result_LL, sample)
+validation = otexp.GeneralizedParetoValidation(result_LL, dataRain)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 
@@ -116,7 +117,7 @@ view = otv.View(graph)
 # Now, we use the profile log-likehood function with respect
 # to the :math:`\xi` parameter rather than log-likehood function
 # to estimate the parameters of the GPD.
-result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample, u)
+result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(dataRain, u)
 
 # %%
 # The following graph allows one to get the profile log-likelihood plot.
@@ -141,22 +142,23 @@ except Exception as ex:
 # %%
 # **Return level estimate from the estimated stationary GPD**
 #
-# We estimate the :math:`m`-block return level :math:`z_m`: it is computed as a particular quantile of the
-# GPD model estimated using the log-likelihood function. We just have to use the maximum log-likelihood
-# estimator built in the previous section.
-#
-# As the data are daily records, each block corresponds to one day: the 10-year return level
-# corresponds to :math:`m=10*365` and the 100-year return level corresponds to :math:`m=100*365`.
+# We evaluate the :math:`T`-year return level which corresponds to the
+# :math:`m`-observation return level, where :math:`m = T*n_y` with :math:`n_y`
+# the number of observations per year. Here, we have daily observations, hence
+# :math:`n_y = 365`. As we assumed that the observations were independent, the extremal index is :math:`\theta=1` which is the default value.
 #
 # The method also provides the asymptotic distribution of the estimator :math:`\hat{z}_m`.
-zm_10 = factory.buildReturnLevelEstimator(result_LL, sample, 10.0 * 365)
+ny = 365
+T10 = 10
+zm_10 = factory.buildReturnLevelEstimator(result_LL, dataRain, T10 * ny)
 return_level_10 = zm_10.getMean()
 print("Maximum log-likelihood function : ")
 print(f"10-year return level = {return_level_10}")
 return_level_ci10 = zm_10.computeBilateralConfidenceInterval(0.95)
 print(f"CI = {return_level_ci10}")
 
-zm_100 = factory.buildReturnLevelEstimator(result_LL, sample, 100.0 * 365)
+T100 = 100
+zm_100 = factory.buildReturnLevelEstimator(result_LL, dataRain, T100 * ny)
 return_level_100 = zm_100.getMean()
 print(f"100-year return level = {return_level_100}")
 return_level_ci100 = zm_100.computeBilateralConfidenceInterval(0.95)
@@ -165,11 +167,11 @@ print(f"CI = {return_level_ci100}")
 # %%
 # **Return level estimate via the profile log-likelihood function of a stationary GPD**
 #
-# We can estimate the :math:`m`-block return level :math:`z_m` directly from the data using the profile
+# We can estimate the :math:`m`-observation return level :math:`z_m` directly from the data using the profile
 # likelihood with respect to :math:`z_m`.
-result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(sample, u, 100.0 * 365)
+result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(dataRain, u, T100 * ny)
 zm_100_PLL = result_zm_100_PLL.getParameter()
-print(f"10-year return level (profile) = {zm_100_PLL}")
+print(f"100-year return level (profile) = {zm_100_PLL}")
 
 # %%
 # We can get the confidence interval of :math:`z_m`: once more, it appears to be a bit smaller
@@ -187,11 +189,12 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 # %%
 # **Non stationary GPD modeling via the log-likelihood function**
 #
-# Now, we want to see whether it is necessary to model the time dependency over
+# Now, we want to check whether it is necessary to model the time dependency over
 # the observation period.
 #
 # We have to define the functional basis for each parameter of the GPD model. Even if we have
-# the possibility to affect a time-varying model to each of the 2 parameters :math:`(\sigma, \xi)`,
+# the possibility to affect a time-varying model to each of the 2 parameters
+# :math:`(\sigma, \xi)`,
 # it is strongly recommended not to vary the shape parameter :math:`\xi`.
 #
 # We suppose that :math:`\sigma` is linear with time, and that the other parameters remain constant.
@@ -225,12 +228,12 @@ xiIndices = [1]  # stationary
 
 # %%
 # We need to get the time stamps (in days here).
-timeStamps = ot.Sample([[i + 1] for i in range(len(sample))])
+timeStamps = ot.Sample([[i + 1] for i in range(len(dataRain))])
 
 # %%
 # We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3)` using
 # the log-likelihood of the data.
-result_NonStatLL = factory.buildTimeVarying(sample, u, timeStamps, basis, sigmaIndices, xiIndices)
+result_NonStatLL = factory.buildTimeVarying(dataRain, u, timeStamps, basis, sigmaIndices, xiIndices)
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
 print(f"sigma(t) = {beta[1]:.4f} * tau(t) + {beta[0]:.4f}")
@@ -321,7 +324,7 @@ graph = ot.Graph(
 )
 graph.setIntegerXTick(True)
 # data
-cloud = ot.Cloud(timeStamps, sample)
+cloud = ot.Cloud(timeStamps, dataRain)
 cloud.setColor("red")
 graph.add(cloud)
 # mean function

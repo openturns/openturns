@@ -1,22 +1,5 @@
 %feature("docstring") OT::CovariatesResult
-"Distribution factory result for non stationary likelihood estimation.
-
-
-We consider a non stationary model with densitiy parameterized by :math:`\vect{\theta} = (\theta^1(t), \dots, \theta^d(t))` depending on time :math:`t`. We refer to this model as Parent Distribution.
-
-Each of :math:`\theta^j(t)` for :math:`1 \leq j \leq d`  has an expression in terms of a parameter vector and covariates:
-
-.. math::
-
-    \theta^j(t)  = h\left(\sum_{i=1}^{d_{j}} \beta_i^{j} X_i^{j}(t)\right)
-
-
-where :math:`h: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function*.
-The functions :math:`X_i^{j}` are scalar functions :math:`\Rset \mapsto \Rset`  and the :math:`\beta_i^{j} \in Rset`.
-
-We denote by :math:`\vect{\beta} = (\beta_1^{1}, \dots, \beta_{d_1}^{1}, \dots, \beta_1^{d}, \dots, \beta_{d_d}^{d})` the complete vector of parameters.
-
-The estimator of vector :math:`\vect{\beta}` maximizes the likelihood of the Parent distribution.
+"Estimation result class for a GEV or GPD model depending on covariates.
 
 Parameters
 ----------
@@ -31,6 +14,71 @@ parameterDistribution : :class:`~openturns.Distribution`
 llh : float
     Maximum log-likelihood.
 
+Notes
+-----
+This class is created by the methods  :meth:`~openturns.GeneralizedParetoFactory.buildCovariates` of the classes
+:class:`~openturns.GeneralizedExtremeValueFactory` and
+:class:`~openturns.GeneralizedParetoFactory`.
+
+Let :math:`Z_{\vect{y}}` be a random variable which follows a GEV distribution or whose
+excesses above :math:`u` follow a GPD. We assume that the parameters of the GEV model or the GPD
+(except for the threshold of the GPD which is assumed to be known)
+depend on :math:`d` covariates
+denoted by :math:`\vect{y} = \Tr{(y_1, \dots, y_d)}`:
+
+.. math::
+
+    Z_{\vect{y}} & \sim \mbox{GEV}(\mu(\vect{y}), \sigma(\vect{y}), \xi(\vect{y}))\\
+    Z_{\vect{y}} & \sim \mbox{GPD}(\sigma(\vect{y}), \xi(\vect{y}), u)
+
+We denote by :math:`(z_{\vect{y}_1}, \dots, z_{\vect{y}_n})`
+the values of :math:`Z_{\vect{y}}` associated to the values of the
+covariates :math:`(\vect{y}_1, \dots, \vect{y}_n)`.
+
+For numerical reasons, the covariates have been normalized. Each covariate :math:`y_k`
+has its own normalization: 
+
+.. math::
+
+    \tilde{y}_k = \tau_k(y_k) = \dfrac{y_k-c_k}{d_k}
+
+Let :math:`\vect{\theta} = (\theta_1, \dots, \theta_p)` be the set of parameters
+:math:`(\mu, \sigma, \xi)` for the GEV model and :math:`(\sigma, \xi)` for the GPD model.
+Then, :math:`\vect{\theta}` depends on all the :math:`d`
+covariates
+even if each component of :math:`\vect{\theta}` only depends on a subset of the covariates.
+We denote by :math:`(y_1^q, \dots, y_{d_q}^q)` the :math:`d_q` covariates involved in the
+modelling of the component :math:`\theta_q`.
+
+Each component :math:`\theta_q` can be written as a function of the covariates:
+
+.. math::
+
+    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^q(y_i^q - c_i^q)
+    \right) 
+
+where:
+
+- :math:`h_q: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function* of
+  the component :math:`\theta_q`,
+- each :math:`\beta_i^{q} \in \Rset`.
+
+To allow one of the parameters to remain constant, i.e. independent of the covariates
+(this will generally be the case for the parameter :math:`\xi`, the library systematically
+adds the constant covariate to the list speciﬁed by the user, even if it means duplicating it
+if the user has already put it in his list.
+
+The complete vector of parameters is defined by:
+
+.. math::
+
+    \Tr{\vect{b}} & = \Tr{( \Tr{\vect{b}_1}, \dots,  \Tr{\vect{b}_p} )} \in  \Rset^{d_t}\\
+    \Tr{\vect{b}_q} & =  (\beta_1^q, \dots, \beta_{d_q}^q)\in \Rset^{d_q}
+
+where :math:`d_t = \sum_{i=1}^p d_i`.
+
+The estimator of :math:`\Tr{\vect{b}}` maximizes the likelihood of the Parent distribution.
+
 See also
 --------
 GeneralizedExtremeValueFactory"
@@ -38,17 +86,17 @@ GeneralizedExtremeValueFactory"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CovariatesResult::getDistribution
-"Accessor to the Parent distribution at a given time.
+"Accessor to the Parent distribution at a given covariate vector.
 
 Parameters
 ----------
-t : float
-    Time value.
+covariate : sequence of float, 2-d sequence of float
+    Covariates value :math:`\vect{y} \in \Rset^d`.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    The Parent distribution at time :math:`t`."
+    The Parent distribution at *covariate*."
 
 // ------------------Time stamps---------------------------------------------------
 
@@ -98,7 +146,7 @@ covariates : :class:`~openturns.Sample`
 Returns
 -------
 normalizeFunction : :class:`~openturns.Function`
-    The  function :math:`t \mapsto _tau(t)`."
+    The function :math:`\vect{y} \mapsto (\tau_1(y_1), \dots, \tau_d(y_d))`."
 
 
 // ---------------------------------------------------------------------
@@ -142,16 +190,26 @@ llh : float
 Parameters
 ----------
 parameterIndex : int in [0, 2]
-    The index specifying the marginal of :math:`\vect{\theta}`.
+    The index specifying the component  :math:`\theta_q`.
 referencePoint : sequence of float, optional
-    Reference values for the frozen :math:`y_k` values.
+    Reference values for the frozen covariates.
     If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.GridLayout`
-    Graph of :math:`\theta_q` as a function of :math:`y_i`.
-"
+grid : :class:`~openturns.GridLayout`
+    Graphs of :math:`y_k \mapsto \theta_q(\vect{y})` for :math:`1 \leq k \leq d`.
+
+Notes
+-----
+Once the index :math:`q` has been chosen, the method draws all the graphs
+:math:`y_k \mapsto \theta_q(\vect{y})`, where all the components of
+:math:`\vect{y}` are fixed to a reference value excepted for :math:`y_k`, for each
+:math:`1 \leq k \leq d`.
+
+Each component of :math:`\vect{\theta}` potentially depends only on a subset of the
+covariates. Hence, when the component :math:`\theta_q` does not depend on
+:math:`y_k`, the graph is reduced to one horizontal line."
 
 // ---------------------------------------------------------------------
 
@@ -161,37 +219,57 @@ graph : :class:`~openturns.GridLayout`
 Parameters
 ----------
 parameterIndex : int in [0, 2]
-    The index specifying the marginal of :math:`\vect{\theta}`.
+    The index specifying the component :math:`\theta_q`.
 referencePoint : sequence of float, optional
-    Reference values for the frozen :math:`y_k` values.
+    Reference values for the frozen covariates.
     If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.GridLayout`
-    Graph of :math:`\theta_q` as a function of :math:`y_i, y_j`.
-"
+grid : :class:`~openturns.GridLayout`
+    Graphs of :math:`(y_k, y_\ell) \mapsto \theta_q(\vect{y})` for
+    :math:`1 \leq k, \ell \leq d`.
+
+Notes
+-----
+Once the index :math:`q` has been chosen, the method draws all the graphs
+:math:`(y_k, y_\ell) \mapsto \theta_q(\vect{y})`, where all the components of
+:math:`\vect{y}` are fixed to a reference value excepted for :math:`(y_k, y_\ell)`, for each
+:math:`1 \leq k, \ell \leq d`.
+
+Each component of :math:`\vect{\theta}` potentially depends only on a subset of the
+covariates. Hence, when the component :math:`\theta_q` does not depend on
+:math:`(y_k, y_\ell)`, the graph is reduced to one point. If it does not depend on one of
+the two, the graph is reduced to one line."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CovariatesResult::drawQuantileFunction1D
 "Draw the quantile function.
 
-The quantile function is the function :math:`y \mapsto q_{\theta(y)}(t)` where :math:`q_{\theta}(y)`
-is the quantile of order :math:`p` of the Parent distribution for the covariate value :math:`y`.
-
 Parameters
 ----------
 p : float
     The quantile level.
 referencePoint : sequence of float, optional
-    Reference values for the frozen :math:`y_k` values.
+    Reference values for the frozen covariates.
     If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.GridLayout`
-    Graph of :math:`\theta_q` as a function of :math:`y_i`.
+grid : :class:`~openturns.GridLayout`
+    Graphs of :math:`y_k \mapsto q_p(Z_{\vect{y}})` for :math:`1 \leq k \leq d`.
+
+Notes
+-----
+The method plots all the graphs of the quantile functions of order :math:`p`: of
+:math:`Z_{\vect{y}}`:  :math:`y_k \mapsto q_p(Z_{\vect{y}})` where all the components of
+:math:`\vect{y}` are fixed to a reference value excepted for :math:`y_k`, for each
+:math:`1 \leq k \leq d`.
+
+Each component of :math:`\vect{\theta}` potentially depends only on a subset of the
+covariates. Hence, when the component :math:`\theta_q` does not depend on
+:math:`y_k`, the graph is reduced to one horizontal line.
 "
 
 // ---------------------------------------------------------------------
@@ -199,19 +277,27 @@ graph : :class:`~openturns.GridLayout`
 %feature("docstring") OT::CovariatesResult::drawQuantileFunction2D
 "Draw the quantile function.
 
-The quantile function is the function :math:`y \mapsto q_{\theta(y)}(t)` where :math:`q_{\theta}(y)`
-is the quantile of order :math:`p` of the Parent distribution for the covariate value :math:`y`.
-
 Parameters
 ----------
 p : float
     The quantile level.
 referencePoint : sequence of float, optional
-    Reference values for the frozen :math:`y_k` values.
+    Reference values for the frozen covariates.
     If not provided the mean of covariates is used.
 
 Returns
 -------
-graph : :class:`~openturns.GridLayout`
-    Graph of :math:`\theta_q` as a function of :math:`y_i, y_j`.
-"
+grid : :class:`~openturns.GridLayout`
+    Graphs of :math:`(y_k, y_\ell) \mapsto q_p(Z_{\vect{y}})` for :math:`1 \leq k, \ell \leq d`.
+
+Notes
+-----
+The method plots all the graphs of the quantile functions of order :math:`p`: of
+:math:`Z_{\vect{y}}`:  :math:`(y_k, y_\ell) \mapsto q_p(Z_{\vect{y}})` where all the
+components of :math:`\vect{y}` are fixed to a reference value excepted for
+:math:`(y_k, y_\ell)`, for each :math:`1 \leq k, \ell \leq d`.
+
+Each component of :math:`\vect{\theta}` potentially depends only on a subset of the
+covariates. Hence, when the component :math:`\theta_q` does not depend on
+:math:`(y_k, y_\ell)`, the graph is reduced to one point. If it does not depend on one of
+the two, the graph is reduced to one line."
