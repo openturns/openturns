@@ -237,6 +237,8 @@ ot_pyinstallcheck_test (NonStationaryCovarianceModelFactory_std)
 ot_pyinstallcheck_test (ProductCovarianceModel_std)
 ot_pyinstallcheck_test (StationaryFunctionalCovarianceModel_std IGNOREOUT)
 ot_pyinstallcheck_test (LatentVariableModel_std IGNOREOUT)
+ot_pyinstallcheck_test (ProcessSample_operators IGNOREOUT)
+ot_pyinstallcheck_test (Field_operators IGNOREOUT)
 
 if (HMAT_FOUND)
 ot_pyinstallcheck_test (HMatrix_std)
