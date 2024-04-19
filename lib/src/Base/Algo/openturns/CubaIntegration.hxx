@@ -87,9 +87,9 @@ public:
   void load(Advocate & adv) override;
 private:
 
-  /* Friend C routine to compute the integrand function with parameter types
+  /* Static routine to compute the integrand function with parameter types
      suitable for Cuba */
-  friend int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
+  static int ComputeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
 
   /* The requested relative accuracy */
   Scalar maximumRelativeError_ = 1.e-4;

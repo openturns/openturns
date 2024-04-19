@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
-
 /**
  * @class CubaIntegration
  */
@@ -62,12 +60,12 @@ CubaIntegration * CubaIntegration::clone() const
 }
 
 /*
- * The friend C routine to compute the integrand, that is provided to the Cuba routine.
+ * The static routine to compute the integrand, that is provided to the Cuba routine.
  * It calls the function one wants to integrate after changing coordinates and
  * multiplying by the volume of the interval as Cuba routines perform integration
  * over the unit hypercube.
  */
-int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata)
+int CubaIntegration::ComputeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata)
 {
   Point ptIn(*ndim);
   void** ppFunctionInterval = (void**)(userdata);
@@ -129,7 +127,7 @@ Point CubaIntegration::integrate(const Function & function,
     /* Cuhre-specific parameters */
     const UnsignedInteger key = 0; /* Default integration rule */
 
-    Cuhre(inputDimension, outputDimension, computeIntegrand,
+    Cuhre(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
             maximumAbsoluteError_, flags_, mineval, maximumEvaluationNumber_,
             key, NULL, NULL, &nregions, &neval, &fail,
@@ -150,7 +148,7 @@ Point CubaIntegration::integrate(const Function & function,
     const SignedInteger ngiven = 0; /* No points at which peaks are expected */
     const SignedInteger nextra = 0; /* No peakfinder routine */
 
-    Divonne(inputDimension, outputDimension, computeIntegrand,
+    Divonne(inputDimension, outputDimension, ComputeIntegrand,
               (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
               maximumAbsoluteError_, flags_, seed, mineval,
               maximumEvaluationNumber_, key1, key2, key3, maxpass, border,
@@ -167,7 +165,7 @@ Point CubaIntegration::integrate(const Function & function,
     const SignedInteger nmin = 2; /* Minimum number of samples a former pass must contribute to a subregion */
     const Scalar flatness = 25.; /* Type of norm used to compute the fluctuation in a sample */
 
-    Suave(inputDimension, outputDimension, computeIntegrand,
+    Suave(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
             maximumAbsoluteError_, flags_, seed, mineval,
             maximumEvaluationNumber_, nnew, nmin, flatness, NULL, NULL,
@@ -182,7 +180,7 @@ Point CubaIntegration::integrate(const Function & function,
     const SignedInteger nbatch = 1000; /* Batch size for sampling */
     const SignedInteger gridno = 0; /* Slot in the internal grid table */
 
-    Vegas(inputDimension, outputDimension, computeIntegrand,
+    Vegas(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
             maximumAbsoluteError_, flags_, seed, mineval,
             maximumEvaluationNumber_, nstart, nincrease, nbatch, gridno, NULL,
