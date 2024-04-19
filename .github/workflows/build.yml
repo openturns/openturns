@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo
+        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo cuba
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
         cmake \

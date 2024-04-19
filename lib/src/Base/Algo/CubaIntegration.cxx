@@ -36,21 +36,14 @@ CLASSNAMEINIT(CubaIntegration)
 
 static const Factory<CubaIntegration> Factory_CubaIntegration;
 
-/* Constructor without parameters */
-CubaIntegration::CubaIntegration()
-  : IntegrationAlgorithmImplementation()
-  , optAlgo_("vegas")
-{
-  // Nothing to do
-}
-
 /* Parameters constructor */
-CubaIntegration::CubaIntegration(const String optAlgo)
+CubaIntegration::CubaIntegration(const String algorithmName)
   : IntegrationAlgorithmImplementation()
-  , optAlgo_(optAlgo)
+  , maximumRelativeError_(ResourceMap::GetAsScalar("CubaIntegration-DefaultMaximumRelativeError"))
+  , maximumAbsoluteError_(ResourceMap::GetAsScalar("CubaIntegration-DefaultMaximumAbsoluteError"))
+  , maximumCallsNumber_(ResourceMap::GetAsUnsignedInteger("CubaIntegration-DefaultMaximumCallsNumber"))
 {
-  // Check the name of the routine
-  if (optAlgo != "cuhre" && optAlgo != "divonne" && optAlgo != "suave" && optAlgo != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optAlgo;
+  setAlgorithmName(algorithmName);
 }
 
 /* Virtual constructor */
@@ -72,11 +65,11 @@ int CubaIntegration::ComputeIntegrand(const int *ndim, const double x[], const i
   const Function* const pFunction = (Function*)(ppFunctionInterval[0]);
   const Interval* const pInterval = (Interval*)(ppFunctionInterval[1]);
   const Scalar intervalVolume = pInterval->getVolume();
-  const Point lb = pInterval->getLowerBound();
-  const Point ub = pInterval->getUpperBound();
-  for (UnsignedInteger i = 0 ; i < static_cast<UnsignedInteger>(*ndim) ; i++)
+  const Point lb(pInterval->getLowerBound());
+  const Point ub(pInterval->getUpperBound());
+  for (UnsignedInteger i = 0 ; i < static_cast<UnsignedInteger>(*ndim) ; ++ i)
   {
-    ptIn[i] = lb[i] + (ub[i] - lb[i]) * *(x + i);
+    ptIn[i] = lb[i] + (ub[i] - lb[i]) * x[i];
   }
   /* Cuba computes an integral over the unit hypercube, one has to multiply its
      output by the volume of the true integration interval. */
@@ -96,17 +89,18 @@ int CubaIntegration::ComputeIntegrand(const int *ndim, const double x[], const i
 Point CubaIntegration::integrate(const Function & function,
                                  const Interval & interval) const
 {
+  if (function.getInputDimension() != interval.getDimension())
+    throw InvalidArgumentException(HERE) << "Error: interval dimension and input dimension have to match, here interval dimension="<< interval.getDimension() << " and input dimension=" << function.getInputDimension();
 #ifdef OPENTURNS_HAVE_CUBA
-  if (function.getInputDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: interval dimension and input dimension have to match, here interval dimension="<< interval.getDimension() << " and input dimension=" << function.getInputDimension();
   const UnsignedInteger inputDimension = interval.getDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
   /*
    * For the number of regions, of evaluations, and the failure indicator, pointers
    * to int, not long (aka SignedInteger) are expected by Cuba.
    */
-  int nregions;
-  int neval;
-  int fail;
+  int nregions = 0;
+  int neval = 0;
+  int fail = 0;
   Point integral(outputDimension);
   Point error(outputDimension);
   Point prob(outputDimension);
@@ -117,85 +111,80 @@ Point CubaIntegration::integrate(const Function & function,
   ppFunctionInterval[1] = (void*)(&interval);
 
   /* Setting constant parameters common to all routines */
-  const UnsignedInteger nvec = 1; /* Maximum number of points to be given to the integrand at each invocation */
-  const UnsignedInteger mineval = 0; /* The minimum number of integrand evaluations required */
-  const SignedInteger seed = 0; /* The seed for the pseudo-random-number generator */
+  const int nvec = 1; /* Maximum number of points to be given to the integrand at each invocation */
+  const int mineval = ResourceMap::GetAsUnsignedInteger("CubaIntegration-mineval"); /* The minimum number of integrand evaluations required */
+  const int flags = ResourceMap::GetAsUnsignedInteger("CubaIntegration-flags");
+  const int seed = ResourceMap::GetAsUnsignedInteger("CubaIntegration-seed"); /* The seed for the pseudo-random-number generator */
 
   /* Calling the chosen optimization routine, with specific parameters for each of them */
-  if (optAlgo_ == "cuhre")
+  if (algorithmName_ == "cuhre")
   {
     /* Cuhre-specific parameters */
-    const UnsignedInteger key = 0; /* Default integration rule */
+    const UnsignedInteger key = ResourceMap::GetAsUnsignedInteger("CubaIntegration-cuhre-key"); /* Default integration rule */
 
     Cuhre(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags_, mineval, maximumEvaluationNumber_,
+            maximumAbsoluteError_, flags, mineval, maximumCallsNumber_,
             key, NULL, NULL, &nregions, &neval, &fail,
             const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()),
             const_cast<double*>(prob.data()));
   }
-  else if (optAlgo_ == "divonne")
+  else if (algorithmName_ == "divonne")
   {
     /* Divonne-specific parameters */
-    const SignedInteger key1 = 47; /* Sampling parameter for the partitioning phase */
-    const SignedInteger key2 = 1; /* Sampling parameter for the final integration phase */
-    const SignedInteger key3 = 1; /* Strategy for the refinement phase */
-    const SignedInteger maxpass = 5; /* Thoroughness of the partitioning phase */
-    const Scalar border = 0.; /* Width of the border of the integration region */
-    const Scalar maxchisq = 10.; /* Maximum chisq value a single subregion is allowed to have in the final integration phase */
-    const Scalar mindeviation = 0.25; /* A bound related to further investigating a region */
-    const SignedInteger ngiven = 0; /* No points at which peaks are expected */
-    const SignedInteger nextra = 0; /* No peakfinder routine */
+    const int key1 = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-key1"); /* Sampling parameter for the partitioning phase */
+    const int key2 = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-key2"); /* Sampling parameter for the final integration phase */
+    const int key3 = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-key3"); /* Strategy for the refinement phase */
+    const int maxpass = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-maxpass"); /* Thoroughness of the partitioning phase */
+    const cubareal border = ResourceMap::GetAsScalar("CubaIntegration-divonne-border"); /* Width of the border of the integration region */
+    const cubareal maxchisq = ResourceMap::GetAsScalar("CubaIntegration-divonne-maxchisq"); /* Maximum chisq value a single subregion is allowed to have in the final integration phase */
+    const cubareal mindeviation = ResourceMap::GetAsScalar("CubaIntegration-divonne-mindeviation"); /* A bound related to further investigating a region */
+    const int ngiven = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-ngiven"); /* No points at which peaks are expected */
+    const int nextra = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-nextra"); /* No peakfinder routine */
 
     Divonne(inputDimension, outputDimension, ComputeIntegrand,
               (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-              maximumAbsoluteError_, flags_, seed, mineval,
-              maximumEvaluationNumber_, key1, key2, key3, maxpass, border,
+              maximumAbsoluteError_, flags, seed, mineval,
+              maximumCallsNumber_, key1, key2, key3, maxpass, border,
               maxchisq, mindeviation, ngiven, inputDimension, NULL, nextra,
               NULL, NULL, NULL, &nregions, &neval, &fail,
               const_cast<double*>(integral.data()),
               const_cast<double*>(error.data()),
               const_cast<double*>(prob.data()));
   }
-  else if (optAlgo_ == "suave")
+  else if (algorithmName_ == "suave")
   {
     /* Suave-specific parameters */
-    const SignedInteger nnew = 1000; /* Number of integrand evaluations in each subdivision */
-    const SignedInteger nmin = 2; /* Minimum number of samples a former pass must contribute to a subregion */
-    const Scalar flatness = 25.; /* Type of norm used to compute the fluctuation in a sample */
+    const int nnew = ResourceMap::GetAsUnsignedInteger("CubaIntegration-suave-nnew"); /* Number of integrand evaluations in each subdivision */
+    const int nmin = ResourceMap::GetAsUnsignedInteger("CubaIntegration-suave-nmin"); /* Minimum number of samples a former pass must contribute to a subregion */
+    const cubareal flatness = ResourceMap::GetAsScalar("CubaIntegration-suave-flatness"); /* Type of norm used to compute the fluctuation in a sample */
 
     Suave(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags_, seed, mineval,
-            maximumEvaluationNumber_, nnew, nmin, flatness, NULL, NULL,
+            maximumAbsoluteError_, flags, seed, mineval,
+            maximumCallsNumber_, nnew, nmin, flatness, NULL, NULL,
             &nregions, &neval, &fail, const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
-  else if (optAlgo_ == "vegas")
+  else if (algorithmName_ == "vegas")
   {
     /* Vegas-specific parameters */
-    const SignedInteger nstart = 1000; /* Number of integrand evaluations per iteration to start with */
-    const SignedInteger nincrease = 500; /* Increase in the number of evaluations per iteration */
-    const SignedInteger nbatch = 1000; /* Batch size for sampling */
-    const SignedInteger gridno = 0; /* Slot in the internal grid table */
+    const int nstart = ResourceMap::GetAsUnsignedInteger("CubaIntegration-vegas-nstart"); /* Number of integrand evaluations per iteration to start with */
+    const int nincrease = ResourceMap::GetAsUnsignedInteger("CubaIntegration-vegas-nincrease"); /* Increase in the number of evaluations per iteration */
+    const int nbatch = ResourceMap::GetAsUnsignedInteger("CubaIntegration-vegas-nbatch"); /* Batch size for sampling */
+    const int gridno = ResourceMap::GetAsUnsignedInteger("CubaIntegration-vegas-gridno"); /* Slot in the internal grid table */
 
     Vegas(inputDimension, outputDimension, ComputeIntegrand,
             (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags_, seed, mineval,
-            maximumEvaluationNumber_, nstart, nincrease, nbatch, gridno, NULL,
+            maximumAbsoluteError_, flags, seed, mineval,
+            maximumCallsNumber_, nstart, nincrease, nbatch, gridno, NULL,
             NULL, &neval, &fail, const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
-  else
-  {
-    throw InvalidArgumentException(HERE) << "Integration has been required with an unknown routine name: " << optAlgo_;
-  }
 
   if (fail != 0)
-  {
-    throw InternalException(HERE) << "Error: integration failed: Cuba error code is " << fail << ".";
-  }
+    throw InternalException(HERE) << "Cuba integration failed with error code " << fail << ".";
 
   return integral;
 #else
@@ -227,49 +216,33 @@ void CubaIntegration::setMaximumAbsoluteError(const Scalar maximumAbsoluteError)
   maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
-/* optAlgo accessor */
+/* algorithmName accessor */
 String CubaIntegration::getAlgorithmName() const
 {
-  return optAlgo_;
+  return algorithmName_;
 }
 
-void CubaIntegration::setAlgorithmName(const String optAlgo)
+void CubaIntegration::setAlgorithmName(const String algorithmName)
 {
-  if (optAlgo != "cuhre" && optAlgo != "divonne" && optAlgo != "suave" && optAlgo != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optAlgo;
-  optAlgo_ = optAlgo;
+  if (!GetAlgorithmNames().contains(algorithmName)) throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << algorithmName;
+  algorithmName_ = algorithmName;
 }
 
-/* maximumEvaluationNumber accessor */
-UnsignedInteger CubaIntegration::getMaximumEvaluationNumber() const
+/* maximumCallsNumber accessor */
+UnsignedInteger CubaIntegration::getMaximumCallsNumber() const
 {
-  return maximumEvaluationNumber_;
+  return maximumCallsNumber_;
 }
 
-void CubaIntegration::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
+void CubaIntegration::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
 {
-  maximumEvaluationNumber_ = maximumEvaluationNumber;
-}
-
-/* flags accessor */
-UnsignedInteger CubaIntegration::getFlags() const
-{
-  return flags_;
-}
-
-void CubaIntegration::setFlags(const UnsignedInteger flags)
-{
-  flags_ = flags;
+  maximumCallsNumber_ = maximumCallsNumber;
 }
 
 /* Return the names of the available integration algorithms */
 Description CubaIntegration::GetAlgorithmNames()
 {
-  Description names;
-  names.add("cuhre");
-  names.add("divonne");
-  names.add("suave");
-  names.add("vegas");
-  return names;
+  return {"cuhre", "divonne", "suave", "vegas"};
 }
 
 /* String converter */
@@ -279,9 +252,8 @@ String CubaIntegration::__repr__() const
   oss << "class=" << CubaIntegration::GetClassName()
       << ", maximumRelativeError=" << maximumRelativeError_
       << ", maximumAbsoluteError=" << maximumAbsoluteError_
-      << ", optAlgo=" << optAlgo_
-      << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
-      << ", flags=" << flags_;
+      << ", algorithmName=" << algorithmName_
+      << ", maximumCallsNumber=" << maximumCallsNumber_;
   return oss;
 }
 
@@ -290,11 +262,10 @@ String CubaIntegration::__str__(const String & ) const
 {
   OSS oss(false);
   oss << CubaIntegration::GetClassName()
-      << "(maximumRelativeError=" << maximumRelativeError_
+      << "(algorithmName=" << algorithmName_
+      << ", maximumRelativeError=" << maximumRelativeError_
       << ", maximumAbsoluteError=" << maximumAbsoluteError_
-      << ", optAlgo=" << optAlgo_
-      << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
-      << ", flags=" << flags_
+      << ", maximumCallsNumber=" << maximumCallsNumber_
       << ")";
   return oss;
 }
@@ -305,9 +276,8 @@ void CubaIntegration::save(Advocate & adv) const
   IntegrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
-  adv.saveAttribute("optAlgo_", optAlgo_);
-  adv.saveAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
-  adv.saveAttribute("flags_", flags_);
+  adv.saveAttribute("algorithmName_", algorithmName_);
+  adv.saveAttribute("maximumCallsNumber_", maximumCallsNumber_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -316,9 +286,8 @@ void CubaIntegration::load(Advocate & adv)
   IntegrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
-  adv.loadAttribute("optAlgo_", optAlgo_);
-  adv.loadAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
-  adv.loadAttribute("flags_", flags_);
+  adv.loadAttribute("algorithmName_", algorithmName_);
+  adv.loadAttribute("maximumCallsNumber_", maximumCallsNumber_);
 }
 
 END_NAMESPACE_OPENTURNS

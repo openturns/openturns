@@ -37,11 +37,8 @@ class OT_API CubaIntegration
 
 public:
 
-  /** Default constructor without parameters */
-  CubaIntegration();
-
   /** Parameter constructor */
-  explicit CubaIntegration(const String optAlgo);
+  explicit CubaIntegration(const String algorithmName = "vegas");
 
   /** Virtual copy constructor */
   CubaIntegration * clone() const override;
@@ -51,27 +48,23 @@ public:
   Point integrate(const Function & function,
                   const Interval & interval) const override;
 
-  /** maximumRelativeError accessor */
+  /** Maximum relative error accessor */
   Scalar getMaximumRelativeError() const;
   void setMaximumRelativeError(const Scalar maximumRelativeError);
 
-  /** maximumAbsoluteError accessor */
+  /** Maximum absolute error accessor */
   Scalar getMaximumAbsoluteError() const;
   void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
-  /** optAlgo accessor */
+  /** Algorithm name accessor */
   String getAlgorithmName() const;
   void setAlgorithmName(const String optAlgo);
 
-  /** maximumEvaluationNumber accessor */
-  UnsignedInteger getMaximumEvaluationNumber() const;
-  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
+  /** Maximum calls number accessor */
+  UnsignedInteger getMaximumCallsNumber() const;
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
 
-  /** flags accessor */
-  UnsignedInteger getFlags() const;
-  void setFlags(const UnsignedInteger flags);
-
-  /** Return the available algorithms'names */
+  /** Available algorithm names accessor */
   static Description GetAlgorithmNames();
 
   /** String converter */
@@ -91,20 +84,18 @@ private:
      suitable for Cuba */
   static int ComputeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
 
+  /* The name of the optimization routine to use */
+  String algorithmName_ = "vegas";
+
   /* The requested relative accuracy */
-  Scalar maximumRelativeError_ = 1.e-4;
+  Scalar maximumRelativeError_ = 0.0;
 
   /* The requested absolute accuracy */
-  Scalar maximumAbsoluteError_ = 1.e-4;
-
-  /* The name of the optimization routine to use */
-  String optAlgo_;
+  Scalar maximumAbsoluteError_ = 0.0;
 
   /* The maximal number of evaluations of the integrand */
-  UnsignedInteger maximumEvaluationNumber_ = 1000000;
+  UnsignedInteger maximumCallsNumber_ = 0;
 
-  /* The flags to use for the integration */
-  UnsignedInteger flags_ = 0;
 } ; /* class CubaIntegration */
 
 END_NAMESPACE_OPENTURNS

@@ -73,7 +73,7 @@ int main(int, char *[])
             /* Vegas seemingly needs more favorable parameters there */
             algo.setMaximumRelativeError(5.e-3);
             algo.setMaximumAbsoluteError(5.e-3);
-            algo.setMaximumEvaluationNumber(10000000);
+            algo.setMaximumCallsNumber(10000000);
           }
           const Point value(algo.integrate(f, Interval(lbIntegration, ubIntegration)));
           assert_almost_equal(value, valueRef, 1.e-3, 1.e-3);
