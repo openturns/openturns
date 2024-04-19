@@ -41,7 +41,7 @@ public:
   CubaIntegration();
 
   /** Parameter constructor */
-  explicit CubaIntegration(const String optRoutine);
+  explicit CubaIntegration(const String optAlgo);
 
   /** Virtual copy constructor */
   CubaIntegration * clone() const override;
@@ -59,9 +59,9 @@ public:
   Scalar getMaximumAbsoluteError() const;
   void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
-  /** optRoutine accessor */
-  String getOptRoutine() const;
-  void setOptRoutine(const String optRoutine);
+  /** optAlgo accessor */
+  String getAlgorithmName() const;
+  void setAlgorithmName(const String optAlgo);
 
   /** maximumEvaluationNumber accessor */
   UnsignedInteger getMaximumEvaluationNumber() const;
@@ -101,7 +101,7 @@ private:
   Scalar maximumAbsoluteError_ = 1.e-4;
 
   /* The name of the optimization routine to use */
-  String optRoutine_;
+  String optAlgo_;
 
   /* The maximal number of evaluations of the integrand */
   UnsignedInteger maximumEvaluationNumber_ = 1000000;

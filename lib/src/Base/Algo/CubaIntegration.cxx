@@ -41,18 +41,18 @@ static const Factory<CubaIntegration> Factory_CubaIntegration;
 /* Constructor without parameters */
 CubaIntegration::CubaIntegration()
   : IntegrationAlgorithmImplementation()
-  , optRoutine_("vegas")
+  , optAlgo_("vegas")
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-CubaIntegration::CubaIntegration(const String optRoutine)
+CubaIntegration::CubaIntegration(const String optAlgo)
   : IntegrationAlgorithmImplementation()
-  , optRoutine_(optRoutine)
+  , optAlgo_(optAlgo)
 {
   // Check the name of the routine
-  if (optRoutine != "cuhre" && optRoutine != "divonne" && optRoutine != "suave" && optRoutine != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optRoutine;
+  if (optAlgo != "cuhre" && optAlgo != "divonne" && optAlgo != "suave" && optAlgo != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optAlgo;
 }
 
 /* Virtual constructor */
@@ -124,7 +124,7 @@ Point CubaIntegration::integrate(const Function & function,
   const SignedInteger seed = 0; /* The seed for the pseudo-random-number generator */
 
   /* Calling the chosen optimization routine, with specific parameters for each of them */
-  if (optRoutine_ == "cuhre")
+  if (optAlgo_ == "cuhre")
   {
     /* Cuhre-specific parameters */
     const UnsignedInteger key = 0; /* Default integration rule */
@@ -137,7 +137,7 @@ Point CubaIntegration::integrate(const Function & function,
             const_cast<double*>(error.data()),
             const_cast<double*>(prob.data()));
   }
-  else if (optRoutine_ == "divonne")
+  else if (optAlgo_ == "divonne")
   {
     /* Divonne-specific parameters */
     const SignedInteger key1 = 47; /* Sampling parameter for the partitioning phase */
@@ -160,7 +160,7 @@ Point CubaIntegration::integrate(const Function & function,
               const_cast<double*>(error.data()),
               const_cast<double*>(prob.data()));
   }
-  else if (optRoutine_ == "suave")
+  else if (optAlgo_ == "suave")
   {
     /* Suave-specific parameters */
     const SignedInteger nnew = 1000; /* Number of integrand evaluations in each subdivision */
@@ -174,7 +174,7 @@ Point CubaIntegration::integrate(const Function & function,
             &nregions, &neval, &fail, const_cast<double*>(integral.data()),
             const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
-  else if (optRoutine_ == "vegas")
+  else if (optAlgo_ == "vegas")
   {
     /* Vegas-specific parameters */
     const SignedInteger nstart = 1000; /* Number of integrand evaluations per iteration to start with */
@@ -191,7 +191,7 @@ Point CubaIntegration::integrate(const Function & function,
   }
   else
   {
-    throw InvalidArgumentException(HERE) << "Integration has been required with an unknown routine name: " << optRoutine_;
+    throw InvalidArgumentException(HERE) << "Integration has been required with an unknown routine name: " << optAlgo_;
   }
 
   if (fail != 0)
@@ -229,16 +229,16 @@ void CubaIntegration::setMaximumAbsoluteError(const Scalar maximumAbsoluteError)
   maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
-/* optRoutine accessor */
-String CubaIntegration::getOptRoutine() const
+/* optAlgo accessor */
+String CubaIntegration::getAlgorithmName() const
 {
-  return optRoutine_;
+  return optAlgo_;
 }
 
-void CubaIntegration::setOptRoutine(const String optRoutine)
+void CubaIntegration::setAlgorithmName(const String optAlgo)
 {
-  if (optRoutine != "cuhre" && optRoutine != "divonne" && optRoutine != "suave" && optRoutine != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optRoutine;
-  optRoutine_ = optRoutine;
+  if (optAlgo != "cuhre" && optAlgo != "divonne" && optAlgo != "suave" && optAlgo != "vegas") throw InvalidArgumentException(HERE) << "Error: the name of the optimisation routine should be \"cuhre\", \"divonne\", \"suave\", or \"vegas\", here optRoutine=" << optAlgo;
+  optAlgo_ = optAlgo;
 }
 
 /* maximumEvaluationNumber accessor */
@@ -270,7 +270,7 @@ String CubaIntegration::__repr__() const
   oss << "class=" << CubaIntegration::GetClassName()
       << ", maximumRelativeError=" << maximumRelativeError_
       << ", maximumAbsoluteError=" << maximumAbsoluteError_
-      << ", optRoutine=" << optRoutine_
+      << ", optAlgo=" << optAlgo_
       << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
       << ", flags=" << flags_;
   return oss;
@@ -283,7 +283,7 @@ String CubaIntegration::__str__(const String & ) const
   oss << CubaIntegration::GetClassName()
       << "(maximumRelativeError=" << maximumRelativeError_
       << ", maximumAbsoluteError=" << maximumAbsoluteError_
-      << ", optRoutine=" << optRoutine_
+      << ", optAlgo=" << optAlgo_
       << ", maximumEvaluationNumber=" << maximumEvaluationNumber_
       << ", flags=" << flags_
       << ")";
@@ -296,7 +296,7 @@ void CubaIntegration::save(Advocate & adv) const
   IntegrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
-  adv.saveAttribute("optRoutine_", optRoutine_);
+  adv.saveAttribute("optAlgo_", optAlgo_);
   adv.saveAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.saveAttribute("flags_", flags_);
 }
@@ -307,7 +307,7 @@ void CubaIntegration::load(Advocate & adv)
   IntegrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute("maximumAbsoluteError_", maximumAbsoluteError_);
-  adv.loadAttribute("optRoutine_", optRoutine_);
+  adv.loadAttribute("optAlgo_", optAlgo_);
   adv.loadAttribute("maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.loadAttribute("flags_", flags_);
 }

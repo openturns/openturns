@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-optRoutine : str
+optAlgo : str
     The name of the optimization routine to use. It must be 'cuhre', 'divonne',
     'suave', or 'vegas'.
 
@@ -108,21 +108,21 @@ maximumAbsoluteError : float
     The absolute accuracy that the *integrate* method attemps to achieve."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::getOptRoutine
+%feature("docstring") OT::CubaIntegration::getAlgorithmName
 "Accessor to the name of the optimization routine to be used.
 
 Returns
 -------
-optRoutine : str
+optAlgo : str
     The name of the optimization routine used by the algorithm."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::CubaIntegration::setOptRoutine
+%feature("docstring") OT::CubaIntegration::setAlgorithmName
 "Accessor to the name of the optimization routine to be used.
 
 Parameters
 ----------
-optRoutine : str
+optAlgo : str
     The name of the optimization routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
 
 // ---------------------------------------------------------------------
