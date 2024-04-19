@@ -31,8 +31,8 @@ valueRef = ot.Point((0.108972129575688278, -0.375))
 
 for r in ot.CubaIntegration.GetAlgorithmNames():
     if r == "suave":
-      # Suave is quite inaccurate with these integrands, skipping.
-      continue
+        # Suave is quite inaccurate with these integrands, skipping.
+        continue
     algoC = ot.CubaIntegration(r)
     if r == "vegas":
         # Vegas seemingly needs more favorable parameters there
