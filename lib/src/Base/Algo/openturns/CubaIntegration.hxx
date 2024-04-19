@@ -91,12 +91,6 @@ private:
      suitable for Cuba */
   friend int computeIntegrand(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata);
 
-  /* The number of dimensions of the integral */
-  UnsignedInteger nDim_ = 0;
-
-  /* The number of components of the integrand */
-  UnsignedInteger nComp_ = 0;
-
   /* The requested relative accuracy */
   Scalar maximumRelativeError_ = 1.e-4;
 
