@@ -21,6 +21,17 @@ openturns.GeneralizedExtremeValueFactory"
 %feature("docstring") OT::GeneralizedParetoValidation::drawDiagnosticPlot
 "Draw the 4 usual diagnostic plots.
 
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Returns a grid of 4 graphs:
+     - the QQ-plot,
+     - the PP-plot,
+     - the return level graph (with confidence lines),
+     - the density graph.
+
+Notes
+-----
 The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the fitted model density.
 
 
@@ -47,17 +58,8 @@ and the points:
 .. math::
     \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
 
-where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
-:math:`m`-block return level calculated with the fitted GPD.
-
-Returns
--------
-grid : :class:`~openturns.GridLayout`
-    Returns a grid of 4 graphs:
-     - the QQ-plot,
-     - the PP-plot,
-     - the return level graph (with confidence lines),
-     - the density graph.
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-observation return level and :math:`\hat{z}_{m}` the 
+:math:`m`-observation return level calculated with the fitted GPD.
 "
 
 // ---------------------------------------------------------------------
@@ -65,6 +67,13 @@ grid : :class:`~openturns.GridLayout`
 %feature("docstring") OT::GeneralizedParetoValidation::drawReturnLevel
 "Draw the return level with confidence interval.
 
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The return level graph.
+
+Notes
+-----
 The *return level* plot consists of the points:
 
 .. math::
@@ -75,14 +84,8 @@ and the points:
 .. math::
     \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
 
-where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
-:math:`m`-block return level calculated with the fitted GPD.
-
-Returns
--------
-graph : :class:`~openturns.Graph`
-    The return level graph.
-"
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-observation return level and :math:`\hat{z}_{m}` the 
+:math:`m`-observation return level calculated with the fitted GPD."
 
 // ---------------------------------------------------------------------
 
