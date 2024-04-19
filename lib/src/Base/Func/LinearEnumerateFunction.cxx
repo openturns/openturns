@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include "openturns/EnumerateFunction.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -172,6 +173,16 @@ UnsignedInteger LinearEnumerateFunction::getMaximumDegreeStrataIndex(const Unsig
 void LinearEnumerateFunction::setUpperBound(const Indices & /*upperBound*/)
 {
   throw NotYetImplementedException(HERE) << " in LinearEnumerateFunction::setUpperBound";
+}
+
+/* The marginal enumerate function */
+EnumerateFunction LinearEnumerateFunction::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger inputDimension = getDimension();
+  indices.check(inputDimension);
+  const UnsignedInteger activeDimension = indices.getSize();
+  const LinearEnumerateFunction enumerateFunctionMarginal(activeDimension);
+  return enumerateFunctionMarginal;
 }
 
 /* Method save() stores the object through the StorageManager */

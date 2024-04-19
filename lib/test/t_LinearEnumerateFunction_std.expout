@@ -31,3 +31,14 @@ index=6, multi-index=[1,0,1], linear index=6
 index=7, multi-index=[0,2,0], linear index=7
 index=8, multi-index=[0,1,1], linear index=8
 index=9, multi-index=[0,0,2], linear index=9
+Test getMarginal()
+index=0, multi-index=[0,0,0,0,0]
+index=1, multi-index=[1,0,0,0,0]
+index=2, multi-index=[0,1,0,0,0]
+index=3, multi-index=[0,0,1,0,0]
+index=4, multi-index=[0,0,0,1,0]
+index=5, multi-index=[0,0,0,0,1]
+index=6, multi-index=[2,0,0,0,0]
+index=7, multi-index=[1,1,0,0,0]
+index=8, multi-index=[1,0,1,0,0]
+index=9, multi-index=[1,0,0,1,0]

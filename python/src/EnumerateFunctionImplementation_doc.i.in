@@ -342,3 +342,21 @@ ub : sequence of int
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getUpperBound
 OT_EnumerateFunction_getUpperBound_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_getMarginal_doc
+"Get the marginal enumerate function.
+
+Parameters
+----------
+indices : int or sequence of int, :math:`0 \leq i < n`
+    List of marginal indices.
+
+Returns
+-------
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    The marginal enumerate function."
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::getMarginal
+OT_EnumerateFunction_getMarginal_doc

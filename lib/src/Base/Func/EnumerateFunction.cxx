@@ -126,4 +126,14 @@ Indices EnumerateFunction::getUpperBound() const
   return getImplementation()->getUpperBound();
 }
 
+EnumerateFunction EnumerateFunction::getMarginal(const Indices & indices) const
+{
+  return getImplementation()->getMarginal(indices);
+}
+
+EnumerateFunction EnumerateFunction::getMarginal(const UnsignedInteger i) const
+{
+  return getImplementation()->getMarginal(i);
+}
+
 END_NAMESPACE_OPENTURNS
