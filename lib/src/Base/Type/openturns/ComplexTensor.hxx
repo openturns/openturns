@@ -23,6 +23,7 @@
 
 #include "openturns/ComplexTensorImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Tensor.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -110,6 +111,12 @@ public:
   UnsignedInteger getNbColumns() const;
   /** Number of sheets */
   UnsignedInteger getNbSheets() const;
+
+  /** Get the real part of the tensor */
+  Tensor real() const;
+
+  /** Get the imaginary part of the tensor */
+  Tensor imag() const;
 
   /** Comparison operators */
   using TypedInterfaceObject<ComplexTensorImplementation>::operator ==;

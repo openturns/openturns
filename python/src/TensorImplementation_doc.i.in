@@ -72,24 +72,6 @@ OT_Tensor_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Tensor_clean_doc
-"Set elements smaller than a threshold to zero.
-
-Parameters
-----------
-threshold : float
-    Threshold for zeroing elements.
-
-Returns
--------
-cleaned_tensor : :class:`~openturns.Tensor`
-    Input tensor with elements smaller than the threshold set to zero."
-%enddef
-%feature("docstring") OT::TensorImplementation::clean
-OT_Tensor_clean_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Tensor_getNbColumns_doc
 "Accessor to the number of columns.
 

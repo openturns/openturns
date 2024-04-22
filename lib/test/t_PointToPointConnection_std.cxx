@@ -78,8 +78,8 @@ int main(int, char *[])
       Point point(myFunc.getInputDimension(), 1.0);
       fullprint << "point=" << point << std::endl;
       fullprint << "myFunc(point)=" << myFunc(point) << std::endl;
-      fullprint << "myFunc.gradient(point)=" << myFunc.gradient(point).clean(1.0e-8) << std::endl;
-      fullprint << "myFunc.hessian(point)=" << myFunc.hessian(point).clean(1.0e-7) << std::endl;
+      assert_almost_equal(myFunc.gradient(point), IdentityMatrix(8));
+      assert_almost_equal(myFunc.hessian(point), SymmetricTensor(8, 8), 0.0, 1e-7);
       /* Get the number of calls */
       fullprint << "called " << myFunc.getEvaluationCallsNumber() << " times" << std::endl;
     }

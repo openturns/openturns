@@ -85,7 +85,7 @@ String HermitianMatrix::__repr__() const
 String HermitianMatrix::__str__(const String & offset) const
 {
   checkHermitian();
-  return SquareComplexMatrix::clean(0.0).__str__(offset);
+  return SquareComplexMatrix::__str__(offset);
 }
 
 /* Get the dimension of the matrix */

@@ -40,15 +40,13 @@ N = 8
 distribution = ot.Normal(N)
 sample = distribution.getSample(2 * N)
 
-# cleaning parameter
-threshold = 1e-14
 # FFT transform
 transformedSample = myFFT.transform2D(sample)
-print("2D FFT result = ", repr(transformedSample.clean(threshold)))
+print("2D FFT result = ", repr(transformedSample))
 
 # Inverse transformation
 inverseTransformedSample = myFFT.inverseTransform2D(transformedSample)
-print("2D FFT back=", repr(inverseTransformedSample.clean(threshold)))
+print("2D FFT back=", repr(inverseTransformedSample.real()))
 
 # 3D case
 elements = [ot.RandomGenerator.Generate() for i in range(N * N * N)]
@@ -56,8 +54,8 @@ tensor = ot.ComplexTensor(N, N, N, elements)
 
 # FFT transform
 transformedTensor = myFFT.transform3D(tensor)
-print("3D FFT result = ", repr(transformedTensor.clean(threshold)))
+print("3D FFT result = ", repr(transformedTensor))
 
 # Inverse transformation
 inverseTransformedTensor = myFFT.inverseTransform3D(transformedTensor)
-print("3D FFT back=", repr(inverseTransformedTensor.clean(threshold)))
+print("3D FFT back=", repr(inverseTransformedTensor.real()))

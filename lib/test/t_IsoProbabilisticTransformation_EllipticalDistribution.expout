@@ -20,4 +20,4 @@ inverse transform gradient at transformed point (FD)=class=Matrix implementation
 inverse transform gradient at transformed point     =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2,0,0,1.5,2.59808,0,0,0.57735,0.816497]
 inverse transform hessian at transformed point      =class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=3 columns=3 sheets=3 values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 inverse transform hessian at transformed point (FD) =class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=3 columns=3 sheets=3 values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-parameters gradient at point=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=6 columns=3 values=[-0.5,0,0,-0.125,0,0,0.288675,-0.3849,0,0,-0.222222,0,-0.204124,0.272166,-1.22474,0,0,0]
+parameters gradient at point=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=6 columns=3 values=[-0.5,0,0,-0.125,0,0,0.288675,-0.3849,0,0,-0.222222,0,-0.204124,0.272166,-1.22474,0,0,-0]
