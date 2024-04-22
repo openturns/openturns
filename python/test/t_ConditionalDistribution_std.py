@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -33,7 +34,9 @@ for method in ["GaussProduct", "QMC", "MC"]:
     print("distribution=", distribution)
     print("Parameters ", distribution.getParametersCollection())
     print("Mean ", distribution.getMean())
-    print("Covariance ", distribution.getCovariance().clean(1e-10))
+    cov = distribution.getCovariance()
+    cov_ref = ot.CovarianceMatrix([[0.0833333, 0.0], [0.0, 0.751111]])
+    ott.assert_almost_equal(cov, cov_ref, 1e-3, 1e-3)
     # Is this distribution an elliptical distribution?
     print("Elliptical distribution= ", distribution.isElliptical())
     # Has this distribution an elliptical copula?

@@ -73,7 +73,6 @@ margin realization=class=Point name=Unnamed dimension=1 values=[-0.147003]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Comparison with a Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
@@ -168,7 +167,6 @@ margins realization=class=Point name=Unnamed dimension=2 values=[-0.422897,0.902
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,1.73205]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,-0.57735,0,0.57735]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
-chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 Comparison with a Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
@@ -258,7 +256,6 @@ margins realization=class=Point name=Unnamed dimension=2 values=[0.979474,1.3590
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,0,1.73205,1.73205,0,0,2.44949]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.57735,0.408248,0,0.57735,-0.408248,0,0,0.408248]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
-chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 Comparison with a Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
@@ -354,7 +351,6 @@ margins realization=class=Point name=Unnamed dimension=2 values=[-3.30128,-0.645
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,0,1.73205,1.73205,0,0,0,2.44949,2.44949,0,0,0,3.16228]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,-0.57735,0.408248,-0.316228,0,0.57735,-0.408248,0.316228,0,0,0.408248,-0.316228,0,0,0,0.316228]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]
-chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 Comparison with a Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true

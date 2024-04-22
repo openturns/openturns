@@ -132,13 +132,13 @@ int main(int, char *[])
     fullprint << "point=" << point << std::endl;
     Point transformedPoint(transform(point));
     fullprint << "transform value at point        =" << transformedPoint << std::endl;
-    fullprint << "transform gradient at point     =" << transform.gradient(point).clean(1.0e-6) << std::endl;
-    fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point).clean(1.0e-6) << std::endl;
+    fullprint << "transform gradient at point     =" << transform.gradient(point) << std::endl;
+    fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point) << std::endl;
     fullprint << "transform hessian at point      =" << std::setprecision(4) << clean(transform.hessian(point)) << std::endl;
     fullprint << "transform hessian at point (FD) =" << std::setprecision(4) << clean(CenteredFiniteDifferenceHessian(1.0e-4, transform.getEvaluation()).hessian(point)) << std::endl;
     fullprint << "inverse transform value at transformed point        =" << inverseTransform(transformedPoint) << std::endl;
-    fullprint << "inverse transform gradient at transformed point     =" << inverseTransform.gradient(transformedPoint).clean(1.0e-6) << std::endl;
-    fullprint << "inverse transform gradient at transformed point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation()).gradient(transformedPoint).clean(1.0e-6) << std::endl;
+    fullprint << "inverse transform gradient at transformed point     =" << inverseTransform.gradient(transformedPoint) << std::endl;
+    fullprint << "inverse transform gradient at transformed point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation()).gradient(transformedPoint) << std::endl;
     fullprint << "inverse transform hessian at transformed point      =" << std::setprecision(4) << clean(inverseTransform.hessian(transformedPoint)) << std::endl;
     fullprint << "inverse transform hessian at transformed point (FD) =" << std::setprecision(4) << clean(CenteredFiniteDifferenceHessian(1.0e-4, inverseTransform.getEvaluation()).hessian(transformedPoint)) << std::endl;
 

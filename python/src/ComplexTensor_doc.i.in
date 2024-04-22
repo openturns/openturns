@@ -186,3 +186,23 @@ Examples
 >>> T = ot.ComplexTensor()
 >>> T.isEmpty()
 True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::real
+"Accessor tot the real part of the tensor.
+
+Returns
+-------
+tensor : :class:`~openturns.Tensor`
+    Real part of the tensor"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::imag
+"Accessor tot the imaginary part of the tensor.
+
+Returns
+-------
+tensor : :class:`~openturns.Tensor`
+    Imaginary part of the tensor"

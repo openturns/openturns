@@ -398,6 +398,20 @@ inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix 
   }
 }
 
+inline void assert_almost_equal(const CovarianceMatrix &a, const CovarianceMatrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  assert_almost_equal(SymmetricMatrix(*a.getImplementation()), SymmetricMatrix(*b.getImplementation()), rtol, atol, errMsg);
+}
+
+inline void assert_almost_equal(const Tensor & a, const Tensor & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getNbSheets() != b.getNbSheets())
+    throw InvalidArgumentException(HERE) << "A and B must have the same sheet number " << a.getNbSheets() << " vs " << b.getNbSheets();
+  const UnsignedInteger sheets = a.getNbSheets();
+  for (UnsignedInteger k = 0; k < sheets; ++ k)
+    assert_almost_equal(a.getSheet(k), b.getSheet(k), rtol, atol, errMsg);
+}
+
 inline void assert_almost_equal(const Distribution &a, const Distribution &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getImplementation()->getClassName() != b.getImplementation()->getClassName())

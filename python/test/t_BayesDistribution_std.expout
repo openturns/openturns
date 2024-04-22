@@ -1,9 +1,6 @@
 Distribution  BayesDistribution(Y, X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1, a_marginal_1 : 1, b_marginal_1 : 2]]
 Mean  [0.5,1.5,0.5]
-Covariance  [[ 0.083333 0        0.083333 ]
- [ 0        0.083333 0        ]
- [ 0.083333 0        2.41667  ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False

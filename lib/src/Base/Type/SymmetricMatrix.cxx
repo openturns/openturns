@@ -135,7 +135,7 @@ String SymmetricMatrix::__repr__() const
 String SymmetricMatrix::__str__(const String & offset) const
 {
   checkSymmetry();
-  return SquareMatrix::clean(0.0).__str__(offset);
+  return SquareMatrix::__str__(offset);
 }
 
 /* Operator () gives access to the elements of the matrix (to modify these elements) */

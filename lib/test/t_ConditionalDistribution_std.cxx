@@ -52,7 +52,11 @@ int main(int, char *[])
       fullprint << "distribution=" << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
       fullprint << "Mean " << distribution.getMean() << std::endl;
-      fullprint << "Covariance " << distribution.getCovariance().clean(1e-10) << std::endl;
+      CovarianceMatrix cov(distribution.getCovariance());
+      CovarianceMatrix covRef(2);
+      covRef(0, 0) = 0.0833333;
+      covRef(1, 1) = 0.751111;
+      assert_almost_equal(cov, covRef);
       // Is this distribution an elliptical distribution?
       fullprint << "Elliptical distribution= " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 
