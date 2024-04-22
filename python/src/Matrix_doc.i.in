@@ -536,6 +536,17 @@ Examples
 [[  1  4 ]
  [  9 16 ]
  [ 25 36 ]]"
+ 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::frobeniusNorm
+"Frobenius norm accessor.
+
+Returns
+-------
+norm : float
+    The Frobenius norm :math:`||\mat{A}||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n a_{ij}^2}`.
+"
 
 // ---------------------------------------------------------------------
 

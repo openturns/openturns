@@ -267,7 +267,7 @@ MatrixImplementation MatrixImplementation::operator+ (const MatrixImplementation
   MatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
   double alpha(1.0);
-  int one(1);
+  int one = 1;
   daxpy_(&size, &alpha, const_cast<double*>(&((*this)[0])), &one, &result[0], &one);
 
   return result;
@@ -281,7 +281,7 @@ MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementat
   MatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
   double alpha(1.0);
-  int one(1);
+  int one = 1;
   daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
 
   return *this;
@@ -295,7 +295,7 @@ MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation
   MatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
   double alpha(-1.0);
-  int one(1);
+  int one = 1;
   daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &result[0], &one);
 
   return result;
@@ -309,7 +309,7 @@ MatrixImplementation & MatrixImplementation::operator-= (const MatrixImplementat
   MatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
   double alpha(-1.0);
-  int one(1);
+  int one = 1;
   daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
 
   return *this;
@@ -450,12 +450,12 @@ Point MatrixImplementation::symVectProd (const Point & pt) const
   Point prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
-  char uplo('L');
-  int n(nbRows_);
-  int one(1);
+  char uplo = 'L';
+  int n = nbRows_;
+  int one = 1;
   double alpha(1.0);
   double beta(0.0);
-  int luplo(1);
+  int luplo = 1;
   dsymv_(&uplo, &n, &alpha, const_cast<double*>(&((*this)[0])), &n, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
@@ -486,10 +486,10 @@ MatrixImplementation MatrixImplementation::operator* (const Scalar s) const
   if (s == 0.0) return MatrixImplementation(nbRows_, nbColumns_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   MatrixImplementation scalprod(*this);
-  double alpha(s);
-  int one(1);
-  int n_(nbRows_ * nbColumns_);
-  dscal_(&n_, &alpha, &scalprod[0], &one);
+  double alpha = s;
+  int one = 1;
+  int n = nbRows_ * nbColumns_;
+  dscal_(&n, &alpha, &scalprod[0], &one);
 
   return scalprod;
 }
@@ -498,10 +498,10 @@ MatrixImplementation MatrixImplementation::operator* (const Scalar s) const
 MatrixImplementation & MatrixImplementation::operator*= (const Scalar s)
 {
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
-  double alpha(s);
-  int one(1);
-  int n_(nbRows_ * nbColumns_);
-  dscal_(&n_, &alpha, &(*this)[0], &one);
+  double alpha = s;
+  int one = 1;
+  int n = nbRows_ * nbColumns_;
+  dscal_(&n, &alpha, &(*this)[0], &one);
 
   return *this;
 }
@@ -513,9 +513,9 @@ MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   MatrixImplementation scalprod(*this);
   double alpha(1.0 / s);
-  int one(1);
-  int n_(nbRows_ * nbColumns_);
-  dscal_(&n_, &alpha, &scalprod[0], &one);
+  int one = 1;
+  int n = nbRows_ * nbColumns_;
+  dscal_(&n, &alpha, &scalprod[0], &one);
 
   return scalprod;
 }
@@ -526,9 +526,9 @@ MatrixImplementation & MatrixImplementation::operator/= (const Scalar s)
   if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE) << "Trying to divide matrix by 0 in place";
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   double alpha(1.0 / s);
-  int one(1);
-  int n_(nbRows_ * nbColumns_);
-  dscal_(&n_, &alpha, &(*this)[0], &one);
+  int one = 1;
+  int n = nbRows_ * nbColumns_;
+  dscal_(&n, &alpha, &(*this)[0], &one);
 
   return *this;
 }
@@ -552,7 +552,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   int ltrans = 1;
   char diag('N');
   int ldiag = 1;
-  int m(nbRows_);
+  int m = nbRows_;
   int n(matrix.nbColumns_);
 
   Scalar alpha = 1.0;
@@ -755,21 +755,21 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRectInPlace(const Ma
 {
   if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
-  int m(nbRows_);
-  int n(nbColumns_);
+  int m = nbRows_;
+  int n = nbColumns_;
   // B is an extended copy of b, it must be large enough to store the solution, see LAPACK documentation
-  int p(std::max(m, n));
-  int q(b.nbColumns_);
+  int p = std::max(m, n);
+  int q = b.nbColumns_;
   MatrixImplementation B(p, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
     for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
       B(i, j) = b(i, j);
-  int nrhs(q);
-  int lwork(-1);
+  int nrhs = q;
+  int lwork = -1;
   double lwork_d = -1.;
   int info = -1;
   std::vector<int> jpiv(n);
-  double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
+  double rcond = ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot");
   int rank = -1;
 
   dgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
@@ -880,8 +880,8 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquareInPlace(const 
 
   // We must copy the right-hand side because it will be overwritten by the operation
   MatrixImplementation B(b);
-  int m(nbRows_);
-  int nrhs(B.nbColumns_);
+  int m = nbRows_;
+  int nrhs = B.nbColumns_;
   int info;
   std::vector<int> ipiv(m);
   dgesv_(&m, &nrhs, &(*this)[0], &m, &ipiv[0], &B[0], &m, &info);
@@ -917,16 +917,16 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSymInPlace(const Mat
   if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
-  char uplo('L');
+  char uplo = 'L';
   // We must copy the right-hand side as it will be overwritten by the operation
   MatrixImplementation B(b);
-  int n(nbRows_);
-  int nrhs(B.nbColumns_);
-  int lwork(-1);
+  int n = nbRows_;
+  int nrhs = B.nbColumns_;
+  int lwork = -1;
   double lwork_d = -1.;
   int info = -1;
   std::vector<int> ipiv(n);
-  int luplo(1);
+  int luplo = 1;
 
   dsysv_(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
   lwork = static_cast<int>(lwork_d);
@@ -966,13 +966,13 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCovInPlace(const Mat
   if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
-  char uplo('L');
+  char uplo = 'L';
   // We must copy the right-hand side as it will be overwritten by the operation
   MatrixImplementation B(b);
-  int n(nbRows_);
-  int nrhs(B.nbColumns_);
+  int n = nbRows_;
+  int nrhs = B.nbColumns_;
   int info;
-  int luplo(1);
+  int luplo = 1;
   dposv_(&uplo, &n, &nrhs, &(*this)[0], &n, &B[0], &n, &info, &luplo);
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
@@ -1087,15 +1087,15 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminantSymInPlace(Scalar & si
   symmetrize();
   return computeLogAbsoluteDeterminantInPlace(sign);
   /* The implementation based on dsytrf does not uses the 2x2 diagonal blocks correctly
-     int n(nbRows_);
+     int n = nbRows_;
      if (n == 0) throw InvalidDimensionException(HERE);
      std::vector<int> ipiv (n);
-     char uplo('L');
+     char uplo = 'L';
      int info;
      Scalar determinant = 1.0;
-     int lwork(-1);
+     int lwork = -1;
      double lwork_d;
-     int luplo(1);
+     int luplo = 1;
 
      // LU Factorization with LAPACK
      if (keepIntact)
@@ -1455,10 +1455,10 @@ Point MatrixImplementation::computeSVDInPlace(MatrixImplementation & u,
 Bool MatrixImplementation::isPositiveDefinite() const
 {
   int info;
-  int n(nbRows_);
+  int n = nbRows_;
   if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
-  char uplo('L');
-  int luplo(1);
+  char uplo = 'L';
+  int luplo = 1;
   MatrixImplementation A(*this);
   dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
   return (info == 0) ;
@@ -1636,7 +1636,7 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
   }
   work = Point(dimension, 0.0);
   int size(0);
-  int one(1);
+  int one = 1;
   UnsignedInteger shift = (dimension - 1) * (dimension + 1);
   for (SignedInteger i = dimension - 1; i >= 0; --i)
   {
@@ -1925,5 +1925,15 @@ void MatrixImplementation::squareElements()
   }
 }
 
+/** The Frobenius norm */
+Scalar MatrixImplementation::frobeniusNorm() const
+{
+  int n = nbRows_ * nbColumns_;
+  int one = 1;
+  Scalar norm = 0.0;
+  if (n > 0)
+    norm = dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
+  return norm;
+}
 
 END_NAMESPACE_OPENTURNS
