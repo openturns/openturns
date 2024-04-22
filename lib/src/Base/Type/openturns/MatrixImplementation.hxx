@@ -370,6 +370,9 @@ public:
   /** All elements are squared */
   void squareElements();
 
+  /** The forbenius norm */
+  Scalar frobeniusNorm() const;
+
 protected:
 
   /** MatrixImplementation Dimensions */

@@ -378,5 +378,10 @@ void Matrix::squareElements()
   getImplementation()->squareElements();
 }
 
+/** The Frobenius norm */
+Scalar Matrix::frobeniusNorm() const
+{
+  return getImplementation()->frobeniusNorm();
+}
 
 END_NAMESPACE_OPENTURNS

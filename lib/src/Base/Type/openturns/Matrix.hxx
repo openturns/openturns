@@ -211,6 +211,9 @@ public:
   /** All elements are squared */
   void squareElements();
 
+  /** The forbenius norm */
+  Scalar frobeniusNorm() const;
+
 }; /* class Matrix */
 
 /** Declaration of friend operators */
