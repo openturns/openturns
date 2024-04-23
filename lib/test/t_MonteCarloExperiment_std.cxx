@@ -30,22 +30,25 @@ int main(int, char *[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  try
-  {
-    Normal distribution(4);
-    UnsignedInteger size = 10;
-    MonteCarloExperiment experiment(distribution, size);
-    fullprint << "experiment = " << experiment << std::endl;
-    Point weights(0);
-    Sample sample(experiment.generateWithWeights(weights));
-    fullprint << "sample = " << sample << std::endl;
-    fullprint << "weights = " << weights << std::endl;
-  }
-  catch (TestFailed & ex)
-  {
-    std::cerr << ex << std::endl;
-    return ExitCode::Error;
-  }
+  fullprint << "Test generateWithWeights()" << std::endl;
+  const Normal distribution(4);
+  const UnsignedInteger size = 100000;
+  const MonteCarloExperiment experiment(distribution, size);
+  fullprint << "experiment = " << experiment << std::endl;
+  Point weights(0);
+  const Sample sample(experiment.generateWithWeights(weights));
+  assert(sample.getSize() == size);
+  assert(sample.getDimension() == 4);
+  assert(weights.getDimension() == size);
+  const Scalar atol = 10.0 / std::sqrt(size);
+  const Scalar rtol = 0.0;
+  const Point meanExact(distribution.getMean());
+  assert_almost_equal(sample.computeMean(), meanExact, rtol, atol);
+  const CovarianceMatrix covarianceExact(distribution.getCovariance());
+  assert_almost_equal(sample.computeCovariance(), covarianceExact, rtol, atol);
+  const Point weightsExact(size, 1.0 / size);
+  assert_almost_equal(weights, weightsExact, 1.e-15);
+
 
   return ExitCode::Success;
 }

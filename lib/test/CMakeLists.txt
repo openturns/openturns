@@ -586,7 +586,7 @@ ot_check_test (GaussProductExperiment_std IGNOREOUT)
 ot_check_test (ImportanceSamplingExperiment_std)
 ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
-ot_check_test (MonteCarloExperiment_std)
+ot_check_test (MonteCarloExperiment_std IGNOREOUT)
 ot_check_test (TensorProductExperiment_std IGNOREOUT)
 ot_check_test (SmolyakExperiment_std IGNOREOUT)
 
