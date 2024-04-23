@@ -34,7 +34,6 @@ int main(int, char *[])
   UnsignedInteger dimension = 8;
 
   // Reference analytical values
-  Scalar covTh = 1.0;
   Point a(dimension);
   a[0] = 1.0;
   a[1] = 2.0;
@@ -51,11 +50,9 @@ int main(int, char *[])
   formula[0] = "1.0";
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    covTh *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
     inputVariables[i] = (OSS() << "xi" << i);
     formula[0] = (OSS() << formula[0] << " * ((abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << "))");
   }
-  --covTh;
 
   SymbolicFunction model(inputVariables, formula);
 
