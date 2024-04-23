@@ -232,3 +232,9 @@ print("proba=%.6f" % dist.computeCDF([3.0, -3.0]))
 unif = ot.Uniform(0.0, 1e12)
 trunc = ot.TruncatedDistribution(unif, 0.25, 2.0)
 print("q@0.1=", trunc.computeQuantile(0.1))
+
+# n-d CDF inversion
+dim = 10
+unif = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim)
+trunc = ot.TruncatedDistribution(unif, ot.Interval([0.0] * dim, [1e-6] * dim))
+x = trunc.getRealization()

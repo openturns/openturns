@@ -169,6 +169,9 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
+  /** Build the simplified version */
+  Bool hasSimplifiedVersion(Distribution & simplified) const;
+
   /** The main parameter set of the distribution */
   Distribution distribution_;
   Interval bounds_;
@@ -181,6 +184,11 @@ private:
   Scalar normalizationFactor_;
 
   Interval epsilonRange_;
+
+  // simplified instance
+  Distribution simplifiedVersion_;
+  Bool useSimplifiedVersion_ = false;
+
 }; /* class TruncatedDistribution */
 
 
