@@ -46,7 +46,7 @@ Compute the L2 norm of a function.
 ...     ['sin(x1) + 7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1) - 3.5']
 ... )
 >>> ot.RandomGenerator.SetSeed(0)
->>> sampleSize = 32768
+>>> sampleSize = 65536
 >>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
