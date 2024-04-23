@@ -1380,9 +1380,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension", 3);
   addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps", 2);
 
-  // Analytical parameters //
-  addAsScalar("Analytical-DefaultLimitStateTolerance", 0.01);
-
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);
   addAsUnsignedInteger("AnalyticalResult-MeanPointIntegrationNodesNumber", 255);

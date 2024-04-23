@@ -79,11 +79,6 @@ public:
 
   /** OptimizationAlgorithm accessor */
   void setNearestPointAlgorithm(const OptimizationAlgorithm & solver);
-
-  /* limitStateTolerance accessors */
-  void setLimitStateTolerance(const Scalar & limitStateTolerance);
-  
-  Scalar getLimitStateTolerance() const;
   
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
@@ -114,7 +109,6 @@ private:
   RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
-  Scalar limitStateTolerance_ = 0.0;
   
 } ; /* class Analytical */
 

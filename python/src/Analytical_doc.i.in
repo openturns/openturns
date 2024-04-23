@@ -89,7 +89,7 @@ estimate the failure probability, that is if:
 
 where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :math:`\epsilon_t`
 is the absolute tolerance.
-Default value is defined by the :class:`~openturns.ResourceMap` key named `Analytical-DefaultLimitStateTolerance`. 
+Default value is specified in the `nearestPointAlgorithm` attribute. 
 
 
 See also
@@ -190,27 +190,3 @@ Notes
 Performs the research of the design point and creates a
 :class:`~openturns.AnalyticalResult`, the structure result which is
 accessible with the method :meth:`getAnalyticalResult`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Analytical::getLimitStateTolerance
-"Accessor to the limit state tolerance.
-
-Returns
--------
-limitStateTolerance : float
-    Tolerance on limit state to assess if the found design point can be used 
-    to estimate the failure probability. Default value is defined in :class:`~openturns.ResourceMap` of  class :class:`~openturns.Analytical`. "
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Analytical::setLimitStateTolerance
-"Accessor to the limit state tolerance.
-
-Returns
--------
-limitStateTolerance : float
-    Tolerance on limit state to assess if the found design point can be used 
-    to estimate the failure probability."
-
-

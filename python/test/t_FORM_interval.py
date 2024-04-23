@@ -61,8 +61,9 @@ for domain in intervals:
 
     ot.RandomGenerator.SetSeed(0)
     # algo = getattr(openturns, algoName)(event)
-    algo = ot.FORM(ot.Cobyla(), event, X.getMean())
-    algo.setLimitStateTolerance(2.0)
+    algoOptim = ot.Cobyla()
+    algoOptim.setMaximumConstraintError(1)
+    algo = ot.FORM(algoOptim, event, X.getMean())
 
     algo.run()
     res = algo.getResult().getEventProbability()

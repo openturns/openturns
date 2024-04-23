@@ -41,8 +41,7 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event),
-    physicalStartingPoint_(physicalStartingPoint),
-    limitStateTolerance_(ResourceMap::GetAsScalar("Analytical-DefaultLimitStateTolerance"))
+    physicalStartingPoint_(physicalStartingPoint)
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension)
@@ -57,19 +56,6 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 Analytical * Analytical::clone() const
 {
   return new Analytical(*this);
-}
-
-
-/* limitStateTolerance accessor */
-Scalar Analytical::getLimitStateTolerance() const
-{
-  return limitStateTolerance_;
-}
-
-/* limitStateTolerance accessor */
-void Analytical::setLimitStateTolerance(const Scalar & limitStateTolerance) 
-{
-  limitStateTolerance_ = limitStateTolerance;
 }
 
 /* Physical starting point accessor */
@@ -154,8 +140,11 @@ void Analytical::run()
   
   const Scalar residual = std::abs(valuePhysicalSpaceDesignPoint[0] - event_.getThreshold()); 
   
-  if (!(residual <= limitStateTolerance_))
-  throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance: "<< limitStateTolerance_;
+  const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
+  
+  
+  if (!(residual <= limitStateTolerance))
+  throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: "<< limitStateTolerance;
   
   
 } /* Analytical::run() */
