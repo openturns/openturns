@@ -13,7 +13,7 @@ option (USE_BISON                    "Looks for Bison if true and then build par
 option (USE_CUBA                     "Use Cuba library"                                                      ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON)
-option (USE_HMAT                     "Use HMat library"                                                      ON)
+option (USE_HMAT                     "Use HMat library (enforces GPL license)"                               OFF)
 option (USE_MUPARSER                 "Use muParser library"                                                  ON)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
@@ -691,7 +691,6 @@ install (FILES COPYING
                 COPYING.ev3
                 COPYING.exprtk
                 COPYING.faddeeva
-                COPYING.hmat
                 COPYING.kendall
                 COPYING.kissfft
                 COPYING.cephes

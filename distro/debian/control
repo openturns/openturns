@@ -17,7 +17,6 @@ Build-Depends: debhelper-compat (= 12),
                libcminpack-dev,
                libdlib-dev,
                libhdf5-dev,
-               libhmat-oss-dev (>= 1.7.1),
                liblapack-dev,
                libmpc-dev,
                libmpfr-dev,
@@ -64,7 +63,6 @@ Section: libdevel
 Architecture: any
 Depends: ${misc:Depends},
          libceres-dev,
-         libhmat-oss-dev,
          libopenturns0.23 (= ${binary:Version})
 Description: headers and development libraries for OpenTURNS
  OpenTURNS is a powerful and generic tool to treat and quantify
