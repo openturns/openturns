@@ -1,0 +1,47 @@
+%feature("docstring") OT::LeastSquaresEquationsSolver
+"Least Square Solver (LeastSquaresEquationsSolver) for a system of non-linear equations.
+
+
+Parameters
+----------
+absError : positive float
+    Absolute error: distance between two successive iterates at the end point.
+    Default is :math:`10^{-5}`.
+relError : positive float
+    Relative error: distance between the two last successive iterates with
+    regards to the last iterate. Default is :math:`10^{-5}`.
+resError : positive float
+    Residual error: threshold for accepting a given solution. It is also used as residual error for the least square optimizer.
+    value. Default is :math:`0`.
+maximumFunctionEvaluation : int
+    The maximum number of evaluations of the function. Default is :math:`100`.
+
+See also
+--------
+openturns.Solver, openturns.OptimizationAlgorithm
+
+Notes
+-----
+LeastSquaresEquationsSolver might fail and not obtain a result lower than the specified threshold, in this case an error is thrown."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresEquationsSolver::solve
+"Solve a system of non-linear equations.
+
+
+Parameters
+----------
+function : :class:`~openturns.Function`
+    The vectorial function of the system of equations :math:`function_i(x) = 0 \forall i \in {1,...,n}` to be solved. Remark that it is an unbounded resolution.
+startingPoint : class:`~openturns.Point`
+    The starting point of the optimization algorithm.
+
+Returns
+-------
+result : :class:`~openturns.Point`
+    The result of the root research.
+
+Notes
+-----
+LeastSquaresEquationsSolver might fail and not obtain a result lower than the specified threshold, in this case an error is thrown."

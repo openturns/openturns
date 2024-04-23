@@ -13,6 +13,7 @@
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
 #include "openturns/OTSimulation.hxx"
+#include "openturns/OTSolver.hxx"
 %}
 
 %include typemaps.i
@@ -32,6 +33,9 @@
 
 /* Base/Stat */
 %include LatentVariableModel.i
+
+/* Base/Solver */
+%include LeastSquaresEquationsSolver.i
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
