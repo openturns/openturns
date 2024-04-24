@@ -118,7 +118,7 @@ void MetaModelValidation::initialize() const
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     if (std::abs(sampleVariance[j]) == 0.0)
-      throw NotDefinedException(HERE) << "Q2 cannot be computed on constant output component index " << j;
+      throw NotDefinedException(HERE) << "R2 cannot be computed on constant output component index " << j;
     r2Score[j] = 1.0 - meanSquaredError_[j] / sampleVariance[j];
   }
   r2Score_ = r2Score;

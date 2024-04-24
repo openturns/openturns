@@ -1,5 +1,5 @@
 %feature("docstring") OT::MetaModelValidation
-"Score a metamodel and perform validation.
+"Scores a metamodel in order to perform its validation.
 
 Parameters
 ----------
@@ -178,7 +178,7 @@ Notes
 The plot presents the metamodel predictions depending on the model observations. 
 If the points are close to the diagonal line of the plot, then the 
 metamodel validation is satisfactory. 
-Points which are far away from the diagonal represents outputs 
+Points which are far away from the diagonal represent outputs 
 for which the metamodel is not accurate.
 
 If the output is multi-dimensional, the graph has 1 row and :math:`n_y \in \Nset`
