@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -132,3 +133,13 @@ for i in range(len(thetas)):
 
 print("chi=", copula.computeUpperTailDependenceMatrix())
 print("chiL=", copula.computeLowerTailDependenceMatrix())
+
+# Test all scenarios of quantile computation
+copula = ot.ClaytonCopula(0.5)
+large_p = 0.75
+ref = [0.86156] * 2
+ott.assert_almost_equal(copula.computeQuantile(1.0 - large_p, True), ref, 1e-5, 0.0)
+ott.assert_almost_equal(copula.computeQuantile(large_p, False), ref, 1e-5, 0.0)
+small_p = ot.SpecFunc.ScalarEpsilon / 2.0
+ott.assert_almost_equal(copula.computeQuantile(small_p, True), [1.0 - small_p / 2.0] * 2, 1e-5, 0.0)
+ott.assert_almost_equal(copula.computeQuantile(1.0 - small_p, False), [1.0 - small_p / 2.0] * 2, 1e-5, 0.0)

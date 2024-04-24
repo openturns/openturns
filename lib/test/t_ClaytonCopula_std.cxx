@@ -166,6 +166,17 @@ int main(int, char *[])
       fullprint << "PDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computePDF(x) << std::endl;
       fullprint << "CDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computeCDF(x) << std::endl;
     }
+
+    // Test all scenarios of quantile computation
+    copula = ClaytonCopula(0.5);
+    Scalar large_p = 0.75;
+    Point large_ref(2, 0.86156);
+    assert_almost_equal(copula.computeQuantile(1.0 - large_p, true), large_ref, 1e-5, 0.0);
+    assert_almost_equal(copula.computeQuantile(large_p, false), large_ref, 1e-5, 0.0);
+    Scalar small_p = SpecFunc::ScalarEpsilon / 2.0;
+    Point small_ref(2, 1.0 - small_p / 2.0);
+    assert_almost_equal(copula.computeQuantile(small_p, true), small_ref, 0.0);
+    assert_almost_equal(copula.computeQuantile(1.0 - small_p, false), small_ref, 1e-5, 0.0);
   }
   catch (TestFailed & ex)
   {
