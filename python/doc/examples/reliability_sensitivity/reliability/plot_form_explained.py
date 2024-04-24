@@ -42,7 +42,7 @@ graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("lower right")
 contours = graphPDF.getDrawable(0).getImplementation()
-contours.setNorm("rank")  # To assign colors based on rank
+contours.setNorm("log")
 graphPDF.setDrawable(contours, 0)
 view = otv.View(graphPDF)
 

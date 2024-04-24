@@ -2,8 +2,6 @@
 Plot the log-likelihood contours of a distribution
 ==================================================
 """
-# sphinx_gallery_thumbnail_number = 5
-# %%
 
 # %%
 # In this example, we show how to plot the bidimensionnal log-likelihood contours of function given a sample.
@@ -117,18 +115,41 @@ graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
+# We get the underlying `Contour` object as a `Drawable`.
+
+contour = graphBasic.getDrawable(0)
+
+# %%
+# To be able to use specific `Contour` methods like `buildDefaultLevels`, we need to use `getImplementation`.
+
+contour = contour.getImplementation()
+contour.buildDefaultLevels(50)
+
+manyLevelGraph = ot.Graph()
+manyLevelGraph.add(contour)
+view = viewer.View(manyLevelGraph)
+
+# %%
+# Using a rank-based normalization of the colors
+# ----------------------------------------------
+# %%
+# In the previous plots, there was little color variation for isolines corresponding to high log-likelihood values.
+# This is due to a steep cliff visible for low values of :math:`\sigma`.
+# To make the color variation clearer around -13, we use a normalization based on the rank of the level curve and not on its value.
+contour.setNorm("rank")
+rankGraph = ot.Graph()
+rankGraph.add(contour)
+view = viewer.View(rankGraph)
+
+# %%
 # Fill the contour graph
 # ----------------------
 
 # %%
 # Areas between contour lines can be colored by requesting a filled outline.
-contour = graphBasic.getDrawable(0).getImplementation()
-contour.buildDefaultLevels(50)
-contour.setIsFilled(True)
 
-# %%
-# To make the color variation clearer around 13, we use a normalization based on the rank of the level curve and not on its value.
-contour.setNorm("rank")
+# sphinx_gallery_thumbnail_number = 6
+contour.setIsFilled(True)
 filledGraph = ot.Graph()
 filledGraph.add(contour)
 view = viewer.View(filledGraph)
@@ -157,36 +178,37 @@ levels
 # In order to inline the level values labels, we use the `setDrawLabels` method.
 
 # %%
-contours = graphBasic.getDrawable(0)
-contours.setLevels(levels)
-contours.setDrawLabels(True)
-contours.setColor('red')
+contour = graphBasic.getDrawable(0)
+contour.setLevels(levels)
+contour.setDrawLabels(True)
+contour.setColor("red")
 
 # %%
-# Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
+# Hide the color bar.
+# The method to do this is not available to generic Drawables,
+# so we need to get the actual `Contour` object.
+
+contour = contour.getImplementation()
+contour.setColorBarPosition("")
 
 # %%
+# Then we create a new graph. Finally, we use `setDrawables` to define this `Contour` object as the single Drawable.
+
 graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
-graphFineTune.setDrawables([contours])
+graphFineTune.setDrawables([contour])
 view = viewer.View(graphFineTune)
 
 # %%
-# Multicolor contour plot
-# -----------------------
+# Set multiple colors manually
+# ----------------------------
 
 # %%
-# The previous contour plot is fine, but lacks of colors.
-# When colors are assigned by matplotlib using the color table, the curves can be very similar colors.
-# Here we will show how to assign explicit colors to the different contour lines.
-#
-# The following script first creates a palette of colors with the `BuildDefaultPalette` class.
+# The `Contour` class does not allow us to manually set multiple colors.
+# Here we show how to assign explicit colors to the different contour lines by passing keyword
+# arguments to the `viewer.View` class.
 
-# Take the first contour as the only one with multiple levels
-contour = graphBasic.getDrawable(0).getImplementation()
-# Hide the color bar
-contour.setColorBarPosition("")
-# Build a range of colors
-palette = ot.Drawable.BuildDefaultPalette(len(levels))
+# Build a range of colors corresponding to the Tableau palette
+palette = ot.Drawable.BuildTableauPalette(len(levels))
 view = viewer.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
 
 plt.show()

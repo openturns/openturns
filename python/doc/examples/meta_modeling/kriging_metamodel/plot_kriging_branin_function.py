@@ -25,22 +25,22 @@ model = bm.objectiveFunction
 # thanks to the following `ResourceMap` key :
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
-
+view = otv.View(graphBasic)
 
 # %%
 # We get the values of all isolines :
 levels = graphBasic.getDrawables()[0].getLevels()
 
-# %%
-# We now build fancy isolines :
+# # %%
+# # We now build fancy isolines :
 
-# Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
-palette = ot.Drawable.BuildDefaultPalette(len(levels))
+# # Build a range of colors
+# ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
+# palette = ot.Drawable.BuildDefaultPalette(len(levels))
 
 graphFineTune = ot.Graph("The exact Branin model", r"$x_1$", r"$x_2$", True, "")
 graphFineTune.setDrawables([graphBasic.getDrawable(0)])
-graphFineTune.setLegendPosition("")  # Remove the legend
+# graphFineTune.setLegendPosition("")  # Remove the legend
 
 
 # %%
@@ -49,7 +49,7 @@ sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
 cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
 # Draw the graph with the palette assigned to the contour
-view = otv.View(graphFineTune, contour_kw={"colors": palette})
+view = otv.View(graphFineTune)
 
 #
 # The values of the exact model at these points are :
@@ -125,7 +125,7 @@ graphFineTune.setLegendPosition("")
 sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
 cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
-view = otv.View(graphFineTune, contour_kw={"colors": palette})
+view = otv.View(graphFineTune)
 
 # %%
 # We evaluate the metamodel at the minima locations :
@@ -157,27 +157,11 @@ condCovSd = sqrt(condCov)
 # %%
 # As we have previously done we build contours with the following levels ans labels :
 levels = [0.01, 0.025, 0.050, 0.075, 0.1, 0.125, 0.150, 0.175]
-labels = ["0.01", "0.025", "0.050", "0.075", "0.1", "0.125", "0.150", "0.175"]
 contour = ot.Contour(N + 2, N + 2, condCovSd)
-graph = ot.Graph("", "x", "y", True, "")
-graph.add(contour)
-
-
-# %%
-# We use fancy colored isolines for the contour plot :
-contour = graph.getDrawable(0)
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
-palette = ot.Drawable.BuildDefaultPalette(len(levels))
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
-    contour.setDrawLabels(True)
-    drawables.append(ot.Drawable(contour))
-
+contour.setLevels(levels)
 graphFineTune = ot.Graph("Standard deviation", r"$x_1$", r"$x_2$", True, "")
-graphFineTune.setDrawables(drawables)
+graphFineTune.setDrawables([contour])
 graphFineTune.setLegendPosition("")
-graphFineTune.setColors(palette)
 
 # %%
 # We superimpose the training sample :
