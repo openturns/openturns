@@ -63,7 +63,7 @@ public:
   Scalar getMaximumRelativeError() const;
 
   /** Maximum evaluations number accessor */
-  void setMaximumCallsNumber(const UnsignedInteger maximumEvaluationNumber);
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
   UnsignedInteger getMaximumCallsNumber() const;
 
   /** String converter */

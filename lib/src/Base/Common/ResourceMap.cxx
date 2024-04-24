@@ -647,7 +647,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Os parameters
   addAsBool("Os-CreateProcess", false);
   addAsBool("Os-RemoveFiles", true);
-  addAsUnsignedInteger("OS-DeleteTimeout", 2);
+  addAsUnsignedInteger("Os-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
   addAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel", 0);
@@ -1285,21 +1285,28 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10);
   addAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm", "TNC");
-  addAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("MaximumLikelihoodFactory-MaximumCallsNumber", 1000);
+
+  // LeastSquaresDistributionFactory parameters //
+  addAsScalar("LeastSquaresDistributionFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumRelativeError", 1.0e-10);
+  addAsUnsignedInteger("LeastSquaresDistributionFactory-MaximumCallsNumber", 1000);
 
   // MethodOfMomentsFactory parameters //
   addAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10);
-  addAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("MethodOfMomentsFactory-MaximumCallsNumber", 1000);
 
   // QuantileMatchingFactory parameters //
   addAsScalar("QuantileMatchingFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
-  addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("QuantileMatchingFactory-MaximumCallsNumber", 1000);
 
   // Student parameters //
   addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
@@ -1321,7 +1328,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("StudentCopulaFactory-NuMax", 1e2);
   addAsScalar("StudentCopulaFactory-NuStart", 5.0);
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
-  addAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
   // NonCentralStudent parameters //
   addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
@@ -1628,12 +1635,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("WhittleFactory-DefaultStartingPointScale", 1.0);
   addAsScalar("WhittleFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber", 2000);
+  addAsUnsignedInteger("WhittleFactory-DefaultMaximumCallsNumber", 2000);
 
   // BoxCoxFactory parameters //
   addAsScalar("BoxCoxFactory-DefaultRhoBeg", 0.1);
   addAsScalar("BoxCoxFactory-DefaultRhoEnd", 1.0e-10);
-  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber", 2000);
+  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumCallsNumber", 2000);
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
@@ -1683,7 +1690,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-DefaultRhoBeg", 0.01);
   addAsScalar("ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumCallsNumber", 10000);
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);

@@ -275,7 +275,7 @@ int Os::DeleteDirectory(const String & path)
 
 #else /* WIN32 */
 
-  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("OS-DeleteTimeout");
+  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("Os-DeleteTimeout");
   const String rmdirCmd("rmdir /Q /S \"" + path + "\"" + " > NUL 2>&1");
   Bool directoryExists = true;
 
