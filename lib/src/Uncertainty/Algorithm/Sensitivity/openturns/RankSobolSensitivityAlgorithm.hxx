@@ -50,10 +50,6 @@ public:
   
   /** Method that draw (plot) the sensitivity graph */
   Graph draw() const override;
-  
-  /** Design accessor */
-  void setDesign(const Sample & inputDesign,
-                 const Sample & outputDesign);
                                  
   /** First order indices accessor */
   Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
@@ -107,11 +103,6 @@ private:
   /** Function that computes aggregated indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
                                  const Point & variance) const;
-                                                        
-                                
-  void setDesign(const Sample & ,
-                 const Sample & ,
-                 const UnsignedInteger ) override {};
                                
   /** void method that computes asymptotic distribution */
   void computeAsymptoticDistribution() const override {};

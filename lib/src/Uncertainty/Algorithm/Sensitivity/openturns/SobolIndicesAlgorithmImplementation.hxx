@@ -141,7 +141,7 @@ public:
   virtual Graph draw(UnsignedInteger marginalIndex) const;
 
   /** Design accessor */
-  virtual void setDesign(const Sample & inputDesign,
+  void setDesign(const Sample & inputDesign,
                  const Sample & outputDesign,
                  const UnsignedInteger size);
 protected:
