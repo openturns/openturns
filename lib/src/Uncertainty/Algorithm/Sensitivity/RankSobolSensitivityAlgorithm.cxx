@@ -167,7 +167,7 @@ struct RankSobolBootstrapPolicy
 
 
 // Draw of First indices only
-Graph RankSobolSensitivityAlgorithm::DrawSobolFirstIndices(const Description & inputDescription,
+Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Description & inputDescription,
     const Point & firstOrderIndices,
     const Interval & firstOrderConfidenceInterval)
 {
@@ -184,7 +184,7 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstIndices(const Description & i
     data(k, 1) = firstOrderIndices[k];
   }
   
-  Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
+  const Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
   
   graph.add(firstOrderIndicesGraph);
 
@@ -228,7 +228,7 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstIndices(const Description & i
 /** Method that draw (plot) the sensitivity graph */
 Graph RankSobolSensitivityAlgorithm::draw() const
 {
-  Graph graph(DrawSobolFirstIndices(inputDescription_, getAggregatedFirstOrderIndices()));
+  Graph graph(DrawSobolFirstOrderIndices(inputDescription_, getAggregatedFirstOrderIndices()));
   if (outputDesign_.getDimension() > 1)
     graph.setTitle(OSS() << "Aggregated Sobol' indices - " << getClassName());
   else
@@ -270,7 +270,7 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
   }
 
   // Compute sum of Var(Y^k)
-  Scalar sumVariance = variance.norm1();
+  const Scalar sumVariance = variance.norm1();
 
   // Compute aggregated indices
   return Point(Vi.computeMean() * (outputDimension_ / sumVariance));
@@ -291,7 +291,7 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     const UnsignedInteger inputDimension = inputDescription_.getSize();
     Sample bsFO(0, inputDimension);
 
-    UnsignedInteger bootstrapSampleSize(ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio")*size_);
+    UnsignedInteger bootstrapSampleSize = ResourceMap::GetAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio") * size_;
 
     const UnsignedInteger blockSize = std::min(bootstrapSize_, ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize"));
     const UnsignedInteger maximumOuterSampling = bootstrapSize_ / blockSize;
@@ -316,7 +316,7 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
 
     }
 
-    KernelSmoothing factory;
+    const KernelSmoothing factory;
     firstOrderIndiceDistribution_ = factory.build(bsFO);
 
   }

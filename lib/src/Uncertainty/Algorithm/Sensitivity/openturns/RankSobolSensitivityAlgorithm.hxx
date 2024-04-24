@@ -95,9 +95,9 @@ protected:
 
 private:
 
-  static Graph DrawSobolFirstIndices(const Description & inputDescription,
-                                     const Point & firstOrderIndices,
-                                     const Interval & firstOrderConfidenceInterval = Interval());
+  static Graph DrawSobolFirstOrderIndices(const Description & inputDescription,
+                                          const Point & firstOrderIndices,
+                                          const Interval & firstOrderConfidenceInterval = Interval());
 
   /** Internal method that compute Vi/VTi using a sample */
   Sample computeIndices(const Sample & sample, Sample & VTi) const override;
