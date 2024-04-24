@@ -86,13 +86,16 @@ String EvaluationImplementation::__str__(const String & ) const
 /* String converter */
 String EvaluationImplementation::_repr_html_() const
 {
+  PointWithDescription parameters(parameter_);
+  parameters.setDescription(parameterDescription_);
+
   OSS oss(true);
   oss << "<ul>\n";
   oss << "  <li> " << "Input dimension = " << getInputDimension() << "  </li>\n";
   oss << "  <li> " << "Input description = " << getInputDescription() << "  </li>\n";
   oss << "  <li> " << "Output dimension = " << getOutputDimension() << "  </li>\n";
   oss << "  <li> " << "Output description = " << getOutputDescription() << "  </li>\n";
-  oss << "  <li> " << "Parameter = " << getParameter() << "  </li>\n";
+  oss << "  <li> " << "Parameter = " << parameters.__str__() << "  </li>\n";
   oss << "</ul>\n";
   return oss;
 }
