@@ -55,11 +55,11 @@ LeastSquaresDistributionFactory::LeastSquaresDistributionFactory(const Distribut
 {
   solver_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
+  solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("LeastSquaresDistributionFactory-MaximumCallsNumber"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("LeastSquaresDistributionFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("LeastSquaresDistributionFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("LeastSquaresDistributionFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("LeastSquaresDistributionFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */

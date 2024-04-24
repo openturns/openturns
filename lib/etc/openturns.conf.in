@@ -22,7 +22,7 @@
   <!-- OT::Os parameters -->
   <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
-  <OS-DeleteTimeout    value_int="2"    />
+  <Os-DeleteTimeout    value_int="2"    />
 
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
@@ -656,21 +656,28 @@
   <MaximumLikelihoodFactory-MaximumObjectiveError        value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumRelativeError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-DefaultOptimizationAlgorithm value_str="TNC"            />
-  <MaximumLikelihoodFactory-MaximumEvaluationNumber      value_int="1000" />
+  <MaximumLikelihoodFactory-MaximumCallsNumber           value_int="1000" />
+
+  <!-- OT::LeastSquaresDistributionFactory parameters -->
+  <LeastSquaresDistributionFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumConstraintError       value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumObjectiveError        value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumRelativeError         value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumCallsNumber           value_int="1000" />
 
   <!-- OT::MethodOfMomentsFactory parameters -->
   <MethodOfMomentsFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
+  <MethodOfMomentsFactory-MaximumCallsNumber      value_int="1000" />
 
   <!-- OT::QuantileMatchingFactory parameters -->
   <QuantileMatchingFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
+  <QuantileMatchingFactory-MaximumCallsNumber      value_int="1000" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
@@ -692,7 +699,7 @@
   <StudentCopulaFactory-NuMax value_scalar="1e2" />
   <StudentCopulaFactory-NuStart value_scalar="5.0" />
   <StudentCopulaFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
-  <StudentCopulaFactory-MaximumEvaluationNumber value_int="1000" />
+  <StudentCopulaFactory-MaximumCallsNumber value_int="1000" />
   
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value_int="0" />
@@ -995,12 +1002,12 @@
   <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />
   <WhittleFactory-DefaultStartingPointScale value_float="1.0"            />
   <WhittleFactory-RootEpsilon               value_float="1.0e-6"         />
-  <WhittleFactory-DefaultMaximumEvaluationNumber             value_int="2000" />
+  <WhittleFactory-DefaultMaximumCallsNumber value_int="2000" />
 
   <!-- OT::BoxCoxFactory parameters -->
   <BoxCoxFactory-DefaultRhoBeg      value_float="0.1"            />
   <BoxCoxFactory-DefaultRhoEnd      value_float="1.0e-10"        />
-  <BoxCoxFactory-DefaultMaximumEvaluationNumber      value_int="2000" />
+  <BoxCoxFactory-DefaultMaximumCallsNumber value_int="2000" />
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
@@ -1050,7 +1057,7 @@
   <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
   <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
-  <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
+  <ARMALikelihoodFactory-DefaultMaximumCallsNumber value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
   <FittingTest-ChiSquaredCheckSample         value_bool="true"  />
