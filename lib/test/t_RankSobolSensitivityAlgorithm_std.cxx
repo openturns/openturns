@@ -56,12 +56,12 @@ int main()
     RankSobolSensitivityAlgorithm rankAlgorithm(inputDesign, outputDesign);
     
     const Point firstOrderIndices(rankAlgorithm.getFirstOrderIndices());
-    OT::Test::assert_almost_equal(firstOrderIndices, [0.208654, 0.493591, -0.0669488], 1e-4, 1e-2);
+    OT::Test::assert_almost_equal(firstOrderIndices, Point({0.208654, 0.493591, -0.0669488}), 1e-4, 1e-2);
     
     Interval indicesInterval(rankAlgorithm.getFirstOrderIndicesInterval());
     
-    OT::Test::assert_almost_equal(indicesInterval.getLowerBound(), [0.117529, 0.409688, -0.176039], 1e-4, 1e-2);
-    OT::Test::assert_almost_equal(indicesInterval.getUpperBound(), [0.340675, 0.560271, 0.08570], 1e-4, 1e-2);   
+    OT::Test::assert_almost_equal(indicesInterval.getLowerBound(), Point({0.117529, 0.409688, -0.176039}), 1e-4, 1e-2);
+    OT::Test::assert_almost_equal(indicesInterval.getUpperBound(), Point({0.340675, 0.560271, 0.08570}), 1e-4, 1e-2);   
     
     return 0;
 }

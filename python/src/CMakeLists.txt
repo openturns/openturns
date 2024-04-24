@@ -941,7 +941,6 @@ ot_add_python_module(simulation simulation_module.i
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
                       SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
-                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                       JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
                       MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in
@@ -1025,7 +1024,7 @@ ot_add_python_module(experimental experimental_module.i
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
-		     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
+		             SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
@@ -1033,7 +1032,7 @@ ot_add_python_module(experimental experimental_module.i
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
-                    )
+                     RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in)
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 

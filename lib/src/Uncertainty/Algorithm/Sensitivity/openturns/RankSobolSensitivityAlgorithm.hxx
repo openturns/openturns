@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_RANKSOBOLENSITIVITYALGORITHM_HXX
-#define OPENTURNS_RANKSOBOLENSITIVITYALGORITHM_HXX
+#ifndef OPENTURNS_RANKSOBOLSENSITIVITYALGORITHM_HXX
+#define OPENTURNS_RANKSOBOLSENSITIVITYALGORITHM_HXX
 
 #include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
@@ -120,4 +120,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_RANKSOBOLENSITIVITYALGORITHM_HXX */
+#endif /* OPENTURNS_RANKSOBOLSENSITIVITYALGORITHM_HXX */
