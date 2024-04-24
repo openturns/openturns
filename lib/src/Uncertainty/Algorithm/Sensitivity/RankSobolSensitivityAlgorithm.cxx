@@ -46,8 +46,35 @@ RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm()
 RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm(const Sample & inputDesign,
     const Sample & outputDesign):SobolIndicesAlgorithmImplementation()
 {
-  setDesign(inputDesign, outputDesign, inputDesign.getSize());
+  setDesign(inputDesign, outputDesign);
 }
+
+/* Design accessor */
+void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
+                                              const Sample & outputDesign)
+{
+
+  inputDesign_  = inputDesign;
+  outputDesign_ = outputDesign;
+  outputDimension_ = outputDesign.getDimension();
+  size_ = inputDesign_.getSize();
+  inputDescription_ = inputDesign.getDescription();
+  referenceVariance_ = outputDesign_.computeVariance();
+  
+  if (!(size_ > 1))
+    throw InvalidArgumentException(HERE) << "Sobol design size must be > 1";
+  
+  if (size_ != outputDesign.getSize())
+    throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << size_
+                                         << " vs " << outputDesign.getSize() << ")";
+  if (!outputDesign.getDimension())
+    throw InvalidArgumentException(HERE) << "Output sample dimension is null";
+
+  for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
+    if (!(referenceVariance_[j] > 0.0))
+      throw InvalidArgumentException(HERE) << "Null output sample variance";
+}
+
 
 /* First order indices accessor */
 Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
