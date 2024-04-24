@@ -126,7 +126,7 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
 .. [gamboa2022] Gamboa, F., Gremaud, P., Klein, T. & Lagnoux, A. *Global sensitivity analysis:
     A novel generation of mighty estimators based on rank statistics* Bernoulli 28(4): 2345-2374, 2022.
-    `pdf <https://arxiv.org/abs/2003.01772>`__
+    `pdf <https://hal.science/hal-02474902v4/file/New_Look_Bernoulli_4.pdf>`__
 .. [gautschi2004] Gautschi, W. (2004).
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
