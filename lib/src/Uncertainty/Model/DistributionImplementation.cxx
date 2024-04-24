@@ -3898,14 +3898,17 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
   // Add a border for a copula
   if (isCopula())
   {
-    const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
     data(1, 0) = 1.0;
     data[2]    = Point(2, 1.0);
     data(3, 1) = 1.0;
     Curve square(data);
-    graph.setDrawable(square, 0);
-    graph.add(drawable);
+
+    // prepend square
+    Collection<Drawable> coll;
+    coll.add(square);
+    coll.add(graph.getDrawables());
+    graph.setDrawables(coll);
   }
   return graph;
 }
@@ -4146,7 +4149,6 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
   // Add a border for a copula
   if (isCopula())
   {
-    const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
     data(0, 0) = (logScaleX ? std::log(SpecFunc::Precision) : 0.0);
     data(0, 1) = (logScaleY ? std::log(SpecFunc::Precision) : 0.0);
@@ -4158,8 +4160,12 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
     data(3, 1) = 1.0;
     data[4] = data[0];
     Curve square(data);
-    graph.setDrawable(square, 0);
-    graph.add(drawable);
+
+    // prepend square
+    Collection<Drawable> coll;
+    coll.add(square);
+    coll.add(graph.getDrawables());
+    graph.setDrawables(coll);
   }
   return graph;
 }
