@@ -54,11 +54,6 @@ public:
   /** First order indices accessor */
   Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
   
-  
-  /** Design accessor */
-  void setDesign(const Sample & inputDesign,
-                 const Sample & outputDesign);
-
   /** String converter */
   String __repr__() const override;
 
@@ -86,7 +81,11 @@ public:
 
   /** Estimator distribution accessor */
   Distribution getTotalOrderIndicesDistribution() const override;
-   
+  
+  /** Design accessor */
+  void setDesign(const Sample & inputDesign,
+                 const Sample & outputDesign,
+                 const UnsignedInteger size) override;
 protected:
 
   Sample computeIndices() const;
@@ -99,10 +98,6 @@ private:
   static Graph DrawSobolFirstOrderIndices(const Description & inputDescription,
                                           const Point & firstOrderIndices,
                                           const Interval & firstOrderConfidenceInterval = Interval());
-  /** Design accessor */
-  void setDesign(const Sample & ,
-                 const Sample & ,
-                 const UnsignedInteger ) override {};
                  
   /** Internal method that compute Vi/VTi using a sample */
   Sample computeIndices(const Sample & sample, Sample & VTi) const override;
@@ -121,9 +116,6 @@ private:
 
   /** Method that draw  the sensitivity graph of a fixed marginal */
   Graph draw(const UnsignedInteger marginalIndex) const override;
-      
-  /** Designs : input & output designs */
-  UnsignedInteger outputDimension_;
   
 }; /* class RankSobolSensitivityAlgorithm */
 

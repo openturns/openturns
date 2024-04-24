@@ -46,18 +46,19 @@ RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm()
 RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm(const Sample & inputDesign,
     const Sample & outputDesign):SobolIndicesAlgorithmImplementation()
 {
-  setDesign(inputDesign, outputDesign);
+  setDesign(inputDesign, outputDesign, inputDesign.getSize());
 }
 
 /* Design accessor */
 void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
-                                              const Sample & outputDesign)
+                                              const Sample & outputDesign,
+                                              const UnsignedInteger size)
 {
 
   inputDesign_  = inputDesign;
   outputDesign_ = outputDesign;
-  outputDimension_ = outputDesign.getDimension();
-  size_ = inputDesign_.getSize();
+
+  size_ = size;
   inputDescription_ = inputDesign.getDescription();
   referenceVariance_ = outputDesign_.computeVariance();
   
@@ -84,10 +85,12 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
     // Invoke the method to compute first order indices
     varianceI_ = computeIndices();
   }
-
-  if (marginalIndex >= outputDimension_)
+  
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  
+  if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In RankSobolSensitivityAlgorithm::getFirstOrderIndices, marginalIndex should be in [0," 
-                                         << outputDimension_ - 1;
+                                         << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   return firstOrderSensitivity;
@@ -256,8 +259,6 @@ Graph RankSobolSensitivityAlgorithm::draw() const
   return graph;
 }
 
-
-
 // Function that computes aggregated indices  using Vi + variance
 // Indices are aggregated with respect to output dimensions
 Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
@@ -265,6 +266,8 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
 {
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  
   if (inputDimension == 1)
   {
     return Point(Vi[0]);
@@ -274,7 +277,7 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
   const Scalar sumVariance = variance.norm1();
 
   // Compute aggregated indices
-  return Point(Vi.computeMean() * (outputDimension_ / sumVariance));
+  return Point(Vi.computeMean() * (outputDimension / sumVariance));
 }
 
 
@@ -407,14 +410,12 @@ String RankSobolSensitivityAlgorithm::__repr__() const
 void RankSobolSensitivityAlgorithm::save(Advocate & adv) const
 {
   SobolIndicesAlgorithmImplementation::save(adv);
-  adv.saveAttribute("outputDimension_", outputDimension_); 
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RankSobolSensitivityAlgorithm::load(Advocate & adv)
 {
   SobolIndicesAlgorithmImplementation::load(adv);
-  adv.loadAttribute("outputDimension_", outputDimension_);
 }
 
 END_NAMESPACE_OPENTURNS
