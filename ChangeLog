@@ -52,9 +52,11 @@
  * Deprecated Study.printLabels (see getLabels)
 
 === Documentation ===
+* Examples show how to visualize matrices
 
 === Python module ===
 * Graphs apply default colors to Drawables with no explicit color
+* Contour plots can now be filled and come with colorbars
 
 === Miscellaneous ===
  * UniformOverMesh left the experimental module
