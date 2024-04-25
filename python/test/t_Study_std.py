@@ -12,14 +12,16 @@ instanciables = []
 for name, obj in inspect.getmembers(ot):
     if inspect.isclass(obj):
         cn = obj.__name__
-        if "_" in cn or "Interface" in cn or "Pointer" in cn:
+        if "Interface" in cn or "Pointer" in cn:
+            continue
+        if cn.startswith("_") or cn.endswith("Collection"):
             continue
         try:
             instance = obj()
-            print(obj.__name__, "OK")
+            print(obj.__name__, "YES")
             instanciables.append(obj)
         except Exception:
-            print(obj.__name__, "FAIL")
+            print(obj.__name__, "NO")
 
 # save / load
 fileName = "studyStd.xml"

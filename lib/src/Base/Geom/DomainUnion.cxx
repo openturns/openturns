@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DomainUnion)
 
 static const Factory<DomainUnion> Factory_DomainUnion;
-
+static const Factory<PersistentCollection<Domain> > Factory_PersistentCollection_Domain;
 
 /* Default constructor */
 DomainUnion::DomainUnion()
