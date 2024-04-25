@@ -136,7 +136,7 @@ view = viewer.View(manyLevelGraph)
 # In the previous plots, there was little color variation for isolines corresponding to high log-likelihood values.
 # This is due to a steep cliff visible for low values of :math:`\sigma`.
 # To make the color variation clearer around -13, we use a normalization based on the rank of the level curve and not on its value.
-contour.setNorm("rank")
+contour.setColorMapNorm("rank")
 rankGraph = ot.Graph()
 rankGraph.add(contour)
 view = viewer.View(rankGraph)

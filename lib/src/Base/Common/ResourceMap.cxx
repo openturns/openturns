@@ -729,13 +729,13 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Contour parameters //
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
-  addAsBool("Contour-IsFilled", false);
-  addAsBool("Contour-DrawLabels", true);
-  addAsString("Contour-Norm", "linear");
-  addAsString("Contour-ColorMap", "viridis");
-  addAsString("Contour-ColorBarPosition", "right");
-  addAsString("Contour-Extend", "both");
-  addAsScalar("Contour-Alpha", 1.0);
+  addAsBool("Contour-DefaultIsFilled", false);
+  addAsBool("Contour-DefaultDrawLabels", true);
+  addAsString("Contour-DefaultColorMapNorm", "linear");
+  addAsString("Contour-DefaultColorMap", "viridis");
+  addAsString("Contour-DefaultColorBarPosition", "right");
+  addAsString("Contour-DefaultExtend", "both");
+  addAsScalar("Contour-DefaultAlpha", 1.0);
 
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);

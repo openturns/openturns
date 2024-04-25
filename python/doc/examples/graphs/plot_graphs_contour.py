@@ -103,7 +103,7 @@ view = viewer.View(graph)
 # Here we will also let `matplotlib` calculate the levels by not giving any level to the contour
 
 # %%
-contour.setNorm('log')
+contour.setColorMapNorm('log')
 contour.setLevels([])
 contour.setExtend('neither')
 contour.setVmin(0.5)
@@ -145,7 +145,7 @@ graph.add(contour)
 # Modify previous contour to fill the graph and use log norm
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
-contour.setNorm('log')
+contour.setColorMapNorm('log')
 graph.setDrawable(contour, 0)
 view = viewer.View(graph)
 

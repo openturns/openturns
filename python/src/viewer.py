@@ -231,6 +231,9 @@ class View:
                     "The given object cannot be converted into a Graph nor Drawable."
                 )
 
+        # Store matplotlib version
+        matplotlib_version = parse_version(matplotlib.__version__)
+
         # check that arguments are dictionaries
         figure_kw = self._CheckDict(figure_kw)
         axes_kw = self._CheckDict(axes_kw)
@@ -413,7 +416,7 @@ class View:
             polygoncollection_kw["zorder"] = zorder
             contour_kw["zorder"] = zorder
             step_kw["zorder"] = zorder
-            if parse_version(matplotlib.__version__) >= parse_version("3.3"):
+            if matplotlib_version >= parse_version("3.3"):
                 clabel_kw["zorder"] = zorder
             scatter_kw["zorder"] = zorder
             text_kw["zorder"] = zorder
@@ -638,23 +641,27 @@ class View:
                     contour_kw["vmin"] = contour.getVmin()
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
                     contour_kw["vmax"] = contour.getVmax()
-                if "norm" not in contour_kw_default:
-                    if not hasattr(cls, "AsinhNorm"):
-                        # matplotlib before 3.6 does not support norms as strings
-                        try:
-                            normDict = {
-                                "rank": "rank",
-                                "linear": cls.Normalize(),
-                                "log": cls.LogNorm(),
-                                "symlog": cls.SymLogNorm(linthresh=0.03)
-                                if matplotlib.__version__ < "3.2.0"
-                                else cls.SymLogNorm(linthresh=0.03, base=10),
-                            }
-                            contour_kw["norm"] = normDict[contour.getNorm()]
-                        except KeyError:
-                            warnings.warn("-- Unknown norm " + contour.getNorm())
-                    else:
-                        contour_kw["norm"] = contour.getNorm()
+                norm = (
+                    contour_kw["norm"]
+                    if "norm" in contour_kw_default
+                    else contour.getColorMapNorm()
+                )
+                if type(norm) is str and matplotlib_version < parse_version("3.6.0"):
+                    # matplotlib before 3.6 does not support norms as strings
+                    try:
+                        normDict = {
+                            "rank": "rank",
+                            "linear": cls.Normalize(),
+                            "log": cls.LogNorm(),
+                            "symlog": cls.SymLogNorm(linthresh=0.03)
+                            if matplotlib_version < parse_version("3.2.0")
+                            else cls.SymLogNorm(linthresh=0.03, base=10),
+                        }
+                        contour_kw["norm"] = normDict[norm]
+                    except KeyError:
+                        warnings.warn("-- Unknown norm " + norm)
+                else:
+                    contour_kw["norm"] = norm
                 if contour_kw.get("norm") == "rank":
                     contour_kw["norm"] = RankNormalize(contour_kw.get("levels"))
                 if "extend" not in contour_kw_default:
@@ -695,7 +702,7 @@ class View:
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
                     colorbar = None
-                    if matplotlib.__version__ >= "3.7.0":
+                    if matplotlib_version >= parse_version("3.7.0"):
                         colorbar = self._fig.colorbar(
                             contourset,
                             location=contour.getColorBarPosition(),

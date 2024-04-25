@@ -50,22 +50,22 @@ public:
           const Sample & data,
           const Point & levels,
           const Description & labels,
-          const Bool drawLabels = ResourceMap::GetAsBool("Contour-DrawLabels"),
+          const Bool drawLabels = ResourceMap::GetAsBool("Contour-DefaultDrawLabels"),
           const String & legend = "");
 
   /** Constructor with parameters */
   Contour(const UnsignedInteger dimX,
           const UnsignedInteger dimY,
           const Sample & data,
-          Bool isFilled = ResourceMap::GetAsBool("Contour-IsFilled"),
-          const String & colorMap = ResourceMap::GetAsString("Contour-ColorMap"));
+          Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
+          const String & colorMap = ResourceMap::GetAsString("Contour-DefaultColorMap"));
 
   /** Constructor with parameters */
   Contour(const Sample & x,
           const Sample & y,
           const Sample & data,
-          Bool isFilled = ResourceMap::GetAsBool("Contour-IsFilled"),
-          const String & colorMap = ResourceMap::GetAsString("Contour-ColorMap"));
+          Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
+          const String & colorMap = ResourceMap::GetAsString("Contour-DefaultColorMap"));
 
   /** Constructor with parameters
       Contour(const Sample & xy,
@@ -111,19 +111,19 @@ public:
 
   /** Accessor for isVminUsed */
   Bool isVminUsed() const;
-  void setIsVminUsed(Bool used);
+  void setIsVminUsed(const Bool used);
 
   /** Accessor for vmin */
   Scalar getVmin() const;
-  void setVmin(Scalar vmin);
+  void setVmin(const Scalar vmin);
 
   /** Accessor for isVmaxUsed */
   Bool isVmaxUsed() const;
-  void setIsVmaxUsed(Bool used);
+  void setIsVmaxUsed(const Bool used);
 
   /** Accessor for vmax */
   Scalar getVmax() const;
-  void setVmax(Scalar vmax);
+  void setVmax(const Scalar vmax);
 
   /** Accessor for colorMap */
   String getColorMap() const;
@@ -134,8 +134,8 @@ public:
   void setAlpha(Scalar alpha);
 
   /** Accessor for norm */
-  String getNorm() const;
-  void setNorm(const String & norm);
+  String getColorMapNorm() const;
+  void setColorMapNorm(const String & norm);
 
   /** Accessor for extend */
   String getExtend() const;
@@ -192,16 +192,16 @@ private:
   String colorBarPosition_;
 
   /** use of vmin value */
-  Bool isVminUsed_;
+  Bool isVminUsed_ = false;
 
   /** Min value of color map */
-  Scalar vmin_;
+  Scalar vmin_ = 0.0;
 
   /** use of vmax value */
-  Bool isVmaxUsed_;
+  Bool isVmaxUsed_ = false;
 
   /** Max value of color map */
-  Scalar vmax_;
+  Scalar vmax_ = 0.0;
 
   /** Name of the color map */
   String colorMap_;

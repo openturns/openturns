@@ -55,7 +55,7 @@ public:
   Sample getTimeGrid() const;
 
   /** Accessor to the normalization function */
-  LinearFunction getNormalizationFunction() const;
+  LinearFunction getColorMapNormalizationFunction() const;
 
   /** Accessor to the distribution of the parameter */
   void setParameterDistribution(const Distribution & parameterDistribution);

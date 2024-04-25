@@ -36,17 +36,13 @@ static const Factory<Contour> Factory_Contour;
 /* Default constructor */
 Contour::Contour()
   : DrawableImplementation()
-  , drawLabels_(ResourceMap::GetAsBool("Contour-DrawLabels"))
-  , isFilled_(ResourceMap::GetAsBool("Contour-IsFilled"))
-  , colorBarPosition_(ResourceMap::GetAsString("Contour-ColorBarPosition"))
-  , isVminUsed_(false)
-  , vmin_(0)
-  , isVmaxUsed_(false)
-  , vmax_(0)
-  , colorMap_(ResourceMap::GetAsString("Contour-ColorMap"))
-  , alpha_(ResourceMap::GetAsScalar("Contour-Alpha"))
-  , norm_(ResourceMap::GetAsString("Contour-Norm"))
-  , extend_(ResourceMap::GetAsString("Contour-Extend"))
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {}
 
 /* Constructor with parameters */
@@ -63,16 +59,12 @@ Contour::Contour(const Sample & x,
   , levels_(levels)
   , labels_(labels)
   , drawLabels_(drawLabels)
-  , isFilled_(ResourceMap::GetAsBool("Contour-IsFilled"))
-  , colorBarPosition_(ResourceMap::GetAsString("Contour-ColorBarPosition"))
-  , isVminUsed_(false)
-  , vmin_(0)
-  , isVmaxUsed_(false)
-  , vmax_(0)
-  , colorMap_(ResourceMap::GetAsString("Contour-ColorMap"))
-  , alpha_(ResourceMap::GetAsScalar("Contour-Alpha"))
-  , norm_(ResourceMap::GetAsString("Contour-Norm"))
-  , extend_(ResourceMap::GetAsString("Contour-Extend"))
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
   if (levels.getDimension() == 0) buildDefaultLevels();
   if (drawLabels && (labels.getSize() == 0)) buildDefaultLabels();
@@ -92,17 +84,13 @@ Contour::Contour(const UnsignedInteger dimX,
   , y_(Sample(dimY, 1))
   , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
-  , drawLabels_(ResourceMap::GetAsBool("Contour-DrawLabels"))
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
   , isFilled_(isFilled)
-  , colorBarPosition_(ResourceMap::GetAsString("Contour-ColorBarPosition"))
-  , isVminUsed_(false)
-  , vmin_(0)
-  , isVmaxUsed_(false)
-  , vmax_(0)
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
   , colorMap_(colorMap)
-  , alpha_(ResourceMap::GetAsScalar("Contour-Alpha"))
-  , norm_(ResourceMap::GetAsString("Contour-Norm"))
-  , extend_(ResourceMap::GetAsString("Contour-Extend"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
   if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
   if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
@@ -133,17 +121,13 @@ Contour::Contour(const Sample & x,
   , y_(y)
   , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
-  , drawLabels_(ResourceMap::GetAsBool("Contour-DrawLabels"))
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
   , isFilled_(isFilled)
-  , colorBarPosition_(ResourceMap::GetAsString("Contour-ColorBarPosition"))
-  , isVminUsed_(false)
-  , vmin_(0)
-  , isVmaxUsed_(false)
-  , vmax_(0)
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
   , colorMap_(colorMap)
-  , alpha_(ResourceMap::GetAsScalar("Contour-Alpha"))
-  , norm_(ResourceMap::GetAsString("Contour-Norm"))
-  , extend_(ResourceMap::GetAsString("Contour-Extend"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
   // Check data validity
   setData(data);
@@ -269,7 +253,7 @@ Bool Contour::isVminUsed() const {
   return isVminUsed_;
 }
 
-void Contour::setIsVminUsed(Bool used) {
+void Contour::setIsVminUsed(const Bool used) {
   isVminUsed_ = used;
 }
 
@@ -280,7 +264,7 @@ Scalar Contour::getVmin() const {
   return vmin_;
 }
 
-void Contour::setVmin(Scalar vmin) {
+void Contour::setVmin(const Scalar vmin) {
   isVminUsed_ = true;
   vmin_ = vmin;
 }
@@ -290,7 +274,7 @@ Bool Contour::isVmaxUsed() const {
   return isVmaxUsed_;
 }
 
-void Contour::setIsVmaxUsed(Bool used) {
+void Contour::setIsVmaxUsed(const Bool used) {
   isVmaxUsed_ = used;
 }
 
@@ -301,7 +285,7 @@ Scalar Contour::getVmax() const {
   return vmax_;
 }
 
-void Contour::setVmax(Scalar vmax) {
+void Contour::setVmax(const Scalar vmax) {
   isVmaxUsed_ = true;
   vmax_ = vmax;
 }
@@ -328,11 +312,11 @@ void Contour::setAlpha(Scalar alpha) {
 }
 
 /** Accessor for norm */
-String Contour::getNorm() const {
+String Contour::getColorMapNorm() const {
   return norm_;
 }
 
-void Contour::setNorm(const String& norm) {
+void Contour::setColorMapNorm(const String& norm) {
   if (!IsValidNorm(norm)) throw InvalidArgumentException(HERE) << "Given norm = " << norm << " is incorrect";
   norm_ = norm;
 }
@@ -439,8 +423,6 @@ void Contour::load(Advocate & adv)
   adv.loadAttribute( "drawLabels_", drawLabels_ );
   if (adv.hasAttribute("isFilled_"))
     adv.loadAttribute("isFilled_", isFilled_);
-  else
-    isFilled_ = ResourceMap::GetAsBool("Contour-IsFilled");
   if (adv.hasAttribute("colorBarPosition_"))
     adv.loadAttribute("colorBarPosition_", colorBarPosition_);
   else
@@ -472,11 +454,11 @@ void Contour::load(Advocate & adv)
   if (adv.hasAttribute("norm_"))
     adv.loadAttribute("norm_", norm_);
   else
-    norm_ = ResourceMap::GetAsString("Contour-Norm");
+    norm_ = ResourceMap::GetAsString("Contour-DefaultColorMapNorm");
   if (adv.hasAttribute("extend_"))
     adv.loadAttribute("extend_", extend_);
   else
-    extend_ = ResourceMap::GetAsString("Contour-Extend");
+    extend_ = ResourceMap::GetAsString("Contour-DefaultExtend");
   if (adv.hasAttribute("hatches_"))
     adv.loadAttribute("hatches_", hatches_);
   else

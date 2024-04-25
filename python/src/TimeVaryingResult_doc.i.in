@@ -121,7 +121,7 @@ parameterFunction : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TimeVaryingResult::getNormalizationFunction
+%feature("docstring") OT::TimeVaryingResult::getColorMapNormalizationFunction
 "Normalizing function accessor.
 
 Returns

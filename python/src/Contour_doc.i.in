@@ -395,7 +395,7 @@ getVmax"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Contour::getNorm
+%feature("docstring") OT::Contour::getColorMapNorm
 "Accessor to the normalization method of the Contour element.
 
 Returns
@@ -407,16 +407,16 @@ norm : str
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Contour(2,2,ot.Sample(4,1)).getNorm())
+>>> print(ot.Contour(2,2,ot.Sample(4,1)).getColorMapNorm())
 linear
 
 See Also
 --------
-setNorm, GetValidNorms"
+setColorMapNorm, GetValidNorms"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Contour::setNorm
+%feature("docstring") OT::Contour::setColorMapNorm
 "Accessor to the normalization method of the Contour element.
 
 Parameters
@@ -428,7 +428,7 @@ norm : str
 
 See Also
 --------
-getNorm, GetValidNorms"
+getColorMapNorm, GetValidNorms"
 
 // ---------------------------------------------------------------------
 

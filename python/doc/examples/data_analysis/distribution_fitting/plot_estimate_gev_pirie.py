@@ -261,7 +261,7 @@ for i in range(beta.getSize()):
 
 # %%
 # You can get the expression of the normalizing function :math:`t \mapsto \tau(t)`:
-normFunc = result_NonStatLL.getNormalizationFunction()
+normFunc = result_NonStatLL.getColorMapNormalizationFunction()
 print("Function tau(t): ", normFunc)
 print("c = ", normFunc.getEvaluation().getImplementation().getCenter()[0])
 print("1/d = ", normFunc.getEvaluation().getImplementation().getLinear()[0, 0])

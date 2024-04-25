@@ -245,7 +245,7 @@ Sample TimeVaryingResult::getTimeGrid() const
   return timeGrid_;
 }
 
-LinearFunction TimeVaryingResult::getNormalizationFunction() const
+LinearFunction TimeVaryingResult::getColorMapNormalizationFunction() const
 {
   return normalizationFunction_;
 }

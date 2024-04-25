@@ -142,7 +142,7 @@ public:
              const Point & xMax,
              const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
              const GraphImplementation::LogScale scale = GraphImplementation::NONE,
-             const Bool isFilled = ResourceMap::GetAsBool("Contour-IsFilled")) const override;
+             const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const override;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   Graph draw(const Scalar xMin,

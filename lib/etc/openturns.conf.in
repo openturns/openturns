@@ -104,13 +104,13 @@
 
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value_int="10" />
-  <Contour-IsFilled value_bool="false"        />
-  <Contour-DrawLabels value_bool="true"       />
-  <Contour-Norm value_str="linear"            />
-  <Contour-ColorMap value_str="viridis"       />
-  <Contour-ColorBarPosition value_str="right" />
-  <Contour-Extend value_str="both"            />
-  <Contour-Alpha value_float="1.0"            />
+  <Contour-DefaultIsFilled value_bool="false"        />
+  <Contour-DefaultDrawLabels value_bool="true"       />
+  <Contour-DefaultColorMapNorm value_str="linear"            />
+  <Contour-DefaultColorMap value_str="viridis"       />
+  <Contour-DefaultColorBarPosition value_str="right" />
+  <Contour-DefaultExtend value_str="both"            />
+  <Contour-DefaultAlpha value_float="1.0"            />
 
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />

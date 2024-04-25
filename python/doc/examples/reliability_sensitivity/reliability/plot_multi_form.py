@@ -23,16 +23,18 @@ dist = ot.Normal(dim)
 # %%
 # We can draw the bidimensional PDF of the distribution `dist` over :math:`[-5,5] \times [-5,5]` :
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
+ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "log")
 graphPDF = dist.drawPDF([-5, -5], [5, 5])
 graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("lower right")
-view = otv.View(graphPDF, contour_kw={"norm": "log"})
+view = otv.View(graphPDF)
 
 # %%
 # We then define a model :math:`f` which maps a 2D-vector X = (X_1,X_2) to a
 # scalar output `Y = f(X)`.
+ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "linear")
 f = ot.SymbolicFunction(["x0", "x1"], ["5.0-x1-0.5*(x0-0.1)^2"])
 graphModel = f.draw([-8.0, -8.0], [8.0, 8.0])
 graphModel.setXTitle(r"$x_1$")

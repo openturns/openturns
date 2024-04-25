@@ -10,7 +10,7 @@ Example of sensitivity analyses on the wing weight model
 # - PRCC: Partial Rank Correlation Coefficients
 # - SRC: Standard Regression Coefficients
 # - SRRC: Standard Rank Regression Coefficients
-# - Pearson coefficients
+# - Pearson coefficientsp
 # - Spearman coefficients
 # - Taylor expansion importance factors
 # - Sobol' indices
@@ -44,7 +44,7 @@ m = WingWeightModel()
 # This graph allows one to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
 
-ot.ResourceMap.SetAsBool("Contour-IsFilled", True)
+ot.ResourceMap.SetAsBool("Contour-DefaultIsFilled", True)
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 100)
 
 lowerBound = m.distributionX.getRange().getLowerBound()

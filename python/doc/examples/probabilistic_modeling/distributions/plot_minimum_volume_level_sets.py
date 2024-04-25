@@ -197,7 +197,7 @@ x_punk = ot.JointDistribution([x1, x2], copula)
 mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%
-ot.ResourceMap.SetAsString("Contour-Norm", "log")
+ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "log")
 graph = mixture.drawPDF()
 view = viewer.View(graph)
 
