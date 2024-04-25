@@ -33,14 +33,23 @@ class RankNormalize(cls.Normalize):
 
     This class is used to manage the "rank" norm for Contour drawables
     """
+
     def _changed(self):
         if self._levels is not None and self.vmin is not None and self.vmax is not None:
-            below_threshold = sum(1 if level < self.vmin else 0 for level in self._levels)
-            above_threshold = sum(1 if level > self.vmax else 0 for level in self._levels)
+            below_threshold = sum(
+                1 if level < self.vmin else 0 for level in self._levels
+            )
+            above_threshold = sum(
+                1 if level > self.vmax else 0 for level in self._levels
+            )
             active = len(self._levels) - below_threshold - above_threshold
             if active <= 0:
                 raise ValueError("No active level; check vmin and vmax")
-            self._ranks = np.linspace(-below_threshold / active, 1.0 + above_threshold / active, len(self._levels))
+            self._ranks = np.linspace(
+                -below_threshold / active,
+                1.0 + above_threshold / active,
+                len(self._levels),
+            )
         if hasattr(cls.Normalize, "_changed"):
             cls.Normalize._changed(self)
 
@@ -61,6 +70,7 @@ class RankNormalize(cls.Normalize):
 
         clip : bool, optional
             Indicator for cutting color distribution out of vmin and vmax
+            Required by the parent class, but unused.
         """
         super().__init__(vmin, vmax, clip)
         self._levels = None if levels is None else np.array(levels)
@@ -73,7 +83,11 @@ class RankNormalize(cls.Normalize):
             self._changed()
         if self._levels is not None and self._ranks is None:
             self._ranks = np.linspace(0.0, 1.0, len(self._levels))
-        return 1. if self._levels is None else np.ma.masked_array(np.interp(value, self._levels, self._ranks))
+        return (
+            1.0
+            if self._levels is None
+            else np.ma.masked_array(np.interp(value, self._levels, self._ranks))
+        )
 
 
 class View:
@@ -270,30 +284,28 @@ class View:
                 axes = self._fig.axes
 
         if isinstance(graph, ot.GridLayout):
-            self._ax = [[None] * graph.getNbColumns()] * graph.getNbRows()
-            self._views = [[None] * graph.getNbColumns()] * graph.getNbRows()
+            self._views = [
+                [None] * graph.getNbColumns() for _ in range(graph.getNbRows())
+            ]
+            axes = self._fig.subplots(graph.getNbRows(), graph.getNbColumns())
+            # Reshape needed when either the nb of rows or the nb of columns is 1.
+            # Does not hurt otherwise.
+            self._ax = np.reshape(axes, (graph.getNbRows(), graph.getNbColumns()))
             for i in range(graph.getNbRows()):
                 for j in range(graph.getNbColumns()):
                     graphij = graph.getGraph(i, j)
                     if len(graphij.getDrawables()) == 0:
+                        self._ax[i, j].axis("off")
                         continue
-                    axes = [
-                        self._fig.add_subplot(
-                            graph.getNbRows(),
-                            graph.getNbColumns(),
-                            1 + i * graph.getNbColumns() + j,
-                            **axes_kw
-                        )
-                    ]
-                    axes[0].axison = graphij.getAxes()
-                    axes[0].set_title(self._ToUnicode(graphij.getTitle()))
+                    self._ax[i, j].axison = graphij.getAxes()
+                    self._ax[i, j].set_title(self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
-                    axes[0].spines["right"].set_visible(False)
-                    axes[0].spines["top"].set_visible(False)
+                    self._ax[i, j].spines["right"].set_visible(False)
+                    self._ax[i, j].spines["top"].set_visible(False)
                     self._views[i][j] = View(
                         graphij,
                         figure=self._fig,
-                        axes=axes,
+                        axes=[self._ax[i, j]],
                         plot_kw=plot_kw,
                         axes_kw=axes_kw,
                         bar_kw=bar_kw,
@@ -306,7 +318,6 @@ class View:
                         text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
-                    self._ax[i][j] = axes[0]
             self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
@@ -429,7 +440,7 @@ class View:
                 "dotted": ":",
                 "dotdash": "-.",
                 "longdash": (0, (10, 3)),
-                "twodash": (0, (10, 3, 5, 3))
+                "twodash": (0, (10, 3, 5, 3)),
             }
             if ("linestyle" not in plot_kw_default) and ("ls" not in plot_kw_default):
                 try:
@@ -447,7 +458,9 @@ class View:
                 plot_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in step_kw_default) and ("lw" not in step_kw_default):
                 step_kw["linewidth"] = drawable.getLineWidth()
-            if ("linewidth" not in polygon_kw_default) and ("lw" not in polygon_kw_default):
+            if ("linewidth" not in polygon_kw_default) and (
+                "lw" not in polygon_kw_default
+            ):
                 polygon_kw["linewidth"] = drawable.getLineWidth()
 
             # retrieve data
@@ -472,9 +485,7 @@ class View:
                     polygoncollection_kw.setdefault("label", label)
 
             if drawableKind == "BarPlot":
-                if ("linestyle" not in bar_kw_default) and (
-                    "ls" not in bar_kw_default
-                ):
+                if ("linestyle" not in bar_kw_default) and ("ls" not in bar_kw_default):
                     if drawable.getLineStyle() in lineStyleDict:
                         bar_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
                     else:
@@ -587,8 +598,10 @@ class View:
                 )
                 if len(drawable.getLevels()) > 0:
                     contour_kw.setdefault("levels", drawable.getLevels())
-                if not contour.isFilled() and ("linestyles" not in contour_kw_default) and (
-                    "ls" not in contour_kw_default
+                if (
+                    not contour.isFilled()
+                    and ("linestyles" not in contour_kw_default)
+                    and ("ls" not in contour_kw_default)
                 ):
                     # Contours do not accept all styles
                     contourLineStyleDict = {
@@ -597,7 +610,7 @@ class View:
                         "dotted": ":",
                         "dotdash": "-.",
                         "longdash": "--",
-                        "twodash": "--"
+                        "twodash": "--",
                     }
                     try:
                         contour_kw["linestyles"] = contourLineStyleDict[
@@ -605,11 +618,17 @@ class View:
                         ]
                     except KeyError:
                         warnings.warn("-- Unknown line style")
-                if not contour.isFilled() and ("linewidths" not in contour_kw_default) and (
-                    "lw" not in contour_kw_default
+                if (
+                    not contour.isFilled()
+                    and ("linewidths" not in contour_kw_default)
+                    and ("lw" not in contour_kw_default)
                 ):
                     contour_kw["linewidths"] = drawable.getLineWidth()
-                if "cmap" not in contour_kw_default and "colors" not in contour_kw_default and contour.getColorMap():
+                if (
+                    "cmap" not in contour_kw_default
+                    and "colors" not in contour_kw_default
+                    and contour.getColorMap()
+                ):
                     contour_kw["cmap"] = contour.getColorMap()
                 if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
@@ -620,15 +639,16 @@ class View:
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
                     contour_kw["vmax"] = contour.getVmax()
                 if "norm" not in contour_kw_default:
-                    if not hasattr(cls, 'AsinhNorm'):
+                    if not hasattr(cls, "AsinhNorm"):
                         # matplotlib before 3.6 does not support norms as strings
                         try:
                             normDict = {
-                                'rank': 'rank',
-                                'linear': cls.Normalize(),
-                                'log': cls.LogNorm(),
-                                'symlog': cls.SymLogNorm(linthresh=0.03) if matplotlib.__version__ < "3.2.0"
-                                else cls.SymLogNorm(linthresh=0.03, base=10)
+                                "rank": "rank",
+                                "linear": cls.Normalize(),
+                                "log": cls.LogNorm(),
+                                "symlog": cls.SymLogNorm(linthresh=0.03)
+                                if matplotlib.__version__ < "3.2.0"
+                                else cls.SymLogNorm(linthresh=0.03, base=10),
                             }
                             contour_kw["norm"] = normDict[contour.getNorm()]
                         except KeyError:
@@ -639,7 +659,11 @@ class View:
                     contour_kw["norm"] = RankNormalize(contour_kw.get("levels"))
                 if "extend" not in contour_kw_default:
                     contour_kw["extend"] = contour.getExtend()
-                if contour.isFilled() and "hatches" not in contour_kw_default and contour.getHatches():
+                if (
+                    contour.isFilled()
+                    and "hatches" not in contour_kw_default
+                    and contour.getHatches()
+                ):
                     contour_kw["hatches"] = [hatch for hatch in contour.getHatches()]
                 if contour.isFilled():
                     contourset = self._ax[0].contourf(X, Y, Z, **contour_kw)
@@ -672,16 +696,27 @@ class View:
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
                     colorbar = None
                     if matplotlib.__version__ >= "3.7.0":
-                        colorbar = self._fig.colorbar(contourset, location=contour.getColorBarPosition(), format="%.3g")
+                        colorbar = self._fig.colorbar(
+                            contourset,
+                            location=contour.getColorBarPosition(),
+                            format="%.3g",
+                        )
                     else:
                         try:
                             colorbar = self._fig.colorbar(contourset, format="%.3g")
                             if contour.getColorBarPosition() != "right":
-                                warnings.warn("-- colorbar location was not used in matplotlib < 3.7.0")
+                                warnings.warn(
+                                    "-- colorbar location was not used in matplotlib < 3.7.0"
+                                )
                         except ZeroDivisionError:
-                            warnings.warn("figure.colorbar likely failed on boundary levels")
+                            warnings.warn(
+                                "figure.colorbar likely failed on boundary levels"
+                            )
                     if colorbar is not None and contour.getLevels():
-                        colorbar.formatter.minor_thresholds = (10., 0.4)  # Avoids the absence of labels in logarithmic scale
+                        colorbar.formatter.minor_thresholds = (
+                            10.0,
+                            0.4,
+                        )  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
                 lines = self._ax[0].step(x, y, **step_kw)

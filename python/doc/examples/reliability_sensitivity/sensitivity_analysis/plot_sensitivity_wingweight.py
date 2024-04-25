@@ -31,7 +31,6 @@ import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
 from matplotlib import pylab as plt
-import numpy as np
 
 ot.Log.Show(ot.Log.NONE)
 m = WingWeightModel()
@@ -44,13 +43,14 @@ m = WingWeightModel()
 # For each 2D cross cut, the other variables are fixed to the input distribution mean values.
 # This graph allows one to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
-fig = plt.figure(figsize=(12, 12))
+
+ot.ResourceMap.SetAsBool("Contour-IsFilled", True)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 100)
+
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
 
-# Definition of number of meshes in x and y axes for the 2D cross cut plots
-nX = 20
-nY = 20
+grid = ot.GridLayout(m.dim, m.dim)
 for i in range(m.dim):
     for j in range(i):
         crossCutIndices = []
@@ -60,37 +60,46 @@ for i in range(m.dim):
                 crossCutIndices.append(k)
                 # Definition of the reference point
                 crossCutReferencePoint.append(m.distributionX.getMean()[k])
+
         # Definition of 2D cross cut function
         crossCutFunction = ot.ParametricFunction(
             m.model, crossCutIndices, crossCutReferencePoint
         )
         crossCutLowerBound = [lowerBound[j], lowerBound[i]]
         crossCutUpperBound = [upperBound[j], upperBound[i]]
-        # Definition of the mesh
-        inputData = ot.Box([nX, nY]).generate()
-        inputData *= ot.Point(crossCutUpperBound) - ot.Point(crossCutLowerBound)
-        inputData += ot.Point(crossCutLowerBound)
-        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nY + 2)
-        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nY + 2)
-        data = crossCutFunction(inputData)
-        meshZ = np.array(data).reshape(nX + 2, nY + 2)
-        levels = [(150 + 3 * i) for i in range(101)]
 
-        # Creation of the contour
-        index = 1 + i * m.dim + j
-
-        ax = fig.add_subplot(m.dim, m.dim, index)
-        ax.pcolormesh(
-            meshX, meshY, meshZ, cmap="hsv", vmin=176.0, vmax=363.0, shading="auto"
-        )
-        ax.set_xticks([])
-        ax.set_yticks([])
+        # Get and customize the contour plot
+        graph = crossCutFunction.draw(crossCutLowerBound, crossCutUpperBound)
+        graph.setTitle("")
+        contour = graph.getDrawable(0).getImplementation()
+        contour.setVmin(176.0)
+        contour.setVmax(363.0)
+        contour.setColorBarPosition("")  # suppress colorbar of each plot
+        contour.setColorMap("plasma")
+        graph.setDrawable(contour, 0)
+        graph.setXTitle("")
+        graph.setYTitle("")
+        graph.setTickLocation(ot.GraphImplementation.TICKNONE)
+        graph.setGrid(False)
 
         # Creation of axes title
         if j == 0:
-            ax.set_ylabel(m.distributionX.getDescription()[i])
+            graph.setYTitle(m.distributionX.getDescription()[i])
         if i == 9:
-            ax.set_xlabel(m.distributionX.getDescription()[j])
+            graph.setXTitle(m.distributionX.getDescription()[j])
+
+        grid.setGraph(i, j, graph)
+
+# Get View object to manipulate the underlying figure
+v = otv.View(grid)
+fig = v.getFigure()
+fig.set_size_inches(12, 12)  # reduce the size
+
+# Setup a large colorbar
+axes = v.getAxes()
+colorbar = fig.colorbar(
+    v.getSubviews()[7][0].getContourSets()[0], ax=axes[:, -1], fraction=0.3
+)
 
 # %%
 # We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`\Lambda, \ell, q, W_p, W_{fw}` have less influence on the function.
@@ -467,3 +476,7 @@ view4 = otv.View(graph4)
 # The HSIC indices go in the same way as the other estimators in terms the most influent variables.
 # The variables :math:`W_{fw}, q, l, W_p` seem to be independent to the output as the corresponding p-values are high.
 # We can also see that the asymptotic p-values and p-values estimated by permutation are quite similar.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()
