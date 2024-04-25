@@ -3,9 +3,9 @@
 
 .. warning::
 
-    Tests results are not intended to be created manually. They are returned
-    by the statistical tests implemented in the :mod:`~openturns.stattests`
-    subpackage. Constructor is therefore intentionally not documented.
+    Tests results are not intended to be created manually.
+    They are returned by the various statistical tests available.
+    Constructor is therefore intentionally not documented.
 
 Notes
 -----

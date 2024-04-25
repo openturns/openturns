@@ -229,10 +229,10 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
 /* Copy assignment operator */
 HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementation & other)
 {
-#ifdef OPENTURNS_HAVE_HMAT
   if (this != &other)
   {
     PersistentObject::operator=(other);
+#ifdef OPENTURNS_HAVE_HMAT
     // destroy current
     if (hmatInterface_ != NULL && hmat_ != NULL)
     {
@@ -252,8 +252,8 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
 
       hmatInterface_ = other.hmatInterface_;
     }
-  }
 #endif
+  }
   return *this;
 }
 
@@ -336,6 +336,9 @@ void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
   static_cast<hmat_interface_t *>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t *>(hmat_));
 
 #else
+  (void)f;
+  (void)parameters;
+  (void)symmetry;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -347,6 +350,7 @@ void HMatrixImplementation::addIdentity(Scalar alpha)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->add_identity(static_cast<hmat_matrix_t *>(hmat_), &alpha);
 #else
+  (void)alpha;
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
 }
@@ -433,6 +437,9 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction &f,
   static_cast<hmat_interface_t *>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t *>(hmat_));
 
 #else
+  (void)f;
+  (void)parameters;
+  (void)symmetry;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -529,6 +536,7 @@ void HMatrixImplementation::factorize(const String& method)
   if (!done)
     throw InternalException(HERE) << "HMatrix::factorize : factorization failed, probably needs more regularization" ;
 #else
+  (void)method;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -540,6 +548,7 @@ void HMatrixImplementation::scale(Scalar alpha)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
 #else
+  (void)alpha;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -553,6 +562,11 @@ void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scala
   Point xcopy(x);
   static_cast<hmat_interface_t*>(hmatInterface_.get())->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
 #else
+  (void)trans;
+  (void)alpha;
+  (void)x;
+  (void)beta;
+  (void)y;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -564,6 +578,12 @@ void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const H
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
 #else
+  (void)transA;
+  (void)transB;
+  (void)alpha;
+  (void)a;
+  (void)b;
+  (void)beta;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -613,6 +633,8 @@ Point HMatrixImplementation::solve(const Point& b, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
 #else
+  (void)b;
+  (void)trans;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -627,6 +649,8 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result(0, 0), result.getNbColumns());
   return result;
 #else
+  (void)m;
+  (void)trans;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -641,6 +665,8 @@ Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
   return result;
 #else
+  (void)b;
+  (void)trans;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -655,6 +681,8 @@ Matrix HMatrixImplementation::solveLower(const Matrix& m, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result(0, 0), result.getNbColumns());
   return result;
 #else
+  (void)m;
+  (void)trans;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
@@ -692,6 +720,7 @@ void HMatrixImplementation::dump(const String & name) const
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
 #else
+  (void)name;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }

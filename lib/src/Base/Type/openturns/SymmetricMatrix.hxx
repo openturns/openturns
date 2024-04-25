@@ -145,14 +145,19 @@ public:
   Matrix solveLinearSystem(const Matrix & b) const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
 
   /** Compute eigenvalues */
-  Point computeEigenValues(const Bool keepIntact = true);
-  Point computeEV(SquareMatrix & vOut,
-                  const Bool keepIntact = true);
+  Point computeEigenValues() const;
+  Point computeEigenValuesInPlace();
+
+  Point computeEV(SquareMatrix & vOut) const;
+  Point computeEVInPlace(SquareMatrix & vOut);
+
   /** Compute the largest eigenvalue module using power iterations */
   Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
                                         const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const override;

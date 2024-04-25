@@ -173,9 +173,25 @@ public:
   /** Draw correlation between all marginals */
   GridLayout drawCorrelation() const;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<ProcessSampleImplementation>::operator ==;
+  Bool operator ==(const ProcessSample & other) const;
+  
   /** Translate realizations in-place */
   ProcessSample & operator += (const Sample & translation);
   ProcessSample & operator -= (const Sample & translation);
+  ProcessSample & operator += (const Point & translation);
+  ProcessSample & operator -= (const Point & translation);
+  ProcessSample & operator += (const ProcessSample & translation);
+  ProcessSample & operator -= (const ProcessSample & translation);
+  
+  /** Translate realizations */
+  ProcessSample operator + (const Sample & translation) const;
+  ProcessSample operator - (const Sample & translation) const;
+  ProcessSample operator + (const Point & translation) const;
+  ProcessSample operator - (const Point & translation) const;
+  ProcessSample operator + (const ProcessSample & translation) const;
+  ProcessSample operator - (const ProcessSample & translation) const;
 
   /** Extract the sample of values at the given vertex index */
   Sample getSampleAtVertex(const UnsignedInteger index) const;

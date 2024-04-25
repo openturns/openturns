@@ -3,27 +3,27 @@
 Covariance models
 =================
 
-We consider :math:`X: \Omega \times\cD \mapsto \Rset^d` a multivariate
+We consider :math:`X: \Omega \times\cD \mapsto \Rset^{\inputDim}` a multivariate
 stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
-is an event, :math:`\cD` is a domain of :math:`\Rset^n`,
+is an event, :math:`\cD` is a domain of :math:`\Rset^{\sampleSize}`,
 :math:`\vect{t}\in \cD` is a multivariate index and
-:math:`X(\omega, \vect{t}) \in \Rset^d`.
+:math:`X(\omega, \vect{t}) \in \Rset^{\inputDim}`.
 
-We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` the random variable at
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\inputDim}` the random variable at
 index :math:`\vect{t} \in \cD` defined by
 :math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})` and
-:math:`X(\omega): \cD  \mapsto \Rset^d` a realization of the process
+:math:`X(\omega): \cD  \mapsto \Rset^{\inputDim}` a realization of the process
 :math:`X`, for a given :math:`\omega \in \Omega` defined by
 :math:`X(\omega)(\vect{t})=X(\omega, \vect{t})`.
 
 If the process is a second order process, we note:
 
-- :math:`m : \cD \mapsto  \Rset^d` its *mean function*, defined by
+- :math:`m : \cD \mapsto  \Rset^{\inputDim}` its *mean function*, defined by
   :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
-- :math:`C : \cD \times \cD \mapsto  \cS_d^+(\Rset)` its
+- :math:`C : \cD \times \cD \mapsto  \cS_{\inputDim}^+(\Rset)` its
   *covariance function*, defined by
   :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}`,
-- :math:`R : \cD \times \cD \mapsto  \cS_d^+(\Rset)` its
+- :math:`R : \cD \times \cD \mapsto  \cS_{\inputDim}^+(\Rset)` its
   *correlation function*, defined for all :math:`(\vect{s}, \vect{t})`,
   by :math:`R(\vect{s}, \vect{t})` such that for all :math:`(i,j)`,
   :math:`R_{ij}(\vect{s}, \vect{t})=C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
@@ -43,8 +43,8 @@ In a general way, the covariance models write:
 
 where:
 
-- :math:`\vect{\theta} \in \Rset^n` is the *scale* parameter
-- :math:`\vect{\sigma} \in \Rset^d` id the *amplitude* parameter
+- :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter
+- :math:`\vect{\sigma} \in \Rset^{\inputDim}` id the *amplitude* parameter
 - :math:`\mat{L}_{\rho}(\vect{s}, \vect{t})` is the Cholesky factor of
   :math:`\mat{\rho}(\vect{s}, \vect{t})`:
 
@@ -60,8 +60,8 @@ The global correlation is given by two separate correlations:
 
     - the spatial correlation between the components of :math:`X_{\vect{t}}`
       which is given by the correlation matrix
-      :math:`\mat{R} \in \cS_d^+(\Rset)` and the vector of marginal variances
-      :math:`\vect{\sigma} \in \Rset^d`.
+      :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` and the vector of marginal variances
+      :math:`\vect{\sigma} \in \Rset^{\inputDim}`.
       The spatial correlation does not depend on :math:`\vect{t} \in \cD`.
       For each  :math:`\vect{t}`, it links together the components of
       :math:`X_{\vect{t}}`.
@@ -70,14 +70,14 @@ The global correlation is given by two separate correlations:
 
         - In the general case, the correlation links each component
           :math:`X^i_{\vect{t}}` to all the components of :math:`X_{\vect{s}}`
-          and :math:`\mat{\rho}(\vect{s}, \vect{t}) \in \cS_d^+(\Rset)`;
+          and :math:`\mat{\rho}(\vect{s}, \vect{t}) \in \cS_{\inputDim}^+(\Rset)`;
 
         - In some particular cases, the correlation is such that
           :math:`X^i_{\vect{t}}` depends only on the component
           :math:`X^i_{\vect{s}}` and that link does not depend on the component
           :math:`i`. In that case, :math:`\mat{\rho}(\vect{s}, \vect{t})` can be
           defined from the scalar function :math:`\rho(\vect{s}, \vect{t})` by
-          :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_d`.
+          :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_{\inputDim}`.
           Then, the covariance model writes:
 
 .. math::

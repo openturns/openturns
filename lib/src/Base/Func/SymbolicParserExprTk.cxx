@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymbolicParserExprTk);
+CLASSNAMEINIT(SymbolicParserExprTk)
 
 static const Factory<SymbolicParserExprTk> Factory_SymbolicParserExprTk;
 
@@ -229,12 +229,14 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
   for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
   {
     if (!symbol_table.add_variable(inputVariablesNames_[inputIndex], stack[inputIndex]))
-      throw InvalidArgumentException(HERE) << "Invalid input variable: " << inputVariablesNames_[inputIndex];
+      throw InvalidArgumentException(HERE) << "Invalid input variable: '" 
+        << inputVariablesNames_[inputIndex] << "' at index: " << inputIndex;
   }
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     if (!symbol_table.add_variable(outputVariablesNames_[outputIndex], stack[inputDimension + outputIndex]))
-      throw InvalidArgumentException(HERE) << "Invalid output variable: " << outputVariablesNames_[outputIndex];
+      throw InvalidArgumentException(HERE) << "Invalid output variable: '" 
+        << outputVariablesNames_[outputIndex] << "' at index: " << outputIndex;
   }
   exprtk::parser<Scalar> parser;
   parser.settings().set_max_stack_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth"));
@@ -246,7 +248,9 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
     expression.register_symbol_table(symbol_table);
     if (!parser.compile(formulas_[outputIndex], expression))
     {
-      throw InvalidArgumentException(HERE) << "Errors found when parsing expression '" << formulas_[outputIndex] << "': " << parser.error();
+      throw InvalidArgumentException(HERE) << "Errors found when parsing expression '" 
+        << formulas_[outputIndex] << "' at index: " 
+        << outputIndex << ": " << parser.error();
     }
     expressions[outputIndex] = new exprtk::expression<Scalar>(expression);
   }

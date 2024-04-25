@@ -18,7 +18,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-HypothesisTest.Pearson, HypothesisTest.Spearman
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.Spearman
 
 Examples
 --------
@@ -54,7 +55,8 @@ testResult : :class:`~openturns.TestResultCollection`
 
 See Also
 --------
-HypothesisTest.Pearson, HypothesisTest.PartialPearson
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.PartialPearson
 
 Notes
 -----
@@ -105,7 +107,8 @@ testResult : :class:`~openturns.TestResultCollection`
 
 See Also
 --------
-HypothesisTest.Spearman, HypothesisTest.PartialSpearman
+openturns.HypothesisTest.Spearman
+openturns.HypothesisTest.PartialSpearman
 
 Notes
 -----
@@ -151,7 +154,8 @@ testResult : :class:`~openturns.TestResultCollection`
 
 See Also
 --------
-HypothesisTest.Pearson, HypothesisTest.FullPearson
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.FullPearson
 
 Notes
 -----
@@ -202,7 +206,8 @@ testResult : :class:`~openturns.TestResultCollection`
 
 See Also
 --------
-HypothesisTest.Spearman, HypothesisTest.FullSpearman
+openturns.HypothesisTest.Spearman
+openturns.HypothesisTest.FullSpearman
 
 Notes
 -----
@@ -248,7 +253,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-HypothesisTest.Spearman
+openturns.HypothesisTest.Spearman
 
 Notes
 -----
@@ -292,7 +297,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-HypothesisTest.Pearson
+openturns.HypothesisTest.Pearson
 
 Notes
 -----

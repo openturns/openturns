@@ -22,8 +22,35 @@ the optimization step:
 
 See also
 --------
-DistributionFactory, StudentCopula
+openturns.DistributionFactory
+openturns.experimental.StudentCopula
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentCopulaFactory::buildAsStudentCopula
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsStudentCopula()
+
+    buildAsStudentCopula(*sample*)
+
+    buildAsStudentCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`openturns.experimental.StudentCopula`.
+
+Returns
+-------
+dist : :class:`~openturns.Uniform`
+    The estimated distribution as a :class:`openturns.experimental.StudentCopula`.
+    In the first usage, the default :class:`openturns.experimental.StudentCopula` distribution is built."
 
 // ---------------------------------------------------------------------
 

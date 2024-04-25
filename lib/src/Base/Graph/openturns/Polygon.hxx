@@ -85,6 +85,12 @@ public:
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Builds a polygon which fills the area between two curves */
+  static Polygon FillBetween(Sample const& dataX, Sample const& dataY1, Sample const& dataY2);
+
+  /** Builds a polygon which fills the area between two curves */
+  static Polygon FillBetween(Point const& dataX, Point const& dataY1, Point const& dataY2);
+
 protected:
   /** Check fo data validity */
   void checkData(const Sample & data) const override;

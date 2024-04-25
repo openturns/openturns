@@ -1,9 +1,6 @@
 %feature("docstring") OT::SklarCopula
 "Sklar copula.
 
-Available constructor:
-    SklarCopula(*distribution*)
-
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`

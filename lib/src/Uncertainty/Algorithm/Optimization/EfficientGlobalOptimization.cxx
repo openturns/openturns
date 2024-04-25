@@ -320,7 +320,12 @@ void EfficientGlobalOptimization::run()
     }
 
     // improvement stopping criterion
-    const Bool improvementStop = (improvementValue[0] < improvementFactor_ * std::abs(optimalValue[0]));
+    Bool improvementStop = false;
+    const Scalar improvementTerm = improvementFactor_ * std::abs(optimalValue[0]);
+    if (problem.isMinimization())
+      improvementStop = improvementValue[0] < improvementTerm;
+    else
+      improvementStop = improvementValue[0] > improvementTerm;
     if (improvementStop) LOGINFO(OSS() << "Stopped algorithm over the improvement criterion");
     exitLoop = exitLoop || improvementStop;
 

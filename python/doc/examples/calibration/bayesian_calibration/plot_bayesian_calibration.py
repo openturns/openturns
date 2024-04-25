@@ -19,7 +19,9 @@ Bayesian calibration of a computer code
 #
 # The posterior distribution is given by Bayes theorem:
 #
-# .. math::\pi(\vect\theta | \vect y) \quad \propto \quad L\left(\vect y | \vect\theta\right) \times \pi(\vect\theta):math:``
+# .. math::
+#
+#     \pi(\vect\theta | \vect y) \quad \propto \quad L\left(\vect y | \vect\theta\right) \times \pi(\vect\theta)
 #
 # where :math:`\propto` means "proportional to", regarded as a function of :math:`\vect\theta`.
 #
@@ -74,7 +76,7 @@ Bayesian calibration of a computer code
 # The following objects need to be defined in order to perform Bayesian calibration:
 #
 # - The conditional density :math:`p(y|\vect z)` must be defined as a probability distribution.
-# - The computer model must be implemented thanks to the ParametricFunction class.
+# - The computer model must be implemented thanks to the :class:`~openturns.ParametricFunction` class.
 #   This takes a value of :math:`\vect\theta` as input, and outputs the vector of model predictions :math:`\vect z`,
 #   as defined above (the vector of covariates :math:`\vect x = (x_1, \ldots, x_n)` is treated as a known constant).
 #   When doing that, we have to keep in mind that :math:`\vect z` will be used as the vector of parameters corresponding
@@ -86,6 +88,11 @@ Bayesian calibration of a computer code
 #   Again, this is implemented as a probability distribution.
 # - Metropolis-Hastings algorithm(s), possibly used in tandem with a Gibbs algorithm
 #   in order to sample from the posterior distribution of the calibration parameters.
+#
+# This example uses the :class:`~openturns.ParametricFunction` class.
+# Please read its documentation and
+# :doc:`/auto_functional_modeling/vectorial_functions/plot_parametric_function`
+# for a detailed example.
 
 # %%
 import openturns as ot

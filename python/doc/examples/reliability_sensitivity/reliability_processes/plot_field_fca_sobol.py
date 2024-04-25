@@ -21,7 +21,7 @@ Estimate Sobol indices on a field to point function
 # - Run the :class:`~openturns.experimental.FieldToPointFunctionalChaosAlgorithm` class
 # - Validate the Karhunen-Loeve decompositions of the inputs
 # - Validate the chaos metamodel between the KL coefficients and the outputs
-# - Retrieve the Sobol' indices from :class:`~openturns.FieldFunctionalChaosSobolIndices`
+# - Retrieve the Sobol' indices from :class:`openturns.experimental.FieldFunctionalChaosSobolIndices`
 #
 
 # %%
@@ -138,11 +138,9 @@ gnorm = normal.drawLogPDF(data.getMin(), data.getMax())
 bad = [l_pair[i][1] for i in range(index_bad + 1)]
 c = ot.Cloud(bad)
 c.setPointStyle("bullet")
-c.setColor("blue")
 graph.setDrawable(c, 1)
 dr = gnorm.getDrawable(0)
 dr.setLevels([beta])
-dr.setColor("red")
 dr.setLegend("99% level-set")
 graph.add(dr)
 _ = View(graph)

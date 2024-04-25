@@ -3,21 +3,20 @@
 Estimation of a stationary covariance model
 ===========================================
 
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
 stationary normal process of dimension :math:`d`. We only treat here
-the case where the domain is of dimension 1: :math:`\cD \in \Rset`
-(:math:`n=1`).
+the case where the domain is of dimension 1: :math:`\cD \in \Rset`.
 If the process is continuous, then :math:`\cD=\Rset`. In the discrete
 case, :math:`\cD` is a lattice.
 :math:`X` is supposed a second order process with zero mean. It is
 entirely defined by its covariance function
-:math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`,
+:math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{\inputDim \times \inputDim}(\Rset)`,
 defined by :math:`C^{stat}(\tau)=\Expect{X_sX_{s+\tau}^t}` for all
 :math:`s\in \cD`.
 In addition, we suppose that its spectral density function
-:math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined, where
-:math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of
-:math:`d`-dimensional positive definite hermitian matrices.
+:math:`S : \Rset \rightarrow \mathcal{H}^+(\inputDim)` is defined, where
+:math:`\mathcal{H}^+(\inputDim) \in \mathcal{M}_{\inputDim}(\Cset)` is the set of
+:math:`\inputDim`-dimensional positive definite Hermitian matrices.
 The objective is to estimate :math:`C^{stat}` from a
 field or a sample of fields from the process :math:`X`, using first
 the estimation of the spectral density function and then mapping

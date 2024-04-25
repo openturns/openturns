@@ -12,6 +12,7 @@ General mathematical functions
     :template: class.rst_t
 
     Function
+    FunctionImplementation
     SymbolicFunction
     TranslationFunction
 
@@ -40,6 +41,7 @@ Algebra of functions
     :template: class.rst_t
     DistanceToDomainFunction
     DualLinearCombinationFunction
+    IdentityFunction
 
     :template: classWithPlot.rst_t
     IndicatorFunction
@@ -117,6 +119,7 @@ Evaluation functions
     :toctree: _generated/
     :template: class.rst_t
 
+    Evaluation
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation
@@ -209,9 +212,7 @@ as Python functions.
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
-    SpecFunc.BinomialCoefficient
     SpecFunc.BitCount
-    SpecFunc.Cbrt
     SpecFunc.Clip01
     SpecFunc.Dawson
     SpecFunc.Debye
@@ -243,8 +244,6 @@ as Python functions.
     SpecFunc.IRoot
     SpecFunc.IsNormal
     SpecFunc.LambertW
-    SpecFunc.LnBeta
-    SpecFunc.LnGamma
     SpecFunc.Log1MExp
     SpecFunc.Log1p
     SpecFunc.Log2

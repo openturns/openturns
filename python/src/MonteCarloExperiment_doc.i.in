@@ -12,15 +12,16 @@ distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with an independent copula used to generate the
     set of input data.
 size : positive int
-    Number :math:`cardI` of points that will be generated in the experiment.
+    Number :math:`\sampleSize` of points that will be generated in the experiment.
 
 Notes
 -----
-MonteCarloExperiment is a random weighted design of experiments.
-The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
-independently from the distribution :math:`\mu`. The weights associated to the
-points are all equal to :math:`1/\mathrm{card}\,I`. When the :meth:`generate` method is
-recalled, the generated sample changes.
+MonteCarloExperiment is a random weighted design of experiments (see [hammersley1961]_ page 51, [lemieux2009]_ page 3).
+The :meth:`generate` method computes the nodes :math:`(\inputReal_i)_{i = 1, ..., \sampleSize}`
+by generating independent observations from the distribution :math:`\mu`. The weights associated to the
+points are all equal to :math:`w_i = \frac{1}{\sampleSize}` where :math:`\sampleSize` is the sample size. 
+When the :meth:`generate` method is
+called a second time, the generated sample changes.
 
 See also
 --------

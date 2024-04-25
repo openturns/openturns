@@ -31,7 +31,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.LinearModelResidualMean
+openturns.LinearModelTest.LinearModelResidualMean
 
 Notes
 -----
@@ -100,7 +100,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.LinearModelFisher, LinearModelTest.LinearModelHarrisonMcCabe
+openturns.LinearModelTest.LinearModelFisher
+openturns.LinearModelTest.LinearModelHarrisonMcCabe
 
 Notes
 -----
@@ -172,8 +173,9 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.LinearModelBreuschPagan, LinearModelTest.LinearModelResidualMean,
-LinearModelTest.LinearModelDurbinWatson
+openturns.LinearModelTest.LinearModelBreuschPagan
+openturns.LinearModelTest.LinearModelResidualMean
+openturns.LinearModelTest.LinearModelDurbinWatson
 
 Notes
 -----
@@ -242,8 +244,9 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.LinearModelHarrisonMcCabe, LinearModelTest.LinearModelResidualMean,
-LinearModelTest.LinearModelDurbinWatson
+openturns.LinearModelTest.LinearModelHarrisonMcCabe
+openturns.LinearModelTest.LinearModelResidualMean,
+openturns.LinearModelTest.LinearModelDurbinWatson
 
 Notes
 -----
@@ -317,7 +320,9 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.LinearModelBreuschPagan, LinearModelTest.LinearModelHarrisonMcCabe, LinearModelTest.LinearModelResidualMean
+openturns.LinearModelTest.LinearModelBreuschPagan
+openturns.LinearModelTest.LinearModelHarrisonMcCabe
+openturns.LinearModelTest.LinearModelResidualMean
 
 Notes
 -----
@@ -386,7 +391,8 @@ testResults : Collection of :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.FullRegression, LinearModelTest.LinearModelFisher
+openturns.LinearModelTest.FullRegression
+openturns.LinearModelTest.LinearModelFisher
 
 Notes
 -----
@@ -443,7 +449,8 @@ testResults : Collection of :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest.PartialRegression, LinearModelTest.LinearModelFisher
+openturns.LinearModelTest.PartialRegression
+openturns.LinearModelTest.LinearModelFisher
 
 Notes
 -----

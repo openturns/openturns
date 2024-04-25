@@ -4,15 +4,15 @@ Latin Hypercube Simulation
 --------------------------
 
 | Let us note
-  :math:`\cD_f = \{\ux \in \Rset^{n} \space | \space  g(\ux,\underline{d}) \leq 0\}`.
+  :math:`\cD_f = \{\ux \in \Rset^{\inputDim} \space | \space  \model(\ux) \leq 0\}`.
   The goal is to estimate the following probability:
 
   .. math::
 
      \begin{aligned}
-         P_f  &=& \int_{\cD_f} f_{\uX}(\ux)d\ux\\
-         &=& \int_{\Rset^{n}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux\\
-         &=& \Prob {\{\space g(\uX,\underline{d}) \leq 0 \}}
+         P_f  & = \int_{\cD_f} f_{\uX}(\ux)d\ux\\
+         & = \int_{\Rset^{\inputDim}} \mathbf{1}_{\{\model(\ux) \leq 0 \}}f_{\uX}(\ux)d\ux\\
+         & = \Prob {\{\space \model(\uX) \leq 0 \}}
        \end{aligned}
 
 | LHS or Latin Hypercube Sampling is a sampling method enabling to
@@ -37,24 +37,24 @@ Latin Hypercube Simulation
 
   .. math::
 
-    \hat{P}_{f,LHS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\uX^i,\underline{d}) \leq 0 \}}
+    \hat{P}_{f,LHS}^\sampleSize = \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{\model(\uX^i) \leq 0 \}}
 
-  where the sample of :math:`\{ \uX^i,i=1 \hdots N \}` is obtained as
+  where the sample of :math:`\{ \uX^i,i=1 \hdots \sampleSize \}` is obtained as
   described previously.
 
 | One can show that:
 
   .. math::
 
-    \Var{\hat{P}_{f,LHS}^N} \leq \frac{N}{N-1} . \Var{    \hat{P}_{f,MC}^N}
+    \Var{\hat{P}_{f,LHS}^\sampleSize} \leq \frac{\sampleSize}{\sampleSize-1} . \Var{    \hat{P}_{f,MC}^\sampleSize}
 
    where:
 
--  :math:`\Var {\hat{P}_{f,LHS}^N}` is the variance of the estimator of
+-  :math:`\Var {\hat{P}_{f,LHS}^\sampleSize}` is the variance of the estimator of
    the probability of exceeding a threshold computed by the LHS
    technique,
 
--  :math:`\Var {\hat{P}_{f,MC}^N}` is the variance of the estimator of
+-  :math:`\Var {\hat{P}_{f,MC}^\sampleSize}` is the variance of the estimator of
    the probability of exceeding a threshold computed by a crude Monte
    Carlo method.
 
@@ -63,16 +63,16 @@ Latin Hypercube Simulation
   .. math::
 
      \begin{aligned}
-         \mu_N &=& \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\underline{x}_i),\underline{d}) \leq 0 \}}\\
-         \sigma_N^2 &=& \frac{1}{N}\sum_{i=1}^N (\mathbf{1}_{\{g(\underline{x}^i),\underline{d}) \leq 0 \}} - \mu_N)^2
+         \mu_\sampleSize &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{\model(\underline{x}_i)) \leq 0 \}}\\
+         \sigma_\sampleSize^2 &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize (\mathbf{1}_{\{\model(\underline{x}^i)) \leq 0 \}} - \mu_\sampleSize)^2
        \end{aligned}
 
 the asymptotic confidence interval of order :math:`1-\alpha` associated
-to the estimator :math:`P_{f,LHS}^N` is
+to the estimator :math:`P_{f,LHS}^\sampleSize` is
 
 .. math::
 
-    [ \mu_N - \frac{q_{1-\alpha / 2} . \sigma_N}{\sqrt{N}} \space ; \space \mu_N + \frac{q_{1-\alpha / 2} . \sigma_N}{\sqrt{N}} ]
+    [ \mu_\sampleSize - \frac{q_{1-\alpha / 2} . \sigma_\sampleSize}{\sqrt{\sampleSize}} \space ; \space \mu_\sampleSize + \frac{q_{1-\alpha / 2} . \sigma_\sampleSize}{\sqrt{\sampleSize}} ]
 
 where :math:`q_{1-\alpha /2}` is the :math:`1-\alpha / 2` quantile from
 the reduced standard gaussian law :math:`\cN(0,1)`.
@@ -86,7 +86,7 @@ Sampling’.
 
 .. topic:: API:
 
-    - See :class:`~openturns.LHS`
+    - See :class:`~openturns.LHSExperiment`
 
 
 .. topic:: Examples:

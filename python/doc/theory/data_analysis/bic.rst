@@ -3,57 +3,54 @@
 Bayesian Information Criterion (BIC)
 ------------------------------------
 
-This method deals with the modelling of a probability distribution of a
-random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
-seeks to rank variable candidate distributions by using a sample of data
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_n \right\}`.
-The Bayesian Information Criterion (BIC) allows one to
-answer this question in the one dimensional case :math:`n_X =1`.
+This method can be used to rank candidate distributions with respect to data
+:math:`\left\{ \inputReal_1,\inputReal_2,\ldots,\inputReal_{\sampleSize} \right\}`.
 
-Let us consider the particular case where :math:`n_X = 1`. Thus we denote
-:math:`\vect{X} = X^1 = X`. Moreover, let us denote by
-:math:`\cM_1, \dots, \cM_K` the parametric models among the
-:ref:`parametric models <parametric_distribution_factories>`. We
-suppose here that the parameters of these models have been estimated
-previously by :ref:`Maximum Likelihood <maximum_likelihood>`
-the on the basis of the sample
-:math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_n \right\}`. We
-denote by :math:`L_i` the maximized likelihood for the model
-:math:`\cM_i`.
+We denote by :math:`\cM_1, \dots, \cM_K` the :math:`K` parametric models we want to test
+(see :ref:`parametric models <parametric_distribution_factories>`).
+We suppose here that the parameters of these models have been estimated from the sample (see
+:ref:`Maximum Likelihood <maximum_likelihood>`). We
+denote by :math:`L_i` the maximized likelihood of the sample with respect to
+the model :math:`\cM_i`.
 
 By definition of the likelihood, the higher :math:`L_i`, the better the
-model describes the sample. However, using the likelihood as a criterion
-to rank the candidate probability distributions would involve a risk:
-one would almost always favor complex models involving many parameters.
-If such models provide indeed a large numbers of degrees-of-freedom that
-can be used to fit the sample, one has to keep in mind that complex
-models may be less robust that simpler models with less parameters.
-Actually, the limited available information (:math:`n` data points) does
-not allow one to estimate robustly too many parameters.
+model describes the sample. However, relying entirely on the value of the likelihood
+runs the risk of systematically selecting the model with the most parameters. As a matter of fact,
+the greater the number of parameters, the easier it is for the distribution to adapt to the data.
 
-The BIC criterion can be used to avoid this problem. The principle is to
-rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
+The Bayesian Information Criterion (BIC) can be used to avoid this problem. It is also referred to
+in the literature as the Schwarz information criterion. It is an information criterion derived from the
+Akaike information criterion (see :ref:`aic`). Note that the library divides the BIC
+defined in the literature by the sample size, which has no impact on the selection of the best model.
+
+The BIC of the model :math:`\cM_i` is defined in the library by:
 
 .. math::
 
    \begin{aligned}
-       \textrm{BIC}_i = -2 \frac{\log(L_i)}{n} + \frac{p_i \log(n)}{n}
+       \operatorname{BIC}(\cM_i) = -2 \frac{\log(L_i)}{\sampleSize} + \frac{k_i \log(\sampleSize)}{\sampleSize}
      \end{aligned}
 
-where :math:`p_i` denotes the number of parameters being adjusted for
-the model :math:`\cM_i`. The smaller the :math:`\textrm{BIC}_i`, the better
-the model. Note that the idea is to introduce a penalization term that
+where :math:`k_i \in \Nset` denotes the number of parameters of the model :math:`\cM_i`
+that have been inferred from the sample. The smaller :math:`\textrm{BIC}(\cM_i)`, the better
+the model:
+
+.. math::
+
+   \cM_{\operatorname{BIC}} = \argmin_{\cM_i \in \{\cM_1, ..., \cM_K\}} \operatorname{BIC}(\cM_i)
+
+The idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
-The term "Bayesian Information Criterion" comes the interpretation of
-the quantity :math:`\textrm{BIC}_i`. In a bayesian context, the unknown
+The term "Bayesian Information Criterion" comes from the interpretation of
+the quantity :math:`\operatorname{BIC}(\cM_i)`. In a Bayesian context, the unknown
 "true" model may be seen as a random variable. Suppose now that the user
 does not have any informative prior information on which model is more
 relevant among :math:`\cM_1, \dots, \cM_K`; all the models are thus
 equally likely from the point of view of the user. Then, one can show
-that :math:`\textrm{BIC}_i` is an approximation of the posterior
+that :math:`\operatorname{BIC}(\cM_i)` is an approximation of the posterior
 distribution's logarithm for the model :math:`\cM_i`.
 
 This criterion is a valuable criterion to reject
@@ -61,6 +58,7 @@ a model which is not relevant, but can be tricky to interpret in
 some cases.
 For example, if two models have very close BIC, these two models should
 be considered instead of keeping only the model which has the lowest BIC.
+
 
 .. topic:: API:
 

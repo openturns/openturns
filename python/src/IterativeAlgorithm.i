@@ -9,14 +9,5 @@
 OTTypedInterfaceObjectHelper(IterativeAlgorithm)
 
 %include openturns/IterativeAlgorithm.hxx
-namespace OT {
-%extend IterativeAlgorithm {
 
-IterativeAlgorithm(const IterativeAlgorithm & other)
-{
-return new OT::IterativeAlgorithm(other);
-}
-
-} // IterativeAlgorithm
-} // OT
-
+%copyctor OT::IterativeAlgorithm;

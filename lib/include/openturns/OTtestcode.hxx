@@ -37,6 +37,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/ProcessSample.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -404,6 +407,28 @@ inline void assert_almost_equal(const Distribution &a, const Distribution &b, co
     throw InvalidArgumentException(HERE) << "A and B must have the same number of parameters. A has " << a.getParameterDimension() << " parameters whereas B has " << b.getParameterDimension() << " parameters.";
 
   assert_almost_equal(a.getParameter(), b.getParameter(), rtol, atol, errMsg);
+}
+
+inline void assert_almost_equal(const Mesh & a, const Mesh & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  assert_almost_equal(a.getVertices(), b.getVertices(), rtol, atol, errMsg);
+  if (a.getSimplices() != b.getSimplices())
+    throw InvalidArgumentException(HERE) << "A and B must have the same simplices";
+}
+
+inline void assert_almost_equal(const Field & a, const Field & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  assert_almost_equal(a.getMesh(), b.getMesh(), rtol, atol, errMsg);
+  assert_almost_equal(a.getValues(), b.getValues(), rtol, atol, errMsg);
+}
+
+inline void assert_almost_equal(const ProcessSample & a, const ProcessSample & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  assert_almost_equal(a.getMesh(), b.getMesh(), rtol, atol, errMsg);
+  if (a.getSize() != b.getSize())
+    throw InvalidArgumentException(HERE) << "A and B must have the same size";
+  for (UnsignedInteger j = 0; j < a.getSize(); ++j)
+    assert_almost_equal(a.getField(j).getValues(), b.getField(j).getValues(), rtol, atol, errMsg);
 }
 
 template <typename T>

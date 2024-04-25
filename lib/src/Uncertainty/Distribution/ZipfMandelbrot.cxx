@@ -36,9 +36,6 @@ static const Factory<ZipfMandelbrot> Factory_ZipfMandelbrot;
 ZipfMandelbrot::ZipfMandelbrot()
   : DiscreteDistribution()
   , harmonicNumbers_(0)
-  , n_(1)
-  , q_(0.0)
-  , s_(1.0)
 {
   setName("ZipfMandelbrot");
   // We set the dimension of the ZipfMandelbrot distribution
@@ -343,7 +340,7 @@ void ZipfMandelbrot::load(Advocate & adv)
 
 
 /* Method getHarmonicNumbers returns the k-th harmonic number for the current distribution */
-Scalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedInteger k ) const
+Scalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedInteger k) const
 {
   if (k < 1) throw InvalidArgumentException(HERE) << "k must be >= 1" ;
   if (k > n_) throw InvalidArgumentException(HERE) << "k must be <= N";

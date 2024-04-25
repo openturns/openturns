@@ -79,7 +79,7 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  /** Check fo data validity */
+  /** Check for data validity */
   void checkData(const Sample & data) const override;
 
 private:

@@ -3,53 +3,57 @@
 Copulas
 -------
 
-| In this part, we will define the concept of copula.
-
-| To define the joined probability density function of the random input
-  vector :math:`\uX` by composition, one needs:
-
--  the specification of the copula of interest :math:`C` with its
-   parameters,
-
--  the specification of the :math:`{n_X}` marginal laws of interest
-   :math:`F_{X_i}` of the :math:`{n_X}` input variables :math:`X_i`.
-
-The joined cumulative density function is therefore defined by:
+Let :math:`F` be a multivariate distribution function of dimension
+:math:`\inputDim` whose marginal distribution functions are
+:math:`F_1,\dots,F_{\inputDim}`. There exists a copula
+:math:`C: [0,1]^{\inputDim} \mapsto [0,1]` of dimension :math:`\inputDim` such that for :math:`\vect{x}\in \Rset^{\inputDim}`, we have:
 
 .. math::
 
    \begin{aligned}
-       \Prob{X^1 \leq x^1, X^2 \leq x^2, \cdots, X^{n_X} \leq x^{n_X}}       = C\left(F_{X^1}(x^1),F_{X^2}(x^2),\cdots,F_{X^{n_X}}(x^{n_X}) \right)
-     \end{aligned}
+       F(\vect{x})  = C \left( F_1(x_1),\cdots,F_{\inputDim}(x_{\inputDim}) \right)
+    \end{aligned}
 
-| Copulas allow one to represent the part of the joined cumulative density
-  function which is not described by the marginal laws. It enables to
-  represent the dependency structure of the input variables. A copula is
-  a special cumulative density function defined on :math:`[0,1]^{n_X}`
-  whose marginal distributions are uniform on :math:`[0,1]`. The choice
-  of the dependence structure is disconnected from the choice of the
-  marginal distributions.
-| A copula, restricted to :math:`[0,1]^{n_X}` is a
-  :math:`n_U`-dimensional cumulative density function with uniform
-  marginals.
+where :math:`F_i` is the cumulative distribution function of the margin  :math:`X_i`.
 
--  :math:`C(\vect{u}) \geq 0`,
-   :math:`\forall \vect{u} \in [0,1]^{n_U}`
+In the case of continuous marginal distributions, for all :math:`\vect{u}\in[0,1]^{\inputDim}`, the copula is uniquely defined by:
 
--  :math:`C(\vect{u}) = u_i`,
-   :math:`\forall \vect{u}=(1,\ldots,1,u_i,1,\ldots,1)`
+.. math::
 
--  For all :math:`N`-box
-   :math:`\cB = [a_1,b_1] \times \cdots \times [a_{n_U},b_{n_U}] \in [0,1]^{n_U}`,
-   we have :math:`\cV_C(\cB) \geq 0`, where:
+   \begin{aligned}
+   C(\vect{u}) & = F(F_1^{-1}(u_1),\hdots,F_{\inputDim}^{-1}(u_{\inputDim}))\\
+          & = \Prob{U_1 \leq u_1, \hdots, U_{\inputDim} \leq u_{\inputDim}}
+    \end{aligned}
 
-   -  :math:`\cV_C(\cB) = \sum_{i=1,\cdots, 2^{n_U}} \sgn(\vect{v}_i) \times C(\vect{v}_i)`,
-      the summation being made over the :math:`2^{n_U}` vertices
-      :math:`\vect{v}_i` of :math:`\cB`.
+where :math:`U_i = F_i(X_i)` is a random variable following the uniform distribution on :math:`[0,1]`.
 
-   -  | :math:`\sgn(\vect{v}_i)= +1` if :math:`v_i^k = a_k` for an
-        even number of :math:`k's`, :math:`\sgn(\vect{v}_i)= -1`
-        otherwise.
+A copula of dimension :math:`\inputDim` is the restriction to the unit cube :math:`[0,1]^{\inputDim}` of a
+multivariate distribution function with uniform univariate marginals on :math:`[0,1]`.
+It has the following properties:
+
+- :math:`\forall \vect{u},\vect{v}\in[0,1]^{\inputDim}, |C(\vect{u})-C(\vect{v})|\leq \sum_{i=1}^{\inputDim} |u_i-v_i|`,
+
+- for all :math:`\vect{u}` with at least one component equal to 0, :math:`C(\vect{u})=0`,
+
+- :math:`C` is :math:`\inputDim`-increasing which means that:
+
+  .. math::
+
+   \sum_{i_1=1}^2 \dots \sum_{i_{\inputDim}=1}^2 (-1)^{i_1 + \dots + i_{\inputDim}} C(x_{1i_1}, \dots, x_{\inputDim i_{\inputDim}})\geq 0
+
+
+where :math:`x_{j1}=a_j` and :math:`x_{j2}=b_j` for all :math:`j \in \{1,\dots,\inputDim\}` and
+:math:`\vect{a}`, :math:`\vect{b}\in[0,1]^{\inputDim}`, :math:`\vect{a}\leq \vect{b}`,
+
+-  :math:`\vect{u}` with all its components equal to 1 except  :math:`u_k`,
+   :math:`C(\vect{u})=u_k`.
+
+
+The copula represents the part of the joint cumulative density function which is not described by the
+marginal distributions. It models the dependence structure of the input variables.
+
+Note that a multivariate distribution is characterized by its marginal distributions and its copula.
+Therefore, a multivariate distribution can be built by choosing the marginals and the copula independently.
 
 .. topic:: API:
 

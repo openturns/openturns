@@ -8,6 +8,8 @@
 
 %include openturns/GridLayout.hxx
 
+%copyctor OT::GridLayout;
+
 %pythoncode %{
 def GridLayout__repr_png_(self):
     """Get the PNG representation."""
@@ -30,6 +32,3 @@ def GridLayout__repr_html_(self):
     raise NotImplementedError
 GridLayout._repr_html_ = Drawable__repr_html_
 %}
-
-namespace OT { %extend GridLayout { GridLayout(const GridLayout & other) { return new OT::GridLayout(other); } } }  
-

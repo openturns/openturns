@@ -60,6 +60,20 @@ public:
 
   /** Accessor to results */
   CrossEntropyResult getResult() const;
+  
+    /** Stepwise result accessors */
+  Point getThresholdPerStep() const;
+  
+  /** Accessor to the achieved number of steps */
+  UnsignedInteger getStepsNumber() const;
+  
+  /** Keep event sample */
+  void setKeepSample(const Bool keepSample);
+   
+  /** Input/output sample accessor according to select flag */
+  enum SelectSample {EVENT0, EVENT1, BOTH};
+  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
 protected:
 
@@ -75,6 +89,9 @@ protected:
   /** Function updating the auxiliary distribution with initial parameters (in case of multiple runs of algorithm) */
   virtual void resetAuxiliaryDistribution();
 
+  /** Select sample indices according to status */
+  Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
+
   // Initial distribution
   Distribution initialDistribution_;
 
@@ -86,6 +103,15 @@ protected:
 
   // Result of CrossEntropyImportanceSampling algorithm
   CrossEntropyResult crossEntropyResult_;
+  
+  // some results
+  UnsignedInteger numberOfSteps_ = 0;// number of subset steps
+  Point thresholdPerStep_;// intermediate thresholds
+
+  // keep samples generated at each step
+  Bool keepSample_ = false;
+  PersistentCollection<Sample> inputSample_;
+  PersistentCollection<Sample> outputSample_;
 
 }; /* class CrossEntropyImportanceSampling */
 

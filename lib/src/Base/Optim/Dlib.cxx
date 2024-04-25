@@ -806,7 +806,7 @@ void Dlib::run()
     result_.setStatusMessage(OSS() << "Dlib optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCEEDED)
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving optimization problem with Dlib failed (" << result_.getStatusMessage() << ")";

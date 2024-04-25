@@ -107,7 +107,7 @@ class OpenTURNSPythonFunction:
     Examples
     --------
     >>> import openturns as ot
-    >>> class FUNC(OpenTURNSPythonFunction):
+    >>> class FUNC(ot.OpenTURNSPythonFunction):
     ...     def __init__(self):
     ...         super(FUNC, self).__init__(2, 1)
     ...         self.setInputDescription(['R', 'S'])

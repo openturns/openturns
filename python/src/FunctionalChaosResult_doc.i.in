@@ -128,7 +128,7 @@ indices : :class:`~openturns.Indices`
 Returns
 -------
 invTransf : :class:`~openturns.Function`
-     :math:`T^{-1}` such that :math:`T(\vect{X}) = \vect{Z}`."
+     :math:`T^{-1}` such that :math:`T^{-1}(\vect{Z}) = \vect{X}`."
 
 // ---------------------------------------------------------------------
 

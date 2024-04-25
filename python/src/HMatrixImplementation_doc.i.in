@@ -133,7 +133,7 @@ Available usages:
 
 Parameters
 ----------
-f : :class:`~openturns.HMatrixRealAssemblyFunction` or :class:`~openturns.HMatrixTensorRealAssemblyFunction`
+f : callable
     Assembly function.
 parameters : :class:`~openturns.HMatrixParameters`
     Parameters used within HMatrix 

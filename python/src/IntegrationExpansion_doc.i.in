@@ -38,7 +38,7 @@ basisSize : int, optional
 
 See also
 --------
-LeastSquaresExpansion, FunctionalChaosAlgorithm, IntegrationMethod
+LeastSquaresExpansion, FunctionalChaosAlgorithm, LeastSquaresMethod
 
 Examples
 --------

@@ -300,6 +300,13 @@ GridLayout ProcessSample::drawCorrelation() const
   return getImplementation()->drawCorrelation();
 }
 
+/* Comparison operator */
+Bool ProcessSample::operator ==(const ProcessSample & other) const
+{
+  return *getImplementation() == *(other.getImplementation());
+}
+
+/* In place sum operator between process sample and sample */
 ProcessSample & ProcessSample::operator += (const Sample & translation)
 {
   copyOnWrite();
@@ -307,12 +314,94 @@ ProcessSample & ProcessSample::operator += (const Sample & translation)
   return *this;
 }
 
+/* In place difference operator between process sample and sample */
 ProcessSample & ProcessSample::operator -= (const Sample & translation)
 {
   copyOnWrite();
   getImplementation()->operator -=(translation);
   return *this;
 }
+
+/* In place sum operator between process sample and point */
+ProcessSample & ProcessSample::operator += (const Point & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(translation);
+  return *this;
+}
+
+/* In place difference operator between process sample and point */
+ProcessSample & ProcessSample::operator -= (const Point & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(translation);
+  return *this;
+}
+
+/* In place sum operator between process sample and process sample */
+ProcessSample & ProcessSample::operator += (const ProcessSample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(*translation.getImplementation());
+  return *this;
+}
+
+/* In place difference operator between process sample and process sample */
+ProcessSample & ProcessSample::operator -= (const ProcessSample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(*translation.getImplementation());
+  return *this;
+}
+
+/* Sum operator between process sample and sample */
+ProcessSample ProcessSample::operator + (const Sample & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample += translation;
+  return processSample;
+}
+
+/* Difference operator between process sample and sample */
+ProcessSample ProcessSample::operator - (const Sample & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample -= translation;
+  return processSample;
+}
+
+/* Sum operator between process sample and point */
+ProcessSample ProcessSample::operator + (const Point & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample += translation;
+  return processSample;
+}
+
+/* Difference operator between process sample and point */
+ProcessSample ProcessSample::operator - (const Point & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample -= translation;
+  return processSample;
+}
+
+/* Sum operator between process sample and process sample */
+ProcessSample ProcessSample::operator + (const ProcessSample & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample += translation;
+  return processSample;
+}
+
+/* Difference operator between process sample and process sample */
+ProcessSample ProcessSample::operator - (const ProcessSample & translation) const
+{
+  ProcessSample processSample(getImplementation());
+  processSample -= translation;
+  return processSample;
+}
+
 
 Sample ProcessSample::getSampleAtVertex(const UnsignedInteger index) const
 {

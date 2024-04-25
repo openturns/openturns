@@ -30,7 +30,7 @@ namespace OT {
 
 %include MultiStart_doc.i
 
-%template(_OptimizationResultCollection) OT::Collection<OT::OptimizationResult>;
+%template(OptimizationResultCollection) OT::Collection<OT::OptimizationResult>;
 
 %copyctor OT::MultiStart;
 

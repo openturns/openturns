@@ -24,8 +24,8 @@ ccdf=0.996347
 survival=0.996347
 quantile=class=Point name=Unnamed dimension=1 values=[13]
 cdf(quantile)=0.964732
-quantile (tail)=class=Point name=Unnamed dimension=1 values=[6]
-cdf (tail)=0.984757
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[7]
+cdf (tail)=0.949987
 characteristic function=(0.0107296,-0.0674204)
 log characteristic function=(-2.6843,-13.9793)
 generating function=(0.00258535,-0.00490073)
@@ -42,4 +42,4 @@ spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplement
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[n : 15, p : 0.7]]
 Standard representative=Binomial(n = 15, p = 0.7)
-95% bilateral confidence interval = [7, 13]
+95% bilateral confidence interval = [7, 14]

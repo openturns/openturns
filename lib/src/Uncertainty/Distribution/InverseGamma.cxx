@@ -172,7 +172,7 @@ void InverseGamma::update()
   // For small k, the normalization factor is:
   // normalizationFactor = log(lambda/Gamma(k))
   //                     = log(lambda) - log(Gamma(k))
-  else normalizationFactor_ = std::log(lambda_) - SpecFunc::LnGamma(k_);
+  else normalizationFactor_ = std::log(lambda_) - SpecFunc::LogGamma(k_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }

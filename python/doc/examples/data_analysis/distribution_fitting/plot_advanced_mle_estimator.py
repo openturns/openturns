@@ -38,7 +38,7 @@ size = 10000
 sample = distribution.getSample(size)
 
 # %%
-# We can use the :class:`TruncatedNormalFactory` class.
+# We can use the :class:`~openturns.TruncatedNormalFactory` class.
 factory = ot.TruncatedNormalFactory()
 fittedDistribution = factory.build(sample)
 print("Fitted distribution=", fittedDistribution)
@@ -170,7 +170,7 @@ printTruncatedNormalParameters(distribution_MLE)
 # -----------------------------------
 
 # %%
-# Another method is to use a special key of the :class:`ResourceMap`,
+# Another method is to use a special key of the :class:`~openturns.ResourceMap`,
 # which defines the default solver used by :class:`~openturns.MaximumLikelihoodFactory`.
 # In this case, we do not define the starting point.
 
@@ -240,7 +240,7 @@ print("   fittedDistribution = ", fittedDistribution)
 
 # %%
 # In the next script, we perform a loop over the algorithms
-# from the :class:`NLopt` class and select the algorithms
+# from the :class:`~openturns.NLopt` class and select the algorithms
 # which can solve the problem.
 # This is done using `try/except` statements.
 # Moreover, some solvers pretend to solve the problem, but do

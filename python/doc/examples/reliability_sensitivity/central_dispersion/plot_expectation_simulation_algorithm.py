@@ -5,7 +5,8 @@ Evaluate the mean of a random vector by simulations
 # %%
 # Abstract
 # --------
-# We introduce the :class:`ExpectationSimulationAlgorithm` class which implements an incremental Monte Carlo sampling algorithm to estimate the mean of a random vector.
+# We introduce the :class:`~openturns.ExpectationSimulationAlgorithm` class which implements
+# an incremental Monte Carlo sampling algorithm to estimate the mean of a random vector.
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
@@ -62,7 +63,7 @@ view = otv.View(graphConvergence)
 
 # %%
 # The result obtained with the previous algorithm is an instance of the
-# :class:~openturns.ExpectationSimulationResult` class.
+# :class:`~openturns.ExpectationSimulationResult` class.
 
 # %%
 # The expected value of the mean is given by the `getExpectationEstimate` method :

@@ -58,10 +58,6 @@ public:
   Point integrate(const Function & function,
                   const Interval & interval) const override;
 
-  Point integrate(const Function & function,
-                  const Scalar omega,
-                  const Interval & interval) const;
-
   /** N accessor */
   UnsignedInteger getN() const;
   void setN(const UnsignedInteger n);

@@ -235,23 +235,34 @@ public:
                                       const char uplo = 'L') const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
-  Scalar computeLogAbsoluteDeterminantSym(Scalar & signOut,
-                                          const Bool keepIntact = true);
-  Scalar computeDeterminantSym(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
+
+  Scalar computeLogAbsoluteDeterminantSym(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantSymInPlace(Scalar & signOut);
+
+  Scalar computeDeterminantSym() const;
+  Scalar computeDeterminantSymInPlace();
 
   /** Compute trace */
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  ComplexCollection computeEVSquare(ComplexMatrixImplementation & vOut,
-                                    const Bool keepIntact = true);
-  Point computeEigenValuesSym(const Bool keepIntact = true);
-  Point computeEVSym(MatrixImplementation & vOut,
-                     const Bool keepIntact = true);
+  ComplexCollection computeEigenValuesSquare() const;
+  ComplexCollection computeEigenValuesSquareInPlace();
+
+  ComplexCollection computeEVSquare(ComplexMatrixImplementation & vOut) const;
+  ComplexCollection computeEVSquareInPlace(ComplexMatrixImplementation & vOut);
+
+  Point computeEigenValuesSym() const;
+  Point computeEigenValuesSymInPlace();
+
+  Point computeEVSym(MatrixImplementation & vOut) const;
+  Point computeEVSymInPlace(MatrixImplementation & vOut);
+
   /** Compute the largest eigenvalue module using power iterations */
   Bool computeLargestEigenValueModuleSquare(Scalar & maximumModule,
       const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
@@ -261,13 +272,16 @@ public:
                                          const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Compute singular values */
-  Point computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues() const;
+  Point computeSingularValuesInPlace ();
 
   /** Build the singular value decomposition */
   Point computeSVD(MatrixImplementation & uOut,
                    MatrixImplementation & vTOut,
-                   const Bool fullSVD = false,
-                   const Bool keepIntact = true);
+                   const Bool fullSVD = false) const;
+  Point computeSVDInPlace(MatrixImplementation & uOut,
+                          MatrixImplementation & vTOut,
+                          const Bool fullSVD = false);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;
@@ -284,7 +298,8 @@ public:
   virtual MatrixImplementation cleanSym(const Scalar threshold) const;
 
   /** Build the Cholesky factorization of the matrix */
-  virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
+  virtual MatrixImplementation computeCholesky() const;
+  virtual MatrixImplementation computeCholeskyInPlace();
 
   /** Build the regularized Cholesky factorization of the matrix */
   virtual MatrixImplementation computeRegularizedCholesky() const;
@@ -300,9 +315,8 @@ public:
 #endif
 
   /** Build the QR factorization of the matrix */
-  virtual MatrixImplementation computeQR(MatrixImplementation & ROut,
-                                         const Bool fullQR = false,
-                                         const Bool keepIntact = true);
+  virtual MatrixImplementation computeQR(MatrixImplementation & ROut, const Bool fullQR = false) const;
+  virtual MatrixImplementation computeQRInPlace(MatrixImplementation & ROut, const Bool fullQR = false);
 
   /** Compute the Gram matrix associated to the matrix. If transpose == true, compute M^T.M, else M.M^T. */
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;

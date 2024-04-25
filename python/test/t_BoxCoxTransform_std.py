@@ -40,6 +40,9 @@ print(myRealization)
 print("output time series = ")
 print(myBoxCox(myRealization))
 
+print("gradient=", myBoxCox.gradient([0.5]))
+print("hessian=", myBoxCox.hessian([0.5]))
+
 # Call the getInverse method
 myInverseBoxCox = myBoxCox.getInverse()
 print("myInverseBoxCox = ", myInverseBoxCox)
