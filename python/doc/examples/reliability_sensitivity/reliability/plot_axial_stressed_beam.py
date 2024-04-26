@@ -142,14 +142,14 @@ view = viewer.View(graph)
 
 # %%
 # We create a NearestPoint algorithm
-myCobyla = ot.Cobyla()
+myalgoOptim = ot.NLopt('LN_AUGLAG_EQ')
 # Resolution options:
-eps = 1e-3
-myCobyla.setMaximumCallsNumber(100)
-myCobyla.setMaximumAbsoluteError(eps)
-myCobyla.setMaximumRelativeError(eps)
-myCobyla.setMaximumResidualError(eps)
-myCobyla.setMaximumConstraintError(eps)
+eps = 1e-2
+myalgoOptim.setMaximumCallsNumber(100)
+myalgoOptim.setMaximumAbsoluteError(eps)
+myalgoOptim.setMaximumRelativeError(eps)
+myalgoOptim.setMaximumResidualError(eps)
+myalgoOptim.setMaximumConstraintError(eps)
 
 # %%
 # For statistics about the algorithm
@@ -159,7 +159,7 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 # We create a FORM algorithm. The first parameter is a NearestPointAlgorithm. The second parameter is an event. The third parameter is a starting point for the design point research.
 
 # %%
-algoFORM = ot.FORM(myCobyla, myEvent, myDistribution.getMean())
+algoFORM = ot.FORM(myalgoOptim, myEvent, myDistribution.getMean())
 
 # %%
 # Perform the analysis.
