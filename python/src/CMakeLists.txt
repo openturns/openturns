@@ -1025,9 +1025,9 @@ ot_add_python_module(experimental experimental_module.i
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                      PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
-		     SamplePartition.i SamplePartition_doc.i.in
+                     SamplePartition.i SamplePartition_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
-		             SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
+                     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
@@ -1038,6 +1038,7 @@ ot_add_python_module(experimental experimental_module.i
                      SimplicialCubature.i SimplicialCubature_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
+                     ExperimentIntegration.i ExperimentIntegration_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

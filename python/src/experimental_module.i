@@ -47,6 +47,7 @@
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
+%include ExperimentIntegration.i
 
 /* Uncertainty */
 %import bayesian_module.i

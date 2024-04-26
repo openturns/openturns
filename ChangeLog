@@ -13,6 +13,7 @@
  * SamplePartition (openturns.experimental)
  * PointToFieldFunctionalChaosAlgorithm (openturns.experimental)
  * CubaIntegration (openturns.experimental)
+ * ExperimentIntegration (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated Pagmo.setGenerationNumber

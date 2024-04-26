@@ -11,6 +11,10 @@ distribution : :class:`~openturns.Distribution`
 size : positive int
     Number :math:`\sampleSize` of points that will be generated in the experiment.
 
+See also
+--------
+openturns.experimental.ExperimentIntegration
+
 Notes
 -----
 This class is used to generate nodes and their associated weights
@@ -72,7 +76,10 @@ which are in three groups:
 
 3. The deterministic patterns or *quadrature rules* e.g.
    :class:`Gauss product <openturns.GaussProductExperiment>`.
-   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`."
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
+
+In order to estimate the expectation of the model using the nodes and weights,
+we suggest to use the :class:`~openturns.experimental.ExperimentIntegration` class."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation
 OT_WeightedExperiment_doc
