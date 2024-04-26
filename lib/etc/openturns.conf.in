@@ -278,6 +278,31 @@
   <Solver-DefaultResidualError             value_float="0.0   "        />
   <Solver-DefaultMaximumFunctionEvaluation value_int="100" />
 
+  <!-- OT::CubaIntegration parameters -->
+  <CubaIntegration-DefaultMaximumAbsoluteError value_float="1.0e-4" />
+  <CubaIntegration-DefaultMaximumRelativeError value_float="1.0e-4" />
+  <CubaIntegration-divonne-border value_float="0.0" />
+  <CubaIntegration-divonne-maxchisq value_float="10.0" />
+  <CubaIntegration-divonne-mindeviation value_float="0.25" />
+  <CubaIntegration-suave-flatness value_float="25.0" />
+  <CubaIntegration-DefaultMaximumCallsNumber value_int="1000000" />
+  <CubaIntegration-mineval value_int="0" />
+  <CubaIntegration-seed value_int="0" />
+  <CubaIntegration-flags value_int="0" />
+  <CubaIntegration-cuhre-key value_int="0" />
+  <CubaIntegration-divonne-key1 value_int="47" />
+  <CubaIntegration-divonne-key2 value_int="1" />
+  <CubaIntegration-divonne-key3 value_int="1" />
+  <CubaIntegration-divonne-maxpass value_int="5" />
+  <CubaIntegration-divonne-ngiven value_int="0" />
+  <CubaIntegration-divonne-nextra value_int="0" />
+  <CubaIntegration-suave-nnew value_int="1000" />
+  <CubaIntegration-suave-nmin value_int="2" />
+  <CubaIntegration-vegas-nstart value_int="1000" />
+  <CubaIntegration-vegas-nincrease value_int="500" />
+  <CubaIntegration-vegas-nbatch value_int="1000" />
+  <CubaIntegration-vegas-gridno value_int="0" />
+
   <!-- OT::GaussKronrod parameters -->
   <GaussKronrod-MaximumError        value_float="1.0e-12"       />
   <GaussKronrod-MaximumSubIntervals value_int="100" />

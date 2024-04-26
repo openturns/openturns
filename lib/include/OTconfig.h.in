@@ -113,6 +113,9 @@
 /* Define to 1 if the system has Boost libraries. */
 #cmakedefine OPENTURNS_HAVE_BOOST
 
+/* Define to 1 if the system has Cuba libraries. */
+#cmakedefine OPENTURNS_HAVE_CUBA
+
 /* Define to 1 if the system has MPFR libraries. */
 #cmakedefine OPENTURNS_HAVE_MPFR
 

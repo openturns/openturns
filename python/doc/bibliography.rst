@@ -144,6 +144,9 @@ Bibliography
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
+.. [hahn2005] Thomas Hahn, *Cuba — a library for multidimensional numerical integration*
+    Computer Physics Communications, 168(2), 78-95.
+    `pdf <https://arxiv.org/pdf/hep-ph/0404043>`
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
     approximate matrix decompositions*,

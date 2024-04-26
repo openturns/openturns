@@ -12,6 +12,7 @@
  * GeneralizedParetoValidation (openturns.experimental)
  * SamplePartition (openturns.experimental)
  * PointToFieldFunctionalChaosAlgorithm (openturns.experimental)
+ * CubaIntegration (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated Pagmo.setGenerationNumber

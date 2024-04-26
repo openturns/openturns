@@ -903,6 +903,31 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Solver-DefaultResidualError",  0.0   );
   addAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation", 100);
 
+  // CubaIntegration parameters //
+  addAsScalar("CubaIntegration-DefaultMaximumAbsoluteError", 1.0e-4);
+  addAsScalar("CubaIntegration-DefaultMaximumRelativeError", 1.0e-4);
+  addAsScalar("CubaIntegration-divonne-border", 0.0);
+  addAsScalar("CubaIntegration-divonne-maxchisq", 10.0);
+  addAsScalar("CubaIntegration-divonne-mindeviation", 0.25);
+  addAsScalar("CubaIntegration-suave-flatness", 25.0);
+  addAsUnsignedInteger("CubaIntegration-DefaultMaximumCallsNumber", 1000000);
+  addAsUnsignedInteger("CubaIntegration-mineval", 0);
+  addAsUnsignedInteger("CubaIntegration-seed", 0);
+  addAsUnsignedInteger("CubaIntegration-cuhre-key", 0);
+  addAsUnsignedInteger("CubaIntegration-flags", 0);
+  addAsUnsignedInteger("CubaIntegration-divonne-key1", 47);
+  addAsUnsignedInteger("CubaIntegration-divonne-key2", 1);
+  addAsUnsignedInteger("CubaIntegration-divonne-key3", 1);
+  addAsUnsignedInteger("CubaIntegration-divonne-maxpass", 5);
+  addAsUnsignedInteger("CubaIntegration-divonne-ngiven", 0);
+  addAsUnsignedInteger("CubaIntegration-divonne-nextra", 0);
+  addAsUnsignedInteger("CubaIntegration-suave-nnew", 1000);
+  addAsUnsignedInteger("CubaIntegration-suave-nmin", 2);
+  addAsUnsignedInteger("CubaIntegration-vegas-nstart", 1000);
+  addAsUnsignedInteger("CubaIntegration-vegas-nincrease", 500);
+  addAsUnsignedInteger("CubaIntegration-vegas-nbatch", 1000);
+  addAsUnsignedInteger("CubaIntegration-vegas-gridno", 0);
+
   // GaussKronrod parameters //
   addAsScalar("GaussKronrod-MaximumError",  1.0e-12);
   addAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100);

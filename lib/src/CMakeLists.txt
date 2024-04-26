@@ -71,6 +71,11 @@ if (Spectra_FOUND)
   set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+# Exclude cuba sources
+if (Cuba_FOUND)
+  set_source_files_properties (Base/Algo/CubaIntegration.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})
   set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)
