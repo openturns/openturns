@@ -49,7 +49,6 @@ SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   setEvent(event);
 }
 
-
 /* Virtual constructor */
 SystemFORM * SystemFORM::clone() const
 {
@@ -61,7 +60,6 @@ MultiFORMResult SystemFORM::getResult() const
 {
   return multiFORMResult_;
 }
-
 
 /* String converter */
 String SystemFORM::__repr__() const

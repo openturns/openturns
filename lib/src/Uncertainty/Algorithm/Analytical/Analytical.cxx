@@ -51,7 +51,6 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
 }
 
-
 /* Virtual constructor */
 Analytical * Analytical::clone() const
 {

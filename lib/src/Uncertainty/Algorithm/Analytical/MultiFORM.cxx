@@ -52,7 +52,6 @@ MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
   // Nothing to do
 }
 
-
 /* Virtual constructor */
 MultiFORM * MultiFORM::clone() const
 {
@@ -65,7 +64,6 @@ MultiFORMResult MultiFORM::getResult() const
   return multiFORMResult_;
 }
 
-
 /* String converter */
 String MultiFORM::__repr__() const
 {
@@ -75,7 +73,6 @@ String MultiFORM::__repr__() const
       << " result=" << multiFORMResult_;
   return oss;
 }
-
 
 /* Function that computes the design point by re-using the Analytical::run() and creates a MultiFORMResult */
 void MultiFORM::run()

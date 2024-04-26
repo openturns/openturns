@@ -48,7 +48,6 @@ FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   // Nothing to do
 }
 
-
 /* Virtual constructor */
 FORM * FORM::clone() const
 {
@@ -66,7 +65,6 @@ void FORM::setResult(const FORMResult & formResult)
 {
   formResult_ = formResult;
 }
-
 
 /* String converter */
 String FORM::__repr__() const
