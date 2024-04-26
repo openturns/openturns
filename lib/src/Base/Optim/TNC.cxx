@@ -213,7 +213,9 @@ void TNC::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
-  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
+  if (returnCode == TNC_MAXFUN)
+    result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+  else if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
 
   // check for timeout

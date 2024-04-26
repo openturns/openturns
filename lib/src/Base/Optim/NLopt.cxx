@@ -344,12 +344,13 @@ void NLopt::run()
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
   if (rc == nlopt::MAXTIME_REACHED)
     result_.setStatus(OptimizationResult::TIMEOUT);
+  else if ((rc == nlopt::MAXEVAL_REACHED) && (algoName_[0] != 'G')) // global algorithms never converge, do not return an error
+    result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if (rc == nlopt::FORCED_STOP)
     result_.setStatus(OptimizationResult::INTERRUPTION);
   else if (rc < 0)
     result_.setStatus(OptimizationResult::FAILURE);
 
-  
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())

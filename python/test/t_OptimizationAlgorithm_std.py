@@ -18,9 +18,9 @@ for minimization in [True, False]:
         if ineq:
             h = ot.SymbolicFunction(["x1", "x2"], ["5-x1", "x2+5"])
             problem.setInequalityConstraint(h)
-        algoNames = ot.OptimizationAlgorithm.GetAlgorithmNames(problem)
-        for algoName in algoNames:
-            algo = ot.OptimizationAlgorithm.Build(algoName)
+        names = ot.OptimizationAlgorithm.GetAlgorithmNames(problem)
+        for name in names:
+            algo = ot.OptimizationAlgorithm.Build(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
             algo.setMaximumCallsNumber(1000)
@@ -29,7 +29,7 @@ for minimization in [True, False]:
             except Exception:
                 # multi-obj
                 continue
-            print(f"minimization={minimization} ineq={ineq} algo={algoName}")
+            print(f"minimization={minimization} ineq={ineq} algo={name}")
             algo.run()
             result = algo.getResult()
             x = result.getOptimalPoint()
@@ -71,6 +71,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
         continue
     algo.setMaximumCallsNumber(100)
     algo.setMaximumIterationNumber(100)
+    print(f"{name}...")
     algo.run()
     assert algo.getResult().getStatus() == ot.OptimizationResult.SUCCESS
     print(f"{name}: OK")
@@ -111,6 +112,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     algo.setMaximumCallsNumber(100)
     algo.setMaximumTimeDuration(0.1)
     algo.setCheckStatus(False)
+    print(f"{name}...")
     algo.run()
     status = algo.getResult().getStatus()
     msg = algo.getResult().getStatusMessage()

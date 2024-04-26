@@ -153,6 +153,9 @@ void Ipopt::run()
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
+  if (status < 0)
+    result_.setStatus(OptimizationResult::FAILURE);
+
   String statusMessage;
   switch (status)
   {
@@ -174,6 +177,7 @@ void Ipopt::run()
       break;
     case User_Requested_Stop:
       statusMessage = "User requested stop";
+      result_.setStatus(OptimizationResult::INTERRUPTION);
       break;
     case Feasible_Point_Found:
       statusMessage = "Feasible point found";
@@ -191,6 +195,7 @@ void Ipopt::run()
 #if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
     case Maximum_WallTime_Exceeded:
       statusMessage = "Maximum Wall time exceeded";
+      result_.setStatus(OptimizationResult::TIMEOUT);
       break;
 #endif
     case Not_Enough_Degrees_Of_Freedom:
@@ -222,25 +227,6 @@ void Ipopt::run()
       break;
   }
   result_.setStatusMessage(statusMessage);
-
-  if (status > 0)
-  {
-    LOGINFO(OSS() << "Ipopt exited with status: " << statusMessage);
-  }
-#if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
-  else if (status == Maximum_WallTime_Exceeded)
-  {
-    result_.setStatus(OptimizationResult::TIMEOUT);
-  }
-#endif
-  else if (status == User_Requested_Stop)
-  {
-    result_.setStatus(OptimizationResult::INTERRUPTION);
-  }
-  else if (status < 0)
-  {
-    result_.setStatus(OptimizationResult::FAILURE);
-  }
 
   if (status < 0)
   {

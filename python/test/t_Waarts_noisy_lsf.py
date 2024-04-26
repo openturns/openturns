@@ -91,7 +91,7 @@ resultC = ot.FORMResult(myAlgoC.getResult())
 #
 # FORM/SORM Abdo Rackwitz
 myAbdoRackwitz = ot.AbdoRackwitz()
-myAbdoRackwitz.setMaximumIterationNumber(1000 * dim)
+myAbdoRackwitz.setMaximumCallsNumber(1000 * dim)
 myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-6)
 myAbdoRackwitz.setMaximumResidualError(1.0e-6)
