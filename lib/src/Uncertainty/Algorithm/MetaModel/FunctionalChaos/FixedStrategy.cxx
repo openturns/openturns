@@ -24,8 +24,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(FixedStrategy)
 
 static const Factory<FixedStrategy> Factory_FixedStrategy;
@@ -37,7 +35,6 @@ FixedStrategy::FixedStrategy()
   // Nothing to do
 }
 
-
 /* Constructor from an orthogonal basis */
 FixedStrategy::FixedStrategy(const OrthogonalBasis & basis,
                              const UnsignedInteger maximumDimension)
@@ -45,7 +42,6 @@ FixedStrategy::FixedStrategy(const OrthogonalBasis & basis,
 {
   // Nothing to do
 }
-
 
 /* Compute initial basis for the approximation */
 void FixedStrategy::computeInitialBasis()
@@ -71,7 +67,7 @@ void FixedStrategy::computeInitialBasis()
 /* Update the basis for the next iteration of approximation */
 void FixedStrategy::updateBasis(const Point &,
                                 const Scalar,
-                                const Scalar )
+                                const Scalar)
 {
   // No change to the basis in the fixed strategy
   addedPsi_k_ranks_ = Indices(0);
@@ -80,13 +76,11 @@ void FixedStrategy::updateBasis(const Point &,
   conservedPsi_k_ranks_.fill();
 }
 
-
 /* Virtual constructor */
 FixedStrategy * FixedStrategy::clone() const
 {
   return new FixedStrategy(*this);
 }
-
 
 /* String converter */
 String FixedStrategy::__repr__() const
@@ -95,6 +89,11 @@ String FixedStrategy::__repr__() const
          << " derived from " << AdaptiveStrategyImplementation::__repr__();
 }
 
+/* involvesModelSelection accessor */
+Bool FixedStrategy::involvesModelSelection() const
+{
+  return false;
+}
 
 /* Method save() stores the object through the StorageManager */
 void FixedStrategy::save(Advocate & adv) const
@@ -102,13 +101,10 @@ void FixedStrategy::save(Advocate & adv) const
   AdaptiveStrategyImplementation::save(adv);
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void FixedStrategy::load(Advocate & adv)
 {
   AdaptiveStrategyImplementation::load(adv);
 }
-
-
 
 END_NAMESPACE_OPENTURNS

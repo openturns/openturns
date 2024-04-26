@@ -61,6 +61,12 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
   return new PenalizedLeastSquaresAlgorithm(x, y, weight, psi, indices, 0.0, useNormal_);
 }
 
+/* involvesModelSelection accessor */
+Bool PenalizedLeastSquaresAlgorithmFactory::involvesModelSelection() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void PenalizedLeastSquaresAlgorithmFactory::save(Advocate & adv) const
 {

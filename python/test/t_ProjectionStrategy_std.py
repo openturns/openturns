@@ -26,6 +26,9 @@ print("leastSquaresStrategy (repr)")
 print(leastSquaresStrategy.__repr__())
 print("leastSquaresStrategy (html)")
 print(leastSquaresStrategy._repr_html_())
+assert leastSquaresStrategy.isLeastSquares()
+assert leastSquaresStrategy.involvesModelSelection()
+assert selectionAlgorithm.involvesModelSelection()
 
 enumerateFunction = basis.getEnumerateFunction()
 basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
@@ -40,6 +43,7 @@ print("projectionStrategy (repr)")
 print(projectionStrategy.__repr__())
 print("projectionStrategy (html)")
 print(projectionStrategy._repr_html_())
+assert not adaptiveStrategy.involvesModelSelection()
 
 
 #
@@ -61,6 +65,7 @@ print("projectionStrategy (repr)")
 print(projectionStrategy.__repr__())
 print("projectionStrategy (html)")
 print(projectionStrategy._repr_html_())
+assert not integrationStrategy.isLeastSquares()
 
 #
 print("+ Compute flood model with large output dimension")

@@ -28,14 +28,19 @@ measure : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with respect to which the basis is orthonormal.
     By default, the limit measure defined within the class
     :class:`~openturns.WeightedExperiment` is used.
-inputSample, outputSample : 2-d sequence of float
-    The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
-    and the output samples :math:`\vect{Y}` that describe the model.
+inputSample : 2-d sequence of float
+    The input random observations :math:`\left\{\vect{X}^{(1)}, ..., \vect{X}^{(n)}\right\}` 
+    where :math:`\vect{X}=(X_1, \dots, X_{n_X})^T` is the input of the physical
+    model, :math:`n_X` is the input dimension and :math:`n` is the sample size.
+outputSample : 2-d sequence of float
+    The output random observations :math:`\left\{\vect{Y}^{(1)}, ..., \vect{Y}^{(n)}\right\}` 
+    where :math:`\vect{Y}=(Y_1, \dots, Y_{n_Y})^T` is the output of the physical
+    model, :math:`n_Y` is the output dimension and :math:`n` is the sample size.
 weights : sequence of float
     Numerical point that are the weights associated to the input sample points
     such that the corresponding weighted experiment is a good approximation of
     :math:`\mu`. If not precised, all weights are equals to 
-    :math:`\omega_i = \frac{1}{size}`, where :math:`size` is the size of the
+    :math:`\omega_i = \frac{1}{n}`, where :math:`n` is the size of the
     sample.
 
 See also

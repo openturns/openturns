@@ -245,3 +245,60 @@ Parameters
 ----------
 errorHistory : sequence of float
     The error history"
+
+%feature("docstring") OT::FunctionalChaosResult::isLeastSquares
+"Get the least squares flag.
+
+Returns
+-------
+isLeastSquares : bool
+    True if the coefficients were estimated from least squares."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::involvesModelSelection
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which enable to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Returns
+-------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setIsLeastSquares
+"Set the least squares flag.
+
+Parameters
+----------
+isLeastSquares : bool
+    True if the coefficients were estimated from least squares."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setIsModelSelection
+"Set the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which enable to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Parameters
+----------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getSampleResiduals
+"Get residuals sample.
+
+Returns
+-------
+residualsSample : :class:`~openturns.Sample`
+    The sample of residuals :math:`r_{ji} = y_{ji} - \metamodel_i(\vect{x^{(j)}})`
+    for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`."

@@ -136,6 +136,18 @@ DesignProxy ProjectionStrategy::getDesignProxy() const
   return getImplementation()->getDesignProxy();
 }
 
+/* isLeastSquares accessor */
+Bool ProjectionStrategy::isLeastSquares() const
+{
+  return getImplementation()->isLeastSquares();
+}
+
+/* involvesModelSelection accessor */
+Bool ProjectionStrategy::involvesModelSelection() const
+{
+  return getImplementation()->involvesModelSelection();
+}
+
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategy::computeCoefficients(const Function & function,
     const FunctionCollection & basis,
@@ -160,6 +172,7 @@ String ProjectionStrategy::__str__(const String & offset) const
 {
   return OSS() << getImplementation()->__str__(offset);
 }
+
 /* String converter */
 String ProjectionStrategy::_repr_html_() const
 {

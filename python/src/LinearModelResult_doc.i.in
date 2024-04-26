@@ -29,9 +29,8 @@ leverages : sequence of float
     The leverage score. 
 cookDistances : sequence of float
     Cook's distances.
-sigma2 : float
+residualsVariance : float
     The unbiased variance estimator of the output observation error.
-
 
 See Also
 --------
@@ -47,6 +46,8 @@ Returns
 -------
 basis : :class:`~openturns.Basis`
     The basis."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getDesign
 "Accessor to the design matrix.
@@ -218,3 +219,41 @@ Returns
 -------
 residualsVariance : float
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::buildMethod
+"Accessor to the least squares method.
+
+Returns
+-------
+leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
+    The least squares method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::involvesModelSelection
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+to best predict the output.
+Model selection can lead to a sparse model.
+
+Returns
+-------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::setIsModelSelection
+"Set the model selection flag.
+
+A model selection method can be used to select the coefficients
+to best predict the output.
+Model selection can lead to a sparse model.
+
+Parameters
+----------
+involvesModelSelection: bool
+    True if the method involves a model selection method."

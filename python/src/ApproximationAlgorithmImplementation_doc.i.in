@@ -8,7 +8,7 @@ LeastSquaresStrategy
 
 Notes
 -----
-This class is not usable because it has sense only within the
+This class is not usable because it operates only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation
@@ -112,3 +112,21 @@ OT_ApproximationAlgorithm_getY_doc
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation::run
 OT_ApproximationAlgorithm_run_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_involvesModelSelection_doc
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which enable to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Returns
+-------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::involvesModelSelection
+OT_ApproximationAlgorithm_involvesModelSelection_doc
+

@@ -84,3 +84,9 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     print("coeffs = ", result.getCoefficients())
     print("residuals = ", result.getResiduals())
     print("relative errors = ", result.getRelativeErrors())
+
+    isLeastSquaresPCE = result.isLeastSquares()
+    assert isLeastSquaresPCE
+    involvesModelSelectionPCE = result.involvesModelSelection()
+    involvesModelSelection = adaptiveStrategy.involvesModelSelection() or projectionStrategy.involvesModelSelection()
+    assert involvesModelSelection == involvesModelSelectionPCE

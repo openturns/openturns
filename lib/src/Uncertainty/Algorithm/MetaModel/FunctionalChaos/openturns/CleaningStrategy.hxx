@@ -77,6 +77,9 @@ public:
   Scalar getSignificanceFactor() const;
   void setSignificanceFactor(const Scalar significanceFactor);
 
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
