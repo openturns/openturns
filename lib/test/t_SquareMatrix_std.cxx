@@ -169,6 +169,29 @@ int main(int, char *[])
               << "squareMatrix1 is empty = " << squareMatrix1.isEmpty() << std::endl
               << "squareMatrix5 is empty = " << squareMatrix5.isEmpty() << std::endl;
 
+    /* Check inverse() */
+    SquareMatrix squareMatrix6(3);
+    squareMatrix6(0, 0) = 1.0;
+    squareMatrix6(0, 1) = 2.0;
+    squareMatrix6(0, 2) = 3.0;
+    squareMatrix6(1, 0) = 3.0;
+    squareMatrix6(1, 1) = 2.0;
+    squareMatrix6(1, 2) = 1.0;
+    squareMatrix6(2, 0) = 2.0;
+    squareMatrix6(2, 1) = 1.0;
+    squareMatrix6(2, 2) = 3.0;
+    SquareMatrix squareMatrix7(squareMatrix6.inverse());
+    SquareMatrix inverseReference(3);
+    inverseReference(0, 0) = -5.0 / 12.0;
+    inverseReference(0, 1) = 3.0 / 12.0;
+    inverseReference(0, 2) = 4.0 / 12.0;
+    inverseReference(1, 0) = 7.0 / 12.0;
+    inverseReference(1, 1) = 3.0 / 12.0;
+    inverseReference(1, 2) = -8.0 / 12.0;
+    inverseReference(2, 0) = 1.0 / 12.0;
+    inverseReference(2, 1) = -3.0 / 12.0;
+    inverseReference(2, 2) = 4.0 / 12.0;
+    assert_almost_equal(squareMatrix7, inverseReference);
   }
   catch (TestFailed & ex)
   {

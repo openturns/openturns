@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SquareMatrix implements the classical mathematical square matrix
+ *  @brief SquareMatrix implements the square matrix
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -35,7 +35,7 @@ class SquareComplexMatrix;
 /**
  * @class SquareMatrix
  *
- * SquareMatrix implements the classical mathematical square matrix
+ * SquareMatrix implements the square matrix
  */
 
 class OT_API SquareMatrix :
@@ -149,6 +149,9 @@ public:
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;
+
+  /** Inverse matrix*/
+  SquareMatrix inverse() const;
 
 protected:
 

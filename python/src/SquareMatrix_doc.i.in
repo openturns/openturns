@@ -32,7 +32,7 @@ Get or set terms
 [[ 1 ]
  [ 1 ]]
 
-Create an openturns matrix from a **square** numpy 2d-array (or matrix, or
+Create a matrix from a **square** Numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
@@ -308,3 +308,22 @@ Examples
 >>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> M.computeTrace()
 5.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::inverse
+"Compute the inverse of the matrix.
+
+Returns
+-------
+inverseMatrix : :class:`~openturns.SquareMatrix`
+    The inverse of the matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SquareMatrix([[1.0, 2.0, 3.0], [3.0, 2.0, 1.0], [2.0, 1.0, 3.0]])
+>>> print(12.0 * M.inverse())
+[[ -5  3  4 ]
+ [  7  3 -8 ]
+ [  1 -3  4 ]]"

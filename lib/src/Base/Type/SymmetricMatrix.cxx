@@ -348,5 +348,10 @@ Scalar SymmetricMatrix::computeSumElements() const
   return getImplementation()->computeSumElements();
 }
 
+/** Compute inverse */
+SymmetricMatrix SymmetricMatrix::inverse() const
+{
+  return getImplementation()->inverseSym();
+}
 
 END_NAMESPACE_OPENTURNS

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
@@ -126,3 +127,12 @@ squareMatrix5 = ot.SquareMatrix()
 print("squareMatrix0 is empty = ", squareMatrix0.isEmpty())
 print("squareMatrix1 is empty = ", squareMatrix1.isEmpty())
 print("squareMatrix5 is empty = ", squareMatrix5.isEmpty())
+
+# Check inverse()
+squareMatrix6 = ot.SquareMatrix([[1.0, 2.0, 3.0], [3.0, 2.0, 1.0], [2.0, 1.0, 3.0]])
+squareMatrix7 = squareMatrix6.inverse()
+inverseReference = ot.SquareMatrix(
+    [[-5.0, 3.0, 4.0], [7.0, 3.0, -8.0], [1.0, -3.0, 4.0]]
+)
+inverseReference /= 12.0
+assert_almost_equal(squareMatrix7, inverseReference)

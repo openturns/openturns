@@ -895,6 +895,30 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare(const MatrixI
   return A.solveLinearSystemSquareInPlace(b);
 }
 
+/* Square matrix inverse */
+MatrixImplementation MatrixImplementation::inverseSquare() const
+{
+  if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
+  MatrixImplementation identity(nbRows_, nbColumns_);
+  for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    identity(i, i) = 1.0;
+  MatrixImplementation A(*this);
+  const MatrixImplementation inverseMatrix(A.solveLinearSystemSquareInPlace(identity));
+  return inverseMatrix;
+}
+
+/* Symmetric matrix inverse */
+MatrixImplementation MatrixImplementation::inverseSym() const
+{
+  if (nbColumns_ != nbRows_ ) throw InvalidDimensionException(HERE) << "The matrix has " << nbRows_ << " and " << nbColumns_ << ", expected a square matrix.";
+  MatrixImplementation identity(nbRows_, nbColumns_);
+  for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    identity(i, i) = 1.0;
+  MatrixImplementation A(*this);
+  const MatrixImplementation inverseMatrix(A.solveLinearSystemSymInPlace(identity));
+  return inverseMatrix;
+}
+
 /* Resolution of a linear system : square matrix */
 Point MatrixImplementation::solveLinearSystemSquareInPlace(const Point & b)
 {

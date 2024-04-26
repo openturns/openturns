@@ -202,6 +202,12 @@ public:
   MatrixImplementation solveLinearSystemSquareInPlace(const MatrixImplementation & b);
   MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b) const;
 
+  /** Square inverse */
+  MatrixImplementation inverseSquare() const;
+
+  /** Symmetric inverse */
+  MatrixImplementation inverseSym() const;
+
   /** Resolution of a linear system in case of a triangular matrix */
   Point solveLinearSystemTri(const Point & b,
                              const Bool lower = true,
