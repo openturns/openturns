@@ -1,0 +1,109 @@
+%feature("docstring") OT::RankSobolSensitivityAlgorithm
+"Sensitivity analysis using rank-based method.
+
+Parameters
+----------
+inputDesign : :class:`~openturns.Sample`
+    The input sample used for the Sobol' sensitivity analysis
+outputDesign : :class:`~openturns.Sample`
+    The output sample used for the Sobol' sensitivity analysis
+
+Notes
+-----
+This method allows one to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
+
+Considering the input random vector :math:`\vect{X} = (X_1,\dots,X_{n_X})` and let :math:`\vect{Y} = (Y_1,\dots,Y_{n_Y})` be the output of the physical model:
+
+.. math::
+
+    \vect{Y} = g(X_1,\dots,X_{n_X}) 
+
+In the following description Y is considered as scalar, without loss of generality. 
+
+Main assumptions:
+
+- :math:`X_1,\dots,X_{n_X}` are independent and scalar
+
+- :math:`\mathbb{E}[\parallel Y \parallel^2] < \infty`
+
+
+We want to estimate the first order Sobol' index :math:`S_k` with respect to :math:`X_k` for :math:`k\in\{1,\dots,{n_X}\}` 
+
+.. math::
+
+    S_k = \frac{\mathbb{V}(\mathbb{E}[Y|X_k])}{\mathbb{V}(Y)}
+
+Let's consider a i.i.d. N-sample of the input/output pair :math:`(X_k,Y)` given by:
+
+.. math::
+
+    (X_{k,1},Y_1),(X_{k,2},Y_2),\dots,(X_{k,N},Y_N)
+
+The pairs :math:`(X_{k,(1)},Y_{(k,1)}),(X_{k,(2)},Y_{(k,2)}),\dots,(X_{k,(N)},Y_{(k,N)})` are ranked (noted using lower scripts under brackets) in such a way that:
+:math:`X_{k,(1)} \leq X_{k,(2)} \leq \dots \leq X_{k,(N)}.`
+
+The first order Sobol' indices estimated based on ranks are given by:
+
+.. math::
+
+    S_{k_{N,rank}} = \frac{\frac{1}{N}\sum_{i=1}^{N} Y_{(k,i)}Y_{(k,i+1)}-\left(\frac{1}{N}\sum_{i=1}^N Y_i\right)^2}{\frac{1}{N}\sum_{i=1}^N Y_i^2-\left(\frac{1}{N}\sum_{i=1}^N Y_i\right)^2}
+    
+where the permutation is defined such that :math:`Y_{(k,N+1)} = Y_{(k,1)}`.
+
+Confidence intervals are obtained via bootstrap without replacement. 
+
+The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the `RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio` ResourceMap key."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::draw
+"Draw sensitivity indices.
+
+Usage:
+  draw()
+
+Draw the aggregated first order Sobol' indices.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graph containing the aggregated first and total order indices.
+
+Notes
+-----
+If number of bootstrap sampling is greater than 1, the graph includes confidence interval plots in the first usage. This is defined in the `SobolIndicesAlgorithm-DefaultBootstrapSize` ResourceMap key."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getSecondOrderIndices
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getTotalOrderIndices
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getTotalOrderIndicesInterval
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getAggregatedTotalOrderIndices
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::setUseAsymptoticDistribution
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getUseAsymptoticDistribution
+"Method not yet implemented."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::RankSobolSensitivityAlgorithm::getTotalOrderIndicesDistribution
+"Method not yet implemented."
+

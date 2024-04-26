@@ -13,6 +13,7 @@
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
 #include "openturns/OTSimulation.hxx"
+
 %}
 
 %include typemaps.i
@@ -65,6 +66,9 @@
 %include CrossEntropyImportanceSampling.i
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
+
+/*Uncertainty/Algorithm/Sensitivity */
+%include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Distribution */
 %include SmoothedUniformFactory.i

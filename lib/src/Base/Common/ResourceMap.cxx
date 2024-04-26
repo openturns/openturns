@@ -978,6 +978,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100);
 
+
+  // RankSobolSensitivityALgorithm//
+  addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
+  
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);

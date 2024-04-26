@@ -14,6 +14,7 @@ Example of sensitivity analyses on the wing weight model
 # - Spearman coefficients
 # - Taylor expansion importance factors
 # - Sobol' indices
+# - Rank-based estimation of Sobol' indices
 # - HSIC : Hilbert-Schmidt Independence Criterion
 #
 # We present the methods on the :ref:`WingWeight function<use-case-wingweight>` and use the same notations.
@@ -26,6 +27,7 @@ Example of sensitivity analyses on the wing weight model
 #
 #
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
 from matplotlib import pylab as plt
@@ -364,6 +366,20 @@ firstOrder = [sensitivityAnalysis.getSobolIndex(i) for i in range(m.dim)]
 totalOrder = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(m.dim)]
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(inputNames, firstOrder, totalOrder)
 graph.setTitle("Sobol indices by Polynomial Chaos Expansion - wing weight")
+view = otv.View(graph)
+
+
+# %%
+# Furthermore, first order Sobol' indices can also been estimated in a data-driven way using a rank-based sensitivity algorithm.
+# In such a way, the estimation of sensitivity indices does not involve any surrogate model.
+sizeRankSobol = 800
+inputDesignRankSobol = m.distributionX.getSample(sizeRankSobol)
+outputDesignankSobol = m.model(inputDesignRankSobol)
+myRankSobol = otexp.RankSobolSensitivityAlgorithm(inputDesignRankSobol, outputDesignankSobol)
+indicesrankSobol = myRankSobol.getFirstOrderIndices()
+print('First order indices:', indicesrankSobol)
+graph = myRankSobol.draw()
+graph.setTitle("Sobol indices by rank-based estimation - wing weight")
 view = otv.View(graph)
 
 # %%

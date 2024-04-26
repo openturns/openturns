@@ -26,6 +26,7 @@
 #include "openturns/FAST.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
+#include "openturns/RankSobolSensitivityAlgorithm.hxx"
 #include "openturns/SaltelliSensitivityAlgorithm.hxx"
 #include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
