@@ -31,6 +31,7 @@ dim = limitState.getInputDimension()
 #
 # Probabilistic model
 #
+ot.RandomGenerator.SetSeed(1)
 
 mean = ot.Point(dim, 0.0)
 
