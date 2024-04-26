@@ -20,6 +20,7 @@
  *
  */
 #include "openturns/OT.hxx"
+#include "openturns/IshigamiUseCase.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -29,47 +30,12 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
+  IshigamiUseCase ishigami;
   UnsignedInteger dimension = 3;
-  Scalar a = 7.0;
-  Scalar b = 0.1;
-  // Reference analytical values
-  Scalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-  Point sob_1(3);
-  sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
-  sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
-  sob_1[2] = 0.0;
-  Point sob_2(3);
-  sob_2[0] = 0.0;
-  sob_2[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh;
-  sob_2[2] = 0.0;
-  Point sob_3(1, 0.0);
-  Point sob_T1(3);
-  sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
-  sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
-  sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
-  Point sob_T2(3);
-  sob_T2[0] = sob_2[0] + sob_2[1] + sob_3[0];
-  sob_T2[1] = sob_2[0] + sob_2[2] + sob_3[0];
-  sob_T2[2] = sob_2[1] + sob_2[2] + sob_3[0];
-  // Create the Ishigami function
-  Description inputVariables(dimension);
-  inputVariables[0] = "xi1";
-  inputVariables[1] = "xi2";
-  inputVariables[2] = "xi3";
-  Description formula(1);
-  formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-  SymbolicFunction model(inputVariables, formula);
-
-  // Create the input distribution
-  Collection<Distribution> marginalX(dimension);
-  for ( UnsignedInteger i = 0; i < dimension; ++ i )
-  {
-    marginalX[i] = Uniform(-M_PI, M_PI);
-  }
-  JointDistribution distribution(marginalX);
+  Function model(ishigami.getModel());  // Create the Ishigami function
+  JointDistribution distribution(ishigami.getInputDistribution());  // Create the input distribution
 
   // Create the orthogonal basis
   Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

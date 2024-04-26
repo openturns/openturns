@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/OT.hxx"
+#include "openturns/IshigamiUseCase.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -33,46 +34,15 @@ int main(int, char *[])
   try
   {
 
+    IshigamiUseCase ishigami;
+    Function model(ishigami.getModel());
+    JointDistribution distribution(ishigami.getInputDistribution());
+    
     // Problem parameters
     UnsignedInteger dimension = 3;
-    Scalar a = 7.0;
-    Scalar b = 0.1;
     // Reference analytical values
-    Scalar meanTh = a / 2;
-    Scalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-    Point sob_1(3);
-    sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
-    sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
-    sob_1[2] = 0.0;
-    Point sob_2(3);
-    sob_2[0] = 0.0;
-    sob_2[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh;
-    sob_2[2] = 0.0;
-    Point sob_3(1, 0.0);
-    Point sob_T1(3);
-    sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
-    sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
-    sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
-    Point sob_T2(3);
-    sob_T2[0] = sob_2[0] + sob_3[0];
-    sob_T2[1] = sob_2[1] + sob_3[0];
-    sob_T2[2] = sob_2[2] + sob_3[0];
-    Point sob_T3(sob_3);
-    // Create the Ishigami function
-    Description inputVariables(dimension);
-    inputVariables[0] = "xi1";
-    inputVariables[1] = "xi2";
-    inputVariables[2] = "xi3";
-    Description formula(1);
-    formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-    SymbolicFunction model(inputVariables, formula);
-
-    // Create the input distribution
-    Collection<Distribution> marginals(dimension);
-    marginals[0] = Uniform(-M_PI, M_PI);
-    marginals[1] = Uniform(-M_PI, M_PI);
-    marginals[2] = Uniform(-M_PI, M_PI);
-    JointDistribution distribution(marginals);
+    Scalar meanTh = ishigami.getMean();
+    Scalar covTh = ishigami.getVariance();
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
@@ -147,12 +117,17 @@ int main(int, char *[])
           fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
           Scalar variance = vector.getCovariance()(0, 0);
           fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
+          
+          // Check Sobol' indices
+          // Check first order indices
           FunctionalChaosSobolIndices sensitivity(result);
+          const Point referenceFirstOrderSobolIndices(ishigami.getFirstOrderSobolIndices());
           for(UnsignedInteger i = 0; i < dimension; ++i)
           {
             Scalar value = sensitivity.getSobolIndex(i);
-            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
+            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceFirstOrderSobolIndices[i]) << std::endl;
           }
+          // Check first order interaction indices (Xi, Xj)
           Indices indices(2);
           UnsignedInteger k = 0;
           for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -162,19 +137,25 @@ int main(int, char *[])
             {
               indices[1] = j;
               Scalar value = sensitivity.getSobolIndex(indices);
-              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k]) << std::endl;
+              const Scalar referenceValue = ishigami.getFirstOrderInteractionSobolIndex(indices);
+              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceValue) << std::endl;
               k = k + 1;
             }
           }
+          // Check first order interaction indices (Xi, Xj, Xk)
           indices = Indices(3);
           indices.fill();
           Scalar value = sensitivity.getSobolIndex(indices);
-          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[0]) << std::endl;
+          const Scalar referenceValue1 = ishigami.getFirstOrderInteractionSobolIndex(indices);
+          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceValue1) << std::endl;
+          // Check total indices
+          const Point referenceTotalSobolIndices(ishigami.getTotalSobolIndices());
           for (UnsignedInteger i = 0; i < dimension; ++i)
           {
             value = sensitivity.getSobolTotalIndex(i);
-            fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
+            fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceTotalSobolIndices[i]) << std::endl;
           }
+          // Check total interaction indices (Xi, Xj)
           indices = Indices(2);
           k = 0;
           for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -184,14 +165,17 @@ int main(int, char *[])
             {
               indices[1] = j;
               value = sensitivity.getSobolTotalIndex(indices);
-              fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k]) << std::endl;
+              const Scalar referenceValue = ishigami.getTotalInteractionSobolIndex(indices);
+              fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceValue) << std::endl;
               k = k + 1;
             }
           }
+          // Check total interaction indices (Xi, Xj, Xk)
           indices = Indices(3);
           indices.fill();
           value = sensitivity.getSobolTotalIndex(indices);
-          fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[0]) << std::endl;
+          const Scalar referenceValue2 = ishigami.getTotalInteractionSobolIndex(indices);
+          fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - referenceValue2) << std::endl;
           // Print part of variance
           // If the exact coefficients of the PCE on Legendre polynomial of the Ishigami function
           // were known, we could check.
