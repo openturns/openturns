@@ -21,31 +21,45 @@ Its main functionalities are :
   the model observations.
 
 More details on this topic are presented in :ref:`cross_validation`.
-  
+
 Examples
 --------
+In this example, we introduce the sinus model and approximate it with a least
+squares metamodel.
+Then we validate this metamodel using a test sample.
+
 >>> import openturns as ot
 >>> from math import pi
 >>> dist = ot.Uniform(-pi / 2, pi / 2)
->>> # Model here is sin(x)
+>>> # Define the model
 >>> model = ot.SymbolicFunction(['x'], ['sin(x)'])
->>> # We can build several types of models (kriging, pc, ...)
->>> # We use a Taylor development (order 5) and compare the metamodel with the model
->>> metaModel = ot.SymbolicFunction(['x'], ['x - x^3 / 6.0 + x^5 / 120.0'])
->>> inputValidationSample = dist.getSample(10)
->>> outputSample = model(inputValidationSample)
->>> # Validation of the model
->>> metamodelPredictions = metaModel(inputValidationSample)
->>> val = ot.MetaModelValidation(outputSample, metamodelPredictions)
+>>> # We can build several types of models (kriging, polynomial chaos expansion, ...)
+>>> # We use here a least squares expansion on canonical basis and compare
+>>> # the metamodel with the model
+>>> # Build the metamodel using a train sample
+>>> x_train = dist.getSample(25)
+>>> y_train = model(x_train)
+>>> total_degree = 3
+>>> polynomialCollection = ['x^%d' % (degree) for degree in range(1, total_degree + 1)]
+>>> basis = ot.SymbolicFunction(['x'], polynomialCollection)
+>>> designMatrix = basis(x_train)
+>>> myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
+>>> myLeastSquares.run()
+>>> leastSquaresModel = myLeastSquares.getMetaModel()
+>>> metaModel = ot.ComposedFunction(leastSquaresModel, basis)
+>>> # Validate the metamodel using a test sample
+>>> x_test = dist.getSample(100)
+>>> y_test = model(x_test)
+>>> metamodelPredictions = metaModel(x_test)
+>>> val = ot.MetaModelValidation(y_test, metamodelPredictions)
 >>> # Compute the R2 score
 >>> r2Score = val.computeR2Score()
 >>> # Get the residual
 >>> residual = val.getResidualSample()
->>> # Get the histogram of residual
+>>> # Get the histogram of residuals
 >>> histoResidual = val.getResidualDistribution(False)
 >>> # Draw the validation graph
->>> graph = val.drawValidation()
-"
+>>> graph = val.drawValidation()"
 
 // ---------------------------------------------------------------------
 
