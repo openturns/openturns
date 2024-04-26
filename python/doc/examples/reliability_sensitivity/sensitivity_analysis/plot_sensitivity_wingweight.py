@@ -50,8 +50,8 @@ ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 50)
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
 
-grid = ot.GridLayout(m.dim, m.dim)
-for i in range(m.dim):
+grid = ot.GridLayout(m.dim-1, m.dim-1)
+for i in range(1, m.dim):
     for j in range(i):
         crossCutIndices = []
         crossCutReferencePoint = []
@@ -88,7 +88,7 @@ for i in range(m.dim):
         if i == 9:
             graph.setXTitle(m.distributionX.getDescription()[j])
 
-        grid.setGraph(i, j, graph)
+        grid.setGraph(i-1, j, graph)
 
 # Get View object to manipulate the underlying figure
 v = otv.View(grid)
@@ -98,8 +98,10 @@ fig.set_size_inches(12, 12)  # reduce the size
 # Setup a large colorbar
 axes = v.getAxes()
 colorbar = fig.colorbar(
-    v.getSubviews()[7][0].getContourSets()[0], ax=axes[:, -1], fraction=0.3
+    v.getSubviews()[6][2].getContourSets()[0], ax=axes[:, -1], fraction=0.3
 )
+
+fig.subplots_adjust(top=1.0, bottom=0.0, left=0.0, right=1.0)
 
 # %%
 # We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`\Lambda, \ell, q, W_p, W_{fw}` have less influence on the function.
