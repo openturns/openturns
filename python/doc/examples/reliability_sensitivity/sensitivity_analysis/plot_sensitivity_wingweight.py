@@ -10,7 +10,7 @@ Example of sensitivity analyses on the wing weight model
 # - PRCC: Partial Rank Correlation Coefficients
 # - SRC: Standard Regression Coefficients
 # - SRRC: Standard Rank Regression Coefficients
-# - Pearson coefficientsp
+# - Pearson coefficients
 # - Spearman coefficients
 # - Taylor expansion importance factors
 # - Sobol' indices
