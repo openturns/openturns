@@ -209,7 +209,7 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 #
 # - the *CenterReduce* method where :math:`c = \dfrac{1}{n} \sum_{i=1}^n t_i` is the mean time stamps
 #   and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
-# - the *MinMax* method where :math:`c = t_1` is the initial time and :math:`d = t_n-t_1` the final time;
+# - the *MinMax* method where :math:`c = t_1` is the initial time and :math:`d = t_n-t_1` the final time. This method is the default one;
 # - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 #
 # .. math::
@@ -374,6 +374,32 @@ print(
 print(f"Dp={resultLikRatioTest.getStatistic():.2f}")
 print(f"alpha={resultLikRatioTest.getThreshold():.2f}")
 print(f"p-value={resultLikRatioTest.getPValue():.2f}")
+
+
+# %%
+# We can test a linear trend in the log-scale parameter for :math:`\sigma(t)`:
+#
+# .. math::
+#     :nowrap:
+#
+#     \begin{align*}
+#       \sigma(t) & = exp(\beta_1 + \beta_2\tau(t)) \\
+#       \xi(t) & = \beta_3
+#     \end{align*}
+sigmaLink = ot.SymbolicFunction('x', 'exp(x)')
+result_NonStatLL_Link = factory.buildTimeVarying(dataRain, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink)
+beta = result_NonStatLL_Link.getOptimalParameter()
+print(f"beta = {beta}")
+print(f"sigma(t) = exp({beta[1]:.4f} * tau(t) + {beta[0]:.4f})")
+print(f"xi = {beta[2]:.4f}")
+print(f"Max log-likelihood = {result_NonStatLL.getLogLikelihood()}")
+
+# %
+# The maximized log-likelihood we obtain with the log-linear model is very similar
+# to the one we obtained with the linear model. Hence, there is no evidence of a time trend.
+# We draw the diagnostic plots which are similar to the previous ones.
+graph = result_NonStatLL_Link.drawDiagnosticPlot()
+view = otv.View(graph)
 
 # %%
 otv.View.ShowAll()
