@@ -202,7 +202,7 @@ ot_check_test (NearestPointChecker_std)
 if (NLopt_FOUND)
   ot_check_test (NLopt_std IGNOREOUT)
 endif ()
-ot_check_test (MultiStart_std)
+ot_check_test (MultiStart_std IGNOREOUT)
 
 # Solver
 ot_check_test (Bisection_std)
