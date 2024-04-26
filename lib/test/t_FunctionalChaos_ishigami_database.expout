@@ -15,9 +15,9 @@ Sobol index [0,1,2] =0.00172 absolute error=1.7e-03
 Sobol total index 0 =0.56386 absolute error=6.3e-03
 Sobol total index 1 =0.43790 absolute error=4.5e-03
 Sobol total index 2 =0.24631 absolute error=2.6e-03
-Sobol total index [0,1] =0.00005 absolute error=4.6e-05
-Sobol total index [0,2] =0.24416 absolute error=4.8e-04
-Sobol total index [1,2] =0.00044 absolute error=4.4e-04
+Sobol total index [0,1] =0.00176 absolute error=1.8e-03
+Sobol total index [0,2] =0.24588 absolute error=2.2e-03
+Sobol total index [1,2] =0.00215 absolute error=2.2e-03
 Sobol total index [0,1,2] =0.00172 absolute error=1.7e-03
 //////////////////////////////////////////////////////////////////////
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
@@ -57,9 +57,9 @@ Sobol index [0,1,2] =0.02263 absolute error=2.3e-02
 Sobol total index 0 =0.58644 absolute error=2.9e-02
 Sobol total index 1 =0.44488 absolute error=2.5e-03
 Sobol total index 2 =0.30105 absolute error=5.7e-02
-Sobol total index [0,1] =0.00932 absolute error=9.3e-03
-Sobol total index [0,2] =0.26319 absolute error=2.0e-02
-Sobol total index [1,2] =0.01461 absolute error=1.5e-02
+Sobol total index [0,1] =0.03195 absolute error=3.2e-02
+Sobol total index [0,2] =0.28582 absolute error=4.2e-02
+Sobol total index [1,2] =0.03724 absolute error=3.7e-02
 Sobol total index [0,1,2] =0.02263 absolute error=2.3e-02
 //////////////////////////////////////////////////////////////////////
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
@@ -78,9 +78,9 @@ Sobol index [0,1,2] =0.00549 absolute error=5.5e-03
 Sobol total index 0 =0.57120 absolute error=1.4e-02
 Sobol total index 1 =0.43703 absolute error=5.4e-03
 Sobol total index 2 =0.25963 absolute error=1.6e-02
-Sobol total index [0,1] =0.00315 absolute error=3.1e-03
-Sobol total index [0,2] =0.25121 absolute error=7.5e-03
-Sobol total index [1,2] =0.00252 absolute error=2.5e-03
+Sobol total index [0,1] =0.00864 absolute error=8.6e-03
+Sobol total index [0,2] =0.25670 absolute error=1.3e-02
+Sobol total index [1,2] =0.00801 absolute error=8.0e-03
 Sobol total index [0,1,2] =0.00549 absolute error=5.5e-03
 //////////////////////////////////////////////////////////////////////
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
@@ -99,9 +99,9 @@ Sobol index [0,1,2] =0.00205 absolute error=2.1e-03
 Sobol total index 0 =0.56488 absolute error=7.3e-03
 Sobol total index 1 =0.43718 absolute error=5.2e-03
 Sobol total index 2 =0.24893 absolute error=5.3e-03
-Sobol total index [0,1] =0.00000 absolute error=0.0e+00
-Sobol total index [0,2] =0.24688 absolute error=3.2e-03
-Sobol total index [1,2] =0.00000 absolute error=0.0e+00
+Sobol total index [0,1] =0.00205 absolute error=2.1e-03
+Sobol total index [0,2] =0.24893 absolute error=5.3e-03
+Sobol total index [1,2] =0.00205 absolute error=2.1e-03
 Sobol total index [0,1,2] =0.00205 absolute error=2.1e-03
 //////////////////////////////////////////////////////////////////////
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
@@ -120,7 +120,7 @@ Sobol index [0,1,2] =0.03026 absolute error=3.0e-02
 Sobol total index 0 =0.58898 absolute error=3.1e-02
 Sobol total index 1 =0.45271 absolute error=1.0e-02
 Sobol total index 2 =0.31226 absolute error=6.9e-02
-Sobol total index [0,1] =0.01430 absolute error=1.4e-02
-Sobol total index [0,2] =0.25857 absolute error=1.5e-02
-Sobol total index [1,2] =0.02058 absolute error=2.1e-02
+Sobol total index [0,1] =0.04455 absolute error=4.5e-02
+Sobol total index [0,2] =0.28883 absolute error=4.5e-02
+Sobol total index [1,2] =0.05083 absolute error=5.1e-02
 Sobol total index [0,1,2] =0.03026 absolute error=3.0e-02
