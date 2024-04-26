@@ -43,51 +43,23 @@ Contour::Contour()
   , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
   , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
   , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
-{}
-
-/* Constructor with parameters */
-Contour::Contour(const Sample & x,
-                 const Sample & y,
-                 const Sample & data,
-                 const Point & levels,
-                 const Description & labels,
-                 const Bool drawLabels,
-                 const String & legend)
-  : DrawableImplementation(data, legend)
-  , x_(x)
-  , y_(y)
-  , levels_(levels)
-  , labels_(labels)
-  , drawLabels_(drawLabels)
-  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
-  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
-  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
-  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
-  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
-  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
-  if (levels.getDimension() == 0) buildDefaultLevels();
-  if (drawLabels && (labels.getSize() == 0)) buildDefaultLabels();
-  if (drawLabels && (levels.getDimension() > 0) && (labels.getSize() > 0) && (levels.getDimension() != labels.getSize())) throw InvalidArgumentException(HERE) << "Error: the levels are incompatible with the labels";
-  // Check data validity
-  setData(data);
+  isColorExplicitlySet_ = true;
 }
 
 /* Constructor with parameters */
 Contour::Contour(const UnsignedInteger dimX,
   const UnsignedInteger dimY,
-  const Sample& data,
-  Bool isFilled,
-  const String& colorMap)
+  const Sample& data)
   : DrawableImplementation(data)
   , x_(Sample(dimX, 1))
   , y_(Sample(dimY, 1))
   , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
   , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
-  , isFilled_(isFilled)
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
   , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
-  , colorMap_(colorMap)
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
   , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
   , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
   , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
@@ -101,9 +73,7 @@ Contour::Contour(const UnsignedInteger dimX,
   for (UnsignedInteger i = 0; i < dimX; ++i) x_(i, 0) = Scalar(i) / (dimX - 1.0);
   // By default, y is assumed to be equally spaced in [0, 1]
   for (UnsignedInteger i = 0; i < dimY; ++i) y_(i, 0) = Scalar(i) / (dimY - 1.0);
-  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
-  if (!colorMap.empty())
-    isColorExplicitlySet_ = true;
+  isColorExplicitlySet_ = true;
   // Build the levels
   buildDefaultLevels();
   // Build the labels
@@ -113,27 +83,23 @@ Contour::Contour(const UnsignedInteger dimX,
 /* Constructor with parameters */
 Contour::Contour(const Sample & x,
                  const Sample & y,
-                 const Sample & data,
-                 Bool isFilled,
-                 const String & colorMap)
+                 const Sample & data)
   : DrawableImplementation(data)
   , x_(x)
   , y_(y)
   , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
   , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
   , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
-  , isFilled_(isFilled)
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
   , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
-  , colorMap_(colorMap)
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
   , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
   , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
   , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
   // Check data validity
   setData(data);
-  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
-  if (!colorMap.empty())
-    isColorExplicitlySet_ = true;
+  isColorExplicitlySet_ = true;
   buildDefaultLevels();
   buildDefaultLabels();
 }

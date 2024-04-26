@@ -94,7 +94,9 @@ xx = ot.Box([nx], ot.Interval([0.0], [10.0])).generate()
 yy = ot.Box([ny], ot.Interval([-10.0], [10.0])).generate()
 inputData = ot.Box([nx, ny], ot.Interval([0.0, -10.0], [10.0, 10.0])).generate()
 outputData = f(inputData)
-mycontour = ot.Contour(xx, yy, outputData, [10.0], ["10.0"])
+mycontour = ot.Contour(xx, yy, outputData)
+mycontour.setLevels([10.0])
+mycontour.setLabels(["10.0"])
 myGraph = ot.Graph("Representation of the failure domain", r"$X_1$", r"$X_2$", True, "")
 myGraph.add(mycontour)
 
@@ -102,6 +104,7 @@ myGraph.add(mycontour)
 texts = [r" Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
 myText = ot.Text([[4.0, 4.0]], texts)
 myText.setTextSize(1)
+myText.setColor("black")
 myGraph.add(myText)
 view = otv.View(myGraph)
 
@@ -245,6 +248,7 @@ graphStandardSpace.setLegendPosition("lower right")
 texts = [r"Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
 myText = ot.Text([[3.0, 4.0]], texts)
 myText.setTextSize(1)
+myText.setColor("black")
 graphStandardSpace.add(myText)
 view = otv.View(graphStandardSpace)
 

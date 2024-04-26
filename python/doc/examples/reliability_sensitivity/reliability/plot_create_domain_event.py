@@ -89,14 +89,18 @@ outputData = f(inputData)
 
 # %%
 # The contour line associated with the 0.0 value for the first marginal.
-mycontour0 = ot.Contour(xx, yy, outputData.getMarginal(0), [0.0], ["0.0"])
+mycontour0 = ot.Contour(xx, yy, outputData.getMarginal(0))
+mycontour0.setLevels([0.0])
+mycontour0.setLabels(["0.0"])
 mycontour0.setColor("black")
 mycontour0.setLineStyle("dashed")
 graphModel0.add(mycontour0)
 
 # %%
 # The contour line associated with the 1.0 value for the first marginal.
-mycontour1 = ot.Contour(xx, yy, outputData.getMarginal(0), [1.0], ["1.0"])
+mycontour1 = ot.Contour(xx, yy, outputData.getMarginal(0))
+mycontour1.setLevels([1.0])
+mycontour1.setLabels(["1.0"])
 mycontour1.setColor("black")
 mycontour1.setLineStyle("dashed")
 graphModel0.add(mycontour1)
@@ -104,14 +108,18 @@ view = otv.View(graphModel0)
 
 # %%
 # The contour line associated with the 0.0 value for the second marginal.
-mycontour2 = ot.Contour(xx, yy, outputData.getMarginal(1), [0.0], ["0.0"])
+mycontour2 = ot.Contour(xx, yy, outputData.getMarginal(1))
+mycontour2.setLevels([0.0])
+mycontour2.setLabels(["0.0"])
 mycontour2.setColor("black")
 mycontour2.setLineStyle("dashed")
 graphModel1.add(mycontour2)
 
 # %%
 # The contour line associated with the 1.0 value for the second marginal.
-mycontour3 = ot.Contour(xx, yy, outputData.getMarginal(1), [1.0], ["1.0"])
+mycontour3 = ot.Contour(xx, yy, outputData.getMarginal(1))
+mycontour3.setLevels([1.0])
+mycontour3.setLabels(["1.0"])
 mycontour3.setColor("black")
 mycontour3.setLineStyle("dashed")
 graphModel1.add(mycontour3)
@@ -141,6 +149,7 @@ texts = [
 
 myText = ot.Text([0.25], [0.0], texts)
 myText.setTextSize(1)
+myText.setColor("black")
 myGraph.add(myText)
 view = otv.View(myGraph)
 
@@ -165,7 +174,7 @@ graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setTitle(r"Isolines of the 2D-PDF")
 graphPDF.add(myPolygon)
-view = otv.View(graphPDF)
+view = otv.View(graphPDF, contour_kw={"norm": "log"})
 
 # %%
 # We shall use a basic Monte Carlo algorithm using the domain event to estimate the probability.

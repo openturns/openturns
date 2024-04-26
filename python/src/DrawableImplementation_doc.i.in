@@ -724,7 +724,13 @@ Returns
 -------
 levels : :class:`~openturns.Point`
     Different levels where the iso-curves of the :class:`~openturns.Contour`
-    will be drawn."
+    will be drawn.
+
+Notes
+-----
+If two points of the grid have
+values bracketing the *level*, a linear interpolation is made in order to
+find the point associated to the *level* considered."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getLevels
 OT_Drawable_getLevels_doc
@@ -738,7 +744,13 @@ Parameters
 ----------
 levels : sequence of float
     Different levels where the iso-curves of the :class:`~openturns.Contour`
-    will be drawn."
+    will be drawn.
+
+Notes
+-----
+If two points of the grid have
+values bracketing the *level*, a linear interpolation is made in order to
+find the point associated to the *level* considered."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setLevels
 OT_Drawable_setLevels_doc

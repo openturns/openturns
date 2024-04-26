@@ -47,33 +47,12 @@ public:
   /** Constructor with parameters */
   Contour(const Sample & x,
           const Sample & y,
-          const Sample & data,
-          const Point & levels,
-          const Description & labels,
-          const Bool drawLabels = ResourceMap::GetAsBool("Contour-DefaultDrawLabels"),
-          const String & legend = "");
+          const Sample & data);
 
   /** Constructor with parameters */
   Contour(const UnsignedInteger dimX,
           const UnsignedInteger dimY,
-          const Sample & data,
-          Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
-          const String & colorMap = ResourceMap::GetAsString("Contour-DefaultColorMap"));
-
-  /** Constructor with parameters */
-  Contour(const Sample & x,
-          const Sample & y,
-          const Sample & data,
-          Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
-          const String & colorMap = ResourceMap::GetAsString("Contour-DefaultColorMap"));
-
-  /** Constructor with parameters
-      Contour(const Sample & xy,
-      const Sample & data,
-      const Point & levels,
-      const Description & labels,
-      const Bool drawLabels = true,
-      const String & legend = ""); */
+          const Sample & data);
 
   /** String converter */
   String __repr__() const override;
