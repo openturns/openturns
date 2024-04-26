@@ -45,7 +45,7 @@ m = WingWeightModel()
 # The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
 
 ot.ResourceMap.SetAsBool("Contour-DefaultIsFilled", True)
-ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 100)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 50)
 
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
@@ -75,7 +75,7 @@ for i in range(m.dim):
         contour.setVmin(176.0)
         contour.setVmax(363.0)
         contour.setColorBarPosition("")  # suppress colorbar of each plot
-        contour.setColorMap("plasma")
+        contour.setColorMap("hsv")
         graph.setDrawable(contour, 0)
         graph.setXTitle("")
         graph.setYTitle("")
