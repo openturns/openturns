@@ -109,12 +109,14 @@ Point ExperimentIntegration::computeL2Norm(const Function & g) const
 /* Method save() stores the object through the StorageManager */
 void ExperimentIntegration::save(Advocate & adv) const
 {
+  PersistentObject::save(adv);
   adv.saveAttribute("weightedExperiment_", weightedExperiment_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExperimentIntegration::load(Advocate & adv)
 {
+  PersistentObject::load(adv);
   adv.loadAttribute("weightedExperiment_", weightedExperiment_);
 }
 
