@@ -57,12 +57,12 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
 #
 # FORM/SORM Cobyla
-myCobyla = ot.Cobyla()
+myCobyla = ot.NLopt('LN_COBYLA')
 myCobyla.setMaximumCallsNumber(100 * dim)
 myCobyla.setMaximumAbsoluteError(1.0e-10)
 myCobyla.setMaximumRelativeError(1.0e-10)
 myCobyla.setMaximumResidualError(1.0e-10)
-myCobyla.setMaximumConstraintError(1.0e-10)
+myCobyla.setMaximumConstraintError(3.0e-10)
 
 myAlgoC = ot.FORM(myCobyla, myEvent, start)
 myAlgoC2 = ot.SORM(myCobyla, myEvent, start)
@@ -80,7 +80,7 @@ myAbdoRackwitz.setMaximumIterationNumber(100)
 myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-10)
 myAbdoRackwitz.setMaximumResidualError(1.0e-10)
-myAbdoRackwitz.setMaximumConstraintError(1.0e-10)
+myAbdoRackwitz.setMaximumConstraintError(3.0e-10)
 
 myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
 myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent, start)
