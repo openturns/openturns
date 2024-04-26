@@ -100,7 +100,7 @@ dist = ot.Normal(2.0, 0.5)
 vect = ot.RandomVector(dist)
 output = ot.CompositeRandomVector(f, vect)
 event = ot.ThresholdEvent(output, ot.Less(), 0.0)
-solver = ot.Cobyla()
+solver = ot.NLopt('LN_COBYLA')
 # -------------------------------------------------------
 algo = ot.FORM(solver, event, dist.getMean())
 algo.run()
