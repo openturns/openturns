@@ -57,24 +57,6 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 #
 
 #
-# FORM/SORM Cobyla
-myCobyla = ot.NLopt('LN_COBYLA')
-myCobyla.setMaximumCallsNumber(100 * dim)
-myCobyla.setMaximumAbsoluteError(1.0e-10)
-myCobyla.setMaximumRelativeError(1.0e-10)
-myCobyla.setMaximumResidualError(1.0e-10)
-myCobyla.setMaximumConstraintError(3.0e-10)
-
-myAlgoC = ot.FORM(myCobyla, myEvent, start)
-myAlgoC2 = ot.SORM(myCobyla, myEvent, start)
-
-myAlgoC.run()
-myAlgoC2.run()
-
-resultC = ot.FORMResult(myAlgoC.getResult())
-resultC2 = ot.SORMResult(myAlgoC2.getResult())
-
-#
 # FORM/SORM Abdo Rackwitz
 myAbdoRackwitz = ot.AbdoRackwitz()
 myAbdoRackwitz.setMaximumIterationNumber(100)
@@ -113,30 +95,6 @@ myLHS.run()
 #
 # Results
 #
-
-#
-# FORM/SORM Cobyla
-PfC = resultC.getEventProbability()
-Beta_generalizedC = resultC.getGeneralisedReliabilityIndex()
-u_starC = resultC.getStandardSpaceDesignPoint()
-x_starC = resultC.getPhysicalSpaceDesignPoint()
-PtC = resultC.getIsStandardPointOriginInFailureSpace() and "true" or "false"
-gammaC = resultC.getImportanceFactors()
-beta_hasoferC = resultC.getHasoferReliabilityIndex()
-SensitivityC = resultC.getEventProbabilitySensitivity()
-
-PFBreitC2 = resultC2.getEventProbabilityBreitung()
-BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung()
-PFHBC2 = resultC2.getEventProbabilityHohenbichler()
-BetaHBC2 = resultC2.getGeneralisedReliabilityIndexHohenbichler()
-PFTvedtC2 = resultC2.getEventProbabilityTvedt()
-BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt()
-CurvC2 = resultC2.getSortedCurvatures()
-u_starC2 = resultC2.getStandardSpaceDesignPoint()
-x_starC2 = resultC2.getPhysicalSpaceDesignPoint()
-PtC2 = resultC2.getIsStandardPointOriginInFailureSpace() and "true" or "false"
-gammaC2 = resultC2.getImportanceFactors()
-beta_hasoferC2 = resultC2.getHasoferReliabilityIndex()
 
 #
 # FORM/SORM Abdo Rackwitz
@@ -189,50 +147,6 @@ print(
     "************************************************************************************************"
 )
 print(
-    "***************************************** FORM  COBYLA *****************************************"
-)
-print(
-    "************************************************************************************************"
-)
-print("event probability = %.5e" % PfC)
-print("generalized reliability index = %.5f" % Beta_generalizedC)
-print(
-    "************************************************************************************************"
-)
-for i in range(u_starC.getDimension()):
-    print("standard space design point = %.5f" % u_starC[i])
-print(
-    "************************************************************************************************"
-)
-for i in range(x_starC.getDimension()):
-    print("physical space design point = %.5f" % x_starC[i])
-print(
-    "************************************************************************************************"
-)
-print("is standard point origin in failure space? ", PtC)
-print(
-    "************************************************************************************************"
-)
-for i in range(gammaC.getDimension()):
-    print("importance factors = %.5f" % gammaC[i])
-print(
-    "************************************************************************************************"
-)
-print("Hasofer reliability index = %.5f" % beta_hasoferC)
-print(
-    "************************************************************************************************"
-)
-for i in range(SensitivityC.getSize()):
-    for j in range(SensitivityC[i].getDimension()):
-        print("Pf sensitivity = %.5f" % SensitivityC[i][j])
-print(
-    "************************************************************************************************"
-)
-print("")
-print(
-    "************************************************************************************************"
-)
-print(
     "************************************** FORM ABDO RACKWITZ **************************************"
 )
 print(
@@ -276,56 +190,7 @@ print("")
 print(
     "************************************************************************************************"
 )
-print(
-    "***************************************** SORM  COBYLA *****************************************"
-)
-print(
-    "************************************************************************************************"
-)
-print("Breitung event probability = %.5e" % PFBreitC2)
-print("Breitung generalized reliability index = %.5f" % BetaBreitC2)
-print("Hohenbichler event probability = %.5e" % PFHBC2)
-print("Hohenbichler generalized reliability index = %.5f" % BetaHBC2)
-print("Tvedt event probability = %.5e" % PFTvedtC2)
-print("Tvedt generalized reliability index = %.5f" % BetaTvedtC2)
-print(
-    "************************************************************************************************"
-)
-for i in range(CurvC2.getDimension()):
-    print("sorted curvatures = %.5f" % cleanScalar(CurvC2[i]))
-print(
-    "************************************************************************************************"
-)
-for i in range(u_starC2.getDimension()):
-    print("standard space design point = %.5f" % u_starC2[i])
-print(
-    "************************************************************************************************"
-)
-for i in range(x_starC2.getDimension()):
-    print("physical space design point = %.5f" % x_starC2[i])
-print(
-    "************************************************************************************************"
-)
-print(
-    "************************************************************************************************"
-)
-print("is standard point origin in failure space? ", PtC2)
-print(
-    "************************************************************************************************"
-)
-for i in range(gammaC2.getDimension()):
-    print("importance factors = %.5f" % gammaC2[i])
-print(
-    "************************************************************************************************"
-)
-print("Hasofer reliability index = %.5f" % beta_hasoferC2)
-print(
-    "************************************************************************************************"
-)
-print("")
-print(
-    "************************************************************************************************"
-)
+
 print(
     "************************************** SORM ABDO RACKWITZ **************************************"
 )

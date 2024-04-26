@@ -142,10 +142,10 @@ view = viewer.View(graph)
 
 # %%
 # We create a NearestPoint algorithm
-myalgoOptim = ot.NLopt('LN_AUGLAG_EQ')
+myalgoOptim = ot.AbdoRackwitz()
 # Resolution options:
-eps = 1e-2
-myalgoOptim.setMaximumCallsNumber(100)
+eps = 1e-3
+myalgoOptim.setMaximumCallsNumber(1000)
 myalgoOptim.setMaximumAbsoluteError(eps)
 myalgoOptim.setMaximumRelativeError(eps)
 myalgoOptim.setMaximumResidualError(eps)
