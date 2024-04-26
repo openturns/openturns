@@ -50,7 +50,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 50)
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
 
-grid = ot.GridLayout(m.dim-1, m.dim-1)
+grid = ot.GridLayout(m.dim - 1, m.dim - 1)
 for i in range(1, m.dim):
     for j in range(i):
         crossCutIndices = []
@@ -88,7 +88,7 @@ for i in range(1, m.dim):
         if i == 9:
             graph.setXTitle(m.distributionX.getDescription()[j])
 
-        grid.setGraph(i-1, j, graph)
+        grid.setGraph(i - 1, j, graph)
 
 # Get View object to manipulate the underlying figure
 v = otv.View(grid)
@@ -386,9 +386,11 @@ view = otv.View(graph)
 sizeRankSobol = 800
 inputDesignRankSobol = m.distributionX.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
-myRankSobol = otexp.RankSobolSensitivityAlgorithm(inputDesignRankSobol, outputDesignankSobol)
+myRankSobol = otexp.RankSobolSensitivityAlgorithm(
+    inputDesignRankSobol, outputDesignankSobol
+)
 indicesrankSobol = myRankSobol.getFirstOrderIndices()
-print('First order indices:', indicesrankSobol)
+print("First order indices:", indicesrankSobol)
 graph = myRankSobol.draw()
 graph.setTitle("Sobol indices by rank-based estimation - wing weight")
 view = otv.View(graph)
