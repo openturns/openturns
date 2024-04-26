@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation for Rank obol Sensitivity Algorithm
+ *  @brief Implementation for Rank Sobol Sensitivity Algorithm
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *

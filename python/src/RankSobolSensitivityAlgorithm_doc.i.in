@@ -8,6 +8,17 @@ inputDesign : :class:`~openturns.Sample`
 outputDesign : :class:`~openturns.Sample`
     The output sample used for the Sobol' sensitivity analysis
 
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> x = im.distributionX.getSample(100)
+>>> y = im.model(x)
+>>> algo = otexp.RankSobolSensitivityAlgorithm(x, y)
+>>> indices = algo.getFirstOrderIndices()
+
 Notes
 -----
 This method allows one to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
