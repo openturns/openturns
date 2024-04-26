@@ -732,7 +732,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("Contour-DefaultIsFilled", false);
   addAsBool("Contour-DefaultDrawLabels", true);
   addAsString("Contour-DefaultColorMapNorm", "linear");
-  addAsString("Contour-DefaultColorMap", "viridis");
+  addAsString("Contour-DefaultColorMap", "hsv");
   addAsString("Contour-DefaultColorBarPosition", "right");
   addAsString("Contour-DefaultExtend", "both");
   addAsScalar("Contour-DefaultAlpha", 1.0);

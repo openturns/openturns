@@ -107,7 +107,7 @@
   <Contour-DefaultIsFilled value_bool="false"        />
   <Contour-DefaultDrawLabels value_bool="true"       />
   <Contour-DefaultColorMapNorm value_str="linear"            />
-  <Contour-DefaultColorMap value_str="viridis"       />
+  <Contour-DefaultColorMap value_str="hsv"       />
   <Contour-DefaultColorBarPosition value_str="right" />
   <Contour-DefaultExtend value_str="both"            />
   <Contour-DefaultAlpha value_float="1.0"            />
