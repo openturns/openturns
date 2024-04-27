@@ -574,7 +574,7 @@ public:
       const Point optimalValue(solver.getResult().getOptimalValue());
       return optimalValue;
     }
-    catch (const Exception & ex)
+    catch (const Exception &)
     {
       return Point(1, -std::log(SpecFunc::ActualMaxScalar));
     }
@@ -1181,7 +1181,7 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
     const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / size).getImplementation());
     parameterDistribution = Normal(optimalBeta, covariance);
   }
-  catch (const Exception & ex)
+  catch (const Exception &)
   {
     parameterDistribution = JointDistribution({Dirac(optimalBeta[0]), Dirac(optimalBeta[1]), Dirac(optimalBeta[2])});
     LOGWARN("Could not compute GPD covariates parameter distribution covariance");
@@ -1440,7 +1440,7 @@ public:
       const Point optimalValue(solver.getResult().getOptimalValue());
       return optimalValue;
     }
-    catch (const Exception &exc)
+    catch (const Exception &)
     {
       return Point(1, -std::log(SpecFunc::ActualMaxScalar));
     }

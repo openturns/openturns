@@ -154,7 +154,7 @@ namespace KolmogorovFunctions
     SignedInteger j2 = 0;
     if (i == 0)
     {
-      j1 = -ll - ceilf - 1;
+      j1 = -static_cast<SignedInteger>(ll) - ceilf - 1;
       j2 = ll + ceilf - 1;
     }
     else
