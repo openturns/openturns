@@ -24,8 +24,8 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/IdentityMatrix.hxx"
 
+#include "kolmogorov.h"
 #include <numeric>
-
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -388,11 +388,6 @@ namespace KolmogorovFunctions
     const Scalar Ksum = std::accumulate(K0to3.begin(), K0to3.end(), 0.0);
     return Ksum;
   }
-
-  extern "C"
-  {
-    double smirnov(int n, double d); // from kolmogorov.c
-  }
   
   Scalar _kolmogn(const UnsignedInteger n, const Scalar x, const Bool cdf)
   {
@@ -427,7 +422,7 @@ namespace KolmogorovFunctions
     }
     if (x >= 0.5)  // Exact: 2 * smirnov
     {
-      prob = 2 * smirnov(n, x);
+      prob = 2 * special::cephes::smirnov(n, x);
       return _select_and_clip_prob(1.0 - prob, prob, cdf);
     }
     const Scalar nxsquared = t * x;
@@ -443,7 +438,7 @@ namespace KolmogorovFunctions
         prob = _kolmogn_Pomeranz(n, x, true);
         return _select_and_clip_prob(prob, 1.0 - prob, cdf);
         // Now use Miller approximation of 2*smirnov
-        prob = 2 * smirnov(n, x);
+        prob = 2 * special::cephes::smirnov(n, x);
         return _select_and_clip_prob(1.0 - prob, prob, cdf);
       }
     }
@@ -454,7 +449,7 @@ namespace KolmogorovFunctions
           return 0.0;
         if (nxsquared >= 2.2)
         {
-          prob = 2 * smirnov(n, x);
+          prob = 2 * special::cephes::smirnov(n, x);
           return SpecFunc::Clip01(prob);
         }
         // Fall through and compute the SF as 1.0-CDF
