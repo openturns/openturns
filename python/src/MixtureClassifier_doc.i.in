@@ -79,7 +79,7 @@ inputPoint : sequence of float
     A point to grade.
 inputSample : 2-d a sequence of float
     A set of point to grade.
-k : integer
+k : int
     The class number.
 classList : sequence of integer
     The list of class number.

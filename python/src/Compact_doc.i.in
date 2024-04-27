@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-N : integer
+N : int
     minimum number of points to store.
 
 See also
@@ -39,7 +39,7 @@ The stored numerical sample will have a size within :math:`N` and :math:`2N` if 
 
 Returns
 -------
-N : integer
+N : int
     The half maximum number of points to store."
 
 // ---------------------------------------------------------------------
@@ -49,5 +49,5 @@ N : integer
 
 Returns
 -------
-index : integer
+index : int
     The number of the stored points."
