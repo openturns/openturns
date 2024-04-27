@@ -10,9 +10,9 @@ Available constructors:
 
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the origin set.
-n : integer
+n : int
     The cardinal of the goal set.
 
 See also
@@ -59,7 +59,7 @@ Examples
 
 Returns
 -------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -69,7 +69,7 @@ k : integer
 
 Returns
 -------
-n : integer
+n : int
     The cardinal of the base set."
 
 // ---------------------------------------------------------------------
@@ -79,7 +79,7 @@ n : integer
 
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -89,5 +89,5 @@ k : integer
 
 Parameters
 ----------
-n : integer
+n : int
     The cardinal of the base set."

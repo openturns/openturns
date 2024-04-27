@@ -8,7 +8,7 @@ Available constructor:
 
 Parameters
 ----------
-dimension : integer
+dimension : int
     The dimension of the standard space. By default, :math:`dimension = 0` but
     automatically updated by the calling class.
 

@@ -8,9 +8,9 @@ Available constructors:
 
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the subsets
-n : integer
+n : int
     The cardinal of the base set
 
 See also
@@ -54,7 +54,7 @@ Examples
 
 Returns
 -------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -64,7 +64,7 @@ k : integer
 
 Returns
 -------
-n : integer
+n : int
     The cardinal of the base set."
 
 // ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ n : integer
 
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -84,5 +84,5 @@ k : integer
 
 Parameters
 ----------
-n : integer
+n : int
     The cardinal of the base set."

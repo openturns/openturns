@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-N : integer
+N : int
     Number of points to store.
 
 See also
@@ -34,7 +34,7 @@ wrapped : bool
 
 Returns
 -------
-index : integer
+index : int
     The index of the storage position."
 
 // ---------------------------------------------------------------------
@@ -44,5 +44,5 @@ index : integer
 
 Returns
 -------
-N : integer
+N : int
     The maximum number of points to store."

@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-dim : integer
+dim : int
     The dimension of the correlation matrix (square matrix with *dim* rows and 
     *dim* columns).
 values : sequence of float

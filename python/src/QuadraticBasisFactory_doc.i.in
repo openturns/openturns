@@ -9,7 +9,7 @@ The quadratic basis is composed of the quadratic terms of the canonical basis:
 
 Parameters
 ----------
-dimension : integer
+dimension : int
     Input dimension of the basis.
 
 See also
