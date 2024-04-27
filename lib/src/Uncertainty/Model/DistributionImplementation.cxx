@@ -3242,50 +3242,53 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
   return getCopula().getSpearmanCorrelation();
 }
 
+/* This helper class is here to compute the Kendall tau of bivariate distributions
+
+   If the distribution is a copula with CDF C and PDF c, then:
+
+   tau = 4\int_0^1\int_0^1 C(u,v)c(u,v)dudv - 1
+
+   If the distribution is general, with CDF F, PDF f, marginal quantiles Qx and Qy, marginal PDF fx and fy, then:
+
+   C(u,v)=F(Qx(u),Qy(v))
+   c(u,v)=d²C(u,v)/dudv=Qx'(u)Qy'(v)f(Qx(u),Qy(v))
+
+   and:
+
+   tau = 4\int_0^1\int_0^1 F(Qx(u),Qy(v))f(Qx(u),Qy(v))Qx'(u)Qy'(v)dudv - 1
+
+   then, with x=Qx(u) and y=Qy(u), dxdy=Qx'(u)duQy'(v)dv and
+
+       = 4\int_R\int_R F(x,y)f(x,y)dxdy - 1
+
+   So in all the cases, we have to integrate the product CDFxPDF over the range
+   of the distribution
+ */
 struct DistributionImplementationKendallTauWrapper
 {
   DistributionImplementationKendallTauWrapper(const Distribution & distribution)
     : distribution_(distribution)
   {
-    if (!distribution.isCopula())
-    {
-      const UnsignedInteger dimension = distribution.getDimension();
-      marginalCollection_ = Collection<Distribution>(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        marginalCollection_[i] = distribution.getMarginal(i);
-    }
+    // Nothing to do
   }
 
-  Point kernelForCopula(const Point & point) const
+  Point kernel(const Point & point) const
   {
-    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(point));
-  }
-
-  Point kernelForDistribution(const Point & point) const
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    Point x(dimension);
-    Scalar factor = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      const Point xi(marginalCollection_[i].computeQuantile(point[i]));
-      x[i] = xi[0];
-      factor *= marginalCollection_[i].computePDF(xi);
-      if (std::abs(factor) < SpecFunc::Precision) return Point(1, 0.0);
-    }
-    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(x) / factor);
+    const Scalar pdf = distribution_.computePDF(point);
+    if (std::abs(pdf) < SpecFunc::Precision) return Point(1, 0.0);
+    return Point(1, distribution_.computeCDF(point) * pdf);
   }
 
   const Distribution & distribution_;
-  Collection<Distribution> marginalCollection_;
-}; // DistributionImplementationKendallTauWrapperx
+}; // DistributionImplementationKendallTauWrapper
 
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
   CorrelationMatrix tau(dimension_);
   // First special case: independent marginals
-  if (hasIndependentCopula()) return tau;
+  if (hasIndependentCopula())
+    return tau;
   // Second special case: elliptical distribution
   if (hasEllipticalCopula())
   {
@@ -3297,7 +3300,6 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
   }
   // General case
   const IteratedQuadrature integrator;
-  const Interval square(2);
   // Performs the integration in the strictly lower triangle of the tau matrix
   Indices indices(2);
   for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
@@ -3306,18 +3308,14 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
     for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
     {
       indices[1] = columnIndex;
-      const Distribution marginalDistribution(getMarginal(indices).getImplementation());
+      const Distribution marginalDistribution(getMarginal(indices));
       if (!marginalDistribution.hasIndependentCopula())
       {
         // Build the integrand
         const DistributionImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-        Function function;
-        if (isCopula())
-          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForCopula, 2, 1));
-        else
-          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForDistribution, 2, 1));
-        tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
-      }
+        const Function function(bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernel, 2, 1));
+        tau(rowIndex, columnIndex) = 4.0 * integrator.integrate(function, marginalDistribution.getRange())[0] - 1.0;
+      } // !independent margins
     } // loop over column indices
   } // loop over row indices
   return tau;

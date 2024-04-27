@@ -18,7 +18,7 @@ CDF(quantile)=0.5
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0241064,0.0241064,0.0833333]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.289277,0.289277,1]
 spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.289277,0.289277,1]
-kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.299108,0.299108,1]
+kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.19643,0.19643,1]
 CDF(x|y)=0.627074
 Quantile(p|y)=0.6
 margin=class=IndependentCopula name=IndependentCopula dimension=1
