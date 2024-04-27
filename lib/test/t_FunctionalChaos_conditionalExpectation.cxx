@@ -31,49 +31,40 @@ int main(int, char *[])
   setRandomGenerator();
 
   // Problem parameters
-  UnsignedInteger dimension = 3;
-  Scalar a = 7.0;
-  Scalar b = 0.1;
+  const UnsignedInteger dimension = 3;
+  const Scalar a = 7.0;
+  const Scalar b = 0.1;
   // Create the Ishigami function
-  Description inputVariables(dimension);
-  inputVariables[0] = "xi1";
-  inputVariables[1] = "xi2";
-  inputVariables[2] = "xi3";
+  const Description inputVariables = {"xi1", "xi2", "xi3"};
   Description formula(1);
   formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-  SymbolicFunction model(inputVariables, formula);
+  const SymbolicFunction model(inputVariables, formula);
 
   // Create the input distribution
-  Collection<Distribution> marginals(dimension);
-  marginals[0] = Uniform(-M_PI, M_PI);
-  marginals[1] = Uniform(-M_PI, M_PI);
-  marginals[2] = Uniform(-M_PI, M_PI);
-  ComposedDistribution distribution(marginals);
+  const Collection<Distribution> marginals(dimension, Uniform(-M_PI, M_PI));
+  const ComposedDistribution distribution(marginals);
 
   // Create the orthogonal basis
-  Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
-  polynomialCollection[0] = LegendreFactory();
-  polynomialCollection[1] = LegendreFactory();
-  polynomialCollection[2] = LegendreFactory();
+  const Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension, LegendreFactory());
 
-  LinearEnumerateFunction enumerateFunction(dimension);
-  OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
+  const LinearEnumerateFunction enumerateFunction(dimension);
+  const OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
   fullprint << productBasis.__str__() << std::endl;
 
   // Create the adaptive strategy
-  UnsignedInteger degree = 10;
-  UnsignedInteger basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree);
-  FixedStrategy adaptiveStrategy(productBasis, basisDimension);
+  const UnsignedInteger degree = 10;
+  const UnsignedInteger basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree);
+  const FixedStrategy adaptiveStrategy(productBasis, basisDimension);
   // Create the result object here in order to test the save/load mechanism outside of the double loop
   FunctionalChaosResult result;
   // Create the projection strategy
-  UnsignedInteger samplingSize = 500;
+  const UnsignedInteger samplingSize = 500;
   // Full: ProjectionStrategy projectionStrategy{LeastSquaresStrategy()};
   // Sparse:
-  FittingAlgorithm fittingAlgorithm = CorrectedLeaveOneOut();
+  const FittingAlgorithm fittingAlgorithm = CorrectedLeaveOneOut();
   const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
 
-  MonteCarloExperiment experiment(distribution, samplingSize);
+  const MonteCarloExperiment experiment(distribution, samplingSize);
   RandomGenerator::SetSeed(0);
   const Sample X(experiment.generate());
   const Sample Y(model(X));
@@ -91,79 +82,70 @@ int main(int, char *[])
 
   // Condition with respect to X1
   fullprint << "Condition with respect to X1" << std::endl;
-  FunctionalChaosResult ceGivenX1(result.getConditionalExpectation({0}));
+  const FunctionalChaosResult ceGivenX1(result.getConditionalExpectation({0}));
   fullprint << ceGivenX1.__str__() << std::endl;
-  Function functionCEGivenX1(ceGivenX1.getMetaModel());
+  const Function functionCEGivenX1(ceGivenX1.getMetaModel());
   // Exact result Y | Xi1
   fullprint << "    Exact result Y | Xi1" << std::endl;
-  Description inputVariablesGivenX1(3);
-  inputVariablesGivenX1[0] = "xi1";
-  inputVariablesGivenX1[1] = "a";
-  inputVariablesGivenX1[2] = "b";
+  const Description inputVariablesGivenX1 = {"xi1", "a", "b"};
   Description formulaGivenX1(1);
   formulaGivenX1[0] = (OSS() << "a / 2 + (1 + b * pi_^4 / 5) * sin(xi1)");
-  SymbolicFunction parametricEgivenX1(inputVariablesGivenX1, formulaGivenX1);
-  Indices indicesABGivenX1({1, 2});
-  Point parametersABGivenX1({a, b});
-  ParametricFunction functionEgivenX1Exact(parametricEgivenX1, indicesABGivenX1, parametersABGivenX1);
+  const SymbolicFunction parametricEgivenX1(inputVariablesGivenX1, formulaGivenX1);
+  const Indices indicesABGivenX1({1, 2});
+  const Point parametersABGivenX1({a, b});
+  const ParametricFunction functionEgivenX1Exact(parametricEgivenX1, indicesABGivenX1, parametersABGivenX1);
   // Compute L2 weighted norm
   fullprint << "    Compute L2 weighted norm" << std::endl;
-  Distribution distributionMarginalGivenX1(distribution.getMarginal(0));
-  MonteCarloExperiment experimentTestGivenX1(distributionMarginalGivenX1, errorSampleSize);
-  ExperimentIntegration integrationX1(experimentTestGivenX1);
-  Point errorGivenX1(integrationX1.computeL2Norm(functionCEGivenX1 - functionEgivenX1Exact));
+  const Distribution distributionMarginalGivenX1(distribution.getMarginal(0));
+  const MonteCarloExperiment experimentTestGivenX1(distributionMarginalGivenX1, errorSampleSize);
+  const ExperimentIntegration integrationX1(experimentTestGivenX1);
+  const Point errorGivenX1(integrationX1.computeL2Norm(functionCEGivenX1 - functionEgivenX1Exact));
   fullprint << "    Error = " << errorGivenX1[0] << std::endl;
   assert(errorGivenX1[0] < atol);
 
   // Condition with respect to X2
   fullprint << "Condition with respect to X2" << std::endl;
-  FunctionalChaosResult ceGivenX2(result.getConditionalExpectation({1}));
+  const FunctionalChaosResult ceGivenX2(result.getConditionalExpectation({1}));
   fullprint << ceGivenX2.__str__() << std::endl;
-  Function functionCEGivenX2(ceGivenX2.getMetaModel());
+  const Function functionCEGivenX2(ceGivenX2.getMetaModel());
   // Exact result Y | Xi2
   fullprint << "    Exact result Y | Xi2" << std::endl;
-  Description inputVariablesGivenX2(3);
-  inputVariablesGivenX2[0] = "xi2";
-  inputVariablesGivenX2[1] = "a";
-  inputVariablesGivenX2[2] = "b";
+  const Description inputVariablesGivenX2 = {"xi2", "a", "b"};
   Description formula2GivenX2(1);
   formula2GivenX2[0] = (OSS() << "a * sin(xi2)^2");
-  SymbolicFunction parametricEgivenX2(inputVariablesGivenX2, formula2GivenX2);
-  Indices indicesABGivenX2({1, 2});
-  Point parametersABGivenX2({a, b});
-  ParametricFunction functionEgivenX2Exact(parametricEgivenX2, indicesABGivenX2, parametersABGivenX2);
+  const SymbolicFunction parametricEgivenX2(inputVariablesGivenX2, formula2GivenX2);
+  const Indices indicesABGivenX2({1, 2});
+  const Point parametersABGivenX2({a, b});
+  const ParametricFunction functionEgivenX2Exact(parametricEgivenX2, indicesABGivenX2, parametersABGivenX2);
   // Compute L2 weighted norm
   fullprint << "    Compute L2 weighted norm" << std::endl;
-  Distribution distributionMarginalGivenX2(distribution.getMarginal(1));
-  MonteCarloExperiment experimentTestGivenX2(distributionMarginalGivenX2, errorSampleSize);
-  ExperimentIntegration integrationX2(experimentTestGivenX2);
-  Point errorGivenX2(integrationX2.computeL2Norm(functionCEGivenX2 - functionEgivenX2Exact));
+  const Distribution distributionMarginalGivenX2(distribution.getMarginal(1));
+  const MonteCarloExperiment experimentTestGivenX2(distributionMarginalGivenX2, errorSampleSize);
+  const ExperimentIntegration integrationX2(experimentTestGivenX2);
+  const Point errorGivenX2(integrationX2.computeL2Norm(functionCEGivenX2 - functionEgivenX2Exact));
   fullprint << "    Error = " << errorGivenX2[0] << std::endl;
   assert(errorGivenX2[0] < atol);
 
   // Condition with respect to X3
   fullprint << "Condition with respect to X3" << std::endl;
-  FunctionalChaosResult ceGivenX3(result.getConditionalExpectation({2}));
+  const FunctionalChaosResult ceGivenX3(result.getConditionalExpectation({2}));
   fullprint << ceGivenX3.__str__() << std::endl;
-  Function functionCEGivenX3(ceGivenX3.getMetaModel());
+  const Function functionCEGivenX3(ceGivenX3.getMetaModel());
   // Exact result Y | Xi3
   fullprint << "    Exact result Y | Xi3" << std::endl;
-  Description inputVariablesGivenX3(3);
-  inputVariablesGivenX3[0] = "xi3";
-  inputVariablesGivenX3[1] = "a";
-  inputVariablesGivenX3[2] = "b";
+  const Description inputVariablesGivenX3 = {"xi3", "a", "b"};
   Description formula2GivenX3(1);
   formula2GivenX3[0] = (OSS() << "a / 2");
-  SymbolicFunction parametricEgivenX3(inputVariablesGivenX3, formula2GivenX3);
-  Indices indicesABGivenX3({1, 2});
-  Point parametersABGivenX3({a, b});
+  const SymbolicFunction parametricEgivenX3(inputVariablesGivenX3, formula2GivenX3);
+  const Indices indicesABGivenX3({1, 2});
+  const Point parametersABGivenX3({a, b});
   ParametricFunction functionEgivenX3Exact(parametricEgivenX3, indicesABGivenX3, parametersABGivenX3);
   // Compute L2 weighted norm
   fullprint << "    Compute L2 weighted norm" << std::endl;
-  Distribution distributionMarginalGivenX3(distribution.getMarginal(2));
-  MonteCarloExperiment experimentTestGivenX3(distributionMarginalGivenX3, errorSampleSize);
-  ExperimentIntegration integrationX3(experimentTestGivenX3);
-  Point errorGivenX3(integrationX3.computeL2Norm(functionCEGivenX3 - functionEgivenX3Exact));
+  const Distribution distributionMarginalGivenX3(distribution.getMarginal(2));
+  const MonteCarloExperiment experimentTestGivenX3(distributionMarginalGivenX3, errorSampleSize);
+  const ExperimentIntegration integrationX3(experimentTestGivenX3);
+  const Point errorGivenX3(integrationX3.computeL2Norm(functionCEGivenX3 - functionEgivenX3Exact));
   fullprint << "    Error = " << errorGivenX3[0] << std::endl;
   assert(errorGivenX3[0] < atol);
 
