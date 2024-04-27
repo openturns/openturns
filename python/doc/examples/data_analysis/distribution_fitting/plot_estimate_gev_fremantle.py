@@ -18,6 +18,8 @@ Estimate a GEV on the Fremantle sea-levels data
 # - the log-likelihood function,
 # - the profile log-likelihood function.
 #
+# We also illustrate the modelling with covariates.
+#
 # First, we load the Fremantle dataset of the annual maximum sea-levels. We start by looking at them
 # through time. The data also contain the annual mean value of the Southern Oscillation Index (SOI),
 # which is a proxy for meteorological volatility due to effects such as El Nino.
@@ -232,8 +234,17 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
         print(f"normMeth = {normMeth}, initPoint = {initPoint}")
         # The ot.Function() is the identity function.
         result = factory.buildTimeVarying(
-            sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-            ot.Function(), ot.Function(), ot.Function(), initPoint, normMeth
+            sample,
+            timeStamps,
+            basis,
+            muIndices,
+            sigmaIndices,
+            xiIndices,
+            ot.Function(),
+            ot.Function(),
+            ot.Function(),
+            initPoint,
+            normMeth,
         )
         beta = result.getOptimalParameter()
         print(f"beta = {beta}")
@@ -243,12 +254,21 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
 # According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
 # This initial point is cheaper than the *Static* one as it requires no optimization computation.
 result_NonStatLL = factory.buildTimeVarying(
-    sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-    ot.Function(), ot.Function(), ot.Function(), "Gumbel", "MinMax"
+    sample,
+    timeStamps,
+    basis,
+    muIndices,
+    sigmaIndices,
+    xiIndices,
+    ot.Function(),
+    ot.Function(),
+    ot.Function(),
+    "Gumbel",
+    "MinMax",
 )
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
-print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau")
+print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau(t)")
 print(f"sigma = {beta[2]:.4f}")
 print(f"xi = {beta[3]:.4f}")
 
@@ -430,12 +450,30 @@ basis = ot.Basis(
     [constant, ot.SymbolicFunction(["t"], ["t"]), ot.SymbolicFunction(["t"], ["t^2"])]
 )
 result_NonStatLL_2 = factory.buildTimeVarying(
-    sample, timeStamps, basis, [0, 1, 2], [0], [0],
-    ot.Function(), ot.Function(), ot.Function(), "Gumbel", "MinMax"
+    sample,
+    timeStamps,
+    basis,
+    [0, 1, 2],
+    [0],
+    [0],
+    ot.Function(),
+    ot.Function(),
+    ot.Function(),
+    "Gumbel",
+    "MinMax",
 )
 result_NonStatLL_3 = factory.buildTimeVarying(
-    sample, timeStamps, basis, [0, 1], [0, 1], [0],
-    ot.Function(), ot.Function(), ot.Function(), "Gumbel", "MinMax"
+    sample,
+    timeStamps,
+    basis,
+    [0, 1],
+    [0, 1],
+    [0],
+    ot.Function(),
+    ot.Function(),
+    ot.Function(),
+    "Gumbel",
+    "MinMax",
 )
 print("Max log-likelihood = ")
 print("Non stationary quadratic mu(t) model = ", result_NonStatLL_2.getLogLikelihood())
@@ -460,6 +498,169 @@ print(
 print(
     f"Hypothesis H0 (linear mu(t) model) vs H1 (linear mu(t) and sigma(t) model):  accepted ? = {accepted_3}"
 )
+
+# %%
+# **Non stationary GEV modeling with the covariates Time and SOI**
+#
+# Extreme sea-levels can be unusually extreme during periods when the El Nino effect is
+# active.
+# Hence, we study a modeling that takes into account the dependence between the extreme
+# sea-levels
+# at Fremantle and the annual mean value of the Southern Oscillation Index (SOI)
+# besides the temporal dependence.
+# The following figure shows that the annual maximum sea-levels are generally greater
+# when the value of SOI is high. It might be due to the time trend in the data for the
+# sea-levels
+# and the SOI (each one increases with time). But it can also be possible that the
+# SOI explains
+# some of the variation in annual maximum sea-levels after allowance for the time variation
+# in the process.
+graph = ot.Graph("SOI at Fremantle", "SOI", "level (m)", True, "")
+cloud = ot.Cloud(data.getMarginal([2, 1]))
+cloud.setColor("red")
+graph.add(cloud)
+view = otv.View(graph)
+
+# %%
+# To consider this possibility, we study the model:
+#
+# .. math::
+#     :nowrap:
+#
+#     \begin{align*}
+#       \mu(t) & = \beta_1 t + \beta_2 \mbox{SOI} + \beta_3 \\
+#       \sigma(t) & = \beta_4 \\
+#       \xi(t) & = \beta_5
+#     \end{align*}
+#
+# We consider two covariates: the time and the SOI. We build the sample of the values of both
+# covariates: :math:`(t_i, \mbox{SOI}_i)_{1 \leq i \leq n}` where :math:`\mbox{SOI}_i =
+# SOI(t_i)`.
+# The constant covariate is
+# automatically added by the library if not specified in order to allow
+# some of the GEV parameters to remain constant (ie independent of both covariates
+# :math:`(t, \mbox{SOI})`):
+# this is the case for the :math:`\sigma` and :math:`\xi` parameters.
+# This last constant covariate is associated to the
+# the third component of the covariates sample which now gathers the values
+# :math:`(t_i, \mbox{SOI}_i, 1)` for :math:`1 \leq i \leq n`.
+dataCovariates = data.getMarginal([0, 2])
+print(dataCovariates[0:10])
+result_Cov = factory.buildCovariates(sample, dataCovariates, [0, 1])
+
+# %%
+# We check here that a third component has effectively been added to the covariates
+# sample: see the added third column which is constant equal to 1.
+print(result_Cov.getCovariates()[0:10])
+
+# %%
+# We get the optimal parameter :math:`\vect{\beta}`.
+beta = result_Cov.getOptimalParameter()
+print("beta = ", beta)
+
+# %%
+# We get here the function :math:`(\vect{\beta}, t, \mbox{SOI}) \mapsto \vect{\theta}
+# (\vect{\beta}, t, \mbox{SOI})` where :math:`\vect{\theta} = (\mu, \sigma)`. We see that
+# :math:`\mu` depends on the three
+# covariates :math:`(t, \mbox{SOI}, 1)` and that :math:`\sigma` and :math:`\xi` depends
+# only on the third one
+# which is the constant one.
+print(result_Cov.getParameterFunction())
+print(f"beta = {beta}")
+print(f"mu(t) = {beta[0]:.4f} *t + {beta[1]:.4f} * SOI(t) + {beta[2]:.4f}")
+print(f"sigma = {beta[3]:.4f}")
+print(f"xi = {beta[4]:.4f}")
+
+# %%
+# We check here the normalizing function that has been used, which comes from
+# the default method (the *MinMax* one).
+print(result_Cov.getNormalizationFunction())
+
+# %%
+# We test this new model where :math:`\mu(t,SOI)` is modeled as a linear combination
+# of the three covariates  :math:`(t, \mbox{SOI}, 1)` against the model
+# with the linear-trend only :math:`\mu(t)`. The maximized log-likelihood of this
+# new model is 53.9, compared to 49.9 for the first model. Hence, the
+# the deviance statistics is equal to :math:`D = 8.0`, which is large when judged relative to
+# a :math:`\chi_1^2` distribution.
+# It provides evidence that the effect of SOI is influential on annual maximum
+# sea-levels at Fremantle, even after the allowance for time-variation.
+llh_cov = result_Cov.getLogLikelihood()
+print("Max log-likelihood: ", llh_cov)
+resultLikRatioTest_SOI = ot.HypothesisTest.LikelihoodRatioTest(
+    4, llh_NonStatLL, 5, llh_cov, 0.05
+)
+print(f"Dp={resultLikRatioTest_SOI.getStatistic():.2f}")
+accepted = resultLikRatioTest_SOI.getBinaryQualityMeasure()
+print(
+    f"Hypothesis H0 (linear-trend mu(t) model) vs H1 (linear-trend and SOI mu(t,SOI) model):  accepted ? = {accepted}"
+)
+
+# %%
+# We plot here the graphs :math:`t \mapsto \mu(t, \mbox{SOI}_0)` where
+# :math:`\mbox{SOI}_0` is a given value (the mean value of the sample if not specified),
+# and :math:`\mbox{SOI} \mapsto \mu(t_0, \mbox{SOI})` where :math:`t_0` is a given time.
+# Care: there are three covariates : math:`(t, SOI, 1)` for the reasons mentioned previously.
+# Then the reference point must be of dimension 3.
+#
+# As the relation is linear (the link function is the Identity function), we get some straight
+# lines.
+# The third graph is the dependence on the third covariate which is constant.
+refSOI = dataCovariates.computeMean()[1]
+refTime = 1940
+refPoint = [refTime, refSOI, 1]
+gridMu = result_Cov.drawParameterFunction1D(0, refPoint)
+view = otv.View(gridMu)
+
+# %%
+# To adapt the labels and get rid of the last graph:
+graphCol = gridMu.getGraphCollection()
+graphMu1 = graphCol[0]
+graphMu1.setTitle(r"$t \mapsto \mu(t, SOI_0)$, $SOI_0$ = {0:.2f}".format(refSOI))
+graphMu1.setXTitle("t")
+graphMu2 = graphCol[1]
+graphMu2.setTitle(r"$SOI \mapsto \mu(t_0, SOI)$, $t_0 = $" + str(refTime))
+graphMu2.setXTitle("SOI")
+newGridLayout = ot.GridLayout(1, 2)
+newGridLayout.setGraph(0, 0, graphMu1)
+newGridLayout.setGraph(0, 1, graphMu2)
+view = otv.View(newGridLayout)
+
+# %%
+# We plot here the graph :math:`(t, SOI) \mapsto \mu(t, SOI)`.
+# As the third covariate is constant, the other graphs :math:`(t, 1)
+# \mapsto \mu(t, \mbox{SOI}_0, 1)`
+# and :math:`(1, SOI) \mapsto \mu(t_0, 1, SOI)` are not interesting
+# as we have already obtained them with the previous method.
+graphCol = result_Cov.drawParameterFunction2D(0, refPoint)
+view = otv.View(graphCol)
+
+# %%
+# We plot here the graphs :math:`t \mapsto q_p(Z_{t, \mbox{SOI}_0})`
+# and :math:`\mbox{SOI} \mapsto q_p(Z_{t_0, \mbox{SOI}})` where :math:`Z_{t, \mbox{SOI}_0}`
+# is the process whose excesses of :math:`u` follow the estimated GPD,
+# depending on the covariates :math:`(t, SOI)`. Then :math:`q_p`
+# is the quantile of order :math:`p`.
+# Because of the constant third covariate, the last graph is reduced to a point.
+p = 0.95
+gridQuantile = result_Cov.drawQuantileFunction1D(0, refPoint)
+view = otv.View(gridQuantile)
+
+# %%
+# To adapt the labels and get rid of the last graph:
+graphCol = gridQuantile.getGraphCollection()
+graphQuant1 = graphCol[0]
+graphQuant1.setTitle(r"$t \mapsto q_p(Z(t, SOI_0))$, $SOI_0$ = {0:.2f}".format(refSOI))
+graphQuant1.setXTitle("t")
+graphQuant1.setYTitle(r"$q_p$")
+graphQuant2 = graphCol[1]
+graphQuant2.setTitle(r"$SOI \mapsto q_p(Z(t_0, SOI))$, $t_0 = $" + str(refTime))
+graphQuant2.setXTitle("SOI")
+graphQuant2.setYTitle(r"$q_p$")
+newGridLayout = ot.GridLayout(1, 2)
+newGridLayout.setGraph(0, 0, graphQuant1)
+newGridLayout.setGraph(0, 1, graphQuant2)
+view = otv.View(newGridLayout)
 
 # %%
 otv.View.ShowAll()

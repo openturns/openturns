@@ -16,7 +16,8 @@ llh : float
 
 Notes
 -----
-This class is created by the methods  :meth:`~openturns.GeneralizedParetoFactory.buildCovariates` of the classes
+This class is created by the method
+:meth:`~openturns.GeneralizedParetoFactory.buildCovariates` of the classes
 :class:`~openturns.GeneralizedExtremeValueFactory` and
 :class:`~openturns.GeneralizedParetoFactory`.
 
@@ -54,8 +55,8 @@ Each component :math:`\theta_q` can be written as a function of the covariates:
 
 .. math::
 
-    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^q(y_i^q - c_i^q)
-    \right) 
+    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^qy_i^q +
+    \beta_{d_q+1}^q \right)
 
 where:
 
@@ -126,7 +127,7 @@ parameterDistribution : :class:`~openturns.Distribution`
 Returns
 -------
 parameterFunction : :class:`~openturns.Function`
-    The function :math:`t \mapsto \vect{\theta}(t)`."
+    The function :math:`(\vect{\beta}, \vect{y}) \mapsto \vect{\theta}(\vect{\beta},\vect{y})`."
 
 // ---------------------------------------------------------------------
 
@@ -136,7 +137,12 @@ parameterFunction : :class:`~openturns.Function`
 Returns
 -------
 covariates : :class:`~openturns.Sample`
-    The sample of covariates."
+    The sample of covariates.
+
+Notes
+-----
+If the constant covariate was not specified, a last column has been automatically added
+which contains the value 1."
 
 // ---------------------------------------------------------------------
 
