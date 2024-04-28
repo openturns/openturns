@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import math
 from openturns.usecases import ishigami_function
 
@@ -41,7 +42,7 @@ absoluteTolerance = 1.0 / math.sqrt(sampleSizeTest)
 print("absoluteTolerance = ", absoluteTolerance)
 marginalDistribution = im.distributionX.getMarginal(0)
 experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
-integration = ot.ExperimentIntegration(experiment)
+integration = otexp.ExperimentIntegration(experiment)
 error = integration.computeL2Norm(conditionalPCEFunction - functionEgivenX1Exact)
 print("PCE | X1, error = ", error)
 assert error[0] < absoluteTolerance
@@ -53,7 +54,7 @@ parametricEgivenX2 = ot.SymbolicFunction(["xi2", "a", "b"], ["a * sin(xi2)^2"])
 functionEgivenX2Exact = ot.ParametricFunction(parametricEgivenX2, [1, 2], [im.a, im.b])
 marginalDistribution = im.distributionX.getMarginal(1)
 experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
-integration = ot.ExperimentIntegration(experiment)
+integration = otexp.ExperimentIntegration(experiment)
 error = integration.computeL2Norm(conditionalPCEFunction - functionEgivenX2Exact)
 print("PCE | X2, error = ", error)
 assert error[0] < absoluteTolerance
@@ -66,7 +67,7 @@ functionEgivenX3Exact = ot.ParametricFunction(parametricEgivenX3, [1, 2], [im.a,
 sampleSizeTest = 10000
 marginalDistribution = im.distributionX.getMarginal(2)
 experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
-integration = ot.ExperimentIntegration(experiment)
+integration = otexp.ExperimentIntegration(experiment)
 error = integration.computeL2Norm(conditionalPCEFunction - functionEgivenX3Exact)
 print("PCE | X3, error = ", error)
 assert error[0] < absoluteTolerance
