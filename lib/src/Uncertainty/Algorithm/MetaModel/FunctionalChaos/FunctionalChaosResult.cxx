@@ -381,7 +381,6 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   const UnsignedInteger numberOfFunctions = Psi_k_.getSize();
   for (UnsignedInteger k = 0; k < numberOfFunctions; ++k)
   {
-    const Function basisFunction(Psi_k_[k]);
     const Indices multiIndex(enumerateFunction(I_[k]));
     // See if this function has active marginal indices only
     bool isActive = true;
