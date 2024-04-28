@@ -26,7 +26,7 @@ Let :math:`\metaModel` be a metamodel of :math:`\model`, i.e.
 an approximation of the function.
 Once the metamodel :math:`\metaModel`
 of the original numerical model :math:`\model` has been
-built up, we may estimate the mean squared error, i.e. the
+built, we may estimate the mean squared error, i.e. the
 discrepancy between the response surface and the true model response
 in terms of the weighted :math:`L^2`-norm:
 

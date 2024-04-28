@@ -58,7 +58,7 @@ public:
 
   /** String converter */
   String __repr__() const override;
- 
+
   /** Sample accessors */
   virtual Sample getOutputSample() const;
   virtual Sample getMetamodelPredictions() const;
