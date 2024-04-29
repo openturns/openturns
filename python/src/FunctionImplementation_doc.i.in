@@ -54,8 +54,8 @@ Create a *Function* from a Python class:
 ...         Y = [X[0] + X[1]]
 ...         return Y
 >>> F = FUNC()
->>> myFunc = Function(F)
->>> print(myFunc((1.0, 2.0)))
+>>> func = ot.Function(F)
+>>> print(func((1.0, 2.0)))
 [3]
 
 
@@ -100,8 +100,8 @@ Create a *Function* from a collection of functions:
 ...                                      ['x1^2 + x2', 'x1 + x2 + x3']))
 >>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
->>> myFunction = ot.AggregatedFunction(functions)
->>> print(myFunction([1.0, 2.0, 3.0]))
+>>> function = ot.AggregatedFunction(functions)
+>>> print(function([1.0, 2.0, 3.0]))
 [3,6,8,0]
 
 Create a *Function* which is the linear combination *linComb*
@@ -120,8 +120,8 @@ then the linear combination is:
                   \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
               \end{array}\right.
 
->>> myFunction2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
->>> print(myFunction2([1.0, 2.0, 3.0]))
+>>> function2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
+>>> print(function2([1.0, 2.0, 3.0]))
 [38,12]
 
 
@@ -147,8 +147,8 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 ...                                      ['x1 + 2 * x2 + x3']))
 >>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1^2 + x2']))
->>> myFunction2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
->>> print(myFunction2([1, 2, 3]))
+>>> function2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
+>>> print(function2([1, 2, 3]))
 [25,35]
 
 If the input and output dimensions of two functions are equal
