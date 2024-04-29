@@ -94,8 +94,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-  
-  
 
 protected:
 
@@ -109,7 +107,7 @@ private:
   RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
-  
+
 } ; /* class Analytical */
 
 END_NAMESPACE_OPENTURNS
