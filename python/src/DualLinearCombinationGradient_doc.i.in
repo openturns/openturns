@@ -1,10 +1,6 @@
 %feature("docstring") OT::DualLinearCombinationGradient
 "Dual linear combination gradient implementation.
 
-Available constructors:
-
-    DualLinearCombinationGradient(*myDLCEI*)
-    
 Parameters
 ----------
 myDLCEI : :class:`~openturns.DualLinearCombinationEvaluation`

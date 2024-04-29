@@ -1,9 +1,6 @@
 %feature("docstring") OT::StratifiedExperiment
 "Base class for stratified experiments.
 
-Available constructor:
-    StratifiedExperiment(*center, levels*)
-
 Parameters
 ----------
 center, levels : two sequences of float

@@ -1,11 +1,6 @@
 %feature("docstring") OT::Combinations
 "Combinations generator.
 
-Available constructors:
-    Combinations()
-
-    Combinations(*k, n*)
-
 Parameters
 ----------
 k : int

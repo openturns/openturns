@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearFunction
 "Linear numerical math function.
 
-Available constructors:
-   LinearFunction(*center, constant, linear*)
-
 Parameters
 ----------
 center : sequence of float

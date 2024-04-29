@@ -1,11 +1,6 @@
 %feature("docstring") OT::OrthogonalDirection
 "Sampling following the orthogonal direction strategy.
 
-Available constructor:
-    OrthogonalDirection()
-
-    OrthogonalDirection(*dimension, k*)
-
 Parameters
 ----------
 dimension : int

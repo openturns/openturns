@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearEvaluation
 "Linear numerical math evaluation implementation.
 
-Available constructors:
-   LinearEvaluation(*center, constant, linear*)
-
 Parameters
 ----------
 center : sequence of float

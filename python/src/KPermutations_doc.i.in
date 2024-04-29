@@ -1,13 +1,6 @@
 %feature("docstring") OT::KPermutations
 "K permutations generator.
 
-Available constructors:
-    KPermutations()
-
-    KPermutations(*n*)
-
-    KPermutations(*k, n*)
-
 Parameters
 ----------
 k : int

@@ -1,20 +1,14 @@
 %define OT_GeometricProfile_doc
 "Geometric temperature profile.
 
-Available constructor:
-    GeometricProfile()
-
-    GeometricProfile(*T0, c, iMax*)
-
-
 Parameters
 ----------
 T0 : float
     Initial temperature
-c : float
+c : float, optional
     The geometric ratio
     Should be in ]0,1[
-iMax : int
+iMax : int, optional
     Number of maximal iterations
 
 Notes

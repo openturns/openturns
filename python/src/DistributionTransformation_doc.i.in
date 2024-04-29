@@ -1,9 +1,6 @@
 %feature("docstring") OT::DistributionTransformation
 "Isoprobabilistic transformation.
 
-Available constructor:
-    DistributionTransformation(*left, right*)
-
 Parameters
 ----------
 left, right : :class:`~openturns.Distribution`

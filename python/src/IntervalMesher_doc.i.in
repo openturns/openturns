@@ -1,9 +1,6 @@
 %feature("docstring") OT::IntervalMesher
 "Creation of mesh of box type.
 
-Available constructor:
-    IntervalMesher(*discretization*)
-
 Parameters
 ----------
 discretization : sequence of int.

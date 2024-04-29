@@ -1,9 +1,6 @@
 %feature("docstring") OT::FORMResult
 "Result of a FORM analysis.
 
-Available constructors:
-    FORMResult(*designPoint, limitStateVariable, isInFailureSpace*)
-
 Notes
 -----
 Structure created by the method run() of the :class:`~openturns.FORM`

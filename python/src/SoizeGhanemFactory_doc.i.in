@@ -4,8 +4,6 @@
 For the any multivariate distribution with continuous copula.
 
 Available constructor:
-    SoizeGhanemFactory()
-
     SoizeGhanemFactory(*measure, useCopula*)
 
     SoizeGhanemFactory(*measure, phi, useCopula*)

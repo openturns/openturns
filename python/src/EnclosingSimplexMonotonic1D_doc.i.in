@@ -1,9 +1,6 @@
 %feature("docstring") OT::EnclosingSimplexMonotonic1D
 "Specialized point location algorithm for monotonic 1D  meshes.
 
-Available constructors:
-    EnclosingSimplexMonotonic1D(*points*)
-
 Parameters
 ----------
 points : 2-d sequence of float

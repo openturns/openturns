@@ -1,16 +1,11 @@
 %feature("docstring") OT::FixedExperiment
 "Fixed experiment.
 
-Available constructors:
-    FixedExperiment(*aSample*)
-
-    FixedExperiment(*aSample, weights*)
-
 Parameters
 ----------
 aSample : 2-d sequence of float
     Sample that already exists.
-weights : sequence of float
+weights : sequence of float, optional
     Weights of each point of *aSample*.
 
 Notes
