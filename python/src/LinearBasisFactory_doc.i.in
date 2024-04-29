@@ -20,7 +20,7 @@ BasisFactory, ConstantBasisFactory, QuadraticBasisFactory
 Examples
 --------
 >>> import openturns as ot
->>> basis = LinearBasisFactory(2).build()
+>>> basis = ot.LinearBasisFactory(2).build()
 >>> psi_1 = basis.build(1)
 >>> print(psi_1)
 class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
