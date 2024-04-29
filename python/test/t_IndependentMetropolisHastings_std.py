@@ -7,7 +7,7 @@ import math
 
 ot.TESTPREAMBLE()
 
-#ot.RandomGenerator.SetSeed(0)
+ot.RandomGenerator.SetSeed(0)
 
 # %%
 # Test independentMetropolisHastings on Beta-Binomial conjugate model

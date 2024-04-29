@@ -3,7 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 
-#ot.RandomGenerator.SetSeed(0)
+ot.RandomGenerator.SetSeed(0)
 
 ot.TESTPREAMBLE()
 
