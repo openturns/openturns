@@ -79,7 +79,7 @@ public:
 
   /** OptimizationAlgorithm accessor */
   void setNearestPointAlgorithm(const OptimizationAlgorithm & solver);
-  
+
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
 
