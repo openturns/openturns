@@ -134,10 +134,13 @@ where :math:`\bar{y}` is the sample mean of the output:
 If the test set :math:`\set{D}_n` is not independent from the training set
 (the set used to calibrate the metamodel), then the previous estimator
 may underestimate the true value of the mean squared error.
-In order to create a test set independent from the training set, a
+Assuming that the sample is made of i.i.d. observations, 
+in order to create a test set independent from the training set, a
 simple method is to split the data set into two parts.
 The drawback of this method is that this reduces the size of the training
-set, so that the mean squared error evaluated on the test set can be pessimistic.
+set, so that the mean squared error evaluated on the test set can be pessimistic
+(because the metamodel is trained with less data) or optimistic (because the R2
+score has a greater variability).
 The leave-one-out (LOO) and K-Fold cross validation methods presented in the next sections
 have the advantage of using all of the available data.
 
