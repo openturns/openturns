@@ -132,8 +132,11 @@ void Analytical::run()
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
   
   /* check if result is valid */
-
-  const Scalar residual = result_.getConstraintError();
+ const Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
+  
+  const Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
+  
+  const Scalar residual = result_.getOptimizationResult().getConstraintError();
   
   const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
   
