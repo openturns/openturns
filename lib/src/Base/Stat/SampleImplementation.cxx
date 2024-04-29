@@ -1056,7 +1056,14 @@ SampleImplementation & SampleImplementation::add(const SampleImplementation & ot
   const UnsignedInteger otherSize = other.getSize();
   size_ += otherSize;
   data_.resize(size_ * dimension_);
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4146)
+#endif
   std::copy_backward(other.begin(), other.begin() + otherSize, end());
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
   return *this;
 }
 
