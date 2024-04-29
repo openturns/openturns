@@ -566,6 +566,7 @@ if (Ceres_FOUND OR CMinpack_FOUND)
 endif ()
 ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
 ot_check_test (IndependentMetropolisHastings_std IGNOREOUT)
+ot_check_test (RandomVectorMetropolisHastings_std IGNOREOUT)
 ot_check_test (Gibbs_regression IGNOREOUT)
 
 # Classification
