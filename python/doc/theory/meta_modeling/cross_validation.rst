@@ -134,7 +134,7 @@ where :math:`\bar{y}` is the sample mean of the output:
 If the test set :math:`\set{D}_n` is not independent from the training set
 (the set used to calibrate the metamodel), then the previous estimator
 may underestimate the true value of the mean squared error.
-Assuming that the sample is made of i.i.d. observations, 
+Assuming that the sample is made of i.i.d. observations,
 in order to create a test set independent from the training set, a
 simple method is to split the data set into two parts.
 The drawback of this method is that this reduces the size of the training
