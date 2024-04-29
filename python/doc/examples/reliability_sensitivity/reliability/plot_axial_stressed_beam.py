@@ -159,7 +159,7 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 # We create a FORM algorithm. The first parameter is a NearestPointAlgorithm. The second parameter is an event. The third parameter is a starting point for the design point research.
 
 # %%
-algoFORM = ot.FORM(myalgoOptim, myEvent, myDistribution.getMean())
+algoFORM = ot.FORM(algoOptim, myEvent, myDistribution.getMean())
 
 # %%
 # Perform the analysis.
