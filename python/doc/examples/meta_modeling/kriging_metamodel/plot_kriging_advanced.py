@@ -228,7 +228,9 @@ else:
     y_valid = np.array(ref_func(X_valid))
 
 # %%
-validation = ot.MetaModelValidation(y_valid, krigingMeta(x_valid))
+metamodelPredictions = krigingMeta(x_valid)
+validation = ot.MetaModelValidation(y_valid, metamodelPredictions)
+validation.computeR2Score()
 
 # %%
 graph = validation.drawValidation()
@@ -248,7 +250,7 @@ view = viewer.View(graph)
 cov.activateNuggetFactor(True)
 
 # %%
-# We have to run the opitmization algorithm again.
+# We have to run the optimization algorithm again.
 
 algokriging_nugget = ot.KrigingAlgorithm(x, y, cov, basis)
 algokriging_nugget.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))

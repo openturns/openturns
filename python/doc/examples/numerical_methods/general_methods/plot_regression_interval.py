@@ -251,10 +251,11 @@ print("Confidence interval of the mean = ", confidenceIntervalMean[i])
 # Each vertical bar represents the 95% confidence interval
 # of the estimate of the conditional expectation of the linear regression model.
 
-validation = ot.MetaModelValidation(outputSample, metamodel(inputSample))
+metamodelPredictions = metamodel(inputSample)
+validation = ot.MetaModelValidation(outputSample, metamodelPredictions)
 graph = validation.drawValidation().getGraph(0, 0)
-r2Score = validation.computeR2Score()[0]
-graph.setTitle("R2 = %.2f%%" % (100.0 * r2Score))
+q2Score = validation.computeR2Score()[0]
+graph.setTitle("Q2 = %.2f%%" % (100.0 * q2Score))
 graph.setXTitle("Observations")
 graph.setYTitle("Metamodel")
 for i in range(sampleSize):

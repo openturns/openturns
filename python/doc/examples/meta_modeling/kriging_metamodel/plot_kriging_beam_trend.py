@@ -187,11 +187,12 @@ Y_test = model(X_test)
 
 # %%
 def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
-    val = ot.MetaModelValidation(Y_test, krigingMetamodel(X_test))
-    R2 = val.computeR2Score()[0]
+    metamodelPredictions = krigingMetamodel(X_test)
+    val = ot.MetaModelValidation(Y_test, metamodelPredictions)
+    r2Score = val.computeR2Score()[0]
     graph = val.drawValidation().getGraph(0, 0)
     graph.setLegends([""])
-    graph.setLegends(["%s, R2 = %.2f%%" % (title, 100 * R2), ""])
+    graph.setLegends(["%s, R2 = %.2f%%" % (title, 100 * r2Score), ""])
     graph.setLegendPosition("upper left")
     return graph
 

@@ -286,23 +286,24 @@ def compute_polynomial_chaos_R2(
 
     Returns
     -------
-    R2 : float
+    r2Score : float
         The R2 score
     """
     ot.RandomGenerator.SetSeed(1976)
     metamodel = polynomialchaos_result.getMetaModel()
     inputTest = input_distribution.getSample(n_valid)
     outputTest = g_function(inputTest)
-    val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
-    R2 = val.computeR2Score()[0]
-    return R2
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
+    r2Score = val.computeR2Score()[0]
+    return r2Score
 
 
 # %%
 #
 # The following function creates a validation plot using the
 # :meth:`~openturns.MetaModelValidation.drawValidation` method
-# of the `MetaModelValidation` class.
+# of the :class:`~openturns.MetaModelValidation` class.
 
 
 # %%
@@ -328,16 +329,17 @@ def draw_polynomial_chaos_validation(
 
     Returns
     -------
-    R2 : float
-        The R2 score
+    view : ot.View
+        The plot.
     """
     metamodel = polynomialchaos_result.getMetaModel()
     inputTest = input_distribution.getSample(n_valid)
     outputTest = g_function(inputTest)
-    val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
-    R2 = val.computeR2Score()[0]
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
+    r2Score = val.computeR2Score()[0]
     graph = val.drawValidation()
-    graph.setTitle("R2=%.2f%%" % (R2 * 100))
+    graph.setTitle("R2=%.2f%%" % (r2Score * 100))
     view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
     return view
 
@@ -582,18 +584,18 @@ score_R2 = compute_cleaning_PCE(
 maximumConsideredTerms_list = list(range(1, 500, 50))
 mostSignificant_list = list(range(1, 30, 5))
 iterator = itertools.product(maximumConsideredTerms_list, mostSignificant_list)
-best_score = 0.0
+best_R2_score = 0.0
 best_parameters = []
 for it in iterator:
     maximumConsideredTerms, mostSignificant = it
     score_R2 = compute_cleaning_PCE(
         maximumConsideredTerms, mostSignificant, significanceFactor
     )
-    if score_R2 > best_score:
-        best_score = score_R2
+    if score_R2 > best_R2_score:
+        best_R2_score = score_R2
         best_parameters = [maximumConsideredTerms, mostSignificant]
 
-print("Best R2 = %.2f%%" % (100.0 * best_score))
+print("Best R2 = %.2f%%" % (100.0 * best_R2_score))
 
 maximumConsideredTerms, mostSignificant = best_parameters
 print("Number of considered coefficients : ", maximumConsideredTerms)
