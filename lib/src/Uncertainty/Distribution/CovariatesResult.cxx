@@ -116,7 +116,9 @@ public:
   Point operator()(const Point & covariate) const override
   {
     const Point theta(parameterFunction_(covariate));
-    return factory_.build(theta).computeQuantile(p_);
+    const Distribution distribution(factory_.build(theta));
+    const Point value(distribution.computeQuantile(p_));
+    return value;
   }
 
   UnsignedInteger getInputDimension() const override
@@ -206,6 +208,7 @@ GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   if (covariatesDimension < 2)
     throw NotDefinedException(HERE) << "CovariatesResult: cannot draw a quantile function when there are less than 2 covariates";
+  if (!((p > 0.0) && (p < 1.0))) throw InvalidArgumentException(HERE) << "CovariatesResult: cannot draw a quantile function when the probability level is <= 0 or >= 1";
   Point referencePoint(referencePoint0);
   if (!referencePoint.getDimension())
     referencePoint = covariates_.computeMean();
