@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# %%
 
 import openturns as ot
 import openturns.testing as ott
@@ -13,7 +12,7 @@ ot.RandomGenerator.SetSeed(0)
 # Test independentMetropolisHastings on Beta-Binomial conjugate model
 
 # Define Beta-binomial model
-a, b, lower, upper = 1.0, 1.0, 0., 1.
+a, b, lower, upper = 1.0, 1.0, 0.0, 1.0
 n, p = 10, 0.5
 prior = ot.Beta(a, b, lower, upper)
 model = ot.Binomial(n, p)
