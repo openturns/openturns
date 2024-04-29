@@ -24,7 +24,6 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NearestPointProblem.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -133,11 +132,8 @@ void Analytical::run()
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
   
   /* check if result is valid */
-  Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
-  
-  Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
-  
-  const Scalar residual = std::abs(valuePhysicalSpaceDesignPoint[0] - event_.getThreshold()); 
+
+  const Scalar residual = result_.getConstraintError()
   
   const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
   
