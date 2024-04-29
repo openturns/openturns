@@ -643,7 +643,8 @@ view = otv.View(graphCol)
 # is the quantile of order :math:`p`.
 # Because of the constant third covariate, the last graph is reduced to a point.
 p = 0.95
-gridQuantile = result_Cov.drawQuantileFunction1D(0, refPoint)
+gridQuantile = result_Cov.drawQuantileFunction1D(p, refPoint)
+view = otv.View(gridQuantile)
 
 # %%
 # To adapt the labels and get rid of the last graph:
