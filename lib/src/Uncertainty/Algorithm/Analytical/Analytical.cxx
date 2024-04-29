@@ -133,7 +133,7 @@ void Analytical::run()
   
   /* check if result is valid */
 
-  const Scalar residual = result_.getConstraintError()
+  const Scalar residual = result_.getConstraintError();
   
   const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
   
