@@ -219,7 +219,6 @@ int main(int, char *[])
           const Function transformation(result.getTransformation());
           const Sample Ztest(transformation(Xtest));
           const Sample YtestLM(metamodelLM(Ztest));
-          const Sample YDiff(YtestPCE - YtestLM);
           assert_almost_equal(YtestPCE, YtestLM, rtol);
           
         }
