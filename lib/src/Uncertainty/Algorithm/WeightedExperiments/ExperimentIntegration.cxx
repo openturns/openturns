@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExperimentIntegration)
 
-typedef Collection<Function>                              FunctionCollection;
+static const Factory<ExperimentIntegration> Factory_ExperimentIntegration;
 
 /* Default constructor */
 ExperimentIntegration::ExperimentIntegration()
