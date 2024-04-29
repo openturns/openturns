@@ -24,13 +24,12 @@
 #include "openturns/OSS.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+
 #ifdef OPENTURNS_HAVE_BONMIN
 #include "openturns/BonminProblem.hxx"
 #include <BonBonminSetup.hpp>
 #include <BonCbc.hpp>
 #include <BonminConfig.h>
-using namespace Bonmin;
-using namespace Ipopt;
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -101,7 +100,7 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_BONMIN
 
 /** Accessors to Bonmin options */
-static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
+static void GetOptionsFromResourceMap(::Ipopt::SmartPtr<::Ipopt::OptionsList> options)
 {
 //   Get options for Bonmin setup from ResourceMap
 //   See Bonmin/Ipopt user manuals for more details.
@@ -148,7 +147,7 @@ void Bonmin::run()
   tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
 
   // Create setup, initialize options
-  BonminSetup app;
+  ::Bonmin::BonminSetup app;
   app.initializeOptionsAndJournalist();
   if (!app.options()->SetStringValue("bonmin.algorithm", algoName_))
     throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.algorithm";
@@ -179,10 +178,10 @@ void Bonmin::run()
     app.initialize(GetRawPtr(tminlp));
 
     // Solve problem
-    Bab solver;
+    ::Bonmin::Bab solver;
     solver(app);
   }
-  catch (TNLPSolver::UnsolvedError *exc)
+  catch (::Bonmin::TNLPSolver::UnsolvedError *exc)
   {
     const Sample inputHistory(tminlp->getInputHistory());
     setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
@@ -195,7 +194,7 @@ void Bonmin::run()
     result_.setStatusMessage(oss.str());
     return;
   }
-  catch(const OsiTMINLPInterface::SimpleError & exc)
+  catch(const ::Bonmin::OsiTMINLPInterface::SimpleError & exc)
   {
     result_.setStatus(OptimizationResult::FAILURE);
     result_.setStatusMessage(exc.message());

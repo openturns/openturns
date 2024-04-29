@@ -24,10 +24,10 @@
 #include "openturns/OSS.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+
 #ifdef OPENTURNS_HAVE_IPOPT
 #include "openturns/IpoptProblem.hxx"
 #include <IpIpoptApplication.hpp>
-using namespace Ipopt;
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -74,7 +74,7 @@ void Ipopt::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_IPOPT
 
 /** Accessors to Ipopt options */
-static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
+static void GetOptionsFromResourceMap(::Ipopt::SmartPtr<::Ipopt::OptionsList> options)
 {
 //   Get options for Ipopt setup from ResourceMap
 //   See Ipopt/Ipopt user manuals for more details.
@@ -119,7 +119,7 @@ void Ipopt::run()
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 
-  SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
+  ::Ipopt::SmartPtr<::Ipopt::IpoptApplication> app = IpoptApplicationFactory();
   app->Options()->SetIntegerValue("print_level", 0);
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
@@ -136,8 +136,8 @@ void Ipopt::run()
   GetOptionsFromResourceMap(app->Options());
 
   // Initialize the IpoptApplication and process the options
-  ApplicationReturnStatus status = app->Initialize();
-  if (status != Solve_Succeeded)
+  ::Ipopt::ApplicationReturnStatus status = app->Initialize();
+  if (status != ::Ipopt::Solve_Succeeded)
     throw InternalException(HERE) << "ipopt failed with code " << status;
 
   // Ask Ipopt to solve the problem
@@ -159,67 +159,67 @@ void Ipopt::run()
   String statusMessage;
   switch (status)
   {
-    case Solve_Succeeded:
+    case ::Ipopt::Solve_Succeeded:
       statusMessage = "Solve succeeded";
       break;
     // info/warning (>0)
-    case Solved_To_Acceptable_Level:
+    case ::Ipopt::Solved_To_Acceptable_Level:
       statusMessage = "Solved to acceptable level";
       break;
-    case Infeasible_Problem_Detected:
+    case ::Ipopt::Infeasible_Problem_Detected:
       statusMessage = "Infeasible problem detected";
       break;
-    case Search_Direction_Becomes_Too_Small:
+    case ::Ipopt::Search_Direction_Becomes_Too_Small:
       statusMessage = "Search direction becomes too small";
       break;
-    case Diverging_Iterates:
+    case ::Ipopt::Diverging_Iterates:
       statusMessage = "Diverging iterates";
       break;
-    case User_Requested_Stop:
+    case ::Ipopt::User_Requested_Stop:
       statusMessage = "User requested stop";
       result_.setStatus(OptimizationResult::INTERRUPTION);
       break;
-    case Feasible_Point_Found:
+    case ::Ipopt::Feasible_Point_Found:
       statusMessage = "Feasible point found";
       break;
     // errors/exception (<0)
-    case Maximum_Iterations_Exceeded:
+    case ::Ipopt::Maximum_Iterations_Exceeded:
       statusMessage = "Maximum iterations exceeded";
       break;
-    case Restoration_Failed:
+    case ::Ipopt::Restoration_Failed:
       statusMessage = "Restoration failed";
       break;
-    case Error_In_Step_Computation:
+    case ::Ipopt::Error_In_Step_Computation:
       statusMessage = "Error in step computation";
       break;
 #if 100000 * IPOPT_VERSION_MAJOR + 100 * IPOPT_VERSION_MINOR >= 301400
-    case Maximum_WallTime_Exceeded:
+    case ::Ipopt::Maximum_WallTime_Exceeded:
       statusMessage = "Maximum Wall time exceeded";
       result_.setStatus(OptimizationResult::TIMEOUT);
       break;
 #endif
-    case Not_Enough_Degrees_Of_Freedom:
+    case ::Ipopt::Not_Enough_Degrees_Of_Freedom:
       statusMessage = "Not enough degrees of freedom";
       break;
-    case Invalid_Problem_Definition:
+    case ::Ipopt::Invalid_Problem_Definition:
       statusMessage = "Invalid problem definition";
       break;
-    case Invalid_Option:
+    case ::Ipopt::Invalid_Option:
       statusMessage = "Invalid option";
       break;
-    case Invalid_Number_Detected:
+    case ::Ipopt::Invalid_Number_Detected:
       statusMessage = "Invalid number detected";
       break;
-    case Unrecoverable_Exception:
+    case ::Ipopt::Unrecoverable_Exception:
       statusMessage = "Unrecoverable exception";
       break;
-    case NonIpopt_Exception_Thrown:
+    case ::Ipopt::NonIpopt_Exception_Thrown:
       statusMessage = "NonIpopt exception thrown";
       break;
-    case Insufficient_Memory:
+    case ::Ipopt::Insufficient_Memory:
       statusMessage = "Insufficient memory";
       break;
-    case Internal_Error:
+    case ::Ipopt::Internal_Error:
       statusMessage = "Internal Error";
       break;
     default:
