@@ -5,9 +5,6 @@ This class implements a naive implementation of point location,
 by looking into all its simplices.  It works well for convex
 domains, but may be slow otherwise.
 
-Available constructors:
-    NaiveEnclosingSimplex(*vertices, simplices*)
-
 Parameters
 ----------
 vertices : :class:`~openturns.Sample`

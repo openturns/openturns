@@ -1,9 +1,6 @@
 %feature("docstring") OT::Last
 "Last history storage strategy.
 
-Available constructors:
-    Last(*N*)
-
 Parameters
 ----------
 N : int

@@ -1,11 +1,6 @@
 %feature("docstring") OT::RandomDirection
 "Sampling following the random direction strategy.
 
-Available constructor:
-    RandomDirection()
-
-    RandomDirection(*dimension*)
-
 Parameters
 ----------
 dimension : int

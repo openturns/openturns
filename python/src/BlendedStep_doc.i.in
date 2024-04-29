@@ -1,14 +1,11 @@
 %feature("docstring") OT::BlendedStep
 "Blended step.
 
-Available constructors:
-    BlendedStep(*epsilon, eta=1.0*)
-
 Parameters
 ----------
 epsilon : sequence of float
     Finite difference step factors for each dimension.
-eta : positive float, sequence of positive float with the same dimension as *epsilon*
+eta : positive float or sequence of positive float with the same dimension as *epsilon*, optional
     Finite difference step offsets for each dimension.
 
 Notes

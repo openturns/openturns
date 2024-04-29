@@ -1,9 +1,6 @@
 %feature("docstring") OT::Compact
 "Compact history storage strategy.
 
-Available constructors:
-    Compact(*N*)
-
 Parameters
 ----------
 N : int

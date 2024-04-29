@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearEnumerateFunction
 "Linear enumerate function.
 
-Available constructors:
-    LinearEnumerateFunction(*dim=1*)
-
 Parameters
 ----------
 dim : int

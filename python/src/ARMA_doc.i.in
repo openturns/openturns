@@ -3,14 +3,6 @@
 
 Refer to :ref:`arma_process`.
 
-Available constructors:
-    ARMA()
-
-    ARMA(*ARCoeff, MACoeff, whiteNoise*)
-
-    ARMA(*ARCoeff, MACoeff, whiteNoise, ARMAstate*)
-   
-
 Parameters
 ----------
 ARCoeff : :class:`~openturns.ARMACoefficients`
@@ -25,7 +17,7 @@ whiteNoise : :class:`~openturns.WhiteNoise`
     The white noise distribution of the recurrent relation.
 
     Default is: the Normal distribution with zero mean and unit variance in dimension 1.
-ARMAstate : :class:`~openturns.ARMAState`
+ARMAstate : :class:`~openturns.ARMAState`, optional
     The state of the ARMA process which will be extended to the next time stamps.
     The state is composed with :math:`p` values of the process and :math:`q` values of the white noise.
     This constructor is needed to get possible futures from the current state.

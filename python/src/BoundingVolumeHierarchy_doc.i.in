@@ -4,13 +4,6 @@
 This spatial data structure helps to find the simplex
 containing a given point.
 
-Available constructors:
-    BoundingVolumeHierarchy(*points, simplices*)
-
-    BoundingVolumeHierarchy(*points, simplices, binNumber*)
-
-    BoundingVolumeHierarchy(*points, simplices, binNumber, strategy*)
-
 Parameters
 ----------
 points : 2-d sequence of float
@@ -19,13 +12,13 @@ points : 2-d sequence of float
 simplices : :class:`~openturns.IndicesCollection`
     Simplices.
 
-binNumber : int
+binNumber : int, optional
     Maximum number of simplices stored in tree leaves.
     By default, it is equal to the value defined through the key
     BoundingVolumeHierarchy-BinNumber of the
     :class:`~openturns.ResourceMap`.
 
-strategy : str
+strategy : str, optional
     Node splitting strategy.  Valid values are: `Mean` and `Median`.
     By default, it is equal to the value defined through the key
     BoundingVolumeHierarchy-Strategy of the

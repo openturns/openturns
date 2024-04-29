@@ -1,12 +1,9 @@
 %feature("docstring") OT::ProductPolynomialEvaluation
 "Product polynomial evaluation implementation.
 
-Available constructors:
-    ProductPolynomialEvaluation(*polCollection*)
-
 Parameters
 ----------
-distCol : :class:`~openturns.PolynomialCollection`
+distColl : :class:`~openturns.PolynomialCollection`
     A collection of :class:`~openturns.UniVariatePolynomial`.
 
 Notes

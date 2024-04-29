@@ -1,9 +1,6 @@
 %feature("docstring") OT::ReverseHaltonSequence
 "Reverse Halton sequence.
 
-Available constructors:
-    ReverseHaltonSequence(*dimension=1*)
-
 Parameters
 ----------
 dimension : positive int

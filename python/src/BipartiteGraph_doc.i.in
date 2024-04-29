@@ -1,9 +1,6 @@
 %feature("docstring") OT::BipartiteGraph
 "Bipartite red/black graph.
 
-Available constructors:
-    BipartiteGraph(*sequence*)
-
 Parameters
 ----------
 sequence : sequence of :class:`~openturns.Indices`

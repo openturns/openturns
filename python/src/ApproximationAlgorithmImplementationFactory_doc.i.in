@@ -1,15 +1,5 @@
 %feature("docstring") OT::ApproximationAlgorithmImplementationFactory
-"Approximation algorithm implementation factory.
-
-Available constructor:
-    ApproximationAlgorithmImplementationFactory(*ApproxAlgoImpFac*)
-
-Parameters
-----------
-ApproxAlgoImpFac : ApproximationAlgorithmImplementationFactory
-    An ApproximationAlgorithmImplementationFactory which is a 
-    :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or a 
-    :class:`~openturns.LeastSquaresMetaModelSelectionFactory`.
+"Approximation algorithm factory base class.
 
 Notes
 -----

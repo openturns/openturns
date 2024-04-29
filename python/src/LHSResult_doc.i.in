@@ -1,9 +1,6 @@
 %feature("docstring") OT::LHSResult
 "Summarize the results of an LHS optimization.
 
-Available constructor:
-    LHSResult(*bounds, spaceFilling, nRestart*)
-
 Parameters
 ----------
 spaceFilling : :class:`~openturns.SpaceFilling`

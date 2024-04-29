@@ -1,9 +1,6 @@
 %feature("docstring") OT::QuadraticFunction
 "Quadratic function.
 
-Available constructors:
-   QuadraticFunction(*center, constant, linear, quadratic*)
-
 Parameters
 ----------
 center : sequence of float
