@@ -26,7 +26,9 @@ posterior = ot.Beta(a + X[0,0], b + n - X[0,0], lower, upper)
 # %%
 # Define IMH sampler
 initialState = [p]
-imh_sampler = ot.IndependentMetropolisHastings(prior, initialState, prior, [0])
+imh_sampler = ot.IndependentMetropolisHastings(
+    prior, initialState, ot.Uniform(-1.0, 1.0), [0]
+)
 slf = ot.SymbolicFunction(['x'], [str(n),'x'])
 imh_sampler.setLikelihood(model, X, slf)
 
