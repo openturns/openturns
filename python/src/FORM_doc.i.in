@@ -3,6 +3,10 @@
 
 Refer to :ref:`form_approximation`.
 
+Available constructors:
+    FORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
+
+
 Parameters
 ----------
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
