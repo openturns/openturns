@@ -1166,7 +1166,7 @@ private:
   Scalar quantileTolerance_ = 1e-5;
   Scalar parameterTolerance_ = 1e-5;
   Scalar domainTolerance_ = 1e-2;
-  UnsignedInteger momentsSamplingSize_ = 1000000;
+  UnsignedInteger momentsSamplingSize_ = 10000000;
   UnsignedInteger entropySamplingSize_ = 1000000;
   UnsignedInteger domainSamplingSize_ = 1000000;
   UnsignedInteger pdfSamplingSize_ = 10;
