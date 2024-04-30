@@ -5,7 +5,7 @@ This represents a least-squares problem:
 
 .. math::
 
-    \min_{x} ||f(x)||^2_2
+    \min_{x} ||f(\vect{x})||^2_2
 
 where *f* is the residual function.
 
