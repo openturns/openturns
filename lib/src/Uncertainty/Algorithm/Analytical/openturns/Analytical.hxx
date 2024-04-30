@@ -34,6 +34,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -57,8 +58,7 @@ public:
   Analytical(const OptimizationAlgorithm & solver,
              const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
-
-
+                    
   /** Virtual constructor */
   Analytical * clone() const override;
 
@@ -103,7 +103,6 @@ protected:
   friend class Factory<Analytical>;
 
 private:
-
   OptimizationAlgorithm nearestPointAlgorithm_;
   RandomVector event_;
   Point physicalStartingPoint_;

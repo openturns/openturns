@@ -52,7 +52,6 @@ public:
        const RandomVector & event,
        const Point & physicalStartingPoint);
 
-
   /** Virtual constructor */
   SORM * clone() const override;
 
