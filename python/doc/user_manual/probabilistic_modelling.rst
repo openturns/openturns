@@ -111,6 +111,7 @@ Discrete parametric distributions
 
     Bernoulli
     Binomial
+    CombinationsDistribution
     Dirac
     Geometric
     Hypergeometric
