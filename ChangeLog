@@ -54,11 +54,14 @@
  * Deprecated ComposedCopula in favor of BlockIndependentCopula
  * Added Polygon::FillBetween static method to fill the surface between two curves
  * Deprecated Study.printLabels (see getLabels)
+ * Removed optional parameters from Contour constructors, use set methods or ResourceMap keys to set them
 
 === Documentation ===
+* Examples show how to visualize matrices
 
 === Python module ===
 * Graphs apply default colors to Drawables with no explicit color
+* Contour plots can now be filled and come with colorbars
 
 === Miscellaneous ===
  * UniformOverMesh left the experimental module

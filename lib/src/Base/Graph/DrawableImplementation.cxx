@@ -52,8 +52,23 @@ Description DrawableImplementation::ValidLineStyles;
 /* Accepted fill styles */
 Description DrawableImplementation::ValidFillStyles;
 
+/* Accepted color maps */
+Description DrawableImplementation::ValidColorMaps;
+
+/* Accepted norms */
+Description DrawableImplementation::ValidNorms;
+
+/* Accepted extends */
+Description DrawableImplementation::ValidExtends;
+
+/* Accepted color bar positions */
+Description DrawableImplementation::ValidColorBarPositions;
+
 void DrawableImplementation::InitializeValidParameterList()
 {
+  if(!IsFirstInitialization)
+    return;
+  IsFirstInitialization = false;
   /* Accepted point symbols */
   ValidPointStyles.setName("ValidPointStyles");
   ValidPointStyles.add("square");
@@ -779,16 +794,28 @@ void DrawableImplementation::InitializeValidParameterList()
   ValidFillStyles.setName("ValidFillStyles");
   ValidFillStyles.add("solid");
   ValidFillStyles.add("shaded");
+
+  /* Accepted color maps */
+  ValidColorMaps = Description({"", "magma", "inferno", "plasma", "viridis", "cividis", "twilight", "twilight_shifted", "turbo", "Blues", "BrBG", "BuGn", "BuPu", "CMRmap", "GnBu", "Greens", "Greys", "OrRd", "Oranges", "PRGn", "PiYG", "PuBu", "PuBuGn", "PuOr", "PuRd", "Purples", "RdBu", "RdGy", "RdPu", "RdYlBu", "RdYlGn", "Reds", "Spectral", "Wistia", "YlGn", "YlGnBu", "YlOrBr", "YlOrRd", "afmhot", "autumn", "binary", "bone", "brg", "bwr", "cool", "coolwarm", "copper", "cubehelix", "flag", "gist_earth", "gist_gray", "gist_heat", "gist_ncar", "gist_rainbow", "gist_stern", "gist_yarg", "gnuplot", "gnuplot2", "gray", "hot", "hsv", "jet", "nipy_spectral", "ocean", "pink", "prism", "rainbow", "seismic", "spring", "summer", "terrain", "winter", "Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "Set2", "Set3", "tab10", "tab20", "tab20b", "tab20c", "magma_r", "inferno_r", "plasma_r", "viridis_r", "cividis_r", "twilight_r", "twilight_shifted_r", "turbo_r", "Blues_r", "BrBG_r", "BuGn_r", "BuPu_r", "CMRmap_r", "GnBu_r", "Greens_r", "Greys_r", "OrRd_r", "Oranges_r", "PRGn_r", "PiYG_r", "PuBu_r", "PuBuGn_r", "PuOr_r", "PuRd_r", "Purples_r", "RdBu_r", "RdGy_r", "RdPu_r", "RdYlBu_r", "RdYlGn_r", "Reds_r", "Spectral_r", "Wistia_r", "YlGn_r", "YlGnBu_r", "YlOrBr_r", "YlOrRd_r", "afmhot_r", "autumn_r", "binary_r", "bone_r", "brg_r", "bwr_r", "cool_r", "coolwarm_r", "copper_r", "cubehelix_r", "flag_r", "gist_earth_r", "gist_gray_r", "gist_heat_r", "gist_ncar_r", "gist_rainbow_r", "gist_stern_r", "gist_yarg_r", "gnuplot_r", "gnuplot2_r", "gray_r", "hot_r", "hsv_r", "jet_r", "nipy_spectral_r", "ocean_r", "pink_r", "prism_r", "rainbow_r", "seismic_r", "spring_r", "summer_r", "terrain_r", "winter_r", "Accent_r", "Dark2_r", "Paired_r", "Pastel1_r", "Pastel2_r", "Set1_r", "Set2_r", "Set3_r", "tab10_r", "tab20_r", "tab20b_r", "tab20c_r"});
+  ValidColorMaps.setName("ValidColorMaps");
+
+  /* Accepted norms */
+  ValidNorms = Description({ "asinh", "linear", "log", "logit", "symlog", "rank"});
+  ValidNorms.setName("ValidNorms");
+
+  /* Accepted extends */
+  ValidExtends = Description({ "neither", "both", "min", "max" });
+  ValidExtends.setName("ValidExtends");
+
+  /* Accepted color bar positions */
+  ValidColorBarPositions = Description({ "", "left", "right", "top", "bottom" });
+  ValidExtends.setName("ValidColorBarPositions");
 }
 
 /* Give the colors name */
 Description DrawableImplementation::GetValidColors()
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   Description validColors;
   std::map<String, String>::const_iterator it(ColorCodes.begin());
   for (it = ColorCodes.begin(); it != ColorCodes.end(); ++it)
@@ -801,34 +828,50 @@ Description DrawableImplementation::GetValidColors()
 /* Give the line style names */
 Description DrawableImplementation::GetValidLineStyles()
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   return ValidLineStyles;
 }
 
 /* Give the fill style names */
 Description DrawableImplementation::GetValidFillStyles()
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   return ValidFillStyles;
 }
 
 /* Give the point style names */
 Description DrawableImplementation::GetValidPointStyles()
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   return ValidPointStyles;
+}
+
+/* Give the color map names */
+Description DrawableImplementation::GetValidColorMaps()
+{
+  InitializeValidParameterList();
+  return ValidColorMaps;
+}
+
+/* Give the extends values */
+Description DrawableImplementation::GetValidExtends()
+{
+  InitializeValidParameterList();
+  return ValidExtends;
+}
+
+/* Give the color bar positions */
+Description DrawableImplementation::GetValidColorBarPositions()
+{
+  InitializeValidParameterList();
+  return ValidColorBarPositions;
+}
+
+/* Give the norm names */
+Description DrawableImplementation::GetValidNorms()
+{
+  InitializeValidParameterList();
+  return ValidNorms;
 }
 
 
@@ -1068,11 +1111,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
     lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
 {
   setName(legend);
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
 }
 
 /* Clone method */
@@ -1134,11 +1173,7 @@ void DrawableImplementation::setLegend(const String & legend)
 /* Check validity of color */
 Bool DrawableImplementation::IsValidColorName(const String & key)
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   const std::map<String, String>::iterator it(ColorCodes.find(key));
 
   return (it != ColorCodes.end());
@@ -1197,11 +1232,7 @@ Bool DrawableImplementation::IsValidColor(const String & key)
 /* Check validity of line style */
 Bool DrawableImplementation::IsValidLineStyle(const String & key)
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   const Description::const_iterator it = std::find(ValidLineStyles.begin(), ValidLineStyles.end(), key);
 
   return (it != ValidLineStyles.end());
@@ -1210,11 +1241,7 @@ Bool DrawableImplementation::IsValidLineStyle(const String & key)
 /* Check validity of point style */
 Bool DrawableImplementation::IsValidPointStyle(const String & key)
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   const Description::const_iterator it = std::find(ValidPointStyles.begin(), ValidPointStyles.end(), key);
 
   return (it != ValidPointStyles.end());
@@ -1223,11 +1250,7 @@ Bool DrawableImplementation::IsValidPointStyle(const String & key)
 /* Check validity of fill style */
 Bool DrawableImplementation::IsValidFillStyle(const String & key)
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   const Description::const_iterator it = std::find(ValidFillStyles.begin(), ValidFillStyles.end(), key);
 
   return (it != ValidFillStyles.end());
@@ -1236,12 +1259,32 @@ Bool DrawableImplementation::IsValidFillStyle(const String & key)
 /* Check validity of pattern parameter */
 Bool DrawableImplementation::IsValidPattern(const String & pattern)
 {
-  if(IsFirstInitialization)
-  {
-    InitializeValidParameterList();
-    IsFirstInitialization = false;
-  }
+  InitializeValidParameterList();
   return (pattern == ResourceMap::GetAsString("Drawable-DefaultPattern") || pattern == ResourceMap::GetAsString("Drawable-AlternativePattern"));
+}
+
+/* Check validity of color map name */
+Bool DrawableImplementation::IsValidColorMap(const String& colorMap) {
+  InitializeValidParameterList();
+  return ValidColorMaps.contains(colorMap);
+}
+
+/* Check validity of norm */
+Bool DrawableImplementation::IsValidNorm(const String& norm) {
+  InitializeValidParameterList();
+  return ValidNorms.contains(norm);
+}
+
+/* Check validity of extend */
+Bool DrawableImplementation::IsValidExtend(const String& extend) {
+  InitializeValidParameterList();
+  return ValidExtends.contains(extend);
+}
+
+/* Check validity of color bar position */
+Bool DrawableImplementation::IsValidColorBarPosition(const String& position) {
+  InitializeValidParameterList();
+  return ValidColorBarPositions.contains(position);
 }
 
 /* Check validity of the data */

@@ -387,7 +387,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Point & xMin,
                                      const Point & xMax,
                                      const Indices & pointNumber,
-                                     const GraphImplementation::LogScale scale) const
+                                     const GraphImplementation::LogScale scale,
+                                     const Bool isFilled) const
 {
   if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
   if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
@@ -439,7 +440,6 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
   Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
-  graph.setLegendCorner({1.0, 1.0});
 
   if (Interval(xMin, xMax).getVolume() > 0.0)
   {
@@ -460,21 +460,11 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     } // j
     // Compute the output sample, using possible parallelism
     const Sample z((*this)(inputSample).getMarginal(outputMarginal));
-    Contour isoValues(x, y, z, Point(0), Description(0), true, title);
-    isoValues.buildDefaultLevels();
-    isoValues.buildDefaultLabels();
-    const Point levels(isoValues.getLevels());
-    const Description labels(isoValues.getLabels());
-    for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
-    {
-      Contour current(isoValues);
-      current.setLevels({levels[i]});
-      current.setLabels({labels[i]});
-      current.setDrawLabels(false);
-      current.setLegend(labels[i]);
-      current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
-      graph.add(current);
-    }
+    Contour isoValues(x, y, z);
+    isoValues.setIsFilled(isFilled);
+    isoValues.setColorBarPosition("right");
+    isoValues.setDrawLabels(false);
+    graph.add(isoValues);
   }
   else
   {
@@ -535,7 +525,6 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     {
       // single point
       Cloud cloud(inputSample.getMarginal({firstInputMarginal, secondInputMarginal}), z);
-      cloud.setColor("blue");
       const Scalar zMin = z.getMin()[0];
       cloud.setLegend(OSS() << zMin);
       graph.add(cloud);
