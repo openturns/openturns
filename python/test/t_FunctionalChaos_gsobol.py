@@ -61,7 +61,9 @@ listAdaptiveStrategy.append(
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(
-    ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+    ot.FixedStrategy(
+        productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
+    )
 )
 
 for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
@@ -88,7 +90,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         algo.run()
 
         # Examine the results
-        result = ot.FunctionalChaosResult(algo.getResult())
+        result = algo.getResult()
         print("###################################")
         print(algo.getAdaptiveStrategy())
         print(algo.getProjectionStrategy())
@@ -97,6 +99,11 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("residuals=", residuals)
         relativeErrors = result.getRelativeErrors()
         print("relative errors=", relativeErrors)
+        print("isLeastSquares= ", result.isLeastSquares())
+        assert result.isLeastSquares()
+        print("involvesModelSelection= ", result.involvesModelSelection())
+        modelSelectionReference = adaptiveStrategy.getClassName() == "CleaningStrategy"
+        assert result.involvesModelSelection() == modelSelectionReference
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)
