@@ -1,52 +1,65 @@
 %feature("docstring") OT::MetaModelValidation
-"Base class to score a metamodel and perform validations.
-
-Refer to :ref:`cross_validation`.
+"Scores a metamodel in order to perform its validation.
 
 Parameters
 ----------
-inputValidationSample, outputValidationSample : 2-d sequence of float
-    The input and output validation samples, not used during the learning step.
+outputSample : 2-d sequence of float
+    The output validation sample, not used during the learning step.
 
-metaModel : :class:`~openturns.Function`
-    Metamodel to validate.
+metamodelPredictions: 2-d sequence of float
+    The output prediction sample from the metamodel.
 
 Notes
 -----
-A MetaModelValidation object is used for the validation process of a metamodel.
+A `MetaModelValidation` object is used for the validation of a metamodel.
 For that purpose, a dataset independent of the learning step, is used to score the surrogate model.
 Its main functionalities are :
 
-- To compute the predictivity factor :math:`Q_2`
-- To get the residual sample, its non parametric distribution
-- To draw a `model vs metamodel` validation graph.
+- compute the coefficient of determination :math:`R^2` ;
+- get the residual sample and its non parametric distribution ;
+- draw a validation graph presenting the metamodel predictions against
+  the model observations.
 
-
-Currently only one dimensional output models are available.
+More details on this topic are presented in :ref:`cross_validation`.
 
 Examples
 --------
+In this example, we introduce the sinus model and approximate it with a least
+squares metamodel.
+Then we validate this metamodel using a test sample.
+
 >>> import openturns as ot
 >>> from math import pi
->>> dist = ot.Uniform(-pi/2, pi/2)
->>> # Model here is sin(x)
+>>> dist = ot.Uniform(-pi / 2, pi / 2)
+>>> # Define the model
 >>> model = ot.SymbolicFunction(['x'], ['sin(x)'])
->>> # We can build several types of models (kriging, pc, ...)
->>> # We use a Taylor development (order 5) and compare the metamodel with the model
->>> metaModel = ot.SymbolicFunction(['x'], ['x - x^3/6.0 + x^5/120.0'])
->>> x = dist.getSample(10)
->>> y = model(x)
->>> # Validation of the model
->>> val = ot.MetaModelValidation(x, y, metaModel)
->>> # Compute the first indicator : q2
->>> q2 = val.computePredictivityFactor()
+>>> # We can build several types of models (kriging, polynomial chaos expansion, ...)
+>>> # We use here a least squares expansion on canonical basis and compare
+>>> # the metamodel with the model
+>>> # Build the metamodel using a train sample
+>>> x_train = dist.getSample(25)
+>>> y_train = model(x_train)
+>>> total_degree = 3
+>>> polynomialCollection = ['x^%d' % (degree) for degree in range(1, total_degree + 1)]
+>>> basis = ot.SymbolicFunction(['x'], polynomialCollection)
+>>> designMatrix = basis(x_train)
+>>> myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
+>>> myLeastSquares.run()
+>>> leastSquaresModel = myLeastSquares.getMetaModel()
+>>> metaModel = ot.ComposedFunction(leastSquaresModel, basis)
+>>> # Validate the metamodel using a test sample
+>>> x_test = dist.getSample(100)
+>>> y_test = model(x_test)
+>>> metamodelPredictions = metaModel(x_test)
+>>> val = ot.MetaModelValidation(y_test, metamodelPredictions)
+>>> # Compute the R2 score
+>>> r2Score = val.computeR2Score()
 >>> # Get the residual
 >>> residual = val.getResidualSample()
->>> # Get the histogram of residual
+>>> # Get the histogram of residuals
 >>> histoResidual = val.getResidualDistribution(False)
 >>> # Draw the validation graph
->>> graph = val.drawValidation()
-"
+>>> graph = val.drawValidation()"
 
 // ---------------------------------------------------------------------
 
@@ -70,20 +83,52 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MetaModelValidation::computePredictivityFactor
-"Compute the predictivity factor.
+%feature("docstring") OT::MetaModelValidation::computeR2Score
+"Compute the R2 score.
 
 Returns
 -------
-q2 : :class:`~openturns.Point`
-    The predictivity factor
+r2Score : :class:`~openturns.Point`
+    The coefficient of determination R2
 
 Notes
 -----
-The predictivity factor :math:`Q_2` is given by :
+The coefficient of determination :math:`R^2` is the fraction of the
+variance of the output explained by the metamodel.
+It is defined as:
 
 .. math::
-    Q_2 = 1 - \frac{\sum_{l=1}^{N} (Y_{l} -\hat{f}(X_l))^2}{N \cdot Var(Y)}"
+    R^2 = 1 - \operatorname{FVU}
+
+where :math:`\operatorname{FVU}` is the fraction of unexplained variance:
+
+.. math::
+    \operatorname{FVU} = \frac{\operatorname{MSE}(\tilde{g}) }{\Var{Y}}
+
+where :math:`Y = g(\bdX)` is the output of the physical model :math:`g`,
+:math:`\Var{Y}` is the variance of the output and :math:`\operatorname{MSE}` is the 
+mean squared error of the metamodel:
+
+.. math::
+    \operatorname{MSE}(\tilde{g}) = \Expect{\left(g(\bdX) - \tilde{g}(\bdX) \right)^2}.
+
+The sample :math:`R^2` is:
+
+.. math::
+    \hat{R}^2 = 1 - \frac{\frac{1}{n} \sum_{j=1}^{n} \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2}{\hat{\sigma}^2_Y}
+
+where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
+:math:`\left\{\bdx^{(j)} \in \Rset^{n_X}\right\}_{j = 1, ..., n}` is the input experimental design,
+:math:`\left\{y^{(j)} \in \Rset\right\}_{j = 1, ..., n}` is the output of the model and
+:math:`\hat{\sigma}^2_Y` is the sample variance of the output:
+
+.. math::
+    \hat{\sigma}^2_Y = \frac{1}{n - 1} \sum_{j=1}^{n} \left(y^{(j)} - \overline{y}\right)^2
+
+where :math:`\overline{y}` is the output sample mean:
+
+.. math::
+    \overline{y} = \frac{1}{n} \sum_{j=1}^{n} y^{(j)}."
 
 // ---------------------------------------------------------------------
 
@@ -100,7 +145,15 @@ Notes
 The residual sample is given by :
 
 .. math::
-    \epsilon_{l} = Y_{l} -\hat{f}(X_l)"
+
+    r^{(j)} = y^{(j)} - \tilde{g}\left(\vect{x}^{(j)}\right)
+
+for :math:`j = 1, ..., n` where :math:`n \in \Nset` is the sample size,
+:math:`y^{(j)}` is the model observation,
+:math:`\tilde{g}` is the metamodel and :math:`\vect{x}^{(j)}` is the :math:`j`-th input observation.
+
+If the output is multi-dimensional, the residual sample has dimension :math:`n_y \in \Nset`,
+where :math:`n_y` is the output dimension."
 
 
 // ---------------------------------------------------------------------
@@ -132,4 +185,51 @@ The residual distribution is built thanks to :class:`~openturns.KernelSmoothing`
 Returns
 -------
 graph : :class:`~openturns.GridLayout`
-    The visual validation graph."
+    The visual validation graph.
+
+Notes
+-----
+The plot presents the metamodel predictions depending on the model observations. 
+If the points are close to the diagonal line of the plot, then the 
+metamodel validation is satisfactory. 
+Points which are far away from the diagonal represent outputs 
+for which the metamodel is not accurate.
+
+If the output is multi-dimensional, the graph has 1 row and :math:`n_y \in \Nset`
+columns, where :math:`n_y` is the output dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::computeMeanSquaredError
+"Accessor to the mean squared error.
+
+Returns
+-------
+meanSquaredError : :class:`~openturns.Point`
+    The mean squared error of each marginal output dimension.
+
+Notes
+-----
+The sample mean squared error is:
+
+.. math::
+    \widehat{\operatorname{MSE}} 
+    = \frac{1}{n} \sum_{j=1}^{n} \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2
+
+where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
+:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design and
+:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model.
+
+If the output is multi-dimensional, the same calculations are repeated separately for
+each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
+is the output dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getMetamodelPredictions
+"Accessor to the output predictions from the metamodel.
+
+Returns
+-------
+outputMetamodelSample : :class:`~openturns.Sample`
+    Output sample of the metamodel."

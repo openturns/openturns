@@ -9,6 +9,8 @@ This methodology is relevant if each model evaluation is time consuming.
 Indeed, once a response surface has been built up, the various propagation steps may be applied at a negligible cost.
 A special focus will be given to polynomial response surfaces.
 
+General purpose surrogate models
+--------------------------------
 
 .. toctree::
     :maxdepth: 1
@@ -17,6 +19,7 @@ A special focus will be given to polynomial response surfaces.
     polynomial_least_squares
     polynomial_sparse_least_squares
     kriging
+    cross_validation
 
 
 Functional chaos
@@ -29,4 +32,4 @@ Functional chaos
     chaos_basis
     enumeration_strategy
     functional_chaos
-    cross_validation
+    pce_cross_validation

@@ -25,18 +25,18 @@ SplitterImplementation * __iter__()
 
 PyObject* __next__()
 {
-  OT::Indices indices1;
-  OT::Indices indices2;
+  OT::Indices indicesTrain;
+  OT::Indices indicesTest;
   try {
-    indices1 = self->generate(indices2);
+    indicesTrain = self->generate(indicesTest);
   }
   catch (const OT::OutOfBoundException &) {
     SWIG_SetErrorObj(PyExc_StopIteration, SWIG_Py_Void());
     return 0;
   }
   PyObject* result = PyTuple_New(2);
-  PyTuple_SET_ITEM(result, 0, SWIG_NewPointerObj(indices1.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN | 0));
-  PyTuple_SET_ITEM(result, 1, SWIG_NewPointerObj(indices2.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN | 0));
+  PyTuple_SET_ITEM(result, 0, SWIG_NewPointerObj(indicesTrain.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN | 0));
+  PyTuple_SET_ITEM(result, 1, SWIG_NewPointerObj(indicesTest.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN | 0));
   return result;
 }
 

@@ -97,10 +97,12 @@ int main(int, char *[])
     FunctionalChaosResult result = algo.getResult();
 
     // MetaModelValidation - SPC
-    MetaModelValidation metaModelValidationSPC(inputValidation, outputValidation, result.getMetaModel());
+    Function metamodel(result.getMetaModel());
+    Sample metamodelPredictions(metamodel(inputValidation));
+    MetaModelValidation metaModelValidationSPC(outputValidation, metamodelPredictions);
 
     fullprint << "Sparse chaos scoring" << std::endl;
-    fullprint << "Q2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationSPC.computePredictivityFactor() << std::endl;
+    fullprint << "R2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationSPC.computeR2Score() << std::endl;
     fullprint << "Residual sample = " << metaModelValidationSPC.getResidualSample() << std::endl;
 
     // 2) Kriging algorithm
@@ -122,10 +124,12 @@ int main(int, char *[])
     KrigingResult result2 = algo2.getResult();
 
     // MetaModelValidation - KG
-    MetaModelValidation metaModelValidationKG(inputValidation, outputValidation, result2.getMetaModel());
+    Function metamodel2(result2.getMetaModel());
+    Sample metamodelPredictions2(metamodel2(inputValidation));
+    MetaModelValidation metaModelValidationKG(outputValidation, metamodelPredictions2);
 
     fullprint << "Kriging scoring" << std::endl;
-    fullprint << "Q2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationKG.computePredictivityFactor() << std::endl;
+    fullprint << "R2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationKG.computeR2Score() << std::endl;
     PlatformInfo::SetNumericalPrecision(2);
     fullprint << "Residual sample = " << metaModelValidationKG.getResidualSample() << std::endl;
 

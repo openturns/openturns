@@ -50,11 +50,16 @@ Bibliography
     *Sensitivity analysis.*
     *An Introduction for the Management Scientist.* International Series in
     Operations Research and Management Science. Cham, Switzerland : Springer.
+.. [burman1989] P. Burman. *Comparative study of Ordinary Cross-Validation,
+    v-Fold Cross-Validation and the repeated Learning-Testing Methods.*
+    Biometrika, 76(3):503–514, 1989.
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
 .. [bingham2010] Bingham, N. H., & Fry, J. M. (2010).
     *Regression: Linear models in statistics*. Springer.
+.. [Bjorck1996] Björck, Å. (1996). *Numerical methods for least squares problems.*
+    Society for Industrial and Applied Mathematics.
 .. [cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
     `pdf <https://arxiv.org/pdf/1508.03483.pdf>`__
 .. [caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
@@ -67,6 +72,8 @@ Bibliography
     *Multivariate kernel smoothing and its applications.* CRC Press.
 .. [chihara1978] Chihara, T. S. (1978).
     *An introduction to orthogonal polynomials.* Dover publications.
+.. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
+    *Model selection for small sample regression.* Machine Learning, 48(1-3), 9.
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -90,6 +97,8 @@ Bibliography
     Journal de la Société française de statistique, 147 (3), 33-71.
 .. [deRocquigny2012] De Rocquigny, E. (2012).
     *Modelling under risk and uncertainty.* John Wiley & Sons.
+.. [deisenroth2020] Deisenroth, M. P., Faisal, A. A., and Ong, C. S. (2020).
+    *Mathematics for machine learning.* Cambridge University Press.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://luc.devroye.org/handbooksimulation1.pdf>`__
@@ -156,6 +165,9 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
 .. [hammersley1961] Hammersley, J. M., & Handscomb, D. C. (1961).
     *Monte Carlo Methods.* Chapman and Hall. Monographs on Statistics and Applied Probability.
+.. [hastie2009] Hastie, T., Tibshirani, R., Friedman, J. H., & Friedman, J. H. (2009).
+    *The elements of statistical learning: data mining, inference, and prediction.*
+    New York: springer.
 .. [helton2003] Helton, J.C., and Davis, F. J.,
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
@@ -395,6 +407,8 @@ Bibliography
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
 .. [sen1990] Sen, A., & Srivastava, M. (1990). *Regression analysis: theory, methods, and applications*.
     Springer.
+.. [shao1993] Shao, J. (1993). *Linear model selection by cross-validation.*
+    Journal of the American statistical Association. 88 (422), 486-494.
 .. [sheather1991] Sheather, S. J. and Jones, M. C. (1991).
     *A reliable data-based bandwidth selection method for kernel density estimation.*
     Journal of the Royal Statistical Society. Series B (Methodological),
@@ -429,6 +443,8 @@ Bibliography
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
 .. [stein1987] Stein, M. (1987). *Large sample properties of simulations using Latin hypercube sampling.*
     Technometrics, 29(2), 143-151.
+.. [stone1974] Stone, M. (1974). *Cross‐validatory choice and assessment of statistical predictions.*
+    Journal of the royal statistical society: Series B (Methodological), 36 (2), 111-133.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <https://zhilin.math.ncsu.edu/TEACHING/MA580/Stoer_Bulirsch.pdf>`__
@@ -439,8 +455,11 @@ Bibliography
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
+.. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
+.. [wang2012] Wang, Y. *Model selection.* (2012).
+    In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
