@@ -84,13 +84,13 @@ Sample SimulatedAnnealingLHS::generateWithWeights(Point & weights) const
   return generateWithRestart(0);
 }
 
-Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) const
+Sample SimulatedAnnealingLHS::generateWithRestart(const UnsignedInteger nRestart) const
 {
-  // LHSResult returns resuls for all restarts
+  // LHSResult returns results for all restarts
   LHSResult result(spaceFilling_, nRestart);
   for(UnsignedInteger index = 0; index < nRestart + 1; ++index)
   {
-    // history has dimension 3 :crit, proba & temperature
+    // history has dimension 3: criterion, proba & temperature
     // Total size depends on convergency
     Sample history(0, 3);
     const Description historyDescription = {spaceFilling_.getImplementation()->getName() + " criterion", "Probability", "Temperature"};

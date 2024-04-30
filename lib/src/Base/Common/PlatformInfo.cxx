@@ -120,6 +120,12 @@ Description PlatformInfo::GetFeatures()
     Features_["primesieve"] = false;
 #endif
 
+#ifdef OPENTURNS_HAVE_NANOFLANN
+    Features_["nanoflann"] = true;
+#else
+    Features_["nanoflann"] = false;
+#endif
+
 #ifdef OPENTURNS_HAVE_TBB
     Features_["tbb"] = true;
 #else
@@ -178,6 +184,12 @@ Description PlatformInfo::GetFeatures()
     Features_["bison"] = true;
 #else
     Features_["bison"] = false;
+#endif
+
+#ifdef OPENTURNS_HAVE_CUBA
+    Features_["cuba"] = true;
+#else
+    Features_["cuba"] = false;
 #endif
   }
 

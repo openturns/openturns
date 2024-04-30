@@ -87,7 +87,7 @@ view = otv.View(graph)
 # **Stationary GEV modeling via the profile log-likelihood function**
 #
 # Now, we use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GEV.
-result_PLL = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
+result_PLL = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
 
 # %%
 # The following graph allows one to get the profile log-likelihood plot.
@@ -190,10 +190,11 @@ view = otv.View(result_zm_10_PLL.drawProfileLikelihoodFunction())
 #     \end{align*}
 #
 constant = ot.SymbolicFunction(["t"], ["1.0"])
-basis_lin = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
-basis_cst = ot.Basis([constant])
+basis = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
 # basis for mu, sigma, xi
-basis_coll = [basis_lin, basis_cst, basis_cst]
+muIndices = [0, 1]  # linear
+sigmaIndices = [0]  # stationary
+xiIndices = [0]  # stationary
 
 # %%
 # We need to get the time stamps (in years here).
@@ -212,31 +213,25 @@ timeStamps = data[:, 0]
 #   and it differs from the result obtained with normalized data. The results are not optimal in that case
 #   since the associated log-likelihood are much smaller than those obtained with normalized data.
 #
-initiPoint_list = list()
-initiPoint_list.append("Gumbel")
-initiPoint_list.append("Static")
-normMethod_list = list()
-normMethod_list.append("MinMax")
-normMethod_list.append("CenterReduce")
-normMethod_list.append("None")
 print("Linear mu(t) model: ")
-for normMeth in normMethod_list:
-    for initPoint in initiPoint_list:
-        print("normMeth, initPoint = ", normMeth, initPoint)
+for normMeth in ["MinMax", "CenterReduce", "None"]:
+    for initPoint in ["Gumbel", "Static"]:
+        print(f"normMeth = {normMeth}, initPoint = {initPoint}")
         # The ot.Function() is the identity function.
         result = factory.buildTimeVarying(
-            sample, timeStamps, basis_coll, ot.Function(), initPoint, normMeth
+            sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
+            ot.Function(), ot.Function(), ot.Function(), initPoint, normMeth
         )
         beta = result.getOptimalParameter()
-        print("beta1, beta2, beta3, beta4 = ", beta)
-        print("Max log-likelihood =  ", result.getLogLikelihood())
+        print(f"beta = {beta}")
+        print(f"Max log-likelihood = {result.getLogLikelihood()}")
 
 # %%
 # According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
 # This initial point is cheaper than the *Static* one as it requires no optimization computation.
-result_NonStatLL = factory.buildTimeVarying(sample, timeStamps, basis_coll)
+result_NonStatLL = factory.buildTimeVarying(sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices)
 beta = result_NonStatLL.getOptimalParameter()
-print("beta1, beta2, beta3, beta_4 = ", beta)
+print(f"beta = {beta}")
 print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau")
 print(f"sigma = {beta[2]:.4f}")
 print(f"xi = {beta[3]:.4f}")
@@ -293,14 +288,14 @@ print("Non stationary linear mu(t) model =  ", result_NonStatLL.getLogLikelihood
 #
 #    \hat{Z}_t = \dfrac{1}{\xi(t)} \log \left[1+ \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right]
 #
-# have  the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
+# have the standard Gumbel distribution which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`.
 #
 # As a result, we can validate the inference result thanks the 4 usual diagnostic plots:
 #
 # - the probability-probability pot,
 # - the quantile-quantile pot,
 # - the return level plot,
-# - the data histogram and the desnity of the fitted model.
+# - the data histogram and the density of the fitted model.
 #
 # using the transformed data compared to the Gumbel model. We can see that the adequation seems similar to the graph
 # of the stationary model.
@@ -350,7 +345,7 @@ drawQuant = graphQuantile.getDrawable(0)
 drawQuant = graphQuantile.getDrawable(0)
 drawQuant.setLineStyle("dashed")
 graph.add(drawQuant)
-graph.setLegends(["data", "mean function", "quantile 0.95  function"])
+graph.setLegends(["data", "mean function", "quantile 0.95 function"])
 graph.setLegendPosition("lower right")
 view = otv.View(graph)
 

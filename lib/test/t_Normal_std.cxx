@@ -264,10 +264,10 @@ int main(int, char *[])
       }
       Matrix chol(distribution.getCholesky());
       Matrix invChol(distribution.getInverseCholesky());
-      fullprint << "chol=" << chol.clean(1.0e-6) << std::endl;
-      fullprint << "invchol=" << invChol.clean(1.0e-6) << std::endl;
-      fullprint << "chol*t(chol)=" << (chol * chol.transpose()).clean(1.0e-6) << std::endl;
-      fullprint << "chol*invchol=" << (chol * invChol).clean(1.0e-6) << std::endl;
+      fullprint << "chol=" << chol << std::endl;
+      fullprint << "invchol=" << invChol << std::endl;
+      fullprint << "chol*t(chol)=" << (chol * chol.transpose()) << std::endl;
+      assert_almost_equal((chol * invChol), IdentityMatrix(dim));
       {
         // Comparison with another elliptical distribution
         const Bool equal = distribution == Student(4.5, meanPoint, sigma, R);

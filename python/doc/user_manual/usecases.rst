@@ -24,3 +24,4 @@ Use cases from the usecases module
     usecases.fireSatellite_function.FireSatelliteModel
     usecases.wingweight_function.WingWeightModel
     usecases.oscillator.Oscillator
+    usecases.stiffened_panel.StiffenedPanel

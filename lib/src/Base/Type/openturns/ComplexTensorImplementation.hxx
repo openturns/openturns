@@ -25,6 +25,7 @@
 #include "openturns/Point.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/HermitianMatrix.hxx"
+#include "openturns/TensorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -119,6 +120,12 @@ public:
 
   /** Symmetrize ComplexTensorImplementation in case it is a hermitian tensor (stored as a set of triangular matrix sheets) */
   void hermitianize() const;
+
+  /** Get the real part of the tensor */
+  TensorImplementation real() const;
+
+  /** Get the imaginary part of the tensor */
+  TensorImplementation imag() const;
 
   /** Comparison operators */
   using PersistentCollection::operator ==;

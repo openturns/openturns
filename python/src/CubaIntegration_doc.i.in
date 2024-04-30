@@ -1,0 +1,158 @@
+%feature("docstring") OT::CubaIntegration
+"Multidimensional integration algorithms.
+
+Parameters
+----------
+algorithmName : str
+    The name of the optimization routine to use. It must be 'cuhre', 'divonne',
+    'suave', or 'vegas'.
+
+Notes
+-----
+The Cuba algorithms enable one to approximate the definite integral:
+
+.. math::
+
+    \int_{I_n} f(x_1, ..., x_n) \di{x_1}...\di{x_n}
+
+
+which takes values in :math:`\Rset^p`, with :math:`f: \Rset^n \mapsto \Rset^p`,
+:math:`I_n=[a_1, b_1]\times\cdots\times[a_n, b_n]\subset\Rset^n`,
+having :math:`a_i<b_i` for all :math:`i=1,...,n`.
+
+The four available optimization routines work on vector integrands. While Cuhre
+is deterministic, the three other ones use Monte Carlo methods. Cuhre employs a
+cubature rule for subregion estimation in an adaptative subdivision scheme.
+Divonne works by stratified sampling. Suave combines techniques from importance
+sampling and subregion sampling. Vegas uses importance sampling for variance
+reduction. The result is returned as a :class:`~openturns.Point` of dimension
+:math:`p`, which is the number of components of the return value of the
+:class:`~openturns.Function` that one will integrate.
+
+All the optimization routines and the parameters are discussed in [hahn2005]_.
+
+Examples
+--------
+Create a Cuba algorithm:
+
+>>> import openturns.experimental as otexp
+>>> algo = otexp.CubaIntegration('vegas')
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::integrate
+"Evaluation of the integral of :math:`f w` on an interval.
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^n \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \subset \Rset^n` 
+    The integration domain.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral. Its dimension is :math:`p`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['sin(x) * cos(y) * exp(z)'])
+>>> interval = ot.Interval([0.0] * 3, [1.0] * 3)
+>>> algoC = otexp.CubaIntegration('vegas')
+>>> value = algoC.integrate(f, interval)  # doctest: +SKIP
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::getMaximumRelativeError
+"Accessor to the relative accuracy required in the integration.
+
+Returns
+-------
+maximumRelativeError : float
+    The relative accuracy that the *integrate* method attempts to achieve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::setMaximumRelativeError
+"Accessor to the relative accuracy required in the integration.
+
+Parameters
+----------
+maximumRelativeError : float
+    The relative accuracy that the *integrate* method attempts to achieve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::getMaximumAbsoluteError
+"Accessor to the absolute accuracy required in the integration.
+
+Returns
+-------
+maximumAbsoluteError : float
+    The absolute accuracy that the *integrate* method attempts to achieve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::setMaximumAbsoluteError
+"Accessor to the absolute accuracy required in the integration.
+
+Parameters
+----------
+maximumAbsoluteError : float
+    The absolute accuracy that the *integrate* method attempts to achieve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::getAlgorithmName
+"Accessor to the name of the optimization routine to be used.
+
+Returns
+-------
+algorithmName : str
+    The name of the optimization routine used by the algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::GetAlgorithmNames
+"Retrieves the names of the available integration algorithms.
+
+Returns
+-------
+algoName : :class:`~openturns.Description`
+    The names of the available integration algorithms."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::setAlgorithmName
+"Accessor to the name of the optimization routine to be used.
+
+Parameters
+----------
+algorithmName : str
+    The name of the optimization routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::getMaximumCallsNumber
+"Accessor to the maximal number of integrand calls.
+
+Returns
+-------
+N : integer
+    The maximal number of times the algorithm will attempt to call the integrand."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CubaIntegration::setMaximumCallsNumber
+"Accessor to the maximal number of integrand calls.
+
+Parameters
+----------
+N : integer, :math:`N>0`
+    The maximal number of times the algorithm will attempt to call the integrand."
+

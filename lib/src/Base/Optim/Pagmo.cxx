@@ -74,20 +74,23 @@ struct PagmoProblem
       throw InvalidArgumentException(HERE) << "PagmoProblem null history";
 
     // pagmo wants the integer components grouped at the end, so renumbering is in order
-    Indices renum;
-    Indices renum_inv;
+    Indices pagmoOrder;
     const Indices types(algorithm_->getProblem().getVariablesType());
     for (UnsignedInteger i = 0; i < types.getSize(); ++ i)
       if (types[i] == OptimizationProblemImplementation::CONTINUOUS)
-        renum.add(i);
+        pagmoOrder.add(i);
     for (UnsignedInteger i = 0; i < types.getSize(); ++ i)
       if (types[i] != OptimizationProblemImplementation::CONTINUOUS)
-        renum.add(i);
+        pagmoOrder.add(i);
     Indices ordinal(types.getSize());
     ordinal.fill();
-    if (renum != ordinal)
+    if (pagmoOrder != ordinal)
+    {
+      Indices renum(types.getSize());
+      for (UnsignedInteger i = 0; i < types.getSize(); ++ i)
+        renum[pagmoOrder[i]] = i;
       renum_ = renum;
-
+    }
     *evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
     *evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
   }

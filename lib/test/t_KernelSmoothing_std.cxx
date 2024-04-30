@@ -133,7 +133,6 @@ int main(int, char *[])
       Point right(2);
       right[0] = 0.9;
       right[1] = 1.9;
-      Point lowerBound(2);
       for (UnsignedInteger nDist = 0; nDist < coll.getSize(); ++nDist)
       {
         const Distribution baseDistribution(coll[nDist]);

@@ -73,6 +73,10 @@ int main(int, char *[])
   Collection<PointWithDescription> coll2(5, Point(4));
   Collection<Point> coll3(5, PointWithDescription(4));
   Collection<Point> coll4(5, Point(4));
+  (void)coll1;
+  (void)coll2;
+  (void)coll3;
+  (void)coll4;
   // Conversion
   //coll1 = coll3;
   //coll4 = coll2;

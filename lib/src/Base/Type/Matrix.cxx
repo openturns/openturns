@@ -248,29 +248,45 @@ Matrix Matrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute singular values */
-Point Matrix::computeSingularValues(const Bool keepIntact)
+Point Matrix::computeSingularValues() const
 {
-  return getImplementation()->computeSingularValues(keepIntact);
+  return getImplementation()->computeSingularValues();
+}
+
+Point Matrix::computeSingularValuesInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeSingularValuesInPlace();
 }
 
 /* Compute singular values */
 Point Matrix::computeSVD(Matrix & u,
                          Matrix & vT,
-                         const Bool fullSVD,
-                         const Bool keepIntact)
+                         const Bool fullSVD) const
 {
-  return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
+  return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD);
+}
+
+Point Matrix::computeSVDInPlace(Matrix & u,
+                         Matrix & vT,
+                         const Bool fullSVD)
+{
+  copyOnWrite();
+  return getImplementation()->computeSVDInPlace(*(u.getImplementation()), *(vT.getImplementation()), fullSVD);
 }
 
 
 /* Build the QR factorization of the matrix */
-Matrix Matrix::computeQR(Matrix & R,
-                         const Bool fullQR,
-                         const Bool keepIntact)
+Matrix Matrix::computeQR(Matrix & R, const Bool fullQR) const
 {
-  return getImplementation()->computeQR(*(R.getImplementation()), fullQR, keepIntact);
+  return getImplementation()->computeQR(*(R.getImplementation()), fullQR);
 }
 
+Matrix Matrix::computeQRInPlace(Matrix & R, const Bool fullQR)
+{
+  copyOnWrite();
+  return getImplementation()->computeQRInPlace(*(R.getImplementation()), fullQR);
+}
 
 /* Empty returns true if there is no element in the matrix */
 Bool Matrix::isEmpty() const
@@ -362,5 +378,10 @@ void Matrix::squareElements()
   getImplementation()->squareElements();
 }
 
+/** The Frobenius norm */
+Scalar Matrix::frobeniusNorm() const
+{
+  return getImplementation()->frobeniusNorm();
+}
 
 END_NAMESPACE_OPENTURNS

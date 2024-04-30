@@ -89,6 +89,7 @@ Graph GeneralizedExtremeValueValidation::drawReturnLevel() const
 Graph GeneralizedExtremeValueValidation::drawPDF() const
 {
   Graph graph(result_.getDistribution().drawPDF());
+  graph.setColors({"red"});
   graph.setLegends({"estimated PDF"});
   Graph histogram(HistogramFactory().build(sample_).drawPDF());
   histogram.setLegends({"data"});

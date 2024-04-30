@@ -139,7 +139,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
   const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize");
-  const UnsignedInteger totalSize = basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+  const UnsignedInteger totalSize = std::min(inputSample.getSize(), basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree));
   LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a basis size of " << totalSize);
   adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
@@ -338,7 +338,12 @@ void FunctionalChaosAlgorithm::run()
     Psi_k.add(basis.build(i));
   }
   // Build the result
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_,
+                                  inverseTransformation_, basis, I_k, alpha_k, Psi_k,
+                                  residuals, relativeErrors);
+  result_.setIsLeastSquares(projectionStrategy_.isLeastSquares());
+  result_.setInvolvesModelSelection(adaptiveStrategy_.getImplementation()->involvesModelSelection() || 
+    projectionStrategy_.getImplementation()->involvesModelSelection());
 
   // set selection history
   Collection<Point> coefficientsHistory;

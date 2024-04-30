@@ -273,10 +273,6 @@ Scalar Student::computeProbability(const Interval & interval) const
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval
-  Point lower(normalize(interval.getLowerBound()));
-  Point upper(normalize(interval.getUpperBound()));
-  const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
   /* General case */
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
@@ -766,6 +762,9 @@ Scalar Student::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (tail ? (prob >= 1.0 - SpecFunc::ScalarEpsilon) : (prob <= SpecFunc::ScalarEpsilon)) return - SpecFunc::MaxScalar;
   return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, prob, tail);
 }
 

@@ -10,9 +10,10 @@ set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 project (openturns)
 
 option (USE_BISON                    "Looks for Bison if true and then build parser"                         ON)
+option (USE_CUBA                     "Use Cuba library"                                                      ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON)
-option (USE_HMAT                     "Use HMat library"                                                      ON)
+option (USE_HMAT                     "Use HMat library (enforces GPL license)"                               OFF)
 option (USE_MUPARSER                 "Use muParser library"                                                  ON)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
@@ -34,6 +35,7 @@ option (USE_PRIMESIEVE               "Use primesieve for prime numbers generatio
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
 option (USE_CXX17                    "Use C++17 standard"                                                    ON)
+option (USE_NANOFLANN                "Use nanoflann for Nearest Neighbor search"                             ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -284,6 +286,16 @@ if (USE_BOOST)
   endif ()
 endif ()
 
+if (USE_CUBA)
+  find_package (Cuba)
+  if (Cuba_FOUND)
+    set (OPENTURNS_HAVE_CUBA TRUE)
+    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${CUBA_INCLUDE_DIRS})
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CUBA_LIBRARIES})
+    list (APPEND OPENTURNS_ENABLED_FEATURES "cuba")
+  endif ()
+endif ()
+
 if (USE_NLOPT)
   find_package (NLopt 2.6 CONFIG)
   if (NLopt_FOUND)
@@ -377,6 +389,16 @@ if (USE_OPENMP)
   if (OPENMP_FOUND)
     set (OPENTURNS_HAVE_OPENMP TRUE)
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES OpenMP::OpenMP_CXX)
+  endif ()
+endif ()
+
+if (USE_NANOFLANN)
+  find_package (nanoflann CONFIG)
+  if (nanoflann_FOUND)
+    message (STATUS "Found nanoflann: ${nanoflann_DIR} (found version \"${nanoflann_VERSION}\")")
+    set (OPENTURNS_HAVE_NANOFLANN TRUE)
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES nanoflann::nanoflann)
+    list (APPEND OPENTURNS_ENABLED_FEATURES "nanoflann")
   endif ()
 endif ()
 
@@ -594,31 +616,6 @@ if (BUILD_PYTHON)
         find_python_module (numpydoc 0.9)
         find_python_module (sphinx_gallery 0.7)
         find_python_module (sphinxcontrib.jquery)
-        if (NOT Bonmin_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_bonmin)")
-        endif ()
-        if (NOT Ceres_FOUND AND NOT CMinpack_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(calibration_flooding)|(calibration_chaboche)|(calibration_deflection_tube)")
-        endif ()
-        if (NOT dlib_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
-        endif ()
-        if (NOT Pagmo_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
-        endif ()
-        if (NOT PANDAS_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")
-        endif ()
-        if (NOT HMAT_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_cantilever_beam_hmat)")
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gaussian_process_covariance_hmat)")
-        endif ()
-        if (NOT HDF5_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
-        endif ()
-        if (NOT BISON_FOUND OR NOT FLEX_FOUND)
-          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(import_export_sample_csv)")
-        endif ()
       endif ()
       if (NOT NUMPYDOC_FOUND OR NOT SPHINX_GALLERY_FOUND OR NOT SPHINXCONTRIB.JQUERY_FOUND OR NOT MATPLOTLIB_FOUND OR NOT LIBXML2_FOUND OR NOT NLopt_FOUND)
         set (SPHINX_FOUND FALSE)
@@ -680,11 +677,9 @@ install (FILES COPYING
                 COPYING.ev3
                 COPYING.exprtk
                 COPYING.faddeeva
-                COPYING.hmat
                 COPYING.kendall
                 COPYING.kissfft
-                COPYING.KolmogorovSmirnovDist
-                COPYING.poissinv
+                COPYING.cephes
                 COPYING.tnc
           DESTINATION ${OPENTURNS_DOC_PATH}
        )

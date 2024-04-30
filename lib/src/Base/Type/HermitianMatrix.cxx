@@ -85,7 +85,7 @@ String HermitianMatrix::__repr__() const
 String HermitianMatrix::__str__(const String & offset) const
 {
   checkHermitian();
-  return SquareComplexMatrix::clean(0.0).__str__(offset);
+  return SquareComplexMatrix::__str__(offset);
 }
 
 /* Get the dimension of the matrix */
@@ -275,9 +275,14 @@ HermitianMatrix HermitianMatrix::power(const UnsignedInteger n) const
 }
 
 /* Build the Cholesky factorization of the hermitian matrix */
-TriangularComplexMatrix HermitianMatrix::computeCholesky(const Bool keepIntact)
+TriangularComplexMatrix HermitianMatrix::computeCholesky() const
 {
-  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholesky(keepIntact).clone()), true);
+  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholesky().clone()), true);
+}
+
+TriangularComplexMatrix HermitianMatrix::computeCholeskyInPlace()
+{
+  return TriangularComplexMatrix(Implementation(getImplementation()->computeCholeskyInPlace().clone()), true);
 }
 
 END_NAMESPACE_OPENTURNS

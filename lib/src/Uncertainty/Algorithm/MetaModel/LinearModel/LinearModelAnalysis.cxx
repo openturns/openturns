@@ -81,9 +81,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   const Point tscores(getCoefficientsTScores());
   const Point pValues(getCoefficientsPValues());
   const Description names(linearModelResult_.getCoefficientsNames());
-  const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
   const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
-  const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
   const String separator(" | ");
   const String separatorEndLine(" |");
   size_t twidth = 0; // column title max width
@@ -134,7 +132,8 @@ String LinearModelAnalysis::__str__(const String & offset) const
     oss << "\n";
   }
   oss << offset << String( awidth, '-' ) << "\n\n";
-  oss << offset << "Residual standard error: " <<  std::sqrt(sigma2 * n / dof)  << " on " << dof << " degrees of freedom\n";
+  const Scalar residualStandardError = getResidualsStandardError();
+  oss << offset << "Residual standard error: " <<  residualStandardError  << " on " << dof << " degrees of freedom\n";
 
   // In case of only intercept in the basis, no more print
   if ((basisSize == 1) && (hasIntercept))
@@ -166,17 +165,17 @@ String LinearModelAnalysis::__str__(const String & offset) const
   // normality tests
   lwidth = 7; // width of "p-value"
   twidth = 20;
-  const Scalar normalitytest1(getNormalityTestResultAndersonDarling().getPValue());
-  const Scalar normalitytest2(getNormalityTestResultChiSquared().getPValue());
-  const Scalar normalitytest3(getNormalityTestResultKolmogorovSmirnov().getPValue());
-  const Scalar normalitytest4(getNormalityTestCramerVonMises().getPValue());
-  st = OSS() << normalitytest1;
+  const Scalar normalityTestAD(getNormalityTestResultAndersonDarling().getPValue());
+  const Scalar normalityTestCS(getNormalityTestResultChiSquared().getPValue());
+  const Scalar normalityTestKS(getNormalityTestResultKolmogorovSmirnov().getPValue());
+  const Scalar normalityTestCVM(getNormalityTestCramerVonMises().getPValue());
+  st = OSS() << normalityTestAD;
   lwidth = std::max( lwidth, st.size() );
-  st = OSS() << normalitytest2;
+  st = OSS() << normalityTestCS;
   lwidth = std::max( lwidth, st.size() );
-  st = OSS() << normalitytest3;
+  st = OSS() << normalityTestKS;
   lwidth = std::max( lwidth, st.size() );
-  st = OSS() << normalitytest4;
+  st = OSS() << normalityTestCVM;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
   oss << "\n" << offset << String( awidth, '-' ) << "\n";
@@ -187,22 +186,22 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << "\n" <<  String( awidth, '-' ) << "\n";
   st = "Anderson-Darling";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
-  st = OSS() << normalitytest1;
+  st = OSS() << normalityTestAD;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
   oss << "\n";
   st = "Cramer-Von Mises";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
-  st = OSS() << normalitytest4;
+  st = OSS() << normalityTestCVM;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
   oss << "\n";
   st = "Chi-Squared";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
-  st = OSS() << normalitytest2;
+  st = OSS() << normalityTestCS;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
   oss << "\n";
   st = "Kolmogorov-Smirnov";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
-  st = OSS() << normalitytest3;
+  st = OSS() << normalityTestKS;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
   oss << "\n" <<  String( awidth, '-' ) << "\n";
   return oss;
@@ -316,24 +315,32 @@ Scalar LinearModelAnalysis::getFisherPValue() const
   return FisherSnedecor(dofModel, dof).computeComplementaryCDF(FStatistic);
 }
 
-/* Kolmogorov-Smirnov normality test */
+/* Estimator of the standard deviation */
+Scalar LinearModelAnalysis::getResidualsStandardError() const
+{
+  const Scalar sumOfSquaredErrors = linearModelResult_.getSampleResiduals().asPoint().normSquare();
+  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const Scalar stdError = std::sqrt(sumOfSquaredErrors / dof);
+  return stdError;
+}
+
+/* Kolmogorov-Smirnov normality test of the residuals */
 TestResult LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov() const
 {
-  // We check that residuals are centered with variance = sigma2
+  // We check that residuals have a Normal distribution
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  // Compute Sigma2
-  const Scalar sigma2(residuals.computeRawMoment(2)[0]);
+  const Scalar sigma2 = residuals.computeRawMoment(2)[0];
   const Normal dist(0.0, std::sqrt(sigma2));
   return FittingTest::Kolmogorov(residuals, dist);
 }
 
-/* Anderson-Darling normality test */
+/* Anderson-Darling normality test of the residuals */
 TestResult LinearModelAnalysis::getNormalityTestResultAndersonDarling() const
 {
   return NormalityTest::AndersonDarlingNormal(linearModelResult_.getSampleResiduals());
 }
 
-/* Chi-Squared normality test */
+/* Chi-Squared normality test of the residuals */
 TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
 {
   // Using OT::FittingTest::ChiSquared
@@ -342,7 +349,7 @@ TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
   return FittingTest::ChiSquared(residuals, normalDistribution);
 }
 
-/* Cramer Von Mises normality test */
+/* Cramer Von Mises normality test of the residuals */
 TestResult LinearModelAnalysis::getNormalityTestCramerVonMises() const
 {
   return NormalityTest::CramerVonMisesNormal(linearModelResult_.getSampleResiduals());
@@ -365,7 +372,7 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   // The graph object
   Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
 
-  // Bissectrice graph
+  // Validation graph
   Sample bissectriceCurve(2, 2);
   bissectriceCurve(0, 0) = outputData.getMin()[0];
   bissectriceCurve(0, 1) = outputData.getMin()[0];
@@ -736,7 +743,6 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     graph.add(text);
   }
   const Interval boundingBox(graph.getBoundingBox());
-  const Point lowerBound(boundingBox.getLowerBound());
   const Point upperBound(boundingBox.getUpperBound());
   // Add contour plot
   Point isovalues(6);

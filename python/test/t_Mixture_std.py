@@ -211,3 +211,8 @@ newMixture = ot.Mixture(atoms, weights)
 print("newMixture pdf= %.12g" % newMixture.computePDF(2.5))
 print("atoms kept in mixture=", newMixture.getDistributionCollection())
 print("newMixture=", newMixture)
+
+# check for non stricly increasing CDF: must return the inf of [1, 2]
+distribution = ot.Mixture([ot.Uniform(0.0, 1.0), ot.Uniform(2.0, 3.0)])
+q = distribution.computeQuantile(0.5)[0]
+print(f"q={q:.6f}")

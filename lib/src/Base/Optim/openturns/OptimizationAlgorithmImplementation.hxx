@@ -110,11 +110,11 @@ public:
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
-  virtual void setProgressCallback(ProgressCallback callBack, void * state = 0);
+  virtual void setProgressCallback(ProgressCallback callBack, void * state = nullptr);
 
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);
-  virtual void setStopCallback(StopCallback callBack, void * state = 0);
+  virtual void setStopCallback(StopCallback callBack, void * state = nullptr);
 
   /** Check status accessor */
   void setCheckStatus(const Bool checkStatus);

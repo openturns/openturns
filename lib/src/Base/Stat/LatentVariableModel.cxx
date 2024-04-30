@@ -69,8 +69,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
   if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << z1
         << ", and/or " << z2 << " are not among the known levels. They should both present integer values between 0 and l-1.";
 
-  Scalar cov = latentCovarianceMatrix_(z1, z2);
-
+  const Scalar cov = latentCovarianceMatrix_(z1, z2);
   return cov;
 }
 

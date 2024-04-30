@@ -49,8 +49,7 @@ public:
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
        const RandomVector & event,
        const Point & physicalStartingPoint);
-
-
+   
   /** Virtual constructor */
   FORM * clone() const override;
 
@@ -80,6 +79,3 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_FORM_HXX */
-
-
-

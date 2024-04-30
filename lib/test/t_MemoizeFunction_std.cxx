@@ -98,12 +98,12 @@ int main(int, char *[])
     UnsignedInteger size = 4;
     Sample input(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i) input(i, 0) = i;
-    Sample output(f(input));
+    f(input);
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
     fullprint << "input history=" << f.getInputHistory() << std::endl;
     fullprint << "output history=" << f.getOutputHistory() << std::endl;
     f.enableHistory();
-    output = f(input);
+    f(input);
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
     fullprint << "input history=" << f.getInputHistory() << std::endl;
     fullprint << "output history=" << f.getOutputHistory() << std::endl;
@@ -112,25 +112,15 @@ int main(int, char *[])
     fullprint << "input history=" << f.getInputHistory() << std::endl;
     fullprint << "output history=" << f.getOutputHistory() << std::endl;
     // Perform the computation twice
-    output = f(input);
-    output = f(input);
+    f(input);
+    f(input);
     fullprint << "input history=" << f.getInputHistory() << std::endl;
     fullprint << "output history=" << f.getOutputHistory() << std::endl;
     // Marginal
-    Description inputVariables;
-    inputVariables.add("x");
-    Description formulas;
-    formulas.add("x");
-    formulas.add("x^2");
-    formulas.add("x^3");
-    formulas.add("x^4");
-    formulas.add("x^5");
-    SymbolicFunction multi(inputVariables, formulas);
+    SymbolicFunction multi(Description({"x"}), Description({"x", "x^2", "x^3", "x^4", "x^5"}));
     MemoizeFunction memoMulti(multi);
-    Sample output5(memoMulti(input));
-    Indices indices;
-    indices.add(3);
-    indices.add(1);
+    memoMulti(input);
+    Indices indices = {3, 1};
     Function marginal(memoMulti.getMarginal(indices));
     fullprint << "memoized marginal=" << marginal << std::endl;
     Function g2(new SymbolicEvaluation(Description(1, "x"), Description(1, "y"), Description(1, "x^3")));

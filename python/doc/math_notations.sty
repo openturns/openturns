@@ -3,14 +3,88 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{siunitx}
+
+% Non-standard units
+\DeclareSIUnit{\mph}{mph}
+\DeclareSIUnit{\rpm}{rpm}
+\DeclareSIUnit{\year}{y}
+
+% A random variable is upcase.
+% An observation of a random variable (or a real number) is downcase.
+% A random vector is in latin, upcase, letter.
+% A vector is in latin, downcase, letter.
+% A set is in latin, caligraphic, upcase, letter.
 
 % The physical model
 \newcommand{\model}{g}
+\newcommand{\inputDim}{d}  % The input dimension of the model
+\newcommand{\outputDim}{d_Y}  % The output dimension of the model
+\newcommand{\inputDomain}{\mathcal{D}}  % Input domain of the model
+\newcommand{\metaModel}{\widetilde{\model}}  % The surrogate model
+
+% Probabilistic modeling
+\newcommand{\inputRV}{\vect{X}}  % The input random vector of the model
+\newcommand{\outputRV}{\vect{Y}}  % The output random vector of the model
+\newcommand{\inputMeasure}{\mu_{\inputRV}}  % The distribution of the input random vector of the model
+\newcommand{\outputMeasure}{\mu_{\outputRV}}  % The distribution of the output random vector of the model
+% Realization of the random vetor
+\newcommand{\inputReal}{\vect{x}}  % An observation of the input random vector of the model
+\newcommand{\outputReal}{\vect{y}}  % An observation of the output random vector of the model
+\newcommand{\standardRV}{\vect{Z}}  % The standard random vector (e.g. for polynomial chaos expansion)
+\newcommand{\RVU}{\vect{U}}
+\newcommand{\standardDim}{d_Z}  % The dimension of the standard random vector
+\newcommand{\dimU}{d_U}
+\newcommand{\standardReal}{\vect{z}}  % An observation of the standard random vector
+\newcommand{\realU}{\vect{u}}
+\newcommand{\supp}[1] {\operatorname{supp}\left(#1\right)}  % The support of a distribution
+\newcommand{\sampleSize}{n}  % The sample size
+
+\newcommand{\metamodel}{{\widehat{\model}}}
+
+\newcommand{\scalarproduct}[2]{\left\langle #1, #2 \right\rangle}
+
+% A set
+\newcommand{\set}[1]{\mathcal{#1}}
+% The set of standard input random observations
+\newcommand{\standardInputSpace}{\set{Z}}
+% The set of physical input random observations
+\newcommand{\physicalInputSpace}{\set{X}}
+% The set of physical output random observations
+\newcommand{\physicalOutputSpace}{\set{Y}}
+
+% The probability density function of the input random vector
+\newcommand{\inputProbabilityDensityFunction}{f}
 
 % For matrixes and vectors
 \newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}
 \newcommand{\mat}[1]{{\vect{\vect{#1}}}}
 \newcommand{\Tr}[1]{{#1}^\top}
+
+
+% Probabilistic operators
+\newcommand{\muX}{\vect{\mu}_{\:X}}
+\newcommand{\Var}[1]{{\rm Var}\left( #1 \right)}
+\newcommand{\Cov}[1]{{\rm Cov}\left( #1 \right)}
+\newcommand{\Expect}[1]{{\mathbb E}\left[ #1 \right]}
+\newcommand{\Econd}[2]{{\mathbb E}_{#1}\left[ #2 \right]}
+\newcommand{\Prob}[1]{{\mathbb P}\left( #1 \right)}
+\newcommand{\ProbCond}[2]{{\mathbb P}_{#1}\left( #2 \right)}
+\newcommand{\pdf}{f_{\un{X}}(\un{x})}
+\newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
+\newcommand{\matcov} {\mathbf C}
+\newcommand{\matcor} {\mathbf R}
+\newcommand{\fcar}[2] {{\mathbf 1}_{#1}(#2)}
+
+% Mathematics operators
+\newcommand{\di}[1] {{\,\mathrm{d}#1}}
+\newcommand{\norm}[1] {\left\|#1\right\|}
+\newcommand{\tendto}[2]{\xrightarrow[#1\rightarrow#2]{}}
+\newcommand{\matr}[1]{\vect{\vect{#1}}}
+\newcommand{\idx}{\vect{\alpha}}
+\newcommand{\Cor}[1]{{\rm Cor}\left[ #1 \right]}
+\newcommand{\NM}{\Nset^{\inputDim}}
+
 
 % Bold letters 
 \newcommand{\bdA}{{\boldsymbol{A}}}
@@ -113,26 +187,6 @@
 \newcommand{\uY}{\vect{Y}}
 \newcommand{\uz}{\vect{z}}
 \newcommand{\uZ}{\vect{Z}}
-\newcommand{\muX}{\vect{\mu}_{\:X}}
-\newcommand{\Var}[1]{{\rm Var}\left( #1 \right)}
-\newcommand{\Cov}[1]{{\rm Cov}\left( #1 \right)}
-\newcommand{\Expect}[1]{{\mathbb E}\left[ #1 \right]}
-\newcommand{\Econd}[2]{{\mathbb E}_{#1}\left[ #2 \right]}
-\newcommand{\Prob}[1]{{\mathbb P}\left( #1 \right)}
-\newcommand{\ProbCond}[2]{{\mathbb P}_{#1}\left( #2 \right)}
-\newcommand{\pdf}{f_{\un{X}}(\un{x})}
-\newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
-\newcommand{\matcov} {\mathbf C}
-\newcommand{\matcor} {\mathbf R}
-\newcommand{\fcar}[2] {{\mathbf 1}_{#1}(#2)}
-\newcommand{\supp}[1] {{\rm supp}\left(#1\right)}
-\newcommand{\di}[1] {{\,\mathrm{d}#1}}
-\newcommand{\norm}[1] {\left\|#1\right\|}
-\newcommand{\tendto}[2]{\xrightarrow[#1\rightarrow#2]{}}
-\newcommand{\matr}[1]{\vect{\vect{#1}}}
-\newcommand{\idx}{\vect{\alpha}}
-\newcommand{\NM}{\Nset^{n_X}}
-\newcommand{\Cor}[1]{{\rm Cor}\left[ #1 \right]}
 
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}

@@ -76,7 +76,6 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   // Check if the given models have the same input dimension
   const UnsignedInteger size = collection.getSize();
   if (!(size > 0)) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
-  Point amplitude(0);
   inputDimension_ = collection[0].getInputDimension();
   // Get dimension: should be the same for all elements
   // Since 1.17, collection should be a list of 1d output models

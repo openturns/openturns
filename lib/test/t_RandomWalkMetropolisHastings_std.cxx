@@ -144,7 +144,7 @@ int main(int, char *[])
     rw.setAdaptationRange(Interval(1.1, 1.2));
     rw.setAdaptationPeriod(10);
     rw.setAdaptationShrinkFactor(0.5);
-    const Sample decreasing_step_sample(rw.getSample(100));
+    rw.getSample(100);
     assert_almost_equal(rw.getAdaptationFactor(), 2.0, 0.0, 0.0);
 
   }

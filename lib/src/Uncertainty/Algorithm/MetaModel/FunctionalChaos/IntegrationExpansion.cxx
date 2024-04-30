@@ -94,7 +94,7 @@ IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
   , basisSize_(basisSize)
 {
   // The arguments are checked in the base class, excepted the basis and its size
-  if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, heare measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
+  if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, here measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
   if (basisSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot project on a basis of size zero";
   // The active functions. By default all the functions are active
   activeFunctions_ = Indices(basisSize_);
@@ -176,6 +176,8 @@ void IntegrationExpansion::run()
   }
   // Build the result
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors);
+  result_.setIsLeastSquares(false);
+  result_.setInvolvesModelSelection(false);
 }
 
 /* Method to get/set the active functions */

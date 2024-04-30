@@ -83,7 +83,6 @@ String FunctionalChaosSobolIndices::__repr_markdown__() const
   oss << FunctionalChaosSobolIndices::GetClassName() << "\n";
 
   const Indices indices(functionalChaosResult_.getIndices());
-  const Sample coefficients(functionalChaosResult_.getCoefficients());
   const UnsignedInteger basisSize = indices.getSize();
   EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
 

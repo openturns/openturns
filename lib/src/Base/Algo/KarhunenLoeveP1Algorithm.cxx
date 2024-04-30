@@ -407,7 +407,7 @@ void KarhunenLoeveP1Algorithm::run()
     // Prepare matrix M = C*G, compute EV
     SquareMatrix denseG(G.asDenseMatrix().getImplementation());
     SquareMatrix M(C * denseG);
-    SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+    SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEVInPlace(eigenVectorsComplex));
 
     // Format results, sort eigenvalues by decreasing order
     LOGINFO("Post-process the eigenvalue problem");

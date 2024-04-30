@@ -96,18 +96,18 @@ int main(int, char *[])
     fullprint << "point=" << point << std::endl;
     Point transformedPoint(transform(point));
     fullprint << "transform value at point        =" << transformedPoint << std::endl;
-    fullprint << "transform gradient at point     =" << transform.gradient(point).clean(1.0e-6) << std::endl;
-    fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point).clean(1.0e-6) << std::endl;
+    fullprint << "transform gradient at point     =" << transform.gradient(point) << std::endl;
+    fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point) << std::endl;
     fullprint << "transform hessian at point      =" << clean(transform.hessian(point)) << std::endl;
     fullprint << "transform hessian at point (FD) =" << clean(CenteredFiniteDifferenceHessian(1.0e-4, transform.getEvaluation()).hessian(point)) << std::endl;
     fullprint << "inverse transform value at transformed point        =" << inverseTransform(transformedPoint) << std::endl;
-    fullprint << "inverse transform gradient at transformed point (FD)=" << inverseTransform.gradient(transformedPoint).clean(1.0e-6) << std::endl;
-    fullprint << "inverse transform gradient at transformed point     =" << CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation()).gradient(transformedPoint).clean(1.0e-6) << std::endl;
+    fullprint << "inverse transform gradient at transformed point (FD)=" << inverseTransform.gradient(transformedPoint) << std::endl;
+    fullprint << "inverse transform gradient at transformed point     =" << CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation()).gradient(transformedPoint) << std::endl;
     fullprint << "inverse transform hessian at transformed point      =" << clean(inverseTransform.hessian(transformedPoint)) << std::endl;
     fullprint << "inverse transform hessian at transformed point (FD) =" << clean(CenteredFiniteDifferenceHessian(1.0e-4, inverseTransform.getEvaluation()).hessian(transformedPoint)) << std::endl;
 
     // Test for parameters
-    fullprint << "parameters gradient at point=" << transform.parameterGradient(point).clean(1.0e-6) << std::endl;
+    fullprint << "parameters gradient at point=" << transform.parameterGradient(point) << std::endl;
   }
   catch (TestFailed & ex)
   {

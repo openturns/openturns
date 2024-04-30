@@ -70,6 +70,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
+
 private:
   /** The algorithm that generates a family of basis */
   BasisSequenceFactory basisSequenceFactory_;

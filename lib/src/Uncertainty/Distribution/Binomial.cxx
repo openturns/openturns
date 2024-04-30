@@ -295,8 +295,10 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
                                        const Bool tail) const
 {
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
-  if (prob <= 0.0) return (tail ? n_ : 0.0);
-  if (prob >= 1.0) return (tail ? 0.0 : n_);
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (prob == 0.0) return (tail ? n_ : 0.0);
+  if (prob == 1.0) return (tail ? 0.0 : n_);
   // Initialization by the Cornish-Fisher expansion
   Scalar qNorm = DistFunc::qNormal(prob, tail);
   Scalar gamma1 = getSkewness()[0];
@@ -324,12 +326,16 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
     LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, final quantile=" << quantile);
     return quantile;
   }
+  oldCDF = cdf;
   while (cdf < prob)
   {
     quantile += step;
+    oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
     LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, forward search, quantile=" << quantile << ", cdf=" << cdf);
   }
+  if (cdf >= oldCDF)
+    quantile -= step;
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, final quantile=" << quantile);
   return quantile;
 }

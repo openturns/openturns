@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SquareMatrix implements the classical mathematical square matrix
+ *  @brief SquareMatrix implements the square matrix
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -35,7 +35,7 @@ class SquareComplexMatrix;
 /**
  * @class SquareMatrix
  *
- * SquareMatrix implements the classical mathematical square matrix
+ * SquareMatrix implements the square matrix
  */
 
 class OT_API SquareMatrix :
@@ -127,23 +127,31 @@ public:
   Matrix solveLinearSystem(const Matrix & b) const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
-                                       const Bool keepIntact = true);
-  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut) const;
+  Scalar computeLogAbsoluteDeterminantInPlace(Scalar & signOut);
+
+  Scalar computeDeterminant() const;
+  Scalar computeDeterminantInPlace();
 
   /** Compute trace */
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  ComplexCollection computeEigenValues(const Bool keepIntact = true);
-  ComplexCollection computeEV(SquareComplexMatrix & vOut,
-                              const Bool keepIntact = true);
+  ComplexCollection computeEigenValues() const;
+  ComplexCollection computeEigenValuesInPlace();
+
+  ComplexCollection computeEV(SquareComplexMatrix & vOut) const;
+  ComplexCollection computeEVInPlace(SquareComplexMatrix & vOut);
+
   /** Compute the largest eigenvalue module using power iterations */
   virtual Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
       const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;
+
+  /** Inverse matrix*/
+  SquareMatrix inverse() const;
 
 protected:
 

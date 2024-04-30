@@ -72,13 +72,12 @@ point = ot.Point(dim, 1.0)
 print("point=", repr(point))
 transformedPoint = transform(point)
 print("transform value at point        =", repr(transformedPoint))
-print("transform gradient at point     =", repr(transform.gradient(point).clean(1e-6)))
+print("transform gradient at point     =", repr(transform.gradient(point)))
 print(
     "transform gradient at point (FD)=",
     repr(
         ot.CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation())
         .gradient(point)
-        .clean(1e-6)
     ),
 )
 print(
@@ -101,14 +100,13 @@ print(
 )
 print(
     "inverse transform gradient at transformed point     =",
-    repr(inverseTransform.gradient(transformedPoint).clean(1e-6)),
+    repr(inverseTransform.gradient(transformedPoint)),
 )
 print(
     "inverse transform gradient at transformed point (FD)=",
     repr(
         ot.CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation())
         .gradient(transformedPoint)
-        .clean(1e-6)
     ),
 )
 print(

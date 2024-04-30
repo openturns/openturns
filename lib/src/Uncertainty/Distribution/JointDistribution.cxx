@@ -53,7 +53,7 @@ static const Factory<JointDistribution> Factory_JointDistribution;
 JointDistribution::JointDistribution()
   : DistributionImplementation()
   , distributionCollection_()
-  , copula_(IndependentCopula(1))
+  , core_(IndependentCopula(1))
 {
   setName("JointDistribution");
   setDimension(1);
@@ -67,7 +67,7 @@ JointDistribution::JointDistribution()
 JointDistribution::JointDistribution(const DistributionCollection & coll)
   : DistributionImplementation()
   , distributionCollection_()
-  , copula_(IndependentCopula(coll.getSize()))
+  , core_(IndependentCopula(coll.getSize()))
 {
   setName("JointDistribution");
   setDimension(coll.getSize());
@@ -81,33 +81,33 @@ JointDistribution::JointDistribution(const DistributionCollection & coll)
 
 /* Default constructor */
 JointDistribution::JointDistribution(const DistributionCollection & coll,
-    const Distribution & copula)
+                                     const Distribution & core)
   : DistributionImplementation()
   , distributionCollection_()
-  , copula_(copula)
+  , core_(core)
 {
   setName("JointDistribution");
-  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
-  setDimension(copula.getDimension());
+  setDimension(core.getDimension());
   // We can NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the dimension 1). We do this by calling
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
-  setDistributionCollection( coll );
+  setDistributionCollection(coll);
+  setCore(core);
 }
 
 /* Comparison operator */
 Bool JointDistribution::operator ==(const JointDistribution & other) const
 {
   if (this == &other) return true;
-  // The copula...
+  // The core...
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();
   // One of the copulas is the independent one, not the other
   if (!hasIndependent == other.hasIndependentCopula()) return false;
   // None of the copulas is the independent one, and the two copulas are different
-  if (!hasIndependent && !(copula_ == other.getCopula())) return false;
+  if (!hasIndependent && !(core_ == other.getCore())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -133,7 +133,7 @@ Bool JointDistribution::equals(const DistributionImplementation & other) const
   // One of the copulas is the independent one, not the other
   if (!hasIndependent == other.hasIndependentCopula()) return false;
   // None of the copulas is the independent one, and the two copulas are different
-  if (!hasIndependent && !(copula_ == other.getCopula())) return false;
+  if (!hasIndependent && !(getCopula() == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -150,8 +150,11 @@ String JointDistribution::__repr__() const
   OSS oss;
   oss << "class=" << JointDistribution::GetClassName()
       << " name=" << getName()
-      << " dimension=" << getDimension()
-      << " copula=" << copula_;
+      << " dimension=" << getDimension();
+  if (core_.isCopula())
+    oss << " copula=" << core_;
+  else
+    oss << " core=" << core_;
   for (UnsignedInteger i = 0; i < getDimension(); ++i) oss << " marginal[" << i << "]=" << distributionCollection_[i];
   return oss;
 }
@@ -166,7 +169,7 @@ String JointDistribution::__str__(const String & ) const
     oss << separator << distributionCollection_[i].__str__();
     separator = ", ";
   }
-  if (getDimension() > 1) oss << ", " << copula_.__str__();
+  if (getDimension() > 1) oss << ", " << core_.__str__();
   oss << ")";
   return oss;
 }
@@ -179,7 +182,13 @@ String JointDistribution::_repr_html_() const
   oss << "  <li>name=" << getName() << "</li>\n";
   oss << "  <li>dimension: " << getDimension() << "</li>\n";
   oss << "  <li>description=" << description_ << "\n";
-  if (getDimension() > 1) oss << "  <li>copula: " << copula_.__str__() << "</li>\n";
+  if (getDimension() > 1)
+  {
+    if (core_.isCopula())
+      oss << "  <li>copula: " << core_.__str__() << "</li>\n";
+    else
+      oss << "  <li>core: " << core_.__str__() << "</li>\n";
+  }
   oss << "</ul>\n";
   oss << "\n";
   // Table of marginals
@@ -210,7 +219,13 @@ String JointDistribution::__repr_markdown__() const
   oss << "- name=" << getName() << "\n";
   oss << "- dimension=" << getDimension() << "\n";
   oss << "- description=" << description_ << "\n";
-  if (getDimension() > 1) oss << "- copula=" << copula_.__str__() << "\n";
+  if (getDimension() > 1)
+  {
+    if (core_.isCopula())
+      oss << "- copula=" << core_.__str__() << "\n";
+    else
+      oss << "- core=" << core_.__str__() << "\n";
+  }
   // Compute maximum distribution's column width
   String intermediateString;
   UnsignedInteger maximumColumnWidth = 0;
@@ -244,7 +259,7 @@ void JointDistribution::setDistributionCollection(const DistributionCollection &
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
-  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the copula dimension";
+  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the core dimension";
   Description description(size);
   Point lowerBound(size);
   Point upperBound(size);
@@ -252,7 +267,7 @@ void JointDistribution::setDistributionCollection(const DistributionCollection &
   Interval::BoolCollection finiteUpperBound(size);
   if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
   // First, check that all the marginal distributions are of dimension 1
-  Bool parallel = copula_.getImplementation()->isParallel();
+  Bool parallel = core_.getImplementation()->isParallel();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "The marginal distribution " << i << " is of dimension " << coll[i].getDimension() << ", which is different from 1.";
@@ -308,6 +323,31 @@ JointDistribution::DistributionCollection JointDistribution::getDistributionColl
 }
 
 
+/* Core accessor */
+void JointDistribution::setCore(const Distribution & core)
+{
+  // We check if the core has a dimension compatible with the one of the object,
+  // especially if the object has already been created and has a collection of distribution
+  if (getDimension() != core.getDimension())
+    throw InvalidArgumentException(HERE) << "Core has a dimension different from the JointDistribution's";
+
+  const Interval unitCube(core.getDimension());
+  const Interval coreRange(core.getRange());
+  if ((!unitCube.contains(coreRange.getLowerBound())) || (!unitCube.contains(coreRange.getUpperBound()))) throw InvalidArgumentException(HERE) << "Error: the given core=" << core << " has a range=" << core.getRange() << " not included in the unit hypercube.";
+  core_ = core;
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
+  // We ensure that the core has the same description than the JointDistribution
+  core_.setDescription(getDescription());
+}
+
+
+/* Core accessor */
+Distribution JointDistribution::getCore() const
+{
+  return core_;
+}
+
 /* Copula accessor */
 void JointDistribution::setCopula(const Distribution & copula)
 {
@@ -321,17 +361,19 @@ void JointDistribution::setCopula(const Distribution & copula)
   else
     setDimension(copula.getDimension());
 
-  copula_ = copula;
+  core_ = copula;
   isAlreadyComputedCovariance_ = false;
   // We ensure that the copula has the same description than the JointDistribution
-  copula_.setDescription(getDescription());
+  core_.setDescription(getDescription());
 }
 
 
 /* Copula accessor */
 Distribution JointDistribution::getCopula() const
 {
-  return copula_;
+  if (core_.isCopula())
+    return core_;
+  return core_.getCopula();
 }
 
 /* Virtual constructor */
@@ -344,17 +386,17 @@ JointDistribution * JointDistribution::clone() const
 Point JointDistribution::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
+  // Complex case: use 1D CDF inversion
+  if (!core_.isCopula() || !hasIndependentCopula())
+  {
+    Point realization(core_.getRealization());
+    for (UnsignedInteger i = 0; i < dimension; ++i) realization[i] = distributionCollection_[i].computeScalarQuantile(realization[i]);
+    return realization;
+  } // General case
   if (dimension == 1) return distributionCollection_[0].getRealization();
   // Special case for independent copula
   Point result(dimension);
-  if (hasIndependentCopula())
-  {
-    for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = distributionCollection_[i].getRealization()[0];
-    return result;
-  }
-  // General case
-  const Point realization(copula_.getRealization());
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = distributionCollection_[i].computeScalarQuantile(realization[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = distributionCollection_[i].getRealization()[0];
   return result;
 }
 
@@ -387,35 +429,35 @@ struct ComposedDistributionComputeSamplePolicy
 Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
+  if (!core_.isCopula() || !hasIndependentCopula())
+  {
+    // For dependent components, we can use some parallelism on top
+    // of possible parallelism of the getSample() method of the core
+    const Sample coreSample(core_.getSample(size));
+    Sample result(size, dimension);
+    const ComposedDistributionComputeSamplePolicy policy( coreSample, result, distributionCollection_ );
+    TBBImplementation::ParallelFor( 0, size, policy );
+    result.setName(getName());
+    result.setDescription(getDescription());
+    return result;
+  } // General case
   // For 1D or independent components, we can only rely on possible parallel
   // implementation of getSample() methods of the marginal distributions
   if (dimension == 1) return distributionCollection_[0].getSample(size);
   // Special case for independent copula
-  if (hasIndependentCopula())
+  Point data(size * dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    Point data(size * dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
+    const Point marginalSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
+    UnsignedInteger shift = i;
+    for (UnsignedInteger j = 0; j < size; ++j)
     {
-      const Point marginalSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
-      UnsignedInteger shift = i;
-      for (UnsignedInteger j = 0; j < size; ++j)
-      {
-        data[shift] = marginalSample[j];
-        shift += dimension;
-      }
+      data[shift] = marginalSample[j];
+      shift += dimension;
     }
-    SampleImplementation result(size, dimension);
-    result.setData(data);
-    result.setName(getName());
-    result.setDescription(getDescription());
-    return result;
   }
-  // For dependent components, we can use some parallelism on top
-  // of possible parallelism of the getSample() method of the copula
-  const Sample copulaSample(copula_.getSample(size));
-  Sample result(size, dimension);
-  const ComposedDistributionComputeSamplePolicy policy( copulaSample, result, distributionCollection_ );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  SampleImplementation result(size, dimension);
+  result.setData(data);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -430,7 +472,7 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
 /* Get the DDF of the JointDistribution */
 Point JointDistribution::computeDDF(const Point & point) const
 {
-  /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
+  /* PDF = PDF_core(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -448,95 +490,96 @@ Point JointDistribution::computeDDF(const Point & point) const
     productPDF *= pdfMarginal[i];
   }
   // Initialization with the values of an independent copula
-  Scalar pdfCopula = 1.0;
-  Point ddfCopula(dimension, 0.0);
+  Scalar pdfCore = 1.0;
+  Point ddfCore(dimension, 0.0);
   // If the distribution does not have an independent copula
-  if (!hasIndependentCopula())
+  if (!core_.isCopula() || !hasIndependentCopula())
   {
-    pdfCopula = copula_.computePDF(uPoint);
-    ddfCopula = copula_.computeDDF(uPoint);
-  }
+    pdfCore = core_.computePDF(uPoint);
+    ddfCore = core_.computeDDF(uPoint);
+  } // General case
   // Compute the ddf
   Point ddf(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) if (pdfMarginal[i] > 0.0) ddf[i] = productPDF * (ddfCopula[i] * pdfMarginal[i] + pdfCopula * ddfMarginal[i] / pdfMarginal[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) if (pdfMarginal[i] > 0.0) ddf[i] = productPDF * (ddfCore[i] * pdfMarginal[i] + pdfCore * ddfMarginal[i] / pdfMarginal[i]);
   return ddf;
 }
 
 /* Get the PDF of the JointDistribution */
 Scalar JointDistribution::computePDF(const Point & point) const
 {
-  /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
+  /* PDF = PDF_core(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
+  if (!core_.isCopula() || !hasIndependentCopula())
+  {
+    // General case
+    Point uPoint(dimension);
+    Point component(1);
+    Scalar productPDF = 1.0;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      component[0] = point[i];
+      uPoint[i] = distributionCollection_[i].computeCDF(component);
+      productPDF *= distributionCollection_[i].computePDF(component);
+    }
+    return core_.computePDF(uPoint) * productPDF;
+  } // General case
   // Special case for dimension 1, to boost performances
   if (dimension == 1) return distributionCollection_[0].computePDF(point);
   Scalar productPDF = 1.0;
   // Special case for the independent case, to boost performances
-  if (hasIndependentCopula())
-  {
-    for (UnsignedInteger i = 0; i < dimension; ++i) productPDF *= distributionCollection_[i].computePDF(point[i]);
-    return productPDF;
-  }
-  // General case
-  Point uPoint(dimension);
-  Point component(1);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    component[0] = point[i];
-    uPoint[i] = distributionCollection_[i].computeCDF(component);
-    productPDF *= distributionCollection_[i].computePDF(component);
-  }
-  return copula_.computePDF(uPoint) * productPDF;
+  for (UnsignedInteger i = 0; i < dimension; ++i) productPDF *= distributionCollection_[i].computePDF(point[i]);
+  return productPDF;
 }
 
 /* Get the logarithm of the PDF of the JointDistribution */
 Scalar JointDistribution::computeLogPDF(const Point & point) const
 {
-  /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
+  /* PDF = PDF_core(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  if (!core_.isCopula() || !hasIndependentCopula())
+  {
+    // General case
+    Point uPoint(dimension);
+    Point component(1);
+    Scalar sumLogPDF = 0.0;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      component[0] = point[i];
+      uPoint[i] = distributionCollection_[i].computeCDF(component);
+      sumLogPDF += distributionCollection_[i].computeLogPDF(component);
+    }
+    return core_.computeLogPDF(uPoint) + sumLogPDF;
+  } // General case
   // Special case for dimension 1, to boost performances
-  if (dimension == 1) return distributionCollection_[0].computeLogPDF(point);
+  if ((dimension == 1) && (core_.isCopula())) return distributionCollection_[0].computeLogPDF(point);
   Scalar sumLogPDF = 0.0;
   // Special case for the independent case, to boost performances
-  if (hasIndependentCopula())
-  {
-    for (UnsignedInteger i = 0; i < dimension; ++i) sumLogPDF += distributionCollection_[i].computeLogPDF(point[i]);
-    return sumLogPDF;
-  }
-  // General case
-  Point uPoint(dimension);
-  Point component(1);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    component[0] = point[i];
-    uPoint[i] = distributionCollection_[i].computeCDF(component);
-    sumLogPDF += distributionCollection_[i].computeLogPDF(component);
-  }
-  return copula_.computeLogPDF(uPoint) + sumLogPDF;
+  for (UnsignedInteger i = 0; i < dimension; ++i) sumLogPDF += distributionCollection_[i].computeLogPDF(point[i]);
+  return sumLogPDF;
 }
 
 /* Get the CDF of the JointDistribution */
 Scalar JointDistribution::computeCDF(const Point & point) const
 {
-  /* CDF = CDF_copula(CDF_dist1(p1), ..., CDF_distn(pn)) */
+  /* CDF = CDF_core(CDF_dist1(p1), ..., CDF_distn(pn)) */
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  if (!core_.isCopula() || !hasIndependentCopula())
+  {
+    // General case
+    Point uPoint(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeCDF(point[i]);
+    return core_.computeCDF(uPoint);
+  } // General case
   if (dimension == 1) return distributionCollection_[0].computeCDF(point);
   // Special case for the independent case, to boost performances
-  if (hasIndependentCopula())
-  {
-    Scalar productCDF = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i) productCDF *= distributionCollection_[i].computeCDF(point[i]);
-    return productCDF;
-  }
-  // General case
-  Point uPoint(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeCDF(point[i]);
-  return copula_.computeCDF(uPoint);
+  Scalar productCDF = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i) productCDF *= distributionCollection_[i].computeCDF(point[i]);
+  return productCDF;
 }
 
 Scalar JointDistribution::computeSurvivalFunction(const Point & point) const
@@ -546,23 +589,23 @@ Scalar JointDistribution::computeSurvivalFunction(const Point & point) const
    *          = \bar{C}(1-\hat{F}_1(x_1), \dots, 1-\hat{F}_d(x_d))
    *          = \bar{C}(F_1(x_1), \dots, F_d(x_d))
    *
-   * With \bar{C} the survival function of the copula, not to be mistaken with the survival copula \hat{C}
+   * With \bar{C} the survival function of the core, not to be mistaken with the survival core \hat{C}
    */
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  if (dimension == 1) return distributionCollection_[0].computeSurvivalFunction(point);
-  // Special case for the independent case, to boost performances
-  if (hasIndependentCopula())
+  if (!core_.isCopula() || !hasIndependentCopula())
   {
-    Scalar productSurvival = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i) productSurvival *= distributionCollection_[i].computeSurvivalFunction(point[i]);
-    return productSurvival;
+    // General case
+    Point uPoint(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeCDF(point[i]);
+    return core_.computeSurvivalFunction(uPoint);
   }
-  // General case
-  Point uPoint(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeCDF(point[i]);
-  return copula_.computeSurvivalFunction(uPoint);
+  if  ((dimension == 1) && (core_.isCopula())) return distributionCollection_[0].computeSurvivalFunction(point);
+  // Special case for the independent case, to boost performances
+  Scalar productSurvival = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i) productSurvival *= distributionCollection_[i].computeSurvivalFunction(point[i]);
+  return productSurvival;
 }
 
 /* Compute the probability content of an interval */
@@ -577,16 +620,16 @@ Scalar JointDistribution::computeProbability(const Interval & interval) const
   const Point upper(interval.getUpperBound());
   const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
-  Point lowerCopula(dimension);
-  Point upperCopula(dimension);
+  Point lowerCore(dimension);
+  Point upperCore(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (finiteLower[i]) lowerCopula[i] = distributionCollection_[i].computeCDF(lower[i]);
-    else lowerCopula[i] = 0.0;
-    if (finiteUpper[i]) upperCopula[i] = distributionCollection_[i].computeCDF(upper[i]);
-    else upperCopula[i] = 1.0;
+    if (finiteLower[i]) lowerCore[i] = distributionCollection_[i].computeCDF(lower[i]);
+    else lowerCore[i] = 0.0;
+    if (finiteUpper[i]) upperCore[i] = distributionCollection_[i].computeCDF(upper[i]);
+    else upperCore[i] = 1.0;
   }
-  return copula_.computeProbability(Interval(lowerCopula, upperCopula));
+  return core_.computeProbability(Interval(lowerCore, upperCore));
 }
 
 /* Get the PDF gradient of the distribution */
@@ -605,10 +648,10 @@ Point JointDistribution::computePDFGradient(const Point & point) const
     const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
     for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
   }
-  const Point copulaGradient(copula_.computePDFGradient(point));
-  const UnsignedInteger copulaParameterDimension = copulaGradient.getDimension();
-  // Then, put the gradient according to the copula parameters
-  for (UnsignedInteger j = 0; j < copulaParameterDimension; ++j) gradient.add(copulaGradient[j]);
+  const Point coreGradient(core_.computePDFGradient(point));
+  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
+  // Then, put the gradient according to the core parameters
+  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
   return gradient;
 }
 
@@ -628,10 +671,10 @@ Point JointDistribution::computeCDFGradient(const Point & point) const
     const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
     for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
   }
-  const Point copulaGradient(copula_.computeCDFGradient(point));
-  const UnsignedInteger copulaParameterDimension = copulaGradient.getDimension();
-  // Then, put the gradient according to the copula parameters
-  for (UnsignedInteger j = 0; j < copulaParameterDimension; ++j) gradient.add(copulaGradient[j]);
+  const Point coreGradient(core_.computeCDFGradient(point));
+  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
+  // Then, put the gradient according to the core parameters
+  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
   return gradient;
 }
 
@@ -641,9 +684,10 @@ Point JointDistribution::computeQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   const UnsignedInteger dimension = getDimension();
-  if (dimension == 1) return distributionCollection_[0].computeQuantile(prob, tail);
-  Point quantile(copula_.computeQuantile(prob, tail));
-  for (UnsignedInteger i = 0; i < getDimension(); ++i) quantile[i] = distributionCollection_[i].computeQuantile(quantile[i])[0];
+  if  ((dimension == 1) && (core_.isCopula())) return distributionCollection_[0].computeQuantile(prob, tail);
+  // General case
+  Point quantile(core_.computeQuantile(prob, tail));
+  for (UnsignedInteger i = 0; i < dimension; ++i) quantile[i] = distributionCollection_[i].computeQuantile(quantile[i])[0];
   return quantile;
 }
 
@@ -653,18 +697,22 @@ Scalar JointDistribution::computeConditionalPDF(const Scalar x, const Point & y)
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return distributionCollection_[conditioningDimension].computePDF(x);
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computePDF(x);
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
-  return distributionCollection_[conditioningDimension].computePDF(x) * copula_.computeConditionalPDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
+  const Scalar pdfX = distributionCollection_[conditioningDimension].computePDF(x);
+  if (pdfX == 0.0)
+    return 0.0;
+  const Scalar corePDF = core_.computeConditionalPDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
+  return pdfX * corePDF;
 }
 
 Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
-  if (hasIndependentCopula())
+  if (core_.isCopula() && hasIndependentCopula())
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = distributionCollection_[i].computePDF(x[i]);
@@ -674,9 +722,12 @@ Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
     Point u(dimension_);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       u[i] = distributionCollection_[i].computeCDF(x[i]);
-    const Point copulaPDF(copula_.computeSequentialConditionalPDF(u));
+    const Point corePDF(core_.computeSequentialConditionalPDF(u));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = distributionCollection_[i].computePDF(x[i]) * copulaPDF[i];
+      {
+        result[i] = distributionCollection_[i].computePDF(x[i]) * corePDF[i];
+        if (result[i] == 0.0) break;
+      }
   }
   return result;
 }
@@ -687,11 +738,11 @@ Scalar JointDistribution::computeConditionalCDF(const Scalar x, const Point & y)
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeCDF(x);
-  // General case
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeCDF(x);
+  // General case$
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
-  return copula_.computeConditionalCDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
+  return core_.computeConditionalCDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
 }
 
 Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
@@ -700,41 +751,41 @@ Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
   Point u(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     u[i] = distributionCollection_[i].computeCDF(x[i]);
-  if (hasIndependentCopula()) return u;
-  return copula_.computeSequentialConditionalCDF(u);
+  if (core_.isCopula() && hasIndependentCopula()) return u;
+  return core_.computeSequentialConditionalCDF(u);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 /* Fk|1,...,k-1(x_k|x_1,...,x_{k-1})=Ck|1,...,k-1(F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
    Fk|1,...,k-1(Qk|1,...,k-1(q)|x_1,...,x_{k-1})=Ck|1,...,k-1(u_k=F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
- */
+*/
 Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(q);
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(q);
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
-  return distributionCollection_[conditioningDimension].computeScalarQuantile(copula_.computeConditionalQuantile(q, u));
+  return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(q, u));
 }
 
 Point JointDistribution::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
-  if (hasIndependentCopula())
+  if (core_.isCopula() && hasIndependentCopula())
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = distributionCollection_[i].computeScalarQuantile(q[i]);
   }
   else
   {
-    const Point copulaQuantile(copula_.computeSequentialConditionalQuantile(q));
+    const Point coreQuantile(core_.computeSequentialConditionalQuantile(q));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = distributionCollection_[i].computeScalarQuantile(copulaQuantile[i]);
+      result[i] = distributionCollection_[i].computeScalarQuantile(coreQuantile[i]);
   }
   return result;
 }
@@ -763,14 +814,21 @@ void JointDistribution::computeMean() const
 {
   const UnsignedInteger dimension = getDimension();
   mean_ = Point(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) mean_[i] = distributionCollection_[i].getMean()[0];
-  isAlreadyComputedMean_ = true;
+  // Shortcut in the copula case
+  if (core_.isCopula())
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++i) mean_[i] = distributionCollection_[i].getMean()[0];
+    isAlreadyComputedMean_ = true;
+  }
+  // Otherwise we have to take the margins of the core into account
+  else
+    DistributionImplementation::computeMean();
 }
 
 /* Compute the entropy of the distribution */
 Scalar JointDistribution::computeEntropy() const
 {
-  Scalar entropy = copula_.computeEntropy();
+  Scalar entropy = core_.computeEntropy();
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     entropy += distributionCollection_[i].computeEntropy();
   return entropy;
@@ -779,10 +837,17 @@ Scalar JointDistribution::computeEntropy() const
 /* Get the standard deviation of the distribution */
 Point JointDistribution::getStandardDeviation() const
 {
-  const UnsignedInteger dimension = getDimension();
-  Point standardDeviation(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) standardDeviation[i] = distributionCollection_[i].getStandardDeviation()[0];
-  return standardDeviation;
+  // Shortcut in the copula case
+  if (core_.isCopula())
+  {
+    const UnsignedInteger dimension = getDimension();
+    Point standardDeviation(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) standardDeviation[i] = distributionCollection_[i].getStandardDeviation()[0];
+    return standardDeviation;
+  }
+  // Otherwise we have to take the margins of the core into account
+  else
+    return DistributionImplementation::getStandardDeviation();
 }
 
 /* Compute the covariance of the distribution */
@@ -791,25 +856,38 @@ void JointDistribution::computeCovariance() const
   const UnsignedInteger dimension = getDimension();
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the distribution and the dimension of the matrix
-  // + the copula has changed from a non-independent one to the independent copula
+  // + the core has changed from a non-independent one to the independent copula
   covariance_ = CovarianceMatrix(dimension);
+  // If the dimension is 1, either the core is a copula and the covariance is simply the covariance of distributionCollection_[0]
+  if (dimension_ == 1)
+  {
+    // Copula case
+    if (core_.isCopula())
+    {
+      covariance_(0, 0) = distributionCollection_[0].getCovariance()(0, 0);
+      isAlreadyComputedCovariance_ = true;
+    }
+    else
+      // Here we must use the generic implementation to avoid recursive calls
+      // and to take into account core margins
+      DistributionImplementation::computeCovariance();
+    return;
+  }
   // First the diagonal terms, which are the marginal covariances
-  // Compute the marginal standard deviation
-  for(UnsignedInteger component = 0; component < dimension; ++component) covariance_(component, component) = distributionCollection_[component].getCovariance()(0, 0);
-  // Off-diagonal terms if the copula is not the independent copula
+  for (UnsignedInteger component = 0; component < dimension; ++component) covariance_(component, component) = getMarginal(component).getCovariance()(0, 0);
+  // Off-diagonal terms if the core is not the independent copula
   if (!hasIndependentCopula())
   {
-    // Special case: elliptical distribution. The covariance is the shape matrix of the associated copula, scaled by the marginal standard deviations
+    // Special case: elliptical distribution. The covariance is the shape matrix of the associated core, scaled by the marginal standard deviations
     if (isElliptical())
     {
-      const CovarianceMatrix shape(copula_.getShapeMatrix());
-      const Point sigma(getStandardDeviation());
+      const CovarianceMatrix shape(core_.getShapeMatrix());
       for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
         for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
-          covariance_(rowIndex, columnIndex) = shape(rowIndex, columnIndex) * sigma[rowIndex] * sigma[columnIndex];
+          covariance_(rowIndex, columnIndex) = shape(rowIndex, columnIndex) * std::sqrt(covariance_(rowIndex, rowIndex) * covariance_(columnIndex, columnIndex));
       return;
     }
-    if (ResourceMap::GetAsBool("JointDistribution-UseGenericCovarianceAlgorithm"))
+    if (!core_.isCopula() || ResourceMap::GetAsBool("JointDistribution-UseGenericCovarianceAlgorithm"))
     {
       LOGINFO("JointDistribution: using the generic covariance algorithm");
       DistributionImplementation::computeCovariance();
@@ -885,7 +963,7 @@ void JointDistribution::computeCovariance() const
       {
         indices[1] = columnIndex;
         const Scalar muJ = mean_[columnIndex];
-        const Distribution marginalCopula(copula_.getMarginal(indices));
+        const Distribution marginalCopula(core_.getMarginal(indices));
         if (!marginalCopula.hasIndependentCopula())
         {
           LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
@@ -913,27 +991,47 @@ void JointDistribution::computeCovariance() const
 /* Get the skewness of the distribution */
 Point JointDistribution::getSkewness() const
 {
-  const UnsignedInteger dimension = getDimension();
-  Point skewness(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) skewness[i] = distributionCollection_[i].getSkewness()[0];
-  return skewness;
+  // Shortcut in the copula case
+  if (core_.isCopula())
+  {
+    const UnsignedInteger dimension = getDimension();
+    Point skewness(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) skewness[i] = distributionCollection_[i].getSkewness()[0];
+    return skewness;
+  }
+  // Otherwise we have to take the margins of the core into account
+  else
+    return DistributionImplementation::getSkewness();
 }
 
 /* Get the kurtosis of the distribution */
 Point JointDistribution::getKurtosis() const
 {
-  const UnsignedInteger dimension = getDimension();
-  Point kurtosis(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) kurtosis[i] = distributionCollection_[i].getKurtosis()[0];
-  return kurtosis;
+  // Shortcut in the copula case
+  if (core_.isCopula())
+  {
+    const UnsignedInteger dimension = getDimension();
+    Point kurtosis(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) kurtosis[i] = distributionCollection_[i].getKurtosis()[0];
+    return kurtosis;
+  }
+  // Otherwise we have to take the margins of the core into account
+  else
+    return DistributionImplementation::getKurtosis();
 }
 
 /* Get the i-th marginal distribution */
 Distribution JointDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  Distribution marginal(distributionCollection_[i]);
-  marginal.setDescription(Description(1, getDescription()[i]));
+  if (core_.isCopula())
+  {
+    Distribution marginal(distributionCollection_[i]);
+    marginal.setDescription({getDescription()[i]});
+    return marginal;
+  }
+  JointDistribution marginal({distributionCollection_[i]}, core_.getMarginal(i));
+  marginal.setDescription({getDescription()[i]});
   return marginal;
 }
 
@@ -944,13 +1042,8 @@ Distribution JointDistribution::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();
   if (size == 1)
-  {
-    const UnsignedInteger i = indices[0];
-    Distribution marginal(distributionCollection_[i]);
-    marginal.setDescription(Description(1, getDescription()[i]));
-    return marginal;
-  }
-  JointDistribution marginal(distributionCollection_.select(indices), copula_.getMarginal(indices));
+    return getMarginal(indices[0]);
+  JointDistribution marginal(distributionCollection_.select(indices), core_.getMarginal(indices));
   marginal.setDescription(getDescription().select(indices));
   return marginal;
 }
@@ -978,7 +1071,7 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
     }
   }
   // Special case for the independent copula case: marginal transformations only to go to the spherical distribution
-  if (hasIndependentCopula())
+  if (core_.isCopula() && hasIndependentCopula())
   {
     // Get the evaluation implementations
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM, Normal());
@@ -1001,7 +1094,7 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
     return transform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)
-  if (hasEllipticalCopula())
+  if (core_.isCopula() && hasEllipticalCopula())
   {
     // Standard distribution
     const Distribution standardDistribution(getStandardDistribution());
@@ -1012,19 +1105,19 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
-    const TriangularMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
+    const TriangularMatrix inverseCholesky(core_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
     LinearFunction linear(Point(dimension, 0.0), Point(dimension, 0.0), inverseCholesky);
     return ComposedFunction(linear, marginalTransformation);
   }
-  // General case: go to uniform marginal distributions using marginal transformations, then use the isoprobabilistic ransformation of the copula
-  // Get the IsoProbabilisticTransformation from the copula
-  const IsoProbabilisticTransformation copulaIsoprobabilisticTransformation(copula_.getIsoProbabilisticTransformation());
+  // General case: go to uniform marginal distributions using marginal transformations, then use the isoprobabilistic transformation of the core
+  // Get the IsoProbabilisticTransformation from the core
+  const IsoProbabilisticTransformation coreIsoprobabilisticTransformation(core_.getIsoProbabilisticTransformation());
   // Get the right function implementations
   const MarginalTransformationEvaluation evaluation(distributionCollection_);
   IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
   marginalTransformation.setParameterDescription(description);
-  return ComposedFunction(copulaIsoprobabilisticTransformation, marginalTransformation);
+  return ComposedFunction(coreIsoprobabilisticTransformation, marginalTransformation);
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -1050,7 +1143,7 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
     }
   }
   // Special case for the independent copula case: marginal transformations only to go back from the spherical distribution
-  if (hasIndependentCopula())
+  if (core_.isCopula() && hasIndependentCopula())
   {
     // Get the evaluation implementations
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO, Normal());
@@ -1073,7 +1166,7 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
     return inverseTransform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)
-  if (hasEllipticalCopula())
+  if (core_.isCopula() && hasEllipticalCopula())
   {
     // Standard distribution
     const Distribution standardDistribution(getStandardDistribution());
@@ -1084,26 +1177,25 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
-    const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
-    // const SquareMatrix cholesky(JointDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
+    const TriangularMatrix cholesky(core_.getShapeMatrix().computeCholesky());
     LinearFunction linear(Point(dimension, 0.0), Point(dimension, 0.0), cholesky);
     return ComposedFunction(marginalTransformation, linear);
   }
-  // General case: go to the copula using its inverse isoprobabilistic transformation, then add the correct marginal distributions using marginal transformations
+  // General case: go to the core using its inverse isoprobabilistic transformation, then add the correct marginal distributions using marginal transformations
   // Get the InverseIsoProbabilisticTransformation from the copula
-  const InverseIsoProbabilisticTransformation copulaInverseIsoprobabilisticTransformation(copula_.getInverseIsoProbabilisticTransformation());
+  const InverseIsoProbabilisticTransformation coreInverseIsoprobabilisticTransformation(core_.getInverseIsoProbabilisticTransformation());
   // Build the marginal transformation
   const MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO);
   InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
   marginalTransformation.setParameterDescription(description);
-  return ComposedFunction(marginalTransformation, copulaInverseIsoprobabilisticTransformation);
+  return ComposedFunction(marginalTransformation, coreInverseIsoprobabilisticTransformation);
 }
 
 /* Get the standard distribution */
 Distribution JointDistribution::getStandardDistribution() const
 {
-  return copula_.getStandardDistribution();
+  return getCopula().getStandardDistribution();
 }
 
 /* Parameters value and description accessor */
@@ -1128,12 +1220,12 @@ JointDistribution::PointWithDescriptionCollection JointDistribution::getParamete
   if (dimension > 1)
   {
     // Second put the dependence parameters
-    PointWithDescription point(copula_.getParametersCollection()[0]);
-    Description copulaParametersDescription(point.getDescription());
-    // Here we must add a unique prefix to the copula parameters description in order to disambiguate the parameters of marginals sharing the same description
-    for (UnsignedInteger i = 0; i < point.getDimension(); ++i) copulaParametersDescription[i] = (OSS() << copulaParametersDescription[i] << "_copula");
-    point.setDescription(copulaParametersDescription);
-    point.setName(copula_.getName());
+    PointWithDescription point(core_.getParametersCollection()[0]);
+    Description coreParametersDescription(point.getDescription());
+    // Here we must add a unique prefix to the core parameters description in order to disambiguate the parameters of marginals sharing the same description
+    for (UnsignedInteger i = 0; i < point.getDimension(); ++i) coreParametersDescription[i] = (OSS() << coreParametersDescription[i] << (core_.isCopula() ? "_copula" : "_core"));
+    point.setDescription(coreParametersDescription);
+    point.setName(core_.getName());
     parameters[dimension] = point;
   } // dimension > 1
   return parameters;
@@ -1148,8 +1240,8 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
 
   // set marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
-  // set copula parameters
-  if (dimension > 1) copula_.setParameter(parametersCollection[dimension]);
+  // set core parameters
+  if (dimension > 1) core_.setParameter(parametersCollection[dimension]);
 }
 
 
@@ -1163,7 +1255,7 @@ Point JointDistribution::getParameter() const
   }
   if (dimension > 1)
   {
-    point.add(copula_.getParameter());
+    point.add(core_.getParameter());
   }
   return point;
 }
@@ -1183,11 +1275,11 @@ void JointDistribution::setParameter(const Point & parameter)
   }
   if (dimension > 1)
   {
-    const UnsignedInteger parametersSize = copula_.getParameterDimension();
-    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for copula";
+    const UnsignedInteger parametersSize = core_.getParameterDimension();
+    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for " << (core_.isCopula() ? "copula" : "core");
     Point newParameters(parametersSize);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
-    copula_.setParameter(newParameters);
+    core_.setParameter(newParameters);
   }
 }
 
@@ -1203,9 +1295,9 @@ Description JointDistribution::getParameterDescription() const
   }
   if (dimension > 1)
   {
-    Description copulaParametersDescription(copula_.getParameterDescription());
-    for (UnsignedInteger i = 0; i < copulaParametersDescription.getSize(); ++ i)
-      description.add(OSS() << copulaParametersDescription[i] << "_copula");
+    Description coreParametersDescription(core_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < coreParametersDescription.getSize(); ++ i)
+      description.add(OSS() << coreParametersDescription[i] << (core_.isCopula() ? "_copula" : "_core"));
   }
   return description;
 }
@@ -1213,21 +1305,21 @@ Description JointDistribution::getParameterDescription() const
 /* Tell if the distribution has independent copula */
 Bool JointDistribution::hasIndependentCopula() const
 {
-  return copula_.hasIndependentCopula();
+  return core_.hasIndependentCopula();
 }
 
 /* Tell if the distribution has elliptical copula */
 Bool JointDistribution::hasEllipticalCopula() const
 {
-  return copula_.hasEllipticalCopula();
+  return core_.hasEllipticalCopula();
 }
 
 /* Check if the distribution is elliptical */
 Bool JointDistribution::isElliptical() const
 {
-  const Bool ellipticalCopula = copula_.hasEllipticalCopula();
+  const Bool ellipticalCopula = core_.isCopula() && core_.hasEllipticalCopula();
   if (!ellipticalCopula) return false;
-  const String copulaKind(copula_.getImplementation()->getClassName());
+  const String copulaKind(core_.getImplementation()->getClassName());
   // Easy case: Normal or independent copula with Normal marginals
   const Bool hasNormalCopula = (copulaKind == NormalCopula::GetClassName()) || hasIndependentCopula();
   Bool hasNormalMarginals = true;
@@ -1245,6 +1337,7 @@ Bool JointDistribution::isElliptical() const
 Bool JointDistribution::isContinuous() const
 {
   const UnsignedInteger dimension = getDimension();
+  if (!core_.isContinuous()) return false;
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isContinuous()) return false;
   return true;
 }
@@ -1270,7 +1363,7 @@ void JointDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distributionCollection_", distributionCollection_ );
-  adv.saveAttribute( "copula_", copula_ );
+  adv.saveAttribute( "core_", core_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -1278,7 +1371,10 @@ void JointDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "distributionCollection_", distributionCollection_ );
-  adv.loadAttribute( "copula_", copula_ );
+  if (adv.hasAttribute("copula_"))
+    adv.loadAttribute( "copula_", core_ );
+  else
+    adv.loadAttribute( "core_", core_ );
   computeRange();
 }
 

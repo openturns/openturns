@@ -97,7 +97,7 @@ int main(int, char *[])
     OptimizationResult result(mySQPAlgorithm.getResult());
     fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
     fullprint << "multipliers = " << printPoint(result.computeLagrangeMultipliers(), 4) << std::endl;
-    Graph convergence(result.drawErrorHistory());
+    result.drawErrorHistory();
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
     fullprint << "hessian    calls number=" << levelFunction.getHessianCallsNumber() << std::endl;

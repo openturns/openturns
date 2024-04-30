@@ -121,13 +121,14 @@ int main(int, char *[])
     CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point) -
                   FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-    Point quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile(0.95);
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     // Confidence regions
     Scalar threshold;
-    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
-    fullprint << "threshold=" << threshold << std::endl;
+    Interval interval(distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold));
+    assert_almost_equal(interval.getLowerBound(), {0.03856}, 1e-4, 0.0);
+    assert_almost_equal(interval.getUpperBound(), {3.21723}, 1e-4, 0.0);    fullprint << "threshold=" << threshold << std::endl;
     Scalar beta;
     LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
     fullprint << "Minimum volume level set=" << levelSet << std::endl;
@@ -136,7 +137,9 @@ int main(int, char *[])
     fullprint << "beta=" << beta << std::endl;
     fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
     fullprint << "beta=" << beta << std::endl;
-    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+    Interval unilateralInterval(distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta));
+    assert_almost_equal(unilateralInterval.getLowerBound(), {0.230549}, 1e-5, 0.0);
+    assert_almost_equal(distribution.computeProbability(unilateralInterval), 0.95, 1e-5, 0.0);
     fullprint << "beta=" << beta << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;

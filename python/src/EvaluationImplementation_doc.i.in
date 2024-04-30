@@ -292,13 +292,13 @@ OT_Evaluation_setParameterDescription_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
-    draw(*inputMarg, outputMarg, CP, xiMin, xiMax, ptNb*)
+    draw(*inputMarg, outputMarg, CP, xiMin, xiMax, ptNb, scale*)
 
-    draw(*firstInputMarg, secondInputMarg, outputMarg, CP, xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*firstInputMarg, secondInputMarg, outputMarg, CP, xiMin_xjMin, xiMax_xjMax, ptNbs, scale, isFilled*)
 
-    draw(*xiMin, xiMax, ptNb*)
+    draw(*xiMin, xiMax, ptNb, scale*)
 
-    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs, scale*)
 
 Parameters
 ----------
@@ -314,8 +314,22 @@ xiMin, xiMax : float
     Define the interval where the curve is plotted.
 xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
     In the 2D case, define the intervals where the curves are plotted.
-ptNb : int :math:`ptNb > 0` or list of ints of dimension 2 :math:`ptNb_k > 0, k=1,2`
+ptNb : int :math:`ptNb > 0`
     The number of points to draw the curves.
+ptNbs : list of int of dimension 2 :math:`ptNbs_k > 0, k=1,2`
+    The number of points to draw the contour in the 2D case.
+scale : bool
+    scale indicates whether the logarithmic scale is used either for one or both axes:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
+isFilled : bool
+    isFilled indicates whether the contour graph is filled or not
 
 Notes
 -----
@@ -430,3 +444,19 @@ check_output : bool
 %enddef
 %feature("docstring") OT::EvaluationImplementation::getCheckOutput
 OT_Evaluation_getCheckOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_setStopCallback_doc
+"Set up a stop callback.
+
+Can be used to programmatically stop an evaluation.
+
+Parameters
+----------
+callback : callable
+    Returns a bool deciding whether to stop or continue.
+"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setStopCallback
+OT_Evaluation_setStopCallback_doc

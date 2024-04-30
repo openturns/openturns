@@ -45,6 +45,9 @@ int main(int, char *[])
       }
       LinearModelAlgorithm test(oneSample, twoSample);
       LinearModelResult result(test.getResult());
+      fullprint << "result = " << std::endl;
+      fullprint << result << std::endl;
+      fullprint << result.__str__() << std::endl;
       fullprint << "trend coefficients = " << result.getCoefficients() << std::endl;
     }
 
@@ -52,7 +55,7 @@ int main(int, char *[])
       setRandomGenerator();
       fullprint << "Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points" << std::endl;
       UnsignedInteger size = 100;
-      // Define a linespace from 0 to 10 with size points
+      // Define a linear grid from 0 to 10 with size points
       // We use a Box experiment ==> remove 0 & 1 points
       const Box experiment(Indices(1, size - 2));
       Sample X(experiment.generate());
@@ -87,6 +90,20 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < leverageFirstElements.getSize(); ++i)
         leverageFirstElements[i] = leverages[i];
       assert_almost_equal(leverageFirstElements, leverages_reference, 1e-6, 0.0);
+
+      LeastSquaresMethod lsMethod(result.buildMethod());
+      SymmetricMatrix projectionMatrix(lsMethod.getH());
+      assert_equal(projectionMatrix.getNbRows(), size);
+      assert_equal(projectionMatrix.getNbColumns(), size);
+      Point predictionsReference(result.getFittedSample().asPoint());
+      Point predictionsFromProjection(projectionMatrix * Y.asPoint());
+      assert_almost_equal(predictionsFromProjection, predictionsReference);
+
+      Sample residuals(result.getSampleResiduals());
+      assert_equal(residuals.getSize(), size);
+      assert_equal(residuals.getDimension(), (UnsignedInteger) 1);
+      Point residualsReference(Y.asPoint() - predictionsReference);
+      assert_almost_equal(residuals.asPoint(), residualsReference);
     }
   }
   catch (TestFailed &ex)

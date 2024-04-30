@@ -4,7 +4,7 @@ Merge nodes in Smolyak quadrature
 """
 # %%
 # The goal of this example is to see the effect of the merge algorithm in
-# Smolyak's quadrature implemented in :class:`~openturns.SmolyakExperiment`.
+# Smolyak's quadrature implemented in :class:`openturns.experimental.SmolyakExperiment`.
 # We analyse the sensitivity of the number of nodes to the relative
 # and absolute tolerances.
 # Then we analyse the effect of the merge algorithm on the number of nodes.
@@ -14,6 +14,7 @@ import numpy as np
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
+import matplotlib.pyplot as plt
 
 # %%
 # The following examples shows how to get the relative and absolute tolerances.
@@ -110,9 +111,10 @@ for epsilon in epsilon_array:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
+graph.setIntegerXTick(True)
 graph.setLegendPosition("upper left")
 graph.setLegendCorner([1.0, 1.0])
-view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
+view = otv.View(graph, figure_kw={"figsize": (6.0, 3.0)})
 
 # %%
 # We see that changing the tolerance from :math:`10^{-6}` down
@@ -182,6 +184,7 @@ graph.add(cloud)
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
+plt.tight_layout()
 
 # %%
 # We see that the number of nodes is reduced when the merge algorithm is

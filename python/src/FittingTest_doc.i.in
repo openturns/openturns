@@ -119,7 +119,7 @@ best_aic : float
 
 See Also
 --------
-FittingTest.AIC
+openturns.FittingTest.AIC
 
 Examples
 --------
@@ -155,7 +155,7 @@ best_aicc : float
 
 See Also
 --------
-FittingTest.AICC
+openturns.FittingTest.AICC
 
 Examples
 --------
@@ -195,7 +195,7 @@ In case of ties, the order in the list matters: the first one which minimizes th
 
 See Also
 --------
-FittingTest.BIC
+openturns.FittingTest.BIC
 
 Examples
 --------
@@ -230,7 +230,7 @@ best_bic :
 
 See Also
 --------
-FittingTest.ChiSquared
+openturns.FittingTest.ChiSquared
 
 Examples
 --------
@@ -265,7 +265,7 @@ best_result : :class:`~openturns.TestResult`
 
 See Also
 --------
-FittingTest.Kolmogorov
+openturns.FittingTest.Kolmogorov
 
 Examples
 --------
@@ -413,9 +413,9 @@ TypeError :
 Notes
 -----
 The distribution is supposed to be fully specified, i.e. no parameter
-has been estimated from the given sample.  This uses an external C
-implementation of the Kolmogorov cumulative distribution function
-by [simard2011]_.
+has been estimated from the given sample.
+The implementation of the Kolmogorov cumulative distribution function
+follows the algorithm described in [simard2011]_.
 
 Examples
 --------
@@ -490,7 +490,7 @@ best_result : :class:`~openturns.TestResult`
 
 See Also
 --------
-FittingTest.Lilliefors
+openturns.FittingTest.Lilliefors
 
 Examples
 --------

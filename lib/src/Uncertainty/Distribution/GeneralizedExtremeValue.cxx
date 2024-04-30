@@ -333,6 +333,7 @@ Graph GeneralizedExtremeValue::drawReturnLevel() const
   drawable.setLegend("GEV return level");
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
+  drawable.setColor("red");
   graph.setDrawable(drawable, 0);
   graph.setXTitle("Return period");
   graph.setYTitle("Return level");

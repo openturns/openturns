@@ -177,4 +177,16 @@ Point LeastSquaresStrategy::getErrorHistory() const
   return errorHistory_;
 }
 
+/* isLeastSquares accessor */
+Bool LeastSquaresStrategy::isLeastSquares() const
+{
+  return true;
+}
+
+/* involvesModelSelection accessor */
+Bool LeastSquaresStrategy::involvesModelSelection() const
+{
+  return p_approximationAlgorithmImplementationFactory_.getImplementation()->involvesModelSelection();
+}
+
 END_NAMESPACE_OPENTURNS

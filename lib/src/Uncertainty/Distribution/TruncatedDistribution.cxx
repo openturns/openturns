@@ -31,6 +31,7 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/JointDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -173,25 +174,38 @@ TruncatedDistribution * TruncatedDistribution::clone() const
 }
 
 /* Get the simplified version (or clone the distribution) */
-Distribution TruncatedDistribution::getSimplifiedVersion() const
+Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) const
 {
+  // n-D case
+  JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
+  if (p_joint && p_joint->hasIndependentCopula() && (getDimension() > 1))
+  {
+    Collection<Distribution> coll(getDimension());
+    for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+      coll[i] = TruncatedDistribution(p_joint->getMarginal(i), bounds_.getMarginal(i));
+    simplified = JointDistribution(coll);
+    return true;
+  }
+
   // Simplification of the 1D case
   Distribution localDistribution(distribution_);
   String kind(localDistribution.getImplementation()->getClassName());
   // Delve into the antecedents until we get something which is not a truncated distribution
+  UnsignedInteger level = 1;
   while (kind == "TruncatedDistribution")
   {
     const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
     localDistribution = truncatedDistribution->getDistribution();
     kind = localDistribution.getImplementation()->getClassName();
+    ++ level;
+    // nested truncation intervals have already been intersected during the nested range computations
   }
   // If no truncation
-  const Scalar w = getWeight();
   const Interval range(getRange());
   if (distribution_.getRange() == range)
   {
-    localDistribution.setWeight(w);
-    return localDistribution;
+    simplified = localDistribution;
+    return true;
   }
   // If UserDefined
   if (kind == "UserDefined")
@@ -209,9 +223,8 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
         reducedProbabilities.add(probabilities[i]);
       }
     }
-    UserDefined simplified(reducedSupport, reducedProbabilities);
-    simplified.setWeight(getWeight());
-    return simplified;
+    simplified = UserDefined(reducedSupport, reducedProbabilities);
+    return true;
   }
   // At this point, no more simplification in the multivariate case
   if (getDimension() == 1)
@@ -223,42 +236,48 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
     // Actual simplifications
     if (kind == "Uniform")
     {
-      Uniform simplified(alpha, beta);
-      simplified.setWeight(getWeight());
-      return simplified;
+      simplified = Uniform(alpha, beta);
+      return true;
     }
     if (kind == "Normal")
     {
       const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
       const Scalar mu = normal->getMean()[0];
       const Scalar sigma = normal->getSigma()[0];
-      TruncatedNormal simplified(mu, sigma, alpha, beta);
-      simplified.setWeight(getWeight());
-      return simplified;
+      simplified = TruncatedNormal(mu, sigma, alpha, beta);
+      return true;
     }
     if (kind == "TruncatedNormal")
     {
       const TruncatedNormal * truncatedNormal(dynamic_cast< const TruncatedNormal * >(localDistribution.getImplementation().get()));
       const Scalar mu = truncatedNormal->getMu();
       const Scalar sigma = truncatedNormal->getSigma();
-      TruncatedNormal simplified(mu, sigma, alpha, beta);
-      simplified.setWeight(getWeight());
-      return simplified;
+      simplified = TruncatedNormal(mu, sigma, alpha, beta);
+      return true;
     }
     if ((kind == "Exponential") && (beta >= b))
     {
       const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
       const Scalar lambda = exponential->getLambda();
-      Exponential simplified(lambda, alpha);
-      simplified.setWeight(getWeight());
-      return simplified;
+      simplified = Exponential(lambda, alpha);
+      return true;
     }
   }
-  // No simplification
-  TruncatedDistribution simplifiedTruncated(localDistribution, getRange());
-  simplifiedTruncated.setWeight(w);
-  return simplifiedTruncated;
+  if (level > 1)
+  {
+    // no innermost simplification
+    simplified = TruncatedDistribution(localDistribution, getRange());
+    return true;
+  }
+  return false;
 }
+
+
+Distribution TruncatedDistribution::getSimplifiedVersion() const
+{
+  return useSimplifiedVersion_ ? simplifiedVersion_ : *this;
+}
+
 
 /* Compute the numerical range of the distribution given the parameters values */
 void TruncatedDistribution::computeRange()
@@ -281,14 +300,23 @@ void TruncatedDistribution::computeRange()
     distribution_.getImplementation()->setQuantileEpsilon(quantileEpsilon_ * probability);
   }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
+
+  // enable simplified path
+  useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
+  simplifiedVersion_.setWeight(getWeight());
 }
 
 /* Get one realization of the distribution */
 Point TruncatedDistribution::getRealization() const
 {
+  // simplified path (JointDistribution, UserDefined, ...)
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getRealization();
+
   // Use CDF inversion only if P([a, b]) < tau
   if ((getDimension() == 1) && (thresholdRealization_ * normalizationFactor_ > 1.0))
     return computeQuantile(RandomGenerator::Generate());
+
   // Here we use simple rejection of the underlying distribution against the bounds
   for (;;)
   {

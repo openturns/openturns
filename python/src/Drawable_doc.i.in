@@ -120,4 +120,11 @@ OT_Drawable_ConvertFromName_doc
 OT_Drawable_ConvertToRGB_doc
 %feature("docstring") OT::Drawable::ConvertToRGBA
 OT_Drawable_ConvertToRGBA_doc
-
+%feature("docstring") OT::Drawable::GetValidColorMaps
+OT_Drawable_GetValidColorMaps_doc
+%feature("docstring") OT::Drawable::GetValidNorms
+OT_Drawable_GetValidNorms_doc
+%feature("docstring") OT::Drawable::GetValidExtends
+OT_Drawable_GetValidExtends_doc
+%feature("docstring") OT::Drawable::GetValidColorBarPositions
+OT_Drawable_GetValidColorBarPositions_doc

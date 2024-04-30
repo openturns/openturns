@@ -46,7 +46,6 @@ int main()
   const Point mean(2, 0.0) ;
   const Point sigma(2, 1.0) ;
   const Normal distX(mean, sigma, CorrelationMatrix(2));
-  const RandomVector inputVector = RandomVector(distX);
 
   // Determination of reference probability
 

@@ -456,6 +456,8 @@ for doe in doeList:
         algo.run()
         # Check the coefficients
         result = algo.getResult()
+        assert result.isLeastSquares()
+        assert not result.involvesModelSelection()
         coeffs = result.getCoefficients().asPoint()
         ref = expectedCoefficientsLinear[: coeffs.getSize()]
         err = (coeffs - ref).norm()

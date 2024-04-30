@@ -40,11 +40,6 @@ static const Factory<NormalGamma> Factory_NormalGamma;
 /* Default constructor */
 NormalGamma::NormalGamma()
   : BayesDistribution()
-  , mu_(0.0)
-  , kappa_(1.0)
-  , alpha_(1.0)
-  , beta_(1.0)
-  , logNormalization_(0.0)
 {
   const Point parameter = {mu_, kappa_, alpha_, beta_};
   setParameter(parameter);
@@ -60,7 +55,6 @@ NormalGamma::NormalGamma(const Scalar mu,
   , kappa_(kappa)
   , alpha_(alpha)
   , beta_(beta)
-  , logNormalization_(0.0)
 {
   if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
   if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
@@ -88,7 +82,7 @@ void NormalGamma::computeRange()
   lowerBound[0] = range0.getLowerBound()[0];
   lowerBound[1] = range1.getLowerBound()[0];
   Interval::BoolCollection finiteLowerBound(2, false);
-  finiteLowerBound[1] = true;
+  finiteLowerBound[0] = true;
   Point upperBound(2, 0.0);
   upperBound[0] = range0.getUpperBound()[0];
   upperBound[1] = range1.getUpperBound()[0];
@@ -127,8 +121,8 @@ void NormalGamma::computeCovariance() const
 {
   if (!(alpha_ > 1.0)) throw NotDefinedException(HERE) << "Error: the covariance is not defined for a NormalGamma distribution with alpha<=1, here alpha=" << alpha_;
   covariance_ = CovarianceMatrix(2);
-  covariance_(0, 0) = beta_ / (kappa_ * (alpha_ - 1.0));
-  covariance_(1, 1) = alpha_ / (beta_ * beta_);
+  covariance_(0, 0) = alpha_ / (beta_ * beta_);
+  covariance_(1, 1) = beta_ / (kappa_ * (alpha_ - 1.0));
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -147,11 +141,11 @@ Scalar NormalGamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
 
-  const Scalar y = point[1];
-  const Scalar a = getRange().getLowerBound()[1];
-  const Scalar b = getRange().getUpperBound()[1];
+  const Scalar y = point[0];
+  const Scalar a = getRange().getLowerBound()[0];
+  const Scalar b = getRange().getUpperBound()[0];
   if ((y <= a) || (y >= b)) return SpecFunc::LowestScalar;
-  const Scalar x = point[0] - mu_;
+  const Scalar x = point[1] - mu_;
   return logNormalization_ + (alpha_ - 0.5) * std::log(y) - 0.5 * y * (kappa_ * x * x + 2.0 * beta_) + 0.5 * std::log(kappa_ / (2.0 * M_PI));
 }
 
@@ -253,11 +247,11 @@ private:
 Scalar NormalGamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
-  const Scalar y = point[1];
-  const Scalar a = getRange().getLowerBound()[1];
-  const Scalar b = getRange().getUpperBound()[1];
+  const Scalar y = point[0];
+  const Scalar a = getRange().getLowerBound()[0];
+  const Scalar b = getRange().getUpperBound()[0];
   if (y <= a) return 0.0;
-  const Scalar x = point[0] - mu_;
+  const Scalar x = point[1] - mu_;
   // DistFunc.qNormal(SpecFunc.ScalarEpsilon)=8.12589...
   const Scalar xBound(8.126 / std::sqrt(kappa_ * y));
   if (x < -xBound) return 0.0;
@@ -277,11 +271,11 @@ Scalar NormalGamma::computeCDF(const Point & point) const
 Scalar NormalGamma::computeSurvivalFunction(const Point & point) const
 {
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
-  const Scalar y = point[1];
-  const Scalar a = getRange().getLowerBound()[1];
-  const Scalar b = getRange().getUpperBound()[1];
+  const Scalar y = point[0];
+  const Scalar a = getRange().getLowerBound()[0];
+  const Scalar b = getRange().getUpperBound()[0];
   if (y > b) return 0.0;
-  const Scalar x = point[0] - mu_;
+  const Scalar x = point[1] - mu_;
   // DistFunc.qNormal(SpecFunc.ScalarEpsilon)=8.12589...
   const Scalar xBound(8.126 / std::sqrt(kappa_ * y));
   if (x >  xBound) return 0.0;
@@ -310,10 +304,10 @@ Scalar NormalGamma::computeProbability(const Interval & interval) const
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;
 
-  const Scalar uMin = reducedInterval.getLowerBound()[0];
-  const Scalar uMax = reducedInterval.getUpperBound()[0];
-  const Scalar a = reducedInterval.getLowerBound()[1];
-  const Scalar b = reducedInterval.getUpperBound()[1];
+  const Scalar uMin = reducedInterval.getLowerBound()[1];
+  const Scalar uMax = reducedInterval.getUpperBound()[1];
+  const Scalar a = reducedInterval.getLowerBound()[0];
+  const Scalar b = reducedInterval.getUpperBound()[0];
   // Here the integration wrt x is given in closed form
   const Function integrand(NormalGammaFunctions::KernelProbability(uMin, uMax, kappa_, alpha_, beta_, logNormalization_, 2));
   // Integrate over the interval [a, b] of the conditioning Gamma distribution
@@ -447,7 +441,7 @@ Scalar NormalGamma::getBeta() const
 Point NormalGamma::getSkewness() const
 {
   Point skewness(2);
-  skewness[1] = 2.0 / std::sqrt(alpha_);
+  skewness[0] = 2.0 / std::sqrt(alpha_);
   return skewness;
 }
 
@@ -455,8 +449,8 @@ Point NormalGamma::getSkewness() const
 Point NormalGamma::getKurtosis() const
 {
   Point kurtosis(2);
-  kurtosis[0] = 3.0 * (alpha_ - 1.0) / (alpha_ - 2.0);
-  kurtosis[1] = 3.0 * (alpha_ + 2.0) / alpha_;
+  kurtosis[0] = 3.0 * (alpha_ + 2.0) / alpha_;
+  kurtosis[1] = 3.0 * (alpha_ - 1.0) / (alpha_ - 2.0);
   return kurtosis;
 }
 

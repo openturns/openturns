@@ -376,7 +376,7 @@ printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model
 # function in the covariance model parameters estimation.
 # We use a :class:`~openturns.MultiStart` algorithm in order to avoid to be trapped by a local minimum.
 # Furthermore, we generate the design of experiments using a
-# :class:`~openturns.LHSExperiments`, which guarantees that the points
+# :class:`~openturns.LHSExperiment`, which guarantees that the points
 # will fill the space.
 
 # %%

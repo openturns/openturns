@@ -178,7 +178,7 @@ void SQP::run()
 
   std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
-  while ((!stop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumCallsNumber()))
+  while ((!stop) && (iterationNumber <= getMaximumIterationNumber()))
   {
     /* Go to next iteration */
     ++ iterationNumber;
@@ -253,7 +253,12 @@ void SQP::run()
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-    LOGTRACE(getResult().__repr__());
+    if (evaluationNumber > getMaximumCallsNumber())
+    {
+      stop = true;
+      result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+      result_.setStatusMessage(OSS() << "SQP reached the maximum calls number after " << evaluationNumber << " evaluations");
+    }
 
     // callbacks
     if (progressCallback_.first)
@@ -277,6 +282,14 @@ void SQP::run()
       result_.setStatus(OptimizationResult::TIMEOUT);
       result_.setStatusMessage(OSS() << "SQP optimization timeout after " << timeDuration << "s");
     }
+  }
+
+  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  {
+    if (getCheckStatus())
+      throw InternalException(HERE) << "SQP raised an exception: " << result_.getStatusMessage();
+    else
+      LOGWARN(OSS() << "SQP algorithm failed: " << result_.getStatusMessage());
   }
 } // run()
 

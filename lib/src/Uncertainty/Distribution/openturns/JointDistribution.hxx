@@ -71,10 +71,13 @@ public:
   void setDistributionCollection(const DistributionCollection & coll);
   DistributionCollection getDistributionCollection() const;
 
+  /** Core accessor */
+  void setCore(const Distribution & core);
+  Distribution getCore() const;
+
   /** Copula accessor */
   void setCopula(const Distribution & copula);
   Distribution getCopula() const override;
-
 
 
   /* Here is the interface that all derived class must implement */
@@ -217,8 +220,8 @@ private:
   /** The collection of distribution of the JointDistribution */
   DistributionPersistentCollection distributionCollection_;
 
-  /** The copula of the JointDistribution */
-  Distribution copula_;
+  /** The core of the JointDistribution */
+  Distribution core_;
 
 }; /* class JointDistribution */
 

@@ -213,6 +213,28 @@ void ComplexTensorImplementation::hermitianize() const
         refThis[this->convertPosition(i, j, k)] = std::conj( (*this)[this->convertPosition(j, i, k)] );
 }
 
+/* Get the real part of the tensor */
+TensorImplementation ComplexTensorImplementation::real() const
+{
+  TensorImplementation result(nbRows_, nbColumns_, nbSheets_);
+  for (UnsignedInteger k = 0; k < nbSheets_; ++k)
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+      for (UnsignedInteger i = j; i < nbRows_; ++i)
+        result(i, j, k) = (*this)(i, j, k).real();
+  return result;
+}
+
+/* Get the imaginary part of the tensor */
+TensorImplementation ComplexTensorImplementation::imag() const
+{
+  TensorImplementation result(nbRows_, nbColumns_, nbSheets_);
+  for (UnsignedInteger k = 0; k < nbSheets_; ++k)
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+      for (UnsignedInteger i = j; i < nbRows_; ++i)
+        result(i, j, k) = (*this)(i, j, k).imag();
+  return result;
+}
+
 /* Comparison operator */
 Bool ComplexTensorImplementation::operator == (const ComplexTensorImplementation & rhs) const
 {

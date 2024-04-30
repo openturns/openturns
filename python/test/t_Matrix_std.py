@@ -183,3 +183,7 @@ print("matrix32*s = ", repr(sampleResult1))
 # unary minus
 A = ot.Matrix([[1, 2], [3, 4]])
 print(-A)
+
+# norm
+norm = A.frobeniusNorm()
+assert norm == sum([i * i for i in range(1, 5)]) ** 0.5

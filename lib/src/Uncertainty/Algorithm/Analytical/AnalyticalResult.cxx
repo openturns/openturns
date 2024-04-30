@@ -428,8 +428,6 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
   // Create an empty graph
   Graph sensitivityGraph("Sensitivity", "parameters", "sensitivities", true, "topright");
 
-  BarPlot sensitivityBarPlot(Sample(0, 2), shift, "");
-
   // Create the barplots
   const UnsignedInteger sensitivitySize = sensitivity.getSize();
   for (UnsignedInteger collectionIndex = 0; collectionIndex < sensitivitySize; ++collectionIndex)

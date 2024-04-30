@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The implementation defined what comparison is actually performed.
  * @see ComparisonOperatorImplementation
  */
-class OT_API ComparisonOperator
+class OT_API OT_WARN_UNUSED ComparisonOperator
   : public TypedInterfaceObject<ComparisonOperatorImplementation>
 {
   CLASSNAME

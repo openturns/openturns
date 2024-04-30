@@ -111,17 +111,17 @@ int main(int, char *[])
     fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
 
     /* Graph 1 : Importance Factors graph */
-    Graph importanceFactorsGraph(result.drawImportanceFactors());
+    result.drawImportanceFactors();
 
     /* Graph 1bis : Importance Factors graph */
-    Graph classicalImportanceFactorsGraph(result.drawImportanceFactors(AnalyticalResult::CLASSICAL));
+    result.drawImportanceFactors(AnalyticalResult::CLASSICAL);
 
     /* Graph 2 : Hasofer Reliability Index Sensitivity Graphs graph */
-    AnalyticalResult::GraphCollection reliabilityIndexSensitivityGraphs(result.drawHasoferReliabilityIndexSensitivity());
+    result.drawHasoferReliabilityIndexSensitivity();
 
 
     /* Graph 3 : FORM Event Probability Sensitivity Graphs graph */
-    AnalyticalResult::GraphCollection eventProbabilitySensitivityGraphs(result.drawEventProbabilitySensitivity());
+    result.drawEventProbabilitySensitivity();
 
   }
   catch (TestFailed & ex)

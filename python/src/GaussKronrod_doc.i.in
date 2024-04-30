@@ -160,3 +160,28 @@ Parameters
 ----------
 rule : :class:`~openturns.GaussKronrodRule`
     The Gauss-Kronrod rule used in the integration algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussKronrod::GetRules
+"Get the collection of available integration rules.
+
+Returns
+-------
+rules : :class:`~openturns.GaussKronrodRuleCollection`
+    Rules available for the integration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussKronrod::GetRuleFromName
+"Get the integration rule corresponding to the given name.
+
+Parameters
+----------
+name : str
+    The Gauss-Kronrod rule name.
+
+Returns
+-------
+rule : :class:`~openturns.GaussKronrodRule`
+    The rule corresponding to the given name."

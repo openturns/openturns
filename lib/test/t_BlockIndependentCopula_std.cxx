@@ -76,9 +76,8 @@ int main(int, char *[])
 
     // Show PDF and CDF of point
     //Scalar eps(1e-5);
-    Point DDF = copula.computeDDF( point );
+    Point DDF = copula.computeDDF(point);
     fullprint << "ddf     =" << DDF << std::endl;
-    Point ddfFD(copula.getDimension());
     fullprint << "ddf (FD)=" << copula.DistributionImplementation::computeDDF(point) << std::endl;
     Scalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;

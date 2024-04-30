@@ -92,7 +92,7 @@ Geometric * Geometric::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Geometric::computeRange()
 {
-  const Point lowerBound(1, 0.0);
+  const Point lowerBound({1.0});
   const Point upperBound(DistributionImplementation::computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
@@ -160,6 +160,8 @@ Point Geometric::computeCDFGradient(const Point & point) const
 Scalar Geometric::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }

@@ -25,8 +25,9 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
+   :exclude-members: __call__, thisown
 
-  {% block methods %}
+   {% block methods %}
    .. automethod:: __init__
    {% endblock %}
 

@@ -183,6 +183,18 @@ Bool ComplexTensor::isEmpty() const
   return getImplementation()->isEmpty();
 }
 
+/* Get the real part of the tensor */
+Tensor ComplexTensor::real() const
+{
+  return Tensor::Implementation(getImplementation()->real().clone());
+}
+
+/* Get the imaginary part of the tensor */
+Tensor ComplexTensor::imag() const
+{
+  return Tensor::Implementation(getImplementation()->imag().clone());
+}
+
 /* Comparison operator */
 Bool ComplexTensor::operator == (const ComplexTensor & rhs) const
 {

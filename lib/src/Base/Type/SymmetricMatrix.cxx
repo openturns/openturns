@@ -135,7 +135,7 @@ String SymmetricMatrix::__repr__() const
 String SymmetricMatrix::__str__(const String & offset) const
 {
   checkSymmetry();
-  return SquareMatrix::clean(0.0).__str__(offset);
+  return SquareMatrix::__str__(offset);
 }
 
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
@@ -271,26 +271,49 @@ Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute determinant */
-Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool keepIntact)
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  return getImplementation()->computeLogAbsoluteDeterminantSym(sign, keepIntact);
+  return getImplementation()->computeLogAbsoluteDeterminantSym(sign);
 }
 
-Scalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
 {
-  return getImplementation()->computeDeterminantSym(keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeLogAbsoluteDeterminantSymInPlace(sign);
+}
+
+Scalar SymmetricMatrix::computeDeterminant() const
+{
+  return getImplementation()->computeDeterminantSym();
+}
+
+Scalar SymmetricMatrix::computeDeterminantInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeDeterminantSymInPlace();
 }
 
 /* Compute eigenvalues */
-Point SymmetricMatrix::computeEigenValues(const Bool keepIntact)
+Point SymmetricMatrix::computeEigenValues() const
 {
-  return getImplementation()->computeEigenValuesSym(keepIntact);
+  return getImplementation()->computeEigenValuesSym();
 }
-Point SymmetricMatrix::computeEV(SquareMatrix & v,
-                                 const Bool keepIntact)
+
+Point SymmetricMatrix::computeEigenValuesInPlace()
 {
-  return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeEigenValuesSymInPlace();
+}
+
+Point SymmetricMatrix::computeEV(SquareMatrix & v) const
+{
+  return getImplementation()->computeEVSym(*(v.getImplementation()));
+}
+
+Point SymmetricMatrix::computeEVInPlace(SquareMatrix & v)
+{
+  copyOnWrite();
+  return getImplementation()->computeEVSymInPlace(*(v.getImplementation()));
 }
 
 /* Compute the largest eigenvalue module using power iterations, symmetric matrix */
@@ -325,5 +348,10 @@ Scalar SymmetricMatrix::computeSumElements() const
   return getImplementation()->computeSumElements();
 }
 
+/** Compute inverse */
+SymmetricMatrix SymmetricMatrix::inverse() const
+{
+  return getImplementation()->inverseSym();
+}
 
 END_NAMESPACE_OPENTURNS

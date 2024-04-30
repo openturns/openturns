@@ -61,7 +61,7 @@ int main(int, char *[])
       X2(0, 0) = 2.0;
       X2(1, 0) = 4.0;
       Sample Y(model(X));
-      Sample Y2(model(X2));
+      model(X2);
 
       Basis basis(ConstantBasisFactory(dimension).build());
       SquaredExponential covarianceModel(Point(1, 1e-02), Point(1, 4.50736));

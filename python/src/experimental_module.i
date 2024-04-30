@@ -13,6 +13,7 @@
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
 #include "openturns/OTSimulation.hxx"
+
 %}
 
 %include typemaps.i
@@ -32,6 +33,7 @@
 
 /* Base/Stat */
 %include LatentVariableModel.i
+%include SamplePartition.i
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
@@ -45,6 +47,7 @@
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
+%include ExperimentIntegration.i
 
 /* Uncertainty */
 %import bayesian_module.i
@@ -53,12 +56,14 @@
 
 /* Base/Algo */
 %include SimplicialCubature.i
+%include CubaIntegration.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+%include PointToFieldFunctionalChaosAlgorithm.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include CrossEntropyResult.i
@@ -66,14 +71,19 @@
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 
+/*Uncertainty/Algorithm/Sensitivity */
+%include RankSobolSensitivityAlgorithm.i
+
 /* Uncertainty/Distribution */
 %include SmoothedUniformFactory.i
 %include StudentCopula.i
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
 %include PosteriorDistribution.i
+%include UniformOrderStatistics.i
 
 // duplicate helpers
 OTDefaultCollectionConvertFunctions(WeightedExperiment)
 %include SmolyakExperiment.i
 %include GeneralizedExtremeValueValidation.i
+%include GeneralizedParetoValidation.i

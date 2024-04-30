@@ -573,6 +573,7 @@ void LinearModelStepwiseAlgorithm::run()
   result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
                               regression, currentFunctions.__str__(), coefficientsNames, residualSample, standardizedResiduals,
                               diagonalGramInverse, leverages, cookDistances, sigma2[0]);
+  result_.setInvolvesModelSelection(true);
   hasRun_ = true;
 }
 
@@ -600,7 +601,7 @@ Scalar LinearModelStepwiseAlgorithm::computeLogLikelihood()
   const UnsignedInteger size = currentX_.getNbRows();
   const UnsignedInteger p = currentX_.getNbColumns();
   Matrix R;
-  currentQ_ = currentX_.computeQR(R, size < p, true);
+  currentQ_ = currentX_.computeQR(R, size < p);
   const MatrixImplementation b(*IdentityMatrix(p).getImplementation());
   //                                                                    lower, transposed
   currentInvRt_ = R.getImplementation()->solveLinearSystemTriInPlace(b, false, true);

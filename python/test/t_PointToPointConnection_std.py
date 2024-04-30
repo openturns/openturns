@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -52,7 +53,7 @@ print("myFunc output dimension=", myFunc.getOutputDimension())
 point = [1.0] * myFunc.getInputDimension()
 print("point=", point)
 print("myFunc(point)=", myFunc(point))
-print("myFunc.gradient(point)=", myFunc.gradient(point).clean(1.0e-8))
-print("myFunc.hessian(point)=", myFunc.hessian(point).clean(1.0e-7))
+ott.assert_almost_equal(myFunc.gradient(point), ot.IdentityMatrix(8))
+ott.assert_almost_equal(myFunc.hessian(point), ot.SymmetricTensor(8, 8), 0.0, 1e-7)
 # Get the number of calls */
 print("called ", myFunc.getEvaluationCallsNumber(), " times")

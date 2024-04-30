@@ -96,8 +96,6 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   const UnsignedInteger dimensionSample = getEvent().getAntecedent().getDimension();
   const Point silverman(stdPerComponent * std::pow(neff * (dimensionSample + 2.0) / 4.0, -1.0 / (dimensionSample + 4.0)));
 
-  Collection<Distribution> margins(dimensionSample);
-
   // Computation of auxiliary distribution using ot.Mixture
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
   Collection<Distribution> collectionOfDistribution(numberOfSample);
@@ -251,7 +249,6 @@ void NAIS::run()
       indicesCritic.add(i);
   } // for i
 
-  const Sample resp_sampleCritic(auxiliaryOutputSample.select(indicesCritic));
   const Sample sampleCritic(auxiliaryInputSample.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample

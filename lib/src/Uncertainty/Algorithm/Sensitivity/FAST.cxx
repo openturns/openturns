@@ -118,7 +118,6 @@ void FAST::run() const
       for (UnsignedInteger i = 0; i < nbIn; ++ i)
         phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
 
-      Point xi_s(nbIn);
       Sample output(0, nbOut);
 
       // for each block ...

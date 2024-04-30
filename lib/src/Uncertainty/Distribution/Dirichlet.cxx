@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/Indices.hxx"
 #include "openturns/Dirichlet.hxx"
+#include "openturns/Beta.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -298,6 +299,8 @@ Scalar Dirichlet::computeCDF(const Point & point) const
 Scalar Dirichlet::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return DistFunc::qBeta(theta_[0], theta_[1], prob, tail);
 }
 
@@ -467,7 +470,7 @@ Point Dirichlet::getSkewness() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar thetaI = theta_[i];
-    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * std::sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
+    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * std::sqrt((sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI)));
   }
   return skewness;
 }
@@ -534,11 +537,14 @@ Distribution Dirichlet::getMarginal(const UnsignedInteger i) const
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   if (dimension == 1) return clone();
+  Beta marginal(theta_[i], sumTheta_ - theta_[i], 0.0, 1.0);
+  /*
   Point thetaMarginal(2);
   thetaMarginal[0] = theta_[i];
   thetaMarginal[1] = sumTheta_ - theta_[i];
   Dirichlet::Implementation marginal(new Dirichlet(thetaMarginal));
-  marginal->setDescription(Description(1, getDescription()[i]));
+  */
+  marginal.setDescription({getDescription()[i]});
   return marginal;
 }
 

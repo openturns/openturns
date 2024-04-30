@@ -9,8 +9,17 @@
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
+ * GeneralizedParetoValidation (openturns.experimental)
+ * SamplePartition (openturns.experimental)
+ * PointToFieldFunctionalChaosAlgorithm (openturns.experimental)
+ * CubaIntegration (openturns.experimental)
+ * ExperimentIntegration (openturns.experimental)
+ * RankSobolSensitivityAlgorithm (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)
+ * Deprecated MetaModelValidation::computePredictivityFactor method, use computeR2Score
+ * Deprecated MetaModelValidation::getInputSample method
  * Removed deprecated Pagmo.setGenerationNumber
  * Removed deprecated NLopt.SetSeed
  * Removed deprecated IterativeThresholdExceedance(dimension, threshold) ctor
@@ -45,11 +54,14 @@
  * Deprecated ComposedCopula in favor of BlockIndependentCopula
  * Added Polygon::FillBetween static method to fill the surface between two curves
  * Deprecated Study.printLabels (see getLabels)
+ * Removed optional parameters from Contour constructors, use set methods or ResourceMap keys to set them
 
 === Documentation ===
+* Examples show how to visualize matrices
 
 === Python module ===
 * Graphs apply default colors to Drawables with no explicit color
+* Contour plots can now be filled and come with colorbars
 
 === Miscellaneous ===
  * UniformOverMesh left the experimental module

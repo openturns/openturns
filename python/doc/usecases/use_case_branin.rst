@@ -66,7 +66,7 @@ References
 
 * Global Optimization Test Problems. Retrieved June 2013, from http://www-optima.amp.i.kyoto-u.ac.jp/member/student/hedar/Hedar_files/TestGO.htm.
 
-* Molga, M., & Smutnicki, C. Test functions for optimization needs (2005). Retrieved June 2013, from http://www.zsd.ict.pwr.wroc.pl/files/docs/functions.pdf.
+* Molga, M., & Smutnicki, C. Test functions for optimization needs (2005), from https://robertmarks.org/Classes/ENGR5358/Papers/functions.pdf.
 
 * Picheny, V., Wagner, T., & Ginsbourger, D. (2012). A benchmark of kriging-based infill criteria for noisy optimization.
 

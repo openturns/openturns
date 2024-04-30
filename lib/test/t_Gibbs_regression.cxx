@@ -123,7 +123,6 @@ int main(int, char *[])
     indices.fill(3000, 1);
 
     Point x_mu(sample.select(indices).computeMean());
-    Point x_sigma(sample.select(indices).computeStandardDeviation());
 
     // compute covariance
     CovarianceMatrix x_cov(sample.computeCovariance());

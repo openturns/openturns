@@ -76,8 +76,6 @@ Distribution BetaMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix BetaMuSigma::gradient() const
 {
-  const Point newParameters = {mu_, sigma_, a_, b_};
-
   const Scalar mu = mu_;
   const Scalar sigma = sigma_;
   const Scalar a = a_;

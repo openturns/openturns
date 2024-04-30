@@ -75,7 +75,7 @@ int main(int, char *[])
       // fullprint << "KL coefficients=" << coefficients << std::endl;
       KLFunctions = result.getModes();
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      Function lifted(result.lift(coefficients[0]));
+      result.lift(coefficients[0]);
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;
       Field liftedAsField(result.liftAsField(coefficients[0]));
       // fullprint << "KL lift as field=" << liftedAsField << std::endl;
@@ -97,7 +97,7 @@ int main(int, char *[])
       // fullprint << "KL coefficients=" << coefficients << std::endl;
       KLFunctions = result.getModes();
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      Function lifted(result.lift(coefficients[0]));
+      result.lift(coefficients[0]);
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;
       Field liftedAsField(result.liftAsField(coefficients[0]));
       // fullprint << "KL lift as field=" << liftedAsField << std::endl;

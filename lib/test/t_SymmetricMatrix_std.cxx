@@ -220,6 +220,30 @@ int main(int, char *[])
     M3(0, 2) = 7.1;
     M3(1, 2) = 9.0;
     fullprint << "SM * M3 = " << SM * M3 << std::endl;
+
+    /* Check inverse() */
+    SymmetricMatrix symMatrix6(3);
+    symMatrix6(0, 0) = 4.0;
+    symMatrix6(0, 1) = 2.0;
+    symMatrix6(0, 2) = 1.0;
+    symMatrix6(1, 0) = 2.0;
+    symMatrix6(1, 1) = 5.0;
+    symMatrix6(1, 2) = 3.0;
+    symMatrix6(2, 0) = 1.0;
+    symMatrix6(2, 1) = 3.0;
+    symMatrix6(2, 2) = 6.0;
+    SymmetricMatrix symMatrix7(symMatrix6.inverse());
+    SymmetricMatrix inverseReference(3);
+    inverseReference(0, 0) = 21.0 / 67.0;
+    inverseReference(0, 1) = -9.0 / 67.0;
+    inverseReference(0, 2) = 1.0 / 67.0;
+    inverseReference(1, 0) = -9.0 / 67.0;
+    inverseReference(1, 1) = 23.0 / 67.0;
+    inverseReference(1, 2) = -10.0 / 67.0;
+    inverseReference(2, 0) = 1.0 / 67.0;
+    inverseReference(2, 1) = -10.0 / 67.0;
+    inverseReference(2, 2) = 16.0 / 67.0;
+    assert_almost_equal(symMatrix7, inverseReference);
   }
   catch (TestFailed & ex)
   {

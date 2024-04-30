@@ -1,31 +1,21 @@
 %feature("docstring") OT::NormalGamma
 "NormalGamma distribution.
 
-Helper class for defining the distribution of the random vector :math:`(X,Y)` where :math:`Y` follows the distribution :math:`\Gamma(\alpha, \beta)` with :math:`\alpha>0` and :math:`\beta>0`, :math:`X|Y` follows the distribution :math:`\mathcal{N}\left(\mu, \dfrac{1}{\sqrt{\kappa Y}}\right)`.
+Helper class for defining the distribution of the random vector :math:`(Y,X)`
+where :math:`Y` follows the distribution :math:`\Gamma(\alpha, \beta)`
+with :math:`\alpha>0` and :math:`\beta>0`, :math:`X|Y` follows the distribution
+:math:`\mathcal{N}\left(\mu, \dfrac{1}{\sqrt{\kappa Y}}\right)`.
 
 Parameters
 ----------
-
 mu : float :math:`\mu`
      Mean of the conditioned Normal distribution of :math:`X|Y`.
-     
-     Default value is 0.0.
-
 kappa : float  :math:`\kappa >0`
      Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`.
-
-     Default value is 1.0.
-
 alpha : float  :math:`\alpha >0`
      Shape parameter of the conditioning Gamma distribution of :math:`Y`.
-
-     Default value is 1.0.
-
 beta : float  :math:`\beta >0`
      Rate parameter of the conditioning Gamma distribution of :math:`Y`.
-
-     Default value 1.0.
-
 
 Notes
 -----
@@ -33,7 +23,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{(X,Y)}(x,y) = \dfrac{\beta^\alpha}{\Gamma(\alpha)}\sqrt{\dfrac{\kappa}{2\pi}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
+    f_{(Y,X)}(y,x) = \dfrac{\beta^\alpha}{\Gamma(\alpha)}\sqrt{\dfrac{\kappa}{2\pi}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
 
 Examples
 --------

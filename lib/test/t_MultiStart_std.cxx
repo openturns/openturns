@@ -73,12 +73,12 @@ int main(int, char *[])
     Scalar trueOptimalValue = -6.55113;
     assert_almost_equal(result.getOptimalPoint(), trueOptimalPoint, 1e-5, 0.0);
     assert_almost_equal(result.getOptimalValue()[0], trueOptimalValue, 1e-5, 0.0);
-    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
+    assert_almost_equal(1.0 * algo.getResultCollection().getSize(), 3.0);
     // Deactivate intermediate results history
     algo = MultiStart(solver, startingSample);
     algo.setKeepResults(false);
     algo.run();
-    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
+    assert_almost_equal(1.0 * algo.getResultCollection().getSize(), 0.0);
   }
   catch (TestFailed & ex)
   {

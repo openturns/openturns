@@ -106,8 +106,8 @@ Initial minimum output value:  [-248]
 >>> result = algo.getResult()
 >>> updatedKrigingResult = algo.getKrigingResult()
 >>> updatedOutputSample = updatedKrigingResult.getOutputSample()
->>> print('Updated minimum output value: ', updatedOutputSample.getMin())
-Updated minimum output value:  [-610..."
+>>> yMin = updatedOutputSample.getMin()
+"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ Updated minimum output value:  [-610..."
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used to optimize the expected improvement"
 
 // ---------------------------------------------------------------------
@@ -126,7 +126,7 @@ solver : :class:`~openturns.OptimizationSolver`
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used to optimize the expected improvement"
 
 // ---------------------------------------------------------------------

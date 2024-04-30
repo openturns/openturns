@@ -647,7 +647,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Os parameters
   addAsBool("Os-CreateProcess", false);
   addAsBool("Os-RemoveFiles", true);
-  addAsUnsignedInteger("OS-DeleteTimeout", 2);
+  addAsUnsignedInteger("Os-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
   addAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel", 0);
@@ -672,6 +672,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DesignProxy parameters
   addAsUnsignedInteger("DesignProxy-DefaultCacheSize", 16777216);// 2^24=16777216=128 Mio
+
+  // KDTree parameters
+  addAsUnsignedInteger("KDTree-leaf_max_size", 10);
+  addAsUnsignedInteger("KDTree-n_thread_build", getAsUnsignedInteger("TBB-ThreadsNumber"));
 
   // KFold parameters
   addAsUnsignedInteger("KFold-DefaultK", 10);
@@ -729,6 +733,13 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Contour parameters //
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
+  addAsBool("Contour-DefaultIsFilled", false);
+  addAsBool("Contour-DefaultDrawLabels", true);
+  addAsString("Contour-DefaultColorMapNorm", "linear");
+  addAsString("Contour-DefaultColorMap", "hsv");
+  addAsString("Contour-DefaultColorBarPosition", "right");
+  addAsString("Contour-DefaultExtend", "both");
+  addAsScalar("Contour-DefaultAlpha", 1.0);
 
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);
@@ -745,6 +756,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FieldToPointFunctionalChaosAlgorithm
   addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal");
+
+  // PointToFieldFunctionalChaosAlgorithm
+  addAsBool("PointToFieldFunctionalChaosAlgorithm-DefaultRecompress", false);
+  addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion");
 
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
@@ -899,6 +914,31 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Solver-DefaultResidualError",  0.0   );
   addAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation", 100);
 
+  // CubaIntegration parameters //
+  addAsScalar("CubaIntegration-DefaultMaximumAbsoluteError", 1.0e-4);
+  addAsScalar("CubaIntegration-DefaultMaximumRelativeError", 1.0e-4);
+  addAsScalar("CubaIntegration-divonne-border", 0.0);
+  addAsScalar("CubaIntegration-divonne-maxchisq", 10.0);
+  addAsScalar("CubaIntegration-divonne-mindeviation", 0.25);
+  addAsScalar("CubaIntegration-suave-flatness", 25.0);
+  addAsUnsignedInteger("CubaIntegration-DefaultMaximumCallsNumber", 1000000);
+  addAsUnsignedInteger("CubaIntegration-mineval", 0);
+  addAsUnsignedInteger("CubaIntegration-seed", 0);
+  addAsUnsignedInteger("CubaIntegration-cuhre-key", 0);
+  addAsUnsignedInteger("CubaIntegration-flags", 0);
+  addAsUnsignedInteger("CubaIntegration-divonne-key1", 47);
+  addAsUnsignedInteger("CubaIntegration-divonne-key2", 1);
+  addAsUnsignedInteger("CubaIntegration-divonne-key3", 1);
+  addAsUnsignedInteger("CubaIntegration-divonne-maxpass", 5);
+  addAsUnsignedInteger("CubaIntegration-divonne-ngiven", 0);
+  addAsUnsignedInteger("CubaIntegration-divonne-nextra", 0);
+  addAsUnsignedInteger("CubaIntegration-suave-nnew", 1000);
+  addAsUnsignedInteger("CubaIntegration-suave-nmin", 2);
+  addAsUnsignedInteger("CubaIntegration-vegas-nstart", 1000);
+  addAsUnsignedInteger("CubaIntegration-vegas-nincrease", 500);
+  addAsUnsignedInteger("CubaIntegration-vegas-nbatch", 1000);
+  addAsUnsignedInteger("CubaIntegration-vegas-gridno", 0);
+
   // GaussKronrod parameters //
   addAsScalar("GaussKronrod-MaximumError",  1.0e-12);
   addAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100);
@@ -910,7 +950,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber", 64);
 
   // IteratedQuadrature parameters //
-  addAsScalar("IteratedQuadrature-MaximumError",    1.0e-7);
+  addAsScalar("IteratedQuadrature-MaximumError", 1.0e-7);
+  addAsString("IteratedQuadrature-Rule", "G3K7");
   addAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals", 32);
 
   // Fehlberg parameters //
@@ -978,6 +1019,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100);
 
+
+  // RankSobolSensitivityALgorithm//
+  addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
+  
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
@@ -1111,13 +1156,16 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValue-MMax", 1.0e3);
 
   // GeneralizedExtremeValueFactory parameters //
-  addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumEvaluationNumber", 10000);
-  addAsUnsignedInteger("GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber", 100);
-  addAsScalar("GeneralizedExtremeValueFactory-FeasibilityRhoFactor", -1.5);
+  addAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumCallsNumber", 10000);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumAbsoluteError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
+  addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
   addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
   addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
   addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // ProfileLikelihoodResult parameters //
   addAsScalar("ProfileLikelihoodResult-AbsolutePrecision", 1.0e-10);
@@ -1126,16 +1174,24 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ProfileLikelihoodResult-TextMargin", 0.03);
   addAsScalar("ProfileLikelihoodResult-StartingScaling", 1e-2);
 
+  // GeneralizedPareto parameters //
+  addAsScalar("GeneralizedPareto-MMin", 1.05);
+  addAsScalar("GeneralizedPareto-MMax", 1.0e3);
+
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel", 0.95);
+  addAsScalar("GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel", 0.95);
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
+  addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
-  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "TNC");
+  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic");
+  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
@@ -1167,6 +1223,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LogNormalFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("LogNormalFactory-EstimationMethod", 0);
   addAsUnsignedInteger("LogNormalFactory-MaximumIteration", 50);
+
+  // MarginalDistribution parameters //
+  addAsBool("MarginalDistribution-UsePDF", true);
+  addAsScalar("MarginalDistribution-MaximumError", 1.0e-7);
+  addAsString("MarginalDistribution-Rule", "G15K31");
+  addAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals", 128);
 
   // Meixner parameters //
   addAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-12);
@@ -1234,21 +1296,28 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10);
   addAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm", "TNC");
-  addAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("MaximumLikelihoodFactory-MaximumCallsNumber", 1000);
+
+  // LeastSquaresDistributionFactory parameters //
+  addAsScalar("LeastSquaresDistributionFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("LeastSquaresDistributionFactory-MaximumRelativeError", 1.0e-10);
+  addAsUnsignedInteger("LeastSquaresDistributionFactory-MaximumCallsNumber", 1000);
 
   // MethodOfMomentsFactory parameters //
   addAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10);
-  addAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("MethodOfMomentsFactory-MaximumCallsNumber", 1000);
 
   // QuantileMatchingFactory parameters //
   addAsScalar("QuantileMatchingFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
-  addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("QuantileMatchingFactory-MaximumCallsNumber", 1000);
 
   // Student parameters //
   addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
@@ -1270,7 +1339,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("StudentCopulaFactory-NuMax", 1e2);
   addAsScalar("StudentCopulaFactory-NuStart", 5.0);
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
-  addAsUnsignedInteger("StudentCopulaFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
   // NonCentralStudent parameters //
   addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
@@ -1431,7 +1500,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+  
+  // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
+  addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
+  addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
+  addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
@@ -1572,12 +1646,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("WhittleFactory-DefaultStartingPointScale", 1.0);
   addAsScalar("WhittleFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber", 2000);
+  addAsUnsignedInteger("WhittleFactory-DefaultMaximumCallsNumber", 2000);
 
   // BoxCoxFactory parameters //
   addAsScalar("BoxCoxFactory-DefaultRhoBeg", 0.1);
   addAsScalar("BoxCoxFactory-DefaultRhoEnd", 1.0e-10);
-  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber", 2000);
+  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumCallsNumber", 2000);
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
@@ -1627,7 +1701,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-DefaultRhoBeg", 0.01);
   addAsScalar("ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
+  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumCallsNumber", 10000);
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);

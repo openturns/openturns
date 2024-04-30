@@ -53,6 +53,10 @@ HMatrix
 HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
 #ifndef OPENTURNS_HAVE_HMAT
+  (void)sample;
+  (void)outputDimension;
+  (void)symmetric;
+  (void)parameters;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been built without HMat support";
 #else
   hmat_interface_t *hmatInterface = (hmat_interface_t*) calloc(1, sizeof(hmat_interface_t));

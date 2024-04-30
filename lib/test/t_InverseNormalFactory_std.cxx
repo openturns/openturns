@@ -36,8 +36,6 @@ int main(int, char *[])
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     InverseNormalFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
@@ -46,7 +44,6 @@ int main(int, char *[])
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     ResourceMap::Set("InverseNormalFactory-Method", "MLE");
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());

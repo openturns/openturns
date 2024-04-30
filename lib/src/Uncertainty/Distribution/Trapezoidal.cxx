@@ -300,6 +300,8 @@ Point Trapezoidal::computeCDFGradient(const Point & point) const
 Scalar Trapezoidal::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar c1 = 0.5 * (b_ - a_) * h_;
   const Scalar c2 = c1 + (c_ - b_) * h_;
   const Scalar q = tail ? 1.0 - prob : prob;
@@ -338,13 +340,13 @@ void Trapezoidal::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-Point Trapezoidal::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getStandardDeviation() const
 {
   return Point(1, getSigma());
 }
 
 /* Get the skewness of the distribution */
-Point Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getSkewness() const
 {
   const Scalar a2 = a_ * a_;
   const Scalar a3 = a2 * a_;
@@ -372,7 +374,7 @@ Point Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
 }
 
 /* Get the kurtosis of the distribution */
-Point Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getKurtosis() const
 {
   const Scalar a2 = a_ * a_;
   const Scalar a3 = a2 * a_;

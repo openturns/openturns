@@ -55,10 +55,4 @@ for i in range(len(nValues)):
         ccdf = ot.DistFunc.pKolmogorov(n, x, True)
         if ccdf < 1e-16:
             ccdf = 0.0
-        print(
-            "pKolmogorov(",
-            n,
-            ",  %.12g" % x,
-            ")=%.6g" % cdf,
-            ", complementary=%.6g" % ccdf,
-        )
+        print(f"pKolmogorov( {n} ,  {x:.12g} )={cdf:.6g} , complementary={ccdf:.6g}")

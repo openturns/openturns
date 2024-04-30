@@ -3,8 +3,6 @@ method= GaussProduct
 distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.1]
-Covariance  [[ 0.0833333 0         ]
- [ 0         0.751111  ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
@@ -39,8 +37,6 @@ method= QMC
 distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.09997]
-Covariance  [[ 0.0833333 0         ]
- [ 0         0.751079  ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
@@ -75,8 +71,6 @@ method= MC
 distribution= ConditionalDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.10103]
-Covariance  [[ 0.0833333 0         ]
- [ 0         0.752585  ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False

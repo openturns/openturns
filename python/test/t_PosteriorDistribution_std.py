@@ -15,10 +15,11 @@ atoms = [ot.Binomial(3, 0.5), ot.Uniform(1.0, 2.0)]
 # conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 # Third conditioning distribution: dirac/continuous
 atoms = [ot.Dirac(0.0), ot.Uniform(1.0, 2.0)]
-conditioningDistributionCollection.append(ot.JointDistribution(atoms))
+# conditioningDistributionCollection.append(ot.JointDistribution(atoms))
 
 
 for conditioning in conditioningDistributionCollection:
+    print("\n" + "=" * 50 + "\n")
     print("conditioning distribution=", conditioning)
     observationsDistribution = ot.Distribution(conditionedDistribution)
     observationsDistribution.setParameter(conditioning.getMean())
@@ -27,7 +28,6 @@ for conditioning in conditioningDistributionCollection:
         ot.ConditionalDistribution(conditionedDistribution, conditioning), observations
     )
     dim = distribution.getDimension()
-    print("Distribution ", distribution)
     print("Distribution ", distribution)
     print("range=", distribution.getRange())
     mean = distribution.getMean()
@@ -57,13 +57,10 @@ for conditioning in conditioningDistributionCollection:
     #       print("anotherSample mean=", anotherSample.computeMean())
     #       print("anotherSample covariance=", anotherSample.computeCovariance())
 
-    # Define a point
-    zero = [1e-3] * dim
-
-    # Show PDF and CDF of zero point
-    zeroPDF = distribution.computePDF(zero)
-    zeroCDF = distribution.computeCDF(zero)
-    print("Zero point= ", zero, " pdf=", zeroPDF, " cdf=", zeroCDF)
+    # Show PDF and CDF of mean point
+    meanPDF = distribution.computePDF(mean)
+    meanCDF = distribution.computeCDF(mean)
+    print("Mean point= ", mean, " pdf=%.5g" % meanPDF, " cdf=%.5g" % meanCDF)
     # Get 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", quantile)
@@ -72,7 +69,7 @@ for conditioning in conditioningDistributionCollection:
     for i in range(dim):
         margin = distribution.getMarginal(i)
         print("margin=", margin)
-        # print("margin PDF=", ot.Point(1, margin.computePDF([0.0])))
-        print("margin CDF=", ot.Point(1, margin.computeCDF([0.0])))
+        print("margin PDF=", ot.Point(1, margin.computePDF(mean[i])))
+        print("margin CDF=", ot.Point(1, margin.computeCDF(mean[i])))
         print("margin quantile=", margin.computeQuantile(0.95))
         print("margin realization=", margin.getRealization())

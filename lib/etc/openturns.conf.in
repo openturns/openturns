@@ -22,7 +22,7 @@
   <!-- OT::Os parameters -->
   <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
-  <OS-DeleteTimeout    value_int="2"    />
+  <Os-DeleteTimeout    value_int="2"    />
 
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
@@ -47,6 +47,10 @@
 
   <!-- OT::DesignProxy parameters -->
   <DesignProxy-DefaultCacheSize value_int="16777216" />
+
+  <!-- OT::KDTree parameters -->
+  <KDTree-leaf_max_size value_int="10" />
+  <!--KDTree-n_thread_build value_int="1" /-->
 
   <!-- OT::KFold parameters -->
   <KFold-DefaultK value_int="10" />
@@ -104,6 +108,13 @@
 
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value_int="10" />
+  <Contour-DefaultIsFilled value_bool="false"        />
+  <Contour-DefaultDrawLabels value_bool="true"       />
+  <Contour-DefaultColorMapNorm value_str="linear"            />
+  <Contour-DefaultColorMap value_str="hsv"       />
+  <Contour-DefaultColorBarPosition value_str="right" />
+  <Contour-DefaultExtend value_str="both"            />
+  <Contour-DefaultAlpha value_float="1.0"            />
 
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />
@@ -120,6 +131,10 @@
   <!-- OT:: FieldToPointFunctionalChaosAlgorithm parameters -->
   <FieldToPointFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
   <FieldToPointFunctionalChaosAlgorithm-CopulaType value_str="Normal" />
+
+  <!-- OT:: PointToFieldFunctionalChaosAlgorithm parameters -->
+  <PointToFieldFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
+  <PointToFieldFunctionalChaosAlgorithm-Expansion value_str="LeastSquaresExpansion" />
 
   <!-- OT::SQP parameters -->
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
@@ -274,6 +289,31 @@
   <Solver-DefaultResidualError             value_float="0.0   "        />
   <Solver-DefaultMaximumFunctionEvaluation value_int="100" />
 
+  <!-- OT::CubaIntegration parameters -->
+  <CubaIntegration-DefaultMaximumAbsoluteError value_float="1.0e-4" />
+  <CubaIntegration-DefaultMaximumRelativeError value_float="1.0e-4" />
+  <CubaIntegration-divonne-border value_float="0.0" />
+  <CubaIntegration-divonne-maxchisq value_float="10.0" />
+  <CubaIntegration-divonne-mindeviation value_float="0.25" />
+  <CubaIntegration-suave-flatness value_float="25.0" />
+  <CubaIntegration-DefaultMaximumCallsNumber value_int="1000000" />
+  <CubaIntegration-mineval value_int="0" />
+  <CubaIntegration-seed value_int="0" />
+  <CubaIntegration-flags value_int="0" />
+  <CubaIntegration-cuhre-key value_int="0" />
+  <CubaIntegration-divonne-key1 value_int="47" />
+  <CubaIntegration-divonne-key2 value_int="1" />
+  <CubaIntegration-divonne-key3 value_int="1" />
+  <CubaIntegration-divonne-maxpass value_int="5" />
+  <CubaIntegration-divonne-ngiven value_int="0" />
+  <CubaIntegration-divonne-nextra value_int="0" />
+  <CubaIntegration-suave-nnew value_int="1000" />
+  <CubaIntegration-suave-nmin value_int="2" />
+  <CubaIntegration-vegas-nstart value_int="1000" />
+  <CubaIntegration-vegas-nincrease value_int="500" />
+  <CubaIntegration-vegas-nbatch value_int="1000" />
+  <CubaIntegration-vegas-gridno value_int="0" />
+
   <!-- OT::GaussKronrod parameters -->
   <GaussKronrod-MaximumError        value_float="1.0e-12"       />
   <GaussKronrod-MaximumSubIntervals value_int="100" />
@@ -285,8 +325,9 @@
   <FejerAlgorithm-DefaultMarginalIntegrationPointsNumber  value_int="64" />
 
   <!-- OT::IteratedQuadrature parameters -->
-  <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
-  <IteratedQuadrature-MaximumSubIntervals value_int="32" />
+  <IteratedQuadrature-MaximumError            value_float="1.0e-7" />
+  <IteratedQuadrature-IteratedQuadrature-Rule value_str="G3K7"     />
+  <IteratedQuadrature-MaximumSubIntervals     value_int="32"       />
 
   <!-- OT::Fehlberg parameters -->
   <Fehlberg-InitialStep    value_float="1.0e-7"                       />
@@ -486,13 +527,16 @@
   <GeneralizedExtremeValue-MMax value_float="1.0e3" />
 
   <!-- OT::GeneralizedExtremeValueFactory parameters -->
-  <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
-  <GeneralizedExtremeValueFactory-FeasibilityMaximumIterationNumber value_int="100" />
-  <GeneralizedExtremeValueFactory-FeasibilityRhoFactor value_float="-1.5" />
+  <GeneralizedExtremeValueFactory-MaximumCallsNumber value_int="10000" />
+  <GeneralizedExtremeValueFactory-MaximumAbsoluteError    value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumConstraintError  value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumObjectiveError   value_float="1.0e-5"        />
+  <GeneralizedExtremeValueFactory-MaximumRelativeError    value_float="1.0e-5"        />
   <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
   <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
   <GeneralizedExtremeValueFactory-InitializationMethod value_string="Gumbel" />
   <GeneralizedExtremeValueFactory-NormalizationMethod value_string="MinMax" />
+  <GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
 
   <!-- OT::ProfileLikelihoodResult parameters -->
   <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />
@@ -501,14 +545,24 @@
   <ProfileLikelihoodResult-TextMargin value_float="0.03" />
   <ProfileLikelihoodResult-StartingScaling value_float="1.0e-2" />
 
+  <!-- OT::GeneralizedPareto parameters -->
+  <GeneralizedPareto-MMin value_float="1.05" />
+  <GeneralizedPareto-MMax value_float="1.0e3" />
+
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel   value_float="0.95" />
+  <GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel value_float="0.95" />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
+  <GeneralizedParetoFactory-MeanResidualLifePointNumber   value_int="100" />
+  <GeneralizedParetoFactory-ThresholdStabilityPointNumber value_int="100" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
-  <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="TNC" />
+  <GeneralizedParetoFactory-InitializationMethod value_string="Generic" />
+  <GeneralizedParetoFactory-NormalizationMethod value_string="MinMax" />
+  <GeneralizedParetoFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
 
   <!-- OT::Gibbs parameters -->
   <Gibbs-DefaultUpdatingMethod       value_int="0"     />
@@ -540,6 +594,12 @@
   <LogNormalFactory-ResidualPrecision value_float="1e-12"        />
   <LogNormalFactory-MaximumIteration  value_int="50" />
   <LogNormalFactory-EstimationMethod  value_int="0"  />
+
+  <!-- MarginalDistribution parameters -->
+  <MarginalDistribution-UsePDF              value_bool="true"         />
+  <MarginalDistribution-MaximumError        value_float="1.0e-7"      />
+  <MarginalDistribution-MaximumSubIntervals value_int="128"           />
+  <MarginalDistribution-Rule                value_str="G15K31"         />
 
   <!-- Meixner parameters -->
   <MeixnerDistribution-MaximumAbsoluteError      value_float="1.0e-12"         />
@@ -607,21 +667,28 @@
   <MaximumLikelihoodFactory-MaximumObjectiveError        value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumRelativeError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-DefaultOptimizationAlgorithm value_str="TNC"            />
-  <MaximumLikelihoodFactory-MaximumEvaluationNumber      value_int="1000" />
+  <MaximumLikelihoodFactory-MaximumCallsNumber           value_int="1000" />
+
+  <!-- OT::LeastSquaresDistributionFactory parameters -->
+  <LeastSquaresDistributionFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumConstraintError       value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumObjectiveError        value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumRelativeError         value_float="1.0e-10"        />
+  <LeastSquaresDistributionFactory-MaximumCallsNumber           value_int="1000" />
 
   <!-- OT::MethodOfMomentsFactory parameters -->
   <MethodOfMomentsFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
+  <MethodOfMomentsFactory-MaximumCallsNumber      value_int="1000" />
 
   <!-- OT::QuantileMatchingFactory parameters -->
   <QuantileMatchingFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
-  <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
+  <QuantileMatchingFactory-MaximumCallsNumber      value_int="1000" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
@@ -643,7 +710,7 @@
   <StudentCopulaFactory-NuMax value_scalar="1e2" />
   <StudentCopulaFactory-NuStart value_scalar="5.0" />
   <StudentCopulaFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
-  <StudentCopulaFactory-MaximumEvaluationNumber value_int="1000" />
+  <StudentCopulaFactory-MaximumCallsNumber value_int="1000" />
   
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value_int="0" />
@@ -800,8 +867,13 @@
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
 
   <!-- OT::LinearModelAlgorithm parameters -->
-  <LinearModelAnalysis-Identifiers                 value_int="3"      />
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
+  
+  <!-- OT::LinearModelAnalysis parameters -->
+  <LinearModelAnalysis-Identifiers            value_int="3"      />
+  <LinearModelAnalysis-PrintEllipsisThreshold value_int="20"     />
+  <LinearModelAnalysis-SmallPValueFormat      value_str="{:.4e}" />
+  <LinearModelAnalysis-LargePValueFormat      value_int="{:.4f}" />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
   <LinearModelStepwiseAlgorithm-Penalty                  value_float="2.0"      />
@@ -941,12 +1013,12 @@
   <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />
   <WhittleFactory-DefaultStartingPointScale value_float="1.0"            />
   <WhittleFactory-RootEpsilon               value_float="1.0e-6"         />
-  <WhittleFactory-DefaultMaximumEvaluationNumber             value_int="2000" />
+  <WhittleFactory-DefaultMaximumCallsNumber value_int="2000" />
 
   <!-- OT::BoxCoxFactory parameters -->
   <BoxCoxFactory-DefaultRhoBeg      value_float="0.1"            />
   <BoxCoxFactory-DefaultRhoEnd      value_float="1.0e-10"        />
-  <BoxCoxFactory-DefaultMaximumEvaluationNumber      value_int="2000" />
+  <BoxCoxFactory-DefaultMaximumCallsNumber value_int="2000" />
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
@@ -996,7 +1068,7 @@
   <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
   <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
-  <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
+  <ARMALikelihoodFactory-DefaultMaximumCallsNumber value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
   <FittingTest-ChiSquaredCheckSample         value_bool="true"  />

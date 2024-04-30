@@ -112,3 +112,7 @@ assert (
     n_calls_1 - n_calls_0
 )
 assert n_calls == 2, "Expected n_calls == 2, here n_calls == " + str(n_calls)
+
+# check parameters name are shown
+html_str = g2._repr_html_()
+assert "[x3 : 0.85, x1 : 0.85]" in html_str, "no params"

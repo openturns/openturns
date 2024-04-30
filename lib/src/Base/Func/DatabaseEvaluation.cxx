@@ -35,6 +35,8 @@ static const Factory<DatabaseEvaluation> Factory_DatabaseEvaluation;
 /* Default constructor */
 DatabaseEvaluation::DatabaseEvaluation()
   : EvaluationImplementation()
+  , inputSample_(1, 1)
+  , outputSample_(1, 1)
 {
   // Nothing to do
 }

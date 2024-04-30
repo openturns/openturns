@@ -77,11 +77,11 @@ public:
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
-  void setProgressCallback(ProgressCallback callBack, void * state = 0);
+  void setProgressCallback(ProgressCallback callBack, void * state = nullptr);
 
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);
-  void setStopCallback(StopCallback callBack, void * state = 0);
+  void setStopCallback(StopCallback callBack, void * state = nullptr);
 
   /** Maximum time accessor */
   void setMaximumTimeDuration(const Scalar maximumTimeDuration);

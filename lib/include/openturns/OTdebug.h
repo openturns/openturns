@@ -39,20 +39,23 @@
 # ifdef __GNUC__
 
 #  ifdef SWIG
-#   define DEPRECATED
-#   define UNUSED
-#   define NOTHROW
+#   define OT_DEPRECATED
+#   define OT_UNUSED
+#   define OT_NOTHROW
+#   define OT_WARN_UNUSED
 #  else /* not SWIG */
-#   define DEPRECATED  __attribute__ ((deprecated))
-#   define UNUSED      __attribute__ ((unused))
-#   define NOTHROW     __attribute__ ((nothrow))
+#   define OT_DEPRECATED  __attribute__ ((deprecated))
+#   define OT_UNUSED      __attribute__ ((unused))
+#   define OT_NOTHROW     __attribute__ ((nothrow))
+#   define OT_WARN_UNUSED __attribute__ ((warn_unused))
 #  endif /* SWIG */
 
 # else /* not __GNUC_ */
 
-#  define DEPRECATED
-#  define UNUSED
-#  define NOTHROW
+#  define OT_DEPRECATED
+#  define OT_UNUSED
+#  define OT_NOTHROW
+#  define OT_WARN_UNUSED
 
 # endif /* __GNUC_ */
 

@@ -82,8 +82,6 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
 
   // Use reference samples
   // Compute muA = mean(yA)
-  const Sample yA(sample, 0, size);
-  const Point muA(yA.computeMean());
 
   // Compute crossMean
   const Point yADotyB(computeSumDotSamples(sample, size_, 0,  size_));

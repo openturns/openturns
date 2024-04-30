@@ -27,9 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(LeastSquaresMetaModelSelectionFactory)
 
 static const Factory<LeastSquaresMetaModelSelectionFactory> Factory_LeastSquaresMetaModelSelectionFactory;
@@ -44,14 +41,12 @@ LeastSquaresMetaModelSelectionFactory::LeastSquaresMetaModelSelectionFactory(con
   // Nothing to do
 }
 
-
 /* Virtual constructor */
 LeastSquaresMetaModelSelectionFactory * LeastSquaresMetaModelSelectionFactory::clone() const
 
 {
   return new LeastSquaresMetaModelSelectionFactory(*this);
 }
-
 
 /* Accessors */
 BasisSequenceFactory LeastSquaresMetaModelSelectionFactory::getBasisSequenceFactory() const
@@ -63,7 +58,6 @@ FittingAlgorithm LeastSquaresMetaModelSelectionFactory::getFittingAlgorithm() co
 {
   return fittingAlgorithm_;
 }
-
 
 /* String converter */
 String LeastSquaresMetaModelSelectionFactory::__repr__() const
@@ -79,6 +73,12 @@ LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelectionFactory::build(co
     const Indices & indices) const
 {
   return new LeastSquaresMetaModelSelection( x, y, weight, psi, indices, basisSequenceFactory_, fittingAlgorithm_ );
+}
+
+/* involvesModelSelection accessor */
+Bool LeastSquaresMetaModelSelectionFactory::involvesModelSelection() const
+{
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

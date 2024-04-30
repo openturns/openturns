@@ -42,7 +42,6 @@ WhiteNoise::WhiteNoise()
 
 /* Standard constructor */
 WhiteNoise::WhiteNoise(const Distribution & distribution)
-/* throw (InvalidArgumentException) */
   : ProcessImplementation()
   , distribution_()
 {

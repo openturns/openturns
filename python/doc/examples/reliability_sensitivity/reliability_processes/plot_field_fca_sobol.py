@@ -21,7 +21,7 @@ Estimate Sobol indices on a field to point function
 # - Run the :class:`~openturns.experimental.FieldToPointFunctionalChaosAlgorithm` class
 # - Validate the Karhunen-Loeve decompositions of the inputs
 # - Validate the chaos metamodel between the KL coefficients and the outputs
-# - Retrieve the Sobol' indices from :class:`~openturns.FieldFunctionalChaosSobolIndices`
+# - Retrieve the Sobol' indices from :class:`openturns.experimental.FieldFunctionalChaosSobolIndices`
 #
 
 # %%
@@ -168,7 +168,7 @@ _ = View(graph)
 # %%
 # Perform an evaluation on a new realization and ensure the output
 # is close to the evaluation with the reference function
-metamodel = result.getFieldToPointMetamodel()
+metamodel = result.getFieldToPointMetaModel()
 x0 = X.getRealization()
 y0 = f(x0)
 y0hat = metamodel(x0)

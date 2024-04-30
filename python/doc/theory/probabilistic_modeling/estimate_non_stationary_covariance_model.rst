@@ -1,12 +1,12 @@
 .. _estimate_non_stationary_covariance_model:
 
-Estimation of a non stationary cov. model
-=========================================
+Estimation of a non stationary covariance model
+-----------------------------------------------
 
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate
-normal process of dimension :math:`d` where :math:`\cD \in \Rset^n`.
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
+normal process of dimension :math:`\inputDim` where :math:`\cD \subset \Rset^n`.
 :math:`X` is supposed to be a second order process and we note
-:math:`C : \cD \times  \cD \rightarrow  \mathcal{M}_{d \times d}(\mathbb{R})`
+:math:`C : \cD \times  \cD \rightarrow  \mathcal{M}_{\inputDim \times \inputDim}(\mathbb{R})`
 its covariance function.
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of
 the common mesh :math:`\cM` and
@@ -19,7 +19,7 @@ We recall that the covariance function :math:`C` writes:
 
     \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \quad C(\vect{s}, \vect{t}) = \Expect{\left(X_{\vect{s}}-m(\vect{s})\right)\left(X_{\vect{t}}-m(\vect{t})\right)^t}
 
-where the mean function :math:`m: \cD \rightarrow \Rset^d` is defined by:
+where the mean function :math:`m: \cD \rightarrow \Rset^{\inputDim}` is defined by:
 
 .. math::
   :label: meanFunc

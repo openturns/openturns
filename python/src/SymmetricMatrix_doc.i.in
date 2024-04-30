@@ -36,7 +36,7 @@ Get or set terms
 [[ 1 ]
  [ 2 ]]
 
-Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
+Create a matrix from a **symmetric** Numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
@@ -51,12 +51,6 @@ and back
 
 %feature("docstring") OT::SymmetricMatrix::computeEigenValues
 "Compute eigenvalues.
-
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -76,6 +70,14 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SymmetricMatrix::computeEigenValuesInPlace
+"Compute eigenvalues in place.
+
+Similar to :meth:`computeEigenValues` but the matrix is modified in place to avoid copy.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SymmetricMatrix::computeEV
 "Compute the eigenvalues decomposition (EVD).
 
@@ -88,12 +90,6 @@ size :math:`n` reads:
 
 where :math:`\mat{\Lambda}` is an :math:`n \times n` diagonal matrix and
 :math:`\mat{\Phi}` is an :math:`n \times n` orthogonal matrix.
-
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -119,6 +115,15 @@ Examples
 >>> np.testing.assert_array_almost_equal(Phi * Lambda * Phi.transpose(), M)"
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::computeEVInPlace
+"Compute the eigenvalues decomposition (EVD) in place.
+
+Similar to :meth:`computeEV` but the matrix is modified in place to avoid copy.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SymmetricMatrix::computeLargestEigenValueModule
 "Compute the largest eigenvalue module.
 
@@ -153,3 +158,22 @@ Examples
 
 %feature("docstring") OT::SymmetricMatrix::checkSymmetry
 "Check if the internal representation is really symmetric."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::inverse
+"Compute the inverse of the matrix.
+
+Returns
+-------
+inverseMatrix : :class:`~openturns.SymmetricMatrix`
+    The inverse of the matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SymmetricMatrix([[4.0, 2.0, 1.0], [2.0, 5.0, 3.0], [1.0, 3.0, 6.0]])
+>>> print(67.0 * M.inverse())
+[[  21  -9   1 ]
+ [  -9  23 -10 ]
+ [   1 -10  16 ]]"

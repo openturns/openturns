@@ -107,7 +107,9 @@ void MultiStart::run()
     solver.setStartingPoint(startingSample_[i]);
     // ensure we do not exceed the global budget if the maximum eval number is set
     const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
-    LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingSample_[i] << ", " << remainingEval << " remaining evaluations");
+    if (!remainingEval)
+      break;
+    LOGDEBUG(OSS() << "Running local search " << (i + 1) << "/" << size << " x0=" << Point(startingSample_[i]).__str__() << " calls=" << callsNumber << "/" << getMaximumCallsNumber());
     if (remainingEval < solver.getMaximumCallsNumber())
       solver.setMaximumCallsNumber(remainingEval);
 
@@ -115,26 +117,23 @@ void MultiStart::run()
     {
       solver.run();
       ++ successNumber;
+      const OptimizationResult result(solver.getResult());
+      LOGDEBUG(OSS() << "Local search succeeded with " << result.getStatusMessage());
+
+      if (keepResults_) resultCollection_.add(result);
+      result_.store(result.getOptimalPoint(), result.getOptimalValue(),
+        result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
+        solver.getMaximumConstraintError());
+      result_.setStatusMessage(result.getStatusMessage());
     }
     catch (const Exception & ex)
     {
-      LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
-      continue;
+      LOGDEBUG(OSS() << "Local search failed with " << ex);
     }
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
 
-    const OptimizationResult result(solver.getResult());
-    if (keepResults_) resultCollection_.add(result);
-
-    result_.store(result.getOptimalPoint(), result.getOptimalValue(),
-                  result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
-                  solver.getMaximumConstraintError());
-
     callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
-    result_.setStatusMessage(result.getStatusMessage());
-
-    LOGDEBUG(OSS() << "Number of evaluations so far=" << callsNumber);
     if ((callsNumber > getMaximumCallsNumber()) || ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration())))
       break;
 

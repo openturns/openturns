@@ -142,19 +142,16 @@ String ApproximationAlgorithmImplementation::__repr__() const
          << " psi=" << psi_;
 }
 
-
 String ApproximationAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
-
 
 void ApproximationAlgorithmImplementation::setCoefficients(const Point & coefficients)
 {
   coefficients_ = coefficients;
   isAlreadyComputedCoefficients_ = true;
 }
-
 
 Point ApproximationAlgorithmImplementation::getCoefficients()
 {
@@ -183,6 +180,11 @@ Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;
+}
+
+Bool ApproximationAlgorithmImplementation::involvesModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::involvesModelSelection()";
 }
 
 /* Method save() stores the object through the StorageManager */

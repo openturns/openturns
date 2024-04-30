@@ -62,7 +62,6 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(PyObject * pyCallable)
 
   const UnsignedInteger inputDimension  = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
-  Description description(inputDimension + outputDimension);
 
   ScopedPyObjectPointer descIn(PyObject_CallMethod( pyObj_,
                                const_cast<char *>("getInputDescription"),

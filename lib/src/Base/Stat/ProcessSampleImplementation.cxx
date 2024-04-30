@@ -684,7 +684,14 @@ void ProcessSampleImplementation::load(Advocate & adv)
   adv.loadAttribute( "data_", data_ );
 }
 
+/* Comparison function */
+Bool ProcessSampleImplementation::operator ==(const ProcessSampleImplementation & other) const
+{
+  if (this == &other) return true;
+  return (mesh_ == other.mesh_) && (data_ == other.data_);
+}
 
+/* In place sum operator between process sample and sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sample & translation)
 {
   const UnsignedInteger size = getSize();
@@ -693,12 +700,111 @@ ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sa
   return *this;
 }
 
+/* In place difference operator between process sample and sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Sample & translation)
 {
   const UnsignedInteger size = getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
     data_[i] -= translation;
   return *this;
+}
+
+/* In place sum operator between process sample and point */
+ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Point & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] += translation;
+  return *this;
+}
+
+/* In place difference operator between process sample and point */
+ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Point & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] -= translation;
+  return *this;
+}
+
+/* In place sum operator between process sample and process sample */
+ProcessSampleImplementation & ProcessSampleImplementation::operator += (const ProcessSampleImplementation & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] += translation[i];
+  return *this;
+}
+
+/* In place difference operator between process sample and process sample */
+ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const ProcessSampleImplementation & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] -= translation[i];
+  return *this;
+}
+
+/* Sum operator between process sample and sample */
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const Sample & translation) const
+{
+  ProcessSampleImplementation processSample(*this);
+  processSample += translation;
+  processSample.setName("");
+  return processSample;
+}
+
+/* Difference operator between process sample and sample */
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const Sample & translation) const
+{
+  ProcessSampleImplementation processSample(*this);
+  processSample -= translation;
+  processSample.setName("");
+  return processSample;
+}
+
+/* Sum operator between process sample and point */
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const Point & translation) const
+{
+  ProcessSampleImplementation processSample(*this);
+  processSample += translation;
+  processSample.setName("");
+  return processSample;
+}
+
+/* Difference operator between process sample and point */
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const Point & translation) const
+{
+  ProcessSampleImplementation processSample(*this);
+  processSample -= translation;
+  processSample.setName("");
+  return processSample;
+}
+
+/* Sum operator between process sample and process sample */
+ProcessSampleImplementation ProcessSampleImplementation::operator + (const ProcessSampleImplementation & translation) const
+{
+  if (getMesh() != translation.getMesh()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their meshes are not identical.";
+  if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";
+  if (getSize() != translation.getSize()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their sizes are different.";
+  ProcessSampleImplementation processSample(*this);
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    processSample[i] += translation[i];
+  return processSample;
+}
+
+/* Difference operator between process sample and process sample */
+ProcessSampleImplementation ProcessSampleImplementation::operator - (const ProcessSampleImplementation & translation) const
+{
+  if (getMesh() != translation.getMesh()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their meshes are not identical.";
+  if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";
+  if (getSize() != translation.getSize()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their sizes are different.";
+  ProcessSampleImplementation processSample(*this);
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    processSample[i] -= translation[i];
+  return processSample;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -12,6 +12,7 @@ General mathematical functions
     :template: class.rst_t
 
     Function
+    FunctionImplementation
     SymbolicFunction
     TranslationFunction
 
@@ -118,6 +119,7 @@ Evaluation functions
     :toctree: _generated/
     :template: class.rst_t
 
+    Evaluation
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation

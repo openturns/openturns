@@ -178,7 +178,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 #
 # .. math::
 #
-#     \boldsymbol{\Psi}_{ik} = \psi_k\left(\vect{x}^{(j)}\right)
+#     \boldsymbol{\Psi}_{jk} = \psi_k\left(\vect{x}^{(j)}\right)
 #
 # for :math:`j = 1, ..., n` and :math:`k = 1, ..., m`.
 # The matrix :math:`\boldsymbol{\Psi}` is mathematically equal to the
@@ -235,6 +235,36 @@ def ComputeSparseLeastSquaresFunctionalChaos(
     distribution,
     sparse=True,
 ):
+    """
+    Create a sparse polynomial chaos based on least squares.
+
+    * Uses the enumerate rule in multivariateBasis.
+    * Uses the LeastSquaresStrategy to compute the coefficients based on
+      least squares.
+    * Uses LeastSquaresMetaModelSelectionFactory to use the LARS selection method.
+    * Uses FixedStrategy in order to keep all the coefficients that the
+      LARS method selected.
+
+    Parameters
+    ----------
+    inputTrain : ot.Sample
+        The input design of experiments.
+    outputTrain : ot.Sample
+        The output design of experiments.
+    multivariateBasis : ot.Basis
+        The multivariate chaos basis.
+    basisSize : int
+        The size of the function basis.
+    distribution : ot.Distribution.
+        The distribution of the input variable.
+    sparse: bool
+        If True, create a sparse PCE.
+
+    Returns
+    -------
+    result : ot.PolynomialChaosResult
+        The estimated polynomial chaos.
+    """
     if sparse:
         selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
     else:
@@ -342,10 +372,11 @@ print("Inverse Gram : ", inverseGram.getNbRows(), "x", inverseGram.getNbColumns(
 # -----------------------------------
 # In this section, we show how to compute the raw leave-one-out
 # error using the naive formula.
-# To do this, we could use implement the :class:~openturns.KFoldSplitter` class
-# with `K = N`.
+# To do this, we could use the :class:`~openturns.LeaveOneOutSplitter` class
+# or the :class:`~openturns.KFoldSplitter` class with `K = N`.
 # Since this would complicate the script and obscure its purpose,
-# we implement the leave-one-out method naively.
+# we implement the leave-one-out method naively using the `pop` method of the
+# `list` Python object.
 
 # %%
 # Compute leave-one-out error

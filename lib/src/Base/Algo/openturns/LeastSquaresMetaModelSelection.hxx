@@ -88,6 +88,9 @@ public:
   Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
   Point getErrorHistory() const override;
 
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
+
 protected:
 
   /** Algorithm that builds the BasisSequence */

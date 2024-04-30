@@ -80,6 +80,7 @@ Sample splitting
     :toctree: _generated/
     :template: class.rst_t
 
+    SplitterImplementation
     KFoldSplitter
     LeaveOneOutSplitter
 
@@ -141,3 +142,12 @@ Used to control the optimization in :class:`~openturns.SimulatedAnnealingLHS`.
     TemperatureProfile
     LinearProfile
     GeometricProfile
+
+Integration
+===========
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.ExperimentIntegration

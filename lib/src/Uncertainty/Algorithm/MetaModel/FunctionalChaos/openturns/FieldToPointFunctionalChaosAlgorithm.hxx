@@ -107,7 +107,7 @@ protected:
    *  - by specifying the threshold of spectrum cut-off
    *  - by specifying the number of modes to compute */
   Scalar threshold_ = 0.0;
-  UnsignedInteger nbModes_;
+  UnsignedInteger nbModes_ = 0;
 
   // Whether to recompress KL modes
   Bool recompress_ = false;

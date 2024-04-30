@@ -418,6 +418,7 @@ void CMinpack::run()
       result_.setStatusMessage("gtol termination condition is satisfied");
       break;
     case 5:
+      result_.setStatus(OptimizationResult::MAXIMUMCALLS);
       result_.setStatusMessage("maximum function evaluations exceeded");
       break;
     case 6:

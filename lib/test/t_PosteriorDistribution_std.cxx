@@ -58,10 +58,11 @@ int main(int, char *[])
       Collection< Distribution > atoms;
       atoms.add(Dirac(0.0));
       atoms.add(Uniform(1.0, 2.0));
-      conditioningDistributionCollection.add(JointDistribution(atoms));
+//      conditioningDistributionCollection.add(JointDistribution(atoms));
     }
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {
+      fullprint << "\n==========================================================================================\n" << std::endl;
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       Distribution observationsDistribution(conditionedDistribution);
       observationsDistribution.setParameter(conditioningDistributionCollection[i].getMean());
@@ -70,12 +71,12 @@ int main(int, char *[])
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
-      fullprint << "range=" << distribution.getRange() << std::endl;
+      fullprint << "range=" << distribution.getRange().__str__() << std::endl;
       // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
       // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
       Point mean(distribution.getMean());
-      fullprint << "Mean " << mean << std::endl;
-      fullprint << "Covariance " << distribution.getCovariance() << std::endl;
+      fullprint << "Mean " << mean.__str__() << std::endl;
+      fullprint << "Covariance " << distribution.getCovariance().__str__() << std::endl;
       // Is this distribution an elliptical distribution?
       fullprint << "Elliptical distribution= " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 
@@ -87,12 +88,12 @@ int main(int, char *[])
 
       // Test for realization of distribution
       Point oneRealization = distribution.getRealization();
-      fullprint << "oneRealization=" << oneRealization << std::endl;
+      fullprint << "oneRealization=" << oneRealization.__str__() << std::endl;
 
       // Test for sampling
       UnsignedInteger size = 10;
       Sample oneSample = distribution.getSample(size);
-      fullprint << "oneSample=" << oneSample << std::endl;
+      fullprint << "oneSample=" << oneSample.__str__() << std::endl;
 
       // Test for sampling
 //       size = 10000;
@@ -100,27 +101,24 @@ int main(int, char *[])
 //       fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
-      // Define a point
-      Point zero(dim, 1e-3);
-
-      // Show PDF and CDF of zero point
-      Scalar zeroPDF = distribution.computePDF(zero);
-      Scalar zeroCDF = distribution.computeCDF(zero);
-      fullprint << "Zero point= " << zero
-                << " pdf=" << zeroPDF
-                << " cdf=" << zeroCDF
+      // Show PDF and CDF of mean point
+      Scalar meanPDF = distribution.computePDF(mean);
+      Scalar meanCDF = distribution.computeCDF(mean);
+      fullprint << "Mean point= " << mean
+                << " pdf=" << meanPDF
+                << " cdf=" << meanCDF
                 << std::endl;
       // Get 95% quantile
       Point quantile = distribution.computeQuantile(0.95);
-      fullprint << "Quantile=" << quantile << std::endl;
+      fullprint << "Quantile=" << quantile.__str__() << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Extract the marginals
       for (UnsignedInteger j = 0; j < dim; ++ j)
       {
         Distribution margin(distribution.getMarginal(j));
-        fullprint << "margin=" << margin << std::endl;
-        fullprint << "margin PDF=" << margin.computePDF(Point(1)) << std::endl;
-        fullprint << "margin CDF=" << margin.computeCDF(Point(1)) << std::endl;
+        fullprint << "margin=" << margin.__str__() << std::endl;
+        fullprint << "margin PDF=" << margin.computePDF(mean[j]) << std::endl;
+        fullprint << "margin CDF=" << margin.computeCDF(mean[j]) << std::endl;
         fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
         fullprint << "margin realization=" << margin.getRealization() << std::endl;
       }

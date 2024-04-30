@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * end time = start time + ( timeStep * steps )
  */
 
-class OT_API RegularGrid
+class OT_API OT_WARN_UNUSED RegularGrid
   : public Mesh
 {
   CLASSNAME

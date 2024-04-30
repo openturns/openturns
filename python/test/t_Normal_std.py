@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import fabs
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 
 def cleanScalar(inScalar):
-    if fabs(inScalar) < 1.0e-10:
+    if abs(inScalar) < 1.0e-10:
         inScalar = 0.0
     return inScalar
 
@@ -15,7 +15,7 @@ def cleanScalar(inScalar):
 def cleanPoint(inPoint):
     dim = inPoint.getDimension()
     for i in range(dim):
-        if fabs(inPoint[i]) < 1.0e-10:
+        if abs(inPoint[i]) < 1.0e-10:
             inPoint[i] = 0.0
     return inPoint
 
@@ -284,10 +284,10 @@ for dim in range(1, 5):
 
     chol = distribution.getCholesky()
     invChol = distribution.getInverseCholesky()
-    print("chol=", repr(chol.clean(1e-6)))
-    print("invchol=", repr(invChol.clean(1e-6)))
-    print("chol*t(chol)=", repr((chol * chol.transpose()).clean(1e-6)))
-    print("chol*invchol=", repr((chol * invChol).clean(1e-6)))
+    print("chol=", repr(chol))
+    print("invchol=", repr(invChol))
+    print("chol*t(chol)=", repr((chol * chol.transpose())))
+    ott.assert_almost_equal((chol * invChol), ot.IdentityMatrix(dim))
 
 # non-spd cov
 dist = ot.Normal(

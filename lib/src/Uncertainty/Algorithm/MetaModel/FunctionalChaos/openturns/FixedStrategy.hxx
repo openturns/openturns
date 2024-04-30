@@ -57,6 +57,9 @@ public:
                    const Scalar residual,
                    const Scalar relativeError) override;
 
+  /** involvesModelSelection accessor */
+  Bool involvesModelSelection() const override;
+
   /** String converter */
   String __repr__() const override;
 
@@ -65,7 +68,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
 
 private:
 

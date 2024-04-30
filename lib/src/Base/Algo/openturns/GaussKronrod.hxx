@@ -98,6 +98,15 @@ public:
   GaussKronrodRule getRule() const;
   void setRule(const GaussKronrodRule & rule);
 
+ protected:
+  /** Map of NLopt algorithms names */
+  static std::map<String, GaussKronrodRule> RuleNames_;
+
+ public:
+  /** GaussKronrod rules accessor */
+  static Collection<GaussKronrodRule> GetRules();
+  static GaussKronrodRule GetRuleFromName(const String & name);
+
   /** String converter */
   String __repr__() const override;
 
@@ -111,6 +120,9 @@ public:
   void load(Advocate & adv) override;
 
 private:
+
+  /** Method to initialize arules map */
+  static void InitializeRules();
 
   /** Compute the local GaussKronrod rule over [a, b] */
   Point computeRule(const Function & function,

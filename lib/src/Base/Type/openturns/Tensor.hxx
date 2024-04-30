@@ -37,9 +37,7 @@ class TensorImplementation;
  * Tensor implements the classical mathematical Tensor
  */
 
-class OT_API Tensor :
-  public TypedInterfaceObject<TensorImplementation>
-
+class OT_API OT_WARN_UNUSED Tensor : public TypedInterfaceObject<TensorImplementation>
 {
   CLASSNAME
 

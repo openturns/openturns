@@ -386,9 +386,9 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
 /* Get the PDF gradient of the distribution */
 Point EllipticalDistribution::computePDFGradient(const Point & point) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  if (point.getDimension() != getDimension())
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Point minusGardientMean(computeDDF(point));
   const UnsignedInteger dimension = getDimension();
   const Point u(normalize(point));
   Point iRu(u);
@@ -481,8 +481,6 @@ void EllipticalDistribution::update()
   const UnsignedInteger dimension = getDimension();
   if (dimension > 1)
   {
-    // Compute the shape matrix
-    const CovarianceMatrix shape(getShape());
     // Try to compute the Cholesky factor of the shape matrix
     TriangularMatrix cholesky(getCholesky());
     inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a collection of interval
  */
-class OT_API Interval
+class OT_API OT_WARN_UNUSED Interval
   : public DomainImplementation
 {
   CLASSNAME

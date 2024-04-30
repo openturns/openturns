@@ -60,9 +60,8 @@ int main(int, char *[])
 
       // Show PDF and CDF of point
       //Scalar eps(1e-5);
-      Point DDF = distribution.computeDDF( point );
+      Point DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
-      Point ddfFD(distribution.getDimension());
       fullprint << "ddf (ref)=" << ref.computeDDF(point) << std::endl;
       Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf      =" << PDF << std::endl;
@@ -127,9 +126,8 @@ int main(int, char *[])
 
     // Show PDF and CDF of point
     //Scalar eps(1e-5);
-    Point DDF = distribution.computeDDF( point );
+    Point DDF = distribution.computeDDF(point);
     fullprint << "ddf     =" << DDF << std::endl;
-    Point ddfFD(distribution.getDimension());
     fullprint << "ddf (FD)=" << distribution.DistributionImplementation::computeDDF(point) << std::endl;
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;

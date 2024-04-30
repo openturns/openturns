@@ -27,6 +27,7 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -52,7 +53,7 @@ public:
                     const Matrix & design,
                     const Sample & outputSample,
                     const Function & metaModel,
-                    const Point & trendCoefficients,
+                    const Point & coefficients,
                     const String & formula,
                     const Description & coefficientsNames,
                     const Sample & sampleResiduals,
@@ -60,17 +61,20 @@ public:
                     const Point & diagonalGramInverse,
                     const Point & leverages,
                     const Point & cookDistances,
-                    const Scalar sigma2);
+                    const Scalar residualsVariance);
 
   /** Virtual constructor */
   LinearModelResult * clone() const override;
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
+  String __repr_markdown__() const override;
 
   /** Sample accessors */
   virtual Basis getBasis() const;
   virtual Sample getFittedSample() const;
+  virtual Matrix getDesign() const;
 
   /** Condensed formula accessor */
   virtual Point getCoefficients() const;
@@ -103,6 +107,9 @@ public:
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
 
+  /** residualsVariance accessor */
+  virtual Scalar getResidualsVariance() const;
+
   Bool hasIntercept() const;
 
   /** R-squared */
@@ -110,6 +117,15 @@ public:
 
   /** Adjusted R-squared */
   Scalar getAdjustedRSquared() const;
+  
+  /** Least squares method accessor */
+  virtual LeastSquaresMethod buildMethod() const;
+
+  /** involvesModelSelection accessor */
+  virtual Bool involvesModelSelection() const;
+
+  /** involvesModelSelection accessor */
+  virtual void setInvolvesModelSelection(const Bool involvesModelSelection);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -127,8 +143,8 @@ private:
   /** input data */
   Matrix design_;
 
-  /** Intercept and trend coefficients */
-  Point beta_;
+  /** Coefficients */
+  Point coefficients_;
 
   /** The formula description */
   String condensedFormula_;
@@ -151,12 +167,15 @@ private:
   /** Cook's distances */
   Point cookDistances_;
 
-  /** Sigma2 */
-  Scalar sigma2_;
+  /** Residuals variance */
+  Scalar residualsVariance_ = 0.0;
 
   /** hasIntercept */
   Bool hasIntercept_;
 
+  /** involvesModelSelection */
+  Bool involvesModelSelection_ = false;
+  
 }; /* class LinearModelResult */
 
 END_NAMESPACE_OPENTURNS

@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/OT.hxx"
+#include "openturns/IshigamiUseCase.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -44,22 +45,21 @@ int main(int, char *[])
   {
 
     // Problem parameters
+    IshigamiUseCase ishigami;
     UnsignedInteger dimension = 3;
-    Scalar a = 7.0;
-    Scalar b = 0.1;
     // Reference analytical values
-    Scalar mean = a / 2;
-    Scalar variance = 1.0 / 2.0 + pow(a, 2.0) / 8.0 + b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 18.0;
-    Scalar S1 = (1.0 / 2.0 + b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / variance;
-    Scalar S2 = (pow(a, 2.0) / 8.0) / variance;
-    Scalar S3 = 0.0;
-    Scalar S12 = 0.0;
-    Scalar S13 = (pow(b, 2.0) * pow(M_PI, 8.0) / 2.0 * (1.0 / 9.0 - 1.0 / 25.0)) / variance;
-    Scalar S23 = 0.0;
+    Scalar mean = ishigami.getMean();
+    Scalar variance = ishigami.getVariance();
+    Scalar S1 = ishigami.getFirstOrderSobolIndices()[0];
+    Scalar S2 = ishigami.getFirstOrderSobolIndices()[1];
+    Scalar S3 = ishigami.getFirstOrderSobolIndices()[2];
+    Scalar S12 = ishigami.getFirstOrderInteractionSobolIndex({0, 1});
+    Scalar S13 = ishigami.getFirstOrderInteractionSobolIndex({0, 2});
+    Scalar S23 = ishigami.getFirstOrderInteractionSobolIndex({1, 2});
     Scalar ST1 = S1 + S13;
     Scalar ST2 = S2;
     Scalar ST3 = S3 + S13;
-    Scalar S123 = 0.0;
+    Scalar S123 = ishigami.getFirstOrderInteractionSobolIndex({0, 1, 2});
     fullprint << "mean = " << mean << std::endl;
     fullprint << "variance = " << std::fixed << std::setprecision(4) << variance << std::endl;
     fullprint << "S1 = " << std::fixed << std::setprecision(4) << S1 << std::endl;
@@ -69,21 +69,9 @@ int main(int, char *[])
     fullprint << "ST1 = " << std::fixed << std::setprecision(4) << ST1 << std::endl;
     fullprint << "ST2 = " << std::fixed << std::setprecision(4) << ST2 << std::endl;
     fullprint << "ST3 = " << std::fixed << std::setprecision(4) << ST3 << std::endl;
-    // Create the Ishigami function
-    Description inputVariables(dimension);
-    inputVariables[0] = "xi1";
-    inputVariables[1] = "xi2";
-    inputVariables[2] = "xi3";
-    Description formula(1);
-    formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-    SymbolicFunction model(inputVariables, formula);
-
-    // Create the input distribution
-    Collection<Distribution> marginals(dimension);
-    marginals[0] = Uniform(-M_PI, M_PI);
-    marginals[1] = Uniform(-M_PI, M_PI);
-    marginals[2] = Uniform(-M_PI, M_PI);
-    JointDistribution distribution(marginals);
+    
+    Function model(ishigami.getModel());  // Create the Ishigami function
+    JointDistribution distribution(ishigami.getInputDistribution());  // Create the input distribution
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

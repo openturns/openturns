@@ -265,7 +265,7 @@ Scalar ProjectionStrategyImplementation::getRelativeError() const
   return relativeError_p_;
 }
 
-/* Relative error accessor */
+/* Coefficients accessor */
 Point ProjectionStrategyImplementation::getCoefficients() const
 {
   return alpha_k_p_;
@@ -289,13 +289,11 @@ void ProjectionStrategyImplementation::computeCoefficients(const Function &,
   throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const FunctionCollection & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
 }
 
-
 /* Method save() stores the object through the StorageManager */
 void ProjectionStrategyImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
 }
-
 
 /* Method load() reloads the object from the StorageManager */
 void ProjectionStrategyImplementation::load(Advocate & adv)
@@ -311,6 +309,18 @@ Collection<Indices> ProjectionStrategyImplementation::getSelectionHistory(Collec
 Point ProjectionStrategyImplementation::getErrorHistory() const
 {
   throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getErrorHistory";
+}
+
+/* isLeastSquares accessor */
+Bool ProjectionStrategyImplementation::isLeastSquares() const
+{
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::isLeastSquares()";
+}
+
+/* involvesModelSelection accessor */
+Bool ProjectionStrategyImplementation::involvesModelSelection() const
+{
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::involvesModelSelection()";
 }
 
 END_NAMESPACE_OPENTURNS

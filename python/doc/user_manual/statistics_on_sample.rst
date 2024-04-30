@@ -12,6 +12,7 @@ Sample
     :template: class.rst_t
 
     Sample
+    experimental.SamplePartition
 
 .. _parametric_distribution_factories:
 
@@ -26,6 +27,7 @@ Building distributions from samples
     DistributionFactoryResult
     DistributionFactoryLikelihoodResult
     ProfileLikelihoodResult
+    CovariatesResult
     TimeVaryingResult
 
     :template: DistributionFactory.rst_t
@@ -162,6 +164,7 @@ Refer to :ref:`sensitivity_sobol`.
     CorrelationAnalysis
     ANCOVA
     FAST
+    experimental.RankSobolSensitivityAlgorithm
 
     :template: classWithPlot.rst_t
 
@@ -245,6 +248,7 @@ Graphical tests
 
     :template: class.rst_t
     experimental.GeneralizedExtremeValueValidation
+    experimental.GeneralizedParetoValidation
 
 Hypothesis tests
 ----------------

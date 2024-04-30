@@ -75,12 +75,11 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 #
 # FORM/SORM Cobyla
 myCobyla = ot.Cobyla()
-myCobyla.setRhoBeg(0.1)
 myCobyla.setMaximumCallsNumber(1000 * dim)
 myCobyla.setMaximumAbsoluteError(1.0e-4)
 myCobyla.setMaximumRelativeError(1.0e-4)
 myCobyla.setMaximumResidualError(1.0e-4)
-myCobyla.setMaximumConstraintError(1.0e-4)
+myCobyla.setMaximumConstraintError(3.0e-3)
 
 myAlgoC = ot.FORM(myCobyla, myEvent, start)
 
@@ -91,11 +90,11 @@ resultC = ot.FORMResult(myAlgoC.getResult())
 #
 # FORM/SORM Abdo Rackwitz
 myAbdoRackwitz = ot.AbdoRackwitz()
-myAbdoRackwitz.setMaximumIterationNumber(1000 * dim)
+myAbdoRackwitz.setMaximumCallsNumber(1000 * dim)
 myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-6)
 myAbdoRackwitz.setMaximumResidualError(1.0e-6)
-myAbdoRackwitz.setMaximumConstraintError(1.0e-6)
+myAbdoRackwitz.setMaximumConstraintError(3.0e-3)
 
 myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
 

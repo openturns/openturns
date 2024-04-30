@@ -57,6 +57,10 @@ if (HMAT_FOUND)
   set_source_files_properties (Base/Stat/HMatrixFactory.cxx Base/Stat/HMatrixImplementation.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+if (nanoflann_FOUND)
+  set_source_files_properties (Base/Algo/KDTree.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from unity builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)
@@ -69,6 +73,11 @@ endif()
 # Exclude spectra sources from unity build (templates take a lot of memory)
 if (Spectra_FOUND)
   set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
+# Exclude cuba sources
+if (Cuba_FOUND)
+  set_source_files_properties (Base/Algo/CubaIntegration.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
 # Build main library

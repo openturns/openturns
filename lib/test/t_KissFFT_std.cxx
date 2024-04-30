@@ -26,6 +26,7 @@ using namespace OT::Test;
 
 typedef Collection<Complex> ComplexCollection;
 
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -66,8 +67,6 @@ int main(int, char *[])
     const ComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
     fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
 
-    const Scalar threshold = 1e-14;
-
     // 2D case now
     const UnsignedInteger N = 8;
     Normal distribution(N);
@@ -75,11 +74,13 @@ int main(int, char *[])
 
     // FFT transform
     const ComplexMatrix transformedSample(myFFT.transform2D(sample));
-    fullprint << "2D FFT result = " << transformedSample.clean(threshold) << std::endl;
+    fullprint << "2D FFT result = " << transformedSample << std::endl;
 
     // Inverse transformation
     const ComplexMatrix inverseTransformedSample(myFFT.inverseTransform2D(transformedSample));
-    fullprint << "2D FFT back=" << inverseTransformedSample.clean(threshold) << std::endl;
+    const Matrix inverseTransformedSampleReal(inverseTransformedSample.real());
+    fullprint << "2D FFT back=" << inverseTransformedSampleReal << std::endl;
+    assert_almost_equal(inverseTransformedSample.imag(), Matrix(inverseTransformedSample.getNbRows(), inverseTransformedSample.getNbColumns()));
 
     // 3D case
     Tensor tensor(N, N, N);
@@ -90,14 +91,17 @@ int main(int, char *[])
 
     // FFT transform
     const ComplexTensor transformedTensor(myFFT.transform3D(tensor));
-    fullprint << "3D FFT result = " << transformedTensor.clean(threshold) << std::endl;
+    fullprint << "3D FFT result = " << transformedTensor << std::endl;
 
     // Inverse transformation
     const ComplexTensor inverseTransformedTensor(myFFT.inverseTransform3D(transformedTensor));
-    fullprint << "3D FFT back=" << inverseTransformedTensor.clean(threshold) << std::endl;
+    const Tensor inverseTransformedTensorReal(inverseTransformedTensor.real());
+    fullprint << "3D FFT back=" << inverseTransformedTensorReal << std::endl;
+    assert_almost_equal(inverseTransformedTensor.imag(), Tensor(transformedTensor.getNbRows(), transformedTensor.getNbColumns(), transformedTensor.getNbSheets()));
+
 
   }
-  catch (TestFailed & ex)
+  catch (const TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;

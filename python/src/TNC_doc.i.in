@@ -1,7 +1,7 @@
 %feature("docstring") OT::TNC
 "Truncated Newton Constrained solver.
 
-Tunrcated-Newton method Non-linear optimizer.
+Truncated-Newton method Non-linear optimizer.
 This solver uses no derivative information and only supports bound constraints.
 
 Available constructors:
@@ -13,24 +13,22 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
-specificParameters : :class:`~openturns.TNCSpecificParameters`
-    Parameters for this solver.
 scale : sequence of float
-    Scaling factors to apply to each variables
+    Scaling factors to apply to each variable.
 offset : sequence of float
-    Constant to subtract to each variable
+    Constant to subtract to each variable.
 maxCGit : int
-    Maximum number of hessian*vector evaluation per main iteration
+    Maximum number of hessian*vector evaluation per main iteration.
 eta : float
     Severity of the line search.
 stepmx : float
-    Maximum step for the line search. may be increased during call
+    Maximum step for the line search, may be increased during call.
 accuracy : float
-    Relative precision for finite difference calculations
+    Relative precision for finite difference calculations.
 fmin : float
     Minimum function value estimate.
 rescale : float
-    f scaling factor (in log10) used to trigger f value rescaling
+    f scaling factor (in log10) used to trigger f value rescaling.
 
 See also
 --------

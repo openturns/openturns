@@ -69,7 +69,7 @@ enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(coll, enumerateFunction)
 
 # %%
-# We can achieve the same result using :class:`~OrthogonalProductPolynomialFactory`.
+# We can achieve the same result using :class:`~openturns.OrthogonalProductPolynomialFactory`.
 marginalDistributionCollection = [
     distribution.getMarginal(i) for i in range(inputDimension)
 ]

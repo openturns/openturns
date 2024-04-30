@@ -58,7 +58,7 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   try
   {
     // the sample description may contain invalid variable names
-    const SymbolicFunction constant(inputDescription, Description(1, "1"));
+    SymbolicFunction(inputDescription, Description({"1"}));
   }
   catch (const InvalidArgumentException &)
   {
@@ -98,10 +98,10 @@ void LinearModelAlgorithm::run()
   // Do not run again if already computed
   if (hasRun_) return;
 
-  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger sampleSize = inputSample_.getSize();
   const UnsignedInteger basisSize = basis_.getSize();
-  if (basisSize > size)
-    throw InvalidArgumentException(HERE) << "Number of basis elements is greater than sample size. Data size = " << outputSample_.getSize()
+  if (basisSize > sampleSize)
+    throw InvalidArgumentException(HERE) << "Number of basis elements is greater than sample size. Sample size = " << outputSample_.getSize()
                                          << ", basis size = " << basisSize;
 
   // No particular strategy : using the full basis
@@ -141,12 +141,12 @@ void LinearModelAlgorithm::run()
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
 
   // noise variance
-  const Scalar sigma2 = (basisSize >= size) ? 0.0 : size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
+  const Scalar sigma2 = (basisSize >= sampleSize) ? 0.0 : sampleSize * residualSample.computeRawMoment(2)[0] / (sampleSize - basisSize);
 
-  Sample standardizedResiduals(size, 1);
+  Sample standardizedResiduals(sampleSize, 1);
 
   // Loop over residual sample
-  for(UnsignedInteger i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     const Scalar factorOneMinusLeverageI = sigma2 * (1.0 - leverages[i]);
     if (!(factorOneMinusLeverageI > 0))
@@ -155,8 +155,8 @@ void LinearModelAlgorithm::run()
       standardizedResiduals(i, 0) = residualSample(i, 0) / std::sqrt(factorOneMinusLeverageI);
   }
 
-  Point cookDistances(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Point cookDistances(sampleSize);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     cookDistances[i] = (1.0 / basisSize) * standardizedResiduals(i, 0) * standardizedResiduals(i, 0) * (leverages[i] / (1.0 - leverages[i]));
   }

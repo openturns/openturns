@@ -140,7 +140,7 @@ public:
   String getStatusMessage() const;
 
   /** Status accessor */
-  enum Status {SUCCESS, FAILURE, TIMEOUT, INTERRUPTION};
+  enum Status {SUCCESS, FAILURE, TIMEOUT, INTERRUPTION, MAXIMUMCALLS};
   void setStatus(const UnsignedInteger status);
   UnsignedInteger getStatus() const;
 

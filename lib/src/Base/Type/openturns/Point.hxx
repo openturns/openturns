@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Point implements the classical mathematical point
  */
 
-class OT_API Point
+class OT_API OT_WARN_UNUSED Point
   : public PersistentCollection<Scalar>
 {
   CLASSNAME

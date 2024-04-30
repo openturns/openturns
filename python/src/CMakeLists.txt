@@ -658,7 +658,8 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
                       DistributionFactoryLikelihoodResult.i DistributionFactoryLikelihoodResult_doc.i.in
                       ProfileLikelihoodResult.i ProfileLikelihoodResult_doc.i.in
-                      TimeVaryingResult.i TimeVaryingResult_doc.i.in
+		      CovariatesResult.i CovariatesResult_doc.i.in
+		      TimeVaryingResult.i TimeVaryingResult_doc.i.in
                       Pareto.i Pareto_doc.i.in
                       ParetoFactory.i ParetoFactory_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
@@ -1022,16 +1023,23 @@ ot_add_python_module(experimental experimental_module.i
                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
+                     PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
+                     SamplePartition.i SamplePartition_doc.i.in
                      SmolyakExperiment.i SmolyakExperiment_doc.i.in
-		     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
+                     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
+                     UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
+                     GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
+                     RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
+                     CubaIntegration.i CubaIntegration_doc.i.in
+                     ExperimentIntegration.i ExperimentIntegration_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
@@ -1065,6 +1073,37 @@ install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
 if (SPHINX_FOUND)
 
+  # exclude examples according to available dependencies
+  if (NOT Bonmin_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_bonmin)")
+  endif ()
+  if (NOT Ceres_FOUND AND NOT CMinpack_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(calibration_flooding)|(calibration_chaboche)|(calibration_deflection_tube)")
+  endif ()
+  if (NOT dlib_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
+  endif ()
+  if (NOT Pagmo_FOUND)
+    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
+  endif ()
+  if (NOT PANDAS_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gpd_wooster)|(estimate_gpd_dowjones)")
+  endif ()
+  if (NOT HMAT_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_cantilever_beam_hmat)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gaussian_process_covariance_hmat)")
+  endif ()
+  if (NOT HDF5_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
+  endif ()
+  if (NOT BISON_FOUND OR NOT FLEX_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(import_export_sample_csv)|(estimate_gev_fremantle)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_pirie)|(estimate_gev_racetime)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_venice)|(estimate_gpd_rain)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_dependence_wavesurge)|(estimate_dependence_wind)")
+  endif ()
+
   # create a build site-package from which sphinx can import
   set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)
   execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns)
@@ -1094,6 +1133,7 @@ if (SPHINX_FOUND)
   list (APPEND doc_formats doctest)
   list (APPEND doc_formats qthelp)
   list (APPEND doc_formats devhelp)
+  list (APPEND doc_formats linkcheck)
 
   set (SPHINX_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/sphinx_build)
   set (SPHINX_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../doc)

@@ -19,6 +19,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0178023]
 - residuals=[0.0313673]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -54,6 +56,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0178023]
 - residuals=[0.0313673]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -146,6 +150,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0196503]
 - residuals=[0.032434]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -181,6 +187,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0196503]
 - residuals=[0.032434]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -274,6 +282,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0154051]
 - residuals=[0.0290505]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -309,6 +319,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0.0154051]
 - residuals=[0.0290505]
+- is least squares=true
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -402,6 +414,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.134395]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -437,6 +451,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.134395]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -549,6 +565,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.15998]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -584,6 +602,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.15998]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -697,6 +717,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.0782409]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -732,6 +754,8 @@ FunctionalChaosResult
 - indices size=21
 - relative errors=[0]
 - residuals=[0.0782409]
+- is least squares=false
+- is model selection=true
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -837,6 +861,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0105163]
 - residuals=[0.0241084]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -935,6 +961,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0105163]
 - residuals=[0.0241084]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1098,6 +1126,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0115022]
 - residuals=[0.0248146]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1196,6 +1226,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0115022]
 - residuals=[0.0248146]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1359,6 +1391,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0111528]
 - residuals=[0.024718]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1457,6 +1491,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0.0111528]
 - residuals=[0.024718]
+- is least squares=true
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1614,6 +1650,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.199582]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1712,6 +1750,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.199582]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -1922,6 +1962,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.205762]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -2020,6 +2062,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.205762]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -2229,6 +2273,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.0865757]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|
@@ -2327,6 +2373,8 @@ FunctionalChaosResult
 - indices size=84
 - relative errors=[0]
 - residuals=[0.0865757]
+- is least squares=false
+- is model selection=false
 
 | Index | Multi-index   | Coefficient   |
 |-------|---------------|---------------|

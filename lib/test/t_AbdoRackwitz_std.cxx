@@ -95,7 +95,7 @@ int main(int, char *[])
     myAlgorithm.run();
     OptimizationResult result(myAlgorithm.getResult());
     fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
-    Graph convergence(result.drawErrorHistory());
+    result.drawErrorHistory();
     fullprint << "evaluation cache hits=" <<   levelFunction.getCacheHits() << std::endl;
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

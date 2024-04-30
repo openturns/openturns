@@ -136,7 +136,7 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getFirstOrderIndices, marginalIndex should be in [0," << outputDimension - 1 << "]";
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   return firstOrderSensitivity;
@@ -193,8 +193,6 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
 {
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
   if (bootstrapSize_ > 0)
   {
     // Temporary samples that stores the first/total indices
@@ -742,7 +740,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
 
   /* build labels and colors for the pie */
-  Description palette(dimension);
   Description labels(dimension);
   Description description(names);
   // If no description has been given for the input distribution components, give standard ones
@@ -902,6 +899,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDesign_", outputDesign_ );
+  adv.saveAttribute( "inputDesign_", inputDesign_ );
   adv.saveAttribute( "size_", size_ );
   adv.saveAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.saveAttribute( "confidenceLevel_", confidenceLevel_ );
@@ -923,6 +921,7 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDesign_", outputDesign_ );
+  adv.loadAttribute( "inputDesign_", inputDesign_ );
   adv.loadAttribute( "size_", size_ );
   adv.loadAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.loadAttribute( "confidenceLevel_", confidenceLevel_ );

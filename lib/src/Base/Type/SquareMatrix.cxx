@@ -187,15 +187,26 @@ Matrix SquareMatrix::solveLinearSystem(const Matrix & b) const
 }
 
 /* Compute determinant */
-Scalar SquareMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool keepIntact)
+Scalar SquareMatrix::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  return getImplementation()->computeLogAbsoluteDeterminant(sign, keepIntact);
+  return getImplementation()->computeLogAbsoluteDeterminant(sign);
 }
 
-Scalar SquareMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SquareMatrix::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
 {
-  return getImplementation()->computeDeterminant(keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeLogAbsoluteDeterminantInPlace(sign);
+}
+
+Scalar SquareMatrix::computeDeterminant() const
+{
+  return getImplementation()->computeDeterminant();
+}
+
+Scalar SquareMatrix::computeDeterminantInPlace()
+{
+  copyOnWrite();
+  return getImplementation()->computeDeterminantInPlace();
 }
 
 /* Compute trace */
@@ -205,16 +216,28 @@ Scalar SquareMatrix::computeTrace() const
 }
 
 /* Compute eigenvalues */
-SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues() const
 {
-  return getImplementation()->computeEigenValuesSquare(keepIntact);
+  return getImplementation()->computeEigenValuesSquare();
 }
 
-SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
-    const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValuesInPlace()
 {
-  return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);
+  copyOnWrite();
+  return getImplementation()->computeEigenValuesSquareInPlace();
 }
+
+SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v) const
+{
+  return getImplementation()->computeEVSquare(*(v.getImplementation()));
+}
+
+SquareMatrix::ComplexCollection SquareMatrix::computeEVInPlace(SquareComplexMatrix & v)
+{
+  copyOnWrite();
+  return getImplementation()->computeEVSquareInPlace(*(v.getImplementation()));
+}
+
 
 /* Compute the largest eigenvalue module using power iterations */
 Scalar SquareMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
@@ -239,6 +262,13 @@ Bool SquareMatrix::isDiagonal() const
       if ((*getImplementation())(i, j) != 0.0) return false;
   }
   return true;
+}
+
+
+/** Compute inverse */
+SquareMatrix SquareMatrix::inverse() const
+{
+  return getImplementation()->inverseSquare();
 }
 
 END_NAMESPACE_OPENTURNS

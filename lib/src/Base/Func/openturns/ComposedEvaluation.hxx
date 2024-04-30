@@ -98,6 +98,10 @@ public:
   /** Is it safe to call in parallel? */
   Bool isParallel() const override;
 
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
 protected:
 
   ComposedEvaluation() {};

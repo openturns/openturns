@@ -237,6 +237,8 @@ Point Beta::computeCDFGradient(const Point & point) const
 Scalar Beta::computeScalarQuantile(const Scalar prob,
                                    const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return a_ + (b_ - a_) * DistFunc::qBeta(alpha_, beta_, prob, tail);
 }
 
@@ -268,7 +270,7 @@ Complex Beta::computeCharacteristicFunction(const Scalar x) const
 Scalar Beta::getRoughness() const
 {
   const Scalar den = SpecFunc::Beta(alpha_, beta_);
-  return SpecFunc::Beta(2.0 * alpha_ - 1.0, 2.0 * (beta_) - 1.0) / (den * den * (b_ - a_));
+  return SpecFunc::Beta(2.0 * alpha_ - 1.0, 2.0 * beta_ - 1.0) / (den * den * (b_ - a_));
 }
 
 /* Compute the entropy of the distribution */
@@ -287,19 +289,19 @@ void Beta::computeMean() const
 /* Get the standard deviation of the distribution */
 Point Beta::getStandardDeviation() const
 {
-  return Point(1, (b_ - a_) / (alpha_ + beta_) * std::sqrt(alpha_ * (beta_) / ((alpha_ + beta_) + 1.0)));
+  return Point(1, (b_ - a_) / (alpha_ + beta_) * std::sqrt(alpha_ * beta_ / (alpha_ + beta_ + 1.0)));
 }
 
 /* Get the skewness of the distribution */
 Point Beta::getSkewness() const
 {
-  return Point(1, 2.0 * ((alpha_ + beta_) - 2.0 * alpha_) / ((alpha_ + beta_) + 2.0) * std::sqrt(((alpha_ + beta_) + 1.0) / (alpha_ * (beta_))));
+  return Point(1, 2.0 * ((alpha_ + beta_) - 2.0 * alpha_) / ((alpha_ + beta_) + 2.0) * std::sqrt(((alpha_ + beta_) + 1.0) / (alpha_ * beta_)));
 }
 
 /* Get the kurtosis of the distribution */
 Point Beta::getKurtosis() const
 {
-  return Point(1, 3.0 * (1.0 + (alpha_ + beta_)) * (2.0 * (alpha_ + beta_) * (alpha_ + beta_) + alpha_ * ((alpha_ + beta_) - 6.0) * (beta_)) / (alpha_ * (beta_) * (3.0 + (alpha_ + beta_)) * (2.0 + (alpha_ + beta_))));
+  return Point(1, 3.0 * (1.0 + (alpha_ + beta_)) * (2.0 * (alpha_ + beta_) * (alpha_ + beta_) + alpha_ * ((alpha_ + beta_) - 6.0) * beta_) / (alpha_ * beta_ * (3.0 + (alpha_ + beta_)) * (2.0 + (alpha_ + beta_))));
 }
 
 /* Compute the covariance of the distribution */
@@ -307,7 +309,7 @@ void Beta::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   const Scalar eta = (b_ - a_) / (alpha_ + beta_);
-  covariance_(0, 0) = eta * eta * alpha_ * (beta_) / ((alpha_ + beta_) + 1.0);
+  covariance_(0, 0) = eta * eta * alpha_ * beta_ / ((alpha_ + beta_) + 1.0);
   isAlreadyComputedCovariance_ = true;
 }
 

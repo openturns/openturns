@@ -1,11 +1,7 @@
+
+==================================================
+
 conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
-    [ X0        ]
-0 : [  1.4123   ]
-1 : [ -1.39926  ]
-2 : [ -0.157398 ]
-3 : [  2.30822  ]
-4 : [ -2.77208  ])
 Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -22,7 +18,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= [0.577515,1.61937]
-Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
+Mean point=  [0.408932,1.65873]  pdf=1.6238  cdf=0.26218
 Quantile= [0.946843,1.98454]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
@@ -31,7 +27,8 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 2 : [ -0.157398 ]
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[0])
-margin CDF= [0]
+margin PDF= [1.12641]
+margin CDF= [0.541543]
 margin quantile= [0.900147]
 margin realization= [0.2696]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
@@ -41,52 +38,7 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 2 : [ -0.157398 ]
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[1])
-margin CDF= [0]
+margin PDF= [1.44124]
+margin CDF= [0.456168]
 margin quantile= [1.96961]
 margin realization= [1.58154]
-conditioning distribution= JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
-    [ X0        ]
-0 : [  1.216    ]
-1 : [  1.18973  ]
-2 : [ -0.705788 ]
-3 : [  0.391527 ]
-4 : [ -3.43509  ])
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
-    [ X0        ]
-0 : [  1.216    ]
-1 : [  1.18973  ]
-2 : [ -0.705788 ]
-3 : [  0.391527 ]
-4 : [ -3.43509  ])
-range= [0, 0]
-[1, 2]
-Mean  [0,1.23679]
-Covariance  [[ 0        0        ]
- [ 0        0.151918 ]]
-Elliptical distribution=  False
-Elliptical copula=  False
-Independent copula=  False
-oneRealization= [0,2]
-Zero point=  [0.001, 0.001]  pdf= 0.0  cdf= 0.0
-Quantile= [0,1.95]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
-    [ X0        ]
-0 : [  1.216    ]
-1 : [  1.18973  ]
-2 : [ -0.705788 ]
-3 : [  0.391527 ]
-4 : [ -3.43509  ]), indices=[0])
-margin CDF= [1]
-margin quantile= [0]
-margin realization= [0]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
-    [ X0        ]
-0 : [  1.216    ]
-1 : [  1.18973  ]
-2 : [ -0.705788 ]
-3 : [  0.391527 ]
-4 : [ -3.43509  ]), indices=[1])
-margin CDF= [0]
-margin quantile= [1.95]
-margin realization= [2]

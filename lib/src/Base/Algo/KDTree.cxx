@@ -25,6 +25,17 @@
 #include "openturns/Indices.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/OTconfig.hxx"
+
+#ifdef OPENTURNS_HAVE_NANOFLANN
+#include <nanoflann.hpp>
+#if NANOFLANN_VERSION < 0x150
+namespace nanoflann {
+  using SearchParameters = SearchParams;
+}
+#endif
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,6 +43,7 @@ CLASSNAMEINIT(KDTree)
 
 static const Factory<KDTree> Factory_KDTree;
 
+#ifndef OPENTURNS_HAVE_NANOFLANN
 /**
  * @class KDNearestNeighboursFinder
  *
@@ -125,7 +137,7 @@ private:
       Scalar squaredDistanceBoundingBox = 0.0;
       for(UnsignedInteger i = 0; i < dimension; ++i)
       {
-        Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+        const Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
         squaredDistanceBoundingBox += difference * difference;
       }
       if (squaredDistanceBoundingBox < values_[0])
@@ -176,7 +188,7 @@ private:
       Scalar squaredDistanceBoundingBox = 0.0;
       for(UnsignedInteger i = 0; i < dimension; ++i)
       {
-        Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+        const Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
         squaredDistanceBoundingBox += difference * difference;
       }
       if (squaredDistanceBoundingBox < values_[0])
@@ -241,6 +253,8 @@ private:
 
 }; /* class KDNearestNeighboursFinder */
 
+#endif
+
 /**
  * @class KDTree
  *
@@ -250,9 +264,6 @@ private:
 /* Default constructor */
 KDTree::KDTree()
   : NearestNeighbourAlgorithmImplementation()
-  , points_(0, 0)
-  , boundingBox_()
-  , tree_()
 {
   // Nothing to do
 }
@@ -260,9 +271,6 @@ KDTree::KDTree()
 /* Parameters constructor */
 KDTree::KDTree(const Sample & points)
   : NearestNeighbourAlgorithmImplementation()
-  , points_(0, 0)
-  , boundingBox_()
-  , tree_()
 {
   // Build the tree
   setSample(points);
@@ -274,11 +282,103 @@ Sample KDTree::getSample() const
   return points_;
 }
 
+#ifdef OPENTURNS_HAVE_NANOFLANN
+class KDTreeSampleAdaptor
+{
+public:
+  explicit KDTreeSampleAdaptor(const Sample & points)
+  : data_(points.getImplementation()->data())
+  , size_(points.getSize())
+  , dimension_(points.getDimension())
+  {
+  }
+
+  inline size_t kdtree_get_point_count() const
+  {
+    return size_;
+  }
+
+  inline Scalar kdtree_get_pt(const size_t idx, const size_t dim) const
+  {
+    return data_[dim + idx * dimension_];
+  }
+
+  template <class BBOX>
+  bool kdtree_get_bbox(BBOX & /*bb*/) const
+  {
+    return false;
+  }
+
+private:
+  const Scalar *data_ = nullptr;
+  UnsignedInteger size_ = 0;
+  UnsignedInteger dimension_ = 0;
+};
+
+
+using nano_kd_tree_t = nanoflann::KDTreeSingleIndexAdaptor<
+        nanoflann::L2_Simple_Adaptor<Scalar, KDTreeSampleAdaptor >,
+        KDTreeSampleAdaptor, -1>;
+
+
+// insulation class for nanoflann implementation
+class KDTreeImplementation
+{
+public:
+  explicit KDTreeImplementation(const Sample & points)
+  {
+    const UnsignedInteger dimension = points.getDimension();
+    sampleAdaptor_ = new KDTreeSampleAdaptor(points);
+    nanoflann::KDTreeSingleIndexAdaptorParams indexParameters;
+    indexParameters.leaf_max_size = ResourceMap::GetAsUnsignedInteger("KDTree-leaf_max_size");
+#if NANOFLANN_VERSION >= 0x150
+    indexParameters.n_thread_build = ResourceMap::GetAsUnsignedInteger("KDTree-n_thread_build");
+#endif
+    indexAdaptor_ = new nano_kd_tree_t(dimension, *sampleAdaptor_, indexParameters);
+#if NANOFLANN_VERSION < 0x140
+    // newer versions do this in the ctor
+    indexAdaptor_->buildIndex();
+#endif
+  }
+
+  UnsignedInteger query(const Point & x) const
+  {
+    UnsignedInteger result = 0;
+    Scalar distance = 0.0;
+    nanoflann::KNNResultSet<Scalar, UnsignedInteger, UnsignedInteger> resultSet(1);
+    resultSet.init(&result, &distance);
+    nanoflann::SearchParameters searchParameters;
+    indexAdaptor_->findNeighbors(resultSet, x.data(), searchParameters);
+    return result;
+  }
+
+  Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const
+  {
+    Indices result(k);
+    Point distance(k);
+    nanoflann::KNNResultSet<Scalar, UnsignedInteger, UnsignedInteger> resultSet(k);
+    resultSet.init(const_cast<UnsignedInteger*>(result.data()), const_cast<Scalar*>(distance.data()));
+    nanoflann::SearchParameters searchParameters;
+    searchParameters.sorted = sorted;
+    indexAdaptor_->findNeighbors(resultSet, x.data(), searchParameters);
+    return result;
+  }
+
+private:
+  Pointer<KDTreeSampleAdaptor> sampleAdaptor_;
+  Pointer<nano_kd_tree_t> indexAdaptor_;
+};
+
+#endif
+
 void KDTree::setSample(const Sample & points)
 {
   if (points == points_) return;
 
   points_ = points;
+#ifdef OPENTURNS_HAVE_NANOFLANN
+  p_implementation_ = new KDTreeImplementation(points);
+#else
   boundingBox_ = Interval(points_.getDimension());
   tree_ = Indices(3 * (points_.getSize() + 1));
 
@@ -297,6 +397,7 @@ void KDTree::setSample(const Sample & points)
   }
   boundingBox_.setLowerBound(points_.getMin());
   boundingBox_.setUpperBound(points_.getMax());
+#endif
 }
 
 /* Virtual constructor */
@@ -358,10 +459,15 @@ UnsignedInteger KDTree::query(const Point & x) const
   if (!points_.getSize())
     throw InvalidArgumentException(HERE) << "Cannot query KDTree with no points";
   if (points_.getSize() == 1) return 0;
+
+#ifdef OPENTURNS_HAVE_NANOFLANN
+  return p_implementation_->query(x);
+#else
   Scalar smallestDistance = SpecFunc::MaxScalar;
   Point lowerBoundingBox(boundingBox_.getLowerBound());
   Point upperBoundingBox(boundingBox_.getUpperBound());
   return getNearestNeighbourIndex(1, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);
+#endif
 }
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
@@ -494,8 +600,12 @@ Indices KDTree::queryK(const Point & x, const UnsignedInteger k, const Bool sort
   }
   else
   {
+#ifdef OPENTURNS_HAVE_NANOFLANN
+    result = p_implementation_->queryK(x, k, sorted);
+#else
     KDNearestNeighboursFinder heap(tree_, points_, boundingBox_, k);
     result = heap.getNearestNeighboursIndices(1, x, sorted);
+#endif
   }
   return result;
 }

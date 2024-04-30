@@ -44,10 +44,14 @@ public:
   /** Default constructor */
   MetaModelValidation();
 
-  /** Constructor with parameters */
+  /** @deprecated Constructor with parameters */
   MetaModelValidation(const Sample & inputSample,
                       const Sample & outputSample,
                       const Function & metaModel);
+
+  /** Constructor with parameters */
+  MetaModelValidation(const Sample & outputSample,
+                      const Sample & metamodelPredictions);
 
   /** Virtual constructor */
   MetaModelValidation * clone() const override;
@@ -56,11 +60,17 @@ public:
   String __repr__() const override;
 
   /** Sample accessors */
-  virtual Sample getInputSample() const;
   virtual Sample getOutputSample() const;
+  virtual Sample getMetamodelPredictions() const;
+  
+  /** Compute R2 score */
+  Point computeR2Score() const;
 
-  /** Compute predictivity factor */
+  /** @deprecated Compute predictivity factor */
   Point computePredictivityFactor() const;
+
+  /** Compute mean squared error */
+  Point computeMeanSquaredError() const;
 
   /** Get residual sample */
   Sample getResidualSample() const;
@@ -81,23 +91,20 @@ protected:
 
   void initialize() const;
 
-  /** The input sample */
-  Sample inputSample_;
-
   /** The output sample */
   Sample outputSample_;
 
   /** The meta model */
-  Function metaModel_;
-
-  /** Boolean argument */
-  mutable Bool isInitialized_ = false;
+  Sample metaModelPredictions_;
 
   /** Residual sample */
   mutable Sample residual_;
 
-  /** Q2 arguments  */
-  mutable Point q2_;
+  /** Mean squared error  */
+  mutable Point meanSquaredError_;
+
+  /** R2 score */
+  mutable Point r2Score_;
 
 private:
 

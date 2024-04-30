@@ -413,9 +413,10 @@ Graph FunctionImplementation::draw(const UnsignedInteger firstInputMarginal,
                                    const Point & xMin,
                                    const Point & xMax,
                                    const Indices & pointNumber,
-                                   const GraphImplementation::LogScale scale) const
+                                   const GraphImplementation::LogScale scale,
+                                   const Bool isFilled) const
 {
-  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale, isFilled);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
@@ -434,6 +435,11 @@ Graph FunctionImplementation::draw(const Point & xMin,
                                    const GraphImplementation::LogScale scale) const
 {
   return evaluation_.draw(xMin, xMax, pointNumber, scale);
+}
+
+void FunctionImplementation::setStopCallback(StopCallback callBack, void * state)
+{
+  evaluation_.setStopCallback(callBack, state);
 }
 
 /* Method save() stores the object through the StorageManager */

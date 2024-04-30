@@ -92,7 +92,7 @@ view = otv.View(graph)
 
 # %%
 # We can also use the profile log-likehood function rather than log-likehood function  to estimate the parameters of the GEV.
-result_PLL_max = factory.buildMethodOfProfileLikelihoodMaximizationEstimator(sample)
+result_PLL_max = factory.buildMethodOfXiProfileLikelihoodEstimator(sample)
 
 # %%
 # The following graph allows one to get the profile log-likelihood plot.

@@ -42,7 +42,6 @@ int main(int, char *[])
   Sample sample(distribution.getSample(size));
   Indices indices(dim - 1);
   indices.fill(1, 1);
-  Sample sampleX(sample.getMarginal(indices));
   Sample sampleY(sample.getMarginal(0));
   Sample sampleZ(SymbolicFunction("x", "x^2")(sampleY));
 

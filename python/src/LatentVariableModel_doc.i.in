@@ -5,9 +5,6 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Available constructors:
-    LatentVariableModel(*nLevels, latentDim*)
-
 Parameters
 ----------
 nLevels : int
@@ -54,7 +51,7 @@ rely on a constant functional basis: please use the :class:`~openturns.ConstantB
 
 See Also
 --------
-CovarianceModel
+openturns.CovarianceModel
 
 Examples
 --------
@@ -201,4 +198,15 @@ LatentVariables : sequence of float
 
 %feature("docstring") OT::LatentVariableModel::draw
 "Not yet implemented"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getLevelNumber
+"Level number accessor.
+
+Returns
+-------
+nLevels : int
+    Number of levels :math:`\ell` characterizing the categorical variable.
+"
 

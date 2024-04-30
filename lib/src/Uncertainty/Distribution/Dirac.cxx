@@ -136,9 +136,11 @@ Scalar Dirac::computeCDF(const Point & point) const
 }
 
 /* Compute the multivariate quantile of the distribution */
-Point Dirac::computeQuantile(const Scalar,
+Point Dirac::computeQuantile(const Scalar prob,
                              const Bool ) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeQuantile expected prob to belong to [0,1], but is " << prob;
   return point_;
 }
 
@@ -162,10 +164,12 @@ Point Dirac::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-Scalar Dirac::computeScalarQuantile(const Scalar,
+Scalar Dirac::computeScalarQuantile(const Scalar prob,
                                     const Bool ) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   return point_[0];
 }
 

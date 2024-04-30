@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -82,7 +83,8 @@ for distribution in coll:
         interval,
         threshold,
     ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
+    ott.assert_almost_equal(interval.getLowerBound(), [-0.11278], 1e-4, 0.0)
+    ott.assert_almost_equal(interval.getUpperBound(), [2.50221], 1e-4, 0.0)
     print("threshold=", threshold)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
@@ -99,7 +101,8 @@ for distribution in coll:
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, False
     )
-    print("Unilateral confidence interval (lower tail)=", interval)
+    ott.assert_almost_equal(levelSet.getLowerBound(), [-7.65063], 1e-4, 0.0)
+    ott.assert_almost_equal(levelSet.getUpperBound(), [2.31868], 1e-4, 0.0)
     print("beta=%.5g" % beta)
     (
         levelSet,
@@ -107,7 +110,8 @@ for distribution in coll:
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, True
     )
-    print("Unilateral confidence interval (upper tail)=", interval)
+    ott.assert_almost_equal(levelSet.getLowerBound(), [0.123843], 1e-4, 0.0)
+    ott.assert_almost_equal(levelSet.getUpperBound(), [7.65063], 1e-4, 0.0)
     print("beta=%.5g" % beta)
     mean = distribution.getMean()
     print("mean=", mean)

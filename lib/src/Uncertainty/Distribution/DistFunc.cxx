@@ -29,6 +29,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/KFactorFunctions.hxx"
+#include "openturns/KolmogorovFunctions.hxx"
 #include "openturns/Normal2DCDF.hxx"
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/Exception.hxx"
@@ -36,13 +37,10 @@
 #ifdef OPENTURNS_HAVE_BOOST
 
 #include <boost/math/distributions/hypergeometric.hpp>
+#include <boost/math/distributions/poisson.hpp>
 
 #endif
 
-// The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
-#include "KolmogorovSmirnovDist.h"
-// The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
-#include "poissinv_cpu.h"
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/OTconfig.hxx"
 
@@ -844,14 +842,12 @@ Indices DistFunc::rHypergeometric(const UnsignedInteger n,
 /* CDF
    The algorithms and the selection strategy is described in:
    Simard, R. and L'Ecuyer, P. "Computing the Two-Sided Kolmogorov-Smirnov Distribution", Journal of Statistical Software, 2010.
-   The implementation is from the first author, initially published under the GPL v3 license but used here with written permission of the author.
 */
 Scalar DistFunc::pKolmogorov(const UnsignedInteger n,
                              const Scalar x,
                              const Bool tail)
 {
-  if (tail) return KSfbar(n, x);
-  else return KScdf(n, x);
+  return KolmogorovFunctions::_kolmogn(n, x, !tail);
 }
 
 /***************************************************************************************************************/
@@ -1192,8 +1188,8 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
 {
-  if (p == 0.0) return (tail ?  8.125890664701906 : -8.125890664701906);
-  if (p == 1.0) return (tail ? -8.125890664701906 :  8.125890664701906);
+  if (p == 0.0) return (tail ?  SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+  if (p == 1.0) return (tail ? -SpecFunc::MaxScalar :  SpecFunc::MaxScalar);
 
   static const Scalar a[6] =
   {
@@ -1432,21 +1428,27 @@ Scalar DistFunc::dPoisson(const Scalar lambda,
   return std::exp(-SpecFunc::Stirlerr(k) - bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
 }
 
-/* Quantile function
-   We use the algorithm described in:
-   Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf or http://people.maths.ox.ac.uk/~gilesm/talks/poisson_2013.pdf
-   It is the Author's implementation, used in OpenTURNS with his written permission, see COPYING.poissinv
-*/
+/* Poisson Quantile function */
 Scalar DistFunc::qPoisson(const Scalar lambda,
                           const Scalar p,
                           const Bool tail)
 {
-  Scalar r = tail ? 1.0 - p : p;
-  if (r <= SpecFunc::MinScalar) r = SpecFunc::MinScalar;
-  if (r >= 1.0 - SpecFunc::ScalarEpsilon) r = 1.0 - SpecFunc::ScalarEpsilon;
-  // We use the scalar version
-  return poissinv_scalar(r, lambda);
+  if ((!tail && (p <= 0.0)) || (tail && (p > 1.0 - SpecFunc::ScalarEpsilon))) return 0.0;
+  const Scalar cp = std::min(std::max(p, SpecFunc::MinScalar), 1.0 - SpecFunc::ScalarEpsilon);
+#ifdef OPENTURNS_HAVE_BOOST
+  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_up;
+  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_down;
+  if (tail)
+    return boost::math::quantile(complement(boost::math::poisson_distribution<Scalar, integer_round_down >(lambda), cp));
+  else
+    return boost::math::quantile(boost::math::poisson_distribution<Scalar, integer_round_up >(lambda), cp);
+#else
+  const Scalar q = std::floor(SpecFunc::RegularizedIncompleteGammaInverse(lambda, cp, tail));
+  const Scalar pq = pGamma(q + 1.0, lambda, !tail);
+  return ((!tail && (pq < p)) || (tail && (pq > p))) ? (q + 1.0) : q;
+#endif
 }
+
 /* Random number generation
    For the small values of lambda, we use the method of inversion by sequential search described in:
    Luc Devroye, "Non-Uniform RandomVariate Generation", Springer-Verlag, 1986, available online at:

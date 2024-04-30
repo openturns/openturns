@@ -13,8 +13,8 @@ outputSample : 2-d sequence of float
    The output sample of a model.
 metaModel : :class:`~openturns.Function`
     The meta model.
-trendCoefficients : sequence of float
-    The trend coeffients associated to the linearmodel. 
+coefficients : sequence of float
+    The trend coefficients associated to the linear model. 
 formula : str
      The formula description. 
 coefficientsNames : sequence of str
@@ -28,10 +28,9 @@ diagonalGramInverse : sequence of float
 leverages : sequence of float
     The leverage score. 
 cookDistances : sequence of float
-    The cook's distances.
-sigma2 : float
-    The unbiased noise variance.
-
+    Cook's distances.
+residualsVariance : float
+    The unbiased variance estimator of the output observation error.
 
 See Also
 --------
@@ -46,7 +45,17 @@ LinearModelAlgorithm
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    The basis which had been passed to the constructor."
+    The basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getDesign
+"Accessor to the design matrix.
+
+Returns
+-------
+design: :class:`~openturns.Matrix`
+    The design matrix."
 
 // ---------------------------------------------------------------------
 
@@ -65,7 +74,7 @@ outputSample : :class:`~openturns.Sample`
 
 Returns
 -------
-beta : :class:`~openturns.Point`
+coefficients : :class:`~openturns.Point`
 "
 
 // ---------------------------------------------------------------------
@@ -200,3 +209,51 @@ Returns
 -------
 intercept : Bool
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getResidualsVariance
+"Accessor to the unbiased sample variance of the residuals.
+
+Returns
+-------
+residualsVariance : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::buildMethod
+"Accessor to the least squares method.
+
+Returns
+-------
+leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
+    The least squares method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::involvesModelSelection
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+to best predict the output.
+Model selection can lead to a sparse model.
+
+Returns
+-------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::setIsModelSelection
+"Set the model selection flag.
+
+A model selection method can be used to select the coefficients
+to best predict the output.
+Model selection can lead to a sparse model.
+
+Parameters
+----------
+involvesModelSelection: bool
+    True if the method involves a model selection method."

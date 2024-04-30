@@ -47,7 +47,11 @@
             if i == j:
                 pdf_graph = distribution.drawMarginal1DPDF(i, xMin[i], xMax[i], 256)
             else:
-                pdf_graph = distribution.drawMarginal2DPDF(i, j, [xMin[i], xMin[j]], [xMax[i], xMax[j]], [256]*2)            
+                pdf_graph = distribution.drawMarginal2DPDF(i, j, [xMin[i], xMin[j]], [xMax[i], xMax[j]], [256]*2)
+                pdf_contour = pdf_graph.getDrawable(0).getImplementation()
+                pdf_contour.setColorBarPosition("")
+                pdf_contour.setColorMapNorm("rank")
+                pdf_graph.setDrawable(pdf_contour, 0)
                 cloud = ot.Cloud(sample.getMarginal([i, j]))
                 cloud.setPointStyle("dot")
                 pdf_graph.add(cloud)

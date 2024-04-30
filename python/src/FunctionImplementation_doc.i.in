@@ -45,7 +45,7 @@ See :class:`~openturns.PythonFunction` for further details.
 
 Create a *Function* from a Python class:
 
->>> class FUNC(OpenTURNSPythonFunction):
+>>> class FUNC(ot.OpenTURNSPythonFunction):
 ...     def __init__(self):
 ...         super(FUNC, self).__init__(2, 1)
 ...         self.setInputDescription(['R', 'S'])
@@ -151,6 +151,17 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 >>> print(myFunction2([1, 2, 3]))
 [25,35]
 
+If the input and output dimensions of two functions are equal
+then we can perform arithmetic operations on these functions
+using the `+`, `-` and `*` operators.
+
+>>> g1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1 + 2 * x2 + x3'])
+>>> g2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1^2 + x2'])
+>>> g_sum = g1 + g2
+>>> g_difference = g1 - g2
+>>> g_product = g1 * g2
 
 Create a *Function* from values of the inputs and the outputs:
 
@@ -624,13 +635,13 @@ OT_Function_getParameterDimension_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
-    draw(*inputMarg, outputMarg, centralPoint, xiMin, xiMax, ptNb*)
+    draw(*inputMarg, outputMarg, centralPoint, xiMin, xiMax, ptNb, scale*)
 
-    draw(*firstInputMarg, secondInputMarg, outputMarg, centralPoint, xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*firstInputMarg, secondInputMarg, outputMarg, centralPoint, xiMin_xjMin, xiMax_xjMax, ptNbs, scale, isFilled*)
 
-    draw(*xiMin, xiMax, ptNb*)
+    draw(*xiMin, xiMax, ptNb, scale*)
 
-    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs, scale*)
 
 Parameters
 ----------
@@ -646,8 +657,22 @@ xiMin, xiMax : float
     Define the interval where the curve is plotted.
 xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
     In the 2D case, define the intervals where the curves are plotted.
-ptNb : int :math:`ptNb > 0` or list of ints of dimension 2 :math:`ptNb_k > 0, k=1,2`
+ptNb : int :math:`ptNb > 0`
     The number of points to draw the curves.
+ptNbs : list of int of dimension 2 :math:`ptNbs_k > 0, k=1,2`
+    The number of points to draw the contour in the 2D case.
+scale : bool
+    scale indicates whether the logarithmic scale is used either for one or both axes:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
+isFilled : bool
+    isFilled indicates whether the contour graph is filled or not
 
 Notes
 -----
@@ -807,3 +832,19 @@ linear : bool
 %enddef
 %feature("docstring") OT::FunctionImplementation::isLinearlyDependent
 OT_Function_isLinearlyDependent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setStopCallback_doc
+"Set up a stop callback.
+
+Can be used to programmatically stop an evaluation.
+
+Parameters
+----------
+callback : callable
+    Returns a bool deciding whether to stop or continue.
+"
+%enddef
+%feature("docstring") OT::FunctionImplementation::setStopCallback
+OT_Function_setStopCallback_doc

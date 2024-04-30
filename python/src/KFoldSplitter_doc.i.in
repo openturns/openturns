@@ -15,11 +15,11 @@ k : int
 Examples
 --------
 >>> import openturns as ot
->>> X = ot.Normal().getSample(10)
+>>> sample = ot.Normal().getSample(10)
 >>> k = 5
->>> splitter = ot.KFoldSplitter(X.getSize(), k)
->>> for indices1, indices2 in splitter:
-...     X_train, X_test = X[indices1], X[indices2]
+>>> splitter = ot.KFoldSplitter(sample.getSize(), k)
+>>> for indicesTrain, indicesTest in splitter:
+...     sampleTrain, sampleTest = sample[indicesTrain], sample[indicesTest]
 "
 
 // ---------------------------------------------------------------------

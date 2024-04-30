@@ -168,12 +168,12 @@ public:
     return timeOut_;
   }
 
-  virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = 0)
+  virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = nullptr)
   {
     progressCallback_ = std::pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(callBack, state);
   }
 
-  virtual void setStopCallback(OptimizationAlgorithmImplementation::StopCallback callBack, void * state = 0)
+  virtual void setStopCallback(OptimizationAlgorithmImplementation::StopCallback callBack, void * state = nullptr)
   {
     stopCallback_ = std::pair<OptimizationAlgorithmImplementation::StopCallback, void *>(callBack, state);
   }

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -162,7 +163,8 @@ print("entropy=%.6f" % distribution.computeEntropy())
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
     0.95
 )
-print("Minimum volume interval=", interval)
+ott.assert_almost_equal(interval.getLowerBound(), [0.03856], 1e-4, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [3.21723], 1e-4, 0.0)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
@@ -182,7 +184,8 @@ print("beta=", ot.Point(1, beta))
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-print("Unilateral confidence interval (upper tail)=", interval)
+ott.assert_almost_equal(interval.getLowerBound(), [0.230549], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.computeProbability(interval), 0.95, 1e-5, 0.0)
 print("beta=", ot.Point(1, beta))
 
 mean = distribution.getMean()

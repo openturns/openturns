@@ -20,6 +20,7 @@
  */
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include "openturns/Contour.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -35,20 +36,33 @@ static const Factory<Contour> Factory_Contour;
 /* Default constructor */
 Contour::Contour()
   : DrawableImplementation()
-  , drawLabels_(true)
-{}
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
+{
+  isColorExplicitlySet_ = true;
+}
 
-/* Default constructor */
+/* Constructor with parameters */
 Contour::Contour(const UnsignedInteger dimX,
-                 const UnsignedInteger dimY,
-                 const Sample & data,
-                 const String & legend)
-  : DrawableImplementation(data, legend)
+  const UnsignedInteger dimY,
+  const Sample& data)
+  : DrawableImplementation(data)
   , x_(Sample(dimX, 1))
   , y_(Sample(dimY, 1))
-  , levels_(Point(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
-  , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
-  , drawLabels_(true)
+  , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
+  , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
   if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
   if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
@@ -59,6 +73,7 @@ Contour::Contour(const UnsignedInteger dimX,
   for (UnsignedInteger i = 0; i < dimX; ++i) x_(i, 0) = Scalar(i) / (dimX - 1.0);
   // By default, y is assumed to be equally spaced in [0, 1]
   for (UnsignedInteger i = 0; i < dimY; ++i) y_(i, 0) = Scalar(i) / (dimY - 1.0);
+  isColorExplicitlySet_ = true;
   // Build the levels
   buildDefaultLevels();
   // Build the labels
@@ -68,24 +83,27 @@ Contour::Contour(const UnsignedInteger dimX,
 /* Constructor with parameters */
 Contour::Contour(const Sample & x,
                  const Sample & y,
-                 const Sample & data,
-                 const Point & levels,
-                 const Description & labels,
-                 const Bool drawLabels,
-                 const String & legend)
-  : DrawableImplementation(data, legend)
+                 const Sample & data)
+  : DrawableImplementation(data)
   , x_(x)
   , y_(y)
-  , levels_(levels)
-  , labels_(labels)
-  , drawLabels_(drawLabels)
+  , levels_(Point(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber")))
+  , labels_(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"))
+  , drawLabels_(ResourceMap::GetAsBool("Contour-DefaultDrawLabels"))
+  , isFilled_(ResourceMap::GetAsBool("Contour-DefaultIsFilled"))
+  , colorBarPosition_(ResourceMap::GetAsString("Contour-DefaultColorBarPosition"))
+  , colorMap_(ResourceMap::GetAsString("Contour-DefaultColorMap"))
+  , alpha_(ResourceMap::GetAsScalar("Contour-DefaultAlpha"))
+  , norm_(ResourceMap::GetAsString("Contour-DefaultColorMapNorm"))
+  , extend_(ResourceMap::GetAsString("Contour-DefaultExtend"))
 {
-  if (levels.getDimension() == 0) buildDefaultLevels();
-  if (drawLabels && (labels.getSize() == 0)) buildDefaultLabels();
-  if (drawLabels && (levels.getDimension() > 0) && (labels.getSize() > 0) && (levels.getDimension() != labels.getSize())) throw InvalidArgumentException(HERE) << "Error: the levels are incompatible with the labels";
   // Check data validity
   setData(data);
+  isColorExplicitlySet_ = true;
+  buildDefaultLevels();
+  buildDefaultLabels();
 }
+
 
 /* String converter */
 String Contour::__repr__() const
@@ -98,8 +116,25 @@ String Contour::__repr__() const
       << " levels=" << levels_
       << " labels=" << labels_
       << " show labels=" << drawLabels_
+      << " isFilled=" << isFilled_
+      << " colorBarPosition=" << colorBarPosition_
+      << " isVminUsed=" << isVminUsed_
+      << " vmin=" << vmin_
+      << " isVmaxUsed=" << isVmaxUsed_
+      << " vmax=" << vmax_
+      << " colorMap=" << colorMap_
+      << " alpha=" << alpha_
+      << " norm=" << norm_
+      << " extend=" << extend_
+      << " hatches=" << hatches_
       << " derived from " << DrawableImplementation::__repr__();
   return oss;
+}
+
+/* Accessor for color overridden to clear colorMap */
+void Contour::setColor(const String& color) {
+  DrawableImplementation::setColor(color);
+  colorMap_.clear();
 }
 
 /* Accessor for first coordinate */
@@ -159,6 +194,121 @@ void Contour::setDrawLabels(const Bool & drawLabels)
   drawLabels_ = drawLabels;
 }
 
+/** Accessor for isFilled */
+Bool Contour::isFilled() const {
+  return isFilled_;
+}
+
+void Contour::setIsFilled(Bool isFilled) {
+  isFilled_ = isFilled;
+}
+
+/** Accessor for colorBarPosition */
+String Contour::getColorBarPosition() const {
+  return colorBarPosition_;
+}
+
+void Contour::setColorBarPosition(const String & colorBarPosition) {
+  if (!IsValidColorBarPosition(colorBarPosition))
+    throw InvalidArgumentException(HERE) << "Given color bar position = " << colorBarPosition << " is incorrect";
+  colorBarPosition_ = colorBarPosition;
+}
+
+/** Accessor for isVminUsed */
+Bool Contour::isVminUsed() const {
+  return isVminUsed_;
+}
+
+void Contour::setIsVminUsed(const Bool used) {
+  isVminUsed_ = used;
+}
+
+/** Accessor for vmin */
+Scalar Contour::getVmin() const {
+  if(!isVminUsed_)
+    throw InternalException(HERE) << "Vmin value is not used";
+  return vmin_;
+}
+
+void Contour::setVmin(const Scalar vmin) {
+  isVminUsed_ = true;
+  vmin_ = vmin;
+}
+
+/** Accessor for isVmaxUsed */
+Bool Contour::isVmaxUsed() const {
+  return isVmaxUsed_;
+}
+
+void Contour::setIsVmaxUsed(const Bool used) {
+  isVmaxUsed_ = used;
+}
+
+/** Accessor for vmax */
+Scalar Contour::getVmax() const {
+  if(!isVmaxUsed_)
+    throw InternalException(HERE) << "Vmax value is not used";
+  return vmax_;
+}
+
+void Contour::setVmax(const Scalar vmax) {
+  isVmaxUsed_ = true;
+  vmax_ = vmax;
+}
+
+/** Accessor for colorMap */
+String Contour::getColorMap() const {
+  return colorMap_;
+}
+
+void Contour::setColorMap(const String& colorMap) {
+  if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
+  isColorExplicitlySet_ = true; // To avoid being overridden when adding the contour to the graph
+  colorMap_ = colorMap;
+}
+
+/** Accessor for alpha */
+Scalar Contour::getAlpha() const {
+  return alpha_;
+}
+
+void Contour::setAlpha(Scalar alpha) {
+  if (alpha < 0 || alpha>1) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " not in [0, 1]";
+  alpha_ = alpha;
+}
+
+/** Accessor for norm */
+String Contour::getColorMapNorm() const {
+  return norm_;
+}
+
+void Contour::setColorMapNorm(const String& norm) {
+  if (!IsValidNorm(norm)) throw InvalidArgumentException(HERE) << "Given norm = " << norm << " is incorrect";
+  norm_ = norm;
+}
+
+/** Accessor for extend */
+String Contour::getExtend() const {
+  return extend_;
+}
+void Contour::setExtend(const String& extend) {
+  if (!IsValidExtend(extend)) throw InvalidArgumentException(HERE) << "Given extend = " << extend << " is incorrect";
+  extend_ = extend;
+}
+
+/** Accessor for hatches */
+Description Contour::getHatches() const {
+  return hatches_;
+}
+
+void Contour::setHatches(const Description& hatches) {
+  for(String h:hatches)
+    for(char c:h)
+      if(!strchr("/\\|-+xoO.*",c))
+        throw InvalidArgumentException(HERE) << "Given hatch = " << h << " is incorrect";
+  hatches_ = hatches;
+}
+
 /* Accessor for boundingbox */
 Interval Contour::getBoundingBox() const
 {
@@ -214,7 +364,18 @@ void Contour::save(Advocate & adv) const
   adv.saveAttribute( "y_", y_ );
   adv.saveAttribute( "levels_", levels_ );
   adv.saveAttribute( "labels_", labels_ );
-  adv.saveAttribute( "drawLabels_", drawLabels_ );
+  adv.saveAttribute("drawLabels_", drawLabels_);
+  adv.saveAttribute("isFilled_", isFilled_);
+  adv.saveAttribute("colorBarPosition_", colorBarPosition_);
+  adv.saveAttribute("isVminUsed_", isVminUsed_);
+  adv.saveAttribute("vmin_", vmin_);
+  adv.saveAttribute("isVmaxUsed_", isVmaxUsed_);
+  adv.saveAttribute("vmax_", vmax_);
+  adv.saveAttribute("colorMap_", colorMap_);
+  adv.saveAttribute("alpha_", alpha_);
+  adv.saveAttribute("norm_", norm_);
+  adv.saveAttribute("extend_", extend_);
+  adv.saveAttribute("hatches_", hatches_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -226,6 +387,48 @@ void Contour::load(Advocate & adv)
   adv.loadAttribute( "levels_", levels_ );
   adv.loadAttribute( "labels_", labels_ );
   adv.loadAttribute( "drawLabels_", drawLabels_ );
+  if (adv.hasAttribute("isFilled_"))
+    adv.loadAttribute("isFilled_", isFilled_);
+  if (adv.hasAttribute("colorBarPosition_"))
+    adv.loadAttribute("colorBarPosition_", colorBarPosition_);
+  else
+    colorBarPosition_ = "";
+  if(adv.hasAttribute("isVminUsed_"))
+    adv.loadAttribute("isVminUsed_", isVminUsed_);
+  else
+    isVminUsed_ = false;
+  if(adv.hasAttribute("vmin_"))
+    adv.loadAttribute("vmin_", vmin_);
+  else
+    vmin_ = 0;
+  if(adv.hasAttribute("isVmaxUsed_"))
+    adv.loadAttribute("isVmaxUsed_", isVmaxUsed_);
+  else
+    isVmaxUsed_ = false;
+  if (adv.hasAttribute("vmax_"))
+    adv.loadAttribute("vmax_", vmax_);
+  else
+    vmax_ = 0;
+  if (adv.hasAttribute("colorMap_"))
+    adv.loadAttribute("colorMap_", colorMap_);
+  else
+    colorMap_.clear();
+  if (adv.hasAttribute("alpha_"))
+    adv.loadAttribute("alpha_", alpha_);
+  else
+    alpha_ = 1;
+  if (adv.hasAttribute("norm_"))
+    adv.loadAttribute("norm_", norm_);
+  else
+    norm_ = ResourceMap::GetAsString("Contour-DefaultColorMapNorm");
+  if (adv.hasAttribute("extend_"))
+    adv.loadAttribute("extend_", extend_);
+  else
+    extend_ = ResourceMap::GetAsString("Contour-DefaultExtend");
+  if (adv.hasAttribute("hatches_"))
+    adv.loadAttribute("hatches_", hatches_);
+  else
+    hatches_.clear();
 }
 
 

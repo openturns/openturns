@@ -224,7 +224,6 @@ void MeixnerDistribution::computeRange()
   }
   // Find the numerical upper bound based on the PDF value
   Point upperBound(mu);
-  Point stepUpper(sigma);
   Scalar logPDFUpper = logPDF;
   while (logPDFUpper > logPDFEpsilon)
   {
@@ -461,6 +460,8 @@ Scalar MeixnerDistribution::computeComplementaryCDF(const Point & point) const
 Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
   if (prob <= 0.0) return (tail ? b : a);

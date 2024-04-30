@@ -44,24 +44,6 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
 #
 # Calculs
-#
-#
-# FORM/SORM Cobyla
-myCobyla = ot.Cobyla()
-myCobyla.setMaximumCallsNumber(100 * dim)
-myCobyla.setMaximumAbsoluteError(1.0e-10)
-myCobyla.setMaximumRelativeError(1.0e-10)
-myCobyla.setMaximumResidualError(1.0e-10)
-myCobyla.setMaximumConstraintError(1.0e-10)
-
-myAlgoC = ot.FORM(myCobyla, myEvent, start)
-myAlgoC2 = ot.SORM(myCobyla, myEvent, start)
-
-myAlgoC.run()
-myAlgoC2.run()
-
-resultC = myAlgoC.getResult()
-resultC2 = myAlgoC2.getResult()
 
 #
 # FORM/SORM Abdo Rackwitz

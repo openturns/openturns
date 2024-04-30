@@ -818,6 +818,8 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
   // So
   // InverseSurvivalFunction(q) = 2mu-Quantile(q)
   if (isElliptical()) return getMean() * 2.0 - computeQuantile(prob, false, marginalProb);
+  // If the distribution is not continuous, no generic implementation is available at this point
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeInverseSurvivalFunction: no generic implementation for noncontinuous distributions.";
   // Extract the marginal distributions
   Collection<Implementation> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i).getImplementation();
@@ -1078,6 +1080,8 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   const Interval reducedInterval(interval.intersect(range_));
   if (reducedInterval.isEmpty()) return 0.0;
   if (reducedInterval == range_) return 1.0;
+  if (dimension_ == 1)
+    return computeProbabilityContinuous1D(reducedInterval.getLowerBound()[0], reducedInterval.getUpperBound()[0]);
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
   Scalar probability = 1.0;
@@ -1110,7 +1114,8 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
   const Scalar b = std::min(bb, range_.getUpperBound()[0]);
   // If no singularity inside of the given reduced interval
   const UnsignedInteger singularitiesNumber = singularities.getSize();
-  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = GaussKronrod().integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
+  const GaussKronrod gkAlgo;
+  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = gkAlgo.integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
   else
   {
     Scalar lower = a;
@@ -1119,14 +1124,14 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
       const Scalar upper = singularities[i];
       if (upper > a && upper < b)
       {
-        probability += GaussKronrod().integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
+        probability += gkAlgo.integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
         lower = upper;
       }
       // Exit the loop if no more singularities inside of the reduced interval
       if (upper >= b) break;
     } // for
     // Last contribution
-    probability += GaussKronrod().integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
+    probability += gkAlgo.integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
   } // else
   return SpecFunc::Clip01(probability);
 }
@@ -2268,7 +2273,6 @@ Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
 Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q) const
 {
   Point result(0);
-  Point y(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     result.add(computeConditionalQuantile(q[i], result));
   return result;
@@ -2308,13 +2312,14 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
+  if (!((prob >= 0.0) && (prob <= 1.0)))
+    throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   // This test allows one to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
   Scalar lower = range_.getLowerBound()[0];
   Scalar upper = range_.getUpperBound()[0];
   // This test allows one to know if the range has already been computed. If not, it is the role of the computeScalarQuantile() to do it.
   if (lower > upper)
   {
-    LOGDEBUG("DistributionImplementation::computeScalarQuantile: look for a bracketing of the bounds of the range");
     // Find a rough estimate of the lower bound and the upper bound
     Scalar step = 1.0;
     Scalar cdf = computeCDF(lower);
@@ -2354,10 +2359,9 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
       ccdf = computeComplementaryCDF(upper);
     }
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: lower=" << lower << ", upper=" << upper);
   if (prob < 0.0) return (tail ? upper : lower);
   if (prob >= 1.0) return (tail ? lower : upper);
-  const Scalar q = tail ? 1.0 - prob : prob;
+  const Scalar p = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
   const Function f(bindMethod<CDFWrapper, Point, Point>(wrapper, &CDFWrapper::computeCDF, 1, 1));
   const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::ActualMaxScalar : lower);
@@ -2365,8 +2369,16 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar rightTau = (std::isinf(upper) ? SpecFunc::ActualMaxScalar : upper);
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-  const Scalar root = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
+  Scalar root = solver.solve(f, p, leftTau, rightTau, leftCDF, rightCDF);
   LOGDEBUG(OSS() << "root=" << root);
+
+  // special case non strictly increasing CDF: retain the inf of the interval veryfing F(x)=p
+  if (root > quantileEpsilon_ && computeCDF(root - quantileEpsilon_) == prob)
+  {
+    solver.setResidualError(0.5 * cdfEpsilon_);
+    root = solver.solve(f, p - cdfEpsilon_, leftTau, root, leftCDF, prob);
+    LOGDEBUG(OSS() << "inf root=" << root);
+  }
   return root;
 } // computeScalarQuantile
 
@@ -2436,11 +2448,11 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
 {
   const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
-  // Special case for bording values
-  if (prob < quantileEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
-  if (prob >= 1.0 - quantileEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, tail));
+  // Special case for border values
+  if (prob < cdfEpsilon_) return (tail ? range_.getUpperBound() : range_.getLowerBound());
+  if (prob >= 1.0 - cdfEpsilon_) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for independent copula
   if (hasIndependentCopula())
   {
@@ -2479,7 +2491,6 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
     rightTau = 1.0;
     rightCDF = 1.0;
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeQuantile: dimension=" << dimension_ << ", q=" << q << ", leftTau=" << leftTau << ", leftCDF=" << leftCDF << ", rightTau=" << rightTau << ", rightCDF=" << rightCDF);
   // Use Brent's method to compute the quantile efficiently for continuous distributions
   const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
@@ -3231,50 +3242,53 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
   return getCopula().getSpearmanCorrelation();
 }
 
+/* This helper class is here to compute the Kendall tau of bivariate distributions
+
+   If the distribution is a copula with CDF C and PDF c, then:
+
+   tau = 4\int_0^1\int_0^1 C(u,v)c(u,v)dudv - 1
+
+   If the distribution is general, with CDF F, PDF f, marginal quantiles Qx and Qy, marginal PDF fx and fy, then:
+
+   C(u,v)=F(Qx(u),Qy(v))
+   c(u,v)=d²C(u,v)/dudv=Qx'(u)Qy'(v)f(Qx(u),Qy(v))
+
+   and:
+
+   tau = 4\int_0^1\int_0^1 F(Qx(u),Qy(v))f(Qx(u),Qy(v))Qx'(u)Qy'(v)dudv - 1
+
+   then, with x=Qx(u) and y=Qy(u), dxdy=Qx'(u)duQy'(v)dv and
+
+       = 4\int_R\int_R F(x,y)f(x,y)dxdy - 1
+
+   So in all the cases, we have to integrate the product CDFxPDF over the range
+   of the distribution
+ */
 struct DistributionImplementationKendallTauWrapper
 {
   DistributionImplementationKendallTauWrapper(const Distribution & distribution)
     : distribution_(distribution)
   {
-    if (!distribution.isCopula())
-    {
-      const UnsignedInteger dimension = distribution.getDimension();
-      marginalCollection_ = Collection<Distribution>(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        marginalCollection_[i] = distribution.getMarginal(i);
-    }
+    // Nothing to do
   }
 
-  Point kernelForCopula(const Point & point) const
+  Point kernel(const Point & point) const
   {
-    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(point));
-  }
-
-  Point kernelForDistribution(const Point & point) const
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    Point x(dimension);
-    Scalar factor = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      const Point xi(marginalCollection_[i].computeQuantile(point[i]));
-      x[i] = xi[0];
-      factor *= marginalCollection_[i].computePDF(xi);
-      if (std::abs(factor) < SpecFunc::Precision) return Point(1, 0.0);
-    }
-    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(x) / factor);
+    const Scalar pdf = distribution_.computePDF(point);
+    if (std::abs(pdf) < SpecFunc::Precision) return Point(1, 0.0);
+    return Point(1, distribution_.computeCDF(point) * pdf);
   }
 
   const Distribution & distribution_;
-  Collection<Distribution> marginalCollection_;
-}; // DistributionImplementationKendallTauWrapperx
+}; // DistributionImplementationKendallTauWrapper
 
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
   CorrelationMatrix tau(dimension_);
   // First special case: independent marginals
-  if (hasIndependentCopula()) return tau;
+  if (hasIndependentCopula())
+    return tau;
   // Second special case: elliptical distribution
   if (hasEllipticalCopula())
   {
@@ -3286,7 +3300,6 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
   }
   // General case
   const IteratedQuadrature integrator;
-  const Interval square(2);
   // Performs the integration in the strictly lower triangle of the tau matrix
   Indices indices(2);
   for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
@@ -3295,18 +3308,14 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
     for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
     {
       indices[1] = columnIndex;
-      const Distribution marginalDistribution(getMarginal(indices).getImplementation());
+      const Distribution marginalDistribution(getMarginal(indices));
       if (!marginalDistribution.hasIndependentCopula())
       {
         // Build the integrand
         const DistributionImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-        Function function;
-        if (isCopula())
-          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForCopula, 2, 1));
-        else
-          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForDistribution, 2, 1));
-        tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
-      }
+        const Function function(bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernel, 2, 1));
+        tau(rowIndex, columnIndex) = 4.0 * integrator.integrate(function, marginalDistribution.getRange())[0] - 1.0;
+      } // !independent margins
     } // loop over column indices
   } // loop over row indices
   return tau;
@@ -3887,14 +3896,17 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
   // Add a border for a copula
   if (isCopula())
   {
-    const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
     data(1, 0) = 1.0;
     data[2]    = Point(2, 1.0);
     data(3, 1) = 1.0;
     Curve square(data);
-    graph.setDrawable(square, 0);
-    graph.add(drawable);
+
+    // prepend square
+    Collection<Drawable> coll;
+    coll.add(square);
+    coll.add(graph.getDrawables());
+    graph.setDrawables(coll);
   }
   return graph;
 }
@@ -4135,7 +4147,6 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
   // Add a border for a copula
   if (isCopula())
   {
-    const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
     data(0, 0) = (logScaleX ? std::log(SpecFunc::Precision) : 0.0);
     data(0, 1) = (logScaleY ? std::log(SpecFunc::Precision) : 0.0);
@@ -4147,8 +4158,12 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber,
     data(3, 1) = 1.0;
     data[4] = data[0];
     Curve square(data);
-    graph.setDrawable(square, 0);
-    graph.add(drawable);
+
+    // prepend square
+    Collection<Drawable> coll;
+    coll.add(square);
+    coll.add(graph.getDrawables());
+    graph.setDrawables(coll);
   }
   return graph;
 }
@@ -4567,6 +4582,11 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
 {
   const String title(OSS() << getDescription() << " Quantile");
   const Sample data(computeQuantile(qMin, qMax, pointNumber));
+  LOGWARN(OSS() << "data = " << data);
+  LOGWARN(OSS() << "qMin =" << qMin << " ; qMax-1 = " << qMax - 1.0);
+  LOGWARN(OSS() << "quantile(qMin) = " << computeQuantile(qMin));
+  LOGWARN(OSS() << "quantile(qMax) = " << computeQuantile(qMax));
+  LOGWARN(OSS() << "copula_quantile(qMax)[0]-1 = " << getCopula().computeQuantile(qMax)[0] - 1.0);
   Curve curveQuantile(data);
   curveQuantile.setLegend(title);
   curveQuantile.setLineStyle("solid");

@@ -2,7 +2,7 @@ Distribution  class=InverseWishart name=InverseWishart dimension=1 cholesky=clas
 Distribution  InverseWishart(V = 
 [[ 1 ]], nu = 5)
 Mean=  class=Point name=Unnamed dimension=1 values=[0.333333]
-Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.222222]
 Elliptical =  False
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.156697]
 oneSample first= class=Point name=Unnamed dimension=1 values=[0.374649]  last= class=Point name=Unnamed dimension=1 values=[0.381059]
@@ -27,7 +27,7 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0903302]
 Survival(inverseSurvival)=0.950000
 entropy=-0.369531
-Minimum volume interval= [0.0458714, 0.877774]
+Minimum volume interval= [0, 0.872999]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 16.35} with f=
 MinimumVolumeLevelSetEvaluation(InverseWishart(V = 
@@ -40,10 +40,10 @@ beta= [0.95]
 Unilateral confidence interval (upper tail)= [0.0903302, 59.8961]
 beta= [0.95]
 mean= class=Point name=Unnamed dimension=1 values=[0.333333]
-standard deviation= class=Point name=Unnamed dimension=1 values=[1]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.471405]
 skewness= class=Point name=Unnamed dimension=1 values=[18.5998]
 kurtosis= class=Point name=Unnamed dimension=1 values=[1074.6]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.222222]
 parameters= [class=PointWithDescription name=X0 dimension=2 description=[nu,] values=[1,5]]
 Standard representative= InverseWishart(V = 
 [[ 1 ]], nu = 5)

@@ -7,29 +7,31 @@ Distribution MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = 
  [ 0 0 0 0 1 ]]), indices=[2,0,1])
 Elliptical = true
 Continuous = true
+Discrete = false
+Integral = false
 oneRealization=class=Point name=Unnamed dimension=3 values=[-0.438266,0.608202,-1.26617]
 oneSample first=class=Point name=Unnamed dimension=3 values=[1.43725,0.350042,-0.355007] last=class=Point name=Unnamed dimension=3 values=[0.859992,-2.2281,0.884963]
 mean=class=Point name=Unnamed dimension=3 values=[-0.000164216,0.00955544,0.000744822]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.00735,0.0155386,-0.00400052,0.0155386,1.02164,-0.0214975,-0.00400052,-0.0214975,0.997907]
 Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
-ddf     =class=Point name=Unnamed dimension=3 values=[-8.56912e-29,-8.56912e-29,-8.56912e-29]
-log pdf=-64.6268
-pdf     =8.56912e-29
+ddf     =class=Point name=Unnamed dimension=3 values=[-0.0141673,-0.0141673,-0.0141673]
+log pdf=-4.25682
+pdf     =0.0141673
 cdf=0.595555
 ccdf=0.404445
-survival=3.99359e-31
+survival=0.00399359
+Inverse survival=class=Point name=Unnamed dimension=3 values=[-2.1212,-2.1212,-2.1212]
+Survival(inverse survival)=0.95
 quantile=class=Point name=Unnamed dimension=3 values=[2.1212,2.1212,2.1212]
 cdf(quantile)=0.95
 quantile (tail)=class=Point name=Unnamed dimension=3 values=[-0.336086,-0.336086,-0.336086]
 cdf (tail)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=10 values=[8.56912e-29,8.56912e-29,8.56912e-29,6.55591e-28,6.55591e-28,0,0,0,4.92999e-27,4.92999e-27]
-cdf gradient     =class=Point name=Unnamed dimension=10 values=[0,0,0,0,0,0,0,0,0,0]
 mean=class=Point name=Unnamed dimension=3 values=[0,0,0]
 standard deviation=class=Point name=Unnamed dimension=3 values=[1,1,1]
 skewness=class=Point name=Unnamed dimension=3 values=[0,0,0]
 kurtosis=class=Point name=Unnamed dimension=3 values=[3,3,3]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
-correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 spearman=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 kendall=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 Standard representative=MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
@@ -38,3 +40,29 @@ Standard representative=MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]), indices=[2,0,1])
+Distribution class=MarginalDistribution name=MarginalDistribution dimension=3 distribution=class=Multinomial name=Multinomial dimension=5 p=class=Point name=Unnamed dimension=5 values=[0.142857,0.142857,0.142857,0.142857,0.142857] n=10 indices=[2,0,1]
+Distribution MarginalDistribution(distribution=Multinomial(n = 10, p = [0.142857,0.142857,0.142857,0.142857,0.142857]), indices=[2,0,1])
+Elliptical = false
+Continuous = false
+Discrete = true
+Integral = true
+oneRealization=class=Point name=Unnamed dimension=3 values=[2,3,0]
+oneSample first=class=Point name=Unnamed dimension=3 values=[2,3,1] last=class=Point name=Unnamed dimension=3 values=[1,1,0]
+mean=class=Point name=Unnamed dimension=3 values=[1.4254,1.434,1.4148]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.22176,-0.210245,-0.186975,-0.210245,1.24377,-0.217845,-0.186975,-0.217845,1.21306]
+Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
+pdf     =0.00250271
+cdf=0.135956
+ccdf=0.864044
+survival=0.457828
+quantile=class=Point name=Unnamed dimension=3 values=[4,4,4]
+cdf(quantile)=0.976008
+quantile (tail)=class=Point name=Unnamed dimension=3 values=[1,1,1]
+cdf (tail)=0.996288
+mean=class=Point name=Unnamed dimension=3 values=[1.42857,1.42857,1.42857]
+standard deviation=class=Point name=Unnamed dimension=3 values=[1.10657,1.10657,1.10657]
+skewness=class=Point name=Unnamed dimension=3 values=[0.645497,0.645497,0.645497]
+kurtosis=class=Point name=Unnamed dimension=3 values=[3.21667,3.21667,3.21667]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.22449,-0.204082,-0.204082,-0.204082,1.22449,-0.204082,-0.204082,-0.204082,1.22449]
+correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.166667,-0.166667,-0.166667,1,-0.166667,-0.166667,-0.166667,1]
+Standard representative=MarginalDistribution(distribution=Multinomial(n = 10, p = [0.142857,0.142857,0.142857,0.142857,0.142857]), indices=[2,0,1])

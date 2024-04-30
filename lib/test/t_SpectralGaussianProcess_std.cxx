@@ -55,7 +55,7 @@ int main(int, char *[])
     // Constructor using maximalFrequency value and size of discretization
     const Scalar maximalFrequency = 10.0;
     SpectralGaussianProcess mySpectralProcess1(myModel, maximalFrequency, points);
-    RegularGrid tg(mySpectralProcess1.getTimeGrid());
+    //RegularGrid tg(mySpectralProcess1.getTimeGrid());
 
     fullprint << "mySpectralProcess1 = " << mySpectralProcess1.__str__() << std::endl;
     fullprint << "Realization = " << mySpectralProcess1.getRealization().__str__() << std::endl;

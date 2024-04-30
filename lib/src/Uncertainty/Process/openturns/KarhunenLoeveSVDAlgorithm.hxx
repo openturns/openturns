@@ -108,19 +108,20 @@ private:
   ProcessSample sample_;
 
   /** Flag to tell if the sample is centered */
-  Bool centeredSample_;
+  Bool centeredSample_ = false;
 
   /** Potential vertices weights */
   Point verticesWeights_;
 
   /** Flag to tell if the weights are uniform */
-  Bool uniformVerticesWeights_;
+  Bool uniformVerticesWeights_ = true;
 
   /** Potential sample weights */
   Point sampleWeights_;
 
   /** Flag to tell if the sample weights are uniform */
-  Bool uniformSampleWeights_;
+  Bool uniformSampleWeights_ = true;
+
 } ; /* class KarhunenLoeveSVDAlgorithm */
 
 END_NAMESPACE_OPENTURNS

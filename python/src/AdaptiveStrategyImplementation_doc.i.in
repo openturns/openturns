@@ -1,11 +1,6 @@
 %define OT_AdaptiveStrategy_doc
 "Base class for the construction of the truncated multivariate orthogonal basis.
 
-Available constructors:
-    AdaptiveStrategy(*orthogonalBasis, dimension*)
-
-    AdaptiveStrategy(*adaptiveStrategyImplementation*)
-
 Parameters
 ----------
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
@@ -13,9 +8,6 @@ orthogonalBasis : :class:`~openturns.OrthogonalBasis`
 dimension : positive int
     Number of terms of the basis. This first usage has the same implementation
     as the second with a :class:`~openturns.FixedStrategy`. 
-adaptiveStrategyImplementation : AdaptiveStrategyImplementation
-    Adaptive strategy implementation which is a :class:`~openturns.FixedStrategy` 
-    or a :class:`~openturns.CleaningStrategy`.
 
 See also
 --------
@@ -74,7 +66,7 @@ OT_AdaptiveStrategy_getBasis_doc
 
 Returns
 -------
-P : integer
+maximumDimension : int
     Maximum dimension of the truncated basis."
 
 %enddef
@@ -84,12 +76,16 @@ OT_AdaptiveStrategy_getMaximumDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_AdaptiveStrategy_getPsi_doc
-"Accessor to the orthogonal polynomials of the basis.
+"Accessor to the selected orthogonal polynomials in the basis.
+
+The value returned by this method depends on the specific
+choice of adaptive strategy and the previous calls to the
+:meth:`updateBasis` method.
 
 Returns
 -------
 polynomials : list of polynomials
-    Sequence of :math:`P` analytical polynomials.
+    Sequence of :math:`P` polynomials.
 
 Notes
 -----
@@ -115,7 +111,7 @@ OT_AdaptiveStrategy_getPsi_doc
 
 Parameters
 ----------
-P : integer
+maximumDimension : int
     Maximum dimension of the truncated basis."
 
 %enddef
@@ -127,10 +123,33 @@ OT_AdaptiveStrategy_setMaximumDimension_doc
 %define OT_AdaptiveStrategy_updateBasis_doc
 "Update the basis for the next iteration of approximation.
 
-Notes
------
-No changes are made to the basis in the fixed strategy."
+Parameters
+----------
+alpha_k: sequence of floats
+    The coefficients of the expansion at this step.
+residual: float
+    The current value of the residual.
+relativeError: float
+    The relative error."
 
 %enddef
 %feature("docstring") OT::AdaptiveStrategyImplementation::updateBasis
 OT_AdaptiveStrategy_updateBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_involvesModelSelection_doc
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which enable to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Returns
+-------
+involvesModelSelection: bool
+    True if the method involves a model selection method."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::involvesModelSelection
+OT_AdaptiveStrategy_involvesModelSelection_doc
