@@ -52,6 +52,16 @@ Bool Indices::isIncreasing() const
   return true;
 }
 
+/* Check if the indices are strictly increasing */
+Bool Indices::isStrictlyIncreasing() const
+{
+  const UnsignedInteger size = getSize();
+  if (!(size > 1)) return true;
+  for (UnsignedInteger i = 1; i < size; ++i)
+    if (operator[](i) <= operator[](i - 1)) return false;
+  return true;
+}
+
 /* Fill the indices with a linear progression, starting from start value by step stepsize */
 void Indices::fill(const UnsignedInteger initialValue,
                    const UnsignedInteger stepSize)

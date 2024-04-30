@@ -81,6 +81,9 @@ public:
   /** Check if the indices are increasing */
   Bool isIncreasing() const;
 
+  /** Check if the indices are strictly increasing */
+  Bool isStrictlyIncreasing() const;
+
   /** Fill the indices with a linear progression, starting from start value by step stepsize */
   void fill(const UnsignedInteger initialValue = 0,
             const UnsignedInteger stepSize = 1);

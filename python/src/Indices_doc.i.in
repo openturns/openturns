@@ -135,6 +135,23 @@ True"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Indices::isStrictlyIncreasing
+"Check if the indices are strictly increasing.
+
+Returns
+-------
+isStrictlyIncreasing : bool
+    *True* if the indices are strictly increasing.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([1, 2, 5])
+>>> indices.isIncreasing()
+True"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Indices::normInf
 "Compute the infinite norm of the indices.
 
