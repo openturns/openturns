@@ -1,0 +1,84 @@
+%feature("docstring") OT::CombinationsDistribution
+"Combinations distribution.
+
+Parameters
+----------
+k : int, :math:`k > 0`
+n : int, :math:`n > 0`
+
+See also
+--------
+Combinations
+
+Notes
+-----
+:class:`~openturns.CombinationsDistribution` is the discrete uniform
+distribution on the set of strictly increasing functions :math:`(i_0, \hdots, i_{k_1})`
+from :math:`\{0, \hdots, k-1\}` into :math:`\{0, \hdots, n-1\}`.
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = (i_0, \hdots, i_{k-1})} = \frac{1}{\binom{n}{k}}
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{\vect{X}} & = & \frac{n - 1}{2}\\
+        \Cov{\vect{X}} & = & \left\{
+                             \begin{array}{ll}
+                                 \displaystyle \frac{n^2-1}{12} \\
+                                 \displaystyle -\frac{1 + n}{12}
+                             \end{array}
+                             \right.
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.CombinationsDistribution(6, 8)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::getN
+"Accessor to the parameter :math:`n`.
+
+Returns
+-------
+n : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::getK
+"Accessor to the parameter :math:`k`.
+
+Returns
+-------
+k : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::setN
+"Accessor to the parameter :math:`n`.
+
+Parameters
+----------
+n : int, :math:`n > 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::setK
+"Accessor to the parameter :math:`k`.
+
+Parameters
+----------
+k : int, :math:`k > 0`"
