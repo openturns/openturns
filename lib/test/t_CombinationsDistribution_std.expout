@@ -1,0 +1,39 @@
+Testing class CombinationsDistribution
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=CombinationsDistribution name=CombinationsDistribution dimension=5 k=5 n=12
+streamObject(const T & anObject)
+class=CombinationsDistribution name=CombinationsDistribution dimension=5 k=5 n=12
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=CombinationsDistribution name=CombinationsDistribution dimension=5 k=5 n=12
+Distribution CombinationsDistribution(k = 5, n = 12)
+Elliptical = false
+Continuous = false
+oneRealization=class=Point name=Unnamed dimension=5 values=[0,3,4,8,9]
+oneSample first=class=Point name=Unnamed dimension=5 values=[1,2,4,8,9] last=class=Point name=Unnamed dimension=5 values=[0,5,7,9,11]
+mean=class=Point name=Unnamed dimension=5 values=[1.1363,3.3014,5.478,7.6634,9.8246]
+covariance=class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1.7443,1.39566,1.04845,0.701149,0.354242,1.39566,2.82124,2.10584,1.40299,0.702136,1.04845,2.10584,3.19264,2.11881,1.05895,0.701149,1.40299,2.11881,2.86319,1.42,0.354242,0.702136,1.05895,1.42,1.77381]
+Point= class=Point name=Unnamed dimension=5 values=[1,3,6,8,10]
+log-pdf     =-6.67456
+log-pdf ref =-6.67456
+pdf     =0.00126263
+pdf ref =0.00126263
+cdf     =0.286616
+cdf ref =0.286616
+ccdf     =0.713384
+ccdf ref =0.713384
+quantile     =class=Point name=Unnamed dimension=5 values=[11,11,11,11,11]
+quantile ref =class=Point name=Unnamed dimension=5 values=[4,7,9,10,11]
+cdf(quantile)=1
+entropy     =6.67456
+entropy ref =6.67456
+entropy (MC)=6.67456
+mean     =class=Point name=Unnamed dimension=5 values=[1.16667,3.33333,5.5,7.66667,9.83333]
+mean ref =class=Point name=Unnamed dimension=5 values=[1.16667,3.33333,5.5,7.66667,9.83333]
+covariance     =class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1.80556,1.44444,1.08333,0.722222,0.361111,1.44444,2.88889,2.16667,1.44444,0.722222,1.08333,2.16667,3.25,2.16667,1.08333,0.722222,1.44444,2.16667,2.88889,1.44444,0.361111,0.722222,1.08333,1.44444,1.80556]
+covariance ref =class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1.80556,1.44444,1.08333,0.722222,0.361111,1.44444,2.88889,2.16667,1.44444,0.722222,1.08333,2.16667,3.25,2.16667,1.08333,0.722222,1.44444,2.16667,2.88889,1.44444,0.361111,0.722222,1.08333,1.44444,1.80556]
+correlation     =class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0.632456,0.447214,0.316228,0.2,0.632456,1,0.707107,0.5,0.316228,0.447214,0.707107,1,0.707107,0.447214,0.316228,0.5,0.707107,1,0.632456,0.2,0.316228,0.447214,0.632456,1]
+correlation ref =class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0.632456,0.447214,0.316228,0.2,0.632456,1,0.707107,0.5,0.316228,0.447214,0.707107,1,0.707107,0.447214,0.316228,0.5,0.707107,1,0.632456,0.2,0.316228,0.447214,0.632456,1]
+parameters=[[n : 12],[n : 12],[n : 12],[n : 12],[n : 12],[k : 5, n : 12]]
