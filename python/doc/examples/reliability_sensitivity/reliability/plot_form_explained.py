@@ -364,7 +364,7 @@ pf = ot.Normal().computeSurvivalFunction(betaHL)
 print("FORM : Pf = ", pf)
 
 # %%
-# This proability of failure is the one computed in the FORMResult and obtained with the `getEventProbability` method :
+# This probability of failure is the one computed in the FORMResult and obtained with the `getEventProbability` method:
 pf = result.getEventProbability()
 print("Probability of failure (FORM) Pf = ", pf)
 
