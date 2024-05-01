@@ -1,0 +1,164 @@
+%feature("docstring") OT::FunctionalChaosValidation
+"Validate a functional chaos metamodel.
+
+
+Parameters
+----------
+result : :class:`~openturns.FunctionalChaosResult`
+    A functional chaos result resulting from a polynomial chaos expansion.
+
+splitter : :class:`~openturns.SplitterImplementation`, optional
+    The cross-validation method.
+    The default is :class:`~openturns.LeaveOneOutSplitter`.
+
+See also
+--------
+FunctionalChaosAlgorithm, FunctionalChaosResult
+
+Notes
+-----
+A `FunctionalChaosValidation` object is used for the validation of a functional chaos expansion.
+It is based on the fast (analytical) leave-one-out and fast K-Fold
+cross-validation methods presented in :ref:`pce_cross_validation`.
+
+Analytical cross-validation can only be performed accurately if some
+conditions are met.
+
+- This can be done only if the coefficients of the expansion are estimated
+  using least squares regression: if the expansion is computed from integration,
+  then an exception is produced.
+- This can be done only if the coefficients of the expansion are estimated
+  using full expansion, without model selection: if the expansion is computed
+  with model selection, then an exception is produced by default.
+  This is because model selection leads to supposedly improved coefficients,
+  so that the hypotheses required to estimate the mean squared error
+  using the cross-validation method are not satisfied anymore.
+  As a consequence, using the analytical formula without taking into
+  account for the model selection leads to a biased, optimistic, mean squared
+  error.
+  More precisely, the analytical formula produces a MSE which is lower
+  than the true one on average.
+  Model selection is involved in the expansion if the
+  :class:`~openturns.LeastSquaresMetaModelSelectionFactory`
+  or :class:`~openturns.CleaningStrategy` classes are involved.
+  If the :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` class
+  is used, then no model selection is involved and the analytical
+  cross-validation methods can be used.
+  If model selection is involved, the naive methods based on the
+  :class:`~openturns.LeaveOneOutSplitter` and :class:`~openturns.KFoldSplitter`
+  classes can be used, but this can be much slower than the
+  analytical methods implemented in the :class:`~openturns.FunctionalChaosValidation`
+  class.
+  In many cases, however, the order of magnitude of the estimate from the
+  analytical formula applied to a sparse model is correct: the estimate of
+  the MSE is only slightly lower than the true value.
+  In order to enable the calculation of the analytical MSE estimator
+  on a sparse model, please set the `FunctionalChaosValidation-ModelSelection`
+  key of the :class:`~openturns.ResourceMap` to `True`: use this
+  option at your own risks.
+
+We suggest to use leave-one-out (LOO) cross validation when possible,
+because it produces a more accurate estimate of the error than K-Fold does.
+If K-Fold is required, we suggest to use the largest possible value of :math:`k`.
+
+The predictions of the leave-one-one or K-Fold surrogate models
+are based on the hold-out method.
+For example, if we use the leave-one-out cross-validation method,
+the :math:`i`-th prediction is the prediction of the linear model
+trained using the hold-out sample where the :math:`i`-th observation
+was removed.
+This produces a sample of residuals which can be retrieved using
+the :class:`~openturns.FunctionalChaosValidation.getResidualSample` method.
+The :class:`~openturns.FunctionalChaosValidation.drawValidation` performs
+similarly.
+
+If the weights of the observations are not equal, the analytical method
+may not necessarily provide an accurate estimator of the mean squared error (MSE).
+This is because LOO and K-Fold cross-validation do not take the weights
+into account.
+Since the :class:`~openturns.FunctionalChaosResult` object does not know
+if the weights are equal, no exception can be generated.
+
+If the sample was not produced from Monte Carlo, then the leave-one-out
+cross-validation method may not necessarily provide an accurate estimator
+of the MSE.
+Indeed, one assumption for cross validation using LOO or K-Fold is to have
+independent observations, which is required to state that the LOO sample MSE
+is an estimator of the true MSE.
+For example, using cross-validation on a quasi-Monte Carlo (QMC) experiment may
+not necessarily provide an accurate estimate of the MSE, because the
+internal structure of the QMC is broken by the different splits:
+the elementary volumes are not filled as expected anymore and the
+space-filling properties of the sequence are lost.
+
+Examples
+--------
+Create a polynomial chaos for the Ishigami function.
+We use the :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` class
+to specify the method to compute the coefficients.
+We may use the :class:`~openturns.LeastSquaresMetaModelSelectionFactory` class
+in order to create a sparse polynomial chaos expansion, but this
+prevents us from using the fast analytical formulas and get an
+accurate estimator of the MSE.
+
+>>> import openturns as ot
+>>> from math import pi
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> sampleSize = 500 
+>>> inputTrain = im.distributionX.getSample(sampleSize)
+>>> outputTrain = im.model(inputTrain)
+>>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
+>>> selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
+>>> projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
+>>> totalDegree = 8
+>>> enumerateFunction = multivariateBasis.getEnumerateFunction()
+>>> basisSize = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+>>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
+>>> chaosalgo = ot.FunctionalChaosAlgorithm(
+...     inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+... )
+>>> chaosalgo.run()
+>>> result = chaosalgo.getResult()
+
+Validate the polynomial chaos expansion using leave-one-out cross-validation.
+
+>>> splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
+>>> validation = ot.FunctionalChaosValidation(result, splitterLOO)
+>>> r2Score = validation.computeR2Score()
+>>> print('R2 = ', r2Score[0])
+R2 =  0.99...
+
+Validate the polynomial chaos expansion using K-Fold cross-validation
+and set the :math:`k` parameter.
+
+>>> kParameter = 10
+>>> splitterKF = ot.KFoldSplitter(sampleSize, kParameter)
+>>> validation = ot.FunctionalChaosValidation(
+...     result, splitterKF
+... )
+
+Draw the validation graph.
+
+>>> graph = validation.drawValidation()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosValidation::getSplitter
+"Get the cross-validation method.
+
+Returns
+-------
+splitter : :class:`~openturns.SplitterImplementation`
+    The cross-validation method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosValidation::computeR2Score
+"Compute the R2 score.
+
+Returns
+-------
+r2Score : :class:`~openturns.Point`
+    The coefficient of determination R2"
+

@@ -1,0 +1,140 @@
+%feature("docstring") OT::LinearModelValidation
+"Validate a linear regression metamodel.
+
+Parameters
+----------
+result : :class:`~openturns.LinearModelResult`
+    A linear model result resulting from linear least squares regression.
+
+splitter : :class:`~openturns.SplitterImplementation`
+    The cross-validation method.
+    The default is :class:`~openturns.LeaveOneOutSplitter`.
+
+See also
+--------
+LinearModelResult
+
+Notes
+-----
+A `LinearModelValidation` object is used for the validation of a linear model.
+It is based on the fast (analytical) leave-one-out and fast K-Fold
+cross-validation methods presented in :ref:`cross_validation`.
+
+Analytical cross-validation can only be performed if all coefficients are estimated without model selection:
+if the coefficients are computed with model selection, then an exception is
+produced by default.
+This is because model selection leads to supposedly improved coefficients,
+so that the hypotheses required to estimate the mean squared error
+using the cross-validation method are not satisfied anymore.
+As a consequence, using the analytical formula without taking into
+account for the model selection leads to a biased, optimistic, mean squared
+error.
+More precisely, the analytical formula produces a MSE which is lower
+than the true one on average.
+Model selection is involved if the
+:class:`~openturns.LinearModelStepwiseAlgorithm` class is involved.
+If the :class:`~openturns.LinearModelAlgorithm` class
+is used, then no model selection is involved and the analytical
+cross-validation methods can be used.
+If model selection is involved, the naive methods based on the
+:class:`~openturns.LeaveOneOutSplitter` and :class:`~openturns.KFoldSplitter`
+classes can be used directly, but this can be much slower than the
+analytical methods implemented in the :class:`~openturns.LinearModelValidation`
+class.
+In many cases, however, the order of magnitude of the estimate from the
+analytical formula applied to a sparse model is correct: the estimate of
+the MSE is only slightly lower than the true value.
+In order to enable the calculation of the analytical MSE estimator
+on a sparse model, please set the `LinearModelValidation-ModelSelection`
+key of the :class:`~openturns.ResourceMap` to `False`: use this
+option at your own risks.
+
+We suggest to use leave-one-out cross validation when possible,
+because it produces a more accurate estimate of the error than K-Fold does.
+If K-Fold is required, we suggest to use the largest possible value of :math:`k`.
+
+The predictions of the leave-one-one or K-Fold surrogate models
+are based on the hold-out method.
+For example, if we use the leave-one-out cross-validation method,
+the :math:`i`-th prediction is the prediction of the linear model
+trained using the hold-out sample where the :math:`i`-th observation
+was removed.
+This produces a sample of residuals which can be retrieved using
+the :class:`~openturns.LinearModelValidation.getResidualSample` method.
+The :class:`~openturns.LinearModelValidation.drawValidation` performs
+similarly.
+
+Examples
+--------
+Create a linear model.
+
+>>> import openturns as ot
+>>> func = ot.SymbolicFunction(
+...     ['x1', 'x2', 'x3'],
+...     ['x1 + x2 + sin(x2 * 2 * pi_) / 5 + 1e-3 * x3^2']
+... )
+>>> dimension = 3
+>>> distribution = ot.JointDistribution([ot.Normal()] * dimension)
+>>> sampleSize = 20
+>>> inputSample = distribution.getSample(sampleSize)
+>>> outputSample = func(inputSample)
+>>> algo = ot.LinearModelAlgorithm(inputSample, outputSample)
+>>> algo.run()
+>>> result = algo.getResult()
+
+Validate the linear model using leave-one-out cross-validation.
+
+>>> validation = ot.LinearModelValidation(result)
+
+We can use a specific cross-validation splitter if needed.
+
+>>> splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
+>>> validation = ot.LinearModelValidation(result, splitterLOO)
+>>> r2Score = validation.computeR2Score()
+>>> print('R2 = ', r2Score[0])
+R2 =  0.98...
+
+Validate the linear model using K-Fold cross-validation.
+
+>>> splitterKFold = ot.KFoldSplitter(sampleSize)
+>>> validation = ot.LinearModelValidation(result, splitterKFold)
+
+Validate the linear model using K-Fold cross-validation and set K.
+
+>>> kFoldParameter = 10
+>>> splitterKFold = ot.KFoldSplitter(sampleSize, kFoldParameter)
+>>> validation = ot.LinearModelValidation(result, splitterKFold)
+
+Draw the validation graph.
+
+>>> graph = validation.drawValidation()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelValidation::getLinearModelResult
+"Get the linear model result.
+
+Returns
+-------
+linearModelResult : :class:`~openturns.LinearModelResult`
+    The linear model result."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelValidation::getSplitter
+"Get the cross-validation method.
+
+Returns
+-------
+splitter : :class:`~openturns.SplitterImplementation`
+    The cross-validation method."
+
+// -------------------------------------v--------------------------------
+
+%feature("docstring") OT::LinearModelValidation::computeR2Score
+"Compute the R2 score.
+
+Returns
+-------
+r2Score : :class:`~openturns.Point`
+    The coefficient of determination R2"
