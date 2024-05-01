@@ -1501,6 +1501,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput", 1000);
   addAsUnsignedInteger("FunctionalChaosSobolIndices-PrintColumnWidth", 15);
 
+  // FunctionalChaosValidation parameters //
+  addAsBool("FunctionalChaosValidation-ModelSelection", false);
+
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
 
@@ -1509,6 +1512,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
   addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
   addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
+
+  // LinearModelValidation parameters //
+  addAsBool("LinearModelValidation-ModelSelection", false);
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
