@@ -122,7 +122,7 @@ Y_test = g(X_test)
 val = ot.MetaModelValidation(X_test, Y_test, metamodel)
 graph = val.drawValidation()
 Q2 = val.computePredictivityFactor()[0]
-graph.setTitle(f"Chaos validation - Q2={Q2*100.0:.2f}%")
+graph.setTitle(f"Chaos validation - Q2={Q2 * 100.0:.2f}%")
 _ = otv.View(graph)
 
 

@@ -125,7 +125,7 @@ Q2
 # %%
 # Plot the observed versus the predicted outputs.
 graph = val.drawValidation()
-graph.setTitle(f"Gauss product N={experiment.getSize()} - Q2={Q2*100:.2f}")
+graph.setTitle(f"Gauss product N={experiment.getSize()} - Q2={Q2 * 100:.2f}")
 view = otv.View(graph)
 
 # %%
@@ -146,7 +146,7 @@ def draw_validation(experiment):
     Q2 = val.computePredictivityFactor()[0]
     graph = val.drawValidation()
     graph.setTitle(
-        f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2*100:.2f}"
+        f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2 * 100:.2f}"
     )
     return graph
 

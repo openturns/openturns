@@ -157,7 +157,7 @@ r = 3
 peaks, clusters = part.getPeakOverThreshold(u, r)
 nc = len(peaks)
 nu = sum([1 if scalTransfDataDJ[i, 0] > u else 0 for i in range(size)])
-print(f"nc={nc} nu={u} theta={nc/nu:.3f}")
+print(f"nc={nc} nu={u} theta={nc / nu:.3f}")
 graph = clusters.draw(u)
 graph.setTitle('Threshold exceedances and clusters by transformed Dow Jones Index series')
 view = otv.View(graph)
