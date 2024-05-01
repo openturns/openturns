@@ -873,6 +873,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
+                      LinearModelValidation.i LinearModelValidation_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
@@ -887,6 +888,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       UnionEvent.i UnionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
+                      FunctionalChaosValidation.i FunctionalChaosValidation_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
 		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                       IntegrationExpansion.i IntegrationExpansion_doc.i.in
