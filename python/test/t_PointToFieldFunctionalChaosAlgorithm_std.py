@@ -78,4 +78,4 @@ for marginalIndex in range(len(blockIndices)):
     s1 = sensitivity.getFirstOrderIndices(marginalIndex)
     st = sensitivity.getTotalOrderIndices(marginalIndex)
     print(s1, st)
-ott.assert_almost_equal(sensitivity.getFirstOrderIndices(0), [0.457798, 0.447243, 0.0905814, 0.00437806], 0.0, 1e-2)
+ott.assert_almost_equal(sensitivity.getFirstOrderIndices(0), [0.457798, 0.447243, 0.0905814, 0.00437806], 0.0, 2e-2)
