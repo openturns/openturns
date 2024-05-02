@@ -13,7 +13,7 @@ ot.RandomGenerator.SetSeed(0)
 mean_target = [0.0, 0.0]
 std_target = [1.0, 1.0]
 rho_target = 0.9
-target_normal = ot.Normal( mean_target, std_target, ot.CorrelationMatrix([[1., rho_target],[rho_target, 1.]]) )
+target_normal = ot.Normal(mean_target, std_target, ot.CorrelationMatrix([[1.0, rho_target], [rho_target, 1.0]]) )
 
 # Initial state of the Gibbs sampler
 initialState = mean_target
@@ -30,7 +30,7 @@ randomVector = ot.RandomVector(ot.Normal())
 # here a Python link function is used. TODO: use a symbolic link function instead 
 def py_link_function(x):
     cond_mean = mean_target[1] + rho_target * std_target[1] * (x[0] - mean_target[0]) / std_target[0]
-    cond_std = std_target[1] * math.sqrt(1. -  rho_target**2)
+    cond_std = std_target[1] * math.sqrt(1.0 -  rho_target**2)
     return [cond_mean, cond_std]
 
 plf = ot.PythonFunction(2, 2, py_link_function)
@@ -40,14 +40,14 @@ rv_sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [1], 
 gibbs = ot.Gibbs([rwmh_sampler, rv_sampler])
 
 # Generate posterior distribution sample
-n = 10000
-Xsample = gibbs.getSample(n+rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
+sampleSize = 10000
+xSample = gibbs.getSample(n + rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
 
 # Compare empirical to theoretical moments
 
-ott.assert_almost_equal(Xsample.computeMean(), mean_target, 0.0, 10.0 / math.sqrt(n))
-ott.assert_almost_equal(Xsample.computeStandardDeviation(), std_target, 0.0, 10.0 / math.sqrt(n))
-ott.assert_almost_equal(Xsample.computeLinearCorrelation()[0,1], rho_target, 0.0, 10.0 / math.sqrt(n))
+ott.assert_almost_equal(xSample.computeMean(), mean_target, 0.0, 10.0 / math.sqrt(sampleSize))
+ott.assert_almost_equal(xSample.computeStandardDeviation(), std_target, 0.0, 10.0 / math.sqrt(sampleSize))
+ott.assert_almost_equal(xSample.computeLinearCorrelation()[0,1], rho_target, 0.0, 10.0 / math.sqrt(sampleSize))
 
 # # this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
 # 1.5.3: Inference for the mean or normal data with known variance

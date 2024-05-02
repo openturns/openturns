@@ -18,8 +18,8 @@ model = ot.Binomial(n, p)
 
 # %%
 # Simulate data and compute analytical posterior
-X = model.getSample(1)
-posterior = ot.Beta(a + X[0,0], b + n - X[0,0], lower, upper)
+x = model.getSample(1)
+posterior = ot.Beta(a + x[0,0], b + n - x[0,0], lower, upper)
 
 # %%
 # Define RVMH sampler
@@ -33,14 +33,14 @@ rvmh_sampler.setLikelihood(model, X, slf)
 
 # %%
 # Generate posterior distribution sample
-N = 10000
-Xsample = rvmh_sampler.getSample(N)
+sampleSize = 10000
+xSample = rvmh_sampler.getSample(sampleSize)
 
 # %%
 # Compare empirical to theoretical moments
 
-ott.assert_almost_equal(Xsample.computeMean(), posterior.getMean(), 0.0, 10.0 / math.sqrt(N))
-ott.assert_almost_equal(Xsample.computeStandardDeviation(), posterior.getStandardDeviation(), 0.0, 10.0 / math.sqrt(N))
+ott.assert_almost_equal(xSample.computeMean(), posterior.getMean(), 0.0, 10.0 / math.sqrt(sampleSize))
+ott.assert_almost_equal(xSample.computeStandardDeviation(), posterior.getStandardDeviation(), 0.0, 10.0 / math.sqrt(sampleSize))
 
 # %%
 randomVector = ot.RandomVector(ot.Normal())
