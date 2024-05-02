@@ -61,6 +61,10 @@
 const double MINLOG = -7.451332191019412076235E2;  // log 2**-1022
 constexpr long double SCIPY_El = 2.718281828459045235360287471352662498L;
 
+#ifndef OPENTURNS_ENABLE_CXX17
+namespace std { template<typename T> inline T clamp(const T & v, const T & lo, const T & hi) { return std::max(std::min(v, hi), lo); }}
+#endif
+
 #include "dd_real.h"
 // #include "unity.h"
 
@@ -822,7 +826,6 @@ namespace cephes {
              */
             double x, logpcdf;
             int iterations = 0;
-            // int function_calls = 0;
             double a = 0, b = 1;
             double maxlogpcdf, psfrootn;
             double dx, dxold;
@@ -927,7 +930,6 @@ namespace cephes {
                 SPECFUN_ASSERT(x > 0);
                 {
                     ThreeProbs probs = _smirnov(n, x0);
-                    // ++function_calls;
                     df = ((pcdf < 0.5) ? (pcdf - probs.cdf) : (probs.sf - psf));
                     dfdx = -probs.pdf;
                 }
