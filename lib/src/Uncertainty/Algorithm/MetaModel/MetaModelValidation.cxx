@@ -67,8 +67,8 @@ MetaModelValidation::MetaModelValidation(const Sample & inputSample,
 
 /* Constructor with parameters */
 MetaModelValidation::MetaModelValidation(
-    const Sample & outputSample,
-    const Sample & metamodelPredictions)
+  const Sample & outputSample,
+  const Sample & metamodelPredictions)
   : PersistentObject()
   , outputSample_(outputSample)
   , metaModelPredictions_(metamodelPredictions)
@@ -219,9 +219,9 @@ void MetaModelValidation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "residual_", residual_ );
-  if (adv.hasAttribute("metaModelPredictions_") && \
-    adv.hasAttribute("meanSquaredError_") && \
-    adv.hasAttribute("r2Score_"))
+  if (adv.hasAttribute("metaModelPredictions_") &&
+      adv.hasAttribute("meanSquaredError_") &&
+      adv.hasAttribute("r2Score_"))
   {
     adv.loadAttribute( "metaModelPredictions_", metaModelPredictions_ );
     adv.loadAttribute( "meanSquaredError_", meanSquaredError_ );

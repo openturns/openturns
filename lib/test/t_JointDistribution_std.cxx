@@ -63,7 +63,7 @@ int main(int, char *[])
     refSkewness.add({0, 0, 0});
     refSkewness.add({0, 0, 0});
     refSkewness.add({-0.213157049688829, 0.0, 0.213157049689032});
-    refSkewness.add({ 0.22711106425,0.22711106425,0.22711106425});
+    refSkewness.add({ 0.22711106425, 0.22711106425, 0.22711106425});
     Collection<Point> refKurtosis;
     refKurtosis.add({3, 3, 3});
     refKurtosis.add({3, 3, 3});
@@ -116,7 +116,7 @@ int main(int, char *[])
     cores.add(UniformOrderStatistics(dim));
     // With a core which support is strictly included in the unit cube
     cores.add(KernelMixture(Beta(2.0, 3.0, 0.2, 0.8), Point(dim, 1.0), Sample(1, dim)));
-    
+
     ResourceMap::SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", true);
     for (UnsignedInteger nCore = 0; nCore < cores.getSize(); ++nCore)
     {
@@ -132,17 +132,17 @@ int main(int, char *[])
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
       // Too slow if nCore == 2
       if (nCore != 2)
-        {
-          fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
-          fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
-        }
+      {
+        fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+        fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
+      }
       fullprint << "Mean " << distribution.getMean() << std::endl;
       if (nCore != 3)
-        {
-          CovarianceMatrix covariance(distribution.getCovariance());
-          covariance.checkSymmetry();
-          assert_almost_equal(covariance, refCovariances[nCore]);
-        }
+      {
+        CovarianceMatrix covariance(distribution.getCovariance());
+        covariance.checkSymmetry();
+        assert_almost_equal(covariance, refCovariances[nCore]);
+      }
       // Is this distribution an elliptical distribution?
       fullprint << "Elliptical distribution= " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 

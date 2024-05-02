@@ -185,8 +185,8 @@ void Bonmin::run()
   {
     const Sample inputHistory(tminlp->getInputHistory());
     setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
-                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+                                   getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                   getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
     result_.setStatus(OptimizationResult::FAILURE);
     std::ostringstream oss;
@@ -219,7 +219,8 @@ void Bonmin::run()
 
   const ::Bonmin::TMINLP::SolverReturn status = tminlp->getStatus();
   const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
-                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"};
+                                        "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"
+                                       };
   result_.setStatusMessage(bonminExitStatus[status]);
   switch (status)
   {

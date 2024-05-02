@@ -127,19 +127,26 @@ muIndices = [0]  # linear
 sigmaIndices = []  # stationary
 xiIndices = []  # stationary
 muLink = ot.SymbolicFunction(["x"], ["1.0*x"])
-estimator_covariate = factory.buildCovariates(fremantle[:, 1], timeStamps, muIndices, sigmaIndices, xiIndices, muLink)
+estimator_covariate = factory.buildCovariates(
+    fremantle[:, 1], timeStamps, muIndices, sigmaIndices, xiIndices, muLink
+)
 beta = estimator_covariate.getOptimalParameter()
 print("beta*=", beta)
 ott.assert_almost_equal(beta, [0.00203333, -2.4751, 0.124301, -0.125008], 1e-2, 1e-2)
 beta_dist = estimator_covariate.getParameterDistribution()
 print("beta dist=", beta_dist)
-assert beta_dist.getImplementation().__class__.__name__ == "Normal", "wrong distribution"
+assert (
+    beta_dist.getImplementation().__class__.__name__ == "Normal"
+), "wrong distribution"
 cov_ref = [
     [3.11388e-09, -6.05561e-06, -1.99653e-08, 2.10413e-07],
     [-6.05561e-06, 0.0117791, 3.93182e-05, -0.000414466],
     [-1.99653e-08, 3.93182e-05, 1.51924e-06, -6.06597e-06],
-    [2.10413e-07, -0.000414466, -6.06597e-06, 8.53944e-05]]
-ott.assert_almost_equal(ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3)
+    [2.10413e-07, -0.000414466, -6.06597e-06, 8.53944e-05],
+]
+ott.assert_almost_equal(
+    ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3
+)
 graph_mu1d = estimator_covariate.drawParameterFunction1D(0)
 graph_mu2d = estimator_covariate.drawParameterFunction2D(0)
 graph_q_mu1d = estimator_covariate.drawQuantileFunction1D(0.9)
@@ -152,19 +159,26 @@ basis = ot.Basis([constant, ot.SymbolicFunction(["t"], ["t"])])
 muIndices = [0, 1]  # linear
 sigmaIndices = [0]  # stationary
 xiIndices = [0]  # stationary
-estimator_timevar = factory.buildTimeVarying(fremantle[:, 1], timeStamps, basis, muIndices, sigmaIndices, xiIndices)
+estimator_timevar = factory.buildTimeVarying(
+    fremantle[:, 1], timeStamps, basis, muIndices, sigmaIndices, xiIndices
+)
 beta = estimator_timevar.getOptimalParameter()
 print("beta*=", beta)
 ott.assert_almost_equal(beta, [1.38216, 0.187033, 0.124317, -0.125086], 1e-2, 1e-2)
 beta_dist = estimator_timevar.getParameterDistribution()
 print("beta dist=", beta_dist)
-assert (beta_dist.getImplementation().__class__.__name__ == "Normal"), "wrong distribution"
+assert (
+    beta_dist.getImplementation().__class__.__name__ == "Normal"
+), "wrong distribution"
 cov_ref = [
     [9.49362e-06, -1.34867e-05, 1.43649e-06, -1.51103e-05],
     [-1.34867e-05, 2.65117e-05, -1.85843e-06, 1.93419e-05],
     [1.43649e-06, -1.85843e-06, 1.52237e-06, -6.07642e-06],
-    [-1.51103e-05, 1.93419e-05, -6.07642e-06, 8.52864e-05]]
-ott.assert_almost_equal(ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3)
+    [-1.51103e-05, 1.93419e-05, -6.07642e-06, 8.52864e-05],
+]
+ott.assert_almost_equal(
+    ot.Matrix(beta_dist.getCovariance()), ot.Matrix(cov_ref), 1e-3, 1e-3
+)
 dist0 = estimator_timevar.getDistribution(t0)
 print(dist0)
 assert dist0.getImplementation().__class__.__name__ == "GeneralizedExtremeValue"

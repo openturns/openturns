@@ -15,7 +15,7 @@ instrumental = ot.Normal(0.0, 1.0)
 sampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
 sampler.setBurnIn(1000)
 s1 = sampler.getSample(2000)
-ott.assert_almost_equal(s1[sampler.getBurnIn():].computeMean()[0], mu, 1e-2, 0.0)
+ott.assert_almost_equal(s1[sampler.getBurnIn() :].computeMean()[0], mu, 1e-2, 0.0)
 
 data = ot.Sample(
     [
@@ -65,8 +65,8 @@ rwmh.setLikelihood(conditional, observations, linkFunction, covariates)
 
 # try to generate a sample
 sample = rwmh.getSample(100000)
-mu = sample[rwmh.getBurnIn():].computeMean()
-sigma = sample[rwmh.getBurnIn():].computeStandardDeviation()
+mu = sample[rwmh.getBurnIn() :].computeMean()
+sigma = sample[rwmh.getBurnIn() :].computeStandardDeviation()
 print("mu=", mu, "sigma=", sigma)
 
 

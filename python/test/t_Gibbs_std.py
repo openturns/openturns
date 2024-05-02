@@ -152,7 +152,7 @@ rwmh_alpha = ot.RandomWalkMetropolisHastings(
 )
 rwmh_alpha.setLikelihood(conditional, x)
 gibbs = ot.Gibbs([rwmh_beta, rwmh_alpha])
-sample = gibbs.getSample(2000)[rwmh_alpha.getBurnIn():]
+sample = gibbs.getSample(2000)[rwmh_alpha.getBurnIn() :]
 print("mu=", sample.computeMean())
 print("sigma=", sample.computeStandardDeviation())
 

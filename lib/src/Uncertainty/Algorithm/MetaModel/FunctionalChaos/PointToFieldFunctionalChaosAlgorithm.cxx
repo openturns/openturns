@@ -58,10 +58,10 @@ PointToFieldFunctionalChaosAlgorithm::PointToFieldFunctionalChaosAlgorithm(const
 {
   if (inputSample.getSize() != outputProcessSample.getSize())
     throw InvalidArgumentException(HERE) << "PointToFieldFunctionalChaosAlgorithm the input sample size (" << inputSample.getSize()
-                                         << ") must match the output sample size ("<<outputProcessSample.getSize() << ")";
+                                         << ") must match the output sample size (" << outputProcessSample.getSize() << ")";
   if (inputSample.getDimension() != distribution.getDimension())
     throw InvalidArgumentException(HERE) << "PointToFieldFunctionalChaosAlgorithm the input sample dimension (" << inputSample.getDimension()
-                                        << ") must match the input distribution dimension (" << distribution.getDimension() << ")";
+                                         << ") must match the input distribution dimension (" << distribution.getDimension() << ")";
 
   // default to one block for all output components
   Indices full(outputProcessSample_.getDimension());
@@ -173,7 +173,7 @@ public:
       inputDescription.add(liftingCollection[i].getInputDescription());
       outputDescription.add(liftingCollection[i].getOutputDescription());
     }
-    
+
     inputDimension_ = inputDescription.getSize();
     outputDimension_ = outputDescription.getSize();
     setInputDescription(inputDescription);
@@ -240,7 +240,10 @@ void PointToFieldFunctionalChaosAlgorithm::run()
   if (recompress_)
   {
     const Scalar cumulatedVariance = eigenValues.norm1();
-    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b) { return a > b; });
+    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b)
+    {
+      return a > b;
+    });
     const UnsignedInteger nbModesMax = std::min(nbModes_, eigenValues.getSize());
     // Find the cut-off in the eigenvalues
     UnsignedInteger K = 0;
@@ -250,7 +253,7 @@ void PointToFieldFunctionalChaosAlgorithm::run()
       selectedVariance += eigenValues[K];
       ++ K;
     }
-    while ((K < nbModesMax-1) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+    while ((K < nbModesMax - 1) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
     LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
     const Scalar lambdaCut = eigenValues[K];

@@ -264,8 +264,17 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
         print(f"normMeth = {normMeth}, initPoint = {initPoint}")
         # The ot.Function() is the identity function.
         result = factory.buildTimeVarying(
-            sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-            ot.Function(), ot.Function(), ot.Function(), initPoint, normMeth
+            sample,
+            timeStamps,
+            basis,
+            muIndices,
+            sigmaIndices,
+            xiIndices,
+            ot.Function(),
+            ot.Function(),
+            ot.Function(),
+            initPoint,
+            normMeth,
         )
         beta = result.getOptimalParameter()
         print(f"beta = {beta}")
@@ -275,8 +284,17 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
 # According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
 # This initial point is cheaper than the *Static* one as it requires no optimization computation.
 result_NonStatLL = factory.buildTimeVarying(
-    sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-    ot.Function(), ot.Function(), ot.Function(), "Gumbel", "MinMax"
+    sample,
+    timeStamps,
+    basis,
+    muIndices,
+    sigmaIndices,
+    xiIndices,
+    ot.Function(),
+    ot.Function(),
+    ot.Function(),
+    "Gumbel",
+    "MinMax",
 )
 beta = result_NonStatLL.getOptimalParameter()
 print("Linear mu(t) model : ")
@@ -422,7 +440,17 @@ basis = ot.Basis(
     [constant, ot.SymbolicFunction(["t"], ["t"]), ot.SymbolicFunction(["t"], ["t^2"])]
 )
 result_NonStatLL_2 = factory.buildTimeVarying(
-    sample, timeStamps, basis, [0, 1, 2], [0], [0], ot.Function(), ot.Function(), ot.Function(), "Gumbel", "MinMax"
+    sample,
+    timeStamps,
+    basis,
+    [0, 1, 2],
+    [0],
+    [0],
+    ot.Function(),
+    ot.Function(),
+    ot.Function(),
+    "Gumbel",
+    "MinMax",
 )
 beta = result_NonStatLL_2.getOptimalParameter()
 print("Quadratic mu(t) model : ")

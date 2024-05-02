@@ -60,7 +60,7 @@ dimension = ds.data.getDimension() - 1
 print("dimension = ", dimension)
 sampleSize = ds.data.getSize()
 print("sampleSize = ", sampleSize)
-inputSample = ds.data[:, 1: dimension + 1]
+inputSample = ds.data[:, 1 : dimension + 1]
 print("Input :")
 print(inputSample[:5])
 outputSample = ds.data[:, 0]

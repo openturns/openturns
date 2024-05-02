@@ -122,8 +122,8 @@ void MultiStart::run()
 
       if (keepResults_) resultCollection_.add(result);
       result_.store(result.getOptimalPoint(), result.getOptimalValue(),
-        result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
-        solver.getMaximumConstraintError());
+                    result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
+                    solver.getMaximumConstraintError());
       result_.setStatusMessage(result.getStatusMessage());
     }
     catch (const Exception & ex)

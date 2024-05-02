@@ -154,7 +154,7 @@ private:
   Scalar logNormalization_ = 0.0;
 
   Sample vertices_;
-  
+
   MeshDomain simplex_;
 }; /* class UniformOrderStatistics */
 

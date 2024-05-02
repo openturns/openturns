@@ -45,7 +45,18 @@ for useQuantile in [True, False]:
 # from quantiles
 ref_dist = ot.Normal()
 lowerBound = -3.0
-probabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 - ot.SpecFunc.ScalarEpsilon]
+probabilities = [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0 - ot.SpecFunc.ScalarEpsilon,
+]
 quantiles = [ref_dist.computeQuantile(pi)[0] for pi in probabilities]
 inf_distribution = ot.HistogramFactory().buildFromQuantiles(
     lowerBound, probabilities, quantiles

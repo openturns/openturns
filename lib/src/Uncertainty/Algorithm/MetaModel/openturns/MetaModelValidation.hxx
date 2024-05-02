@@ -62,7 +62,7 @@ public:
   /** Sample accessors */
   virtual Sample getOutputSample() const;
   virtual Sample getMetamodelPredictions() const;
-  
+
   /** Compute R2 score */
   Point computeR2Score() const;
 

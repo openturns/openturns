@@ -49,6 +49,7 @@ covmodel = ot.UserDefinedCovarianceModel(mesh, covariance)
 # Draw the covariance model as a function
 # ---------------------------------------
 
+
 # %%
 # Define the function to draw
 def f(x):
@@ -67,7 +68,9 @@ view = viewer.View(cov_graph)
 
 # %%
 # Draw the function in a filled contour graph
-cov_graph = func.draw(0, 1, 0, [0] * 2, [-a] * 2, [a] * 2, [512] * 2, ot.GraphImplementation.NONE, True)
+cov_graph = func.draw(
+    0, 1, 0, [0] * 2, [-a] * 2, [a] * 2, [512] * 2, ot.GraphImplementation.NONE, True
+)
 view = viewer.View(cov_graph)
 
 # %%
@@ -85,6 +88,10 @@ plt.matshow(covariance)
 # To obtain the correct graduations we use the extent argument.
 # We also change the colormap used.
 pas = 2 * a / (N - 1)
-plt.matshow(covariance, cmap='gray', origin='lower',
-            extent=(-a - pas / 2, a + pas / 2, -a - pas / 2, a + pas / 2))
+plt.matshow(
+    covariance,
+    cmap="gray",
+    origin="lower",
+    extent=(-a - pas / 2, a + pas / 2, -a - pas / 2, a + pas / 2),
+)
 plt.show()

@@ -29,7 +29,7 @@ static const Factory<HSICVStat> Factory_HSICVStat;
 
 /* Default constructor */
 HSICVStat::HSICVStat()
-: HSICStatImplementation()
+  : HSICStatImplementation()
 {
   // Nothing
 }

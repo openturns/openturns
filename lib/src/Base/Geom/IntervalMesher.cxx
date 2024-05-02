@@ -340,7 +340,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2) + vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.125;
 
             // center of faces ABDC were already added, reuse the center of the opposite face of the adjacent cube
-            const UnsignedInteger centerABDCIndex = (k > 0) ? vertexIndex - 4 * n * m : mp1np1*(p + 1) + i + j * m;
+            const UnsignedInteger centerABDCIndex = (k > 0) ? vertexIndex - 4 * n * m : mp1np1 * (p + 1) + i + j * m;
             // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
             simplices(simplexIndex, 0) = centerABDCIndex;
             simplices(simplexIndex, 1) = b;
@@ -391,7 +391,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             ++simplexIndex;
 
             // center of faces ACGE were already added, reuse the center of the opposite face of the adjacent cube
-            const UnsignedInteger centerACGEIndex = (i > 0) ? vertexIndex - 4 : mp1np1*(p + 1) + m * n + k * n + j;
+            const UnsignedInteger centerACGEIndex = (i > 0) ? vertexIndex - 4 : mp1np1 * (p + 1) + m * n + k * n + j;
             // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
             simplices(simplexIndex, 0) = centerACGEIndex;
             simplices(simplexIndex, 1) = c;
@@ -442,7 +442,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             ++simplexIndex;
 
             // center of faces ABFE were already added, reuse the center of the opposite face of the adjacent cube
-            const UnsignedInteger centerABFEIndex = (j > 0) ? vertexIndex - 4 * m : mp1np1*(p + 1) + m * n + p * n + k * m + i;
+            const UnsignedInteger centerABFEIndex = (j > 0) ? vertexIndex - 4 * m : mp1np1 * (p + 1) + m * n + p * n + k * m + i;
             // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
             simplices(simplexIndex, 0) = centerABFEIndex;
             simplices(simplexIndex, 1) = a;

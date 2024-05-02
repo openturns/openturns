@@ -40,11 +40,11 @@ CovariatesResult::CovariatesResult()
 }
 
 CovariatesResult::CovariatesResult(const DistributionFactory & factory,
-                                     const Function & parameterFunction,
-                                     const Sample & covariates,
-                                     const Distribution & parameterDistribution,
-                                     const LinearFunction & normalizationFunction,
-                                     const Scalar logLikelihood)
+                                   const Function & parameterFunction,
+                                   const Sample & covariates,
+                                   const Distribution & parameterDistribution,
+                                   const LinearFunction & normalizationFunction,
+                                   const Scalar logLikelihood)
   : PersistentObject()
   , factory_(factory)
   , parameterFunction_(parameterFunction)
@@ -140,7 +140,7 @@ private:
 /* Draw parameter according to 1 or 2 covariates
    the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawParameterFunction1D(const UnsignedInteger parameterIndex,
-                                                     const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   if (parameterIndex > 2)
     throw InvalidArgumentException(HERE) << "CovariatesResult: parameter index (" << parameterIndex << ") should be < 3";
@@ -167,7 +167,7 @@ GridLayout CovariatesResult::drawParameterFunction1D(const UnsignedInteger param
 }
 
 GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger parameterIndex,
-                                                     const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   if (covariatesDimension < 2)
@@ -203,7 +203,7 @@ GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger param
 /* Draw quantile according to 1 or 2 covariates
     the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
-                                                    const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   if (covariatesDimension < 2)
@@ -231,7 +231,7 @@ GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
 }
 
 GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
-                                                    const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   Point referencePoint(referencePoint0);
@@ -262,8 +262,8 @@ GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
 String CovariatesResult::__repr__() const
 {
   return OSS() << getClassName()
-              << " parameterDistribution="<< parameterDistribution_
-              << " logLikelihood=" << logLikelihood_;
+         << " parameterDistribution=" << parameterDistribution_
+         << " logLikelihood=" << logLikelihood_;
 }
 
 Function CovariatesResult::getParameterFunction() const

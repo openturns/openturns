@@ -24,7 +24,7 @@ from openturns.usecases import linthurst
 ds = linthurst.Linthurst()
 dimension = ds.data.getDimension() - 1
 
-input_sample = ds.data[:, 1: dimension + 1]
+input_sample = ds.data[:, 1 : dimension + 1]
 print("Input :")
 print(input_sample[:5])
 output_sample = ds.data[:, 0]

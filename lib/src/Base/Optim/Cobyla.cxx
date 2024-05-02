@@ -225,7 +225,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
       if (!SpecFunc::IsNormal(inP[i]))
         throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
-    // evaluate the function on the clipped point (still penalized if outside the bounds) 
+    // evaluate the function on the clipped point (still penalized if outside the bounds)
     Point inClip(inP);
     if (problem.hasBounds())
     {

@@ -59,7 +59,7 @@ int main(int, char *[])
     assert_almost_equal(optimizedCovarianceModel.getScale(), Point({1.34, 1.34, 1.34}), 0.2, 0.0);
     assert_almost_equal(std::log10(optimizedCovarianceModel.getNuggetFactor()), -1.9, 0.25, 0.0);
 
-    // Product covariance kernel 
+    // Product covariance kernel
     // (with SquaredExponential => identical to the first)
     Collection<CovarianceModel> collection({SquaredExponential(), SquaredExponential(), SquaredExponential()});
     ProductCovarianceModel product(collection);
