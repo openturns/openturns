@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+
 import openturns as ot
 import openturns.testing as ott
 import math
@@ -13,7 +14,11 @@ ot.RandomGenerator.SetSeed(0)
 mean_target = [0.0, 0.0]
 std_target = [1.0, 1.0]
 rho_target = 0.9
-target_normal = ot.Normal(mean_target, std_target, ot.CorrelationMatrix([[1.0, rho_target], [rho_target, 1.0]]) )
+target_normal = ot.Normal(
+    mean_target,
+    std_target,
+    ot.CorrelationMatrix([[1.0, rho_target], [rho_target, 1.0]]),
+)
 
 # Initial state of the Gibbs sampler
 initialState = mean_target
@@ -21,17 +26,24 @@ initialState = mean_target
 # Define RWMH sampler for first coordinate
 proposal_std = 0.1
 proposal = ot.Normal(0.0, proposal_std)
-rwmh_sampler = ot.RandomWalkMetropolisHastings(target_normal, initialState, proposal, [0])
+rwmh_sampler = ot.RandomWalkMetropolisHastings(
+    target_normal, initialState, proposal, [0]
+)
 
 # Define exacte sampler for second coordinate
 randomVector = ot.RandomVector(ot.Normal())
 
+
 # Define link function, implementing the Gaussian conditioning formulae
-# here a Python link function is used. TODO: use a symbolic link function instead 
+# here a Python link function is used. TODO: use a symbolic link function instead
 def py_link_function(x):
-    cond_mean = mean_target[1] + rho_target * std_target[1] * (x[0] - mean_target[0]) / std_target[0]
-    cond_std = std_target[1] * math.sqrt(1.0 -  rho_target**2)
+    cond_mean = (
+        mean_target[1]
+        + rho_target * std_target[1] * (x[0] - mean_target[0]) / std_target[0]
+    )
+    cond_std = std_target[1] * math.sqrt(1.0 - rho_target**2)
     return [cond_mean, cond_std]
+
 
 plf = ot.PythonFunction(2, 2, py_link_function)
 rv_sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [1], plf)
@@ -41,15 +53,24 @@ gibbs = ot.Gibbs([rwmh_sampler, rv_sampler])
 
 # Generate posterior distribution sample
 sampleSize = 10000
-xSample = gibbs.getSample(n + rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
+xSample = gibbs.getSample(sampleSize + rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
 
 # Compare empirical to theoretical moments
 
-ott.assert_almost_equal(xSample.computeMean(), mean_target, 0.0, 10.0 / math.sqrt(sampleSize))
-ott.assert_almost_equal(xSample.computeStandardDeviation(), std_target, 0.0, 10.0 / math.sqrt(sampleSize))
-ott.assert_almost_equal(xSample.computeLinearCorrelation()[0,1], rho_target, 0.0, 10.0 / math.sqrt(sampleSize))
+ott.assert_almost_equal(
+    xSample.computeMean(), mean_target, 0.0, 10.0 / math.sqrt(sampleSize)
+)
+ott.assert_almost_equal(
+    xSample.computeStandardDeviation(), std_target, 0.0, 10.0 / math.sqrt(sampleSize)
+)
+ott.assert_almost_equal(
+    xSample.computeLinearCorrelation()[0, 1],
+    rho_target,
+    0.0,
+    10.0 / math.sqrt(sampleSize),
+)
 
-# # this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
+# This analytical example is taken from p. 9 of "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
 # 1.5.3: Inference for the mean or normal data with known variance
 
 # Variable of interest: Y=N(mu, sigma)
@@ -153,8 +174,8 @@ class CensoredWeibull(ot.PythonDistribution):
         if not (self.alpha > 0.0 and self.beta > 0.0):
             return float("-inf")
         log_pdf = -((x[0] / self.beta) ** self.alpha)
-        log_pdf += (self.alpha - 1) * m.log(x[0] / self.beta) * x[1]
-        log_pdf += m.log(self.alpha / self.beta) * x[1]
+        log_pdf += (self.alpha - 1) * math.log(x[0] / self.beta) * x[1]
+        log_pdf += math.log(self.alpha / self.beta) * x[1]
         return log_pdf
 
     def setParameter(self, parameter):
@@ -237,6 +258,8 @@ rwmh = ot.RandomWalkMetropolisHastings(
     ot.Uniform(),
     [3],
 )
+rwmh.setBurnIn(0)  # otherwise burn-in distorts the test
+
 gibbs = ot.Gibbs([rvmh1, rvmh2, rwmh])
 gibbs.getRealization()
 assert gibbs.getRecomputeLogPosterior() == [1, 0, 1]

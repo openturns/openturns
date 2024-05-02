@@ -20,7 +20,7 @@ model = ot.Binomial(n, p)
 # %%
 # Simulate data and compute analytical posterior
 x = model.getSample(1)
-posterior = ot.Beta(a + x[0,0], b + n - x[0,0], lower, upper)
+posterior = ot.Beta(a + x[0, 0], b + n - x[0, 0], lower, upper)
 
 # %%
 # Define IMH sampler
@@ -28,8 +28,8 @@ initialState = [p]
 imh_sampler = ot.IndependentMetropolisHastings(
     prior, initialState, ot.Uniform(-1.0, 1.0), [0]
 )
-slf = ot.SymbolicFunction(['x'], [str(n),'x'])
-imh_sampler.setLikelihood(model, X, slf)
+slf = ot.SymbolicFunction(["x"], [str(n), "x"])
+imh_sampler.setLikelihood(model, x, slf)
 
 # %%
 # Generate posterior distribution sample
@@ -39,8 +39,15 @@ xSample = imh_sampler.getSample(sampleSize)
 # %%
 # Compare empirical to theoretical moments
 
-ott.assert_almost_equal(Xsample.computeMean(), posterior.getMean(), 0.0, 10.0 / math.sqrt(sampleSize))
-ott.assert_almost_equal(Xsample.computeStandardDeviation(), posterior.getStandardDeviation(), 0.0, 10.0 / math.sqrt(sampleSize))
+ott.assert_almost_equal(
+    xSample.computeMean(), posterior.getMean(), 0.0, 10.0 / math.sqrt(sampleSize)
+)
+ott.assert_almost_equal(
+    xSample.computeStandardDeviation(),
+    posterior.getStandardDeviation(),
+    0.0,
+    10.0 / math.sqrt(sampleSize),
+)
 
 # %%
 # Draw the unnormalized probability density
