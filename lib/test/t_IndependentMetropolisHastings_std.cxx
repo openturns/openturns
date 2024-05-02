@@ -48,6 +48,8 @@ int main(int, char *[])
     Binomial model(n, p);
 
     // Simulate data and compute analytical posterior
+    // cf. Wikipedia table of conjugate distributions
+    // https://en.wikipedia.org/wiki/Conjugate_prior#Table_of_conjugate_distributions
     Sample X(model.getSample(1));
     Beta posterior(a + X(0,0), b + n - X(0,0), lower, upper);
 
