@@ -69,7 +69,7 @@ int main(int, char *[])
     fullprint << "ST1 = " << std::fixed << std::setprecision(4) << ST1 << std::endl;
     fullprint << "ST2 = " << std::fixed << std::setprecision(4) << ST2 << std::endl;
     fullprint << "ST3 = " << std::fixed << std::setprecision(4) << ST3 << std::endl;
-    
+
     Function model(ishigami.getModel());  // Create the Ishigami function
     JointDistribution distribution(ishigami.getInputDistribution());  // Create the input distribution
 

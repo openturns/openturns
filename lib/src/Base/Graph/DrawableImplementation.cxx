@@ -1264,25 +1264,29 @@ Bool DrawableImplementation::IsValidPattern(const String & pattern)
 }
 
 /* Check validity of color map name */
-Bool DrawableImplementation::IsValidColorMap(const String& colorMap) {
+Bool DrawableImplementation::IsValidColorMap(const String& colorMap)
+{
   InitializeValidParameterList();
   return ValidColorMaps.contains(colorMap);
 }
 
 /* Check validity of norm */
-Bool DrawableImplementation::IsValidNorm(const String& norm) {
+Bool DrawableImplementation::IsValidNorm(const String& norm)
+{
   InitializeValidParameterList();
   return ValidNorms.contains(norm);
 }
 
 /* Check validity of extend */
-Bool DrawableImplementation::IsValidExtend(const String& extend) {
+Bool DrawableImplementation::IsValidExtend(const String& extend)
+{
   InitializeValidParameterList();
   return ValidExtends.contains(extend);
 }
 
 /* Check validity of color bar position */
-Bool DrawableImplementation::IsValidColorBarPosition(const String& position) {
+Bool DrawableImplementation::IsValidColorBarPosition(const String& position)
+{
   InitializeValidParameterList();
   return ValidColorBarPositions.contains(position);
 }

@@ -61,17 +61,17 @@ public:
 
   /** Accessor to results */
   NAISResult getResult() const;
-  
-  
+
+
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
-  
+
   /** Accessor to the achieved number of steps */
   UnsignedInteger getStepsNumber() const;
-  
+
   /** Keep event sample */
   void setKeepSample(const Bool keepSample);
-   
+
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
@@ -101,7 +101,7 @@ private:
 
   // Result of NAIS algorithm
   NAISResult naisResult_;
-  
+
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds
@@ -110,8 +110,8 @@ private:
   Bool keepSample_ = false;
   PersistentCollection<Sample> inputSample_;
   PersistentCollection<Sample> outputSample_;
-  
-  
+
+
 }; /* class NAIS */
 
 END_NAMESPACE_OPENTURNS

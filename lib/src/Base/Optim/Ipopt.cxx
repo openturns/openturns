@@ -113,7 +113,7 @@ void Ipopt::run()
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
- 
+
   // Create BonminProblem
   ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
@@ -223,7 +223,7 @@ void Ipopt::run()
       statusMessage = "Internal Error";
       break;
     default:
-      statusMessage = (OSS() << "Unknown status: "<< status);
+      statusMessage = (OSS() << "Unknown status: " << status);
       break;
   }
   result_.setStatusMessage(statusMessage);

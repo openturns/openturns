@@ -79,7 +79,7 @@ public:
   /** Maximum likelihood */
 protected:
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimatorWithStartingPoint(const Sample & sample,
-                                                                                                    const Point & startingPoint, const Scalar u) const;
+      const Point & startingPoint, const Scalar u) const;
 public:
   DistributionFactoryLikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample, const Scalar u) const;
   GeneralizedPareto buildMethodOfLikelihoodMaximization(const Sample & sample, const Scalar u) const;
@@ -120,9 +120,9 @@ public:
 
   /** Return level via profiled likelihood */
   ProfileLikelihoodResult buildReturnLevelProfileLikelihoodEstimator(const Sample & sample,
-                                                                     const Scalar u, const Scalar m, const Scalar theta = 1.0) const;
+      const Scalar u, const Scalar m, const Scalar theta = 1.0) const;
   GeneralizedPareto buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u,
-                                                      const Scalar m, const Scalar theta = 1.0) const;
+      const Scalar m, const Scalar theta = 1.0) const;
 
 private:
 

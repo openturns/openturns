@@ -1022,7 +1022,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
-  
+
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
@@ -1500,7 +1500,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
-  
+
   // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);

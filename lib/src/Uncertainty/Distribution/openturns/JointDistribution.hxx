@@ -51,7 +51,7 @@ public:
 
   /** Default constructor */
   JointDistribution(const DistributionCollection & coll,
-                       const Distribution & copula);
+                    const Distribution & copula);
 
 
   /** Comparison operator */
@@ -230,7 +230,7 @@ private:
 class OT_API ComposedDistribution
   : public JointDistribution
 {
-CLASSNAME
+  CLASSNAME
 public:
   ComposedDistribution()
     : JointDistribution() {}

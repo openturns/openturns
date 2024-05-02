@@ -21,7 +21,9 @@ print("Distribution from parameters=", estimatedDistribution)
 estimatedSmoothedUniform = factory.buildAsSmoothedUniform(sample)
 print("SmoothedUniform          =", distribution)
 print("Estimated uniform=", estimatedSmoothedUniform)
-ott.assert_almost_equal(estimatedSmoothedUniform.getParameter(), distribution.getParameter(), 1e-2, 1e-2)
+ott.assert_almost_equal(
+    estimatedSmoothedUniform.getParameter(), distribution.getParameter(), 1e-2, 1e-2
+)
 estimatedSmoothedUniform = factory.buildAsSmoothedUniform()
 print("Default uniform=", estimatedSmoothedUniform)
 estimatedSmoothedUniform = factory.buildAsSmoothedUniform(distribution.getParameter())

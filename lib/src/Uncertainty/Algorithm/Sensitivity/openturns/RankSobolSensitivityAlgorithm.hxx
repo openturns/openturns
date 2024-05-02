@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of Rank Sobol Sensitivity Algorithm 
+ *  @brief Implementation of Rank Sobol Sensitivity Algorithm
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -47,13 +47,13 @@ public:
 
   /** Virtual constructor */
   RankSobolSensitivityAlgorithm * clone() const override;
-  
+
   /** Method that draw (plot) the sensitivity graph */
   Graph draw() const override;
-                                 
+
   /** First order indices accessor */
   Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
-  
+
   /** String converter */
   String __repr__() const override;
 
@@ -61,27 +61,27 @@ public:
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;  
-  
+  void load(Advocate & adv) override;
+
   /** Second order indices accessor */
   SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
-  
+
   /** Total order indices accessor */
   Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const override;
 
   /** Interval for the total order indices accessor */
   Interval getTotalOrderIndicesInterval() const override;
-  
+
   /** Aggregated total order indices accessor for multivariate samples */
   Point getAggregatedTotalOrderIndices() const override;
-  
+
   /** Whether to use bootstrap or asymptotic distribution */
   void setUseAsymptoticDistribution(Bool ) override {};
   Bool getUseAsymptoticDistribution() const override;
 
   /** Estimator distribution accessor */
   Distribution getTotalOrderIndicesDistribution() const override;
-  
+
   /** Design accessor */
   void setDesign(const Sample & inputDesign,
                  const Sample & outputDesign,
@@ -89,7 +89,7 @@ public:
 protected:
 
   Sample computeIndices() const;
-  
+
   /** void method that computes bootstrap confidence interval */
   void computeBootstrapDistribution() const override;
 
@@ -98,16 +98,16 @@ private:
   static Graph DrawSobolFirstOrderIndices(const Description & inputDescription,
                                           const Point & firstOrderIndices,
                                           const Interval & firstOrderConfidenceInterval = Interval());
-                 
+
   /** Internal method that compute Vi/VTi using a sample */
   Sample computeIndices(const Sample & sample, Sample & VTi) const override;
-  
+
   Sample computeIndicesFromSample(const Sample &, const Sample &) const;
-  
+
   /** Function that computes aggregated indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
                                  const Point & variance) const;
-                               
+
   /** void method that computes asymptotic distribution */
   void computeAsymptoticDistribution() const override {};
 
@@ -116,7 +116,7 @@ private:
 
   /** Method that draw  the sensitivity graph of a fixed marginal */
   Graph draw(const UnsignedInteger marginalIndex) const override;
-  
+
 }; /* class RankSobolSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

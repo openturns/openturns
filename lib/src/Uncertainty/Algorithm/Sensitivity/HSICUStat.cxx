@@ -30,7 +30,7 @@ static const Factory<HSICUStat> Factory_HSICUStat;
 
 /* Default constructor */
 HSICUStat::HSICUStat()
-: HSICStatImplementation()
+  : HSICStatImplementation()
 {
   // Nothing
 }

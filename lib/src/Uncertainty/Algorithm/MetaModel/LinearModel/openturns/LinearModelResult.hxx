@@ -117,7 +117,7 @@ public:
 
   /** Adjusted R-squared */
   Scalar getAdjustedRSquared() const;
-  
+
   /** Least squares method accessor */
   virtual LeastSquaresMethod buildMethod() const;
 
@@ -175,7 +175,7 @@ private:
 
   /** involvesModelSelection */
   Bool involvesModelSelection_ = false;
-  
+
 }; /* class LinearModelResult */
 
 END_NAMESPACE_OPENTURNS

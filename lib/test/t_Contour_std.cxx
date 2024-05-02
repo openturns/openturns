@@ -71,7 +71,7 @@ int main(int, char *[])
     myContour.setExtend("min");
     myContour.setColorBarPosition("left");
     myContour.setColorMapNorm("symlog");
-    myContour.setHatches(Description({ "/","\\","+/","*" }));
+    myContour.setHatches(Description({ "/", "\\", "+/", "*" }));
     myContour.setIsFilled(true);
     fullprint << "filled contour=" << myContour << std::endl;
 

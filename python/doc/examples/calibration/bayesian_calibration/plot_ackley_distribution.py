@@ -174,7 +174,9 @@ graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 line = ot.Curve([[-3, 1.5], [3, 1.5]], "black", "dashed", 2)
 graph.add(line)
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2).getDrawable(0).getImplementation()
-contour.setLabels([format_float_scientific(float(v), precision=1) for v in contour.getLabels()])
+contour.setLabels(
+    [format_float_scientific(float(v), precision=1) for v in contour.getLabels()]
+)
 contour.setColorMapNorm("log")
 graph.add(contour)
 view = View(graph)
@@ -205,7 +207,9 @@ line = ot.Curve([[0.5, -3], [0.5, 3]], "black", "dashed", 2)
 graph.add(line)
 graph.setLegendPosition("upper right")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2).getDrawable(0).getImplementation()
-contour.setLabels([format_float_scientific(float(v), precision=1) for v in contour.getLabels()])
+contour.setLabels(
+    [format_float_scientific(float(v), precision=1) for v in contour.getLabels()]
+)
 contour.setColorMapNorm("log")
 graph.add(contour)
 view = View(graph)
@@ -255,7 +259,9 @@ print("Acceptance rates: {} and {}".format(rate_gmh_0, rate_gmh_1))
 title = "Ackley PDF (up to a constant factor) and Metropolis-Hastings sample"
 graph = ot.Graph(title, "$X_0$", "$X_1$", True)
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2).getDrawable(0).getImplementation()
-contour.setLabels([format_float_scientific(float(v), precision=1) for v in contour.getLabels()])
+contour.setLabels(
+    [format_float_scientific(float(v), precision=1) for v in contour.getLabels()]
+)
 print(contour.getLabels())
 contour.setColorMapNorm("log")
 graph.add(contour)

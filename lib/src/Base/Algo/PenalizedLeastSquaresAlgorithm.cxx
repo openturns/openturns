@@ -289,7 +289,7 @@ Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collecti
 
 Point PenalizedLeastSquaresAlgorithm::getErrorHistory() const
 {
-  return Point();  
+  return Point();
 }
 
 Bool PenalizedLeastSquaresAlgorithm::involvesModelSelection() const

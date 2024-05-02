@@ -72,19 +72,19 @@ int main(int, char *[])
     Binomial binomial;
     for (UnsignedInteger i = 0; i < dataset.getSize(); ++ i)
     {
-        const UnsignedInteger N = (UnsignedInteger)dataset(i, 1);
-        binomial.setN(N);
-        binomial.setP(dataset(i, 2));
-        const Scalar x = dataset(i, 0);
-        const Scalar pdf = dataset(i, 3);
-        const Scalar cdf = dataset(i, 4);
-        const Scalar surv = dataset(i, 5);
-        std::cout << "i = " << i << " x = " << x << " N = " << N << " p = " << binomial.getP() << std::endl;
-        assert_almost_equal(binomial.computePDF(x), pdf, precision, 0.0);
-        assert_almost_equal(binomial.computeCDF(x), cdf, precision, 0.0);
-        assert_almost_equal(binomial.computeSurvivalFunction(x), surv, precision, 0.0);
-        if (i > 0)  // FIXME: test fails for i = 0 (x=0, N=10, P=0)
-          assert_almost_equal(binomial.computeQuantile(cdf), Point({x}), 0.0, 1.0); // Can be off by 1 unit
+      const UnsignedInteger N = (UnsignedInteger)dataset(i, 1);
+      binomial.setN(N);
+      binomial.setP(dataset(i, 2));
+      const Scalar x = dataset(i, 0);
+      const Scalar pdf = dataset(i, 3);
+      const Scalar cdf = dataset(i, 4);
+      const Scalar surv = dataset(i, 5);
+      std::cout << "i = " << i << " x = " << x << " N = " << N << " p = " << binomial.getP() << std::endl;
+      assert_almost_equal(binomial.computePDF(x), pdf, precision, 0.0);
+      assert_almost_equal(binomial.computeCDF(x), cdf, precision, 0.0);
+      assert_almost_equal(binomial.computeSurvivalFunction(x), surv, precision, 0.0);
+      if (i > 0)  // FIXME: test fails for i = 0 (x=0, N=10, P=0)
+        assert_almost_equal(binomial.computeQuantile(cdf), Point({x}), 0.0, 1.0); // Can be off by 1 unit
     }
 
     // 2147483647 is the maximum integer.

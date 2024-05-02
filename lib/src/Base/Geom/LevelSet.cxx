@@ -43,7 +43,7 @@ static const Factory<LevelSet> Factory_LevelSet;
 LevelSet::LevelSet()
   : DomainImplementation(1)
   , function_(SymbolicFunction(Description({"x"}), Description({"1.0"})))
-  , operator_(LessOrEqual())
+, operator_(LessOrEqual())
 {
   // Nothing to do
 }

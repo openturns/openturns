@@ -36,14 +36,16 @@ Y = im.model(X)
 # Estimate Sobol' first order indices via rank-based algorithm.
 mySobol = otexp.RankSobolSensitivityAlgorithm(X, Y)
 indices = mySobol.getFirstOrderIndices()
-print('First order indices:', indices)
+print("First order indices:", indices)
 
 # %%
 # Draw Sobol' indices.
 #
 # Options for confidence interval estimation can be defined.
-ot.ResourceMap.SetAsUnsignedInteger('SobolIndicesAlgorithm-DefaultBootstrapSize', 200)
-ot.ResourceMap.SetAsScalar('RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio', 0.85)
+ot.ResourceMap.SetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 200)
+ot.ResourceMap.SetAsScalar(
+    "RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.85
+)
 
 # %%
 # if SobolIndicesAlgorithm-DefaultBootstrapSize > 1, the draw() method will call bootstrap method to compute the confidence intervals.
@@ -52,7 +54,7 @@ graph = mySobol.draw()
 graph.setTitle("Sobol' indices")
 view = viewer.View(graph)
 
-print('confidence intervals:', mySobol.getFirstOrderIndicesInterval())
+print("confidence intervals:", mySobol.getFirstOrderIndicesInterval())
 
 # %%
 # It is possible that Sobol' indices estimates take negative values, that is inconsistent with the theory. Therefore, a larger number of samples is required to get consistent indices.

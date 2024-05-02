@@ -433,8 +433,8 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   const Scalar zMax = sample.getMax()[0];
 
   Description formulas(2);
-  formulas[0] = OSS() << "sigma + xi * (" << zMax << " - " << u <<")";
-  formulas[1] = OSS() << "sigma + xi * (" << zMin << " - " << u <<")";
+  formulas[0] = OSS() << "sigma + xi * (" << zMax << " - " << u << ")";
+  formulas[1] = OSS() << "sigma + xi * (" << zMin << " - " << u << ")";
   const SymbolicFunction constraint(Description({"sigma", "xi"}), formulas);
   problem.setInequalityConstraint(constraint);
 
@@ -548,8 +548,8 @@ public:
 
     // 1+xi*zi/sigma > 0
     Description formulas(2);
-    formulas[0] = OSS() << "sigma + "<<xi0<<" * (" << zMax_ << " - " << u_ << ")";
-    formulas[1] = OSS() << "sigma + "<<xi0<<" * (" << zMin_ << " - " << u_ << ")";
+    formulas[0] = OSS() << "sigma + " << xi0 << " * (" << zMax_ << " - " << u_ << ")";
+    formulas[1] = OSS() << "sigma + " << xi0 << " * (" << zMin_ << " - " << u_ << ")";
     const SymbolicFunction constraint(Description({"sigma"}), formulas);
     problem.setInequalityConstraint(constraint);
 
@@ -755,7 +755,7 @@ class GeneralizedParetoCovariatesLikelihoodEvaluation : public EvaluationImpleme
 {
 public:
   GeneralizedParetoCovariatesLikelihoodEvaluation(const Sample & sample,
-                                                  const Scalar u,
+      const Scalar u,
       const Matrix & sigmaCovariates,
       const Matrix & xiCovariates,
       const Function & sigmaLink,
@@ -788,8 +788,8 @@ public:
   UnsignedInteger getOutputDimension() const override
   {
     return 3;
-  } 
-  
+  }
+
   Point operator() (const Point & beta) const override
   {
     // Sigma
@@ -900,7 +900,7 @@ Point GeneralizedParetoPDFEvaluation::X_;
 
 /** Covariates */
 CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample,
-                                                           const Scalar u,
+    const Scalar u,
     const Sample & covariates0,
     const Indices & sigmaIndices0,
     const Indices & xiIndices0,
@@ -1116,7 +1116,7 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
   for (UnsignedInteger i = 0; i < xiDim; ++ i)
     if (xiIndices[i] == constantCovariateIndex)
       optimalBeta[shift + i] -= offset;
-  
+
   LOGINFO(OSS(false) << "Optimal unnormalized coefficients=" << optimalBeta);
 
   // Build the theta function which maps a dim(covariates) vector into a (sigma, xi, u) vector.
@@ -1146,7 +1146,7 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
 
   // The theta function is the composition between the inverse link function and the linear function
   if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
-    || xiLink.getEvaluation().getImplementation()->isActualImplementation())
+      || xiLink.getEvaluation().getImplementation()->isActualImplementation())
   {
     Function link1(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1));
     link1 = ComposedFunction(link1, SymbolicFunction({"x1", "x2", "x3"}, {"x1"}));
@@ -1193,7 +1193,7 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
 
 
 TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & sample,
-                                                             const Scalar u,
+    const Scalar u,
     const Sample & timeStamps,
     const Basis & basis,
     const Indices & sigmaIndices,
@@ -1204,7 +1204,7 @@ TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & samp
     const String & normalizationMethod) const
 {
   if (timeStamps.getSize() != sample.getSize())
-    throw InvalidArgumentException(HERE) << "GeneralizedPareto timeStamps size (" << timeStamps.getSize()<<") must match sample size (" << sample.getSize() << ")";
+    throw InvalidArgumentException(HERE) << "GeneralizedPareto timeStamps size (" << timeStamps.getSize() << ") must match sample size (" << sample.getSize() << ")";
   if (timeStamps.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << timeStamps.getDimension();
   if (!basis.getSize())
@@ -1275,7 +1275,7 @@ TimeVaryingResult GeneralizedParetoFactory::buildTimeVarying(const Sample & samp
 
 /* Return level */
 Distribution GeneralizedParetoFactory::buildReturnLevelEstimator(const DistributionFactoryResult & result, const Sample & sample,
-                                                                 const Scalar m, const Scalar theta) const
+    const Scalar m, const Scalar theta) const
 {
   // see coles2001 4.3.3 p81
   if (result.getDistribution().getImplementation()->getClassName() != "GeneralizedPareto")
@@ -1384,11 +1384,11 @@ class GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1 : public Evaluati
 {
 public:
   GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1(const Sample & sample,
-                                                          const Scalar u,
-                                                          const Scalar xi0,
-                                                          const Scalar zeta,
-                                                          const Scalar m,
-                                                          const OptimizationAlgorithm & solver)
+      const Scalar u,
+      const Scalar xi0,
+      const Scalar zeta,
+      const Scalar m,
+      const OptimizationAlgorithm & solver)
     : EvaluationImplementation()
     , sample_(sample)
     , u_(u)
@@ -1462,7 +1462,7 @@ private:
 };
 
 ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u,
-                                                                                             const Scalar m, const Scalar theta) const
+    const Scalar m, const Scalar theta) const
 {
   if (sample.getSize() < 3)
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 3";
@@ -1506,7 +1506,7 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelih
   const Scalar zm = solver.getResult().getOptimalPoint()[0];
   profileLikelihoodEvaluation(solver.getResult().getOptimalPoint());
   const Scalar xi = profileLikelihoodEvaluation.getOptimalPoint()[0];
-  const Scalar sigma = (zm - u) * xi/ (std::pow(m * zeta, xi) - 1.0);
+  const Scalar sigma = (zm - u) * xi / (std::pow(m * zeta, xi) - 1.0);
   const Point optimalParameter({sigma, xi, u});
 
   const Distribution distribution(buildAsGeneralizedPareto(optimalParameter));
@@ -1538,7 +1538,7 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelih
 }
 
 GeneralizedPareto GeneralizedParetoFactory::buildReturnLevelProfileLikelihood(const Sample & sample, const Scalar u,
-                                                                              const Scalar m, const Scalar theta) const
+    const Scalar m, const Scalar theta) const
 {
   const Distribution distribution(buildReturnLevelProfileLikelihoodEstimator(sample, u, m, theta).getDistribution());
   return buildAsGeneralizedPareto(distribution.getParameter());

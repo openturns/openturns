@@ -14,9 +14,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the underlying distribution, degrees
-distribution = ot.JointDistribution(
-    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]
-)
+distribution = ot.JointDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
 marginalSizes = [15, 8]
 
 # %%

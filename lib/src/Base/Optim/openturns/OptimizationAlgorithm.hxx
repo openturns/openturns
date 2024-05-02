@@ -112,7 +112,7 @@ public:
   /** Check status accessor */
   void setCheckStatus(const Bool checkStatus);
   Bool getCheckStatus() const;
-  
+
   /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
 

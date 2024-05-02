@@ -228,13 +228,13 @@ Point UniformOrderStatistics::computeSequentialConditionalPDF(const Point & x) c
   if (!(x[0] >= 0.0) && (x[0] < 1)) return result;
   result[0] = std::pow(1.0 - x[0], dimension_ - 1.0) / dimension_;
   for (UnsignedInteger k = 1; k < dimension_; ++k)
-    {
-      // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
-      // will be zero
-      const Scalar xKm1 = x[k - 1];
-      if ((x[k] < xKm1) || (x[k] >= 1.0)) return result;
-      result[k] = (dimension_ - k) * std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k - 1.0) / (1.0 - xKm1);
-    }
+  {
+    // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
+    // will be zero
+    const Scalar xKm1 = x[k - 1];
+    if ((x[k] < xKm1) || (x[k] >= 1.0)) return result;
+    result[k] = (dimension_ - k) * std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k - 1.0) / (1.0 - xKm1);
+  }
   return result;
 }
 
@@ -262,14 +262,14 @@ Point UniformOrderStatistics::computeSequentialConditionalCDF(const Point & x) c
   if (x[0] <= 0) return result;
   result[0] = 1.0 - std::pow(1.0 - x[0], dimension_);
   for (UnsignedInteger k = 1; k < dimension_; ++k)
-    {
-      // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
-      // will be zero
-      const Scalar xKm1 = x[k - 1];
-      if ((x[k] < xKm1)) return result;
-      if (x[k] >= 1.0) result[k] = 1.0;
-      result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
-    }
+  {
+    // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
+    // will be zero
+    const Scalar xKm1 = x[k - 1];
+    if ((x[k] < xKm1)) return result;
+    if (x[k] >= 1.0) result[k] = 1.0;
+    result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
+  }
   return result;
 }
 
@@ -295,10 +295,10 @@ Point UniformOrderStatistics::computeSequentialConditionalQuantile(const Point &
   Point result(dimension_);
   result[0] = 1.0 - std::pow(1.0 - q[0], 1.0 / dimension_);
   for (UnsignedInteger k = 1; k < dimension_; ++k)
-    {
-      if ((q[k] < 0.0) || (q[k] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-      result[k] = 1.0 - (1.0 - result[k - 1]) * std::pow(1.0 - q[k], 1.0 / (dimension_ - k));
-    }
+  {
+    if ((q[k] < 0.0) || (q[k] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+    result[k] = 1.0 - (1.0 - result[k - 1]) * std::pow(1.0 - q[k], 1.0 / (dimension_ - k));
+  }
   return result;
 }
 

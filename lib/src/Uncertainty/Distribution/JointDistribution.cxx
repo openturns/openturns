@@ -724,10 +724,10 @@ Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
       u[i] = distributionCollection_[i].computeCDF(x[i]);
     const Point corePDF(core_.computeSequentialConditionalPDF(u));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      {
-        result[i] = distributionCollection_[i].computePDF(x[i]) * corePDF[i];
-        if (result[i] == 0.0) break;
-      }
+    {
+      result[i] = distributionCollection_[i].computePDF(x[i]) * corePDF[i];
+      if (result[i] == 0.0) break;
+    }
   }
   return result;
 }

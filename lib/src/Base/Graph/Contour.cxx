@@ -49,8 +49,8 @@ Contour::Contour()
 
 /* Constructor with parameters */
 Contour::Contour(const UnsignedInteger dimX,
-  const UnsignedInteger dimY,
-  const Sample& data)
+                 const UnsignedInteger dimY,
+                 const Sample& data)
   : DrawableImplementation(data)
   , x_(Sample(dimX, 1))
   , y_(Sample(dimY, 1))
@@ -132,7 +132,8 @@ String Contour::__repr__() const
 }
 
 /* Accessor for color overridden to clear colorMap */
-void Contour::setColor(const String& color) {
+void Contour::setColor(const String& color)
+{
   DrawableImplementation::setColor(color);
   colorMap_.clear();
 }
@@ -195,116 +196,138 @@ void Contour::setDrawLabels(const Bool & drawLabels)
 }
 
 /** Accessor for isFilled */
-Bool Contour::isFilled() const {
+Bool Contour::isFilled() const
+{
   return isFilled_;
 }
 
-void Contour::setIsFilled(Bool isFilled) {
+void Contour::setIsFilled(Bool isFilled)
+{
   isFilled_ = isFilled;
 }
 
 /** Accessor for colorBarPosition */
-String Contour::getColorBarPosition() const {
+String Contour::getColorBarPosition() const
+{
   return colorBarPosition_;
 }
 
-void Contour::setColorBarPosition(const String & colorBarPosition) {
+void Contour::setColorBarPosition(const String & colorBarPosition)
+{
   if (!IsValidColorBarPosition(colorBarPosition))
     throw InvalidArgumentException(HERE) << "Given color bar position = " << colorBarPosition << " is incorrect";
   colorBarPosition_ = colorBarPosition;
 }
 
 /** Accessor for isVminUsed */
-Bool Contour::isVminUsed() const {
+Bool Contour::isVminUsed() const
+{
   return isVminUsed_;
 }
 
-void Contour::setIsVminUsed(const Bool used) {
+void Contour::setIsVminUsed(const Bool used)
+{
   isVminUsed_ = used;
 }
 
 /** Accessor for vmin */
-Scalar Contour::getVmin() const {
+Scalar Contour::getVmin() const
+{
   if(!isVminUsed_)
     throw InternalException(HERE) << "Vmin value is not used";
   return vmin_;
 }
 
-void Contour::setVmin(const Scalar vmin) {
+void Contour::setVmin(const Scalar vmin)
+{
   isVminUsed_ = true;
   vmin_ = vmin;
 }
 
 /** Accessor for isVmaxUsed */
-Bool Contour::isVmaxUsed() const {
+Bool Contour::isVmaxUsed() const
+{
   return isVmaxUsed_;
 }
 
-void Contour::setIsVmaxUsed(const Bool used) {
+void Contour::setIsVmaxUsed(const Bool used)
+{
   isVmaxUsed_ = used;
 }
 
 /** Accessor for vmax */
-Scalar Contour::getVmax() const {
+Scalar Contour::getVmax() const
+{
   if(!isVmaxUsed_)
     throw InternalException(HERE) << "Vmax value is not used";
   return vmax_;
 }
 
-void Contour::setVmax(const Scalar vmax) {
+void Contour::setVmax(const Scalar vmax)
+{
   isVmaxUsed_ = true;
   vmax_ = vmax;
 }
 
 /** Accessor for colorMap */
-String Contour::getColorMap() const {
+String Contour::getColorMap() const
+{
   return colorMap_;
 }
 
-void Contour::setColorMap(const String& colorMap) {
+void Contour::setColorMap(const String& colorMap)
+{
   if (!IsValidColorMap(colorMap)) throw InvalidArgumentException(HERE) << "Given color map = " << colorMap << " is incorrect";
   isColorExplicitlySet_ = true; // To avoid being overridden when adding the contour to the graph
   colorMap_ = colorMap;
 }
 
 /** Accessor for alpha */
-Scalar Contour::getAlpha() const {
+Scalar Contour::getAlpha() const
+{
   return alpha_;
 }
 
-void Contour::setAlpha(Scalar alpha) {
-  if (alpha < 0 || alpha>1) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " not in [0, 1]";
+void Contour::setAlpha(Scalar alpha)
+{
+  if (alpha < 0 || alpha > 1) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " not in [0, 1]";
   alpha_ = alpha;
 }
 
 /** Accessor for norm */
-String Contour::getColorMapNorm() const {
+String Contour::getColorMapNorm() const
+{
   return norm_;
 }
 
-void Contour::setColorMapNorm(const String& norm) {
+void Contour::setColorMapNorm(const String& norm)
+{
   if (!IsValidNorm(norm)) throw InvalidArgumentException(HERE) << "Given norm = " << norm << " is incorrect";
   norm_ = norm;
 }
 
 /** Accessor for extend */
-String Contour::getExtend() const {
+String Contour::getExtend() const
+{
   return extend_;
 }
-void Contour::setExtend(const String& extend) {
+void Contour::setExtend(const String& extend)
+{
   if (!IsValidExtend(extend)) throw InvalidArgumentException(HERE) << "Given extend = " << extend << " is incorrect";
   extend_ = extend;
 }
 
 /** Accessor for hatches */
-Description Contour::getHatches() const {
+Description Contour::getHatches() const
+{
   return hatches_;
 }
 
-void Contour::setHatches(const Description& hatches) {
-  for(String h:hatches)
-    for(char c:h)
-      if(!strchr("/\\|-+xoO.*",c))
+void Contour::setHatches(const Description& hatches)
+{
+  for(String h : hatches)
+    for(char c : h)
+      if(!strchr("/\\|-+xoO.*", c))
         throw InvalidArgumentException(HERE) << "Given hatch = " << h << " is incorrect";
   hatches_ = hatches;
 }

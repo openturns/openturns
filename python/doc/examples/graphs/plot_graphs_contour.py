@@ -21,7 +21,7 @@ import openturns.viewer as viewer
 # We build a bidimensional function (function of x and y), define the study domain and the sample size
 
 # %%
-f = ot . SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2 * x^2 + sin(x)^2 * y^2))'])
+f = ot.SymbolicFunction(["x", "y"], ["exp(-sin(cos(y)^2 * x^2 + sin(x)^2 * y^2))"])
 XMin = -5.0
 XMax = 5.0
 YMin = -5.0
@@ -60,7 +60,7 @@ contour = ot.Contour(x, y, data)
 # By creating an empty graph and adding the contour we can display the whole.
 
 # %%
-graph = ot.Graph('Complex iso lines', 'u1', 'u2', True)
+graph = ot.Graph("Complex iso lines", "u1", "u2", True)
 graph.add(contour)
 view = viewer.View(graph)
 
@@ -70,8 +70,8 @@ view = viewer.View(graph)
 # We will also change the color map, the number of contour lines and hide the labels.
 
 # %%
-contour.setColorBarPosition('right')
-contour.setColorMap('inferno')
+contour.setColorBarPosition("right")
+contour.setColorMap("inferno")
 contour.buildDefaultLevels(5)
 contour.setDrawLabels(False)
 graph.setDrawables([ot.Drawable(contour)])
@@ -81,7 +81,7 @@ view = viewer.View(graph)
 # For such a function, contour lines are not easy to interpret.
 # We will modify the contour to use filled areas.
 contour.setIsFilled(True)
-graph.setTitle('Complex filled contour')
+graph.setTitle("Complex filled contour")
 graph.setDrawables([ot.Drawable(contour)])
 view = viewer.View(graph)
 
@@ -92,8 +92,8 @@ view = viewer.View(graph)
 
 # %%
 contour.setAlpha(0.3)
-contour.setHatches(['/', '\\', '/\\', '+', '*'])
-graph.setTitle('Complex filled contour with hatches')
+contour.setHatches(["/", "\\", "/\\", "+", "*"])
+graph.setTitle("Complex filled contour with hatches")
 graph.setDrawables([ot.Drawable(contour)])
 view = viewer.View(graph)
 
@@ -103,12 +103,12 @@ view = viewer.View(graph)
 # Here we will also let `matplotlib` calculate the levels by not giving any level to the contour
 
 # %%
-contour.setColorMapNorm('log')
+contour.setColorMapNorm("log")
 contour.setLevels([])
-contour.setExtend('neither')
+contour.setExtend("neither")
 contour.setVmin(0.5)
 contour.setVmax(2)
-graph.setTitle('Complex contour with log norm and automatic levels')
+graph.setTitle("Complex contour with log norm and automatic levels")
 graph.setDrawables([ot.Drawable(contour)])
 view = viewer.View(graph)
 
@@ -137,15 +137,15 @@ mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 graph = mixture.drawPDF([-5.0, -5.0], [5.0, 5.0])
 # Add level lines above filled contour
 contour = graph.getDrawable(0).getImplementation()
-contour.setColor('black')
+contour.setColor("black")
 contour.setColorBarPosition("")
 contour.setLineWidth(3)
-contour.setLineStyle('dotdash')
+contour.setLineStyle("dotdash")
 graph.add(contour)
 # Modify previous contour to fill the graph and use log norm
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
-contour.setColorMapNorm('log')
+contour.setColorMapNorm("log")
 graph.setDrawable(contour, 0)
 view = viewer.View(graph)
 
@@ -157,7 +157,7 @@ contour.setColorBarPosition("")  # Hide color bar
 graph.setDrawable(contour, 0)
 contour = graph.getDrawable(1).getImplementation()
 contour.setDrawLabels(True)
-contour.setLabels(['{:.3g}'.format(level) for level in contour.getLevels()])
+contour.setLabels(["{:.3g}".format(level) for level in contour.getLevels()])
 graph.setDrawable(contour, 1)
 view = viewer.View(graph)
 

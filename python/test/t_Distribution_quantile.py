@@ -9,12 +9,20 @@ for factory in factories:
     dist = factory.build()
     try:
         qm1 = dist.computeQuantile(-1.0)
-        raise ValueError("Expected a TypeError but with dist = {} got quantile(-1) = {}".format(dist, qm1))
+        raise ValueError(
+            "Expected a TypeError but with dist = {} got quantile(-1) = {}".format(
+                dist, qm1
+            )
+        )
     except TypeError:
         pass
     try:
         q2 = dist.computeQuantile(2.0)
-        raise ValueError("Expected a TypeError but with dist = {} got quantile(2) = {}".format(dist, q2))
+        raise ValueError(
+            "Expected a TypeError but with dist = {} got quantile(2) = {}".format(
+                dist, q2
+            )
+        )
     except TypeError:
         pass
     q0 = dist.computeQuantile(0.0)[0]

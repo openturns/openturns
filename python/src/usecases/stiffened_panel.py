@@ -72,59 +72,69 @@ class StiffenedPanel:
         # Here we use substitutions in order to get a unique formula for the model.
         # This way, we get a symbolic derivation of the gradient and the hessian,
         # which is not possible if we use the exprtk embedded language
-        formula = '(5.35 + 4 * (b_0 / a)^2) * (pi_^2 / b_0^2 * E * t^3 / (12 * (1 - nu^2))) * (1 + (2 * p * (h - 2 * h_0) - h_c  * (f_1 - f_2)) / (4 * h_0 * ell))'
+        formula = "(5.35 + 4 * (b_0 / a)^2) * (pi_^2 / b_0^2 * E * t^3 / (12 * (1 - nu^2))) * (1 + (2 * p * (h - 2 * h_0) - h_c  * (f_1 - f_2)) / (4 * h_0 * ell))"
         # Substitutions
-        a = '(ell*t)'
-        a_bar = '(A+t*(p+(f_1-f_2)/2))'
-        h_0 = '((A*(h_c+2*t)+t^2*(f_1-f_2))/(2*A_bar))'
-        h = '(h_c + t)'
-        formula = formula.replace('h_0', h_0)
-        formula = formula.replace('A_bar', a_bar)
-        formula = formula.replace('A', a)
+        a = "(ell*t)"
+        a_bar = "(A+t*(p+(f_1-f_2)/2))"
+        h_0 = "((A*(h_c+2*t)+t^2*(f_1-f_2))/(2*A_bar))"
+        h = "(h_c + t)"
+        formula = formula.replace("h_0", h_0)
+        formula = formula.replace("A_bar", a_bar)
+        formula = formula.replace("A", a)
         # Attention! If the substitution of h by its formula is done without
         # caution h_c will be replaced by (h_c + t)_c!
         # First, we protect h_c
-        formula = formula.replace('h_c', 'H_C')
+        formula = formula.replace("h_c", "H_C")
         # Then we replace h by its formula
-        formula = formula.replace('h', h)
+        formula = formula.replace("h", h)
         # On restaure les occurrences de h_c
-        formula = formula.replace('H_C', 'h_c')
+        formula = formula.replace("H_C", "h_c")
         self.model = ot.SymbolicFunction(
-            ['E', 'nu', 'h_c', 'ell', 'f_1', 'f_2', 't', 'a', 'b_0', 'p'],
-            [formula]
+            ["E", "nu", "h_c", "ell", "f_1", "f_2", "t", "a", "b_0", "p"], [formula]
         )
-        self.model.setOutputDescription([r'(N_{xy})_{cr}'])
+        self.model.setOutputDescription([r"(N_{xy})_{cr}"])
 
         self.youngModulus = ot.TruncatedNormal(110.0e9, 55.0e9, 99.0e9, 121.0e9)
-        self.youngModulus.setDescription(['E (Pa)'])
+        self.youngModulus.setDescription(["E (Pa)"])
 
         self.nu = ot.Uniform(0.3675, 0.3825)
-        self.nu.setDescription(['nu (-)'])
+        self.nu.setDescription(["nu (-)"])
 
         self.h_c = ot.Uniform(0.0285, 0.0315)
-        self.h_c.setDescription(['h_c (m)'])
+        self.h_c.setDescription(["h_c (m)"])
 
         self.ell = ot.Uniform(0.04655, 0.05145)
-        self.ell.setDescription(['ell (m)'])
+        self.ell.setDescription(["ell (m)"])
 
         self.f_1 = ot.Uniform(0.0266, 0.0294)
-        self.f_1.setDescription(['f_1 (m)'])
+        self.f_1.setDescription(["f_1 (m)"])
 
         self.f_2 = ot.Uniform(0.00627, 0.00693)
-        self.f_2.setDescription(['f_2 (m)'])
+        self.f_2.setDescription(["f_2 (m)"])
 
         self.t = ot.Uniform(8.02e-5, 8.181e-5)
-        self.t.setDescription(['t (m)'])
+        self.t.setDescription(["t (m)"])
 
         self.a = ot.Uniform(0.6039, 0.6161)
-        self.a.setDescription(['a (m)'])
+        self.a.setDescription(["a (m)"])
 
         self.b_0 = ot.Uniform(0.04455, 0.04545)
-        self.b_0.setDescription(['b_0 (m)'])
+        self.b_0.setDescription(["b_0 (m)"])
 
         self.p = ot.Uniform(0.03762, 0.03838)
-        self.p.setDescription(['p (m)'])
+        self.p.setDescription(["p (m)"])
 
         self.distribution = ot.JointDistribution(
-            [self.youngModulus, self.nu, self.h_c, self.ell, self.f_1, self.f_2, self.t, self.a, self.b_0, self.p]
+            [
+                self.youngModulus,
+                self.nu,
+                self.h_c,
+                self.ell,
+                self.f_1,
+                self.f_2,
+                self.t,
+                self.a,
+                self.b_0,
+                self.p,
+            ]
         )

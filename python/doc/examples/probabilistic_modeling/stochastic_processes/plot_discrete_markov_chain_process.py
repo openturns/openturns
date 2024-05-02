@@ -45,9 +45,17 @@ def plotMatrix(matrix, texts=False, origin=None, colorbar=False, extent=None, **
         y_step = (extent[3] - extent[2]) / matrix.getNbRows()
         for i in range(matrix.getNbColumns()):
             for j in range(matrix.getNbRows()):
-                c = round(matrix[j if origin == 'lower' else (matrix.getNbRows() - j - 1), i], 2)
-                plt.text(i * x_step + extent[0] + x_step / 2, j * y_step + extent[2] + y_step / 2,
-                         str(c), va='center', ha='center')
+                c = round(
+                    matrix[j if origin == "lower" else (matrix.getNbRows() - j - 1), i],
+                    2,
+                )
+                plt.text(
+                    i * x_step + extent[0] + x_step / 2,
+                    j * y_step + extent[2] + y_step / 2,
+                    str(c),
+                    va="center",
+                    ha="center",
+                )
     if colorbar:
         plt.colorbar(res)
 
@@ -58,10 +66,14 @@ origin = ot.Dirac(0.0)
 
 # %%
 # Define the transition matrix
-transition = ot.SquareMatrix([[0.1, 0.3, 0.5, 0.1],
-                             [0.6, 0.1, 0.2, 0.1],
-                             [0.4, 0.3, 0.1, 0.2],
-                             [0.2, 0.0, 0.1, 0.7]])
+transition = ot.SquareMatrix(
+    [
+        [0.1, 0.3, 0.5, 0.1],
+        [0.6, 0.1, 0.2, 0.1],
+        [0.4, 0.3, 0.1, 0.2],
+        [0.2, 0.0, 0.1, 0.7],
+    ]
+)
 
 # %%
 # Visualize the transition matrix
@@ -69,7 +81,16 @@ plt.matshow(transition)
 
 # %%
 # Invert axes and add texts
-plotMatrix(transition, cmap="gray", texts=True, origin="lower", colorbar=True, alpha=0.5, vmin=0, vmax=1)
+plotMatrix(
+    transition,
+    cmap="gray",
+    texts=True,
+    origin="lower",
+    colorbar=True,
+    alpha=0.5,
+    vmin=0,
+    vmax=1,
+)
 
 # %%
 # Define an 1-d mesh

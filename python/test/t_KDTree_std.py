@@ -34,4 +34,6 @@ neighbourIndices_np = [nearest_debug(x) for x in test]
 
 assert neighbourIndices == neighbourIndices_np, "Errors found in query"
 for x in test:
-    assert np.any(nearest_debug_indices(x)[:10] == tree.queryK(x, 10, True)), "Errors found in queryK"
+    assert np.any(
+        nearest_debug_indices(x)[:10] == tree.queryK(x, 10, True)
+    ), "Errors found in queryK"

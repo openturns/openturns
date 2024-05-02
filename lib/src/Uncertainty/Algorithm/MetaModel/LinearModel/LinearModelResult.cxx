@@ -256,7 +256,7 @@ Scalar LinearModelResult::getRSquared() const
   const Scalar RSS = residuals.computeRawMoment(2)[0];
   // get outputSample and SYY
   // See https://stats.stackexchange.com/questions/26176/removal-of-statistically-significant-intercept-term-increases-r2-in-linear-mo
-  // In case there is no intercept, the convention for R^2 is to have the ratio 
+  // In case there is no intercept, the convention for R^2 is to have the ratio
   // between sum of squared predicted over sum of squared real
   // values.
   const Sample outputSample(getOutputSample());

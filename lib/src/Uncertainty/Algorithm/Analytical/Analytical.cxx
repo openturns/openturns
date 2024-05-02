@@ -130,19 +130,19 @@ void Analytical::run()
   Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
-  
+
   /* check if result is valid */
- const Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
-  
+  const Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
+
   const Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
-  
+
   const Scalar residual = result_.getOptimizationResult().getConstraintError();
-  
+
   const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
-  
+
   if (!(residual <= 1.1 * limitStateTolerance)) // 1.1 is added to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance.
-    throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: "<< limitStateTolerance;
-  
+    throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: " << limitStateTolerance;
+
 } /* Analytical::run() */
 
 /* Result accessor */

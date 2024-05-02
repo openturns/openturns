@@ -73,8 +73,9 @@ print("transform gradient at point     =", repr(transform.gradient(point)))
 print(
     "transform gradient at point (FD)=",
     repr(
-        ot.CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation())
-        .gradient(point)
+        ot.CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(
+            point
+        )
     ),
 )
 print(
@@ -102,8 +103,9 @@ print(
 print(
     "inverse transform gradient at transformed point     =",
     repr(
-        ot.CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation())
-        .gradient(transformedPoint)
+        ot.CenteredFiniteDifferenceGradient(
+            1.0e-5, inverseTransform.getEvaluation()
+        ).gradient(transformedPoint)
     ),
 )
 print(
