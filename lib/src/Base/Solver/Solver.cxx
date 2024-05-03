@@ -127,26 +127,20 @@ Scalar Solver::getResidualError() const
 }
 
 /* Maximum function evaluation accessor */
-void Solver::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation)
+void Solver::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
 {
   copyOnWrite();
-  getImplementation()->setMaximumFunctionEvaluation(maximumFunctionEvaluation);
+  getImplementation()->setMaximumCallsNumber(maximumCallsNumber);
 }
 
-UnsignedInteger Solver::getMaximumFunctionEvaluation() const
+UnsignedInteger Solver::getMaximumCallsNumber() const
 {
-  return getImplementation()->getMaximumFunctionEvaluation();
+  return getImplementation()->getMaximumCallsNumber();
 }
 
 UnsignedInteger Solver::getCallsNumber() const
 {
   return getImplementation()->getCallsNumber();
 }
-
-UnsignedInteger Solver::getUsedFunctionEvaluation() const
-{
-  return getImplementation()->getUsedFunctionEvaluation();
-}
-
 
 END_NAMESPACE_OPENTURNS

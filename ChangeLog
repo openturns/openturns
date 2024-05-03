@@ -13,6 +13,8 @@
  * Removed deprecated class TimerCallback
  * Removed deprecated MetaModelValidation(inputSample, outputSample, metaModel) ctor
  * Removed deprecated MetaModelValidation::computePredictivityFactor method
+ * Removed deprecated Solver.set/getMaximumFunctionEvaluation
+ * Removed deprecated Solver.getUsedFunctionEvaluation
 
 === Documentation ===
 
