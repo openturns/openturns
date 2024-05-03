@@ -15,6 +15,7 @@
  * Removed deprecated MetaModelValidation::computePredictivityFactor method
  * Removed deprecated Solver.set/getMaximumFunctionEvaluation
  * Removed deprecated Solver.getUsedFunctionEvaluation
+ * Removed deprecated Sample/CorrelationAnalysis.computePearsonCorrelation
 
 === Documentation ===
 

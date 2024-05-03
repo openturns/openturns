@@ -1252,12 +1252,6 @@ Point SampleImplementation::computeVariance() const
 /*
  * Gives the Pearson correlation matrix of the sample
  */
-CorrelationMatrix SampleImplementation::computePearsonCorrelation() const
-{
-  LOGWARN("Sample.computePearsonCorrelation is deprecated, use computeLinearCorrelation");
-  return computeLinearCorrelation();
-}
-
 CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Pearson correlation of an empty sample.";
