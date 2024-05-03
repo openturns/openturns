@@ -42,29 +42,6 @@ MetaModelValidation::MetaModelValidation()
   // Nothing to do
 }
 
-/* @deprecated Constructor with parameters */
-MetaModelValidation::MetaModelValidation(const Sample & inputSample,
-    const Sample & outputSample,
-    const Function & metaModel)
-  : PersistentObject()
-  , outputSample_(outputSample)
-  , metaModelPredictions_(metaModel(inputSample))
-{
-  if (inputSample.getSize() != outputSample_.getSize())
-    throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample.getSize() << ")"
-                                         << " should match output sample size (" << outputSample_.getSize() << ")";
-  if (inputSample.getSize() < 2)
-    throw NotDefinedException(HERE) << "R2 computation needs at least 2 values";
-  if (inputSample.getDimension() != metaModel.getInputDimension())
-    throw InvalidArgumentException(HERE) << "Metamodel input dimension (" << metaModel.getInputDimension() << ")"
-                                         <<  " should match input sample dimension (" << inputSample.getDimension() << ")";
-  if (outputSample_.getDimension() != metaModel.getOutputDimension())
-    throw InvalidArgumentException(HERE) << "Metamodel output dimension (" << metaModel.getOutputDimension() << ")"
-                                         <<  " should match output sample dimension (" << outputSample_.getDimension() << ")";
-  LOGWARN(OSS() << "MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)");
-  initialize();
-}
-
 /* Constructor with parameters */
 MetaModelValidation::MetaModelValidation(
   const Sample & outputSample,
@@ -132,12 +109,6 @@ Sample MetaModelValidation::getOutputSample() const
 Sample MetaModelValidation::getMetamodelPredictions() const
 {
   return metaModelPredictions_;
-}
-
-Point MetaModelValidation::computePredictivityFactor() const
-{
-  LOGWARN(OSS() << "computePredictivityFactor is deprecated");
-  return computeR2Score();
 }
 
 Point MetaModelValidation::computeR2Score() const

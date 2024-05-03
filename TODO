@@ -8,6 +8,3 @@ Remove Solver.set/getMaximumFunctionEvaluation
 Remove Solver.getUsedFunctionEvaluation
 Remove ComposedDistribution in some future version
 Remove ComposedCopula in some future version
-Remove MetaModelValidation(inputSample, outputSample, metaModel)
-Remove MetaModelValidation::computePredictivityFactor
-Remove MetaModelValidation::getInputSample

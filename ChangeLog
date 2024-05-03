@@ -11,6 +11,8 @@
 ==== API changes ====
  * Removed deprecated method Study.printLabels
  * Removed deprecated class TimerCallback
+ * Removed deprecated MetaModelValidation(inputSample, outputSample, metaModel) ctor
+ * Removed deprecated MetaModelValidation::computePredictivityFactor method
 
 === Documentation ===
 
