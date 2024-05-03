@@ -113,16 +113,16 @@ outputKriging = krigingMetamodel(inputTestSet)
 
 # %%
 # Then, we use the `MetaModelValidation` class to validate the metamodel.
-val = ot.MetaModelValidation(inputTestSet, outputTestSet, krigingMetamodel)
+val = ot.MetaModelValidation(outputTestSet, krigingMetamodel(inputTestSet))
 
-Q2 = val.computePredictivityFactor()
+R2 = val.computeR2Score()
 
 label = ["Total torque", "Total power", "Solar array area"]
 
 for i in range(3):
     graph = val.drawValidation().getGraph(0, i)
     graph.setLegends([""])
-    graph.setLegends(["Q2 = %.2f%%" % (100 * Q2[i]), ""])
+    graph.setLegends(["R2 = %.2f%%" % (100 * R2[i]), ""])
     graph.setLegendPosition("upper left")
     graph.setXTitle("Exact function")
     graph.setYTitle("Metamodel prediction")

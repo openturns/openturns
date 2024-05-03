@@ -115,17 +115,17 @@ Y_test = g(X_test)
 # %%
 # The :class:`~openturns.MetaModelValidation` class validates the metamodel
 # based on a validation sample.
-val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+val = ot.MetaModelValidation(Y_test, metamodel(X_test))
 
 # %%
-# Compute the :math:`Q^2` predictivity coefficient.
-Q2 = val.computePredictivityFactor()[0]
-Q2
+# Compute the :math:`R^2` predictivity coefficient.
+R2 = val.computeR2Score()[0]
+R2
 
 # %%
 # Plot the observed versus the predicted outputs.
 graph = val.drawValidation()
-graph.setTitle(f"Gauss product N={experiment.getSize()} - Q2={Q2 * 100:.2f}")
+graph.setTitle(f"Gauss product N={experiment.getSize()} - R2={R2 * 100:.2f}")
 view = otv.View(graph)
 
 # %%
@@ -142,11 +142,11 @@ def draw_validation(experiment):
     metamodel = result.getMetaModel()
     X_test = distribution.getSample(n_valid)
     Y_test = g(X_test)
-    val = ot.MetaModelValidation(X_test, Y_test, metamodel)
-    Q2 = val.computePredictivityFactor()[0]
+    val = ot.MetaModelValidation(Y_test, metamodel(X_test))
+    R2 = val.computeR2Score()[0]
     graph = val.drawValidation()
     graph.setTitle(
-        f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2 * 100:.2f}"
+        f"{experiment.__class__.__name__} - N={experiment.getSize()} - R2={R2 * 100:.2f}"
     )
     return graph
 

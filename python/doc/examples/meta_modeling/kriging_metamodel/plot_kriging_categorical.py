@@ -331,7 +331,7 @@ for rep in range(5):
     yVal = fun(xVal)
     yVal = (yVal - yMin) / (yMin - yMax)
 
-    valLV = ot.MetaModelValidation(xVal, yVal, resLV.getMetaModel())
+    valLV = ot.MetaModelValidation(yVal, resLV.getMetaModel()(xVal))
     rmseLV = valLV.getResidualSample().computeStandardDeviation()[0]
     rmseLVList.append(rmseLV)
 
@@ -356,7 +356,7 @@ for rep in range(5):
             ind = np.where(np.all(np.array(xVal[:, 2:]) == [z1, z2], axis=1))[0]
             xValInd = xVal[ind][:, :2]
             yValInd = yVal[ind]
-            valInd = ot.MetaModelValidation(xValInd, yValInd, resInd.getMetaModel())
+            valInd = ot.MetaModelValidation(yValInd, resInd.getMetaModel()(xValInd))
             error.add(valInd.getResidualSample())
     rmseInd = error.computeStandardDeviation()[0]
     rmseIndList.append(rmseInd)
