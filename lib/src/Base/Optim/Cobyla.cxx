@@ -328,16 +328,4 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   return returnValue;
 }
 
-void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
-{
-  LOGWARN(OSS() << "Cobyla.setIgnoreFailure is deprecated, use setCheckStatus");
-  setCheckStatus(!ignoreFailure);
-}
-
-Bool Cobyla::getIgnoreFailure() const
-{
-  LOGWARN(OSS() << "Cobyla.getIgnoreFailure is deprecated, use getCheckStatus");
-  return !getCheckStatus();
-}
-
 END_NAMESPACE_OPENTURNS

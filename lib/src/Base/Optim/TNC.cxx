@@ -446,17 +446,5 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   return 0;
 }
 
-void TNC::setIgnoreFailure(const Bool ignoreFailure)
-{
-  LOGWARN(OSS() << "TNC.setIgnoreFailure is deprecated, use setCheckStatus");
-  setCheckStatus(!ignoreFailure);
-}
-
-Bool TNC::getIgnoreFailure() const
-{
-  LOGWARN(OSS() << "TNC.getIgnoreFailure is deprecated, use getCheckStatus");
-  return !getCheckStatus();
-}
-
 END_NAMESPACE_OPENTURNS
 
