@@ -77,9 +77,6 @@ public:
   /** Maximum calls number accessor */
   void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
   UnsignedInteger getMaximumCallsNumber() const;
-  // @deprecated
-  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
-  UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
   Scalar getMaximumAbsoluteError() const;

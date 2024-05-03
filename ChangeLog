@@ -17,6 +17,7 @@
  * Removed deprecated Solver.getUsedFunctionEvaluation
  * Removed deprecated Sample/CorrelationAnalysis.computePearsonCorrelation
  * Removed deprecated Cobyla/TNC.setIgnoreFailure method
+ * Removed deprecated OptimizationAlgorithm.setMaximumEvaluationNumber method
 
 === Documentation ===
 
