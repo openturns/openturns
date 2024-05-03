@@ -10,6 +10,7 @@
 
 ==== API changes ====
  * Removed deprecated method Study.printLabels
+ * Removed deprecated class TimerCallback
 
 === Documentation ===
 
