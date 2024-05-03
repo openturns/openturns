@@ -9,7 +9,6 @@ Remove Solver.getUsedFunctionEvaluation
 Remove TimerCallback
 Remove ComposedDistribution in some future version
 Remove ComposedCopula in some future version
-Remove Study.printLabels
 Remove MetaModelValidation(inputSample, outputSample, metaModel)
 Remove MetaModelValidation::computePredictivityFactor
 Remove MetaModelValidation::getInputSample
