@@ -135,14 +135,14 @@ Y_test = model(X_test)
 # The `MetaModelValidation` classe makes the validation easy. To create it, we use the validation samples and the metamodel.
 
 # %%
-val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
+val = ot.MetaModelValidation(Y_test, krigingMetamodel(X_test))
 
 # %%
 # The `computePredictivityFactor` computes the Q2 factor.
 
 # %%
-Q2 = val.computePredictivityFactor()[0]
-print(Q2)
+R2 = val.computeR2Score()[0]
+print(R2)
 
 # %%
 # The residuals are the difference between the model and the metamodel.
@@ -164,7 +164,7 @@ view = viewer.View(graph)
 # %%
 # sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
-graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
+graph.setTitle("R2 = %.2f%%" % (100 * R2))
 view = viewer.View(graph)
 
 plt.show()

@@ -251,10 +251,10 @@ print("Confidence interval of the mean = ", confidenceIntervalMean[i])
 # Each vertical bar represents the 95% confidence interval
 # of the estimate of the conditional expectation of the linear regression model.
 
-validation = ot.MetaModelValidation(inputSample, outputSample, metamodel)
+validation = ot.MetaModelValidation(outputSample, metamodel(inputSample))
 graph = validation.drawValidation().getGraph(0, 0)
-q2Score = validation.computePredictivityFactor()[0]
-graph.setTitle("Q2 = %.2f%%" % (100.0 * q2Score))
+r2Score = validation.computeR2Score()[0]
+graph.setTitle("R2 = %.2f%%" % (100.0 * r2Score))
 graph.setXTitle("Observations")
 graph.setYTitle("Metamodel")
 for i in range(sampleSize):
@@ -264,7 +264,7 @@ view = otv.View(graph)
 
 # %%
 # We see that the linear regression model is not a very accurate
-# metamodel, as can be seen from the relatively low Q2 score.
+# metamodel, as can be seen from the relatively low R2 score.
 # The metamodel predictions are not very close to observations,
 # which is why the points are not close to the diagonal of the plot.
 # Hence, the confidence intervals do not cross the diagonal very often.

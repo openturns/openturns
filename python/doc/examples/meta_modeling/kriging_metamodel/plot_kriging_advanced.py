@@ -228,8 +228,7 @@ else:
     y_valid = np.array(ref_func(X_valid))
 
 # %%
-validation = ot.MetaModelValidation(x_valid, y_valid, krigingMeta)
-validation.computePredictivityFactor()
+validation = ot.MetaModelValidation(y_valid, krigingMeta(x_valid))
 
 # %%
 graph = validation.drawValidation()
@@ -321,11 +320,9 @@ plt.show()
 # We validate the model with the nugget effect:
 # its predictivity factor is slightly improved.
 
-validation_nugget = ot.MetaModelValidation(x_valid, y_valid, krigingMeta_nugget)
-print(
-    "predictivity factor with nugget: ", validation_nugget.computePredictivityFactor()
-)
-print("predictivity factor without nugget: ", validation.computePredictivityFactor())
+validation_nugget = ot.MetaModelValidation(y_valid, krigingMeta_nugget(x_valid))
+print("R2 score with nugget: ", validation_nugget.computeR2Score())
+print("R2 score without nugget: ", validation.computeR2Score())
 
 # %%
 # Reset default settings

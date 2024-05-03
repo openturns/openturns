@@ -142,16 +142,16 @@ outputTest = model(inputTest)
 # Plot the corresponding validation graphics.
 
 # %%
-val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-Q2 = val.computePredictivityFactor()
+val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
+R2 = val.computeR2Score()
 graph = val.drawValidation()
-graph.setTitle("Metamodel validation Q2=" + str(Q2))
+graph.setTitle("Metamodel validation R2=" + str(R2))
 view = viewer.View(graph)
 
 # %%
 # The coefficient of predictivity is not extremely satisfactory for the
 # first output, but is would be sufficient for a central dispersion study.
-# The second output has a much more satisfactory Q2: only one single
+# The second output has a much more satisfactory R2: only one single
 # extreme point is far from the diagonal of the graphics.
 
 # %%
@@ -214,7 +214,7 @@ ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree
 
 # %%
 degrees = range(1, 12)
-q2 = ot.Sample(len(degrees), 2)
+r2 = ot.Sample(len(degrees), 2)
 for maximumDegree in degrees:
     ot.ResourceMap.SetAsUnsignedInteger(
         "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree
@@ -226,18 +226,18 @@ for maximumDegree in degrees:
     metamodel = result.getMetaModel()
     for outputIndex in range(2):
         val = ot.MetaModelValidation(
-            inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex)
+            outputTest[:, outputIndex], metamodel.getMarginal(outputIndex)(inputTest)
         )
-        q2Value = min(1.0, max(0.0, val.computePredictivityFactor()[0]))  # Get lucky.
-        q2[maximumDegree - degrees[0], outputIndex] = q2Value
+        r2Value = min(1.0, max(0.0, val.computeR2Score()[0]))  # Get lucky.
+        r2[maximumDegree - degrees[0], outputIndex] = r2Value
 
 # %%
-graph = ot.Graph("Predictivity", "Total degree", "Q2", True)
-cloud = ot.Cloud([[d] for d in degrees], q2[:, 0])
+graph = ot.Graph("Predictivity", "Total degree", "R2", True)
+cloud = ot.Cloud([[d] for d in degrees], r2[:, 0])
 cloud.setLegend("Output #0")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
-cloud = ot.Cloud([[d] for d in degrees], q2[:, 1])
+cloud = ot.Cloud([[d] for d in degrees], r2[:, 1])
 cloud.setLegend("Output #1")
 cloud.setColor("red")
 cloud.setPointStyle("bullet")
