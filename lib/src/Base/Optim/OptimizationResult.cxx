@@ -116,18 +116,6 @@ void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
   callsNumber_ = callsNumber;
 }
 
-UnsignedInteger OptimizationResult::getEvaluationNumber() const
-{
-  LOGWARN("OptimizationResult.getEvaluationNumber is deprecated, use getCallsNumber");
-  return getCallsNumber();
-}
-
-void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
-{
-  LOGWARN("OptimizationResult.setEvaluationNumber is deprecated, use setCallsNumber");
-  setCallsNumber(evaluationNumber);
-}
-
 /* Iteration number accessor */
 UnsignedInteger OptimizationResult::getIterationNumber() const
 {
