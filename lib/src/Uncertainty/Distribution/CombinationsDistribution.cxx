@@ -256,22 +256,22 @@ Point CombinationsDistribution::computeQuantile(const Scalar prob,
 } // computeQuantile
 
 /* Get the i-th marginal distribution */
-Distribution CombinationsDistribution::getMarginal(const UnsignedInteger i) const
+Distribution CombinationsDistribution::getMarginal(const UnsignedInteger index) const
 {
-  if (i >= k_) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
+  if (index >= k_) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   Sample support(n_ - k_ + 1, 1);
   // First, compute the probabilities on a log scale
-  Point probabilities(n_ - k_ + 1, -SpecFunc::LogBinomialCoefficient(k_, n_));
-  for (UnsignedInteger x = i; x <= n_ - k_ + i; ++x)
+  Point probabilities(n_ - k_ + 1, -SpecFunc::LogBinomialCoefficient(n_, k_));
+  for (UnsignedInteger x = index; x <= n_ - k_ + index; ++x)
     {
-      support(x - i, 0) = x;
-      probabilities[x - i] += SpecFunc::LogBinomialCoefficient(x, i) + SpecFunc::LogBinomialCoefficient(n_ - 1 - x, k_ - 1 - i);
+      support(x - index, 0) = x;
+      probabilities[x - index] += SpecFunc::LogBinomialCoefficient(x, index) + SpecFunc::LogBinomialCoefficient(n_ - 1 - x, k_ - 1 - index);
     }
   // Then, go back to the [0, 1] interval
   for (UnsignedInteger j = 0; j <= n_ - k_; ++j)
     probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
   UserDefined marginal(support, probabilities);
-  marginal.setDescription(Description(1, getDescription()[i]));
+  marginal.setDescription(Description(1, getDescription()[index]));
   return marginal;
 }
 
