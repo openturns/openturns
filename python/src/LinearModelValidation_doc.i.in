@@ -1,6 +1,10 @@
 %feature("docstring") OT::LinearModelValidation
 "Validate a linear regression metamodel.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 result : :class:`~openturns.LinearModelResult`
@@ -12,7 +16,7 @@ splitter : :class:`~openturns.SplitterImplementation`
 
 See also
 --------
-LinearModelResult
+openturns.LinearModelResult
 
 Notes
 -----

@@ -52,6 +52,12 @@ then the fast methods presented in :ref:`cross_validation` can be applied:
 - the fast leave-one-out cross-validation,
 - the fast K-Fold cross-validation.
 
+Fast methods are implemented in :class:`~openturns.FunctionalChaosValidation`.
+
+.. topic:: API:
+
+    - See :class:`~openturns.FunctionalChaosValidation`
+
 .. topic:: References:
 
     - [blatman2009]_
