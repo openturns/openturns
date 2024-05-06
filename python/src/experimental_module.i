@@ -55,13 +55,14 @@
 
 /* Base/Algo */
 %include CubaIntegration.i
+%include SimplicialCubature.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
+%include UserDefinedMetropolisHastings.i
 
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
@@ -69,7 +70,10 @@
 /* Uncertainty/Distribution */
 %include PointConditionalDistribution.i
 %include SmoothedUniformFactory.i
+%include CombinationsDistribution.i
+%include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
+%include SmoothedUniformFactory.i
 %include UniformOrderStatistics.i
 %include GeneralizedParetoValidation.i
 /* Uncertainty/Algorithm/Metamodel */
