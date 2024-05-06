@@ -55,31 +55,35 @@
 %include simulation_module.i
 
 /* Base/Algo */
-%include SimplicialCubature.i
 %include CubaIntegration.i
+%include SimplicialCubature.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
+%include UserDefinedMetropolisHastings.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include CrossEntropyResult.i
 %include CrossEntropyImportanceSampling.i
-%include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
+%include StandardSpaceCrossEntropyImportanceSampling.i
 
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Distribution */
+%include CombinationsDistribution.i
+%include GeneralizedExtremeValueValidation.i
+%include GeneralizedParetoValidation.i
+%include MarginalUniformOrderStatistics.i
+%include PosteriorDistribution.i
 %include SmoothedUniformFactory.i
 %include StudentCopula.i
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
-%include PosteriorDistribution.i
 %include UniformOrderStatistics.i
 %include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i

@@ -116,6 +116,7 @@
 #include "openturns/OrdinalSumCopula.hxx"
 #include "openturns/MarshallOlkinCopula.hxx"
 #include "openturns/MarginalDistribution.hxx"
+#include "openturns/MarginalUniformOrderStatistics.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
 #include "openturns/MaximumEntropyOrderStatisticsCopula.hxx"

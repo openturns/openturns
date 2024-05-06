@@ -175,7 +175,7 @@ public:
   void load(Advocate & adv) override;
 
 
-private:
+protected:
   /** Compute the mean of the distribution */
   void computeMean() const override;
 
