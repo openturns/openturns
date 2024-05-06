@@ -2,6 +2,10 @@
 "Validate a functional chaos metamodel.
 
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 result : :class:`~openturns.FunctionalChaosResult`
@@ -13,7 +17,7 @@ splitter : :class:`~openturns.SplitterImplementation`, optional
 
 See also
 --------
-FunctionalChaosAlgorithm, FunctionalChaosResult
+openturns.FunctionalChaosAlgorithm, openturns.FunctionalChaosResult
 
 Notes
 -----

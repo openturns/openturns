@@ -634,12 +634,17 @@ The generic cross-validation method can be implemented using the following class
 - :class:`~openturns.KFoldSplitter`: uses the K-Fold method
   to split the data set.
 
-See :ref:`pce_cross_validation` for specific methods for the the cross-validation
-of a polynomial chaos expansion.
+Since the :class:`~openturns.LinearModelResult` is based on linear least
+squares, fast methods are implemented in the :class:`~openturns.LinearModelValidation`.
+
+See :ref:`pce_cross_validation` and :class:`~openturns.FunctionalChaosValidation`
+for specific methods for the the cross-validation of a polynomial chaos expansion.
 
 .. topic:: API:
 
     - See :class:`~openturns.MetaModelValidation`
+    - See :class:`~openturns.LinearModelValidation`
+    - See :class:`~openturns.FunctionalChaosValidation`
     - See :class:`~openturns.KFoldSplitter`
     - See :class:`~openturns.LeaveOneOutSplitter`
 
