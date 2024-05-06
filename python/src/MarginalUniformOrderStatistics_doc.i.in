@@ -1,0 +1,113 @@
+%feature("docstring") OT::MarginalUniformOrderStatistics
+"Marginal uniformOrderStatistics.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Allows one to extract marginals of a :class:`~openturns.experimental.UniformOrderStatistics`.
+
+Parameters
+----------
+uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
+    The underlying uniform order statistics distribution.
+indices : sequence of int
+    Marginal indices, must be strictly increasing.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::setUniformOrderStatistics
+"Accessor to the uniformOrderStatistics.
+
+Parameters
+----------
+uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
+    The underlying uniform order statistics distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::getUniformOrderStatistics
+"Accessor to the uniformOrderStatistics.
+
+Returns
+-------
+uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
+    The underlying uniform order statistics distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::setIndices
+"Accessor to the marginal indices.
+
+Parameters
+----------
+indices : sequence of int
+    Marginal indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::getIndices
+"Accessor to the marginal indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Marginal indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::getN
+"Accessor to the size of the underlying order statistics
+
+Returns
+-------
+N : int
+    Size of the order statistics."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::setIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the PDF.
+
+Parameters
+----------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The integration algorithm used to marginalize the unwanted
+    components of the PDF."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::getIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the PDF.
+
+Returns
+-------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The integration algorithm used to marginalize the unwanted
+    components of the PDF."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::setUsePDF
+"Accessor to the flag telling how the PDF is computed.
+
+Parameters
+----------
+flag : bool
+    Flag telling if the marginal PDF is computed using an integration
+    of the PDF of the underlying uniformOrderStatistics or if it is computed
+    using finite differences of the underlying CDF."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalUniformOrderStatistics::getUsePDF
+"Accessor to the flag telling how the PDF is computed.
+
+Returns
+-------
+flag : bool
+    Flag telling if the marginal PDF is computed using an integration
+    of the PDF of the underlying uniformOrderStatistics or if it is computed
+    using finite differences of the underlying CDF."
+
