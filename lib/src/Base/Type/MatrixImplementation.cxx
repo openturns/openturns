@@ -1110,47 +1110,6 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminantSymInPlace(Scalar & si
 {
   symmetrize();
   return computeLogAbsoluteDeterminantInPlace(sign);
-  /* The implementation based on dsytrf does not uses the 2x2 diagonal blocks correctly
-     int n = nbRows_;
-     if (n == 0) throw InvalidDimensionException(HERE);
-     std::vector<int> ipiv (n);
-     char uplo = 'L';
-     int info;
-     Scalar determinant = 1.0;
-     int lwork = -1;
-     double lwork_d;
-     int luplo = 1;
-
-     // LU Factorization with LAPACK
-     if (keepIntact)
-     {
-     MatrixImplementation A(*this);
-     dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
-     lwork = static_cast<int>(lwork_d);
-     Point work(lwork);
-     dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
-     // Determinant computation
-     for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
-     {
-     determinant *= A[i * (ipiv.size() + 1)];
-     if (ipiv[i] != int(i + 1)) determinant = -determinant;
-     }
-     }
-     else
-     {
-     dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
-     lwork = static_cast<int>(lwork_d);
-     Point work(lwork);
-     dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
-     // Determinant computation
-     for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
-     {
-     determinant *= (*this)[i * (ipiv.size() + 1)];
-     if (ipiv[i] != int(i + 1)) determinant = -determinant;
-     }
-     }
-
-     return determinant; */
 }
 
 /* Compute determinant for a symmetric matrix */
