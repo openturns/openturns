@@ -9,6 +9,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * SmolyakExperiment left the experimental module
  * Removed deprecated method Study.printLabels
  * Removed deprecated class TimerCallback
  * Removed deprecated MetaModelValidation(inputSample, outputSample, metaModel) ctor

@@ -25,7 +25,6 @@ Plot Smolyak multi-indices
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from matplotlib import pylab as plt
 
@@ -33,15 +32,15 @@ from matplotlib import pylab as plt
 # In the first example, we print the indices involved in
 # Smolyak-Legendre quadrature of level 3.
 # The multi-indices are computed using the
-# :py:meth:`openturns.experimental.SmolyakExperiment.computeCombination` method.
+# :py:meth:`openturns.SmolyakExperiment.computeCombination` method.
 # Actually, the multi-indices do not actually depend on the
 # underlying univariate quadratures, but this is required for
-# the :class:`openturns.experimental.SmolyakExperiment` class.
+# the :class:`openturns.SmolyakExperiment` class.
 
 collection = [ot.GaussProductExperiment()] * 2
 level = 3
 print("level = ", level)
-experiment = otexp.SmolyakExperiment(collection, level)
+experiment = ot.SmolyakExperiment(collection, level)
 indices = experiment.computeCombination()
 print(indices)
 
@@ -57,7 +56,7 @@ print(indices)
 def drawSmolyakIndices(level):
     # Plot Smolyak indices of given level in 2 dimensions
     collection = [ot.GaussProductExperiment()] * 2
-    experiment = otexp.SmolyakExperiment(collection, level)
+    experiment = ot.SmolyakExperiment(collection, level)
     indices = experiment.computeCombination()
     sample = indices
     graph = ot.Graph("L = %d" % (level), "k1", "k2", True)

@@ -1,10 +1,6 @@
 %feature("docstring") OT::SmolyakExperiment
 "Smolyak experiment.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 experiments : list of :class:`~openturns.WeightedExperiment`
@@ -22,7 +18,7 @@ Smolyak experiment has a significantly lower number of nodes [petras2003]_.
 This implementation uses the combination technique ([gerstner1998]_ page 215).
 Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177).
 The size of the experiment is only known after the nodes and weights have been computed,
-that is, after the :meth:`~openturns.experimental.SmolyakExperiment.generateWithWeights` method is called.
+that is, after the :meth:`generateWithWeights` method is called.
 
 **Method**
 
@@ -124,7 +120,7 @@ for any :math:`\ell \geq 1`.
 As shown by the previous equation, for a given multi-index :math:`\vect{k}`
 the Smolyak quadrature requires to set the level of each marginal experiment to
 an integer which depends on the multi-index.
-This is done using the :meth:`~openturns.experimental.SmolyakExperiment.setLevel` method of the marginal quadrature.
+This is done using the :meth:`setLevel` method of the marginal quadrature.
 
 The following formula expresses the multivariate quadrature in terms of
 combinations univariate quadratures, known as the *combination technique*.
@@ -217,7 +213,7 @@ Therefore,
 
 See Also
 --------
-openturns.WeightedExperiment
+WeightedExperiment
 
 Examples
 --------
@@ -225,12 +221,11 @@ In the following example, we create Smolyak quadrature using two Gauss-Legendre
 marginal quadratures.
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
 >>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
 >>> collection = [experiment1, experiment2]
 >>> level = 3
->>> multivariate_experiment = otexp.SmolyakExperiment(collection, level)
+>>> multivariate_experiment = ot.SmolyakExperiment(collection, level)
 >>> nodes, weights = multivariate_experiment.generateWithWeights()"
 
 // ---------------------------------------------------------------------
