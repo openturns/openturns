@@ -694,6 +694,10 @@
   <LeastSquaresDistributionFactory-MaximumRelativeError         value_float="1.0e-10"        />
   <LeastSquaresDistributionFactory-MaximumCallsNumber           value_int="1000" />
 
+  <!-- OT::MarginalUniformOrderStatistics parameters -->
+  <MarginalUniformOrderStatistics-LargeCaseCDF       value_int="1000"    />
+  <MarginalUniformOrderStatistics-MaximumCallsNumber value_int="1000000" />
+
   <!-- OT::MethodOfMomentsFactory parameters -->
   <MethodOfMomentsFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumConstraintError  value_float="1.0e-10"        />
