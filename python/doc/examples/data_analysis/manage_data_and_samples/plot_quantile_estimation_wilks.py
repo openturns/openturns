@@ -36,11 +36,11 @@ Estimate Wilks and empirical quantile
 #   \right\}
 #
 # Once the order :math:`i` has been chosen, the Wilks number :math:`N_{Wilks}(\alpha, \beta,i)` is evaluated,
-# thanks to the static method :math:`ComputeSampleSize(\alpha, \beta, i)` of the Wilks object.
+# thanks to the static method :math:`ComputeSampleSize(\alpha, \beta, i)` of the :class:`~openturns.Wilks` object.
 #
 # In the example, we want to evaluate a quantile :math:`\alpha = 95\%`,
-# with a confidence level of :math:`\beta = 90\%` thanks to the :math:`4`th maximum of
-# the ordered sample (associated to the order :math:`i = 3`).
+# with a confidence level of :math:`\beta = 90\%` thanks to the :math:`4` th maximum of
+# the ordered sample (associated to the order :math:`i = 3` ).
 #
 # Be careful: :math:`i=0` means that the Wilks estimator is the maximum of the sample:
 # it corresponds to the first maximum of the sample.

@@ -9,7 +9,7 @@ Test Normality
 # ----------------------------------------
 #
 # In this paragraph we perform a visual goodness-of-fit test for a univariate
-# normal distribution using the Henry line test, which is the QQ plot adapted
+# Normal distribution using the Henry line test, which is the QQ plot adapted
 # for Gaussian distributions.
 
 # %%
@@ -39,14 +39,14 @@ view = viewer.View(graph)
 # Normality tests
 # ---------------
 #
-# We use two tests to check whether a sample follows a normal distribution :
+# We use two tests to check whether a sample follows a Normal distribution :
 #
 #  - the Anderson-Darling test
 #  - the Cramer-Von Mises test
 #
 
 # %%
-# We first generate two samples, one from a standard unit gaussian and another from a Gumbel
+# We first generate two samples, one from a standard unit Gaussian and another from a Gumbel
 # distribution with parameters :math:`\beta = 1` and :math:`\gamma = 0`.
 sample1 = ot.Normal().getSample(200)
 sample2 = ot.Gumbel().getSample(200)

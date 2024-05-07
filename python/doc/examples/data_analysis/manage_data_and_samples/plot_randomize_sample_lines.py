@@ -10,7 +10,7 @@ import openturns as ot
 # thanks to the :class:`~openturns.KPermutationsDistribution` class.
 
 # %%
-# We first define a small sample of size :math:`N` based on a standard unit gaussian distribution.
+# We first define a small sample of size :math:`N` based on a standard unit Gaussian distribution.
 distribution = ot.Normal()
 N = 5
 sample = distribution.getSample(N)

@@ -22,23 +22,23 @@ Estimate a scalar ARMA process
 #
 # We proceed as follows:
 #
-# -   the object *WhittleFactory* is created with either a specified order
+# -   the object :class:`~openturns.WhittleFactory` is created with either a specified order
 #     :math:`(p,q)` or a range :math:`Ind_p \times Ind_q`. By default, the Welch
 #     estimator (object *Welch*) is used with its default parameters.
 # -   for each order :math:`(p,q)`, the estimation of the parameters is done by
 #     maximizing the reduced equation of the Whittle likelihood function
-#     (\[lik2\]), thanks to the method *build* of the object
+#     (\[lik2\]), thanks to the method `build` of the object
 #     *WhittleFactory*. This method applies to a time series or a process
 #     sample. If the user wants to get the quantified criteria
-#     :math:`AIC_c, AIC` and *BIC* of the model :math:`ARMA(p,q)`, he has to specify
-#     it by giving a *Point* of size 0 (*Point()*) as input parameter of
-#     the method *build*.
+#     :math:`AIC_c, AIC` and `BIC` of the model :math:`ARMA(p,q)`, he has to specify
+#     it by giving a `Point` of size 0 as input parameter of
+#     the method `build`.
 # -   the output of the estimation is, in all the cases, one unique ARMA:
 #     the ARMA with the specified order or the optimal one with respect to
 #     the :math:`AIC_c` criterion.
 # -   in the case of a range :math:`Ind_p \times Ind_q`, the user can get all
 #     the estimated models thanks to the method *getHistory* of the object
-#     *WhittleFactory*. If the *build* has been parameterized by a *Point*
+#     class:`~openturns.WhittleFactory`. If the `build` has been parameterized by a Point
 #     of size 0, the user also has access to all the quantified criteria.
 #
 # The synthetic data is generated using the following 1-d ARMA process:
@@ -59,7 +59,7 @@ ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create an arma process
+# Create an ARMA process
 
 tMin = 0.0
 n = 1000
@@ -73,7 +73,7 @@ arma = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
 
 tseries = ot.TimeSeries(arma.getRealization())
 
-# Create a sample of N time series from the process
+# Create a sample of `N` time series from the process
 N = 100
 sample = arma.getSample(N)
 
@@ -89,7 +89,7 @@ factory = ot.WhittleFactory(p, q)
 print("Default spectral model factory = ", factory.getSpectralModelFactory())
 
 # To set the spectral model factory
-# For example, set WelchFactory as SpectralModelFactory
+# For example, set :class:`~openturns.WelchFactory` as :class:`~openturns.SpectralModelFactory`
 # with the Hann filtering window
 # The Welch estimator splits the time series in four blocs without overlap
 myFilteringWindow = ot.Hann()
@@ -125,5 +125,5 @@ arma_range
 # %%
 # Results exploitation
 
-# Get the white noise of the (best) estimated arma
+# Get the white noise of the (best) estimated ARMA
 arma_range.getWhiteNoise()

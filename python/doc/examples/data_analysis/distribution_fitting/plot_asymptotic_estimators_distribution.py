@@ -18,10 +18,10 @@ ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%
-# The standard normal
+# The standard Normal
 # -------------------
-# The parameters of the standard normal distribution are estimated by a method of moments method.
-# Thus the asymptotic parameters distribution is normal and estimated by bootstrap on the initial data.
+# The parameters of the standard Normal distribution are estimated by a method of moments.
+# Thus the asymptotic parameters distribution is Normal and estimated by bootstrap on the initial data.
 #
 distribution = ot.Normal(0.0, 1.0)
 sample = distribution.getSample(50)
@@ -63,7 +63,7 @@ graph.setLegends(["PDF"])
 view = viewer.View(graph)
 
 # %%
-# We observe on the two previous figures that the distribution is normal and centered around
+# We observe on the two previous figures that the distribution is Normal and centered around
 # the estimated value of the parameter.
 
 
@@ -72,9 +72,9 @@ view = viewer.View(graph)
 # -----------------------
 #
 # We consider a Pareto distribution with a scale parameter :math:`\beta=1.0`, a shape parameter :math:`\alpha=1.0` and a location parameter :math:`\gamma = 0.0`.
-# We generate a sample from this distribution and use a `ParetoFactory` to fit the sample.
+# We generate a sample from this distribution and use a :class:`~openturns.ParetoFactory` to fit the sample.
 # In that case the asymptotic parameters distribution is estimated by bootstrap on the initial
-# data and kernel fitting (see KernelSmoothing).
+# data and kernel fitting (see :class:`~openturns.KernelSmoothing`).
 #
 
 # %%

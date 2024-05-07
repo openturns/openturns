@@ -51,7 +51,7 @@ sample.add(sampleGumbel)
 
 
 # %%
-# We fit the sample thanks to the `GeneralizedExtremeValueFactory`:
+# We fit the sample thanks to the :class:`~openturns.GeneralizedExtremeValueFactory`:
 myDistribution = ot.GeneralizedExtremeValueFactory().buildAsGeneralizedExtremeValue(
     sample
 )

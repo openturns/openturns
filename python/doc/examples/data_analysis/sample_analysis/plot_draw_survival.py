@@ -98,7 +98,7 @@ p2
 p1 + p2
 
 # %%
-# The `drawCDF` and `drawSurvivalFunction` methods allows one to draw the functions :math:`F` and :math:`S`.
+# The `drawCDF` and `drawSurvivalFunction` methods allow one to draw the functions :math:`F` and :math:`S`.
 
 # %%
 graph = distribution.drawCDF()
@@ -123,7 +123,7 @@ xmax = distribution.computeQuantile(0.99)[0]
 xmax
 
 # %%
-# The `drawSurvivalFunction` methods also has an option to plot the survival with the X axis in logarithmic scale.
+# The `drawSurvivalFunction` method also has an option to plot the survival with the X axis in logarithmic scale.
 
 # %%
 npoints = 50
@@ -182,7 +182,7 @@ p1 + p2
 # -----------------------------
 
 # %%
-# In order to draw the empirical functions of a `Sample`, we use the `UserDefined` class.
+# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.UserDefined` class.
 #
 # * The `drawCDF` method plots the CDF.
 # * The `drawSurvivalFunction` method plots the survival function.
@@ -234,7 +234,7 @@ view = viewer.View(graph)
 # --------------------------------------------------------------------
 
 # %%
-# In the final example, we compare the distribution and sample survival functions in the same graphics.
+# In the final example, we compare the distribution and sample survival function in the same graphics.
 
 # %%
 xmin = sample.getMin()[0]

@@ -12,7 +12,7 @@ Estimate a conditional quantile
 #    Q_2 : x_1 \mapsto q_{0.9}(X_2|X_1=x_1)
 #
 # We then draw the curve :math:`Q_2 : x_1 \mapsto Q_2(x_1)`.
-# We first start with independent normals then we consider dependent marginals with a Clayton copula.
+# We first start with independent Normals then we consider dependent marginals with a Clayton copula.
 #
 
 # %%
@@ -31,7 +31,7 @@ ot.RandomGenerator.SetSeed(0)
 # Defining the marginals
 # ----------------------
 #
-# We consider two independent normal marginals :
+# We consider two independent Normal marginals :
 X1 = ot.Normal(0.0, 1.0)
 X2 = ot.Normal(0.0, 3.0)
 
@@ -84,7 +84,7 @@ view = viewer.View(graph)
 #
 
 # %%
-# We first create N observation points in :math:`[-3.0, 3.0]` :
+# We first create `N` observation points in :math:`[-3.0, 3.0]` :
 
 # %%
 N = 301

@@ -17,8 +17,8 @@ A quick start guide to the `Point` and `Sample` classes
 #
 # Two fundamental objects in the library are:
 #
-# * `Point`: a multidimensional point in :math:`d` dimensions (:math:`\in \mathbb{R}^d`) ;
-# * `Sample`: a multivariate sample made of :math:`n` points in :math:`d` dimensions.
+# * :class:`~openturns.Point`: a multidimensional point in :math:`d` dimensions (:math:`\in \mathbb{R}^d`) ;
+# * :class:`~openturns.Sample`: a multivariate sample made of :math:`n` points in :math:`d` dimensions.
 #
 
 # %%
@@ -53,7 +53,7 @@ p
 p[1]
 
 # %%
-# The following statements sets the second component.
+# The following statement sets the second component.
 
 # %%
 p[1] = 2

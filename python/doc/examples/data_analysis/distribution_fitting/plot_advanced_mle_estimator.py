@@ -15,7 +15,7 @@ Fitting a distribution with customized maximum likelihood
 # In this example, we configure the optimization solver by two different
 # methods.
 #
-# - The first method sets a specific solver among the NLopt solvers.
+# - The first method sets a specific solver among the :class:`~openturns.NLopt` solvers.
 #   Moreover, we customize the distribution parameters bounds.
 #   This helps the solver to avoid the part of the domain where
 #   the distribution cannot be built.
@@ -55,7 +55,7 @@ print("Fitted distribution=", fittedDistribution)
 # -------------------------------
 
 # %%
-# The truncated normal distribution has 4 parameters:
+# The truncated Normal distribution has 4 parameters:
 #
 # - the mean and standard deviation parameters of the
 #   underlying Normal distribution,
@@ -218,10 +218,10 @@ sample = standardLogNormal.getSample(1000)
 # In this example, we assume that we know that this parameter is zero.
 # In this case, the simplest method is to use the
 # :meth:`~openturns.MaximumLikelihoodFactory.setKnownParameter` method.
-# Furthermore, we know that the absolute value of the mean of the underlying normal
+# Furthermore, we know that the absolute value of the mean of the underlying Normal
 # distribution cannot be greater than 5.
 # Finally, we know that the standard deviation of the underlying
-# normal distribution cannot be lower than, say, :math:`\epsilon = 10^{-4}`.
+# Normal distribution cannot be lower than, say, :math:`\epsilon = 10^{-4}`.
 
 # %%
 logNormalFactoryWithZeroLocation = ot.MaximumLikelihoodFactory(standardLogNormal)

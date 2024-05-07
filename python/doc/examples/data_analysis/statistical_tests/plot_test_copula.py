@@ -31,7 +31,7 @@ sample2 = dist2.getSample(N)
 sample2.setName("sample2")
 
 # %%
-# We change the parameter for the evaluation of E(Wi) thanks to the `ResourceMap` :
+# We change the parameter for the evaluation of E(Wi) thanks to the :class:`~openturns.ResourceMap` :
 ot.ResourceMap.SetAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 25)
 
 # %%

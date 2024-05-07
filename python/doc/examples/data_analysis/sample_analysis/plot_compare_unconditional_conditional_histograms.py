@@ -103,10 +103,10 @@ numberOfBins = 10
 histogram = ot.HistogramFactory().buildAsHistogram(sampleQ, numberOfBins)
 
 # %%
-# Extract the sub-sample of the input flowrates Q which leads to large values of the output S.
+# Extract the sub-sample of the input flowrates `Q` which leads to large values of the output `S`.
 
 # %%
-# Search the index of the marginal S in the columns of the sample.
+# Search the index of the marginal `S` in the columns of the sample.
 criteriaComponent = list(sample.getDescription()).index("S")
 criteriaComponent
 

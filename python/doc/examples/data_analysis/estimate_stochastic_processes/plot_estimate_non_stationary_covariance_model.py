@@ -25,7 +25,7 @@ Estimate a non stationary covariance function
 # We get a :math:`N=10^3` fields from the process :math:`X` from which we
 # estimate the covariance model :math:`C`.
 #
-# We use the object *NonStationaryCovarianceModelFactory* which creates a *UserDefinedCovarianceModel*.
+# We use the object :class:`~openturns.NonStationaryCovarianceModelFactory` which creates a :class:`~openturns.UserDefinedCovarianceModel`.
 
 # %%
 import math as m
@@ -65,7 +65,7 @@ graph.setLegendPosition("")
 view = viewer.View(graph)
 
 # %%
-# Create data from a non stationary normal process Omega * [0,T]--> R
+# Create data from a non stationary Normal process Omega * [0,T]--> R
 
 # Create the collection of HermitianMatrix
 covariance = ot.CovarianceMatrix(N)
