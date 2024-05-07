@@ -132,6 +132,8 @@ Sample IntersectionEvent::getFrozenSample(const Sample & fixedSample) const
     for (UnsignedInteger j = 0; j < stillInIntersection.getSize(); ++ j)
       if (currentEventSample(j, 0) == 0.0) noLongerInIntersection.add(stillInIntersection[j]);
     stillInIntersection = noLongerInIntersection.complement(fixedSample.getSize());
+    if (!stillInIntersection.getSize())
+      break;
   }
 
   Sample sample(fixedSample.getSize(), 1);
