@@ -32,7 +32,7 @@ ot.Log.Show(ot.Log.NONE)
 sample = ot.Normal().getSample(1000)
 
 # %%
-# We can estimate a Normal distribution with :class:`~openturns`ǸormalFactory` :
+# We can estimate a Normal distribution with :class:`~openturns.NormalFactory` :
 distribution = ot.NormalFactory().build(sample)
 
 # %%
