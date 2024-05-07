@@ -104,10 +104,7 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
 {
   Point weights;
   const Sample inputSample(experiment_.generateWithWeights(weights));
-  Sample blockSample(blockSize_, 1);
-  const RandomVector event(getEvent());
-  for (UnsignedInteger i = 0; i < blockSize_; ++ i)
-    blockSample[i] = event.getFrozenRealization(inputSample[i]);
+  Sample blockSample(getEvent().getFrozenSample(inputSample));
   if (!experiment_.hasUniformWeights())
     for (UnsignedInteger i = 0; i < blockSize_; ++ i)
       blockSample(i, 0) *= weights[i];

@@ -136,6 +136,8 @@ Sample UnionEvent::getFrozenSample(const Sample & fixedSample) const
     for (UnsignedInteger j = 0; j < notYetInUnion.getSize(); ++ j)
       if (currentEventSample(j, 0) == 1.0) alreadyInUnion.add(notYetInUnion[j]);
     notYetInUnion = alreadyInUnion.complement(fixedSample.getSize());
+    if (!notYetInUnion.getSize())
+      break;
   }
 
   Sample sample(fixedSample.getSize(), 1);
