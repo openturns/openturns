@@ -7,8 +7,8 @@ Estimate a stationary covariance function
 # The objective here is to estimate a stationary covariance model from data.
 #
 # The library builds an estimation of the stationary covariance function on a
-# :class:`~openturns.ProcessSample or :class:`~openturns.TimeSeries` using the previous algorithm implemented in
-# the *:class:`~openturns.StationaryCovarianceModelFactory` class.
+# :class:`~openturns.ProcessSample` or :class:`~openturns.TimeSeries` using the previous algorithm implemented in
+# the :class:`~openturns.StationaryCovarianceModelFactory` class.
 # The result consists in a :class:`~openturns.UserDefinedStationaryCovarianceModel` which is easy to manipulate.
 #
 # Such an object is composed of a time grid and a collection of :math:`K`
