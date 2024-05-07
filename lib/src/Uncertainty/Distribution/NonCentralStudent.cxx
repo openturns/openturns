@@ -20,12 +20,10 @@
  */
 #include <cmath>
 #include "openturns/NonCentralStudent.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

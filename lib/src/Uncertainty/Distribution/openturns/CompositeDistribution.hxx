@@ -132,8 +132,6 @@ protected:
   Point computeShiftedMomentContinuous(const UnsignedInteger n, const Point & shift) const override;
 private:
 
-  friend class CompositeDistributionShiftedMomentWrapper;
-
   // Structure used to compute shifted moments
   struct CompositeDistributionShiftedMomentWrapper
   {
@@ -157,23 +155,6 @@ private:
     const Scalar shift_;
     const CompositeDistribution * p_distribution_;
   }; // struct CompositeDistributionShiftedMomentWrapper
-
-  // Structure used to wrap the gradient of the function into a Function
-  struct DerivativeWrapper
-  {
-    const Function & function_;
-
-    DerivativeWrapper(const Function & function)
-      : function_(function)
-    {}
-
-    Point computeDerivative(const Point & point) const
-    {
-      Point value(1, function_.gradient(point)(0, 0));
-      return value;
-    }
-
-  };
 
   /** update all the derivative attributes */
   void update();
