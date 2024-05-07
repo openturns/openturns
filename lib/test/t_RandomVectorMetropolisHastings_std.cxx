@@ -69,7 +69,9 @@ int main(int, char *[])
     // End Beta-Binomial conjugate model test
 
     // Elementary test
-    RandomVector randomVector(Normal());
+    Normal normal;
+    const Normal & ref_normal(normal);
+    RandomVector randomVector(ref_normal);
     RandomVectorMetropolisHastings sampler(randomVector, {0.0});
     Sample x(sampler.getSample(N));
     Point mean(x.computeMean());
