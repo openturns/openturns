@@ -13,7 +13,7 @@ dim : int, :math:`dim \geq 0`
     the finite interval :math:`[0, 1]^{dim}`.
     By default, an empty interval is created.
 lowerBound, upperBound : float or sequence of float of dimension *dim*
-    Define an interval
+    Define the interval
     :math:`[lowerBound_0, upperBound_0]\times \dots \times [lowerBound_{dim-1}, upperBound_{dim-1}]`.
     It is allowed to have :math:`lowerBound_i \geq upperBound_i` for some
     :math:`i`: it simply defines an empty interval.
@@ -41,11 +41,11 @@ scalar.
 Examples
 --------
 >>> import openturns as ot
->>> # A finite interval
+>>> # The finite interval [2,4] * [3,5]
 >>> print(ot.Interval([2.0, 3.0], [4.0, 5.0]))
 [2, 4]
 [3, 5]
->>> # Not finite intervals
+>>> # The finite interval [2, +inf[
 >>> a = 2.0
 >>> print(ot.Interval([a], [1], [True], [False]))
 [2, (1) +inf[
