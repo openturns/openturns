@@ -45,7 +45,7 @@ Examples
 >>> print(ot.Interval([2.0, 3.0], [4.0, 5.0]))
 [2, 4]
 [3, 5]
->>> # The finite interval [2, +inf[
+>>> # The right-unbounded interval [2, +inf[
 >>> a = 2.0
 >>> print(ot.Interval([a], [1], [True], [False]))
 [2, (1) +inf[
