@@ -66,7 +66,7 @@ p.getDimension()
 # The `Sample` class
 # ------------------
 #
-# The :class:`~openturns.Sample` class represents a multivariate sample made of :math:`n` points in :math:`\mathbb{R}^d`.
+# The :class:`~openturns.Sample` class represents a multivariate sample made of :math:`\sampleSize` points in :math:`\Rset^d`.
 #
 # * :math:`d` is the *dimension* of the sample,
 # * :math:`n` is the *size* of the sample.
