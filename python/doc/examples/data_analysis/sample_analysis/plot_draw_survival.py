@@ -84,7 +84,7 @@ distribution = ot.GeneralizedPareto(sigma, xi, u)
 # -----------------------------------
 
 # %%
-# The `computeCDF` and `computeSurvivalFunction` computes the CDF :math:`F` and survival :math:`S` of a distribution.
+# The `computeCDF` and `computeSurvivalFunction` compute the CDF :math:`F` and survival :math:`S` of a distribution.
 
 # %%
 p1 = distribution.computeCDF(10.0)
