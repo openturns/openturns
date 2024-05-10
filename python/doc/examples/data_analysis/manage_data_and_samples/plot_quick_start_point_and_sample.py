@@ -17,7 +17,7 @@ A quick start guide to the `Point` and `Sample` classes
 #
 # Two fundamental objects in the library are:
 #
-# * :class:`~openturns.Point`: a multidimensional point in :math:`d` dimensions (:math:`\in \mathbb{R}^d`) ;
+# * :class:`~openturns.Point`: a multidimensional point in :math:`d` dimensions (:math:`\in \Rset^d`) ;
 # * :class:`~openturns.Sample`: a multivariate sample made of :math:`n` points in :math:`d` dimensions.
 #
 
