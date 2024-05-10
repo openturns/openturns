@@ -20,7 +20,7 @@ sample = distribution.getSample(N)
 sample
 
 # %%
-# A new set of randomly mixed indices is a realization of a permutation of N elements amongst N :
+# A new set of randomly mixed indices is a realization of a permutation of :math:`N` elements amongst :math:`N` :
 #
 mixingDistribution = ot.KPermutationsDistribution(N, N)
 newIndices = mixingDistribution.getSample(1)[0, :]

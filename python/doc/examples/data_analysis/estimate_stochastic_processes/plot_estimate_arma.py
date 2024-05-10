@@ -4,7 +4,7 @@ Estimate a scalar ARMA process
 """
 # %%
 # The objective here is to estimate an ARMA model from a scalar stationary
-# time series using the Whittle estimator and a centered normal white
+# time series using the Whittle estimator and a centered Normal white
 # noise.
 #
 # The data can be a unique time series or several time series collected in
@@ -28,9 +28,9 @@ Estimate a scalar ARMA process
 # -   for each order :math:`(p,q)`, the estimation of the parameters is done by
 #     maximizing the reduced equation of the Whittle likelihood function
 #     (\[lik2\]), thanks to the method `build` of the object
-#     *WhittleFactory*. This method applies to a time series or a process
+#     :class:`~openturns.WhittleFactory`. This method applies to a time series or a process
 #     sample. If the user wants to get the quantified criteria
-#     :math:`AIC_c, AIC` and `BIC` of the model :math:`ARMA(p,q)`, he has to specify
+#     :math:`AIC_c`, `AIC` and `BIC` of the model :math:`ARMA(p,q)`, he has to specify
 #     it by giving a `Point` of size 0 as input parameter of
 #     the method `build`.
 # -   the output of the estimation is, in all the cases, one unique ARMA:

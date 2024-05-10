@@ -46,7 +46,7 @@ print("Fitted distribution=", fittedDistribution)
 # %%
 # But this method sometimes fails for specific distributions, for example
 # when the sample size is very small or when the distribution has
-# specific properties (e.g. some parameter is known beforehand).
+# specific properties (e.g., some parameter is known beforehand).
 # In these cases, general-purpose methods cannot be used, and the
 # methods presented below may be relevant.
 

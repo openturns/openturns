@@ -170,7 +170,7 @@ view = viewer.View(graph)
 #
 
 # %%
-# We first create N observation points in :math:`[-3.0, 3.0]` :
+# We first create `N` observation points in :math:`[-3.0, 3.0]` :
 
 # %%
 N = 301

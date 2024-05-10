@@ -12,7 +12,7 @@ Estimate Wilks and empirical quantile
 # of size :math:`n`, with a confidence level equal to :math:`\beta`.
 #
 # We note :math:`(Y^{(1)}, ..., Y^{(n)})` the sample where the values are sorted in ascending order.
-# The empirical estimator, noted :math:`q_{\alpha}^{emp}`, and its confidence interval, is defined by the expressions:
+# The empirical estimator, noted :math:`q_{\alpha}^{emp}`, and its confidence interval, are defined by the expressions:
 #
 # .. math::
 #     \left\{
@@ -24,7 +24,7 @@ Estimate Wilks and empirical quantile
 #      \end{array}
 #     \right\}
 #
-# The Wilks estimator, noted :math:`q_{\alpha, \beta}^{Wilks}`, and its confidence interval, is defined by the expressions:
+# The Wilks estimator, noted :math:`q_{\alpha, \beta}^{Wilks}`, and its confidence interval, are defined by the expressions:
 #
 # .. math::
 #   \left\{

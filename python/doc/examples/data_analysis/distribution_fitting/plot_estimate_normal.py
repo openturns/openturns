@@ -28,7 +28,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# We consider a sample, here created from a standard Normal distribution :
+# We consider a sample, here created from a standard :class:`~openturns.Normal` distribution :
 sample = ot.Normal().getSample(1000)
 
 # %%
@@ -53,7 +53,7 @@ view = viewer.View(graph)
 #
 
 # %%
-# We generate a sample from a Student distribution with parameters :math:`\nu=5.0`, :math:`\mu = -0.5` and a scale parameter :math:`\sigma=2.0`.
+# We generate a sample from a :class:`~openturns.Student` distribution with parameters :math:`\nu=5.0`, :math:`\mu = -0.5` and a scale parameter :math:`\sigma=2.0`.
 sample = ot.Student(5.0, -0.5, 2.0).getSample(1000)
 
 # %%

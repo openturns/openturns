@@ -18,7 +18,7 @@ Estimate a non stationary covariance function
 #    \end{aligned}
 #
 # The domain :math:`\mathcal{D}` is discretized on a mesh :math:`\mathcal{M}` which is a time grid with 64 points.
-# We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
+# We build a Normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
 # :math:`C` as covariance function.
 # We discretize the covariance model :math:`C` using :math:`C(t_k, t_\ell)`
 # for each :math:`(t_k, t_\ell)\in \mathcal{M} \times \mathcal{M}`.
@@ -78,7 +78,7 @@ for k in range(N):
 covmodel = ot.UserDefinedCovarianceModel(tgrid, covariance)
 
 # %%
-# Create the normal process with that covariance model
+# Create the Normal process with that covariance model
 # based on the mesh tgrid
 process = ot.GaussianProcess(covmodel, tgrid)
 

@@ -9,7 +9,7 @@ A quick start guide to the `Point` and `Sample` classes
 # In this example, we present the :class:`~openturns.Point` and :class:`~openturns.Sample` classes, two fundamental objects in the library.
 # We present the principles behind these classes and the way to create and use these objects.
 # We show how to extract a row or a column with the slicing operator.
-# We show how these objects interacts with Python variables and with the `numpy` module.
+# We show how these objects interact with Python variables and with the `numpy` module.
 
 # %%
 # Introduction
@@ -66,7 +66,7 @@ p.getDimension()
 # The `Sample` class
 # ------------------
 #
-# The `Sample` class represents a multivariate sample made of :math:`n` points in :math:`\mathbb{R}^d`.
+# The :class:`~openturns.Sample` class represents a multivariate sample made of :math:`n` points in :math:`\mathbb{R}^d`.
 #
 # * :math:`d` is the *dimension* of the sample,
 # * :math:`n` is the *size* of the sample.
@@ -133,7 +133,7 @@ print(type(column))
 # * the `row` is a `Point`,
 # * the `column` is a `Sample`.
 #
-# This is consistent with the fact that, in a dimension :math:`d` `Sample`, a row is a :math:`d`-dimensional `Point`.
+# This is consistent with the fact that, in a dimension :math:`d`, a row is a :math:`d`-dimensional `Point`.
 
 # %%
 # The following statement extracts several columns (with indices 0 and 2) and creates a new `Sample`.

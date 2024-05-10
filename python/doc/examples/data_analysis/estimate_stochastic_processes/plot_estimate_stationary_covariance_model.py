@@ -9,10 +9,10 @@ Estimate a stationary covariance function
 # The library builds an estimation of the stationary covariance function on a
 # :class:`~openturns.ProcessSample` or :class:`~openturns.TimeSeries` using the previous algorithm implemented in
 # the :class:`~openturns.StationaryCovarianceModelFactory` class.
-# The result consists in a :class:`~openturns.UserDefinedStationaryCovarianceModel` which is easy to manipulate.
+# The result consists of a :class:`~openturns.UserDefinedStationaryCovarianceModel` which is easy to manipulate.
 #
 # Such an object is composed of a time grid and a collection of :math:`K`
-# square matrices of dimension d.
+# square matrices of dimension `d`.
 # :math:`K` corresponds to the number of time steps of the final time grid on
 # which the covariance is estimated.
 # When estimated from a time series , the :class:`~openturns.UserDefinedStationaryCovarianceModel`
@@ -83,7 +83,7 @@ for i in range(N):
     cov = estimatedModel_PS(tau)
 
 # %%
-# Drawing...
+# Drawing:
 sampleValueEstimated = ot.Sample(N, 1)
 sampleValueModel = ot.Sample(N, 1)
 for i in range(N):

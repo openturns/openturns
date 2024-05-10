@@ -38,7 +38,7 @@ fittedRes = ot.NormalFactory().buildEstimator(sample)
 paramDist = fittedRes.getParameterDistribution()
 
 # %%
-# We draw the 2D-PDF of the parameters
+# We draw the 2d-PDF of the parameters
 graph = paramDist.drawPDF()
 graph.setXTitle(r"$\mu$")
 graph.setYTitle(r"$\sigma$")

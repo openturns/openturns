@@ -22,7 +22,7 @@ ot.RandomGenerator.SetSeed(0)
 
 # %%
 # The :class:`~openturns.GeneralizedExtremeValue` distribution is a family of continuous probability distributions
-# that combine the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distribution, all extreme value distribution.
+# that combine the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distributions, all extreme value distributions.
 #
 # In this example we use the associated :class:`~openturns.GeneralizedExtremeValueFactory` to fit sample with extreme values.
 # This factory returns the best model among the Frechet, Gumbel and Weibull estimates according to the BIC criterion.
