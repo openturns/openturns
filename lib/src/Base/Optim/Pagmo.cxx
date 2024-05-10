@@ -23,7 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/BootstrapExperiment.hxx"
+#include "openturns/RandomGenerator.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -388,7 +388,8 @@ void Pagmo::run()
       throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
     if (startingSampleConstrained.getSize() < populationSize)
     {
-      const Indices indices(BootstrapExperiment::GenerateSelection(populationSize, startingSampleConstrained.getSize()));
+      const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(populationSize, startingSampleConstrained.getSize()));
+      const Indices indices(selection.begin(), selection.end());
       startingSample_ = startingSampleConstrained.select(indices);
       LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
     }
