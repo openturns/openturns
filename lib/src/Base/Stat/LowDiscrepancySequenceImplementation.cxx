@@ -377,13 +377,13 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
 /* Compute the least prime number greater or equal to n */
 Unsigned64BitsInteger LowDiscrepancySequenceImplementation::GetNextPrimeNumber(const UnsignedInteger n)
 {
-  if (n == 0) return 2;
+  if (n <= 2) return 2;
 #ifdef OPENTURNS_HAVE_PRIMESIEVE
   primesieve::iterator it;
 #if PRIMESIEVE_VERSION_MAJOR >= 11
-  it.jump_to(n - 1);
+  it.jump_to(n);
 #else
-  it.skipto(n - 1);
+  it.skipto(n);
 #endif
   return it.next_prime();
 #else
