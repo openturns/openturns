@@ -10,21 +10,23 @@ kernel : :class:`~openturns.Distribution`, optional
 binned : bool, optional
     Activates bining mechanism only in the univariate or bivariate cases. It allows one to speed up the manipulation of the density function of the resulting distribution.  By default, the mechanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
-    Indicates the number of bins used by the bining mechanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
+    Indicates the number of bins used by the bining mechanism. By default, OpenTURNS uses the values stored in :class:`~openturns.ResourceMap`.
 boundaryCorrection : bool, optional
     Activates the boundary correction using the mirroring technique.
     By default, the correction is not provided.
 
 Notes
 -----
-The binning mechanism creates a regular grid of *binNumber* intervals in each
-dimension, then the unit weight of each point is linearly affected to the vertices
-of the bin containing the point (see [wand1994]_ appendix D, page 182).
-The `KernelSmoothing-BinNumber` key defines the default value of the 
-number of bins used in the _binning_ algorithm to improve the evaluation speed.
+The binning mechanism is available in dimension 1 and 2 only. See the notes of the
+:meth:`setBinning` method for details.
 
-The boundary correction is available only in one dimension, and it is done using
-the mirroring technique. See the notes of the :meth:`setBoundingOption` method for
+The boundary correction is available in dimension 1 only, and it is done using
+the mirroring technique (also named as the reflection correction).
+See the notes of the :meth:`setBoundingOption` method for
+details.
+
+It is possible to apply a log-transformation on the data in dimension 1 only, and build the kernel smoothing
+distribution on the transformed data. See the notes of the :meth:`setUseLogTransform` method for
 details.
 
 When applied to multivariate samples, the kernel is the kernel product of the
@@ -78,7 +80,8 @@ Nevertheless, the parameters can be manually set.
 Variants of the :meth:`build` method can be used when the distribution to build
 is expected to be of a certain type. In those cases however,
 the bandwidth must be user-specified.
-To use :meth:`buildAsTruncatedDistribution`, boundary correction must be enabled.
+To use :meth:`buildAsTruncatedDistribution`, boundary correction must be activated.
+To use the LogTransform treatment, activate it with :meth:`setUseLogTransform`.
 
 >>> distribution = ks.buildAsKernelMixture(sample, bandwidth)
 >>> print(distribution.getClassName())
@@ -88,7 +91,11 @@ KernelMixture
 Mixture
 >>> distribution = ks.buildAsTruncatedDistribution(sample, bandwidth)
 >>> print(distribution.getClassName())
-TruncatedDistribution"
+TruncatedDistribution
+>>> ks.setUseLogTransform(True)
+>>> distribution = ks.build(sample)
+>>> print(distribution.getClassName())
+Distribution"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::buildAsKernelMixture
@@ -103,12 +110,12 @@ bandwidth : :class:`~openturns.Point`
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`
+fittedDist : :class:`~openturns.KernelMixture`
     The fitted distribution.
 
 Notes
 -----
-It builds a :math:`~openturns.KernelMixture` using the given data and bandwidth regardless of the binning or boundary treatment flags.
+It builds a :class:`~openturns.KernelMixture` using the given data and bandwidth regardless of the binning or boundary treatment flags.
 
 Examples
 --------
@@ -132,12 +139,12 @@ bandwidth : :class:`~openturns.Point`
 
 Returns
 -------
-fittdDist : :class:`~openturns.KernelMixture`
+fittedDist : :class:`~openturns.Mixture`
     The fitted distribution.
 
 Notes
 -----
-It builds a :math:`~openturns.Mixture` using the given bandwidth and a binning of the given data regardless of the bin number, the data size, the binning flag or boundary treatment flags. This method is available only for 1D or 2D samples.
+It builds a :class:`~openturns.Mixture` using the given bandwidth and a binning of the given data regardless of the bin number, the data size, the binning flag or boundary treatment flags. This method is available only for 1D or 2D samples.
 
 Examples
 --------
@@ -161,7 +168,7 @@ bandwidth : :class:`~openturns.Point`
 
 Returns
 -------
-fittdDist : :class:`~openturns.TruncatedDistribution`
+fittedDist : :class:`~openturns.TruncatedDistribution`
     The estimated distribution as a :class:`~openturns.TruncatedDistribution`.
 
 Examples
@@ -186,7 +193,7 @@ bandwidth : :class:`~openturns.Point`, optional
 
 Returns
 -------
-fittdDist : :class:`~openturns.Distribution`
+fittedDist : :class:`~openturns.Distribution`
     The fitted distribution.
 
 Notes
@@ -194,17 +201,26 @@ Notes
 According to the dimension of the data and the specified treatments, the resulting distribution differs.
 
 - If the sample is constant, a :class:`~openturns.Dirac` distribution is built.
-- If dimension > 2 or if no treatment has been asked for, a :class:`~openturns.KernelMixture` is built by calling *buildAsKernelMixture*. 
-- If dimension = 1 and a boundary treatment has been asked for, a :class:`~openturns.TruncatedDistribution` is built by calling *buildAsTruncatedDistribution*
-- If dimension = 1 or 2 and no boundary treatment has been asked for, but a binning treatment has been asked for,
 
-    - If the sample size is greater than the bin number, then a :class:`~openturns.Mixture` is built by calling `buildAsMixture`
-    - Otherwise a :class:`~openturns.KernelMixture` is built by calling `buildAsKernelMixture`
+- In dimension 1:
+
+    - if no treatment is activated, a :class:`~openturns.KernelMixture` is built by using :meth:`buildAsKernelMixture`,
+    - if a boundary treatment is activated, a :class:`~openturns.TruncatedDistribution` is built by using :meth:`buildAsTruncatedDistribution`,
+    - if a log-transformation is activated, a :class:`~openturns.CompositeDistribution` is built by using :meth:`build`.
+
+- In dimension > 2:
+
+    - no treatment (boundary correction or log-transformation) is available. A :class:`~openturns.KernelMixture` is built by using :meth:`buildAsKernelMixture`. 
+
+- In dimension 1 or 2, if a binning treatment is activated:
+
+    - If the sample size is greater than the bin number, then a :class:`~openturns.Mixture` is built by using :meth:`buildAsMixture`,
+    - Otherwise a :class:`~openturns.KernelMixture` is built by using :meth:`buildAsKernelMixture`.
     
-The bandwidth selection depends on the dimension.
+The bandwidth selection depends on the dimension:
 
-- If dimension = 1, then `computeMixedBandwidth` is used.
-- Otherwise, then the only multivariate rule `computeSilvermanBandwidth` is used.
+    - If dimension 1, then :meth:`computeMixedBandwidth` is used,
+    - Otherwise, then the only multivariate rule :meth:`computeSilvermanBandwidth` is used.
 
 Examples
 --------
@@ -233,7 +249,7 @@ Compare the PDFs:
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwidth used in each direction.
+    Bandwidth.
 "
 
 // ---------------------------------------------------------------------
@@ -248,13 +264,45 @@ kernel : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::KernelSmoothing::getBoundaryCorrection
+"Accessor to the boundary correction flag.
+
+Returns
+-------
+boundaryCorrection : bool
+    Flag to tell if the boundary correction is activated.
+
+Notes
+-----
+This treatment is available in dimension 1 only."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::KernelSmoothing::setBoundaryCorrection
 "Accessor to the boundary correction flag.
 
 Parameters
 ----------
 boundaryCorrection : bool
-    Activates the boundary correction using the mirroring technique."
+    Activates the boundary correction using the mirroring technique.
+
+Notes
+-----
+This treatment is available in dimension 1 only. See [jones1993]_ to get more details.
+The *reflection* or *mirroring* method
+is used: the boundaries are automatically detected from the sample
+(with the :meth:`Sample.getMin` and :meth:`Sample.getMax` functions) and the kernel smoothed distribution
+is corrected in the boundary areas to remain within the boundaries,
+according to the mirroring technique:
+
+- the Scott bandwidth is evaluated from the sample: *h*
+- two sub-samples are extracted from the initial sample,
+  containing all the points within the range :math:`[min, min + h[` and  :math:`]max-h, max]`,
+- both sub-samples are transformed into their symmetric samples with respect their respective boundary:
+  its results two samples within the range :math:`]min-h, min]` and :math:`[max, max+h[`,
+- a kernel smoothed PDF is built from the new sample composed with
+  the initial one and the two new ones, with the previous bandwidth *h*,
+- this last kernel smoothed PDF is truncated within the initial range :math:`[min, max]` (conditional PDF)."
 
 // ---------------------------------------------------------------------
 
@@ -275,9 +323,9 @@ The possible values for the bounding option are:
     - KernelSmoothing.UPPER or 2: apply the boundary correction to the upper bound
     - KernelSmoothing.BOTH  or 3: apply the boundary correction to both bounds
 
-It applies only to 1D samples. Each bound can be defined by the user or computed
-automatically from the sample, see *setLowerBound*, *setUpperBound*,
-*setAutomaticLowerBound*, *setAutomaticUpperBound*."
+This treatment is available in dimension 1 only. Each bound can be defined by the user or computed
+automatically from the sample, see :meth:`setLowerBound`, :meth:`setUpperBound`,
+:meth:`setAutomaticLowerBound`, :meth:`setAutomaticUpperBound`."
 
 // ---------------------------------------------------------------------
 
@@ -291,6 +339,7 @@ lowerBound : float
 
 Notes
 -----
+This treatment is available in dimension 1 only.
 This method automatically sets the *automaticLowerBound* flag to *False*.
 The given value will be taken into account only if *boundingOption* is set to
 either 1 or 3. If the algorithm is applied to a sample with a minimum value
@@ -306,10 +355,11 @@ less than the user-defined lower bound and the *automaticLowerBound* is set to
 Parameters
 ----------
 upperBound : float
-    A user-defined lower bound to take into account for boundary correction.
+    A user-defined upper bound to take into account for boundary correction.
 
 Notes
 -----
+This treatment is available in dimension 1 only.
 This method automatically sets the *automaticLowerBound* flag to *False*.
 The given value will be taken into account only if *boundingOption* is set to
 either 1 or 3. If the algorithm is applied to a sample with a minimum value
@@ -325,7 +375,13 @@ less than the user-defined lower bound and the *automaticLowerBound* is set to
 Parameters
 ----------
 automaticLowerBound : bool
-    Flag to tell if the user-defined lower bound has to be taken into account (value *False*) or if the minimum of the given sample has to be used (value *True*)."
+    Flag to tell if the lower bound is automatically calculated from the sample.
+
+Notes
+-----
+This treatment is available in dimension 1 only.
+The automatic lower bound is the minimum of the given sample. In the other case,
+the user has to specify the lower bound."
 
 // ---------------------------------------------------------------------
 
@@ -335,7 +391,84 @@ automaticLowerBound : bool
 Parameters
 ----------
 automaticUpperBound : bool
-    Flag to tell if the user-defined upper bound has to be taken into account (value *False*) or if the maximum of the given sample has to be used (value *True*)."
+    Flag to tell if the upper bound is automatically calculated from the sample.
+
+Notes
+-----
+This treatment is available in dimension 1 only.
+The automatic upper bound is the maximum of the given sample. In the other case,
+the user has to specify the upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::getBinning
+"Accessor to the binning flag.
+
+Returns
+-------
+binning : bool
+    Flag to tell if the binning treatment is activated.
+
+Notes
+-----
+This treatment is available in dimension 1 and 2 only."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setBinning
+"Accessor to the binning flag.
+
+Parameters
+----------
+binning : bool
+    Flag to tell if the binning treatment is activated.
+
+Notes
+-----
+This treatment is available in dimension 1 and 2 only.
+It creates a regular grid of *binNumber*
+intervals in each
+dimension, then the unit weight of each point is linearly affected to the vertices
+of the bin containing the point (see [wand1994]_ appendix D, page 182).
+The `KernelSmoothing-BinNumber` key of the class  :class:`~openturns.ResourceMap` defines the default value of the 
+number of bins used in the _binning_ algorithm to improve the evaluation speed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setUseLogTransform
+"Accessor to the log-transform flag.
+
+Parameters
+----------
+useLogTransform : bool
+    Flag to tell if the kernel smoothing distribution is built on the log-transformed data.
+
+Notes
+-----
+This treatment is available in dimension 1 only. See [charpentier2015]_ to get more details.
+
+We denote by :math:`(X_i)_{1 \leq i  \leq \sampleSize}`
+some independent random variates, identically distributed according to :math:`X`.
+
+Refer to :ref:`kernel_smoothing` for the details. The shift
+scale is fixed in the `KernelSmoothing-DefaultShiftScale` key of the class :class:`~openturns.ResourceMap`.
+
+Once a kernel smoothed distribution has been fitted on the transformed data, the fitted distribution of :math:`X`
+is built as a :class:`~openturns.CompositeDistribution` from :math:`T^{-1}` and the kernel smoothed distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::getUseLogTransform
+"Accessor to the log-transform flag.
+
+Returns
+-------
+useLogTransform : bool
+    Flag to tell if the kernel smoothing distribution is built on the log-transformed data.
+
+Notes
+-----
+This treatment is available in dimension 1 only."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeSilvermanBandwidth
@@ -344,13 +477,16 @@ automaticUpperBound : bool
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwidth which components are evaluated according to the Silverman rule
-    assuming a normal distribution.
-    The bandwidth uses a robust estimate of the
-    sample standard deviation, based on the interquartile range introduced
-    in :ref:`kernel_smoothing` (rather than the sample standard deviation).
-    This method can manage a multivariate sample and produces a
-    multivariate bandwidth.
+    Bandwidth computed according to the Silverman rule.
+    
+Notes
+-----
+Each component of the bandwidth which components is evaluated according to the Silverman rule
+assuming a normal distribution. The bandwidth uses a robust estimate of the
+sample standard deviation, based on the interquartile range introduced
+in :ref:`kernel_smoothing` (rather than the sample standard deviation).
+This method can manage a multivariate sample and produces a
+multivariate bandwidth.
 "
 
 // ---------------------------------------------------------------------
@@ -360,11 +496,12 @@ bandwidth : :class:`~openturns.Point`
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwidth which components are evaluated according to the plugin rule.
+    Bandwidth computed according to the plug-in rule.
 
 Notes
 -----
-This plug-in method is based on the *solve-the-equation* rule from [sheather1991]_.
+Each component of the bandwidth which components is evaluated according to
+the plug-in rule. This plug-in rule is based on the *solve-the-equation* method from [sheather1991]_.
 This method can take a lot of time for large samples, as the cost is  quadratic with the sample size.
 
 Several keys of the :class:`~openturns.ResourceMap` are used by the [sheather1991]_ method.
@@ -373,17 +510,12 @@ Several keys of the :class:`~openturns.ResourceMap` are used by the [sheather199
   to estimate the bandwidth.
   It defines the absolute tolerance used by the solver
   to solve the nonlinear equation.
-
 - The `KernelSmoothing-MaximumIteration` key defines the maximum number of iterations
   used by the solver.
-
 - The `KernelSmoothing-RelativePrecision` key defines the relative tolerance.
-
 - The `KernelSmoothing-AbsolutePrecision` key defines the absolute tolerance. 
-
 - The `KernelSmoothing-ResidualPrecision` key defines the absolute
   tolerance on the residual.
-
 - The `KernelSmoothing-CutOffPlugin` key is the cut-off value
   introduced in :ref:`kernel_smoothing`.
 
@@ -413,13 +545,9 @@ This method uses the *mixed* rule introduced in :ref:`kernel_smoothing`.
 Its goal is to provide an accurate estimator of the bandwidth 
 when the sample size is large.
 
-Let :math:`n` be the sample size.
+Let :math:`\sampleSize` be the sample size.
 The estimator depends on the threshold sample size :math:`n_t` defined in the
-`KernelSmoothing-SmallSize` key of the :class:`~openturns.ResourceMap`.
+`KernelSmoothing-SmallSize` key of the :class:`~openturns.ResourceMap`: 
 
-
-- If :math:`n \leq n_t`, i.e. for a small sample, we use the plugin solve-the-equation
-  method.
-
-- Otherwise, the *mixed* rule is used.
-"
+- if :math:`\sampleSize \leq n_t`, i.e. for a small sample, we use the plugin solve-the-equation method,
+- otherwise, the *mixed* rule is used."
