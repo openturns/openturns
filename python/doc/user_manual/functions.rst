@@ -251,6 +251,7 @@ as Python functions.
     SpecFunc.LogBesselI1
     SpecFunc.LogBesselK
     SpecFunc.LogBeta
+    SpecFunc.LogBinomialCoefficient
     SpecFunc.LogFactorial
     SpecFunc.LogGamma
     SpecFunc.LogGamma1p
