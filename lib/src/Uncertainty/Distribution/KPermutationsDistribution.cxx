@@ -248,12 +248,26 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
   // Convert int values into float
   const IndicesCollection intResult(KPermutations(k_, n_).generate());
   const UnsignedInteger size = intResult.getSize();
-  if (size == 0) return Sample();
-  const UnsignedInteger dimension = intResult.cend_at(0) - intResult.cbegin_at(0);
-  Sample result(size, dimension);
+  if (size == 0) return Sample(0, getDimension());
+  const Interval inter(interval.intersect(range_));
+  // Common case: get the full support
+  if (inter == range_)
+    {
+      Sample result(size, dimension_);
+      for (UnsignedInteger i = 0; i < size; ++i)
+        for (UnsignedInteger j = 0; j < dimension_; ++j)
+            result(i, j) = intResult(i, j);
+      return result;
+    }
+  Sample result(0, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      result(i, j) = intResult(i, j);
+    {
+      Point point(dimension_);
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        point[j] = intResult(i, j);
+      if (inter.contains(point))
+        result.add(point);
+    }
   return result;
 }
 

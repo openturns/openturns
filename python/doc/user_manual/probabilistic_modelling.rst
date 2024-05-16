@@ -115,10 +115,10 @@ Discrete parametric distributions
     Geometric
     Hypergeometric
     Multinomial
-    KPermutationsDistribution
 
     :template: classWithPlot.rst_t
     Polya
+    KPermutationsDistribution
 
     :template: Distribution.rst_t
     Poisson
