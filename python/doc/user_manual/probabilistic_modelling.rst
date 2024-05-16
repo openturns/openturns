@@ -115,9 +115,9 @@ Discrete parametric distributions
     Geometric
     Hypergeometric
     Multinomial
-    KPermutationsDistribution
 
     :template: classWithPlot.rst_t
+    KPermutationsDistribution
     NegativeBinomial
 
     :template: Distribution.rst_t
