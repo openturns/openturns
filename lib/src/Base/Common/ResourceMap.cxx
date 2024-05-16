@@ -1212,6 +1212,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
+  addAsScalar("KernelSmoothing-DefaultShiftScale", 1.0e-5);
   addAsUnsignedInteger("KernelSmoothing-BinNumber", 1024);
   addAsUnsignedInteger("KernelSmoothing-MaximumIteration", 50);
   addAsUnsignedInteger("KernelSmoothing-SmallSize", 250);
