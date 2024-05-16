@@ -1209,6 +1209,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
+  addAsScalar("KernelSmoothing-DefaultShiftScale", 1.0e-5);
   addAsUnsignedInteger("KernelSmoothing-BinNumber", 1024);
   addAsUnsignedInteger("KernelSmoothing-MaximumIteration", 50);
   addAsUnsignedInteger("KernelSmoothing-SmallSize", 250);
@@ -1230,6 +1231,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("MarginalDistribution-Rule", "G15K31");
   addAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals", 128);
 
+  // MarginalUniformOrderStatistics //
+  addAsUnsignedInteger("MarginalUniformOrderStatistics-LargeCaseCDF", 1000);
+  
   // Meixner parameters //
   addAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-12);
   addAsScalar("MeixnerDistribution-MaximumConstraintError", 1.0e-12);

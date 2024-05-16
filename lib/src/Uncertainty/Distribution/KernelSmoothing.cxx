@@ -25,6 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/HermiteFactory.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
@@ -33,6 +34,7 @@
 #include "openturns/SobolSequence.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/JointDistribution.hxx"
+#include "openturns/CompositeDistribution.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -256,8 +258,41 @@ Distribution KernelSmoothing::build(const Sample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1)
-    return build(sample, computeMixedBandwidth(sample));
-
+  {
+    if (useLogTransform_)
+    {
+      const Scalar skewness = sample.computeSkewness()[0];
+      const Scalar xMin = sample.getMin()[0];
+      const Scalar xMax = sample.getMax()[0];
+      const Scalar delta = (xMax - xMin) * std::max(SpecFunc::Precision, ResourceMap::GetAsScalar("KernelSmoothing-DefaultShiftScale"));
+      SymbolicFunction transform;
+      SymbolicFunction inverseTransform;
+      OSS oss(true);
+      // To get the full double precision
+      oss.setPrecision(17);
+      if (skewness >= 0.0)
+      {
+        const Scalar shift = delta - xMin;
+        transform = SymbolicFunction("x", String(oss << "log(x+(" << shift << "))"));
+        oss.clear();
+        inverseTransform = SymbolicFunction("y", String(oss << "exp(y)-(" << shift << ")"));
+      }
+      else
+      {
+        const Scalar shift = xMax + delta;
+        transform = SymbolicFunction("x", String(oss << "log((" << shift << ")-x)"));
+        oss.clear();
+        inverseTransform = SymbolicFunction("y", String(oss << "(" << shift << ") - exp(y)"));
+      }
+      const Sample transformedSample(transform(sample));
+      const Distribution transformedDistribution(build(transformedSample, computeMixedBandwidth(transformedSample)));
+      CompositeDistribution fitted(inverseTransform, transformedDistribution);
+      fitted.setDescription(sample.getDescription());
+      return fitted;
+    } // useLogTransform
+    else
+      return build(sample, computeMixedBandwidth(sample));
+  } // dimension 1
   // For nD sample, use the only available rule
   return build(sample, computeSilvermanBandwidth(sample));
 }
@@ -279,8 +314,8 @@ Distribution KernelSmoothing::build(const Sample & sample,
   if (xmin == xmax)
   {
     bandwidth_ = bandwidth;
-    KernelSmoothing::Implementation result(new Dirac(xmin));
-    result->setDescription(sample.getDescription());
+    Dirac result(xmin);
+    result.setDescription(sample.getDescription());
     return result;
   }
   Indices degenerateIndices;
@@ -549,6 +584,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   // Now, work on the extended sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
   newSample.setData(newSampleData);
+  newSample.setDescription(sample.getDescription());
   size = newSample.getSize();
   const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
   if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
@@ -585,6 +621,11 @@ void KernelSmoothing::setBoundaryCorrection(const Bool boundaryCorrection)
   boundingOption_ = (boundaryCorrection ? BOTH : NONE);
 }
 
+Bool KernelSmoothing::getBoundaryCorrection() const
+{
+  return (boundingOption_ != NONE);
+}
+
 /* Boundary correction accessor */
 void KernelSmoothing::setBoundingOption(const BoundingOption boundingOption)
 {
@@ -615,6 +656,38 @@ void KernelSmoothing::setAutomaticUpperBound(const Bool automaticUpperBound)
   automaticUpperBound_ = automaticUpperBound;
 }
 
+/* Binning accessors */
+void KernelSmoothing::setBinning(const Bool binned)
+{
+  binned_ = binned;
+}
+
+Bool KernelSmoothing::getBinning() const
+{
+  return binned_;
+}
+
+/* Bin number accessor */
+void KernelSmoothing::setBinNumber(const UnsignedInteger binNumber)
+{
+  if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
+}
+
+UnsignedInteger KernelSmoothing::getBinNumber() const
+{
+  return binNumber_;
+}
+
+/* Use log transform accessor */
+void KernelSmoothing::setUseLogTransform(const Bool useLog)
+{
+  useLogTransform_ = useLog;
+}
+
+Bool KernelSmoothing::getUseLogTransform() const
+{
+  return useLogTransform_;
+}
 
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
@@ -646,6 +719,10 @@ void KernelSmoothing::load(Advocate & adv)
   adv.loadAttribute("automaticLowerBound_", automaticLowerBound_);
   adv.loadAttribute("upperBound_", upperBound_);
   adv.loadAttribute("automaticUpperBound_", automaticUpperBound_);
+  if (adv.hasAttribute("useLogTransform_"))
+    adv.loadAttribute("useLogTransform_", useLogTransform_);
+  else
+    useLogTransform_ = false;
 }
 
 END_NAMESPACE_OPENTURNS

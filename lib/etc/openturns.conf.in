@@ -576,13 +576,14 @@
   <KernelMixture-SmallSize            value_int="50"   />
   
   <!-- OT::KernelSmoothing parameters -->
-  <KernelSmoothing-AbsolutePrecision   value_float="0.0"            />
-  <KernelSmoothing-CutOffPlugin        value_float="5.0"            />
-  <KernelSmoothing-RelativePrecision   value_float="1.0e-5"         />
-  <KernelSmoothing-ResidualPrecision   value_float="1.0e-10"        />
-  <KernelSmoothing-BinNumber           value_int="1024" />
-  <KernelSmoothing-MaximumIteration    value_int="50"   />
-  <KernelSmoothing-SmallSize           value_int="250"  />
+  <KernelSmoothing-AbsolutePrecision   value_float="0.0"     />
+  <KernelSmoothing-CutOffPlugin        value_float="5.0"     />
+  <KernelSmoothing-RelativePrecision   value_float="1.0e-5"  />
+  <KernelSmoothing-ResidualPrecision   value_float="1.0e-10" />
+  <KernelSmoothing-DefaultShiftScale   value_float="1.0e-5"  />
+  <KernelSmoothing-BinNumber           value_int="1024"      />
+  <KernelSmoothing-MaximumIteration    value_int="50"        />
+  <KernelSmoothing-SmallSize           value_int="250"       />
   
   <!-- OT::LogNormal parameters -->
   <LogNormal-CharacteristicFunctionSmallSigmaThreshold value_float="0.2"           />
@@ -600,6 +601,9 @@
   <MarginalDistribution-MaximumError        value_float="1.0e-7"      />
   <MarginalDistribution-MaximumSubIntervals value_int="128"           />
   <MarginalDistribution-Rule                value_str="G15K31"         />
+
+  <!-- MarginalUniformOrderStatistics parameters -->
+  <MarginalUniformOrderStatistics-LargeCaseCDF value_int="1000"           />
 
   <!-- Meixner parameters -->
   <MeixnerDistribution-MaximumAbsoluteError      value_float="1.0e-12"         />
