@@ -111,7 +111,11 @@ Discrete parametric distributions
 
     Bernoulli
     Binomial
+
+    :template: class.rst_t
     CombinationsDistribution
+
+    :template: Distribution.rst_t
     Dirac
     Geometric
     Hypergeometric
