@@ -238,6 +238,10 @@ OT_API UnsignedInteger BitCount(const Unsigned64BitsInteger n);
 OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
     const UnsignedInteger k);
 
+// log-binomial coefficient C(n, k)
+OT_API Scalar LogBinomialCoefficient(const UnsignedInteger n,
+    const UnsignedInteger k);
+
 // Accurate summation
 OT_API Scalar AccurateSum(const Point & v);
 
