@@ -704,7 +704,13 @@ void Pagmo::run()
     // retrieve non-penalized output values instead of using pop.get_f
     std::vector<std::vector<double> > popf;
     for (UnsignedInteger i = 0; i < finalValues.getSize(); ++ i)
-      popf.push_back(Point(finalValues[i]).toStdVector());
+    {
+      Point outP(finalValues[i]);
+      for (UnsignedInteger j = 0; j < outP.getDimension(); ++ j)
+        if (!getProblem().isMinimization(j))
+          outP[j] *= -1.0;
+      popf.push_back(outP.toStdVector());
+    }
     // compute the fronts
     std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
     Collection<Indices> frontIndices(fronts.size());
