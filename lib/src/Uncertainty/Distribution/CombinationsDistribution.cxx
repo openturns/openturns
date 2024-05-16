@@ -116,7 +116,6 @@ Point CombinationsDistribution::getRealization() const
 {
   Indices flags(n_);
   Indices integralRealization;
-  Bool done = false;
   // Build the complementary subset if its cardinal is smaller than k_
   const UnsignedInteger actualK = (k_ > n_ / 2 ? n_ - k_ : k_);
   while (integralRealization.getSize() < actualK)
