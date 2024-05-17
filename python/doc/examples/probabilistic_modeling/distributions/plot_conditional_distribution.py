@@ -10,7 +10,7 @@ Create a conditional distribution
 # .. math::
 #    \vect{X}|\vect{\Theta}
 #
-# with :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function math:`f`
+# with :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function :math:`f`
 #
 # .. math::
 #    \vect{\Theta}=f(Y)
