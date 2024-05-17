@@ -27,7 +27,7 @@ YDist = ot.Normal(0.0, 1.0)
 
 # %%
 # Create :math:`\vect{\Theta}=f(Y)`
-f = ot.SymbolicFunction(["y"], ["y", "1 + y"])
+f = ot.SymbolicFunction(["y"], ["y", "1 + y^2"])
 
 # %%
 # Create the :math:`\vect{X}|\vect{\Theta}` distribution
