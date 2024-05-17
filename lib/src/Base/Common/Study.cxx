@@ -409,14 +409,6 @@ void Study::add(const String & label, const PersistentObject * po, Bool force)
 }
 
 /* Print all the labels in the study */
-String Study::printLabels() const
-{
-  OSS oss;
-  String separator("");
-  for(LabelMap::const_iterator it = labelMap_.begin(); it != labelMap_.end(); ++it, separator = ";") oss << separator << (*it).first;
-  return oss;
-}
-
 std::vector<String> Study::getLabels() const
 {
   std::vector<String> labels;

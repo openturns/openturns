@@ -157,16 +157,16 @@ metamodel = chaosResult.getMetaModel()
 n_valid = 1000
 inputTest = im.distributionX.getSample(n_valid)
 outputTest = im.model(inputTest)
-val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-Q2 = val.computePredictivityFactor()[0]
-Q2
+val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
+R2 = val.computeR2Score()[0]
+R2
 
 # %%
-# The Q2 is very close to 1: the metamodel is excellent.
+# The R2 is very close to 1: the metamodel is excellent.
 
 # %%
 graph = val.drawValidation()
-graph.setTitle("Q2=%.2f%%" % (Q2 * 100))
+graph.setTitle("R2=%.2f%%" % (R2 * 100))
 view = otv.View(graph)
 
 # %%

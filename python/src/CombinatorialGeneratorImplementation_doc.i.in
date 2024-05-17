@@ -1,18 +1,6 @@
 %define OT_CombinatorialGenerator_doc
 "Combinatorial generator base class.
 
-Available constructors:
-    CombinatorialGenerator()
-
-    CombinatorialGenerator(*combinatorialGeneratorImp*)
-
-Parameters
-----------
-combinatorialGeneratorImp : CombinatorialGeneratorImplementation
-    An implementation of a combinatorial generator which is provided by
-    :class:`~openturns.Combinations`, :class:`~openturns.KPermutations` or
-    :class:`~openturns.Tuples`.
-
 See also
 --------
 Combinations, KPermutations, Tuples"

@@ -115,18 +115,6 @@ UnsignedInteger OptimizationAlgorithmImplementation::getMaximumCallsNumber() con
   return maximumCallsNumber_;
 }
 
-void OptimizationAlgorithmImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
-{
-  LOGWARN("OptimizationAlgorithm.setMaximumEvaluationNumber is deprecated, use setMaximumCallsNumber");
-  setMaximumCallsNumber(maximumEvaluationNumber);
-}
-
-UnsignedInteger OptimizationAlgorithmImplementation::getMaximumEvaluationNumber() const
-{
-  LOGWARN("OptimizationAlgorithm.getMaximumEvaluationNumber is deprecated, use getMaximumCallsNumber");
-  return getMaximumCallsNumber();
-}
-
 /* Maximum absolute error accessor */
 Scalar OptimizationAlgorithmImplementation::getMaximumAbsoluteError() const
 {

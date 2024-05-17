@@ -31,7 +31,7 @@ print("Spearman=", ot.HypothesisTest.Spearman(sampleY, sampleZ, 0.10))
 # Expected result is SpecFunc::MaxScalar
 fullSpearman = ot.HypothesisTest.FullSpearman(sampleX, sampleZ, 0.10)[0]
 testStatistic = fullSpearman.getStatistic()
-assert (testStatistic == ot.SpecFunc.MaxScalar)
+assert testStatistic == ot.SpecFunc.MaxScalar
 
 fullSpearman = ot.HypothesisTest.FullSpearman(sampleX, sampleZ, 0.10)[1]
 pValue = fullSpearman.getPValue()
@@ -42,7 +42,7 @@ ott.assert_almost_equal(testStatistic, 0.1219, 1e-4, 0.0)
 # Expected result is SpecFunc::MaxScalar
 fullSpearman = ot.HypothesisTest.FullSpearman(sampleY, sampleY, 0.10)[0]
 testStatistic = fullSpearman.getStatistic()
-assert (testStatistic == ot.SpecFunc.MaxScalar)
+assert testStatistic == ot.SpecFunc.MaxScalar
 
 # Partial Spearman Test : collection of tests of zero correlation between a selection of the 1D marginals of a sample and another 1D sample
 # H0 = zero rank correlation

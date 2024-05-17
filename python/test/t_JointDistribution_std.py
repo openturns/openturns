@@ -1,12 +1,67 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
-ot.PlatformInfo.SetNumericalPrecision(5)
 
-mean = [1.0, 2.0, 3.0]
+mean = [3.0, 2.0, 1.0]
 sigma = [2.0, 3.0, 4.0]
+
+refCovariances = list()
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 0.0, 0.0, 0.0, 9.0, 0.0, 0.0, 0.0, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 1.5, 0.0, 1.5, 9.0, 3.0, 0.0, 3.0, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 1.125, 0.0, 1.125, 9.0, 2.25, 0.0, 2.25, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(
+        3,
+        [
+            4.0,
+            2.0696999,
+            -4.403889,
+            2.0696999,
+            9.0,
+            4.1393998,
+            -4.403889,
+            4.1393998,
+            16.0,
+        ],
+    )
+)
+refCovariances.append(
+    ot.CovarianceMatrix(
+        3, [0.39606657, 0.0, 0.0, 0.0, 0.891149785, 0.0, 0.0, 0.0, 1.584266284]
+    )
+)
+
+refStandardDeviation = [
+    [2, 3, 4],
+    [2, 3, 4],
+    [2, 3, 4],
+    [1.49595080640498, 2.00948748222124, 2.99190161280996],
+    [0.62933820074628, 0.94400730111948, 1.25867640149264],
+]
+refSkewness = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [-0.213157049688829, 0.0, 0.213157049689032],
+    [0.22711106425, 0.22711106425, 0.22711106425],
+]
+refKurtosis = [
+    [3, 3, 3],
+    [3, 3, 3],
+    [3, 3, 3],
+    [3.11664895604121, 3.03472746922749, 3.11664895604127],
+    [2.439305739629, 2.439305739629, 2.439305739629],
+]
 
 # Create a collection of distribution attente TUI
 aCollection = []
@@ -14,214 +69,209 @@ try:
     aCollection[10] = ot.Normal()
 except Exception:
     pass
-# Create a marginal : distribution 1D
+
+dim = len(mean)
+# Create a collection of distribution
+aCollection = list()
 marginal = ot.Normal(mean[0], sigma[0])
 marginal.setName("First")
 marginal.setDescription(["One"])
-# Fill the first marginal of aCollection
 aCollection.append(marginal)
-aCollection[0].setName("First")
-# Create a second marginal : distribution 1D
 marginal = ot.Normal(mean[1], sigma[1])
 marginal.setName("Second")
 marginal.setDescription(["Two"])
-# Fill the second marginal of aCollection
 aCollection.append(marginal)
-aCollection[1].setName("Second")
-# Create a third marginal : distribution 1D
 marginal = ot.Normal(mean[2], sigma[2])
 marginal.setName("Third")
 marginal.setDescription(["Three"])
-# Fill the third marginal of aCollection
 aCollection.append(marginal)
-aCollection[2].setName("Third")
-# Create a copula : IndependentCopula
-dim = len(aCollection)
+
+# Create a copula
 aCopula = ot.IndependentCopula(dim)
 aCopula.setName("Independent copula")
-print("Copula = ", repr(aCopula))
-print("Copula = ", aCopula)
-# Instantiate one distribution object
-distribution = ot.JointDistribution(aCollection, aCopula)
-distribution.setName("myDist")
-print("Distribution = ")
-print(repr(distribution))
-print("Distribution = ")
-print(distribution)
-print("Distribution (Markdown) = ")
-print(distribution.__repr_markdown__())
-print("Distribution (HTML) = ")
-print(distribution._repr_html_())
-print("Parameters = ", repr(distribution.getParametersCollection()))
-print("Mean = ", repr(distribution.getMean()))
-print("Covariance = ", repr(distribution.getCovariance()))
-# Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
-# Has this distribution an elliptical copula?
-print("Elliptical copula = ", distribution.hasEllipticalCopula())
-
-# Has this distribution an independent copula?
-print("Independent copula = ", distribution.hasIndependentCopula())
-
-# Test for realization of distribution
-oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
-
-# Test for sampling
-size = 10
-oneSample = distribution.getSample(size)
-print("oneSample=", repr(oneSample))
-
-# Test for sampling
-size = 10000
-anotherSample = distribution.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
-
-# Define a point
-zero = ot.Point(dim, 0.0)
-
-# Show PDF and CDF of zero point
-zeroPDF = distribution.computePDF(zero)
-zeroCDF = distribution.computeCDF(zero)
-print("Zero point= ", repr(zero), " pdf=%.6f" % zeroPDF, " cdf=%.6f" % zeroCDF)
-
-# Get 95% quantile
-quantile = distribution.computeQuantile(0.95)
-print("Quantile=", repr(quantile))
-print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
-
-# Get 5% quantile
-quantile = distribution.computeQuantile(0.95, True)
-print("Quantile=", repr(quantile))
-
-# Get 95% survival function
-inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
-)
-print("entropy=%.6f" % distribution.computeEntropy())
-# Confidence regions
-if distribution.getDimension() <= 2:
-    threshold = ot.Point()
-    print(
-        "Minimum volume interval=",
-        distribution.computeMinimumVolumeInterval(0.95, threshold),
-    )
-    print("threshold=", threshold)
-    beta = ot.Point()
-    levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", beta)
-    print(
-        "Bilateral confidence interval=",
-        distribution.computeBilateralConfidenceInterval(0.95, beta),
-    )
-    print("beta=", beta)
-    print(
-        "Unilateral confidence interval (lower tail)=",
-        distribution.computeUnilateralConfidenceInterval(0.95, False, beta),
-    )
-    print("beta=", beta)
-    print(
-        "Unilateral confidence interval (upper tail)=",
-        distribution.computeUnilateralConfidenceInterval(0.95, True, beta),
-    )
-    print("beta=", beta)
-
-# Reference : Normal nD, correlation matrix = identity
-ref = ot.Normal(mean, sigma, ot.CorrelationMatrix(dim))
-print("Reference=")
-print(
-    "Zero point= ",
-    repr(zero),
-    " pdf= %.6f" % ref.computePDF(zero),
-    " cdf= %.6f" % ref.computeCDF(zero),
-    " quantile= ",
-    repr(ref.computeQuantile(0.95)),
-)
-
-# Extract the marginals
-for i in range(dim):
-    margin = distribution.getMarginal(i)
-    print("margin=", repr(margin))
-    print("margin PDF=%.6f" % margin.computePDF([0.0]))
-    print("margin CDF=%.6f" % margin.computeCDF([0.0]))
-    print("margin quantile=", repr(margin.computeQuantile(0.5)))
-    print("margin realization=", repr(margin.getRealization()))
-
-# Extract a 2-D marginal
-indices = ot.Indices([1, 0])
-print("indices=", repr(indices))
-margins = distribution.getMarginal(indices)
-print("margins=", repr(margins))
-print("margins PDF=%.6f" % margins.computePDF([0.0] * 2))
-print("margins CDF=%.6f" % margins.computeCDF([0.0] * 2))
-quantile = margins.computeQuantile(0.5)
-print("margins quantile=", repr(quantile))
-print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
-print("margins realization=", repr(margins.getRealization()))
-x = 0.6
-y = [0.2]
-print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
-print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
-point = [0.6] * dim
-print(
-    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point)
-)
-print(
-    "sequential conditional CDF=", distribution.computeSequentialConditionalCDF(point)
-)
-print(
-    "sequential conditional quantile=",
-    distribution.computeSequentialConditionalQuantile(point),
-)
-
-#
-
+cores = list()
+cores.append(aCopula)
 # With a Normal copula
 correlation = ot.CorrelationMatrix(dim)
 for i in range(1, dim):
     correlation[i - 1, i] = 0.25
-anotherCopula = ot.NormalCopula(correlation)
+    anotherCopula = ot.NormalCopula(correlation)
 anotherCopula.setName("Normal copula")
+cores.append(anotherCopula)
+# With a copula which is not a copula by type
+atoms = list()
+atoms.append(aCopula)
+atoms.append(anotherCopula)
+cores.append(ot.Mixture(atoms, [0.25, 0.75]))
+# With a non-copula core
+cores.append(otexp.UniformOrderStatistics(dim))
+# With a core which support is strictly included in the unit cube
+cores.append(ot.KernelMixture(ot.Beta(2.0, 3.0, 0.2, 0.8), [1.0] * dim, [[0.0] * dim]))
+ot.ResourceMap.SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", True)
+for nCore in range(len(cores)):
+    print("\n\n")
+    # Instantiate one distribution object
+    distribution = ot.JointDistribution(aCollection, cores[nCore])
+    distribution.setName("myDist")
+    print("Distribution", repr(distribution))
+    print("Distribution")
+    print(distribution)
+    print("Distribution (Markdown)")
+    print(distribution.__repr_markdown__())
+    print("Parameters", distribution.getParametersCollection())
+    print("nCore=", nCore)
+    if nCore != 2:
+        print("entropy=%.5e" % distribution.computeEntropy())
+        print(
+            "entropy (MC)=%.5e"
+            % -distribution.computeLogPDF(
+                distribution.getSample(1000000)
+            ).computeMean()[0]
+        )
+    print("Mean ", distribution.getMean())
+    precision = ot.PlatformInfo.GetNumericalPrecision()
+    print("Covariance ")
+    if nCore != 3:
+        covariance = distribution.getCovariance()
+        covariance.checkSymmetry()
+        ott.assert_almost_equal(covariance, refCovariances[nCore])
+    # Is this distribution an elliptical distribution?
+    print("Elliptical distribution= ", distribution.isElliptical())
 
-# Instantiate one distribution object
-distribution = ot.JointDistribution(aCollection, anotherCopula)
-distribution.setName("myDist")
-distributionRef = ot.Normal(mean, sigma, correlation)
-print("Distribution ", repr(distribution))
-print("Parameters ", repr(distribution.getParametersCollection()))
+    # Has this distribution an elliptical copula?
+    print("Elliptical copula= ", distribution.hasEllipticalCopula())
 
-# Show PDF and CDF at point
-point = [0.0] * dim
-print("PDF      =%.6f" % distribution.computePDF(point))
-print("PDF (ref)=%.6f" % distributionRef.computePDF(point))
-print("CDF      =%.6f" % distribution.computeCDF(point))
-print("CDF (ref)=%.6f" % distributionRef.computeCDF(point))
-print("Survival      =%.6f" % distribution.computeSurvivalFunction(point))
-print("Survival (ref)=%.6f" % distributionRef.computeSurvivalFunction(point))
-# 95% quantile
-quantile = distribution.computeQuantile(0.95)
-print("Quantile      =", repr(quantile))
-print("Quantile (ref)=", repr(distributionRef.computeQuantile(0.95)))
-print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
-print("Mean      =", repr(distribution.getMean()))
-print("Mean (ref)=", repr(distributionRef.getMean()))
-print("Standard deviation      =", repr(distribution.getStandardDeviation()))
-print("Standard deviation (ref)=", repr(distributionRef.getStandardDeviation()))
-print("Skewness      =", repr(distribution.getSkewness()))
-print("Skewness (ref)=", repr(distributionRef.getSkewness()))
-print("Kurtosis      =", repr(distribution.getKurtosis()))
-print("Kurtosis (ref)=", repr(distributionRef.getKurtosis()))
-print("Covariance      =", repr(distribution.getCovariance()))
-print("Covariance (ref)=", repr(distributionRef.getCovariance()))
-anotherSample = distribution.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
+    # Has this distribution an independent copula?
+    print("Independent copula= ", distribution.hasIndependentCopula())
+
+    # Test for realization of distribution
+    oneRealization = distribution.getRealization()
+    print("oneRealization=", oneRealization)
+    # Test for sampling
+    size = 10
+    oneSample = distribution.getSample(size)
+    print("oneSample=", oneSample)
+
+    # Test for sampling
+    size = 10000
+    anotherSample = distribution.getSample(size)
+    print("anotherSample mean=", anotherSample.computeMean())
+    print("anotherSample covariance=", anotherSample.computeCovariance())
+
+    # Define a point
+    zero = [0.0] * dim
+
+    # Show PDF and CDF of zero point
+    zeroPDF = distribution.computePDF(zero)
+    zeroCDF = distribution.computeCDF(zero)
+    print("Zero point= ", zero, " pdf=%.5e" % zeroPDF, " cdf=%.5e" % zeroCDF)
+    # Get 95% quantile
+    quantile = distribution.computeQuantile(0.95)
+    print("Quantile=", quantile)
+    print("CDF(quantile)=%.5e" % distribution.computeCDF(quantile))
+
+    # Extract the marginals
+    for i in range(dim):
+        margin = distribution.getMarginal(i)
+        print("margin=", margin)
+        print("margin PDF=%.5e" % margin.computePDF([0.0]))
+        print("margin CDF=%.5e" % margin.computeCDF([0.0]))
+        print("margin quantile=", margin.computeQuantile(0.95))
+        print("margin realization=", margin.getRealization())
+
+    # Extract a 2-D marginal
+    indices = [1, 0]
+    print("indices=", indices)
+    margins = distribution.getMarginal(indices)
+    print("margins=", margins)
+    print("margins PDF=%.5e" % margins.computePDF([0.0] * 2))
+    print("margins CDF=%.5e" % margins.computeCDF([0.0] * 2))
+    quantile = margins.computeQuantile(0.5)
+    print("margins quantile=", quantile)
+    print("margins CDF(quantile)=%.5e" % margins.computeCDF(quantile))
+    print("margins realization=", margins.getRealization())
+    x = 0.6
+    y = [0.2] * (dim - 1)
+    print("conditional PDF=%.5e" % distribution.computeConditionalPDF(x, y))
+    print("conditional CDF=%.5e" % distribution.computeConditionalCDF(x, y))
+    print("conditional quantile=%.5e" % distribution.computeConditionalQuantile(x, y))
+    pt = [i + 1.5 for i in range(dim)]
+    print(
+        "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt)
+    )
+    resCDF = distribution.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print(
+        "sequential conditional quantile(",
+        resCDF,
+        ")=",
+        distribution.computeSequentialConditionalQuantile(resCDF),
+    )
+
+    # Confidence regions
+    if distribution.getDimension() <= 2:
+        (
+            levelSet,
+            threshold,
+        ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        print("Minimum volume interval=", levelSet)
+        print("threshold=%.5e" % threshold)
+        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+        print("Minimum volume level set=", levelSet)
+        print("beta=%.5e" % beta)
+        (
+            interval,
+            beta,
+        ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        print("Bilateral confidence interval=", interval)
+        print("beta=%.5e" % beta)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False
+        )
+        print("Unilateral confidence interval (lower tail)=", interval)
+        print("beta=%.5e" % beta)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True
+        )
+        print("Unilateral confidence interval (upper tail)=", interval)
+        print("beta=%.5e" % beta)
+    # Moments other than mean and covariance
+    standardDeviation = distribution.getStandardDeviation()
+    ott.assert_almost_equal(standardDeviation, refStandardDeviation[nCore])
+    skewness = distribution.getSkewness()
+    ott.assert_almost_equal(skewness, refSkewness[nCore])
+    kurtosis = distribution.getKurtosis()
+    ott.assert_almost_equal(kurtosis, refKurtosis[nCore])
+    anotherSample = distribution.getSample(size)
+    print("anotherSample mean=", anotherSample.computeMean())
+    print("anotherSample covariance=", anotherSample.computeCovariance())
+
+# Create and print a complex distribution
+aCollection2 = list()
+marginalN = ot.Normal(0.0, 1.0)
+marginalN.setName("First")
+marginalN.setDescription(["One"])
+aCollection2.append(marginalN)
+marginalU = ot.Uniform(12345.6, 123456.7)
+marginalU.setName("Second")
+marginalU.setDescription(["Two"])
+aCollection2.append(marginalU)
+marginalTN = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0)
+marginalTN.setName("Third")
+marginalTN.setDescription(["Three"])
+aCollection2.append(marginalTN)
+distribution2 = ot.JointDistribution(aCollection2)
+distribution2.setName("myDist2")
+print("Distribution ")
+print(distribution2)
+print("Distribution (Markdown)")
+print(distribution2.__repr_markdown__())
 
 # test transfo
 sample = distribution.getSample(10)
@@ -235,10 +285,8 @@ y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
 print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
-pt = ot.Point([i + 1.5 for i in range(dim)])
-print(
-    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point)
-)
+pt = [i + 1.5 for i in range(dim)]
+print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt))
 resCDF = distribution.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
 print(

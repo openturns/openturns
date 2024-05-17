@@ -1,0 +1,38 @@
+Distribution  class=UniformOrderStatistics name=UniformOrderStatistics dimension=4 simplex=class=MeshDomain name=Unnamed mesh=class=Mesh name=Unnamed dimension=4 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=4 data=[[1,1,1,1],[0,1,1,1],[0,0,1,1],[0,0,0,1],[0,0,0,0]] simplices=[[0,1,2,3,4]] enclosingSimplex=class=EnclosingSimplexAlgorithm implementation=class=BoundingVolumeHierarchy binNumber=50 strategy=Mean
+Distribution  UniformOrderStatistics(dimension = 4)
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.128996,0.204795,0.217965,0.4246]
+oneSample first= [0.279959,0.806666,0.819288,0.842172]  last= [0.171199,0.380093,0.478821,0.92017]
+mean= [0.199915,0.4001,0.601052,0.79878]
+covariance= [[ 0.0271484  0.0199639  0.0135221  0.00676285 ]
+ [ 0.0199639  0.0397974  0.0266969  0.0134376  ]
+ [ 0.0135221  0.0266969  0.0405454  0.0203095  ]
+ [ 0.00676285 0.0134376  0.0203095  0.0269938  ]]
+Point=  [0.1, 0.15, 0.25, 0.45]
+ddf     = [0,0,0,0]
+log pdf=3.17805e+00
+pdf     =2.40000e+01
+cdf     =1.04000e-02
+ccdf    =9.89600e-01
+survival=6.25831e-01
+Inverse survival= [0.00386121,0.0524168,0.163562,0.35202]
+Survival(inverse survival)=9.50000e-01
+quantile= [0.64798,0.836438,0.947583,0.996139]
+cdf(quantile)=9.50000e-01
+entropy     =-3.17805e+00
+entropy (MC)=-3.17805e+00
+mean= [0.2,0.4,0.6,0.8]
+standard deviation= [0.163299,0.2,0.2,0.163299]
+skewness= [1.04978,0.285714,-0.285714,-1.04978]
+kurtosis= [3.69643,2.35714,2.35714,3.69643]
+covariance= [[ 0.0266667  0.02       0.0133333  0.00666667 ]
+ [ 0.02       0.04       0.0266667  0.0133333  ]
+ [ 0.0133333  0.0266667  0.04       0.02       ]
+ [ 0.00666667 0.0133333  0.02       0.0266667  ]]
+correlation= [[ 1        0.612372 0.408248 0.25     ]
+ [ 0.612372 1        0.666667 0.408248 ]
+ [ 0.408248 0.666667 1        0.612372 ]
+ [ 0.25     0.408248 0.612372 1        ]]
+parameters= [[]]
+Standard representative= UniformOrderStatistics(dimension = 4)

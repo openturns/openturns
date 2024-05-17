@@ -219,8 +219,17 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
         print(f"normMeth = {normMeth}, initPoint = {initPoint}")
         # The ot.Function() is the identity function.
         result = factory.buildTimeVarying(
-            sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices,
-            ot.Function(), ot.Function(), ot.Function(), initPoint, normMeth
+            sample,
+            timeStamps,
+            basis,
+            muIndices,
+            sigmaIndices,
+            xiIndices,
+            ot.Function(),
+            ot.Function(),
+            ot.Function(),
+            initPoint,
+            normMeth,
         )
         beta = result.getOptimalParameter()
         print(f"beta = {beta}")
@@ -229,7 +238,9 @@ for normMeth in ["MinMax", "CenterReduce", "None"]:
 # %%
 # According to the previous results, we choose the *MinMax* normalization method and the *Gumbel* initial point.
 # This initial point is cheaper than the *Static* one as it requires no optimization computation.
-result_NonStatLL = factory.buildTimeVarying(sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices)
+result_NonStatLL = factory.buildTimeVarying(
+    sample, timeStamps, basis, muIndices, sigmaIndices, xiIndices
+)
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
 print(f"mu(t) = {beta[0]:.4f} + {beta[1]:.4f} * tau")

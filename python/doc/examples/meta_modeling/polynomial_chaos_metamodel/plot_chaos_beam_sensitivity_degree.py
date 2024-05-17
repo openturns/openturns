@@ -131,33 +131,33 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 
 
 # %%
-# The following functions compute and plot the Q2 predictivity coefficients within the validation plot.
+# The following functions compute and plot the R2 predictivity coefficients within the validation plot.
 
 
 # %%
-def computeQ2Chaos(chaosResult, inputTest, outputTest):
-    """Compute the Q2 of a chaos."""
+def computeR2Chaos(chaosResult, inputTest, outputTest):
+    """Compute the R2 of a chaos."""
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-    Q2 = val.computePredictivityFactor()[0]
-    Q2 = max(Q2, 0.0)  # We are not lucky every day.
-    return Q2
+    val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
+    R2 = val.computeR2Score()[0]
+    R2 = max(R2, 0.0)  # We are not lucky every day.
+    return R2
 
 
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
     sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
-    Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
+    R2 = computeR2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    val = ot.MetaModelValidation(outputTest, metamodel(inputTest))
     graph = val.drawValidation().getGraph(0, 0)
-    legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
+    legend1 = "D=%d, R2=%.2f%%" % (totalDegree, 100 * R2)
     graph.setLegends(["", legend1])
     graph.setLegendPosition("upper left")
     print(
-        "Degree=%d, Q2=%.2f%%, Sparsity=%.2f%%"
-        % (totalDegree, 100 * Q2, 100 * sparsityRate)
+        "Degree=%d, R2=%.2f%%, Sparsity=%.2f%%"
+        % (totalDegree, 100 * R2, 100 * sparsityRate)
     )
     return graph
 
@@ -198,7 +198,7 @@ for totalDegree in range(1, maxDegree + 1):
     pl.suptitle("Metamodel validation")
 
 # %%
-# We see that when the degree of the polynomial increases, the Q2 coefficient decreases.
+# We see that when the degree of the polynomial increases, the R2 coefficient decreases.
 # We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis.
 # This shows that the algorithm performs its task of selecting relevant coefficients.
 # However, this selection does not seem to be sufficient to mitigate the large number of coefficients.
@@ -211,18 +211,18 @@ for totalDegree in range(1, maxDegree + 1):
 # --------------------------------------------
 
 # %%
-# Let us repeat the following experiment to see the variability of the Q2 coefficient.
+# Let us repeat the following experiment to see the variability of the R2 coefficient.
 
 # %%
 
 
-def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
+def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
     """For a given sample size N, for degree from 1 to maxDegree,
     repeat the following experiment numberAttempts times:
-    create a sparse least squares chaos and compute the Q2
+    create a sparse least squares chaos and compute the R2
     using n_valid points.
     """
-    Q2sample = ot.Sample(numberAttempts, maxDegree)
+    R2sample = ot.Sample(numberAttempts, maxDegree)
     for totalDegree in range(1, maxDegree + 1):
         print("Degree = %d" % (totalDegree))
         for i in range(numberAttempts):
@@ -233,24 +233,24 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
             chaosResult = ComputeSparseLeastSquaresChaos(
                 inputTrain, outputTrain, multivariateBasis, totalDegree, myDistribution
             )
-            Q2sample[i, totalDegree - 1] = computeQ2Chaos(
+            R2sample[i, totalDegree - 1] = computeR2Chaos(
                 chaosResult, inputTest, outputTest
             )
-    return Q2sample
+    return R2sample
 
 
 # %%
-# The following function uses a boxplot to see the distribution of the Q2 coefficients.
+# The following function uses a boxplot to see the distribution of the R2 coefficients.
 
 
 # %%
-def plotQ2Boxplots(Q2sample, N):
-    data = np.array(Q2sample)
+def plotR2Boxplots(R2sample, N):
+    data = np.array(R2sample)
     pl.figure()
     pl.boxplot(data)
     pl.title("N=%d" % (N))
     pl.xlabel("Degree")
-    pl.ylabel("Q2 (%)")
+    pl.ylabel("R2 (%)")
     return
 
 
@@ -262,29 +262,29 @@ numberAttempts = 50  # Number of repetitions
 
 # %%
 N = 20  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+R2sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(R2sample, N)
 
 # %%
 # We see that when the size of the design of experiments is as small as 20, it is more appropriate to use a very low degree polynomial. Here 1 performs best and 4 is risky.
 
 # %%
 N = 30  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+R2sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(R2sample, N)
 
 # %%
 # With a 30-point design set, a polynomial degree of 2 is usually advisable.
 
 # %%
 N = 50  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+R2sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(R2sample, N)
 
 pl.show()
 
 # %%
-# When the sample size increases, the Q2 computation becomes less sensitive to the polynomial degree.
+# When the sample size increases, the R2 computation becomes less sensitive to the polynomial degree.
 
 # %%
 # Conclusion
@@ -292,7 +292,7 @@ pl.show()
 #
 # We observe that on the cantilever beam example, to use a polynomial total
 # degree equal to 4, we need a sample size at least equal to 50 to get a
-# satisfactory and reproducible Q2.
+# satisfactory and reproducible R2.
 # When the degree is equal to 4, if the sample is small, then depending on the
 # particular sample, the predictivity coefficient can be very low (i.e. less than 0.5).
 # With a sample size as small as 20, a polynomial degree of 1 is safer.

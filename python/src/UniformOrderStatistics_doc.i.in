@@ -1,0 +1,55 @@
+%feature("docstring") OT::UniformOrderStatistics
+"UniformOrderStatistics distribution.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+dimension : int
+    The dimension of the distribution.
+
+See also
+--------
+openturns.MaximumEntropyOrderStatisticsDistribution
+
+Notes
+-----
+This is the joint distribution of the order statistics
+:math:`X_{(1:n)}=(X_{(1)},\dots,X_{(n)})` of a sample :math:`(X_1,\dots, X_n)`
+of :math:`n` independent random variables uniformly distributed
+over :math:`[0,1]`. Its probability density function is defined
+as (see [arnold2008]_ eq. 2.2.4 page 11):
+
+.. math::
+
+    f_{X_{(1:n)}}(x) = n!\,\mathbf{1}_{\cS}(x)
+
+where :math:`\cS\subset\Rset^n` is the simplex with vertices :math:`\cV`:
+
+.. math::
+   \cV=\left\{(\underbrace{0,\dots,0}_{k}, \underbrace{1,\dots,1}_{n-k}), \; k\in\{0,\dots,n\}\right\}`.
+
+The link between :math:`\cS` and the order statistics is given by:
+
+.. math::
+   \cS=\left\{(x_1,\dots,x_n)\in[0,1]^n\,|\,0 \leq x_1 \leq \dots \leq x_n \leq 1\right\}
+   = \left\{\sum_{k = 1}^{n + 1} \lambda_k v_k \, \left|\right.\, v_k \in \cV, \; \lambda_k \in [0,1], \; \sum_{k = 1}^{n + 1} \lambda_k = 1\right\}
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns.experimental as otexp
+>>> distribution = otexp.UniformOrderStatistics(3)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+
+Compute some quantities:
+
+>>> pdf = distribution.computePDF([0.1, 0.15, 0.45]) # Notice the order
+>>> cdf = distribution.computeCDF([0.1, 0.15, 0.45])"

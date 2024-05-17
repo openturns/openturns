@@ -144,7 +144,8 @@ public:
                      const Point & xMin,
                      const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
+                     const GraphImplementation::LogScale scale = GraphImplementation::NONE,
+                     const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   virtual Graph draw(const Scalar xMin,

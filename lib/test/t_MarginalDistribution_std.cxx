@@ -83,12 +83,12 @@ int main(int, char *[])
 
       // Show PDF and CDF of point
       if (distribution.isContinuous())
-        {
-          Point DDF = distribution.computeDDF( point );
-          fullprint << "ddf     =" << DDF << std::endl;
-          Scalar LPDF = distribution.computeLogPDF( point );
-          fullprint << "log pdf=" << LPDF << std::endl;
-        }
+      {
+        Point DDF = distribution.computeDDF( point );
+        fullprint << "ddf     =" << DDF << std::endl;
+        Scalar LPDF = distribution.computeLogPDF( point );
+        fullprint << "log pdf=" << LPDF << std::endl;
+      }
       Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf     =" << PDF << std::endl;
       Scalar CDF = distribution.computeCDF( point );
@@ -98,11 +98,11 @@ int main(int, char *[])
       Scalar Survival = distribution.computeSurvivalFunction( point );
       fullprint << "survival=" << Survival << std::endl;
       if (distribution.isContinuous())
-        {
-          Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
-          fullprint << "Inverse survival=" << InverseSurvival << std::endl;
-          fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-        }
+      {
+        Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+        fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+        fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+      }
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile=" << quantile << std::endl;
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
@@ -123,12 +123,12 @@ int main(int, char *[])
       CorrelationMatrix correlation = distribution.getCorrelation();
       fullprint << "correlation=" << correlation << std::endl;
       if (distribution.isContinuous())
-        {
-          CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-          fullprint << "spearman=" << spearman << std::endl;
-          CovarianceMatrix kendall = distribution.getKendallTau();
-          fullprint << "kendall=" << kendall << std::endl;
-        }
+      {
+        CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+        fullprint << "spearman=" << spearman << std::endl;
+        CovarianceMatrix kendall = distribution.getKendallTau();
+        fullprint << "kendall=" << kendall << std::endl;
+      }
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     }
   }

@@ -169,7 +169,9 @@ print(f"CI = {return_level_ci100}")
 #
 # We can estimate the :math:`m`-observation return level :math:`z_m` directly from the data using the profile
 # likelihood with respect to :math:`z_m`.
-result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(dataRain, u, T100 * ny)
+result_zm_100_PLL = factory.buildReturnLevelProfileLikelihoodEstimator(
+    dataRain, u, T100 * ny
+)
 zm_100_PLL = result_zm_100_PLL.getParameter()
 print(f"100-year return level (profile) = {zm_100_PLL}")
 
@@ -233,7 +235,9 @@ timeStamps = ot.Sample([[i + 1] for i in range(len(dataRain))])
 # %%
 # We can now estimate the list of coefficients :math:`\vect{\beta} = (\beta_1, \beta_2, \beta_3)` using
 # the log-likelihood of the data.
-result_NonStatLL = factory.buildTimeVarying(dataRain, u, timeStamps, basis, sigmaIndices, xiIndices)
+result_NonStatLL = factory.buildTimeVarying(
+    dataRain, u, timeStamps, basis, sigmaIndices, xiIndices
+)
 beta = result_NonStatLL.getOptimalParameter()
 print(f"beta = {beta}")
 print(f"sigma(t) = {beta[1]:.4f} * tau(t) + {beta[0]:.4f}")
@@ -386,8 +390,10 @@ print(f"p-value={resultLikRatioTest.getPValue():.2f}")
 #       \sigma(t) & = exp(\beta_1 + \beta_2\tau(t)) \\
 #       \xi(t) & = \beta_3
 #     \end{align*}
-sigmaLink = ot.SymbolicFunction('x', 'exp(x)')
-result_NonStatLL_Link = factory.buildTimeVarying(dataRain, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink)
+sigmaLink = ot.SymbolicFunction("x", "exp(x)")
+result_NonStatLL_Link = factory.buildTimeVarying(
+    dataRain, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink
+)
 beta = result_NonStatLL_Link.getOptimalParameter()
 print(f"beta = {beta}")
 print(f"sigma(t) = exp({beta[1]:.4f} * tau(t) + {beta[0]:.4f})")

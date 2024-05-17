@@ -20,9 +20,13 @@
  */
 #include "openturns/HSICEstimatorConditionalSensitivity.hxx"
 #include "openturns/HSICVStat.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
 CLASSNAMEINIT(HSICEstimatorConditionalSensitivity)
+
+static const Factory<HSICEstimatorConditionalSensitivity> Factory_HSICEstimatorConditionalSensitivity;
 
 /* Default */
 HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity()

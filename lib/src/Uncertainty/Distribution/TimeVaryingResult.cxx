@@ -66,9 +66,9 @@ TimeVaryingResult::TimeVaryingResult(const DistributionFactory & factory,
   if (timeGrid.getDimension() != normalizationFunction.getInputDimension())
     throw InvalidArgumentException(HERE) << "TimeVaryingResult: the time grid dimension (" << timeGrid.getDimension() << ") must match the normalization function input dimension (" << normalizationFunction.getInputDimension() << ")";
   if (normalizationFunction.getInputDimension() != normalizationFunction.getOutputDimension())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the normalization function must have the same input dimension (" << normalizationFunction.getInputDimension() << ") as output dimension ("<< normalizationFunction.getOutputDimension() << ")";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the normalization function must have the same input dimension (" << normalizationFunction.getInputDimension() << ") as output dimension (" << normalizationFunction.getOutputDimension() << ")";
   if (parameterDistribution.getDimension() != parameterFunction.getParameter().getDimension())
-    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the parameter distribution dimension (" << parameterDistribution.getDimension() << ") must match the parameter function parameter dimension ("<< parameterFunction.getParameter().getDimension() <<")";
+    throw InvalidArgumentException(HERE) << "TimeVaryingResult: the parameter distribution dimension (" << parameterDistribution.getDimension() << ") must match the parameter function parameter dimension (" << parameterFunction.getParameter().getDimension() << ")";
 }
 
 TimeVaryingResult * TimeVaryingResult::clone() const

@@ -1,11 +1,6 @@
 %feature("docstring") OT::Hann
 "Hann filtering windows.
 
-Available constructors:
-    Hann()
-   
-
-
 Notes
 -----
 The Hann windows is implemented using the formula:

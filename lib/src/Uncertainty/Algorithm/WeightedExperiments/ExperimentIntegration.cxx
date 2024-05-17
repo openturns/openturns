@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExperimentIntegration)
 
-typedef Collection<Function>                              FunctionCollection;
+static const Factory<ExperimentIntegration> Factory_ExperimentIntegration;
 
 /* Default constructor */
 ExperimentIntegration::ExperimentIntegration()
@@ -71,8 +71,8 @@ Point ExperimentIntegration::integrate(const Function & g) const
   Point weights(0);
   const Sample inputSample(weightedExperiment_.generateWithWeights(weights));
   if (g.getInputDimension() != inputSample.getDimension())
-    throw NotYetImplementedException(HERE) << "The input dimension of g is : " 
-                                           << g.getInputDimension() 
+    throw NotYetImplementedException(HERE) << "The input dimension of g is : "
+                                           << g.getInputDimension()
                                            << " which is inconsistent with the experiment dimension : "
                                            << inputSample.getDimension();
   Point approximateIntegral(outputDimension);

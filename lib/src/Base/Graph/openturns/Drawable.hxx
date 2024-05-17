@@ -151,6 +151,18 @@ public:
   /** Give the point style names */
   static Description GetValidPointStyles();
 
+  /** Give the color map names */
+  static Description GetValidColorMaps();
+
+  /** Give the extend values */
+  static Description GetValidExtends();
+
+  /** Give the color bar positions */
+  static Description GetValidColorBarPositions();
+
+  /** Give the norm names */
+  static Description GetValidNorms();
+
   /** Convert a color name into a valid hexadecimal code */
   static String ConvertFromName(const String & name);
 

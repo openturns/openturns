@@ -357,7 +357,7 @@ Scalar SpecFunc::BesselKDerivative(const Scalar nu,
 
 // LogBeta function: LogBeta(a, b) = \log(Beta(a, b))
 Scalar SpecFunc::LogBeta(const Scalar a,
-                        const Scalar b)
+                         const Scalar b)
 {
   const Scalar first = std::min(a, b);
   if (!(first > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute the LogBeta function when a or b is nonpositive, a=" << a << ", b=" << b;

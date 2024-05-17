@@ -90,11 +90,11 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   computeTimeGrid();
   computeAlpha();
   if (getOutputDimension() == 1)
-    {
-      choleskyFactorsCache1D_ = Point(nFrequency_);
-      for (UnsignedInteger k = 0; k < nFrequency_; ++k)
-        choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
-    } // getOutputDimension() == 1
+  {
+    choleskyFactorsCache1D_ = Point(nFrequency_);
+    for (UnsignedInteger k = 0; k < nFrequency_; ++k)
+      choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
+  } // getOutputDimension() == 1
   setOutputDimension(spectralModel.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
@@ -241,11 +241,11 @@ void SpectralGaussianProcess::setTimeGrid(const RegularGrid & tg)
     // Reset the caches
     choleskyFactorsCache_ = TriangularComplexMatrixPersistentCollection(0);
     if (getOutputDimension() == 1)
-      {
-        choleskyFactorsCache1D_ = Point(nFrequency_);
-        for (UnsignedInteger k = 0; k < nFrequency_; ++k)
-          choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
-      } // getOutputDimension() == 1
+    {
+      choleskyFactorsCache1D_ = Point(nFrequency_);
+      for (UnsignedInteger k = 0; k < nFrequency_; ++k)
+        choleskyFactorsCache1D_[k] = std::sqrt(std::real(spectralModel_((k + 0.5) * frequencyStep_)(0, 0)));
+    } // getOutputDimension() == 1
     else
       choleskyFactorsCache1D_ = Point(0);
   }

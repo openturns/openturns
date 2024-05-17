@@ -6,9 +6,15 @@ import math as m
 ot.TESTPREAMBLE()
 
 
-for UseRandomSVD, RandomSVDVariant in [(False, ""), (True, "Halko2010"), (True, "Halko2011")]:
+for UseRandomSVD, RandomSVDVariant in [
+    (False, ""),
+    (True, "Halko2010"),
+    (True, "Halko2011"),
+]:
     ot.ResourceMap.SetAsBool("KarhunenLoeveSVDAlgorithm-UseRandomSVD", UseRandomSVD)
-    ot.ResourceMap.SetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant", RandomSVDVariant)
+    ot.ResourceMap.SetAsString(
+        "KarhunenLoeveSVDAlgorithm-RandomSVDVariant", RandomSVDVariant
+    )
 
     mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
     # 1D mesh, 1D covariance, uniform weight, automatic centering, more samples

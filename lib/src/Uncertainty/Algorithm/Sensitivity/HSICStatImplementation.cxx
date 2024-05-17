@@ -25,11 +25,13 @@
 #include "openturns/Log.hxx"
 #include "openturns/HSICStatImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 static const Factory<HSICStatImplementation> Factory_HSICStatImplementation;
 
 CLASSNAMEINIT(HSICStatImplementation)
+
 /* Default constructor */
 HSICStatImplementation::HSICStatImplementation()
   : PersistentObject()

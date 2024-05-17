@@ -1,9 +1,6 @@
 %feature("docstring") OT::Less
 "Less comparison operator.
 
-Available constructors:
-    Less()
-
 See also
 --------
 Equal, Greater, GreaterOrEqual, LessOrEqual

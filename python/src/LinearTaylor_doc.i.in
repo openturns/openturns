@@ -1,9 +1,6 @@
 %feature("docstring") OT::LinearTaylor
 "First order polynomial response surface by Taylor expansion.
 
-Available constructors:
-    LinearTaylor(*center, function*)
-
 Parameters
 ----------
 center : sequence of float

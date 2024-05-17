@@ -1,9 +1,6 @@
 %feature("docstring") OT::BootstrapExperiment
 "Bootstrap experiment.
 
-Available constructors:
-    BootstrapExperiment(*sample*)
-
 Parameters
 ----------
 sample : 2-d sequence of float

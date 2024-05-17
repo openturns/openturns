@@ -116,8 +116,8 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
-    mmv = ot.MetaModelValidation(xGrid, yFunction, meta)
-    Q2 = mmv.computePredictivityFactor()[0]
+    mmv = ot.MetaModelValidation(yFunction, meta(xGrid))
+    R2 = mmv.computeR2Score()[0]
     # Plot the function
     graphFonction = ot.Curve(xGrid, yFunction)
     graphFonction.setLineStyle("dashed")
@@ -138,7 +138,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     graph.setLegendPosition("lower right")
     graph.setAxes(True)
     graph.setGrid(True)
-    graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100 * Q2))
+    graph.setTitle("Size = %d, R2=%.2f%%" % (samplesize, 100 * R2))
     graph.setXTitle("X")
     graph.setYTitle("Y")
     return graph

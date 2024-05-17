@@ -86,8 +86,8 @@ public:
   /** Get the discrete probability levels */
   using DistributionImplementation::getProbabilities;
   Point getProbabilities() const override;
-  
- private:
+
+private:
   /** Set the distribution and the indices in one shot */
   void setDistributionAndIndices(const Distribution & distribution,
                                  const Indices & indices);
@@ -207,10 +207,10 @@ private:
 
   /** Integration algorithm used to compute the PDF. By default it is an IteratedQuadrature. */
   IntegrationAlgorithm integrationAlgorithm_ = IteratedQuadrature(
-                                                                  GaussKronrod(ResourceMap::GetAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals"),
-                                                                               ResourceMap::GetAsScalar("MarginalDistribution-MaximumError"),
-                                                                               GaussKronrod::GetRuleFromName(ResourceMap::GetAsString("MarginalDistribution-Rule"))
-                                                                               ));
+        GaussKronrod(ResourceMap::GetAsUnsignedInteger("MarginalDistribution-MaximumSubIntervals"),
+                     ResourceMap::GetAsScalar("MarginalDistribution-MaximumError"),
+                     GaussKronrod::GetRuleFromName(ResourceMap::GetAsString("MarginalDistribution-Rule"))
+                    ));
 
 }; /* class MarginalDistribution */
 

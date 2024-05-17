@@ -3,9 +3,6 @@
 
 For the :class:`~openturns.Beta` distribution.
 
-Available constructors:
-    Jacobi(*arg1=1.0, arg2=1.0, parameters_set=ot.JacobiFactory.ANALYSIS*)
-
 Parameters
 ----------
 arg1 : float

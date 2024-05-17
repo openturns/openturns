@@ -1,9 +1,6 @@
 %feature("docstring") OT::PenalizedLeastSquaresAlgorithmFactory
 "Penalized least squares algorithm factory.
 
-Available constructors:
-    PenalizedLeastSquaresAlgorithmFactory()
-
 See also
 --------
 ApproximationAlgorithm, LeastSquaresMetaModelSelectionFactory

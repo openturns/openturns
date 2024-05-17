@@ -77,9 +77,6 @@ public:
   /** Maximum calls number accessor */
   void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
   UnsignedInteger getMaximumCallsNumber() const;
-  // @deprecated
-  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
-  UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
   Scalar getMaximumAbsoluteError() const;
@@ -112,7 +109,7 @@ public:
   /** Check status accessor */
   void setCheckStatus(const Bool checkStatus);
   Bool getCheckStatus() const;
-  
+
   /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
 

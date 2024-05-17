@@ -3,9 +3,6 @@
 
 For the :class:`~openturns.Binomial` distribution.
 
-Available constructors:
-    KrawtchoukFactory(*n=1, p=0.5*)
-
 Parameters
 ----------
 n : int, :math:`n > 0`

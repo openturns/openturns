@@ -154,7 +154,7 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
-  
+
   /** The lamdbda of the Exponential distribution */
   Scalar lambda_;
 

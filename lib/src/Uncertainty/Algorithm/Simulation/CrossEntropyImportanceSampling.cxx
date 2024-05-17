@@ -127,8 +127,8 @@ void CrossEntropyImportanceSampling::run()
     inputSample_.add(auxiliaryInputSample);
     outputSample_.add(auxiliaryOutputSample);
   }
-    
-    
+
+
   Point auxiliaryDistributionParameters;
 
   const ComparisonOperator comparator(getEvent().getOperator());
@@ -187,7 +187,7 @@ void CrossEntropyImportanceSampling::run()
       inputSample_.add(auxiliaryInputSample);
       outputSample_.add(auxiliaryOutputSample);
     }
-    
+
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 

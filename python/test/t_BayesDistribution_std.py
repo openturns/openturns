@@ -15,9 +15,9 @@ print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
 print("Mean ", distribution.getMean())
 cov = distribution.getCovariance()
-cov_ref = ot.CovarianceMatrix([[0.0833333, 0.0, 0.0833333],
-                               [0.0, 0.0833333, 0.0],
-                               [0.0833333, 0.0, 2.41667]])
+cov_ref = ot.CovarianceMatrix(
+    [[0.0833333, 0.0, 0.0833333], [0.0, 0.0833333, 0.0], [0.0833333, 0.0, 2.41667]]
+)
 ott.assert_almost_equal(cov, cov_ref)
 # Is this distribution an elliptical distribution?
 print("Elliptical distribution= ", distribution.isElliptical())

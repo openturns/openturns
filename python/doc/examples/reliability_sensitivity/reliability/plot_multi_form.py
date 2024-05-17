@@ -28,7 +28,7 @@ graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graphPDF.setXTitle(r"$x_1$")
 graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("lower right")
-view = otv.View(graphPDF)
+view = otv.View(graphPDF, contour_kw={"norm": "log"})
 
 # %%
 # We then define a model :math:`f` which maps a 2D-vector X = (X_1,X_2) to a
@@ -59,7 +59,9 @@ xx = ot.Box([nx], ot.Interval([-8.0], [8.0])).generate()
 yy = ot.Box([ny], ot.Interval([-8.0], [8.0])).generate()
 inputData = ot.Box([nx, ny], ot.Interval([-8.0, -8.0], [8.0, 8.0])).generate()
 outputData = f(inputData)
-mycontour = ot.Contour(xx, yy, outputData, [0.0], ["0.0"])
+mycontour = ot.Contour(xx, yy, outputData)
+mycontour.setLevels([0.0])
+mycontour.setLabels(["0.0"])
 mycontour.setColor("black")
 mycontour.setLineStyle("dashed")
 graphModel.add(mycontour)
@@ -141,3 +143,5 @@ plt.show()
 # %%
 # Reset default settings
 ot.ResourceMap.Reload()
+
+# %%

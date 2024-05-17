@@ -54,8 +54,8 @@ Create a *Function* from a Python class:
 ...         Y = [X[0] + X[1]]
 ...         return Y
 >>> F = FUNC()
->>> myFunc = Function(F)
->>> print(myFunc((1.0, 2.0)))
+>>> func = ot.Function(F)
+>>> print(func((1.0, 2.0)))
 [3]
 
 
@@ -100,8 +100,8 @@ Create a *Function* from a collection of functions:
 ...                                      ['x1^2 + x2', 'x1 + x2 + x3']))
 >>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
->>> myFunction = ot.AggregatedFunction(functions)
->>> print(myFunction([1.0, 2.0, 3.0]))
+>>> function = ot.AggregatedFunction(functions)
+>>> print(function([1.0, 2.0, 3.0]))
 [3,6,8,0]
 
 Create a *Function* which is the linear combination *linComb*
@@ -120,8 +120,8 @@ then the linear combination is:
                   \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
               \end{array}\right.
 
->>> myFunction2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
->>> print(myFunction2([1.0, 2.0, 3.0]))
+>>> function2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
+>>> print(function2([1.0, 2.0, 3.0]))
 [38,12]
 
 
@@ -147,8 +147,8 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 ...                                      ['x1 + 2 * x2 + x3']))
 >>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1^2 + x2']))
->>> myFunction2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
->>> print(myFunction2([1, 2, 3]))
+>>> function2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
+>>> print(function2([1, 2, 3]))
 [25,35]
 
 If the input and output dimensions of two functions are equal
@@ -635,13 +635,13 @@ OT_Function_getParameterDimension_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
-    draw(*inputMarg, outputMarg, centralPoint, xiMin, xiMax, ptNb*)
+    draw(*inputMarg, outputMarg, centralPoint, xiMin, xiMax, ptNb, scale*)
 
-    draw(*firstInputMarg, secondInputMarg, outputMarg, centralPoint, xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*firstInputMarg, secondInputMarg, outputMarg, centralPoint, xiMin_xjMin, xiMax_xjMax, ptNbs, scale, isFilled*)
 
-    draw(*xiMin, xiMax, ptNb*)
+    draw(*xiMin, xiMax, ptNb, scale*)
 
-    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs*)
+    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs, scale*)
 
 Parameters
 ----------
@@ -657,8 +657,22 @@ xiMin, xiMax : float
     Define the interval where the curve is plotted.
 xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
     In the 2D case, define the intervals where the curves are plotted.
-ptNb : int :math:`ptNb > 0` or list of ints of dimension 2 :math:`ptNb_k > 0, k=1,2`
+ptNb : int :math:`ptNb > 0`
     The number of points to draw the curves.
+ptNbs : list of int of dimension 2 :math:`ptNbs_k > 0, k=1,2`
+    The number of points to draw the contour in the 2D case.
+scale : bool
+    scale indicates whether the logarithmic scale is used either for one or both axes:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
+isFilled : bool
+    isFilled indicates whether the contour graph is filled or not
 
 Notes
 -----

@@ -106,10 +106,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** @deprecated Ignore failure return codes */
-  void setIgnoreFailure(const Bool ignoreFailure);
-  Bool getIgnoreFailure() const;
-
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   void checkProblem(const OptimizationProblem & problem) const override;

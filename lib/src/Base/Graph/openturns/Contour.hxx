@@ -44,31 +44,21 @@ public:
   /** Default constructor */
   Contour();
 
-  /** Default constructor */
-  Contour(const UnsignedInteger dimX,
-          const UnsignedInteger dimY,
-          const Sample & data,
-          const String & legend = "");
-
   /** Constructor with parameters */
   Contour(const Sample & x,
           const Sample & y,
-          const Sample & data,
-          const Point & levels,
-          const Description & labels,
-          const Bool drawLabels = true,
-          const String & legend = "");
+          const Sample & data);
 
-  /** Constructor with parameters
-      Contour(const Sample & xy,
-      const Sample & data,
-      const Point & levels,
-      const Description & labels,
-      const Bool drawLabels = true,
-      const String & legend = ""); */
+  /** Constructor with parameters */
+  Contour(const UnsignedInteger dimX,
+          const UnsignedInteger dimY,
+          const Sample & data);
 
   /** String converter */
   String __repr__() const override;
+
+  /** Accessor for color overridden to clear colorMap */
+  void setColor(const String& color) override;
 
   /** Accessor for first coordinate */
   Sample getX() const override;
@@ -89,6 +79,50 @@ public:
   /** Accessor for drawLabels */
   Bool getDrawLabels() const override;
   void setDrawLabels(const Bool & drawLabels) override;
+
+  /** Accessor for isFilled */
+  Bool isFilled() const;
+  void setIsFilled(Bool isFilled);
+
+  /** Accessor for colorBarPosition */
+  String getColorBarPosition() const;
+  void setColorBarPosition(const String & colorBarPosition);
+
+  /** Accessor for isVminUsed */
+  Bool isVminUsed() const;
+  void setIsVminUsed(const Bool used);
+
+  /** Accessor for vmin */
+  Scalar getVmin() const;
+  void setVmin(const Scalar vmin);
+
+  /** Accessor for isVmaxUsed */
+  Bool isVmaxUsed() const;
+  void setIsVmaxUsed(const Bool used);
+
+  /** Accessor for vmax */
+  Scalar getVmax() const;
+  void setVmax(const Scalar vmax);
+
+  /** Accessor for colorMap */
+  String getColorMap() const;
+  void setColorMap(const String & colorMap);
+
+  /** Accessor for alpha */
+  Scalar getAlpha() const;
+  void setAlpha(Scalar alpha);
+
+  /** Accessor for norm */
+  String getColorMapNorm() const;
+  void setColorMapNorm(const String & norm);
+
+  /** Accessor for extend */
+  String getExtend() const;
+  void setExtend(const String & extend);
+
+  /** Accessor for hatches */
+  Description getHatches() const;
+  void setHatches(const Description & hatches);
 
   /** Accessor for boundingbox */
   Interval getBoundingBox() const override;
@@ -129,6 +163,39 @@ private:
 
   /** Flag for drawing the labels */
   Bool drawLabels_;
+
+  /** Flag for filling the contours */
+  Bool isFilled_;
+
+  /** Color bar position */
+  String colorBarPosition_;
+
+  /** use of vmin value */
+  Bool isVminUsed_ = false;
+
+  /** Min value of color map */
+  Scalar vmin_ = 0.0;
+
+  /** use of vmax value */
+  Bool isVmaxUsed_ = false;
+
+  /** Max value of color map */
+  Scalar vmax_ = 0.0;
+
+  /** Name of the color map */
+  String colorMap_;
+
+  /** Transparency of the filling colors */
+  Scalar alpha_;
+
+  /** Name of the scale normalization method */
+  String norm_;
+
+  /** Extension of coloring beyond extreme levels */
+  String extend_;
+
+  /** Hatch patterns to use on the filled areas */
+  Description hatches_;
 
 }; /* class Contour */
 

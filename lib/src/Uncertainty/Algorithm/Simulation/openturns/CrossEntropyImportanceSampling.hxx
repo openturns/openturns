@@ -60,16 +60,16 @@ public:
 
   /** Accessor to results */
   CrossEntropyResult getResult() const;
-  
-    /** Stepwise result accessors */
+
+  /** Stepwise result accessors */
   Point getThresholdPerStep() const;
-  
+
   /** Accessor to the achieved number of steps */
   UnsignedInteger getStepsNumber() const;
-  
+
   /** Keep event sample */
   void setKeepSample(const Bool keepSample);
-   
+
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
@@ -103,7 +103,7 @@ protected:
 
   // Result of CrossEntropyImportanceSampling algorithm
   CrossEntropyResult crossEntropyResult_;
-  
+
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
   Point thresholdPerStep_;// intermediate thresholds

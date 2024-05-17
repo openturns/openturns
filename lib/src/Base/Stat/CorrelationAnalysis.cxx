@@ -73,12 +73,6 @@ Point CorrelationAnalysis::computeLinearCorrelation() const
   return ComputeLinearCorrelation(firstSample_, secondSample_);
 }
 
-Point CorrelationAnalysis::computePearsonCorrelation() const
-{
-  LOGWARN("CorrelationAnalysis.computePearsonCorrelation is deprecated, use computeLinearCorrelation");
-  return computeLinearCorrelation();
-}
-
 // Compute the Pearson correlation coefficient with arguments
 Point CorrelationAnalysis::ComputeLinearCorrelation(const Sample & firstSample,
     const Sample & secondSample)

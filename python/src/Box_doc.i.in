@@ -1,18 +1,13 @@
 %feature("docstring") OT::Box
 "Box design of experiments.
 
-Available constructor:
-    Box(*levels*)
-
-    Box(*levels, bounds*)
-
 Parameters
 ----------
 levels : sequence of int or float
     Sequence specifying the number of intermediate points in each direction
     which regularly discretizes a pavement. In direction :math:`i`, the
     points number is :math:`levels[i]+2`.
-bounds : :class:`~openturns.Interval`
+bounds : :class:`~openturns.Interval`, optional
     The bounds of the pavement
     If not specified, the bounds are set to the unit pavement :math:`[0,1]^n`.
 

@@ -7,7 +7,7 @@ template< typename T >
 struct is_same_type<T, T>
 {
   int dummy;
-  is_same_type<T, T>() : dummy(0) {}
+  is_same_type() : dummy(0) {}
 };
 
 

@@ -123,8 +123,8 @@ Create a distribution:
 
 Create it from a Frechet distribution:
 
->>> myFrechet = Frechet(1.0, 2.0, 3.0)
->>> dist1 = ot.GeneralizedExtremeValue(myFrechet)
+>>> frechet = ot.Frechet(1.0, 2.0, 3.0)
+>>> dist1 = ot.GeneralizedExtremeValue(frechet)
 
 Draw a sample:
 

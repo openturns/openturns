@@ -733,6 +733,13 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Contour parameters //
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
+  addAsBool("Contour-DefaultIsFilled", false);
+  addAsBool("Contour-DefaultDrawLabels", true);
+  addAsString("Contour-DefaultColorMapNorm", "linear");
+  addAsString("Contour-DefaultColorMap", "hsv");
+  addAsString("Contour-DefaultColorBarPosition", "right");
+  addAsString("Contour-DefaultExtend", "both");
+  addAsScalar("Contour-DefaultAlpha", 1.0);
 
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);
@@ -1015,7 +1022,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
-  
+
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
@@ -1493,7 +1500,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
-  
+
   // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);

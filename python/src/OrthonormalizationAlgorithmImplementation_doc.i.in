@@ -53,7 +53,7 @@ OT_OrthonormalizationAlgorithm_getMeasure_doc
 
 Parameters
 ----------
-n : integer
+n : int
     Index ot the recurrence step.
 
 Returns

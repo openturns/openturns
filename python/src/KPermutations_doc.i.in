@@ -1,18 +1,11 @@
 %feature("docstring") OT::KPermutations
 "K permutations generator.
 
-Available constructors:
-    KPermutations()
-
-    KPermutations(*n*)
-
-    KPermutations(*k, n*)
-
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the origin set.
-n : integer
+n : int
     The cardinal of the goal set.
 
 See also
@@ -59,7 +52,7 @@ Examples
 
 Returns
 -------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -69,7 +62,7 @@ k : integer
 
 Returns
 -------
-n : integer
+n : int
     The cardinal of the base set."
 
 // ---------------------------------------------------------------------
@@ -79,7 +72,7 @@ n : integer
 
 Parameters
 ----------
-k : integer
+k : int
     The cardinal of the subsets."
 
 // ---------------------------------------------------------------------
@@ -89,5 +82,5 @@ k : integer
 
 Parameters
 ----------
-n : integer
+n : int
     The cardinal of the base set."

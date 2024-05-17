@@ -1,9 +1,6 @@
 %feature("docstring") OT::FixedStrategy
 "Fixed truncation strategy.
 
-Available constructors:
-    FixedStrategy(*orthogonalBasis, dimension*)
-
 Parameters
 ----------
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`

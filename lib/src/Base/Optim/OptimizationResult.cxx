@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Compact.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -113,18 +114,6 @@ UnsignedInteger OptimizationResult::getCallsNumber() const
 void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
 {
   callsNumber_ = callsNumber;
-}
-
-UnsignedInteger OptimizationResult::getEvaluationNumber() const
-{
-  LOGWARN("OptimizationResult.getEvaluationNumber is deprecated, use getCallsNumber");
-  return getCallsNumber();
-}
-
-void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
-{
-  LOGWARN("OptimizationResult.setEvaluationNumber is deprecated, use setCallsNumber");
-  setCallsNumber(evaluationNumber);
 }
 
 /* Iteration number accessor */
@@ -303,13 +292,24 @@ void OptimizationResult::load(Advocate & adv)
   }
   else
   {
-    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
-    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
-
-    adv.loadAttribute( "inputHistory_", inputHistory_ );
-    adv.loadAttribute( "outputHistory_", outputHistory_ );
+    Compact inputHistory;
+    Compact outputHistory;
+    Compact absoluteErrorHistory;
+    Compact relativeErrorHistory;
+    Compact residualErrorHistory;
+    Compact constraintErrorHistory;
+    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory );
+    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory );
+    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory );
+    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory );
+    adv.loadAttribute( "inputHistory_", inputHistory );
+    adv.loadAttribute( "outputHistory_", outputHistory );
+    inputHistory_ = inputHistory.getSample();
+    outputHistory_ = outputHistory.getSample();
+    absoluteErrorHistory_ = absoluteErrorHistory.getSample();
+    relativeErrorHistory_ = relativeErrorHistory.getSample();
+    residualErrorHistory_ = residualErrorHistory.getSample();
+    constraintErrorHistory_ = constraintErrorHistory.getSample();
   }
 
   adv.loadAttribute( "problem_", problem_ );
