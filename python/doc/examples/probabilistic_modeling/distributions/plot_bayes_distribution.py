@@ -23,7 +23,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the math:`Y` distribution
-YDist = ot.Uniform(-1.0, 1.0)
+YDist = ot.Normal(0.0, 1.0)
 
 # %%
 # Create :math:`\vect{\Theta}=f(Y)`
@@ -31,7 +31,7 @@ f = ot.SymbolicFunction(["y"], ["y", "1 + y"])
 
 # %%
 # Create the :math:`\vect{X}|\vect{\Theta}` distribution
-XgivenThetaDist = ot.Uniform()
+XgivenThetaDist = ot.Normal()
 
 # %%
 # Create the distribution
