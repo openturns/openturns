@@ -3,18 +3,18 @@ Create a stationary covariance model
 ====================================
 """
 # %%
-# This use case illustrates how the user can define his own stationary covariance model thanks to the object *UserDefinedStationaryCovarianceModel* defined from:
+# This use case illustrates how the user can define his own stationary covariance model thanks to the object :class:`~openturns.UserDefinedStationaryCovarianceModel` defined from:
 #
-# - a mesh :math:`\mathcal{M}` of dimension :math:`n` defined by the vertices :math:`(\underline{\tau}_0,\dots, \underline{\tau}_{N-1})` and the associated simplices,
-# - a collection of covariance matrices stored in the object *CovarianceMatrixCollection* noted :math:`\underline{\underline{C}}_0, \dots, \underline{\underline{C}}_{N-1}`
-#   where :math:`\underline{\underline{C}}_k` :math:`\in \mathcal{M}_{d \times d}(\mathbb{R})` for :math:`0 \leq k \leq N-1`
+# - a mesh :math:`\mathcal{M}` of dimension :math:`n` defined by the vertices :math:`(\vect{\tau}_0,\dots, \vect{\tau}_{N-1})` and the associated simplices,
+# - a collection of covariance matrices stored in the object :class:`~openturns.CovarianceMatrixCollection` noted :math:`\vect{C}_0, \dots, \vect{C}_{N-1}`
+#   where :math:`\vect{C}_k` :math:`\in \mathcal{M}_{d \times d}(\mathbb{R})` for :math:`0 \leq k \leq N-1`
 #
 # Then we build a stationary covariance function which is a piecewise constant function on :math:`\mathcal{D}` defined by:
 #
 # .. math::
-#    \forall \underline{\tau} \in \mathcal{D}, \, C^{stat}(\underline{\tau}) =  \underline{\underline{C}}_k
+#    \forall \vect{\tau} \in \mathcal{D}, \, C^{stat}(\vect{\tau}) =  \vect{C}_k
 #
-# where :math:`k`  is such that :math:`\underline{\tau}_k` is the  vertex of :math:`\mathcal{M}` the nearest to :math:`\underline{t}.`
+# where :math:`k`  is such that :math:`\vect{\tau}_k` is the  vertex of :math:`\mathcal{M}` the nearest to :math:`\vect{t}.`
 
 # %%
 import openturns as ot
@@ -38,7 +38,7 @@ def gamma(tau):
     return 1.0 / (1.0 + tau * tau)
 
 
-# Create the collection of HermitianMatrix
+# Create the collection of :class:`~openturns.SquareMatrix`
 coll = ot.SquareMatrixCollection()
 for k in range(N):
     t = mesh.getValue(k)

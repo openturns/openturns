@@ -5,15 +5,15 @@ Create a conditional distribution
 # %%
 
 # %%
-# In this example we are going to build the distribution of the random vector X conditioned by the random variable Theta
+# In this example we are going to build the distribution of the random vector :math:`\vect{X}` conditioned by the random vector :math:`\vect{\Theta}`
 #
 # .. math::
-#    \underline{X}|\underline{\Theta}
+#    \vect{X}|\vect{\Theta}
 #
-# with Theta obtained with the random variable Y through a function f
+# with :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function math:`f`
 #
 # .. math::
-#    \underline{\Theta}=f(\underline{Y})
+#    \vect{\Theta}=f(Y)
 #
 
 # %%
@@ -22,19 +22,19 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
 # %%
-# create the Y distribution
+# Create the math:`Y` distribution
 YDist = ot.Uniform(-1.0, 1.0)
 
 # %%
-# create Theta=f(y)
+# Create :math:`\vect{\Theta}=f(Y)`
 f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 
 # %%
-# create the X|Theta distribution
+# Create the :math:`\vect{X}|\vect{\Theta}` distribution
 XgivenThetaDist = ot.Uniform()
 
 # %%
-# create the distribution
+# Create the distribution
 XDist = ot.ConditionalDistribution(XgivenThetaDist, YDist, f)
 XDist.setDescription(["X|Theta=f(y)"])
 XDist
@@ -44,7 +44,7 @@ XDist
 XDist.getSample(5)
 
 # %%
-# draw PDF
+# Draw PDF
 graph = XDist.drawPDF()
 view = viewer.View(graph)
 plt.show()

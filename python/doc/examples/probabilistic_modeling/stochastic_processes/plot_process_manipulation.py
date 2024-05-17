@@ -5,16 +5,16 @@ Draw fields
 # %%
 # The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d`,
 # where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}`
-# and exhibit some of the services exposed by the *Process* objects:
+# and exhibit some of the services exposed by the :class:`~openturns.Process` objects:
 #
-# - ask for the dimension, with the method getOutputDimension
-# - ask for the mesh, with the method getMesh
-# - ask for the mesh as regular 1-d mesh, with the getTimeGrid method
-# - ask for a realization, with the method the getRealization method
-# - ask for a continuous realization, with the getContinuousRealization method
-# - ask for a sample of realizations, with the getSample method
-# - ask for the normality of the process with the isNormal method
-# - ask for the stationarity of the process with the isStationary method
+# - ask for the dimension, with the method `getOutputDimension`
+# - ask for the mesh, with the method `getMesh`
+# - ask for the mesh as regular 1-d mesh, with the `getTimeGrid` method
+# - ask for a realization, with the method the `getRealization` method
+# - ask for a continuous realization, with the `getContinuousRealization` method
+# - ask for a sample of realizations, with the `getSample` method
+# - ask for the normality of the process with the `isNormal` method
+# - ask for the stationarity of the process with the `isStationary` method
 #
 
 # %%
@@ -25,7 +25,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We create a mesh -a time grid- which is a RegularGrid :
+# We create a mesh -a time grid- which is a :class:`~openturns.RegularGrid` :
 tMin = 0.0
 timeStep = 0.1
 n = 100
@@ -34,7 +34,7 @@ time_grid.setName("time")
 
 # %%
 # We create a Normal process :math:`X_t = (X_t^0, X_t^1, X_t^2)` in dimension 3 with an exponential covariance model.
-# We define the amplitude and the scale of the `ExponentialModel`
+# We define the amplitude and the scale of the :class:`~openturns.ExponentialModel`
 scale = [4.0]
 amplitude = [1.0, 2.0, 3.0]
 
@@ -54,7 +54,7 @@ myCovarianceModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 process = ot.GaussianProcess(myCovarianceModel, time_grid)
 
 # %%
-# The dimension d of the process may be retrieved by
+# The dimension `d` of the process may be retrieved by
 dim = process.getOutputDimension()
 print("Dimension : %d" % dim)
 
@@ -129,7 +129,7 @@ number = 10
 fieldSample = process.getSample(number)
 
 # %%
-# Let us draw them the first marginal)
+# Let us draw them the first marginal
 graph = fieldSample.drawMarginal(0, False)
 graph.setTitle("First marginal of 10 realizations of the process")
 graph.setXTitle("t")
@@ -152,15 +152,15 @@ view = viewer.View(graph)
 # We can extract any marginal of the process with the `getMarginal` method.
 # Beware the numerotation begins at 0 ! It may be not implemented yet for
 # some processes.
-# The extracted marginal is a 1D gaussian process :
+# The extracted marginal is a 1-d Gaussian process :
 print(process.getMarginal([1]))
 
 # %%
-# If we extract simultaneously two indices we build a 2D gaussian process :
+# If we extract simultaneously two indices we build a 2-d Gaussian process :
 print(process.getMarginal([0, 2]))
 
 # %%
-# We can check whether the process is normal or not :
+# We can check whether the process is Normal or not :
 print("Is normal ? ", process.isNormal())
 
 # %%

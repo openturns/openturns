@@ -23,7 +23,7 @@ mesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 
 
 # %%
-# Create the covariance function at (s,t)
+# Create the covariance function at `(s,t)`
 def C(s, t):
     return m.exp(-4.0 * abs(s - t) / (1 + (s * s + t * t)))
 

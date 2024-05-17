@@ -104,8 +104,8 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# The following function defines the quantile function of the `WeibullMin` distribution.
-# (Of course, we could use the `computeQuantile` method of the `WeibullMin` class as well.
+# The following function defines the quantile function of the :class:`~openturns.WeibullMin` distribution.
+# (Of course, we could use the `computeQuantile` method of the :class:`~openturns.WeibullMin` class as well.
 # This would create a simpler, but less interesting example: this is a trade off
 # that we accept in order to better understand the algorithm.)
 
@@ -154,7 +154,7 @@ uniformSample = U.getSample(n)
 weibullSample = quantile(uniformSample)
 
 # %%
-# In order to compare the results, we use the `WeibullMin` class (using the default value of the location parameter :math:`\gamma=0`).
+# In order to compare the results, we use the :class:`~openturns.WeibullMin` class (using the default value of the location parameter :math:`\gamma=0`).
 
 # %%
 W = ot.WeibullMin(beta, alpha)
@@ -222,5 +222,5 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# This graphics must be read from the U axis on the left to the blue curve (representing the CDF), and down to the X axis.
-# We see that the horizontal lines on the U axis follow the uniform distribution. On the other hand, the vertical lines (on the X axis) follow the Weibull distribution.
+# This graphics must be read from the `U` axis on the left to the blue curve (representing the CDF), and down to the `X` axis.
+# We see that the horizontal lines on the `U` axis follow the uniform distribution. On the other hand, the vertical lines (on the `X` axis) follow the Weibull distribution.

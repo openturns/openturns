@@ -10,10 +10,10 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a gaussian process from a covariance model
+# Create a Gaussian process from a covariance model
 # -------------------------------------------------
 #
-# In this paragraph we build a gaussian process from its covariance model.
+# In this paragraph we build a Gaussian process from its covariance model.
 
 
 # %%
@@ -49,10 +49,10 @@ view = viewer.View(graph)
 
 
 # %%
-# Create a gaussian process from spectral density
+# Create a Gaussian process from spectral density
 # -----------------------------------------------
 #
-# In this paragraph we build a gaussian process from its spectral density.
+# In this paragraph we build a Gaussian process from its spectral density.
 #
 
 # %%

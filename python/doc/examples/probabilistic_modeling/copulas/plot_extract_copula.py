@@ -12,7 +12,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# create a multivariate gaussian distribution
+# Create a multivariate Gaussian distribution
 mu = [0.0] * 2
 sigma = [1.0] * 2
 R = ot.CorrelationMatrix(2)
@@ -21,6 +21,6 @@ distribution = ot.Normal(mu, sigma, R)
 print(distribution)
 
 # %%
-# extract the copula
+# Extract the copula
 copula = distribution.getCopula()
 print(copula)

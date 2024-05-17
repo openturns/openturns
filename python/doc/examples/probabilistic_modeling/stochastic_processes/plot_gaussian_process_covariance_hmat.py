@@ -4,7 +4,7 @@ Create a gaussian process from a cov. model using HMatrix
 """
 # %%
 #
-# In this basic example we build a gaussian process from its covariance model and use the `HMatrix` method as a sampling method.
+# In this basic example we build a Gaussian process from its covariance model and use the `HMatrix` method as a sampling method.
 # Several methods and parameters are presented to set the HMatrix compression.
 # This is an advanced topic and we should highlight key ideas only in this example.
 

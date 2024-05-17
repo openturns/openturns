@@ -7,16 +7,16 @@ Create a white noise process
 # A second order white noise
 # :math:`\varepsilon: \Omega \times \mathbb{D} \rightarrow \mathbb{R}^d` is a stochastic
 # process of dimension :math:`d` such that the covariance function
-# :math:`C(\underline{s},\underline{t})=\delta(\underline{t}-\underline{s})C(\underline{s},\underline{s})`
-# where :math:`C(\underline{s},\underline{s})` is the covariance matrix of the process at
-# vertex :math:`\underline{s}` and :math:`\delta` the Kroenecker function.
+# :math:`C(\vect{s},\vect{t})=\delta(\vect{t}-\vect{s})C(\vect{s},\vect{s})`
+# where :math:`C(\vect{s},\vect{s})` is the covariance matrix of the process at
+# vertex :math:`\vect{s}` and :math:`\delta` the Kroenecker function.
 #
 # A process :math:`\varepsilon` is a white noise if all finite family of
-# locations :math:`(\underline{t}_i)_{i=1, \dots, n} \in \mathbb{D}`,
-# :math:`(\varepsilon_{\underline{t}_i})_{i=1, \dots, n}` is independent and
+# locations :math:`(\vect{t}_i)_{i=1, \dots, n} \in \mathbb{D}`,
+# :math:`(\varepsilon_{\vect{t}_i})_{i=1, \dots, n}` is independent and
 # identically distributed.
 #
-# The library proposes to model it through the object *WhiteNoise* defined
+# The library proposes to model it through the object :class:`~openturns.WhiteNoise` defined
 # on a mesh and a distribution with zero mean and finite standard
 # deviation.
 #

@@ -5,7 +5,7 @@ Add a trend to a process
 # %%
 # In this example we are going to add a trend to a process.
 #
-# The TrendTransform class enables to create a new process Y from a process X (no hypothesis on X needed):
+# The :class:`~openturns.TrendTransform` class enables to create a new process :math:`Y` from a process :math:`X` (no hypothesis on :math:`X` needed):
 #
 # .. math::
 #    Y(\omega, t) = X(\omega, t) + f(t)

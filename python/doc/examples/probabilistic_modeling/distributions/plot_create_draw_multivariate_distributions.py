@@ -15,7 +15,7 @@ ot.Log.Show(ot.Log.NONE)
 # Create a multivariate model with `JointDistribution`
 # -------------------------------------------------------
 #
-# In this paragraph we use :math:`~openturns.JointDistribution` class to
+# In this paragraph we use :class:`~openturns.JointDistribution` class to
 # build multidimensional distribution described by its marginal distributions and optionally its dependence structure (a particular copula).
 #
 
@@ -23,8 +23,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # We first create the marginals of the distribution :
 #
-#   - a Normal distribution ;
-#   - a Gumbel distribution.
+#   - a :class:`~openturns.Normal` distribution ;
+#   - a :class:`~openturns.Gumbel` distribution.
 #
 marginals = [ot.Normal(), ot.Gumbel()]
 
@@ -74,20 +74,20 @@ view = otv.View(graph)
 # -------------------
 # Some models in the library are natively multivariate. We present examples of three of them :
 #
-#  - the Normal distribution ;
-#  - the Student distribution ;
-#  - the UserDefined distribution.
+#  - the :class:`~openturns.Normal` distribution ;
+#  - the :class:`~openturns.Student` distribution ;
+#  - the :class:`~openturns.UserDefined` distribution.
 #
 # The Normal distribution
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
 # The :class:`~openturns.Normal` distribution is natively multivariate.
-# Here we define a bivariate standard unit gaussian distribution and display
+# Here we define a bivariate standard unit Gaussian distribution and display
 # its PDF.
 dim = 2
 distribution = ot.Normal(dim)
 graph = distribution.drawPDF()
-graph.setTitle("Bivariate standard unit gaussian PDF")
+graph.setTitle("Bivariate standard unit Gaussian PDF")
 view = otv.View(graph)
 
 

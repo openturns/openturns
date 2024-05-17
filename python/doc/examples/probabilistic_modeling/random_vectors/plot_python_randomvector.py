@@ -5,12 +5,12 @@ Create a random vector
 # %%
 # In this example we are going to create a distribution or copula.
 #
-# The way to go is inheriting the PythonRandomVector class and overload its methods:
+# The way to go is inheriting the :class:`~openturns.PythonRandomVector` class and overload its methods:
 #
-# - getRealization
-# - getSample
-# - getMean
-# - getCovariance
+# - `getRealization`
+# - `getSample`
+# - `getMean`
+# - `getCovariance`
 
 # %%
 import openturns as ot
@@ -19,7 +19,7 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# Inherit PythonRandomVector
+# Inherit :class:`~openturns.PythonRandomVector`
 class RVEC(ot.PythonRandomVector):
     def __init__(self):
         super(RVEC, self).__init__(2)
@@ -45,7 +45,7 @@ class RVEC(ot.PythonRandomVector):
 
 
 # %%
-# Instantiate our distribution
+# Instantiate the distribution
 randomVector = ot.RandomVector(RVEC())
 
 # %%
