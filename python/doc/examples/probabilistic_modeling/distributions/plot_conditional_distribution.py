@@ -22,7 +22,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
 # %%
-# Create the math:`Y` distribution
+# Create the :math:`Y` distribution
 YDist = ot.Uniform(-1.0, 1.0)
 
 # %%

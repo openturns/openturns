@@ -53,13 +53,13 @@ rho = 2.0
 g = ot.ParametricFunction(gWithParameter, [1], [rho])
 
 # %%
-# We define the distribution distF as the image through :math:`G` of the :math:`\mathcal{U}(0,1)` distribution:
+# We define the distribution `distF` as the image through :math:`G` of the :math:`\mathcal{U}(0,1)` distribution:
 
 # %%
 distF = ot.CompositeDistribution(g, ot.Uniform(0.0, 1.0))
 
 # %%
-# Now, we can draw its pdf, cdf and generate samples.
+# Now, we can draw its PDF, CDF and generate samples.
 
 # %%
 g = distF.drawPDF()

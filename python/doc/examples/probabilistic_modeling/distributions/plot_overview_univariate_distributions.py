@@ -11,7 +11,7 @@ Overview of univariate distribution management
 # - the distributions with several parametrizations (particularly with the `Beta` distribution),
 # - the arithmetic of distributions and functions of distributions,
 # - the :class:`~openturns.CompositeDistribution` for more general functions,
-# - how to define our customized distribution with :class:`~openturns.PythonDistribution` if the distribution do not exist.
+# - how to define our customized distribution with :class:`~openturns.PythonDistribution` if the distribution does not exist.
 
 # %%
 import openturns as ot
@@ -155,7 +155,7 @@ view = viewer.View(graph)
 # ------------------------------------------------------------
 #
 # More complex functions can be created thanks to the :class:`~openturns.CompositeDistribution` class, but it requires an `f` function.
-# In the following example, we create the distribution of a random variable equal to the exponential of a gaussian variable.
+# In the following example, we create the distribution of a random variable equal to the exponential of a Gaussian variable.
 # Obviously, this is equivalent to the :class:`~openturns.LogNormal` distribution but this shows how such a distribution could be created.
 
 # %%

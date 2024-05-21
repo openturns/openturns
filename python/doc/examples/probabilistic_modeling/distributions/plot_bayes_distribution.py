@@ -6,7 +6,7 @@ Create a Bayes distribution
 # In this example we are going to build the distribution of the random vector
 #
 # .. math::
-#    (\vect{Y}, \vect{X}|\vect{\Theta})
+#    (Y, \vect{X}|\vect{\Theta})
 #
 # with :math:`\vect{X}` conditioned by the random vector :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function :math:`f`
 #
@@ -22,7 +22,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the math:`Y` distribution
+# Create the :math:`Y` distribution
 
 YDist = ot.Normal(0.0, 1.0)
 

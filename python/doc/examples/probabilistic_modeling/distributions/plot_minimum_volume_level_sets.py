@@ -28,9 +28,9 @@ graph = n.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We want to compute the minimum volume LevelSet which contains `alpha` = 90% of the distribution.
+# We want to compute the minimum volume `LevelSet` which contains `alpha` = 90% of the distribution.
 # The `threshold` is the value of the PDF corresponding the `alpha`-probability:
-# the points contained in the LevelSet have a PDF value lower or equal to this threshold.
+# the points contained in the `LevelSet` have a PDF value lower or equal to this threshold.
 
 # %%
 alpha = 0.9
@@ -180,7 +180,7 @@ view = viewer.View(graph)
 
 
 # %%
-# Create a gaussian
+# Create a Gaussian distribution
 corr = ot.CorrelationMatrix(2)
 corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
@@ -188,7 +188,7 @@ x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
 x_funk = ot.JointDistribution([x1, x2], copula)
 
-# Create a second gaussian
+# Create a second Gaussian distribution
 x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
 x_punk = ot.JointDistribution([x1, x2], copula)
@@ -210,7 +210,7 @@ ot.ResourceMap.SetAsUnsignedInteger(
 )
 
 # %%
-# We want to compute the minimum volume LevelSet which contains `alpha` = 90% of the distribution.
+# We want to compute the minimum volume `LevelSet` which contains `alpha` = 90% of the distribution.
 # The `threshold` is the value of the PDF corresponding the `alpha`-probability:
 # the points contained in the LevelSet have a PDF value lower or equal to this threshold.
 
@@ -258,7 +258,7 @@ def drawLevelSetContour2D(
 
 
 # %%
-# The following plot shows that 90% of the sample is contained in the LevelSet.
+# The following plot shows that 90% of the sample is contained in the `LevelSet`.
 
 # %%
 numberOfPointsInXAxis = 50

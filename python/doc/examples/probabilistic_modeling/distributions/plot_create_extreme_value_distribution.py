@@ -22,8 +22,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The :class:`~openturns.GeneralizedExtremeValue` distribution is a family of continuous probability distributions
-# that combines the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distribution,
-# all extreme value distribution.
+# that combines the :class:`~openturns.Gumbel`, :class:`~openturns.Frechet` and :class:`~openturns.WeibullMax` distributions,
+# all extreme value distributions.
 #
 # We define a generalized extreme value distribution with parameters :math:`\mu = 0.0`, :math:`\sigma = 1.0` and :math:`\xi = 0.0`
 myDistribution = ot.GeneralizedExtremeValue(0.0, 1.0, 0.0)

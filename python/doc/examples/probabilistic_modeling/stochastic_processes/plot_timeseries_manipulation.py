@@ -65,7 +65,7 @@ i = 37
 print("Xi = ", myTimeSeries[i])
 
 # %%
-# Get a the marginal value at index `i` of the time series
+# Get a the marginal value at index :math:`i` of the time series
 i = 37
 # get the time stamp:
 print("ti = ", myTimeSeries.getTimeGrid().getValue(i))
@@ -73,7 +73,7 @@ print("ti = ", myTimeSeries.getTimeGrid().getValue(i))
 print("Xi1 = ", myTimeSeries[i, 0])
 
 # %%
-# Get all the values :math:`(X1_, \dots, X_n)` of the time series
+# Get all the values :math:`(X_1, \dots, X_n)` of the time series
 myTimeSeries.getValues()
 
 # %%
@@ -82,7 +82,7 @@ myTimeSeries.getValues()
 myTimeSeries.getInputMean()
 
 # %%
-# Draw the marginal `i` of the time series using linear interpolation
+# Draw the marginal :math:`i` of the time series using linear interpolation
 graph = myTimeSeries.drawMarginal(0)
 view = viewer.View(graph)
 

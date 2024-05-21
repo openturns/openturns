@@ -1,5 +1,5 @@
 """
-Create a gaussian process from a cov. model using HMatrix
+Create a Gaussian process from a cov. model using HMatrix
 =========================================================
 """
 # %%

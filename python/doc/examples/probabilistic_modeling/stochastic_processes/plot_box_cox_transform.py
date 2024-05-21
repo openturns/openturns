@@ -36,7 +36,7 @@ Use the Box-Cox transformation
 #
 #    :math:`\vect{y}_{i} = h_{\vect{\lambda}}(\vect{x}_{i} + \vect{\alpha})`
 #
-#    thanks to the operand *()*. The field based on the values
+#    thanks to the operand (). The field based on the values
 #    :math:`\vect{y}_{i}` shares the same mesh than the initial field.
 #
 # -  create the inverse Box Cox transformation such that :

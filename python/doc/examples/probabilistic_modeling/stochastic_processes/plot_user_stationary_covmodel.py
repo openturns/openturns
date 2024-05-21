@@ -25,6 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We detail the example described in the documentation
+#
 # Create the time grid
 t0 = 0.0
 dt = 0.5

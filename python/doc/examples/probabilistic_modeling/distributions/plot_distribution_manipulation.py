@@ -5,19 +5,19 @@ Distribution manipulation
 # %%
 # In this example we are going to exhibit some of the services exposed by the distribution objects:
 #
-# - ask for the dimension, with the method `getDimension`
-# - extract the marginal distributions, with the method `getMarginal`
-# - to ask for some properties, with `isContinuous`, `isDiscrete`, `isElliptical`
-# - to get the copula, with the method `getCopula`
-# - to ask for some properties on the copula, with the methods `hasIndependentCopula`, `hasEllipticalCopula`
-# - to evaluate some moments, with `getMean`, `getStandardDeviation`, `getCovariance`, `getSkewness`, `getKurtosis`
-# - to evaluate the roughness, with the method `getRoughness`
-# - to get one realization or simultaneously :math:`n` realizations, with the method `getRealization`, `getSample`
-# - to evaluate the probability content of a given interval, with the method `computeProbability`
-# - to evaluate a quantile or a complementary quantile, with the method `computeQuantile`
-# - to evaluate the characteristic function of the distribution
-# - to evaluate the derivative of the CDF or PDF
-# - to draw some curves
+# - ask for the dimension, with the method `getDimension` ;
+# - extract the marginal distributions, with the method `getMarginal` ;
+# - to ask for some properties, with `isContinuous`, `isDiscrete`, `isElliptical` ;
+# - to get the copula, with the method `getCopula` ;
+# - to ask for some properties on the copula, with the methods `hasIndependentCopula`, `hasEllipticalCopula` ;
+# - to evaluate some moments, with `getMean`, `getStandardDeviation`, `getCovariance`, `getSkewness`, `getKurtosis` ;
+# - to evaluate the roughness, with the method `getRoughness` ;
+# - to get one realization or simultaneously :math:`n` realizations, with the method `getRealization`, `getSample` ;
+# - to evaluate the probability content of a given interval, with the method `computeProbability` ;
+# - to evaluate a quantile or a complementary quantile, with the method `computeQuantile` ;
+# - to evaluate the characteristic function of the distribution ;
+# - to evaluate the derivative of the CDF or PDF ;
+# - to draw some curves.
 
 # %%
 import openturns as ot

@@ -1,5 +1,5 @@
 """
-Create a normal process
+Create a Normal process
 =======================
 """
 # %%

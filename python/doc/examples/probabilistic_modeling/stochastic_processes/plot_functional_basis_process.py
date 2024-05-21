@@ -25,7 +25,7 @@ Create a functional basis process
 #
 # If we note
 # :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the realization of :math:`X`, where
-# :math:`X(\omega, \vect{t}_k) = \underline{x}_k`, we have:
+# :math:`X(\omega, \vect{t}_k) = \vect{x}_k`, we have:
 #
 # .. math::
 #    \begin{aligned}

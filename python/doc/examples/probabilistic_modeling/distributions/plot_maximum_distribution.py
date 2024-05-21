@@ -13,7 +13,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a collection of distribution
+# Create a collection of distributions
 distribution1 = ot.Normal()
 distribution2 = ot.Uniform(-1.0, 2.0)
 distColl = [distribution1, distribution2]

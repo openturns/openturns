@@ -19,14 +19,14 @@ Create a stationary covariance model
 # with:
 #
 # .. math::
-#    \underline{\vect{A}} = \mbox{Diag}(a_1, \dots, a_d)
+#    \vect{A} = \mbox{Diag}(a_1, \dots, a_d)
 #
 # We call :math:`\vect{a}` the amplitude vector and :math:`\vect{\lambda}` the scale vector.
 #
 # The library implements the multivariate exponential model thanks to the object *ExponentialModel* which is created from:
 #
 #
-# - the scale and amplitude vectors :math:`(\underline{\lambda}, \underline{a})`: in that case, by default :math:`\vect{R} = \vect{I}`;
+# - the scale and amplitude vectors :math:`(\vect{\lambda}, \vect{a})`: in that case, by default :math:`\vect{R} = \vect{I}`;
 # - the scale and amplitude vectors and the spatial correlation matrix  :math:`(\vect{\lambda}, \vect{a},\vect{R})`;
 # - the scale and amplitude vectors and the spatial covariance matrix  :math:`(\vect{\lambda}, \vect{a},\vect{C})`;
 #   Then :math:`\vect{C}` is mapped into the associated correlation matrix :math:`\vect{R}` and the previous constructor is used.
@@ -64,9 +64,9 @@ spatialCovariance[1, 2] = -0.2
 ot.ExponentialModel(scale, amplitude)
 
 # %%
-# or from the amplitude, scale and spatialCovariance
+# or from the amplitude, scale and spatial vorrelation
 ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
 # %%
-# or from the scale and spatialCovariance
+# or from the scale and spatial covariance
 ot.ExponentialModel(scale, spatialCovariance)

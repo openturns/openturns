@@ -9,7 +9,7 @@ Create a spectral model
 # the object :class:`~openturns.UserDefinedSpectralModel` defined from:
 #
 # -   a frequency grid :math:`(-f_c, \dots, f_c)` with step :math:`\delta f`, stored
-#     in the object *RegularGrid*,
+#     in the object :class:`~openturns.RegularGrid`,
 # -   a collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})`
 #     stored in the object :class:`~openturns.HermitianMatrixCollection`, which are the
 #     images of each point of the frequency grid through the density
