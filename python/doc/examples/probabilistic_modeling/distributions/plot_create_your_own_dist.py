@@ -14,7 +14,7 @@ Create your own distribution given its quantile function
 # distribution in the :math:`[0,1]` interval, i.e., :math:`U=F(X) \sim \mathcal{U}(0,1)`.
 # Hence, if :math:`U \sim  \mathcal{U}(0,1)` then :math:`X=F^{-1}(U)` is distributed according to :math:`F`.
 #
-# In this example, we want to create a distribution with CDF :math:`F: \mathbb{R} \rightarrow [0,1]` parametrized by :math:`\rho > 1` :
+# In this example, we want to create a distribution with CDF :math:`F: \mathbb{R} \rightarrow [0,1]` parametrized by :math:`\rho > 1`:
 #
 # .. math::
 #    F(x) = 1-e^{-\rho^x} \quad \forall x  \in \mathbb{R}.
