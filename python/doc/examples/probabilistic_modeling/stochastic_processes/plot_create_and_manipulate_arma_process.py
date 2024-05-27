@@ -57,7 +57,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# The definition of the recurrence coefficients ARMA (4,2) is simple :
+# The definition of the recurrence coefficients ARMA (4,2) is simple:
 myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
 myMACoef = ot.ARMACoefficients([0.4, 0.3])
 
