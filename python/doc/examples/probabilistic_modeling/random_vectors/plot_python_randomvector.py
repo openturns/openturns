@@ -7,10 +7,10 @@ Create a random vector
 #
 # The way to go is inheriting the :class:`~openturns.PythonRandomVector` class and overload its methods:
 #
-# - `getRealization`
-# - `getSample`
-# - `getMean`
-# - `getCovariance`
+# - `:meth:`~openturns.PythonRandomVector.getRealization`
+# - `:meth:`~openturns.PythonRandomVector.getSample`
+# - `:meth:`~openturns.PythonRandomVector.getMean`
+# - `:meth:`~openturns.PythonRandomVector.getCovariance`
 
 # %%
 import openturns as ot
