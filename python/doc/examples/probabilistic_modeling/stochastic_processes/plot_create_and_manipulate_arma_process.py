@@ -30,7 +30,7 @@ ot.Log.Show(ot.Log.NONE)
 # -  a list of square matrix
 #    :math:`(\mat{A}_{\, 1}, \dots, \mat{A}{\, _p})` for the
 #    AR-coefficients and
-#    :math:`(\vect{B}_{\, 1}\, \dots, \vect{B}_{\, q})` for the
+#    :math:`(\mat{B}_{\, 1}\, \dots, \mat{B}_{\, q})` for the
 #    MA-coefficients
 #
 # It also requires the definition of a white noise
