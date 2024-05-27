@@ -28,7 +28,7 @@ ot.Log.Show(ot.Log.NONE)
 #    :math:`(b_1, \dots, b_q)` for the MA-coefficients
 #
 # -  a list of square matrix
-#    :math:`(\vect{A}_{\, 1}, \dots, \vect{A}{\, _p})` for the
+#    :math:`(\mat{A}_{\, 1}, \dots, \mat{A}{\, _p})` for the
 #    AR-coefficients and
 #    :math:`(\vect{B}_{\, 1}\, \dots, \vect{B}_{\, q})` for the
 #    MA-coefficients
