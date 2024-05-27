@@ -5,7 +5,7 @@ Create a customized distribution or copula
 # %%
 # In this example we are going to create a distribution or copula.
 #
-# The way to go is inheriting the :class:`~openturns.PythonDistribution` Get the  class and overload the methods of the Distribution object.
+# The way to go is inheriting the :class:`~openturns.PythonDistribution`, get the  class and overload the methods of the :class:`~openturns.Distribution` object.
 #
 # To create a Copula, the user has to overload `isCopula()` and return `True`.
 #
