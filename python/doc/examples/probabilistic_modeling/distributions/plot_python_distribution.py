@@ -25,7 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# Inherit :class:`~openturns.PythonDistribution` :
+# Inherit :class:`~openturns.PythonDistribution`:
 
 
 # %%
