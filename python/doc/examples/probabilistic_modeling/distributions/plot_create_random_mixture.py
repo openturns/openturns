@@ -55,7 +55,7 @@ variance = distribution.getCovariance()[0, 0]
 print("Variance : %.3f" % variance)
 
 # %%
-# The 90% quantile :
+# The 90% quantile:
 quantile = distribution.computeQuantile(0.9)[0]
 print("0.9-quantile : %.3f" % quantile)
 
