@@ -48,7 +48,7 @@ ot.Log.Show(ot.Log.NONE)
 # When the process is not stationary, the user is warned by a message.
 
 # %%
-# We build the 1-d ARMA process defined by :
+# We build the 1-d ARMA process defined by:
 #
 # .. math::
 #    X_{0,t} + 0.4 X_{0,t-1} + 0.3 X_{0,t-2} + 0.2 X_{0,t-3} + 0.1 X_{0,t-4} = E_{0,t} + 0.4 E_{0,t-1} + 0.3 E_{0,t-2}
