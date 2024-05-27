@@ -26,10 +26,10 @@ Create a stationary covariance model
 # The library implements the multivariate exponential model thanks to the object *ExponentialModel* which is created from:
 #
 #
-# - the scale and amplitude vectors :math:`(\vect{\lambda}, \vect{a})`: in that case, by default :math:`\vect{R} = \vect{I}`;
-# - the scale and amplitude vectors and the spatial correlation matrix  :math:`(\vect{\lambda}, \vect{a},\vect{R})`;
-# - the scale and amplitude vectors and the spatial covariance matrix  :math:`(\vect{\lambda}, \vect{a},\vect{C})`;
-#   Then :math:`\vect{C}` is mapped into the associated correlation matrix :math:`\vect{R}` and the previous constructor is used.
+# - the scale and amplitude vectors :math:`(\vect{\lambda}, \vect{a})`: in that case, by default :math:`\mat{R} = \mat{I}`;
+# - the scale and amplitude vectors and the spatial correlation matrix  :math:`(\vect{\lambda}, \vect{a},\mat{R})`;
+# - the scale and amplitude vectors and the spatial covariance matrix  :math:`(\vect{\lambda}, \vect{a},\mat{C})`;
+#   Then :math:`\mat{C}` is mapped into the associated correlation matrix :math:`\mat{R}` and the previous constructor is used.
 #
 
 # %%
