@@ -50,7 +50,7 @@ mean = distribution.getMean()[0]
 print("Mean : %.3f" % mean)
 
 # %%
-# Its variance :
+# Its variance:
 variance = distribution.getCovariance()[0, 0]
 print("Variance : %.3f" % variance)
 
