@@ -9,8 +9,8 @@ Create a stationary covariance model
 # .. math::
 #    \rho(\vect{s}, \vect{t} ) = e^{-\left\| \vect{s}- \vect{t} \right\|_2} \quad \forall (\vect{s}, \vect{t}) \in \mathcal{D}
 #
-# It is possible to define the exponential model from the spatial covariance matrix :math:`\vect{C}^{spat}`
-# rather than the correlation matrix :math:`\vect{R}`:
+# It is possible to define the exponential model from the spatial covariance matrix :math:`\mat{C}^{spat}`
+# rather than the correlation matrix :math:`\mat{R}`:
 #
 # .. math::
 #     \forall \vect{t} \in \mathcal{D},\quad \vect{\vect{C}}^{spat} = \mathbb{E} \left[ X_{\vect{t}} X^t_{\vect{t}} \right]
