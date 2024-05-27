@@ -7,14 +7,14 @@ Draw fields
 # where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}`
 # and exhibit some of the services exposed by the :class:`~openturns.Process` objects:
 #
-# - ask for the dimension, with the method `getOutputDimension` ;
-# - ask for the mesh, with the method `getMesh` ;
-# - ask for the mesh as regular 1-d mesh, with the `getTimeGrid` method ;
-# - ask for a realization, with the method the `getRealization` method ;
-# - ask for a continuous realization, with the `getContinuousRealization` method ;
-# - ask for a sample of realizations, with the `getSample` method ;
-# - ask for the normality of the process with the `isNormal` method ;
-# - ask for the stationarity of the process with the `isStationary` method.
+# - ask for the dimension, with the method :meth:`~openturns.Process.getOutputDimension` ;
+# - ask for the mesh, with the method :meth:`~openturns.Process.getMesh` ;
+# - ask for the mesh as regular 1-d mesh, with the :meth:`~openturns.Process.getTimeGrid` method ;
+# - ask for a realization, with the method the :meth:`~openturns.Process.getRealization` method ;
+# - ask for a continuous realization, with the :meth:`~openturns.Process.getContinuousRealization` method ;
+# - ask for a sample of realizations, with the :meth:`~openturns.Process.getSample` method ;
+# - ask for the normality of the process with the :meth:`~openturns.Process.isNormal` method ;
+# - ask for the stationarity of the process with the :meth:`~openturns.Process.isStationary` method.
 #
 
 # %%
