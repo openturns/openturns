@@ -29,7 +29,7 @@ ot.Log.Show(ot.Log.NONE)
 myDistribution = ot.GeneralizedExtremeValue(0.0, 1.0, 0.0)
 
 # %%
-# The :class:`~openturns.GeneralizedExtremeValue` class acts as a proxy class. We can get the actual distribution (Weibull, Frechet or Gumbel) with the `getActualDistribution` method :
+# The :class:`~openturns.GeneralizedExtremeValue` class acts as a proxy class. We can get the actual distribution (Weibull, Frechet or Gumbel) with the `getActualDistribution` method:
 print(myDistribution.getActualDistribution())
 
 # %%
