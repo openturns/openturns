@@ -19,7 +19,7 @@ Create a stationary covariance model
 # with:
 #
 # .. math::
-#    \vect{A} = \mbox{Diag}(a_1, \dots, a_d)
+#    \mat{A} = \mbox{Diag}(a_1, \dots, a_d)
 #
 # We call :math:`\vect{a}` the amplitude vector and :math:`\vect{\lambda}` the scale vector.
 #
