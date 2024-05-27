@@ -13,8 +13,8 @@ Create a stationary covariance model
 # rather than the correlation matrix :math:`\mat{R}`:
 #
 # .. math::
-#     \forall \vect{t} \in \mathcal{D},\quad \vect{\vect{C}}^{spat} = \mathbb{E} \left[ X_{\vect{t}} X^t_{\vect{t}} \right]
-#     = \vect{A}\,\vect{R}, \vect{A}
+#     \forall \vect{t} \in \mathcal{D},\quad \mat{C}^{spat} = \mathbb{E} \left[ X_{\vect{t}} X^t_{\vect{t}} \right]
+#     = \mat{A}\,\mat{R}, \mat{A}
 #
 # with:
 #
