@@ -34,7 +34,7 @@ print(myDistribution.getActualDistribution())
 
 # %%
 # For the chosen parameters it is a Gumbel distribution with parameters
-# :math:`\beta=1.0` and :math:`\gamma = 0.0`.
+# :math:`\beta=1` and :math:`\gamma = 0`.
 
 # %%
 # We draw its PDF and CDF :
