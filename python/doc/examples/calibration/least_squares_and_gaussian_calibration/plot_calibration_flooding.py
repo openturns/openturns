@@ -168,7 +168,7 @@ print("Physical Model Parameters:", g.getParameterDescription())
 # +-------+-----------+
 # | 1     | Zv        |
 # +-------+-----------+
-# | 3     | Zm        |
+# | 2     | Zm        |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
