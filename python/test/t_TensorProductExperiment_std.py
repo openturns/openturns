@@ -343,3 +343,97 @@ def testTensorProductExperiment3():
 testTensorProductExperiment1()
 testTensorProductExperiment2()
 testTensorProductExperiment3()
+
+
+# Check polynomial degree of exactness
+def checkPolynomialExactness(
+    marginalDegrees,
+    marginalSizes,
+    lowerBound=0.0,
+    upperBound=1.0,
+    rtol=1.0e-15,
+    atol=0.0,
+    verbose=False,
+):
+    """
+    Check polynomial exactness of Gauss tensor product quadrature
+
+    Parameters
+    ----------
+    marginalDegrees : list of int
+        The polynomial degree of the marginal polynomials to integrate
+    marginalSizes : list of int
+        The number of nodes on each marginal axis.
+
+    Examples
+    --------
+    marginalDegrees = [5, 3, 7]
+    marginalSizes = [3, 2, 4]  # Polynomial exactness space = P5 x P3 x P7
+    checkPolynomialExactness(marginalDegrees, marginalSizes)
+    """
+    dimension = len(marginalDegrees)
+    if len(marginalSizes) != dimension:
+        raise ValueError(
+            f"Number of marginal degrees is {dimension} "
+            f"but number of marginal sizes is {len(marginalSizes)}"
+        )
+
+    # Set bounds
+    bounds = ot.Interval([lowerBound] * dimension, [upperBound] * dimension)
+
+    # Create polynomial
+    polynomialCollection = ot.PolynomialCollection()
+    for i in range(dimension):
+        coefficients = [0.0] * (1 + marginalDegrees[i])
+        coefficients[-1] = 1
+        polynomial = ot.UniVariatePolynomial(coefficients)
+        polynomialCollection.add(polynomial)
+
+    productPoly = ot.ProductPolynomialEvaluation(polynomialCollection)
+
+    # Create Gauss tensor product quadrature
+    lowerBound = bounds.getLowerBound()
+    upperBound = bounds.getUpperBound()
+    collection = [
+        ot.GaussProductExperiment(ot.Uniform(lowerBound[i], upperBound[i]))
+        for i in range(dimension)
+    ]
+    experiment = ot.TensorProductExperiment(collection)
+
+    # Evaluate integral
+    nodes, weights = experiment.generateWithWeights()
+    values = productPoly(nodes).asPoint()
+    computedIntegral = weights.dot(values)
+
+    # Expected integral
+    expectedIntegral = 1.0
+    for i in range(dimension):
+        marginalIntegral = (
+            upperBound[i] ** (1 + marginalDegrees[i])
+            - lowerBound[i] ** (1 + marginalDegrees[i])
+        ) / (1 + marginalDegrees[i])
+        expectedIntegral *= marginalIntegral
+    absoluteError = abs(computedIntegral - expectedIntegral)
+    relativeError = abs(computedIntegral - expectedIntegral) / abs(expectedIntegral)
+    if verbose:
+        print(
+            f"Polynomial : {str(productPoly):20s}, "
+            f"  integral computed  = {computedIntegral:.7f}, "
+            f"  expected = {expectedIntegral:.7f}, "
+            f"  abs. err. = {absoluteError:.3e}"
+            f"  rel. err. = {relativeError:.3e}"
+        )
+    ott.assert_almost_equal(expectedIntegral, computedIntegral, rtol, atol)
+    return
+
+
+# Test different polynomials, up to the maximum
+marginalSizes = [3, 2, 4]  # Polynomial exactness space = P5 x P3 x P7
+maximumMarginalDegrees = [2 * n for n in marginalSizes]
+experiment = ot.Tuples(maximumMarginalDegrees)
+marginalDegreesList = experiment.generate()
+for i in range(marginalDegreesList.getSize()):
+    marginalDegrees = marginalDegreesList[i]
+    checkPolynomialExactness(
+        marginalDegrees, marginalSizes, rtol=1.0e-14, verbose=False
+    )
