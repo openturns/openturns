@@ -306,3 +306,105 @@ testSmolyakExperiment2()
 testSmolyakExperiment3()
 testSmolyakExperiment4()
 testSmolyakExperiment5()
+
+
+# Check polynomial degree of exactness
+def checkPolynomialExactness(
+    marginalDegrees,
+    level,
+    lowerBound=0.0,
+    upperBound=1.0,
+    rtol=1.0e-15,
+    atol=0.0,
+    verbose=False,
+):
+    """
+    Check polynomial exactness of Smolyak quadrature based on Gauss
+
+    Parameters
+    ----------
+    marginalDegrees : list of int
+        The polynomial degree of the marginal polynomials to integrate
+    level : int
+        The Smolyak level
+    lowerBound : float
+        The lower bound of quadrature
+    upperBound : float
+        The upper bound of quadrature
+    rtol : float, > 0
+        The relative tolerance
+    atol : float, > 0
+        The absolute tolerance
+    verbose : bool
+        Set to True to print intermediate messages
+
+    Examples
+    --------
+    marginalDegrees = [5, 1]
+    level = 3
+    checkPolynomialExactness(marginalDegrees, level)
+    """
+    if lowerBound > upperBound:
+        raise ValueError(f"The lower bound {lowerBound} is greater than "
+                         f"the upper bound {upperBound}.")
+    dimension = len(marginalDegrees)
+
+    # Set bounds
+    bounds = ot.Interval([lowerBound] * dimension, [upperBound] * dimension)
+
+    # Create polynomial
+    polynomialCollection = ot.PolynomialCollection()
+    for i in range(dimension):
+        coefficients = [0.0] * (1 + marginalDegrees[i])
+        coefficients[-1] = 1
+        polynomial = ot.UniVariatePolynomial(coefficients)
+        polynomialCollection.add(polynomial)
+
+    productPoly = ot.ProductPolynomialEvaluation(polynomialCollection)
+
+    # Create Smolyak quadrature
+    lowerBoundPoint = bounds.getLowerBound()
+    upperBoundPoint = bounds.getUpperBound()
+    experimentCollection = []
+    for i in range(dimension):
+        marginalDistribution = ot.Uniform(lowerBoundPoint[i], upperBoundPoint[i])
+        marginalExperiment = ot.GaussProductExperiment(marginalDistribution)
+        experimentCollection.append(marginalExperiment)
+    experiment = ot.SmolyakExperiment(experimentCollection, level)
+
+    # Evaluate integral
+    nodes, weights = experiment.generateWithWeights()
+    values = productPoly(nodes).asPoint()
+    computedIntegral = weights.dot(values)
+
+    # Expected integral
+    expectedIntegral = 1.0
+    for i in range(dimension):
+        marginalIntegral = (
+            upperBoundPoint[i] ** (1 + marginalDegrees[i])
+            - lowerBoundPoint[i] ** (1 + marginalDegrees[i])
+        ) / (1 + marginalDegrees[i])
+        expectedIntegral *= marginalIntegral
+    absoluteError = abs(computedIntegral - expectedIntegral)
+    if verbose:
+        print(
+            f"Polynomial : {str(productPoly):20s}, "
+            f"  integral computed  = {computedIntegral:.7f}, "
+            f"  expected = {expectedIntegral:.7f}, "
+            f"  absolute error = {absoluteError:.3e}"
+        )
+    ott.assert_almost_equal(expectedIntegral, computedIntegral, rtol, atol)
+    return
+
+
+ot.Log.Show(ot.Log.NONE)
+# Test different polynomials, up to the maximum
+# Polynomial exactness space = P5 x P1 + P3 x P3 + P1 x P5
+level = 3
+marginalDegreesList = [v for v in ot.Tuples([6, 2]).generate()]
+marginalDegreesList += [v for v in ot.Tuples([4, 4]).generate()]
+marginalDegreesList += [v for v in ot.Tuples([2, 6]).generate()]
+print(marginalDegreesList)
+for i in range(len(marginalDegreesList)):
+    marginalDegrees = marginalDegreesList[i]
+    checkPolynomialExactness(marginalDegrees, level, verbose=True)
