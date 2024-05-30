@@ -462,7 +462,6 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     const Sample z((*this)(inputSample).getMarginal(outputMarginal));
     Contour isoValues(x, y, z);
     isoValues.setIsFilled(isFilled);
-    isoValues.setColorBarPosition("right");
     isoValues.setDrawLabels(false);
     graph.add(isoValues);
   }
