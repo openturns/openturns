@@ -78,6 +78,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   {
     Chi result(sumSquares / size);
     result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
     return result;
   }
   catch (const InvalidArgumentException &)

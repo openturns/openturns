@@ -73,6 +73,7 @@ Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
   const Point parameters = {mu, sigma};
   Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

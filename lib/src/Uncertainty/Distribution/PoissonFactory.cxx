@@ -75,6 +75,7 @@ Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
   if (!(lambda > 0.0) || std::isinf(lambda)) throw InvalidArgumentException(HERE) << "Error: can build a poisson distribution only if lambda > 0, here lambda=" << lambda;
   Poisson result(lambda / size);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -75,6 +75,7 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a ChiSquare distribution from a constant sample.";
   ChiSquare result(mean);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

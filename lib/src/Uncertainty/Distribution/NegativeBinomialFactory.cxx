@@ -141,6 +141,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
   const Scalar p = 1.0 / (r / mean + 1.0);
   NegativeBinomial result(r, p);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

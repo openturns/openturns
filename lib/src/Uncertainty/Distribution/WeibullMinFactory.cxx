@@ -75,13 +75,15 @@ WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
   const Point parameters = {mean, sigma, gamma};
   WeibullMin result(buildAsWeibullMin(WeibullMinMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 
 WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
   LOGINFO("in WeibullMinFactory, using likelihood maximization");
-  const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
+  MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
+  factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
   return buildAsWeibullMin(factory.build(sample).getParameter());
 }
 

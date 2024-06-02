@@ -76,6 +76,7 @@ Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
   const Scalar m = 3.0 * sample.computeMean()[0] - a - b;
   Triangular result(a, m, b);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

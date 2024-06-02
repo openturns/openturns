@@ -162,6 +162,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
     throw InvalidArgumentException(HERE) << "Likelihood-optimized TruncatedNormal is not valid";
 
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 
