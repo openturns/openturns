@@ -22,23 +22,23 @@ that is, after the :meth:`generateWithWeights` method is called.
 
 **Method**
 
-Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
-and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 
+Let :math:`\mathcal{X} \subset \mathbb{R}^{\inputDim}` be the integration domain 
+and let :math:`\model : \mathcal{X} \rightarrow \mathbb{R}^{\outputDim}` be an integrable 
 function. 
-Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density function.
+Let :math:`\inputProbabilityDensityFunction : \mathcal{X} \rightarrow \mathbb{R}` be a probability density function.
 The Smolyak experiment produces an approximation of the integral:
 
 .. math::
 
-    \int_{\mathcal{X}} g(\vect{x}) f(\vect{x}) d\vect{x}
-    \approx \sum_{i = 1}^{s_t} w_i g\left(\vect{x}_i\right)
+    \int_{\mathcal{X}} \model(\vect{x}) \inputProbabilityDensityFunction(\vect{x}) d\vect{x}
+    \approx \sum_{i = 1}^{s_t} w_i \model\left(\vect{x}_i\right)
 
 where :math:`s_t \in \mathbb{N}` is the size of the Smolyak
 design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the
-weights and :math:`\vect{x}_1, ..., \vect{x}_{s_t} \in \mathbb{R}^{d_x}`
+weights and :math:`\vect{x}_1, ..., \vect{x}_{s_t} \in \mathbb{R}^{\inputDim}`
 are the nodes. 
 
-Let :math:`\vect{k} = (k_1, ..., k_{d_x}) \in (\mathbb{N}^\star)^{d_x}` 
+Let :math:`\vect{k} = (k_1, ..., k_{\inputDim}) \in (\mathbb{N}^\star)^{\inputDim}` 
 be the multi-index where
 
 .. math::
@@ -50,10 +50,10 @@ Consider the 1 and the infinity norms ([lemaitre2010]_ page 57, eq. 3.28):
 
 .. math::
 
-    \|\vect{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
-    \|\vect{k}\|_\infty = \max_{i = 1, ..., d_x} k_i.
+    \|\vect{k}\|_1 = \sum_{i = 1}^{\inputDim} k_i \qquad
+    \|\vect{k}\|_\infty = \max_{i = 1, ..., \inputDim} k_i.
 
-for any :math:`\vect{k} \in (\mathbb{N}^\star)^{d_x}`.
+for any :math:`\vect{k} \in (\mathbb{N}^\star)^{\inputDim}`.
 
 Let :math:`\ell` be an integer representing the level of the quadrature.
 Let :math:`Q_{\ell}^{(1)}` be a marginal quadrature of level :math:`\ell`.
@@ -66,7 +66,7 @@ The tensor product quadrature is:
 
 .. math::
 
-    T_\ell^{(d_x)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+    T_\ell^{(\inputDim)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
 
 In the previous equation, the marginal quadratures are not necessarily 
 of the same type. 
@@ -89,22 +89,21 @@ on difference quadratures:
 
     Q_\ell^{(1)} = \sum_{k = 1}^\ell \Delta_k^{(1)}.
 
-for any :math:`\ell \geq 1`. 
-
+for any :math:`\ell \geq 1`.
 The following equation provides an equivalent equation for the tensor product
 quadrature ([lemaitre2010]_ page 57, eq. 3.30):
 
 .. math::
 
-    T_\ell^{(d_x)} = \sum_{\|\vect{k}\|_\infty \leq \ell}
-    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}.
+    T_\ell^{(\inputDim)} = \sum_{\|\vect{k}\|_\infty \leq \ell}
+    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{\inputDim}}^{(1)}.
 
 The significant part of the previous equation is the set of multi-indices
 :math:`\|\vect{k}\|_\infty \leq \ell`, which may be very large
 depending on the dimension of the problem.
 
 One of the ways to reduce the size of this set is to consider the smaller set
-of multi-indices such that :math:`\|\vect{k}\|_1 \leq \ell + {d_x} - 1`. The sparse
+of multi-indices such that :math:`\|\vect{k}\|_1 \leq \ell + {\inputDim} - 1`. The sparse
 quadrature ([lemaitre2010]_ page 57, eq. 3.29, [gerstner1998]_  page 214)
 is introduced in the following definition.
 
@@ -112,8 +111,8 @@ The Smolyak sparse quadrature formula at level :math:`\ell` is:
 
 .. math::
 
-    S_\ell^{(d_x)} = \sum_{\|\vect{k}\|_1 \leq \ell + d_x - 1} 
-    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}
+    S_\ell^{(\inputDim)} = \sum_{\|\vect{k}\|_1 \leq \ell + \inputDim - 1} 
+    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{\inputDim}}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
@@ -130,10 +129,10 @@ The sparse quadrature formula at level :math:`\ell` is:
 
 .. math::
 
-    S_\ell^{(d_x)} = \sum_{\ell \leq \|\vect{k}\|_1 \leq \ell + d_x - 1} 
-    (-1)^{\ell + d_x - \|\vect{k}\|_1 - 1} 
-    {d_x - 1 \choose \|\vect{k}\|_1 - \ell} 
-    Q_{k_1}^{(1)} \otimes \cdots \otimes Q_{k_{d_x}}^{(1)}
+    S_\ell^{(\inputDim)} = \sum_{\ell \leq \|\vect{k}\|_1 \leq \ell + \inputDim - 1} 
+    (-1)^{\ell + \inputDim - \|\vect{k}\|_1 - 1} 
+    {\inputDim - 1 \choose \|\vect{k}\|_1 - \ell} 
+    Q_{k_1}^{(1)} \otimes \cdots \otimes Q_{k_{\inputDim}}^{(1)}
 
 for any :math:`\ell \geq 1` where the binomial coefficient is:
 
@@ -154,7 +153,7 @@ This can reduce the number of nodes, which may be particularly efficient when th
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis
 quadrature rule.
 
-If two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{d_x}`,
+If two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{\inputDim}`,
 associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged,
 then the merged node is
 
@@ -177,14 +176,14 @@ Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances.
 These parameters can be set using the :class:`~openturns.ResourceMap` keys
 `SmolyakExperiment-MergeRelativeEpsilon` and `SmolyakExperiment-MergeAbsoluteEpsilon`.
 The criterion is based on a mixed absolute and relative tolerance.
-Two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{d_x}`
+Two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{\inputDim}`
 are close to each other and are to be merged if:
 
 .. math::
 
     |(x_1)_i - (y_1)_i| \leq \delta_i
 
-for :math:`i = 1, ..., d_x`, where :math:`\delta_i` is equal to:
+for :math:`i = 1, ..., \inputDim`, where :math:`\delta_i` is equal to:
 
 .. math::
 
@@ -195,21 +194,49 @@ If the bounds of the input distribution are either very close to zero
 or very large, then the default settings may not work properly: in this case,
 please fine tune the parameters to match your needs.
 
+**Polynomial exactness**
+
+The Smolyak quadrature rule is exact for polynomials up to some degree.
+More precisely, for any :math:`m_i \in \Nset`, let :math:`\mathcal{P}_{m_i}^{(1)}`
+be the set of mono-variable polynomials of degree lower or equal to :math:`m_i`.
+Consider the tensor product of 1D polynomials:
+
+.. math::
+
+    \bigotimes_{i = 1}^\inputDim \mathcal{P}_{m_i}^{(1)}
+    = 
+    \left\{
+    (x_1, ..., x_\inputDim)\in\Rset^\inputDim
+    \rightarrow \prod_{i = 1}^\inputDim p_i(x_i) \in \Rset, \quad 
+    p_i \in \mathcal{P}_{m_i}^{(1)}
+    \right\}.
+
+Therefore the Smolyak quadrature is exact for all polynomials of the non-classical 
+vector space (see [novak1999]_ theorem 2 page 88 and [peter2019]_ section 5.4 page 2-17):
+
+.. math::
+
+    \operatorname{Span}
+    \left\{
+    \mathcal{P}_{m_{k_1}}^{(1)} \otimes \cdots \otimes \mathcal{P}_{m_{k_\inputDim}}^{(1)}
+    \quad / \quad \|\boldsymbol{k}\|_1 = \ell + \inputDim - 1
+    \right\}.
+
 **Accuracy**
     
 The following equation presents the absolute error of a sparse
 quadrature ([sullivan2015]_ page 177, eq. 9.10).
-Assume that :math:`g \in \mathcal{C}^r([0, 1]^{d_x})` and that we use a sparse
+Assume that :math:`\model \in \mathcal{C}^r([0, 1]^{\inputDim})` and that we use a sparse
 quadrature with :math:`n_\ell` nodes at level :math:`\ell`.
-In this particular case, the probability density function :math:`f` is
+In this particular case, the probability density function :math:`\inputProbabilityDensityFunction` is
 equal to 1. 
 Therefore,
 
 .. math::
 
-    \left|\int_{[0, 1]^{d_x}} g(\vect{x}) d\vect{x} 
-    - S_\ell(g)\right|
-    = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
+    \left|\int_{[0, 1]^{\inputDim}} \model(\vect{x}) d\vect{x} 
+    - S_\ell(\model)\right|
+    = O \left(n_\ell^{-r} (\log(n_\ell))^{(\inputDim - 1)(r + 1)}\right).
 
 See Also
 --------
