@@ -270,6 +270,14 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
   if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != momentOrders_.getSize()))
     throw InvalidArgumentException(HERE) << "The bounds dimension must match the moments order size (" << momentOrders_.getSize() << ")";
 
+  // Quick return if all the parameter values are known
+  if (knownParameterValues_.getSize() == parameterDimension)
+    {
+      Distribution result(distribution_);
+      result.setParameter(knownParameterValues_);
+      return result;
+    }
+
   // Define evaluation
   const MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, momentOrders_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
@@ -357,25 +365,6 @@ Interval MethodOfMomentsFactory::getOptimizationBounds() const
   return optimizationBounds_;
 }
 
-void MethodOfMomentsFactory::setKnownParameter(const Point & values,
-    const Indices & indices)
-{
-  if (values.getSize() != indices.getSize())
-    throw InvalidArgumentException(HERE) << "Indices and values size must match";
-  knownParameterValues_ = values;
-  knownParameterIndices_ = indices;
-}
-
-Indices MethodOfMomentsFactory::getKnownParameterIndices() const
-{
-  return knownParameterIndices_;
-}
-
-Point MethodOfMomentsFactory::getKnownParameterValues() const
-{
-  return knownParameterValues_;
-}
-
 /* Moments orders accessor */
 void MethodOfMomentsFactory::setMomentOrders(const Indices & momentsOrders)
 {
@@ -401,8 +390,6 @@ void MethodOfMomentsFactory::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("momentOrders_", momentOrders_);
-  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
-  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
 }
 
@@ -412,8 +399,6 @@ void MethodOfMomentsFactory::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("momentOrders_", momentOrders_);
-  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
-  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
 }
 

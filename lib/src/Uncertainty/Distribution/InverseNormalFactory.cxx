@@ -87,6 +87,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
     lambda = std::pow(mu, 3) / (sigma * sigma);
   InverseNormal result(mu, lambda);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

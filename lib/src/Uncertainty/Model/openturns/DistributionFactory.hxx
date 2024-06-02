@@ -73,6 +73,11 @@ public:
   virtual DistributionFactoryResult buildEstimator(const Sample & sample,
       const DistributionParameters & parameters) const;
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const Point & values, const Indices & positions);
+  Point getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
+
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();
   static DistributionFactoryCollection GetContinuousMultiVariateFactories();

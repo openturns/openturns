@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/ExponentialFactory.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -73,6 +74,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   const Scalar lambda = 1.0 / (mean - gamma);
   Exponential result(lambda, gamma);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -22,6 +22,7 @@
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/BootstrapExperiment.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Normal.hxx"
@@ -199,11 +200,42 @@ void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger b
 }
 
 
+void DistributionFactoryImplementation::setKnownParameter(const Point & values,
+    const Indices & indices)
+{
+  if (values.getSize() != indices.getSize())
+    throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
+  knownParameterValues_ = values;
+  knownParameterIndices_ = indices;
+}
+
+Indices DistributionFactoryImplementation::getKnownParameterIndices() const
+{
+  return knownParameterIndices_;
+}
+
+Point DistributionFactoryImplementation::getKnownParameterValues() const
+{
+  return knownParameterValues_;
+}
+
+void DistributionFactoryImplementation::adaptToKnownParameter(const Sample & sample, DistributionImplementation * distribution) const
+{
+  if (knownParameterValues_.getSize() > 0)
+    {
+      MaximumLikelihoodFactory factory(*distribution);
+      factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+      distribution->setParameter(factory.build(sample).getParameter());
+    }
+}
+
 /* Method save() stores the object through the StorageManager */
 void DistributionFactoryImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
+  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
+  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -211,6 +243,10 @@ void DistributionFactoryImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
+  if (adv.hasAttribute("knownParameterValues_"))
+    adv.loadAttribute("knownParameterValues_", knownParameterValues_);
+  if (adv.hasAttribute("knownParameterIndices_"))
+    adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -80,6 +80,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   }
   Bernoulli result(sum / size);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

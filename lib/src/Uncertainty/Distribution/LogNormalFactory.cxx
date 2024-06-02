@@ -231,41 +231,48 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
   const UnsignedInteger size = sample.getSize();
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from a sample of size < 3";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  LogNormal result;
   switch (method)
   {
     case 0:
       try
       {
-        return buildMethodOfLocalLikelihoodMaximization(sample);
+        result = buildMethodOfLocalLikelihoodMaximization(sample);
+        break;
       }
       catch (const InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << ex.what());
-        return buildAsLogNormal(sample, 1);
+        result = buildAsLogNormal(sample, 1);
+        break;
       }
       break;
     case 1:
       try
       {
-        return buildMethodOfModifiedMoments(sample);
+        result = buildMethodOfModifiedMoments(sample);
+        break;
       }
       catch (const InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << ex.what());
-        return buildAsLogNormal(sample, 2);
+        result = buildAsLogNormal(sample, 2);
+        break;
       }
       break;
     case 2:
-      return buildMethodOfMoments(sample);
+      result = buildMethodOfMoments(sample);
       break;
     case 3:
-      return buildMethodOfLeastSquares(sample);
+      result = buildMethodOfLeastSquares(sample);
       break;
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid value=" << method << " for the key 'LogNormalFactory-EstimationMethod' in ResourceMap";
   }
+  adaptToKnownParameter(sample, &result);
+  return result;  
 }
 
 LogNormal LogNormalFactory::buildAsLogNormal(const Point & parameters) const

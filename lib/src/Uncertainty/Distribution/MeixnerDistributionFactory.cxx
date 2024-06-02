@@ -76,6 +76,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   const Scalar mu = m - alpha * delta * std::tan(0.5 * beta);
   MeixnerDistribution result(alpha, beta, delta, mu);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

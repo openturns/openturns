@@ -80,6 +80,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
   p *= 1.0 / (maxSum * size);
   Multinomial result(maxSum, p);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

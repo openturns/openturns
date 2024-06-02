@@ -76,6 +76,7 @@ LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
   Scalar bLog = std::log(b);
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

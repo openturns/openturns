@@ -137,6 +137,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   const Point sigma(stdev * std::sqrt(1.0 - 2.0 / nu));
   Student result(nu, mu, sigma, R);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

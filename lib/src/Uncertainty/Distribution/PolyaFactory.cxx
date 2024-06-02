@@ -141,6 +141,7 @@ Polya PolyaFactory::buildAsPolya(const Sample & sample) const
   const Scalar p = 1.0 / (r / mean + 1.0);
   Polya result(r, p);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

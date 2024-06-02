@@ -75,7 +75,10 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
 
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  return buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate());
+  Beta result(buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate()));
+  result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
+  return result;
 }
 
 Beta BetaFactory::buildAsBeta(const Point & parameters) const

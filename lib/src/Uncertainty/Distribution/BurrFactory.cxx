@@ -140,6 +140,7 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   const Scalar k = size / sumLogXC;
   Burr result(c, k);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -66,6 +66,7 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) 
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample with Kendall tau equal to 1";
   ClaytonCopula result(2.0 * tau / (1.0 - tau));
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -80,6 +80,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
   }
   NormalCopula result(R);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 
