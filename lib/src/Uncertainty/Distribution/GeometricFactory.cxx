@@ -75,6 +75,7 @@ Geometric GeometricFactory::buildAsGeometric(const Sample & sample) const
   }
   Geometric result(size / sum);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

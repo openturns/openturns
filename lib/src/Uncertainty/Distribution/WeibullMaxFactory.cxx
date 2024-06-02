@@ -61,7 +61,16 @@ Distribution WeibullMaxFactory::build() const
 
 WeibullMax WeibullMaxFactory::buildAsWeibullMax(const Sample & sample) const
 {
-  const Distribution weibullMin(WeibullMinFactory().build(-1.0 * sample));
+  WeibullMinFactory minFactory;
+  if (knownParameterValues_.getSize() > 0)
+    {
+      Point minParametersValues(knownParameterValues_);
+      for (UnsignedInteger i = 0; i < knownParameterIndices_.getSize(); ++i)
+        if (knownParameterIndices_[i] == 2)
+          minParametersValues[i] *= -1.0;
+      minFactory.setKnownParameter(minParametersValues, knownParameterIndices_);
+    }
+  const Distribution weibullMin(minFactory.build(-1.0 * sample));
   Point parameter(weibullMin.getParameter());
   parameter[2] *= -1.0;// location parameter (gamma)
   return buildAsWeibullMax(parameter);

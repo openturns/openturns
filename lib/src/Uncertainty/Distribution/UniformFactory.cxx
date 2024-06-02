@@ -74,6 +74,7 @@ Uniform UniformFactory::buildAsUniform(const Sample & sample) const
   const Scalar b = xMax + delta / (size + 2);
   Uniform result(a, b);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

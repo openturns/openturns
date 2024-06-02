@@ -80,6 +80,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   {
     Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);
     result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
     return result;
   }
   catch (const InvalidArgumentException &)

@@ -68,6 +68,7 @@ Laplace LaplaceFactory::buildAsLaplace(const Sample & sample) const
   if (tau == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution with infinite lambda.";
   Laplace result(mu, size / tau);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -66,6 +66,7 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Sample & sample) con
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with Kendall tau equal to 1";
   GumbelCopula result(1.0 / (1.0 - tau));
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

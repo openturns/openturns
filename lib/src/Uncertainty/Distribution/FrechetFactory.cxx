@@ -94,7 +94,10 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   const Scalar margin = std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin"));
   const Point lower = {betaFrechet / margin, alphaFrechet / margin, gamma - margin * std::abs(gamma)};
   const Point upper = {margin * betaFrechet,  margin * alphaFrechet, gamma + margin * std::abs(gamma)};
-  mleFactory.setOptimizationBounds(Interval(lower, upper));
+  const Interval bounds(lower, upper);
+  // Use bounds only for unknown parameters
+  mleFactory.setOptimizationBounds(bounds.getMarginal(knownParameterIndices_.complement(bounds.getDimension())));
+  mleFactory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
   const Point parameters(mleFactory.buildParameter(sample));
   return buildAsFrechet(parameters);
 }

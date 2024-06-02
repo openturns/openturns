@@ -102,6 +102,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
   theta = solver.solve(f, tau, minTheta, maxTheta, minTau, maxTau);
   FrankCopula result(isTauNegative ? -theta : theta);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

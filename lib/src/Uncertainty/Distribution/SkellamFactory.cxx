@@ -82,6 +82,7 @@ Skellam SkellamFactory::buildAsSkellam(const Sample & sample) const
   const Scalar lambda1 = 0.5 * (var + mean);
   Skellam result(lambda1, lambda2);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

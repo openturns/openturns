@@ -159,26 +159,6 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileMatchingFactory::getKnownParameterValues
-"Accessor to the known parameters indices.
-
-Returns
--------
-values : :class:`~openturns.Point`
-    The values of the fixed parameters."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::QuantileMatchingFactory::getKnownParameterIndices
-"Accessor to the known parameters indices.
-
-Returns
--------
-indices : :class:`~openturns.Indices`
-    The indices of the fixed parameters."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::QuantileMatchingFactory::buildFromQuantiles
 "Build from given quantiles.
 

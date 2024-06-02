@@ -102,3 +102,64 @@ size : int
 %feature("docstring") OT::DistributionFactoryImplementation::setBootstrapSize
 OT_DistributionFactory_setBootstrapSize_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_setKnownParameter_doc
+"Accessor to the known parameters.
+
+Parameters
+----------
+values : sequence of float
+    Values of known parameters.
+positions : sequence of int
+    Indices of known parameters.
+
+Examples
+--------
+When a subset of the parameter vector is known, the other parameters only have to be estimated 
+from data. 
+
+In the following example, we consider a sample and want to fit 
+a :class:`~openturns.Beta` distribution.  
+We assume that the :math:`a` and :math:`b` parameters are known beforehand. 
+In this case, we set the third parameter (at index 2) to -1 
+and the fourth parameter (at index 3) to 1. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+>>> sample = distribution.getSample(10)
+>>> factory = ot.BetaFactory()
+>>> # set (a,b) out of (r, t, a, b)
+>>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> inf_distribution = factory.build(sample)"
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::setKnownParameter
+OT_DistributionFactory_setKnownParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_getKnownParameterValues_doc
+"Accessor to the known parameters values.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    Values of known parameters."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::getKnownParameterValues
+OT_DistributionFactory_getKnownParameterValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_getKnownParameterIndices_doc
+"Accessor to the known parameters indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of the known parameters."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::getKnownParameterIndices
+OT_DistributionFactory_getKnownParameterIndices_doc
+

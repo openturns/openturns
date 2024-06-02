@@ -137,6 +137,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   {
     Rice result(beta, nu);
     result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
     return result;
   }
   catch (const InvalidArgumentException &)

@@ -67,7 +67,11 @@ PlackettCopula PlackettCopulaFactory::buildAsPlackettCopula(const Sample & sampl
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a PlackettCopula distribution from a sample of dimension not equal to 2";
   const Scalar m = sample.computeEmpiricalCDF(sample.computeMedian());
   const Scalar ratio = 1.0 / (0.5 / m - 1.0);
-  return PlackettCopula(ratio * ratio);
+  
+  PlackettCopula result(ratio * ratio);
+  result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
+  return result;
 }
 
 PlackettCopula PlackettCopulaFactory::buildAsPlackettCopula(const Point & parameters) const

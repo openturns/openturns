@@ -74,6 +74,11 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const Point & values, const Indices & positions);
+  Point getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -84,9 +89,15 @@ protected:
   /* Bootstrap estimator */
   virtual DistributionFactoryResult buildBootStrapEstimator(const Sample & sample, const Bool isGaussian = false) const;
 
+  /* Fit parameters taking into account known ones */
+  void adaptToKnownParameter(const Sample & sample, DistributionImplementation * p_distribution) const;
+  
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
 
+  /* Known parameter */
+  Point knownParameterValues_;
+  Indices knownParameterIndices_;
 }; /* class DistributionFactoryImplementation */
 
 

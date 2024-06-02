@@ -112,6 +112,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Point lowerBound(4, xMin + rhoEnd);
   const Point upperBound(4, xMax - rhoEnd);
   factory.setOptimizationBounds(Interval(lowerBound, upperBound));
+  factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());
   return result;

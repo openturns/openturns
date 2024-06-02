@@ -82,14 +82,14 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
   const Scalar gamma = sample.computeMean()[0] - alpha * beta / (alpha - 1.0);
 
   Pareto result(beta, alpha, gamma);
-  result.setDescription(sample.getDescription());
   return result;
 }
 
 Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
   const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
-  return buildAsPareto(factory.build(sample).getParameter());
+  Pareto result(buildAsPareto(factory.build(sample).getParameter()));
+  return buildAsPareto(result.getParameter());
 }
 
 Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const
@@ -211,11 +211,15 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
 
 Pareto ParetoFactory::buildAsPareto(const Sample & sample) const
 {
+  Pareto result;
 #if defined(OPENTURNS_HAVE_CERES) || defined(OPENTURNS_HAVE_CMINPACK)
-  return buildMethodOfLeastSquares(sample);
+  result = buildAsPareto(buildMethodOfLeastSquares(sample).getParameter());
 #else
-  return buildMethodOfLikelihoodMaximization(sample);
+  result = buildAsPareto(buildMethodOfLikelihoodMaximization(sample).getParameter());
 #endif
+  result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
+  return result;
 }
 
 Pareto ParetoFactory::buildAsPareto(const Point & parameters) const
