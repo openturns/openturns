@@ -132,17 +132,20 @@ X_test = myDistribution.getSample(sampleSize_test)
 Y_test = model(X_test)
 
 # %%
-# The `MetaModelValidation` classe makes the validation easy. To create it, we use the validation samples and the metamodel.
+# The :class:`~openturns.MetaModelValidation` class makes surrogate model validation easy.
+# To create it, we use the validation samples and the metamodel.
 
 # %%
-val = ot.MetaModelValidation(Y_test, krigingMetamodel(X_test))
+metamodelPredictions = krigingMetamodel(X_test)
+val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 
 # %%
-# The `computePredictivityFactor` computes the Q2 factor.
+# The :meth:`~openturns.MetaModelValidation.computeR2Score` method computes the
+# R2 coefficient of determination.
 
 # %%
-R2 = val.computeR2Score()[0]
-print(R2)
+r2Score = val.computeR2Score()[0]
+print(r2Score)
 
 # %%
 # The residuals are the difference between the model and the metamodel.
@@ -159,12 +162,13 @@ view = viewer.View(graph)
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first sign of good quality.
 
 # %%
-# The `drawValidation` method allows one to compare the observed outputs and the metamodel outputs.
+# The :meth:`~openturns.MetaModelValidation.drawValidation` method allows one to compare
+# the observed outputs and the metamodel outputs.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
-graph.setTitle("R2 = %.2f%%" % (100 * R2))
+graph.setTitle("R2 = %.2f%%" % (100 * r2Score))
 view = viewer.View(graph)
 
 plt.show()

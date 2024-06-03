@@ -1,45 +1,26 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 
 # Problem parameters
-dimension = 3
-a = 7.0
-b = 0.1
-# Reference analytical values
-meanTh = a / 2
-covTh = (b**2 * m.pi**8) / 18.0 + (b * m.pi**4) / 5.0 + (a**2) / 8.0 + 1.0 / 2.0
-sob_1 = [
-    (b * m.pi**4 / 5.0 + b**2 * m.pi**8 / 50.0 + 1.0 / 2.0) / covTh,
-    (a**2 / 8.0) / covTh,
-    0.0,
+im = ishigami_function.IshigamiModel()
+distribution = im.distributionX
+model = im.model
+dimension = im.distributionX.getDimension()
+sobolFirstOrderReference = [im.S1, im.S2, im.S3]
+sobolSecondOrderReference = [im.S12, im.S13, im.S23]
+sobolTotalReference = [im.ST1, im.ST2, im.ST3]
+sobolInteractionTotalReference2 = [im.S12 + im.S123, im.S13 + im.S123, im.S23 + im.S123]
+sobolInteractionTotalReference3 = [im.S123]
+sobolGroupedIndex2 = [
+    im.S1 + im.S2 + im.S12,
+    im.S1 + im.S3 + im.S13,
+    im.S2 + im.S3 + im.S23,
 ]
-sob_2 = [0.0, (b**2 * m.pi**8 / 18.0 - b**2 * m.pi**8 / 50.0) / covTh, 0.0]
-sob_3 = [0.0]
-sob_T1 = [
-    sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0],
-    sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0],
-    sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0],
-]
-sob_T2 = [
-    sob_2[0] + sob_2[1] + sob_3[0],
-    sob_2[0] + sob_2[2] + sob_3[0],
-    sob_2[1] + sob_2[2] + sob_3[0],
-]
-sob_T3 = [sob_3[0]]
-# Create the Ishigami function
-inputVariables = ["xi1", "xi2", "xi3"]
-formula = ot.Description(1)
-formula[0] = (
-    "sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"
-)
-model = ot.SymbolicFunction(inputVariables, formula)
-
-# Create the input distribution
-distribution = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * dimension)
+sobolGroupedIndex3 = [im.S1 + im.S2 + im.S3 + im.S12 + im.S13 + im.S23 + im.S123]
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
@@ -52,15 +33,17 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
 # First, the most efficient (but more complex!) strategy
 listAdaptiveStrategy = list()
 degree = 6
-indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
-basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
+indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
     ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold)
 )
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(
-    ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+    ot.FixedStrategy(
+        productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
+    )
 )
 
 for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
@@ -88,7 +71,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         algo.run()
 
         # Examine the results
-        result = ot.FunctionalChaosResult(algo.getResult())
+        result = algo.getResult()
         pGrad = result.getMetaModel().parameterGradient(distribution.getMean())
         print("###################################")
         print(algo.getAdaptiveStrategy())
@@ -107,10 +90,11 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)
         mean = vector.getMean()[0]
-        print("mean=%.8f" % mean, "absolute error=%.10f" % abs(mean - meanTh))
+        print("mean=%.8f" % mean, "absolute error=%.10f" % abs(mean - im.expectation))
         variance = vector.getCovariance()[0, 0]
         print(
-            "variance=%.8f" % variance, "absolute error=%.10f" % abs(variance - covTh)
+            "variance=%.8f" % variance,
+            "absolute error=%.10f" % abs(variance - im.variance),
         )
         sensitivity = ot.FunctionalChaosSobolIndices(result)
         for i in range(dimension):
@@ -119,7 +103,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                 "Sobol index",
                 i,
                 "= %.8f" % value,
-                "absolute error=%.10f" % abs(value - sob_1[i]),
+                "absolute error=%.10f" % abs(value - sobolFirstOrderReference[i]),
             )
         indices = ot.Indices(2)
         k = 0
@@ -132,7 +116,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                     "Sobol index",
                     indices,
                     "=%.8f" % value,
-                    "absolute error=%.10f" % abs(value - sob_2[k]),
+                    "absolute error=%.10f" % abs(value - sobolSecondOrderReference[k]),
                 )
                 k = k + 1
         indices = ot.Indices([0, 1, 2])
@@ -141,7 +125,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             "Sobol index",
             indices,
             "=%.8f" % value,
-            "absolute error=%.10f" % abs(value - sob_3[0]),
+            "absolute error=%.10f" % abs(value - im.S123),
         )
         for i in range(dimension):
             value = sensitivity.getSobolTotalIndex(i)
@@ -149,7 +133,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                 "Sobol total index",
                 i,
                 "=%.8f" % value,
-                "absolute error=%.10f" % abs(value - sob_T1[i]),
+                "absolute error=%.10f" % abs(value - sobolTotalReference[i]),
             )
         indices = ot.Indices(2)
         k = 0
@@ -157,12 +141,13 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             indices[0] = i
             for j in range(i + 1, dimension):
                 indices[1] = j
-                value = sensitivity.getSobolIndex(indices)
+                value = sensitivity.getSobolTotalIndex(indices)
                 print(
                     "Sobol total index",
                     indices,
                     "=%.8f" % value,
-                    "absolute error=%.10f" % abs(value - sob_2[k]),
+                    "absolute error=%.10f"
+                    % abs(value - sobolInteractionTotalReference2[k]),
                 )
                 k = k + 1
         indices = ot.Indices([0, 1, 2])
@@ -171,7 +156,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             "Sobol total index ",
             indices,
             "=%.8f" % value,
-            "absolute error=%.10f" % abs(value - sob_3[0]),
+            "absolute error=%.10f" % abs(value - sobolInteractionTotalReference3[0]),
         )
         indices = ot.Indices(2)
         k = 0
@@ -184,7 +169,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                     "Sobol grouped index",
                     indices,
                     "=%.8f" % value,
-                    "absolute error=%.10f" % abs(value - sob_2[k]),
+                    "absolute error=%.10f" % abs(value - sobolGroupedIndex2[k]),
                 )
                 k = k + 1
         indices = ot.Indices([0, 1, 2])
@@ -193,7 +178,7 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             "Sobol grouped index ",
             indices,
             "=%.8f" % value,
-            "absolute error=%.10f" % abs(value - sob_3[0]),
+            "absolute error=%.10f" % abs(value - sobolGroupedIndex3[0]),
         )
         indices = ot.Indices([0, 1, 2])
         value = sensitivity.getSobolGroupedTotalIndex(indices)

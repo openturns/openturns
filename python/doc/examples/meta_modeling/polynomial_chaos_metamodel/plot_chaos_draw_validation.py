@@ -23,7 +23,8 @@ ot.Log.Show(ot.Log.NONE)
 im = ishigami_function.IshigamiModel()
 
 # %%
-# The `IshigamiModel` data class contains the input distribution :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami function in `im.model`.
+# The model contains the input distribution :math:`X=(X_1, X_2, X_3)` in
+# `im.distributionX` and the Ishigami function in `im.model`.
 # We also have access to the input variable names with
 input_names = im.distributionX.getDescription()
 
@@ -49,8 +50,8 @@ chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
-P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+basisSize = enumfunc.getBasisSizeFromTotalDegree(totalDegree)
+adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 
 # %%
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
@@ -79,17 +80,17 @@ metamodel = result.getMetaModel()
 n_valid = 1000
 inputTest = im.distributionX.getSample(n_valid)
 outputTest = im.model(inputTest)
-prediction = metamodel(inputTest)
-val = ot.MetaModelValidation(outputTest, prediction)
-R2 = val.computeR2Score()[0]
-R2
+metamodelPredictions = metamodel(inputTest)
+val = ot.MetaModelValidation(outputTest, metamodelPredictions)
+r2Score = val.computeR2Score()[0]
+r2Score
 
 # %%
 # The R2 is very close to 1: the metamodel is excellent.
 
 # %%
 graph = val.drawValidation()
-graph.setTitle("R2=%.2f%%" % (R2 * 100))
+graph.setTitle("R2=%.2f%%" % (r2Score * 100))
 view = viewer.View(graph)
 plt.show()
 

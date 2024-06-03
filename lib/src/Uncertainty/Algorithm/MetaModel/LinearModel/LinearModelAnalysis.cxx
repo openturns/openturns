@@ -387,11 +387,9 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst residuals
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Description annotations(size);
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -432,11 +430,9 @@ Graph LinearModelAnalysis::drawResidualsVsFitted() const
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst residuals
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Description annotations(size);
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -480,11 +476,9 @@ Graph LinearModelAnalysis::drawScaleLocation() const
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst standardized residuals
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Description annotations(size);
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -521,7 +515,7 @@ Graph LinearModelAnalysis::drawQQplot() const
   graph.setYTitle("Theoretical Quantiles");
 
   // Add point identifiers for worst standardized residuals
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber"));
   if (identifiers > 0)
   {
     const Sample dataFull(graph.getDrawable(1).getData());
@@ -565,12 +559,10 @@ Graph LinearModelAnalysis::drawCookDistance() const
   const Point cookdistances(linearModelResult_.getCookDistances());
   const UnsignedInteger size(cookdistances.getSize());
   // Add point identifiers for worst Cook's distance
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   Description annotations(size);
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
     {
@@ -624,11 +616,9 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Description annotations(size);
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -716,11 +706,9 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance
-  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  const UnsignedInteger identifiers(std::min(size, ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber")));
   if (identifiers > 0)
   {
-    if (identifiers > size)
-      identifiers = size;
     Description annotations(size);
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of MonteCarlo class
+ *  @brief The test file of FunctionalChaosAlgorithm class
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -146,6 +146,9 @@ int main(int, char *[])
     // 3rd order Total Sobol
     Point sob_T3(sob_3);
     SymbolicFunction model(inputVariables, formula);
+    
+    // Default
+    const UnsignedInteger defaultEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
 
     // Create the input distribution
     Collection<Distribution> marginals(inputDimension);
@@ -196,6 +199,9 @@ int main(int, char *[])
 
         // Examine the results
         FunctionalChaosResult result(algo.getResult());
+        ResourceMap::SetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold", defaultEllipsisThreshold);
+        fullprint << result.__str__() << std::endl;
+        ResourceMap::SetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold", 20);
         fullprint << result.__str__() << std::endl;
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << algo.getAdaptiveStrategy() << std::endl;
