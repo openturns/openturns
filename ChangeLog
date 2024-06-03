@@ -22,6 +22,7 @@
  * Removed deprecated OptimizationResult.getEvaluationNumber
 
 === Documentation ===
+ * Copy button for code blocks
 
 === Python module ===
 
