@@ -45,6 +45,9 @@ futures = process.getFuture(20, 3)
 print("3 different futures :")
 print(futures)
 
+dist = process.computeStationaryDistribution()
+print("Distribution: ", dist)
+
 process.exportToDOTFile("markov.dot")
 with open("markov.dot") as f:
     print(f.read())
