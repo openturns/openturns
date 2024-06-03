@@ -48,7 +48,7 @@ ot.ResourceMap.SetAsScalar(
 )
 
 # %%
-# if SobolIndicesAlgorithm-DefaultBootstrapSize > 1, the draw() method will call bootstrap method to compute the confidence intervals.
+# if `SobolIndicesAlgorithm-DefaultBootstrapSize` > 1, the draw() method will call bootstrap method to compute the confidence intervals.
 
 graph = mySobol.draw()
 graph.setTitle("Sobol' indices")
