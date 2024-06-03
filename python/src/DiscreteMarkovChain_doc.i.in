@@ -114,7 +114,7 @@ Compute the stationary distribution of a Markov chain:
 >>> myMarkovChain = ot.DiscreteMarkovChain(origin, transitionMatrix, timeGrid)
 >>> distribution = myMarkovChain.computeStationaryDistribution()
 >>> print(distribution)
-UserDefined({x = [0], p = 0.333333}, {x = [1], p = 0.333333}, {x = [2], p = 0.333333})"
+UserDefined({x = [0], p = 0.883978}, {x = [1], p = 0.0441989}, {x = [2], p = 0.0718232})"
 
 // ---------------------------------------------------------------------
 

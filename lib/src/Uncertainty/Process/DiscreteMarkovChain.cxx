@@ -295,7 +295,7 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
 {
   const UnsignedInteger dimension = transitionMatrix_.getDimension();
   SquareComplexMatrix eigenvectors;
-  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.transpose().computeEV(eigenvectors));
+  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.computeEV(eigenvectors));
   // Find the largest eigenvalue, exactly equal to one in theory
   Scalar largestEV = eigenvalues[0].real();
   UnsignedInteger indexMax = 0;
