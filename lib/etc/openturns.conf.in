@@ -566,7 +566,10 @@
 
   <!-- OT::Gibbs parameters -->
   <Gibbs-DefaultUpdatingMethod       value_int="0"     />
-  
+
+  <!-- OT::HistogramFactory parameters -->
+  <HistogramFactory-MaximumBinNumber value_int="1024" />
+
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
 

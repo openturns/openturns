@@ -1196,6 +1196,9 @@ void ResourceMap::loadDefaultConfiguration()
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
 
+  // HistogramFactory //
+  addAsUnsignedInteger("HistogramFactory-MaximumBinNumber", 1024);
+
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE");
 

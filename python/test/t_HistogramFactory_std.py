@@ -63,3 +63,9 @@ inf_distribution = ot.HistogramFactory().buildFromQuantiles(
 )
 inf_quantiles = [inf_distribution.computeQuantile(pi)[0] for pi in probabilities]
 ott.assert_almost_equal(inf_quantiles, quantiles)
+
+# samples with different scales, bandwidth should not be too small and blow up memory thanks to MaximumBinNumber
+sample1 = ot.Uniform(-1e-10, 1e-10).getSample(100)
+sample2 = ot.Uniform(-1, 1).getSample(5)
+sample1.add(sample2)
+dist = ot.HistogramFactory().build(sample1)
