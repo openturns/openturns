@@ -72,12 +72,12 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   // starting point
   Point startingPoint(4);
-  const Scalar min = sample.getMin()[0];
-  const Scalar max = sample.getMax()[0];
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
-  //  if (max <= min - std::sqrt(SpecFunc::ScalarEpsilon))
-  if (min == max) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample.";
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
 
   MaximumLikelihoodFactory factory(buildAsTrapezoidal());
 
@@ -88,11 +88,11 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");
   solver.setMaximumAbsoluteError(rhoEnd);
   solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
-  const Scalar delta = (max - min) / (2.0 + size);
-  startingPoint[0] = min + delta;// a
+  const Scalar delta = (xMax - xMin) / (2.0 + size);
+  startingPoint[0] = xMin + delta;// a
   startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
   startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
-  startingPoint[3] = max - delta;// d
+  startingPoint[3] = xMax - delta;// d
   solver.setStartingPoint(startingPoint);
   solver.setCheckStatus(false);
   factory.setOptimizationAlgorithm(solver);
@@ -109,8 +109,8 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Point constant(3, -rhoEnd);
   LinearFunction constraint(center, constant, linear);
   factory.setOptimizationInequalityConstraint(constraint);
-  const Point lowerBound(4, min + rhoEnd);
-  const Point upperBound(4, max - rhoEnd);
+  const Point lowerBound(4, xMin + rhoEnd);
+  const Point upperBound(4, xMax - rhoEnd);
   factory.setOptimizationBounds(Interval(lowerBound, upperBound));
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());
