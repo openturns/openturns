@@ -23,15 +23,15 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create the Y distribution
-YDist = ot.Uniform(-1.0, 1.0)
+YDist = ot.Normal(0.0, 1.0)
 
 # %%
 # create Theta=f(y)
-f = ot.SymbolicFunction(["y"], ["y", "1 + y"])
+f = ot.SymbolicFunction(["y"], ["y", "0.1 + y^2"])
 
 # %%
 # create the X|Theta distribution
-XgivenThetaDist = ot.Uniform()
+XgivenThetaDist = ot.Normal()
 
 # %%
 # create the distribution

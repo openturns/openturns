@@ -155,5 +155,7 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 # computeProba test with bound far away
-p = distribution.computeProbability(ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar))
+p = distribution.computeProbability(
+    ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
+)
 ott.assert_almost_equal(p, 1.0)

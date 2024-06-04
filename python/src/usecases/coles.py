@@ -40,8 +40,17 @@ class Coles:
     """
 
     def __getattr__(self, name):
-        if name not in ["dowjones", "portpirie", "venice", "racetime",
-                        "fremantle", "rain", "wavesurge", "wind", "wooster"]:
+        if name not in [
+            "dowjones",
+            "portpirie",
+            "venice",
+            "racetime",
+            "fremantle",
+            "rain",
+            "wavesurge",
+            "wind",
+            "wooster",
+        ]:
             raise AttributeError(f"'Coles' object has no attribute '{name}'")
         current_dir = os.path.dirname(os.path.abspath(__file__))
         fn = os.path.join(current_dir, name + ".csv")

@@ -32,6 +32,10 @@ residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
 relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
     The relative error is the empirical error divided by the 
     sample variance of the output.
+isLeastSquares : bool
+    True if the expansion is computed using least squares.
+isModelSelection : bool
+    True if the expansion is computed using model selection.
 
 Notes
 -----

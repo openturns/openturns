@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-dim : integer
+dim : int
     The dimension of the Hermitian matrix (square matrix with *dim* rows and 
     *dim* columns).
 
@@ -45,7 +45,7 @@ Similar to :meth:`computeCholesky` but modifies the matrix in place to avoid a c
 
 Returns
 -------
-dim : integer
+dim : int
     The dimension of the Hermitian matrix."
 
 // ---------------------------------------------------------------------

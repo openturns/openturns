@@ -68,7 +68,7 @@ int main(int, char *[])
       Graph graph1D(f.draw(0, 0, centralPoint, -5.0, 5.0, 32));
       fullprint << "graph1D=" << graph1D << std::endl;
       // Second output as a function of second and third inputs around central point
-      Graph graph2D(f.draw(1, 2, 1, centralPoint, Point(2, -5.0), Point(2, 5.0), Indices(2, 21)));
+      Graph graph2D(f.draw(1, 2, 1, centralPoint, Point(2, -5.0), Point(2, 5.0), Indices(2, 21), GraphImplementation::NONE, true));
       fullprint << "graph2D=" << graph2D << std::endl;
     }
   }

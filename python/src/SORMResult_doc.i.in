@@ -1,9 +1,6 @@
 %feature("docstring") OT::SORMResult
 "Result of a SORM analysis.
 
-Available constructors:
-    SORMResult(*designPoint, limitStateVariable, isInFailureSpace*)
-
 Notes
 -----
 Structure created by the method run() of the :class:`~openturns.SORM`

@@ -1,9 +1,6 @@
 %define OT_FiniteDifferenceStep_doc
 "Base class to define finite difference steps.
 
-Available constructors:
-    FiniteDifferenceStep(*epsilon=[1.0]*)
-
 Parameters
 ----------
 epsilon : sequence of float

@@ -111,7 +111,7 @@ Examples
 
 Returns
 -------
-n : integer
+n : int
     The discretization used by the algorithm."
 
 // ---------------------------------------------------------------------
@@ -120,7 +120,7 @@ n : integer
 
 Parameters
 ----------
-n : integer, :math:`n>0`
+n : int, :math:`n>0`
     The discretization used by the algorithm."
 
 // ---------------------------------------------------------------------

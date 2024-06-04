@@ -176,7 +176,7 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<ProcessSampleImplementation>::operator ==;
   Bool operator ==(const ProcessSample & other) const;
-  
+
   /** Translate realizations in-place */
   ProcessSample & operator += (const Sample & translation);
   ProcessSample & operator -= (const Sample & translation);
@@ -184,7 +184,7 @@ public:
   ProcessSample & operator -= (const Point & translation);
   ProcessSample & operator += (const ProcessSample & translation);
   ProcessSample & operator -= (const ProcessSample & translation);
-  
+
   /** Translate realizations */
   ProcessSample operator + (const Sample & translation) const;
   ProcessSample operator - (const Sample & translation) const;

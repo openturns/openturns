@@ -1,11 +1,6 @@
 %feature("docstring") OT::Hamming
 "Hamming filtering windows.
 
-Available constructors:
-    Hamming()
-   
-
-
 Notes
 -----
 The Hamming windows is implemented using the formula:

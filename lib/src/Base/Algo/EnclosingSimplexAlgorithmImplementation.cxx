@@ -167,7 +167,7 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
 
 namespace
 {
-  inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex1D(const Scalar v1, const Scalar v2, const Scalar pt, const Scalar epsilon)
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex1D(const Scalar v1, const Scalar v2, const Scalar pt, const Scalar epsilon)
 {
   return (pt - v1) * (pt - v2) <= epsilon * std::abs(v1 - v2);
 }
@@ -213,7 +213,7 @@ inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const
   }
 } // EnclosingSimplexAlgorithm_checkPointInSimplex2D
 
-  inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt, const Scalar epsilon)
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt, const Scalar epsilon)
 {
   const Scalar x = *pt;
   const Scalar y = *(pt + 1);
@@ -332,7 +332,7 @@ void EnclosingSimplexAlgorithmImplementation::setBarycentricCoordinatesEpsilon(c
   if (!(epsilon >= 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a nonnegative value, here epsilon)" << epsilon;
   barycentricCoordinatesEpsilon_ = epsilon;
 }
-  
+
 Scalar EnclosingSimplexAlgorithmImplementation::getBarycentricCoordinatesEpsilon() const
 {
   return barycentricCoordinatesEpsilon_;

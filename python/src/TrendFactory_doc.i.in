@@ -3,16 +3,13 @@
 
 Refer to :ref:`trend_transform`.
 
-Available constructors:
-    TrendFactory(*basisSequenceFactory=LARS(), fittingAlgorithm=CorrectedLeaveOneOut()*)
-
 Parameters
 ----------
 basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
     The  regression strategy that provides the estimation of the  coefficients associated to the best model among the  basis functions.
 
     Default is the *least angle regression* (LARS) method for the choice of sparse models: :class:`~openturns.LARS`.
-fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`, optional
     The fitting algorithm that estimates the empirical error on each sub-basis.
 
     Default is the *leave one out* strategy: :class:`~openturns.CorrectedLeaveOneOut`.

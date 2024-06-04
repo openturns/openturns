@@ -2,8 +2,6 @@
 "Multivariate fractional Brownian motion covariance function.
 
 Available constructors:
-    FractionalBrownianMotionModel()
-
     FractionalBrownianMotionModel(*scale, amplitude, exponent*)
 
     FractionalBrownianMotionModel(*scale, amplitude, exponent, eta, rho*)

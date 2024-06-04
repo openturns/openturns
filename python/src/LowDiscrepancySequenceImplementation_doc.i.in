@@ -1,9 +1,6 @@
 %define OT_LowDiscrepancySequence_doc
 "Base class to generate low discrepancy sequences.
 
-Available constructors:
-    LowDiscrepancySequence(*dimension=1*)
-
 Parameters
 ----------
 dimension : int

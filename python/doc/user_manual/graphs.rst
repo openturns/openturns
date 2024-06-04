@@ -44,6 +44,10 @@ Graphical visualisation object
 
 .. autosummary::
     :toctree: _generated/
+    :template: class.rst_t
+
+    viewer.RankNormalize
+
     :template: classWithPlot.rst_t
 
     viewer.View

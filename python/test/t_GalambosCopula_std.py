@@ -47,7 +47,7 @@ ott.assert_almost_equal(
 )
 ott.assert_almost_equal(
     copula.getKendallTau(),
-    ot.CovarianceMatrix(2, [1, 0.299108, 0.299108, 1]),
+    ot.CovarianceMatrix(2, [1, 0.19643, 0.19643, 1]),
     1e-5,
     0.0,
 )

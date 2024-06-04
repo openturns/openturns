@@ -38,7 +38,7 @@ GeneralizedParetoValidation::GeneralizedParetoValidation()
 {}
 
 GeneralizedParetoValidation::GeneralizedParetoValidation(const DistributionFactoryResult & result,
-                                                         const Sample & sample)
+    const Sample & sample)
   : PersistentObject()
   , sample_(sample)
   , result_(result)
@@ -49,7 +49,7 @@ GeneralizedParetoValidation::GeneralizedParetoValidation(const DistributionFacto
 
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "GeneralizedParetoValidation expected a sample of dimension 1, got " << sample.getDimension();
-  
+
   // store excess sample
   const Scalar u = result.getDistribution().getParameter()[2];
   sample_ = Sample(0, 1);

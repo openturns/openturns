@@ -128,7 +128,8 @@ int main(int, char *[])
     Scalar threshold;
     Interval interval(distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold));
     assert_almost_equal(interval.getLowerBound(), {0.03856}, 1e-4, 0.0);
-    assert_almost_equal(interval.getUpperBound(), {3.21723}, 1e-4, 0.0);    fullprint << "threshold=" << threshold << std::endl;
+    assert_almost_equal(interval.getUpperBound(), {3.21723}, 1e-4, 0.0);
+    fullprint << "threshold=" << threshold << std::endl;
     Scalar beta;
     LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
     fullprint << "Minimum volume level set=" << levelSet << std::endl;

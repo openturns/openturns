@@ -146,9 +146,9 @@ void NAIS::run()
   inputSample_.clear();
   outputSample_.clear();
   thresholdPerStep_.clear();
-  
+
   numberOfSteps_ = 0;
-  
+
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
@@ -159,19 +159,19 @@ void NAIS::run()
   Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
 
   ++ numberOfSteps_;
-  
+
   if (keepSample_)
   {
     inputSample_.add(auxiliaryInputSample);
     outputSample_.add(auxiliaryOutputSample);
   }
-    
-    
+
+
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
-  
-  
-    
+
+
+
   Distribution auxiliaryDistribution;
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
@@ -215,7 +215,7 @@ void NAIS::run()
       inputSample_.add(auxiliaryInputSample);
       outputSample_.add(auxiliaryOutputSample);
     }
-    
+
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 

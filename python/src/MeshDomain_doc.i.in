@@ -1,16 +1,11 @@
 %feature("docstring") OT::MeshDomain
 "Adaptor to convert a Mesh to a Domain.
 
-Available constructors:
-    MeshDomain(*mesh*)
-
-    MeshDomain(*mesh, enclosingSimplex*)
-
 Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
     Underlying mesh.
-enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`
+enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`, optional
     Algorithm to use for point location.
 
 Examples

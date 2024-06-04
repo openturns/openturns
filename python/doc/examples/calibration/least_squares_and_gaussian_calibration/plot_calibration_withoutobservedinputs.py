@@ -59,9 +59,7 @@ print(trueParameter)
 # in dimension 3, with Dirac (i.e. constant) marginals.
 
 # %%
-inputRandomVector = ot.JointDistribution(
-    [ot.Dirac(theta) for theta in trueParameter]
-)
+inputRandomVector = ot.JointDistribution([ot.Dirac(theta) for theta in trueParameter])
 
 # %%
 # The candidate value is chosen to be different from the true parameter value.

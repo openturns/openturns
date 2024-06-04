@@ -1,11 +1,6 @@
 %feature("docstring") OT::MediumSafe
 "MediumSafe method.
 
-Available constructors:
-    MediumSafe(*solver=ot.Brent()*)
-
-    MediumSafe(*solver, maximumDistance, stepSize*)
-
 Parameters
 ----------
 solver : :class:`~openturns.Solver`

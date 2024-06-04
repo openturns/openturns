@@ -36,11 +36,11 @@ public:
   CovariatesResult();
 
   CovariatesResult(const DistributionFactory & factory,
-                    const Function & parameterFunction,
-                    const Sample & covariates,
-                    const Distribution & parameterDistribution,
-                    const LinearFunction & normalizationFunction,
-                    const Scalar logLikelihood);
+                   const Function & parameterFunction,
+                   const Sample & covariates,
+                   const Distribution & parameterDistribution,
+                   const LinearFunction & normalizationFunction,
+                   const Scalar logLikelihood);
 
   CovariatesResult * clone() const override;
 

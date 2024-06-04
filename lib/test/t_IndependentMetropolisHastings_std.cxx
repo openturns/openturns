@@ -34,6 +34,42 @@ int main(int, char *[])
 
   try
   {
+    // Test IndependentMetropolisHastings on Beta-Binomial conjugate model
+
+    // Define Beta-binomial model
+    Scalar a = 1.0;
+    Scalar b = 1.0;
+    Scalar lower = 0.0;
+    Scalar upper = 1.0;
+    Beta prior(a, b, lower, upper);
+
+    UnsignedInteger n = 10;
+    Scalar p = 0.5;
+    Binomial model(n, p);
+
+    // Simulate data and compute analytical posterior
+    // cf. Wikipedia table of conjugate distributions
+    // https://en.wikipedia.org/wiki/Conjugate_prior#Table_of_conjugate_distributions
+    Sample X(model.getSample(1));
+    Beta posterior(a + X(0,0), b + n - X(0,0), lower, upper);
+
+    // Define IMH sampler
+    IndependentMetropolisHastings imh_sampler(prior, {p}, Uniform(-1.0, 1.0), Indices(1));
+    Description inVar({"x"});
+    Description outVar({std::to_string(n), "x"});
+    SymbolicFunction slf(inVar, outVar);
+    imh_sampler.setLikelihood(model, X, slf);
+
+    // Generate posterior distribution sample
+    UnsignedInteger N = 10000;
+    Sample Xsample(imh_sampler.getSample(N));
+
+    // Compare empirical to theoretical moments
+    assert_almost_equal(Xsample.computeMean(), posterior.getMean(), 0.0, 10.0 / std::sqrt(N));
+    assert_almost_equal(Xsample.computeStandardDeviation(), posterior.getStandardDeviation(), 0.0, 10.0 / std::sqrt(N));
+
+    // End Beta-Binomial conjugate model test
+
     RandomGenerator::SetSeed(1);
     const Point lower_bound(1);
     const Point upper_bound({2.0 * M_PI});

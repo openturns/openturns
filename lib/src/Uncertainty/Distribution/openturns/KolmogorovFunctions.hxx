@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace KolmogorovFunctions
 {
-  Scalar _kolmogn(const UnsignedInteger n, const Scalar x, const Bool cdf);
+Scalar _kolmogn(const UnsignedInteger n, const Scalar x, const Bool cdf);
 }
 
 END_NAMESPACE_OPENTURNS

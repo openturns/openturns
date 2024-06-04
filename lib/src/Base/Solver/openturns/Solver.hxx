@@ -91,13 +91,11 @@ public:
   Scalar getResidualError() const;
 
   /** Maximum function evaluation accessor */
-  void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
-  UnsignedInteger getMaximumFunctionEvaluation() const;
+  void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
+  UnsignedInteger getMaximumCallsNumber() const;
 
   /** Used function evaluation */
   UnsignedInteger getCallsNumber() const;
-  // @deprecated
-  UnsignedInteger getUsedFunctionEvaluation() const;
 
 }; /* Class Solver */
 

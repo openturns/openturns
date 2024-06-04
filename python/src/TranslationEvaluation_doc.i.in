@@ -1,9 +1,6 @@
 %feature("docstring") OT::TranslationEvaluation
 "Translation evaluation.
 
-Available constructors:
-   TranslationEvaluation(*linear*)
-
 Parameters
 ----------
 constant : sequence of float

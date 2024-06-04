@@ -16,6 +16,8 @@ the parameters of the optimization solver involved in the different estimators:
 - `GeneralizedParetoFactory-MaximumRelativeError`
 - `GeneralizedParetoFactory-MaximumObjectiveError`
 - `GeneralizedParetoFactory-MaximumConstraintError`
+- `GeneralizedParetoFactory-InitializationMethod`
+- `GeneralizedParetoFactory-NormalizationMethod`
 "
 
 // ---------------------------------------------------------------------
@@ -104,7 +106,11 @@ Returns
 dist : :class:`~openturns.GeneralizedPareto`
     The estimated GPD as a :class:`~openturns.GeneralizedPareto`.
     
-    In the first usage, the default GeneralizedPareto distribution is built."
+    In the first usage, the default GeneralizedPareto distribution is built.
+
+Notes
+-----
+The strategy described in :meth:`build` is followed."
 
 // ---------------------------------------------------------------------
 
@@ -501,12 +507,16 @@ covariates : 2-d sequence of float
 sigmaIndices : sequence of int, optional
     Indices of covariates considered for parameter :math:`\sigma`.
 
-    By default, an empty sequence, and the index of the constant covariate is added
+    By default, an empty sequence.
+    
+    The index of the constant covariate is added
     if empty or if the covariates do not initially contain a constant column.
 xiIndices : sequence of int, optional
     Indices of covariates considered for parameter :math:`\xi`.
 
-    By default, an empty sequence, and the index of the constant covariate is added
+    By default, an empty sequence.
+    
+    The index of the constant covariate is added
     if empty or if the covariates do not initially contain a constant column.
 sigmaLink : :class:`~openturns.Function`, optional
     The :math:`h_{\sigma}` function.
@@ -517,13 +527,15 @@ xiLink : :class:`~openturns.Function`, optional
 
     By default, the identity function.
 initializationMethod : str, optional
-    The initialization method for the optimization problem: *Gumbel* or *Static*.
+    The initialization method for the optimization problem: *Generic* or *Static*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+    By default, the method *Generic* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedParetoFactory-InitializationMethod*).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+    By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedParetoFactory-NormalizationMethod*).
 
 Returns
 -------
@@ -557,7 +569,7 @@ and with three ways of defining :math:`(c_k,d_k)` of the covariate :math:`y_k`:
 - the *CenterReduce* method where :math:`c_k = \dfrac{1}{n} \sum_{i=1}^n y_{k,i}` is the covariate mean
   and :math:`d_k = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (y_{k,i}-c_k)^2}` is the standard deviation of the covariates;
 - the *MinMax* method where :math:`c_k = \min_i y_{k,i}` is the min value of the covariate
-  :math:`y_k` and :math:`d_k = \max_i y_{k,i}- \min_i y_{k,i}` its range;
+  :math:`y_k` and :math:`d_k = \max_i y_{k,i}- \min_i y_{k,i}` its range. This is the default method. This is the default method;
 - the *None* method where :math:`c_k = 0` and :math:`d_k = 1`: in that case, data are not normalized.
 
 
@@ -576,7 +588,8 @@ This relation can be written  as a function of the real covariates:
 
 .. math::
 
-    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^q(y_i^q - c_i^q) \right) 
+    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^qy_i^q +
+    \beta_{d_q+1}^q \right)
 
 where:
 
@@ -584,10 +597,9 @@ where:
   component :math:`\theta_q`,
 - each :math:`\beta_i^{q} \in \Rset`.
 
-To allow one of the parameters to remain constant, i.e. independent of the covariates
-(this will generally be the case for the parameter :math:`\xi`, the library systematically
-adds the constant covariate to the list speciﬁed by the user, even if it means duplicating it
-if the user has already put it in his list.
+To allow some parameters to remain constant, i.e. independent of the covariates
+(this will generally be the case for the parameter :math:`\xi`), the library systematically
+adds the constant covariate to the speciﬁed covariates.
 
 The complete vector of parameters is defined by:
 
@@ -629,25 +641,26 @@ And if any of the :math:`\xi(\vect{y}_i)` is equal to 0, the log-likelihood is d
 The initialization of the optimization problem is crucial.
 Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
 
-- the *Exponential* initial point: in that case, we assume that the GPD is a stationary
-  Exponential distribution :math:`(\xi=0)` and we deduce
-  :math:`\sigma_0` from the mean of the data: :math:`\sigma_0 = \dfrac{1}{n}
-  \sum_{i=1}^n z_{\vect{y}_i}`;
-- the *Static* initial point: in that case, we assume that the GPD is stationary and
+- the *Generic* initial point: in that case, we assume that the GPD is stationary and
+  :math:`(\sigma_0, \xi_0)` is the estimate resulting from the method
+  :meth:`buildAsGeneralizedPareto` which follows the strategy described
+  in the method :meth:`build`. This is the default initial point;
+- the *Static* initial point: in that case, we still assume that the GPD is stationary and
   :math:`(\sigma_0, \xi_0)`
-  is the maximum likelihood estimate resulting from that assumption.
+  is the maximum likelihood estimate.
 
 The result class provides:
 
 - the estimator :math:`\hat{\vect{\beta}}`,
 - the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
-- the parameter functions :math:`\vect{y} \mapsto \vect{\theta}(\vect{y})`,
+- the parameter function :math:`(\vect{\beta}, \vect{y}) \mapsto \vect{\theta}(\vect{\beta},
+  \vect{y})`,
 - the graphs of the parameter functions :math:`y_k \mapsto \theta_q(\vect{y})`, where all the components of
   :math:`\vect{y}` are fixed to a reference value excepted for :math:`y_k`, for each :math:`k`,
 - the graphs of the parameter functions :math:`(y_k, y_\ell) \mapsto \theta_q(\vect{y})`, where all the
   components of :math:`\vect{y}` are fixed to a reference value excepted for
   :math:`(y_k, y_\ell)`, for each :math:`(k,\ell)`,
-- the normalizing function :math:`(\tau_1, \dots, \tau_d)`,
+- the normalizing function :math:`\vect{y} \mapsto (\tau_1(y_1), \dots, \tau_d(y_d))`,
 - the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
 - the GEV distribution at covariate :math:`\vect{y}`,
 - the graphs of the quantile functions of order :math:`p`: :math:`y_k \mapsto q_p(Z_{\vect{y}})` where all
@@ -684,13 +697,15 @@ xiLink : :class:`~openturns.Function`, optional
 
     By default, the identity function.
 initializationMethod : str, optional
-    The initialization method for the optimization problem: *Gumbel* or *Static*.
+    The initialization method for the optimization problem: *Generic* or *Static*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+    By default, the method *Generic* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedParetoFactory-InitializationMethod*).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+    By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedParetoFactory-NormalizationMethod*).
 
 Returns
 -------
@@ -721,7 +736,7 @@ and with three ways of defining :math:`(c,d)`:
   time stamps
   and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
 - the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the
-  range of the time stamps;
+  range of the time stamps. This is the default method;
 - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not
   normalized.
 
@@ -778,13 +793,13 @@ And if any of the :math:`\xi(t_i)` is equal to 0, the log-likelihood is defined 
 The initialization of the optimization problem is crucial.
 Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
 
-- the *Exponential* initial point: in that case, we assume that the GPD is a stationary
-  Exponential distribution :math:`(\xi=0)` and we deduce
-  :math:`\sigma_0` from the mean of the data: :math:`\sigma_0 = \dfrac{1}{n}
-  \sum_{i=1}^n z_{t_i}`;
-- the *Static* initial point: in that case, we assume that the GPD is stationary and
-  :math:`(\sigma_0, \xi_0)` is the maximum likelihood estimate resulting from that
-  assumption.
+- the *Generic* initial point: in that case, we assume that the GPD is stationary and
+  :math:`(\sigma_0, \xi_0)` is the estimate resulting from the method
+  :meth:`buildAsGeneralizedPareto` which follows the strategy described
+  in the method :meth:`build`. This is the default initial point;
+- the *Static* initial point: in that case, we still assume that the GPD is stationary and
+  :math:`(\sigma_0, \xi_0)`
+  is the maximum likelihood estimate.
 
 The result class produced by the method provides:
 

@@ -44,11 +44,6 @@ public:
   /** Default constructor */
   MetaModelValidation();
 
-  /** @deprecated Constructor with parameters */
-  MetaModelValidation(const Sample & inputSample,
-                      const Sample & outputSample,
-                      const Function & metaModel);
-
   /** Constructor with parameters */
   MetaModelValidation(const Sample & outputSample,
                       const Sample & metamodelPredictions);
@@ -62,12 +57,9 @@ public:
   /** Sample accessors */
   virtual Sample getOutputSample() const;
   virtual Sample getMetamodelPredictions() const;
-  
+
   /** Compute R2 score */
   Point computeR2Score() const;
-
-  /** @deprecated Compute predictivity factor */
-  Point computePredictivityFactor() const;
 
   /** Compute mean squared error */
   Point computeMeanSquaredError() const;

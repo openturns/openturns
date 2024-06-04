@@ -120,23 +120,10 @@ UnsignedInteger OptimizationAlgorithm::getMaximumCallsNumber() const
   return getImplementation()->getMaximumCallsNumber();
 }
 
-/* Maximum iterations number accessor */
 void OptimizationAlgorithm::setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber)
 {
   copyOnWrite();
   getImplementation()->setMaximumCallsNumber(maximumCallsNumber);
-}
-
-UnsignedInteger OptimizationAlgorithm::getMaximumEvaluationNumber() const
-{
-  return getImplementation()->getMaximumEvaluationNumber();
-}
-
-/* Maximum iterations number accessor */
-void OptimizationAlgorithm::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
-{
-  copyOnWrite();
-  getImplementation()->setMaximumEvaluationNumber(maximumEvaluationNumber);
 }
 
 /* Maximum absolute error accessor */

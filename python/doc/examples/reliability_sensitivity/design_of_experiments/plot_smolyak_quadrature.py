@@ -14,7 +14,6 @@ Use the Smolyak quadrature
 # %%
 import numpy as np
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from matplotlib import pylab as plt
 
@@ -26,7 +25,7 @@ uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
 collection = [uniform] * 2
 level = 3
 print("level = ", level)
-experiment = otexp.SmolyakExperiment(collection, level)
+experiment = ot.SmolyakExperiment(collection, level)
 nodes, weights = experiment.generateWithWeights()
 print(nodes)
 print(weights)
@@ -98,7 +97,7 @@ uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
 collection = [uniform] * dimension
 level = 5
 print("level = ", level)
-experiment = otexp.SmolyakExperiment(collection, level)
+experiment = ot.SmolyakExperiment(collection, level)
 nodes, weights = experiment.generateWithWeights()
 print("size = ", nodes.getSize())
 
@@ -178,7 +177,7 @@ def smolyakQuadrature(g_function, level):
     dimension = g_function.getInputDimension()
     uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [uniform] * dimension
-    experiment = otexp.SmolyakExperiment(collection, level)
+    experiment = ot.SmolyakExperiment(collection, level)
     nodes, weights = experiment.generateWithWeights()
     size = nodes.getSize()
     g_values = g_function(nodes)

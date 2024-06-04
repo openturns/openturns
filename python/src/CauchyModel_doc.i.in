@@ -3,9 +3,6 @@
 
 Refer to :ref:`parametric_spectral_model`.
 
-Available constructors:
-    CauchyModel(*theta, sigma*)
-
 Parameters
 ----------
 theta : sequence of float

@@ -1,10 +1,6 @@
 %feature("docstring") OT::DualLinearCombinationHessian
 "Dual linear combination hessian implementation.
 
-Available constructors:
-
-    DualLinearCombinationHessian(*myDLCEI*)
-    
 Parameters
 ----------
 myDLCEI : :class:`~openturns.DualLinearCombinationEvaluation`

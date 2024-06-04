@@ -1,9 +1,6 @@
 %feature("docstring") OT::SobolSequence
 "Sobol sequence.
 
-Available constructors:
-    SobolSequence(*dimension=1*)
-
 Parameters
 ----------
 dimension : positive int, :math:`1\leq d \leq 1111`

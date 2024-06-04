@@ -20,9 +20,7 @@ for i in range(basisDimension):
     basis.append(ot.SymbolicFunction("x", "sin(" + str(i) + "*x)"))
     coefficients[i] = ot.Normal(0.0, (1.0 + i))
 
-process = ot.FunctionalBasisProcess(
-    ot.JointDistribution(coefficients), ot.Basis(basis)
-)
+process = ot.FunctionalBasisProcess(ot.JointDistribution(coefficients), ot.Basis(basis))
 
 # Setting the timeGrid
 process.setTimeGrid(timeGrid)

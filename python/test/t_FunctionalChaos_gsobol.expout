@@ -13,6 +13,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00906333]
 relative errors= [0.0344988]
+isLeastSquares=  True
+involvesModelSelection=  True
 mean=1.01345049 absolute error=0.01345049
 variance=0.62357821 absolute error=0.03485801
 Sobol index 0 = 0.51099735 absolute error=0.00474735
@@ -37,6 +39,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00959568]
 relative errors= [0.0356757]
+isLeastSquares=  True
+involvesModelSelection=  True
 mean=0.99047885 absolute error=0.00952115
 variance=0.63728790 absolute error=0.02114832
 Sobol index 0 = 0.52950736 absolute error=0.02325736
@@ -61,6 +65,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00971889]
 relative errors= [0.0390684]
+isLeastSquares=  True
+involvesModelSelection=  True
 mean=0.99807210 absolute error=0.00192790
 variance=0.62703738 absolute error=0.03139883
 Sobol index 0 = 0.51256233 absolute error=0.00631233
@@ -85,6 +91,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00851458]
 relative errors= [0.0304478]
+isLeastSquares=  True
+involvesModelSelection=  False
 mean=1.01296639 absolute error=0.01296639
 variance=0.63583892 absolute error=0.02259730
 Sobol index 0 = 0.50644977 absolute error=0.00019977
@@ -109,6 +117,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00881056]
 relative errors= [0.0300766]
+isLeastSquares=  True
+involvesModelSelection=  False
 mean=0.99116011 absolute error=0.00883989
 variance=0.64156015 absolute error=0.01687606
 Sobol index 0 = 0.53320841 absolute error=0.02695841
@@ -133,6 +143,8 @@ ProjectionStrategyImplementation
 
 residuals= [0.00936606]
 relative errors= [0.0362832]
+isLeastSquares=  True
+involvesModelSelection=  False
 mean=0.99781283 absolute error=0.00218717
 variance=0.63105256 absolute error=0.02738366
 Sobol index 0 = 0.50996596 absolute error=0.00371596

@@ -52,13 +52,13 @@ LinearEvaluation::LinearEvaluation(const Point & center,
   /* Check if the dimension of the constant term is compatible with the linear term */
   if (constant.getDimension() != linear.getNbColumns())
     throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term. "
-      <<"The constant has dimension: " << constant.getDimension()
-      <<" but the number of columns in the linear matrix is: " << linear.getNbColumns();
+                                          << "The constant has dimension: " << constant.getDimension()
+                                          << " but the number of columns in the linear matrix is: " << linear.getNbColumns();
   /* Check if the dimension of the center term is compatible with the linear term */
   if (center.getDimension() != linear.getNbRows())
     throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term. "
-      << "The dimension of the center is: " << center.getDimension()
-      << " but the number of rows of the linear matrix is: " << linear.getNbRows();
+                                          << "The dimension of the center is: " << center.getDimension()
+                                          << " but the number of rows of the linear matrix is: " << linear.getNbRows();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
 }

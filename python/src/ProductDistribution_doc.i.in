@@ -3,9 +3,6 @@
 
 Helper class for defining the push-forward distribution of a given univariate distribution by a given scalar function.
 
-Available constructors:
-    ProductDistribution(*distX, distY*)
-
 Parameters
 ----------
 

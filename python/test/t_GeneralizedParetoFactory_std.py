@@ -21,24 +21,38 @@ for xi in [-0.75, 0.0, 0.75]:
     estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(sample)
     print("GeneralizedPareto          =", distribution)
     print("Estimated generalizedPareto=", estimatedGeneralizedPareto)
-    assert estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto", "wrong name"
+    assert (
+        estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto"
+    ), "wrong name"
 
     # method of moments
     if xi <= 0.0:
         estimatedDistribution = factory.buildMethodOfMoments(sample)
         print("GeneralizedPareto from moments=", estimatedDistribution)
-        ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1)
+        ott.assert_almost_equal(
+            estimatedDistribution.getParameter(),
+            distribution.getParameter(),
+            1e-1,
+            1e-1,
+        )
 
     # exponential regression
     estimatedDistribution = factory.buildMethodOfExponentialRegression(sample)
     print("GeneralizedPareto from exponential regression=", estimatedDistribution)
-    ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1)
+    ott.assert_almost_equal(
+        estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1
+    )
 
     # pwm
     if xi >= -0.5:
         estimatedDistribution = factory.buildMethodOfProbabilityWeightedMoments(sample)
         print("GeneralizedPareto from pwm=", estimatedDistribution)
-        ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 1e-1, 1e-1)
+        ott.assert_almost_equal(
+            estimatedDistribution.getParameter(),
+            distribution.getParameter(),
+            1e-1,
+            1e-1,
+        )
 
 estimatedDistribution = factory.build()
 ott.assert_almost_equal(estimatedDistribution.getParameter(), [1.0, 0.0, 0.0])
@@ -46,12 +60,16 @@ print("Default distribution=", estimatedDistribution)
 estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto()
-assert estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto", "wrong name"
+assert (
+    estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto"
+), "wrong name"
 print("Default generalizedPareto=", estimatedGeneralizedPareto)
 estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(
     distribution.getParameter()
 )
-assert estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto", "wrong name"
+assert (
+    estimatedGeneralizedPareto.__class__.__name__ == "GeneralizedPareto"
+), "wrong name"
 print("GeneralizedPareto from parameters=", estimatedGeneralizedPareto)
 ott.assert_almost_equal(
     estimatedGeneralizedPareto.getParameter(), distribution.getParameter()
@@ -74,10 +92,13 @@ pref_mle = [7.44573, 0.184112, 30.0]
 ott.assert_almost_equal(inf_dist.getParameter(), pref_mle, 1e-2, 1e-2)
 print("parameter dist=", estimator_mle.getParameterDistribution())
 print(estimator_mle.getParameterDistribution().getCovariance())
-cov_ref = [[0.920412, -0.0655531, 0],
-           [-0.0655531, 0.0102358, 0],
-           [0, 0, 0]]
-ott.assert_almost_equal(ot.Matrix(estimator_mle.getParameterDistribution().getCovariance()), ot.Matrix(cov_ref), 2e-3, 1e-5)
+cov_ref = [[0.920412, -0.0655531, 0], [-0.0655531, 0.0102358, 0], [0, 0, 0]]
+ott.assert_almost_equal(
+    ot.Matrix(estimator_mle.getParameterDistribution().getCovariance()),
+    ot.Matrix(cov_ref),
+    2e-3,
+    1e-5,
+)
 ott.assert_almost_equal(estimator_mle.getLogLikelihood(), -485.094)
 
 # specific check for covariates
@@ -85,7 +106,9 @@ covariates = ot.Sample([[i + 1] for i in range(sample.getSize())])
 sigmaIndices = [0]  # linear
 xiIndices = []  # stationary
 sigmaLink = ot.SymbolicFunction(["x"], ["exp(x)"])
-estimator_covariate = factory.buildCovariates(sample, u, covariates, sigmaIndices, xiIndices, sigmaLink)
+estimator_covariate = factory.buildCovariates(
+    sample, u, covariates, sigmaIndices, xiIndices, sigmaLink
+)
 beta = estimator_covariate.getOptimalParameter()
 print("beta*=", beta)
 ott.assert_almost_equal(beta, [1.9582e-05, 1.80441, 0.197766], 1e-2, 1e-2)
@@ -103,7 +126,9 @@ basis = ot.Basis([ot.SymbolicFunction(["t"], ["t"]), constant])
 sigmaIndices = [0, 1]  # linear
 xiIndices = [1]  # stationary
 sigmaLink = ot.SymbolicFunction(["x"], ["exp(x)"])
-estimator_timevar = factory.buildTimeVarying(sample, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink)
+estimator_timevar = factory.buildTimeVarying(
+    sample, u, timeStamps, basis, sigmaIndices, xiIndices, sigmaLink
+)
 beta = estimator_timevar.getOptimalParameter()
 print("beta*=", beta)
 ott.assert_almost_equal(beta, [0.343272, 1.80443, 0.197766], 1e-2, 1e-2)
@@ -123,7 +148,9 @@ ott.assert_almost_equal(xm.getMean(), [106.284], 1e-2, 1e-2)
 ott.assert_almost_equal(xm.getCovariance()[0, 0], 433.145, 1e-2, 1e-2)
 
 # specific check for return level via profile likelihood
-estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(sample, u, 100.0 * 365.0)
+estimator_prof_rl = factory.buildReturnLevelProfileLikelihoodEstimator(
+    sample, u, 100.0 * 365.0
+)
 print(estimator_prof_rl)
 zm = estimator_prof_rl.getParameter()
 try:

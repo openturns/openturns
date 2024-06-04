@@ -428,7 +428,7 @@ bool BonminProblem::eval_jac_g(int n,
     // Convert x to OT::Point
     Point xPoint(n);
     std::copy(x, x + n, xPoint.begin());
-    
+
     // Filling values array
     UnsignedInteger k = 0;
     UnsignedInteger nbEqualityConstraints = 0;
@@ -632,7 +632,7 @@ bool BonminProblem::eval_grad_gi(int n,
   // Convert x to OT::Point
   Point xPoint(n);
   std::copy(x, x + n, xPoint.begin());
-  
+
   // Computing constraint derivative
   nele_grad_gi = n;
 

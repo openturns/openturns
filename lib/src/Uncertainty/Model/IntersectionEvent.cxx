@@ -200,7 +200,8 @@ void IntersectionEvent::load(Advocate & adv)
   RandomVectorImplementation::load(adv);
   RandomVectorPersistentCollection eventCollection;
   adv.loadAttribute( "eventCollection_", eventCollection );
-  setEventCollection(eventCollection);
+  if (eventCollection.getSize())
+    setEventCollection(eventCollection);
 }
 
 END_NAMESPACE_OPENTURNS

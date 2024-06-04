@@ -37,16 +37,16 @@ static const Factory<SamplePartition> Factory_SamplePartition;
 
 /* Constructor without parameters */
 SamplePartition::SamplePartition()
-: PersistentObject()
+  : PersistentObject()
 {
   // Nothing to do
 }
 
 SamplePartition::SamplePartition(const Sample & sample,
-                const Collection<Indices> & indicesCollection)
-: PersistentObject()
-, sample_(sample)
-, indicesCollection_(indicesCollection)
+                                 const Collection<Indices> & indicesCollection)
+  : PersistentObject()
+  , sample_(sample)
+  , indicesCollection_(indicesCollection)
 {
   if (!indicesCollection.getSize())
     indicesCollection_.add(Indices({0, sample.getSize()}));
@@ -62,9 +62,9 @@ SamplePartition::SamplePartition(const Sample & sample,
 }
 
 SamplePartition::SamplePartition(const Sample & sample,
-                const Indices & indices)
-: PersistentObject()
-, sample_(sample)
+                                 const Indices & indices)
+  : PersistentObject()
+  , sample_(sample)
 {
   if (!indices.check(sample.getSize()))
     throw InvalidArgumentException(HERE) << "Indices must not exceed sample size";
@@ -103,7 +103,7 @@ SamplePartition * SamplePartition::clone() const
 
 
 Sample SamplePartition::getPeakOverThreshold(const Scalar threshold, const UnsignedInteger r,
-                                                         SamplePartition & clusters) const
+    SamplePartition & clusters) const
 {
   if (r == 0)
     throw InvalidArgumentException(HERE) << "SamplePartition minimum cluster gap should be > 0";

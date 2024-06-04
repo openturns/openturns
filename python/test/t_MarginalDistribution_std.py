@@ -68,7 +68,10 @@ for nDistribution in range(len(coll)):
     if distribution.isContinuous():
         InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
         print("Inverse survival=", InverseSurvival)
-        print("Survival(inverse survival)=%.5e" % distribution.computeSurvivalFunction(InverseSurvival))
+        print(
+            "Survival(inverse survival)=%.5e"
+            % distribution.computeSurvivalFunction(InverseSurvival)
+        )
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=%.5e" % distribution.computeCDF(quantile))
@@ -93,6 +96,8 @@ for nDistribution in range(len(coll)):
         print("spearman=", spearman)
         kendall = distribution.getKendallTau()
         print("kendall=", kendall)
-    print("Standard representative=", distribution.getStandardRepresentative().__str__())
+    print(
+        "Standard representative=", distribution.getStandardRepresentative().__str__()
+    )
     # Additional tests to make codecov happy
     distribution = ot.MarginalDistribution(fullDistribution, 0)

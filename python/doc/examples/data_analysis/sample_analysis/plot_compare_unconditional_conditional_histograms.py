@@ -91,7 +91,7 @@ def computeConditionnedSample(
     quantileValue = quantiles[criteriaComponent]
     sortedSampleCriteria = sortedSample[:, criteriaComponent]
     indices = np.where(np.array(sortedSampleCriteria.asPoint()) > quantileValue)[0]
-    conditionnedSortedSample = sortedSample[int(indices[0]):, selectedComponent]
+    conditionnedSortedSample = sortedSample[int(indices[0]) :, selectedComponent]
     return conditionnedSortedSample
 
 

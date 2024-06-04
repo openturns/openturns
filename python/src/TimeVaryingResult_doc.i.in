@@ -20,7 +20,10 @@ llh : float
 
 Notes
 -----
-This class is created by the methods  :meth:`~openturns.GeneralizedParetoFactory.buildTimeVarying` or :meth:`~openturns.GeneralizedExtremeValueFactory.buildTimeVarying`.
+This class is created by the method
+:meth:`~openturns.GeneralizedParetoFactory.buildTimeVarying` of the classes
+:class:`~openturns.GeneralizedExtremeValueFactory` and
+:class:`~openturns.GeneralizedParetoFactory`.
 
 Let :math:`Z_t` be a non stationary random variable which follows a GEV distribution or whose excesses above :math:`u` follow a GPD. The parameters of the GEV or GPD model depend on :math:`t`:
 

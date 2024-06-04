@@ -98,7 +98,7 @@ public:
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
-    /** Get the quantile of the distribution */
+  /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the probability content of an interval */

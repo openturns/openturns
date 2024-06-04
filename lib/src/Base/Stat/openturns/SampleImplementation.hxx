@@ -646,8 +646,6 @@ public:
    * Gives the Linear correlation matrix of the sample
    */
   virtual CorrelationMatrix computeLinearCorrelation() const;
-  /* @deprecated */
-  virtual CorrelationMatrix computePearsonCorrelation() const;
 
   /**
    * Gives the Spearman correlation matrix of the sample

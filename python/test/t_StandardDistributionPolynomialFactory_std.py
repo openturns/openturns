@@ -48,7 +48,9 @@ for distribution in collection:
 
             integrand = ot.PythonFunction(1, 1, kernel)
             if distribution.isContinuous():
-                M[i, j] = ot.GaussKronrod().integrate(integrand, distribution.getRange())[0]
+                M[i, j] = ot.GaussKronrod().integrate(
+                    integrand, distribution.getRange()
+                )[0]
             else:
                 x = distribution.getSupport()
                 M[i, j] = integrand(x).computeMean()[0] * len(x)

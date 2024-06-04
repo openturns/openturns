@@ -26,8 +26,8 @@ Construction of the truncated multivariate orthogonal basis
     CleaningStrategy
     FixedStrategy
 
-Computation of the polynomial chaos coefficients
-================================================
+Projection method
+=================
 
 .. autosummary::
     :toctree: _generated/
@@ -36,21 +36,43 @@ Computation of the polynomial chaos coefficients
     ProjectionStrategy
     IntegrationStrategy
     LeastSquaresStrategy
+
+Least squares algorithms to compute the coefficients
+====================================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
     ApproximationAlgorithm
+    ApproximationAlgorithmImplementationFactory
     PenalizedLeastSquaresAlgorithmFactory
     PenalizedLeastSquaresAlgorithm
     LeastSquaresMetaModelSelectionFactory
     LeastSquaresMetaModelSelection
+
+Model selection algorithm
+=========================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
     BasisSequenceFactory
 
     :template: classWithPlot.rst_t
     LARS
 
+Model selection criteria
+========================
+
+.. autosummary::
+    :toctree: _generated/
     :template: class.rst_t
+
     FittingAlgorithm
     CorrectedLeaveOneOut
     KFold
-    DesignProxy
 
 .. _least_squares_methods:
 
@@ -68,6 +90,7 @@ Refer to :ref:`least_squares`.
     SVDMethod
     QRMethod
     SparseMethod
+    DesignProxy
 
 Results
 =======
@@ -78,6 +101,9 @@ Results
 
     FunctionalChaosRandomVector
     FunctionalChaosResult
+
+    :template: classWithPlot.rst_t
+
     FunctionalChaosSobolIndices
 
 Functional chaos on fields

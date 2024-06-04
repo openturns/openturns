@@ -18,7 +18,7 @@ entropy=-0.041475
 entropy (MC)=-0.041557
 mean=class=Point name=Unnamed dimension=1 values=[0.454545]
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.352089]
-skewness=class=Point name=Unnamed dimension=1 values=[0.108715]
+skewness=class=Point name=Unnamed dimension=1 values=[0.148865]
 kurtosis=class=Point name=Unnamed dimension=1 values=[1.98398]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0661157]
 parameters collection=[[theta : 1.25, sum theta : 1.5]]
@@ -53,7 +53,7 @@ entropy=-0.82087
 entropy (MC)=-0.82062
 mean=class=Point name=Unnamed dimension=2 values=[0.277778,0.333333]
 standard deviation=class=Point name=Unnamed dimension=2 values=[0.384946,0.426401]
-skewness=class=Point name=Unnamed dimension=2 values=[0.35525,0.240534]
+skewness=class=Point name=Unnamed dimension=2 values=[0.71603,0.51025]
 kurtosis=class=Point name=Unnamed dimension=2 values=[2.86651,2.53846]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0364759,-0.016835,-0.016835,0.040404]
 parameters collection=[[theta : 1.25, sum theta : 3.25],[theta : 1.5, sum theta : 3]]
@@ -65,12 +65,12 @@ conditional quantile=0.42284
 sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[2.12095,1.32086]
 sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[0.05,0.15])=class=Point name=Unnamed dimension=2 values=[0.0893938,0.141993]
 sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.0893938,0.141993])=class=Point name=Unnamed dimension=2 values=[0.05,0.15]
-margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,3.25]
+margin=class=Beta name=Beta dimension=1 alpha=1.25 beta=3.25 a=0 b=1
 margin PDF=0.88989
 margin CDF=0.85595
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.643596]
 margin realization=class=Point name=Unnamed dimension=1 values=[0.337255]
-margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.5,3]
+margin=class=Beta name=Beta dimension=1 alpha=1.5 beta=3 a=0 b=1
 margin PDF=1.1601
 margin CDF=0.78445
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.704013]

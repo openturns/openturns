@@ -38,7 +38,7 @@ Examples
 
 Returns
 -------
-k : integer
+k : int
     Number of folds in which the sample is split."
 
 // ---------------------------------------------------------------------
@@ -48,5 +48,5 @@ k : integer
 
 Parameters
 ----------
-k : integer
+k : int
     Number of folds in which the sample is split."

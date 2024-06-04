@@ -25,14 +25,14 @@ Sobol index [0,1,2] =0.00013721 absolute error=0.0001372088
 Sobol total index 0 =0.57202851 absolute error=0.0144396556
 Sobol total index 1 =0.42812329 absolute error=0.0142878525
 Sobol total index 2 =0.25651466 absolute error=0.0128309938
-Sobol total index [0,1] =0.00001628 absolute error=0.0000162807
-Sobol total index [0,2] =0.25602203 absolute error=0.0123383686
-Sobol total index [1,2] =0.00035373 absolute error=0.0003537299
+Sobol total index [0,1] =0.00015349 absolute error=0.0001534896
+Sobol total index [0,2] =0.25615924 absolute error=0.0124755774
+Sobol total index [1,2] =0.00049094 absolute error=0.0004909387
 Sobol total index  [0,1,2] =0.00013721 absolute error=0.0001372088
-Sobol grouped index [0,1] =0.74348534 absolute error=0.7434853421
-Sobol grouped index [0,2] =0.57187671 absolute error=0.3281930437
-Sobol grouped index [1,2] =0.42797149 absolute error=0.4279714892
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.74348534 absolute error=0.0128309938
+Sobol grouped index [0,2] =0.57187671 absolute error=0.0142878525
+Sobol grouped index [1,2] =0.42797149 absolute error=0.0144396556
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.1925
@@ -64,9 +64,9 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.315853      | 0.572029      |
-|     1 | X1            | 0.427616      | 0.428123      |
-|     2 | X2            | 1.68656e-06   | 0.256515      |
+|     0 | X1            | 0.315853      | 0.572029      |
+|     1 | X2            | 0.427616      | 0.428123      |
+|     2 | X3            | 1.68656e-06   | 0.256515      |
 
 
 ###################################
@@ -96,14 +96,14 @@ Sobol index [0,1,2] =0.00014240 absolute error=0.0001424047
 Sobol total index 0 =0.54578713 absolute error=0.0118017299
 Sobol total index 1 =0.45446361 absolute error=0.0120524673
 Sobol total index 2 =0.23409305 absolute error=0.0095906113
-Sobol total index [0,1] =0.00050315 absolute error=0.0005031478
-Sobol total index [0,2] =0.23225190 absolute error=0.0114317673
-Sobol total index [1,2] =0.00130394 absolute error=0.0013039361
+Sobol total index [0,1] =0.00064555 absolute error=0.0006455525
+Sobol total index [0,2] =0.23239430 absolute error=0.0112893626
+Sobol total index [1,2] =0.00144634 absolute error=0.0014463408
 Sobol total index  [0,1,2] =0.00014240 absolute error=0.0001424047
-Sobol grouped index [0,1] =0.76590695 absolute error=0.7659069473
-Sobol grouped index [0,2] =0.54553639 absolute error=0.3018527238
-Sobol grouped index [1,2] =0.45421287 absolute error=0.4542128747
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.76590695 absolute error=0.0095906113
+Sobol grouped index [0,2] =0.54553639 absolute error=0.0120524673
+Sobol grouped index [1,2] =0.45421287 absolute error=0.0118017299
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.1932
@@ -136,9 +136,9 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.31289       | 0.545787      |
-|     1 | X1            | 0.452514      | 0.454464      |
-|     2 | X2            | 0.000394815   | 0.234093      |
+|     0 | X1            | 0.31289       | 0.545787      |
+|     1 | X2            | 0.452514      | 0.454464      |
+|     2 | X3            | 0.000394815   | 0.234093      |
 
 
 ###################################
@@ -168,14 +168,14 @@ Sobol index [0,1,2] =0.00171843 absolute error=0.0017184293
 Sobol total index 0 =0.56386484 absolute error=0.0062759857
 Sobol total index 1 =0.43789799 absolute error=0.0045131590
 Sobol total index 2 =0.24631494 absolute error=0.0026312723
-Sobol total index [0,1] =0.00004580 absolute error=0.0000458036
-Sobol total index [0,2] =0.24415868 absolute error=0.0004750191
-Sobol total index [1,2] =0.00043642 absolute error=0.0004364176
+Sobol total index [0,1] =0.00176423 absolute error=0.0017642330
+Sobol total index [0,2] =0.24587711 absolute error=0.0021934484
+Sobol total index [1,2] =0.00215485 absolute error=0.0021548469
 Sobol total index  [0,1,2] =0.00171843 absolute error=0.0017184293
-Sobol grouped index [0,1] =0.75368506 absolute error=0.7536850637
-Sobol grouped index [0,2] =0.56210201 absolute error=0.3184183502
-Sobol grouped index [1,2] =0.43613516 absolute error=0.4361351591
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.75368506 absolute error=0.0026312723
+Sobol grouped index [0,2] =0.56210201 absolute error=0.0045131590
+Sobol grouped index [1,2] =0.43613516 absolute error=0.0062759857
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.1968
@@ -208,9 +208,9 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.317942      | 0.563865      |
-|     1 | X1            | 0.435697      | 0.437898      |
-|     2 | X2            | 1.40628e-06   | 0.246315      |
+|     0 | X1            | 0.317942      | 0.563865      |
+|     1 | X2            | 0.435697      | 0.437898      |
+|     2 | X3            | 1.40628e-06   | 0.246315      |
 
 
 ###################################
@@ -240,14 +240,14 @@ Sobol index [0,1,2] =0.00707950 absolute error=0.0070795030
 Sobol total index 0 =0.55730528 absolute error=0.0002835755
 Sobol total index 1 =0.45102832 absolute error=0.0086171717
 Sobol total index 2 =0.25379662 absolute error=0.0101129549
-Sobol total index [0,1] =0.00254496 absolute error=0.0025449599
-Sobol total index [0,2] =0.24156455 absolute error=0.0021191136
-Sobol total index [1,2] =0.00386170 absolute error=0.0038616988
+Sobol total index [0,1] =0.00962446 absolute error=0.0096244629
+Sobol total index [0,2] =0.24864405 absolute error=0.0049603894
+Sobol total index [1,2] =0.01094120 absolute error=0.0109412018
 Sobol total index  [0,1,2] =0.00707950 absolute error=0.0070795030
-Sobol grouped index [0,1] =0.74620338 absolute error=0.7462033810
-Sobol grouped index [0,2] =0.54897168 absolute error=0.3052880194
-Sobol grouped index [1,2] =0.44269472 absolute error=0.4426947203
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.74620338 absolute error=0.0101129549
+Sobol grouped index [0,2] =0.54897168 absolute error=0.0086171717
+Sobol grouped index [1,2] =0.44269472 absolute error=0.0002835755
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.1734
@@ -287,9 +287,9 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.306116      | 0.557305      |
-|     1 | X1            | 0.437542      | 0.451028      |
-|     2 | X2            | 0.00129087    | 0.253797      |
+|     0 | X1            | 0.306116      | 0.557305      |
+|     1 | X2            | 0.437542      | 0.451028      |
+|     2 | X3            | 0.00129087    | 0.253797      |
 
 
 ###################################
@@ -319,14 +319,14 @@ Sobol index [0,1,2] =0.00757555 absolute error=0.0075755522
 Sobol total index 0 =0.54824000 absolute error=0.0093488551
 Sobol total index 1 =0.46251801 absolute error=0.0201068669
 Sobol total index 2 =0.24894582 absolute error=0.0052621606
-Sobol total index [0,1] =0.00771703 absolute error=0.0077170275
-Sobol total index [0,2] =0.23077723 absolute error=0.0129064377
-Sobol total index [1,2] =0.00605848 absolute error=0.0060584783
+Sobol total index [0,1] =0.01529258 absolute error=0.0152925796
+Sobol total index [0,2] =0.23835278 absolute error=0.0053308856
+Sobol total index [1,2] =0.01363403 absolute error=0.0136340305
 Sobol total index  [0,1,2] =0.00757555 absolute error=0.0075755522
-Sobol grouped index [0,1] =0.75105418 absolute error=0.7510541753
-Sobol grouped index [0,2] =0.53748199 absolute error=0.2937983243
-Sobol grouped index [1,2] =0.45176000 absolute error=0.4517599999
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.75105418 absolute error=0.0052621606
+Sobol grouped index [0,2] =0.53748199 absolute error=0.0201068669
+Sobol grouped index [1,2] =0.45176000 absolute error=0.0093488551
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.2018
@@ -366,9 +366,9 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.30217       | 0.54824       |
-|     1 | X1            | 0.441167      | 0.462518      |
-|     2 | X2            | 0.00453457    | 0.248946      |
+|     0 | X1            | 0.30217       | 0.54824       |
+|     1 | X2            | 0.441167      | 0.462518      |
+|     2 | X3            | 0.00453457    | 0.248946      |
 
 
 ###################################
@@ -398,14 +398,14 @@ Sobol index [0,1,2] =0.00548925 absolute error=0.0054892488
 Sobol total index 0 =0.57119967 absolute error=0.0136108134
 Sobol total index 1 =0.43702709 absolute error=0.0053840510
 Sobol total index 2 =0.25963010 absolute error=0.0159464355
-Sobol total index [0,1] =0.00314638 absolute error=0.0031463799
-Sobol total index [0,2] =0.25121369 absolute error=0.0075300230
-Sobol total index [1,2] =0.00251830 absolute error=0.0025182974
+Sobol total index [0,1] =0.00863563 absolute error=0.0086356287
+Sobol total index [0,2] =0.25670294 absolute error=0.0130192718
+Sobol total index [1,2] =0.00800755 absolute error=0.0080075462
 Sobol total index  [0,1,2] =0.00548925 absolute error=0.0054892488
-Sobol grouped index [0,1] =0.74036990 absolute error=0.7403699004
-Sobol grouped index [0,2] =0.56297291 absolute error=0.3192892421
-Sobol grouped index [1,2] =0.42880033 absolute error=0.4288003314
-Sobol grouped index  [0,1,2] =1.00000000 absolute error=1.0000000000
+Sobol grouped index [0,1] =0.74036990 absolute error=0.0159464355
+Sobol grouped index [0,2] =0.56297291 absolute error=0.0053840510
+Sobol grouped index [1,2] =0.42880033 absolute error=0.0136108134
+Sobol grouped index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Sobol grouped total index  [0,1,2] =1.00000000 absolute error=0.0000000000
 Part of variance
 1, 1, [1,0,0], 0.1916
@@ -439,8 +439,8 @@ FunctionalChaosSobolIndices
 
 | Input | Name          | Sobol' index  | Total index   |
 |-------|---------------|---------------|---------------|
-|     0 | X0            | 0.31135       | 0.5712        |
-|     1 | X1            | 0.425873      | 0.437027      |
-|     2 | X2            | 0.000408866   | 0.25963       |
+|     0 | X1            | 0.31135       | 0.5712        |
+|     1 | X2            | 0.425873      | 0.437027      |
+|     2 | X3            | 0.000408866   | 0.25963       |
 
 

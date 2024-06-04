@@ -1,9 +1,6 @@
 %feature("docstring") OT::Null
 "Null history storage strategy.
 
-Available constructors:
-    Null()
-
 See also
 --------
 HistoryStrategy, Compact, Full, Last

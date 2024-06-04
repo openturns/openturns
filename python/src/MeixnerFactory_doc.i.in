@@ -3,9 +3,6 @@
 
 For the :class:`~openturns.NegativeBinomial` distribution.
 
-Available constructors:
-    MeixnerFactory(*r=1.0, p=0.5*)
-
 Parameters
 ----------
 r : float, :math:`r > 0`

@@ -40,11 +40,11 @@ CovariatesResult::CovariatesResult()
 }
 
 CovariatesResult::CovariatesResult(const DistributionFactory & factory,
-                                     const Function & parameterFunction,
-                                     const Sample & covariates,
-                                     const Distribution & parameterDistribution,
-                                     const LinearFunction & normalizationFunction,
-                                     const Scalar logLikelihood)
+                                   const Function & parameterFunction,
+                                   const Sample & covariates,
+                                   const Distribution & parameterDistribution,
+                                   const LinearFunction & normalizationFunction,
+                                   const Scalar logLikelihood)
   : PersistentObject()
   , factory_(factory)
   , parameterFunction_(parameterFunction)
@@ -116,7 +116,9 @@ public:
   Point operator()(const Point & covariate) const override
   {
     const Point theta(parameterFunction_(covariate));
-    return factory_.build(theta).computeQuantile(p_);
+    const Distribution distribution(factory_.build(theta));
+    const Point value(distribution.computeQuantile(p_));
+    return value;
   }
 
   UnsignedInteger getInputDimension() const override
@@ -138,7 +140,7 @@ private:
 /* Draw parameter according to 1 or 2 covariates
    the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawParameterFunction1D(const UnsignedInteger parameterIndex,
-                                                     const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   if (parameterIndex > 2)
     throw InvalidArgumentException(HERE) << "CovariatesResult: parameter index (" << parameterIndex << ") should be < 3";
@@ -165,7 +167,7 @@ GridLayout CovariatesResult::drawParameterFunction1D(const UnsignedInteger param
 }
 
 GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger parameterIndex,
-                                                     const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   if (covariatesDimension < 2)
@@ -201,11 +203,12 @@ GridLayout CovariatesResult::drawParameterFunction2D(const UnsignedInteger param
 /* Draw quantile according to 1 or 2 covariates
     the reference point sets the values of the frozen covariates */
 GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
-                                                    const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   if (covariatesDimension < 2)
     throw NotDefinedException(HERE) << "CovariatesResult: cannot draw a quantile function when there are less than 2 covariates";
+  if (!((p > 0.0) && (p < 1.0))) throw InvalidArgumentException(HERE) << "CovariatesResult: cannot draw a quantile function when the probability level is <= 0 or >= 1";
   Point referencePoint(referencePoint0);
   if (!referencePoint.getDimension())
     referencePoint = covariates_.computeMean();
@@ -228,7 +231,7 @@ GridLayout CovariatesResult::drawQuantileFunction1D(const Scalar p,
 }
 
 GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
-                                                    const Point & referencePoint0) const
+    const Point & referencePoint0) const
 {
   const UnsignedInteger covariatesDimension = covariates_.getDimension();
   Point referencePoint(referencePoint0);
@@ -259,8 +262,8 @@ GridLayout CovariatesResult::drawQuantileFunction2D(const Scalar p,
 String CovariatesResult::__repr__() const
 {
   return OSS() << getClassName()
-              << " parameterDistribution="<< parameterDistribution_
-              << " logLikelihood=" << logLikelihood_;
+         << " parameterDistribution=" << parameterDistribution_
+         << " logLikelihood=" << logLikelihood_;
 }
 
 Function CovariatesResult::getParameterFunction() const

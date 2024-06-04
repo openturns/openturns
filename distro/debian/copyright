@@ -41,13 +41,9 @@ Files: lib/src/Base/Stat/kendall.c
 Copyright: 2010 David Simcha
 License: BSL-1.0
 
-Files: lib/src/Uncertainty/Distribution/kolmogorov.c
+Files: lib/src/Uncertainty/Distribution/cephes/*
 Copyright: Copyright 1984, 1995, 2000 by Stephen L. Moshier
 License: BSD-3-clause
-
-Files: lib/src/Uncertainty/Distribution/dd_*
-Copyright: Copyright (c) 2003-2009, The Regents of the University of California
-License: modified BSD license
 
 Files: lib/test/CRT_fp8.c
 Copyright: none

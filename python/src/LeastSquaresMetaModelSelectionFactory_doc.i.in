@@ -1,18 +1,11 @@
 %feature("docstring") OT::LeastSquaresMetaModelSelectionFactory
 "Least squares metamodel selection factory.
 
-Available constructors:
-    LeastSquaresMetaModelSelectionFactory()
-
-    LeastSquaresMetaModelSelectionFactory(*basisSeqFac*)
-
-    LeastSquaresMetaModelSelectionFactory(*basisSeqFac, fittingAlgo*)
-
 Parameters
 ----------
 basisSeqFac : :class:`~openturns.BasisSequenceFactory`
     A basis sequence factory.
-fittingAlgo : :class:`~openturns.FittingAlgorithm`
+fittingAlgo : :class:`~openturns.FittingAlgorithm`, optional
     A fitting algorithm.
 
 See also

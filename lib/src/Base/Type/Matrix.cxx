@@ -268,8 +268,8 @@ Point Matrix::computeSVD(Matrix & u,
 }
 
 Point Matrix::computeSVDInPlace(Matrix & u,
-                         Matrix & vT,
-                         const Bool fullSVD)
+                                Matrix & vT,
+                                const Bool fullSVD)
 {
   copyOnWrite();
   return getImplementation()->computeSVDInPlace(*(u.getImplementation()), *(vT.getImplementation()), fullSVD);

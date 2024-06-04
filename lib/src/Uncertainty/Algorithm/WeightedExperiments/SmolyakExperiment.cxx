@@ -29,6 +29,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SmolyakExperiment)
 
+static const Factory<SmolyakExperiment> Factory_SmolyakExperiment;
+static const Factory<PersistentCollection<WeightedExperiment> > Factory_PersistentCollection_WeightedExperiment;
+
 /* Default constructor */
 SmolyakExperiment::SmolyakExperiment()
   : WeightedExperimentImplementation()

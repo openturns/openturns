@@ -1,18 +1,8 @@
 %define OT_SamplingStrategy_doc
 "Base class for sampling strategies.
 
-Available constructor:
-    SamplingStrategyImplementation()
-
-    SamplingStrategyImplementation(*samplingStratImp*)
-
-    SamplingStrategyImplementation(*dimension*)
-
 Parameters
 ----------
-samplingStratImp : SamplingStrategyImplementationImplementation
-    An implementation of the sampling strategy adopted, which is
-    :class:`~openturns.RandomDirection` or :class:`~openturns.OrthogonalDirection`.
 dimension : int
     The dimension of the standard space. By default, :math:`dimension = 0` but
     automatically updated by the calling class.

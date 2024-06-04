@@ -1,20 +1,12 @@
 %feature("docstring") OT::DatabaseEvaluation
 "Data based math evaluation implementation.
 
-Available constructors:
-
-    DatabaseEvaluation(*inputSample, outputSample*)
-    
-    DatabaseEvaluation(*inputSample, outputSample, activateCache*)
-
 Parameters
 ----------
 inputSample : 2-d sequence of float
     Sample :math:`\cS^{in}` of size :math:`l` and dimension :math:`n`.
 outputSample : 2-d sequence of float
     Sample :math:`\cS^{out}` of size :math:`l` and dimension :math:`p`.
-activateCache : bool
-    Flag to enable cache or not.
 
 See also
 --------

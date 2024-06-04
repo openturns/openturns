@@ -201,25 +201,25 @@ Scalar MarginalDistribution::computePDF(const Point & point) const
   if (distribution_.getDimension() == getDimension())
     return distribution_.computePDF(expandPoint(point));
   if (usePDF_)
+  {
+    if (isContinuous())
     {
-      if (isContinuous())
-        {
-          // Build the relevant parametric function to be integrated over the remaining parameters
-          const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), indices_, point);
-          const Interval marginalInterval(distribution_.getRange().getMarginal(indices_.complement(distribution_.getDimension())));
-          return integrationAlgorithm_.integrate(kernel, marginalInterval)[0];
-        }
-      if (isDiscrete())
-        {
-          const Point probabilities(distribution_.getProbabilities());
-          // We modify the support in-place to speed-up the computation
-          Sample support(distribution_.getImplementation()->getSupport());
-          for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-              for (UnsignedInteger j = 0; j < indices_.getSize(); ++j)
-                support(i, indices_[j]) = point[j];
-          return distribution_.computePDF(support).asPoint().dot(probabilities);
-        }
-    } // use PDF
+      // Build the relevant parametric function to be integrated over the remaining parameters
+      const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), indices_, point);
+      const Interval marginalInterval(distribution_.getRange().getMarginal(indices_.complement(distribution_.getDimension())));
+      return integrationAlgorithm_.integrate(kernel, marginalInterval)[0];
+    }
+    if (isDiscrete())
+    {
+      const Point probabilities(distribution_.getProbabilities());
+      // We modify the support in-place to speed-up the computation
+      Sample support(distribution_.getImplementation()->getSupport());
+      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+        for (UnsignedInteger j = 0; j < indices_.getSize(); ++j)
+          support(i, indices_[j]) = point[j];
+      return distribution_.computePDF(support).asPoint().dot(probabilities);
+    }
+  } // use PDF
   return DistributionImplementation::computePDF(point);
 }
 

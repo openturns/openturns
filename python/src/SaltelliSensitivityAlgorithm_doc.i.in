@@ -24,6 +24,8 @@ experiment : :class:`~openturns.WeightedExperiment`
     Experiment for the generation of two independent samples.
 N : int
     Size of samples to generate
+model : :class:`~openturns.Function`
+    Model to evaluate input samples.
 computeSecondOrder : bool
     If True, design that will be generated contains elements for the evaluation
     of second order indices.

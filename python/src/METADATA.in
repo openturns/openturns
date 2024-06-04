@@ -1,4 +1,4 @@
-Metadata-Version: 2.0
+Metadata-Version: 1.2
 Name: openturns
 Version: @PACKAGE_VERSION@
 Summary: Uncertainty treatment library

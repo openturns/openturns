@@ -1,11 +1,6 @@
 %feature("docstring") OT::Tuples
 "Tuples generator.
 
-Available constructors:
-    Tuples()
-
-    Tuples(*bounds*)
-
 Parameters
 ----------
 bounds : :class:`~openturns.Indices`

@@ -36,6 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorImplementation)
 
 static const Factory<HSICEstimatorImplementation> Factory_HSICEstimatorImplementation;
+static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
 
 /* Default constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation()

@@ -2,8 +2,6 @@
 Plot the log-likelihood contours of a distribution
 ==================================================
 """
-# sphinx_gallery_thumbnail_number = 5
-# %%
 
 # %%
 # In this example, we show how to plot the bidimensionnal log-likelihood contours of function given a sample.
@@ -15,6 +13,7 @@ import openturns as ot
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
+ot.ResourceMap.SetAsString("Contour-DefaultColorMap", "viridis")
 
 # %%
 # Generate a sample
@@ -117,7 +116,44 @@ graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
-# A part of the graphics is hidden by the legends. This is why we fine tune the graphics in the next examples.
+# We get the underlying `Contour` object as a `Drawable`.
+
+contour = graphBasic.getDrawable(0)
+
+# %%
+# To be able to use specific `Contour` methods like `buildDefaultLevels`, we need to use `getImplementation`.
+
+contour = contour.getImplementation()
+contour.buildDefaultLevels(50)
+
+manyLevelGraph = ot.Graph()
+manyLevelGraph.add(contour)
+view = viewer.View(manyLevelGraph)
+
+# %%
+# Using a rank-based normalization of the colors
+# ----------------------------------------------
+# %%
+# In the previous plots, there was little color variation for isolines corresponding to high log-likelihood values.
+# This is due to a steep cliff visible for low values of :math:`\sigma`.
+# To make the color variation clearer around -13, we use a normalization based on the rank of the level curve and not on its value.
+contour.setColorMapNorm("rank")
+rankGraph = ot.Graph()
+rankGraph.add(contour)
+view = viewer.View(rankGraph)
+
+# %%
+# Fill the contour graph
+# ----------------------
+
+# %%
+# Areas between contour lines can be colored by requesting a filled outline.
+
+# sphinx_gallery_thumbnail_number = 6
+contour.setIsFilled(True)
+filledGraph = ot.Graph()
+filledGraph.add(contour)
+view = viewer.View(filledGraph)
 
 # %%
 # Getting the level values
@@ -128,10 +164,7 @@ view = viewer.View(graphBasic)
 
 # %%
 drawables = graphBasic.getDrawables()
-levels = []
-for i in range(len(drawables)):
-    contours = drawables[i]
-    levels.append(contours.getLevels()[0])
+levels = drawables[0].getLevels()
 levels
 
 # %%
@@ -140,63 +173,45 @@ levels
 
 # %%
 # We first configure the contour plot.
-# By default each level is a dedicated contour in order to have one color per contour,
-# but they all share the same grid and data.
 # We use the `getDrawable` method to take the first contour as the only one with multiple levels.
-# Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves.
+# Then we use the `setLevels` method: we could have changed the levels.
+# We use the `setColor` method to get a monochrome contour.
 # In order to inline the level values labels, we use the `setDrawLabels` method.
 
 # %%
-contours = graphBasic.getDrawable(0)
-contours.setLevels(levels)
-contours.setDrawLabels(True)
-
-# %%
-# Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
-
-# %%
-graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
-graphFineTune.setDrawables([contours])
-graphFineTune.setLegendPosition("")  # Remove the legend
-view = viewer.View(graphFineTune)
-
-# %%
-# Multicolor contour plot
-# -----------------------
-
-# %%
-# The previous contour plot is fine, but lacks of colors.
-# It is not obvious that the colors make the plot clearer given that the values
-# in the contour plot are so different: some adjacent contours have close
-# levels, while others are very different.
-# Anyway, it is obviously nicer to get a colored graphics.
-#
-# The following script first creates a palette of colors with the `BuildDefaultPalette` class.
-# Before doing so, we configure the `Drawable-DefaultPalettePhase` `ResourceMap` key so
-# that the number of generated colors corresponds to the number of levels.
-# Then we create the `drawables` list, where each item is a single contour with its own level and color.
-
-# %%
-# Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0)
-# Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
-palette = ot.Drawable.BuildDefaultPalette(len(levels))
-# Create the drawables list, appending each contour with its own color
-drawables = list()
-for i in range(len(levels)):
-    contour.setLevels([levels[i]])
-    # Inline the level values
-    contour.setDrawLabels(True)
-    # We have to copy the drawable because a Python list stores only pointers
-    drawables.append(ot.Drawable(contour))
+contour.setLevels(levels)
+contour.setDrawLabels(True)
+contour.setColor("red")
 
 # %%
+# Hide the color bar.
+# The method to do this is not available to generic Drawables,
+# so we need to get the actual `Contour` object.
+
+contour = contour.getImplementation()
+contour.setColorBarPosition("")
+
+# %%
+# Then we create a new graph. Finally, we use `setDrawables` to define this `Contour` object as the single Drawable.
+
 graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
-graphFineTune.setDrawables(drawables)  # Replace the drawables
-graphFineTune.setLegendPosition("")  # Remove the legend
-graphFineTune.setColors(palette)  # Add colors
+graphFineTune.setDrawables([contour])
 view = viewer.View(graphFineTune)
+
+# %%
+# Set multiple colors manually
+# ----------------------------
+
+# %%
+# The `Contour` class does not allow us to manually set multiple colors.
+# Here we show how to assign explicit colors to the different contour lines by passing keyword
+# arguments to the `viewer.View` class.
+
+# Build a range of colors corresponding to the Tableau palette
+palette = ot.Drawable.BuildTableauPalette(len(levels))
+view = viewer.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
+
 plt.show()
 
 # %%

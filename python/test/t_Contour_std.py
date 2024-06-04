@@ -35,5 +35,16 @@ myContour.setLevels(levels)
 myContour.setColor("red")
 print("contour=", myContour)
 
+# Modify it to filled Contour
+myContour.setColorMap("inferno")
+myContour.setAlpha(0.5)
+myContour.setExtend("min")
+myContour.setColorBarPosition("left")
+myContour.setColorMapNorm("symlog")
+myContour.setVmin(3)
+myContour.setHatches(ot.Description(["/", "\\", "+/", "*"]))
+myContour.setIsFilled(True)
+print("filled contour=", myContour.__repr__())
+
 # Then, draw it
 myGraph.add(myContour)

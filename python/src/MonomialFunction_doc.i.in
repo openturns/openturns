@@ -1,9 +1,6 @@
 %define OT_MonomialFunction_doc
 "Monomial function class.
 
-Available constructors:
-    MonomialFunction(*degree*)
-
 Parameters
 ----------
 degre : int

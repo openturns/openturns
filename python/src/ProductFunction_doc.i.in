@@ -1,9 +1,6 @@
 %feature("docstring") OT::ProductFunction
 "Product function.
 
-Available constructor:
-    ProductFunction(*f, g*)
-
 The function is the product function :math:`f\times g`.
 
 Parameters

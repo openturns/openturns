@@ -99,7 +99,7 @@ significance factor :math:`10^{-4}`.
 
 Returns
 -------
-index : integer
+index : int
     Current index of the basis term."
 
 // ---------------------------------------------------------------------

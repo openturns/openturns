@@ -1,9 +1,6 @@
 %feature("docstring") OT::FaureSequence
 "Faure sequence.
 
-Available constructors:
-    FaureSequence(*dimension=1*)
-
 Parameters
 ----------
 dimension : positive int

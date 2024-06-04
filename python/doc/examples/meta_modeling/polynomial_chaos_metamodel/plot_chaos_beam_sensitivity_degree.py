@@ -99,8 +99,8 @@ def ComputeSparseLeastSquaresChaos(
     selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
     projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
     enumfunc = multivariateBasis.getEnumerateFunction()
-    P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-    adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+    basisSize = enumfunc.getBasisSizeFromTotalDegree(totalDegree)
+    adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
     chaosalgo = ot.FunctionalChaosAlgorithm(
         inputTrain, outputTrain, myDistribution, adaptiveStrategy, projectionStrategy
     )
@@ -119,14 +119,14 @@ def ComputeSparseLeastSquaresChaos(
 # %%
 def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     """Compute the sparsity rate, assuming a FixedStrategy."""
-    # Get P, the maximum possible number of coefficients
+    # Get basisSize, the number of candidate coefficients
     enumfunc = multivariateBasis.getEnumerateFunction()
-    P = enumfunc.getStrataCumulatedCardinal(totalDegree)
+    basisSize = enumfunc.getStrataCumulatedCardinal(totalDegree)
     # Get number of coefficients in the selection
     indices = chaosResult.getIndices()
     nbcoeffs = indices.getSize()
     # Compute rate
-    sparsityRate = 1.0 - nbcoeffs / P
+    sparsityRate = 1.0 - nbcoeffs / basisSize
     return sparsityRate
 
 
@@ -134,30 +134,33 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 # The following functions compute and plot the :math:`Q^2` predictivity coefficients within the validation plot.
 
 
+
 # %%
-def computeQ2Chaos(chaosResult, inputTest, outputTest):
-    """Compute the Q2 of a chaos."""
+def computeR2Chaos(chaosResult, inputTest, outputTest):
+    """Compute the R2 of a chaos."""
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-    Q2 = val.computePredictivityFactor()[0]
-    Q2 = max(Q2, 0.0)  # We are not lucky every day.
-    return Q2
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
+    r2Score = val.computeR2Score()[0]
+    r2Score = max(r2Score, 0.0)  # We are not lucky every day.
+    return r2Score
 
 
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
     sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
-    Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
+    r2Score = computeR2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
-    val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+    metamodelPredictions = metamodel(inputTest)
+    val = ot.MetaModelValidation(outputTest, metamodelPredictions)
     graph = val.drawValidation().getGraph(0, 0)
-    legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
+    legend1 = "D=%d, R2=%.2f%%" % (totalDegree, 100 * r2Score)
     graph.setLegends(["", legend1])
     graph.setLegendPosition("upper left")
     print(
-        "Degree=%d, Q2=%.2f%%, Sparsity=%.2f%%"
-        % (totalDegree, 100 * Q2, 100 * sparsityRate)
+        "Degree=%d, R2=%.2f%%, Sparsity=%.2f%%"
+        % (totalDegree, 100 * r2Score, 100 * sparsityRate)
     )
     return graph
 
@@ -213,16 +216,17 @@ for totalDegree in range(1, maxDegree + 1):
 # %%
 # Let us repeat the following experiment to see the variability of the :math:`Q^2` coefficient.
 
+
 # %%
 
 
-def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
+def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
     """For a given sample size N, for degree from 1 to maxDegree,
     repeat the following experiment numberAttempts times:
-    create a sparse least squares chaos and compute the Q2
+    create a sparse least squares chaos and compute the R2
     using n_valid points.
     """
-    Q2sample = ot.Sample(numberAttempts, maxDegree)
+    r2Sample = ot.Sample(numberAttempts, maxDegree)
     for totalDegree in range(1, maxDegree + 1):
         print("Degree = %d" % (totalDegree))
         for i in range(numberAttempts):
@@ -233,24 +237,25 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
             chaosResult = ComputeSparseLeastSquaresChaos(
                 inputTrain, outputTrain, multivariateBasis, totalDegree, myDistribution
             )
-            Q2sample[i, totalDegree - 1] = computeQ2Chaos(
+            r2Sample[i, totalDegree - 1] = computeR2Chaos(
                 chaosResult, inputTest, outputTest
             )
-    return Q2sample
+    return r2Sample
 
 
-# %%
+# %% 
 # The following function uses a boxplot to see the distribution of the :math:`Q^2` coefficients.
 
 
+
 # %%
-def plotQ2Boxplots(Q2sample, N):
-    data = np.array(Q2sample)
+def plotR2Boxplots(r2Sample, N):
+    data = np.array(r2Sample)
     pl.figure()
     pl.boxplot(data)
     pl.title("N=%d" % (N))
     pl.xlabel("Degree")
-    pl.ylabel("Q2 (%)")
+    pl.ylabel("R2 (%)")
     return
 
 
@@ -262,29 +267,30 @@ numberAttempts = 50  # Number of repetitions
 
 # %%
 N = 20  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+r2Sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(r2Sample, N)
 
 # %%
 # We see that when the size of the design of experiments is as small as 20, it is more appropriate to use a very low degree polynomial. Here 1 performs best and 4 is risky.
 
 # %%
 N = 30  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+r2Sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(r2Sample, N)
 
 # %%
 # With a 30-point design set, a polynomial degree of 2 is usually advisable.
 
 # %%
 N = 50  # size of the train design
-Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
-plotQ2Boxplots(Q2sample, N)
+r2Sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
+plotR2Boxplots(r2Sample, N)
 
 pl.show()
 
 # %%
 # When the sample size increases, the :math:`Q^2` computation becomes less sensitive to the polynomial degree.
+
 
 # %%
 # Conclusion

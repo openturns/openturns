@@ -343,6 +343,30 @@ Description Drawable::GetValidPointStyles()
   return DrawableImplementation::GetValidPointStyles();
 }
 
+/** Give the color map names */
+Description Drawable::GetValidColorMaps()
+{
+  return DrawableImplementation::GetValidColorMaps();
+}
+
+/** Give the extend values */
+Description Drawable::GetValidExtends()
+{
+  return DrawableImplementation::GetValidExtends();
+}
+
+/** Give the color bar positions */
+Description Drawable::GetValidColorBarPositions()
+{
+  return DrawableImplementation::GetValidColorBarPositions();
+}
+
+/** Give the norm names */
+Description Drawable::GetValidNorms()
+{
+  return DrawableImplementation::GetValidNorms();
+}
+
 /* Convert an hexadecimal code into an RGB triplet  */
 Indices Drawable::ConvertToRGB(const String & key)
 {

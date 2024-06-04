@@ -113,16 +113,18 @@ outputKriging = krigingMetamodel(inputTestSet)
 
 # %%
 # Then, we use the :class:`~openturns.MetaModelValidation` class to validate the metamodel.
+
 val = ot.MetaModelValidation(inputTestSet, outputTestSet, krigingMetamodel)
 
-Q2 = val.computePredictivityFactor()
+
+r2Score = val.computeR2Score()
 
 label = ["Total torque", "Total power", "Solar array area"]
 
 for i in range(3):
     graph = val.drawValidation().getGraph(0, i)
     graph.setLegends([""])
-    graph.setLegends(["Q2 = %.2f%%" % (100 * Q2[i]), ""])
+    graph.setLegends(["R2 = %.2f%%" % (100 * r2Score[i]), ""])
     graph.setLegendPosition("upper left")
     graph.setXTitle("Exact function")
     graph.setYTitle("Metamodel prediction")

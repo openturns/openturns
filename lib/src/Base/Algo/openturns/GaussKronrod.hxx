@@ -98,11 +98,11 @@ public:
   GaussKronrodRule getRule() const;
   void setRule(const GaussKronrodRule & rule);
 
- protected:
+protected:
   /** Map of NLopt algorithms names */
   static std::map<String, GaussKronrodRule> RuleNames_;
 
- public:
+public:
   /** GaussKronrod rules accessor */
   static Collection<GaussKronrodRule> GetRules();
   static GaussKronrodRule GetRuleFromName(const String & name);

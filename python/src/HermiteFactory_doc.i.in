@@ -3,9 +3,6 @@
 
 For the :class:`~openturns.Normal` distribution.
 
-Available constructor:
-    HermiteFactory()
-
 Notes
 -----
 Any sequence of orthogonal polynomials has a recurrence formula relating any

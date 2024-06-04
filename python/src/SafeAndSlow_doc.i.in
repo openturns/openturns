@@ -1,11 +1,6 @@
 %feature("docstring") OT::SafeAndSlow
 "SafeAndSlow method.
 
-Available constructors:
-    SafeAndSlow(*solver=ot.Brent()*)
-
-    SafeAndSlow(*solver, maximumDistance, stepSize*)
-
 Parameters
 ----------
 solver : :class:`~openturns.Solver`

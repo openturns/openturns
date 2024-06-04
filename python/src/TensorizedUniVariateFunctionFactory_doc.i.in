@@ -1,16 +1,11 @@
 %feature("docstring") OT::TensorizedUniVariateFunctionFactory
 "Base class for tensorized multivariate functions.
 
-Available constructors:
-        TensorizedUniVariateFunctionFactory(*functions*)
-
-        TensorizedUniVariateFunctionFactory(*functions, enumerateFunction*)
-
 Parameters
 ----------
 functions : list of :class:`~openturns.UniVariateFunctionFamily`
     List of univariate function factories.
-enumerateFunction : :class:`~openturns.EnumerateFunction`
+enumerateFunction : :class:`~openturns.EnumerateFunction`, optional
     Associates to an integer its multi-index image in the :math:`\Nset^d`
     dimension, which is the dimension of the basis. This multi-index represents
     the collection of degrees of the univariate polynomials.

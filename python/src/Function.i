@@ -119,7 +119,7 @@ class OpenTURNSPythonFunction:
 
     Create the associated Function:
 
-    >>> myFunc = Function(F)
+    >>> func = ot.Function(F)
     """
     def __init__(self, n=0, p=0):
         try:

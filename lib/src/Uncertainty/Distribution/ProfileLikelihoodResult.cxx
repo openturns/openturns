@@ -282,7 +282,7 @@ Graph ProfileLikelihoodResult::drawProfileLikelihoodFunction() const
 String ProfileLikelihoodResult::__repr__() const
 {
   return OSS() << DistributionFactoryLikelihoodResult::__repr__()
-               << " confidenceLevel=" << confidenceLevel_;
+         << " confidenceLevel=" << confidenceLevel_;
 }
 
 Function ProfileLikelihoodResult::getProfileLikelihoodFunction() const

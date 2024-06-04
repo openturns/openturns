@@ -212,8 +212,6 @@ public:
    * Method computeLinearCorrelation() gives the linear correlation matrix of the sample
    */
   CorrelationMatrix computeLinearCorrelation() const;
-  /* @deprecated */
-  CorrelationMatrix computePearsonCorrelation() const;
 
   /**
    * Method computeSpearmanCorrelation() gives the Spearman correlation matrix of the sample

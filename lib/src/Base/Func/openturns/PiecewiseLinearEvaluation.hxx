@@ -39,9 +39,9 @@ class OT_API PiecewiseLinearEvaluation
   : public EvaluationImplementation
 {
   CLASSNAME
-  
+
   friend class PiecewiseHermiteEvaluation;
-  
+
 public:
   /** Default constructor */
   PiecewiseLinearEvaluation();

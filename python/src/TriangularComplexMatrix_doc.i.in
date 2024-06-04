@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-dim : integer
+dim : int
     The dimension of the triangular matrix (square matrix with *dim* rows and 
     *dim* columns).
 isLower : bool, optional
@@ -36,5 +36,5 @@ isLower : bool
 
 Returns
 -------
-dim : integer
+dim : int
     The dimension of the matrix."

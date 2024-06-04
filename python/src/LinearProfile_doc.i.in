@@ -1,10 +1,6 @@
 %define OT_LinearProfile_doc
 "Linear temperature profile.
 
-Available constructor:
-    LinearProfile(*T0, iMax*)
-
-
 Parameters
 ----------
 T0 : float

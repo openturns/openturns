@@ -143,27 +143,9 @@ UnsignedInteger SolverImplementation::getMaximumCallsNumber() const
   return maximumCallsNumber_;
 }
 
-void SolverImplementation::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation)
-{
-  LOGWARN("Solver.setMaximumFunctionEvaluation is deprecated, use setMaximumCallsNumber");
-  setMaximumCallsNumber(maximumFunctionEvaluation);
-}
-
-UnsignedInteger SolverImplementation::getMaximumFunctionEvaluation() const
-{
-  LOGWARN("Solver.getMaximumFunctionEvaluation is deprecated, use setMaximumCallsNumber");
-  return getMaximumCallsNumber();
-}
-
 UnsignedInteger SolverImplementation::getCallsNumber() const
 {
   return callsNumber_;
-}
-
-UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
-{
-  LOGWARN("Solver.getUsedFunctionEvaluation is deprecated, use getCallsNumber");
-  return getCallsNumber();
 }
 
 namespace

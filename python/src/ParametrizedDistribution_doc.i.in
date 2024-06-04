@@ -1,9 +1,6 @@
 %feature("docstring") OT::ParametrizedDistribution
 "Parametrized distribution.
 
-Available constructors:
-    ParametrizedDistribution(*parameters*)
-
 Parameters
 ----------
 parameters : :class:`~openturns.DistributionParameters`

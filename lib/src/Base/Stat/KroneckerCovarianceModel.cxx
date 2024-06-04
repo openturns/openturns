@@ -144,7 +144,7 @@ void KroneckerCovarianceModel::setCorrelationModel(const CovarianceModel &rho)
     if (rhoActiveParameter[i] <= scale_.getSize()) activeParameter_.add(rhoActiveParameter[i]);
     // Rho has one amplitude parameter which is set to 1.0, we activate our amplitude parameters if it is active
     else if (rhoActiveParameter[i] == scale_.getSize() + 1)
-      for (UnsignedInteger j=0; j < outputDimension_; ++j) activeParameter_.add(scale_.getSize() + 1 + j);
+      for (UnsignedInteger j = 0; j < outputDimension_; ++j) activeParameter_.add(scale_.getSize() + 1 + j);
     // We now tackle extra parameters
     else activeParameter_.add(covarianceParameterSize - 1 + rhoActiveParameter[i]);
   }

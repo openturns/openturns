@@ -325,7 +325,7 @@ Collection<GaussKronrodRule> GaussKronrod::GetRules()
   InitializeRules();
   Collection<GaussKronrodRule> allRules;
   for(std::map<String, GaussKronrodRule>::iterator it = RuleNames_.begin(); it != RuleNames_.end(); ++it)
-      allRules.add(it->second);
+    allRules.add(it->second);
   return allRules;
 }
 

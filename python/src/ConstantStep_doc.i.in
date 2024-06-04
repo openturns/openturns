@@ -1,9 +1,6 @@
 %feature("docstring") OT::ConstantStep
 "Constant step.
 
-Available constructors:
-    ConstantStep(*epsilon=[1.0]*)
-
 Parameters
 ----------
 epsilon : sequence of float

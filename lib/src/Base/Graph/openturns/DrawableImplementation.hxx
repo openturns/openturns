@@ -162,6 +162,18 @@ public:
   /** Give the point style names */
   static Description GetValidPointStyles();
 
+  /** Give the color map names */
+  static Description GetValidColorMaps();
+
+  /** Give the extend values */
+  static Description GetValidExtends();
+
+  /** Give the color bar positions */
+  static Description GetValidColorBarPositions();
+
+  /** Give the norm names */
+  static Description GetValidNorms();
+
   /** Convert a color name to a valid hexadecimal code */
   static String ConvertFromName(const String & name);
 
@@ -256,6 +268,18 @@ protected:
   /** Check validity of pattern parameter */
   static Bool IsValidPattern(const String & pattern);
 
+  /** Check validity of color map name */
+  static Bool IsValidColorMap(const String & colorMap);
+
+  /** Check validity of norm */
+  static Bool IsValidNorm(const String & norm);
+
+  /** Check validity of extend */
+  static Bool IsValidExtend(const String& extend);
+
+  /** Check validity of color bar position */
+  static Bool IsValidColorBarPosition(const String& position);
+
   /** A map matching keys with HTML definition for R colors */
   static std::map<String, String> ColorCodes;
 
@@ -267,6 +291,18 @@ protected:
 
   /** Valid point styles */
   static Description ValidPointStyles;
+
+  /** Valid color maps */
+  static Description ValidColorMaps;
+
+  /** Valid norms */
+  static Description ValidNorms;
+
+  /** Valid extends */
+  static Description ValidExtends;
+
+  /** Valid color bar positions */
+  static Description ValidColorBarPositions;
 
   /** Data accessor */
   virtual void setData(const Sample & data);

@@ -3,9 +3,6 @@
 
 Helper class for defining the random vector :math:`\vect{X}` such that  :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`, with :math:`\vect{\Theta}` a random vector of dimension the dimension of :math:`\vect{\Theta}`.
 
-Available constructors:
-   ConditionalRandomVector(*conditionedDist, randomParameters*)
-
 Parameters
 ----------
 

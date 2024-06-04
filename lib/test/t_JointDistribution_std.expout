@@ -1,6 +1,9 @@
-Distribution class=JointDistribution name=myDist dimension=3 copula=class=IndependentCopula name=Independent copula dimension=3 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+
+
+
+Distribution class=JointDistribution name=myDist dimension=3 copula=class=IndependentCopula name=Independent copula dimension=3 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution 
-JointDistribution(Normal(mu = 1, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 3, sigma = 4), IndependentCopula(dimension = 3))
+JointDistribution(Normal(mu = 3, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 1, sigma = 4), IndependentCopula(dimension = 3))
 Distribution (Markdown)
 JointDistribution
 - name=myDist
@@ -10,86 +13,314 @@ JointDistribution
 
 | Index | Variable | Distribution              |
 |-------|----------|---------------------------|
-|     0 |      One | Normal(mu = 1, sigma = 2) |
+|     0 |      One | Normal(mu = 3, sigma = 2) |
 |     1 |      Two | Normal(mu = 2, sigma = 3) |
-|     2 |    Three | Normal(mu = 3, sigma = 4) |
+|     2 |    Three | Normal(mu = 1, sigma = 4) |
 
-Parameters [[mu_0_marginal_0 : 1, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 3, sigma_0_marginal_2 : 4],[]]
+Parameters [[mu_0_marginal_0 : 3, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 1, sigma_0_marginal_2 : 4],[]]
 entropy=7.43487
 entropy (MC)=7.43644
-Mean class=Point name=Unnamed dimension=3 values=[1,2,3]
-Covariance class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,0,0,0,9,0,0,0,16]
+Mean class=Point name=Unnamed dimension=3 values=[3,2,1]
 Elliptical distribution= true
 Elliptical copula= true
 Independent copula= true
-oneRealization=class=Point name=Unnamed dimension=3 values=[1.30342,0.207998,-6.08667]
-oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[-0.146632,0.193954,6.30076],[-0.863184,2.49519,2.55826],[-0.671151,3.28639,1.57436],[2.84637,2.77168,4.16423],[-0.129571,2.88678,1.20838],[2.71915,-1.09338,3.24062],[1.17637,-4.61406,1.98131],[1.2316,-2.79136,10.0065],[2.72735,1.14194,6.52464],[2.23681,0.00126513,-0.0976687]]
-anotherSample mean=class=Point name=Unnamed dimension=3 values=[1.00732,1.96126,3.02609]
+oneRealization=class=Point name=Unnamed dimension=3 values=[3.30342,0.207998,-8.08667]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[1.85337,0.193954,4.30076],[1.13682,2.49519,0.558261],[1.32885,3.28639,-0.425635],[4.84637,2.77168,2.16423],[1.87043,2.88678,-0.791618],[4.71915,-1.09338,1.24062],[3.17637,-4.61406,-0.0186904],[3.2316,-2.79136,8.00648],[4.72735,1.14194,4.52464],[4.23681,0.00126513,-2.09767]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00732,1.96126,1.02609]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.02217,-0.0306704,0.0997155,-0.0306704,9.02098,0.0418057,0.0997155,0.0418057,15.9525]
-Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.00141116 cdf=0.017655
-Quantile=class=Point name=Unnamed dimension=3 values=[5.2424,8.3636,11.4848]
+Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.000666586 cdf=0.00676915
+Quantile=class=Point name=Unnamed dimension=3 values=[7.2424,8.3636,9.48481]
 CDF(quantile)=0.95
-Reference=
-Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf= 0.00141116 cdf= 0.017655 quantile= class=Point name=Unnamed dimension=3 values=[5.2424,8.3636,11.4848]
-margin=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-margin PDF=0.176033
-margin CDF=0.308538
-margin quantile=class=Point name=Unnamed dimension=1 values=[4.28971]
-margin realization=class=Point name=Unnamed dimension=1 values=[1.45049]
+margin=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.0647588
+margin CDF=0.0668072
+margin quantile=class=Point name=Unnamed dimension=1 values=[6.28971]
+margin realization=class=Point name=Unnamed dimension=1 values=[3.45049]
 margin=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.106483
 margin CDF=0.252493
 margin quantile=class=Point name=Unnamed dimension=1 values=[6.93456]
 margin realization=class=Point name=Unnamed dimension=1 values=[1.00774]
-margin=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-margin PDF=0.0752844
-margin CDF=0.226627
-margin quantile=class=Point name=Unnamed dimension=1 values=[9.57941]
-margin realization=class=Point name=Unnamed dimension=1 values=[3.06617]
+margin=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.096667
+margin CDF=0.401294
+margin quantile=class=Point name=Unnamed dimension=1 values=[7.57941]
+margin realization=class=Point name=Unnamed dimension=1 values=[1.06617]
 indices=[1,0]
-margins=class=JointDistribution name=JointDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-margins PDF=0.0187444
-margins CDF=0.0779034
-margins quantile=class=Point name=Unnamed dimension=2 values=[3.63486,2.0899]
+margins=class=JointDistribution name=JointDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins PDF=0.00689569
+margins CDF=0.0168683
+margins quantile=class=Point name=Unnamed dimension=2 values=[3.63486,4.0899]
 margins CDF(quantile)=0.5
-margins realization=class=Point name=Unnamed dimension=2 values=[2.80912,1.82864]
-conditional PDF=0.0833062
-conditional CDF=0.274253
-conditional quantile=4.01339
-sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.193334,0.131147,0.0989594]
-sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738]
-sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
-Distribution class=JointDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Parameters [[mu_0_marginal_0 : 1, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 3, sigma_0_marginal_2 : 4],[R_2_1_copula : 0.25, R_3_1_copula : 0, R_3_2_copula : 0.25]]
-PDF      =0.00175369
-PDF (ref)=0.00175369
-CDF      =0.033495
-CDF (ref)=0.033495
-Survival      =0.439015
-Survival (ref)=0.439015
-Inverse survival=class=Point name=Unnamed dimension=3 values=[-3.21773,-4.3266,-5.43546]
-Survival(inverse survival)=0.95
-Quantile      =class=Point name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
-Quantile (ref)=class=Point name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
+margins realization=class=Point name=Unnamed dimension=2 values=[2.80912,3.82864]
+conditional PDF=0.0992381
+conditional CDF=0.460172
+conditional quantile=2.01339
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.150569,0.131147,0.0820402]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.226627,0.566184,0.734014]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.226627,0.566184,0.734014])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00628,2.0077,0.966492]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.0067,0.111055,-0.172045,0.111055,8.82503,0.227309,-0.172045,0.227309,15.8971]
+
+
+
+Distribution class=JointDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution 
+JointDistribution(Normal(mu = 3, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 1, sigma = 4), NormalCopula(R = [[ 1    0.25 0    ]
+ [ 0.25 1    0.25 ]
+ [ 0    0.25 1    ]]))
+Distribution (Markdown)
+JointDistribution
+- name=myDist
+- dimension=3
+- description=[One,Two,Three]
+- copula=NormalCopula(R = [[ 1    0.25 0    ]
+ [ 0.25 1    0.25 ]
+ [ 0    0.25 1    ]])
+
+| Index | Variable | Distribution              |
+|-------|----------|---------------------------|
+|     0 |      One | Normal(mu = 3, sigma = 2) |
+|     1 |      Two | Normal(mu = 2, sigma = 3) |
+|     2 |    Three | Normal(mu = 1, sigma = 4) |
+
+Parameters [[mu_0_marginal_0 : 3, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 1, sigma_0_marginal_2 : 4],[R_2_1_copula : 0.25, R_3_1_copula : 0, R_3_2_copula : 0.25]]
+entropy=7.3681
+entropy (MC)=7.3664
+Mean class=Point name=Unnamed dimension=3 values=[3,2,1]
+Elliptical distribution= true
+Elliptical copula= true
+Independent copula= false
+oneRealization=class=Point name=Unnamed dimension=3 values=[0.896194,2.12065,-0.587189]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[3.78162,2.12225,1.77565],[4.57903,2.87309,1.81748],[3.39359,-3.47326,0.781119],[1.71169,5.63203,6.5806],[3.13368,3.18048,3.35103],[0.78107,-1.99712,-6.07363],[2.87106,-2.54461,-3.87715],[0.780656,1.20508,-3.28975],[2.15355,-4.02038,3.43825],[7.07834,7.47785,-4.28614]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00291,2.00765,1.03717]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.08794,1.56749,0.0303991,1.56749,9.02502,3.03709,0.0303991,3.03709,16.471]
+Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.000863632 cdf=0.014058
+Quantile=class=Point name=Unnamed dimension=3 values=[7.21773,8.3266,9.43546]
 CDF(quantile)=0.95
-conditional PDF=0.0918679
-conditional CDF=0.314532
-conditional quantile=3.44569
-sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.193334,0.136549,0.102715]
-sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.598706,0.542837,0.54008]
-sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.598706,0.542837,0.54008])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
-Mean      =class=Point name=Unnamed dimension=3 values=[1,2,3]
-Mean (ref)=class=Point name=Unnamed dimension=3 values=[1,2,3]
-Standard deviation      =class=Point name=Unnamed dimension=3 values=[2,3,4]
-Standard deviation (ref)=class=Point name=Unnamed dimension=3 values=[2,3,4]
-Skewness       =class=Point name=Unnamed dimension=3 values=[0,0,0]
-Skewness (ref)==class=Point name=Unnamed dimension=3 values=[0,0,0]
-Kurtosis      =class=Point name=Unnamed dimension=3 values=[3,3,3]
-Kurtosis (ref)=class=Point name=Unnamed dimension=3 values=[3,3,3]
-Covariance      =class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,1.5,0,1.5,9,3,0,3,16]
-Covariance (ref)=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,1.5,0,1.5,9,3,0,3,16]
-anotherSample mean=class=Point name=Unnamed dimension=3 values=[1.00628,2.00981,2.97028]
-anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.0067,1.61004,-0.127979,1.61004,8.91755,3.10631,-0.127979,3.10631,16.0344]
+margin=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.0647588
+margin CDF=0.0668072
+margin quantile=class=Point name=Unnamed dimension=1 values=[6.28971]
+margin realization=class=Point name=Unnamed dimension=1 values=[2.91962]
+margin=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.106483
+margin CDF=0.252493
+margin quantile=class=Point name=Unnamed dimension=1 values=[6.93456]
+margin realization=class=Point name=Unnamed dimension=1 values=[-0.550204]
+margin=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.096667
+margin CDF=0.401294
+margin quantile=class=Point name=Unnamed dimension=1 values=[7.57941]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.910159]
+indices=[1,0]
+margins=class=JointDistribution name=JointDistribution dimension=2 copula=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1] marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins PDF=0.00849959
+margins CDF=0.0284415
+margins quantile=class=Point name=Unnamed dimension=2 values=[3.4326,3.95507]
+margins CDF(quantile)=0.5
+margins realization=class=Point name=Unnamed dimension=2 values=[6.76019,3.95371]
+conditional PDF=0.103175
+conditional CDF=0.486238
+conditional quantile=1.71236
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.150569,0.128455,0.0887853]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.226627,0.642736,0.708558]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.226627,0.642736,0.708558])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00512,1.93612,1.01293]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.99297,1.49263,-0.0156456,1.49263,8.82516,2.9395,-0.0156456,2.9395,15.8404]
+
+
+
+Distribution class=JointDistribution name=myDist dimension=3 copula=class=Mixture name=Mixture dimension=3 distributionCollection=[class=IndependentCopula name=Independent copula dimension=3,class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]] base=class=Point name=Unnamed dimension=2 values=[0.5,1] alias=[1,0] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution 
+JointDistribution(Normal(mu = 3, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 1, sigma = 4), Mixture((w = 0.25, d = IndependentCopula(dimension = 3)), (w = 0.75, d = NormalCopula(R = [[ 1    0.25 0    ]
+ [ 0.25 1    0.25 ]
+ [ 0    0.25 1    ]]))))
+Distribution (Markdown)
+JointDistribution
+- name=myDist
+- dimension=3
+- description=[One,Two,Three]
+- copula=Mixture((w = 0.25, d = IndependentCopula(dimension = 3)), (w = 0.75, d = NormalCopula(R = [[ 1    0.25 0    ]
+ [ 0.25 1    0.25 ]
+ [ 0    0.25 1    ]])))
+
+| Index | Variable | Distribution              |
+|-------|----------|---------------------------|
+|     0 |      One | Normal(mu = 3, sigma = 2) |
+|     1 |      Two | Normal(mu = 2, sigma = 3) |
+|     2 |    Three | Normal(mu = 1, sigma = 4) |
+
+Parameters [[mu_0_marginal_0 : 3, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 1, sigma_0_marginal_2 : 4],[]]
+Mean class=Point name=Unnamed dimension=3 values=[3,2,1]
+Elliptical distribution= false
+Elliptical copula= false
+Independent copula= false
+oneRealization=class=Point name=Unnamed dimension=3 values=[-1.41443,-0.0779004,6.08757]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[3.16148,-4.08653,-4.72211],[1.94829,3.81397,-1.10196],[6.51299,7.92436,3.66228],[0.813293,6.14965,0.079626],[1.10376,1.18808,3.37215],[2.45447,0.414036,-0.562594],[2.32834,3.85911,12.5741],[5.97033,5.9757,0.550341],[4.42027,1.22228,2.31874],[0.0750201,4.19876,-0.724726]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[2.99728,1.93126,0.94606]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.99254,1.15377,0.124269,1.15377,9.35877,2.50802,0.124269,2.50802,16.271]
+Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.000814371 cdf=0.0122358
+Quantile=class=Point name=Unnamed dimension=3 values=[7.22405,8.33608,9.4481]
+CDF(quantile)=0.95
+margin=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.0647588
+margin CDF=0.0668072
+margin quantile=class=Point name=Unnamed dimension=1 values=[6.28971]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.848471]
+margin=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.106483
+margin CDF=0.252493
+margin quantile=class=Point name=Unnamed dimension=1 values=[6.93456]
+margin realization=class=Point name=Unnamed dimension=1 values=[-1.60572]
+margin=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.096667
+margin CDF=0.401294
+margin quantile=class=Point name=Unnamed dimension=1 values=[7.57941]
+margin realization=class=Point name=Unnamed dimension=1 values=[6.25041]
+indices=[1,0]
+margins=class=JointDistribution name=JointDistribution dimension=2 copula=class=Mixture name=Mixture dimension=2 distributionCollection=[class=IndependentCopula name=IndependentCopula dimension=2,class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]] base=class=Point name=Unnamed dimension=2 values=[0.5,1] alias=[1,0] marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins PDF=0.00809861
+margins CDF=0.0255482
+margins quantile=class=Point name=Unnamed dimension=2 values=[3.48546,3.99031]
+margins CDF(quantile)=0.5
+margins realization=class=Point name=Unnamed dimension=2 values=[2.95868,4.20588]
+conditional PDF=0.102317
+conditional CDF=0.480556
+conditional quantile=1.77668
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.150569,0.129128,0.0870727]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.226627,0.623598,0.715022]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.226627,0.623598,0.715022])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00816,1.99741,0.993731]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.95396,1.17018,-0.157569,1.17018,9.04306,2.2664,-0.157569,2.2664,16.3394]
+
+
+
+Distribution class=JointDistribution name=myDist dimension=3 core=class=UniformOrderStatistics name=UniformOrderStatistics dimension=3 simplex=class=MeshDomain name=Unnamed mesh=class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=3 data=[[1,1,1],[0,1,1],[0,0,1],[0,0,0]] simplices=[[0,1,2,3]] enclosingSimplex=class=EnclosingSimplexAlgorithm implementation=class=BoundingVolumeHierarchy binNumber=50 strategy=Mean marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution 
+JointDistribution(Normal(mu = 3, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 1, sigma = 4), UniformOrderStatistics(dimension = 3))
+Distribution (Markdown)
+JointDistribution
+- name=myDist
+- dimension=3
+- description=[One,Two,Three]
+- core=UniformOrderStatistics(dimension = 3)
+
+| Index | Variable | Distribution              |
+|-------|----------|---------------------------|
+|     0 |      One | Normal(mu = 3, sigma = 2) |
+|     1 |      Two | Normal(mu = 2, sigma = 3) |
+|     2 |    Three | Normal(mu = 1, sigma = 4) |
+
+Parameters [[mu_0_marginal_0 : 3, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 1, sigma_0_marginal_2 : 4],[]]
+entropy=5.64311
+entropy (MC)=5.64532
+Mean class=Point name=Unnamed dimension=3 values=[1.30743,2,4.38514]
+Elliptical distribution= false
+Elliptical copula= false
+Independent copula= false
+oneRealization=class=Point name=Unnamed dimension=3 values=[1.16473,1.23315,1.67703]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[0.215908,1.94859,3.56712],[1.72054,1.41665,6.74978],[2.39313,1.15569,0.0618393],[2.47253,4.40287,4.50304],[1.56092,0.47767,5.78186],[0.522214,-0.718746,6.75521],[-0.39578,4.73016,5.47907],[0.160765,4.85787,5.19197],[0.769952,2.8675,4.02997],[2.06082,5.81484,6.48306]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[1.28889,1.9922,4.35315]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2.24171,1.65884,1.36213,1.65884,4.03964,3.25425,1.36213,3.25425,8.75013]
+Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.00399951 cdf=0.0227625
+Quantile=class=Point name=Unnamed dimension=3 values=[4.23546,6.16386,10.9383]
+CDF(quantile)=0.95
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=Beta name=Beta dimension=1 alpha=1 beta=3 a=0 b=1 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.169185
+margin CDF=0.18733
+margin quantile=class=Point name=Unnamed dimension=1 values=[3.67217]
+margin realization=class=Point name=Unnamed dimension=1 values=[1.81515]
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=Beta name=Beta dimension=1 alpha=2 beta=2 a=0 b=1 marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.120585
+margin CDF=0.159063
+margin quantile=class=Point name=Unnamed dimension=1 values=[5.30435]
+margin realization=class=Point name=Unnamed dimension=1 values=[3.24904]
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=Beta name=Beta dimension=1 alpha=3 beta=1 a=0 b=1 marginal[0]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.0467008
+margin CDF=0.064623
+margin quantile=class=Point name=Unnamed dimension=1 values=[9.48481]
+margin realization=class=Point name=Unnamed dimension=1 values=[2.52092]
+indices=[1,0]
+margins=class=JointDistribution name=JointDistribution dimension=2 core=class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=UniformOrderStatistics name=UniformOrderStatistics dimension=3 simplex=class=MeshDomain name=Unnamed mesh=class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=3 data=[[1,1,1],[0,1,1],[0,0,1],[0,0,0]] simplices=[[0,1,2,3]] enclosingSimplex=class=EnclosingSimplexAlgorithm implementation=class=BoundingVolumeHierarchy binNumber=50 strategy=Mean indices=[1,0] marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins PDF=0.0309275
+margins CDF=0.0753411
+margins quantile=class=Point name=Unnamed dimension=2 values=[2.72816,1.89316]
+margins CDF(quantile)=0.5
+margins realization=class=Point name=Unnamed dimension=2 values=[2.35766,1.86378]
+conditional PDF=0.136739
+conditional CDF=0.256176
+conditional quantile=3.21005
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.0300186,0.190246,0.189113]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.537442,0.685346,0.38687]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.537442,0.685346,0.38687])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[1.32758,2.04178,4.43892]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2.24767,1.65058,1.31535,1.65058,3.9825,3.31977,1.31535,3.31977,8.89621]
+
+
+
+Distribution class=JointDistribution name=myDist dimension=3 core=class=KernelMixture name=KernelMixture kernel=class=Beta name=Beta dimension=1 alpha=2 beta=3 a=0.2 b=0.8 bandwidth=class=Point name=Unnamed dimension=3 values=[1,1,1] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=3 data=[[0,0,0]] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution 
+JointDistribution(Normal(mu = 3, sigma = 2), Normal(mu = 2, sigma = 3), Normal(mu = 1, sigma = 4), KernelMixture(kernel = Beta(alpha = 2, beta = 3, a = 0.2, b = 0.8), bandwidth = [1,1,1], sample = 
+0 : [ 0 0 0 ])
+Distribution (Markdown)
+JointDistribution
+- name=myDist
+- dimension=3
+- description=[One,Two,Three]
+- core=KernelMixture(kernel = Beta(alpha = 2, beta = 3, a = 0.2, b = 0.8), bandwidth = [1,1,1], sample = 
+0 : [ 0 0 0 ]
+
+| Index | Variable | Distribution              |
+|-------|----------|---------------------------|
+|     0 |      One | Normal(mu = 3, sigma = 2) |
+|     1 |      Two | Normal(mu = 2, sigma = 3) |
+|     2 |    Three | Normal(mu = 1, sigma = 4) |
+
+Parameters [[mu_0_marginal_0 : 3, sigma_0_marginal_0 : 2],[mu_0_marginal_1 : 2, sigma_0_marginal_1 : 3],[mu_0_marginal_2 : 1, sigma_0_marginal_2 : 4],[x_0^0_core : 0, h_0_core : 1]]
+entropy=5.19767
+entropy (MC)=3.88293
+Mean class=Point name=Unnamed dimension=3 values=[2.68546,1.52819,0.370924]
+Elliptical distribution= false
+Elliptical copula= false
+Independent copula= false
+oneRealization=class=Point name=Unnamed dimension=3 values=[2.01631,-0.27946,0.808824]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[2.34836,1.24943,1.20811],[1.99841,0.907041,-0.0312187],[3.13525,0.250368,0.15086],[2.02497,1.91411,-1.65737],[2.68345,2.40798,-0.526989],[2.48291,0.689151,1.06407],[3.23655,2.44213,-0.410566],[1.40593,0.675174,1.41943],[2.13836,3.92642,1.41709],[2.46907,1.8888,1.66652]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[2.68537,1.53137,0.383789]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.398306,-0.0120354,-0.0115013,-0.0120354,0.891089,0.009268,-0.0115013,0.009268,1.57741]
+Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0 cdf=0
+Quantile=class=Point name=Unnamed dimension=3 values=[4.03964,3.55946,3.07928]
+CDF(quantile)=0.95
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=KernelMixture name=KernelMixture kernel=class=Beta name=Beta dimension=1 alpha=2 beta=3 a=0.2 b=0.8 bandwidth=class=Point name=Unnamed dimension=1 values=[1] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0
+margin CDF=0
+margin quantile=class=Point name=Unnamed dimension=1 values=[3.77516]
+margin realization=class=Point name=Unnamed dimension=1 values=[2.25633]
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=KernelMixture name=KernelMixture kernel=class=Beta name=Beta dimension=1 alpha=2 beta=3 a=0.2 b=0.8 bandwidth=class=Point name=Unnamed dimension=1 values=[1] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.155143
+margin CDF=0.0407431
+margin quantile=class=Point name=Unnamed dimension=1 values=[3.16275]
+margin realization=class=Point name=Unnamed dimension=1 values=[2.74422]
+margin=class=JointDistribution name=JointDistribution dimension=1 core=class=KernelMixture name=KernelMixture kernel=class=Beta name=Beta dimension=1 alpha=2 beta=3 a=0.2 b=0.8 bandwidth=class=Point name=Unnamed dimension=1 values=[1] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] marginal[0]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margin PDF=0.286412
+margin CDF=0.41124
+margin quantile=class=Point name=Unnamed dimension=1 values=[2.55033]
+margin realization=class=Point name=Unnamed dimension=1 values=[2.54773]
+indices=[1,0]
+margins=class=JointDistribution name=JointDistribution dimension=2 core=class=KernelMixture name=KernelMixture kernel=class=Beta name=Beta dimension=1 alpha=2 beta=3 a=0.2 b=0.8 bandwidth=class=Point name=Unnamed dimension=2 values=[1,1] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=2 data=[[0,0]] marginal[0]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+margins PDF=0
+margins CDF=0
+margins quantile=class=Point name=Unnamed dimension=2 values=[2.05979,3.03986]
+margins CDF(quantile)=0.5
+margins realization=class=Point name=Unnamed dimension=2 values=[1.09898,1.8244]
+conditional PDF=0
+conditional CDF=0
+conditional quantile=4.36648
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.122043,0.243098,0.0176626]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.0111293,0.832468,0.995118]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.0111293,0.832468,0.995118])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[2.70038,1.52644,0.367288]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.406464,0.00197769,0.0034419,0.00197769,0.893273,7.39114e-05,0.0034419,7.39114e-05,1.56214]
 Distribution class=JointDistribution name=myDist2 dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Uniform name=Second dimension=1 a=12345.6 b=123457 marginal[2]=class=TruncatedDistribution name=Third distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
 Distribution 
 JointDistribution(Normal(mu = 0, sigma = 1), Uniform(a = 12345.6, b = 123457), TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]), IndependentCopula(dimension = 3))

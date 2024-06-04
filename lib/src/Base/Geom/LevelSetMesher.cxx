@@ -255,15 +255,15 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                   cobyla.setStartingPoint(delta);
                   LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << cobyla);
                   try
-                    {
-                      cobyla.run();
-                      movedVertices.add(currentVertex + cobyla.getResult().getOptimalPoint());
-                    }
+                  {
+                    cobyla.run();
+                    movedVertices.add(currentVertex + cobyla.getResult().getOptimalPoint());
+                  }
                   catch(...)
-                    {
-                      LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
-                      movedVertices.add(currentVertex + delta);
-                    }
+                  {
+                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
+                    movedVertices.add(currentVertex + delta);
+                  }
                 } // User-defined solver failed ?
                 // Restore the use of solve-the-equation if we used minimization due to a difficult vertex
                 minimizeDistance = !solveEquation;

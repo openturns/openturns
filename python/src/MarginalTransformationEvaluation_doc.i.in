@@ -13,7 +13,7 @@ Parameters
 ----------
 distCol : sequence of :class:`~openturns.Distribution`
     A collection of distributions.
-direction : integer
+direction : int
     Flag for the direction of the transformation, either integer or 
     *MarginalTransformationEvaluation.FROM* (associated to the integer 0) or 
     *MarginalTransformationEvaluation.TO* (associated to the integer 1).

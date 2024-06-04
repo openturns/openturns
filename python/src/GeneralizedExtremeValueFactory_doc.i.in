@@ -19,6 +19,8 @@ the parameters of the optimization solver involved in the different estimators:
 - `GeneralizedExtremeValueFactory-MaximumRelativeError`
 - `GeneralizedExtremeValueFactory-MaximumObjectiveError`
 - `GeneralizedExtremeValueFactory-MaximumConstraintError`
+- `GeneralizedExtremeValueFactory-InitializationMethod`
+- `GeneralizedExtremeValueFactory-NormalizationMethod`
 "
 
 // ---------------------------------------------------------------------
@@ -44,8 +46,11 @@ param : sequence of float
 Returns
 -------
 distribution : :class:`~openturns.GeneralizedExtremeValue`
-    The estimated distribution."
+    The estimated distribution.
 
+Notes
+-----
+The estimation strategy described in :meth:`buildAsGeneralizedExtremeValue` is followed."
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValue
@@ -73,7 +78,11 @@ Returns
 distribution : :class:`~openturns.GeneralizedExtremeValue`
     The estimated distribution as a GeneralizedExtremeValue.
     
-    In the first usage, the default GeneralizedExtremeValue distribution is built."
+    In the first usage, the default GeneralizedExtremeValue distribution is built.
+
+Notes
+-----
+The estimate maximizes the log-likelihood of the model."
 
 // ----------------------------------------------------------------------------
 
@@ -249,17 +258,23 @@ covariates : 2-d sequence of float
 muIndices : sequence of int, optional
     Indices of covariates considered for parameter :math:`\mu`.
 
-    By default, an empty sequence, and the index of the constant covariate is added
+    By default, an empty sequence.
+    
+    The index of the constant covariate is added
     if empty or if the covariates do not initially contain a constant column.
 sigmaIndices : sequence of int, optional
     Indices of covariates considered for parameter :math:`\sigma`.
 
-    By default, an empty sequence, and the index of the constant covariate is added
+    By default, an empty sequence.
+    
+    The index of the constant covariate is added
     if empty or if the covariates do not initially contain a constant column.
 xiIndices : sequence of int, optional
     Indices of covariates considered for parameter :math:`\xi`.
 
-    By default, an empty sequence, and the index of the constant covariate is added
+    By default, an empty sequence.
+    
+    The index of the constant covariate is added
     if empty or if the covariates do not initially contain a constant column.
 muLink : :class:`~openturns.Function`, optional
     The :math:`h_{\mu}` function.
@@ -276,11 +291,13 @@ xiLink : :class:`~openturns.Function`, optional
 initializationMethod : str, optional
     The initialization method for the optimization problem: *Gumbel* or *Static*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+    By default, the method *Gumbel* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedExtremeValueFactory-InitializationMethod*).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+    By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedExtremeValueFactory-NormalizationMethod*).
 
 Returns
 -------
@@ -312,7 +329,7 @@ and with three ways of defining :math:`(c_k,d_k)` of the covariate :math:`y_k`:
 - the *CenterReduce* method where :math:`c_k = \dfrac{1}{n} \sum_{i=1}^n y_{k,i}` is the
   covariate mean and :math:`d_k = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (y_{k,i}-c_k)^2}` is the standard deviation of the covariates;
 - the *MinMax* method where :math:`c_k = \min_i y_{k,i}` is the min value of the covariate
-  :math:`y_k` and :math:`d_k = \max_i y_{k,i}- \min_i y_{k,i}` its range;
+  :math:`y_k` and :math:`d_k = \max_i y_{k,i}- \min_i y_{k,i}` its range. This is the default method;
 - the *None* method where :math:`c_k = 0` and :math:`d_k = 1`: in that case, data are not
   normalized.
 
@@ -332,8 +349,8 @@ This relation can be written  as a function of the real covariates:
 
 .. math::
 
-    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^q(y_i^q - c_i^q)
-    \right)
+    \theta_q(y_1^q, \dots, y_{d_q}^q)  & = h_q\left(\sum_{i=1}^{d_q} \beta_i^qy_i^q +
+    \beta_{d_q+1}^q \right)
 
 where:
 
@@ -341,10 +358,9 @@ where:
   the component :math:`\theta_q`,
 - each :math:`\beta_i^{q} \in \Rset`.
 
-To allow one of the parameters to remain constant, i.e. independent of the covariates
-(this will generally be the case for the parameter :math:`\xi`, the library systematically
-adds the constant covariate to the list speciﬁed by the user, even if it means duplicating it
-if the user has already put it in his list.
+To allow some parameters to remain constant, i.e. independent of the covariates
+(this will generally be the case for the parameter :math:`\xi`), the library systematically
+adds the constant covariate to the speciﬁed covariates.
 
 The complete vector of parameters is defined by:
 
@@ -397,7 +413,7 @@ Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
   :math:`(\mu_0, \sigma_0)` from the mean :math:`\hat{M}` and standard variation :math:`\hat{\sigma}` of the data:
   :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma
   \sigma_0` where
-  :math:`\gamma` is Euler's constant;
+  :math:`\gamma` is Euler's constant; then we take the initial point :math:`(\mu_0, \sigma_0, \xi_0 = 0.1)`. This is the default initial point;
 - the *Static* initial point: in that case, we assume that the GEV is stationary and
   :math:`(\mu_0, \sigma_0, \xi_0)`
   is the maximum likelihood estimate resulting from that assumption.
@@ -406,13 +422,14 @@ The result class provides:
 
 - the estimator :math:`\hat{\vect{\beta}}`,
 - the asymptotic distribution of :math:`\hat{\vect{\beta}}`,
-- the parameter functions :math:`\vect{y} \mapsto \vect{\theta}(\vect{y})`,
+- the parameter function :math:`(\vect{\beta}, \vect{y}) \mapsto \vect{\theta}(\vect{\beta},
+  \vect{y})`,
 - the graphs of the parameter functions :math:`y_k \mapsto \theta_q(\vect{y})`, where all the components of
   :math:`\vect{y}` are fixed to a reference value excepted for :math:`y_k`, for each :math:`k`,
 - the graphs of the parameter functions :math:`(y_k, y_\ell) \mapsto\theta_q(\vect{y})`, where all the
   components of :math:`\vect{y}` are fixed to a reference value excepted for
   :math:`(y_k, y_\ell)`, for each :math:`(k,\ell)`,
-- the normalizing functions :math:`(\tau_1, \dots, \tau_d)`,
+- the normalizing function :math:`\vect{y} \mapsto (\tau_1(y_1), \dots, \tau_d(y_d))`,
 - the optimal log-likelihood value :math:`\hat{\vect{\beta}}`,
 - the GEV distribution at covariate :math:`\vect{y}`,
 - the graphs of the quantile functions of order :math:`p`: :math:`y_k \mapsto q_p(Z_{\vect{y}})` where all the components
@@ -455,11 +472,13 @@ xiLink : :class:`~openturns.Function`, optional
 initializationMethod : str, optional
     The initialization method for the optimization problem: *Gumbel* or *Static*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-InitializationMethod*.
+    By default, the method *Gumbel* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedExtremeValueFactory-InitializationMethod*).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
-    The default value depends on the key *GeneralizedExtremeValueFactory-NormalizationMethod*.
+    By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
+    *GeneralizedExtremeValueFactory-NormalizationMethod*).
 
 Returns
 -------
@@ -490,7 +509,7 @@ and with three ways of defining :math:`(c,d)`:
   stamps
   and :math:`d = \sqrt{\dfrac{1}{n} \sum_{i=1}^n (t_i-c)^2}` is the standard deviation of the time stamps;
 - the *MinMax* method where :math:`c = t_1` is the first time and :math:`d = t_n-t_1` the
-  range of the time stamps;
+  range of the time stamps. This is the default method;
 - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not
   normalized.
 
@@ -549,7 +568,8 @@ Two initial points :math:`(\mu_0, \sigma_0, \xi_0)` are proposed:
   :math:`\hat{\sigma}` of the data:
   :math:`\sigma_0 = \dfrac{\sqrt{6}}{\pi} \hat{\sigma}` and :math:`\mu_0 = \hat{M} - \gamma
   \sigma_0` where
-  :math:`\gamma` is Euler's constant;
+  :math:`\gamma` is Euler's constant; then we take the initial point :math:`(\mu_0, \sigma_0,
+  \xi_0 = 0.1)`. This is the default initial point;
 - the *Static* initial point: in that case, we assume that the GEV is stationary and
   :math:`(\mu_0, \sigma_0, \xi_0)`
   is the maximum likelihood estimate resulting from that assumption.

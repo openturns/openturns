@@ -61,7 +61,6 @@ MultiFORMResult SystemFORM::getResult() const
   return multiFORMResult_;
 }
 
-
 /* String converter */
 String SystemFORM::__repr__() const
 {

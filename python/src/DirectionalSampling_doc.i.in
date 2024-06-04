@@ -4,7 +4,7 @@
 Refer to :ref:`directional_simulation`.
 
 Available constructors:
-    DirectionalSampling(*event=ot.Event()*)
+    DirectionalSampling(*event*)
 
     DirectionalSampling(*event, rootStrategy, samplingStrategy*)
 

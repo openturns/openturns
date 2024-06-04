@@ -60,7 +60,7 @@ dimension = ds.data.getDimension() - 1
 print("dimension = ", dimension)
 sampleSize = ds.data.getSize()
 print("sampleSize = ", sampleSize)
-inputSample = ds.data[:, 1: dimension + 1]
+inputSample = ds.data[:, 1 : dimension + 1]
 print("Input :")
 print(inputSample[:5])
 outputSample = ds.data[:, 0]
@@ -251,9 +251,10 @@ print("Confidence interval of the mean = ", confidenceIntervalMean[i])
 # Each vertical bar represents the 95% confidence interval
 # of the estimate of the conditional expectation of the linear regression model.
 
-validation = ot.MetaModelValidation(inputSample, outputSample, metamodel)
+metamodelPredictions = metamodel(inputSample)
+validation = ot.MetaModelValidation(outputSample, metamodelPredictions)
 graph = validation.drawValidation().getGraph(0, 0)
-q2Score = validation.computePredictivityFactor()[0]
+q2Score = validation.computeR2Score()[0]
 graph.setTitle("Q2 = %.2f%%" % (100.0 * q2Score))
 graph.setXTitle("Observations")
 graph.setYTitle("Metamodel")
@@ -264,7 +265,7 @@ view = otv.View(graph)
 
 # %%
 # We see that the linear regression model is not a very accurate
-# metamodel, as can be seen from the relatively low Q2 score.
+# metamodel, as can be seen from the relatively low R2 score.
 # The metamodel predictions are not very close to observations,
 # which is why the points are not close to the diagonal of the plot.
 # Hence, the confidence intervals do not cross the diagonal very often.

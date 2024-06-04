@@ -16,7 +16,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.22
+Version:        1.23rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -32,13 +32,15 @@ BuildRequires:  hdf5-devel
 BuildRequires:  boost-devel
 %if 0%{?suse_version}
 BuildRequires:  mpc-devel
+BuildRequires:  cblas-devel
 %else
 BuildRequires:  libmpc-devel
 %endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
+BuildRequires:  cuba-devel
 %if 0%{?fedora_version} || 0%{?mageia}
-BuildRequires:  pagmo-devel
+BuildRequires:  pagmo2-devel
 %endif
 BuildRequires:  python3-devel
 BuildRequires:  spectra-devel
@@ -53,6 +55,9 @@ BuildRequires:  flexiblas-devel
 BuildRequires:  primesieve-devel
 %else
 BuildRequires:  lapack-devel
+%endif
+%if 0%{?fedora_version} >= 40
+BuildRequires:  nanoflann-devel
 %endif
 
 %description
@@ -94,6 +99,9 @@ Python textual interface to OpenTURNS uncertainty library
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
+%if 0%{?suse_version}
+       -DUSE_CXX17=OFF \
+%endif
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
@@ -103,7 +111,7 @@ make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/doc/%{name}
 
 %check
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on-failure %{?_smp_mflags} -E "cppcheck|ChaosSobol|Kriging" --timeout 1000 --schedule-random || echo "fail"
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} OMP_NUM_THREADS=1 OPENTURNS_NUM_THREADS=1 ctest --output-on-failure %{?_smp_mflags} -E "cppcheck|ChaosSobol|Kriging" --timeout 1000 --schedule-random || echo "fail"
 
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -130,6 +138,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=1 ctest --output-on
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Thu May 02 2024 Julien Schueller <schueller at phimeca dot com> 1.23-1
+- New upstream release
+
 * Tue Nov 14 2023 Julien Schueller <schueller at phimeca dot com> 1.22-1
 - New upstream release
 

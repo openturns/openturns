@@ -1,9 +1,6 @@
 %feature("docstring") OT::ParametricFunction
 "Parametric function.
 
-Available constructor:
-    ParametricFunction(*function, indices, referencePoint, parametersSet*)
-
 It defines a parametric function from *function* by freezing the variables
 marked by the *indices* set to the values of *referencePoint*.
 
@@ -20,7 +17,7 @@ referencePoint : sequence of float
     Values of the frozen variables.
     Must be of size of *indices* if *parametersSet* is *True* (default),
     else its size should be the complementary size of *indices*.
-parametersSet : bool
+parametersSet : bool, optional
     If *True* (default), the frozen variables are the ones referenced
     in *indices*.
     Otherwise, the set variables are the ones referenced in the complementary

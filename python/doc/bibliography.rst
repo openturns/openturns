@@ -20,6 +20,8 @@ Bibliography
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
     `pdf <https://arxiv.org/pdf/1007.0828.pdf>`__
+.. [arnold2008] Arnold B.C, Balakrishnan N., Nagaraja H. N.,
+    *A First Course in Order Statistics*, SIAM, 2008
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__

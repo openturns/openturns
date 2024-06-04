@@ -145,7 +145,7 @@ public:
 
   /** VTK export */
   void exportToVTKFile(const String & fileName) const;
-  
+
   /** Translate realizations in-place */
   FieldImplementation & operator += (const Sample & translation);
   FieldImplementation & operator -= (const Sample & translation);

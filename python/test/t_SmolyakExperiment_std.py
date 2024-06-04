@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -112,7 +111,7 @@ def testSmolyakExperiment1():
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
     level = 3
-    smolyak = otexp.SmolyakExperiment(collection, level)
+    smolyak = ot.SmolyakExperiment(collection, level)
     nodes, weights = smolyak.generateWithWeights()
     numberOfDigits = 14
     nodes = roundSample(nodes, numberOfDigits)
@@ -197,7 +196,7 @@ def testSmolyakExperiment2():
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
     level = 3
-    smolyak = otexp.SmolyakExperiment(collection, level)
+    smolyak = ot.SmolyakExperiment(collection, level)
     nodes = smolyak.generate()
     numberOfDigits = 14
     nodes = roundSample(nodes, numberOfDigits)
@@ -239,7 +238,7 @@ def testSmolyakExperiment3():
         marginalExperiment = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
         collection.append(marginalExperiment)
     level = 3
-    smolyak = otexp.SmolyakExperiment(collection, level)
+    smolyak = ot.SmolyakExperiment(collection, level)
     nodes, weights = smolyak.generateWithWeights()
     # Check size and dimension
     assert nodes.getDimension() == 3
@@ -256,7 +255,7 @@ def testSmolyakExperiment4():
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
     level = 1
-    smolyak = otexp.SmolyakExperiment(collection, level)
+    smolyak = ot.SmolyakExperiment(collection, level)
     nodes, weights = smolyak.generateWithWeights()
     numberOfDigits = 14
     nodes = roundSample(nodes, numberOfDigits)
@@ -293,7 +292,7 @@ def testSmolyakExperiment5():
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
     level = 3
-    smolyak = otexp.SmolyakExperiment(collection, level)
+    smolyak = ot.SmolyakExperiment(collection, level)
     indicesCollection = smolyak.computeCombination()
     print("indicesCollection = ", indicesCollection)
     expected = [[2, 1], [1, 2], [3, 1], [2, 2], [1, 3]]

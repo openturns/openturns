@@ -270,7 +270,9 @@ for idx, v in enumerate(alphas):
     quantileAlpha = computeQuantileAlpha(v)
     vLow, vUp = computeBoundsConfidenceInterval(quantileAlpha)
     boundsPoly = ot.Polygon.FillBetween(x_test, vLow, vUp)
-    boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[idx][0], mycolors[idx][1], mycolors[idx][2]))
+    boundsPoly.setColor(
+        ot.Drawable.ConvertFromHSV(mycolors[idx][0], mycolors[idx][1], mycolors[idx][2])
+    )
     boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 

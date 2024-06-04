@@ -328,11 +328,11 @@ public:
     // Compute stop criterion
     const bool timeout = (dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration());
     bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
-                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
-                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
-                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
-                       || timeout;
+                       && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
+                       && (residualError < dlibAlgorithm_.getMaximumResidualError()))
+                      || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
+                      || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
+                      || timeout;
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;

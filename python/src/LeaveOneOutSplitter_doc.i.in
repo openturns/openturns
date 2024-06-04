@@ -12,10 +12,10 @@ N : int
 Examples
 --------
 >>> import openturns as ot
->>> X = ot.Normal().getSample(10)
->>> splitter = ot.LeaveOneOutSplitter(X.getSize())
+>>> sample = ot.Normal().getSample(10)
+>>> splitter = ot.LeaveOneOutSplitter(sample.getSize())
 >>> for indicesTrain, indicesTest in splitter:
-...     XTrain, XTest = X[indicesTrain], X[indicesTest]
+...     sampleTrain, sampleTest = sample[indicesTrain], sample[indicesTest]
 "
 %enddef
 %feature("docstring") OT::LeaveOneOutSplitter

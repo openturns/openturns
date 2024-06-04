@@ -66,7 +66,6 @@ void FORM::setResult(const FORMResult & formResult)
   formResult_ = formResult;
 }
 
-
 /* String converter */
 String FORM::__repr__() const
 {

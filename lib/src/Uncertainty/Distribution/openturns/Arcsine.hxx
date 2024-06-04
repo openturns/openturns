@@ -78,7 +78,7 @@ public:
   Scalar computeCDF(const Point & point) const override;
   using ContinuousDistribution::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
-  
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 

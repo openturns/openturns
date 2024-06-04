@@ -3,9 +3,6 @@
 
 For :class:`~openturns.Poisson`'s distribution.
 
-Available constructors:
-    CharlierFactory(*lambda=1.0*)
-
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`

@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 conditioningDist = ot.Normal(0.0, 1.0)
-link = ot.SymbolicFunction(['y'], ['y', '0.1+y^2'])
+link = ot.SymbolicFunction(["y"], ["y", "0.1+y^2"])
 conditionedDist = ot.Normal()
 distribution = ot.BayesDistribution(conditionedDist, conditioningDist, link)
 distribution.setDescription(["$Y$", "$X$"])

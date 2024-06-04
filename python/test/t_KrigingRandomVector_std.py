@@ -22,9 +22,7 @@ outputSample = model(inputSample)
 
 # Validation data
 sampleSize = 10
-inputValidSample = ot.JointDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
-    sampleSize
-)
+inputValidSample = ot.JointDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model

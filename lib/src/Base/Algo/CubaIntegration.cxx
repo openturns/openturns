@@ -90,7 +90,7 @@ Point CubaIntegration::integrate(const Function & function,
                                  const Interval & interval) const
 {
   if (function.getInputDimension() != interval.getDimension())
-    throw InvalidArgumentException(HERE) << "Error: interval dimension and input dimension have to match, here interval dimension="<< interval.getDimension() << " and input dimension=" << function.getInputDimension();
+    throw InvalidArgumentException(HERE) << "Error: interval dimension and input dimension have to match, here interval dimension=" << interval.getDimension() << " and input dimension=" << function.getInputDimension();
 #ifdef OPENTURNS_HAVE_CUBA
   const UnsignedInteger inputDimension = interval.getDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
@@ -123,12 +123,12 @@ Point CubaIntegration::integrate(const Function & function,
     const UnsignedInteger key = ResourceMap::GetAsUnsignedInteger("CubaIntegration-cuhre-key"); /* Default integration rule */
 
     Cuhre(inputDimension, outputDimension, ComputeIntegrand,
-            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags, mineval, maximumCallsNumber_,
-            key, NULL, NULL, &nregions, &neval, &fail,
-            const_cast<double*>(integral.data()),
-            const_cast<double*>(error.data()),
-            const_cast<double*>(prob.data()));
+          (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+          maximumAbsoluteError_, flags, mineval, maximumCallsNumber_,
+          key, NULL, NULL, &nregions, &neval, &fail,
+          const_cast<double*>(integral.data()),
+          const_cast<double*>(error.data()),
+          const_cast<double*>(prob.data()));
   }
   else if (algorithmName_ == "divonne")
   {
@@ -144,14 +144,14 @@ Point CubaIntegration::integrate(const Function & function,
     const int nextra = ResourceMap::GetAsUnsignedInteger("CubaIntegration-divonne-nextra"); /* No peakfinder routine */
 
     Divonne(inputDimension, outputDimension, ComputeIntegrand,
-              (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-              maximumAbsoluteError_, flags, seed, mineval,
-              maximumCallsNumber_, key1, key2, key3, maxpass, border,
-              maxchisq, mindeviation, ngiven, inputDimension, NULL, nextra,
-              NULL, NULL, NULL, &nregions, &neval, &fail,
-              const_cast<double*>(integral.data()),
-              const_cast<double*>(error.data()),
-              const_cast<double*>(prob.data()));
+            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+            maximumAbsoluteError_, flags, seed, mineval,
+            maximumCallsNumber_, key1, key2, key3, maxpass, border,
+            maxchisq, mindeviation, ngiven, inputDimension, NULL, nextra,
+            NULL, NULL, NULL, &nregions, &neval, &fail,
+            const_cast<double*>(integral.data()),
+            const_cast<double*>(error.data()),
+            const_cast<double*>(prob.data()));
   }
   else if (algorithmName_ == "suave")
   {
@@ -161,11 +161,11 @@ Point CubaIntegration::integrate(const Function & function,
     const cubareal flatness = ResourceMap::GetAsScalar("CubaIntegration-suave-flatness"); /* Type of norm used to compute the fluctuation in a sample */
 
     Suave(inputDimension, outputDimension, ComputeIntegrand,
-            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags, seed, mineval,
-            maximumCallsNumber_, nnew, nmin, flatness, NULL, NULL,
-            &nregions, &neval, &fail, const_cast<double*>(integral.data()),
-            const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
+          (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+          maximumAbsoluteError_, flags, seed, mineval,
+          maximumCallsNumber_, nnew, nmin, flatness, NULL, NULL,
+          &nregions, &neval, &fail, const_cast<double*>(integral.data()),
+          const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
   else if (algorithmName_ == "vegas")
   {
@@ -176,11 +176,11 @@ Point CubaIntegration::integrate(const Function & function,
     const int gridno = ResourceMap::GetAsUnsignedInteger("CubaIntegration-vegas-gridno"); /* Slot in the internal grid table */
 
     Vegas(inputDimension, outputDimension, ComputeIntegrand,
-            (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
-            maximumAbsoluteError_, flags, seed, mineval,
-            maximumCallsNumber_, nstart, nincrease, nbatch, gridno, NULL,
-            NULL, &neval, &fail, const_cast<double*>(integral.data()),
-            const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
+          (void*)(ppFunctionInterval), nvec, maximumRelativeError_,
+          maximumAbsoluteError_, flags, seed, mineval,
+          maximumCallsNumber_, nstart, nincrease, nbatch, gridno, NULL,
+          NULL, &neval, &fail, const_cast<double*>(integral.data()),
+          const_cast<double*>(error.data()), const_cast<double*>(prob.data()));
   }
 
   if (fail != 0)

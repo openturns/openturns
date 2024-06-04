@@ -46,7 +46,7 @@ distribution : :class:`~openturns.Distribution`
 
 Parameters
 ----------
-N : integer
+N : int
     The  index of the marginal to be extracted.
 
 indices : :class:`~openturns.Indices`, optional

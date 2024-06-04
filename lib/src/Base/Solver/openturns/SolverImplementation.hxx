@@ -105,14 +105,9 @@ public:
   /** Maximum function calls accessor */
   void setMaximumCallsNumber(const UnsignedInteger maximumFunctionEvaluation);
   UnsignedInteger getMaximumCallsNumber() const;
-  // @deprecated
-  void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
-  UnsignedInteger getMaximumFunctionEvaluation() const;
 
   /** Used function calls */
   UnsignedInteger getCallsNumber() const;
-  // @deprecated
-  UnsignedInteger getUsedFunctionEvaluation() const;
 
 protected:
 

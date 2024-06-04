@@ -120,6 +120,14 @@ void RandomWalkMetropolisHastings::setProposal(const Distribution & proposal)
   if (proposal.getDimension() != marginalIndices_.getSize())
     throw InvalidArgumentException(HERE) << "The proposal density dimension (" << proposal.getDimension()
                                          << ") does not match the block size (" << marginalIndices_.getSize() << ")";
+
+  // check the range contains the origin with enough probability
+  const Scalar cdf0 = proposal.computeCDF(Point(proposal.getDimension()));
+  const Scalar qMin = ResourceMap::GetAsScalar("Distribution-QMin");
+  const Scalar qMax = ResourceMap::GetAsScalar("Distribution-QMax");
+  if (!((cdf0 > qMin) && (cdf0 < qMax)))
+    throw InvalidArgumentException(HERE) << "The range of the proposal distribution does not contain the origin with enough probability";
+
   proposal_ = proposal;
 
   // In the following, we try do determine whether the proposal distribution is symmetric.

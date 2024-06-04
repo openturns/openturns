@@ -225,7 +225,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
       if (!SpecFunc::IsNormal(inP[i]))
         throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
-    // evaluate the function on the clipped point (still penalized if outside the bounds) 
+    // evaluate the function on the clipped point (still penalized if outside the bounds)
     Point inClip(inP);
     if (problem.hasBounds())
     {
@@ -326,18 +326,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
   }
   return returnValue;
-}
-
-void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
-{
-  LOGWARN(OSS() << "Cobyla.setIgnoreFailure is deprecated, use setCheckStatus");
-  setCheckStatus(!ignoreFailure);
-}
-
-Bool Cobyla::getIgnoreFailure() const
-{
-  LOGWARN(OSS() << "Cobyla.getIgnoreFailure is deprecated, use getCheckStatus");
-  return !getCheckStatus();
 }
 
 END_NAMESPACE_OPENTURNS

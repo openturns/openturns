@@ -1443,8 +1443,8 @@ Point MatrixImplementation::computeSVD(MatrixImplementation & u,
 }
 
 Point MatrixImplementation::computeSVDInPlace(MatrixImplementation & u,
-                                              MatrixImplementation & vT,
-                                              const Bool fullSVD)
+    MatrixImplementation & vT,
+    const Bool fullSVD)
 {
   int m = nbRows_;
   int n = nbColumns_;

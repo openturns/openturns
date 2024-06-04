@@ -42,7 +42,12 @@ view = otv.View(graph)
 #     \tilde{X}_i = \log X_i - \log X_{i-1}.
 #
 # The resulting time series appears to be reasonably close to stationarity.
-transfDataDJ = ot.Sample([[m.log(dataDowJones[i, 0]) - m.log(dataDowJones[i - 1, 0])] for i in range(1, size)])
+transfDataDJ = ot.Sample(
+    [
+        [m.log(dataDowJones[i, 0]) - m.log(dataDowJones[i - 1, 0])]
+        for i in range(1, size)
+    ]
+)
 curve = ot.Curve(days[:-1], transfDataDJ)
 graph = ot.Graph(
     "Log-daily returns of the Dow Jones Index", "Day index", "Index", True, ""
@@ -157,9 +162,11 @@ r = 3
 peaks, clusters = part.getPeakOverThreshold(u, r)
 nc = len(peaks)
 nu = sum([1 if scalTransfDataDJ[i, 0] > u else 0 for i in range(size)])
-print(f"nc={nc} nu={u} theta={nc/nu:.3f}")
+print(f"nc={nc} nu={u} theta={nc / nu:.3f}")
 graph = clusters.draw(u)
-graph.setTitle('Threshold exceedances and clusters by transformed Dow Jones Index series')
+graph.setTitle(
+    "Threshold exceedances and clusters by transformed Dow Jones Index series"
+)
 view = otv.View(graph)
 
 # %%
@@ -168,7 +175,10 @@ view = otv.View(graph)
 result_LL = factory.buildMethodOfLikelihoodMaximizationEstimator(peaks, u)
 sigma, xi, _ = result_LL.getParameterDistribution().getMean()
 sigma_stddev, xi_stddev, _ = result_LL.getParameterDistribution().getStandardDeviation()
-print(f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})", end=" ")
+print(
+    f"u={u} r={r} nc={nc} sigma={sigma:.2f} ({sigma_stddev:.2f}) xi={xi:.2f} ({xi_stddev:.2f})",
+    end=" ",
+)
 
 # %%
 # We evaluate the :math:`T=100`-year return level which corresponds to the

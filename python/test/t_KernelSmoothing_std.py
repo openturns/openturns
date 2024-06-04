@@ -206,9 +206,9 @@ for nDist in range(len(coll)):
     )
 
 # full degenerate case
-sample = ot.JointDistribution(
-    [ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]
-).getSample(50)
+sample = ot.JointDistribution([ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]).getSample(
+    50
+)
 smoothed = ot.KernelSmoothing().build(sample)
 print(smoothed.getSample(3))
 

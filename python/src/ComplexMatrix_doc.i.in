@@ -3,9 +3,9 @@
 
 Parameters
 ----------
-nr : integer
+nr : int
     The number of rows of the complex matrix.
-nc : integer
+nc : int
     The number of columns of the complex matrix.
 values : sequence of complex number, optional
     The sequence must have :math:`n_r \times n_c` elements. It might be a
@@ -92,7 +92,7 @@ OT_ComplexMatrix_conjugateTranspose_doc
 
 Returns
 -------
-nc : integer
+nc : int
     The number of columns of :math:`\mat{M}`."
 %enddef
 %feature("docstring") OT::ComplexMatrix::getNbColumns
@@ -105,7 +105,7 @@ OT_ComplexMatrix_getNbColumns_doc
 
 Returns
 -------
-nr : integer
+nr : int
     The number of rows of :math:`\mat{M}`."
 %enddef
 %feature("docstring") OT::ComplexMatrix::getNbRows

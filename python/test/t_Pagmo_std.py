@@ -190,7 +190,7 @@ for name in ["gaco", "ihs", "sga"]:
 # check internal reordering of integer components
 def minlp_obj2(x):
     x1, x2, x3 = x
-    return [x1 + 100 * (x3 - x2**2)**2 + (1 - x2)**2]
+    return [x1 + 100 * (x3 - x2**2) ** 2 + (1 - x2) ** 2]
 
 
 f = ot.PythonFunction(3, 1, minlp_obj2)
@@ -199,9 +199,11 @@ pop0 = ot.JointDistribution([ot.Poisson()] + [ot.Uniform(-5.0, 5.0)] * 2).getSam
 problem = ot.OptimizationProblem(f)
 problem.setBounds(bounds)
 problem.setVariablesType(
-    [ot.OptimizationProblemImplementation.INTEGER,
-     ot.OptimizationProblemImplementation.CONTINUOUS,
-     ot.OptimizationProblemImplementation.CONTINUOUS]
+    [
+        ot.OptimizationProblemImplementation.INTEGER,
+        ot.OptimizationProblemImplementation.CONTINUOUS,
+        ot.OptimizationProblemImplementation.CONTINUOUS,
+    ]
 )
 algo = ot.Pagmo(problem, "gaco", pop0)
 algo.run()

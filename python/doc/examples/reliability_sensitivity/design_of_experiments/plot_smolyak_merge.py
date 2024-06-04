@@ -4,7 +4,7 @@ Merge nodes in Smolyak quadrature
 """
 # %%
 # The goal of this example is to see the effect of the merge algorithm in
-# Smolyak's quadrature implemented in :class:`openturns.experimental.SmolyakExperiment`.
+# Smolyak's quadrature implemented in :class:`openturns.SmolyakExperiment`.
 # We analyse the sensitivity of the number of nodes to the relative
 # and absolute tolerances.
 # Then we analyse the effect of the merge algorithm on the number of nodes.
@@ -12,7 +12,6 @@ Merge nodes in Smolyak quadrature
 # %%
 import numpy as np
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import matplotlib.pyplot as plt
 
@@ -46,7 +45,7 @@ def computeNumberOfSmolyakNodes(level, epsilon_a, epsilon_r):
     ot.ResourceMap.SetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", epsilon_a)
     uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [uniform] * 2
-    experiment = otexp.SmolyakExperiment(collection, level)
+    experiment = ot.SmolyakExperiment(collection, level)
     nodes, weights = experiment.generateWithWeights()
     size = nodes.getSize()
     return size

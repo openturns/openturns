@@ -154,7 +154,7 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-method : integer
+method : int
     An integer corresponding to a specific estimator method:
 
     - 0 : Local likelihood maximum estimator
@@ -196,7 +196,7 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-method : integer
+method : int
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
 
     - 0 : Local likelihood maximum estimator

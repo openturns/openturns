@@ -45,6 +45,6 @@ with open("metamodel.pkl", "rb") as f:
 
 # %%
 # Reuse the loaded metamodel
-x = [6.70455e+10, 300.0, 2.55, 1.45385e-07]
+x = [6.70455e10, 300.0, 2.55, 1.45385e-07]
 y = metamodel(x)
 print(y)

@@ -70,7 +70,7 @@ public:
   IntegrationAlgorithm getAlgorithm() const;
 
   void setAlgorithm(const IntegrationAlgorithm & algorithm);
-  
+
   /** String converter */
   String __repr__() const override;
 

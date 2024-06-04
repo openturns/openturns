@@ -3,9 +3,6 @@
 
 Refer to :ref:`sensitivity_fast`.
 
-Available constructor:
-    FAST(*model, distribution, N, Nr=1, M=4*)
-
 Parameters
 ----------
 model : :class:`~openturns.Function`
@@ -16,12 +13,12 @@ distribution : :class:`~openturns.Distribution`
 N : int, :math:`N > Nr`
     Size of the sample from which the Fourier series are calculated.
     It represents the length of the discretization of the s-space.
-Nr : int, :math:`Nr \geq 1`
+Nr : int, :math:`Nr \geq 1`, optional
     Number of resamplings. The extended FAST method involves a part of
     randomness in the computation of the indices. So it can be asked to
     realize the procedure *Nr* times and then to calculate the
     arithmetic means of the results over the *Nr* estimates.
-M : int, :math:`0 < M < N`
+M : int, :math:`0 < M < N`, optional
     Interference factor usually equal to 4 or higher.
     It corresponds to the truncation level of the Fourier series, i.e. the
     number of harmonics that are retained in the decomposition.

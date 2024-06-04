@@ -80,9 +80,6 @@
 %include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
 %include PosteriorDistribution.i
-
-// duplicate helpers
-OTDefaultCollectionConvertFunctions(WeightedExperiment)
-%include SmolyakExperiment.i
+%include UniformOrderStatistics.i
 %include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i

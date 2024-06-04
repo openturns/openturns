@@ -97,7 +97,7 @@ print("Study = ", study)
 
 # %%
 # List names of stored objects
-study.printLabels()
+study.getLabels()
 
 # %%
 # Check our 'distribution' labelled object was loaded

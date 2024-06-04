@@ -31,8 +31,9 @@
 #ifdef OPENTURNS_HAVE_NANOFLANN
 #include <nanoflann.hpp>
 #if NANOFLANN_VERSION < 0x150
-namespace nanoflann {
-  using SearchParameters = SearchParams;
+namespace nanoflann
+{
+using SearchParameters = SearchParams;
 }
 #endif
 #endif
@@ -287,9 +288,9 @@ class KDTreeSampleAdaptor
 {
 public:
   explicit KDTreeSampleAdaptor(const Sample & points)
-  : data_(points.getImplementation()->data())
-  , size_(points.getSize())
-  , dimension_(points.getDimension())
+    : data_(points.getImplementation()->data())
+    , size_(points.getSize())
+    , dimension_(points.getDimension())
   {
   }
 
@@ -316,9 +317,9 @@ private:
 };
 
 
-using nano_kd_tree_t = nanoflann::KDTreeSingleIndexAdaptor<
-        nanoflann::L2_Simple_Adaptor<Scalar, KDTreeSampleAdaptor >,
-        KDTreeSampleAdaptor, -1>;
+using nano_kd_tree_t = nanoflann::KDTreeSingleIndexAdaptor <
+                       nanoflann::L2_Simple_Adaptor<Scalar, KDTreeSampleAdaptor >,
+                       KDTreeSampleAdaptor, -1 >;
 
 
 // insulation class for nanoflann implementation

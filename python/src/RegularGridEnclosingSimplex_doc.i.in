@@ -1,9 +1,6 @@
 %feature("docstring") OT::RegularGridEnclosingSimplex
 "Specialized point location algorithm on RegularGrid.
 
-Available constructors:
-    RegularGridEnclosingSimplex(*regularGrid*)
-
 Parameters
 ----------
 regularGrid : :class:`~openturns.RegularGrid`

@@ -1,8 +1,12 @@
 The OpenTURNS library and all its derivatives are distributed under the LGPL license, see COPYING and COPYING.LESSER.
 
-This library depends on different third-party codes, some of which being distributed under the GPL license. These dependencies are either mandatory or optional, but in all cases they are used with the explicit permission of their respective authors. All the details are in their respective COPYING files, and here is the list of the impacted dependencies:
-+ the optional hmat library
-+ the mandatory poissoninv set of functions for the efficient computation of the
-  Poisson quantile function.
-
-If you use OpenTURNS as a dependency of your own project, you are not contaminated by the GPL license of these codes as long as you use only their OpenTURNS interfaces and not their native interfaces.
+This library bundles several third-party codes with various licenses compatible with the LGPL:
+- COBYLA optimization solver (lib/src/Base/Optim/algocobyla.*) under Expat license, see COPYING.cobyla
+- Mersenne twister RNG (lib/src/Base/Stat/dsfmt.*) under BSD license, see COPYING.dsfmt
+- Ev3 symbolic library (lib/src/Base/Diff/Ev3/*) under LGPL license, see COPYING.ev3
+- ExprTk symbolic parser (lib/src/Base/Func/openturns/exprtk.hpp) under Expat license, see COPYING.exprtk
+- Faddeeva function (lib/src/Base/Func/SpecFunc/Faddeeva.*) under Expat license, see COPYING.faddeeva
+- Kendall Tau (lib/src/Base/Stat/kendall.c) under BSL license, see COPYING.kendall
+- KissFFT (lib/src/Base/Algo/kissfft.hh), under BSD license, see COPYING.kissfft
+- KS distribution from Cephes library (lib/src/Uncertainty/Distribution/cephes/*) under BSD license, see COPYING.cephes
+- TNC optimization solver (lib/src/Base/Optim/algotnc.*) under Expat license, see COPYING.tnc

@@ -83,7 +83,7 @@ OT_DistributionFactory_buildEstimator_doc
 
 Returns
 -------
-size : integer
+size : int
     Size of the bootstrap."
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::getBootstrapSize
@@ -96,7 +96,7 @@ OT_DistributionFactory_getBootstrapSize_doc
 
 Parameters
 ----------
-size : integer
+size : int
     The size of the bootstrap."
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::setBootstrapSize

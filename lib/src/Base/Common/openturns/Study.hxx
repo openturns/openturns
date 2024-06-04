@@ -194,9 +194,6 @@ public:
   /** Labels accessor */
   std::vector<String> getLabels() const;
 
-  /** @deprecated Print all the labels in the study */
-  String printLabels() const;
-
 protected:
 
   /** Define a label for an object */

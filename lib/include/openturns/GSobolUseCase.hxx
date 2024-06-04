@@ -30,79 +30,79 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class GSobolUseCase
 {
-  public:
-    /* Default constructor */
-    GSobolUseCase(const UnsignedInteger & dimension, const Point & a) 
+public:
+  /* Default constructor */
+  GSobolUseCase(const UnsignedInteger & dimension, const Point & a)
     : dimension_(dimension)
     , a_(a)
     , mean_(1.0)
+  {
+    // Reference analytical values
+    ;
+    variance_ = 1.0;
+    // Create the gSobol function
+    Description inputVariables(dimension);
+    Description formula(1);
+    formula[0] = "1.0";
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      // Reference analytical values
-      ;
-      variance_ = 1.0;
-      // Create the gSobol function
-      Description inputVariables(dimension);
-      Description formula(1);
-      formula[0] = "1.0";
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        variance_ *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
-        inputVariables[i] = (OSS() << "xi" << i);
-        formula[0] = (OSS() << formula[0] << " * (abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << ")");
-      }
-      --variance_;
+      variance_ *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
+      inputVariables[i] = (OSS() << "xi" << i);
+      formula[0] = (OSS() << formula[0] << " * (abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << ")");
+    }
+    --variance_;
 
-      model_ = SymbolicFunction(inputVariables, formula);
+    model_ = SymbolicFunction(inputVariables, formula);
 
-      // Create the input distribution
-      Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
-      inputDistribution_ = JointDistribution(marginals);
-    }
-    
-    Function getModel()
+    // Create the input distribution
+    Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
+    inputDistribution_ = JointDistribution(marginals);
+  }
+
+  Function getModel()
+  {
+    return model_;
+  }
+
+  UnsignedInteger getDimension()
+  {
+    return dimension_;
+  }
+
+  JointDistribution getInputDistribution()
+  {
+    return inputDistribution_;
+  }
+
+  Scalar getMean()
+  {
+    return mean_;
+  }
+
+  Scalar getVariance()
+  {
+    return variance_;
+  }
+
+  // Get the first order Sobol’ index of a single input variable or the
+  // interaction (high order) index of a group of variables.
+  Scalar computeSobolIndex(const Indices & indices)
+  {
+    Scalar value = 1.0;
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
     {
-      return model_;
+      value *= 1.0 / (3.0 * pow(1.0 + a_[indices[i]], 2.0));
     }
-    
-    UnsignedInteger getDimension()
-    {
-      return dimension_;
-    }
-    
-    JointDistribution getInputDistribution()
-    {
-      return inputDistribution_;
-    }
-    
-    Scalar getMean()
-    {
-      return mean_;
-    }
-    
-    Scalar getVariance()
-    {
-      return variance_;
-    }
-    
-    // Get the first order Sobol’ index of a single input variable or the
-    // interaction (high order) index of a group of variables.
-    Scalar computeSobolIndex(const Indices & indices)
-    {
-      Scalar value = 1.0;
-      for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
-      {
-        value *= 1.0 / (3.0 * pow(1.0 + a_[indices[i]], 2.0));
-      }
-      return value / variance_;
-    }
-    
-  private:
-    Function model_;
-    JointDistribution inputDistribution_;
-    UnsignedInteger dimension_;
-    Point a_;
-    Scalar mean_;
-    Scalar variance_;
+    return value / variance_;
+  }
+
+private:
+  Function model_;
+  JointDistribution inputDistribution_;
+  UnsignedInteger dimension_;
+  Point a_;
+  Scalar mean_;
+  Scalar variance_;
 
 }; /* class GSobolUseCase */
 

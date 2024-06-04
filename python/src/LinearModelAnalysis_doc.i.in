@@ -16,7 +16,7 @@ This class relies on a linear model result structure and analyses the results.
 
 By default, on graphs, labels of the 3 most significant points are displayed.
 This number can be changed by modifying the ResourceMap key
-(``LinearModelAnalysis-Identifiers``).
+(``LinearModelAnalysis-IdentifiersNumber``).
 
 The class has a pretty-print method which is triggered by
 the `print()` function.

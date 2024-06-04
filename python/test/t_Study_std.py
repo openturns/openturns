@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import os
 import inspect
 
@@ -8,41 +9,36 @@ ot.TESTPREAMBLE()
 ot.Log.Show(ot.Log.NONE)
 
 # find all instanciable classes
-instanciables = []
-for name, obj in inspect.getmembers(ot):
-    if inspect.isclass(obj):
-        cn = obj.__name__
-        if "Interface" in cn or "Pointer" in cn:
-            continue
-        if cn.startswith("_") or cn.endswith("Collection"):
-            continue
-        try:
-            instance = obj()
-            print(obj.__name__, "YES")
-            instanciables.append(obj)
-        except Exception:
-            print(obj.__name__, "NO")
+persistentClasses = {}
+for mod in [ot, otexp]:
+    for name, obj in inspect.getmembers(mod):
+        if inspect.isclass(obj) and issubclass(obj, ot.PersistentObject):
+            persistentClasses[obj.__name__] = obj
 
 # save / load
 fileName = "studyStd.xml"
-for class_ in instanciables:
+failed = []
+for cname, class_ in persistentClasses.items():
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
-
-    print(class_.__name__)
+    print(cname)
     try:
         instance = class_()
-        study.add(class_.__name__, instance)
+        study.add(cname, instance)
         study.save()
         study = ot.Study()
         study.setStorageManager(ot.XMLStorageManager(fileName))
         study.load()
         os.remove(fileName)
         instance = class_()
-        study.fillObject(class_.__name__, instance)
-        print(class_.__name__, "OK")
+        study.fillObject(cname, instance)
+        print(cname, "OK")
     except Exception as exc:
-        print("--", class_.__name__, exc)
+        failed += [cname]
+        print("--", cname, exc)
+print(f"==== {len(failed)} failures / {len(persistentClasses)} classes ====")
+print(f"failed={failed}")
+assert len(failed) < 43, f"{len(failed)} serialization failures: {failed}"
 
 # non-ascii filename
 fileName = "utf_é.xml"

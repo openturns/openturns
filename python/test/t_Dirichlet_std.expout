@@ -30,7 +30,7 @@ Unilateral confidence interval (upper tail)= [1.8464e-05, 1]
 beta= [0.95]
 mean= class=Point name=Unnamed dimension=1 values=[0.333333]
 standard deviation= class=Point name=Unnamed dimension=1 values=[0.125988]
-skewness= class=Point name=Unnamed dimension=1 values=[1.92418]
+skewness= class=Point name=Unnamed dimension=1 values=[0.680301]
 kurtosis= class=Point name=Unnamed dimension=1 values=[1.90909]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.126984]
 conditional PDF=0.442267
