@@ -27,6 +27,7 @@
 #include "openturns/KDTree.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/Combinations.hxx"
+#include "openturns/CombinationsDistribution.hxx"
 #include "openturns/CholeskyMethod.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 
@@ -79,11 +80,29 @@ struct LVNeighboorhoodPolicy
 {
   const LOLAVoronoi & lola_;
   const KDTree & tree_;
+  IndicesCollection candidateCombinations_;
 
   LVNeighboorhoodPolicy(const LOLAVoronoi & lola, const KDTree & tree)
     : lola_(lola)
     , tree_(tree)
-  {}
+  {
+    const UnsignedInteger m = 2 * lola_.x_.getDimension();
+    const UnsignedInteger k = std::min(lola_.x_.getSize(), m + lola_.neighbourhoodCandidatesNumber_ + 1);
+    const UnsignedInteger maximumCombinationsNumber = ResourceMap::GetAsUnsignedInteger("LOLAVoronoi-DefaultMaximumCombinationsNumber");
+    if (SpecFunc::LogGamma(k) - SpecFunc::LogGamma(m+1) - SpecFunc::LogGamma(k-m) > std::log(maximumCombinationsNumber))
+      {
+        candidateCombinations_ = IndicesCollection(maximumCombinationsNumber, m);
+        const CombinationsDistribution distribution(m, k - 1);
+        for (UnsignedInteger i = 0; i < maximumCombinationsNumber; ++i)
+          {
+            const Point point(distribution.getRealization());
+            for (UnsignedInteger j = 0; j < m; ++j)
+              candidateCombinations_(i, j) = static_cast<UnsignedInteger>(point[j]);
+          } // i
+      } // Large combination number
+    else
+      candidateCombinations_ = Combinations(m, k - 1).generate();
+  }
 
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & rnge) const
   {
@@ -98,15 +117,14 @@ struct LVNeighboorhoodPolicy
       candidateIndices.erase(candidateIndices.begin() + indexI, candidateIndices.begin() + indexI + 1);
 
       // explore all combinations of the neighbouring points
-      const IndicesCollection candidateCombinations(Combinations(m, k - 1).generate());
       Scalar bestNeighbourhoodScore = 0.0;
-      for (UnsignedInteger n = 0; n < candidateCombinations.getSize(); ++ n)
+      for (UnsignedInteger n = 0; n < candidateCombinations_.getSize(); ++ n)
       {
         // the cohesion is defined as the average distance of all neighbours from the origin (3.3)
         Scalar cohesion = 0.0;
         for (UnsignedInteger j = 0; j < m; ++ j)
         {
-          const Point xj(lola_.x_[candidateIndices[candidateCombinations(n, j)]]);
+          const Point xj(lola_.x_[candidateIndices[candidateCombinations_(n, j)]]);
           // sadly KDTree does not give the distances
           cohesion += Point(lola_.x_[i] - xj).norm() / m;
         }
@@ -117,8 +135,8 @@ struct LVNeighboorhoodPolicy
         {
           for (UnsignedInteger j2 = j1 + 1; j2 < m; ++ j2)
           {
-            const Point xj1(lola_.x_[candidateIndices[candidateCombinations(n, j1)]]);
-            const Point xj2(lola_.x_[candidateIndices[candidateCombinations(n, j2)]]);
+            const Point xj1(lola_.x_[candidateIndices[candidateCombinations_(n, j1)]]);
+            const Point xj2(lola_.x_[candidateIndices[candidateCombinations_(n, j2)]]);
             adhesion += Point(xj1 - xj2).norm() / (m * (m - 1));
           }
         }
@@ -132,7 +150,7 @@ struct LVNeighboorhoodPolicy
         {
           Indices neighbourhood;
           for (UnsignedInteger j = 0; j < m; ++ j)
-            neighbourhood.add(candidateIndices[candidateCombinations(n, j)]);
+            neighbourhood.add(candidateIndices[candidateCombinations_(n, j)]);
           lola_.neighbourhood_[i] = neighbourhood;
           bestNeighbourhoodScore = neighbourhoodScore;
         }
@@ -279,8 +297,27 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
     // sample in the box containing the neighbourhood of x_i
     const Point width(d, neighbourhoodMaximumDistance);
     const Interval bounds(xi - width, xi + width);
-    const TruncatedDistribution truncated(distribution_, bounds);
-    const Sample voronoiSample(truncated.getSample(voronoiSamplingSize_));
+    Sample voronoiSample;
+    if (ResourceMap::GetAsBool("LOLAVoronoi-UseTruncatedDistribution"))
+      {
+        const TruncatedDistribution truncated(distribution_, bounds);
+        voronoiSample = truncated.getSample(voronoiSamplingSize_);
+      }
+    else
+      {
+        voronoiSample = Sample(voronoiSamplingSize_, distribution_.getDimension());
+        UnsignedInteger index = 0;
+        while (index < voronoiSamplingSize_)
+          {
+            const Point point(distribution_.getRealization());
+            if (bounds.contains(point))
+              {
+                for (UnsignedInteger j = 0; j < point.getDimension(); ++j)
+                  voronoiSample(index, j) = point[j];
+                ++index;
+              }
+          } // while
+      } // else
     Point newPoint;
     Scalar candidatesMaximumDistance = 0.0;
     for (UnsignedInteger k = 0; k < voronoiSamplingSize_; ++ k)

@@ -274,6 +274,8 @@
   <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
   <!-- OT::LOLAVoronoi parameters -->
+  <LOLAVoronoi-UseTruncatedDistribution value_bool="true" />
+  <LOLAVoronoi-DefaultMaximumCombinationsNumber value_int="100" />
   <LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber value_int="15" />
   <LOLAVoronoi-DefaultVoronoiSamplingSize value_int="1000" />
 

@@ -906,6 +906,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
   // LOLAVoronoi parameters //
+  addAsBool("LOLAVoronoi-UseTruncatedDistribution", true);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultMaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
   addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
 
