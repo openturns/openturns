@@ -176,7 +176,8 @@ trajectories = process.getSample(10)
 type(trajectories)
 
 # %%
-# The `getSample` method returns a :class:`~openturns.ProcessSample`. By comparison, the `getSample` method of a :class:`~openturns.KrigingRandomVector` would return a :class:`~openturns.Sample`.
+# The `getSample` method returns a :class:`~openturns.ProcessSample`.
+# By comparison, the `getSample` method of a :class:`~openturns.KrigingRandomVector` would return a :class:`~openturns.Sample`.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3

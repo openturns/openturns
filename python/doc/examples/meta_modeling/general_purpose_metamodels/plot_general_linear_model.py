@@ -27,7 +27,8 @@ x = distribution.getSample(100)
 y = model(x)
 
 # %%
-# We create a :class:`~openturns.GeneralLinearModelAlgorithm` based on a linear basis. The `run` method estimates the coefficients of the trend and the hyperparameters of the covariance model.
+# We create a :class:`~openturns.GeneralLinearModelAlgorithm` based on a linear basis.
+# The `run` method estimates the coefficients of the trend and the hyperparameters of the covariance model.
 
 # %%
 basis = ot.LinearBasisFactory(dimension).build()
@@ -74,5 +75,6 @@ plt.show()
 # %%
 # We see that the metamodel is equal to the trend because it takes into account the fact that the mean of the Gaussian process is zero.
 #
-# This :class:`~openturns.GeneralLinearModelAlgorithm` class is the main building block of the :class:`~openturns.KrigingAlgorithm`.
+# This :class:`~openturns.GeneralLinearModelAlgorithm` class is the main building block 
+# of the :class:`~openturns.KrigingAlgorithm`.
 # This is why most basic use cases are based on the :class:`~openturns.KrigingAlgorithm` instead of the :class:`~openturns.GeneralLinearModelAlgorithm`, because this allows one to condition the Gaussian process.

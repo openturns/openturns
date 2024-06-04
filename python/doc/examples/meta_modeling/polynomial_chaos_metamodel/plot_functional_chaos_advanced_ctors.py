@@ -68,7 +68,8 @@ polyColl[0] = ot.KrawtchoukFactory()
 polyColl[1] = ot.CharlierFactory()
 
 # %%
-# We could also use the automatic selection of the polynomial which corresponds to the distribution: this is done with the :class:`~openturns.StandardDistributionPolynomialFactory` class.
+# We could also use the automatic selection of the polynomial which corresponds to the distribution: 
+# this is done with the :class:`~openturns.StandardDistributionPolynomialFactory` class.
 
 # %%
 for i in range(inputDimension):
