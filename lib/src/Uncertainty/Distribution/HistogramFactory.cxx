@@ -193,22 +193,45 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
-  Scalar hOpt = 0;
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Cannot build an Histogram distribution from a sample of size < 2";
+
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (xMin == xMax)
+    throw InvalidArgumentException(HERE) << "Cannot estimate an Histogram distribution from a constant sample.";
+
+  Scalar hOpt = 0.0;
+  UnsignedInteger binNumber = 0;
+
   if (useQuantile)
   {
     // We use the robust estimation of dispersion based on inter-quartile
     hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
+
     // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
-    if (hOpt == 0.0) LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
+    if (hOpt == 0.0)
+    {
+      LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
+    }
+    else
+      binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
   }
+
   // Here hOpt == 0.0 either because we asked for the standard deviation based bandwidth or because the quantile based bandwidth is zero
   if (hOpt == 0.0)
   {
     // We use the standard deviation
     const Scalar sigma = sample.computeStandardDeviation()[0];
     hOpt = sigma * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
+    binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
   }
+
+  // cap the bin number
+  const UnsignedInteger maximumBinNumber = ResourceMap::GetAsUnsignedInteger("HistogramFactory-MaximumBinNumber");
+  if (binNumber > maximumBinNumber)
+    hOpt = (xMax - xMin) / maximumBinNumber;
+
   return hOpt;
 }
 
