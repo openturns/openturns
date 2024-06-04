@@ -33,7 +33,7 @@ ot.Log.Show(ot.Log.NONE)
 cb = cantilever_beam.CantileverBeam()
 
 # %%
-# We load the function (model) which evaluates the output Y depending on the inputs.
+# We load the function (model) which evaluates the output `Y` depending on the inputs.
 model = cb.model
 
 # %%
@@ -61,13 +61,13 @@ Y_train = model(X_train)
 #
 # We first create a Legendre basis of univariate polynomials. In order to convert then into multivariate polynomials, we use a linear enumerate function.
 #
-# The `LegendreFactory` class creates Legendre polynomials.
+# The :class:`~openturns.LegendreFactory` class creates Legendre polynomials.
 
 # %%
 univariateFactory = ot.LegendreFactory()
 
 # %%
-# This factory corresponds to the `Uniform` distribution in the [-1,1] interval.
+# This factory corresponds to the `Uniform` distribution in the :math:`[-1, 1]` interval.
 
 # %%
 univariateFactory.getMeasure()
@@ -100,9 +100,9 @@ basis = ot.Basis(functions)
 
 # %%
 # In order to create the kriging metamodel, we first select a constant trend
-# with the `ConstantBasisFactory` class.
+# with the :class:`~openturns.ConstantBasisFactory` class.
 # Then we use a squared exponential covariance model.
-# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel,
+# Finally, we use the :class:`~openturns.KrigingAlgorithm` class to create the Kriging metamodel,
 # taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
@@ -127,7 +127,7 @@ result.getTrendCoefficients()
 result.getCovarianceModel()
 
 # %%
-# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients.
+# The :class:`~openturns.SquaredExponential` model has one amplitude coefficient and 4 scale coefficients.
 # This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
@@ -185,7 +185,7 @@ result.getTrendCoefficients()
 #
 # Other extensions of this work would be:
 #
-# * to use a Fourier basis with `FourierSeriesFactory`,
-# * wavelets with `HaarWaveletFactory`,
+# * to use a Fourier basis with :class:`~openturns.FourierSeriesFactory`,
+# * wavelets with :class:`~openturns.HaarWaveletFactory`,
 #
 # or any other univariate factory.

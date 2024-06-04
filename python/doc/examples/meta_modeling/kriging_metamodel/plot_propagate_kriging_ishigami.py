@@ -11,7 +11,7 @@ import openturns.viewer as otv
 
 
 # %%
-# We first build the metamodel and then compute its mean with a MonteCarlo
+# We first build the metamodel and then compute its mean with a Monte-Carlo
 # computation.
 #
 # We load the Ishigami model from the usecases module:
@@ -21,7 +21,7 @@ from openturns.usecases import ishigami_function
 im = ishigami_function.IshigamiModel()
 
 # %%
-# We build a design of experiments with a LHS for the three input variables
+# We build a design of experiments with a Latin Hypercube Sampling (LHS) for the three input variables
 # supposed independent.
 experiment = ot.LHSExperiment(im.distributionX, 30, False, True)
 xdata = experiment.generate()
@@ -33,7 +33,7 @@ model = im.model
 ydata = model(xdata)
 
 # %%
-# We define our kriging strategy :
+# We define our Kriging strategy :
 #
 #  - a constant basis in :math:`\mathbb{R}^3` ;
 #  - a squared exponential covariance function.
@@ -46,11 +46,11 @@ algo.run()
 result = algo.getResult()
 
 # %%
-# We finally get the metamodel to use with MonteCarlo.
+# We finally get the metamodel to use with Monte-Carlo.
 metamodel = result.getMetaModel()
 
 # %%
-# We want to estmate the mean of the Ishigami model with MonteCarlo using the
+# We want to estmate the mean of the Ishigami model with Monte-Carlo using the
 # metamodel instead of the exact model.
 #
 # We first create a random vector following the input distribution :
@@ -69,7 +69,7 @@ algo.setBlockSize(1)
 algo.setCoefficientOfVariationCriterionType("NONE")
 
 # %%
-# We run it and store the result :
+# We run it and store the results :
 algo.run()
 result = algo.getResult()
 

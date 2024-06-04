@@ -95,7 +95,7 @@ def compute_sparse_least_squares_chaos(
 
 
 # %%
-# The next function computes the Q2 score by splitting the data set
+# The next function computes the :math:`Q^2` score by splitting the data set
 # into a training set and a test set.
 
 
@@ -135,7 +135,7 @@ def compute_Q2_score_by_splitting(
 
 
 # %%
-# The next function computes the Q2 score by K-Fold.
+# The next function computes the :math:`Q^2` score by K-Fold.
 
 
 # %%
@@ -178,7 +178,7 @@ def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5)
 # ----------------------------
 
 # %%
-# We start by generating the input and output sample. We use a sample size equal to 1000.
+# We start by generating the input and output samples. We use a sample size equal to 1000.
 
 # %%
 im = ishigami_function.IshigamiModel()

@@ -80,7 +80,7 @@ view = otv.View(graph, axes_kw={"aspect": "equal"})
 
 # %%
 # When the number of input dimensions of a polynomial chaos expansion (PCE) increases,
-# each multi-index correspond to a coefficient in the expansion.
+# each multi-index corresponds to a coefficient in the expansion.
 # Hence, the number of multi-indices represents the number of coefficients in the PCE.
 # Plot the number of terms in the basis depending on the maximum total degree
 # for several dimension values.
@@ -106,8 +106,8 @@ graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(graph, figure_kw={"figsize": (5, 4)})
 
 # %%
-# Plot the hyperbolic quasi norm for different values of q.
-# With q=1 stratas are hyperplanes, and in case of isotropy
+# Plot the hyperbolic quasi norm for different values of :math:`q`.
+# With :math:`q = 1` stratas are hyperplanes, and in case of isotropy
 # it is equivalent to the linear enumeration rule.
 
 
@@ -139,7 +139,7 @@ view = otv.View(grid, axes_kw={"aspect": "equal"})
 
 # %%
 # Plot the multi-indices of the linear enumeration rule by stratas.
-# The lower the value of q the lower the number of interactions terms in stratas.
+# The lower the value of :math:`q` the lower the number of interactions terms in stratas.
 grid = ot.GridLayout(2, 2)
 grid.setGraph(0, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 1.0)))
 grid.setGraph(0, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.75)))
@@ -152,15 +152,15 @@ view = otv.View(grid, axes_kw={"aspect": "equal"})
 # Interaction multi-indices are presented in the center of the :math:`(\alpha_1, \alpha_2)` space.
 # We see that when the quasi-norm parameter is close to zero, the enumeration rule
 # shows less interaction multi-indices.
-# Instead, multi-indices close to the X and Y axes represent multivariate polynomials
+# Instead, multi-indices close to the :math:`x` and :math:`y` axes represent multivariate polynomials
 # with high marginal degrees.
-# When q is close to zero, these polynomials with high marginal degrees appear
+# When :math:`q` is close to zero, these polynomials with high marginal degrees appear
 # sooner with the hyperbolic enumeration rule.
 
 # %%
 # Plot the number of terms in the basis depending on the maximum total degree
-# in dimension d=5 for several q-norm values.
-# We observe that the gap between high and low values of q can lead to a gap
+# in dimension :math:`d = 5` for several :math:`q` -norm values.
+# We observe that the gap between high and low values of :math:`q` can lead to a gap
 # in the numbers of terms of an order of magnitude.
 dim = 5
 graph = ot.Graph(
@@ -195,7 +195,7 @@ otv.View.ShowAll()
 # When the quasi-norm parameter is close to 1, then the hyperbolic rule is equal to the
 # linear enumeration rule and the number of coefficients is larger.
 #
-# In practice, we often test several values of the parameter q, in the [0.5, 0.9] range,
+# In practice, we often test several values of the parameter :math:`q`, in the :math:`[0.5, 0.9]` range,
 # for example :math:`q \in \{0.5, 0.6, 0.7, 0.8, 0.9\}`.
 
 # %%
