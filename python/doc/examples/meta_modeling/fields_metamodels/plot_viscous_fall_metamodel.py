@@ -5,7 +5,7 @@ Viscous free fall: metamodel of a field function
 # %%
 #
 # In this example, we present how to create the metamodel of a field function.
-# This examples considers the :ref:`free fall model <use-case-viscous-fall>`.
+# This example considers the :ref:`free fall model <use-case-viscous-fall>`.
 # We create the metamodel automatically using :class:`openturns.experimental.PointToFieldFunctionalChaosAlgorithm`
 # and then also with a manual approach:
 # We first compute the Karhunen-Loève decomposition of a sample of trajectories.
@@ -119,17 +119,17 @@ graph.setYTitle(r"$z$")
 view = otv.View(graph)
 
 # %%
-# We create the lifting function which takes coefficients of the K.-L. modes as inputs and returns the trajectories.
+# We create the lifting function which takes coefficients of the KL modes as inputs and returns the trajectories.
 klLiftingFunction = ot.KarhunenLoeveLifting(klResult)
 
 # %%
-# The `project` method computes the projection of the output sample (i.e. the trajectories) onto the K.-L. modes.
+# The `project` method computes the projection of the output sample (i.e. the trajectories) onto the KL modes.
 outputSampleChaos = klResult.project(outputSample)
 
 # %%
-# step 2: compute the metamodel of the KL modes
+# Step 2: compute the metamodel of the KL modes
 
-# We create a polynomial chaos metamodel which takes the input sample and returns the K.-L. modes.
+# We create a polynomial chaos metamodel which takes the input sample and returns the KL modes.
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSampleChaos, distribution)
 algo.run()
 chaosMetamodel = algo.getResult().getMetaModel()

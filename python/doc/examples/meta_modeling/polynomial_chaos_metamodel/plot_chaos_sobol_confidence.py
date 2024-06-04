@@ -10,7 +10,7 @@ Compute Sobol' indices confidence intervals
 # so we can fallback to bootstrap.
 #
 # Bootstraping the polynomial chaos is presented in [marelli2018]_ as "full bootstraping"
-# and referred to as bootstrap-PCE or bPCE.
+# and referred to as bootstrap-PCE or "bPCE".
 # Full bPCE can be CPU time consuming in some cases, e.g. when the dimension of the input
 # random vector is large or when the training sample size is large.
 # In the fast bPCE method, the sparse polynomial basis identified by the LARS algorithm
@@ -24,9 +24,9 @@ Compute Sobol' indices confidence intervals
 #
 # This involves the following steps:
 #
-# - Generate an initial input/output design of experiment.
-# - Compute a fixed number of bootstrap samples from the original design.
-# - For each input/output boostrap samples, compute Sobol' indices by functional chaos.
+# - Generate an initial input/output design of experiments ;
+# - Compute a fixed number of bootstrap samples from the original design ;
+# - For each input/output boostrap sample, compute Sobol' indices by functional chaos ;
 # - Compute quantiles of these Sobol' indices realizations to get the confidence intervals.
 #
 
@@ -49,7 +49,7 @@ marginals = [distribution.getMarginal(i) for i in range(dim_input)]
 basis = ot.OrthogonalProductPolynomialFactory(marginals)
 
 # %%
-# Generate a learning sample with MC simulation (or retrieve the design from experimental data).
+# Generate a learning sample with Monte-Carlo simulations (or retrieve the design from experimental data).
 ot.RandomGenerator.SetSeed(0)
 N = 35  # size of the experimental design
 X = distribution.getSample(N)
@@ -104,7 +104,7 @@ def computeSparseLeastSquaresChaos(X, Y, basis, total_degree, distribution):
 
 
 # %%
-# Build the chaos metamodel on the design of experiment.
+# Build the chaos metamodel on the design of experiments.
 total_degree = 3
 result = computeSparseLeastSquaresChaos(X, Y, basis, total_degree, distribution)
 metamodel = result.getMetaModel()
@@ -117,7 +117,7 @@ Y_test = g(X_test)
 
 
 # %%
-# The MetaModelValidation class allows one to validate the metamodel on a test sample.
+# The :class:`~openturns.MetaModelValidation` class allows one to validate the metamodel on a test sample.
 # Plot the observed versus the predicted outputs.
 metamodelPredictions = metamodel(X_test)
 val = ot.MetaModelValidation(Y_test, metamodelPredictions)
@@ -340,10 +340,10 @@ _ = otv.View(graph)
 otv.View.ShowAll()
 
 # %%
-# We see that the variable F has the highest sensitivity indices and that confidence intervals
+# We see that the variable `F` has the highest sensitivity indices and that confidence intervals
 # do not change this conclusion.
-# The confidence intervals of the sensitivity indices of the variables L and I are similar
-# so that we cannot say which of L or I is more significant than the other: both variables have
+# The confidence intervals of the sensitivity indices of the variables `L` and `I` are similar
+# so that we cannot say which of `L` or `I` is more significant than the other: both variables have
 # similar sensitivity indices.
-# The least sensitive variable is E, but the confidence intervals do not cross the X axis.
-# Hence, there is no evidence that the Sobol' indices of E are zero.
+# The least sensitive variable is `E`, but the confidence intervals do not cross the X axis.
+# Hence, there is no evidence that the Sobol' indices of `E` are zero.

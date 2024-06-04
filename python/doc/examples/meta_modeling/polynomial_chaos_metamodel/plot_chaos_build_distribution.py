@@ -31,7 +31,7 @@ formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
-# Then we create a sample `x` and compute the corresponding output sample `y`.
+# Then we create a sample :math:`x` and compute the corresponding output sample :math:`y`.
 
 # %%
 distribution = ot.Normal(dimension)
@@ -75,7 +75,7 @@ distribution = ot.FunctionalChaosAlgorithm.BuildDistribution(inputSample)
 distribution
 
 # %%
-# We can also analyse its properties in more details.
+# We can also analyze its properties in more details.
 
 # %%
 for i in range(dimension):
@@ -86,7 +86,7 @@ distribution.getCopula()
 
 # %%
 # The previous call to :meth:`~openturns.MetaModelAlgorithm.BuildDistribution` is what is done internally by the
-# following constructor of `FunctionalChaosAlgorithm`.
+# following constructor of :class:`~openturns.FunctionalChaosAlgorithm`.
 
 # %%
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)

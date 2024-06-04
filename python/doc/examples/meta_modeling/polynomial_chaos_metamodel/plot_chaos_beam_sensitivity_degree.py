@@ -29,7 +29,7 @@ maxDegree = 4
 # For real tests, we suggest using the following parameter value:
 
 # %%
-# maxDegree = 7
+# `maxDegree` = 7
 
 # %%
 # Let us define the parameters of the cantilever beam problem.
@@ -132,7 +132,6 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 
 # %%
 # The following functions compute and plot the R2 predictivity coefficients within the validation plot.
-
 
 # %%
 def computeR2Chaos(chaosResult, inputTest, outputTest):
@@ -243,7 +242,6 @@ def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
 
 # %%
 # The following function uses a boxplot to see the distribution of the R2 coefficients.
-
 
 # %%
 def plotR2Boxplots(r2Sample, N):

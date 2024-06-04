@@ -10,7 +10,7 @@ Apply a transform or inverse transform on your polynomial chaos
 # In this document we present the transformation involved in the creation of a polynomial chaos.
 # Indeed, the polynomial chaos expansion is never directly applied to the input random variable of a model :math:`g`.
 # Instead, the expansion is expressed based on the associated standard random variable.
-# In this example,  we show how to transform a Log-Normal random variable into its standardized variable with the class `DistributionTransformation`.
+# In this example,  we show how to transform a Log-Normal random variable into its standardized variable with the class :class:`~openturns.DistributionTransformation`.
 
 # %%
 # Probabilistic transform
@@ -40,7 +40,7 @@ Apply a transform or inverse transform on your polynomial chaos
 #
 # We want to use the Hermite orthogonal polynomials to expand a Log-Normal random variable:
 #
-# * let :math:`X` follow the Log-Normal distribution with the following parameters: Lognormal(:math:`\mu=3 \times 10^4`, :math:`\sigma=9\times 10^3`),
+# * let :math:`X` follow the Log-Normal distribution with the following parameters: LogNormal(:math:`\mu=3 \times 10^4`, :math:`\sigma=9\times 10^3`),
 # * let :math:`Z=\xi` follow the Normal distribution with zero mean and unit standard deviation (the letter :math:`Z` is often used for standard Normal random variables).
 #
 # Let :math:`F_{LN}` be the CDF of the Log-Normal distribution associated with :math:`X` and let :math:`\Phi` be the CDF of the standard Normal distribution.
@@ -59,7 +59,7 @@ import openturns as ot
 # %%
 # In the first step, we define the LogNormal distribution.
 # Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution.
-# This parametrization can be used thanks to the `ParametrizedDistribution` class.
+# This parametrization can be used thanks to the :class:`~openturns.ParametrizedDistribution` class.
 
 # %%
 Xparam = ot.LogNormalMuSigma(3.0e4, 9.0e3, 15.0e3)  # in N
@@ -86,13 +86,13 @@ sampleZ = Z.getSample(5)
 sampleZ
 
 # %%
-# In the third step, we create the transform T which maps X to Z.
+# In the third step, we create the transform :math:`T` which maps :math:`X` to :math:`Z`.
 
 # %%
 T = ot.DistributionTransformation(X, Z)
 
 # %%
-# We apply this transform on the sample generated from `X`.
+# We apply this transform on the sample generated from :math:`X`.
 
 # %%
 T(sampleX)
@@ -110,8 +110,8 @@ Tinverse(sampleZ)
 # Conclusion
 # ----------
 #
-# The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically.
-# However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`:
+# The :class:`~openturns.DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically.
+# However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`
 # the expansion is based on the standard variables :math:`\xi`.
 # Hence, the absolute values of the corresponding coefficients have no straightforward interpretation,
 # even though squaring them yields the part of the global variance associated with each coefficient.

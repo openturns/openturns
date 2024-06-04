@@ -182,7 +182,7 @@ print("Adjusted R-squared = ", result_both.getAdjustedRSquared())
 # Graphical analyses
 # ------------------
 #
-# Finally, we can rely on the LinearModelAnalysis class in order to analyse
+# Finally, we can rely on the :class:`~openturns.LinearModelAnalysis` class in order to analyse
 # the predictive differences between the obtained models.
 
 # %%
@@ -247,5 +247,5 @@ plt.tight_layout()
 
 # %%
 # The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity
-# should take into account the influence of 2 regession variables as well as the constant term. This is coherent with the results previously
-# obtained
+# should take into account the influence of 2 regression variables as well as the constant term. This is coherent with the results previously
+# obtained.

@@ -46,7 +46,7 @@ X_train = myDistribution.getSample(sampleSize_train)
 Y_train = model(X_train)
 
 # %%
-# The following figure presents the distribution of the vertical deviations Y on the training sample. We observe that the large deviations occur less often.
+# The following figure presents the distribution of the vertical deviations `Y` on the training sample. We observe that the large deviations occur less often.
 
 # %%
 histo = ot.HistogramFactory().build(Y_train).drawPDF()
@@ -60,8 +60,8 @@ view = viewer.View(histo)
 # --------------------
 
 # %%
-# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
+# In order to create the Kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
+# The :class:`~openturns.SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
 # This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
@@ -69,7 +69,7 @@ basis = ot.ConstantBasisFactory(dim).build()
 covarianceModel = ot.SquaredExponential(dim)
 
 # %%
-# Typically, the optimization algorithm is quite good at setting sensible optimization bounds.
+# Typically, the optimization algorithm is quite good at setting optimization bounds.
 # In this case, however, the range of the input domain is extreme.
 
 # %%
@@ -77,7 +77,7 @@ print("Lower and upper bounds of X_train:")
 print(X_train.getMin(), X_train.getMax())
 
 # %%
-# We need to manually define sensible optimization bounds.
+# We need to manually define optimization bounds.
 # Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
 
 # %%
@@ -86,9 +86,9 @@ scaleOptimizationBounds = ot.Interval(
 )
 
 # %%
-# Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
+# Finally, we use the :class:`~openturns.KrigingAlgorithm` class to create the Kriging metamodel.
 # It requires a training sample, a covariance kernel and a trend basis as input arguments.
-# We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
+# We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensitive choice here.
 # We must not forget to actually set the optimization bounds defined above.
 
 # %%

@@ -85,7 +85,7 @@ noiseSample = noise.getSample(n_train)
 
 # %%
 # The following computes the observation as the sum of the function value and of the noise.
-# The couple (`x_train`, `y_train`) is the training set: it is used to compute the coefficients of the polynomial model.
+# The couple (`x_train` , `y_train`) is the training set: it is used to compute the coefficients of the polynomial model.
 
 # %%
 y_train = g(x_train) + noiseSample
@@ -107,31 +107,31 @@ view = otv.View(graph)
 # Compute the coefficients of the polynomial decomposition
 # --------------------------------------------------------
 #
-# Let :math:`y \in \mathbb{R}^n` be a vector of observations.
+# Let :math:`\vect{y} \in \mathbb{R}^n` be a vector of observations.
 # The polynomial model is
 #
 # .. math::
-#    P(x) = \beta_0 + \beta_1 x + ... + \beta_p x^p,
+#    P(\vect{x}) = \beta_0 + \beta_1 \vect{x} + ... + \beta_p \vect{x}^p,
 #
-# for any :math:`x\in\mathbb{R}`, where :math:`p` is the polynomial degree and :math:`\beta\in\mathbb{R}^{p+1}` is the vector of the coefficients of the model.
-# Let :math:`n` be the training sample size and let :math:`x_1,...,x_n \in \mathbb{R}` be the abscissas of the training set.
-# The design matrix :math:`X \in \mathbb{R}^{n \times (p+1)}` is
+# for any :math:`\vect{x}\in\mathbb{R}`, where :math:`p` is the polynomial degree and :math:`\beta\in\mathbb{R}^{p+1}` is the vector of the coefficients of the model.
+# Let :math:`n` be the training sample size and let :math:`\vect{x_1},...,\vect{x_n} \in \mathbb{R}` be the abscissas of the training set.
+# The design matrix :math:`\mat{X} \in \mathbb{R}^{n \times (p+1)}` is
 #
 # .. math::
-#    x_{i,j} = x^j_i,
+#    \vect{x}_{i,j} = \vect{x}^j_i,
 #
 # for :math:`i=1,...,n` and :math:`j=0,...,p`.
 # The least squares solution is:
 #
 # .. math::
-#    \beta^\star = \textrm{argmin}_{\beta \in \mathbb{R}^{p+1}} \| X\beta - y\|_2^2.
+#    \beta^\star = \textrm{argmin}_{\beta \in \mathbb{R}^{p+1}} \| \mat{X}\beta - \vect{y}\|_2^2.
 #
 
 # %%
 # In order to approximate the function with polynomials up to degree 4,
 # we create a list of strings containing the associated monomials.
 # We do not include a constant in the polynomial basis, as this constant term
-# is automatically included in the model by the `LinearLeastSquares` class.
+# is automatically included in the model by the :class:`~openturns.LinearLeastSquares` class.
 # We perform the loop from 1 up to `total_degree` (but the `range` function takes `total_degree + 1` as its second input argument).
 
 # %%
@@ -162,7 +162,7 @@ responseSurface = myLeastSquares.getMetaModel()
 # ------------
 
 # %%
-# The couple (`x_test`, `y_test`) is the test set: it is used to assess the quality of the polynomial model with points that were not used for training.
+# The couple (`x_test` , `y_test`) is the test set: it is used to assess the quality of the polynomial model with points that were not used for training.
 
 # %%
 n_test = 50
@@ -274,7 +274,7 @@ def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
 
 
 # %%
-# In order to see the effect of the polynomial degree, we compare the polynomial fit with degrees equal to 0 (constant), 1 (linear), 3 (cubic) and 9 (enneagonic ?).
+# In order to see the effect of the polynomial degree, we compare the polynomial fit with degrees equal to 0 (constant), 1 (linear), 3 (cubic) and 9.
 
 # %%
 grid = ot.GridLayout(2, 2)
@@ -295,7 +295,7 @@ pl.subplots_adjust(hspace=0.5, wspace=0.5)
 # *exactly* interpolates the observations: the residuals are zeroed.
 #
 # If the locations of the x abscissas could be changed, then the oscillations could be made smaller.
-# This is the method used in gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds.
+# This is the method used in Gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds.
 # In our situation, we make the asssumption that these abscissas cannot be changed: the most obvious choice is to limit the degree of the polynomial.
 # Another possibility is to include a regularization into the least squares solution.
 
@@ -347,9 +347,9 @@ ypredicted_test = responseSurface(basis(x_test))
 residuals = y_test.asPoint() - ypredicted_test.asPoint()
 
 # %%
-# The `normSquare` method computes the square of the Euclidian norm (i.e. the 2-norm).
+# The `normSquare` method computes the square of the Euclidian norm (i.e., the 2-norm).
 # We divide this by the test sample size (so as to compare the error for different sample sizes)
-# and compute the square root of the result (so that the result has the same unit as y).
+# and compute the square root of the result (so that the result has the same unit as `y` ).
 
 # %%
 RMSE = sqrt([residuals.normSquare() / n_test])[0]

@@ -18,7 +18,7 @@ Advanced polynomial chaos construction
 #
 # for any :math:`x_1,x_2,x_3,x_4\in\mathbb{R}`.
 #
-# We assume that the inputs have normal, uniform, gamma and beta distributions :
+# We assume that the inputs have Normal, uniform, gamma and beta distributions :
 #
 # .. math::
 #    X_1 \sim \mathcal{N}(0,1), \qquad X_2 \sim \mathcal{U}(-1,1), \qquad X_3 \sim \mathcal{G}(2.75,1), \qquad X_4 \sim \mathcal{B}(2.5,1,-1,2),
@@ -68,7 +68,7 @@ polyColl[0] = ot.KrawtchoukFactory()
 polyColl[1] = ot.CharlierFactory()
 
 # %%
-# We could also use the automatic selection of the polynomial which corresponds to the distribution: this is done with the `StandardDistributionPolynomialFactory` class.
+# We could also use the automatic selection of the polynomial which corresponds to the distribution: this is done with the :class:`~openturns.StandardDistributionPolynomialFactory` class.
 
 # %%
 for i in range(inputDimension):
@@ -89,7 +89,7 @@ polyColl[3] = ot.JacobiFactory(2.5, 3.5, 1)
 # Create the enumeration function.
 
 # %%
-# The first possibility is to use the `LinearEnumerateFunction`.
+# The first possibility is to use the :class:`~openturns.LinearEnumerateFunction`.
 
 # %%
 enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
@@ -97,14 +97,14 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFun
 multivariateBasis
 
 # %%
-# Another possibility is to use the `HyperbolicAnisotropicEnumerateFunction`, which gives less weight to interactions.
+# Another possibility is to use the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction`, which gives less weight to interactions.
 
 # %%
 q = 0.4
 enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
 
 # %%
-# Create the multivariate orthonormal basis which is the cartesian product of the univariate basis.
+# Create the multivariate orthonormal basis which is the Cartesian product of the univariate basis.
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
@@ -112,7 +112,7 @@ multivariateBasis
 
 # %%
 # Ask how many basis terms there are in the 6-th strata.
-# In the special case of the Linear enumerate function this is also the strata with all the multi-indices of total degree 5.
+# In the special case of the linear enumerate function this is also the strata with all the multi-indices of total degree 5.
 k = 5
 enumerateFunction.getStrataCardinal(k)
 
@@ -152,8 +152,8 @@ p = 15
 truncatureBasisStrategy = ot.FixedStrategy(multivariateBasis, p)
 
 # %%
-# CleaningStrategy : among the maximumConsideredTerms = 500 first polynomials, those which have the mostSignificant = 50 most significant contributions
-# with significance criterion significanceFactor equal to :math:`10^{-4}`
+# CleaningStrategy : among the `maximumConsideredTerms = 500` first polynomials, those which have the `mostSignificant = 50` most significant contributions
+# with significance criterion `significanceFactor` equal to :math:`10^{-4}`
 # The `True` boolean indicates if we are interested in the online monitoring of the current basis update (removed or added coefficients).
 
 # %%
@@ -169,7 +169,7 @@ truncatureBasisStrategy_2 = ot.CleaningStrategy(
 # -------------------------------------------------------------
 
 # %%
-# The technique illustrated is the Least Squares technique where the points come from an design of experiments. Here : the Monte Carlo sampling technique.
+# The technique illustrated is the Least Squares technique where the points come from an design of experiments. Here : the Monte-Carlo sampling technique.
 
 # %%
 sampleSize = 100
@@ -210,12 +210,12 @@ Y = model(X)
 # STEP 4: Creation of the Functional Chaos Algorithm
 # --------------------------------------------------
 #
-# The `FunctionalChaosAlgorithm` class combines
+# The :class:`~openturns.FunctionalChaosAlgorithm` class combines
 #
-# * the model : `model`
-# * the distribution of the input random vector : `distribution`
-# * the truncature strategy of the multivariate basis
-# * and the evaluation strategy of the coefficients
+# * the model : `model`,
+# * the distribution of the input random vector : `distribution` ,
+# * the truncature strategy of the multivariate basis,
+# * and the evaluation strategy of the coefficients.
 
 # %%
 polynomialChaosAlgorithm = ot.FunctionalChaosAlgorithm(

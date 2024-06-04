@@ -33,7 +33,7 @@ Create a sparse chaos by integration
 #   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z})
 #
 # where :math:`\vect{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`
-# is a multiindex, :math:`a_{\vect{\alpha}} \in \mathbb{R}` is the
+# is a multi-index, :math:`a_{\vect{\alpha}} \in \mathbb{R}` is the
 # coefficient,  :math:`\psi_{\vect{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}`
 # is a multivariate polynomial.
 
@@ -43,10 +43,10 @@ Create a sparse chaos by integration
 # -------------------
 # In practice, we cannot consider an infinite series and must truncate
 # the decomposition at a given order. Only a selection of coefficients must
-# be kept. This leads to a subset of all possible multiindices. In the
-# remainder of this text, we call this selection the *multiindex set*.
+# be kept. This leads to a subset of all possible multi-indices. In the
+# remainder of this text, we call this selection the *multi-index set*.
 #
-# Several multiindex sets can be considered. A simple method is to truncate
+# Several multi-index sets can be considered. A simple method is to truncate
 # the polynomial up to a given maximum total degree :math:`d \in \mathbb{N}`.
 # Let :math:`\mathcal{A}^{d}` be the multi-index set defined by
 #
@@ -87,15 +87,15 @@ Create a sparse chaos by integration
 # Low-rank polynomial chaos expansion
 # -----------------------------------
 # For any :math:`\vect{\alpha} \in \mathbb{N}^p`, let
-# :math:`\|\vect{\alpha}\|_0` be the rank of the multiindex, that is,
-# the number of nonzero components:
+# :math:`\|\vect{\alpha}\|_0` be the rank of the multi-index, that is,
+# the number of non-zero components:
 #
 # .. math::
 #
 #   \|\vect{\alpha}\|_0 = \sum_{i = 1}^p \vect{1}_{\alpha_i > 0}
 #
 # where :math:`\vect{1}` is the indicator function.
-# The multiindex set of maximum total degree :math:`d \in \mathbb{N}`
+# The multi-index set of maximum total degree :math:`d \in \mathbb{N}`
 # and maximum rank :math:`j \in \mathbb{N}` is ([blatman2009]_ page 74):
 #
 # .. math::
@@ -122,7 +122,7 @@ Create a sparse chaos by integration
 #
 # Model selection
 # ---------------
-# If :math:`\textrm{card}\left(\mathcal{A}^{d}\right)` is large, many coefficients
+# If :math:`\textrm{Card}\left(\mathcal{A}^{d}\right)` is large, many coefficients
 # may be poorly estimated, which may reduce the quality of the metamodel. We may
 # want to select a subset of the coefficients which best predict the output.
 # In other words, we may compute a subset:
@@ -139,7 +139,7 @@ Create a sparse chaos by integration
 #   a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\vect{z})
 #
 # An enumeration rule is a function from the set of integers :math:`k` to
-# the corresponding set of multiindices :math:`\vect{\alpha}`. More
+# the corresponding set of multi-indices :math:`\vect{\alpha}`. More
 # precisely, let :math:`r : \mathbb{N} \rightarrow \mathbb{N}^p` be the
 # function such that :
 #
@@ -150,8 +150,8 @@ Create a sparse chaos by integration
 # for any :math:`k \geq 0`.
 # Let :math:`K \in \mathbb{N}` be a parameter representing the number of
 # coefficients considered in the selection. Given an enumeration rule for
-# the multiindices :math:`\vect{\alpha}`, at most :math:`K` multiindices
-# will be considered. Let :math:`\mathcal{A}_K` be the corresponding multiindex set :
+# the multi-indices :math:`\vect{\alpha}`, at most :math:`K` multi-indices
+# will be considered. Let :math:`\mathcal{A}_K` be the corresponding multi-index set :
 #
 # .. math::
 #
@@ -161,7 +161,7 @@ Create a sparse chaos by integration
 #
 # Let :math:`\epsilon > 0` be a parameter representing the minimum relative
 # value of a significant coefficient :math:`a_{\vect{\alpha}}`.
-# The :class:`~openturns.CleaningStrategy` uses the following criteria to select the coefficients :
+# The :class:`~openturns.CleaningStrategy` uses the following criterion to select the coefficients :
 #
 # .. math::
 #
@@ -178,10 +178,10 @@ Create a sparse chaos by integration
 #
 # Sparsity index
 # --------------
-# The sparsity index of a multiindex set is the ratio of the cardinality of
-# the multiindex set to the cardinality of the multiindex set of the
-# equivalent multiindex with maximum total degree. For a given multiindex
-# set :math:`\mathcal{A}`, let :math:`d` be the maximum 1-norm of multiindices
+# The sparsity index of a multi-index set is the ratio of the cardinality of
+# the multi-index set to the cardinality of the multi-index set of the
+# equivalent multi-index with maximum total degree. For a given multi-index
+# set :math:`\mathcal{A}`, let :math:`d` be the maximum 1-norm of multi-indices
 # in the set :
 #
 # .. math::
@@ -484,6 +484,7 @@ printCoefficientsTable(result, threshold=1.0e-14)
 # relative factor and returns the R2 score.
 
 
+
 # %%
 def compute_cleaning_PCE(
     maximumConsideredTerms, mostSignificant, significanceFactor, verbose=False
@@ -570,12 +571,12 @@ score_R2 = compute_cleaning_PCE(
 # chaos metamodel is much better: the coefficients are associated with a low
 # polynomial degree, so that the quadrature rule estimates them with greater accuracy.
 #
-# We would like to know which combination is best. In the following loop, we
+# We would like to know which combination is the best. In the following loop, we
 # consider the maximum number of considered coefficients from 1 to 500 and the
 # number of selected coefficients from 1 to 30. In order to produce the
 # combinations, we use the `product` function from the `itertools` module.
 # For each combination, we compute the :math:`Q^2` score and select the
-# combination with highest :math:`Q^2` coefficient. As shown in [muller2016]_
+# combination with the highest :math:`Q^2` coefficient. As shown in [muller2016]_
 # page 268, the computed :math:`Q^2` may be optimistic, but this is not the
 # point of the current example.
 
@@ -630,26 +631,26 @@ score_R2 = compute_cleaning_PCE(
 # `compute_cleaning_PCE` function to `True`, then intermediate messages are
 # printed in the Terminal. For each step of
 # the adaptivity algorithm, the code prints some of the internal parameters
-# of the algorithm. The datastructure uses several variables that we now describe.
+# of the algorithm. The data structure uses several variables that we now describe.
 #
-# - `Psi_k_p_` : the collection of functions in the current active polynomial multiindex set,
+# - `Psi_k_p_` : the collection of functions in the current active polynomial multi-index set,
 # - `I_p_` : the list of indices of the selected coefficients based according to the enumeration rule,
-# - `addedPsi_k_ranks_` : the list of indices to add the multiindex set,
-# - `removedPsi_k_ranks_` : the list of indices to remove to the multiindex set,
-# - `conservedPsi_k_ranks_` : the index of the first polynomial in the selected multiindex set,
-# - `currentVectorIndex_` : the current value of the index in the full multiindex set, according to the enumeration rule.
+# - `addedPsi_k_ranks_` : the list of indices to add the multi-index set,
+# - `removedPsi_k_ranks_` : the list of indices to remove to the multi-index set,
+# - `conservedPsi_k_ranks_` : the index of the first polynomial in the selected multi-index set,
+# - `currentVectorIndex_` : the current value of the index in the full multi-index set, according to the enumeration rule.
 #
 # Each time the selection method is called, it is passed a
 # coefficient :math:`a_{\vect{\alpha}}` which is a new candidate to be
 # considered by the algorithm. The first time the method is evaluated, the
-# active multiindex set is empty, so that it must be filled with the first
-# coefficients in the multiindex set, according to the enumeration rule. The
+# active multi-index set is empty, so that it must be filled with the first
+# coefficients in the multi-index set, according to the enumeration rule. The
 # second time (and up to the end of the algorithm), the candidate coefficient
-# is considered to be added to the multiindex set.
+# is considered to be added to the multi-index set.
 #
 # Executing the function prints messages that we can process to produce the
 # following listing. On each step, we print the list of integers corresponding
-# to the indices of the coefficients in the active multiindex set.
+# to the indices of the coefficients in the active multi-index set.
 
 # %%
 #
@@ -710,13 +711,13 @@ score_R2 = compute_cleaning_PCE(
 #   corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
 # - On step 1, the candidate index 16 is considered. Its coefficient is
 #   :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be
-#   selected. Hence, the basis is unchanged and the active multiindex set
+#   selected. Hence, the basis is unchanged and the active multi-index set
 #   is [0, 1, 7, 10, 15] on the end of this step.
-# - From the step 3 to the step 15, the active multiindex set is unchanged,
+# - From the step 3 to the step 15, the active multi-index set is unchanged,
 #   because no considered coefficient becomes greater than the threshold.
 # - On step 16, the candidate index 30 is considered, with corresponding
 #   coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute
-#   value greater than the threshold, it gets selected and the active multiindex
+#   value greater than the threshold, it gets selected and the active multi-index
 #   set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the
 #   end, the index 30 will not leave the active set.
 # - On the step 20, the index 35 enters the active set.
@@ -725,7 +726,7 @@ score_R2 = compute_cleaning_PCE(
 # - On the step 69, the index 84 enters the active set.
 # - On the step 74, the index 89 enters the active set.
 # - On the step 83, the index 98 enters the active set.
-# - On the last step, the active multiindex set contains the indices
+# - On the last step, the active multi-index set contains the indices
 #   [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding
 #   coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076,
 #   -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
@@ -745,3 +746,4 @@ score_R2 = compute_cleaning_PCE(
 # We see that the :class:`~openturns.CleaningStrategy` class performs correctly in
 # this particular case. We have seen how to select the hyperparameters which
 # produce the best R2 score.
+

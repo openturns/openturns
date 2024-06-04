@@ -156,6 +156,7 @@ def compute_R2_score_by_splitting(
 
 
 # %%
+<<<<<<< HEAD
 def computeMSENaiveKFold(
     inputSample,
     outputSample,
@@ -218,7 +219,6 @@ def computeMSENaiveKFold(
     mse = squaredResiduals.computeMean()
     return mse
 
-
 # %%
 # The next function computes the R2 score by K-Fold.
 
@@ -276,7 +276,7 @@ def compute_R2_score_by_kfold(
 # ----------------------------
 
 # %%
-# We start by generating the input and output sample. We use a sample size equal to 1000.
+# We start by generating the input and output samples. We use a sample size equal to 1000.
 
 # %%
 im = ishigami_function.IshigamiModel()

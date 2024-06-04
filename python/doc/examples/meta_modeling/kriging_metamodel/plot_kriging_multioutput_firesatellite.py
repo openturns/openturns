@@ -64,8 +64,8 @@ basis = ot.Basis(
 
 # %%
 # We would like to have separate covariance models for the three outputs.
-# To do so, we use the `TensorizedCovarianceModel`.
-# For the purpose of illustration, we consider `MaternModel` for the first and third outputs, and `SquaredExponential` for the second output.
+# To do so, we use the :class:`~openturns.TensorizedCovarianceModel`.
+# For the purpose of illustration, we consider :class:`~openturns.MaternModel` for the first and third outputs, and :class:`~openturns.SquaredExponential` for the second output.
 
 # %%
 myCov1 = ot.MaternModel([1.0] * m.dim, 2.5)
@@ -77,7 +77,7 @@ covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 # %%
 # The scaling of the data is really important when dealing with Kriging,
 # especially considering the domain definition of the input variables (the
-# altitude varies in order of 1e7 whereas the drag coefficient is around 1).
+# altitude varies in order of :math:`10^7 whereas the drag coefficient is around 1).
 # We thus define appropriate bounds for the training algorithm based on the
 # domain definition of each variable.
 
@@ -109,7 +109,6 @@ ot.RandomGenerator.SetSeed(1)
 experimentTest = ot.LHSExperiment(inputDistribution, 50 * m.dim)
 inputTestSet = experimentTest.generate()
 outputTestSet = model(inputTestSet)
-outputKriging = krigingMetamodel(inputTestSet)
 
 # %%
 # Then, we use the :class:`~openturns.MetaModelValidation` class to validate the metamodel.
