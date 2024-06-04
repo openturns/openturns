@@ -339,7 +339,7 @@ void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
 void DiscreteMarkovChain::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
-  adv.saveAttribute( "transitionMatrix", transitionMatrix_ );
+  adv.saveAttribute( "transitionMatrix_", transitionMatrix_ );
   adv.saveAttribute( "origin_", origin_ );
   adv.saveAttribute( "currentState_", currentState_ );
 }
