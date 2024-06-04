@@ -91,10 +91,11 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   const Scalar mean = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
-  const Scalar min = sample.getMin()[0];
-  const Scalar max = sample.getMax()[0];
-  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
-  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((max - min) / bandwidth + 0.5));
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
+  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / bandwidth + 0.5));
   return buildAsHistogram(sample, binNumber);
 }
 
@@ -109,23 +110,24 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   const Scalar mean = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
-  const Scalar min = sample.getMin()[0];
-  const Scalar max = sample.getMax()[0];
-  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
-  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
-  const Scalar hOpt = ((max - min) + delta) / binNumber;
+  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (xMax - xMin);
+  const Scalar hOpt = ((xMax - xMin) + delta) / binNumber;
   Point heights(binNumber, 0.0);
   const Scalar step = 1.0 / hOpt;
   // Aggregate the realizations into the bins
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     // The index takes values in [[0, binNumber-1]] because min <= sample(i, 0) <= max and step < binNumber / (max - min)
-    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - min) * step));
+    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - xMin) * step));
     heights[index] += 1.0;
   }
   const Scalar inverseArea = 1.0 / (hOpt * size);
-  Histogram result(min, Point(binNumber, hOpt), heights * inverseArea);
+  Histogram result(xMin, Point(binNumber, hOpt), heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
 }
@@ -194,12 +196,12 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
 {
   const UnsignedInteger size = sample.getSize();
   if (size < 2)
-    throw InvalidArgumentException(HERE) << "Cannot build an Histogram distribution from a sample of size < 2";
+    throw InvalidArgumentException(HERE) << "Cannot build a Histogram distribution from a sample of size < 2";
 
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
-  if (xMin == xMax)
-    throw InvalidArgumentException(HERE) << "Cannot estimate an Histogram distribution from a constant sample.";
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
 
   Scalar hOpt = 0.0;
   UnsignedInteger binNumber = 0;
