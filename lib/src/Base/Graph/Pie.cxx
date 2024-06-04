@@ -190,7 +190,7 @@ void Pie::checkData(const Point & data) const
   }
 
   // Then, check the positivity of the data
-  Scalar max = 0.0;
+  Scalar xMax = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar x = data[i];
@@ -199,13 +199,13 @@ void Pie::checkData(const Point & data) const
       throw InvalidArgumentException(HERE) << "Expected positive values, got " << x;
     }
 
-    if (x > max) max = x;
+    if (x > xMax) xMax = x;
   }
 
   // Check if there is at least one strictly positive data
-  if (!(max > 0.0))
+  if (!(xMax > 0.0))
   {
-    throw InvalidArgumentException(HERE) << "Expected at least one strictly positive data, but max=" << max;
+    throw InvalidArgumentException(HERE) << "Expected at least one strictly positive data, but max=" << xMax;
   }
 }
 

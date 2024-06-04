@@ -102,9 +102,9 @@ void LinearModelResult::checkIntercept()
   {
     const Point column(design.getColumn(j));
     sample.setData(column);
-    const Scalar min = sample.getMin()[0];
-    const Scalar max = sample.getMax()[0];
-    if (min == max)
+    const Scalar xMin = sample.getMin()[0];
+    const Scalar xMax = sample.getMax()[0];
+    if (xMin == xMax)
     {
       cont = false;
       hasIntercept_ = true;
