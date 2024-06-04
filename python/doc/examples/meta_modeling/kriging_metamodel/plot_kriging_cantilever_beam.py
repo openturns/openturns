@@ -60,7 +60,8 @@ view = viewer.View(histo)
 # --------------------
 
 # %%
-# In order to create the Kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
+# In order to create the Kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class.
+# Then we use a squared exponential covariance kernel.
 # The :class:`~openturns.SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
 # This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 

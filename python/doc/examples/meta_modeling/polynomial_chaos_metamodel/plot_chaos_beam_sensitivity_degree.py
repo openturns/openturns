@@ -129,9 +129,12 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     sparsityRate = 1.0 - nbcoeffs / basisSize
     return sparsityRate
 
-
 # %%
+<<<<<<< HEAD
 # The following functions compute and plot the R2 predictivity coefficients within the validation plot.
+=======
+# The following functions compute and plot the :math:`Q^2` predictivity coefficients within the validation plot.
+>>>>>>> 97251e848 (typo fixes --> lines too long)
 
 # %%
 def computeR2Chaos(chaosResult, inputTest, outputTest):
@@ -161,7 +164,6 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
         % (totalDegree, 100 * r2Score, 100 * sparsityRate)
     )
     return graph
-
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
@@ -215,7 +217,6 @@ for totalDegree in range(1, maxDegree + 1):
 # Let us repeat the following experiment to see the variability of the R2 coefficient.
 
 # %%
-
 
 def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
     """For a given sample size N, for degree from 1 to maxDegree,

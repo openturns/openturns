@@ -44,7 +44,9 @@ outputTrain = im.model(inputTrain)
 chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 
 # %%
-# Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution, that is three independent variables :math:`X_1` , :math:`X_2` and :math:`X_3` .
+# Since the input distribution is known in our particular case, 
+# we instead create the multivariate basis from the distribution, 
+# that is three independent variables :math:`X_1` , :math:`X_2` and :math:`X_3` .
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])

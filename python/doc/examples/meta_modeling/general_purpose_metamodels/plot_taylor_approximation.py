@@ -17,7 +17,7 @@ Taylor approximations
 # .. math::
 #    \vect{y} \, \approx \, \widehat{\vect{h}}(\vect{x})
 #
-# for any :math:`\vect{x} \in \Rset^2`. We note  :math:`h_k`, :math:`k=1, 2` the marginal outputs 
+# for any :math:`\vect{x} \in \Rset^2`. We note  :math:`h_k`, :math:`k=1, 2` the marginal outputs
 # In this example, we consider two different approximations:
 #
 # - the first order Taylor expansion,
