@@ -194,6 +194,8 @@ Evaluation AggregatedEvaluation::getMarginal(const Indices & indices) const
     // Check if a bad case occurs: one index related to function i is found after indices related to function j, with j > i. In this case we use the generic marginal extraction
     if (currentIndex < lowerIndex) return EvaluationImplementation::getMarginal(indices);
   }
+  if (marginalFunctions.getSize() == 1)
+    return marginalFunctions[0].getEvaluation();
   return new AggregatedEvaluation(marginalFunctions);
 }
 
