@@ -10,7 +10,7 @@ Estimate a GEV on the Fremantle sea-levels data
 #
 # We illustrate techniques to:
 #
-# - estimate a stationary and a non stationary GEV,
+# - estimate a stationary and a non stationary GEV depending on time or on the covariates (time, SOI),
 # - estimate a return level,
 #
 # using:
@@ -542,7 +542,7 @@ view = otv.View(graph)
 # :math:`(t, \mbox{SOI})`):
 # this is the case for the :math:`\sigma` and :math:`\xi` parameters.
 # This last constant covariate is associated to the
-# the third component of the covariates sample which now gathers the values
+# third component of the covariates sample which now gathers the values
 # :math:`(t_i, \mbox{SOI}_i, 1)` for :math:`1 \leq i \leq n`.
 dataCovariates = data.getMarginal([0, 2])
 print(dataCovariates[0:10])
@@ -560,7 +560,7 @@ print("beta = ", beta)
 
 # %%
 # We get here the function :math:`(\vect{\beta}, t, \mbox{SOI}) \mapsto \vect{\theta}
-# (\vect{\beta}, t, \mbox{SOI})` where :math:`\vect{\theta} = (\mu, \sigma)`. We see that
+# (\vect{\beta}, t, \mbox{SOI})` where :math:`\vect{\theta} = (\mu, \sigma, \xi)`. We see that
 # :math:`\mu` depends on the three
 # covariates :math:`(t, \mbox{SOI}, 1)` and that :math:`\sigma` and :math:`\xi` depends
 # only on the third one
@@ -581,7 +581,7 @@ print(result_Cov.getNormalizationFunction())
 # of the three covariates  :math:`(t, \mbox{SOI}, 1)` against the model
 # with the linear-trend only :math:`\mu(t)`. The maximized log-likelihood of this
 # new model is 53.9, compared to 49.9 for the first model. Hence, the
-# the deviance statistics is equal to :math:`D = 8.0`, which is large when judged relative to
+# deviance statistics is equal to :math:`D = 8.0`, which is large when judged relative to
 # a :math:`\chi_1^2` distribution.
 # It provides evidence that the effect of SOI is influential on annual maximum
 # sea-levels at Fremantle, even after the allowance for time-variation.
@@ -600,7 +600,7 @@ print(
 # We plot here the graphs :math:`t \mapsto \mu(t, \mbox{SOI}_0)` where
 # :math:`\mbox{SOI}_0` is a given value (the mean value of the sample if not specified),
 # and :math:`\mbox{SOI} \mapsto \mu(t_0, \mbox{SOI})` where :math:`t_0` is a given time.
-# Care: there are three covariates : math:`(t, SOI, 1)` for the reasons mentioned previously.
+# Care: there are three covariates :math:`(t, SOI, 1)` for the reasons mentioned previously.
 # Then the reference point must be of dimension 3.
 #
 # As the relation is linear (the link function is the Identity function), we get some straight
