@@ -67,6 +67,16 @@ view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
 #
 # We first assume that the dependence through time is negligible, so we first model the data as
 # independent observations over the observation period.
+#
+# We consider the model  :math:`\mathcal{M}_0` defined by:
+# .. math::
+#     :nowrap:
+#
+#     \begin{align*}
+#       \sigma(t) & = \sigma\\
+#       \xi(t) & = \xi
+#     \end{align*}
+#
 # We estimate the parameters of the GPD distribution by maximizing
 # the log-likelihood of the data for the selecte threshold :math:`u=30`.
 u = 30
@@ -214,6 +224,7 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 # - the *MinMax* method where :math:`c = t_1` is the initial time and :math:`d = t_n-t_1` the final time. This method is the default one;
 # - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 #
+# We consider the model  :math:`\mathcal{M}_1` defined by:
 # .. math::
 #     :nowrap:
 #
@@ -275,7 +286,7 @@ print("1/d = ", normFunc.getEvaluation().getImplementation().getLinear()[0, 0])
 
 # %%
 # You can get the function :math:`t \mapsto \vect{\theta}(t)` where
-# :math:`\vect{\theta}(t) = (\mu(t), \sigma(t), \xi(t))`.
+# :math:`\vect{\theta}(t) = (\sigma(t), \xi(t))`.
 functionTheta = result_NonStatLL.getParameterFunction()
 
 # %%
@@ -351,8 +362,8 @@ view = otv.View(graph)
 # At last, we can test the validity of the stationary model :math:`\mathcal{M}_0`
 # relative to the model with time varying parameters  :math:`\mathcal{M}_1`. The
 # model :math:`\mathcal{M}_0` is parametrized
-# by :math:`(\beta_1, \beta_3, \beta_4)` and the model :math:`\mathcal{M}_1` is parametrized
-# by :math:`(\beta_1, \beta_2, \beta_3, \beta_4)`: so we have :math:`\mathcal{M}_0 \subset \mathcal{M}_1`.
+# by :math:`(\beta_1, \beta_3)` and the model :math:`\mathcal{M}_1` is parametrized
+# by :math:`(\beta_1, \beta_2, \beta_3)`: so we have :math:`\mathcal{M}_0 \subset \mathcal{M}_1`.
 #
 # We use the Likelihood Ratio test. The null hypothesis is the stationary model :math:`\mathcal{M}_0`.
 # The Type I error :math:`\alpha` is taken equal to 0.05.
