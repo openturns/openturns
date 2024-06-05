@@ -1148,11 +1148,18 @@ Returns
 validNorms : :class:`~openturns.Description`
     List of the valid norms of contour drawables.
 
+Notes
+-----
+These norms are strings that can be passed as the *norm* parameter
+of a Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+object, except *rank* which scales the colormap based on the ranks of the data values.
+
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable.GetValidNorms()[:2])
-[asinh,linear]
+>>> print(ot.Drawable.GetValidNorms())
+[asinh,linear,log,logit,symlog,rank]
 "
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidNorms
