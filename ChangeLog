@@ -30,7 +30,7 @@
 
 
 
-== 1.23rc1 release (2024-05-03) == #release-1.23rc1
+== 1.23 release (2024-06-05) == #release-1.23
 
 === Library ===
 
@@ -109,7 +109,7 @@
  * Faster marginal distribution PDF computation by integration on marginalized components
  * Extendend the JointDistribution to use any distribution defined on the unit cube that is not a copula
 
-=== Bug fixes (total 45) ===
+=== Bug fixes (total 53) ===
  * #1252 (In NumericalMathFunction class, getCallsNumber and getEvaluationCallsNumber return the same information API)
  * #1430 (The MetaModelValidation class has no graphics)
  * #2067 (Can't compute of a marginal of a BayesDistribution->it takes ages!)
@@ -146,15 +146,23 @@
  * #2557 (Shipping openturns and poissoninv GPL license)
  * #2558 (Typos in Copulas theory documentation)
  * #2563 (SimulatedAnnealingLHS.generate does not terminate for LHS of size 1)
+ * #2567 (The PythonRandomVector.getSample() method returns a 0-dimension sample)
  * #2570 (MarginalDistribution test is disabled)
  * #2571 (Drawables order is not preserved by the viewer)
  * #2593 (Formatting of input and output arguments in the API help page)
  * #2596 (The legends of the drawPDF() graph have a wrong order)
  * #2602 (The pretty-print of a ParametricFunction does not show the name of the parameters)
+ * #2604 (Slower MonteCarlo simulations for versions > 1.19)
  * #2621 (TruncatedDistribution n-d CDF inversion)
  * #2624 (HSICEstimatorImplementation : cannot save with pickle)
  * #2627 (Weird window for NormalGamma plot in API page)
  * #2628 (Multi Start have incoherent behavior if the max eval has been reached)
+ * #2642 (The description of a KernelSmoothing fitted distribution can be lost sometimes)
+ * #2647 (Contour: need to detail the norms)
+ * #2653 (The Faure sequence is wrong)
+ * #2655 (HistogramFactory struggles with samples with various scales)
+ * #2658 (FunctionImplementation::draw forces the location of the color bar in 2D)
+ * #2673 (The invariant distribution of a DiscreteMarkovChain is wrong)
 
 
 == 1.22 release (2024-01-09) == #release-1.22
