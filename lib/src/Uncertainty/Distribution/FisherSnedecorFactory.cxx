@@ -19,8 +19,6 @@
  *
  */
 #include "openturns/FisherSnedecorFactory.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

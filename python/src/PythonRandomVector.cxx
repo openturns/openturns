@@ -61,7 +61,7 @@ PythonRandomVector::PythonRandomVector(PyObject * pyObject)
 
   setName( checkAndConvert< _PyString_, String >(name.get()) );
 
-  const UnsignedInteger dimension  = getDimension();
+  const UnsignedInteger dimension = getDimension();
   Description description(dimension);
   ScopedPyObjectPointer desc(PyObject_CallMethod ( pyObj_,
                              const_cast<char *>( "getDescription" ),
@@ -151,7 +151,7 @@ UnsignedInteger PythonRandomVector::getDimension() const
     handleException();
   }
 
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >( result.get() );
+  const UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -164,7 +164,8 @@ Point PythonRandomVector::getRealization() const
   {
     handleException();
   }
-  Point point(convert<_PySequence_, Point>(result.get()));
+  const Point point(convert<_PySequence_, Point>(result.get()));
+  if (point.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "PythonRandomVector realization has dimension " << point.getDimension() << ", expected " << getDimension();
   return point;
 }
 
@@ -184,7 +185,7 @@ Sample PythonRandomVector::getSample(const UnsignedInteger size) const
     if ( result.get() )
     {
       sample = convert<_PySequence_, Sample>(result.get());
-      if (sample.getSize() != size) throw InvalidDimensionException(HERE) << "Sample returned by PythonRandomVector has incorrect size. Got " << sample.getSize() << ". Expected" << size;
+      if (sample.getSize() != size) throw InvalidDimensionException(HERE) << "PythonRandomVector sample has size " << sample.getSize() << ", expected " << size;
     }
   }
   else
@@ -206,8 +207,8 @@ Point PythonRandomVector::getMean() const
     handleException();
   }
 
-  Point mean(convert<_PySequence_, Point>(result.get()));
-  if (mean.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Mean returned by PythonRandomVector has incorrect dimension. Got " << mean.getDimension() << ". Expected" << getDimension();
+  const Point mean(convert<_PySequence_, Point>(result.get()));
+  if (mean.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "PythonRandomVector mean has dimension " << mean.getDimension() << ", expected " << getDimension();
   return mean;
 }
 
@@ -222,8 +223,8 @@ CovarianceMatrix PythonRandomVector::getCovariance() const
     handleException();
   }
 
-  CovarianceMatrix covariance(convert<_PySequence_, CovarianceMatrix>(result.get()));
-  if (covariance.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Covariance matrix returned by PythonRandomVector has incorrect dimension. Got " << covariance.getDimension() << ". Expected" << getDimension();
+  const CovarianceMatrix covariance(convert<_PySequence_, CovarianceMatrix>(result.get()));
+  if (covariance.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "PythonRandomVector covariance matrix has dimension " << covariance.getDimension() << ", expected" << getDimension();
 
   return covariance;
 }
@@ -235,12 +236,12 @@ Bool PythonRandomVector::isEvent() const
     ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                  const_cast<char *>( "isEvent" ),
                                  const_cast<char *>( "()" ) ));
-    if ( result.isNull() )
+    if (result.isNull())
     {
       handleException();
     }
 
-    Bool isEvent = checkAndConvert<_PyBool_, Bool>(result.get());
+    const Bool isEvent = checkAndConvert<_PyBool_, Bool>(result.get());
     return isEvent;
   }
   else
@@ -261,7 +262,7 @@ Point PythonRandomVector::getParameter() const
     {
       handleException();
     }
-    Point parameter(convert< _PySequence_, Point >(callResult.get()));
+    const Point parameter(convert< _PySequence_, Point >(callResult.get()));
     return parameter;
   }
   else
@@ -313,7 +314,7 @@ Description PythonRandomVector::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void PythonRandomVector::save(Advocate & adv) const
 {
-  RandomVectorImplementation::save( adv );
+  RandomVectorImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -322,7 +323,7 @@ void PythonRandomVector::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonRandomVector::load(Advocate & adv)
 {
-  RandomVectorImplementation::load( adv );
+  RandomVectorImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }

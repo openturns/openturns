@@ -91,10 +91,11 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   const Scalar mean = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
-  const Scalar min = sample.getMin()[0];
-  const Scalar max = sample.getMax()[0];
-  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
-  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((max - min) / bandwidth + 0.5));
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
+  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / bandwidth + 0.5));
   return buildAsHistogram(sample, binNumber);
 }
 
@@ -109,23 +110,24 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   const Scalar mean = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
-  const Scalar min = sample.getMin()[0];
-  const Scalar max = sample.getMax()[0];
-  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
-  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
-  const Scalar hOpt = ((max - min) + delta) / binNumber;
+  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (xMax - xMin);
+  const Scalar hOpt = ((xMax - xMin) + delta) / binNumber;
   Point heights(binNumber, 0.0);
   const Scalar step = 1.0 / hOpt;
   // Aggregate the realizations into the bins
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     // The index takes values in [[0, binNumber-1]] because min <= sample(i, 0) <= max and step < binNumber / (max - min)
-    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - min) * step));
+    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - xMin) * step));
     heights[index] += 1.0;
   }
   const Scalar inverseArea = 1.0 / (hOpt * size);
-  Histogram result(min, Point(binNumber, hOpt), heights * inverseArea);
+  Histogram result(xMin, Point(binNumber, hOpt), heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
 }
@@ -193,22 +195,45 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
-  Scalar hOpt = 0;
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Cannot build a Histogram distribution from a sample of size < 2";
+
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate a Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
+
+  Scalar hOpt = 0.0;
+  UnsignedInteger binNumber = 0;
+
   if (useQuantile)
   {
     // We use the robust estimation of dispersion based on inter-quartile
     hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
+
     // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
-    if (hOpt == 0.0) LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
+    if (hOpt == 0.0)
+    {
+      LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
+    }
+    else
+      binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
   }
+
   // Here hOpt == 0.0 either because we asked for the standard deviation based bandwidth or because the quantile based bandwidth is zero
   if (hOpt == 0.0)
   {
     // We use the standard deviation
     const Scalar sigma = sample.computeStandardDeviation()[0];
     hOpt = sigma * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
+    binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
   }
+
+  // cap the bin number
+  const UnsignedInteger maximumBinNumber = ResourceMap::GetAsUnsignedInteger("HistogramFactory-MaximumBinNumber");
+  if (binNumber > maximumBinNumber)
+    hOpt = (xMax - xMin) / maximumBinNumber;
+
   return hOpt;
 }
 

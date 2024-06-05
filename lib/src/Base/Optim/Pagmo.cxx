@@ -23,7 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/BootstrapExperiment.hxx"
+#include "openturns/RandomGenerator.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -388,7 +388,8 @@ void Pagmo::run()
       throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
     if (startingSampleConstrained.getSize() < populationSize)
     {
-      const Indices indices(BootstrapExperiment::GenerateSelection(populationSize, startingSampleConstrained.getSize()));
+      const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(populationSize, startingSampleConstrained.getSize()));
+      const Indices indices(selection.begin(), selection.end());
       startingSample_ = startingSampleConstrained.select(indices);
       LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
     }
@@ -703,7 +704,13 @@ void Pagmo::run()
     // retrieve non-penalized output values instead of using pop.get_f
     std::vector<std::vector<double> > popf;
     for (UnsignedInteger i = 0; i < finalValues.getSize(); ++ i)
-      popf.push_back(Point(finalValues[i]).toStdVector());
+    {
+      Point outP(finalValues[i]);
+      for (UnsignedInteger j = 0; j < outP.getDimension(); ++ j)
+        if (!getProblem().isMinimization(j))
+          outP[j] *= -1.0;
+      popf.push_back(outP.toStdVector());
+    }
     // compute the fronts
     std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
     Collection<Indices> frontIndices(fronts.size());

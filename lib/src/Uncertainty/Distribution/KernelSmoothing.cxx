@@ -549,6 +549,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   // Now, work on the extended sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
   newSample.setData(newSampleData);
+  newSample.setDescription(sample.getDescription());
   size = newSample.getSize();
   const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
   if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");

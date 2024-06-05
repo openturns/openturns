@@ -427,18 +427,38 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample().getMarginal(0));
-  const UnsignedInteger size = data.getSize();
-  const Bool minimization = problem_.isMinimization();
-  for (UnsignedInteger i = 1; i < size; ++ i)
+  const Sample dataX(getInputSample());
+  Sample dataY(getOutputSample().getMarginal(0));
+  const UnsignedInteger size = dataY.getSize();
+  Scalar bestY = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  UnsignedInteger firstFeasibleIndex = size;
+  const Scalar maximumConstraintError = ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError");
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const UnsignedInteger j = 0;
-    if (!((minimization && (data(i, j) < data(i - 1, j)))
-          || (!minimization && (data(i, j) > data(i - 1, j)))))
+    const Scalar y = dataY(i, 0);
+    const Point x(dataX[i]);
+    const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
+    const Bool objectiveImproved = ((getProblem().isMinimization() && y < bestY) || (!getProblem().isMinimization() && y > bestY));
+    if (!std::isnan(y) && insideBounds && objectiveImproved && (constraintErrorHistory_(i, 0) < maximumConstraintError))
     {
-      data(i, j) = data(i - 1, j);
+      bestY = y;
+      // store first feasible index
+      if (firstFeasibleIndex >= size)
+        firstFeasibleIndex = i;
     }
+    else
+      dataY(i, 0) = bestY;
   }
+
+  // iteration index and optimal value
+  Sample data(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data(i, 0) = i;
+  data.stack(dataY);
+
+  // ignore values before first feasible point
+  data = data.split(firstFeasibleIndex);
+
   Curve optimalValueCurve(data, "optimal value");
   optimalValueCurve.setLegend("optimal value");
   result.add(optimalValueCurve);
