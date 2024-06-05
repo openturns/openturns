@@ -157,7 +157,7 @@ and
     \tau_{sp} = L_{sp}\frac{F_s}{C}A_s(1+q)\cos(i)
 
 .. math::
-    \tau_{m} = \frac{2 M R_D}{R_E+H)^3}
+    \tau_{m} = \frac{2 M R_D}{(R_E+H)^3}
 
 .. math::
     \tau_{a} = \frac{1}{2} L_{alpha} \rho C_d A v^2
