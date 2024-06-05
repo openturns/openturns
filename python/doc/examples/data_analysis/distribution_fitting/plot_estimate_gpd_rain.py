@@ -69,6 +69,7 @@ view = otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})
 # independent observations over the observation period.
 #
 # We consider the model  :math:`\mathcal{M}_0` defined by:
+#
 # .. math::
 #     :nowrap:
 #
@@ -225,6 +226,7 @@ view = otv.View(result_zm_100_PLL.drawProfileLikelihoodFunction())
 # - the *None* method where :math:`c = 0` and :math:`d = 1`: in that case, data are not normalized.
 #
 # We consider the model  :math:`\mathcal{M}_1` defined by:
+#
 # .. math::
 #     :nowrap:
 #
