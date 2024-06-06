@@ -28,7 +28,6 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_C_FLAGS="-Wall -Wextra -Wpedantic -Werror" -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Werror -D_GLIBCXX_ASSERTIONS -fuse-ld=mold" \
       -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" \
       -DSPHINX_FLAGS="-W -T -j4" \
-      -DUSE_HMAT=ON \
       ${source_dir}
 make install
 if test -n "${uid}" -a -n "${gid}"
