@@ -25,7 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 #   - a :class:`~openturns.Normal` distribution ;
 #   - a :class:`~openturns.Gumbel` distribution.
-#
+
 marginals = [ot.Normal(), ot.Gumbel()]
 
 # %%
