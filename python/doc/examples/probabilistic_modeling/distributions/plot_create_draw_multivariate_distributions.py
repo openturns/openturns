@@ -87,7 +87,7 @@ view = otv.View(graph)
 dim = 2
 distribution = ot.Normal(dim)
 graph = distribution.drawPDF()
-graph.setTitle("Bivariate standard unit Gaussian PDF")
+graph.setTitle("Bivariate standard unit Normal PDF")
 view = otv.View(graph)
 
 
