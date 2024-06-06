@@ -144,7 +144,7 @@ Bibliography
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003.
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
 .. [ghanem1991] Ghanem R. and P. Spanos, 1991,
-    *Stochastic finite elements – A spectral approach*,
+    *Stochastic finite elements - A spectral approach*,
     Springer Verlag. (Reedited by Dover Publications, 2003).
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
@@ -155,9 +155,9 @@ Bibliography
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
-.. [hahn2005] Thomas Hahn, *Cuba — a library for multidimensional numerical integration*
+.. [hahn2005] Thomas Hahn, *Cuba - a library for multidimensional numerical integration*
     Computer Physics Communications, 168(2), 78-95.
-    `pdf <https://arxiv.org/pdf/hep-ph/0404043>`
+    `pdf <https://arxiv.org/pdf/hep-ph/0404043>`__
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
     approximate matrix decompositions*,
