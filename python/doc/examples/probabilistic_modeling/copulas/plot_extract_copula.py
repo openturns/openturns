@@ -12,7 +12,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a multivariate Gaussian distribution
+# Create a multivariate Normal distribution
 mu = [0.0] * 2
 sigma = [1.0] * 2
 R = ot.CorrelationMatrix(2)
