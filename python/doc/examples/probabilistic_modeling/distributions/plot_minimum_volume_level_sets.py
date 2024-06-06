@@ -188,7 +188,7 @@ x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
 x_funk = ot.JointDistribution([x1, x2], copula)
 
-# Create a second Gaussian distribution
+# Create a second Normal distribution
 x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
 x_punk = ot.JointDistribution([x1, x2], copula)
