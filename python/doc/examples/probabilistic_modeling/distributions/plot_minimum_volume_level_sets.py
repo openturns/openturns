@@ -180,7 +180,7 @@ view = viewer.View(graph)
 
 
 # %%
-# Create a Gaussian distribution
+# Create a Normal distribution
 corr = ot.CorrelationMatrix(2)
 corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
