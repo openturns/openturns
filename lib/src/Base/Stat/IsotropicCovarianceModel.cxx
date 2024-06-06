@@ -37,6 +37,8 @@ IsotropicCovarianceModel::IsotropicCovarianceModel(const CovarianceModel & oneDi
     const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
 {
+  if (!inputDimension)
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel, the supplied inputDimension must be nonzero.";
   setKernel(oneDimensional);
 }
 

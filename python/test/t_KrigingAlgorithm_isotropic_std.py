@@ -40,3 +40,9 @@ ott.assert_almost_equal(krigingFittedCovarianceModel.getScale()[0], 2.86427, 0.0
 ott.assert_almost_equal(
     krigingFittedCovarianceModel.getAmplitude()[0], 6.65231, 0.0, 1e-4
 )
+
+try:
+    ot.IsotropicCovarianceModel(ot.SquaredExponential(), 0)
+    raise ValueError("Invalid IsotropicCovarianceModel should have thrown")
+except TypeError:
+    pass
