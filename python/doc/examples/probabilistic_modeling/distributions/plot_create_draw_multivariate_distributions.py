@@ -82,7 +82,7 @@ view = otv.View(graph)
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
 # The :class:`~openturns.Normal` distribution is natively multivariate.
-# Here we define a bivariate standard unit Gaussian distribution and display
+# Here we define a bivariate standard unit Normal distribution and display
 # its PDF.
 dim = 2
 distribution = ot.Normal(dim)
