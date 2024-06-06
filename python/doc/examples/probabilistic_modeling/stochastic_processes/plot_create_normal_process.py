@@ -1,6 +1,6 @@
 """
-Create a Normal process
-=======================
+Create a Gaussian process
+=========================
 """
 # %%
 import openturns as ot
