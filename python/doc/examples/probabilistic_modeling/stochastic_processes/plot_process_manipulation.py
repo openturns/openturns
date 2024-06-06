@@ -160,7 +160,7 @@ print(process.getMarginal([1]))
 print(process.getMarginal([0, 2]))
 
 # %%
-# We can check whether the process is Normal or not :
+# We can check whether the process is Gaussian or not :
 print("Is normal ? ", process.isNormal())
 
 # %%
