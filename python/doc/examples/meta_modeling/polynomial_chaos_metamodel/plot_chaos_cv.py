@@ -96,7 +96,7 @@ def compute_sparse_least_squares_chaos(
 
 
 # %%
-# The next function computes the R2 score by splitting the data set
+# The next function computes the :math:`R^2` score by splitting the data set
 # into a training set and a test set.
 
 
@@ -218,6 +218,57 @@ def computeMSENaiveKFold(
                 squaredResiduals[indicesTest[i], j] = residualsKFold[i, j] ** 2
     mse = squaredResiduals.computeMean()
     return mse
+# %%
+# The next function computes the R2 score by K-Fold.
+
+
+def compute_R2_score_by_kfold(
+    inputSample,
+    outputSample,
+    multivariateBasis,
+    totalDegree,
+    distribution,
+    kParameter=5,
+):
+    """
+    Compute R2 score by KFold.
+
+    Parameters
+    ----------
+    inputSample : Sample(size, input_dimension)
+        The X dataset.
+    outputSample : Sample(size, output_dimension)
+        The Y dataset.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
+    totalDegree : int
+        The total degree of the chaos polynomial.
+    distribution : Distribution.
+        The distribution of the input variable.
+    kParameter : int
+        The parameter K.
+
+    Returns
+    -------
+    r2Score : float
+        The R2 score.
+    """
+    #
+    mse = computeMSENaiveKFold(
+        inputSample,
+        outputSample,
+        multivariateBasis,
+        totalDegree,
+        distribution,
+        kParameter,
+    )
+    sampleVariance = outputSample.computeCentralMoment(2)
+    outputDimension = outputSample.getDimension()
+    r2Score = ot.Point(outputDimension)
+    for i in range(outputDimension):
+        r2Score[i] = 1.0 - mse[i] / sampleVariance[i]
+    return r2Score
+
 
 # %%
 # The next function computes the R2 score by K-Fold.
