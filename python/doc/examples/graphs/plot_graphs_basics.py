@@ -11,7 +11,7 @@ A quick start guide to graphs
 # The `draw` method the `Graph` class
 # -----------------------------------
 #
-# The simplest way to create a graph is to use the `draw` method. The :class:`~openturns.Normal` distribution for example provides a method to draw the density function of the Gaussian distribution.
+# The simplest way to create a graph is to use the `draw` method. The :class:`~openturns.Normal` distribution for example provides a method to draw its density function.
 
 # %%
 import openturns as ot
