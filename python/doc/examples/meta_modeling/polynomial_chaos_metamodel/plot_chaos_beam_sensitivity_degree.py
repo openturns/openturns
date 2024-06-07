@@ -132,6 +132,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
 # %%
 # The following functions compute and plot the :math:`R^2` predictivity coefficients within the validation plot.
 
+
 # %%
 def computeR2Chaos(chaosResult, inputTest, outputTest):
     """Compute the R2 of a chaos."""
@@ -160,6 +161,7 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
         % (totalDegree, 100 * r2Score, 100 * sparsityRate)
     )
     return graph
+
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
@@ -220,8 +222,8 @@ for totalDegree in range(1, maxDegree + 1):
 # Let us repeat the following experiment to see the variability of the :math:`R^2` coefficient.
 >>>>>>> 061c473ae (Update plot_chaos_beam_sensitivity_degree.py)
 
-# %%
 
+# %%
 def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
     """For a given sample size N, for degree from 1 to maxDegree,
     repeat the following experiment numberAttempts times:
