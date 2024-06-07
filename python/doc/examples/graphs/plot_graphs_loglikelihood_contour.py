@@ -207,7 +207,7 @@ view = viewer.View(graphFineTune)
 # %%
 # The :class:`~openturns.Contour` class does not allow us to manually set multiple colors.
 # Here we show how to assign explicit colors to the different contour lines by passing keyword
-# arguments to the class:` openturns.viewer` class.
+# arguments to the class:`~openturns.viewer.View` class.
 
 # Build a range of colors corresponding to the Tableau palette
 palette = ot.Drawable.BuildTableauPalette(len(levels))
