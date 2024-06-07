@@ -142,7 +142,8 @@ metamodelPredictions = krigingMetamodel(X_test)
 val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 
 # %%
-# The `computePredictivityFactor` computes the :math:`Q^2` factor.
+# The :meth:`~openturns.MetaModelValidation.computeR2Score` method computes the
+# R2 coefficient of determination.
 
 # %%
 r2Score = val.computeR2Score()[0]
