@@ -8,7 +8,7 @@ Polynomial chaos is sensitive to the degree
 # ------------
 #
 # In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial.
-# More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
+# More precisely, we observe how this impacts the :math:`R^2` predictivity coefficient.
 #
 # We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule
 # and the family of orthogonal polynomials corresponding to each input variable.
@@ -130,7 +130,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     return sparsityRate
 
 # %%
-# The following functions compute and plot the :math:`Q^2` predictivity coefficients within the validation plot.
+# The following functions compute and plot the :math:`R^2` predictivity coefficients within the validation plot.
 
 # %%
 def computeR2Chaos(chaosResult, inputTest, outputTest):
@@ -197,7 +197,7 @@ for totalDegree in range(1, maxDegree + 1):
     pl.suptitle("Metamodel validation")
 
 # %%
-# We see that when the degree of the polynomial increases, the :math:`Q^2` coefficient decreases.
+# We see that when the degree of the polynomial increases, the :math:`R^2` coefficient decreases.
 # We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis.
 # This shows that the algorithm performs its task of selecting relevant coefficients.
 # However, this selection does not seem to be sufficient to mitigate the large number of coefficients.
@@ -210,7 +210,7 @@ for totalDegree in range(1, maxDegree + 1):
 # --------------------------------------------
 
 # %%
-# Let us repeat the following experiment to see the variability of the :math:`Q^2` coefficient.
+# Let us repeat the following experiment to see the variability of the :math:`R^2` coefficient.
 
 # %%
 
@@ -238,7 +238,7 @@ def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
 
 
 # %%
-# The following function uses a boxplot to see the distribution of the :math:`Q^2` coefficients.
+# The following function uses a boxplot to see the distribution of the :math:`R^2` coefficients.
 
 # %%
 def plotR2Boxplots(r2Sample, N):
@@ -281,7 +281,7 @@ plotR2Boxplots(r2Sample, N)
 pl.show()
 
 # %%
-# When the sample size increases, the :math:`Q^2` computation becomes less sensitive to the polynomial degree.
+# When the sample size increases, the :math:`R^2` computation becomes less sensitive to the polynomial degree.
 
 
 # %%
@@ -290,7 +290,7 @@ pl.show()
 #
 # We observe that on the cantilever beam example, to use a polynomial total
 # degree equal to 4, we need a sample size at least equal to 50 to get a
-# satisfactory and reproducible :math:`Q^2` .
+# satisfactory and reproducible :math:`R^2` .
 # When the degree is equal to 4, if the sample size is small, then depending on the
 # particular sample, the predictivity coefficient can be very low (i.e., less than 0.5).
 # With a sample size as small as 20, a polynomial degree of 1 is safer.
