@@ -5,7 +5,7 @@ Mixture of experts
 # %%
 # In this example we are going to approximate a piece-wise continuous function using an expert mixture of metamodels.
 #
-# The metamodels will be represented by the family of :math:`f_k \forall \in [1, N]`:
+# The metamodels will be represented by the family of :math:`f_k \forall k \in [1, N]`:
 #
 # .. math::
 #    \begin{aligned}
@@ -16,7 +16,7 @@ Mixture of experts
 #
 # where the `N` classes are defined by the classifier.
 #
-# Using the supervised mode the classifier partitions the input and output space at once:
+# Using the supervised mode the classifier partitions the input and output spaces at once:
 #
 # .. math::
 #    z =(\vect{x}, f( \vect{x}))

@@ -146,7 +146,7 @@ distributionStandard
 # -----------------------------------------------------------------
 
 # %%
-# FixedStrategy : all the polynomials af degree lower or equal to 2 which corresponds to the 15 first ones.
+# FixedStrategy : all the polynomials of degree lower or equal to 2 which corresponds to the 15 first ones.
 
 # %%
 p = 15
@@ -170,7 +170,7 @@ truncatureBasisStrategy_2 = ot.CleaningStrategy(
 # -------------------------------------------------------------
 
 # %%
-# The technique illustrated is the Least Squares technique where the points come from an design of experiments. Here : the Monte-Carlo sampling technique.
+# The technique illustrated is the Least Squares technique where the points come from a design of experiments. Here : the Monte-Carlo sampling technique.
 
 # %%
 sampleSize = 100

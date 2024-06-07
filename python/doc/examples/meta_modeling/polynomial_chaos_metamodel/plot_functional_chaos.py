@@ -154,7 +154,7 @@ view = viewer.View(graph)
 # %%
 # The coefficient of determination is not extremely satisfactory for the
 # first output, but is would be sufficient for a central dispersion study.
-# The second output has a much more satisfactory R2: only one single
+# The second output has a much more satisfactory :math:`R^2`: only one single
 # extreme point is far from the diagonal of the graphics.
 
 # %%
@@ -255,9 +255,9 @@ plt.show()
 
 # %%
 # We see that a low total degree is not sufficient to describe the
-# first output with good R2 score.
+# first output with good :math:`R^2` score.
 # However, the coefficient of determination can drop when the total degree increases.
-# The R2 score of the second output seems to be much less satisfactory:
+# The :math:`R^2` score of the second output seems to be much less satisfactory:
 # a little more work would be required to improve the metamodel.
 #
 # In this situation, the following methods may be used.

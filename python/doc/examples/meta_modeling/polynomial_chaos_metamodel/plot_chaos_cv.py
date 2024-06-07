@@ -221,7 +221,7 @@ def computeMSENaiveKFold(
 
 
 # %%
-# The next function computes the R2 score by K-Fold.
+# The next function computes the :math:`R^2` score by K-Fold.
 
 
 def compute_R2_score_by_kfold(

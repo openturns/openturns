@@ -163,7 +163,7 @@ r2Score = val.computeR2Score()[0]
 r2Score
 
 # %%
-# The R2 is very close to 1: the metamodel is excellent.
+# The :math:`R^2` is very close to 1: the metamodel is accurate.
 
 # %%
 graph = val.drawValidation()

@@ -167,7 +167,7 @@ print(result.getCovarianceModel())
 # This is because the number of coefficients in the quadratic part has
 #
 # .. math::
-#    \frac{dim (dim+1)}{2}=\frac{4\times 5}{2}=10
+#    \frac{dim \times (dim+1)}{2}=\frac{4\times 5}{2}=10
 #
 #
 # coefficients, associated with the symmetric matrix of the quadratic function.
