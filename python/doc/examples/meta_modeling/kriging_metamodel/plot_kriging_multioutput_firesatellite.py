@@ -77,7 +77,7 @@ covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 # %%
 # The scaling of the data is really important when dealing with Kriging,
 # especially considering the domain definition of the input variables (the
-# altitude varies in order of :math:`10^7 whereas the drag coefficient is around 1).
+# altitude varies in order of :math:`10^7` whereas the drag coefficient is around 1).
 # We thus define appropriate bounds for the training algorithm based on the
 # domain definition of each variable.
 
