@@ -252,7 +252,7 @@ _ = fig.suptitle("The gaussian")
 # -----------------------
 
 # %%
-# The :class:`openturns.viewer` class has a `save` method which saves the graph into an image.
+# The :class:`openturns.viewer.View` class has a `save` method which saves the graph into an image.
 
 # %%
 
