@@ -4,7 +4,7 @@ Validate a polynomial chaos
 """
 # %%
 #
-# In this example, we show how to perform the draw validation of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
+# In this example, we show how to perform the validation plot of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
 from openturns.usecases import ishigami_function
@@ -88,7 +88,7 @@ r2Score = val.computeR2Score()[0]
 r2Score
 
 # %%
-# The R2 is very close to 1: the metamodel is excellent.
+# The :math:`R^2` is very close to 1: the metamodel seems very accurate.
 
 # %%
 graph = val.drawValidation()

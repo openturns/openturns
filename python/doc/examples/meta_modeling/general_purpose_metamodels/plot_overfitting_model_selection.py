@@ -9,13 +9,13 @@ Over-fitting and model selection
 # ------------
 #
 # In this notebook, we present the problem of over-fitting a model to data.
-# We consider noisy observations of the sine function.
+# We consider noisy observations of the `sine` function.
 # We estimate the coefficients of the univariate polynomial based on linear
 # least squares and show that, when the degree of the polynomial becomes too
 # large, the overall prediction quality decreases.
 #
 # This shows why and how model selection can come into play in order to select
-# the degree of the polynomial: there is is a trade-off between fitting the
+# the degree of the polynomial: there is a trade-off between fitting the
 # data and preserving the quality of future predictions.
 # In this example, we use cross validation as a model selection method.
 
@@ -30,7 +30,7 @@ Over-fitting and model selection
 # Compute the data
 # ----------------
 #
-# In this section, we generate noisy observations from the sine function.
+# In this section, we generate noisy observations from the `sine` function.
 
 # %%
 import openturns as ot
@@ -56,7 +56,7 @@ view = otv.View(graph)
 
 
 # %%
-# This seems a nice, smooth function to approximate with polynomials.
+# This seems a smooth function to approximate with polynomials.
 
 
 # %%
@@ -114,7 +114,7 @@ view = otv.View(graph)
 #    P(\vect{x}) = \beta_0 + \beta_1 \vect{x} + ... + \beta_p \vect{x}^p,
 #
 # for any :math:`\vect{x}\in\mathbb{R}`, where :math:`p` is the polynomial degree and :math:`\beta\in\mathbb{R}^{p+1}` is the vector of the coefficients of the model.
-# Let :math:`n` be the training sample size and let :math:`\vect{x_1},...,\vect{x_n} \in \mathbb{R}` be the abscissas of the training set.
+# Let :math:`n` be the training sample size and let :math:`\vect{x}_1,...,\vect{x}_n \in \mathbb{R}` be the abscissas of the training set.
 # The design matrix :math:`\mat{X} \in \mathbb{R}^{n \times (p+1)}` is
 #
 # .. math::

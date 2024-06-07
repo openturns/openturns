@@ -2,7 +2,7 @@
 Create a linear model
 =====================
 In this example we create a surrogate model using linear model approximation
-using the :class:`~openturns.LinearModelAlgorithm` class.
+with the :class:`~openturns.LinearModelAlgorithm` class.
 We show how the :class:`~openturns.LinearModelAnalysis` class
 can be used to produce the statistical analysis of the least squares
 regression model.
@@ -118,10 +118,10 @@ analysis
 #   zero for all coefficients.
 #   Hence, we can reject the hypothesis that any coefficient is zero.
 #   In other words, all the coefficients are significantly nonzero.
-# - The R2 score is close to 1.
-#   Furthermore, the adjusted R2 value, which takes into account the size of
+# - The :math:`R^2` score is close to 1.
+#   Furthermore, the adjusted :math:`R^2` value, which takes into account the size of
 #   the data set and the number of hyperparameters, is similar to the
-#   unadjusted R2 score.
+#   unadjusted :math:`R^2` score.
 #   Most of the variance is explained by the linear model.
 # - The F-test tests if all coefficients are simultaneously zero.
 #   The `Fisher-Snedecor` p-value is lower than 1%.

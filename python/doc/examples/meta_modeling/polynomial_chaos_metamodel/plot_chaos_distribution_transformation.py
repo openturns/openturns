@@ -7,7 +7,7 @@ Apply a transform or inverse transform on your polynomial chaos
 # Introduction
 # ------------
 #
-# In this document we present the transformation involved in the creation of a polynomial chaos.
+# In this example, we present the transformation involved in the creation of a polynomial chaos.
 # Indeed, the polynomial chaos expansion is never directly applied to the input random variable of a model :math:`g`.
 # Instead, the expansion is expressed based on the associated standard random variable.
 # In this example,  we show how to transform a Log-Normal random variable into its standardized variable with the class :class:`~openturns.DistributionTransformation`.
@@ -57,7 +57,7 @@ Apply a transform or inverse transform on your polynomial chaos
 import openturns as ot
 
 # %%
-# In the first step, we define the LogNormal distribution.
+# In the first step, we define the Log-Normal distribution.
 # Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution.
 # This parametrization can be used thanks to the :class:`~openturns.ParametrizedDistribution` class.
 
