@@ -74,7 +74,7 @@ view = viewer.View(graph)
 # Draw a cloud
 # ------------
 #
-# The :class:`~openturns.Cloud` class creates clouds of bidimensional points. To illustrate it, let us create two Gaussian distributions in two dimensions.
+# The :class:`~openturns.Cloud` class creates clouds of bidimensional points. To illustrate it, let us create two Normal distributions in two dimensions.
 
 # %%
 # Create a Funky distribution
@@ -218,7 +218,7 @@ view = viewer.View(graph)
 #
 # The library provides features to create a grid of graphs. However, we can use the `add_subplot` function from `Matplotlib`.
 #
-# Let us create two graphs of the PDF and CDF of the following Gaussian distribution..
+# Let us create two graphs of the PDF and CDF of the following Normal distribution..
 
 # %%
 n = ot.Normal()
@@ -275,7 +275,7 @@ view.save("normal-100dpi.png", dpi=100)
 # %%
 
 # %%
-# We first create a graph containing the PDF of a Gaussian distribution
+# We first create a graph containing the PDF of a Normal distribution
 
 # %%
 n = ot.Normal()
