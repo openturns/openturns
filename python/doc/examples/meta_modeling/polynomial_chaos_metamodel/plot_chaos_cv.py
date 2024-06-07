@@ -94,7 +94,6 @@ def compute_sparse_least_squares_chaos(
     return result
 
 
-
 # %%
 # The next function computes the :math:`R^2` score by splitting the data set
 # into a training set and a test set.
@@ -151,6 +150,7 @@ def compute_R2_score_by_splitting(
     val = ot.MetaModelValidation(outputSampleTest, metamodelPredictions)
     r2Score = val.computeR2Score()
     return r2Score
+
 
 # %%
 # The next function computes the mean squared error by K-Fold.
@@ -218,6 +218,8 @@ def computeMSENaiveKFold(
                 squaredResiduals[indicesTest[i], j] = residualsKFold[i, j] ** 2
     mse = squaredResiduals.computeMean()
     return mse
+
+
 # %%
 # The next function computes the R2 score by K-Fold.
 
