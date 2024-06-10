@@ -5,16 +5,16 @@ Mixture of experts
 # %%
 # In this example we are going to approximate a piece-wise continuous function using an expert mixture of metamodels.
 #
-# The metamodels will be represented by the family of :math:`f_k \forall k \in [1, N]`:
+# The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
 #
 # .. math::
 #    \begin{aligned}
 #      f(\vect{x}) &= f_1(\vect{x}) \quad \forall \vect{x} \in \text{Class}_1 \\
 #      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k \\
-#      f(\vect{x}) &= f_N(\vect{x}) \quad \forall \vect{x} \in \text{Class}_N
+#      f(\vect{x}) &= f_n(\vect{x}) \quad \forall \vect{x} \in \text{Class}_n
 #    \end{aligned}
 #
-# where the `N` classes are defined by the classifier.
+# where the `n` classes are defined by the classifier.
 #
 # Using the supervised mode the classifier partitions the input and output spaces at once:
 #
@@ -24,7 +24,7 @@ Mixture of experts
 # The classifier is :class:`~openturns.MixtureClassifier` based on a :class:`~openturns.Mixture` distribution defined as:
 #
 # .. math::
-#    p(\vect{x}) = \sum_{i=1}^N w_ip_i(\vect{x})
+#    p(\vect{x}) = \sum_{i=1}^n w_ip_i(\vect{x})
 #
 #
 # The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j=\text{argmax}_j \log w_kp_k(\vect{x})`.
