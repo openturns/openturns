@@ -119,7 +119,7 @@ graph.setYTitle(r"$z$")
 view = otv.View(graph)
 
 # %%
-# We create the lifting function which takes coefficients of the KL modes as inputs and returns the trajectories.
+# We create the lifting function which takes coefficients of the Karhunen-Loève (KL) modes as inputs and returns the trajectories.
 klLiftingFunction = ot.KarhunenLoeveLifting(klResult)
 
 # %%
