@@ -8,7 +8,7 @@ import inspect
 ot.TESTPREAMBLE()
 ot.Log.Show(ot.Log.NONE)
 
-# find all instanciable classes
+# find all instantiable classes
 persistentClasses = {}
 for mod in [ot, otexp]:
     for name, obj in inspect.getmembers(mod):

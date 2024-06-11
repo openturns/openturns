@@ -6,8 +6,8 @@ import inspect
 
 ot.TESTPREAMBLE()
 
-# find all instanciable classes
-instanciables = []
+# find all instantiable classes
+instantiables = []
 for mod in [ot, otexp]:
     for name, obj in inspect.getmembers(mod):
         if inspect.isclass(obj):
@@ -16,7 +16,7 @@ for mod in [ot, otexp]:
                 continue
             try:
                 instance = obj()
-                instanciables.append(obj)
+                instantiables.append(obj)
             except Exception:
                 pass
 
@@ -25,7 +25,7 @@ count_class = 0
 count_class_undoc = 0
 count_methods = 0
 count_methods_undoc = 0
-for class_ in instanciables:
+for class_ in instantiables:
     count_class += 1
     if class_.__doc__ is None:
         print(f"{class_.__name__} class")
