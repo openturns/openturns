@@ -160,7 +160,9 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
-This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor),
+has a better complexity both in terms of memory requirements and floating point operations.
+To use it, the `GeneralLinearModelAlgorithm-LinearAlgebra` resource map key should be set to `HMAT`. Default value of the key is `LAPACK`.
 
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:
