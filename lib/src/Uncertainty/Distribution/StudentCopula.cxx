@@ -31,7 +31,7 @@ static const Factory<StudentCopula> Factory_StudentCopula;
 
 /* Default constructor */
 StudentCopula::StudentCopula()
-  : SklarCopula(Student())
+  : SklarCopula(Student(3.0, 2))
 {
   // Nothing to do
 }
