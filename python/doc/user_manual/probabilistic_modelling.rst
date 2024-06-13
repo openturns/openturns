@@ -254,8 +254,6 @@ Refer to :ref:`copula`.
 
     :template: Copula.rst_t
     NormalCopula
-
-    :template: class.rst_t
     experimental.StudentCopula
 
 
