@@ -382,38 +382,38 @@ Graph OptimizationResult::drawErrorHistory() const
   Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
-// create a sample with the iteration number to be plotted as x data
+  // create a sample with the iteration number to be plotted as x data
   const UnsignedInteger size = getAbsoluteErrorHistory().getSize();
   {
     Sample data(getAbsoluteErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
-    Curve absoluteErrorCurve( data, "absolute error" );
+    Curve absoluteErrorCurve(data, "absolute error");
     absoluteErrorCurve.setLegend("absolute error");
     result.add( absoluteErrorCurve );
   }
-// Relative error
+  // Relative error
   {
     Sample data(getRelativeErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
-    Curve relativeErrorCurve( data, "relative error" );
+    Curve relativeErrorCurve(data, "relative error");
     relativeErrorCurve.setLegend("relative error");
     result.add( relativeErrorCurve );
   }
-// Residual error
+  // Residual error
   {
     Sample data(getResidualErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
-    Curve residualErrorCurve( data, "residual error" );
+    Curve residualErrorCurve(data, "residual error");
     residualErrorCurve.setLegend("residual error");
     result.add( residualErrorCurve );
   }
-// Constraint error
+  // Constraint error
   {
     Sample data(getConstraintErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data(i, 0) <= 0.0) data(i, 0) = SpecFunc::ScalarEpsilon;
-    Curve constraintErrorCurve( data, "constraint error" );
+    Curve constraintErrorCurve(data, "constraint error");
     constraintErrorCurve.setLegend("constraint error");
-    result.add( constraintErrorCurve );
+    result.add(constraintErrorCurve);
   }
   result.setYMargin(0.0);// tighten the Y axis
   return result;
@@ -424,6 +424,8 @@ Graph OptimizationResult::drawOptimalValueHistory() const
 {
   if (getProblem().getObjective().getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
+  if (!getOptimalPoint().getDimension())
+    throw InvalidDimensionException(HERE) << "drawOptimalValueHistory cannot be called without feasible point";
   Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");

@@ -575,6 +575,9 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 
   // optimal point
   const Point optpoint(solver.getResult().getOptimalPoint());
+  if (!optpoint.getDimension())
+    throw InvalidArgumentException(HERE) << "optimization in ARMA did not yield feasible points";
+
   beta = optpoint;
 
   // Return result

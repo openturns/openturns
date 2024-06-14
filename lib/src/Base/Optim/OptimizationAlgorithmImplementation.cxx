@@ -355,7 +355,10 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   if (!result_.getOptimalPoint().getDimension())
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
+    if (checkStatus_)
+      throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
+    else
+      LOGWARN(OSS() << "no feasible point found during optimization");
   }
   result_.setCallsNumber(size);
 }
