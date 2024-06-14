@@ -397,6 +397,8 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   }
   algorithm_.run();
   const Point thetaStar(algorithm_.getResult().getOptimalPoint());
+  if (!thetaStar.getDimension())
+    throw InvalidArgumentException(HERE) << "optimization in NonLinearLeastSquaresCalibration did not yield a feasible point";
   return thetaStar;
 }
 
