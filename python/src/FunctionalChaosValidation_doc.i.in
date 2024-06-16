@@ -9,7 +9,7 @@
 Parameters
 ----------
 result : :class:`~openturns.FunctionalChaosResult`
-    A functional chaos result resulting from a polynomial chaos expansion.
+    A functional chaos result obtained from a polynomial chaos expansion.
 
 splitter : :class:`~openturns.SplitterImplementation`, optional
     The cross-validation method.
@@ -28,17 +28,17 @@ cross-validation methods presented in :ref:`pce_cross_validation`.
 Analytical cross-validation can only be performed accurately if some
 conditions are met.
 
-- This can be done only if the coefficients of the expansion are estimated
+- This can only be done if the coefficients of the expansion are estimated
   using least squares regression: if the expansion is computed from integration,
   then an exception is produced.
-- This can be done only if the coefficients of the expansion are estimated
+- This can only be done if the coefficients of the expansion are estimated
   using full expansion, without model selection: if the expansion is computed
   with model selection, then an exception is produced by default.
   This is because model selection leads to supposedly improved coefficients,
   so that the hypotheses required to estimate the mean squared error
   using the cross-validation method are not satisfied anymore.
-  As a consequence, using the analytical formula without taking into
-  account for the model selection leads to a biased, optimistic, mean squared
+  As a consequence, using the analytical formula without taking model selection into
+  account leads to a biased, overly optimistic, mean squared
   error.
   More precisely, the analytical formula produces a MSE which is lower
   than the true one on average.
@@ -72,15 +72,15 @@ the :math:`i`-th prediction is the prediction of the linear model
 trained using the hold-out sample where the :math:`i`-th observation
 was removed.
 This produces a sample of residuals which can be retrieved using
-the :class:`~openturns.experimental.FunctionalChaosValidation.getResidualSample` method.
-The :class:`~openturns.experimental.FunctionalChaosValidation.drawValidation` performs
+the :meth:`~openturns.experimental.FunctionalChaosValidation.getResidualSample` method.
+The :meth:`~openturns.experimental.FunctionalChaosValidation.drawValidation` method performs
 similarly.
 
 If the weights of the observations are not equal, the analytical method
 may not necessarily provide an accurate estimator of the mean squared error (MSE).
 This is because LOO and K-Fold cross-validation do not take the weights
 into account.
-Since the :class:`~openturns.experimental.FunctionalChaosResult` object does not know
+Since the :class:`~openturns.FunctionalChaosResult` object does not know
 if the weights are equal, no exception can be generated.
 
 If the sample was not produced from Monte Carlo, then the leave-one-out

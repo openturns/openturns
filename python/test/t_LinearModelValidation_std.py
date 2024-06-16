@@ -10,8 +10,8 @@ print("Fit y ~ 3 - 2 x1 + x2 + epsilon")
 kFoldParameter = 4
 foldRootSize = 3
 # Makes so that k does not divide the sample size.
-# In this case, we must take into account for the different weight of
-# each fold.
+# In this case, we must take the different weigths
+# of each fold into account.
 sampleSize = foldRootSize * kFoldParameter + 1
 print("sampleSize = ", sampleSize)
 aCollection = []
