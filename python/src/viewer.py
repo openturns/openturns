@@ -21,9 +21,9 @@ import warnings
 import io
 
 try:
-    from pkg_resources import parse_version
+    from packaging.version import Version
 except ImportError:
-    from packaging.version import Version as parse_version
+    from pkg_resources import parse_version as Version
 
 __all__ = ["View", "PlotDesign"]
 
@@ -233,7 +233,7 @@ class View:
                 )
 
         # Store matplotlib version
-        matplotlib_version = parse_version(matplotlib.__version__)
+        matplotlib_version = Version(matplotlib.__version__)
 
         # check that arguments are dictionaries
         figure_kw = self._CheckDict(figure_kw)
@@ -417,7 +417,7 @@ class View:
             polygoncollection_kw["zorder"] = zorder
             contour_kw["zorder"] = zorder
             step_kw["zorder"] = zorder
-            if matplotlib_version >= parse_version("3.3"):
+            if matplotlib_version >= Version("3.3"):
                 clabel_kw["zorder"] = zorder
             scatter_kw["zorder"] = zorder
             text_kw["zorder"] = zorder
@@ -647,7 +647,7 @@ class View:
                     if "norm" in contour_kw_default
                     else contour.getColorMapNorm()
                 )
-                if type(norm) is str and matplotlib_version < parse_version("3.6.0"):
+                if type(norm) is str and matplotlib_version < Version("3.6.0"):
                     # matplotlib before 3.6 does not support norms as strings
                     try:
                         normDict = {
@@ -655,7 +655,7 @@ class View:
                             "linear": cls.Normalize(),
                             "log": cls.LogNorm(),
                             "symlog": cls.SymLogNorm(linthresh=0.03)
-                            if matplotlib_version < parse_version("3.2.0")
+                            if matplotlib_version < Version("3.2.0")
                             else cls.SymLogNorm(linthresh=0.03, base=10),
                         }
                         contour_kw["norm"] = normDict[norm]
@@ -703,7 +703,7 @@ class View:
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
                     colorbar = None
-                    if matplotlib_version >= parse_version("3.7.0"):
+                    if matplotlib_version >= Version("3.7.0"):
                         colorbar = self._fig.colorbar(
                             contourset,
                             location=contour.getColorBarPosition(),
