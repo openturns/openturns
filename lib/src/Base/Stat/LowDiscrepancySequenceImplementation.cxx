@@ -383,7 +383,7 @@ Unsigned64BitsInteger LowDiscrepancySequenceImplementation::GetNextPrimeNumber(c
 #if PRIMESIEVE_VERSION_MAJOR >= 11
   it.jump_to(n);
 #else
-  it.skipto(n);
+  it.skipto(n - 1);
 #endif
   return it.next_prime();
 #else
