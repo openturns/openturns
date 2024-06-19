@@ -5,7 +5,7 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
-allDistributions = [ot.InverseGamma(2.5, 5.5), ot.InverseGamma(2.5, 15.0)]
+allDistributions = [ot.InverseGamma(5.5, 2.5), ot.InverseGamma(15.0, 2.5)]
 for n in range(len(allDistributions)):
     distribution = allDistributions[n]
     print("Distribution ", distribution)
@@ -86,19 +86,19 @@ for n in range(len(allDistributions)):
     print("pdf gradient     =", PDFgr)
     PDFgrFD = ot.Point(2)
     PDFgrFD[0] = (
-        ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computePDF(
+        ot.InverseGamma(distribution.getK() + eps, distribution.getLambda()).computePDF(
             point
         )
         - ot.InverseGamma(
-            distribution.getLambda() - eps, distribution.getK()
+            distribution.getK() - eps, distribution.getLambda()
         ).computePDF(point)
     ) / (2.0 * eps)
     PDFgrFD[1] = (
-        ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computePDF(
+        ot.InverseGamma(distribution.getK(), distribution.getLambda() + eps).computePDF(
             point
         )
         - ot.InverseGamma(
-            distribution.getLambda(), distribution.getK() - eps
+            distribution.getK(), distribution.getLambda() - eps
         ).computePDF(point)
     ) / (2.0 * eps)
     print("pdf gradient (FD)=", PDFgrFD)
@@ -106,19 +106,19 @@ for n in range(len(allDistributions)):
     print("cdf gradient     =", CDFgr)
     CDFgrFD = ot.Point(2)
     CDFgrFD[0] = (
-        ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computeCDF(
+        ot.InverseGamma(distribution.getK() + eps, distribution.getLambda()).computeCDF(
             point
         )
         - ot.InverseGamma(
-            distribution.getLambda() - eps, distribution.getK()
+            distribution.getK() - eps, distribution.getLambda()
         ).computeCDF(point)
     ) / (2.0 * eps)
     CDFgrFD[1] = (
-        ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computeCDF(
+        ot.InverseGamma(distribution.getK(), distribution.getLambda() + eps).computeCDF(
             point
         )
         - ot.InverseGamma(
-            distribution.getLambda(), distribution.getK() - eps
+            distribution.getK(), distribution.getLambda() - eps
         ).computeCDF(point)
     ) / (2.0 * eps)
     print("cdf gradient (FD)=", CDFgrFD)
