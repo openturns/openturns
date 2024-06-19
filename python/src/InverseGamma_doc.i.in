@@ -1,16 +1,13 @@
 %feature("docstring") OT::InverseGamma
 "InverseGamma distribution.
 
-
 Parameters
 ----------
-lambda : float, :math:`\lambda > 0`
-    Rate parameter.
-    
-    Default value is 1.0.
 k : float, :math:`k > 0`
     Shape parameter.
-    
+    Default value is 1.0.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter.
     Default value is 1.0.
 
 Notes

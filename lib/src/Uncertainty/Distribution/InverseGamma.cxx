@@ -35,9 +35,6 @@ static const Factory<InverseGamma> Factory_InverseGamma;
 /* Default constructor */
 InverseGamma::InverseGamma()
   : ContinuousDistribution()
-  , lambda_(1.0)
-  , k_(1.0)
-  , normalizationFactor_(0.0)
 {
   setName("InverseGamma");
   setDimension(1);
@@ -45,12 +42,11 @@ InverseGamma::InverseGamma()
 }
 
 /* Parameters constructor */
-InverseGamma::InverseGamma(const Scalar lambda,
-                           const Scalar k)
+InverseGamma::InverseGamma(const Scalar k,
+                           const Scalar lambda)
   : ContinuousDistribution()
-  , lambda_(0.0)
   , k_(0.0)
-  , normalizationFactor_(0.0)
+  , lambda_(0.0)
 {
   setName("InverseGamma");
   setKLambda(k, lambda);
@@ -77,15 +73,15 @@ String InverseGamma::__repr__() const
   oss << "class=" << InverseGamma::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " lambda=" << lambda_
-      << " k=" << k_;
+      << " k=" << k_
+      << " lambda=" << lambda_;
   return oss;
 }
 
 String InverseGamma::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(lambda = " << lambda_ << ", k = " << k_ << ")";
+  oss << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 
@@ -265,8 +261,8 @@ Point InverseGamma::computePDFGradient(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return pdfGradient;
   const Scalar pdf = computePDF(point);
-  pdfGradient[0] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
-  pdfGradient[1] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
+  pdfGradient[0] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
+  pdfGradient[1] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
   return pdfGradient;
 }
 
@@ -281,8 +277,8 @@ Point InverseGamma::computeCDFGradient(const Point & point) const
   const Scalar lambdaXInverse = 1.0 / (lambda_ * x);
   const Scalar pdf = computePDF(x);
   const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
-  cdfGradient[0] = pdf * x / lambda_;
-  cdfGradient[1] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
+  cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
+  cdfGradient[1] = pdf * x / lambda_;
   return cdfGradient;
 }
 
@@ -349,10 +345,7 @@ void InverseGamma::computeCovariance() const
 /* Parameters value and description accessor */
 Point InverseGamma::getParameter() const
 {
-  Point point(2);
-  point[0] = lambda_;
-  point[1] = k_;
-  return point;
+  return {k_, lambda_};
 }
 
 void InverseGamma::setParameter(const Point & parameter)
@@ -366,18 +359,15 @@ void InverseGamma::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description InverseGamma::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "lambda";
-  description[1] = "k";
-  return description;
+  return {"k", "lambda"};
 }
 
 /* Method save() stores the object through the StorageManager */
 void InverseGamma::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "k_", k_ );
+  adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
 
@@ -385,8 +375,8 @@ void InverseGamma::save(Advocate & adv) const
 void InverseGamma::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "k_", k_ );
+  adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
   computeRange();
 }

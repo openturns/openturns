@@ -41,8 +41,8 @@ public:
   InverseGamma();
 
   /** Parameters constructor */
-  InverseGamma(const Scalar lambda,
-               const Scalar k);
+  InverseGamma(const Scalar k,
+               const Scalar lambda);
 
 
   /** Comparison operator */
@@ -159,9 +159,9 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  Scalar lambda_;
-  Scalar k_;
-  Scalar normalizationFactor_;
+  Scalar k_ = 1.0;
+  Scalar lambda_ = 1.0;
+  Scalar normalizationFactor_ = 0.0;
 
 }; /* class InverseGamma */
 
