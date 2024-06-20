@@ -6,7 +6,6 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
-
 f1 = ot.SymbolicFunction(
     ["a0", "a1"],
     ["-4 * exp((-25 / 8) * (a0^2 + a1^2)) + 7 * exp((-125 / 4) * (a0^2 + a1^2))"],
@@ -26,14 +25,20 @@ ref_mean = [
 
 algo = otexp.LOLAVoronoi(x0, y0, distribution)
 newX = ot.Sample(0, x0.getDimension())
+inc = 15
 for i in range(5):
-    x0 = algo.getX()
-    x = algo.generate(15)
+    x = algo.generate(inc)
     newX.add(x)
     y = f1(x)
     algo.update(x, y)
+
     x_mean = x.computeMean()
     print(f"iteration={i} x_mean={x_mean}")
+
+    lolaScore = algo.getLOLAScore()
+    voronoiScore = algo.getVoronoiScore()
+    assert len(lolaScore) == len(x0) + i * inc
+    assert len(lolaScore) == len(voronoiScore)
 
     # FIXME: legacy KDTree is incorrect https://github.com/openturns/openturns/issues/2617
     if ot.PlatformInfo.HasFeature("nanoflann"):

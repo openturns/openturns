@@ -67,15 +67,21 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** LOLA/Voronoi scores accessor */
+  Point getLOLAScore() const;
+  Point getVoronoiScore() const;
+
 protected:
   friend struct LVNeighboorhoodPolicy;
   void updateNeighbourhood() const;
 
   friend struct LVVoronoiScorePolicy;
   Point computeVoronoiScore() const;
+  mutable Point voronoiScore_;
 
   friend struct LVLOLAScorePolicy;
   Point computeLOLAScore() const;
+  mutable Point lolaScore_;
 
   Distribution distribution_;
 
