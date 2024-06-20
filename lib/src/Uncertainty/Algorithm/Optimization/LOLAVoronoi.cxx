@@ -262,12 +262,12 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
   // hybrid score, see 3.4 equation (3.10)
   Sample hybridScore(x_.getSize(), 1);
   LOGINFO("LOLAVoronoi updating voronoi score");
-  const Point voronoiScore(computeVoronoiScore());
+  voronoiScore_ = computeVoronoiScore();
   LOGINFO("LOLAVoronoi updating LOLA score");
-  const Point nonLinearScore(computeLOLAScore());
-  const Scalar sumLS = std::accumulate(nonLinearScore.begin(), nonLinearScore.end(), 0.0);
+  lolaScore_ = computeLOLAScore();
+  const Scalar sumLS = std::accumulate(lolaScore_.begin(), lolaScore_.end(), 0.0);
   for (UnsignedInteger i = 0; i < x_.getSize(); ++ i)
-    hybridScore(i, 0) = voronoiScore[i] + nonLinearScore[i] / sumLS;
+    hybridScore(i, 0) = voronoiScore_[i] + lolaScore_[i] / sumLS;
   const Indices ranking(hybridScore.argsort(false));
   const KDTree tree(x_);
   const UnsignedInteger d = x_.getDimension();
@@ -349,6 +349,18 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
   } // i loop
   return result;
 }
+
+/* LOLA/Voronoi scores accessors */
+Point LOLAVoronoi::getLOLAScore() const
+{
+  return lolaScore_;
+}
+
+Point LOLAVoronoi::getVoronoiScore() const
+{
+  return voronoiScore_;
+}
+
 
 /* Voronoi sampling size accessor */
 void LOLAVoronoi::setVoronoiSamplingSize(const UnsignedInteger voronoiSamplingSize)
