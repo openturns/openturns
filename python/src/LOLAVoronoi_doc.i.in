@@ -105,3 +105,25 @@ neighbourhoodCandidatesNumber : int
     The number of extra closest neighbour points to consider
     during the neighbourhood update step needed for the LOLA criterion.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::getVoronoiScore
+"Voronoi score accessor.
+
+Returns
+-------
+voronoiScore : :class:`~openturns.Point`
+    The exploration criterion for each point in history.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::getLOLAScore
+"LOLA score accessor.
+
+Returns
+-------
+voronoiScore : :class:`~openturns.Point`
+    The exploitation criterion for each point in history.
+"
