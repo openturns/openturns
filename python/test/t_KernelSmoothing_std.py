@@ -242,22 +242,10 @@ for i, distribution in enumerate([ot.LogNormal(0.0, 2.5),
     kernel = ot.KernelSmoothing()
     kernel.setUseLogTransform(True)
     fitted = kernel.build(sample)
-    print('fitted.getMean()[0] = ', fitted.getMean()[0])
-    print('distribution.getMean()[0] = ', distribution.getMean()[0])
     assert_almost_equal(fitted.getMean(), [4.3066], 1e-2)
-    
     quantile = distribution.computeQuantile(0.9)
-    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
-    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
     assert_almost_equal(fitted.computePDF(quantile), [0.0191833], 1e-2)
-    
     quantile = distribution.computeQuantile(0.7)
-    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
-    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
     assert_almost_equal(fitted.computePDF(quantile), [0.0812542], 1e-2)
-    
     quantile = distribution.computeQuantile(0.2)
-    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
-    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
     assert_almost_equal(fitted.computePDF(quantile), [0.0819552], 1e-2)
-    
