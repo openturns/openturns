@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for a quadratic numerical math function implementation
+ *  @brief Class for a quadratic function implementation
  *        of the form y = constant + <linear, x-c> + <<quadratic, x-c>, x-c>
- *        where constant is a dim(y) numerical point, c a dim(x) numerical
+ *        where constant is a dim(y) point, c a dim(x)
  *        point, linear is a dim(x) by dim(y) matrix, quadratic is a
  *        dim(x) by dim(x) by dim(y) symmetric tensor and <linear, x>
  *        means Transpose(linear).x, <quadratic, x> means
