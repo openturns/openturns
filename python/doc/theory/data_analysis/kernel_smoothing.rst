@@ -655,7 +655,7 @@ and :math:`\delta \in \Rset^+_*` the shift scale.
 Once a kernel smoothed distribution has been fitted on the transformed data, the fitted distribution of :math:`X`
 is built as :math:`T^{-1}(Y)` where :math:`Y` is distributed according to the kernel smoothed distribution.
 
-Given a sample :math:`(x_i)_{1 \leq i  \leq n}` from :math:`X`, we denote by :math:`\hat{a} = \min_{i} x_i`, 
+Given a sample :math:`(x_i)_{1 \leq i  \leq n}` from :math:`X`, we denote by :math:`\hat{a} = \min_{i} x_i`,
 :math:`\hat{b} = \max_{i} x_i` and :math:`y_i = T(x_i)` for :math:`1 \leq i \leq n`.
 We build the kernel smoothing distribution of :math:`Y` using :math:`(y_i)_{1 \leq i  \leq n}`
 which pdf is :math:`\hat{p}_Y` and cdf :math:`\hat{F}_Y`.
