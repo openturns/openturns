@@ -462,7 +462,8 @@ The log-transform treatment maps each :math:`X_j` into :math:`Y_j` as follows:
        \right.
 
 where :math:`\gamma_1(X) = \dfrac{\Expect{\left( X - \mu\right)^3}}{\sigma}`
-is the skewness of :math:`X`  with :math:`\mu = \Expect{X}`, :math:`\sigma^2 = \Var{X}` and :math:`\delta \in \Rset^+_*` the shift scale. Its value is fixed in the `KernelSmoothing-DefaultShiftScale` key of the class  :class:`~openturns.ResourceMap`.
+is the skewness of :math:`X`  with :math:`\mu = \Expect{X}`, :math:`\sigma^2 = \Var{X}` and :math:`\delta \in \Rset^+_*` the shift
+scale. Its value is fixed in the `KernelSmoothing-DefaultShiftScale` key of the class  :class:`~openturns.ResourceMap`.
 
 Once a kernel smoothed distribution has been fitted on the transformed data, the fitted distribution of :math:`X`
 is built as a :class:`~openturns.CompositeDistribution` from :math:`T^{-1}` and the kernel smoothed distribution."

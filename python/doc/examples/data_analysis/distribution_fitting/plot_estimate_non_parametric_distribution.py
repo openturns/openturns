@@ -257,8 +257,6 @@ view = viewer.View(graph)
 # %%
 # The boundary correction made has a remarkable impact on the quality of the estimate for the small values.
 
-
-
 # %%
 # Log-transform treatment
 # -----------------------
@@ -292,10 +290,9 @@ for i, distribution in enumerate(distCollection):
     # We draw the real distribution
     graph = distribution.drawPDF()
     graph.setLegends([distribution.getClassName()])
-    
     # We choose the default kernel
     kernel = ot.KernelSmoothing()
-    
+
     # We activate no particular treatment
     fitted = kernel.build(sample)
     curve = fitted.drawPDF()
@@ -309,7 +306,7 @@ for i, distribution in enumerate(distCollection):
     curve.setLegends(["Fitted LogTransform"])
     curve = curve.getDrawable(0)
     curve.setLineStyle("dashed")
-    
+
     graph.add(curve)
     graph.setColors(ot.Drawable.BuildDefaultPalette(3))
     grid.setGraph(i // 3, i % 3, graph)
