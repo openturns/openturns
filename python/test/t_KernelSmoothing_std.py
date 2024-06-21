@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
@@ -229,3 +230,34 @@ ot.RandomGenerator.SetSeed(8457)
 sample = distribution.getSample(30)
 h = factory.computePluginBandwidth(sample)[0]
 print("with reduced cutoff. h=%.6g" % (h))
+
+# test of logTransform
+for i, distribution in enumerate([ot.LogNormal(0.0, 2.5),
+                                  ot.Beta(20000.5, 2.5, 0.0, 1.0),
+                                  ot.Exponential(),
+                                  ot.WeibullMax(1.0, 0.9, 0.0),
+                                  ot.Mixture([ot.Normal(-1.0, 0.5), ot.Normal(1.0, 1.0)], [0.4, 0.6]),
+                                  ot.Mixture([ot.LogNormal(-1.0, 1.0, -1.0), ot.LogNormal(1.0, 1.0, 1.0)], [0.2, 0.8])]):
+    sample = distribution.getSample(5000)
+    kernel = ot.KernelSmoothing()
+    kernel.setUseLogTransform(True)
+    fitted = kernel.build(sample)
+    print('fitted.getMean()[0] = ', fitted.getMean()[0])
+    print('distribution.getMean()[0] = ', distribution.getMean()[0])
+    assert_almost_equal(fitted.getMean(), [4.3066], 1e-2)
+    
+    quantile = distribution.computeQuantile(0.9)
+    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
+    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
+    assert_almost_equal(fitted.computePDF(quantile), [0.0191833], 1e-2)
+    
+    quantile = distribution.computeQuantile(0.7)
+    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
+    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
+    assert_almost_equal(fitted.computePDF(quantile), [0.0812542], 1e-2)
+    
+    quantile = distribution.computeQuantile(0.2)
+    print('fitted.computePDF(quantile) = ', fitted.computePDF(quantile))
+    print('distribution.computePDF(quantile) = ', distribution.computePDF(quantile))
+    assert_almost_equal(fitted.computePDF(quantile), [0.0819552], 1e-2)
+    

@@ -610,7 +610,7 @@ Another method is to use boundary kernels (see [chacon2018]_ page 76,
 [scott2015]_ page 157).
 
 In dimension 1, the boundary effects may be taken into account using
-a *reflection* or *mirroring* method (see [silverman1982]_ page 31).
+a *reflection* or *mirroring* method (see [silverman1982]_ page 31, [jones1993]_).
 the boundaries are automatically detected from the sample
 (with the *min* and *max* functions) and the kernel smoothed PDF
 is corrected in the boundary areas to remain within the boundaries,
@@ -628,6 +628,49 @@ according to the mirroring technique:
   the initial one and the two new ones, with the previous bandwidth *h*,
 
 - this last kernel smoothed PDF is truncated within the initial range :math:`[min, max]` (conditional PDF).
+
+Log-transform treatment
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In this section, we consider a random variable i.e. :math:`d = 1`. This treatment is highly suited to skewed distributions,
+which are all challenging for kernel smoothing. See [charpentier2015]_ to get more details.
+
+We denote by :math:`(X_i)_{1 \leq i  \leq n}` some independent random variates, identically distributed according to :math:`X`.
+
+The log-transform treatment maps each :math:`X_j` into :math:`Y_j` as follows:
+
+.. math::
+
+    Y_j  = T(X_j) = \left |
+    \begin{array}{ll}
+       \log (X_j - \min_{i} X_i + \delta) & \mbox{if } \gamma_1(X) >0\\
+       \log (\max_{i} X_i - X_j + \delta) & \mbox{if } \gamma_1(X) >0
+       \end{array}
+       \right.
+
+where :math:`\gamma_1(X) = \dfrac{\Expect{\left( X - \mu\right)^3}}{\sigma}`
+is the skewness of :math:`X`  with :math:`\mu = \Expect{X}`, :math:`\sigma^2 = \Var{X}`
+and :math:`\delta \in \Rset^+_*` the shift scale.
+
+Once a kernel smoothed distribution has been fitted on the transformed data, the fitted distribution of :math:`X`
+is built as :math:`T^{-1}(Y)` where :math:`Y` is distributed according to the kernel smoothed distribution.
+
+Given a sample :math:`(x_i)_{1 \leq i  \leq n}` from :math:`X`, we denote by :math:`\hat{a} = \min_{i} x_i`, 
+:math:`\hat{b} = \max_{i} x_i` and :math:`y_i = T(x_i)` for :math:`1 \leq i \leq n`.
+We build the kernel smoothing distribution of :math:`Y` using :math:`(y_i)_{1 \leq i  \leq n}`
+which pdf is :math:`\hat{p}_Y` and cdf :math:`\hat{F}_Y`.
+
+We recover the pdf and cdf of :math:`X` as follows:
+
+.. math::
+
+    \hat{F}_X(x) & = \hat{F}_Y(T(x)) \\
+    \hat{p}_X(x) & = T'(x) \hat{p}_Y(T(x))
+
+We note that this transformation also embeds a treatment of the boundaries as the finite lower bound in case of positive skewness
+or the finite upper bound in case of negative skewness is rejected to infinity. Thus, there is no more boundary effect on the
+:math:`Y`-sample.
+
 
 Conclusion
 ~~~~~~~~~~
