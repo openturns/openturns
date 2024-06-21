@@ -204,7 +204,7 @@ Point ThresholdEventImplementation::getFrozenRealization(const Point & fixedPoin
   return Point(1, operator_(CompositeRandomVector::getFrozenRealization(fixedPoint)[0], threshold_));
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample ThresholdEventImplementation::getSample(const UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't

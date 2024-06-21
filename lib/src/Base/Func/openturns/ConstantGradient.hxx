@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for a linear numerical math gradient impelmentation
+ *  @brief Class for a linear gradient implementation
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ConstantGradient
  *
- * This class offers an interface for an real numerical mathematical gradient
+ * This class offers an interface for a real gradient
  * implementations into the platform. It realizes the computation of the image matrix
  * of a vector (aka Point) through the gradient. The
  * gradient may be loaded in an external way through a wrapper.

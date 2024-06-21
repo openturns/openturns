@@ -76,7 +76,7 @@ public:
   /** Fixed value accessor */
   virtual Point getFrozenRealization(const Point & fixedPoint) const;
 
-  /** Numerical sample accessor */
+  /** Sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Fixed sample accessor */

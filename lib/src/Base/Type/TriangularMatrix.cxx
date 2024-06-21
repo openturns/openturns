@@ -237,13 +237,13 @@ Point TriangularMatrix::operator * (const Point & pt) const
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
-/* Multiplication with a Numerical */
+/* Multiplication with a scalar */
 TriangularMatrix TriangularMatrix::operator* (const Scalar s) const
 {
   return TriangularMatrix(*getImplementation() * s, isLowerTriangular_);
 }
 
-/* Division by a Numerical*/
+/* Division by a scalar */
 TriangularMatrix TriangularMatrix::operator / (const Scalar s) const
 {
   return TriangularMatrix(*getImplementation() / s, isLowerTriangular_);

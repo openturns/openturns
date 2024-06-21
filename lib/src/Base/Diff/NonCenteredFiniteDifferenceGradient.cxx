@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for the creation of a numerical math gradient implementation
- *         form a numerical math evaluation implementation by using noncentered
+ *  @brief Class for the creation of a gradient implementation
+ *         from an evaluation implementation by using noncentered
  *         finite difference formula.
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
