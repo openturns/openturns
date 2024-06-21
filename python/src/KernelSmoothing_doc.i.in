@@ -489,7 +489,7 @@ This treatment is available in dimension 1 only."
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith computed according to the Silverman rule.
+    Bandwidth computed according to the Silverman rule.
     
 Notes
 -----
