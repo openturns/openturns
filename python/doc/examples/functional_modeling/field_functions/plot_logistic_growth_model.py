@@ -20,6 +20,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
+ot.RandomGenerator.SetSeed(0)
 
 # %%
 # We load the logistic model from the usecases module :
@@ -77,9 +78,6 @@ popu = ot.PointToFieldFunction(F)
 size = 10
 inputSample = distX.getSample(size)
 outputSample = popu(inputSample)
-
-# %%
-ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", size)
 
 # %%
 # Draw some curves

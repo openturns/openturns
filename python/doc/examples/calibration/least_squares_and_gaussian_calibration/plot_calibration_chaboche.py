@@ -1,4 +1,4 @@
-r"""
+"""
 Calibration of the Chaboche mechanical model
 ============================================
 

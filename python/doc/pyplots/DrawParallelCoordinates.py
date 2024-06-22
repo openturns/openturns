@@ -20,4 +20,7 @@ cobweb = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 2.5, 3.0, "red", False
 )
 
-View(cobweb, figure_kw={"figsize": (10, 6)}, legend_kw={"loc": "lower right"})
+cobweb.setLegendCorner([1.0, 0.0])
+cobweb.setLegendPosition('lower right')
+#View(cobweb, figure_kw={"figsize": (10, 6)}, legend_kw={"loc": "lower right"})
+View(cobweb, figure_kw={"figsize": (9, 5)})

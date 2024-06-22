@@ -93,7 +93,6 @@ def drawKSDistance(sample, distribution, observation, D, distFactory):
     cdf = distribution.drawCDF()
     cdf.setLegends([distname])
     graph.add(cdf)
-    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
     return graph
 
 
