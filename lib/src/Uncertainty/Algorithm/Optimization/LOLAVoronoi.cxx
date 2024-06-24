@@ -28,7 +28,7 @@
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/Combinations.hxx"
 #include "openturns/CombinationsDistribution.hxx"
-#include "openturns/CholeskyMethod.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 
 #include <numeric>
@@ -188,10 +188,12 @@ struct LVLOLAScorePolicy
 {
   const LOLAVoronoi & lola_;
   Point & nonLinearScore_;
+  String methodName_;
 
-  LVLOLAScorePolicy(const LOLAVoronoi & lola, Point & nonLinearScore)
+  LVLOLAScorePolicy(const LOLAVoronoi & lola, Point & nonLinearScore, String methodName)
     : lola_(lola)
     , nonLinearScore_(nonLinearScore)
+    , methodName_(methodName)
   {}
 
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & rnge) const
@@ -223,7 +225,7 @@ struct LVLOLAScorePolicy
         }
 
         // g = \argmin ||pg-f|| cf 3.3.3 equation (3.8)
-        const Point g(CholeskyMethod(p).solve(f));
+        const Point g(LeastSquaresMethod::Build(methodName_, p).solve(f));
 
         // local nonlinearity, 3.3.4 equation (3.9)
         Scalar epr = 0.0;
@@ -250,7 +252,8 @@ Point LOLAVoronoi::computeLOLAScore() const
     updateNeighbourhood();
 
   Point nonLinearScore(x_.getSize());
-  const LVLOLAScorePolicy policy(*this, nonLinearScore);
+  const String methodName = ResourceMap::Get("LOLAVoronoi-DecompositionMethod");
+  const LVLOLAScorePolicy policy(*this, nonLinearScore, methodName);
   TBBImplementation::ParallelFor(0, x_.getSize(), policy);
   return nonLinearScore;
 }
