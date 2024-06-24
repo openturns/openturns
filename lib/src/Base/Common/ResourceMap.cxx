@@ -897,6 +897,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LOLAVoronoi-DefaultMaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
   addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
+  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky");
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);

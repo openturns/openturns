@@ -19,6 +19,8 @@ For the nonlinearity criterion the algorithm only uses the data available and ch
 set of neighbouring samples :math:`N(\vect{p}_i) = {\vect{p}_{i1}, \hdots, \vect{p}_{im}}`
 with :math:`m = 2 d` to build the gradient approximation :math:`\vect{g}`.
 
+The least-squares method to compute the gradient is set by the :class:`~openturns.ResourceMap` entry `LOLAVoronoi-DecompositionMethod`.
+
 The LOLA algorithm local nonlinearity score is given by:
 
 .. math::
