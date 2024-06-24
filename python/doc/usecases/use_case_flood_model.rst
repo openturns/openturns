@@ -417,7 +417,6 @@ This is a simpler model that leads to a simplified analysis.
     view = otv.View(
         graph,
         figure_kw={"figsize": (6.0, 4.0)},
-        #legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     )
     pl.subplots_adjust(right=0.7)
 
