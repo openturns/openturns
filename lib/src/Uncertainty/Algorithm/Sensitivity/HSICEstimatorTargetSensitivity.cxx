@@ -19,9 +19,13 @@
  *
  */
 #include "openturns/HSICEstimatorTargetSensitivity.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
 CLASSNAMEINIT(HSICEstimatorTargetSensitivity)
+
+static const Factory<HSICEstimatorTargetSensitivity> Factory_HSICEstimatorTargetSensitivity;
 
 /* Default */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity()

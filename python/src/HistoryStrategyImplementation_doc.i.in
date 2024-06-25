@@ -1,17 +1,5 @@
 %define OT_HistoryStrategy_doc
-"History storage strategy.
-
-Available constructors:
-    HistoryStrategy()
-
-    HistoryStrategy(*historyStrategyImp*)
-
-Parameters
-----------
-historyStrategyImp : HistoryStrategyImplementation
-    An implementation of a history strategy which is provided by
-    :class:`~openturns.Compact`, :class:`~openturns.Full`,
-    :class:`~openturns.Last` or :class:`~openturns.Null` class.
+"History storage strategy base class.
 
 See also
 --------

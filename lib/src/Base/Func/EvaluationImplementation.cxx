@@ -331,7 +331,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (!(getInputDimension() >= 1)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
   if (!(inputMarginal < getInputDimension())) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
   if (!(outputMarginal < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
-  if (!(xMin <= xMax)) throw InvalidArgumentException(HERE) << "Error: xMin ("<<xMin<<") cannot be greater than xMax("<< xMax << ")";
+  if (!(xMin <= xMax)) throw InvalidArgumentException(HERE) << "Error: xMin (" << xMin << ") cannot be greater than xMax(" << xMax << ")";
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
   if (useLogX && (!(xMin > 0.0 && xMax > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
@@ -462,7 +462,6 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     const Sample z((*this)(inputSample).getMarginal(outputMarginal));
     Contour isoValues(x, y, z);
     isoValues.setIsFilled(isFilled);
-    isoValues.setColorBarPosition("right");
     isoValues.setDrawLabels(false);
     graph.add(isoValues);
   }
@@ -516,7 +515,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
         // constant X
         graph.setXTitle(yName);
         graph.setYTitle(getOutputDescription()[outputMarginal]);
-        graph.setTitle(OSS() << graph.getYTitle() << " as a function of " << graph.getXTitle()); 
+        graph.setTitle(OSS() << graph.getYTitle() << " as a function of " << graph.getXTitle());
         Curve curve(inputSample.getMarginal(secondInputMarginal), z);
         graph.add(curve);
       }

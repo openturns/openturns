@@ -75,9 +75,6 @@ public:
   /** Maximum calls number accessor */
   virtual void setMaximumCallsNumber(const UnsignedInteger maximumCallsNumber);
   virtual UnsignedInteger getMaximumCallsNumber() const;
-  // @deprecated
-  virtual void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
-  virtual UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
   virtual Scalar getMaximumAbsoluteError() const;

@@ -138,7 +138,7 @@ void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & fun
   {
     if (functionsCollection[i].getInputDimension() != inputDimension)
       throw InvalidArgumentException(HERE) << "Error: the function with index " << i << " has input dimension " << functionsCollection[i].getInputDimension()
-	                                   << ", whereas the function with index 0 has input dimension " << inputDimension;
+                                           << ", whereas the function with index 0 has input dimension " << inputDimension;
     const UnsignedInteger atomOutputDimension = functionsCollection[i].getOutputDimension();
     if (!(atomOutputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
     outputDimension_ += atomOutputDimension;
@@ -194,6 +194,8 @@ Evaluation AggregatedEvaluation::getMarginal(const Indices & indices) const
     // Check if a bad case occurs: one index related to function i is found after indices related to function j, with j > i. In this case we use the generic marginal extraction
     if (currentIndex < lowerIndex) return EvaluationImplementation::getMarginal(indices);
   }
+  if (marginalFunctions.getSize() == 1)
+    return marginalFunctions[0].getEvaluation();
   return new AggregatedEvaluation(marginalFunctions);
 }
 
@@ -251,7 +253,7 @@ void AggregatedEvaluation::setParameter(const Point & parameter)
     parameterSize += functionsCollection_[i].getParameter().getSize();
   if (parameter.getSize() != parameterSize)
     throw InvalidDimensionException(HERE) << "AggregatedEvaluation expected a parameter of size " << parameterSize
-	                                  << " got " << parameter.getSize();
+                                          << " got " << parameter.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {

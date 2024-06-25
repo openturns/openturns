@@ -53,26 +53,26 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory(
 )
 
 # %%
-# In this case, we select `P` using the
+# In this case, we select :math:`P` using the
 # :meth:`~openturns.EnumerateFunction.getBasisSizeFromTotalDegree` method,
 # so that all polynomials with total degree lower or equal to 5 are used.
 # This will lead to the computation of 126 coefficients.
 totalDegree = 5
 enum_func = multivariateBasis.getEnumerateFunction()
-P = enum_func.getBasisSizeFromTotalDegree(totalDegree)
-print(f"P={P}")
+basisSize = enum_func.getBasisSizeFromTotalDegree(totalDegree)
+print(f"Basis size = {basisSize}")
 
 # %%
 # We select the :class:`~openturns.FixedStrategy` truncation rule, which corresponds to using
-# the first `P` polynomials of the polynomial basis.
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+# the first :math:`P` polynomials of the polynomial basis.
+adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 
 # %%
 # We begin by getting the standard measure associated with the multivariate polynomial basis.
 # We see that the range of the `Beta` distribution has been standardized into the [-1,1] interval.
 # This is the same for the `Uniform` distribution and the second `Beta` distribution.
 measure = multivariateBasis.getMeasure()
-print(f"measure={measure}")
+print(f"Measure = {measure}")
 
 # %%
 # The choice of the :class:`~openturns.GaussProductExperiment` rule with 4 nodes
@@ -115,17 +115,18 @@ Y_test = g(X_test)
 # %%
 # The :class:`~openturns.MetaModelValidation` class validates the metamodel
 # based on a validation sample.
-val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+metamodelPredictions = metamodel(X_test)
+val = ot.MetaModelValidation(Y_test, metamodelPredictions)
 
 # %%
-# Compute the :math:`Q^2` predictivity coefficient.
-Q2 = val.computePredictivityFactor()[0]
-Q2
+# Compute the :math:`R^2` coefficient of determination.
+r2Score = val.computeR2Score()[0]
+r2Score
 
 # %%
 # Plot the observed versus the predicted outputs.
 graph = val.drawValidation()
-graph.setTitle(f"Gauss product N={experiment.getSize()} - Q2={Q2*100:.2f}")
+graph.setTitle(f"Gauss product N={experiment.getSize()} - R2={r2Score * 100:.2f}")
 view = otv.View(graph)
 
 # %%
@@ -142,11 +143,12 @@ def draw_validation(experiment):
     metamodel = result.getMetaModel()
     X_test = distribution.getSample(n_valid)
     Y_test = g(X_test)
-    val = ot.MetaModelValidation(X_test, Y_test, metamodel)
-    Q2 = val.computePredictivityFactor()[0]
+    metamodelPredictions = metamodel(X_test)
+    val = ot.MetaModelValidation(Y_test, metamodelPredictions)
+    r2Score = val.computeR2Score()[0]
     graph = val.drawValidation()
     graph.setTitle(
-        f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2*100:.2f}"
+        f"{experiment.__class__.__name__} - N={experiment.getSize()} - R2={r2Score * 100:.2f}"
     )
     return graph
 
@@ -169,8 +171,8 @@ otv.View.ShowAll()
 # %%
 # Conclusion
 # ----------
-# With the Gauss product rule the coefficients are particularly well computed
-# since the Q2 coefficient is excellent, even with the relatively limited amount
+# With the Gauss product rule, the coefficients are particularly well computed
+# since the R2 score is excellent, even with the relatively limited amount
 # of simulation (256 points).
 # On the other hand the LHS and low-discrepancy experiments require many more
-# points to achieve a Q2>99%.
+# points to achieve a R2 > 99%.

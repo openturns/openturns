@@ -652,29 +652,29 @@ Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
     // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty Point
     const PointWithDescriptionCollection marginalParameters(distributionCollection_[marginalIndex].getParametersCollection());
     if (marginalParameters.getSize() > 0)
-      {
-        PointWithDescription point(marginalParameters[0]);
-        point.setName(distributionCollection_[marginalIndex].getName());
-        parameters[marginalIndex] = point;
-      }
+    {
+      PointWithDescription point(marginalParameters[0]);
+      point.setName(distributionCollection_[marginalIndex].getName());
+      parameters[marginalIndex] = point;
+    }
   } // marginalIndex
 
   // Form a big Point from the dependence parameters of each atom
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (distributionCollection_[i].getParametersCollection().getSize() >= dimension - 1)
+    {
+      const PointWithDescription atomDependenceParameters(distributionCollection_[i].getParametersCollection()[dimension]);
+      const Description atomDescription(atomDependenceParameters.getDescription());
+      const UnsignedInteger atomParameterDimension = atomDependenceParameters.getDimension();
+      const String prefix(OSS() << "atom_" << i << "_");
+      // Add the current atom dependence parameters
+      for (UnsignedInteger j = 0; j < atomParameterDimension; j++)
       {
-        const PointWithDescription atomDependenceParameters(distributionCollection_[i].getParametersCollection()[dimension]);
-        const Description atomDescription(atomDependenceParameters.getDescription());
-        const UnsignedInteger atomParameterDimension = atomDependenceParameters.getDimension();
-        const String prefix(OSS() << "atom_" << i << "_");
-        // Add the current atom dependence parameters
-        for (UnsignedInteger j = 0; j < atomParameterDimension; j++)
-          {
-            parameters[size].add(atomDependenceParameters[j]);
-            description.add(prefix + atomDescription[j]);
-          }
-      } // if
+        parameters[size].add(atomDependenceParameters[j]);
+        description.add(prefix + atomDescription[j]);
+      }
+    } // if
   } // for i
   parameters[size].setDescription(description);
   parameters[size].setName("dependence");

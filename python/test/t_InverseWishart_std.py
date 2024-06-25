@@ -172,7 +172,9 @@ class TestInverseWishartMethods(ut.TestCase):
                 ott.assert_almost_equal(
                     theoretical_mean_inverse[indice], coefficient * Scale[k, j]
                 )
-                ott.assert_almost_equal(theoretical_mean[indice], DoF * Scale_wishart[k, j])
+                ott.assert_almost_equal(
+                    theoretical_mean[indice], DoF * Scale_wishart[k, j]
+                )
                 ott.assert_almost_equal(
                     mean_inverse[indice], coefficient * Scale[k, j], 0.15, 1.0e-3
                 )

@@ -54,7 +54,7 @@ def piecewise(X):
     #     f = (x+0.75)**2-0.75**2
     # else:
     #     f = 2.0-x**2
-    xarray = np.array(X, copy=False)
+    xarray = np.asarray(X)
     return np.piecewise(
         xarray,
         [xarray < 0, xarray >= 0],

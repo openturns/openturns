@@ -47,13 +47,19 @@ Survival = distribution.computeSurvivalFunction(point)
 print("survival=%.5e" % Survival)
 InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
 print("Inverse survival=", InverseSurvival)
-print("Survival(inverse survival)=%.5e" % distribution.computeSurvivalFunction(InverseSurvival))
+print(
+    "Survival(inverse survival)=%.5e"
+    % distribution.computeSurvivalFunction(InverseSurvival)
+)
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)=%.5e" % distribution.computeCDF(quantile))
 
 print("entropy     =%.5e" % distribution.computeEntropy())
-print("entropy (MC)=%.5e" % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0])
+print(
+    "entropy (MC)=%.5e"
+    % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0]
+)
 mean = distribution.getMean()
 print("mean=", mean)
 #

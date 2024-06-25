@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HSICUStat
  *
  */
-class OT_API HSICUStat: public HSICStatImplementation
+class OT_API HSICUStat : public HSICStatImplementation
 {
   CLASSNAME
 public:

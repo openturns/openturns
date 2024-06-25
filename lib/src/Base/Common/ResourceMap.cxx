@@ -1022,7 +1022,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
-  
+
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
@@ -1195,6 +1195,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Gibbs parameters //
   addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
+
+  // HistogramFactory //
+  addAsUnsignedInteger("HistogramFactory-MaximumBinNumber", 1024);
 
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE");
@@ -1500,9 +1503,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
-  
+
   // LinearModelAnalysis parameters //
-  addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
+  addAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber", 3);
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
   addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
   addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");

@@ -50,6 +50,7 @@
 %include KFoldSplitter.i
 %include LeaveOneOutSplitter.i
 %include TensorProductExperiment.i
+%include SmolyakExperiment.i
 
 /* At last we include template definitions */
 %include UncertaintyWeightedExperimentTemplateDefs.i

@@ -5,9 +5,7 @@ from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
 
 # Generate sample with the given plane
-distribution = ot.JointDistribution(
-    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]
-)
+distribution = ot.JointDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
 marginalSizes = ot.Indices([3, 6])
 experiment = ot.GaussProductExperiment(ot.Distribution(distribution), marginalSizes)
 

@@ -56,7 +56,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
-  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension_ + 1 + outputDimension_; ++i)
     if(i != inputDimension_) activeParameter_.add(i);
   updateOutputCovariance();
 }
@@ -79,7 +79,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
 {
   setAmplitude(amplitude);
   setScale(scale);
-  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension_ + 1 + outputDimension_; ++i)
     if(i != inputDimension_) activeParameter_.add(i);
 }
 
@@ -102,7 +102,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
 {
   setAmplitude(amplitude);
   setScale(scale);
-  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension_ + 1 + outputDimension_; ++i)
     if(i != inputDimension_) activeParameter_.add(i);
   setOutputCorrelation(spatialCorrelation);
 }
@@ -139,7 +139,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
       for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
         outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
   } // !isDiagonal
-  for (UnsignedInteger i=0; i < inputDimension_ + 1 + outputDimension_; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension_ + 1 + outputDimension_; ++i)
     if(i != inputDimension_) activeParameter_.add(i);
 }
 
@@ -952,7 +952,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   }
   // Second the nugget factor
   if (!(parameter[index] >= 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of nuggetFactor is negative";
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of nuggetFactor is negative";
   nuggetFactor_ = parameter[index];
   ++ index;
   // Third the amplitude parameter
@@ -1070,7 +1070,7 @@ void CovarianceModelImplementation::activateAmplitude(const Bool isAmplitudeActi
     if(activeParameter[i] <= scaleSize) newActiveParameter.add(activeParameter[i]);
     else if (activeParameter[i] > scaleSize + amplitudeSize) activeAfterAmplitude.add(activeParameter[i]);
   }
-  if (isAmplitudeActive) 
+  if (isAmplitudeActive)
   {
     Indices amplitudeIndices(amplitudeSize);
     amplitudeIndices.fill(scaleSize + 1);

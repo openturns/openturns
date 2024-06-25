@@ -26,7 +26,6 @@
 #include "openturns/RandomMixture.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Tuples.hxx"
 #include "openturns/Function.hxx"

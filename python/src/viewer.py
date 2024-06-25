@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as cls
 import warnings
 import io
+
 try:
     from pkg_resources import parse_version
 except ImportError:

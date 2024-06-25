@@ -132,6 +132,8 @@ Sample IntersectionEvent::getFrozenSample(const Sample & fixedSample) const
     for (UnsignedInteger j = 0; j < stillInIntersection.getSize(); ++ j)
       if (currentEventSample(j, 0) == 0.0) noLongerInIntersection.add(stillInIntersection[j]);
     stillInIntersection = noLongerInIntersection.complement(fixedSample.getSize());
+    if (!stillInIntersection.getSize())
+      break;
   }
 
   Sample sample(fixedSample.getSize(), 1);
@@ -200,7 +202,8 @@ void IntersectionEvent::load(Advocate & adv)
   RandomVectorImplementation::load(adv);
   RandomVectorPersistentCollection eventCollection;
   adv.loadAttribute( "eventCollection_", eventCollection );
-  setEventCollection(eventCollection);
+  if (eventCollection.getSize())
+    setEventCollection(eventCollection);
 }
 
 END_NAMESPACE_OPENTURNS

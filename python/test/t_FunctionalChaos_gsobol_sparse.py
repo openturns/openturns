@@ -10,7 +10,7 @@ ot.TESTPREAMBLE()
 # Problem parameters
 dimension = 8
 
-# Create the Ishigami function
+# Create the GSobol' function
 # Reference analytical values
 meanTh = 1.0
 covTh = 1.0
@@ -66,9 +66,8 @@ listFittingAlgorithm.append(ot.CorrectedLeaveOneOut())
 for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     fittingAlgorithm = listFittingAlgorithm[fittingAlgorithmIndex]
     adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
-    projectionStrategy = ot.LeastSquaresStrategy(
-        ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
-    )
+    lsSelectionFactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
+    projectionStrategy = ot.LeastSquaresStrategy(lsSelectionFactory)
     experiment = ot.LowDiscrepancyExperiment(
         ot.SobolSequence(), distribution, samplingSize
     )
@@ -88,5 +87,8 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     isLeastSquaresPCE = result.isLeastSquares()
     assert isLeastSquaresPCE
     involvesModelSelectionPCE = result.involvesModelSelection()
-    involvesModelSelection = adaptiveStrategy.involvesModelSelection() or projectionStrategy.involvesModelSelection()
+    involvesModelSelection = (
+        adaptiveStrategy.involvesModelSelection()
+        or projectionStrategy.involvesModelSelection()
+    )
     assert involvesModelSelection == involvesModelSelectionPCE

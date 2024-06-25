@@ -37,7 +37,7 @@ int main(int, char *[])
     IshigamiUseCase ishigami;
     Function model(ishigami.getModel());
     JointDistribution distribution(ishigami.getInputDistribution());
-    
+
     // Problem parameters
     UnsignedInteger dimension = 3;
     // Reference analytical values
@@ -123,7 +123,7 @@ int main(int, char *[])
           fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
           Scalar variance = vector.getCovariance()(0, 0);
           fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
-          
+
           // Check Sobol' indices
           // Check first order indices
           FunctionalChaosSobolIndices sensitivity(result);

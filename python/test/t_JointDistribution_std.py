@@ -10,15 +10,58 @@ mean = [3.0, 2.0, 1.0]
 sigma = [2.0, 3.0, 4.0]
 
 refCovariances = list()
-refCovariances.append(ot.CovarianceMatrix(3, [4.0, 0.0, 0.0, 0.0, 9.0, 0.0, 0.0, 0.0, 16.0]))
-refCovariances.append(ot.CovarianceMatrix(3, [4.0, 1.5, 0.0, 1.5, 9.0, 3.0, 0.0, 3.0, 16.0]))
-refCovariances.append(ot.CovarianceMatrix(3, [4.0, 1.125, 0.0, 1.125, 9.0, 2.25, 0.0, 2.25, 16.0]))
-refCovariances.append(ot.CovarianceMatrix(3, [4.0, 2.0696999, -4.403889, 2.0696999, 9.0, 4.1393998, -4.403889, 4.1393998, 16.0]))
-refCovariances.append(ot.CovarianceMatrix(3, [0.39606657, 0.0, 0.0, 0.0, 0.891149785, 0.0, 0.0, 0.0, 1.584266284]))
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 0.0, 0.0, 0.0, 9.0, 0.0, 0.0, 0.0, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 1.5, 0.0, 1.5, 9.0, 3.0, 0.0, 3.0, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(3, [4.0, 1.125, 0.0, 1.125, 9.0, 2.25, 0.0, 2.25, 16.0])
+)
+refCovariances.append(
+    ot.CovarianceMatrix(
+        3,
+        [
+            4.0,
+            2.0696999,
+            -4.403889,
+            2.0696999,
+            9.0,
+            4.1393998,
+            -4.403889,
+            4.1393998,
+            16.0,
+        ],
+    )
+)
+refCovariances.append(
+    ot.CovarianceMatrix(
+        3, [0.39606657, 0.0, 0.0, 0.0, 0.891149785, 0.0, 0.0, 0.0, 1.584266284]
+    )
+)
 
-refStandardDeviation = [[2, 3, 4], [2, 3, 4], [2, 3, 4], [1.49595080640498, 2.00948748222124, 2.99190161280996], [0.62933820074628, 0.94400730111948, 1.25867640149264]]
-refSkewness = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [-0.213157049688829, 0.0, 0.213157049689032], [0.22711106425, 0.22711106425, 0.22711106425]]
-refKurtosis = [[3, 3, 3], [3, 3, 3], [3, 3, 3], [3.11664895604121, 3.03472746922749, 3.11664895604127], [2.439305739629, 2.439305739629, 2.439305739629]]
+refStandardDeviation = [
+    [2, 3, 4],
+    [2, 3, 4],
+    [2, 3, 4],
+    [1.49595080640498, 2.00948748222124, 2.99190161280996],
+    [0.62933820074628, 0.94400730111948, 1.25867640149264],
+]
+refSkewness = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [-0.213157049688829, 0.0, 0.213157049689032],
+    [0.22711106425, 0.22711106425, 0.22711106425],
+]
+refKurtosis = [
+    [3, 3, 3],
+    [3, 3, 3],
+    [3, 3, 3],
+    [3.11664895604121, 3.03472746922749, 3.11664895604127],
+    [2.439305739629, 2.439305739629, 2.439305739629],
+]
 
 # Create a collection of distribution attente TUI
 aCollection = []
@@ -79,7 +122,12 @@ for nCore in range(len(cores)):
     print("nCore=", nCore)
     if nCore != 2:
         print("entropy=%.5e" % distribution.computeEntropy())
-        print("entropy (MC)=%.5e" % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0])
+        print(
+            "entropy (MC)=%.5e"
+            % -distribution.computeLogPDF(
+                distribution.getSample(1000000)
+            ).computeMean()[0]
+        )
     print("Mean ", distribution.getMean())
     precision = ot.PlatformInfo.GetNumericalPrecision()
     print("Covariance ")
@@ -148,26 +196,49 @@ for nCore in range(len(cores)):
     print("conditional CDF=%.5e" % distribution.computeConditionalCDF(x, y))
     print("conditional quantile=%.5e" % distribution.computeConditionalQuantile(x, y))
     pt = [i + 1.5 for i in range(dim)]
-    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt))
+    print(
+        "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt)
+    )
     resCDF = distribution.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+    print(
+        "sequential conditional quantile(",
+        resCDF,
+        ")=",
+        distribution.computeSequentialConditionalQuantile(resCDF),
+    )
 
     # Confidence regions
     if distribution.getDimension() <= 2:
-        levelSet, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        (
+            levelSet,
+            threshold,
+        ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
         print("Minimum volume interval=", levelSet)
         print("threshold=%.5e" % threshold)
         levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
         print("Minimum volume level set=", levelSet)
         print("beta=%.5e" % beta)
-        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        (
+            interval,
+            beta,
+        ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
         print("Bilateral confidence interval=", interval)
         print("beta=%.5e" % beta)
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False
+        )
         print("Unilateral confidence interval (lower tail)=", interval)
         print("beta=%.5e" % beta)
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True
+        )
         print("Unilateral confidence interval (upper tail)=", interval)
         print("beta=%.5e" % beta)
     # Moments other than mean and covariance
@@ -215,9 +286,7 @@ print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
 print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
 pt = [i + 1.5 for i in range(dim)]
-print(
-    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt)
-)
+print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt))
 resCDF = distribution.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
 print(

@@ -142,8 +142,8 @@ public:
 
   /** Design accessor */
   virtual void setDesign(const Sample & inputDesign,
-                 const Sample & outputDesign,
-                 const UnsignedInteger size);
+                         const Sample & outputDesign,
+                         const UnsignedInteger size);
 protected:
 
   /** Internal method that compute Vi/VTi using a collection of samples */

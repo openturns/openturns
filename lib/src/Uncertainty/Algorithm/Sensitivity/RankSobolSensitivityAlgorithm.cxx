@@ -44,15 +44,15 @@ RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm()
 
 /** Constructor with parameters */
 RankSobolSensitivityAlgorithm::RankSobolSensitivityAlgorithm(const Sample & inputDesign,
-    const Sample & outputDesign):SobolIndicesAlgorithmImplementation()
+    const Sample & outputDesign): SobolIndicesAlgorithmImplementation()
 {
   setDesign(inputDesign, outputDesign, inputDesign.getSize());
 }
 
 /* Design accessor */
 void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
-                                              const Sample & outputDesign,
-                                              const UnsignedInteger size)
+    const Sample & outputDesign,
+    const UnsignedInteger size)
 {
 
   inputDesign_  = inputDesign;
@@ -61,10 +61,10 @@ void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
   size_ = size;
   inputDescription_ = inputDesign.getDescription();
   referenceVariance_ = outputDesign_.computeVariance();
-  
+
   if (!(size_ > 1))
     throw InvalidArgumentException(HERE) << "Sobol design size must be > 1";
-  
+
   if (size_ != outputDesign.getSize())
     throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << size_
                                          << " vs " << outputDesign.getSize() << ")";
@@ -85,11 +85,11 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
     // Invoke the method to compute first order indices
     varianceI_ = computeIndices();
   }
-  
+
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  
+
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In RankSobolSensitivityAlgorithm::getFirstOrderIndices, marginalIndex should be in [0," 
+    throw InvalidArgumentException(HERE) << "In RankSobolSensitivityAlgorithm::getFirstOrderIndices, marginalIndex should be in [0,"
                                          << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
@@ -98,36 +98,36 @@ Point RankSobolSensitivityAlgorithm::getFirstOrderIndices(const UnsignedInteger 
 
 /** Internal method that compute Vi  **/
 Sample RankSobolSensitivityAlgorithm::computeIndicesFromSample(const Sample & inputDesign, const Sample & outputDesign) const
-{  
-  Sample marginalVar(outputDesign.getDimension(),inputDesign.getDimension());
-  
+{
+  Sample marginalVar(outputDesign.getDimension(), inputDesign.getDimension());
+
   UnsignedInteger size = inputDesign.getSize();
   const Point meanOutputDesign = outputDesign.computeMean();
-  
-  for (UnsignedInteger j = 0; j < outputDesign.getDimension(); ++j) 
+
+  for (UnsignedInteger j = 0; j < outputDesign.getDimension(); ++j)
   {
-      for (UnsignedInteger i = 0; i < inputDesign.getDimension(); ++i)
+    for (UnsignedInteger i = 0; i < inputDesign.getDimension(); ++i)
+    {
+      // Sorting samples with respect to the input dimension
+      const Indices idSort = inputDesign.getMarginal(i).argsort();
+      Scalar sum = 0.;
+
+      for (UnsignedInteger k = 0; k < size; ++k)
       {
-        // Sorting samples with respect to the input dimension
-        const Indices idSort = inputDesign.getMarginal(i).argsort();
-        Scalar sum = 0.;
-        
-        for (UnsignedInteger k = 0; k < size; ++k) 
-        {
-            sum += outputDesign(idSort[k], j) * outputDesign(idSort[(k + 1) % size], j);    
-        }
-        // Compute the marginal variance
-        marginalVar(j,i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j]; 
+        sum += outputDesign(idSort[k], j) * outputDesign(idSort[(k + 1) % size], j);
       }
+      // Compute the marginal variance
+      marginalVar(j, i) = 1. / size * sum - meanOutputDesign[j] * meanOutputDesign[j];
+    }
   }
-  
+
   return marginalVar;
 }
 
 
 Sample RankSobolSensitivityAlgorithm::computeIndices() const
 {
-   return computeIndicesFromSample(inputDesign_, outputDesign_);
+  return computeIndicesFromSample(inputDesign_, outputDesign_);
 }
 
 
@@ -138,7 +138,7 @@ struct RankSobolBootstrapPolicy
   const RankSobolSensitivityAlgorithm & sai_;
   const Sample & randomIndices_;
   Sample & bsFO_;
-  
+
   RankSobolBootstrapPolicy( const RankSobolSensitivityAlgorithm & sai,
                             const Sample & randomIndices,
                             Sample & bsFO)
@@ -156,9 +156,9 @@ struct RankSobolBootstrapPolicy
       {
         index[l] = static_cast <OT::UnsignedInteger>(randomIndices_(k, l));
       }
-      
+
       const Sample selectedOutput = sai_.outputDesign_.select(index);
-      
+
       const Point variance(selectedOutput.computeVariance());
       // Compute indices using this collection
       const Sample Vi(sai_.computeIndicesFromSample(sai_.inputDesign_.select(index), selectedOutput));
@@ -181,15 +181,15 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Descriptio
 
   // Define cloud for FO
   Sample data(dimension, 2);
-  
+
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
     data(k, 0) = k + 1.0;
     data(k, 1) = firstOrderIndices[k];
   }
-  
+
   const Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
-  
+
   graph.add(firstOrderIndicesGraph);
 
   // Description
@@ -267,7 +267,7 @@ Point RankSobolSensitivityAlgorithm::computeAggregatedIndices(const Sample & Vi,
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  
+
   if (inputDimension == 1)
   {
     return Point(Vi[0]);
@@ -309,7 +309,7 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
       const UnsignedInteger effectiveBlockSize = (outerSampling + 1) < maximumOuterSampling ? blockSize : lastBlockSize;
 
       Sample bsFOpartial(effectiveBlockSize, inputDimension);
- 
+
       const Sample randomIndices = KPermutation.getSample(effectiveBlockSize);
 
       const RankSobolBootstrapPolicy policy( *this, randomIndices, bsFOpartial );
@@ -344,49 +344,49 @@ Point RankSobolSensitivityAlgorithm::getAggregatedFirstOrderIndices() const
 
 /** Methods of base class that are not yet implemented **/
 
-Sample RankSobolSensitivityAlgorithm::computeIndices(const Sample & , Sample & ) const
+Sample RankSobolSensitivityAlgorithm::computeIndices(const Sample &, Sample & ) const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::computeIndices(const Sample & sample, Sample & VTi) const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::computeIndices(const Sample & sample, Sample & VTi) const";
 }
 
 
 SymmetricMatrix RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger) const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const";
 }
 
 Point RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger) const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const";
 }
 
 Interval RankSobolSensitivityAlgorithm::getTotalOrderIndicesInterval() const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndicesInterval() const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndicesInterval() const";
 }
 
 /** Aggregated total order indices accessor for multivariate samples */
 Point RankSobolSensitivityAlgorithm::getAggregatedTotalOrderIndices() const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getAggregatedTotalOrderIndices() const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getAggregatedTotalOrderIndices() const";
 }
 
 /** Whether to use bootstrap or asymptotic distribution */
 Bool RankSobolSensitivityAlgorithm::getUseAsymptoticDistribution() const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getUseAsymptoticDistribution() const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getUseAsymptoticDistribution() const";
 }
 
 Distribution RankSobolSensitivityAlgorithm::getTotalOrderIndicesDistribution() const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndicesDistribution() const";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::getTotalOrderIndicesDistribution() const";
 }
 
 
 /** Method that draw  the sensitivity graph of a fixed marginal */
-Graph RankSobolSensitivityAlgorithm::draw(UnsignedInteger) const 
+Graph RankSobolSensitivityAlgorithm::draw(UnsignedInteger) const
 {
- throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::draw(UnsignedInteger marginalIndex) const ";
+  throw NotYetImplementedException(HERE) << "In RankSobolSensitivityAlgorithm::draw(UnsignedInteger marginalIndex) const ";
 }
 
 /* Virtual constructor */

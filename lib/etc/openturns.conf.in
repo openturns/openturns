@@ -566,7 +566,10 @@
 
   <!-- OT::Gibbs parameters -->
   <Gibbs-DefaultUpdatingMethod       value_int="0"     />
-  
+
+  <!-- OT::HistogramFactory parameters -->
+  <HistogramFactory-MaximumBinNumber value_int="1024" />
+
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
 
@@ -870,7 +873,7 @@
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
   
   <!-- OT::LinearModelAnalysis parameters -->
-  <LinearModelAnalysis-Identifiers            value_int="3"      />
+  <LinearModelAnalysis-IdentifiersNumber           value_int="3" />
   <LinearModelAnalysis-PrintEllipsisThreshold value_int="20"     />
   <LinearModelAnalysis-SmallPValueFormat      value_str="{:.4e}" />
   <LinearModelAnalysis-LargePValueFormat      value_int="{:.4f}" />

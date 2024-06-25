@@ -397,66 +397,66 @@ GeneralizedExtremeValue GeneralizedExtremeValueFactory::buildMethodOfXiProfileLi
 
 /* R largest order statistics */
 DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample,
-		const UnsignedInteger rx) const
+    const UnsignedInteger rx) const
 {
-	const UnsignedInteger R = sample.getDimension();
-	// r=0 means r=R
-	const UnsignedInteger r = (rx > 0) ? rx : R;
-	const UnsignedInteger size = sample.getSize();
-	if (r > R)
-		throw InvalidArgumentException(HERE) << "r(" << r << ") should be < R (" << R << ")";
-	if (size < 2)
-		throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of size>=2, here size=" << sample.getSize();
+  const UnsignedInteger R = sample.getDimension();
+  // r=0 means r=R
+  const UnsignedInteger r = (rx > 0) ? rx : R;
+  const UnsignedInteger size = sample.getSize();
+  if (r > R)
+    throw InvalidArgumentException(HERE) << "r(" << r << ") should be < R (" << R << ")";
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of size>=2, here size=" << sample.getSize();
 
-	// Check if order statistics are sorted the right way
-	for (UnsignedInteger i = 0; i < size; ++i)
-		for (UnsignedInteger j = 0; j < r - 1; ++j)
-			if (sample(i, j) < sample(i, j + 1))
-				throw InvalidArgumentException(HERE) << "The maxima of bloc #" << (i + 1) << "/" << size << " are not sorted in decreasing order";
+  // Check if order statistics are sorted the right way
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < r - 1; ++j)
+      if (sample(i, j) < sample(i, j + 1))
+        throw InvalidArgumentException(HERE) << "The maxima of bloc #" << (i + 1) << "/" << size << " are not sorted in decreasing order";
 
-	const Function objective(new GeneralizedExtremeValueRMaximaLikelihoodEvaluation(sample, r));
-	OptimizationProblem problem(objective);
-	problem.setMinimization(false);
+  const Function objective(new GeneralizedExtremeValueRMaximaLikelihoodEvaluation(sample, r));
+  OptimizationProblem problem(objective);
+  problem.setMinimization(false);
 
-	// sigma > 0
-	const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision, -SpecFunc::MaxScalar});
-	const Point upperBound(3, SpecFunc::MaxScalar);
-	const Interval::BoolCollection finiteLowerBound({false, true, false});
-	const Interval::BoolCollection finiteUpperBound(3, false);
-	problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+  // sigma > 0
+  const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision, -SpecFunc::MaxScalar});
+  const Point upperBound(3, SpecFunc::MaxScalar);
+  const Interval::BoolCollection finiteLowerBound({false, true, false});
+  const Interval::BoolCollection finiteUpperBound(3, false);
+  problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 
-	// 1+xi(zi-mu)/sigma > 0 for all order statistics taken into account
-	const Point allZMin = sample.getMin();
-	const Point allZMax = sample.getMax();
-	Scalar zMin = SpecFunc::MaxScalar;
-	Scalar zMax = -SpecFunc::MaxScalar;
-	for (UnsignedInteger i = 0; i < r; ++i)
-	{
-		zMin = std::min(zMin, allZMin[i]);
-		zMax = std::max(zMax, allZMax[i]);
-	}
-	const Sample sample0(r == 1 ? sample : sample.getMarginal(0));
-	const Scalar mean = sample0.computeMean()[0];
-	Description formulas(2);
-	formulas[0] = OSS() << "sigma + xi * (" << zMax << " - mu)";
-	formulas[1] = OSS() << "sigma + xi * (" << zMin << " - mu)";
-	const SymbolicFunction constraint(Description({"mu", "sigma", "xi"}), formulas);
-	problem.setInequalityConstraint(constraint);
+  // 1+xi(zi-mu)/sigma > 0 for all order statistics taken into account
+  const Point allZMin = sample.getMin();
+  const Point allZMax = sample.getMax();
+  Scalar zMin = SpecFunc::MaxScalar;
+  Scalar zMax = -SpecFunc::MaxScalar;
+  for (UnsignedInteger i = 0; i < r; ++i)
+  {
+    zMin = std::min(zMin, allZMin[i]);
+    zMax = std::max(zMax, allZMax[i]);
+  }
+  const Sample sample0(r == 1 ? sample : sample.getMarginal(0));
+  const Scalar mean = sample0.computeMean()[0];
+  Description formulas(2);
+  formulas[0] = OSS() << "sigma + xi * (" << zMax << " - mu)";
+  formulas[1] = OSS() << "sigma + xi * (" << zMin << " - mu)";
+  const SymbolicFunction constraint(Description({"mu", "sigma", "xi"}), formulas);
+  problem.setInequalityConstraint(constraint);
 
-	// pwm for the starting point, see fit.gev function from R mev package
-	const Sample sorted(sample0.sort());
-	const Scalar bpwm1 = GeneralizedExtremeValueFactoryPWM(sorted, 1);
-	const Scalar bpwm2 = GeneralizedExtremeValueFactoryPWM(sorted, 2);
-	const Scalar kst = (2.0 * bpwm1 - mean) / (3.0 * bpwm2 - mean) - std::log(2.0) / std::log(3.0);
-	const Scalar xi0 = -(7.859 + 2.9554 * kst) * kst;
-	const Scalar gamma1mXi0 = SpecFunc::Gamma(1.0 - xi0);
-	const Scalar sigma0 = -(2.0 * bpwm1 - mean) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
-	const Scalar mu0 = mean - sigma0 * (gamma1mXi0 - 1.0) / xi0;
-	const Point x0({mu0, sigma0, xi0});
+  // pwm for the starting point, see fit.gev function from R mev package
+  const Sample sorted(sample0.sort());
+  const Scalar bpwm1 = GeneralizedExtremeValueFactoryPWM(sorted, 1);
+  const Scalar bpwm2 = GeneralizedExtremeValueFactoryPWM(sorted, 2);
+  const Scalar kst = (2.0 * bpwm1 - mean) / (3.0 * bpwm2 - mean) - std::log(2.0) / std::log(3.0);
+  const Scalar xi0 = -(7.859 + 2.9554 * kst) * kst;
+  const Scalar gamma1mXi0 = SpecFunc::Gamma(1.0 - xi0);
+  const Scalar sigma0 = -(2.0 * bpwm1 - mean) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
+  const Scalar mu0 = mean - sigma0 * (gamma1mXi0 - 1.0) / xi0;
+  const Point x0({mu0, sigma0, xi0});
 
-	// solve optimization problem
-	OptimizationAlgorithm solver(solver_);
-	solver.setProblem(problem);
+  // solve optimization problem
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
   solver.setStartingPoint(x0);
   solver.run();
   const Point optimalParameter(solver.getResult().getOptimalPoint());
@@ -939,11 +939,11 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
   muBetaFunction = ParametricFunction(muBetaFunction, muVarsIndices, Point(muDim, 1.0));
   sigmaBetaFunction = ParametricFunction(sigmaBetaFunction, sigmaVarsIndices, Point(sigmaDim, 1.0));
   xiBetaFunction = ParametricFunction(xiBetaFunction, xiVarsIndices, Point(xiDim, 1.0));
- 
+
   // The theta function is the composition between the inverse link function and the linear function
   if (muLink.getEvaluation().getImplementation()->isActualImplementation()
-    || sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
-    || xiLink.getEvaluation().getImplementation()->isActualImplementation())
+      || sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
+      || xiLink.getEvaluation().getImplementation()->isActualImplementation())
   {
     Function link1(muLink.getEvaluation().getImplementation()->isActualImplementation() ? muLink : IdentityFunction(1));
     link1 = ComposedFunction(link1, SymbolicFunction({"x1", "x2", "x3"}, {"x1"}));
@@ -994,7 +994,7 @@ TimeVaryingResult GeneralizedExtremeValueFactory::buildTimeVarying(const Sample 
     const String & normalizationMethod) const
 {
   if (timeStamps.getSize() != sample.getSize())
-    throw InvalidArgumentException(HERE) << "GeneralizedExtremeValue timeStamps size (" << timeStamps.getSize()<<") must match sample size (" << sample.getSize() << ")";
+    throw InvalidArgumentException(HERE) << "GeneralizedExtremeValue timeStamps size (" << timeStamps.getSize() << ") must match sample size (" << sample.getSize() << ")";
   if (timeStamps.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedExtremeValue distribution only from a sample of dimension 1, here dimension=" << timeStamps.getDimension();
   if (!basis.getSize())

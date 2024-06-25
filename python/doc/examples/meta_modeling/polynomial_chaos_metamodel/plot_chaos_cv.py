@@ -20,12 +20,12 @@ Polynomial chaos expansion cross-validation
 # - split the data into two subsets, one for training and one for testing,
 # - use k-fold validation.
 #
-# The split of the data is performed by the `compute_Q2_score_by_splitting` function below.
+# The split of the data is performed by the `compute_R2_score_by_splitting` function below.
 # It uses 75% of the data to estimate the coefficients of the metamodel (this is the training step)
-# and use 25% of the data to estimate the :math:`Q^2` score (this is the validation step).
+# and use 25% of the data to estimate the :math:`R^2` score (this is the validation step).
 # To do this, we use the `split` method of the :class:`~openturns.Sample`.
 #
-# The K-Fold validation is performed by the `compute_Q2_score_by_kfold` function below.
+# The K-Fold validation is performed by the `compute_R2_score_by_kfold` function below.
 # It uses the K-Fold method with :math:`k = 5`.
 # The code uses the :class:`~openturns.KFoldSplitter` class, which computes the appropriate indices.
 # Similar results can be obtained with :class:`~openturns.LeaveOneOutSplitter` at a higher cost.
@@ -49,12 +49,12 @@ from openturns.usecases import ishigami_function
 
 
 def compute_sparse_least_squares_chaos(
-    inputTrain, outputTrain, basis, totalDegree, distribution
+    inputTrain, outputTrain, multivariateBasis, totalDegree, distribution
 ):
     """
     Create a sparse polynomial chaos based on least squares.
 
-    * Uses the enumerate rule in basis.
+    * Uses the enumerate rule in multivariateBasis.
     * Uses the LeastSquaresStrategy to compute the coefficients based on
       least squares.
     * Uses LeastSquaresMetaModelSelectionFactory to use the LARS selection method.
@@ -67,8 +67,8 @@ def compute_sparse_least_squares_chaos(
         The input design of experiments.
     outputTrain : Sample
         The output design of experiments.
-    basis : Basis
-        The multivariate chaos basis.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
     totalDegree : int
         The total degree of the chaos polynomial.
     distribution : Distribution.
@@ -83,9 +83,9 @@ def compute_sparse_least_squares_chaos(
     projectionStrategy = ot.LeastSquaresStrategy(
         inputTrain, outputTrain, selectionAlgorithm
     )
-    enumerateFunction = basis.getEnumerateFunction()
-    basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
-    adaptiveStrategy = ot.FixedStrategy(basis, basisSize)
+    enumerateFunction = multivariateBasis.getEnumerateFunction()
+    multivariateBasisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
+    adaptiveStrategy = ot.FixedStrategy(multivariateBasis, multivariateBasisSize)
     chaosAlgo = ot.FunctionalChaosAlgorithm(
         inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy
     )
@@ -95,82 +95,180 @@ def compute_sparse_least_squares_chaos(
 
 
 # %%
-# The next function computes the Q2 score by splitting the data set
+# The next function computes the R2 score by splitting the data set
 # into a training set and a test set.
 
 
 # %%
-def compute_Q2_score_by_splitting(
-    X, Y, basis, totalDegree, distribution, split_fraction=0.75
+def compute_R2_score_by_splitting(
+    inputSample,
+    outputSample,
+    multivariateBasis,
+    totalDegree,
+    distribution,
+    split_fraction=0.75,
 ):
     """
-    Compute Q2 score by splitting into train/test sets.
+    Compute R2 score by splitting into train/test sets.
 
     Parameters
     ----------
-    X : Sample(size, input_dimension)
+    inputSample : Sample(size, input_dimension)
         The X dataset.
-    Y : Sample(size, output_dimension)
+    outputSample : Sample(size, output_dimension)
         The Y dataset.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
+    totalDegree : int
+        The total degree of the chaos polynomial.
+    distribution : Distribution.
+        The distribution of the input variable.
+    split_fraction : float, in (0, 1)
+        The proportion of the sample used in the training.
 
     Returns
     -------
-    Q2_score : float
-        The Q2 score.
+    r2Score : float
+        The R2 score.
     """
 
-    training_sample_size = X.getSize()
-    X_train = ot.Sample(X)
-    Y_train = ot.Sample(Y)
+    training_sample_size = inputSample.getSize()
+    inputSampleTrain = ot.Sample(inputSample)  # Make a copy
+    outputSampleTrain = ot.Sample(outputSample)
     split_index = int(split_fraction * training_sample_size)
-    X_test = X_train.split(split_index)
-    Y_test = Y_train.split(split_index)
-    result = compute_sparse_least_squares_chaos(
-        X_train, Y_train, basis, totalDegree, distribution
+    inputSampleTest = inputSampleTrain.split(split_index)
+    outputSampleTest = outputSampleTrain.split(split_index)
+    chaosResult = compute_sparse_least_squares_chaos(
+        inputSampleTrain,
+        outputSampleTrain,
+        multivariateBasis,
+        totalDegree,
+        distribution,
     )
-    metamodel = result.getMetaModel()
-    val = ot.MetaModelValidation(X_test, Y_test, metamodel)
-    Q2_score = val.computePredictivityFactor()[0]
-    return Q2_score
+    metamodel = chaosResult.getMetaModel()
+    metamodelPredictions = metamodel(inputSampleTest)
+    val = ot.MetaModelValidation(outputSampleTest, metamodelPredictions)
+    r2Score = val.computeR2Score()
+    return r2Score
+
+# %%
+# The next function computes the mean squared error by K-Fold.
 
 
 # %%
-# The next function computes the Q2 score by K-Fold.
-
-
-# %%
-def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5):
+def computeMSENaiveKFold(
+    inputSample,
+    outputSample,
+    multivariateBasis,
+    totalDegree,
+    distribution,
+    kParameter=5,
+):
     """
-    Compute score by KFold.
+    Compute mean squared error by (naive) KFold.
 
     Parameters
     ----------
-    X : Sample(size, input_dimension)
-        The X dataset.
-    Y : Sample(size, output_dimension)
-        The Y dataset.
+    inputSample : Sample(size, input_dimension)
+        The inputSample dataset.
+    outputSample : Sample(size, output_dimension)
+        The outputSample dataset.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
+    totalDegree : int
+        The total degree of the chaos polynomial.
+    distribution : Distribution.
+        The distribution of the input variable.
+    kParameter : int, in (2, sampleSize)
+        The parameter K.
 
     Returns
     -------
-    Q2_score : float
-        The Q2 score.
+    mse : Point(output_dimension)
+        The mean squared error.
     """
     #
-    training_sample_size = X.getSize()
-    splitter = ot.KFoldSplitter(training_sample_size, n_folds)
-    Q2_score_list = ot.Sample(0, 1)
-    for indices1, indices2 in splitter:
-        X_train, X_test = X[indices1], X[indices2]
-        Y_train, Y_test = Y[indices1], Y[indices2]
-        result = compute_sparse_least_squares_chaos(
-            X_train, Y_train, basis, totalDegree, distribution
+    sampleSize = inputSample.getSize()
+    outputDimension = outputSample.getDimension()
+    splitter = ot.KFoldSplitter(sampleSize, kParameter)
+    squaredResiduals = ot.Sample(sampleSize, outputDimension)
+    for indicesTrain, indicesTest in splitter:
+        inputSampleTrain, inputSampleTest = (
+            inputSample[indicesTrain],
+            inputSample[indicesTest],
         )
-        metamodel = result.getMetaModel()
-        val = ot.MetaModelValidation(X_test, Y_test, metamodel)
-        Q2_local = val.computePredictivityFactor()[0]
-        Q2_score_list.add([Q2_local])
-    Q2_score = Q2_score_list.computeMean()[0]
-    return Q2_score
+        outputSampleTrain, outputSampleTest = (
+            outputSample[indicesTrain],
+            outputSample[indicesTest],
+        )
+        chaosResultKFold = compute_sparse_least_squares_chaos(
+            inputSampleTrain,
+            outputSampleTrain,
+            multivariateBasis,
+            totalDegree,
+            distribution,
+        )
+        metamodelKFold = chaosResultKFold.getMetaModel()
+        predictionsKFold = metamodelKFold(inputSampleTest)
+        residualsKFold = outputSampleTest - predictionsKFold
+        foldSize = indicesTest.getSize()
+        for j in range(outputDimension):
+            for i in range(foldSize):
+                squaredResiduals[indicesTest[i], j] = residualsKFold[i, j] ** 2
+    mse = squaredResiduals.computeMean()
+    return mse
+
+
+# %%
+# The next function computes the R2 score by K-Fold.
+
+
+def compute_R2_score_by_kfold(
+    inputSample,
+    outputSample,
+    multivariateBasis,
+    totalDegree,
+    distribution,
+    kParameter=5,
+):
+    """
+    Compute R2 score by KFold.
+
+    Parameters
+    ----------
+    inputSample : Sample(size, input_dimension)
+        The X dataset.
+    outputSample : Sample(size, output_dimension)
+        The Y dataset.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
+    totalDegree : int
+        The total degree of the chaos polynomial.
+    distribution : Distribution.
+        The distribution of the input variable.
+    kParameter : int
+        The parameter K.
+
+    Returns
+    -------
+    r2Score : float
+        The R2 score.
+    """
+    #
+    mse = computeMSENaiveKFold(
+        inputSample,
+        outputSample,
+        multivariateBasis,
+        totalDegree,
+        distribution,
+        kParameter,
+    )
+    sampleVariance = outputSample.computeCentralMoment(2)
+    outputDimension = outputSample.getDimension()
+    r2Score = ot.Point(outputDimension)
+    for i in range(outputDimension):
+        r2Score[i] = 1.0 - mse[i] / sampleVariance[i]
+    return r2Score
 
 
 # %%
@@ -204,11 +302,13 @@ Y[:5]
 
 # %%
 dimension = im.distributionX.getDimension()
-basis = ot.OrthogonalProductPolynomialFactory(
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
     [im.distributionX.getMarginal(i) for i in range(dimension)]
 )
 totalDegree = 5  # Polynomial degree
-result = compute_sparse_least_squares_chaos(X, Y, basis, totalDegree, im.distributionX)
+result = compute_sparse_least_squares_chaos(
+    X, Y, multivariateBasis, totalDegree, im.distributionX
+)
 result
 
 # %%
@@ -227,10 +327,11 @@ metamodel = result.getMetaModel()
 test_sample_size = 200  # Size of the validation design of experiments
 inputTest = im.distributionX.getSample(test_sample_size)
 outputTest = im.model(inputTest)
-validation = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-Q2 = validation.computePredictivityFactor()[0]
+metamodelPredictions = metamodel(inputTest)
+validation = ot.MetaModelValidation(outputTest, metamodelPredictions)
+r2Score = validation.computeR2Score()[0]
 graph = validation.drawValidation()
-graph.setTitle("Q2=%.2f, n=%d" % (Q2, test_sample_size))
+graph.setTitle("R2=%.2f, n=%d" % (r2Score, test_sample_size))
 view = otv.View(graph)
 
 
@@ -240,10 +341,10 @@ view = otv.View(graph)
 #
 # - It may happen that the data in the validation sample with size 200 is more
 #   difficult to fit than the data in the training dataset.
-#   In this case, the :math:`Q^2` score may be pessimistic.
+#   In this case, the :math:`R^2` score may be pessimistic.
 # - It may happen that the data in the validation sample with size 200 is
 #   less difficult to fit than the data in the validation dataset.
-#   In this case, the :math:`Q^2` score may be optimistic.
+#   In this case, the :math:`R^2` score may be optimistic.
 # - We may not be able to generate an extra dataset for validation.
 #   In this case, a part of the original dataset should be used for validation.
 # - The polynomial degree may not be appropriate for this data.
@@ -252,68 +353,98 @@ view = otv.View(graph)
 #   This can be done using the :class:`~openturns.KPermutationsDistribution`.
 #
 # The K-Fold validation aims at solving some of these issues, so that all the
-# available data is used in order to estimate the :math:`Q^2` score.
+# available data is used in order to estimate the :math:`R^2` score.
 
 # %%
-# Compute the Q2 score from a test set
+# Compute the R2 score from a test set
 # ------------------------------------
 
 # %%
-# In the following script, we compute the :math:`Q^2` score associated with each polynomial degree from 1 to 10.
+# In the following script, we compute the :math:`R^2` score associated with each polynomial degree from 1 to 10.
+split_fraction = 0.75
+print(f"Split cross-validation, with {100 * split_fraction:.0f}% for training")
 degree_max = 10
-degree_list = list(range(1, degree_max))
+degree_list = list(range(1, 1 + degree_max))
 n_degrees = len(degree_list)
-score_sample = ot.Sample(len(degree_list), 1)
+scoreSampleSplit = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
-    score_sample[i, 0] = compute_Q2_score_by_splitting(
-        X, Y, basis, totalDegree, im.distributionX
+    scoreSampleSplit[i] = compute_R2_score_by_splitting(
+        X, Y, multivariateBasis, totalDegree, im.distributionX, split_fraction
     )
-    print(f"split - degree = {totalDegree}, score = {score_sample[i, 0]:.4f}")
+    print(f"Degree = {totalDegree}, score = {scoreSampleSplit[i, 0]:.4f}")
 
 
 # %%
-graph = ot.Graph("Split", "Degree", "$Q^2$", True)
-cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), score_sample)
+graph = ot.Graph(
+    f"Split CV, {100 * split_fraction:.0f}% for training", "Degree", "$R^2$", True
+)
+cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleSplit)
+cloud.setPointStyle("circle")
 graph.add(cloud)
-view = otv.View(graph)
+boundingBox = ot.Interval([0.0, 0.0], [1 + degree_max, 1.1])
+graph.setBoundingBox(boundingBox)
+view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 
 # %%
 # We see that the polynomial degree may be increased up to degree 7,
-# after which the :math:`Q^2` score does not increase much.
+# after which the :math:`R^2` score does not increase much.
 
 # %%
-# Compute the Q2 score from K-Fold cross-validation
+# Compute the R2 score from K-Fold cross-validation
 # -------------------------------------------------
 #
-# One limitation of the previous method is that the estimate of the :math:`Q^2` may be sensitive to the particular split of the dataset.
-# The following script uses 5-Fold cross validation to estimate the :math:`Q^2` score.
+# One limitation of the previous method is that the estimate of the
+# :math:`R^2` may be sensitive to the particular split of the dataset.
+# The following script uses 5-Fold cross validation to estimate the
+# :math:`R^2` score.
 
 # %%
-score_sample = ot.Sample(len(degree_list), 1)
+kParameter = 5
+print(f"{kParameter}-Fold cross-validation")
+scoreSampleKFold = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
-    score_sample[i, 0] = compute_Q2_score_by_kfold(
-        X, Y, basis, totalDegree, im.distributionX
+    scoreSampleKFold[i] = compute_R2_score_by_kfold(
+        X, Y, multivariateBasis, totalDegree, im.distributionX, kParameter
     )
-    print(f"k-fold, degree = {totalDegree}, score = {score_sample[i, 0]:.4f}")
+    print(f"Degree = {totalDegree}, score = {scoreSampleKFold[i, 0]:.4f}")
 
 # %%
-graph = ot.Graph("K-Fold", "Degree", "$Q^2$", True)
-cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), score_sample)
+graph = ot.Graph(f"{kParameter}-Fold cross-validation", "Degree", "$R^2$", True)
+cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleKFold)
+cloud.setPointStyle("square")
 graph.add(cloud)
-view = otv.View(graph)
+graph.setBoundingBox(boundingBox)
+view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 
 # %%
 # The conclusion is similar to the previous method.
 
 # %%
+# Compare the two cross-validation methods.
+# sphinx_gallery_thumbnail_number = 4
+graph = ot.Graph("CV : split vs K-Fold", "Degree", "$R^2$", True)
+cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleSplit)
+cloud.setPointStyle("circle")
+cloud.setLegend("Split")
+graph.add(cloud)
+cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleKFold)
+cloud.setPointStyle("square")
+cloud.setLegend("K-Fold")
+graph.add(cloud)
+graph.setLegendPosition("topleft")
+graph.setColors(ot.Drawable().BuildDefaultPalette(2))
+graph.setBoundingBox(boundingBox)
+view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
+
+# %%
 # Conclusion
 # ----------
 #
-# When we select the best polynomial degree which maximizes the :math:`Q^2` score,
-# the danger is that the validation set is used both for computing the :math:`Q^2` and to maximize it:
-# hence, the :math:`Q^2` score may be optimistic.
+# When we select the best polynomial degree which maximizes the :math:`R^2` score,
+# the danger is that the validation set is used both for computing the :math:`R^2` and to maximize it:
+# hence, the :math:`R^2` score may be optimistic.
 # In [muller2016]_, chapter 5, page 269, the authors advocate the split of the dataset into three subsets:
 #
 # - the training set,
@@ -321,7 +452,7 @@ view = otv.View(graph)
 # - the test set.
 #
 # When selecting the best parameters, the validation set is used.
-# When estimating the :math:`Q^2` score with the best parameters, the test set is used.
+# When estimating the :math:`R^2` score with the best parameters, the test set is used.
 
 # %%
 otv.View.ShowAll()

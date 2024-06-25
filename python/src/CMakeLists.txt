@@ -807,6 +807,7 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
+		      SmolyakExperiment.i SmolyakExperiment_doc.i.in
                       SplitterImplementation.i SplitterImplementation_doc.i.in
                       KFoldSplitter.i KFoldSplitter_doc.i.in
                       LeaveOneOutSplitter.i LeaveOneOutSplitter_doc.i.in
@@ -1026,7 +1027,6 @@ ot_add_python_module(experimental experimental_module.i
                      PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
-                     SmolyakExperiment.i SmolyakExperiment_doc.i.in
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      StudentCopula.i StudentCopula_doc.i.in
                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in

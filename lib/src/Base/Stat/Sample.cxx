@@ -427,16 +427,11 @@ Point Sample::computeStandardDeviation() const
 }
 
 /*
- * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample
+ * Method gives the Pearson correlation matrix of the sample
  */
 CorrelationMatrix Sample::computeLinearCorrelation() const
 {
   return getImplementation()->computeLinearCorrelation();
-}
-
-CorrelationMatrix Sample::computePearsonCorrelation() const
-{
-  return getImplementation()->computePearsonCorrelation();
 }
 
 /*

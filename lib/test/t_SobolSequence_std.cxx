@@ -31,31 +31,55 @@ int main(int, char *[])
 
   try
   {
+    // Create 6 points from a Sobol' sequence in dimension 1
+    Sample expected1D(6, 1);
+    expected1D[0] = Point({1.0 / 2.0});
+    expected1D[1] = Point({3.0 / 4.0});
+    expected1D[2] = Point({1.0 / 4.0});
+    expected1D[3] = Point({3.0 / 8.0});
+    expected1D[4] = Point({7.0 / 8.0});
+    expected1D[5] = Point({5.0 / 8.0});
+    SobolSequence sequence1D(1);
+    fullprint << sequence1D << std::endl;
+    Sample sobolSample1D(sequence1D.generate(6));
+    assert_almost_equal(sobolSample1D, expected1D);
+
+    // Create 6 points from a Sobol' sequence in dimension 2
+    Sample expected2D(6, 2);
+    expected2D[0] = Point({1.0 / 2.0, 1.0 / 2.0});
+    expected2D[1] = Point({3.0 / 4.0, 1.0 / 4.0});
+    expected2D[2] = Point({1.0 / 4.0, 3.0 / 4.0});
+    expected2D[3] = Point({3.0 / 8.0, 3.0 / 8.0});
+    expected2D[4] = Point({7.0 / 8.0, 7.0 / 8.0});
+    expected2D[5] = Point({5.0 / 8.0, 1.0 / 8.0});
+    SobolSequence sequence2D(2);
+    fullprint << sequence2D << std::endl;
+    Sample sobolSample2D(sequence2D.generate(6));
+    assert_almost_equal(sobolSample2D, expected2D);
+
     // Create a Sobol' sequence of maximum dimension
     SobolSequence sequence(SobolSequence::MaximumDimension);
     fullprint << sequence << std::endl;
-
-    // Create a numerical sample of the sequence
-    Sample sobolSample(sequence.generate(10));
-    fullprint << sobolSample << std::endl;
+    sequence.generate(10);
 
     // Create another Sobol' sequence of dimension 2 to estimate Pi in [0; 1)^2
     UnsignedInteger dimension = 2;
     sequence = SobolSequence(dimension);
     UnsignedInteger pointInsideCircle = 0;
-    UnsignedInteger sampleSize = 1000;
+    UnsignedInteger sampleSize = std::pow(2, 11);  // This is significant!
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       Point sobolPoint(sequence.generate());
-      fullprint << sobolPoint << std::endl;
       if(sobolPoint.norm() < 1.0)
         ++ pointInsideCircle;
     }
     Scalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
     Scalar probability = M_PI / 4.0;
-    Scalar relativeError = std::abs(probability - probabilityEstimate) / probability;
     fullprint << "sample size=" << sampleSize << std::endl;
-    fullprint << "relative error to Pi=" << relativeError << std::endl;
+    fullprint << "computed probability =" << probabilityEstimate << std::endl;
+    fullprint << "expected probability =" << probability << std::endl;
+    Scalar rtol = 10.0 / sampleSize;
+    assert_almost_equal(probabilityEstimate, probability, rtol);
 
   }
 

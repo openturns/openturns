@@ -45,10 +45,27 @@ for useQuantile in [True, False]:
 # from quantiles
 ref_dist = ot.Normal()
 lowerBound = -3.0
-probabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 - ot.SpecFunc.ScalarEpsilon]
+probabilities = [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0 - ot.SpecFunc.ScalarEpsilon,
+]
 quantiles = [ref_dist.computeQuantile(pi)[0] for pi in probabilities]
 inf_distribution = ot.HistogramFactory().buildFromQuantiles(
     lowerBound, probabilities, quantiles
 )
 inf_quantiles = [inf_distribution.computeQuantile(pi)[0] for pi in probabilities]
 ott.assert_almost_equal(inf_quantiles, quantiles)
+
+# samples with different scales, bandwidth should not be too small and blow up memory thanks to MaximumBinNumber
+sample1 = ot.Uniform(-1e-10, 1e-10).getSample(100)
+sample2 = ot.Uniform(-1, 1).getSample(5)
+sample1.add(sample2)
+dist = ot.HistogramFactory().build(sample1)

@@ -356,6 +356,25 @@ void fromStringConverter(const String & st, String & value)
   value = st;
 }
 
+static inline
+void fromStringConverter(const String & st, Scalar & value)
+{
+  std::istringstream iss (st);
+  iss >> value;
+
+  if (st == "nan")
+  {
+    value = std::numeric_limits<Scalar>::quiet_NaN();
+  }
+  else if (st == "inf")
+  {
+    value = std::numeric_limits<Scalar>::infinity();
+  }
+  else if (st == "-inf")
+  {
+    value = -std::numeric_limits<Scalar>::infinity();
+  }
+}
 
 template <typename _Tp>
 static inline
@@ -363,22 +382,7 @@ void fromStringConverter(const String & st, _Tp & value)
 {
   std::istringstream iss (st);
   iss >> value;
-
-  if (st == "nan")
-  {
-    value = std::numeric_limits<_Tp>::quiet_NaN();
-  }
-  else if (st == "inf")
-  {
-    value = std::numeric_limits<_Tp>::infinity();
-  }
-  else if (st == "-inf")
-  {
-    value = -std::numeric_limits<_Tp>::infinity();
-  }
 }
-
-
 
 /* getValueToConvert */
 

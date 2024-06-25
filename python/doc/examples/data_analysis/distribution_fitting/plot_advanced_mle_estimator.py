@@ -178,7 +178,9 @@ printTruncatedNormalParameters(distribution_MLE)
 ot.ResourceMap.SetAsString(
     "MaximumLikelihoodFactory-DefaultOptimizationAlgorithm", "LN_COBYLA"
 )
-ot.ResourceMap.SetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumCallsNumber", 100000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "MaximumLikelihoodFactory-MaximumCallsNumber", 100000
+)
 factory = ot.MaximumLikelihoodFactory(distribution)
 factory.setOptimizationBounds(interval)
 print(

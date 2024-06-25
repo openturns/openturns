@@ -1,14 +1,9 @@
 %feature("docstring") OT::RandomDirection
 "Sampling following the random direction strategy.
 
-Available constructor:
-    RandomDirection()
-
-    RandomDirection(*dimension*)
-
 Parameters
 ----------
-dimension : integer
+dimension : int
     The dimension of the standard space. By default, :math:`dimension = 0` but
     automatically updated by the calling class.
 

@@ -1,9 +1,6 @@
 %feature("docstring") OT::Equal
 "Equal comparison operator.
 
-Available constructors:
-    Equal()
-
 See also
 --------
 Greater, GreaterOrEqual, Less, LessOrEqual

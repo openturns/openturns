@@ -173,7 +173,7 @@ private:
 class OT_API ComposedCopula
   : public BlockIndependentCopula
 {
-CLASSNAME
+  CLASSNAME
 public:
   ComposedCopula()
     : BlockIndependentCopula() {}

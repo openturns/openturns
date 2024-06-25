@@ -64,4 +64,4 @@ print("FullPearsonXY=", ot.HypothesisTest.FullPearson(sampleX, sampleY, 0.10))
 # Expected result is SpecFunc::MaxScalar
 fullPearsonYY = ot.HypothesisTest.FullPearson(sampleY, sampleY, 0.10)[0]
 testStatistic = fullPearsonYY.getStatistic()
-assert (testStatistic == ot.SpecFunc.MaxScalar)
+assert testStatistic == ot.SpecFunc.MaxScalar

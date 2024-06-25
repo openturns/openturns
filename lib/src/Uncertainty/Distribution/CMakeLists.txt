@@ -88,8 +88,10 @@ ot_add_source_file (KPermutationsDistribution.cxx)
 ot_add_source_file (KernelMixture.cxx)
 ot_add_source_file (KernelSmoothing.cxx)
 ot_add_source_file (KolmogorovFunctions.cxx)
-ot_add_source_file (cephes/dd_real.c)
-ot_add_source_file (cephes/kolmogorov.c)
+
+# borrowed from https://github.com/scipy/scipy/tree/main/scipy/special/special/cephes
+ot_add_build_dir_to_include_dirs(${CMAKE_CURRENT_SOURCE_DIR}/cephes)
+
 ot_add_source_file (Laplace.cxx)
 ot_add_source_file (LaplaceFactory.cxx)
 ot_add_source_file (LeastSquaresDistributionFactory.cxx)

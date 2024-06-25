@@ -132,6 +132,40 @@ void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
   update();
 }
 
+// Structure used to wrap the gradient of the function into a Function
+class CompositeDistributionDerivativeEvaluation : public EvaluationImplementation
+{
+public:
+  explicit CompositeDistributionDerivativeEvaluation(const Function & function)
+  : EvaluationImplementation()
+  , function_(function)
+  {}
+
+  CompositeDistributionDerivativeEvaluation * clone() const override
+  {
+    return new CompositeDistributionDerivativeEvaluation(*this);
+  }
+
+  Point operator()(const Point & point) const override
+  {
+    Point value(1, function_.gradient(point)(0, 0));
+    return value;
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return function_.getInputDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+private:
+  const Function & function_;
+};
+
+
 /* Compute all the derivative attributes */
 void CompositeDistribution::update()
 {
@@ -153,8 +187,7 @@ void CompositeDistribution::update()
   Scalar fMin = values_[0];
   Scalar fMax = values_[0];
   const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber");
-  const DerivativeWrapper derivativeWrapper(function_);
-  const Function derivative(bindMethod<DerivativeWrapper, Point, Point>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
+  const Function derivative(new CompositeDistributionDerivativeEvaluation(function_));
   Scalar a = xMin;
   Scalar fpA = -1.0;
   try
@@ -488,6 +521,51 @@ Bool CompositeDistribution::isDiscrete() const
   return antecedent_.isDiscrete();
 }
 
+// Structure used to compute shifted moments
+class CompositeDistributionShiftedMomentEvaluation : public EvaluationImplementation
+{
+public:
+  CompositeDistributionShiftedMomentEvaluation(const UnsignedInteger n,
+        const Scalar shift,
+        const Distribution & antecedent,
+        const Function & function)
+ : EvaluationImplementation()
+ , n_(n)
+ , shift_(shift)
+ , antecedent_(antecedent)
+ , function_(function)
+ {}
+
+  CompositeDistributionShiftedMomentEvaluation * clone() const override
+  {
+    return new CompositeDistributionShiftedMomentEvaluation(*this);
+  }
+
+  Point operator()(const Point & point) const override
+  {
+    const Scalar y = function_(point)[0];
+    const Scalar power = std::pow(y - shift_, static_cast<Scalar>(n_));
+    const Scalar pdf = antecedent_.computePDF(point);
+    const Scalar value = power * pdf;
+    return Point(1, value);
+  };
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+private:
+  UnsignedInteger n_ = 0;
+  Scalar shift_ = 0.0;
+  Distribution antecedent_;
+  Function function_;
+};
+
+
 /* Compute the shifted moments of the distribution */
 Point CompositeDistribution::computeShiftedMomentContinuous(const UnsignedInteger n,
     const Point & shift) const
@@ -497,8 +575,7 @@ Point CompositeDistribution::computeShiftedMomentContinuous(const UnsignedIntege
   Point moment(1);
   // For each component
   GaussKronrod algo;
-  const CompositeDistributionShiftedMomentWrapper kernel(n, shift[0], this);
-  const Function integrand(bindMethod<CompositeDistributionShiftedMomentWrapper, Point, Point>(kernel, &CompositeDistributionShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
+  const Function integrand(new CompositeDistributionShiftedMomentEvaluation(n, shift[0], antecedent_, function_));
   const Scalar a = antecedent_.getRange().getLowerBound()[0];
   const Scalar b = antecedent_.getRange().getUpperBound()[0];
   moment[0] = algo.integrate(integrand, Interval(a, b))[0];

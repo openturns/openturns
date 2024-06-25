@@ -2,9 +2,9 @@
 "Numerical interval.
 
 Available constructors:
-    Interval(*dim=0*)
+    Interval(*dim*)
 
-    Interval(*lowerBound, upperBound, finiteLowerBound=[True]*dim, finiteUpperBound=[True]*dim*)
+    Interval(*lowerBound, upperBound, finiteLowerBound, finiteUpperBound*)
 
 Parameters
 ----------

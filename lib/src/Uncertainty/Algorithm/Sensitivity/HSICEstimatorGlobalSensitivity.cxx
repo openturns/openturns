@@ -19,9 +19,13 @@
  *
  */
 #include "openturns/HSICEstimatorGlobalSensitivity.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
 CLASSNAMEINIT(HSICEstimatorGlobalSensitivity)
+
+static const Factory<HSICEstimatorGlobalSensitivity> Factory_HSICEstimatorGlobalSensitivity;
 
 /* Default */
 HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity()

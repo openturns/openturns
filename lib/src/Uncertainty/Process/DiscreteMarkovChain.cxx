@@ -295,7 +295,7 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
 {
   const UnsignedInteger dimension = transitionMatrix_.getDimension();
   SquareComplexMatrix eigenvectors;
-  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.transpose().computeEV(eigenvectors));
+  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.computeEV(eigenvectors));
   // Find the largest eigenvalue, exactly equal to one in theory
   Scalar largestEV = eigenvalues[0].real();
   UnsignedInteger indexMax = 0;
@@ -339,7 +339,7 @@ void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
 void DiscreteMarkovChain::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
-  adv.saveAttribute( "transitionMatrix", transitionMatrix_ );
+  adv.saveAttribute( "transitionMatrix_", transitionMatrix_ );
   adv.saveAttribute( "origin_", origin_ );
   adv.saveAttribute( "currentState_", currentState_ );
 }

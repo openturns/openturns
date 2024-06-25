@@ -1,9 +1,6 @@
 %feature("docstring") OT::Greater
 "Greater comparison operator.
 
-Available constructors:
-    Greater()
-
 See also
 --------
 Equal, GreaterOrEqual, Less, LessOrEqual

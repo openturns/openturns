@@ -305,7 +305,7 @@ print(
 )
 
 optim_res = resultSORM.getOptimizationResult()
-print("Simulation budget:", optim_res.getEvaluationNumber())
+print("Simulation budget:", optim_res.getCallsNumber())
 
 # %%
 # One can see that the probability estimate has been decreased by a factor 10 compared to the FORM estimate.

@@ -72,9 +72,6 @@ public:
   /** Calls number accessor */
   void setCallsNumber(const UnsignedInteger callsNumber);
   UnsignedInteger getCallsNumber() const;
-  // @deprecated
-  void setEvaluationNumber(const UnsignedInteger evaluationNumber);
-  UnsignedInteger getEvaluationNumber() const;
 
   /** Iteration number accessor */
   void setIterationNumber(const UnsignedInteger iterationNumber);

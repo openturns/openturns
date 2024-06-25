@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Compact.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -113,18 +114,6 @@ UnsignedInteger OptimizationResult::getCallsNumber() const
 void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
 {
   callsNumber_ = callsNumber;
-}
-
-UnsignedInteger OptimizationResult::getEvaluationNumber() const
-{
-  LOGWARN("OptimizationResult.getEvaluationNumber is deprecated, use getCallsNumber");
-  return getCallsNumber();
-}
-
-void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
-{
-  LOGWARN("OptimizationResult.setEvaluationNumber is deprecated, use setCallsNumber");
-  setCallsNumber(evaluationNumber);
 }
 
 /* Iteration number accessor */
@@ -303,13 +292,24 @@ void OptimizationResult::load(Advocate & adv)
   }
   else
   {
-    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
-    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
-    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory_ );
-    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory_ );
-
-    adv.loadAttribute( "inputHistory_", inputHistory_ );
-    adv.loadAttribute( "outputHistory_", outputHistory_ );
+    Compact inputHistory;
+    Compact outputHistory;
+    Compact absoluteErrorHistory;
+    Compact relativeErrorHistory;
+    Compact residualErrorHistory;
+    Compact constraintErrorHistory;
+    adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory );
+    adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory );
+    adv.loadAttribute( "residualErrorHistory_", residualErrorHistory );
+    adv.loadAttribute( "constraintErrorHistory_", constraintErrorHistory );
+    adv.loadAttribute( "inputHistory_", inputHistory );
+    adv.loadAttribute( "outputHistory_", outputHistory );
+    inputHistory_ = inputHistory.getSample();
+    outputHistory_ = outputHistory.getSample();
+    absoluteErrorHistory_ = absoluteErrorHistory.getSample();
+    relativeErrorHistory_ = relativeErrorHistory.getSample();
+    residualErrorHistory_ = residualErrorHistory.getSample();
+    constraintErrorHistory_ = constraintErrorHistory.getSample();
   }
 
   adv.loadAttribute( "problem_", problem_ );
@@ -427,18 +427,38 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample().getMarginal(0));
-  const UnsignedInteger size = data.getSize();
-  const Bool minimization = problem_.isMinimization();
-  for (UnsignedInteger i = 1; i < size; ++ i)
+  const Sample dataX(getInputSample());
+  Sample dataY(getOutputSample().getMarginal(0));
+  const UnsignedInteger size = dataY.getSize();
+  Scalar bestY = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  UnsignedInteger firstFeasibleIndex = size;
+  const Scalar maximumConstraintError = ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError");
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const UnsignedInteger j = 0;
-    if (!((minimization && (data(i, j) < data(i - 1, j)))
-          || (!minimization && (data(i, j) > data(i - 1, j)))))
+    const Scalar y = dataY(i, 0);
+    const Point x(dataX[i]);
+    const Bool insideBounds = (!getProblem().hasBounds()) || (getProblem().hasBounds() && getProblem().getBounds().contains(x));
+    const Bool objectiveImproved = ((getProblem().isMinimization() && y < bestY) || (!getProblem().isMinimization() && y > bestY));
+    if (!std::isnan(y) && insideBounds && objectiveImproved && (constraintErrorHistory_(i, 0) < maximumConstraintError))
     {
-      data(i, j) = data(i - 1, j);
+      bestY = y;
+      // store first feasible index
+      if (firstFeasibleIndex >= size)
+        firstFeasibleIndex = i;
     }
+    else
+      dataY(i, 0) = bestY;
   }
+
+  // iteration index and optimal value
+  Sample data(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data(i, 0) = i;
+  data.stack(dataY);
+
+  // ignore values before first feasible point
+  data = data.split(firstFeasibleIndex);
+
   Curve optimalValueCurve(data, "optimal value");
   optimalValueCurve.setLegend("optimal value");
   result.add(optimalValueCurve);

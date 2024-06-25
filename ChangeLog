@@ -1,11 +1,44 @@
 = New Features =
 
-== 1.23 release (in-progress) == #release-1.23
+== 1.24 release (in progress) == #release-1.24
 
 === Library ===
 
 ==== Major changes ====
- * CovarianceModel nuggetFactor can be optimized by KrigingAlgorithm
+
+==== New classes ====
+
+==== API changes ====
+ * SmolyakExperiment left the experimental module
+ * Removed deprecated method Study.printLabels
+ * Removed deprecated class TimerCallback
+ * Removed deprecated MetaModelValidation(inputSample, outputSample, metaModel) ctor
+ * Removed deprecated MetaModelValidation::computePredictivityFactor method
+ * Removed deprecated Solver.set/getMaximumFunctionEvaluation
+ * Removed deprecated Solver.getUsedFunctionEvaluation
+ * Removed deprecated Sample/CorrelationAnalysis.computePearsonCorrelation
+ * Removed deprecated Cobyla/TNC.setIgnoreFailure method
+ * Removed deprecated OptimizationAlgorithm.setMaximumEvaluationNumber method
+ * Removed deprecated OptimizationResult.getEvaluationNumber
+
+=== Documentation ===
+ * Copy button for code blocks
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+
+
+== 1.23 release (2024-06-05) == #release-1.23
+
+=== Library ===
+
+==== Major changes ====
+ * New GPD estimation services: MLE, profiled likelihood, time-varying, return level, covariates, clustering
+ * New GEV covariates estimation method, profiled likelihood by blocks
+ * Rank-based Sobol indices estimation
+ * Vector=>Field chaos-based metamodel and sensitivity algorithm
 
 ==== New classes ====
  * SmoothedUniformFactory (openturns.experimental)
@@ -15,6 +48,7 @@
  * CubaIntegration (openturns.experimental)
  * ExperimentIntegration (openturns.experimental)
  * RankSobolSensitivityAlgorithm (openturns.experimental)
+ * UniformOrderStatistics (openturns.experimental)
 
 ==== API changes ====
  * Deprecated MetaModelValidation(inputSample, outputSample, metaModel) is deprecated in favor of MetaModelValidation(outputSample, metamodelPredictions)
@@ -57,15 +91,79 @@
  * Removed optional parameters from Contour constructors, use set methods or ResourceMap keys to set them
 
 === Documentation ===
-* Examples show how to visualize matrices
+ * Examples show how to visualize matrices
+ * Enforce check of internal links with sphinx nitpicky option
 
 === Python module ===
-* Graphs apply default colors to Drawables with no explicit color
-* Contour plots can now be filled and come with colorbars
+ * Graphs apply default colors to Drawables with no explicit color
+ * Contour plots can now be filled and come with colorbars
+ * Binary wheels are now compatible with uv package manager
 
 === Miscellaneous ===
+ * CovarianceModel nuggetFactor can be optimized by KrigingAlgorithm
  * UniformOverMesh left the experimental module
  * IntegrationExpansion/LeastSquaresExpansion left the experimental module
+ * Allow to set optimization/simulation algorithm maximum run time duration
+ * New OptimizationAlgorithm API to retrieve return code and error message
+ * Improved TruncatedDistribution to use CDF inversion instead of rejection method to generate n-d samples
+ * Faster marginal distribution PDF computation by integration on marginalized components
+ * Extendend the JointDistribution to use any distribution defined on the unit cube that is not a copula
+
+=== Bug fixes (total 53) ===
+ * #1252 (In NumericalMathFunction class, getCallsNumber and getEvaluationCallsNumber return the same information API)
+ * #1430 (The MetaModelValidation class has no graphics)
+ * #2067 (Can't compute of a marginal of a BayesDistribution->it takes ages!)
+ * #2218 (Split keepIntact methods)
+ * #2332 (The doc of Sobol' indices has issues)
+ * #2359 (The Sample help page does not show how to set a column)
+ * #2361 (Inconsistency in the documentation of KrigingAlgorithm)
+ * #2364 (KrigingAlgorithm: examples set bounds before disabling optimization)
+ * #2366 (The maths notations in the help pages are inconsistent)
+ * #2427 (Rename ComposedDistribution to JointDistribution ?)
+ * #2446 (The polynomial_sparse_least_squares theory help page can be improved)
+ * #2460 (Cobyla returns an internal exception when maximum number of evaluations is reached)
+ * #2474 (Coupling tools replace method is not robust to inputs larger than 10)
+ * #2477 (Deprecate Sample.computeLinearCorrelation ?)
+ * #2479 (Number of calls to objective function due to gradient approximation not always counted in OptimizationResult.getEvaluationNumber())
+ * #2489 (Inconsistent Evaluation number in drawOptimalValueHistory())
+ * #2500 (MarshallOlkinCopula missing computePDF ?)
+ * #2507 (The computeComplementaryCDF and computeSurvivalFunction methods are unclear)
+ * #2508 (Cobyla claim to support bounds, but does not)
+ * #2511 (Drop SpecFunc::IsNaN/IsInf)
+ * #2513 (Binomial quantile computation fails on extreme example)
+ * #2517 (Cannot build OpenTURNS with doc if optional dependencies bison/flex are unavailable)
+ * #2524 (Bayes distribution order)
+ * #2525 (Geometric range starts at 1)
+ * #2526 (BestModelChiSquared does not handle exceptions)
+ * #2527 (Strange probabilistic model for the fire satellite use-case)
+ * #2531 (StandardDistributionPolynomialFactory produces NaN and Infs)
+ * #2535 (undocumented SaltelliSensitivityAlgorithm model argument)
+ * #2541 (The computeQuantile() method of a Mixture can fail)
+ * #2544 (Example of multi output Kriging on the fire satellite model: paramers are not optimized)
+ * #2545 (Formatting Issues on LatentVariableModel)
+ * #2548 (Distribution::computeQuantile(p) can be computed for p<0 or p>1)
+ * #2552 (ComputeQuantile for discrete variables)
+ * #2557 (Shipping openturns and poissoninv GPL license)
+ * #2558 (Typos in Copulas theory documentation)
+ * #2563 (SimulatedAnnealingLHS.generate does not terminate for LHS of size 1)
+ * #2567 (The PythonRandomVector.getSample() method returns a 0-dimension sample)
+ * #2570 (MarginalDistribution test is disabled)
+ * #2571 (Drawables order is not preserved by the viewer)
+ * #2593 (Formatting of input and output arguments in the API help page)
+ * #2596 (The legends of the drawPDF() graph have a wrong order)
+ * #2602 (The pretty-print of a ParametricFunction does not show the name of the parameters)
+ * #2604 (Slower MonteCarlo simulations for versions > 1.19)
+ * #2621 (TruncatedDistribution n-d CDF inversion)
+ * #2624 (HSICEstimatorImplementation : cannot save with pickle)
+ * #2627 (Weird window for NormalGamma plot in API page)
+ * #2628 (Multi Start have incoherent behavior if the max eval has been reached)
+ * #2642 (The description of a KernelSmoothing fitted distribution can be lost sometimes)
+ * #2647 (Contour: need to detail the norms)
+ * #2653 (The Faure sequence is wrong)
+ * #2655 (HistogramFactory struggles with samples with various scales)
+ * #2658 (FunctionImplementation::draw forces the location of the color bar in 2D)
+ * #2673 (The invariant distribution of a DiscreteMarkovChain is wrong)
+
 
 == 1.22 release (2024-01-09) == #release-1.22
 

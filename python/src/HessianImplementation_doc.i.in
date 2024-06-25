@@ -60,7 +60,7 @@ OT_Hessian_getOutputDimension_doc
 
 Parameters
 ----------
-i : integer
+i : int
     Integer corresponding to the output (Care: it starts at 0).
 indices : sequence of integer
     The set of indices for which the outputs are extracted.

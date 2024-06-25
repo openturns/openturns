@@ -56,8 +56,6 @@ public:
 
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
   Point computeLinearCorrelation() const;
-  // @deprecated
-  Point computePearsonCorrelation() const;
 
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
   Point computeSpearmanCorrelation() const;
@@ -88,7 +86,7 @@ public:
 
 protected:
 
-  // computePearsonCorrelation with arguments
+  // computeLinearCorrelation with arguments
   static Point ComputeLinearCorrelation(const Sample & firstSample,
                                         const Sample & secondSample);
 

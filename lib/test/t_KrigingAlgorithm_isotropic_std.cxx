@@ -83,6 +83,16 @@ int main(int, char *[])
       assert_almost_equal(krigingFittedCovarianceModel.getAmplitude()[0], 6.65231, 0.0, 1e-4);
     }
 
+    try
+    {
+      IsotropicCovarianceModel(SquaredExponential(), 0);
+      throw InvalidDimensionException(HERE) << "Invalid IsotropicCovarianceModel should have thrown";
+    }
+    catch(const InvalidArgumentException &)
+    {
+      // nothing to do
+    }
+
   }
   catch (TestFailed & ex)
   {

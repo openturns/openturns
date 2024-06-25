@@ -10,7 +10,7 @@ The linear basis is the collection of functions :math:`\psi_k: \mathbb{R}^d \map
 
 Parameters
 ----------
-dimension : integer
+dimension : int
     Input dimension :math:`d` of the basis.
 
 See also
@@ -20,7 +20,7 @@ BasisFactory, ConstantBasisFactory, QuadraticBasisFactory
 Examples
 --------
 >>> import openturns as ot
->>> basis = LinearBasisFactory(2).build()
+>>> basis = ot.LinearBasisFactory(2).build()
 >>> psi_1 = basis.build(1)
 >>> print(psi_1)
 class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]

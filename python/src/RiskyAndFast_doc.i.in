@@ -1,11 +1,6 @@
 %feature("docstring") OT::RiskyAndFast
 "RiskyAndFast method.
 
-Available constructors:
-    RiskyAndFast(*solver=ot.Brent()*)
-
-    RiskyAndFast(*solver, maximumDistance, stepSize*)
-
 Parameters
 ----------
 solver : :class:`~openturns.Solver`
@@ -17,11 +12,6 @@ maximumDistance : positive float
     intersection with the limit state function along each direction. By
     default, the maximum distance is equal to the value defined through the key
     RootStrategyImplementation-DefaultMaximumDistance of the
-    :class:`~openturns.ResourceMap`.
-stepSize : float
-    Length of each segment inside which the root research is performed. By
-    default, the step size is equal to the value defined through the key
-    RootStrategyImplementation-DefaultStepSize of the
     :class:`~openturns.ResourceMap`.
 
 See also

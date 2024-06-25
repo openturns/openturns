@@ -1,9 +1,6 @@
 %feature("docstring") OT::Full
 "Full history storage strategy.
 
-Available constructors:
-    Full()
-
 See also
 --------
 HistoryStrategy, Compact, Null, Last

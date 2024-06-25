@@ -19,7 +19,7 @@ from openturns.usecases import ishigami_function
 # %%
 im = ishigami_function.IshigamiModel()
 partOfIshigamiFunction = ot.SymbolicFunction(
-    ['x1', 'x2', 'x3'], ['7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1)']
+    ["x1", "x2", "x3"], ["7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1)"]
 )
 ot.RandomGenerator.SetSeed(0)
 sampleSize = 1000
