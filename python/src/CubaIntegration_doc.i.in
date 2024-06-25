@@ -4,7 +4,7 @@
 Parameters
 ----------
 algorithmName : str
-    The name of the optimization routine to use. It must be 'cuhre', 'divonne',
+    The name of the integration routine to use. It must be 'cuhre', 'divonne',
     'suave', or 'vegas'.
 
 Notes
@@ -20,7 +20,7 @@ which takes values in :math:`\Rset^p`, with :math:`f: \Rset^n \mapsto \Rset^p`,
 :math:`I_n=[a_1, b_1]\times\cdots\times[a_n, b_n]\subset\Rset^n`,
 having :math:`a_i<b_i` for all :math:`i=1,...,n`.
 
-The four available optimization routines work on vector integrands. While Cuhre
+The four available integration routines work on vector integrands. While Cuhre
 is deterministic, the three other ones use Monte Carlo methods. Cuhre employs a
 cubature rule for subregion estimation in an adaptative subdivision scheme.
 Divonne works by stratified sampling. Suave combines techniques from importance
@@ -29,7 +29,7 @@ reduction. The result is returned as a :class:`~openturns.Point` of dimension
 :math:`p`, which is the number of components of the return value of the
 :class:`~openturns.Function` that one will integrate.
 
-All the optimization routines and the parameters are discussed in [hahn2005]_.
+All the integration routines and the parameters are discussed in [hahn2005]_.
 
 Examples
 --------
@@ -108,13 +108,13 @@ maximumAbsoluteError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CubaIntegration::getAlgorithmName
-"Accessor to the name of the optimization routine to be used.
+%feature("docstring") OT::integration::getAlgorithmName
+"Accessor to the name of the integration routine to be used.
 
 Returns
 -------
 algorithmName : str
-    The name of the optimization routine used by the algorithm."
+    The name of the integration routine used by the algorithm."
 
 // ---------------------------------------------------------------------
 
@@ -129,12 +129,12 @@ algoName : :class:`~openturns.Description`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CubaIntegration::setAlgorithmName
-"Accessor to the name of the optimization routine to be used.
+"Accessor to the name of the integration routine to be used.
 
 Parameters
 ----------
 algorithmName : str
-    The name of the optimization routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
+    The name of the integration routine used by the algorithm. It must be 'cuhre', 'divonne', 'suave', or 'vegas'."
 
 // ---------------------------------------------------------------------
 

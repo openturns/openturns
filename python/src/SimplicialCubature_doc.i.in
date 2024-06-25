@@ -1,5 +1,5 @@
 %feature("docstring") OT::SimplicialCubature
-"Integration over a simplex.
+"Integration over a mesh.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
@@ -24,14 +24,14 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SimplicialCubature::integrate
-"Evaluation of the integral of :math:`f` on an interval.
+"Evaluation of the integral of :math:`f` on an mesh.
 
 Parameters
 ----------
 f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
     The integrand function.
 mesh : :class:`~openturns.Mesh`
-    The domain on which to integrate.
+    The mesh on which to integrate.
 
 Returns
 -------
