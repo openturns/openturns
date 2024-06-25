@@ -106,7 +106,8 @@ struct LVNeighboorhoodPolicy
 
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & rnge) const
   {
-    const UnsignedInteger m = 2 * lola_.x_.getDimension();
+    const UnsignedInteger d = lola_.x_.getDimension();
+    const UnsignedInteger m = 2 * d;
     for (UnsignedInteger i = rnge.begin(); i != rnge.end(); ++ i)
     {
       const UnsignedInteger k = std::min(lola_.x_.getSize(), m + lola_.neighbourhoodCandidatesNumber_ + 1);
@@ -124,9 +125,17 @@ struct LVNeighboorhoodPolicy
         Scalar cohesion = 0.0;
         for (UnsignedInteger j = 0; j < m; ++ j)
         {
-          const Point xj(lola_.x_[candidateIndices[candidateCombinations_(n, j)]]);
+          // expand Point(x[i] - x[cc]).norm() to avoid creating many Point instances
+          const UnsignedInteger cc = candidateIndices[candidateCombinations_(n, j)];
+          Scalar xmxjNorm = 0.0;
+          for (UnsignedInteger j2 = 0; j2 < d; ++ j2)
+          {
+            const Scalar xmxj = lola_.x_(i, j2) - lola_.x_(cc, j2);
+            xmxjNorm += xmxj * xmxj;
+          }
+
           // sadly KDTree does not give the distances
-          cohesion += Point(lola_.x_[i] - xj).norm() / m;
+          cohesion += std::sqrt(xmxjNorm) / m;
         }
 
         // the adhesion is defined as the average distance of neighbours from each other (3.4)
@@ -135,9 +144,17 @@ struct LVNeighboorhoodPolicy
         {
           for (UnsignedInteger j2 = j1 + 1; j2 < m; ++ j2)
           {
-            const Point xj1(lola_.x_[candidateIndices[candidateCombinations_(n, j1)]]);
-            const Point xj2(lola_.x_[candidateIndices[candidateCombinations_(n, j2)]]);
-            adhesion += Point(xj1 - xj2).norm() / (m * (m - 1));
+            const UnsignedInteger cc1 = candidateIndices[candidateCombinations_(n, j1)];
+            const UnsignedInteger cc2 = candidateIndices[candidateCombinations_(n, j2)];
+
+            // expand Point(x[cc1] - x[cc2]).norm() to avoid creating many Point instances
+            Scalar x1m2norm = 0.0;
+            for (UnsignedInteger j = 0; j < d; ++ j)
+            {
+              const Scalar x1m2j = lola_.x_(cc1, j) - lola_.x_(cc2, j);
+              x1m2norm += x1m2j * x1m2j;
+            }
+            adhesion += std::sqrt(x1m2norm) / (m * (m - 1));
           }
         }
 
