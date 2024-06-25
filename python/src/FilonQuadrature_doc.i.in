@@ -1,5 +1,5 @@
 %feature("docstring") OT::FilonQuadrature
-"Tensorized integration algorithm of Gauss-Legendre.
+"Integration algorithm dedicated to oscillating integrands.
 
 Parameters
 ----------
