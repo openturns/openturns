@@ -116,7 +116,7 @@ except Exception as ex:
     pass
 
 # %%
-# **Stationary GEV modeling from the largest :math:`r` annual sea-levels**
+# **Stationary GEV modeling from the largest** :math:`r` **annual sea-levels**
 #
 # We still assume that the dependence through time is negligible.  We estimate the parameters of the
 # GEV distribution by maximizing the log-likelihood of the data. Now, we want to model more of the

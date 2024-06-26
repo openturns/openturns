@@ -7,15 +7,15 @@ Estimate a stationary covariance function
 # The objective here is to estimate a stationary covariance model from data.
 #
 # The library builds an estimation of the stationary covariance function on a
-# *ProcessSample* or *TimeSeries* using the previous algorithm implemented in
-# the *StationaryCovarianceModelFactory* class.
-# The result consists in a *UserDefinedStationaryCovarianceModel* which is easy to manipulate.
+# :class:`~openturns.ProcessSample` or :class:`~openturns.TimeSeries` using the previous algorithm implemented in
+# the :class:`~openturns.StationaryCovarianceModelFactory` class.
+# The result consists of a :class:`~openturns.UserDefinedStationaryCovarianceModel` which is easy to manipulate.
 #
 # Such an object is composed of a time grid and a collection of :math:`K`
-# square matrices of dimension d.
+# square matrices of dimension `d`.
 # :math:`K` corresponds to the number of time steps of the final time grid on
 # which the covariance is estimated.
-# When estimated from a time series , the *UserDefinedStationaryCovarianceModel*
+# When estimated from a time series , the :class:`~openturns.UserDefinedStationaryCovarianceModel`
 # may have a time grid different from the initial time grid of the time series.
 #
 
@@ -27,7 +27,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create some 1-d normal process data with an Exponential covariance model
+# Create some 1-d Normal process data with an Exponential covariance model
 
 # Dimension parameter
 dim = 1
@@ -83,7 +83,7 @@ for i in range(N):
     cov = estimatedModel_PS(tau)
 
 # %%
-# Drawing...
+# Drawing:
 sampleValueEstimated = ot.Sample(N, 1)
 sampleValueModel = ot.Sample(N, 1)
 for i in range(N):

@@ -138,7 +138,7 @@ _ = otv.View(graph)
 
 # %%
 # We see that the variable :math:`Q` must be significant, because the lower
-# bound of the confidence interval does not cross the X axis.
+# bound of the confidence interval does not cross the `X` axis.
 # Furthermore, its bounds are significantly greater than the bounds of the
 # other variables (although perhaps less significantly for the :math:`K_s` variable).
 # Hence, it must be recognized that :math:`Q` is the most important variable

@@ -49,12 +49,12 @@ Draw a survival function
 # For many probabilistic models associated with extreme events or lifetime models,
 # the survival function has a simpler expression than the distribution function.
 #
-# * More specifically, several models (e.g. Pareto or Weibull) have a simple
+# * More specifically, several models (e.g., Pareto or Weibull) have a simple
 #   expression when we consider the logarithm of the survival function.
 #   In this situation, the :math:`(\log(x),\log(S(x)))` plot is often used.
 #   For some distributions, this plot is a straight line.
 #
-# * When we consider probabilities very close to 1 (e.g. with extreme events),
+# * When we consider probabilities very close to 1 (e.g., with extreme events),
 #   a loss of precision can occur when we consider the :math:`1-F(x)` expression
 #   with floating point numbers.
 #   This loss of significant digits is known as "catastrophic cancellation" in
@@ -84,7 +84,7 @@ distribution = ot.GeneralizedPareto(sigma, xi, u)
 # -----------------------------------
 
 # %%
-# The `computeCDF` and `computeSurvivalFunction` computes the CDF :math:`F` and survival :math:`S` of a distribution.
+# The `computeCDF` and `computeSurvivalFunction` compute the CDF :math:`F` and survival :math:`S` of a distribution.
 
 # %%
 p1 = distribution.computeCDF(10.0)
@@ -98,7 +98,7 @@ p2
 p1 + p2
 
 # %%
-# The `drawCDF` and `drawSurvivalFunction` methods allows one to draw the functions :math:`F` and :math:`S`.
+# The `drawCDF` and `drawSurvivalFunction` methods allow one to draw the functions :math:`F` and :math:`S`.
 
 # %%
 graph = distribution.drawCDF()
@@ -123,7 +123,7 @@ xmax = distribution.computeQuantile(0.99)[0]
 xmax
 
 # %%
-# The `drawSurvivalFunction` methods also has an option to plot the survival with the X axis in logarithmic scale.
+# The `drawSurvivalFunction` method also has an option to plot the survival with the X axis in logarithmic scale.
 
 # %%
 npoints = 50
@@ -182,7 +182,7 @@ p1 + p2
 # -----------------------------
 
 # %%
-# In order to draw the empirical functions of a `Sample`, we use the `UserDefined` class.
+# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.UserDefined` class.
 #
 # * The `drawCDF` method plots the CDF.
 # * The `drawSurvivalFunction` method plots the survival function.
@@ -234,7 +234,7 @@ view = viewer.View(graph)
 # --------------------------------------------------------------------
 
 # %%
-# In the final example, we compare the distribution and sample survival functions in the same graphics.
+# In the final example, we compare the distribution and sample survival function in the same graphics.
 
 # %%
 xmin = sample.getMin()[0]

@@ -47,7 +47,7 @@ inputDist = im.distributionX
 inputVector = ot.RandomVector(inputDist)
 
 # %%
-# And we create the output random vector Y = model(X) :
+# And we create the output random vector :math:`Y = model(X)` :
 output = ot.CompositeRandomVector(model, inputVector)
 
 # %%
@@ -61,7 +61,7 @@ Y = model(X)
 Y.setDescription("Y")
 
 # %%
-# We display the minimum, maximum and value of the 90% quantile of `Y` :
+# We display the minimum, maximum and value of the 90% quantile of :math:`Y` :
 print(Y.getMin(), Y.getMax(), Y.computeQuantilePerComponent(0.9))
 
 # %%
@@ -88,7 +88,7 @@ graph.setLegendPosition("lower right")
 view = viewer.View(graph)
 
 # %%
-# Here we would like to conclude that the highest values of `Y` are obtained from a specific input as the highlighted lines clearly follow one only path.
+# Here we would like to conclude that the highest values of :math:`Y` are obtained from a specific input as the highlighted lines clearly follow one only path.
 # However, this approach is too naive and specific to the input sample. Indeed,
 # if we set the lower bound to 80% of the maximum :
 
@@ -111,7 +111,7 @@ view = viewer.View(graph)
 # ---------------------------------------------------
 #
 # In this paragraph we use quantile based bounds. We are still interested in
-# the highest values of `Y` more specifically the 95% quantile :
+# the highest values of :math:`Y` more specifically the 95% quantile :
 
 # %%
 minValue = 0.95

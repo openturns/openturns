@@ -18,7 +18,7 @@ import math as m
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create data from a normal PDF with :math:`\mu=4`, :math:`\sigma=1.5`.
+# Create data from the PDF of the Normal distribution with :math:`\mu=4`, :math:`\sigma=1.5`.
 sample = ot.Normal(4.0, 1.5).getSample(200)
 
 # %%

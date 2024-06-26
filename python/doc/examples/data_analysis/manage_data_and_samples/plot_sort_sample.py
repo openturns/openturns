@@ -3,7 +3,7 @@ Sort a sample
 =============
 """
 # %%
-# In this example we present useful methods of the `Sample` object such as marginals extraction and various sorting strategies.
+# In this example we present useful methods of the :class:`~openturns.Sample` object such as marginals extraction and various sorting strategies.
 
 
 # %%
@@ -71,7 +71,7 @@ sorted_marginal = sample.sort(1)
 print(sorted_marginal)
 
 # %%
-# We can sort the sample in place, that is without creating a new sample, as well with sortInPlace.
+# We can sort the sample in place, that is without creating a new sample, as well with `sortInPlace`.
 # When the dimension is greater than one the sort is made according to the first marginal.
 sample.sortInPlace()
 print(sample)
