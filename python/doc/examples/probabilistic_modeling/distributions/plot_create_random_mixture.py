@@ -23,7 +23,7 @@ ot.Log.Show(ot.Log.NONE)
 # - :math:`X_1 \sim \mathcal{E}(\lambda=1.5)`
 # - :math:`X_2 \sim \mathcal{N}(\mu=4, \sigma=1)`
 #
-# This notion is different from the Mixture where the combination is made on the probability density functions and not on the univariate random variable.
+# This notion is different from the mixture where the combination is made on the probability density functions and not on the univariate random variable.
 
 
 # %%
@@ -50,12 +50,12 @@ mean = distribution.getMean()[0]
 print("Mean : %.3f" % mean)
 
 # %%
-# its variance :
+# Its variance:
 variance = distribution.getCovariance()[0, 0]
 print("Variance : %.3f" % variance)
 
 # %%
-# the 90% quantile :
+# The 90% quantile:
 quantile = distribution.computeQuantile(0.9)[0]
 print("0.9-quantile : %.3f" % quantile)
 
@@ -100,7 +100,7 @@ print(sample)
 N = 20
 
 # %%
-# We create a collection of identically distributed Xi :
+# We create a collection of identically distributed :math:`X_i` :
 coll = [X] * N
 
 # %%

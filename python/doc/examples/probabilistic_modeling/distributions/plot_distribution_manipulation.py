@@ -5,19 +5,19 @@ Distribution manipulation
 # %%
 # In this example we are going to exhibit some of the services exposed by the distribution objects:
 #
-# - ask for the dimension, with the method getDimension
-# - extract the marginal distributions, with the method getMarginal
-# - to ask for some properties, with isContinuous, isDiscrete, isElliptical
-# - to get the copula, with the method getCopula*
-# - to ask for some properties on the copula, with the methods hasIndependentCopula, hasEllipticalCopula
-# - to evaluate some moments, with getMean, getStandardDeviation, getCovariance, getSkewness, getKurtosis
-# - to evaluate the roughness, with the method getRoughness
-# - to get one realization or simultaneously :math:`n` realizations, with the method getRealization, getSample
-# - to evaluate the probability content of a given interval, with the method computeProbability
-# - to evaluate a quantile or a complementary quantile, with the method computeQuantile
-# - to evaluate the characteristic function of the distribution
-# - to evaluate the derivative of the CDF or PDF
-# - to draw some curves
+# - ask for the dimension, with the method `getDimension` ;
+# - extract the marginal distributions, with the method `getMarginal` ;
+# - to ask for some properties, with `isContinuous`, `isDiscrete`, `isElliptical` ;
+# - to get the copula, with the method `getCopula` ;
+# - to ask for some properties on the copula, with the methods `hasIndependentCopula`, `hasEllipticalCopula` ;
+# - to evaluate some moments, with `getMean`, `getStandardDeviation`, `getCovariance`, `getSkewness`, `getKurtosis` ;
+# - to evaluate the roughness, with the method `getRoughness` ;
+# - to get one realization or simultaneously :math:`n` realizations, with the method `getRealization`, `getSample` ;
+# - to evaluate the probability content of a given interval, with the method `computeProbability` ;
+# - to evaluate a quantile or a complementary quantile, with the method `computeQuantile` ;
+# - to evaluate the characteristic function of the distribution ;
+# - to evaluate the derivative of the CDF or PDF ;
+# - to draw some curves.
 
 # %%
 import openturns as ot
@@ -66,27 +66,27 @@ copula = dist_2.getCopula()
 dist_2.hasIndependentCopula(), dist_2.hasEllipticalCopula()
 
 # %%
-# mean vector of the distribution
+# Get the mean vector of the distribution
 dist_2.getMean()
 
 # %%
-# standard deviation vector of the distribution
+# Get the standard deviation vector of the distribution
 dist_2.getStandardDeviation()
 
 # %%
-# covariance matrix of the distribution
+# Get the covariance matrix of the distribution
 dist_2.getCovariance()
 
 # %%
-# skewness vector of the distribution
+# Get the skewness vector of the distribution
 dist_2.getSkewness()
 
 # %%
-# kurtosis vector of the distribution
+# Get the kurtosis vector of the distribution
 dist_2.getKurtosis()
 
 # %%
-# roughness of the distribution
+# Get the roughness of the distribution
 dist_1.getRoughness()
 
 # %%
@@ -132,7 +132,7 @@ interval = ot.Interval([0.4, -1], [3.4, 2])
 dist_2.computeProbability(interval)
 
 # %%
-# Evaluate the quantile of order p=90%
+# Evaluate the quantile of order `p=90%`
 dist_2.computeQuantile(0.90)
 
 # %%
@@ -141,7 +141,7 @@ dist_2.computeQuantile(0.90, True)
 
 # %%
 # Evaluate the quantiles of order p et q
-# For example, the quantile 90% and 95%
+# For example, the quantile `90%` and `95%`
 dist_1.computeQuantile([0.90, 0.95])
 
 # %%
@@ -161,12 +161,12 @@ dist_2.computePDFGradient(dist_2.getMean())
 dist_2.computeCDFGradient(dist_2.getMean())
 
 # %%
-# draw PDF
+# Draw PDF
 graph = dist_1.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# draw CDF
+# Draw CDF
 graph = dist_1.drawCDF()
 view = viewer.View(graph)
 

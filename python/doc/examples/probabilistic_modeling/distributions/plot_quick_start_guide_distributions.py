@@ -243,7 +243,7 @@ view = otv.View(grid)
 # if :math:`y\in[a,b]` and :math:`f_Y(y)=0` otherwise.
 
 # %%
-# Consider for example the log-normal variable :math:`X` with mean :math:`\mu=0` and standard deviation :math:`\sigma=1`.
+# Consider for example the log-Normal variable :math:`X` with mean :math:`\mu=0` and standard deviation :math:`\sigma=1`.
 
 # %%
 X = ot.LogNormal()

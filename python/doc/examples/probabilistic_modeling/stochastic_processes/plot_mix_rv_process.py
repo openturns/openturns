@@ -31,7 +31,7 @@ from openturns.viewer import View
 import math as m
 
 # %%
-# 1. Create the gaussian process :math:`(\omega, t) \rightarrow S(\omega,t)`
+# 1. Create the Gaussian process :math:`(\omega, t) \rightarrow S(\omega,t)`
 # --------------------------------------------------------------------------
 
 # %%
@@ -46,7 +46,7 @@ n = round((tfin - t0) / step)
 myMesh = ot.RegularGrid(t0, step, n)
 
 # %%
-# Create the squared exeponential covariance model:
+# Create the squared exponential covariance model:
 #
 # .. math::
 #    C(s,t) = \sigma^2e^{-\frac{1}{2} \left( \dfrac{s-t}{l} \right)^2}
@@ -60,7 +60,7 @@ myCovKernel = ot.SquaredExponential([ll])
 print("cov model = ", myCovKernel)
 
 # %%
-# Create the gaussian process :math:`S(t)`:
+# Create the Gaussian process :math:`S(t)`:
 
 # %%
 S_proc = ot.GaussianProcess(myCovKernel, myMesh)
@@ -85,7 +85,7 @@ R = ot.Normal(muR, sigR)
 B = ot.Dirac(b)
 
 # %%
-# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class
+# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :class:`~openturns.FunctionalBasisProcess` class
 # and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t`:
 #
 # .. math::
@@ -113,7 +113,7 @@ R_proc = ot.FunctionalBasisProcess(coef, myBasis, myMesh)
 myRS_proc = ot.AggregatedProcess([R_proc, S_proc])
 
 # %%
-# Then create the spatial field function that acts only on the values of the process, keeping the mesh unchanged, using the *ValueFunction* class.
+# Then create the spatial field function that acts only on the values of the process, keeping the mesh unchanged, using the :class:`~openturns.ValueFunction` class.
 # We define the function :math:`g` on :math:`\mathbb{R}^2` by:
 #
 # .. math::
@@ -151,7 +151,7 @@ view = View(graph)
 # ---------------------------------------------------------------------
 
 # %%
-# We define the domaine :math:`\mathcal{D} = [2,4]` and the event :math:`Z(\omega, t) \in \mathcal{D}`:
+# We define the domain :math:`\mathcal{D} = [2,4]` and the event :math:`Z(\omega, t) \in \mathcal{D}`:
 
 # %%
 domain = ot.Interval([2], [4])

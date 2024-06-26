@@ -6,12 +6,12 @@ Create a spectral model
 #
 # This use case illustrates how the User can define his own density
 # spectral function from parametric models. The library allows it thanks to
-# the object *UserDefinedSpectralModel* defined from:
+# the object :class:`~openturns.UserDefinedSpectralModel` defined from:
 #
 # -   a frequency grid :math:`(-f_c, \dots, f_c)` with step :math:`\delta f`, stored
-#     in the object *RegularGrid*,
+#     in the object :class:`~openturns.RegularGrid`,
 # -   a collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})`
-#     stored in the object *HermitianMatrixCollection*, which are the
+#     stored in the object :class:`~openturns.HermitianMatrixCollection`, which are the
 #     images of each point of the frequency grid through the density
 #     spectral function.
 #
@@ -20,7 +20,7 @@ Create a spectral model
 # the intervals where the density spectral function is constant are
 # centered on the points of the frequency grid, of length :math:`\delta f`.
 # Then, it is possible to evaluate the spectral density function for a
-# given frequency thanks to the method [*computeSpectralDensity*]{}: if
+# given frequency thanks to the method `computeSpectralDensity`: if
 # the frequency is not inside the interval :math:`[-f_c,f_c]`, an exception is thrown.
 # Otherwise, it returns the hermitian matrix of the
 # subinterval of :math:`[-f_c,f_c]` that contains the given frequency.
@@ -65,7 +65,7 @@ def s(f):
 
 
 # %%
-# Create the collection of HermitianMatrix:
+# Create the collection of :class:`~openturns.HermitianMatrix`:
 coll = ot.HermitianMatrixCollection()
 for k in range(N):
     frequency = fgrid.getValue(k)

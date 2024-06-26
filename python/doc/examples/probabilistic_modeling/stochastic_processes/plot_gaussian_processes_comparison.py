@@ -5,7 +5,7 @@ Compare covariance models
 # %%
 # The main goal of this example is to briefly review the most important covariance models and compare them in terms of regularity.
 #
-# We first show how to define a covariance model, a temporal grid and a gaussian process.
+# We first show how to define a covariance model, a temporal grid and a Gaussian process.
 # We first consider the squared exponential covariance model and show how the trajectories are sensitive to its parameters.
 # We show how to define a trend. In the final section, we compare the trajectories from exponential and Matérn covariance models.
 
@@ -67,14 +67,14 @@ graph.setTitle("Regular grid")
 view = viewer.View(graph)
 
 # %%
-# Then we create the gaussian process (by default the trend is zero).
+# Then we create the Gaussian process (by default the trend is zero).
 
 # %%
 process = ot.GaussianProcess(myModel, myTimeGrid)
 process
 
 # %%
-# Then we generate 10 trajectores with the `getSample` method. This trajectories are in a `ProcessSample`.
+# Then we generate 10 trajectores with the `getSample` method. This trajectories are in a :class:`~openturns.ProcessSample`.
 
 # %%
 nbTrajectories = 10
@@ -91,7 +91,7 @@ view = viewer.View(graph)
 
 
 # %%
-# In order to make the next examples easier, we define a function which plots a given number of trajectories from a gaussian process based on a covariance model.
+# In order to make the next examples easier, we define a function which plots a given number of trajectories from a Gaussian process based on a covariance model.
 
 
 # %%
@@ -130,7 +130,7 @@ view = viewer.View(graph)
 # Define the trend
 # ----------------
 #
-# The trend is a deterministic function. With the `GaussianProcess` class, the associated process is the sum of a trend and a gaussian process with zero mean.
+# The trend is a deterministic function. With the :class:`~openturns.GaussianProcess` class, the associated process is the sum of a trend and a Gaussian process with zero mean.
 
 # %%
 f = ot.SymbolicFunction(["x"], ["2*x"])
@@ -156,14 +156,14 @@ view = viewer.View(graph)
 #
 # There are other covariance models. The models which are used more often are the following:
 #
-# * `SquaredExponential`. The generated processes can be derivated in mean square at all orders.
-# * `MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model.
+# * :class:`~openturns.SquaredExponential`. The generated processes can be derivated in mean square at all orders.
+# * :class:`~openturns.MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model.
 #   This model can be derivated :math:`k` times only if :math:`k<\nu`.
 #   In other words, when :math:`\nu` increases, then the trajectories are more and more regular.
 #   The particular case :math:`\nu=1/2` is the exponential model.
 #   The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity,
 #   in between the squared exponential and the exponential models.
-# * `ExponentialModel`. The associated process is continuous, but not differentiable.
+# * :class:`~openturns.ExponentialModel`. The associated process is continuous, but not differentiable.
 #
 
 # %%
