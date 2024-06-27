@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The BayesDistribution distribution
+ *  @brief The JointByConditioningDistribution distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/BayesDistribution.hxx"
+#include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/ConditionalDistribution.hxx"
@@ -33,54 +33,54 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BayesDistribution)
+CLASSNAMEINIT(JointByConditioningDistribution)
 
-static const Factory<BayesDistribution> Factory_BayesDistribution;
+static const Factory<JointByConditioningDistribution> Factory_JointByConditioningDistribution;
 
 
 /* Default constructor */
-BayesDistribution::BayesDistribution()
+JointByConditioningDistribution::JointByConditioningDistribution()
   : ContinuousDistribution()
 {
   const SymbolicFunction linkFunction(Description({"y0"}), Description({"y0", "y0 + 1"}));
   setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
-  setName("BayesDistribution");
+  setName("JointByConditioningDistribution");
   isParallel_ = false;
 }
 
 /* Parameters constructor */
-BayesDistribution::BayesDistribution(const Distribution & conditionedDistribution,
+JointByConditioningDistribution::JointByConditioningDistribution(const Distribution & conditionedDistribution,
                                      const Distribution & conditioningDistribution,
                                      const Function & linkFunction0)
   : ContinuousDistribution()
 {
-  if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
-  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
+  if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
+  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
 
   Function linkFunction(linkFunction0);
   if (!linkFunction.getEvaluation().getImplementation()->isActualImplementation())
     linkFunction = IdentityFunction(conditioningDistribution.getDimension());
 
   setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
-  setName("BayesDistribution");
+  setName("JointByConditioningDistribution");
   isParallel_ = false;
 }
 
 /* Comparison operator */
-Bool BayesDistribution::operator ==(const BayesDistribution & other) const
+Bool JointByConditioningDistribution::operator ==(const JointByConditioningDistribution & other) const
 {
   if (this == &other) return true;
   return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
-Bool BayesDistribution::equals(const DistributionImplementation & other) const
+Bool JointByConditioningDistribution::equals(const DistributionImplementation & other) const
 {
-  const BayesDistribution* p_other = dynamic_cast<const BayesDistribution*>(&other);
+  const JointByConditioningDistribution* p_other = dynamic_cast<const JointByConditioningDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void BayesDistribution::computeRange()
+void JointByConditioningDistribution::computeRange()
 {
   // First, the conditioning distribution
   Point lowerBound(conditioningDistribution_.getRange().getLowerBound());
@@ -99,10 +99,10 @@ void BayesDistribution::computeRange()
 }
 
 /* String converter */
-String BayesDistribution::__repr__() const
+String JointByConditioningDistribution::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << BayesDistribution::GetClassName()
+  oss << "class=" << JointByConditioningDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " conditioned distribution=" << conditionedDistribution_
@@ -111,7 +111,7 @@ String BayesDistribution::__repr__() const
   return oss;
 }
 
-String BayesDistribution::__str__(const String & ) const
+String JointByConditioningDistribution::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(Y, X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
@@ -119,13 +119,13 @@ String BayesDistribution::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-BayesDistribution * BayesDistribution::clone() const
+JointByConditioningDistribution * JointByConditioningDistribution::clone() const
 {
-  return new BayesDistribution(*this);
+  return new JointByConditioningDistribution(*this);
 }
 
 /* Get one realization of the distribution */
-Point BayesDistribution::getRealization() const
+Point JointByConditioningDistribution::getRealization() const
 {
   Point yx(conditioningDistribution_.getRealization());
   Distribution deconditioned(conditionedDistribution_);
@@ -135,7 +135,7 @@ Point BayesDistribution::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-Scalar BayesDistribution::computePDF(const Point & point) const
+Scalar JointByConditioningDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -154,47 +154,123 @@ Scalar BayesDistribution::computePDF(const Point & point) const
   return deconditionedPDF * conditioningPDF;
 }
 
-/* Bayes distribution accessor */
-void BayesDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
+/* Conditioned distribution accessor */
+void JointByConditioningDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
 {
-  if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
+  if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
   if (conditionedDistribution != conditionedDistribution_)
     setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution_, linkFunction_);
 }
 
-Distribution BayesDistribution::getConditionedDistribution() const
+namespace {
+// Class used to compute the CDF of a JointByConditioning distribution
+class JointByConditioningCDFKernel: public EvaluationImplementation
+{
+public:
+  JointByConditioningCDFKernel(const Distribution & conditionedDistribution,
+		 const Distribution & conditioningDistribution,
+		 const Function & linkFunction,
+		 const Point & x)
+    : EvaluationImplementation()
+    , conditionedDistribution_(conditionedDistribution)
+    , conditioningDistribution_(conditioningDistribution)
+    , linkFunction_(linkFunction)
+    , x_(x)
+  {
+    // Nothing to do
+  }
+
+  JointByConditioningCDFKernel * clone() const
+  {
+    return new JointByConditioningCDFKernel(*this);
+  }
+
+  Point operator() (const Point & point) const
+  {
+    const Scalar pdfY = conditioningDistribution_.computePDF(point);
+    if (pdfY == 0.0) return Point(1, 0.0);
+    Distribution parameterized(conditionedDistribution_);
+    const Point parameter(linkFunction_(point));
+    parameterized.setParameter(parameter);
+    const Scalar cdfX = parameterized.computeCDF(x_);
+    return Point(1, pdfY * cdfX);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return conditioningDistribution_.getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return conditioningDistribution_.getDescription();
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "JointByConditioningCDFKernel");
+  }
+
+private:
+  const Distribution & conditionedDistribution_;
+  const Distribution & conditioningDistribution_;
+  const Function & linkFunction_;
+  const Point & x_;
+};  // class JointByConditioningCDFKernel
+} // anonymous namespace
+
+/* Get the CDF of the distribution */
+Scalar JointByConditioningDistribution::computeCDF(const Point & point) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
+  Point y(conditioningDistribution_.getDimension());
+  std::copy(point.begin(), point.begin() + y.getSize(), y.begin());
+  Point x(conditionedDistribution_.getDimension());
+  std::copy(point.begin() + y.getSize(), point.end(), x.begin());
+  Point lowerY(conditioningDistribution_.getRange().getLowerBound());
+  const Function kernel(JointByConditioningCDFKernel(conditionedDistribution_, conditioningDistribution_, linkFunction_, x));
+  const Scalar cdf = IteratedQuadrature().integrate(kernel, Interval(lowerY, y))[0];
+  return cdf;
+}
+
+Distribution JointByConditioningDistribution::getConditionedDistribution() const
 {
   return conditionedDistribution_;
 }
 
 
 /* Conditioning distribution accessor */
-void BayesDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
+void JointByConditioningDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
 {
-  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the BayesDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
+  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
   if (conditioningDistribution != conditioningDistribution_)
     setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution, linkFunction_);
 }
 
-Distribution BayesDistribution::getConditioningDistribution() const
+Distribution JointByConditioningDistribution::getConditioningDistribution() const
 {
   return conditioningDistribution_;
 }
 
 /* Link function accessor */
-void BayesDistribution::setLinkFunction(const Function & linkFunction)
+void JointByConditioningDistribution::setLinkFunction(const Function & linkFunction)
 {
   if (!(linkFunction == linkFunction_))
     setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
 }
 
-Function BayesDistribution::getLinkFunction() const
+Function JointByConditioningDistribution::getLinkFunction() const
 {
   return linkFunction_;
 }
 
 /* Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
-void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
+void JointByConditioningDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
     const Function & linkFunction)
 {
@@ -223,7 +299,7 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
 }
 
 /* Get the i-th marginal distribution */
-Distribution BayesDistribution::getMarginal(const UnsignedInteger i) const
+Distribution JointByConditioningDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
@@ -236,7 +312,7 @@ Distribution BayesDistribution::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution BayesDistribution::getMarginal(const Indices & indices) const
+Distribution JointByConditioningDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension))
@@ -259,14 +335,14 @@ Distribution BayesDistribution::getMarginal(const Indices & indices) const
 } // getMarginal(Indices)
 
 /* Parameters value and description accessor */
-Point BayesDistribution::getParameter() const
+Point JointByConditioningDistribution::getParameter() const
 {
   Point parameter(linkFunction_.getParameter());
   parameter.add(conditioningDistribution_.getParameter());
   return parameter;
 } // getParameter
 
-void BayesDistribution::setParameter(const Point & parameter)
+void JointByConditioningDistribution::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize())
     throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
@@ -287,12 +363,12 @@ void BayesDistribution::setParameter(const Point & parameter)
     std::copy(start, parameter.end(), conditioningParameter.begin());
     conditioningDistribution_.setParameter(conditioningParameter);
   }
-  *this = BayesDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_);
+  *this = JointByConditioningDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_);
   setWeight(w);
 } // setParameter
 
 /* Parameters value and description accessor */
-Description BayesDistribution::getParameterDescription() const
+Description JointByConditioningDistribution::getParameterDescription() const
 {
   Description parameterDescription(linkFunction_.getParameterDescription());
   parameterDescription.add(conditioningDistribution_.getParameterDescription());
@@ -300,7 +376,7 @@ Description BayesDistribution::getParameterDescription() const
 } // getParameterDescription
 
 /* Compute the mean of the distribution */
-void BayesDistribution::computeMean() const
+void JointByConditioningDistribution::computeMean() const
 {
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Indices lower(conditioningDimension);
@@ -313,13 +389,13 @@ void BayesDistribution::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
-namespace BayesDistributionFunctions
+namespace JointByConditioningDistributionFunctions
 {
 
 class KernelCovariance: public EvaluationImplementation
 {
 public:
-  KernelCovariance(const BayesDistribution & distribution)
+  KernelCovariance(const JointByConditioningDistribution & distribution)
     : EvaluationImplementation()
     , distribution_(distribution)
     , dimension_(distribution.getDimension())
@@ -385,7 +461,7 @@ public:
   }
 
 private:
-  const BayesDistribution & distribution_;
+  const JointByConditioningDistribution & distribution_;
   const UnsignedInteger dimension_;
   const UnsignedInteger conditioningDimension_;
   const UnsignedInteger conditionedDimension_;
@@ -393,14 +469,14 @@ private:
   const Point mu_;
 }; // KernelCovariance
 
-} // namespace BayesDistributionFunctions
+} // namespace JointByConditioningDistributionFunctions
 
 /* Compute the covariance of the distribution */
-void BayesDistribution::computeCovariance() const
+void JointByConditioningDistribution::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
-  const Function integrand(BayesDistributionFunctions::KernelCovariance(*this));
+  const Function integrand(JointByConditioningDistributionFunctions::KernelCovariance(*this));
   const Bool useAdaptiveAlgorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
   IntegrationAlgorithm integrator;
   if (useAdaptiveAlgorithm) integrator = IteratedQuadrature(GaussKronrod());
@@ -426,7 +502,7 @@ void BayesDistribution::computeCovariance() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void BayesDistribution::save(Advocate & adv) const
+void JointByConditioningDistribution::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "conditionedDistribution_", conditionedDistribution_ );
@@ -435,7 +511,7 @@ void BayesDistribution::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void BayesDistribution::load(Advocate & adv)
+void JointByConditioningDistribution::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "conditionedDistribution_", conditionedDistribution_ );
@@ -443,6 +519,5 @@ void BayesDistribution::load(Advocate & adv)
   adv.loadAttribute( "linkFunction_", linkFunction_ );
   computeRange();
 }
-
 
 END_NAMESPACE_OPENTURNS

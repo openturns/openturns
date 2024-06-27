@@ -605,7 +605,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
-                      BayesDistribution.i BayesDistribution_doc.i.in
+                      JointByConditioningDistribution.i JointByConditioningDistribution_doc.i.in
                       Bernoulli.i Bernoulli_doc.i.in
                       BernoulliFactory.i BernoulliFactory_doc.i.in
                       EmpiricalBernsteinCopula.i EmpiricalBernsteinCopula_doc.i.in
