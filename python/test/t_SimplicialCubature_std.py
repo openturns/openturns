@@ -20,3 +20,9 @@ algo = otexp.SimplicialCubature()
 value = algo.integrate(f, mesh)[0]
 print(value)
 ott.assert_almost_equal(value, (m.exp(1.0) - 1.0) ** 3 / 6)
+
+# Test with interval inferface
+f = ot.SymbolicFunction(["x", "y", "z"], ["sin(x) * cos(y) * exp(z)"])
+valueRef = -m.sin(1.0) * (m.cos(1.0) - 1.0) * (m.e - 1.0)
+value = algo.integrate(f, ot.Interval([0.0] * 3, [1.0] * 3))
+ott.assert_almost_equal(value[0], valueRef)

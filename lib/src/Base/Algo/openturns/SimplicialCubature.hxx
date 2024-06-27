@@ -22,7 +22,6 @@
 #define OPENTURNS_SIMPLICIALCUBATURE_HXX
 
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
-#include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API SimplicialCubature
-  : public PersistentObject
+  : public IntegrationAlgorithmImplementation
 {
 
   CLASSNAME
@@ -48,6 +47,13 @@ public:
   /** Compute an approximation of \int_D f(x_1,\dots,x_n)dx_1\dotsdx_n, where D is a mesh.
    */
   Point integrate(const Function & function, const Mesh & mesh) const;
+
+  /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
+   * is an n-D interval
+   */
+  using IntegrationAlgorithmImplementation::integrate;
+  Point integrate(const Function & function,
+                  const Interval & interval) const override;
 
   // Integration rule accessor
   void setRule(const UnsignedInteger rule);
