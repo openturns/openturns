@@ -39,7 +39,7 @@ static const Factory<NormalGamma> Factory_NormalGamma;
 
 /* Default constructor */
 NormalGamma::NormalGamma()
-  : BayesDistribution()
+  : JointByConditioningDistribution()
 {
   const Point parameter = {mu_, kappa_, alpha_, beta_};
   setParameter(parameter);
@@ -50,7 +50,7 @@ NormalGamma::NormalGamma(const Scalar mu,
                          const Scalar kappa,
                          const Scalar alpha,
                          const Scalar beta)
-  : BayesDistribution()
+  : JointByConditioningDistribution()
   , mu_(mu)
   , kappa_(kappa)
   , alpha_(alpha)
@@ -60,7 +60,7 @@ NormalGamma::NormalGamma(const Scalar mu,
   if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
   if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
   computeLogNormalization();
-  // If we want to have the same behavior of the setParameter() method in NormalGamma and BayesDistribution
+  // If we want to have the same behavior of the setParameter() method in NormalGamma and JointByConditioningDistribution
   // the values (mu, kappa) must be part of the parameter. As they are not parameter of the conditioning
   // distribution they have to be parameter of the link function
   setName("NormalGamma");
@@ -457,7 +457,7 @@ Point NormalGamma::getKurtosis() const
 /* Method save() stores the object through the StorageManager */
 void NormalGamma::save(Advocate & adv) const
 {
-  BayesDistribution::save(adv);
+  JointByConditioningDistribution::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "kappa_", kappa_ );
   adv.saveAttribute( "alpha_", alpha_ );
@@ -467,7 +467,7 @@ void NormalGamma::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NormalGamma::load(Advocate & adv)
 {
-  BayesDistribution::load(adv);
+  JointByConditioningDistribution::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "kappa_", kappa_ );
   adv.loadAttribute( "alpha_", alpha_ );

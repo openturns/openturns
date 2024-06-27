@@ -50,7 +50,7 @@
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/ConditionalDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
-#include "openturns/BayesDistribution.hxx"
+#include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/DiracFactory.hxx"
 #include "openturns/Dirichlet.hxx"

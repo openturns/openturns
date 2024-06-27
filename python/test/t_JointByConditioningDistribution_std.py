@@ -9,7 +9,7 @@ conditionedDistribution = ot.Normal()
 conditioningDistribution = ot.JointDistribution(
     [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
 )
-distribution = ot.BayesDistribution(conditionedDistribution, conditioningDistribution)
+distribution = ot.JointByConditioningDistribution(conditionedDistribution, conditioningDistribution)
 dim = distribution.getDimension()
 print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
@@ -76,7 +76,7 @@ print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
 # print("threshold=", Point(1, threshold))
 #  result should be
 #  Minimum volume level set= {x | f(x) <= 3.24752} with f=
-#  MinimumVolumeLevelSetEvaluation(BayesDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y),
+#  MinimumVolumeLevelSetEvaluation(JointByConditioningDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y),
 #    f=IdentityEvaluation(dimension=2), Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))))
 #  beta= [0.0388705]
 # levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)

@@ -24,7 +24,7 @@
 %include Histogram.i
 %include HistogramFactory.i
 %include Hypergeometric.i
-%include BayesDistribution.i
+%include JointByConditioningDistribution.i
 %include InverseChiSquare.i
 %include InverseGamma.i
 %include InverseNormal.i

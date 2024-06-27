@@ -164,7 +164,7 @@ Combining and transforming distributions
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
-    BayesDistribution
+    JointByConditioningDistribution
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution

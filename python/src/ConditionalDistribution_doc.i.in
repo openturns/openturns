@@ -47,7 +47,7 @@ With the default constructor, the resulting random variable :math:`X` follows a
 trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 
 Note that a :class:`~openturns.ConditionalDistribution` can be obtained as the
-first marginal distribution of a :class:`~openturns.BayesDistribution`.
+first marginal distribution of a :class:`~openturns.JointByConditioningDistribution`.
 
 The continuous part of the conditioning distribution is discretized using a
 :class:`~openturns.WeightedExperiment` which can be modified using
