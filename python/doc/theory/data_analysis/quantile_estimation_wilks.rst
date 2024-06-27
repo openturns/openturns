@@ -1,197 +1,103 @@
 .. _quantile_estimation_wilks:
 
-Estimation of a quantile by Wilks' method
------------------------------------------
+Estimation of a quantile upper bound by Wilks' method
+-----------------------------------------------------
 
-Let us denote
-:math:`\underline{Y} = h\left( \vect{X},\vect{d} \right) = \left( Y^1,\ldots,Y^{n_Y} \right)`,
-where :math:`\vect{X}= \left( X^1,\ldots,X^{n_X} \right)` is a random
-vector, and :math:`\vect{d}` a deterministic vector. We seek here to
-evaluate, using the probability distribution of the random vector
-:math:`\vect{X}`, the :math:`\alpha`-quantile :math:`q_{Y^i}(\alpha)` of
-:math:`Y^i`, where :math:`\alpha \in (0, 1)`:
+We consider a random variable :math:`X` of dimension 1 and the unknown  :math:`x_{\alpha}`
+level quantile of its distribution (:math:`\alpha \in [0, 1]`).
+We seek to evaluate an upper bound of :math:`x_{\alpha}` with a confidence greater or equal to
+:math:`\beta`, using a given order statistics.
 
-.. math::
-
-   \begin{aligned}
-       \Prob{ Y^i \leq q_{Y^i}(\alpha)} = \alpha
-     \end{aligned}
-
-If we have a sample
-:math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of :math:`N`
-independent samples of the random vector :math:`\vect{X}`,
-:math:`q_{Y^i}(\alpha)` can be estimated as follows:
-
--  the sample :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of
-   vector :math:`\vect{X}` is first transformed to a sample
-   :math:`\left\{ y^i_1,\ldots,y^i_N \right\}` of the variable
-   :math:`Y^i`, using :math:`\underline{y} = h(\vect{x}_i,\vect{d})`,
-
--  the sample :math:`\left\{ y^i_1,\ldots,y^i_N \right\}` is then placed
-   in ascending order, which gives the sample
-   :math:`\left\{ y^{(1)},\ldots,y^{(N)} \right\}`,
-
--  this empirical estimation of the quantile is then calculated by the
-   formula:
-
-   .. math::
-
-      \begin{aligned}
-            \widehat{q}_{y^i}(\alpha) = y^{([N\alpha]+1)}
-          \end{aligned}
-
-where :math:`[N\alpha]` denotes the integral part of
-:math:`N\alpha`.
-
-For example, if :math:`N=100` and :math:`\alpha = 0.95`,
-:math:`\widehat{q}_Z(0.95)` is equal to :math:`y^{(96)}`, which is the
-:math:`5^\textrm{th}` largest value of the sample
-:math:`\left\{ y^i_1,\ldots,y^i_N \right\}`. We note that this
-estimation has no meaning unless :math:`1/N \leq \alpha \leq 1-1/N`. For
-example, if :math:`N=100`, one can only consider values of a to be
-between 1% and 99%.
-
-It is also possible to calculate an upper limit for the quantile with a
-confidence level :math:`\beta` chosen by the user; one can then be sure
-with a :math:`\beta` level of confidence that the real value of
-:math:`q_{Y^i}(\alpha))` is less than or equal to
-:math:`\widehat{q}_{Y^i}(\alpha)_{\sup}`:
+Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
+Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
+:math:`X_{(k)}` is the :math:`k` -th maximum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`. For
+example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
+and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum. We have:
 
 .. math::
 
-   \begin{aligned}
-       \Prob{q_{Y^i}(\alpha) \leq \widehat{q}_{Y^i}(\alpha)_{\sup}} = \beta
-     \end{aligned}
+    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
 
-The most robust method for calculating this upper limit consists of
-taking
-:math:`\widehat{q}_{Y^i}(\alpha)_{\sup} = y^{(j(\alpha,\beta,N))}` where
-:math:`j(\alpha,\beta,N)` is an integer between 2 and :math:`N` found by
-solving the equation:
+
+Smallest rank for an upper bound to the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let :math:`(x_1, \dots, x_\sampleSize)` be an i.i.d. sample of size :math:`\sampleSize` of
+the random variable :math:`X`.
+Given a quantile level :math:`\alpha \in [0,1]`, a confidence level
+:math:`\beta \in [0,1]`, and a sample size :math:`\sampleSize`, we seek the smallest
+rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
+
+.. math::
+    :label: EqOrderStat
+
+    \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta
+
+The probability density and cumulative distribution functions of the order
+statistics :math:`X_{(k)}` are:
+
+.. math::
+    :label: DistOrderStat
+
+    F_{X_{(k)}}(x) & = \sum_{i=k}^{\sampleSize} \binom{\sampleSize}{i}\left(F(x)
+    \right)^i \left(1-F(x)
+    \right)^{\sampleSize-i} \\
+    p_{X_{(k)}}(x) & = (\sampleSize-k+1)\binom{\sampleSize}{k-1}\left(F(x)\right)^{k-1}
+    \left(1-F(x)
+    \right)^{\sampleSize-k} p(x)
+
+We notice that :math:`F_{X_{(k)}}(x) = \overline{F}_{(\sampleSize,F(x))}(k-1)` where
+:math:`F_{(\sampleSize,F(x))}` is the cumulated
+distribution function of the Binomial distribution :math:`\cB(\sampleSize,F(x))` and
+:math:`\overline{F}_{(\sampleSize,F(x))}(k) = 1 - F_{(\sampleSize,F(x))}(k)` is the
+complementary cumulated distribution fonction (also named survival function in dimension
+1).
+Therefore:
 
 .. math::
 
-   \begin{aligned}
-       \sum_{k=1}^{j(\alpha,\beta,N) - 1} C^k_N \alpha^k \left( 1-\alpha \right)^{N-k} = \beta
-     \end{aligned}
+    F_{X_{(k)}}(x_{\alpha}) = \sum_{i=k}^{\sampleSize} \binom{\sampleSize}{i} \alpha^i (1-\alpha)^{\sampleSize-i}
+    = \overline{F}_{(\sampleSize,\alpha)}(k-1)
 
-A solution to this does not necessarily exist, i.e. there may be no
-integer value for :math:`j(\alpha,\beta,N)` satisfying this equality;
-one can in this case choose the smallest integer :math:`j` such that:
+and equation :eq:`EqOrderStat` implies:
+
+.. math::
+    :label: EqOrderStat2
+
+    1-F_{X_{(k)}}(x_{\alpha})\geq \beta
+
+This implies:
 
 .. math::
 
-   \begin{aligned}
-       \sum_{k=1}^{j(\alpha,\beta,N) - 1} C^k_N \alpha^k \left( 1-\alpha \right)^{N-k} > \beta
-     \end{aligned}
+    F_{\sampleSize, \alpha}(k-1)\geq \beta
 
-which ensures that
-:math:`\Prob{q_{Y^i}(\alpha) \leq \widehat{q}_{Y^i}(\alpha)_{\sup}} > \beta`;
-in other words, the level of confidence of the quantile estimation is
-greater than that initially required.
+The smallest rank :math:`k_{sol}` such that the previous equation is satisfied is:
 
-This formula of the confidence interval can be used in two ways:
+.. math::
 
--  either directly to determine :math:`j(\alpha,\beta,N)` for the values
-   :math:`\alpha,\beta,N` chosen by the user,
+    k_{sol} & = \min \{ k \in \llbracket 1, n \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\geq \beta \}\\
+            & = 1 +  \min \{ k \in \llbracket 1, n\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq \beta \}
 
--  or in reverse to determine the number :math:`N` of simulations to be
-   carried out for the values :math:`\alpha,\beta` and
-   :math:`j(\alpha,\beta,N)` chosen by the user; this is known as Wilks’
-   formula.
+An upper bound of  :math:`x_{\alpha}` is estimated by the value of :math:`X_{(k_{sol})}`
+on the sample
+:math:`(x_1, \dots, x_\sampleSize)`.
 
-For example for :math:`\alpha = \beta = 95\%`, we take :math:`j=59` with
-:math:`N = 59` simulations (that is the maximum value out of 59 samples)
-or else :math:`j = 92` with :math:`N = 93` simulations (that is the
-second largest result out of the 93 selections). For values of :math:`N`
-between :math:`59` and :math:`92`, the upper limit is the maximum value
-of the sample. The following tabular presents the whole results for
-:math:`N \leq 1000`, still for :math:`\alpha = \beta = 95\%`.
+Minimum sample size for an upper bound to the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-+-------------+------------------------------------------+--------------------------------------+
-| :math:`N`   | Rank of the upper bound of the quantile  | Rank of the empirical quantile       |
-+=============+==========================================+======================================+
-| 59          | 59                                       | 57                                   |
-+-------------+------------------------------------------+--------------------------------------+
-| 93          | 92                                       | 89                                   |
-+-------------+------------------------------------------+--------------------------------------+
-| 124         | 122                                      | 118                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 153         | 150                                      | 146                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 181         | 177                                      | 172                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 208         | 203                                      | 198                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 234         | 228                                      | 223                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 260         | 253                                      | 248                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 286         | 278                                      | 272                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 311         | 302                                      | 296                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 336         | 326                                      | 320                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 361         | 350                                      | 343                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 386         | 374                                      | 367                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 410         | 397                                      | 390                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 434         | 420                                      | 413                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 458         | 443                                      | 436                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 482         | 466                                      | 458                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 506         | 489                                      | 481                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 530         | 512                                      | 504                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 554         | 535                                      | 527                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 577         | 557                                      | 549                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 601         | 580                                      | 571                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 624         | 602                                      | 593                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 647         | 624                                      | 615                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 671         | 647                                      | 638                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 694         | 669                                      | 660                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 717         | 691                                      | 682                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 740         | 713                                      | 704                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 763         | 735                                      | 725                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 786         | 757                                      | 747                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 809         | 779                                      | 769                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 832         | 801                                      | 791                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 855         | 823                                      | 813                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 877         | 844                                      | 834                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 900         | 866                                      | 856                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 923         | 888                                      | 877                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 945         | 909                                      | 898                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 968         | 931                                      | 920                                  |
-+-------------+------------------------------------------+--------------------------------------+
-| 991         | 953                                      | 942                                  |
-+-------------+------------------------------------------+--------------------------------------+
+Given :math:`\alpha`, :math:`\beta`, and :math:`k`, we seek for the smallest sample size
+:math:`\sampleSize`
+such that the equation :eq:`EqOrderStat` is satisfied. In order to do so, we solve the
+equation :eq:`EqOrderStat2` with respect to the sample size :math:`\sampleSize`.
 
-:math:`\widehat{q}_{Y^i}(\alpha)` is often called the “empirical
-:math:`\alpha`-quantile” for the variable :math:`{Y^i}`.
+Once the smallest size :math:`\sampleSize`  has been estimated, a sample of size
+:math:`\sampleSize` can be
+generated from
+:math:`X` and an upper bound of :math:`x_{\alpha}` is estimated using
+:math:`x_{(\sampleSize-i)}` i.e. the :math:`\sampleSize - i`-th observation
+in the ordered sample :math:`(x_{(1)}, \dots, x_{(\sampleSize)})`.
+
 
 .. topic:: API:
 
@@ -203,6 +109,6 @@ of the sample. The following tabular presents the whole results for
 
 .. topic:: References:
 
-    - Wilks, S.S. (1962). "Mathematical Statistics", New York-London
+    - Wilks, S. S. (1941). Determination of sample sizes for setting tolerance limits. The Annals of Mathematical Statistics, 12(1), 91-96
     - Robert C.P., Casella G. (2004). Monte-Carlo Statistical Methods, Springer, ISBN 0-387-21239-6, 2nd ed.
     - Rubinstein R.Y. (1981). Simulation and The Monte-Carlo methods, John Wiley & Sons

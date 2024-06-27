@@ -97,6 +97,11 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [delmas2006] Delmas, J.F. and Jourdain, B. *Modèles aléatoires: Applications aux
+    sciences de l'ingénieur et du vivant* , Berlin, Heidelberg: Springer Berlin Heidelberg (2006).
+    *La maîtrise des incertitudes dans un contexte industriel.
+    1re partie: une approche méthodologique globale basée sur des exemples.*
+    Journal de la Société française de statistique, 147 (3), 33-71.
 .. [deRocquigny2006] De Rocquigny, É. (2006).
     *La maîtrise des incertitudes dans un contexte industriel.
     1re partie: une approche méthodologique globale basée sur des exemples.*
