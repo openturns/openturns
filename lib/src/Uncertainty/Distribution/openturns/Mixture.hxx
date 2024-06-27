@@ -193,7 +193,7 @@ private:
   /** Structures for the alias sampling method */
   Point base_;
   Indices alias_;
-  Bool uniformWeights_;
+  Bool uniformWeights_ = true;
   Point p_;
 
   /** PDF approximation associated to the CDF approximation */
@@ -209,7 +209,10 @@ private:
   PiecewiseHermiteEvaluation ccdfApproximation_;
 
   /** Do I have an approximation for the CDF? */
-  Bool useApproximatePDFCDF_;
+  Bool useApproximatePDFCDF_ = false;
+
+  /* Am I discrete or continuous, or neither */
+  Bool isDiscreteOrContinuous_ = true;
 
 }; /* class Mixture */
 
