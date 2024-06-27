@@ -21,6 +21,7 @@
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/IntervalMesher.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +35,7 @@ static const Factory<SimplicialCubature> Factory_SimplicialCubature;
 
 /* Default constructor */
 SimplicialCubature::SimplicialCubature()
-  : PersistentObject()
+  : IntegrationAlgorithmImplementation()
   , rule_(ResourceMap::GetAsUnsignedInteger("SimplicialCubature-DefaultRule"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError"))
   , maximumRelativeError_(ResourceMap::GetAsScalar("SimplicialCubature-DefaultMaximumRelativeError"))
@@ -116,14 +117,14 @@ String SimplicialCubature::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void SimplicialCubature::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  IntegrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("rule_", rule_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SimplicialCubature::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  IntegrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("rule_", rule_);
 }
 
@@ -150,6 +151,16 @@ UnsignedInteger SimplicialCubature::getNodeNumber(const UnsignedInteger dimensio
   return nodeNumber;
 }
 
+
+Point SimplicialCubature::integrate(const Function & function,
+                                    const Interval & interval) const
+{
+  const UnsignedInteger intervalsNumber = ResourceMap::GetAsUnsignedInteger("SimplicialCubature-MarginalDiscretizationIntervalsNumber");
+  const Indices discretization(interval.getDimension(), intervalsNumber);
+  const IntervalMesher mesher(discretization);
+  const Mesh mesh(mesher.build(interval));
+  return integrate(function, mesh);
+}
 
 /* Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an n-D interval.
  */

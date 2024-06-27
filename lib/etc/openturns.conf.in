@@ -1100,6 +1100,7 @@
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
   <SimplicialCubature-DefaultMaximumCallsNumber   value_int="10000" />
   <SimplicialCubature-DefaultRule value_int="3" />
+  <SimplicialCubature-MarginalDiscretizationIntervalsNumber value_int="1" />
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />
