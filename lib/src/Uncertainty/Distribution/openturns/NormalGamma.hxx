@@ -22,7 +22,7 @@
 #define OPENTURNS_NORMALGAMMA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/BayesDistribution.hxx"
+#include "openturns/JointByConditioningDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The NormalGamma distribution.
  */
 class OT_API NormalGamma
-  : public BayesDistribution
+  : public JointByConditioningDistribution
 {
   CLASSNAME
 
@@ -48,7 +48,7 @@ public:
               const Scalar beta);
 
   /** Comparison operator */
-  using BayesDistribution::operator ==;
+  using JointByConditioningDistribution::operator ==;
   Bool operator ==(const NormalGamma & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -123,16 +123,16 @@ public:
 protected:
 
   /** Conditioned distribution accessor */
-  using BayesDistribution::setConditionedDistribution;
-  using BayesDistribution::getConditionedDistribution;
+  using JointByConditioningDistribution::setConditionedDistribution;
+  using JointByConditioningDistribution::getConditionedDistribution;
 
   /** Conditioning distribution accessor */
-  using BayesDistribution::setConditioningDistribution;
-  using BayesDistribution::getConditioningDistribution;
+  using JointByConditioningDistribution::setConditioningDistribution;
+  using JointByConditioningDistribution::getConditioningDistribution;
 
   /** Link function accessor */
-  using BayesDistribution::setLinkFunction;
-  using BayesDistribution::getLinkFunction;
+  using JointByConditioningDistribution::setLinkFunction;
+  using JointByConditioningDistribution::getLinkFunction;
 
 private:
 

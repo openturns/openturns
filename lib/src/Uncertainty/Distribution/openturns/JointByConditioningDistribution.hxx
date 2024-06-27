@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The BayesDistribution distribution
+ *  @brief The JointByConditioningDistribution distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BAYESDISTRIBUTION_HXX
-#define OPENTURNS_BAYESDISTRIBUTION_HXX
+#ifndef OPENTURNS_JOINTBYCONDITIONINGDISTRIBUTION_HXX
+#define OPENTURNS_JOINTBYCONDITIONINGDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
@@ -30,11 +30,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class BayesDistribution
+ * @class JointByConditioningDistribution
  *
- * The BayesDistribution distribution.
+ * The JointByConditioningDistribution distribution.
  */
-class OT_API BayesDistribution
+class OT_API JointByConditioningDistribution
   : public ContinuousDistribution
 {
   CLASSNAME
@@ -42,16 +42,16 @@ class OT_API BayesDistribution
 public:
 
   /** Default constructor */
-  BayesDistribution();
+  JointByConditioningDistribution();
 
   /** Parameters constructor */
-  BayesDistribution(const Distribution & conditionedDistribution,
-                    const Distribution & conditioningDistribution,
-                    const Function & linkFunction = Function());
+  JointByConditioningDistribution(const Distribution & conditionedDistribution,
+                                  const Distribution & conditioningDistribution,
+                                  const Function & linkFunction = Function());
 
   /** Comparison operator */
   using ContinuousDistribution::operator ==;
-  Bool operator ==(const BayesDistribution & other) const;
+  Bool operator ==(const JointByConditioningDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -63,7 +63,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  BayesDistribution * clone() const override;
+  JointByConditioningDistribution * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -72,7 +72,10 @@ public:
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /* Interface specific to BayesDistribution */
+  /* Interface specific to JointByConditioningDistribution */
+  /** Compute the CDF of the distribution */
+  using ContinuousDistribution::computeCDF;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Conditioned distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -130,9 +133,8 @@ protected:
   /** Values of the Dirac marginals */
   Function linkFunction_;
 
-}; /* class BayesDistribution */
-
+}; /* class JointByConditioningDistribution */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BAYESDISTRIBUTION_HXX */
+#endif /* OPENTURNS_JOINTBYCONDITIONINGDISTRIBUTION_HXX */

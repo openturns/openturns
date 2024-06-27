@@ -1,4 +1,4 @@
-%feature("docstring") OT::BayesDistribution
+%feature("docstring") OT::JointByConditioningDistribution
 "Bayes distribution.
 
 Helper class for defining the distribution of the random vector :math:`(\vect{Y},\vect{X})`
@@ -52,7 +52,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::getConditionedDistribution
+%feature("docstring") OT::JointByConditioningDistribution::getConditionedDistribution
 "Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
 
 Returns
@@ -62,7 +62,7 @@ conditionedDistribution : :class:`~openturns.Distribution`, the distribution of 
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::getConditioningDistribution
+%feature("docstring") OT::JointByConditioningDistribution::getConditioningDistribution
 "Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
 
 Returns
@@ -72,7 +72,7 @@ conditioningDistribution : :class:`~openturns.Distribution`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::getLinkFunction
+%feature("docstring") OT::JointByConditioningDistribution::getLinkFunction
 "Accessor to the distribution's conditioned distribution parameter `linkFunction`.
 
 Returns
@@ -84,7 +84,7 @@ linkFunction : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::setConditionedDistribution
+%feature("docstring") OT::JointByConditioningDistribution::setConditionedDistribution
 "Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
 
 Parameters
@@ -96,7 +96,7 @@ conditionedDistribution : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::setConditioningDistribution
+%feature("docstring") OT::JointByConditioningDistribution::setConditioningDistribution
 "Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
 
 Parameters
@@ -106,7 +106,7 @@ conditioningDistribution : :class:`~openturns.Distribution`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BayesDistribution::setLinkFunction
+%feature("docstring") OT::JointByConditioningDistribution::setLinkFunction
 "Accessor to the distribution's conditioned distribution parameter `linkFunction`.
 
 Parameters
