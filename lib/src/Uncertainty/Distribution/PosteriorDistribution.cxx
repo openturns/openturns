@@ -50,7 +50,7 @@ PosteriorDistribution::PosteriorDistribution()
 }
 
 /* Parameters constructor */
-PosteriorDistribution::PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
+PosteriorDistribution::PosteriorDistribution(const DeconditionedDistribution & conditionalDistribution,
     const Sample & observations)
   : ContinuousDistribution(),
     conditionalDistribution_(),
@@ -159,7 +159,7 @@ void PosteriorDistribution::setParametersCollection(const PointCollection & )
 
 
 /* Conditional distribution accessor */
-void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribution & conditionalDistribution)
+void PosteriorDistribution::setConditionalDistribution(const DeconditionedDistribution & conditionalDistribution)
 {
   if (observations_.getDimension() != conditionalDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
   conditionalDistribution_ = conditionalDistribution;
@@ -181,7 +181,7 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   }
 }
 
-ConditionalDistribution PosteriorDistribution::getConditionalDistribution() const
+DeconditionedDistribution PosteriorDistribution::getConditionalDistribution() const
 {
   return conditionalDistribution_;
 }

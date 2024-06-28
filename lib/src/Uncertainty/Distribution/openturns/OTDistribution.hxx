@@ -48,7 +48,7 @@
 #include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
-#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/Dirac.hxx"

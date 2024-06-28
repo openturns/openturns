@@ -43,7 +43,7 @@ Create a distribution:
 >>> conditioningDist = ot.Normal(0.0, 1.0)
 >>> g = ot.SymbolicFunction(['y'], ['y', '0.1+y^2'])
 >>> conditionedDist = ot.Normal()
->>> finalDist = ot.ConditionalDistribution(conditionedDist, conditioningDist, g)
+>>> finalDist = ot.DeconditionedDistribution(conditionedDist, conditioningDist, g)
 
 Draw a sample:
 

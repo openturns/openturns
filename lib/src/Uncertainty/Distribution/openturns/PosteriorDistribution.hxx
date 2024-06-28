@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ public:
   PosteriorDistribution();
 
   /** Parameters constructor */
-  PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
+  PosteriorDistribution(const DeconditionedDistribution & conditionalDistribution,
                         const Sample & observations);
 
   /** Comparison operator */
@@ -79,8 +79,8 @@ public:
   /* Interface specific to PosteriorDistribution */
 
   /** Conditional distribution accessor */
-  void setConditionalDistribution(const ConditionalDistribution & conditionalDistribution);
-  ConditionalDistribution getConditionalDistribution() const;
+  void setConditionalDistribution(const DeconditionedDistribution & conditionalDistribution);
+  DeconditionedDistribution getConditionalDistribution() const;
 
   /** Observations accessor */
   void setObservations(const Sample & observations);
@@ -126,7 +126,7 @@ private:
   void computeCovariance() const override;
 
   /** The underlying conditional distribution */
-  ConditionalDistribution conditionalDistribution_;
+  DeconditionedDistribution conditionalDistribution_;
 
   /** The observations */
   Sample observations_;
