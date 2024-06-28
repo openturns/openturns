@@ -22,7 +22,7 @@
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
@@ -89,7 +89,7 @@ void JointByConditioningDistribution::computeRange()
   Interval::BoolCollection finiteUpperBound(conditioningDistribution_.getRange().getFiniteUpperBound());
 
   // Then, the conditioned distribution
-  const ConditionalDistribution deconditioned(conditionedDistribution_, conditioningDistribution_, linkFunction_);
+  const DeconditionedDistribution deconditioned(conditionedDistribution_, conditioningDistribution_, linkFunction_);
   lowerBound.add(deconditioned.getRange().getLowerBound());
   finiteLowerBound.add(deconditioned.getRange().getFiniteLowerBound());
   upperBound.add(deconditioned.getRange().getUpperBound());
@@ -308,7 +308,7 @@ Distribution JointByConditioningDistribution::getMarginal(const UnsignedInteger 
   // If the index is in the conditioning part
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (i < conditioningDimension) return conditioningDistribution_.getMarginal(i);
-  return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i - conditioningDimension);
+  return DeconditionedDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i - conditioningDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -330,7 +330,7 @@ Distribution JointByConditioningDistribution::getMarginal(const Indices & indice
     if (indices[i] >= conditioningDimension)
       conditionedIndices.add(indices[i] - conditioningDimension);
   if (conditionedIndices.getSize() == size)
-    return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(conditionedIndices);
+    return DeconditionedDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(conditionedIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 

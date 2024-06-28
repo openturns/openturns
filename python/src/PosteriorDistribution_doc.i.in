@@ -7,14 +7,14 @@
 
 Parameters
 ----------
-conditional : :class:`~openturns.ConditionalDistribution`
+deconditioned : :class:`~openturns.DeconditionedDistribution`
     The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
 observations : 2-d sequence of float
     Observations :math:`\vect{x}_i`.
 
 See Also
 --------
-openturns.ConditionalDistribution
+openturns.DeconditionedDistribution
 openturns.MetropolisHastings
 
 Notes
@@ -27,7 +27,7 @@ Its probability density function is defined as:
 
 with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
 :math:`f_{\vect{Y}}` the PDF of the conditioning distribution, i.e. the marginal distribution of :math:`\vect{Y}`,
-:math:`\vect{x}_i` the observations of the conditional distribution.
+:math:`\vect{x}_i` the observations of the deconditioned distribution.
 
 Examples
 --------
@@ -35,37 +35,37 @@ Examples
 >>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> conditionedDistribution = ot.Normal()
->>> # Conditional distribution
+>>> # Deconditioned distribution
 >>> atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
 >>> conditioning = ot.JointDistribution(atoms)
->>> conditional = ot.ConditionalDistribution(conditionedDistribution, conditioning)
+>>> deconditioned = ot.DeconditionedDistribution(conditionedDistribution, conditioning)
 >>> # Observations
 >>> observationsSize = 5
 >>> observationsDistribution = ot.Distribution(conditionedDistribution)
 >>> observationsDistribution.setParameter(conditioning.getMean())
 >>> observations = observationsDistribution.getSample(observationsSize)
 >>> # Posterior distribution
->>> distribution = otexp.PosteriorDistribution(conditional, observations)"
+>>> distribution = otexp.PosteriorDistribution(deconditioned, observations)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PosteriorDistribution::setConditionalDistribution
-"Conditional distribution accessor.
+%feature("docstring") OT::PosteriorDistribution::setDeconditionedDistribution
+"Deconditioned distribution accessor.
 
 Parameters
 ----------
-conditional : :class:`~openturns.ConditionalDistribution`
-    The conditional distribution."
+deconditioned : :class:`~openturns.DeconditionedDistribution`
+    The deconditioned distribution."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PosteriorDistribution::getConditionalDistribution
-"Conditional distribution accessor.
+%feature("docstring") OT::PosteriorDistribution::getDeconditionedDistribution
+"Deconditioned distribution accessor.
 
 Returns
 -------
-conditional : :class:`~openturns.ConditionalDistribution`
-    The conditional distribution."
+deconditioned : :class:`~openturns.DeconditionedDistribution`
+    The deconditioned distribution."
 
 // ---------------------------------------------------------------------
 

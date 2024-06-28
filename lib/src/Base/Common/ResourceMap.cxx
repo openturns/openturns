@@ -1104,10 +1104,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("BurrFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
-  // ConditionalDistribution parameters //
-  addAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256);
-  addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
+  // DeconditionedDistribution parameters //
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);

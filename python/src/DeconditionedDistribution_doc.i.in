@@ -1,5 +1,5 @@
-%feature("docstring") OT::ConditionalDistribution
-"Conditional distribution.
+%feature("docstring") OT::DeconditionedDistribution
+"Deconditioned distribution.
 
 Helper class for defining the distribution of :math:`\vect{X}` such that
 :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
@@ -46,15 +46,15 @@ by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
 With the default constructor, the resulting random variable :math:`X` follows a
 trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 
-Note that a :class:`~openturns.ConditionalDistribution` can be obtained as the
+Note that a :class:`~openturns.DeconditionedDistribution` can be obtained as the
 first marginal distribution of a :class:`~openturns.JointByConditioningDistribution`.
 
 The continuous part of the conditioning distribution is discretized using a
 :class:`~openturns.WeightedExperiment` which can be modified using
-'ConditionalDistribution-ContinuousDiscretizationMethod' in
+'DeconditionedDistribution-ContinuousDiscretizationMethod' in
 :class:`~openturns.ResourceMap` (can be 'GaussProduct', 'QMC' or 'MC'), in
-conjunction with 'ConditionalDistribution-MarginalIntegrationNodesNumber' and
-'ConditionalDistribution-MaximumIntegrationNodesNumber'. The default is
+conjunction with 'DeconditionedDistribution-MarginalIntegrationNodesNumber' and
+'DeconditionedDistribution-MaximumIntegrationNodesNumber'. The default is
 'GaussProduct', well adapted if the conditioned model is *regular*, meaning that
 its range does not depend on the parameters (e.g. a :class:`~openturns.Normal`
 distribution). Otherwise, one of the other discretization methods is to be
@@ -68,7 +68,7 @@ Create a distribution:
 >>> conditioningDist = ot.Normal(0.0, 1.0)
 >>> g = ot.SymbolicFunction(['y'], ['y', '0.1+y^2'])
 >>> conditionedDist = ot.Normal()
->>> finalDist = ot.ConditionalDistribution(conditionedDist, conditioningDist, g)
+>>> finalDist = ot.DeconditionedDistribution(conditionedDist, conditioningDist, g)
 
 Draw a sample:
 
@@ -77,7 +77,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::getConditionedDistribution
+%feature("docstring") OT::DeconditionedDistribution::getConditionedDistribution
 "Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
 
 Returns
@@ -89,7 +89,7 @@ conditionedDistribution : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::getConditioningDistribution
+%feature("docstring") OT::DeconditionedDistribution::getConditioningDistribution
 "Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
 
 Returns
@@ -99,7 +99,7 @@ conditioningDistribution : :class:`~openturns.Distribution`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::getLinkFunction
+%feature("docstring") OT::DeconditionedDistribution::getLinkFunction
 "Accessor to the distribution's conditioned distribution parameter *linkFunction*.
 
 Returns
@@ -111,7 +111,7 @@ linkFunction : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::setConditionedDistribution
+%feature("docstring") OT::DeconditionedDistribution::setConditionedDistribution
 "Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
 
 Parameters
@@ -123,7 +123,7 @@ conditionedDistribution : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::setConditioningDistribution
+%feature("docstring") OT::DeconditionedDistribution::setConditioningDistribution
 "Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
 
 Parameters
@@ -133,7 +133,7 @@ conditioningDistribution : :class:`~openturns.Distribution`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionalDistribution::setLinkFunction
+%feature("docstring") OT::DeconditionedDistribution::setLinkFunction
 "Accessor to the distribution's conditioned distribution parameter *linkFunction*.
 
 Parameters

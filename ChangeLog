@@ -23,6 +23,7 @@
  * Removed deprecated OptimizationAlgorithm.setMaximumEvaluationNumber method
  * Removed deprecated OptimizationResult.getEvaluationNumber
  * Deprecated BayesDistribution in favor of JointByConditioningDistribution
+ * Deprecated ConditionalDistribution in favor of DeconditionedDistribution
 
 === Documentation ===
  * Copy button for code blocks
