@@ -24,6 +24,8 @@ Depends on the following Python libraries:
   * sphinx
   * sphinx-gallery
   * numpydoc
+  * sphinx-copybutton
+  * sphinxcontrib-jquery
 
 Sphinx reads the docstrings of the OpenTURNS methods to generate the API doc.
 This means that changing the source _doc.i.in files will have no effect,
