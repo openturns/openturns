@@ -695,7 +695,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i.in
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
-                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
+                      DeconditionedDistribution.i DeconditionedDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
                       NegativeBinomial.i NegativeBinomial_doc.i.in

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The ConditionalDistribution distribution
+ *  @brief The DeconditionedDistribution distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_CONDITIONALDISTRIBUTION_HXX
-#define OPENTURNS_CONDITIONALDISTRIBUTION_HXX
+#ifndef OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX
+#define OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Mixture.hxx"
@@ -30,35 +30,35 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ConditionalDistribution
+ * @class DeconditionedDistribution
  *
- * The ConditionalDistribution distribution.
+ * The DeconditionedDistribution distribution.
  */
-class OT_API ConditionalDistribution
+class OT_API DeconditionedDistribution
   : public Mixture
 {
   CLASSNAME
 
-  /** The PosteriorDistribution class is closely linked with the ConditionalDistribution class
+  /** The PosteriorDistribution class is closely linked with the DeconditionedDistribution class
       as they are the two parts of the Bayesian modeling using distributions */
   friend class PosteriorDistribution;
 
 public:
 
   /** Default constructor */
-  ConditionalDistribution();
+  DeconditionedDistribution();
 
   /** Parameters constructor */
-  ConditionalDistribution(const Distribution & conditionedDistribution,
-                          const Distribution & conditioningDistribution);
+  DeconditionedDistribution(const Distribution & conditionedDistribution,
+                            const Distribution & conditioningDistribution);
 
-  ConditionalDistribution(const Distribution & conditionedDistribution,
-                          const Distribution & conditioningDistribution,
-                          const Function & linkFunction);
+  DeconditionedDistribution(const Distribution & conditionedDistribution,
+                            const Distribution & conditioningDistribution,
+                            const Function & linkFunction);
 
   /** Comparison operator */
   using Mixture::operator ==;
-  Bool operator ==(const ConditionalDistribution & other) const;
+  Bool operator ==(const DeconditionedDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -71,7 +71,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  ConditionalDistribution * clone() const override;
+  DeconditionedDistribution * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -86,7 +86,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
-  /* Interface specific to ConditionalDistribution */
+  /* Interface specific to DeconditionedDistribution */
 
   /** Conditioned distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -163,9 +163,8 @@ private:
   /** Values of the Dirac marginals */
   Point diracValues_;
 
-}; /* class ConditionalDistribution */
-
+}; /* class DeconditionedDistribution */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_CONDITIONALDISTRIBUTION_HXX */
+#endif /* OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX */

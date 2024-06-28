@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The ConditionalDistribution distribution
+ *  @brief The DeconditionedDistribution distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Uniform.hxx"
@@ -36,16 +36,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConditionalDistribution)
+CLASSNAMEINIT(DeconditionedDistribution)
 
-static const Factory<ConditionalDistribution> Factory_ConditionalDistribution;
+static const Factory<DeconditionedDistribution> Factory_DeconditionedDistribution;
 
 
 /* Default constructor */
-ConditionalDistribution::ConditionalDistribution()
+DeconditionedDistribution::DeconditionedDistribution()
   : Mixture()
 {
-  setName("ConditionalDistribution");
+  setName("DeconditionedDistribution");
   const Description inVars(Description::BuildDefault(1, "y"));
   const Description outVars(Description::BuildDefault(2, "theta"));
   const Description formulas = {inVars[0], inVars[0] + " + 1"};
@@ -58,42 +58,42 @@ ConditionalDistribution::ConditionalDistribution()
 }
 
 /* Parameters constructor */
-ConditionalDistribution::ConditionalDistribution(const Distribution & conditionedDistribution,
+DeconditionedDistribution::DeconditionedDistribution(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution)
-  : ConditionalDistribution(conditionedDistribution, conditioningDistribution, IdentityFunction(conditioningDistribution.getDimension()))
+  : DeconditionedDistribution(conditionedDistribution, conditioningDistribution, IdentityFunction(conditioningDistribution.getDimension()))
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-ConditionalDistribution::ConditionalDistribution(const Distribution & conditionedDistribution,
+DeconditionedDistribution::DeconditionedDistribution(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
     const Function & linkFunction)
   : Mixture()
 {
-  setName("ConditionalDistribution");
+  setName("DeconditionedDistribution");
   // The dimension and range are computed using the upper class through this call
   setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
 }
 
 /* Comparison operator */
-Bool ConditionalDistribution::operator ==(const ConditionalDistribution & other) const
+Bool DeconditionedDistribution::operator ==(const DeconditionedDistribution & other) const
 {
   if (this == &other) return true;
   return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
-Bool ConditionalDistribution::equals(const DistributionImplementation & other) const
+Bool DeconditionedDistribution::equals(const DistributionImplementation & other) const
 {
-  const ConditionalDistribution* p_other = dynamic_cast<const ConditionalDistribution*>(&other);
+  const DeconditionedDistribution* p_other = dynamic_cast<const DeconditionedDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String ConditionalDistribution::__repr__() const
+String DeconditionedDistribution::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ConditionalDistribution::GetClassName()
+  oss << "class=" << DeconditionedDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " conditioned distribution=" << conditionedDistribution_
@@ -102,7 +102,7 @@ String ConditionalDistribution::__repr__() const
   return oss;
 }
 
-String ConditionalDistribution::__str__(const String & ) const
+String DeconditionedDistribution::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
@@ -110,81 +110,81 @@ String ConditionalDistribution::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-ConditionalDistribution * ConditionalDistribution::clone() const
+DeconditionedDistribution * DeconditionedDistribution::clone() const
 {
-  return new ConditionalDistribution(*this);
+  return new DeconditionedDistribution(*this);
 }
 
 /* Get one realization of the distribution */
-Point ConditionalDistribution::getRealization() const
+Point DeconditionedDistribution::getRealization() const
 {
   Distribution deconditioned(conditionedDistribution_);
   deconditioned.setParameter(linkFunction_(conditioningDistribution_.getRealization()));
   return deconditioned.getRealization();
 }
 
-ConditionalDistribution::PointWithDescriptionCollection ConditionalDistribution::getParametersCollection() const
+DeconditionedDistribution::PointWithDescriptionCollection DeconditionedDistribution::getParametersCollection() const
 {
   return conditioningDistribution_.getParametersCollection();
 }
 
 /* Parameters value accessor */
-Point ConditionalDistribution::getParameter() const
+Point DeconditionedDistribution::getParameter() const
 {
   return conditioningDistribution_.getParameter();
 }
 
-void ConditionalDistribution::setParameter(const Point & parameter)
+void DeconditionedDistribution::setParameter(const Point & parameter)
 {
   Distribution conditioningDistribution(conditioningDistribution_);
   conditioningDistribution.setParameter(parameter);
   const Scalar w = getWeight();
   Distribution conditionedDistribution(conditionedDistribution_);
-  *this = ConditionalDistribution(conditionedDistribution, conditioningDistribution);
+  *this = DeconditionedDistribution(conditionedDistribution, conditioningDistribution);
   setWeight(w);
 }
 
-Description ConditionalDistribution::getParameterDescription() const
+Description DeconditionedDistribution::getParameterDescription() const
 {
   return conditioningDistribution_.getParameterDescription();
 }
 
 /* Conditioned distribution accessor */
-void ConditionalDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
+void DeconditionedDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
 {
   if (conditionedDistribution != conditionedDistribution_) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution_, linkFunction_);
 }
 
-Distribution ConditionalDistribution::getConditionedDistribution() const
+Distribution DeconditionedDistribution::getConditionedDistribution() const
 {
   return conditionedDistribution_;
 }
 
 
 /* Conditioning distribution accessor */
-void ConditionalDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
+void DeconditionedDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
 {
   if (conditioningDistribution != conditioningDistribution_) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution, linkFunction_);
 }
 
-Distribution ConditionalDistribution::getConditioningDistribution() const
+Distribution DeconditionedDistribution::getConditioningDistribution() const
 {
   return conditioningDistribution_;
 }
 
 /* Link function accessor */
-void ConditionalDistribution::setLinkFunction(const Function & linkFunction)
+void DeconditionedDistribution::setLinkFunction(const Function & linkFunction)
 {
   if (!(linkFunction == linkFunction_)) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
 }
 
-Function ConditionalDistribution::getLinkFunction() const
+Function DeconditionedDistribution::getLinkFunction() const
 {
   return linkFunction_;
 }
 
 
-void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
+void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
     const Function & linkFunction)
 {
@@ -238,12 +238,12 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   {
     const JointDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
     // Create the DOE for continuous integration
-    const String method(ResourceMap::GetAsString("ConditionalDistribution-ContinuousDiscretizationMethod"));
-    const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" );
+    const String method(ResourceMap::GetAsString("DeconditionedDistribution-ContinuousDiscretizationMethod"));
+    const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "DeconditionedDistribution-MaximumIntegrationNodesNumber" );
     // All these quantities are needed for the upper class algorithms even if locally they are only useful for GaussProduct
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / continuousDimension)));
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"ConditionalDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"ConditionalDistribution-MarginalIntegrationNodesNumber\"");
+    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "DeconditionedDistribution-MarginalIntegrationNodesNumber" );
+    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"DeconditionedDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"DeconditionedDistribution-MarginalIntegrationNodesNumber\"");
     WeightedExperiment experiment;
     if (method == "GaussProduct")
       experiment = GaussProductExperiment(measure, Indices(continuousDimension, std::min(maximumNumber, candidateNumber)));
@@ -418,7 +418,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
-Point ConditionalDistribution::computeExpectation(const Function & f,
+Point DeconditionedDistribution::computeExpectation(const Function & f,
     const Point & thetaStar) const
 {
   const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
@@ -427,7 +427,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
   if (thetaStar.getDimension() != conditioningDimension) throw InvalidArgumentException(HERE) << "Error: the given upper bound must have a dimension=" << thetaStar.getDimension() << " equal to the conditioning dimension=" << conditioningDimension;
   const UnsignedInteger outputDimension = f.getOutputDimension();
   Point result(outputDimension);
-  // Here, we reuse the analysis made in the underlying conditional distribution
+  // Here, we reuse the analysis made in the underlying deconditioned distribution
   const UnsignedInteger continuousDimension = continuousMarginalsIndices_.getSize();
   const UnsignedInteger continuousAtomsNumber = continuousNodes_.getSize();
   const UnsignedInteger discreteDimension = discreteMarginalsIndices_.getSize();
@@ -579,7 +579,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
 }
 
 /* Get the i-th marginal distribution */
-Distribution ConditionalDistribution::getMarginal(const UnsignedInteger i) const
+Distribution DeconditionedDistribution::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -589,7 +589,7 @@ Distribution ConditionalDistribution::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution ConditionalDistribution::getMarginal(const Indices & indices) const
+Distribution DeconditionedDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -599,7 +599,7 @@ Distribution ConditionalDistribution::getMarginal(const Indices & indices) const
 } // getMarginal(Indices)
 
 /* Method save() stores the object through the StorageManager */
-void ConditionalDistribution::save(Advocate & adv) const
+void DeconditionedDistribution::save(Advocate & adv) const
 {
   Mixture::save(adv);
   adv.saveAttribute( "conditionedDistribution_", conditionedDistribution_ );
@@ -616,7 +616,7 @@ void ConditionalDistribution::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ConditionalDistribution::load(Advocate & adv)
+void DeconditionedDistribution::load(Advocate & adv)
 {
   Mixture::load(adv);
   adv.loadAttribute( "conditionedDistribution_", conditionedDistribution_ );
@@ -632,6 +632,5 @@ void ConditionalDistribution::load(Advocate & adv)
   adv.loadAttribute( "diracValues_", diracValues_ );
   // The range is computed using the upper class
 }
-
 
 END_NAMESPACE_OPENTURNS

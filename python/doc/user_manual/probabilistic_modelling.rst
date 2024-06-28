@@ -174,7 +174,7 @@ Combining and transforming distributions
     CompositeDistribution
 
     :template: Distribution.rst_t
-    ConditionalDistribution
+    DeconditionedDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
 
