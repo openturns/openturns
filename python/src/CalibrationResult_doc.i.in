@@ -65,6 +65,26 @@ parameterPrior : : :class:`~openturns.Distribution`
 %feature("docstring") OT::CalibrationResult::getParameterPosterior
 "Accessor to the parameter posterior distribution.
 
+The content of the posterior distribution depends of the class that
+created this distribution.
+The next table presents this distribution depending on the
+algorithm.
+
++------------------------------------------------------+-----------------------------------------------------------------------+
+| Class                                                | Distribution                                                          |
++======================================================+=======================================================================+
+| :class:`~openturns.LinearLeastSquaresCalibration`    | Distribution of the parameters with respect to randomness in the data |
++------------------------------------------------------+-----------------------------------------------------------------------+
+| :class:`~openturns.NonLinearLeastSquaresCalibration` | Distribution of the parameters with respect to randomness in the data |
++------------------------------------------------------+-----------------------------------------------------------------------+
+| :class:`~openturns.GaussianLinearCalibration`        | Posterior distribution of the parameters given the observations       |
++------------------------------------------------------+-----------------------------------------------------------------------+
+| :class:`~openturns.GaussianNonLinearCalibration`     | Distribution of the MAP with respect to randomness in the data        |
++------------------------------------------------------+-----------------------------------------------------------------------+
+
+**Table 1.** Content of the distribution returned by  `getParameterPosterior()` different classes returning a `CalibrationResult`.
+
+
 Returns
 -------
 parameterPosterior : :class:`~openturns.Distribution`
