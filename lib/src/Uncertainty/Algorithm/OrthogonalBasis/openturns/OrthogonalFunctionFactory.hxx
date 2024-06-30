@@ -62,6 +62,9 @@ public:
   /** Virtual constructor */
   OrthogonalFunctionFactory * clone() const override;
 
+  /** Get the function factory corresponding to marginal input indices */
+  virtual OrthogonalFunctionFactory getMarginal(const Indices & indices) const;
+
   Bool isOrthogonal() const override;
 
   /** String converter */

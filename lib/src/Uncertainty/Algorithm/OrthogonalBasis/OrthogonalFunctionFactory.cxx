@@ -88,12 +88,16 @@ EnumerateFunction OrthogonalFunctionFactory::getEnumerateFunction() const
   throw NotYetImplementedException(HERE) << "In OrthogonalFunctionFactory::getEnumerateFunction() const";
 }
 
+/* Get the function factory corresponding to marginal input indices */
+OrthogonalFunctionFactory OrthogonalFunctionFactory::getMarginal(const Indices & ) const
+{
+  throw NotYetImplementedException(HERE) << "In OrthogonalFunctionFactory::getMarginal() const";
+}
 
 Bool OrthogonalFunctionFactory::isOrthogonal() const
 {
   return true;
 }
-
 
 /* String converter */
 String OrthogonalFunctionFactory::__repr__() const

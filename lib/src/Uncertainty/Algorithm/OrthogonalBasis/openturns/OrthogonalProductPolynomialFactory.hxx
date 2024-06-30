@@ -81,8 +81,9 @@ public:
   Sample getNodesAndWeights(const Indices & degrees,
                             Point & weightsOut) const;
 
-  /** Get marginal functions */
-  PolynomialFamilyCollection getMarginal(const Indices & indices) const;
+  /** Get the function factory corresponding to the given input marginal indices */
+  using OrthogonalFunctionFactory::getMarginal;
+  OrthogonalFunctionFactory getMarginal(const Indices & indices) const override;
 
   /** String converter */
   String __repr__() const override;

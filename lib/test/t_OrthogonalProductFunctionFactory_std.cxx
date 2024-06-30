@@ -26,7 +26,9 @@ using namespace OT::Test;
 
 // Compute reference function value from index and point
 Point computeFunctionValue(const UnsignedInteger & index, const Point & point) 
-{    
+{
+    if (point.getDimension() != 3)
+      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
     const UnsignedInteger dimension = 3;
     TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionCollection(dimension);
     functionCollection[0] = HaarWaveletFactory();
@@ -42,6 +44,8 @@ Point computeFunctionValue(const UnsignedInteger & index, const Point & point)
 // Compute reference function value from multi-index and point
 Point computeFunctionValue(const Indices & indices, const Point & point) 
 {    
+    if (point.getDimension() != 3)
+      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
     const UnsignedInteger dimension = 3;
     const LinearEnumerateFunction enumerate(dimension);
     const UnsignedInteger index = enumerate.inverse(indices);
@@ -108,8 +112,16 @@ int main(int, char *[])
     functionCollection3[4] = FourierSeriesFactory();
     OrthogonalProductFunctionFactory productBasis5(functionCollection3);
     Indices indices({0, 2, 4});
-    TensorizedUniVariateFunctionFactory::FunctionFamilyCollection productBasis6(productBasis5.getMarginal(indices));
-    assert_equal(productBasis6.getSize(), indices.getSize());
+    OrthogonalFunctionFactory productBasis6(productBasis5.getMarginal(indices));
+    fullprint << productBasis6.__str__() << std::endl;
+    // Test the build() method on a collection of functions
+    const Point center2({0.5, 0.5, 0.5});
+    for (UnsignedInteger i = 0; i < 10; ++ i)
+    {
+      // Test build from index
+      const Function function(productBasis6.build(i));
+      assert_almost_equal(function(center2), computeFunctionValue(i, center2));
+    }
   }
   catch (TestFailed & ex)
   {
