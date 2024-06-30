@@ -153,18 +153,23 @@ void OrthogonalProductFunctionFactory::buildMeasure(const FunctionFamilyCollecti
   measure_ = JointDistribution(distributions);
 }
 
-/* Get marginal functions */
-TensorizedUniVariateFunctionFactory::FunctionFamilyCollection OrthogonalProductFunctionFactory::getMarginal(const Indices & indices) const
+/* Get the function factory corresponding to marginal input indices */
+OrthogonalFunctionFactory OrthogonalProductFunctionFactory::getMarginal(const Indices & indices) const
 {
-  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionColl(tensorizedFunctionFactory_.getFunctionFamilyCollection());
+  OrthogonalProductFunctionFactory::FunctionFamilyCollection functionColl(getFunctionFamilyCollection());
   const UnsignedInteger size = functionColl.getSize();
   if (!indices.check(size))
     throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, size-1] and must be different";
-  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionMarginalCollection;
+  // Create list of factories corresponding to input marginal indices
+  OrthogonalProductFunctionFactory::FunctionFamilyCollection functionMarginalCollection;
   for (UnsignedInteger index = 0; index < size; ++ index)
     if (indices.contains(index))
       functionMarginalCollection.add(functionColl[index]);
-  return functionMarginalCollection;
+  // Create function
+  const EnumerateFunction enumerateFunction(tensorizedFunctionFactory_.getEnumerateFunction());
+  const EnumerateFunction marginalEnumerateFunction(enumerateFunction.getMarginal(indices));
+  const OrthogonalProductFunctionFactory marginalFactory(functionMarginalCollection, marginalEnumerateFunction);
+  return marginalFactory;
 }
 
 END_NAMESPACE_OPENTURNS

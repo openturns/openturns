@@ -37,4 +37,6 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
     enumerateFunction,
 )
 productBasisMarginal = productBasis.getMarginal([0, 2, 4])
-assert productBasisMarginal.getSize() == 3
+for i in range(20):
+    function = productBasisMarginal.build(i)
+

@@ -71,8 +71,8 @@ public:
   /** Return the collection of univariate orthogonal polynomial families */
   FunctionFamilyCollection getFunctionFamilyCollection() const;
 
-  /** Get marginal functions */
-  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection getMarginal(const Indices & indices) const;
+  /** Get the function factory corresponding to marginal input indices */
+  OrthogonalFunctionFactory getMarginal(const Indices & indices) const override;
 
   /** Virtual constructor */
   OrthogonalProductFunctionFactory * clone() const override;
