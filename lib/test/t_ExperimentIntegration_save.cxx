@@ -34,7 +34,7 @@ int main(int, char *[])
   const UnsignedInteger dimension = 3;
   fullprint << "Create the input distribution" << std::endl;
   const Collection<Distribution> marginals(dimension, Uniform(-M_PI, M_PI));
-  const ComposedDistribution distributionIshigami(marginals);
+  const JointDistribution distributionIshigami(marginals);
   const UnsignedInteger sampleSize = 100;
   const MonteCarloExperiment experiment2(distributionIshigami, sampleSize);
   const ExperimentIntegration integration(experiment2);
