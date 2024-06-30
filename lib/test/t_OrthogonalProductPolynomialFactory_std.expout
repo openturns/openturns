@@ -86,3 +86,15 @@ OrthogonalProductPolynomialFactory
 |     1 | LegendreFactory            |
 |     2 | AdaptiveStieltjesAlgorithm |
 
+Test getMarginal
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | LegendreFactory |
+|     2 | LegendreFactory |
+

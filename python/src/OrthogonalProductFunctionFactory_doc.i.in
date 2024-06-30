@@ -29,11 +29,17 @@ OrthogonalProductPolynomialFactory
 
 Examples
 --------
+Create from a list of orthogonal functions.
+
 >>> import openturns as ot
->>> from math import pi
 >>> funcColl = [ot.HaarWaveletFactory(), ot.FourierSeriesFactory()]
->>> dim = len(funcColl)
->>> enumerateFunction = ot.LinearEnumerateFunction(dim)
+>>> productBasis = ot.OrthogonalProductFunctionFactory(funcColl)
+
+Set an enumerate function.
+
+>>> funcColl = [ot.HaarWaveletFactory(), ot.FourierSeriesFactory()]
+>>> inputDimension = len(funcColl)
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 >>> productBasis = ot.OrthogonalProductFunctionFactory(funcColl, enumerateFunction)"
 
 // ---------------------------------------------------------------------
@@ -45,3 +51,25 @@ Returns
 -------
 polynomialFamily : list of :class:`~openturns.OrthogonalUniVariateFunctionFamily`
     List of orthogonal univariate function families."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalProductFunctionFactory::getMarginal
+"Get the marginal orthogonal functions.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < \inputDim`
+    List of marginal indices of the input variables.
+
+Returns
+-------
+functionFamilylist : list of :class:`~openturns.OrthogonalUniVariateFunctionFamily`
+    The marginal orthogonal functions.
+
+Examples
+--------
+>>> import openturns as ot
+>>> funcColl = [ot.HaarWaveletFactory(), ot.FourierSeriesFactory(), ot.HaarWaveletFactory()]
+>>> productBasis = ot.OrthogonalProductFunctionFactory(funcColl)
+>>> marginalProduct = productBasis.getMarginal([0, 2])  #  [ot.HaarWaveletFactory(), ot.HaarWaveletFactory()]"

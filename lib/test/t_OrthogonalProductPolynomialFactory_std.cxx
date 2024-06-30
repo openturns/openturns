@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of FunctionalChaosAlgoritm class
+ *  @brief The test file of OrthogonalProductPolynomialFactory class
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -24,6 +24,38 @@
 using namespace OT;
 using namespace OT::Test;
 
+// Compute reference function value from index and point
+Point computePolynomialValue(const UnsignedInteger & index, const Point & point) 
+{    
+    if (point.getDimension() != 3)
+      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+    const UnsignedInteger dimension = 3;
+    const LinearEnumerateFunction enumerate(dimension);
+    // Compute the multi-indices using the EnumerateFunction
+    Indices indices(enumerate(index));
+    // Then build the collection of polynomials using the collection of factories
+    ProductPolynomialEvaluation::PolynomialCollection polynomials(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      polynomials[i] = LegendreFactory().build(indices[i]);
+    }
+    const ProductPolynomialEvaluation product(polynomials);
+    const Point value(product(point));
+    return value;
+}
+
+// Compute reference function value from multi-index and point
+Point computePolynomialValue(const Indices & indices, const Point & point) 
+{    
+    if (point.getDimension() != 3)
+      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+    const UnsignedInteger dimension = 3;
+    const LinearEnumerateFunction enumerate(dimension);
+    const UnsignedInteger index = enumerate.inverse(indices);
+    const Point value(computePolynomialValue(index, point));
+    return value;
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -43,6 +75,18 @@ int main(int, char *[])
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
     fullprint << productBasis.__str__() << std::endl;
     fullprint << productBasis.__repr_markdown__() << std::endl;
+    // Test the build() method on a collection of functions
+    const Point center({0.5, 0.5, 0.5});
+    for (UnsignedInteger i = 0; i < 10; ++ i)
+    {
+      // Test build from index
+      const Function polynomial(productBasis.build(i));
+      assert_almost_equal(polynomial(center), computePolynomialValue(i, center));
+      // Test build from multi-index
+      const Indices indices(enumerateFunction(i));
+      const Function polynomial2(productBasis.build(indices));
+      assert_almost_equal(polynomial2(center), computePolynomialValue(indices, center));
+    }
 
     // Heterogeneous collection
     OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomCollection2(dimension);
@@ -70,13 +114,29 @@ int main(int, char *[])
     OrthogonalProductPolynomialFactory productBasis4(aCollection4);
     fullprint << productBasis4.__str__() << std::endl;
     fullprint << productBasis4.__repr_markdown__() << std::endl;
+
+    // Test getMarginal
+    fullprint << "Test getMarginal" << std::endl;
+    UnsignedInteger dimension2 = 5;
+    Collection<Distribution> marginals4(dimension2, Uniform(0.0, 1.0));
+    OrthogonalProductPolynomialFactory productBasis5(marginals4);
+    Indices indices({0, 2, 4});
+    OrthogonalBasis productBasis6(productBasis5.getMarginal(indices));
+    fullprint << productBasis6.__str__() << std::endl;
+    // Test the build() method on a collection of functions
+    const Point center2({0.5, 0.5, 0.5});
+    for (UnsignedInteger i = 0; i < 10; ++ i)
+    {
+      // Test build from index
+      const Function polynomial(productBasis6.build(i));
+      assert_almost_equal(polynomial(center2), computePolynomialValue(i, center2));
+    }
   }
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
   }
-
 
   return ExitCode::Success;
 }
