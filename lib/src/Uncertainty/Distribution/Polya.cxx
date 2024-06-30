@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The NegativeBinomial distribution
+ *  @brief The Polya distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/NegativeBinomial.hxx"
+#include "openturns/Polya.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -28,31 +28,31 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NegativeBinomial)
+CLASSNAMEINIT(Polya)
 
-static const Factory<NegativeBinomial> Factory_NegativeBinomial;
+static const Factory<Polya> Factory_Polya;
 
 /* Default constructor */
-NegativeBinomial::NegativeBinomial()
+Polya::Polya()
   : DiscreteDistribution()
   , r_(1.0)
   , p_(0.5)
 {
-  setName( "NegativeBinomial" );
-  // We set the dimension of the NegativeBinomial distribution
+  setName( "Polya" );
+  // We set the dimension of the Polya distribution
   setDimension( 1 );
   computeRange();
 }
 
 /* Parameters constructor */
-NegativeBinomial::NegativeBinomial(const Scalar r,
+Polya::Polya(const Scalar r,
                                    const Scalar p)
   : DiscreteDistribution()
   , r_(r)
   , p_(p)
 {
-  setName( "NegativeBinomial" );
-  // We set the dimension of the NegativeBinomial distribution
+  setName( "Polya" );
+  // We set the dimension of the Polya distribution
   setR(r);
   setP(p);
   setDimension( 1 );
@@ -60,23 +60,23 @@ NegativeBinomial::NegativeBinomial(const Scalar r,
 }
 
 /* Comparison operator */
-Bool NegativeBinomial::operator ==(const NegativeBinomial & other) const
+Bool Polya::operator ==(const Polya & other) const
 {
   if (this == &other) return true;
   return (r_ == other.r_) && (p_ == other.p_);
 }
 
-Bool NegativeBinomial::equals(const DistributionImplementation & other) const
+Bool Polya::equals(const DistributionImplementation & other) const
 {
-  const NegativeBinomial* p_other = dynamic_cast<const NegativeBinomial*>(&other);
+  const Polya* p_other = dynamic_cast<const Polya*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String NegativeBinomial::__repr__() const
+String Polya::__repr__() const
 {
   OSS oss;
-  oss << "class=" << NegativeBinomial::GetClassName()
+  oss << "class=" << Polya::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " r=" << r_
@@ -84,7 +84,7 @@ String NegativeBinomial::__repr__() const
   return oss;
 }
 
-String NegativeBinomial::__str__(const String & ) const
+String Polya::__str__(const String & ) const
 {
   OSS oss;
   oss << getClassName() << "(r = " << r_ << ", p = " << p_ << ")";
@@ -92,20 +92,20 @@ String NegativeBinomial::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-NegativeBinomial * NegativeBinomial::clone() const
+Polya * Polya::clone() const
 {
-  return new NegativeBinomial(*this);
+  return new Polya(*this);
 }
 
 /* Get one realization of the distribution */
-Point NegativeBinomial::getRealization() const
+Point Polya::getRealization() const
 {
   return Point(1, DistFunc::rPoisson(DistFunc::rGamma(r_) * p_ / (1.0 - p_)));
 }
 
 
 /* Get the PDF of the distribution */
-Scalar NegativeBinomial::computePDF(const Point & point) const
+Scalar Polya::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -116,7 +116,7 @@ Scalar NegativeBinomial::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-Scalar NegativeBinomial::computeCDF(const Point & point) const
+Scalar Polya::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -126,7 +126,7 @@ Scalar NegativeBinomial::computeCDF(const Point & point) const
   return DistFunc::pBeta(floor(k) + 1, r_, p_, true);
 }
 
-Scalar NegativeBinomial::computeComplementaryCDF(const Point & point) const
+Scalar Polya::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -138,54 +138,54 @@ Scalar NegativeBinomial::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the PDF gradient of the distribution */
-Point NegativeBinomial::computePDFGradient(const Point & point) const
+Point Polya::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
   Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computePDFGradient(const Point & point) const";
+  throw NotYetImplementedException(HERE) << "In Polya::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-Point NegativeBinomial::computeCDFGradient(const Point & point) const
+Point Polya::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return Point(1, 0.0);
-  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computeCDFGradient(const Point & point) const";
+  throw NotYetImplementedException(HERE) << "In Polya::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the mean of the distribution */
-void NegativeBinomial::computeMean() const
+void Polya::computeMean() const
 {
   mean_ = Point(1, r_ * p_ / (1.0 - p_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-Point NegativeBinomial::getStandardDeviation() const
+Point Polya::getStandardDeviation() const
 {
   return Point(1, std::sqrt(r_ * p_) / (1.0 - p_));
 }
 
 /* Get the skewness of the distribution */
-Point NegativeBinomial::getSkewness() const
+Point Polya::getSkewness() const
 {
   return Point(1, (1.0 + p_) / std::sqrt(p_ * r_));
 }
 
 /* Get the kurtosis of the distribution */
-Point NegativeBinomial::getKurtosis() const
+Point Polya::getKurtosis() const
 {
   return Point(1, 3.0 + 6.0 / r_ + std::pow(1.0 - p_, 2.0) / (p_ * r_));
 }
 
 /* Compute the covariance of the distribution */
-void NegativeBinomial::computeCovariance() const
+void Polya::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = r_ * p_ / std::pow(1.0 - p_, 2.0);
@@ -193,7 +193,7 @@ void NegativeBinomial::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-Sample NegativeBinomial::getSupport(const Interval & interval) const
+Sample Polya::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const SignedInteger kMin = static_cast< SignedInteger > (std::max(0.0, ceil(interval.getLowerBound()[0])));
@@ -205,7 +205,7 @@ Sample NegativeBinomial::getSupport(const Interval & interval) const
 }
 
 /* Parameters value accessor */
-Point NegativeBinomial::getParameter() const
+Point Polya::getParameter() const
 {
   Point point(2);
   point[0] = r_;
@@ -213,16 +213,16 @@ Point NegativeBinomial::getParameter() const
   return point;
 }
 
-void NegativeBinomial::setParameter(const Point & parameter)
+void Polya::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const Scalar w = getWeight();
-  *this = NegativeBinomial(parameter[0], parameter[1]);
+  *this = Polya(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description NegativeBinomial::getParameterDescription() const
+Description Polya::getParameterDescription() const
 {
   Description description(2);
   description[0] = "r";
@@ -231,7 +231,7 @@ Description NegativeBinomial::getParameterDescription() const
 }
 
 /* P accessor */
-void NegativeBinomial::setP(const Scalar p)
+void Polya::setP(const Scalar p)
 {
   if ((p <= 0.0) || (p >= 1.0)) throw InvalidArgumentException(HERE) << "Error: p must be in (0, 1), here p=" << p;
   if (p != p_)
@@ -244,13 +244,13 @@ void NegativeBinomial::setP(const Scalar p)
 }
 
 /* P accessor */
-Scalar NegativeBinomial::getP() const
+Scalar Polya::getP() const
 {
   return p_;
 }
 
 /* N accessor */
-void NegativeBinomial::setR(const Scalar r)
+void Polya::setR(const Scalar r)
 {
   if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: r must be > 0, here r=" << r;
   if (r != r_)
@@ -263,13 +263,13 @@ void NegativeBinomial::setR(const Scalar r)
 }
 
 /* N accessor */
-Scalar NegativeBinomial::getR() const
+Scalar Polya::getR() const
 {
   return r_;
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void NegativeBinomial::computeRange()
+void Polya::computeRange()
 {
   const Point lowerBound(1, 0.0);
   const Point upperBound(computeUpperBound());
@@ -279,10 +279,10 @@ void NegativeBinomial::computeRange()
 }
 
 /* Get the quantile of the distribution */
-Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
+Scalar Polya::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
+  LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail ? (prob == 1.0) : (prob == 0.0)) return 0.0;
@@ -294,7 +294,7 @@ Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
   Scalar quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
   if (quantile < 0.0) quantile = 0.0;
   Scalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
-  LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
+  LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
   Scalar oldCDF = cdf;
   const Scalar step = tail ? -1.0 : 1.0;
   while (cdf >= prob)
@@ -302,12 +302,12 @@ Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
     quantile -= step;
     oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
-    LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, backward search, quantile=" << quantile << ", cdf=" << cdf);
+    LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, backward search, quantile=" << quantile << ", cdf=" << cdf);
   }
   if (cdf < oldCDF)
   {
     quantile += step;
-    LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, final quantile=" << quantile);
+    LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, final quantile=" << quantile);
     return quantile;
   }
   while (cdf < prob)
@@ -315,40 +315,40 @@ Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
     quantile += step;
     oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
-    LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, forward search, quantile=" << quantile << ", cdf=" << cdf);
+    LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, forward search, quantile=" << quantile << ", cdf=" << cdf);
   }
-  LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, final quantile=" << quantile);
+  LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, final quantile=" << quantile);
   return quantile;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-Complex NegativeBinomial::computeCharacteristicFunction(const Scalar x) const
+Complex Polya::computeCharacteristicFunction(const Scalar x) const
 {
   const Complex value((1.0 - p_) / (1.0 - p_ * std::exp(Complex(0.0, x))));
   return std::pow(value, r_);
 }
 
-Complex NegativeBinomial::computeLogCharacteristicFunction(const Scalar x) const
+Complex Polya::computeLogCharacteristicFunction(const Scalar x) const
 {
   const Complex value((1.0 - p_) / (1.0 - p_ * std::exp(Complex(0.0, x))));
   return Complex(r_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-Complex NegativeBinomial::computeGeneratingFunction(const Complex & z) const
+Complex Polya::computeGeneratingFunction(const Complex & z) const
 {
   const Complex value((1.0 - p_) / (1.0 - p_ * z));
   return std::pow(value, r_);
 }
 
-Complex NegativeBinomial::computeLogGeneratingFunction(const Complex & z) const
+Complex Polya::computeLogGeneratingFunction(const Complex & z) const
 {
   const Complex value((1.0 - p_) / (1.0 - p_ * z));
   return Complex(r_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */
-void NegativeBinomial::save(Advocate & adv) const
+void Polya::save(Advocate & adv) const
 {
   DiscreteDistribution::save(adv);
   adv.saveAttribute( "r_", r_ );
@@ -356,12 +356,16 @@ void NegativeBinomial::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NegativeBinomial::load(Advocate & adv)
+void Polya::load(Advocate & adv)
 {
   DiscreteDistribution::load(adv);
   adv.loadAttribute( "r_", r_ );
   adv.loadAttribute( "p_", p_ );
   computeRange();
 }
+
+CLASSNAMEINIT(NegativeBinomial)
+
+static const Factory<NegativeBinomial> Factory_NegativeBinomial;
 
 END_NAMESPACE_OPENTURNS

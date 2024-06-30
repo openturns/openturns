@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The NegativeBinomial distribution
+ *  @brief The Polya distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NEGATIVEBINOMIAL_HXX
-#define OPENTURNS_NEGATIVEBINOMIAL_HXX
+#ifndef OPENTURNS_POLYA_HXX
+#define OPENTURNS_POLYA_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DiscreteDistribution.hxx"
@@ -27,26 +27,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NegativeBinomial
+ * @class Polya
  *
- * The NegativeBinomial distribution.
+ * The Polya distribution.
  */
-class OT_API NegativeBinomial
+class OT_API Polya
   : public DiscreteDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  NegativeBinomial();
+  Polya();
 
   /** Parameters constructor */
-  NegativeBinomial(const Scalar r,
-                   const Scalar p);
+  Polya(const Scalar r,
+        const Scalar p);
 
   /** Comparison operator */
   using DiscreteDistribution::operator ==;
-  Bool operator ==(const NegativeBinomial & other) const;
+  Bool operator ==(const Polya & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -58,7 +58,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  NegativeBinomial * clone() const override;
+  Polya * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -109,7 +109,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
-  /* Interface specific to NegativeBinomial */
+  /* Interface specific to Polya */
 
   /** P accessor */
   void setP(const Scalar p);
@@ -141,15 +141,29 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
-  /** The maximum value of the NegativeBinomial distribution */
+  /** The maximum value of the Polya distribution */
   Scalar r_;
 
-  /** The probability parameter of the NegativeBinomial distribution */
+  /** The probability parameter of the Polya distribution */
   Scalar p_;
 
-}; /* class NegativeBinomial */
+}; /* class Polya */
 
+// @deprecated
+class OT_API NegativeBinomial
+  : public Polya
+{
+  CLASSNAME
+public:
+  NegativeBinomial()
+    : Polya() {}
+
+  NegativeBinomial(const Scalar r,
+                   const Scalar p)
+    : Polya(r, p) {}
+
+};
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NEGATIVEBINOMIAL_HXX */
+#endif /* OPENTURNS_POLYA_HXX */

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NegativeBinomial for standard methods
+ *  @brief The test file of class Polya for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -24,10 +24,10 @@
 using namespace OT;
 using namespace OT::Test;
 
-class TestObject : public NegativeBinomial
+class TestObject : public Polya
 {
 public:
-  TestObject() : NegativeBinomial(4.5, 0.7) {}
+  TestObject() : Polya(4.5, 0.7) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instantiate one distribution object
-    NegativeBinomial distribution(4.5, 0.7);
+    Polya distribution(4.5, 0.7);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -117,7 +117,7 @@ int main(int, char *[])
     fullprint << "spearman=" << spearman << std::endl;
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
-    NegativeBinomial::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    Polya::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
   }

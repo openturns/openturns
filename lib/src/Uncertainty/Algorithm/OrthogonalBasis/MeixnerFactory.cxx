@@ -20,7 +20,7 @@
  */
 #include "openturns/MeixnerFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NegativeBinomial.hxx"
+#include "openturns/Polya.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ static const Factory<MeixnerFactory> Factory_MeixnerFactory;
 
 /* Default constructor, associated with the default Negative Binomial distribution of parameter 1, 1/2. */
 MeixnerFactory::MeixnerFactory()
-  : OrthogonalUniVariatePolynomialFactory(NegativeBinomial()),
+  : OrthogonalUniVariatePolynomialFactory(Polya()),
     r_(1.0),
     p_(0.5)
 {
@@ -43,10 +43,10 @@ MeixnerFactory::MeixnerFactory()
 }
 
 
-/* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the NegativeBinomial(r, p) distribution */
+/* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the Polya(r, p) distribution */
 MeixnerFactory::MeixnerFactory(const Scalar r,
                                const Scalar p)
-  : OrthogonalUniVariatePolynomialFactory( NegativeBinomial(r, p) ),
+  : OrthogonalUniVariatePolynomialFactory( Polya(r, p) ),
     r_(r),
     p_(p)
 {

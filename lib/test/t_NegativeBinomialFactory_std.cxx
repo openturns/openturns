@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NegativeBinomial for standard methods
+ *  @brief The test file of class Polya for standard methods
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    NegativeBinomial distribution(15, 0.7);
+    Polya distribution(15, 0.7);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     NegativeBinomialFactory factory;
@@ -43,13 +43,13 @@ int main(int, char *[])
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
-    NegativeBinomial estimatedNegativeBinomial(factory.buildAsNegativeBinomial(sample));
-    fullprint << "NegativeBinomial          =" << distribution << std::endl;
+    Polya estimatedNegativeBinomial(factory.buildAsNegativeBinomial(sample));
+    fullprint << "Polya          =" << distribution << std::endl;
     fullprint << "Estimated negativeBinomial=" << estimatedNegativeBinomial << std::endl;
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial();
     fullprint << "Default negativeBinomial=" << estimatedNegativeBinomial << std::endl;
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial(distribution.getParameter());
-    fullprint << "NegativeBinomial from parameters=" << estimatedNegativeBinomial << std::endl;
+    fullprint << "Polya from parameters=" << estimatedNegativeBinomial << std::endl;
   }
   catch (TestFailed & ex)
   {

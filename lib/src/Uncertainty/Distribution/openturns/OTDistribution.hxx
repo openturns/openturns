@@ -127,7 +127,7 @@
 #include "openturns/Mixture.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/MultinomialFactory.hxx"
-#include "openturns/NegativeBinomial.hxx"
+#include "openturns/Polya.hxx"
 #include "openturns/NegativeBinomialFactory.hxx"
 #include "openturns/NonCentralChiSquare.hxx"
 #include "openturns/NonCentralStudent.hxx"

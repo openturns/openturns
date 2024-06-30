@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
-distribution = ot.NegativeBinomial(4.5, 0.7)
+distribution = ot.Polya(4.5, 0.7)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 

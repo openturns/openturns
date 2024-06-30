@@ -1,4 +1,4 @@
-meixner=class=MeixnerFactory r=10 p=0.3 measure=class=NegativeBinomial name=NegativeBinomial dimension=1 r=10 p=0.3
+meixner=class=MeixnerFactory r=10 p=0.3 measure=class=Polya name=Polya dimension=1 r=10 p=0.3
 meixner(0)=1
 meixner(1)=1.73205 - 0.404145 * X
 meixner(2)=2.22486 - 1.14839 * X + 0.110119 * X^2
