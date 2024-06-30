@@ -698,7 +698,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       DeconditionedDistribution.i DeconditionedDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
-                      NegativeBinomial.i NegativeBinomial_doc.i.in
+                      Polya.i Polya_doc.i.in
                       NegativeBinomialFactory.i NegativeBinomialFactory_doc.i.in
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in

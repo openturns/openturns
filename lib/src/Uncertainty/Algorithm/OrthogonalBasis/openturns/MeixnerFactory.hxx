@@ -43,7 +43,7 @@ public:
   /** Default constructor, associated with the default Negative Binomial distribution of parameter 1, 1/2. */
   MeixnerFactory();
 
-  /** Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the NegativeBinomial(r, p) distribution */
+  /** Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the Polya(r, p) distribution */
   MeixnerFactory(const Scalar r,
                  const Scalar p);
 

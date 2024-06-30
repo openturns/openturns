@@ -24,6 +24,7 @@
  * Removed deprecated OptimizationResult.getEvaluationNumber
  * Deprecated BayesDistribution in favor of JointByConditioningDistribution
  * Deprecated ConditionalDistribution in favor of DeconditionedDistribution
+ * Deprecated NegativeBinomial in favor of Polya
 
 === Documentation ===
  * Copy button for code blocks
