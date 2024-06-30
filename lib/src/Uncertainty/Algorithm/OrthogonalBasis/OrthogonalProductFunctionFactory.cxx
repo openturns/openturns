@@ -32,8 +32,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariateFunctionFamily>)
 
 static const Factory<PersistentCollection<OrthogonalUniVariateFunctionFamily> > Factory_PersistentCollection_OrthogonalUniVariateFunctionFamily;
@@ -53,7 +51,6 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
   // Nothing to do
 }
 
-
 /* Constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll)
   : OrthogonalFunctionFactory()
@@ -61,7 +58,6 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const Functio
   buildTensorizedFunctionFactory(coll, LinearEnumerateFunction(coll.getSize()) );
   buildMeasure(coll);
 }
-
 
 /* Constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll,
@@ -73,13 +69,11 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const Functio
   buildMeasure(coll);
 }
 
-
 /* Virtual constructor */
 OrthogonalProductFunctionFactory * OrthogonalProductFunctionFactory::clone() const
 {
   return new OrthogonalProductFunctionFactory(*this);
 }
-
 
 /* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalProductFunctionFactory::getEnumerateFunction() const
@@ -99,13 +93,17 @@ OrthogonalProductFunctionFactory::FunctionFamilyCollection OrthogonalProductFunc
   return coll;
 }
 
-
 /* Build the Function of the given index */
 Function OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
 {
   return tensorizedFunctionFactory_.build(index);
 }
 
+/* Build the Function of the given index */
+Function OrthogonalProductFunctionFactory::build(const Indices & indices) const
+{
+  return tensorizedFunctionFactory_.build(getEnumerateFunction().inverse(indices));
+}
 
 /* String converter */
 String OrthogonalProductFunctionFactory::__repr__() const
@@ -115,14 +113,12 @@ String OrthogonalProductFunctionFactory::__repr__() const
          << " measure=" << measure_;
 }
 
-
 /* Method save() stores the object through the StorageManager */
 void OrthogonalProductFunctionFactory::save(Advocate & adv) const
 {
   OrthogonalFunctionFactory::save(adv);
   adv.saveAttribute("tensorizedFunctionFactory_", tensorizedFunctionFactory_);
 }
-
 
 /* Method load() reloads the object from the StorageManager */
 void OrthogonalProductFunctionFactory::load(Advocate & adv)
@@ -157,5 +153,23 @@ void OrthogonalProductFunctionFactory::buildMeasure(const FunctionFamilyCollecti
   measure_ = JointDistribution(distributions);
 }
 
+/* Get the function factory corresponding to marginal input indices */
+OrthogonalBasis OrthogonalProductFunctionFactory::getMarginal(const Indices & indices) const
+{
+  OrthogonalProductFunctionFactory::FunctionFamilyCollection functionColl(getFunctionFamilyCollection());
+  const UnsignedInteger size = functionColl.getSize();
+  if (!indices.check(size))
+    throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, size-1] and must be different";
+  // Create list of factories corresponding to input marginal indices
+  OrthogonalProductFunctionFactory::FunctionFamilyCollection functionMarginalCollection;
+  for (UnsignedInteger index = 0; index < size; ++ index)
+    if (indices.contains(index))
+      functionMarginalCollection.add(functionColl[index]);
+  // Create function
+  const EnumerateFunction enumerateFunction(tensorizedFunctionFactory_.getEnumerateFunction());
+  const EnumerateFunction marginalEnumerateFunction(enumerateFunction.getMarginal(indices));
+  const OrthogonalProductFunctionFactory marginalFactory(functionMarginalCollection, marginalEnumerateFunction);
+  return marginalFactory;
+}
 
 END_NAMESPACE_OPENTURNS

@@ -1,0 +1,202 @@
+class=OrthogonalProductFunctionFactory factory=class=TensorizedUniVariateFunctionFactory univariate function collection=[class=UniVariateFunctionFamily implementation=class=HaarWaveletFactory measure=class=Uniform name=Uniform dimension=1 a=0 b=1,class=UniVariateFunctionFamily implementation=class=HaarWaveletFactory measure=class=Uniform name=Uniform dimension=1 a=0 b=1] enumerate function=class=LinearEnumerateFunction dimension=2 measure=class=JointDistribution name=JointDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Uniform name=Uniform dimension=1 a=0 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=0 b=1
+print() :
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1,class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1,class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1,class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5,class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1,class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1,class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=2 k=0 isScaling=false a=0 m=0.125 b=0.25,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1,class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5,class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1,class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1,class=HaarWavelet j=2 k=0 isScaling=false a=0 m=0.125 b=0.25]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=2 k=1 isScaling=false a=0.25 m=0.375 b=0.5,class=HaarWavelet j=0 k=0 isScaling=true a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=2 k=0 isScaling=false a=0 m=0.125 b=0.25,class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1,class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=1 k=0 isScaling=false a=0 m=0.25 b=0.5,class=HaarWavelet j=1 k=1 isScaling=false a=0.5 m=0.75 b=1]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+
+type =  <class 'openturns.func.Function'>
+class=ProductUniVariateFunctionEvaluation functions=[class=HaarWavelet j=0 k=0 isScaling=false a=0 m=0.5 b=1,class=HaarWavelet j=2 k=0 isScaling=false a=0 m=0.125 b=0.25]
+<ul>
+  <li> Input dimension = 2  </li>
+  <li> Input description = [x0,x1]  </li>
+  <li> Output dimension = 1  </li>
+  <li> Output description = [y0]  </li>
+  <li> Parameter = []  </li>
+</ul>
+

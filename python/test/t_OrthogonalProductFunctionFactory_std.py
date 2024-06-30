@@ -8,8 +8,8 @@ dimension = 2
 
 # Create the orthogonal basis
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
-productBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory(), ot.HermiteFactory()], enumerateFunction
+productBasis = ot.OrthogonalProductFunctionFactory(
+    [ot.HaarWaveletFactory(), ot.HaarWaveletFactory()], enumerateFunction
 )
 print(productBasis)
 print("print() :")
