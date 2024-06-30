@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for NegativeBinomial distribution
+ *  @brief Factory for Polya distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/NegativeBinomial.hxx"
+#include "openturns/Polya.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,9 +48,9 @@ public:
   Distribution build(const Sample & sample) const override;
   Distribution build(const Point & parameters) const override;
   Distribution build() const override;
-  NegativeBinomial buildAsNegativeBinomial(const Sample & sample) const;
-  NegativeBinomial buildAsNegativeBinomial(const Point & parameters) const;
-  NegativeBinomial buildAsNegativeBinomial() const;
+  Polya buildAsNegativeBinomial(const Sample & sample) const;
+  Polya buildAsNegativeBinomial(const Point & parameters) const;
+  Polya buildAsNegativeBinomial() const;
 
 }; /* class NegativeBinomialFactory */
 

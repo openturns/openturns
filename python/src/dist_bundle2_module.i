@@ -61,7 +61,7 @@
 %include DeconditionedDistribution.i
 %include Multinomial.i
 %include MultinomialFactory.i
-%include NegativeBinomial.i
+%include Polya.i
 %include NegativeBinomialFactory.i
 %include NonCentralChiSquare.i
 %include NonCentralStudent.i

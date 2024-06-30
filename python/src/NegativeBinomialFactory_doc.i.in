@@ -17,7 +17,7 @@ We use the following estimator:
 
 See also
 --------
-DistributionFactory, NegativeBinomial"
+DistributionFactory, Polya"
 
 
 // ---------------------------------------------------------------------
@@ -38,12 +38,12 @@ Parameters
 sample : 2-d sequence of float
     Data.
 param : sequence of float
-   The parameters of the :class:`~openturns.NegativeBinomial`.
+   The parameters of the :class:`~openturns.Polya`.
 
 Returns
 -------
-distribution : :class:`~openturns.NegativeBinomial`
-    The estimated distribution as a NegativeBinomial.
+distribution : :class:`~openturns.Polya`
+    The estimated distribution as a Polya.
     
-    In the first usage, the default NegativeBinomial distribution is built."
+    In the first usage, the default Polya distribution is built."
 
