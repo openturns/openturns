@@ -28,6 +28,7 @@
 %import weightedexperiment_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
+%import func_module.i
 %include OrthogonalUniVariatePolynomial.i
 %include OrthogonalUniVariatePolynomialFactory.i
 %include CharlierFactory.i
@@ -45,14 +46,14 @@
 %include AdaptiveStieltjesAlgorithm.i
 %include StandardDistributionPolynomialFactory.i
 %include OrthogonalFunctionFactory.i
-%include OrthogonalProductPolynomialFactory.i
 %include OrthogonalBasis.i
 %include OrthogonalUniVariateFunctionFactory.i
 %include OrthogonalUniVariateFunctionFamily.i 
 %include OrthogonalUniVariatePolynomialFunctionFactory.i
+%include OrthogonalProductFunctionFactory.i
+%include OrthogonalProductPolynomialFactory.i
 %include FourierSeriesFactory.i
 %include HaarWaveletFactory.i
-%include OrthogonalProductFunctionFactory.i
 %include SoizeGhanemFactory.i
 
 /* At last we include template definitions */

@@ -22,6 +22,7 @@
 #define OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX
 
 #include "openturns/OrthogonalFunctionFactory.hxx"
+#include "openturns/OrthogonalProductFunctionFactory.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Point.hxx"
@@ -79,6 +80,9 @@ public:
   /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
   Sample getNodesAndWeights(const Indices & degrees,
                             Point & weightsOut) const;
+
+  /** Get marginal functions */
+  PolynomialFamilyCollection getMarginal(const Indices & indices) const;
 
   /** String converter */
   String __repr__() const override;

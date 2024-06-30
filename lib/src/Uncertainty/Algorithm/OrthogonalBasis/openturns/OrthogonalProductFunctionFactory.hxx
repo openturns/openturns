@@ -62,11 +62,17 @@ public:
   /** Build the Function of the given index */
   Function build(const UnsignedInteger index) const override;
 
+  /** Build the Function of the given multi-indices */
+  Function build(const Indices & indices) const override;
+
   /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
   EnumerateFunction getEnumerateFunction() const override;
 
   /** Return the collection of univariate orthogonal polynomial families */
   FunctionFamilyCollection getFunctionFamilyCollection() const;
+
+  /** Get marginal functions */
+  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection getMarginal(const Indices & indices) const;
 
   /** Virtual constructor */
   OrthogonalProductFunctionFactory * clone() const override;

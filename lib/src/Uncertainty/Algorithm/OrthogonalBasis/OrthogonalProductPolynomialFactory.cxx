@@ -304,4 +304,17 @@ Sample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & de
   return nodes;
 }
 
+/* Get marginal polynomials */
+OrthogonalProductPolynomialFactory::PolynomialFamilyCollection OrthogonalProductPolynomialFactory::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger size = coll_.getSize();
+  if (!indices.check(size))
+    throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, size-1] and must be different";
+  OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialMarginalCollection;
+  for (UnsignedInteger index = 0; index < size; ++ index)
+    if (indices.contains(index))
+      polynomialMarginalCollection.add(coll_[index]);
+  return polynomialMarginalCollection;
+}
+
 END_NAMESPACE_OPENTURNS
