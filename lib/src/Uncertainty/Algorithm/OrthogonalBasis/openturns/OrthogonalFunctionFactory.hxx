@@ -51,7 +51,7 @@ public:
   Function build(const UnsignedInteger index) const override;
 
   /** Build the Function of the given multi-indices */
-  Function build(const Indices & indices) const;
+  virtual Function build(const Indices & indices) const;
 
   /** Return the measure upon which the basis is orthogonal */
   virtual Distribution getMeasure() const;

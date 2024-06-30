@@ -38,19 +38,23 @@ StandardDistributionPolynomialFactory
 
 Examples
 --------
->>> import openturns as ot
->>> # Define the model
->>> myModel = ot.SymbolicFunction(['x1','x2','x3'], ['1+x1*x2 + 2*x3^2'])
->>> # Create a distribution of dimension 3
->>> Xdist = ot.JointDistribution([ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0)])
->>> # Create the multivariate orthonormal basis
->>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory(2.75)]
->>> enumerateFunction = ot.LinearEnumerateFunction(3)
->>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+Create from a collection of orthogonal polynomials.
 
->>> # Easier way to create the same multivariate orthonormal basis
+>>> import openturns as ot
+>>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory()]
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl)
+
+Easy way to create a multivariate orthonormal basis from a distribution.
+
+>>> Xdist = ot.JointDistribution([ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0)])
 >>> marginals = [Xdist.getMarginal(i) for i in range(Xdist.getDimension())]
->>> productBasis = ot.OrthogonalProductPolynomialFactory(marginals)"
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(marginals)
+
+Set an enumerate function.
+
+>>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory()]
+>>> enumerateFunction = ot.LinearEnumerateFunction(3)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)"
 
 // ---------------------------------------------------------------------
 
@@ -104,3 +108,25 @@ Examples
 1 : [  1        -0.774597  3.75     ]
 >>> print(weights[:2])
 [0.138889,0.138889]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalProductPolynomialFactory::getMarginal
+"Get the marginal orthogonal polynomials.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < \inputDim`
+    List of marginal indices of the input variables.
+
+Returns
+-------
+polynomialFamilylist : list of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    The marginal orthogonal polynomials.
+
+Examples
+--------
+>>> import openturns as ot
+>>> funcColl = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(funcColl)
+>>> marginalProduct = productBasis.getMarginal([0, 2])  # [ot.LegendreFactory(), ot.HermiteFactory()]"
