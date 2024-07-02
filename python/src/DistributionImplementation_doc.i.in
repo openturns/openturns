@@ -1245,7 +1245,7 @@ We consider a Normal(2) distribution with zero mean, unit standard deviation and
 We note :math:`\Phi_2` its cdf. Due to
 symetries of the distribution, the bilateral confidence interval is :math:`I^*_{\alpha} = [-a, a] \times \times [-a, a]`
 where :math:`a = \Phi^{-1}((1+\beta)/2)` where :math:`\Phi` is the marginal cdf of each component. Then :math:`\beta` is such that
-:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = _beta^2`,
+:math:`\Phi_2(I^*_{\alpha}) = \alpha`. As :math:`\Phi_2(I^*_{\alpha}) = (2\Phi(a) - 1)^2 = \beta^2`,
 then, :math:`\beta` is equal to :math:`\beta = \sqrt{\alpha} \simeq 0.9486`
 and :math:`a \simeq -1.9488`.
 
