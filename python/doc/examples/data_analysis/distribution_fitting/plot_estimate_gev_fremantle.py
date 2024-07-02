@@ -287,12 +287,12 @@ functionTheta = result_NonStatLL.getParameterFunction()
 # We get the asymptotic distribution of :math:`\vect{\beta}` to compute some confidence intervals of
 # the estimates, for example of order :math:`p = 0.95`.
 dist_beta = result_NonStatLL.getParameterDistribution()
-condifence_level = 0.95
+confidence_level = 0.95
 for i in range(beta.getSize()):
-    lower_bound = dist_beta.getMarginal(i).computeQuantile((1 - condifence_level) / 2)[
+    lower_bound = dist_beta.getMarginal(i).computeQuantile((1 - confidence_level) / 2)[
         0
     ]
-    upper_bound = dist_beta.getMarginal(i).computeQuantile((1 + condifence_level) / 2)[
+    upper_bound = dist_beta.getMarginal(i).computeQuantile((1 + confidence_level) / 2)[
         0
     ]
     print(
