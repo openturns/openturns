@@ -327,17 +327,21 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
     return quantile;
   }
   oldCDF = cdf;
+  Bool forward = false;
   while (cdf < prob)
   {
+    forward = true;
     quantile += step;
     oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
     LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, forward search, quantile=" << quantile << ", cdf=" << cdf);
   }
-  if (cdf >= oldCDF)
+  if (!forward && (cdf >= oldCDF))
+  {
     quantile -= step;
+  }
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, final quantile=" << quantile);
-  return quantile;
+  return std::max(0.0, quantile);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
