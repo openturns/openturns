@@ -20,7 +20,7 @@ ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%
-# generate some multivariate data to estimate, with correlation
+# Generate some multivariate data to estimate, with correlation
 cop1 = ot.AliMikhailHaqCopula(0.6)
 cop2 = ot.ClaytonCopula(2.5)
 copula = ot.BlockIndependentCopula([cop1, cop2])
@@ -34,7 +34,7 @@ distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
 
 # %%
-# estimate marginals
+# Estimate marginals
 dimension = sample.getDimension()
 marginalFactories = []
 for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():

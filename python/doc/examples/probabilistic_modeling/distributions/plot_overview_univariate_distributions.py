@@ -10,8 +10,8 @@ Overview of univariate distribution management
 #
 # - the distributions with several parametrizations (particularly with the `Beta` distribution),
 # - the arithmetic of distributions and functions of distributions,
-# - the `CompositeDistribution` for more general functions,
-# - how to define our customized distribution with `PythonDistribution` if the distribution do not exist.
+# - the :class:`~openturns.CompositeDistribution` for more general functions,
+# - how to define our customized distribution with :class:`~openturns.PythonDistribution` if the distribution does not exist.
 
 # %%
 import openturns as ot
@@ -27,7 +27,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # By default, any univariate distribution uses its native parameters. For some few distributions, alternative parameters might be used to define the distribution.
 #
-# For example, the `Beta` distribution has several parametrizations.
+# For example, the :class:`~openturns.Beta` distribution has several parametrizations.
 #
 # The native parametrization uses the following parameters:
 #
@@ -36,13 +36,13 @@ ot.Log.Show(ot.Log.NONE)
 # - :math:`a` : the lower bound,
 # - :math:`b` : the upper bound with :math:`a<b`.
 #
-# The PDF of the beta distribution is:
+# The PDF of the Beta distribution is:
 #
 # .. math::
 #    f(x) = \frac{(x-a)^{\alpha - 1} (b - x)^{\beta - 1}}{(b - a)^{\alpha + \beta - 1} B(\alpha, \beta)}
 #
 #
-# for any :math:`x\in[a,b]`, where :math:`B` is Euler's beta function.
+# for any :math:`x\in[a,b]`, where :math:`B` is Euler's Beta function.
 #
 # For any :math:`y,z>0`, the beta function is:
 #
@@ -51,7 +51,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# The `Beta` class uses the native parametrization.
+# The :class:`~openturns.Beta` class uses the native parametrization.
 
 # %%
 distribution = ot.Beta(2.5, 2.5, -1, 2)
@@ -59,7 +59,7 @@ graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# The `BetaMuSigma` class provides another parametrization, based on the expectation :math:`\mu` and the standard deviation  :math:`\sigma` of the random variable:
+# The :class:`~openturns.BetaMuSigma` class provides another parametrization, based on the expectation :math:`\mu` and the standard deviation  :math:`\sigma` of the random variable:
 #
 # .. math::
 #    \mu = a + \frac{(b-a)\alpha}{\alpha+\beta}
@@ -92,7 +92,7 @@ parameters = ot.BetaMuSigma(0.2, 0.6, -1, 2)
 parameters.evaluate()
 
 # %%
-# The `ParametrizedDistribution` creates a distribution from a parametrization.
+# The :class:`~openturns.ParametrizedDistribution` creates a distribution from a parametrization.
 
 # %%
 param_dist = ot.ParametrizedDistribution(parameters)
@@ -132,7 +132,7 @@ S = B + E
 
 # %%
 # The `S` variable is equipped with the methods of any distribution: we can for example compute the PDF or the CDF at any point and compute its quantile.
-# For example, we can simply draw the PDF with the `drawPDF` class.
+# For example, we can simply draw the PDF with the `drawPDF` method.
 
 # %%
 graph = S.drawPDF()
@@ -154,9 +154,9 @@ view = viewer.View(graph)
 # The `CompositeDistribution` class for more general functions
 # ------------------------------------------------------------
 #
-# More complex functions can be created thanks to the `CompositeDistribution` class, but it requires an `f` function.
-# In the following example, we create the distribution of a random variable equal to the exponential of a gaussian variable.
-# Obviously, this is equivalent to the `LogNormal` distribution but this shows how such a distribution could be created.
+# More complex functions can be created thanks to the :class:`~openturns.CompositeDistribution` class, but it requires an `f` function.
+# In the following example, we create the distribution of a random variable equal to the exponential of a Gaussian variable.
+# Obviously, this is equivalent to the :class:`~openturns.LogNormal` distribution but this shows how such a distribution could be created.
 
 # %%
 # First, we create a distribution.
@@ -173,7 +173,7 @@ f = ot.SymbolicFunction(["x"], ["exp(x)"])
 f.setDescription(["X", "Exp(X)"])
 
 # %%
-# Finally, we create the distribution equal to the exponential of the gaussian random variable.
+# Finally, we create the distribution equal to the exponential of the Gaussian random variable.
 
 # %%
 dist = ot.CompositeDistribution(f, N)

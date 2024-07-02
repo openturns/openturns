@@ -13,10 +13,10 @@ from openturns.viewer import View
 # %%
 # We need as many quantile values as there are parameters
 # of the distribution.
-# For example, for a normal distribution, the two parameters are the mean and the
+# For example, for a Normal distribution, the two parameters are the mean and the
 # standard deviation.
 # This implies that two quantiles are required to estimate the parameters
-# of a normal distribution.
+# of a Normal distribution.
 # The values of the parameters :math:`\mu`, :math:`\sigma` will be used as the reference to assess the optimization.
 dist_ref = ot.Normal(17.0, 34.0)
 dist_ref.setDescription(["reference"])
@@ -27,7 +27,7 @@ q2 = dist_ref.computeQuantile(p2)[0]
 print(q1, q2)
 
 # %%
-# Fit a normal distribution from these quantiles by numerical optimization.
+# Fit a Normal distribution from these quantiles by numerical optimization.
 # Ensure we get the same values as the reference.
 factory = ot.QuantileMatchingFactory(ot.Normal(), [p1, p2])
 dist_estim = factory.buildFromQuantiles([q1, q2])

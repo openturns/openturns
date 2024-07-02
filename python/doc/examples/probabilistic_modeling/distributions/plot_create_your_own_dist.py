@@ -11,10 +11,10 @@ Create your own distribution given its quantile function
 # %%
 # We know that the random variable :math:`X` is distributed according to :math:`F`
 # if and only if :math:`U=F(X)` is distributed according to the uniform
-# distribution in the :math:`[0,1]` interval, i.e. :math:`U=F(X) \sim \mathcal{U}(0,1)`.
+# distribution in the :math:`[0,1]` interval, i.e., :math:`U=F(X) \sim \mathcal{U}(0,1)`.
 # Hence, if :math:`U \sim  \mathcal{U}(0,1)` then :math:`X=F^{-1}(U)` is distributed according to :math:`F`.
 #
-# In this example, we want to create a distribution with CDF :math:`F: \mathbb{R} \rightarrow [0,1] `parametrized by :math:`\rho > 1`:
+# In this example, we want to create a distribution with CDF :math:`F: \mathbb{R} \rightarrow [0,1]` parametrized by :math:`\rho > 1`:
 #
 # .. math::
 #    F(x) = 1-e^{-\rho^x} \quad \forall x  \in \mathbb{R}.
@@ -53,13 +53,13 @@ rho = 2.0
 g = ot.ParametricFunction(gWithParameter, [1], [rho])
 
 # %%
-# We define the distribution distF as the image through :math:`G` of the Uniform(0,1) distribution:
+# We define the distribution `distF` as the image through :math:`G` of the :math:`\mathcal{U}(0,1)` distribution:
 
 # %%
 distF = ot.CompositeDistribution(g, ot.Uniform(0.0, 1.0))
 
 # %%
-# Now, we can draw its pdf, cdf, sample it,...
+# Now, we can draw its PDF, CDF and generate samples.
 
 # %%
 g = distF.drawPDF()

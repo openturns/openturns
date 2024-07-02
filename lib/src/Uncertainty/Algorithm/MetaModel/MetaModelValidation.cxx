@@ -173,6 +173,107 @@ GridLayout MetaModelValidation::drawValidation() const
   return grid;
 }
 
+/* Compute cross-validation predictions */
+Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
+    const Sample & outputSample,
+    const Sample & residual,
+    const Point & hMatrixDiag,
+    const LeaveOneOutSplitter & splitter)
+{
+  // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
+  // and tilde(g) is the metamodel.
+  // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
+  const UnsignedInteger sampleSize = outputSample.getSize();
+  const UnsignedInteger outputDimension = outputSample.getDimension();
+  if (residual.getSize() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the residual sample size is: "
+      << residual.getSize() <<
+      " but the output sample size is: " << sampleSize;
+  if (residual.getDimension() != outputSample.getDimension())
+    throw InvalidArgumentException(HERE)
+      << "Error: the output sample dimension is: "
+      << outputSample.getDimension() 
+      << " which is different from the residual output dimension: "
+      << residual.getDimension();
+  if (splitter.getN() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the splitter size is: " << splitter.getSize() << 
+      " but the output sample size is " << sampleSize;
+  if (hMatrixDiag.getDimension() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the H matrix diagional dimension is: " << hMatrixDiag.getDimension() << 
+      " but the output sample size is " << sampleSize;
+  Sample cvPredictions(sampleSize, outputDimension);
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      if (hMatrixDiag[i] == 1.0)
+        throw InvalidArgumentException(HERE) 
+          << "The leverage of observation #" << i
+          << " is equal to 1. Cannot divide by zero.";
+      cvPredictions(i, j) = outputSample(i, j) - residual(i, j) / (1.0 - hMatrixDiag[i]);
+    } // For observations indices
+  return cvPredictions;
+}
+
+/* Compute cross-validation predictions */
+Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
+    const Sample & outputSample,
+    const Sample & residual,
+    const SymmetricMatrix & projectionMatrix, 
+    const KFoldSplitter & splitter)
+{
+  // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
+  // and tilde(g) is the metamodel.
+  // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
+  const UnsignedInteger sampleSize = outputSample.getSize();
+  const UnsignedInteger outputDimension = outputSample.getDimension();
+  if (residual.getSize() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the residual sample size is: "
+      << residual.getDimension() << 
+      " but the output sample size is: " << sampleSize;
+  if (residual.getDimension() != outputSample.getDimension())
+    throw InvalidArgumentException(HERE)
+      << "Error: the output sample dimension is: "
+      << outputSample.getDimension() 
+      << " which is different from the residual output dimension: "
+      << residual.getDimension();
+  if (splitter.getN() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the splitter size is: " << splitter.getSize() << 
+      " but the output sample size is " << sampleSize;
+  if (projectionMatrix.getDimension() != sampleSize)
+    throw InvalidArgumentException(HERE)
+      << "Error: the H matrix diagional dimension is: " << projectionMatrix.getDimension() << 
+      " but the output sample size is " << sampleSize;
+  Sample cvPredictions(sampleSize, outputDimension);
+  UnsignedInteger kParameter = splitter.getSize();
+  Indices indicesTest;
+  for (UnsignedInteger foldIndex = 0; foldIndex < kParameter; ++foldIndex)
+  {
+    splitter.generate(indicesTest);
+    const UnsignedInteger foldSize = indicesTest.getSize();
+    SymmetricMatrix projectionKFoldMatrix(foldSize);
+    for (UnsignedInteger i1 = 0; i1 < foldSize; ++i1)
+      for (UnsignedInteger i2 = 0; i2 < 1 + i1; ++i2)
+        projectionKFoldMatrix(i1, i2) = projectionMatrix(indicesTest[i1], indicesTest[i2]);
+    const IdentityMatrix identityMatrix(foldSize);
+    const SymmetricMatrix reducedMatrix(identityMatrix - projectionKFoldMatrix);
+    const Sample residualsSampleKFoldTest(residual.select(indicesTest));
+    Matrix multipleRightHandSide(foldSize, outputDimension);
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger i = 0; i < foldSize; ++i)
+        multipleRightHandSide(i, j) = residualsSampleKFoldTest(i, j);
+    const Matrix residualsKFoldMatrix(reducedMatrix.solveLinearSystem(multipleRightHandSide));
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger i = 0; i < foldSize; ++i)
+        cvPredictions(indicesTest[i], j) = outputSample(indicesTest[i], j) - residualsKFoldMatrix(i, j);
+  } // For fold indices
+  return cvPredictions;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MetaModelValidation::save(Advocate & adv) const
 {

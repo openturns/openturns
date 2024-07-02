@@ -4,7 +4,7 @@ Fit a non parametric copula
 """
 
 # %%
-# In this example we are going to estimate a normal copula from a sample using non parametric representations.
+# In this example we are going to estimate a Normal copula from a sample using non parametric representations.
 
 # %%
 import openturns as ot
@@ -21,7 +21,7 @@ copula = ot.NormalCopula(R)
 sample = copula.getSample(30)
 
 # %%
-# Estimate a normal copula using BernsteinCopulaFactory
+# Estimate a Normal copula using :class:`~openturns.BernsteinCopulaFactory`
 distribution = ot.BernsteinCopulaFactory().build(sample)
 
 # %%
@@ -30,7 +30,7 @@ graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# Estimate a normal copula using KernelSmoothing
+# Estimate a Normal copula using :class:`~openturns.KernelSmoothing`
 distribution = ot.KernelSmoothing().build(sample).getCopula()
 graph = distribution.drawPDF()
 view = viewer.View(graph)

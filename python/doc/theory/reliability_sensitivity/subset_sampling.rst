@@ -156,7 +156,7 @@ As for the c.v. :math:`\delta_{\hat{p}_f^{SS}}`, Au and Beck (2001) show that it
 
 .. math::
 
-    \sum_{s=1}^m \delta_{s} \leq  \delta^2_{\hat{p}_f^{SS}}  \leq  \sum_{s_1=1}^m \sum_{s_2=1}^m \delta_{s_1} \delta_{s_2} \qquad \text {(3)}
+    \sum_{s=1}^m \delta_{s}^2 \leq  \delta^2_{\hat{p}_f^{SS}}  \leq  \sum_{s_1=1}^m \sum_{s_2=1}^m \delta_{s_1} \delta_{s_2} \qquad \text {(3)}
 
 
 where :math:`\delta^2_{\hat{p}_f^{SS}} = \mathbb{E} \left[ \left( \frac{\hat{p}_f^{SS} -p_f  }{p_f} \right)^2 \right]`

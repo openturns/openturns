@@ -25,7 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# We create the data from a Gamma distribution :
+# We create the data from a :class:`~openturns.Gamma` distribution :
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Gamma(6.0, 1.0)
 sample = distribution.getSample(800)
@@ -76,7 +76,7 @@ view = viewer.View(graph)
 #
 # We experiment with several kernels to perform the smoothing :
 #
-# - the standard normal kernel
+# - the standard Normal kernel
 # - the triangular kernel
 # - the Epanechnikov kernel
 # - the uniform kernel
@@ -138,7 +138,7 @@ view = viewer.View(graph)
 
 # %%
 # We observe that all the kernels produce very similar results in practice.
-# The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard normal kernel is a fine choice.
+# The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard Normal kernel is a fine choice.
 # The most important aspect of kernel smoothing is the choice of the bandwidth.
 
 
@@ -223,7 +223,7 @@ graph = myDist.drawPDF()
 # %%
 # We use two different kernels :
 #
-# - a standard normal kernel
+# - a standard Normal kernel
 # - the same kernel with a boundary correction
 #
 

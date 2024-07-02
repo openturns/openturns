@@ -28,17 +28,17 @@ ot.Log.Show(ot.Log.NONE)
 #    :math:`(b_1, \dots, b_q)` for the MA-coefficients
 #
 # -  a list of square matrix
-#    :math:`(\underline{\underline{A}}_{\, 1}, \dots, \underline{\underline{A}}{\, _p})` for the
+#    :math:`(\mat{A}_{\, 1}, \dots, \mat{A}{\, _p})` for the
 #    AR-coefficients and
-#    :math:`(\underline{\underline{B}}_{\, 1}\, \dots, \underline{\underline{B}}_{\, q})` for the
+#    :math:`(\mat{B}_{\, 1}\, \dots, \mat{B}_{\, q})` for the
 #    MA-coefficients
 #
 # It also requires the definition of a white noise
-# :math:`\underline{\varepsilon}` that contains the same time grid as the
+# :math:`\vect{\varepsilon}` that contains the same time grid as the
 # one of the process.
 # The current state of an ARMA model is characterized by its last
 # :math:`p` values and the last :math:`q` values of its white noise. It
-# is possible to get that state thanks to the methods *getState*.
+# is possible to get that state thanks to the methods `getState`.
 # It is possible to create an ARMA with a specific current state. That
 # specific current state is taken into account to generate possible
 # futures but not to generate realizations (in order to respect the
@@ -48,7 +48,7 @@ ot.Log.Show(ot.Log.NONE)
 # When the process is not stationary, the user is warned by a message.
 
 # %%
-# We build the 1D ARMA process defined by :
+# We build the 1-d ARMA process defined by:
 #
 # .. math::
 #    X_{0,t} + 0.4 X_{0,t-1} + 0.3 X_{0,t-2} + 0.2 X_{0,t-3} + 0.1 X_{0,t-4} = E_{0,t} + 0.4 E_{0,t-1} + 0.3 E_{0,t-2}
@@ -57,7 +57,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# The definition of the recurrence coefficients AR, MA (4,2) is simple :
+# The definition of the recurrence coefficients ARMA (4,2) is simple:
 myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
 myMACoef = ot.ARMACoefficients([0.4, 0.3])
 
@@ -80,25 +80,25 @@ print(process)
 #
 # In this paragraph we shall expose some of the services exposed by an :math:`ARMA(p,q)` object, namely :
 #
-# -  its AR and MA coefficients thanks to the methods *getARCoefficients,
-#    getMACoefficients*,
+# -  its AR and MA coefficients thanks to the methods `getARCoefficients`,
+#    `getMACoefficients`,
 #
-# -  its white noise thanks to the method *getWhiteNoise*, that contains
+# -  its white noise thanks to the method `getWhiteNoise`, that contains
 #    the time grid of the process,
 #
 # -  its current state, that is its last :math:`p` values and the last
-#    :math:`q` values of its white noise, thanks to the method *getState*,
+#    :math:`q` values of its white noise, thanks to the method `getState`,
 #
-# -  a realization thanks to the method *getRealization* or a sample of realizations thanks to the method *getSample*,
+# -  a realization thanks to the method `getRealization` or a sample of realizations thanks to the method `getSample`,
 #
-# -  a possible future of the model, which is a possible prolongation of
+# -  a possible future of the model, which is a possible extension of
 #    the current state on the next :math:`n_{prol}` instants, thanks to
-#    the method *getFuture*.
+#    the method `getFuture`.
 #
 # -  :math:`n` possible futures of the model, which correspond to
 #    :math:`n` possible prolongations of the current state on the next
 #    :math:`n_{prol}` instants, thanks to the method
-#    *getFuture* (:math:`n_{prol}`, :math:`n`).
+#    `getFuture` (:math:`n_{prol}`, :math:`n`).
 #
 
 
@@ -181,11 +181,11 @@ print("newThermalValue : %d" % newThermalValue)
 process.setNThermalization(newThermalValue)
 
 # %%
-# An important feature of an ARMA process is the future prediction from its current state over the next# `Nit` instants, say Nit=20.
+# An important feature of an ARMA process is the future prediction from its current state over the next  `Nit` instants, say `Nit=20`.
 Nit = 21
 
 # %%
-# First we specify a current state armaState and build the corresponding ARMA process `arma` :
+# First we specify a current state `armaState` and build the corresponding ARMA process `arma` :
 arma = ot.ARMA(myARCoef, myMACoef, myWhiteNoise, armaState)
 
 # Then, we generate a possible future. The last instant was :math:`t=0.9` so the future starts at
@@ -201,7 +201,7 @@ view = viewer.View(graph0)
 
 
 # %%
-# It is of course possible to generate N different possible futures over the Nit next instants.
+# It is of course possible to generate `N` different possible futures over the `Nit` next instants.
 N = 6
 possibleFuture_N = arma.getFuture(Nit, N)
 possibleFuture_N.setName("Possible futures")

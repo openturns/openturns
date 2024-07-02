@@ -3,7 +3,7 @@ Sample manipulation
 ===================
 """
 # %%
-# This example will describe the main statistical functionalities on data through the Sample object. The Sample is an output variable of interest.
+# This example will describe the main statistical functionalities on data through the :class:`~openturns.Sample` object. The Sample is an output variable of interest.
 
 # %%
 import openturns as ot
@@ -15,9 +15,9 @@ ot.Log.Show(ot.Log.NONE)
 # -----------------
 
 # %%
-# A recurring issue in uncertainty quantification is to perform analysis on an output variable of interest Y obtained through a model `f` and input parameters `X`.
-# Here we shall consider the input parameters as two independent standard normal distributions :math:`X=(X_1, X_2)`.
-# We therefore use an `IndependentCopula` to describe the link between the two marginals.
+# A recurring issue in uncertainty quantification is to perform analysis on an output variable of interest `Y` obtained through a model `f` and input parameters `X`.
+# Here we shall consider the input parameters as two independent standard Normal distributions :math:`X=(X_1, X_2)`.
+# We therefore use an :class:`~openturns.IndependentCopula` to describe the link between the two marginals.
 #
 
 # input parameters
@@ -25,7 +25,7 @@ inputDist = ot.JointDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
 inputDist.setDescription(["X1", "X2"])
 
 # %%
-# We create a vector from the 2D-distribution created before :
+# We create a vector from the 2d-distribution created before :
 
 # %%
 inputVector = ot.RandomVector(inputDist)
@@ -35,27 +35,27 @@ inputVector = ot.RandomVector(inputDist)
 # Suppose our model `f` is known and reads as :
 #
 # .. math::
-#    f(X) = \begin{pmatrix}
+#    f(x) = \begin{pmatrix}
 #             x_1^2 + x_2 \\
 #             x_1   + x_2^2
 #           \end{pmatrix}
 #
-# We define our model `f` with a `SymbolicFunction`
+# We define our model `f` with a :class:`~openturns.SymbolicFunction`
 
 # %%
 f = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2", "x2^2+x1"])
 
 # %%
-# Our output vector is Y=f(X), the image of the inputVector by the model
+# Our output vector is :math:`Y = f(X)`, the image of the inputVector by the model
 outputVector = ot.CompositeRandomVector(f, inputVector)
 
 # %%
-# We can now get a sample out of Y, that is realizations (here 1000) of the random outputVector
+# We can now get a sample out of `Y`, that is realizations (here 1000) of the random outputVector
 size = 1000
 sample = outputVector.getSample(size)
 
 # %%
-# The `sample` may be seen as a matrix of size :math:`1000 \times 2`. We print the 5 first samples (out of 1000) :
+# The sample may be seen as a matrix of size :math:`1000 \times 2`. We print the 5 first samples (out of 1000) :
 
 # %%
 sample[:5]

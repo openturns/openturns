@@ -41,6 +41,7 @@
  * Vector=>Field chaos-based metamodel and sensitivity algorithm
 
 ==== New classes ====
+ * FunctionalChaosValidation (openturns.experimental)
  * SmoothedUniformFactory (openturns.experimental)
  * GeneralizedParetoValidation (openturns.experimental)
  * SamplePartition (openturns.experimental)

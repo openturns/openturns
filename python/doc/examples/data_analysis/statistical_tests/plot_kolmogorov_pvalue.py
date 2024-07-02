@@ -4,10 +4,10 @@ Kolmogorov-Smirnov : understand the p-value
 """
 
 # %%
-# In this example, we illustrate the calculation of the Kolmogorov-Smirnov p-value.
+# In this example, we illustrate the calculation of the Kolmogorov-Smirnov (KS) p-value.
 #
-# * We generate a sample from a gaussian distribution.
-# * We create a Uniform distribution with known parameters.
+# * We generate a sample from a Gaussian distribution.
+# * We create a uniform distribution with known parameters.
 # * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulated distribution function.
 # * We plot the p-value as the area under the part of the curve exceeding the observed statistics.
 
@@ -19,7 +19,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We generate a sample from a standard gaussian distribution.
+# We generate a sample from a standard Gaussian distribution.
 
 # %%
 dist = ot.Normal()

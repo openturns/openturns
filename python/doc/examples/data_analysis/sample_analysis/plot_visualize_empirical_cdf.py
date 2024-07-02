@@ -14,7 +14,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Then create a sample from a gaussian distribution.
+# Then create a sample from a Gaussian distribution.
 
 # %%
 size = 100
@@ -22,7 +22,7 @@ normal = ot.Normal(1)
 sample = normal.getSample(size)
 
 # %%
-# We draw the empirical CDF based on the `UserDefined` distribution.
+# We draw the empirical CDF based on the :class:`~openturns.UserDefined` distribution.
 # By default, the `drawCDF` method requires no input argument.
 
 # %%
