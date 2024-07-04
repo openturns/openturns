@@ -28,3 +28,9 @@ pre, div[class*="highlight-"] {
 
 /* Shrink overlarge warning box from PR #2169 */
 div.admonition::after{content:none;}
+
+/* override basic.css
+ * xref https://github.com/sphinx-doc/sphinx/issues/10918 */
+table.align-default {
+    margin-left: 0px;
+}
