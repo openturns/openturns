@@ -256,7 +256,16 @@ if (HDF5_FOUND)
 endif ()
 
 if (USE_BOOST)
-  find_package (Boost 1.46)
+  find_package (Boost CONFIG 1.46)
+  if (Boost_FOUND)
+    message(STATUS "Found Boost: ${Boost_DIR} (found suitable version \"${Boost_VERSION}\")")
+  endif ()
+
+  # fallback to FindBoost before its deprecation
+  if (CMAKE_VERSION VERSION_LESS 3.30 AND NOT Boost_FOUND)
+    find_package (Boost MODULE 1.46)
+  endif ()
+
   if (Boost_FOUND)
     if (CMAKE_VERSION VERSION_LESS 3.15)
       # Boost_VERSION reports the integer BOOST_VERSION from boost/version.hpp instead of x.y.z format
@@ -281,7 +290,7 @@ if (USE_BOOST)
         list (APPEND OPENTURNS_ENABLED_FEATURES "mpc")
       endif ()
     endif ()
-    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES Boost::boost)
     list (APPEND OPENTURNS_ENABLED_FEATURES "boost")
   endif ()
 endif ()
