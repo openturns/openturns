@@ -738,3 +738,18 @@ Returns
 -------
 upper_bound : :class:`~openturns.Point`
     Max of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::intersect
+"Compute the intersection with another mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Another mesh.
+
+Returns
+-------
+intersection : :class:`~openturns.Mesh`
+    The intersection mesh."
