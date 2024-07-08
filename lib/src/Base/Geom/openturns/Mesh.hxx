@@ -172,6 +172,9 @@ public:
   void exportToVTKFile(const String & fileName,
                        const IndicesCollection & simplices) const;
 
+  /** Intersection */
+  Mesh intersect(const Mesh & other) const;
+
 protected:
   // Build the affine matrix associated with a given simplex
   void buildSimplexMatrix(const UnsignedInteger index,
