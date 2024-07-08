@@ -184,11 +184,11 @@ protected:
 
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
   // Spatial dimension
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 0;
 
   // Mesh might be already checked (user provide the information)
   // or we might need to check it for drawing for example.
-  mutable Bool hasBeenChecked_;
+  mutable Bool hasBeenChecked_ = false;
 
   // The vertices
   Sample vertices_;

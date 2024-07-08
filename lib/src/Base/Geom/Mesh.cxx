@@ -57,9 +57,7 @@ static const Factory<Mesh> Factory_Mesh;
 Mesh::Mesh(const UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
-  , hasBeenChecked_(false)
   , vertices_(1, dimension) // At least one point
-  , simplices_()
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -69,9 +67,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
 Mesh::Mesh(const Sample & vertices)
   : PersistentObject()
   , dimension_(vertices.getDimension())
-  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
-  , simplices_()
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -83,7 +79,6 @@ Mesh::Mesh(const Sample & vertices,
            const Bool checkMeshValidity)
   : PersistentObject()
   , dimension_(vertices.getDimension())
-  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
 {
