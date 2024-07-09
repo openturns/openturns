@@ -25,7 +25,7 @@ sample : 2-d sequence of float
     Values assigned to each time stamp of the time series.
 
 field : :class:`~openturns.Field`
-    Maps a field into a time series when the associated lesh cn be interpretated as a regular time grid.
+    Maps a field into a time series when the associated mesh can be interpretated as a regular time grid.
 
 Examples
 --------
