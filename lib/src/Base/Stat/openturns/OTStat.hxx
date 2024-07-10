@@ -89,5 +89,6 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/IsotropicCovarianceModel.hxx"
 #include "openturns/LatentVariableModel.hxx"
+#include "openturns/SumCovarianceModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

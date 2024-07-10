@@ -18,6 +18,13 @@
         cov1 = ot.ExponentialModel(scale1, amplitude)
         cov2 = ot.ExponentialModel(scale2, amplitude)
         covarianceModel = ot.ProductCovarianceModel([cov1, cov2])
+    elif ot.{{ objname }}().__class__.__name__ == 'SumCovarianceModel':
+        amplitude = [1.0]
+        scale1 = [4.0]
+        scale2 = [4.0]
+        cov1 = ot.ExponentialModel(scale1, amplitude)
+        cov2 = ot.ExponentialModel(scale2, amplitude)
+        covarianceModel = ot.SumCovarianceModel([cov1, cov2])
     elif ot.{{ objname }}().__class__.__name__ == 'RankMCovarianceModel':
         variance = [1.0, 2.0]
         basis = ot.LinearBasisFactory().build()
