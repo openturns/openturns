@@ -482,9 +482,36 @@ Point Histogram::getSingularities() const
 Graph Histogram::drawPDF(const UnsignedInteger pointNumber,
                          const Bool logScale) const
 {
+  // draw full bars, but take into account the quantile levels
+  const Scalar qMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  const Scalar qMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (qMax - qMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+  const Scalar xMinRef = qMin - delta;
+  const Scalar xMaxRef = qMax + delta;
+
+  // if first bar ends before xMinRef, find last bar before xMinRef
   const UnsignedInteger lastIndex = cumulatedWidth_.getSize() - 1;
+  Scalar xMin = first_ - 0.5 * width_[0];
+  if (first_ + 0.5 * width_[0] < xMinRef)
+  {
+    UnsignedInteger index = 0;
+    while ((index < lastIndex) && (first_ + cumulatedWidth_[index + 1] - 0.5 * width_[index + 1] < xMinRef))
+    {
+      ++ index;
+    }
+    xMin = first_ + cumulatedWidth_[index] - 0.5 * width_[index];
+  }
+
+  // find first bar after xMaxRef
+  UnsignedInteger index = lastIndex;
+  while ((index > 0) && (first_ + cumulatedWidth_[index - 1] + 0.5 * width_[index - 1] > xMaxRef))
+  {
+    -- index;
+  }
+  const Scalar xMax = first_ + cumulatedWidth_[index] + 0.5 * width_[index];
+
   // Must prefix explicitly by the class name in order to avoid conflict with the methods in the upper class
-  return Histogram::drawPDF(first_ - 0.5 * width_[0], first_ + cumulatedWidth_[lastIndex] + 0.5 * width_[lastIndex], pointNumber, logScale);
+  return Histogram::drawPDF(xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the PDF of the Histogram using a specific presentation */
