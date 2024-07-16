@@ -21,7 +21,7 @@ option (USE_HDF5                     "Use HDF5 for high volume storage"         
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_MPFR                     "Use MPFR for real valued special functions computation"                ON)
 option (USE_MPC                      "Use MPC for complex valued special functions computation"              ON)
-option (USE_SPHINX                   "Use sphinx for documentation"                                          ON)
+option (USE_SPHINX                   "Use sphinx for documentation"                                          OFF)
 option (USE_DOXYGEN                  "Use Doxygen for API documentation"                                     ON)
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
 option (USE_CERES                    "Use Ceres Solver for additional optimization algorithms"               ON)
