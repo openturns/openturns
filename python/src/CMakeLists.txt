@@ -7,11 +7,6 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 # allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
-if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
-  execute_process (COMMAND ${Python_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
-                   OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif ()
-
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
 add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
@@ -82,12 +77,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   endif ()
 
   set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
-
   set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
-
-  if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
-    set_target_properties (${MODULENAME} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
-  endif ()
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
@@ -1055,10 +1045,10 @@ else ()
   target_link_libraries_with_dynamic_lookup (memoryview ${Python_LIBRARIES})
 endif ()
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
-if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
-  set_target_properties (memoryview PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
-elseif (WIN32 AND NOT CYGWIN)
+if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
+else ()
+  set_target_properties(memoryview PROPERTIES SUFFIX ".so")
 endif ()
 set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
