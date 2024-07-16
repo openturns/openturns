@@ -17,14 +17,12 @@ add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ope
 add_custom_target (generate_docstrings)
 add_custom_target (pylib)
 
-include_directories (BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
-include_directories (BEFORE ${CMAKE_CURRENT_SOURCE_DIR})
-
 set (OPENTURNS_PYTHON_MODULES)
 macro (ot_add_python_module MODULENAME SOURCEFILE)
   set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON)
   set_source_files_properties (${SOURCEFILE} PROPERTIES SWIG_MODULE_NAME ${MODULENAME})
+  set_source_files_properties (${SOURCEFILE} PROPERTIES INCLUDE_DIRECTORIES "${INTERNAL_INCLUDE_DIRS};${CMAKE_CURRENT_SOURCE_DIR}")
+
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
@@ -59,7 +57,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   add_custom_target (generate_${MODULENAME}_docstrings
                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
                       -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
-		      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
+                      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
                       DEPENDS ${docstring_sources})
   add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
 
@@ -67,12 +65,13 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
 
   add_dependencies (${MODULENAME} generate_swig_runtime)
-  target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
+  target_include_directories (${MODULENAME} PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
   swig_link_libraries (${MODULENAME} OT)
 
   if (TARGET Python::Module)
     target_link_libraries (${MODULENAME} Python::Module)
   else ()
+    target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
     target_link_libraries_with_dynamic_lookup (${MODULENAME} ${Python_LIBRARIES})
   endif ()
 
