@@ -9,7 +9,7 @@ dimension = 2
 size = 20
 
 # Factory: lhs generates
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setRandomShift(False) # centered
 lhsDesign.setAlwaysShuffle(True) # randomized
 
@@ -35,7 +35,7 @@ bounds = ot.Interval(dimension)
 
 # Size of sample
 size = 100
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setRandomShift(False) # centered
 lhsDesign.setAlwaysShuffle(True) # randomized
 

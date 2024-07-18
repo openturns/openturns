@@ -6,7 +6,7 @@
 # EDF R&D - 2017 - Michael Baudin
 #
 
-from openturns import ComposedDistribution, Uniform
+from openturns import JointDistribution, Uniform
 from numpy import array, prod, ones, zeros
 
 
@@ -41,7 +41,7 @@ def gsobolSAExact(a):
 
 
 def gsobolDistribution(d):
-    distribution = ComposedDistribution([Uniform(0, 1)] * d)
+    distribution = JointDistribution([Uniform(0, 1)] * d)
     return distribution
 
 

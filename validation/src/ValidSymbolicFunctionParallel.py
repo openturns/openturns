@@ -6,7 +6,7 @@ import time
 
 # one evaluation of a big sample, varying formula length
 N = int(1e7)
-x = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3).getSample(N)
+x = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * 3).getSample(N)
 for M in [1, 10, 50]:
     f = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['+'.join(['cosh(x1)+cosh(x2)+cosh(x3)'] * M)])
     t0 = time.time()
@@ -33,7 +33,7 @@ for M in [1, 10, 50]:
     f = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['+'.join(['cosh(x1)+cosh(x2)+cosh(x3)'] * M)])
     for p in range(1, 7):
         m1 = int(10 ** p)
-        x = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3).getSample(m1)
+        x = ot.JointDistribution([ot.Uniform(-m.pi, m.pi)] * 3).getSample(m1)
         t0 = time.time()
         for i in range(N // m1):
             y = f(x)
