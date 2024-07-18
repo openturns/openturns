@@ -7,7 +7,7 @@
 #
 
 from math import sin, pi
-from openturns import ComposedDistribution, Uniform, SymbolicFunction
+from openturns import JointDistribution, Uniform, SymbolicFunction
 
 
 def ishigamiAB():
@@ -48,7 +48,7 @@ def ishigamiGSymbolic():
 
 
 def ishigamiDistribution():
-    distribution = ComposedDistribution([Uniform(-pi, pi)] * 3)
+    distribution = JointDistribution([Uniform(-pi, pi)] * 3)
     return distribution
 
 
