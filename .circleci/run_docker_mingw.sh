@@ -12,7 +12,7 @@ fi
 
 mkdir build && cd build
 
-ARCH=i686
+ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PYMAJMIN=310
 PREFIX=${PWD}/install
