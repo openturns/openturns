@@ -83,7 +83,11 @@
 %include UniformOrderStatistics.i
 %include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i
-
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosValidation.i
 %include LinearModelValidation.i
+%include GaussianProcessFitterResult.i
+%include GaussianProcessFitter.i
+%include GaussianProcessRegressionResult.i
+%include GaussianProcessRegression.i
+%include GaussianProcessConditionalCovariance.i
