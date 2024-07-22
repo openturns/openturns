@@ -642,7 +642,7 @@ void ResourceMap::loadDefaultConfiguration()
       throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got " << env_num_threads;
     }
   }
-  addAsUnsignedInteger("Cache-MaxSize", 1024);
+  addAsUnsignedInteger("Cache-MaxSize", 65536);
 
   // Os parameters
   addAsBool("Os-CreateProcess", false);
