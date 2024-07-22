@@ -17,7 +17,7 @@
        To set manually the number of threads used for parallel computing, uncomment the following line:
     -->
   <!--<TBB-ThreadsNumber    value_int="1"    />-->
-  <Cache-MaxSize          value_int="1024" />
+  <Cache-MaxSize          value_int="65536" />
 
   <!-- OT::Os parameters -->
   <Os-CreateProcess value_bool="false" />
