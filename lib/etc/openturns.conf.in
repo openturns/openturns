@@ -623,11 +623,11 @@
   <Multinomial-eta    value_float="1.0e-9" />
   <Multinomial-smallA value_float="10.0"   />
 
-  <!-- OT::NegativeBinomialFactory parameters -->
-  <NegativeBinomialFactory-AbsolutePrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-RelativePrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-ResidualPrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-MaximumIteration  value_int="50" />
+  <!-- OT::PolyaFactory parameters -->
+  <PolyaFactory-AbsolutePrecision value_float="1e-12"        />
+  <PolyaFactory-RelativePrecision value_float="1e-12"        />
+  <PolyaFactory-ResidualPrecision value_float="1e-12"        />
+  <PolyaFactory-MaximumIteration  value_int="50" />
 
   <!-- OT::Normal parameters -->
   <Normal-MaximumCDFEpsilon              value_float="5.0e-6"             />

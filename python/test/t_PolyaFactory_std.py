@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 distribution = ot.Polya(15, 0.7)
 size = 10000
 sample = distribution.getSample(size)
-factory = ot.NegativeBinomialFactory()
+factory = ot.PolyaFactory()
 estimatedDistribution = factory.build(sample)
 print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))

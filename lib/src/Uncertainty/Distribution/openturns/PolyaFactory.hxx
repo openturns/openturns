@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NEGATIVEBINOMIALFACTORY_HXX
-#define OPENTURNS_NEGATIVEBINOMIALFACTORY_HXX
+#ifndef OPENTURNS_POLYAFACTORY_HXX
+#define OPENTURNS_POLYAFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
@@ -28,19 +28,19 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NegativeBinomialFactory
+ * @class PolyaFactory
  */
-class OT_API NegativeBinomialFactory
+class OT_API PolyaFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  NegativeBinomialFactory();
+  PolyaFactory();
 
   /** Virtual constructor */
-  NegativeBinomialFactory * clone() const override;
+  PolyaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
@@ -52,9 +52,9 @@ public:
   Polya buildAsNegativeBinomial(const Point & parameters) const;
   Polya buildAsNegativeBinomial() const;
 
-}; /* class NegativeBinomialFactory */
+}; /* class PolyaFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NEGATIVEBINOMIALFACTORY_HXX */
+#endif /* OPENTURNS_POLYAFACTORY_HXX */

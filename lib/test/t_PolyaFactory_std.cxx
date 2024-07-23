@@ -35,7 +35,7 @@ int main(int, char *[])
     Polya distribution(15, 0.7);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
-    NegativeBinomialFactory factory;
+    PolyaFactory factory;
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
