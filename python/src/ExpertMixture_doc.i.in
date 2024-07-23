@@ -2,16 +2,14 @@
 "Expert mixture defining a piecewise function according to a classifier.
 
 This implements an expert mixture which is a piecewise function :math:`f`
-defined by the collection of functions :math:`(f_i)_{i=1, \ldots, N}` given in
+defined by the collection of functions :math:`(f_i)_{i=1, \ldots, n_c}` given in
 *basis* and according to a *classifier*:
 
 .. math::
 
-    f(\vect{x}) &= f_1(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} 1 \\
-                &= f_k(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} k \\
-                &= f_N(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} N
-
-where the :math:`N` classes are defined by the classifier.
+    f(\vect{x}) = f_i(\vect{x})
+    
+if :math:`\vect{z} \in \text{Class}_i` where the :math:`n_c \in \Nset` classes are defined by the classifier.
 
 In supervised mode the classifier partitions the input and output space at once:
 
@@ -33,7 +31,7 @@ classifier : :class:`~openturns.Classifier`
     A classifier
 supervised : bool (default=True)
     In supervised mode, the classifier partitions the space
-    of :math:`(\vect(x), f(\vect(x)))` whereas in non-supervised mode the
+    of :math:`(\vect{x}, f(\vect{x}))` whereas in non-supervised mode the
     classifier only partitions the input space.
 
 Examples
@@ -49,11 +47,10 @@ Examples
 >>> f1 = ot.SymbolicFunction(['x'], ['-x'])
 >>> f2 = ot.SymbolicFunction(['x'], ['x'])
 >>> experts = [f1, f2]
->>> evaluation = ot.ExpertMixture(experts, classifier)
->>> moe = ot.Function(evaluation)
->>> print(moe([-0.3]))
+>>> mixtureOfExperts = ot.ExpertMixture(experts, classifier)
+>>> print(mixtureOfExperts([-0.3]))
 [0.3]
->>> print(moe([0.1]))
+>>> print(mixtureOfExperts([0.1]))
 [0.1]
 
 Notes
@@ -72,7 +69,7 @@ Classifier, MixtureClassifier"
 Returns
 -------
 basis : collection of :class:`~openturns.Function`
-    The collection of functions :math:`(f_i)_{i=1, \ldots, N}`."
+    The collection of functions :math:`(f_i)_{i=1, \ldots, n_c}`."
 
 // ---------------------------------------------------------------------
 
@@ -82,7 +79,7 @@ basis : collection of :class:`~openturns.Function`
 Parameters
 ----------
 basis : :class:`~openturns.Basis`
-    The collection of functions :math:`(f_i)_{i=1, \ldots, N}`."
+    The collection of functions :math:`(f_i)_{i=1, \ldots, n_c}`."
 
 // ---------------------------------------------------------------------
 

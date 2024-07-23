@@ -33,7 +33,7 @@ NY = 75
 # We build the graph by calling the `draw` method and display it
 
 # %%
-graph = f.draw([YMin, YMin], [XMax, YMax], [NX, NY])
+graph = f.draw([XMin, YMin], [XMax, YMax], [NX, NY])
 view = viewer.View(graph)
 
 # %%
