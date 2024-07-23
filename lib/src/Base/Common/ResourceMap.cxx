@@ -1240,11 +1240,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Multinomial-eta", 1.0e-9);
   addAsScalar("Multinomial-smallA", 10.0);
 
-  // NegativeBinomialFactory parameters //
-  addAsScalar("NegativeBinomialFactory-AbsolutePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-RelativePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-ResidualPrecision", 1.0e-12);
-  addAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration", 50);
+  // PolyaFactory parameters //
+  addAsScalar("PolyaFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("PolyaFactory-MaximumIteration", 50);
 
   // Normal parameters //
   addAsScalar("Normal-MaximumCDFEpsilon", 5.0e-6);

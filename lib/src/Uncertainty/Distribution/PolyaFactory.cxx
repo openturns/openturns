@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NegativeBinomialFactory.hxx"
+#include "openturns/PolyaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
@@ -27,21 +27,21 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NegativeBinomialFactory)
+CLASSNAMEINIT(PolyaFactory)
 
-static const Factory<NegativeBinomialFactory> Factory_NegativeBinomialFactory;
+static const Factory<PolyaFactory> Factory_PolyaFactory;
 
 /* Default constructor */
-NegativeBinomialFactory::NegativeBinomialFactory()
+PolyaFactory::PolyaFactory()
   : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-NegativeBinomialFactory * NegativeBinomialFactory::clone() const
+PolyaFactory * PolyaFactory::clone() const
 {
-  return new NegativeBinomialFactory(*this);
+  return new PolyaFactory(*this);
 }
 
 
@@ -76,22 +76,22 @@ struct NegativeBinomialFactoryParameterConstraint
   Scalar mean_;
 };
 
-Distribution NegativeBinomialFactory::build(const Sample & sample) const
+Distribution PolyaFactory::build(const Sample & sample) const
 {
   return buildAsNegativeBinomial(sample).clone();
 }
 
-Distribution NegativeBinomialFactory::build(const Point & parameters) const
+Distribution PolyaFactory::build(const Point & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
 
-Distribution NegativeBinomialFactory::build() const
+Distribution PolyaFactory::build() const
 {
   return buildAsNegativeBinomial().clone();
 }
 
-Polya NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
+Polya PolyaFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Polya distribution from a sample of size < 2";
@@ -134,7 +134,7 @@ Polya NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) co
     fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
+  Brent solver(ResourceMap::GetAsScalar("PolyaFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("PolyaFactory-RelativePrecision"), ResourceMap::GetAsScalar("PolyaFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("PolyaFactory-MaximumIteration"));
   // R estimate
   const Scalar r = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding p estimate
@@ -144,7 +144,7 @@ Polya NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) co
   return result;
 }
 
-Polya NegativeBinomialFactory::buildAsNegativeBinomial(const Point & parameters) const
+Polya PolyaFactory::buildAsNegativeBinomial(const Point & parameters) const
 {
   try
   {
@@ -158,7 +158,7 @@ Polya NegativeBinomialFactory::buildAsNegativeBinomial(const Point & parameters)
   }
 }
 
-Polya NegativeBinomialFactory::buildAsNegativeBinomial() const
+Polya PolyaFactory::buildAsNegativeBinomial() const
 {
   return Polya();
 }

@@ -1,4 +1,4 @@
-%feature("docstring") OT::NegativeBinomialFactory
+%feature("docstring") OT::PolyaFactory
 "Negative Binomial factory.
 
 Notes
@@ -22,7 +22,7 @@ DistributionFactory, Polya"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NegativeBinomialFactory::buildAsNegativeBinomial
+%feature("docstring") OT::PolyaFactory::buildAsNegativeBinomial
 "Estimate the distribution as native distribution.
 
 **Available usages**:

@@ -62,7 +62,7 @@
 %include Multinomial.i
 %include MultinomialFactory.i
 %include Polya.i
-%include NegativeBinomialFactory.i
+%include PolyaFactory.i
 %include NonCentralChiSquare.i
 %include NonCentralStudent.i
 %include Normal.i
