@@ -664,7 +664,7 @@ the gradient of the probability density function :math:`f_{\vect{X}}` is defined
 
 .. math::
 
-    (\frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_d})"
+    \left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_d}\right)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDFGradient
 OT_Distribution_computePDFGradient_doc
