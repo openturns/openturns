@@ -217,6 +217,7 @@ struct LVLOLAScorePolicy
   {
     const UnsignedInteger d = lola_.x_.getDimension();
     const UnsignedInteger m = 2 * d;
+    const String aggregationMethod = ResourceMap::GetAsString("LOLAVoronoi-NonLinearityAggregationMethod");
     for (UnsignedInteger i = rnge.begin(); i != rnge.end(); ++ i)
     {
       const Point prx(lola_.x_[i]);
@@ -231,7 +232,7 @@ struct LVLOLAScorePolicy
           p(ti, j) = prtx[j] - prx[j];
       }
 
-      Scalar eprMax = 0.0;
+      Scalar eprAgg = 0.0;
       for (UnsignedInteger k = 0; k < lola_.y_.getDimension(); ++ k)
       {
         Point f(m);
@@ -254,10 +255,14 @@ struct LVLOLAScorePolicy
         }
 
         // the non linearity score is the max across output components cf 3.6 equation (3.12)
-        if (epr > eprMax)
-          eprMax = epr;
+        if (aggregationMethod == "Maximum")
+          eprAgg = std::max(eprAgg, epr);
+        else if (aggregationMethod == "Average")
+          eprAgg += epr / lola_.y_.getDimension();
+        else
+          throw InvalidArgumentException(HERE) << "LOLAVoronoi-NonLinearityAggregationMethod must be 'Maximum' or 'Average'";
       }
-      nonLinearScore_[i] = eprMax;
+      nonLinearScore_[i] = eprAgg;
     } // i loop
   }
 };
