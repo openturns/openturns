@@ -294,13 +294,21 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
   const UnsignedInteger d = x_.getDimension();
   Sample result(0, d);
   const UnsignedInteger m = 2 * d;
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  UnsignedInteger i = 0;
+  // stop only when enough points are generated
+  while (result.getSize() < size)
   {
-    LOGINFO(OSS() << "LOLAVoronoi generating point " << (i + 1) << "/" << size);
-    const Point xi = x_[ranking[i]];
+    if (i >= x_.getSize())
+      throw InternalException(HERE) << "Exhausted the number of candidates to generate new points from";
+
+    LOGINFO(OSS() << "LOLAVoronoi generating point from candidate #" << i << " (completed " << result.getSize() << "/" << size << ")");
+
+    const UnsignedInteger rankingI = ranking[i];
+    ++ i;
+    const Point xi = x_[rankingI];
 
     // compute the maximum distance from x_i to other points
-    const Indices neighbourhood(neighbourhood_[ranking[i]]);
+    const Indices neighbourhood(neighbourhood_[rankingI]);
     Scalar neighbourhoodMaximumDistance = 0.0;
     for (UnsignedInteger j = 0; j < m; ++ j)
     {
@@ -348,7 +356,7 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
       const UnsignedInteger indexNew = treeNew.query(vk);
 
       // keep only the points inside the voronoi cell of x_i but not closer to new candidates
-      if ((indexK == ranking[i]) && (indexNew == 0))
+      if ((indexK == rankingI) && (indexNew == 0))
       {
         // select random point which is furthest away from x_i and its neighbors as new adaptive sample
         Scalar distance = (vk - xi).norm();
@@ -364,10 +372,10 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
         }
       }
     }
-    if (!newPoint.getDimension())
-      throw InternalException(HERE) << "No new point found i=" << i;
-    result.add(newPoint);
-  } // i loop
+    // if no new point is found now then will retry from next ranked point
+    if (newPoint.getDimension())
+      result.add(newPoint);
+  }
   return result;
 }
 
