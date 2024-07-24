@@ -13,23 +13,16 @@ Use the LOLA-Voronoi sequential design of experiment
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
-import math
 
 # %%
-# Lets use the Rastrigin standard optimization test-case
-
-
-def rastriginPy(X):
-    A = 10.0
-    delta = [x**2 - A * math.cos(3.0 * math.pi * x) for x in X]
-    y = A + sum(delta)
-    return [y]
-
-
+# Lets use Franke's bivariate function
 dim = 2
-f1 = ot.PythonFunction(dim, 1, rastriginPy)
-print(f1([1.0, 1.0]))
-distribution = ot.JointDistribution([ot.Uniform(-0.5, 0.5)] * 2)
+f1 = ot.SymbolicFunction(["a0", "a1"],
+                         ["3 / 4 * exp(-1 / 4 * (((9 * a0 - 2) ^ 2) + ((9 * a1 - 2) ^ 2))) + 3 / 4 * exp(-1 / 49 * "
+                          "((9 * a0 + 1) ^ 2) - 1 / 10 * (9 * a1 + 1) ^ 2) + 1 / 2 * exp(-1 / 4 * (((9 * a0 - 7) ^ 2) "
+                          "+ (9 * a1 - 3) ^ 2)) - 1 / 5 * exp(-((9 * a0 - 4) ^ 2) - ((9 * a1 + 1) ^ 2))"])
+print(f1([0.5, 0.5]))
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 
 # %%
 # Plot the gradient
@@ -52,11 +45,13 @@ otv.View(graph)
 # %%
 # Plot the gradient
 graph = gradNorm.draw(distribution.getRange().getLowerBound(), distribution.getRange().getUpperBound())
+contour = graph.getDrawable(0)
 graph.setTitle("Gradient norm as a function of (x0, y0)")
 otv.View(graph)
 
 # %%
 # Lets define an initial design of experiments
+ot.RandomGenerator.SetSeed(0)
 x0 = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, 50).generate()
 y0 = f1(x0)
 
@@ -67,6 +62,7 @@ cloud1 = ot.Cloud(x0)
 cloud1.setPointStyle("fcircle")
 cloud1.setColor("blue")
 graph.add(cloud1)
+graph.add(contour)
 otv.View(graph)
 
 # %%
@@ -95,7 +91,7 @@ learnSize = xLola.getSize()
 
 
 def runMetaModel(x, y, tag):
-    cov = ot.ExponentialModel([1.1] * 2, [10.0])
+    cov = ot.ExponentialModel([2.0] * 2, [0.26])
     kriging = ot.KrigingAlgorithm(x, y, cov)
     kriging.setOptimizeParameters(False)
     kriging.run()
