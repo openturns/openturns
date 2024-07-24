@@ -275,6 +275,7 @@
   <LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber value_int="15" />
   <LOLAVoronoi-DefaultVoronoiSamplingSize value_int="1000" />
   <LOLAVoronoi-DecompositionMethod value_str="Cholesky" />
+  <LOLAVoronoi-NonLinearityAggregationMethod value_str="Maximum" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
