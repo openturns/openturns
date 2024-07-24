@@ -47,6 +47,18 @@ y : 2-d sequence of float
 distribution : :class:`~openturns.Distribution`
     Distribution to generate new input samples
 
+Notes
+-----
+Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the algorithm:
+
+- The entry `LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber` entry, see :meth:`setNeighbourhoodCandidatesNumber`.
+- The entry `LOLAVoronoi-DefaultVoronoiSamplingSize` entry, see :meth:`setVoronoiSamplingSize`.
+- The entry `LOLAVoronoi-DefaultMaximumCombinationsNumber` controls the maximum
+  number of neighbourhood combinations explored in the gradient estimation for the exploitation criterion.
+- The entry `LOLAVoronoi-UseTruncatedDistribution` controls whether the :class:`~openturns.TruncatedDistribution`
+  distribution is used to sample neighbourhoods (by CDF inversion when the copula is independent)
+  or if we want to perform rejection sampling instead.
+
 Examples
 --------
 >>> import openturns as ot
@@ -71,6 +83,7 @@ Parameters
 ----------
 voronoiSamplingSize : int
     The sampling size to estimate the Voronoi cells relative volume.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiSamplingSize` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------
@@ -82,6 +95,7 @@ Returns
 -------
 voronoiSamplingSize : int
     The sampling size to estimate the Voronoi cells relative volume.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiSamplingSize` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------
@@ -94,6 +108,7 @@ Parameters
 neighbourhoodCandidatesNumber : int
     The number of extra closest neighbour points to consider
     during the neighbourhood update step needed for the LOLA criterion.
+    The default value is set to the `LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------
@@ -106,6 +121,7 @@ Returns
 neighbourhoodCandidatesNumber : int
     The number of extra closest neighbour points to consider
     during the neighbourhood update step needed for the LOLA criterion.
+    The default value is set to the `LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------
