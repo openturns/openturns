@@ -163,7 +163,7 @@ r2Score = val.computeR2Score()[0]
 r2Score
 
 # %%
-# The R2 is very close to 1: the metamodel is excellent.
+# The :math:`R^2` is very close to 1: the metamodel is accurate.
 
 # %%
 graph = val.drawValidation()
@@ -212,7 +212,7 @@ chaosSI = ot.FunctionalChaosSobolIndices(chaosResult)
 chaosSI
 
 # %%
-# We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance.
+# We notice that a coefficient with marginal degree equal to 6 has a significant impact on the output variance.
 # Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.
 
 # %%
@@ -229,10 +229,10 @@ view = otv.View(graph)
 
 # %%
 # The variable which has the largest impact on the output is, taking
-# interactions into account, X1.
-# We see that X1 has interactions with other variables, since the first
+# interactions into account, :math:`X_1`.
+# We see that :math:`X_1` has interactions with other variables, since the first
 # order indice is less than the total order indice.
-# At first order, X3 has no interactions with other variables since its
+# At first order, :math:`X_3` has no interaction with other variables since its
 # first order indice is close to zero.
 
 # %%
@@ -263,7 +263,7 @@ for i in range(im.dim):
     )
 
 # %%
-# We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations.
+# We see that the indices are correctly estimated with a low accuracy even if we have used only 100 function evaluations.
 # This shows the good performance of the polynomial chaos in this case.
 
 # %%

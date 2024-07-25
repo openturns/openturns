@@ -95,7 +95,7 @@ def compute_sparse_least_squares_chaos(
 
 
 # %%
-# The next function computes the R2 score by splitting the data set
+# The next function computes the :math:`R^2` score by splitting the data set
 # into a training set and a test set.
 
 
@@ -150,6 +150,7 @@ def compute_R2_score_by_splitting(
     val = ot.MetaModelValidation(outputSampleTest, metamodelPredictions)
     r2Score = val.computeR2Score()
     return r2Score
+
 
 # %%
 # The next function computes the mean squared error by K-Fold.
@@ -220,7 +221,7 @@ def computeMSENaiveKFold(
 
 
 # %%
-# The next function computes the R2 score by K-Fold.
+# The next function computes the :math:`R^2` score by K-Fold.
 
 
 def compute_R2_score_by_kfold(
@@ -276,7 +277,7 @@ def compute_R2_score_by_kfold(
 # ----------------------------
 
 # %%
-# We start by generating the input and output sample. We use a sample size equal to 1000.
+# We start by generating the input and output samples. We use a sample size equal to 1000.
 
 # %%
 im = ishigami_function.IshigamiModel()

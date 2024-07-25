@@ -3,35 +3,33 @@ Mixture of experts
 ==================
 """
 # %%
-# In this example we are going to approximate a piece wise continuous function using an expert mixture of metamodels.
+# In this example we are going to approximate a piece-wise continuous function using an expert mixture of metamodels.
 #
-# The metamodels will be represented by the family of :math:`f_k \forall \in [1, N]`:
-#
-# .. math::
-#    \begin{align}
-#      f(\underline{x}) = f_1(\underline{x}) \quad \forall \underline{z} \in Class\, 1
-#      \dots
-#      f(\underline{x}) = f_k(\underline{x}) \quad \forall \underline{z} \in Class\, k
-#      \dots
-#      f(\underline{x}) = f_N(\underline{x}) \quad \forall \underline{z} \in Class\, N
-#    \end{align}
-#
-# where the N classes are defined by the classifier.
-#
-# Using the supervised mode the classifier partitions the input and output space at once:
+# The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
 #
 # .. math::
-#    z =(\underline{x}, f( \underline{x}))
+#    \begin{aligned}
+#      f(\vect{x}) &= f_1(\vect{x}) \quad \forall \vect{x} \in \text{Class}_1 \\
+#      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k \\
+#      f(\vect{x}) &= f_n(\vect{x}) \quad \forall \vect{x} \in \text{Class}_n
+#    \end{aligned}
 #
-# The classifier is MixtureClassifier based on a MixtureDistribution defined as:
+# where the `n` classes are defined by the classifier.
+#
+# Using the supervised mode the classifier partitions the input and output spaces at once:
 #
 # .. math::
-#    p(\underline{x}) = \sum_{i=1}^N w_ip_i(\underline{x})
+#    z =(\vect{x}, f( \vect{x}))
+#
+# The classifier is :class:`~openturns.MixtureClassifier` based on a :class:`~openturns.Mixture` distribution defined as:
+#
+# .. math::
+#    p(\vect{x}) = \sum_{i=1}^n w_ip_i(\vect{x})
 #
 #
-# The rule to assign a point to a class is defined as follows: :math:`\underline{x}` is assigned to the class :math:`j=argmax_j \log w_kp_k(\underline{z})`.
+# The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j=\text{argmax}_j \log w_kp_k(\vect{x})`.
 #
-# The grade of :math:`\underline{x}` with respect to the class :math:`k` is :math:`\log w_kp_k(\underline{x})`.
+# The grade of :math:`\vect{x}` with respect to the class :math:`k` is :math:`\log w_kp_k(\vect{x})`.
 #
 #
 
@@ -77,7 +75,7 @@ adaptiveStrategy = ot.FixedStrategy(
 )
 
 # %%
-# Segment 1: (-1.0; 0.0)
+# Segment 1: :math:`(-1.0; 0.0)`
 d1 = ot.Uniform(-1.0, 0.0)
 X1 = d1.getSample(samplingSize)
 Y1 = f(X1)
@@ -88,7 +86,7 @@ graph = mm1.draw(-1.0, -1e-6)
 view = viewer.View(graph)
 
 # %%
-# Segment 2: (0.0, 1.0)
+# Segment 2: :math:`(0.0, 1.0)`
 d2 = ot.Uniform(0.0, 1.0)
 X2 = d2.getSample(samplingSize)
 Y2 = f(X2)

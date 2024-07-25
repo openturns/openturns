@@ -106,8 +106,8 @@ print("Adjusted R-squared = ", result_forward.getAdjustedRSquared())
 # With this first forward stepwise regression, the results show that the selected optimal basis contains a constant term,
 # plus two linear terms depending respectively on the pH value (pH) and on the sodium concentration (Na).
 #
-# As can be expected, the R-squared value diminishes if compared to the regression on the entire basis, as the stepwise
-# regression results in a lower number of predictive variables.  However, it can also be seen that the adjusted R-squared,
+# As can be expected, the :math:`R^2` value diminishes if compared to the regression on the entire basis, as the stepwise
+# regression results in a lower number of predictive variables.  However, it can also be seen that the adjusted :math:`R^2`,
 # which is a metric that also takes into account the ratio  between the amount of training data and the number of explanatory
 # variables, is improved if compared to the complete model.
 
@@ -182,7 +182,7 @@ print("Adjusted R-squared = ", result_both.getAdjustedRSquared())
 # Graphical analyses
 # ------------------
 #
-# Finally, we can rely on the LinearModelAnalysis class in order to analyse
+# Finally, we can rely on the :class:`~openturns.LinearModelAnalysis` class in order to analyze
 # the predictive differences between the obtained models.
 
 # %%
@@ -247,5 +247,5 @@ plt.tight_layout()
 
 # %%
 # The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity
-# should take into account the influence of 2 regession variables as well as the constant term. This is coherent with the results previously
-# obtained
+# should take into account the influence of 2 regression variables as well as the constant term. This is consistent with the results previously
+# obtained.

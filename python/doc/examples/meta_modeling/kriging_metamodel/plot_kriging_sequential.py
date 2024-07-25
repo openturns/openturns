@@ -1,10 +1,10 @@
 """
-Sequentially adding new points to a kriging
+Sequentially adding new points to a Kriging
 ===========================================
 """
 # %%
-# In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel.
-# In order to create simple graphics, we consider a 1D function.
+# In this example, we show how to sequentially add new points to a Kriging in order to improve the predictivity of the metamodel.
+# In order to create simple graphics, we consider a 1-d function.
 
 # %%
 # Create the function and the design of experiments
@@ -146,7 +146,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
 
 
 # %%
-# We start by creating the initial kriging metamodel on the 4 points in the design of experiments.
+# We start by creating the initial Kriging metamodel on the 4 points in the design of experiments.
 
 # %%
 krigResult = createMyBasicKriging(X, Y)
@@ -194,7 +194,7 @@ X.add(xNew)
 Y.add(yNew)
 
 # %%
-# We now plot the updated kriging.
+# We now plot the updated Kriging.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3
@@ -221,7 +221,7 @@ for krigingStep in range(5):
 # We observe that the second added point is the left bound of the domain.
 # The remaining points were added strictly inside the domain where the accuracy was drastically improved.
 #
-# With only 10 points, the metamodel accuracy is already very good with a Q2 which is equal to 99.9%.
+# With only 10 points, the metamodel accuracy is already very good with a :math:`Q^2` which is equal to 99.9%.
 
 # %%
 # Conclusion

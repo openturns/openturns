@@ -21,7 +21,7 @@ bm = branin_function.BraninModel()
 model = bm.objectiveFunction
 
 # %%
-# We shall represent this 2D function with isolines. We set the number of isolines to a maximum of 10
+# We shall represent this 2-d function with isolines. We set the number of isolines to a maximum of 10
 # thanks to the following `ResourceMap` key :
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
@@ -64,8 +64,8 @@ print(bm.objectiveFunction(sample1))
 # Definition of the Kriging metamodel
 # -----------------------------------
 #
-# We use the :class:`~openturns.KrigingAlgorithm` class to perform the kriging analysis.
-# We first generate a design of experiments with LHS and store the input trainig points in `xdata`
+# We use the :class:`~openturns.KrigingAlgorithm` class to perform the Kriging analysis.
+# We first generate a design of experiments with LHS and store the input training points in `xdata`
 experiment = ot.LHSExperiment(
     ot.JointDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
     28,
@@ -89,19 +89,19 @@ basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 
 # %%
-# We have all the components to build a kriging algorithm and run it :
+# We have all the components to build a Kriging algorithm and run it :
 algo = ot.KrigingAlgorithm(xdata, ydata, covarianceModel, basis)
 algo.run()
 
 # %%
-# We get the result of the kriging analysis with :
+# We get the result of the Kriging analysis with :
 result = algo.getResult()
 
 # %%
 # Metamodel visualization
 # -----------------------
 #
-# We draw the kriging metamodel of the Branin function. It is the mean of the random process.
+# We draw the Kriging metamodel of the Branin function. It is the mean of the random process.
 metamodel = result.getMetaModel()
 
 
@@ -145,7 +145,7 @@ print(metamodel(sample1))
 # seen as a measure of the error of the metamodel.
 
 # %%
-# We discretize the domain with 22 points (N inside points and 2 endpoints) :
+# We discretize the domain with 22 points (`N` inside points and 2 endpoints) :
 N = 20
 inputData = ot.Box([N, N]).generate()
 
@@ -178,7 +178,7 @@ view = otv.View(graphFineTune)
 print(result.getConditionalMarginalVariance(xdata, 0)[0:5])
 
 # %%
-# These values are nearly zero which is expected as the kriging interpolates data. The value being
+# These values are nearly zero which is expected as the Kriging interpolates data. The value being
 # known it is not random anymore and the variance ought to be zero.
 
 # %%

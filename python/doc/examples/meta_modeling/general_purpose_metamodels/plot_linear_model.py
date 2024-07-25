@@ -2,7 +2,7 @@
 Create a linear model
 =====================
 In this example we create a surrogate model using linear model approximation
-using the :class:`~openturns.LinearModelAlgorithm` class.
+with the :class:`~openturns.LinearModelAlgorithm` class.
 We show how the :class:`~openturns.LinearModelAnalysis` class
 can be used to produce the statistical analysis of the least squares
 regression model.
@@ -11,7 +11,7 @@ regression model.
 # Introduction
 # ~~~~~~~~~~~~
 #
-# The following 2-dimensional function is used in this example:
+# The following 2-d function is used in this example:
 #
 # .. math::
 #
@@ -64,9 +64,8 @@ output_sample = func(input_sample) + epsilon
 # Linear regression
 # ~~~~~~~~~~~~~~~~~
 #
-# Let us run the linear model algorithm using the
-# :class:`~openturns.LinearModelAlgorithm` class and get the associated
-# results:
+# Let us run the linear model algorithm using the :class:`~openturns.LinearModelAlgorithm`
+# class and get the associated results:
 
 # %%
 algo = ot.LinearModelAlgorithm(input_sample, output_sample)
@@ -76,7 +75,7 @@ result = algo.getResult()
 # Residuals analysis
 # ~~~~~~~~~~~~~~~~~~
 #
-# We can now analyse the residuals of the regression on the training data.
+# We can now analyze the residuals of the regression on the training data.
 # For clarity purposes, only the first 5 residual values are printed.
 
 # %%
@@ -102,8 +101,8 @@ result.getNoiseDistribution()
 # Analysis of the results
 # ~~~~~~~~~~~~~~~~~~~~~~~
 #
-# In order to post-process the linear regression results, the
-# :class:`~openturns.LinearModelAnalysis` class can be used:
+# In order to post-process the linear regression results, the :class:`~openturns.LinearModelAnalysis`
+# class can be used:
 
 # %%
 analysis = ot.LinearModelAnalysis(result)
@@ -119,10 +118,10 @@ analysis
 #   zero for all coefficients.
 #   Hence, we can reject the hypothesis that any coefficient is zero.
 #   In other words, all the coefficients are significantly nonzero.
-# - The R2 score is close to 1.
-#   Furthermore, the adjusted R2 value, which takes into account the size of
+# - The :math:`R^2` score is close to 1.
+#   Furthermore, the adjusted :math:`R^2` value, which takes into account the size of
 #   the data set and the number of hyperparameters, is similar to the
-#   unadjusted R2 score.
+#   unadjusted :math:`R^2` score.
 #   Most of the variance is explained by the linear model.
 # - The F-test tests if all coefficients are simultaneously zero.
 #   The `Fisher-Snedecor` p-value is lower than 1%.
@@ -186,7 +185,7 @@ graph = analysis.drawResidualsVsLeverages()
 view = viewer.View(graph)
 
 # %%
-# In this case, there seem to be no obvious influential outlier characterized
+# In this case, there seems to be no obvious influential outlier characterized
 # by large leverage and residual values.
 #
 # Similarly, we can also plot Cook's distances as a function of the sample
