@@ -701,6 +701,7 @@ void KernelSmoothing::save(Advocate & adv) const
   adv.saveAttribute("automaticLowerBound_", automaticLowerBound_);
   adv.saveAttribute("upperBound_", upperBound_);
   adv.saveAttribute("automaticUpperBound_", automaticUpperBound_);
+  adv.saveAttribute("useLogTransform_", useLogTransform_);
 }
 
 /* Method load() reloads the object from the StorageManager */
