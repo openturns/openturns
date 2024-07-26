@@ -11,7 +11,7 @@ A quick start guide to graphs
 # The `draw` method the `Graph` class
 # -----------------------------------
 #
-# The simplest way to create a graph is to use the `draw` method. The `Normal` distribution for example provides a method to draw the density function of the gaussian distribution.
+# The simplest way to create a graph is to use the `draw` method. The :class:`~openturns.Normal` distribution for example provides a method to draw its density function.
 
 # %%
 import openturns as ot
@@ -29,20 +29,20 @@ graph = n.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# To configure the look of the plot, we can first observe the type of graph returned by the `drawPDF` method returns: it is a `Graph`.
+# To configure the look of the plot, we can first observe the type of graph returned by the `drawPDF` method returns: it is a :class:`~openturns.Graph`.
 
 # %%
 graph = n.drawPDF()
 type(graph)
 
 # %%
-# The `Graph` class provides several methods to configure the legends, the title and the colors.
-# Since a graph  can contain several sub-graphs, the `setColors` takes a list of colors as inputs argument: each item of the list corresponds to the sub-graphs.
+# The class:`~openturns.Graph` class provides several methods to configure the legends, the title and the colors.
+# Since a graph  can contain several sub-graphs, the `setColors` method takes a list of colors as inputs argument: each item of the list corresponds to the sub-graphs.
 
 # %%
 graph.setXTitle("N")
 graph.setYTitle("PDF")
-graph.setTitle("Probability density function of the standard gaussian distribution")
+graph.setTitle("Probability density function of the standard Gaussian distribution")
 graph.setLegends(["N"])
 graph.setColors(["blue"])
 view = viewer.View(graph)
@@ -74,7 +74,7 @@ view = viewer.View(graph)
 # Draw a cloud
 # ------------
 #
-# The `Cloud` class creates clouds of bidimensional points. To demonstrate it, let us create two gaussian distributions in two dimensions.
+# The :class:`~openturns.Cloud` class creates clouds of bidimensional points. To illustrate it, let us create two Normal distributions in two dimensions.
 
 # %%
 # Create a Funky distribution
@@ -108,7 +108,7 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We sometimes want to customize the graph by choosing the type of point (square, triangle, circle, etc...), of line (continuous, dashed, etc...) or another parameter.
+# We sometimes want to customize the graph by choosing the type of point (square, triangle, circle, etc.), of line (continuous, dashed, etc.) or another parameter.
 # We can know the list of possible values with the corresponding `getValid` method.
 #
 # For example, the following function returns the possible values of the `PointStyle` parameter.
@@ -137,7 +137,7 @@ view = viewer.View(graph)
 # Configure the style of points and the thickness of a curve
 # ----------------------------------------------------------
 #
-# Assume that we want to plot the sine curve from -2 to 2. The simplest way is to use the `draw` method of the function.
+# Assume that we want to plot the `sine` curve from -2 to 2. The simplest way is to use the `draw` method of the function.
 
 # %%
 g = ot.SymbolicFunction("x", "sin(x)")
@@ -147,14 +147,14 @@ graph = g.draw(-2, 2)
 view = viewer.View(graph)
 
 # %%
-# I would rather get a dashed curve: let us search for the available line styles.
+# One would rather get a dashed curve: let us search for the available line styles.
 
 # %%
 ot.Drawable.GetValidLineStyles()
 
 
 # %%
-# In order to use the `Curve` class, it will be easier if we have a method to generate a `Sample` containing points regularly spaced in an interval.
+# In order to use the :class:`~openturns.Curve` class, it will be easier if we have a method to generate a :class:`~openturns.Sample` containing points regularly spaced in an interval.
 
 
 # %%
@@ -216,9 +216,9 @@ view = viewer.View(graph)
 # Create matrices of graphs
 # -------------------------
 #
-# The library provides features to create a grid of graphs. However, we can use the `add_subplot` function from Matplotlib.
+# The library provides features to create a grid of graphs. However, we can use the `add_subplot` function from `Matplotlib`.
 #
-# Let us create two graphs of the PDF and CDF of the following gaussian distribution..
+# Let us create two graphs of the PDF and CDF of the following Normal distribution..
 
 # %%
 n = ot.Normal()
@@ -233,9 +233,9 @@ grid.setGraph(0, 1, myCDF)
 _ = viewer.View(grid)
 
 # %%
-# Another method is to create a figure with the `figure` function from Matplotlib,
+# Another method is to create a figure with the `figure` function from `Matplotlib`,
 # then add two graphs with the `add_subplot` function.
-# We use the `viewer.View` function to create the required Matplotlib object.
+# We use the `viewer.View` function to create the required `Matplotlib` object.
 # Since we are not interested by the output of the `View` function, we use the dummy variable `_` as output.
 # The title is finally configured with `suptitle`.
 
@@ -252,7 +252,7 @@ _ = fig.suptitle("The gaussian")
 # -----------------------
 
 # %%
-# The `View` class has a `save` method which saves the graph into an image.
+# The :class:`openturns.viewer.View` class has a `save` method which saves the graph into an image.
 
 # %%
 
@@ -269,13 +269,13 @@ view.save("normal.png")
 view.save("normal-100dpi.png", dpi=100)
 
 # %%
-# Configure the size of a graph with matplotlib
-# ---------------------------------------------
+# Configure the size of a graph with `matplotlib`
+# -----------------------------------------------
 
 # %%
 
 # %%
-# We first create a graph containing the PDF of a gaussian distribution
+# We first create a graph containing the PDF of a Normal distribution
 
 # %%
 n = ot.Normal()

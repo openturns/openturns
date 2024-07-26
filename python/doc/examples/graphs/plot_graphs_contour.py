@@ -18,7 +18,7 @@ import openturns as ot
 import openturns.viewer as viewer
 
 # %%
-# We build a bidimensional function (function of x and y), define the study domain and the sample size
+# We build a bidimensional function (function of `x` and `y`), define the study domain and the sample size
 
 # %%
 f = ot.SymbolicFunction(["x", "y"], ["exp(-sin(cos(y)^2 * x^2 + sin(x)^2 * y^2))"])
@@ -37,14 +37,14 @@ graph = f.draw([YMin, YMin], [XMax, YMax], [NX, NY])
 view = viewer.View(graph)
 
 # %%
-# The graph contains an unique drawable whose implementation is of class `Contour`
+# The graph contains a unique drawable whose implementation is of class :class:`~openturns.Contour`
 
 # %%
 contour = graph.getDrawable(0).getImplementation()
 print(type(contour).__name__)
 
 # %%
-# Another way to build the contour is to build the data sample and give it to the constructor of the `Contour` class
+# Another way to build the contour is to build the data sample and give it to the constructor of the :class:`~openturns.Contour` class
 
 # %%
 inputData = ot.Box([NX, NY]).generate()
@@ -100,7 +100,7 @@ view = viewer.View(graph)
 # %%
 # When the function takes values very different in magnitude, it may be useful to change the norm which is
 # used to distribute the colors and to bound the color interval.
-# Here we will also let `matplotlib` calculate the levels by not giving any level to the contour
+# Here we will also let `Matplotlib` calculate the levels by not giving any level to the contour
 
 # %%
 contour.setColorMapNorm("log")
@@ -130,8 +130,8 @@ x_punk = ot.ComposedDistribution([x1, x2], copula)
 mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%
-# The constructed graph is composed of the superposition of a filled contour and iso lines
-# We also changed the thickness and style of the lines to show the effect although it is not useful here
+# The constructed graph is composed of the superposition of a filled contour and iso lines.
+# We also changed the thickness and style of the lines to show the effect although it is not useful here.
 
 # %%
 graph = mixture.drawPDF([-5.0, -5.0], [5.0, 5.0])
