@@ -416,8 +416,13 @@ void Pagmo::run()
     if (!memory)
       ker = std::min(ker, populationSize);
     pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "de")
@@ -483,8 +488,13 @@ void Pagmo::run()
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     pagmo::pso_gen algorithm_impl(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "sea")
@@ -532,7 +542,15 @@ void Pagmo::run()
     const Scalar cmu = ResourceMap::GetAsScalar("Pagmo-cmaes-cmu");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-cmaes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::cmaes(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    pagmo::cmaes algorithm_impl(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
+    if (!emulatedConstraints)
+      algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
+    algo = algorithm_impl;
   }
   else if (algoName_ == "xnes")
   {
@@ -553,8 +571,13 @@ void Pagmo::run()
     const Scalar m = ResourceMap::GetAsScalar("Pagmo-nsga2-m");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_m");
     pagmo::nsga2 algorithm_impl(getMaximumIterationNumber(), cr, eta_c, m, eta_m);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "moead")
@@ -584,7 +607,15 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    algo = pagmo::moead_gen(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    pagmo::moead_gen algorithm_impl(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
+    if (!emulatedConstraints)
+      algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
+    algo = algorithm_impl;
   }
 #endif
   else if (algoName_ == "mhaco")
@@ -599,8 +630,13 @@ void Pagmo::run()
     if (!memory)
       ker = std::min(ker, populationSize);
     pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "nspso")
@@ -615,8 +651,13 @@ void Pagmo::run()
     const String diversity_mechanism = ResourceMap::GetAsString("Pagmo-nspso-diversity_mechanism");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     pagmo::nspso algorithm_impl(getMaximumIterationNumber(), omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else
