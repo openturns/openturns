@@ -270,7 +270,9 @@ view = View(graph)
 
 # mixed legend
 f = ot.SymbolicFunction(["x", "y"], ["sin(x)*sin(y)"])
-graph = f.draw([-4.0] * 2, [4.0] * 2, [64] * 2)
+# use different numbers of points for x and y to check
+# these numbers are handled properly by the viewer
+graph = f.draw([-4.0] * 2, [4.0] * 2, [64, 32])
 curve = ot.Curve([-4.0, 4.0], [1.0, 1.0], "curve")
 curve.setColor("black")
 curve.setLineStyle("dashed")
