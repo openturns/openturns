@@ -503,7 +503,8 @@ void Pagmo::run()
     const Scalar cmu = ResourceMap::GetAsScalar("Pagmo-cmaes-cmu");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-cmaes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    pagmo::cmaes algorithm_impl(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    const Bool force_bounds = getProblem().hasBounds();
+    pagmo::cmaes algorithm_impl(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
 #if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2020
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -521,7 +522,8 @@ void Pagmo::run()
     const Scalar eta_b = ResourceMap::GetAsScalar("Pagmo-xnes-eta_b");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-xnes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    const Bool force_bounds = getProblem().hasBounds();
+    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
   }
 #endif
   else if (algoName_ == "nsga2")
