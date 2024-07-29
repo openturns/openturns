@@ -522,7 +522,9 @@ String Mesh::__repr__() const
 
 String Mesh::__str__(const String & ) const
 {
-  return __repr__();
+  return OSS() << getClassName() << "(dimension=" << getDimension()
+               << ", vertices=" << vertices_.getSize()
+               << ", simplices=" << simplices_.getSize() << ")";
 }
 
 /* Drawing method */
