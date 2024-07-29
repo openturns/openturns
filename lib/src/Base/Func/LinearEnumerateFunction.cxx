@@ -179,7 +179,10 @@ void LinearEnumerateFunction::setUpperBound(const Indices & /*upperBound*/)
 EnumerateFunction LinearEnumerateFunction::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger inputDimension = getDimension();
-  indices.check(inputDimension);
+  if (!indices.check(inputDimension))
+  {
+    throw InvalidArgumentException(HERE) << "Indices " << indices << "must not exceed dimension " << inputDimension;
+  }
   const UnsignedInteger activeDimension = indices.getSize();
   const LinearEnumerateFunction enumerateFunctionMarginal(activeDimension);
   return enumerateFunctionMarginal;

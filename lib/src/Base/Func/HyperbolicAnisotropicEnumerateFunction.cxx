@@ -280,7 +280,10 @@ void HyperbolicAnisotropicEnumerateFunction::setUpperBound(const Indices & upper
 EnumerateFunction HyperbolicAnisotropicEnumerateFunction::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger inputDimension = getDimension();
-  indices.check(inputDimension);
+  if (!indices.check(inputDimension))
+  {
+    throw InvalidArgumentException(HERE) << "Indices " << indices << "must not exceed dimension " << inputDimension;
+  }
   const UnsignedInteger activeDimension = indices.getSize();
   Point weightMarginal(activeDimension);
   for (UnsignedInteger i = 0; i < activeDimension; ++i)
