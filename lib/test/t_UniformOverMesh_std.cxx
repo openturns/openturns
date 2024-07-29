@@ -34,7 +34,7 @@ int main(int, char *[])
   try
   {
     // Instantiate one distribution object
-    LevelSetMesher mesher(Indices(2, 5));
+    LevelSetMesher mesher(Indices(2, 25));
     SymbolicFunction function(Description::BuildDefault(2, "x"), Description(1, "10*(x0^3+x1)^2+x0^2"));
     Scalar level = 0.5;
     LevelSet domain(function, LessOrEqual(), level);
@@ -74,7 +74,7 @@ int main(int, char *[])
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     Scalar CDF = distribution.computeCDF( point );
-    fullprint << "cdf=" << CDF << std::endl;
+    fullprint << "cdf=" << std::setprecision(3) << CDF << std::setprecision(6) << std::endl;
     /* Too expensive for a test
     Scalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
