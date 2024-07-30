@@ -9,34 +9,133 @@ Available constructors:
 Parameters
 ----------
 dimension : int, :math:`dimension>0`
-    The dimension of the functions to integrate. The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
+    The input dimension of the functions to integrate.
 discretization : sequence of int
-    The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+    The number of nodes in each dimension.
+    The sequence must be non-empty and must contain only positive values.
+    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber*
+    in each dimension, see :class:`~openturns.ResourceMap`.
 
 Notes
 -----
-The Gauss-Legendre algorithm enables to approximate the definite integral:
+The Gauss-Legendre algorithm approximates the definite integral:
 
 .. math::
 
-    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}}
+    \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}}
 
 
-with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` using a fixed tensorized Gauss-Legendre approximation:
+where :math:`\model: \Rset^\inputDim \mapsto \Rset^\outputDim` is a function and
+:math:`\vect{a}, \vect{b}\in\Rset^\inputDim` are the bounds
+where :math:`a_i \leq b_i` for :math:`i \in \{1, ..., \inputDim\}`.
+For :math:`i \in \{1, ..., \inputDim\}`, let :math:`s_i \in \Nset` be the number
+of marginal nodes of the univariate Gauss-Legendre quadrature.
+The algorithm uses a fixed tensorized Gauss-Legendre approximation based
+on the tensor-product Gauss quadrature using
+:math:`s_1, ..., s_\inputDim \in \Nset` marginal nodes.
+In other words, this algorithms uses an anisotropic quadrature rule,
+i.e. the number of nodes in each marginal dimension
+are not necessarily equal.
+
+In order to get a more straightforward access to the nodes and weights,
+please use the :class:`~openturns.GaussProductExperiment` class.
+In order to create a more general tensor product quadrature,
+please use the :class:`~openturns.TensorProductExperiment` class.
+
+**Quadrature rule**
+
+More precisely, for any marginal index :math:`i \in \{1, ..., \inputDim\}`,
+for any node index :math:`k_i \in \{1, ..., s_i\}`,
+let :math:`x^{(i)}_{k_i} \in [a_i, b_i]` be the :math:`k_i`-th node and
+let :math:`w^{(i)}_{k_i} \geq 0` be the associated weight of the 1D
+Gauss-Legendre quadrature.
+The approximated integral is:
 
 .. math::
 
-    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+    \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}} 
+    \approx \sum_{k_1 = 1}^{s_1} \cdots \sum_{k_\inputDim = 1}^{s_\inputDim} 
+    \left(\prod_{i=1}^\inputDim w^{(i)}_{k_i}\right)
+    \model\left(x^{(1)}_{k_1},\dots,x^{(\inputDim)}_{k_\inputDim}\right).
 
-where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` th node of the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+The total number of nodes is the product of marginal number of nodes:
+
+.. math::
+
+    \prod_{i = 1}^\inputDim s_i.
+
+
+**Polynomial exactness**
+
+The Gauss-Legendre quadrature rule is exact for polynomials
+up to some degree.
+More precisely, for any :math:`m_i \in \Nset`, let :math:`\mathcal{P}_{m_i}^{(1)}`
+be the set of mono-variable polynomials of degree lower or equal to :math:`m_i`.
+Consider the tensor product of 1D polynomials:
+
+.. math::
+
+    \bigotimes_{i = 1}^\inputDim \mathcal{P}_{m_i}^{(1)}
+    = 
+    \left\{
+    (x_1, ..., x_\inputDim)\in\Rset^\inputDim
+    \rightarrow \prod_{i = 1}^\inputDim p_i(x_i) \in \Rset, \quad 
+    p_i \in \mathcal{P}_{m_i}^{(1)}
+    \right\}.
+
+Therefore the Gauss-Legendre tensorized quadrature is exact for all
+polynomials of the vector space:
+
+.. math::
+
+    \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 s_i - 1}^{(1)}.
+
+See also
+--------
+GaussProductExperiment, TensorProductExperiment
 
 Examples
 --------
-Create a Gauss-Legendre algorithm:
+Create a Gauss-Legendre algorithm in dimension 2.
 
 >>> import openturns as ot
 >>> algo = ot.GaussLegendre(2)
->>> algo = ot.GaussLegendre([2, 4, 5])"
+
+Create a Gauss-Legendre algorithm in dimension 3 with 2 nodes for :math:`x_1`,
+4 nodes for :math:`x_2` and 5 nodes for :math:`x_3`.
+
+>>> algo = ot.GaussLegendre([2, 4, 5])
+
+Compute the following integral:
+
+.. math::
+
+    \int_{[0,1]^3} x_1^5 x_2^3 x_3^7 d\vect{x}
+
+>>> dimension = 3
+>>> bounds = ot.Interval([0.0] * dimension, [1.0] * dimension)
+>>> polynomial = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['x1^5 * x2^3 * x3^7'])
+>>> algo = ot.GaussLegendre(dimension)
+>>> computedIntegral = algo.integrate(polynomial, bounds)
+>>> print(computedIntegral)
+[0.00520833]
+
+In the previous example, we used the default number of nodes in each dimension,
+as defined by the :class:`~openturns.ResourceMap`.
+In the next example, we set the number of marginal nodes:
+we use 3 nodes for :math:`x_1`, 2 nodes for :math:`x_2`, 4 nodes for :math:`x_3`.
+In this case, the vector space for which the Gauss-Legendre quadrature
+rule is exact is :math:`\mathcal{P}_5 \otimes \mathcal{P}_3 \otimes \mathcal{P}_7`.
+In other words, we test the quadrature rule against the
+polynomial with maximum possible marginal degrees.
+
+>>> dimension = 3
+>>> bounds = ot.Interval([0.0] * dimension, [1.0] * dimension)
+>>> polynomial = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['x1^5 * x2^3 * x3^7'])
+>>> algo = ot.GaussLegendre([3, 2, 4])
+>>> computedIntegral = algo.integrate(polynomial, bounds)
+>>> print(computedIntegral)
+[0.00520833]"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::integrate
@@ -47,9 +146,9 @@ Available usages:
 
 Parameters
 ----------
-f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+f : :class:`~openturns.Function`, :math:`f: \Rset^\inputDim \mapsto \Rset^\outputDim`
     The integrand function.
-interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^\inputDim` 
     The integration domain. 
 
 Returns
@@ -76,9 +175,9 @@ Examples
 
 Parameters
 ----------
-f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+f : :class:`~openturns.Function`, :math:`f: \Rset^\inputDim \mapsto \Rset^\outputDim`
     The integrand function.
-interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d`
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^\inputDim`
     The integration domain.
 
 Returns
@@ -127,7 +226,7 @@ discretization : :class:`~openturns.Indices`
 Returns
 -------
 nodes : :class:`~openturns.Sample`
-    The tensorized Gauss-Legendre integration nodes on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+    The tensorized Gauss-Legendre integration nodes on :math:`[0,1]^\inputDim` where :math:`d>0` is the dimension of the integration algorithm."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::getWeights
@@ -136,5 +235,5 @@ nodes : :class:`~openturns.Sample`
 Returns
 -------
 weights : :class:`~openturns.Point`
-    The tensorized Gauss-Legendre integration weights on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+    The tensorized Gauss-Legendre integration weights on :math:`[0,1]^\inputDim` where :math:`d>0` is the dimension of the integration algorithm."
 
