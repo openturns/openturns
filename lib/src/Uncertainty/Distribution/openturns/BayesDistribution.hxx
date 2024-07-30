@@ -72,6 +72,10 @@ public:
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Compute the CDF of the distribution */
+  using ContinuousDistribution::computeCDF;
+  Scalar computeCDF(const Point & point) const override;
+
   /* Interface specific to BayesDistribution */
 
   /** Conditioned distribution accessor */

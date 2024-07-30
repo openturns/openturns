@@ -154,6 +154,82 @@ Scalar BayesDistribution::computePDF(const Point & point) const
   return deconditionedPDF * conditioningPDF;
 }
 
+namespace {
+// Class used to compute the CDF of a Bayes distribution
+class BayesCDFKernel: public EvaluationImplementation
+{
+public:
+  BayesCDFKernel(const Distribution & conditionedDistribution,
+		 const Distribution & conditioningDistribution,
+		 const Function & linkFunction,
+		 const Point & x)
+    : EvaluationImplementation()
+    , conditionedDistribution_(conditionedDistribution)
+    , conditioningDistribution_(conditioningDistribution)
+    , linkFunction_(linkFunction)
+    , x_(x)
+  {
+    // Nothing to do
+  }
+
+  BayesCDFKernel * clone() const
+  {
+    return new BayesCDFKernel(*this);
+  }
+
+  Point operator() (const Point & point) const
+  {
+    const Scalar pdfY = conditioningDistribution_.computePDF(point);
+    if (pdfY == 0.0) return Point(1, 0.0);
+    Distribution parameterized(conditionedDistribution_);
+    const Point parameter(linkFunction_(point));
+    parameterized.setParameter(parameter);
+    const Scalar cdfX = parameterized.computeCDF(x_);
+    return Point(1, pdfY * cdfX);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return conditioningDistribution_.getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return conditioningDistribution_.getDescription();
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "BayesCDFKernel");
+  }
+
+private:
+  const Distribution & conditionedDistribution_;
+  const Distribution & conditioningDistribution_;
+  const Function & linkFunction_;
+  const Point & x_;
+};  // class BayesCDFKernel
+} // anonymous namespace
+
+/* Get the CDF of the distribution */
+Scalar BayesDistribution::computeCDF(const Point & point) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
+  Point y(conditioningDistribution_.getDimension());
+  std::copy(point.begin(), point.begin() + y.getSize(), y.begin());
+  Point x(conditionedDistribution_.getDimension());
+  std::copy(point.begin() + y.getSize(), point.end(), x.begin());
+  Point lowerY(conditioningDistribution_.getRange().getLowerBound());
+  const Function kernel(BayesCDFKernel(conditionedDistribution_, conditioningDistribution_, linkFunction_, x));
+  const Scalar cdf = IteratedQuadrature().integrate(kernel, Interval(lowerY, y))[0];
+  return cdf;
+}
+
 /* Bayes distribution accessor */
 void BayesDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
 {
