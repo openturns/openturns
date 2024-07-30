@@ -151,8 +151,6 @@ for i in range(Ns):
     cloud = ot.Cloud(list_subSamples[i])
     # cloud.setPointStyle("dot")
     graph.add(cloud)
-col = ot.Drawable().BuildDefaultPalette(Ns)
-graph.setColors(col)
 
 # %%
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
@@ -165,7 +163,6 @@ for i in range(levels.getSize()):
     dr.setLineStyle("solid")
     dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
-    dr.setColor(col[i])
     graph.add(dr)
 
 # %%
@@ -189,7 +186,6 @@ for i in range(levels.getSize()):
     dr.setLineWidth(3)
     graph.add(dr)
 
-graph.setColors(col)
 graph.setLegendPosition("lower left")
 graph.setTitle("Subset sampling: thresholds")
 graph.setXTitle(r"$x_1$")

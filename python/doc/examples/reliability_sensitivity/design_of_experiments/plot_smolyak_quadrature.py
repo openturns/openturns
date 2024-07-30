@@ -324,13 +324,11 @@ n_max = 11
 curve = drawTensorizedGaussQuadrature(n_max)
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setLegendPosition("upper right")
-palette = ot.Drawable.BuildDefaultPalette(4)
-graph.setColors(palette)
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
     figure_kw={"figsize": (5.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.tight_layout()
 plt.show()

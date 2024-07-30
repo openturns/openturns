@@ -258,9 +258,10 @@ def plotKrigingConfidenceBounds(krigingResult, x_test, myTransform, color, alpha
 # Plot a confidence interval.
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a constant trend")
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     figure_kw={"figsize": (7.0, 3.0)},
 )
 
@@ -321,9 +322,10 @@ graph.add(plotTrend(x_test, myTrend, myTransform, palette[2]))
 # Add the 95% confidence interval.
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a linear trend")
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     figure_kw={"figsize": (7.0, 3.0)},
 )
 
@@ -383,9 +385,10 @@ graph.add(plotTrend(x_test, myTrend, myTransform, palette[2]))
 # sphinx_gallery_thumbnail_number = 6
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a quadratic trend")
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     figure_kw={"figsize": (7.0, 3.0)},
 )
 

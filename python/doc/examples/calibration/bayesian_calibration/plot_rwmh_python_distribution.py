@@ -202,7 +202,6 @@ for parameter_index in range(2):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     priorGraph = prior.getMarginal(parameter_index).drawPDF()
     graph.add(priorGraph)
-    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
     graph.setLegends(["Posterior", "Prior"])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
