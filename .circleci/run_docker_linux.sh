@@ -29,7 +29,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" \
       -DSPHINX_FLAGS="-W -T -j4" \
       ${source_dir}
-make install
+OPENTURNS_NUM_THREADS=1 make install
 if test -n "${uid}" -a -n "${gid}"
 then
   cp -r ~/.local/share/doc/openturns/html .
