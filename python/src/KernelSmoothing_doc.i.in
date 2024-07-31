@@ -551,3 +551,23 @@ The estimator depends on the threshold sample size :math:`n_t` defined in the
 
 - if :math:`\sampleSize \leq n_t`, i.e. for a small sample, we use the plugin solve-the-equation method,
 - otherwise, the *mixed* rule is used."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::getBinNumber
+"Accessor to the bin number.
+
+Returns
+-------
+binNumber : int
+    The bin number."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothin::setBinNumber
+"Accessor to the bin number.
+
+Parameters
+----------
+binNumber : int
+    The bin number."
