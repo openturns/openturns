@@ -669,7 +669,9 @@ Bool KernelSmoothing::getBinning() const
 /* Bin number accessor */
 void KernelSmoothing::setBinNumber(const UnsignedInteger binNumber)
 {
-  if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
+  if (binNumber < 2)
+    throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
+  binNumber_ = binNumber;
 }
 
 UnsignedInteger KernelSmoothing::getBinNumber() const
