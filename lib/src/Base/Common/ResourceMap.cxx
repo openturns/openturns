@@ -19,10 +19,8 @@
  *
  */
 #include <mutex>
+#include <thread>
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_UNISTD_H
-#include <unistd.h>                 // for sysconf
-#endif
 #include "openturns/OSS.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Exception.hxx"
@@ -623,14 +621,10 @@ void ResourceMap::loadDefaultConfiguration()
 {
 #ifndef _WIN32
   addAsString("Path-TemporaryDirectory", "/tmp");
-  addAsUnsignedInteger("TBB-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
 #else
   addAsString("Path-TemporaryDirectory", "TEMP");
-  UnsignedInteger numberOfProcessors = 0;
-  std::istringstream iss(getenv("NUMBER_OF_PROCESSORS"));
-  iss >> numberOfProcessors;
-  addAsUnsignedInteger("TBB-ThreadsNumber", numberOfProcessors);
 #endif
+  addAsUnsignedInteger("TBB-ThreadsNumber", std::thread::hardware_concurrency());
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
     try
