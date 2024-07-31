@@ -619,7 +619,8 @@ void ResourceMap::loadConfigurationFile()
 /* Load the configuration defined at installation time */
 void ResourceMap::loadDefaultConfiguration()
 {
-  addAsUnsignedInteger("TBB-ThreadsNumber", std::thread::hardware_concurrency());
+  // using physical cores numbers (logical/2) is faster in most situations
+  addAsUnsignedInteger("TBB-ThreadsNumber", std::max(std::thread::hardware_concurrency() / 2, 1u));
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
     try
