@@ -274,14 +274,12 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
   for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
   {
     // integrate the pdf over the simplex via the unit hypercube transformation
-    const Sample simplexVertices(getSimplexVertices(i));
-    Indices simplexIndices(simplexVertices.getSize());
-    simplexIndices.fill();
     const SimplicialCubature integrationAlgorithm;
-    const Mesh simplexMesh(simplexVertices, IndicesCollection(Collection<Indices>(1, simplexIndices)));
+    const Mesh simplexMesh(mesh.getSubMesh({i}));
     probabilities_[i] = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
 
     // look for pdf maxima over the simplex in the same way
+    const Sample simplexVertices(getSimplexVertices(i));
     const Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
     const ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
     OptimizationProblem problem(pdfUnitCube);
