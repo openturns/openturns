@@ -133,6 +133,14 @@ try:
 except Exception:
     print("ok")
 
+# sub-mesh
+n = 4
+m2 = ot.IntervalMesher([n] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
+submesh = m2.getSubMesh([0, 2])
+print(f"submesh={submesh}")
+assert len(submesh.getSimplices()) == 2
+assert sum(submesh.computeSimplicesVolume()) == 1 / 16, "wrong submesh"
+
 if ot.PlatformInfo.HasFeature("boost"):
     vertices1 = [[0.0, 0.0], [2.0, 0.0], [0.0, 1.0]]
     simplices1 = [[0, 1, 2]]
