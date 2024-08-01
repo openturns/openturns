@@ -48,3 +48,4 @@ P1 gram=
  [ 0          0          0          0.00833333 0          0.00833333 0.00833333 0.0166667  ]]
 True
 ok
+submesh=Mesh(dimension=2, vertices=5, simplices=2)

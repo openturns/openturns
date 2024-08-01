@@ -175,6 +175,9 @@ public:
   /** Intersection */
   Mesh intersect(const Mesh & other) const;
 
+  /** Sub-mesh */
+  Mesh getSubMesh(const Indices & simplicesIndices) const;
+
 protected:
   // Build the affine matrix associated with a given simplex
   void buildSimplexMatrix(const UnsignedInteger index,

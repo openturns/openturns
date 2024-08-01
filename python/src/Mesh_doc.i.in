@@ -753,3 +753,18 @@ Returns
 -------
 intersection : :class:`~openturns.Mesh`
     The intersection mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSubMesh
+"Compute the sub-mesh by filtering simplices.
+
+Parameters
+----------
+simplicesIndices : sequence of int
+    Indices of simplices to retain.
+
+Returns
+-------
+subMesh : :class:`~openturns.Mesh`
+    The sub-mesh."
