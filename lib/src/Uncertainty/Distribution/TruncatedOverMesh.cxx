@@ -31,6 +31,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SimplicialCubature.hxx"
+#include "openturns/IntervalMesher.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -210,31 +211,31 @@ Scalar TruncatedOverMesh::computePDF(const Point & point) const
 Scalar TruncatedOverMesh::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-
   Scalar cdf = 0.0;
   const Interval quadrant(Point(getDimension(), -SpecFunc::MaxScalar), point);
-#if 1
-  // Waiting for a better implementation
   const Interval intersection(quadrant.intersect(getRange()));
-  if (intersection == getRange()) cdf = 1.0;
-  else if (!intersection.isEmpty())
-    cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
-#else
-  // integrate pdf over simplices inside the [-inf, X] quadrant
-  SimplicialCubature integrationAlgorithm;
-  const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
-  for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
+  if (intersection.isEmpty())
+    cdf = 0.0;
+  else if (intersection == getRange())
+    cdf = 1.0;
+  else
   {
-    const Sample simplexVertices(getSimplexVertices(i));
-    // TODO: split simplices that have vertices both inside & outside the quadrant
-    if (!quadrant.contains(simplexVertices.getMax()))
-      continue;
-    Indices simplexIndices(simplexVertices.getSize());
-    simplexIndices.fill();
-    const Mesh simplexMesh(simplexVertices, IndicesCollection(Collection<Indices>(1, simplexIndices)));
-    cdf += integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
+    try
+    {
+      const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
+
+      // integrate pdf over simplices of the quadrant/mesh intersection
+      SimplicialCubature integrationAlgorithm;
+      const UnsignedInteger setMaximumCallsNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber");
+      integrationAlgorithm.setMaximumCallsNumber(setMaximumCallsNumber);
+      cdf = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intersectionMesh)[0];
+    }
+    catch (const NotYetImplementedException &)
+    {
+      // no boost support
+      cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+    }
   }
-#endif
   return cdf;
 }
 
