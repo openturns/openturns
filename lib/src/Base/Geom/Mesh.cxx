@@ -1090,18 +1090,18 @@ Mesh Mesh::intersect(const Mesh & other) const
 #endif
 }
 
-Mesh Mesh::getSubMesh(const Indices & simpliciesIndices) const
+Mesh Mesh::getSubMesh(const Indices & simplicesIndices) const
 {
-  if (!simpliciesIndices.check(simplices_.getSize()))
+  if (!simplicesIndices.check(simplices_.getSize()))
     throw InvalidArgumentException(HERE) << "Simplices indices must be in [0, " << simplices_.getSize() << "[";
   const UnsignedInteger simplexSize = getDimension() + 1;
-  IndicesCollection simplices(simpliciesIndices.getSize(), simplexSize);
+  IndicesCollection simplices(simplicesIndices.getSize(), simplexSize);
   Sample vertices(0, getDimension());
   std::map <UnsignedInteger, UnsignedInteger> usedVertices;
-  for (UnsignedInteger i = 0; i < simpliciesIndices.getSize(); ++ i)
+  for (UnsignedInteger i = 0; i < simplicesIndices.getSize(); ++ i)
     for (UnsignedInteger j = 0; j < simplexSize; ++ j)
     {
-      const UnsignedInteger vertexIndex = simplices_(simpliciesIndices[i], j);
+      const UnsignedInteger vertexIndex = simplices_(simplicesIndices[i], j);
       UnsignedInteger newVertexIndex = vertices.getSize();
       try
       {
