@@ -7,13 +7,13 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 mesher = ot.LevelSetMesher([25] * 2)
-function = ot.SymbolicFunction(["x0", "x1"], ["10*(x0^3+x1)^2+x0^2"])
-level = 0.5
+function = ot.SymbolicFunction(["x0", "x1"], ["sin(x0) * sin(x1)"])
+level = 0.2
 domain = ot.LevelSet(function, ot.LessOrEqual(), level)
-lower = [-0.75, -0.5]
-upper = [0.75, 0.5]
+lower = [-5.0] * 2
+upper = [5.0] * 2
 mesh = mesher.build(domain, ot.Interval(lower, upper), False)
-dist = ot.Normal(2)
+dist = ot.Normal([0.0] * 2, [2.0] * 2)
 distribution = otexp.TruncatedOverMesh(dist, mesh)
 print("Distribution ", distribution)
 
@@ -35,7 +35,7 @@ print("mean=", oneSample.computeMean())
 print("covariance=", oneSample.computeCovariance())
 
 # Define a point
-point = [0.1] * 2
+point = [3.0] * 2
 print("Point= ", point)
 
 # Show PDF and CDF of point

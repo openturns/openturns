@@ -45,7 +45,7 @@ print("log pdf=%.5g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.5g" % PDF)
 CDF = distribution.computeCDF(point)
-print("cdf=%.5g" % CDF)
+print(f"cdf={CDF:.3g}")
 # Too expansive for a test
 if False:
     CCDF = distribution.computeComplementaryCDF(point)

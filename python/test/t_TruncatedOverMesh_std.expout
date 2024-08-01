@@ -1,0 +1,16 @@
+Distribution  TruncatedOverMesh(distribution = Normal(mu = [0,0], sigma = [2,2], R = [[ 1 0 ]
+ [ 0 1 ]]), mesh = Mesh(dimension=2, vertices=554, simplices=946))
+Elliptical =  False
+Continuous =  True
+oneRealization= [-0.137641,0.609755]
+oneSample first= [-0.550024,3.05059]  last= [-2.40376,0.444545]
+mean= [0.00778627,-0.0264828]
+covariance= [[  3.60768  -0.328027 ]
+ [ -0.328027  3.59503  ]]
+Point=  [3.0, 3.0]
+ddf     = [-0.00474403,-0.00474403]
+log pdf=-5.0632
+pdf     =0.0063254
+cdf=0.57491
+entropy=3.7146
+entropy (MC)=3.7082

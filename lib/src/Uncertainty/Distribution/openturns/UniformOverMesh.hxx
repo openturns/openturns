@@ -122,7 +122,7 @@ private:
   Point simplicesVolumes_;
 
   /** Volume of the mesh */
-  Scalar meshVolume_;
+  Scalar meshVolume_ = 0.0;
 
   /** Probabilities associated to the simplices selection */
   Point probabilities_;

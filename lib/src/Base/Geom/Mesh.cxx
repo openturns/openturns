@@ -20,6 +20,7 @@
  */
 #include <fstream>
 #include <algorithm>
+#include <deque>
 
 #include "openturns/Mesh.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -35,6 +36,16 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
 
+#ifdef OPENTURNS_HAVE_BOOST
+  #if BOOST_VERSION < 107500
+    #define BOOST_ALLOW_DEPRECATED_HEADERS
+  #endif
+  #include <boost/geometry/algorithms/append.hpp>
+  #include <boost/geometry/algorithms/intersection.hpp>
+  #include <boost/geometry/geometries/point_xy.hpp>
+  #include <boost/geometry/geometries/polygon.hpp>
+#endif
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Mesh)
@@ -45,9 +56,7 @@ static const Factory<Mesh> Factory_Mesh;
 Mesh::Mesh(const UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
-  , hasBeenChecked_(false)
   , vertices_(1, dimension) // At least one point
-  , simplices_()
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -57,9 +66,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
 Mesh::Mesh(const Sample & vertices)
   : PersistentObject()
   , dimension_(vertices.getDimension())
-  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
-  , simplices_()
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -71,7 +78,6 @@ Mesh::Mesh(const Sample & vertices,
            const Bool checkMeshValidity)
   : PersistentObject()
   , dimension_(vertices.getDimension())
-  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
 {
@@ -341,7 +347,7 @@ CovarianceMatrix Mesh::computeP1Gram() const
 {
   // If no simplex, the P1 gram matrix is null
   if (simplices_.getSize() == 0) return CovarianceMatrix(0);
-  const UnsignedInteger simplexSize = getVertices().getDimension() + 1;
+  const UnsignedInteger simplexSize = getDimension() + 1;
   SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / (simplexSize * (simplexSize + 1.0))));
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize = vertices_.getSize();
@@ -516,7 +522,9 @@ String Mesh::__repr__() const
 
 String Mesh::__str__(const String & ) const
 {
-  return __repr__();
+  return OSS() << getClassName() << "(dimension=" << getDimension()
+               << ", vertices=" << vertices_.getSize()
+               << ", simplices=" << simplices_.getSize() << ")";
 }
 
 /* Drawing method */
@@ -996,6 +1004,92 @@ void Mesh::exportToVTKFile(const String & fileName,
   const String content(streamToVTKFormat(simplices));
   file << content;
   file.close();
+}
+
+/* Intersection */
+Mesh Mesh::intersect(const Mesh & other) const
+{
+  if (getDimension() != other.getDimension())
+    throw InvalidArgumentException(HERE) << "Expected a mesh of dimension " << getDimension() << " got " << other.getDimension();
+#ifdef OPENTURNS_HAVE_BOOST
+  if (getDimension() != 2)
+    throw NotYetImplementedException(HERE) << "Cannot compute intersection of a Mesh of dimension != 2";
+
+  typedef boost::geometry::model::d2::point_xy<Scalar> point_t;
+
+  // set clockwise=false for consistency with what IntervalMesher returns
+  typedef boost::geometry::model::polygon<point_t, false> polygon_t;
+
+  Sample vertices(0, 2);
+  Collection<Indices> simplices;
+  // compute the intersection as union of intersection of triangle combinations from each mesh
+  for (UnsignedInteger i1 = 0; i1 < getSimplicesNumber(); ++ i1)
+  {
+    polygon_t tri1;
+    for(UnsignedInteger j1 = 0; j1 < 4; ++ j1)
+    {
+      // the first vertex is repeated at the end
+      const Point pj1(vertices_[simplices_(i1, j1 % 3)]);
+      boost::geometry::append(tri1.outer(), point_t(pj1[0], pj1[1]));
+    }
+    if (boost::geometry::area(tri1) < 0.0)
+      throw InvalidArgumentException(HERE) << "Simplex at index " << i1 << " is not anti-clockwise";
+    for (UnsignedInteger i2 = 0; i2 < other.getSimplicesNumber(); ++ i2)
+    {
+      polygon_t tri2;
+      for(UnsignedInteger j2 = 0; j2 < 4; ++ j2)
+      {
+        // the first vertex is repeated at the end
+        const Point pj2(other.vertices_[other.simplices_(i2, j2 % 3)]);
+        boost::geometry::append(tri2.outer(), point_t(pj2[0], pj2[1]));
+      }
+      if (boost::geometry::area(tri2) < 0.0)
+        throw InvalidArgumentException(HERE) << "Simplex at index " << i2 << " is not anti-clockwise";
+      std::deque<polygon_t> output;
+      boost::geometry::intersection(tri1, tri2, output);
+      for (const polygon_t & poly : output)
+      {
+        const UnsignedInteger offset = vertices.getSize();
+        // take into account the repeated vertex at the end
+        for (UnsignedInteger j3 = 0; j3 < poly.outer().size() - 1; ++ j3)
+        {
+          const point_t & pj3 = poly.outer()[j3];
+          vertices.add(Point({pj3.x(), pj3.y()}));
+        }
+        // take into account the repeated vertex at the end
+        for (UnsignedInteger j3 = 0; j3 < poly.outer().size() - 3; ++ j3)
+        {
+          // [0,1,2], [0,2,3], [0,3,4], [0,4,5] depending on number of intersection edges ([3-6])
+          Indices simplex(3, offset);
+          simplex[1] += j3 + 1;
+          simplex[2] += j3 + 2;
+          simplices.add(simplex);
+        }
+      }
+    }
+  }
+  IndicesCollection simplices2(simplices.getSize(), 3);
+  for (UnsignedInteger i = 0; i < simplices.getSize(); ++ i)
+    for (UnsignedInteger j = 0; j < 3; ++ j)
+      simplices2(i, j) = simplices[i][j];
+  Mesh result(vertices, simplices2);
+  return result;
+#else
+  throw NotYetImplementedException(HERE) << "No boost support";
+#endif
+}
+
+Mesh Mesh::getSubMesh(const Indices & simpliciesIndices) const
+{
+  if (!simpliciesIndices.check(simplices_.getSize()))
+    throw InvalidArgumentException(HERE) << "Simplices indices must be in [0, " << simplices_.getSize() << "[";
+  const UnsignedInteger simplexSize = getDimension() + 1;
+  IndicesCollection simplices(simpliciesIndices.getSize(), simplexSize);
+  for (UnsignedInteger i = 0; i < simpliciesIndices.getSize(); ++ i)
+    for (UnsignedInteger j = 0; j < simplexSize; ++ j)
+      simplices(i, j) = simplices_(simpliciesIndices[i], j);
+  Mesh result(vertices_, simplices);
+  return result;
 }
 
 /* Method save() stores the object through the StorageManager */
