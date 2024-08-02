@@ -94,7 +94,7 @@ Point CompositeRandomVector::getFrozenRealization(const Point & fixedPoint) cons
   return function_(antecedent_.getFrozenRealization(fixedPoint));
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {
   Sample sample(function_(antecedent_.getSample(size)));

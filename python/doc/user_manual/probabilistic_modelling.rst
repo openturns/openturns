@@ -111,13 +111,18 @@ Discrete parametric distributions
 
     Bernoulli
     Binomial
+
+    :template: classWithPlot.rst_t
+    experimental.CombinationsDistribution
+
+    :template: Distribution.rst_t
     Dirac
     Geometric
     Hypergeometric
     Multinomial
-    KPermutationsDistribution
 
     :template: classWithPlot.rst_t
+    KPermutationsDistribution
     NegativeBinomial
 
     :template: Distribution.rst_t

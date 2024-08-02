@@ -76,7 +76,7 @@ public:
   /** Realization accessor */
   Point getRealization() const override;
 
-  /** Numerical sample accessor */
+  /** Sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Mean accessor */

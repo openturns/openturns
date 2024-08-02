@@ -36,7 +36,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-/* Best model for a given numerical sample by AIC */
+/* Best model for a given sample by AIC */
 Distribution FittingTest::BestModelAIC(const Sample &sample,
                                        const DistributionFactoryCollection &factoryCollection,
                                        Scalar &bestAICOut)
@@ -81,7 +81,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by AIC */
+/* Best model for a given sample by AIC */
 Distribution FittingTest::BestModelAIC(const Sample &sample,
                                        const DistributionCollection &distributionCollection,
                                        Scalar &bestAICOut)
@@ -109,7 +109,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by AICc */
+/* Best model for a given sample by AICc */
 Distribution FittingTest::BestModelAICC(const Sample &sample,
                                         const DistributionFactoryCollection &factoryCollection,
                                         Scalar &bestAICOut)
@@ -154,7 +154,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by AICc */
+/* Best model for a given sample by AICc */
 Distribution FittingTest::BestModelAICC(const Sample &sample,
                                         const DistributionCollection &distributionCollection,
                                         Scalar &bestAICOut)
@@ -182,7 +182,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by BIC */
+/* Best model for a given sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample & sample,
                                        const DistributionFactoryCollection & factoryCollection,
                                        Scalar & bestBICOut)
@@ -222,7 +222,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by BIC */
+/* Best model for a given sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample  & sample,
                                        const DistributionCollection & distributionCollection,
                                        Scalar & bestBICOut)
@@ -260,7 +260,7 @@ Bool pairCompare(const std::pair<Scalar, DistributionFactory>& firstElem,
 }
 } // anonymous namespace
 
-/* Best model for a given numerical sample by Lilliefors */
+/* Best model for a given sample by Lilliefors */
 Distribution FittingTest::BestModelLilliefors(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
     TestResult & bestResult)
@@ -333,7 +333,7 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
 }
 
 
-/* Best model for a given numerical sample by Kolmogorov */
+/* Best model for a given sample by Kolmogorov */
 Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     const DistributionCollection & distributionCollection,
     TestResult & bestResult)
@@ -360,7 +360,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
 }
 
 
-/* Best model for a given numerical sample by ChiSquared */
+/* Best model for a given sample by ChiSquared */
 Distribution FittingTest::BestModelChiSquared(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
     TestResult & bestResult)
@@ -398,7 +398,7 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
   return bestDistribution;
 }
 
-/* Best model for a given numerical sample by ChiSquared */
+/* Best model for a given sample by ChiSquared */
 Distribution FittingTest::BestModelChiSquared(const Sample & sample,
     const DistributionCollection & distributionCollection,
     TestResult & bestResult)
