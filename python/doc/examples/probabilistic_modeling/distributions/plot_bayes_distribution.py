@@ -36,8 +36,8 @@ f = ot.SymbolicFunction(["y"], ["y", "0.1 + y^2"])
 XgivenThetaDist = ot.Normal()
 
 # %%
-# Create the distribution
-XDist = ot.BayesDistribution(XgivenThetaDist, YDist, f)
+# create the distribution
+XDist = ot.JointByConditioningDistribution(XgivenThetaDist, YDist, f)
 XDist.setDescription(["X|Theta=f(y)", "y"])
 XDist
 

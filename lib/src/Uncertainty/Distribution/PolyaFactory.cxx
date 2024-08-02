@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for NegativeBinomial distribution
+ *  @brief Factory for Polya distribution
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NegativeBinomialFactory.hxx"
+#include "openturns/PolyaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
@@ -27,21 +27,21 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NegativeBinomialFactory)
+CLASSNAMEINIT(PolyaFactory)
 
-static const Factory<NegativeBinomialFactory> Factory_NegativeBinomialFactory;
+static const Factory<PolyaFactory> Factory_PolyaFactory;
 
 /* Default constructor */
-NegativeBinomialFactory::NegativeBinomialFactory()
+PolyaFactory::PolyaFactory()
   : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-NegativeBinomialFactory * NegativeBinomialFactory::clone() const
+PolyaFactory * PolyaFactory::clone() const
 {
-  return new NegativeBinomialFactory(*this);
+  return new PolyaFactory(*this);
 }
 
 
@@ -76,36 +76,36 @@ struct NegativeBinomialFactoryParameterConstraint
   Scalar mean_;
 };
 
-Distribution NegativeBinomialFactory::build(const Sample & sample) const
+Distribution PolyaFactory::build(const Sample & sample) const
 {
   return buildAsNegativeBinomial(sample).clone();
 }
 
-Distribution NegativeBinomialFactory::build(const Point & parameters) const
+Distribution PolyaFactory::build(const Point & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
 
-Distribution NegativeBinomialFactory::build() const
+Distribution PolyaFactory::build() const
 {
   return buildAsNegativeBinomial().clone();
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
+Polya PolyaFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from a sample of size < 2";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Polya distribution from a sample of size < 2";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Polya distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = 0.0;
   Scalar var = 0.0;
   const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
-    if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution if data contains NaN or Inf";
+    if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polya distribution if data contains NaN or Inf";
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
-    if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;
+    if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Polya distribution only from a sample made of nonnegative integers, here x=" << x;
     var = i * var / (i + 1.0) + (1.0 - 1.0 / (i + 1.0)) * (mean - x) * (mean - x) / (i + 1.0);
     mean = (x + i * mean) / (i + 1.0);
   }
@@ -134,33 +134,33 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
     fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
+  Brent solver(ResourceMap::GetAsScalar("PolyaFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("PolyaFactory-RelativePrecision"), ResourceMap::GetAsScalar("PolyaFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("PolyaFactory-MaximumIteration"));
   // R estimate
   const Scalar r = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding p estimate
   const Scalar p = 1.0 / (r / mean + 1.0);
-  NegativeBinomial result(r, p);
+  Polya result(r, p);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Point & parameters) const
+Polya PolyaFactory::buildAsNegativeBinomial(const Point & parameters) const
 {
   try
   {
-    NegativeBinomial distribution;
+    Polya distribution;
     distribution.setParameter(parameters);
     return distribution;
   }
   catch (const InvalidArgumentException &)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from the given parameters";
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Polya distribution from the given parameters";
   }
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial() const
+Polya PolyaFactory::buildAsNegativeBinomial() const
 {
-  return NegativeBinomial();
+  return Polya();
 }
 
 END_NAMESPACE_OPENTURNS

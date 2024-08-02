@@ -118,7 +118,7 @@ Discrete parametric distributions
     KPermutationsDistribution
 
     :template: classWithPlot.rst_t
-    NegativeBinomial
+    Polya
 
     :template: Distribution.rst_t
     Poisson
@@ -164,7 +164,7 @@ Combining and transforming distributions
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
-    BayesDistribution
+    JointByConditioningDistribution
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
@@ -174,7 +174,7 @@ Combining and transforming distributions
     CompositeDistribution
 
     :template: Distribution.rst_t
-    ConditionalDistribution
+    DeconditionedDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
 

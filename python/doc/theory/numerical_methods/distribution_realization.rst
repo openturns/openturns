@@ -164,7 +164,7 @@ The techniques implemented in each distribution are:
 - Mixture: Transformation.
 - MultiNomial: Conditional CDF inversion.
 - Non Central Chi Square: Transformation.
-- NegativeBinomial: Conditional simulation (Poisson|Gamma)
+- Polya: Conditional simulation (Poisson|Gamma)
 - Non Central Student: Transformation.
 - NormalCopula: Transformation of independent Normal realizations.
 - Normal:

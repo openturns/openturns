@@ -1,11 +1,11 @@
-%feature("docstring") OT::NegativeBinomial
-"NegativeBinomial distribution.
+%feature("docstring") OT::Polya
+"Polya distribution.
 
 
 Parameters
 ----------
 r : float, :math:`r > 0`
-    Number of failures until the Bernoulli trial is stopped.
+    Stopping time of the Bernoulli process.
 
     Default value is 1.0.
 
@@ -33,12 +33,15 @@ Its first moments are:
         \Var{X} & = & \frac{rp}{(1-p)^2}
     \end{eqnarray*}
 
+When :math:`r` is a positive integer, it is the number of failures
+before the first success of the Bernoulli trial.
+
 Examples
 --------
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.NegativeBinomial(1.0, 0.6)
+>>> distribution = ot.Polya(1.0, 0.6)
 
 Draw a sample:
 
@@ -46,7 +49,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NegativeBinomial::getP
+%feature("docstring") OT::Polya::getP
 "Accessor to the success probability parameter.
 
 Returns
@@ -56,17 +59,17 @@ p : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NegativeBinomial::getR
-"Accessor to the number of failures parameter.
+%feature("docstring") OT::Polya::getR
+"Accessor to the stopping time parameter.
 
 Returns
 -------
 r : float
-    Number of failures until the Bernoulli trial is stopped."
+    Stopping time of the Bernoulli process."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NegativeBinomial::setP
+%feature("docstring") OT::Polya::setP
 "Accessor to the success probability parameter.
 
 Parameters
@@ -76,10 +79,10 @@ p : float, :math:`0 \leq p \leq 1`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NegativeBinomial::setR
-"Accessor to the number of failures parameter.
+%feature("docstring") OT::Polya::setR
+"Accessor to the stopping time parameter.
 
 Parameters
 ----------
 r : float, :math:`r > 0`
-    Number of failures until the Bernoulli trial is stopped."
+    Stopping time of the Bernoulli process."

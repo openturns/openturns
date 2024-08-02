@@ -7,14 +7,14 @@
 
 Parameters
 ----------
-conditional : :class:`~openturns.ConditionalDistribution`
+conditional : :class:`~openturns.DeconditionedDistribution`
     The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
 observations : 2-d sequence of float
     Observations :math:`\vect{x}_i`.
 
 See Also
 --------
-openturns.ConditionalDistribution
+openturns.DeconditionedDistribution
 openturns.MetropolisHastings
 
 Notes
@@ -38,7 +38,7 @@ Examples
 >>> # Conditional distribution
 >>> atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
 >>> conditioning = ot.JointDistribution(atoms)
->>> conditional = ot.ConditionalDistribution(conditionedDistribution, conditioning)
+>>> conditional = ot.DeconditionedDistribution(conditionedDistribution, conditioning)
 >>> # Observations
 >>> observationsSize = 5
 >>> observationsDistribution = ot.Distribution(conditionedDistribution)
@@ -54,7 +54,7 @@ Examples
 
 Parameters
 ----------
-conditional : :class:`~openturns.ConditionalDistribution`
+conditional : :class:`~openturns.DeconditionedDistribution`
     The conditional distribution."
 
 // ---------------------------------------------------------------------
@@ -64,7 +64,7 @@ conditional : :class:`~openturns.ConditionalDistribution`
 
 Returns
 -------
-conditional : :class:`~openturns.ConditionalDistribution`
+conditional : :class:`~openturns.DeconditionedDistribution`
     The conditional distribution."
 
 // ---------------------------------------------------------------------

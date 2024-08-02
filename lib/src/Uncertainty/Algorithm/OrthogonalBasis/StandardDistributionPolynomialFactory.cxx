@@ -127,7 +127,7 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
       hasSpecificFamily_ = true;
       return;
     }
-    if (measureType == "NegativeBinomial")
+    if (measureType == "Polya")
     {
       specificFamily_ = MeixnerFactory(parameter[0], parameter[1]);
       LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);

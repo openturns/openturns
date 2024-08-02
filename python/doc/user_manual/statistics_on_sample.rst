@@ -85,7 +85,7 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     MultinomialFactory
-    NegativeBinomialFactory
+    PolyaFactory
     NormalFactory
     ParetoFactory
     PoissonFactory
