@@ -20,9 +20,7 @@
   <Cache-MaxSize          value_int="65536" />
 
   <!-- OT::Os parameters -->
-  <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
-  <Os-DeleteTimeout    value_int="2"    />
 
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />

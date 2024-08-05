@@ -639,9 +639,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Cache-MaxSize", 65536);
 
   // Os parameters
-  addAsBool("Os-CreateProcess", false);
   addAsBool("Os-RemoveFiles", true);
-  addAsUnsignedInteger("Os-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
   addAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel", 0);
