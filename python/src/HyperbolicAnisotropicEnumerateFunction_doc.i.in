@@ -140,3 +140,4 @@ Parameters
 ----------
 w : sequence of float
     Weights of the indices in each dimension."
+

@@ -19,6 +19,7 @@
  *
  */
 #include <limits>
+#include "openturns/EnumerateFunction.hxx"
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -148,5 +149,16 @@ void EnumerateFunctionImplementation::load(Advocate & adv)
     upperBound_ = Indices(getDimension(), std::numeric_limits<UnsignedInteger>::max());
 }
 
+/* Returns the marginal enumerate function */
+EnumerateFunction EnumerateFunctionImplementation::getMarginal(const Indices &) const
+{
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getMarginal";
+}
+
+/* Returns the marginal enumerate function */
+EnumerateFunction EnumerateFunctionImplementation::getMarginal(const UnsignedInteger i) const
+{
+  return getMarginal(Indices({i}));
+}
 
 END_NAMESPACE_OPENTURNS

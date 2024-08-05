@@ -135,3 +135,25 @@ index= 21 [1,5] 21
 index= 22 [2,5] 22
 index= 23 [3,5] 23
 index= 24 [0,6] 24
+Test getMarginal() from indices
+index= 0 [0,0,0] 0
+index= 1 [1,0,0] 1
+index= 2 [0,1,0] 2
+index= 3 [1,1,0] 3
+index= 4 [0,0,1] 4
+index= 5 [1,0,1] 5
+index= 6 [0,1,1] 6
+index= 7 [1,1,1] 7
+index= 8 [2,0,0] 8
+index= 9 [2,1,0] 9
+Test getMarginal() from a single integer
+index= 0 [0] 0
+index= 1 [1] 1
+index= 2 [2] 2
+index= 3 [3] 3
+index= 4 [4] 4
+index= 5 [5] 5
+index= 6 [6] 6
+index= 7 [7] 7
+index= 8 [8] 8
+index= 9 [9] 9

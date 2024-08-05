@@ -83,6 +83,17 @@ int main(int, char *[])
       }
     }
 
+    // Test getMarginal()
+    fullprint << "Test getMarginal()" << std::endl;
+    HyperbolicAnisotropicEnumerateFunction enumerateFunction(10, 0.5);
+    Indices indices({0, 2, 4, 6, 9});
+    EnumerateFunction marginalEnumerate(enumerateFunction.getMarginal(indices));
+    assert_equal(marginalEnumerate.getDimension(), indices.getSize());
+    for (UnsignedInteger index = 0; index < size; ++index)
+    {
+      Indices multiIndex(marginalEnumerate(index));
+      fullprint << "index=" << index << ", multi-index=" << multiIndex << std::endl;
+    }
 
 
   }

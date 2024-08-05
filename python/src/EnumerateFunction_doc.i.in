@@ -22,3 +22,5 @@ OT_EnumerateFunction_setDimension_doc
 OT_EnumerateFunction_setUpperBound_doc
 %feature("docstring") OT::EnumerateFunction::getUpperBound
 OT_EnumerateFunction_getUpperBound_doc
+%feature("docstring") OT::EnumerateFunction::getMarginal
+OT_EnumerateFunction_getMarginal_doc

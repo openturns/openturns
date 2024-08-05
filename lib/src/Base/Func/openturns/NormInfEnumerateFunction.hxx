@@ -61,6 +61,10 @@ public:
   /** The index of the strata of degree max <= maximumDegree */
   UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const override;
 
+  /** The marginal enumerate function */
+  using EnumerateFunctionImplementation::getMarginal;
+  EnumerateFunction getMarginal(const Indices & indices) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

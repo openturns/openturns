@@ -42,6 +42,18 @@ int main(int, char *[])
         fullprint << "index=" << index << ", multi-index=" << multiIndex << ", linear index=" << f.inverse(multiIndex) << std::endl;
       }
     }
+    // Test getMarginal()
+    fullprint << "Test getMarginal()" << std::endl;
+    LinearEnumerateFunction enumerateFunction(10);
+    Indices indices({0, 2, 4, 6, 9});
+    EnumerateFunction marginalEnumerate(enumerateFunction.getMarginal(indices));
+    assert_equal(marginalEnumerate.getDimension(), indices.getSize());
+    for (UnsignedInteger index = 0; index < size; ++index)
+    {
+      Indices multiIndex(marginalEnumerate(index));
+      fullprint << "index=" << index << ", multi-index=" << multiIndex << std::endl;
+    }
+
   }
   catch (TestFailed & ex)
   {

@@ -77,6 +77,12 @@ public:
   /** Basis size from degree */
   UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
 
+  /** The marginal enumerate function */
+  EnumerateFunction getMarginal(const Indices & indices) const;
+
+  /** The marginal enumerate function */
+  EnumerateFunction getMarginal(const UnsignedInteger i) const;
+
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);
   UnsignedInteger getDimension() const;

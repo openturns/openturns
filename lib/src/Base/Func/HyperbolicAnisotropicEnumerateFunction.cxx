@@ -19,6 +19,7 @@
  *
  */
 #include <algorithm>
+#include "openturns/EnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -275,6 +276,21 @@ void HyperbolicAnisotropicEnumerateFunction::setUpperBound(const Indices & upper
   initialize();
 }
 
+/* The marginal enumerate function */
+EnumerateFunction HyperbolicAnisotropicEnumerateFunction::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger inputDimension = getDimension();
+  if (!indices.check(inputDimension))
+  {
+    throw InvalidArgumentException(HERE) << "Indices " << indices << "must not exceed dimension " << inputDimension;
+  }
+  const UnsignedInteger activeDimension = indices.getSize();
+  Point weightMarginal(activeDimension);
+  for (UnsignedInteger i = 0; i < activeDimension; ++i)
+    weightMarginal[i] = weight_[indices[i]];
+  const HyperbolicAnisotropicEnumerateFunction enumerateFunctionMarginal(weightMarginal, q_);
+  return enumerateFunctionMarginal;
+}
 
 /* Method save() stores the object through the StorageManager */
 void HyperbolicAnisotropicEnumerateFunction::save(Advocate & adv) const
