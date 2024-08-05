@@ -32,7 +32,7 @@ int main(int, char *[])
   // Create a ResourceMap Object
   fullprint << ResourceMap::GetInstance() << std::endl;
 
-  fullprint << "Extract from ResourceMap: Path-TemporaryDirectory -> " << ResourceMap::GetAsString("Path-TemporaryDirectory") << std::endl;
+  fullprint << "Extract from ResourceMap: Cache-MaxSize -> " << ResourceMap::GetAsUnsignedInteger("Cache-MaxSize") << std::endl;
 
   // Create string key
   fullprint << "Create key: dummy_key" << std::endl;

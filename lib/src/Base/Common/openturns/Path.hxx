@@ -77,26 +77,6 @@ public:
   static FileName FindFileByNameInDirectoryList(const FileName & name,
       const DirectoryList & dirList);
 
-  /** Get the temporary directory set in the openturns conf file.
-   *
-   * On Windows, if temporary-directory is an env var, return the content of the env var,
-   *   if not, just return the content of temporary-directory.
-   * This function is mostly useful on windows in order to get the TEMP env var.
-   */
-  static FileName GetTemporaryDirectory();
-
-  /** Build a temporary file name given a prefix
-   * @result A new unique filename based on the prefix
-   */
-  static FileName BuildTemporaryFileName(const FileName & prefix);
-
-  /** Create a temporary directory.
-   */
-  static FileName CreateTemporaryDirectory(const FileName & directoryPrefix);
-
-  /** Escape backslash in file name */
-  static void EscapeBackslash(FileName & filename);
-
   /** Get the location of the OT shared library (at runtime) */
   static FileName GetLibraryDirectory();
 

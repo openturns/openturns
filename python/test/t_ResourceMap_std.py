@@ -9,6 +9,6 @@ for key in ot.ResourceMap.GetKeys():
     print("  %s => %s," % (key, ot.ResourceMap.Get(key)))
 print("}")
 print(
-    "Extract from ResourceMap: Path-TemporaryDirectory -> ",
-    ot.ResourceMap.Get("Path-TemporaryDirectory"),
+    "Extract from ResourceMap: Cache-MaxSize -> ",
+    ot.ResourceMap.Get("Cache-MaxSize"),
 )

@@ -12,7 +12,6 @@
 <!DOCTYPE configuration>
   <openturns-configuration version="1" >
 
-  <Path-TemporaryDirectory     value_str="@TEMPDIR@"      />
   <!-- TBB-ThreadsNumber is set by default to the number of cores of the machine.
        To set manually the number of threads used for parallel computing, uncomment the following line:
     -->

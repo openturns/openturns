@@ -36,23 +36,6 @@ int main(int, char *[])
     Path::DirectoryList configDirectoryList(Path::GetConfigDirectoryList());
     for (UnsignedInteger i = 0; i < configDirectoryList.size(); ++i)
       fullprint << "configDirectoryList[" << i << "]=" << configDirectoryList[i] << std::endl;
-    Path::DirectoryList list(2);
-    FileName directory1(Path::CreateTemporaryDirectory("testDirectory1"));
-    fullprint << "Directory 1=" << directory1 << std::endl;
-    list[0] = directory1;
-    FileName directory2(Path::CreateTemporaryDirectory("testDirectory2"));
-    fullprint << "Directory 2=" << directory2 << std::endl;
-    list[1] = directory2;
-    // Create a file in dir2
-    std::ofstream testFile(FileName(directory2 + FileName("/testFile")).c_str());
-    testFile << "test" << std::endl;
-    testFile.close();
-    FileName findName(Path::FindFileByNameInDirectoryList("testFile", list));
-    fullprint << "Find file=" << findName << std::endl;
-    FileName fileName(Path::BuildTemporaryFileName("testFile"));
-    fullprint << "Temporary file name=" << fileName << std::endl;
-    Os::DeleteDirectory(directory1);
-    Os::DeleteDirectory(directory2);
   }
   catch (FileOpenException & ex)
   {
