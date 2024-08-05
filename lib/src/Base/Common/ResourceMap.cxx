@@ -619,11 +619,6 @@ void ResourceMap::loadConfigurationFile()
 /* Load the configuration defined at installation time */
 void ResourceMap::loadDefaultConfiguration()
 {
-#ifndef _WIN32
-  addAsString("Path-TemporaryDirectory", "/tmp");
-#else
-  addAsString("Path-TemporaryDirectory", "TEMP");
-#endif
   addAsUnsignedInteger("TBB-ThreadsNumber", std::thread::hardware_concurrency());
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {

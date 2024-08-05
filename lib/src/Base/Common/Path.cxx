@@ -21,19 +21,15 @@
 #include <vector>                 // for std::vector
 #include <string>                 // for std::string
 #include <cstdlib>                // for getenv
-#include <cstring>                // for strcpy
+#include <cstring>                // for strdup
 
 #ifdef _WIN32
 #include <fstream>                // for ofstream
 #include "openturns/OTwindows.h"            // for GetTempFileName, GetModuleFileName
-#ifdef _MSC_VER
-# include <direct.h>
-#define mkdir(p)  _mkdir(p)
-#endif /* _MSC_VER */
-#endif /* WIN32 */
+#endif
 
 // Include OTConfig that defines OPENTURNS_HAVE_XXX
-// It also defines INSTALL_PATH, SYSCONFIG_PATH, DATA_PATH, OPENTURNS_HOME_ENV_VAR
+// It also defines INSTALL_PATH, SYSCONFIG_PATH, OPENTURNS_HOME_ENV_VAR
 #include "openturns/OTconfig.hxx"
 
 #include "openturns/OSS.hxx"
@@ -42,12 +38,13 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Log.hxx"
+
 #ifdef OPENTURNS_HAVE_LIBGEN_H
 #include <libgen.h>               // for dirname
 #endif
 
 #ifdef OPENTURNS_HAVE_UNISTD_H
-#include <unistd.h>               // for getpid, readlink, close
+#include <unistd.h>               // for close
 #endif
 
 #ifndef INSTALL_PATH
@@ -60,10 +57,6 @@
 
 #ifndef SYSCONFIG_PATH
 #error "SYSCONFIG_PATH is NOT defined. Check configuration."
-#endif
-
-#ifndef DATA_PATH
-#error "DATA_PATH is NOT defined. Check configuration."
 #endif
 
 #ifndef OPENTURNS_HOME_ENV_VAR
@@ -300,134 +293,6 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
   throw FileNotFoundException(HERE) << String(errorMessage);
 
 } /* end findFileByNameInDirectoryList */
-
-
-/*
- * escape backslash in filename
- * ex: if filename = C:\windows\temp, return C:\\windows\\temp
- */
-void Path::EscapeBackslash(FileName & filename)
-{
-  String backslash("\\");
-  String::size_type loc = filename.find(backslash);
-  while(loc != String::npos)
-  {
-    // "\" at the last pos
-    if(loc == filename.size() - 1)
-    {
-      filename.insert(loc, backslash);
-      break;
-    }
-    // "\" in the middle
-    if(filename.at(loc + 1) != backslash[0])
-      filename.insert(loc, backslash);
-    // else: no "\", or "\\" in the middle
-    loc = filename.find(backslash, loc + 2);
-  }
-}
-
-
-FileName Path::GetTemporaryDirectory()
-{
-  FileName tempDirectory;
-
-  String tempStr(ResourceMap::GetAsString("Path-TemporaryDirectory"));
-#ifndef _WIN32
-  tempDirectory = tempStr;
-#else
-  const char * tempEnv = getenv(tempStr.c_str());
-  if (tempEnv)
-  {
-    // if temporary-directory is an env var, return the content of the env var.
-    tempDirectory = String(tempEnv);
-  }
-  else
-  {
-    // if not, just return the content of temporary-directory
-    tempDirectory = tempStr;
-  }
-#endif
-
-  return tempDirectory;
-}
-
-
-/* Build a temporary file name given a prefix */
-FileName Path::BuildTemporaryFileName(const FileName & prefix)
-{
-#ifndef _WIN32
-  const String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + prefix + String("_XXXXXX"));
-  char * temporaryFileName = strdup(fullPattern.c_str());
-  int fileDescriptor(mkstemp(temporaryFileName));
-  close(fileDescriptor);
-  FileName result(temporaryFileName);
-  free(temporaryFileName);
-  return result;
-#else
-  // get uniq name
-  char temporaryFileName[MAX_PATH];
-  GetTempFileName(GetTemporaryDirectory().c_str(), // directory for tmp files
-                  TEXT(prefix.c_str()), // temp file name prefix
-                  0,                     // create unique name
-                  temporaryFileName);    // buffer for name
-  // check temporary filename
-  if (!Os::IsFile(String(temporaryFileName)))
-    LOGERROR(OSS() << "Temporary file name " << temporaryFileName << " does NOT exists. Check your temporary directory.");
-  // add "/" to the directory
-  String slashedTemporaryFileName(temporaryFileName);
-  EscapeBackslash(slashedTemporaryFileName);
-  return slashedTemporaryFileName;
-#endif
-}
-
-/* Create a temporary directory.
- */
-String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
-{
-  if (directoryPrefix.size() == 0) throw InvalidArgumentException(HERE) << "No prefix defined to create temporary directory";
-
-#ifndef _WIN32
-  String tempDir(GetTemporaryDirectory());
-  tempDir += Os::GetDirectorySeparator();
-  tempDir += directoryPrefix;
-  tempDir += "_XXXXXX";
-
-  char * tempDirName = (char *) calloc(tempDir.size() + 1, sizeof (char));
-  strncpy(tempDirName, tempDir.c_str(), tempDir.size() + 1);
-  char *tempDirName_p = mkdtemp(tempDirName);
-  if ( ! tempDirName_p ) throw FileOpenException(HERE) << "Could not create temporary directory from template " << tempDir;
-  const String finalTempDirName(tempDirName);
-  free(tempDirName);
-#else
-  char temporaryDirName[MAX_PATH];
-  int ret = 0;
-  for (int retry = 10000; retry >= 0; --retry)
-  {
-    ret = GetTempFileName(GetTemporaryDirectory().c_str(),             // directory for tmp files
-                          TEXT((directoryPrefix + "abc").c_str()),     // temp file name prefix (only 3 characters are used)
-                          0,                                           // create unique name
-                          temporaryDirName);                           // buffer for name
-    if (0 == ret)
-    {
-      ret = -1;
-      continue;
-    }
-    DeleteFile(temporaryDirName);
-    ret = mkdir(temporaryDirName);
-    if (0 == ret) break;
-  }
-  if (0 != ret)
-  {
-    LOGERROR(OSS() << "Can't create temporary directory.");
-    temporaryDirName[0] = '\0';
-  }
-
-  const String finalTempDirName(temporaryDirName);
-
-#endif
-
-  return finalTempDirName;
-}
 
 
 END_NAMESPACE_OPENTURNS
