@@ -135,6 +135,7 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
   }
   Binomial result(maxN, mean / maxN);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

@@ -160,6 +160,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   }
   Dirichlet result(theta);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

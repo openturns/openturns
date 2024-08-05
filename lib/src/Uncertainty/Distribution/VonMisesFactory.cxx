@@ -176,6 +176,7 @@ VonMises VonMisesFactory::buildAsVonMises(const Sample & sample) const
 
   VonMises result(mu, kappa);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

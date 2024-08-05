@@ -243,4 +243,22 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sam
   return getImplementation()->buildEstimator(sample, parameters);
 }
 
+void DistributionFactory::setKnownParameter(const Point & values,
+    const Indices & indices)
+{
+  copyOnWrite();
+  getImplementation()->setKnownParameter(values, indices);
+}
+
+Indices DistributionFactory::getKnownParameterIndices() const
+{
+  return getImplementation()->getKnownParameterIndices();
+}
+
+Point DistributionFactory::getKnownParameterValues() const
+{
+  return getImplementation()->getKnownParameterValues();
+}
+
+
 END_NAMESPACE_OPENTURNS

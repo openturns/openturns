@@ -76,11 +76,6 @@ public:
   /** Accessor to inequality constraint */
   void setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint);
 
-  /** Accessor to known parameter */
-  void setKnownParameter(const Point & values, const Indices & positions);
-  Point getKnownParameterValues() const;
-  Indices getKnownParameterIndices() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -99,10 +94,6 @@ protected:
 
   // Inequality constraint used for parameter optimization
   Function optimizationInequalityConstraint_;
-
-  /* Known parameter */
-  Point knownParameterValues_;
-  Indices knownParameterIndices_;
 
 }; /* class LeastSquaresDistributionFactory */
 

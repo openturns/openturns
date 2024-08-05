@@ -76,11 +76,6 @@ public:
   void setOptimizationBounds(const Interval & optimizationBounds);
   Interval getOptimizationBounds() const;
 
-  /** Accessor to known parameter */
-  void setKnownParameter(const Point & values, const Indices & positions);
-  Point getKnownParameterValues() const;
-  Indices getKnownParameterIndices() const;
-
   /** Moments orders accessor */
   void setMomentOrders(const Indices & momentsOrders);
   Indices getMomentOrders() const;
@@ -103,10 +98,6 @@ protected:
 
   /* Bounds used for parameter optimization */
   Interval optimizationBounds_;
-
-  /* Known parameter */
-  Point knownParameterValues_;
-  Indices knownParameterIndices_;
 
 }; /* class MethodOfMomentsFactory */
 

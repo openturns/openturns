@@ -83,6 +83,7 @@ Normal NormalFactory::buildAsNormal(const Sample & sample) const
   const CovarianceMatrix covariance(sample.computeCovariance());
   Normal result(mean, covariance);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

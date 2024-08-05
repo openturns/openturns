@@ -103,58 +103,6 @@ inequalityConstraint : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::setKnownParameter
-"Accessor to the known parameters.
-
-Parameters
-----------
-values : sequence of float
-    Values of known parameters.
-positions : sequence of int
-    Indices of known parameters.
-
-Examples
---------
-When a subset of the parameter vector is known, the other parameters only have to be estimated 
-from data. 
-
-In the following example, we consider a sample and want to fit 
-a :class:`~openturns.Beta` distribution.  
-We assume that the :math:`a` and :math:`b` parameters are known beforehand. 
-In this case, we set the third parameter (at index 2) to -1 
-and the fourth parameter (at index 3) to 1. 
-
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
->>> sample = distribution.getSample(10)
->>> factory = ot.MaximumLikelihoodFactory(ot.Beta())
->>> # set (a,b) out of (r, t, a, b)
->>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
->>> inf_distribution = factory.build(sample)"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MaximumLikelihoodFactory::getKnownParameterValues
-"Accessor to the known parameters indices.
-
-Returns
--------
-values : :class:`~openturns.Point`
-    Values of known parameters."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MaximumLikelihoodFactory::getKnownParameterIndices
-"Accessor to the known parameters indices.
-
-Returns
--------
-indices : :class:`~openturns.Indices`
-    Indices of the known parameters."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MaximumLikelihoodFactory::BuildGaussianEstimator
 "Compute the asymptotic distribution of the parameters.
 
