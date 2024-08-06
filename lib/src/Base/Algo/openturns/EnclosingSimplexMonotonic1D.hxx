@@ -70,10 +70,16 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
 private:
 
   /** Flag telling whether vertices are sorted in ascending or descending order */
-  Bool increasing_;
+  Bool increasing_ = true;
 
 } ; /* class EnclosingSimplexMonotonic1D */
 
