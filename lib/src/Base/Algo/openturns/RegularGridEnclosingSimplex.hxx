@@ -70,12 +70,18 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
 private:
 
   /** Cached values taken from grid_ */
-  Scalar start_;
-  UnsignedInteger N_;
-  Scalar step_;
+  Scalar start_ = 0.0;
+  UnsignedInteger N_ = 0.0;
+  Scalar step_ = 0.0;
 
 } ; /* class RegularGridEnclosingSimplex */
 
