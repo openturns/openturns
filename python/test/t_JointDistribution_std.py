@@ -89,19 +89,16 @@ aCollection.append(marginal)
 # Create a copula
 aCopula = ot.IndependentCopula(dim)
 aCopula.setName("Independent copula")
-cores = list()
-cores.append(aCopula)
+cores = [aCopula]
 # With a Normal copula
 correlation = ot.CorrelationMatrix(dim)
 for i in range(1, dim):
     correlation[i - 1, i] = 0.25
-    anotherCopula = ot.NormalCopula(correlation)
+anotherCopula = ot.NormalCopula(correlation)
 anotherCopula.setName("Normal copula")
 cores.append(anotherCopula)
 # With a copula which is not a copula by type
-atoms = list()
-atoms.append(aCopula)
-atoms.append(anotherCopula)
+atoms = [aCopula, anotherCopula]
 cores.append(ot.Mixture(atoms, [0.25, 0.75]))
 # With a non-copula core
 cores.append(otexp.UniformOrderStatistics(dim))
@@ -120,7 +117,9 @@ for nCore in range(len(cores)):
     print(distribution.__repr_markdown__())
     print("Parameters", distribution.getParametersCollection())
     print("nCore=", nCore)
-    if nCore != 2:
+
+    # too slow for Mixture/KernelMixture
+    if "Mixture" not in distribution.getCore().getImplementation().getName():
         print("entropy=%.5e" % distribution.computeEntropy())
         print(
             "entropy (MC)=%.5e"
