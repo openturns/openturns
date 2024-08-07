@@ -42,6 +42,7 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepance between the platforms with or without CMinpack
     print("result   (Auto)=", algo.getResult().getParameterMAP())
+    multiStartSize = 10
     algo.setOptimizationAlgorithm(
         ot.MultiStart(
             ot.TNC(),
@@ -50,9 +51,7 @@ for bootstrapSize in bootstrapSizes:
                 ot.Normal(
                     candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())
                 ),
-                ot.ResourceMap.GetAsUnsignedInteger(
-                    "GaussianNonLinearCalibration-MultiStartSize"
-                ),
+                multiStartSize,
             ).generate(),
         )
     )

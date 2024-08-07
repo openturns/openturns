@@ -82,7 +82,8 @@ int main(int, char *[])
       assert_almost_equal(parameterMAP, trueParameter, 5e-1);
       // With TNC
       fullprint << "2. TNC optim" << std::endl;
-      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()));
+      const UnsignedInteger multiStartSize = 10;
+      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), multiStartSize).generate()));
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
