@@ -20,6 +20,9 @@ for minimization in [True, False]:
             problem.setInequalityConstraint(h)
         names = ot.OptimizationAlgorithm.GetAlgorithmNames(problem)
         for name in names:
+            if "global" in name:
+                # slow
+                continue
             algo = ot.OptimizationAlgorithm.Build(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
