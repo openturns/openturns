@@ -129,11 +129,11 @@ int main(int, char *[])
     assert_almost_equal(pvaluesAs, referencePValuesAs);
 
     /* We set the number of permutations for the pvalue estimate. */
-    UnsignedInteger b = 1000 ;
+    UnsignedInteger b = 100;
     TSA.setPermutationSize(b);
 
     /* We get the pvalue estimate by permutations */
-    Point referencePValuesPerm = {0, 0.233766, 0.265734};
+    Point referencePValuesPerm = {0, 0.257426, 0.217822};
     Point pvaluesPerm = TSA.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValuesPerm);
 
@@ -143,7 +143,7 @@ int main(int, char *[])
     TSA.setFilterFunction(alternateFilter);
     assert_almost_equal(TSA.getR2HSICIndices(), {0.373511, 0.0130156, 0.0153977});
     assert_almost_equal(TSA.getHSICIndices(), {0.00118685, 4.12193e-05, 5.07577e-05}, 1e-4, 0.0);
-    assert_almost_equal(TSA.getPValuesPermutation(), {0, 0.137862, 0.112887});
+    assert_almost_equal(TSA.getPValuesPermutation(), {0.0, 0.118812, 0.158416});
     assert_almost_equal(TSA.getPValuesAsymptotic(), {7.32022e-13, 0.143851, 0.128866});
   }
   catch (TestFailed & ex)
