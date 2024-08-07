@@ -130,8 +130,9 @@ int main(int, char *[])
       std::cout << "Distribution (Markdown)" << std::endl;
       std::cout << distribution.__repr_markdown__() << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
-      // Too slow if nCore == 2
-      if (nCore != 2)
+      // Too slow for Mixture/KernelMixture
+      if (distribution.getCore().getImplementation()->getName() != "Mixture" &&
+          distribution.getCore().getImplementation()->getName() != "KernelMixture")
       {
         fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
         fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
