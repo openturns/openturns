@@ -133,13 +133,13 @@ for dim in range(1, 5):
     #     print "cdf gradient     =" , CDFgr
 
     # quantile
-    quantile = distribution.computeQuantile(0.95)
-    print("quantile=", repr(quantile))
-    print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-    # Get 95% survival function
-    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-    print("InverseSurvival=", repr(inverseSurvival))
     if dim < 4:
+        quantile = distribution.computeQuantile(0.95)
+        print("quantile=", repr(quantile))
+        print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+        # Get 95% survival function
+        inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
+        print("InverseSurvival=", repr(inverseSurvival))
         print(
             "Survival(inverseSurvival)=%.6f"
             % distribution.computeSurvivalFunction(inverseSurvival)
