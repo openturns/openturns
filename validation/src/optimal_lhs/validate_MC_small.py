@@ -23,7 +23,7 @@ print("dimension=%d, size=%d"%(dimension, size))
 for nSimu in [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200, 102400, 204800, 409600]:
     ot.RandomGenerator.SetSeed(0)
     # Factory: lhs generates
-    lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+    lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
     lhsDesign.setAlwaysShuffle(True) # randomized
 
     mc = ot.MonteCarloLHS(lhsDesign, nSimu, c2)
@@ -43,7 +43,7 @@ plt.close(fig)
 minDist = ot.SpaceFillingMinDist()
 
 # Factory: lhs generates
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setAlwaysShuffle(True) # randomized
 
 mc = ot.MonteCarloLHS(lhsDesign, nSimu, minDist)

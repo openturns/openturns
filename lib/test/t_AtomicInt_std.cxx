@@ -18,10 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef _WIN32
-#include <unistd.h> // sysconf
-#endif
-#include <stdlib.h> // getenv
 #include <thread>
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
@@ -55,17 +51,7 @@ int main(int, char *[])
   {
     AtomicInt atom;
 
-#ifndef _WIN32
-    unsigned int nbThreads = sysconf(_SC_NPROCESSORS_CONF);
-#else
-    std::istringstream converter(getenv("NUMBER_OF_PROCESSORS"));
-    unsigned int nbThreads;
-    if (!(converter >> nbThreads))
-    {
-      throw TestFailed("OT::AtomicInt wrong nb of thread!");
-    }
-#endif
-    ++ nbThreads;
+    unsigned int nbThreads = std::thread::hardware_concurrency();
     std::thread * threads = new std::thread[nbThreads];
 
     for (unsigned int i = 0; i < nbThreads; ++ i)

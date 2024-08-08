@@ -213,10 +213,10 @@ view = viewer.View(graph)
 ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree")
 
 # %%
-# This is why we explore the values from 1 to 14.
+# This is why we explore the values from 1 to 10.
 
 # %%
-maximumDegree = 15
+maximumDegree = 11
 degrees = range(1, maximumDegree)
 r2Score = ot.Sample(len(degrees), outputDimension)
 for maximumDegree in degrees:

@@ -31,7 +31,7 @@ CLASSNAMEINIT(AdaptiveDirectionalStratification)
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
   : EventSimulation()
   , partialStratification_(false)
-  , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
+  , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
   // Nothing to do
 }

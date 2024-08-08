@@ -17,7 +17,7 @@ dimension = 50
 size = 100
 
 # Factory: lhs generates
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setAlwaysShuffle(True) # randomized
 
 geomProfile = ot.GeometricProfile(10.0, 0.999, 50000)

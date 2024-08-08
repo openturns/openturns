@@ -31,6 +31,7 @@ macro (ot_check_test TESTNAME)
   set (TEST_TARGET t_${TESTNAME})
   add_executable (${TEST_TARGET} EXCLUDE_FROM_ALL ${TEST_TARGET}.cxx)
   add_dependencies(tests ${TEST_TARGET})
+  target_include_directories(${TEST_TARGET} PRIVATE ${INTERNAL_INCLUDE_DIRS} BEFORE)
   target_link_libraries (${TEST_TARGET} PRIVATE OT)
   if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
     target_link_libraries (${TEST_TARGET} PRIVATE CRT_fp8)
@@ -58,8 +59,6 @@ macro (ot_check_test TESTNAME)
   list (APPEND CHECK_TO_BE_RUN ${TEST_TARGET})
 endmacro ()
 
-
-include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 
 # Common
 ot_check_test (Object_std)

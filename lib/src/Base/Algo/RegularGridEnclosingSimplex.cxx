@@ -37,9 +37,6 @@ static const Factory<RegularGridEnclosingSimplex> Factory_RegularGridEnclosingSi
 /* Constructor without parameters */
 RegularGridEnclosingSimplex::RegularGridEnclosingSimplex()
   : EnclosingSimplexAlgorithmImplementation()
-  , start_(0)
-  , N_(0)
-  , step_(0)
 {
   // Nothing to do
 }
@@ -68,11 +65,21 @@ RegularGridEnclosingSimplex * RegularGridEnclosingSimplex::emptyClone() const
 void RegularGridEnclosingSimplex::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
   EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(vertices, simplices);
-  // Check that sample can be converted to a RegularGrid, and get N, start, step
-  RegularGrid newGrid = Mesh(vertices);
-  start_ = newGrid.getStart();
-  N_ = newGrid.getN();
-  step_ = newGrid.getStep();
+  if (vertices.getSize())
+  {
+    // Check that sample can be converted to a RegularGrid, and get N, start, step
+    RegularGrid newGrid = Mesh(vertices);
+    start_ = newGrid.getStart();
+    N_ = newGrid.getN();
+    step_ = newGrid.getStep();
+  }
+  else
+  {
+    // allow one to reset it
+    start_ = 0.0;
+    N_ = 0.0;
+    step_ = 0.0;
+  }
 }
 
 /* Get the index of the enclosing simplex of the given point */
@@ -107,6 +114,25 @@ String RegularGridEnclosingSimplex::__repr__() const
 String RegularGridEnclosingSimplex::__str__(const String & ) const
 {
   return OSS(false) << "class=" << RegularGridEnclosingSimplex::GetClassName();
+}
+
+/* Method save() stores the object through the StorageManager */
+void RegularGridEnclosingSimplex::save(Advocate & adv) const
+{
+  EnclosingSimplexAlgorithmImplementation::save(adv);
+  adv.saveAttribute("start_", start_);
+  adv.saveAttribute("N_", N_);
+  adv.saveAttribute("step_", step_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void RegularGridEnclosingSimplex::load(Advocate & adv)
+{
+  EnclosingSimplexAlgorithmImplementation::load(adv);
+  adv.loadAttribute("start_", start_);
+  adv.loadAttribute("N_", N_);
+  adv.loadAttribute("step_", step_);
 }
 
 END_NAMESPACE_OPENTURNS

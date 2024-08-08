@@ -160,10 +160,10 @@ def plot_sample_by_kernel_smoothing(
 # We first consider the estimation of the variance :math:`\sigma^2`.
 # In the next cell, we consider a sample size equal to :math:`n = 6` with
 # :math:`p = 3` parameters.
-# We use :math:`r = 1000` repetitions.
+# We use :math:`r = 100` repetitions.
 
 
-repetitions_size = 1000
+repetitions_size = 100
 true_standard_deviation = 0.1
 sample_size = 6
 coefficients = ot.Point([3.0, 2.0, -1.0])
@@ -186,7 +186,7 @@ pl.subplots_adjust(bottom=0.25)
 # %%
 # Then we increase the sample size :math:`n`.
 
-repetitions_size = 1000
+repetitions_size = 100
 true_standard_deviation = 0.1
 sample_size = 100
 coefficients = ot.Point([3.0, 2.0, -1.0])
@@ -210,7 +210,7 @@ pl.subplots_adjust(bottom=0.25)
 # We now consider the estimation of the standard deviation :math:`\sigma`.
 
 
-repetitions_size = 1000
+repetitions_size = 100
 true_standard_deviation = 0.1
 sample_size = 6
 coefficients = ot.Point([3.0, 2.0, -1.0])
@@ -232,7 +232,7 @@ pl.subplots_adjust(bottom=0.25)
 # as we could expect.
 
 
-repetitions_size = 1000
+repetitions_size = 100
 true_standard_deviation = 0.1
 sample_size = 100
 coefficients = ot.Point([3.0, 2.0, -1.0])
@@ -250,3 +250,7 @@ pl.subplots_adjust(bottom=0.25)
 # If we use a sample size equal to :math:`n = 100` with
 # :math:`p = 3` parameters, we see that the distribution is almost normal.
 # We notice that the bias disappeared.
+
+
+# %%
+otv.View.ShowAll()

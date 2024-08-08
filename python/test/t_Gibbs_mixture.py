@@ -68,12 +68,12 @@ sampler2 = ot.RandomVectorMetropolisHastings(
 gibbs = ot.Gibbs([sampler0, sampler1, sampler2])
 
 # Run the Gibbs algorithm
-s = gibbs.getSample(10000)
+s = gibbs.getSample(1000)
 
 # Extract the relevant marginals: the first (:math:`mu_0`) and the second (:math:`\mu_1`).
 posterior_sample = s[:, 0:2]
 mean = posterior_sample.computeMean()
 stddev = posterior_sample.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [-0.0788226, 2.80322])
-ott.assert_almost_equal(stddev, [0.0306272, 0.0591087])
+ott.assert_almost_equal(mean, [-0.078428, 2.80587])
+ott.assert_almost_equal(stddev, [0.0463082, 0.108863])

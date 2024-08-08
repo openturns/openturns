@@ -128,11 +128,11 @@ int main(int, char *[])
       }
       Scalar Survival = distribution.computeSurvivalFunction( point );
       fullprint << "survival=" << Survival << std::endl;
-      Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
-      fullprint << "Inverse survival=" << InverseSurvival << std::endl;
       if (dim <= 3)
       {
-        fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+        const Point inverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+        fullprint << "Inverse survival=" << inverseSurvival << std::endl;
+        fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(inverseSurvival) << std::endl;
       }
       Complex CF = distribution.computeCharacteristicFunction( point );
       fullprint << "characteristic function=" << CF << std::endl;
@@ -164,14 +164,14 @@ int main(int, char *[])
       {
         Point CDFgr = distribution.computeCDFGradient( point );
         fullprint << "cdf gradient     =" << CDFgr << std::endl;
+        const Point quantile(distribution.computeQuantile(0.95));
+        int oldPrecision = PlatformInfo::GetNumericalPrecision();
+        PlatformInfo::SetNumericalPrecision( 4 );
+        fullprint << "quantile=" << quantile << std::endl;
+        PlatformInfo::SetNumericalPrecision( oldPrecision );
+        fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       }
-      Point quantile = distribution.computeQuantile( 0.95 );
-      int oldPrecision = PlatformInfo::GetNumericalPrecision();
-      PlatformInfo::SetNumericalPrecision( 4 );
-      fullprint << "quantile=" << quantile << std::endl;
-      PlatformInfo::SetNumericalPrecision( oldPrecision );
-      fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      if (distribution.getDimension() <= 2)
+      if (dim <= 2)
       {
         // Confidence regions
         Scalar threshold;
@@ -257,7 +257,7 @@ int main(int, char *[])
         fullprint << "margins=" << margins << std::endl;
         fullprint << "margins PDF=" << margins.computePDF(Point(2, 0.5)) << std::endl;
         fullprint << "margins CDF=" << margins.computeCDF(Point(2, 0.5)) << std::endl;
-        quantile = margins.computeQuantile(0.95);
+        const Point quantile(margins.computeQuantile(0.95));
         fullprint << "margins quantile=" << quantile << std::endl;
         fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
         fullprint << "margins realization=" << margins.getRealization() << std::endl;

@@ -20,7 +20,7 @@ pp = PdfPages('large_mc_OTLHS.pdf')
 # Size of sample
 size = 100
 # Factory: lhs generates
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setAlwaysShuffle(True) # randomized
 
 mc = ot.MonteCarloLHS(lhsDesign, nSimu, c2)
@@ -38,7 +38,7 @@ pp.savefig(View(crit, plot_kwargs={'color':'blue'}).getFigure())
 
 minDist = ot.SpaceFillingMinDist()
 # Factory: lhs generates
-lhsDesign = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
+lhsDesign = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dimension), size)
 lhsDesign.setAlwaysShuffle(True) # randomized
 
 mc = ot.MonteCarloLHS(lhsDesign, nSimu, minDist)
