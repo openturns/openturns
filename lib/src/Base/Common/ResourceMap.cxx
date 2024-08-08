@@ -1173,7 +1173,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel", 0.95);
   addAsScalar("GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel", 0.95);
-  addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("GeneralizedParetoFactory-MaximumCallsNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
