@@ -25,9 +25,9 @@ factories = ot.DistributionFactory.GetContinuousUniVariateFactories()
 factories.add(ot.DistributionFactory.GetDiscreteUniVariateFactories())
 for factory in factories:
     print(factory)
-
+    dist = factory.build()
     # check if raise on constant sample
-    if factory.build().isContinuous():
+    if dist.isContinuous():
         sample = ot.Sample(100, [1.0e5])
         ok = False
         try:
@@ -39,7 +39,7 @@ for factory in factories:
 
     # check if raises on sample with nan/inf
     for weird in ["nan", "inf"]:
-        sample = factory.build().getSample(100)
+        sample = dist.getSample(100)
         sample[0, 0] = float(weird)
         ok = False
         try:
