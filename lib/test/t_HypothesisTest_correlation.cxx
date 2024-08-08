@@ -90,10 +90,10 @@ int main(int, char *[])
 
   fullprint << "FullPearsonX0Y=" << HypothesisTest::FullPearson(sampleX, sampleY, 0.10) << std::endl;
 
-  // Expected result is SpecFunc::MaxScalar
+  // Expected result is SpecFunc::Infinity
   TestResult fullPearsonYY(HypothesisTest::FullPearson(sampleY, sampleY, 0.10)[0]);
   Scalar testStatistic = fullPearsonYY.getStatistic();
-  assert_equal(testStatistic, SpecFunc::MaxScalar);
+  assert_equal(testStatistic, SpecFunc::Infinity);
 
   return ExitCode::Success;
 }

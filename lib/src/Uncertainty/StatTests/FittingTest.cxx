@@ -46,7 +46,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
     throw InternalException(HERE) << "Error: no model given";
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   Bool continuousCase = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -75,7 +75,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
   }
   if (!builtAtLeastOne)
     throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
-  if (bestConcordanceMeasure == SpecFunc::MaxScalar)
+  if (bestConcordanceMeasure == SpecFunc::Infinity)
     LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestAICOut = bestConcordanceMeasure;
   return bestDistribution;
@@ -90,7 +90,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
   if (size == 0)
     throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
@@ -103,7 +103,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
       bestDistribution = distribution;
     }
   }
-  if (bestConcordanceMeasure > SpecFunc::MaxScalar)
+  if (bestConcordanceMeasure > SpecFunc::Infinity)
     LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestAICOut = bestConcordanceMeasure;
   return bestDistribution;
@@ -119,7 +119,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
     throw InternalException(HERE) << "Error: no model given";
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   Bool continuousCase = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -148,7 +148,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
   }
   if (!builtAtLeastOne)
     throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
-  if (bestConcordanceMeasure == SpecFunc::MaxScalar)
+  if (bestConcordanceMeasure == SpecFunc::Infinity)
     LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestAICOut = bestConcordanceMeasure;
   return bestDistribution;
@@ -163,7 +163,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
   if (size == 0)
     throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
@@ -176,7 +176,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
       bestDistribution = distribution;
     }
   }
-  if (bestConcordanceMeasure > SpecFunc::MaxScalar)
+  if (bestConcordanceMeasure > SpecFunc::Infinity)
     LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestAICOut = bestConcordanceMeasure;
   return bestDistribution;
@@ -191,7 +191,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   Bool continuousCase = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -217,7 +217,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
     }
   }
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
-  if (bestConcordanceMeasure == SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  if (bestConcordanceMeasure == SpecFunc::Infinity) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestBICOut = bestConcordanceMeasure;
   return bestDistribution;
 }
@@ -230,7 +230,7 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
@@ -243,7 +243,7 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
       bestDistribution = distribution;
     }
   }
-  if (bestConcordanceMeasure > SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  if (bestConcordanceMeasure > SpecFunc::Infinity) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   bestBICOut = bestConcordanceMeasure;
   return bestDistribution;
 }
@@ -369,7 +369,7 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   const Scalar fakeLevel = 0.5;
   Distribution bestDistribution;
-  bestResult = TestResult("", false, -SpecFunc::MaxScalar, 0.0, 0.0);
+  bestResult = TestResult("", false, -SpecFunc::Infinity, 0.0, 0.0);
   Bool builtAtLeastOne = false;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -436,7 +436,7 @@ Scalar FittingTest::BIC(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (logPDF(i, 0) == SpecFunc::LowestScalar)
-      return SpecFunc::MaxScalar;
+      return SpecFunc::Infinity;
     logLikelihood += logPDF(i, 0);
   }
   return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
@@ -470,7 +470,7 @@ Scalar FittingTest::AIC(const Sample &sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (logPDF(i, 0) == SpecFunc::LowestScalar)
-      return SpecFunc::MaxScalar;
+      return SpecFunc::Infinity;
     logLikelihood += logPDF(i, 0);
   }
   return (-2.0 * logLikelihood + 2.0 * estimatedParameters) / size;

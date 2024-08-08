@@ -186,7 +186,7 @@ Scalar Interval::computeDistance(const Point & point) const
 
   if (pointDimension != intervalDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension=" << intervalDimension;
 
-  if (isEmpty()) return SpecFunc::MaxScalar;
+  if (isEmpty()) return SpecFunc::Infinity;
 
   Point lowerBound = getLowerBound();
   Point upperBound = getUpperBound();
@@ -417,7 +417,7 @@ void Interval::setLowerBound(const Point & lowerBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (std::isinf(lowerBound[i]))
     {
-      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
+      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::Infinity : SpecFunc::LowestScalar);
       finiteLowerBound_[i] = false;
     }
 }
@@ -435,7 +435,7 @@ void Interval::setUpperBound(const Point & upperBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (std::isinf(upperBound[i]))
     {
-      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
+      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::Infinity : SpecFunc::LowestScalar);
       finiteUpperBound_[i] = false;
     }
 }

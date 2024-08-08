@@ -470,7 +470,7 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   Scalar value = DistFunc::pNormal(-del) + pForward * betaPForward + qForward * betaQForward;
   Scalar contributionForward = 0.0;
   Scalar contributionBackward = 0.0;
-  Scalar error = SpecFunc::MaxScalar;
+  Scalar error = SpecFunc::Infinity;
   // At the beginning of the iteration, kForward and kBackward store the index of the last terms
   // that have already been accumulated. Each iteration must update the P and Q factors, as well
   // as the betaP and betaQ factors. For this last update, one must update the corresponding
@@ -609,7 +609,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   Scalar pBackwardEven = pForwardEven;
   Scalar pBackwardOdd = pForwardOdd;
   Scalar value = pForwardOdd + pForwardEven;
-  Scalar error = SpecFunc::MaxScalar;
+  Scalar error = SpecFunc::Infinity;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                                               \

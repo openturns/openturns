@@ -211,7 +211,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFactor(const
   if (y < x)
   {
     const Scalar value = computeExponentialFactor(k, y, x);
-    if (value == 0.0) return SpecFunc::MaxScalar;
+    if (value == 0.0) return SpecFunc::Infinity;
     return 1.0 / value;
   }
   // Generic part, no approximation here
@@ -268,7 +268,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const UnsignedIn
   const Scalar a = distributionCollection_[k].getRange().getLowerBound()[0];
   if (y <= a) return 0.0;
   const Scalar b = distributionCollection_[k].getRange().getUpperBound()[0];
-  if (y >= b) return SpecFunc::MaxScalar;
+  if (y >= b) return SpecFunc::Infinity;
   const Scalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta)
   {
@@ -278,7 +278,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const UnsignedIn
   if (useApproximation_)
   {
     const Scalar exponentialFactor = computeExponentialFactor(k, x, y);
-    if (exponentialFactor == 0.0) return SpecFunc::MaxScalar;
+    if (exponentialFactor == 0.0) return SpecFunc::Infinity;
     return -std::log(exponentialFactor);
   }
   const MaximumEntropyOrderStatisticsDistributionWrapper phiKWrapper(*this, k - 1, k, a);

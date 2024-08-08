@@ -73,8 +73,8 @@ private:
   Function profileLikelihoodFunction_;
   Scalar confidenceLevel_ = 0.95;
   Scalar parameter_ = 0.0;
-  Scalar xMin_ = -SpecFunc::MaxScalar;
-  Scalar xMax_ = SpecFunc::MaxScalar;
+  Scalar xMin_ = -SpecFunc::Infinity;
+  Scalar xMax_ = SpecFunc::Infinity;
 };
 
 END_NAMESPACE_OPENTURNS

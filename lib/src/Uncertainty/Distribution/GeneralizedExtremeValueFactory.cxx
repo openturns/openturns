@@ -141,7 +141,7 @@ public:
     Point value(1);
     if (sigma <= 0.0)
     {
-      value[0] = -std::log(SpecFunc::MaxScalar);
+      value[0] = -std::log(SpecFunc::Infinity);
       return value;
     }
 
@@ -169,7 +169,7 @@ public:
         const Scalar c1 = xi * yir;
         if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
         {
-          ll += -std::log(SpecFunc::ActualMaxScalar);
+          ll += -std::log(SpecFunc::MaxScalar);
           continue;
         }
         const Scalar log1pC1 = std::log1p(c1);
@@ -181,7 +181,7 @@ public:
           const Scalar c2 = xi * yik;
           if (c2 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::ActualMaxScalar);
+            ll += -std::log(SpecFunc::MaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c2);
@@ -251,8 +251,8 @@ public:
     problem.setMinimization(false);
 
     // sigma > 0
-    const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision});
-    const Point upperBound(2, SpecFunc::MaxScalar);
+    const Point lowerBound({-SpecFunc::Infinity, SpecFunc::Precision});
+    const Point upperBound(2, SpecFunc::Infinity);
     const Interval::BoolCollection finiteLowerBound({false, true});
     const Interval::BoolCollection finiteUpperBound(2, false);
     problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -295,7 +295,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return Point(1, -std::log(SpecFunc::Infinity));
     }
   }
 
@@ -374,15 +374,15 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildMethodOfXiProfileLi
      if (zMax > mu)
      xiMin = -sigma / (zMax - mu);
      else
-     xiMin = -SpecFunc::MaxScalar;
+     xiMin = -SpecFunc::Infinity;
      Scalar xiMax;
      if (zMin < mu)
      xiMax = sigma / (mu - zMin);
      else
-     xiMax = SpecFunc::MaxScalar;
+     xiMax = SpecFunc::Infinity;
      */
-  const Scalar xiMin = -SpecFunc::MaxScalar;
-  const Scalar xiMax = SpecFunc::MaxScalar;
+  const Scalar xiMin = -SpecFunc::Infinity;
+  const Scalar xiMax = SpecFunc::Infinity;
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, xi, xiMin, xiMax);
   return result;
 }
@@ -419,8 +419,8 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   problem.setMinimization(false);
 
   // sigma > 0
-  const Point lowerBound({-SpecFunc::MaxScalar, SpecFunc::Precision, -SpecFunc::MaxScalar});
-  const Point upperBound(3, SpecFunc::MaxScalar);
+  const Point lowerBound({-SpecFunc::Infinity, SpecFunc::Precision, -SpecFunc::Infinity});
+  const Point upperBound(3, SpecFunc::Infinity);
   const Interval::BoolCollection finiteLowerBound({false, true, false});
   const Interval::BoolCollection finiteUpperBound(3, false);
   problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -428,8 +428,8 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   // 1+xi(zi-mu)/sigma > 0 for all order statistics taken into account
   const Point allZMin = sample.getMin();
   const Point allZMax = sample.getMax();
-  Scalar zMin = SpecFunc::MaxScalar;
-  Scalar zMax = -SpecFunc::MaxScalar;
+  Scalar zMin = SpecFunc::Infinity;
+  Scalar zMax = -SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < r; ++i)
   {
     zMin = std::min(zMin, allZMin[i]);
@@ -535,8 +535,8 @@ public:
     const Sample xiT(Sample::BuildFromPoint(xiCovariates_ * betaXi));
 
     Scalar ll = startingValue_;
-    Scalar minSigma = SpecFunc::ActualMaxScalar;
-    Scalar minC1 = SpecFunc::ActualMaxScalar;
+    Scalar minSigma = SpecFunc::MaxScalar;
+    Scalar minC1 = SpecFunc::MaxScalar;
     for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
     {
       const Scalar mu = muLink_(muT[i])[0];
@@ -554,7 +554,7 @@ public:
 
         if (sigma <= 0.0)
         {
-          ll += -std::log(SpecFunc::ActualMaxScalar);
+          ll += -std::log(SpecFunc::MaxScalar);
           continue;
         }
 
@@ -563,7 +563,7 @@ public:
         minC1 = std::min(minC1, 1.0 + c1);
         if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
         {
-          ll += -std::log(SpecFunc::ActualMaxScalar);
+          ll += -std::log(SpecFunc::MaxScalar);
           continue;
         }
         const Scalar log1pC1 = std::log1p(c1);
@@ -1135,7 +1135,7 @@ public:
     const Scalar xi = zParameter[2];
 
     if (sigma <= 0.0)
-      return Point(1, -SpecFunc::MaxScalar);
+      return Point(1, -SpecFunc::Infinity);
 
     const Scalar mu = (std::abs(xi) < SpecFunc::Precision ? zm + sigma * logLog1pM_ : zm - sigma * std::expm1(-xi * logLog1pM_) / xi);
 
@@ -1196,8 +1196,8 @@ public:
 
 
     // sigma > 0
-    const Point lowerBound({SpecFunc::Precision, -SpecFunc::MaxScalar});
-    const Point upperBound(2, SpecFunc::MaxScalar);
+    const Point lowerBound({SpecFunc::Precision, -SpecFunc::Infinity});
+    const Point upperBound(2, SpecFunc::Infinity);
     const Interval::BoolCollection finiteLowerBound({true, false});
     const Interval::BoolCollection finiteUpperBound(2, false);
     problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -1217,7 +1217,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return Point(1, -std::log(SpecFunc::Infinity));
     }
   }
 
@@ -1317,10 +1317,10 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
     zmMax = mu + sigma * std::expm1(-xiMax * logLog1pM) / xiMax;
     }
     else
-    zmMax = SpecFunc::MaxScalar;
+    zmMax = SpecFunc::Infinity;
   */
-  const Scalar zmMin = -SpecFunc::ActualMaxScalar;
-  const Scalar zmMax =  SpecFunc::ActualMaxScalar;
+  const Scalar zmMin = -SpecFunc::MaxScalar;
+  const Scalar zmMax =  SpecFunc::MaxScalar;
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm, zmMin, zmMax);
   return result;
 }

@@ -176,7 +176,7 @@ bool IpoptProblem::get_bounds_info( int n,
         x_l[i] = bounds.getLowerBound()[i];
 
       if (!bounds.getFiniteUpperBound()[i])
-        x_u[i] =  SpecFunc::MaxScalar;
+        x_u[i] =  SpecFunc::Infinity;
       else
         x_u[i] = bounds.getUpperBound()[i];
     }
@@ -186,7 +186,7 @@ bool IpoptProblem::get_bounds_info( int n,
     for (int i = 0; i < n; ++i)
     {
       x_l[i] = SpecFunc::LowestScalar;
-      x_u[i] =  SpecFunc::MaxScalar;
+      x_u[i] =  SpecFunc::Infinity;
     }
   }
 
@@ -204,7 +204,7 @@ bool IpoptProblem::get_bounds_info( int n,
     for (UnsignedInteger i = 0; i < optimProblem_.getInequalityConstraint().getOutputDimension(); ++i)
     {
       g_l[k] = 0.0;   // OT constraints are expressed as g(x) = 0 and h(x) >= 0
-      g_u[k] = SpecFunc::MaxScalar;
+      g_u[k] = SpecFunc::Infinity;
       ++k;
     }
 

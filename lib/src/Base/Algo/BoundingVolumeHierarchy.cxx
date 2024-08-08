@@ -169,8 +169,8 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   // This node contains all simplices from sortedSimplices_[firstIndex] to sortedSimplices_[lastIndex-1]
   // First compute its bounding box.
   const UnsignedInteger dimension = vertices_.getDimension();
-  Point lowerBounds(dimension, SpecFunc::MaxScalar);
-  Point upperBounds(dimension, - SpecFunc::MaxScalar);
+  Point lowerBounds(dimension, SpecFunc::Infinity);
+  Point upperBounds(dimension, - SpecFunc::Infinity);
 
   const Collection<Scalar>::const_iterator lowerData = lowerBoundingBoxSimplices_.getImplementation()->data_begin();
   const Collection<Scalar>::const_iterator upperData = upperBoundingBoxSimplices_.getImplementation()->data_begin();
@@ -187,8 +187,8 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   }
   // Otherwise, we will split this node.
   // First search the minimum and maximum center.
-  Point lowerMiddle(dimension, SpecFunc::MaxScalar);
-  Point upperMiddle(dimension, - SpecFunc::MaxScalar);
+  Point lowerMiddle(dimension, SpecFunc::Infinity);
+  Point upperMiddle(dimension, - SpecFunc::Infinity);
   const Collection<Scalar>::const_iterator centerData = centerBoundingBoxSimplices_.getImplementation()->data_begin();
   for(UnsignedInteger i = firstIndex; i < lastIndex; ++i)
   {

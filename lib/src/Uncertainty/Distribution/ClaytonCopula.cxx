@@ -240,7 +240,7 @@ Scalar ClaytonCopula::computePDF(const Point & point) const
   // W case (Frechet lower bound)
   if (theta_ == -1.0)
   {
-    if (u == 1.0 - v) return SpecFunc::MaxScalar;
+    if (u == 1.0 - v) return SpecFunc::Infinity;
     return 0.0;
   }
   // Independent case
