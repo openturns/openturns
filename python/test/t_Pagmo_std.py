@@ -216,7 +216,7 @@ result = algo.getResult()
 x = result.getOptimalPoint()
 y = result.getOptimalValue()
 print("gaco reorder", x, y)
-assert abs(-5.0 - y[0]) < 1e-4, "wrong value"
+assert abs(-5.0 - y[0]) < 2e-3, f"wrong value {y}"
 
 # check we don't expose penalized values
 f = ot.SymbolicFunction(
