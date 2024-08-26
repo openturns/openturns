@@ -387,6 +387,11 @@ Bibliography
     *The Metropolis-Hastings algorithm.*
     arXiv preprint arXiv:1504.01896, 2015.
     `pdf <https://arxiv.org/pdf/1504.01896.pdf>`__
+.. [robertson2024] Robertson, G., Sjöstrand, H., Andersson, P., Göök, A. and Blair, P.
+    *Addressing model inadequacy in fuel performance model calibration using MH-within-gibbs sampling.*
+    Best Estimate Plus Uncertainty International Conference (BEPU 2024), Real Collegio, Lucca, Tuscany, Italy, May 19–24, 2024.
+    Nuclear and Industrial Engineering (NINE)
+    `pdf <https://www.diva-portal.org/smash/get/diva2:1865473/FULLTEXT01.pdf>`__
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
