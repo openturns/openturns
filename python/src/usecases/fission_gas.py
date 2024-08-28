@@ -91,11 +91,13 @@ class FissionGasRelease:
         self.measurement_uncertainty = lambda v: ((v * 0.05) ** 2 + 1e-4) ** 0.5
 
     def get_input_description(self):
-        """Get the description of the model inputs.
+        """
+        Get the description of the model inputs.
 
         Returns
         -------
         :class:`~openturns.Description`
             Model input names
+
         """
         return self._Xtrain.getDescription()
