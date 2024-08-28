@@ -94,10 +94,5 @@ class FissionGasRelease:
         """
         Get the description of the model inputs.
 
-        Returns
-        -------
-        :class:`~openturns.Description`
-            Model input names
-
         """
         return self._Xtrain.getDescription()
