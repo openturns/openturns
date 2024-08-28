@@ -23,7 +23,7 @@ Bayesian calibration of hierarchical fission gas release models
 #
 # The network plot from the page :ref:`use-case-fission-gas` can thus be updated:
 #
-# .. figure:: ../../../../_static/fission_gas_network_calibration.png
+# .. figure:: ../../_static/fission_gas_network_calibration.png
 #     :align: center
 #     :alt: Fission gas release calibration
 #     :width: 50%
@@ -285,7 +285,7 @@ ot.ResourceMap.SetAsScalar("Distribution-QMax", 1.0)
 # Create the list of all samplers in the Gibbs algorithm as outlined in the chart below,
 # where direct samplers are represented in green and random walk Metropolis-Hastings samplers in blue.
 #
-# .. figure:: ../../../../_static/fission_gas_mh.png
+# .. figure:: ../../_static/fission_gas_mh.png
 #     :align: center
 #     :alt: Metropolis-Hastings-within-Gibbs description
 #     :width: 100%
