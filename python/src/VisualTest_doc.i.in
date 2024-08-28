@@ -711,3 +711,39 @@ Examples
 >>> import openturns as ot
 >>> sample = ot.FrankCopula().getSample(100)
 >>> graph = ot.VisualTest.DrawLowerExtremalDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawInsideOutside
+"Draw the 2D projections of a sample, colored according to whether or not the points belong to the domain.
+The projections grid is returned as a :class:`~openturns.GridLayout`.
+
+Parameters
+----------
+domain : :class:`~openturns.Domain`
+    Domain on which each point is tested: does the domain contain it or not.
+sample : 2-d sequence of floats
+    Sample with the same dimension as the domain.
+inColor : str
+    Color used to draw points belonging to the domain.
+outColor : str
+    Color used to draw points not belonging to the domain.
+
+Notes
+-----
+Draws the 2D projections of the sample onto all coordinate pairs in the domain space.
+Each sample is drawn as a small square colored with the color *inColor*
+if it belongs to the domain and with the color *outColor* otherwise.
+
+The limits of the graphs are those of the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> domain = ot.Interval([-2.0, 1.0, -1], [2., 3., 1.])
+>>> U = ot.Uniform(-3, 4)
+>>> dist = ot.JointDistribution([U, U, U])
+>>> sample = dist.getSample(200)
+>>> grid = ot.VisualTest.DrawInsideOutside(domain, sample)
+>>> View(grid).show()"

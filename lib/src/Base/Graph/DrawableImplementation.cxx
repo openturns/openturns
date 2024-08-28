@@ -666,6 +666,8 @@ void DrawableImplementation::InitializeValidParameterList()
   ColorCodes["plum3"]                = "#CD96CD";
   ColorCodes["plum4"]                = "#8B668B";
   ColorCodes["powderblue"]           = "#B0E0E6";
+  ColorCodes["prettyBlue"]           = "#1F77B4";
+  ColorCodes["prettyOrange"]         = "#FF7F0E";
   ColorCodes["purple"]               = "#A020F0";
   ColorCodes["purple1"]              = "#9B30FF";
   ColorCodes["purple2"]              = "#912CEE";

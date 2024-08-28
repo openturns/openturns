@@ -208,6 +208,16 @@ public:
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
+  /** Draw cross sections of the function assumed to have 1D output */
+  virtual GridLayout drawCrossCuts(const Point & centralPoint,
+                                   const Point & xMin,
+                                   const Point & xMax,
+                                   const Indices & pointNumber,
+                                   const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
+                                   const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
+                                   const Scalar vMin = -SpecFunc::MaxScalar,
+                                   const Scalar vMax = -SpecFunc::MaxScalar) const;
+
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = nullptr);

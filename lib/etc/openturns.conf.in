@@ -113,6 +113,9 @@
   <Contour-DefaultExtend value_str="both"            />
   <Contour-DefaultAlpha value_float="1.0"            />
 
+  <!-- OT::Cross cuts parameters -->
+  <CrossCuts-DefaultWithMonoDimensionalCuts value_bool="true" />
+
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />
 
@@ -434,6 +437,8 @@
 
   <!-- OT::DomainImplementation parameters -->
   <Domain-SmallVolume value_float="1.0e-12" />
+  <Domain-DefaultInColor value_str="prettyOrange" />
+  <Domain-DefaultOutColor value_str="prettyBlue" />
 
   <!-- OT::Mesh parameters -->
   <Mesh-BackfaceCulling   value_bool="false" />

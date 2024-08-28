@@ -32,9 +32,11 @@
  * Copy button for code blocks
 
 === Python module ===
+ * Cross-cuts of multivariate Functions can be drawn with the drawCrossCut method
+ * VisualTest::DrawInsideOutside shows which points in a Sample belong to a given Domain and which do not.
 
 === Miscellaneous ===
-
+ * The Distribution PDF, logPDF and CDF can be exposed as Function objects using the new getPDF, getLogPDF and getCDF methods, previously they could only be computed on a Point or Sample or else drawn.
 
 
 == 1.23 release (2024-06-05) == #release-1.23

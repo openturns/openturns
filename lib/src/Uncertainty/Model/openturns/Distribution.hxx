@@ -141,6 +141,11 @@ public:
   Sample getSampleByInversion(const UnsignedInteger size) const;
   Sample getSampleByQMC(const UnsignedInteger size) const;
 
+  /** Get function representation of PDF and CDF*/
+  Function getPDF() const;
+  Function getLogPDF() const;
+  Function getCDF() const;
+
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;
   Point  computeDDF(const Point & point) const;

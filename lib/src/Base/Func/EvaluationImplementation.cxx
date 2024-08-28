@@ -555,6 +555,111 @@ Graph EvaluationImplementation::draw(const Point & xMin,
   return draw(0, 1, 0, Point(2), xMin, xMax, pointNumber, scale);
 }
 
+/** Draw the cross-cuts of the function supposed to have 1D output */
+GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
+                                                   const Point & xMin,
+                                                   const Point & xMax,
+                                                   const Indices& pointNumber,
+                                                   const Bool withMonoDimensionalCuts,
+                                                   const Bool isFilled,
+                                                   const Scalar vMin,
+                                                   const Scalar vMax) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (!(inputDimension >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with input dimension=" << inputDimension << " less than 2 using this method. See the other draw() methods.";
+  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
+  if (!(xMin.getDimension() == inputDimension && xMax.getDimension() == inputDimension && pointNumber.getSize() == inputDimension)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be of dimension " << inputDimension;
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    if (!(pointNumber[i] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  const Bool buildVMinMax = vMax == -SpecFunc::MaxScalar && vMin == -SpecFunc::MaxScalar;
+  Scalar vMinCal = buildVMinMax ? SpecFunc::MaxScalar : vMin;
+  Scalar vMaxCal = vMax;
+  if (!buildVMinMax && !(vMin < vMax))throw InvalidArgumentException(HERE) << "Error: the vMin value must be less than the vMax value";
+  //Building component samples
+  Collection<Sample>samples(inputDimension);
+  for (UnsignedInteger iX = 0; iX < inputDimension; iX++)
+  {
+    const UnsignedInteger nX = pointNumber[iX];
+    Sample sample(nX, 1);
+    const Scalar dX = (xMax[iX] - xMin[iX]) / (nX - 1.0);
+    for (UnsignedInteger i = 0; i < nX; ++i)
+      sample(i, 0) = xMin[iX] + i * dX;
+    samples[iX] = sample;
+  }
+  //Build contours
+  GridLayout grid(withMonoDimensionalCuts ? inputDimension : inputDimension - 1, withMonoDimensionalCuts ? inputDimension : inputDimension - 1);
+  if (!getName().empty())
+    grid.setTitle("Cross cuts of function " + getName());
+  for (UnsignedInteger iX = 0; iX < inputDimension; iX++)
+  {
+    const Sample x(samples[iX]);
+    for (UnsignedInteger iY = iX + 1; iY < inputDimension; iY++)
+    {
+      // Discretization of the XY plane
+      const UnsignedInteger nX = pointNumber[iX], nY = pointNumber[iY];
+      const Sample y(samples[iY]);
+      Sample inputSample(nX * nY, centralPoint);
+      // Prepare the input sample
+      UnsignedInteger index = 0;
+      for (UnsignedInteger j = 0; j < nY; ++j)
+      {
+        const Scalar yJ = y(j, 0);
+        for (UnsignedInteger i = 0; i < nX; ++i)
+        {
+          const Scalar xI = x(i, 0);
+          inputSample(index, iX) = xI;
+          inputSample(index, iY) = yJ;
+          ++index;
+        } // i
+      } // j
+      // Compute the output sample, using possible parallelism
+      const Sample z((*this)(inputSample));
+      if (buildVMinMax)
+      {
+        vMinCal = std::min(vMinCal, z.getMin()[0]);
+        vMaxCal = std::max(vMaxCal, z.getMax()[0]);
+      }
+      Contour isoValues(x, y, z);
+      isoValues.setIsFilled(isFilled);
+      isoValues.setDrawLabels(!isFilled);
+      isoValues.setColorBarPosition("");
+      Graph graph("", iY + 1 == inputDimension ? getInputDescription()[iX] : "", iX == 0 ? getInputDescription()[iY] : "", true);
+      graph.add(isoValues);
+      grid.setGraph(withMonoDimensionalCuts ? iY : iY - 1, iX, graph);
+    }
+  }
+  if (withMonoDimensionalCuts)
+  {
+    //Build curves
+    for (UnsignedInteger iX = 0; iX < inputDimension; iX++)
+    {
+      Sample x(samples[iX]);
+      const UnsignedInteger nX = pointNumber[iX];
+      Sample inputSample(nX, centralPoint);
+      for (UnsignedInteger i = 0; i < nX; ++i)
+        inputSample(i, iX) = x(i, 0);
+      Graph graph("", iX + 1 == inputDimension ? getInputDescription()[iX] : "", getOutputDescription()[0], true);
+      graph.add(Curve(x, (*this)(inputSample)));
+      grid.setGraph(iX, iX, graph);
+    }
+  }
+  //Uniformize vMin and vMax
+  for (UnsignedInteger iX = 0; iX < inputDimension; iX++)
+  {
+    for (UnsignedInteger iY = iX + 1; iY < inputDimension; iY++)
+    {
+      Contour* contour = dynamic_cast<Contour*>(grid.getGraph(withMonoDimensionalCuts ? iY : iY - 1, iX).getDrawable(0).getImplementation().get());
+      contour->setVmin(vMinCal);
+      contour->setVmax(vMaxCal);
+      Point levels(ResourceMap::GetAsUnsignedInteger("Contour-DefaultLevelsNumber"));
+      for (UnsignedInteger i = 0; i < levels.getSize(); i++)
+        levels[i] = vMinCal + (vMaxCal - vMinCal) * (i + 1) / (levels.getSize() + 1);
+      contour->setLevels(levels);
+    }
+  }
+  return grid;
+}
+
 void EvaluationImplementation::setStopCallback(StopCallback callBack, void * state)
 {
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);

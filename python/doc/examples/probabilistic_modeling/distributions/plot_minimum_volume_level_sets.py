@@ -2,6 +2,7 @@
 Draw minimum volume level sets
 ==============================
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer
@@ -221,9 +222,7 @@ threshold
 
 
 # %%
-def drawLevelSetContour2D(
-    distribution, numberOfPointsInXAxis, alpha, threshold, sampleSize=500
-):
+def drawLevelSetContour2D(distribution, alpha, level_set, threshold, sampleSize=500):
     """
     Compute the minimum volume LevelSet of measure equal to alpha and get the
     corresponding density value (named threshold).
@@ -231,38 +230,26 @@ def drawLevelSetContour2D(
     Draw a contour plot for the distribution, where the PDF is equal to threshold.
     """
     sample = distribution.getSample(sampleSize)
-    X1min = sample[:, 0].getMin()[0]
-    X1max = sample[:, 0].getMax()[0]
-    X2min = sample[:, 1].getMin()[0]
-    X2max = sample[:, 1].getMax()[0]
-    xx = ot.Box([numberOfPointsInXAxis], ot.Interval([X1min], [X1max])).generate()
-    yy = ot.Box([numberOfPointsInXAxis], ot.Interval([X2min], [X2max])).generate()
-    xy = ot.Box(
-        [numberOfPointsInXAxis, numberOfPointsInXAxis],
-        ot.Interval([X1min, X2min], [X1max, X2max]),
-    ).generate()
-    data = distribution.computePDF(xy)
-    graph = ot.Graph("", "X1", "X2", True, "upper right")
+    graph = ot.VisualTest.DrawInsideOutside(level_set, sample).getGraph(0, 0)
     labels = ["%.2f%%" % (100 * alpha)]
-    contour = ot.Contour(xx, yy, data)
+    contour_graph = distribution.drawPDF(sample.getMin(), sample.getMax())
+    contour = contour_graph.getDrawable(0).getImplementation()
     contour.setLevels([threshold])
     contour.setLabels(labels)
+    contour.setDrawLabels(True)
     contour.setColor("black")
     graph.setTitle(
         "%.2f%% of the distribution, sample size = %d" % (100 * alpha, sampleSize)
     )
     graph.add(contour)
-    cloud = ot.Cloud(sample)
-    graph.add(cloud)
-    return graph
+    return graph, contour
 
 
 # %%
 # The following plot shows that 90% of the sample is contained in the `LevelSet`.
 
 # %%
-numberOfPointsInXAxis = 50
-graph = drawLevelSetContour2D(mixture, numberOfPointsInXAxis, alpha, threshold)
+graph, contour = drawLevelSetContour2D(mixture, alpha, levelSet, threshold)
 view = viewer.View(graph)
 plt.show()
 
