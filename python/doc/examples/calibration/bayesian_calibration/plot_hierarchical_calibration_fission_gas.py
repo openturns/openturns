@@ -173,7 +173,7 @@ class PosteriorParametersSigmaSquare(ot.OpenTURNSPythonFunction):
     -------
     parameters : list of float
         Parameters of the conditional posterior distribution.
-        In order: lambda, k (shape), lower bound, upper bound.
+        In order: k (shape), lambda, lower bound, upper bound.
     """
 
     def __init__(self, dim=0, lb=1e-4, ub=100):
