@@ -197,7 +197,7 @@ class PosteriorParametersSigmaSquare(ot.OpenTURNSPythonFunction):
         post_lambda = 2.0 / np.sum(squares)  # rate lambda =  1 / beta
         post_k = nexp / 2.0  # shape
 
-        return [post_lambda, post_k, self._lb, self._ub]
+        return [post_k, post_lambda, self._lb, self._ub]
 
 
 class PosteriorLogDensityX(ot.OpenTURNSPythonFunction):
@@ -515,12 +515,12 @@ prior = ot.JointDistribution(
         ot.Uniform(lbs[0], ubs[0]),
         ot.Uniform(lbs[1], ubs[1]),
         ot.TruncatedDistribution(
-            ot.InverseGamma(10000000, 0.01),
+            ot.InverseGamma(0.01, 10000000),
             lbs_sigma_square[0],
             float(ubs_sigma_square[0]),
         ),
         ot.TruncatedDistribution(
-            ot.InverseGamma(10000000, 0.01),
+            ot.InverseGamma(0.01, 10000000),
             lbs_sigma_square[1],
             float(ubs_sigma_square[1]),
         ),
