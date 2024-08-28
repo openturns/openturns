@@ -437,6 +437,30 @@ Graph FunctionImplementation::draw(const Point & xMin,
   return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
+/** Draw cross sections of the function assumed to have 1D output */
+GridLayout FunctionImplementation::drawCrossCuts(const Point& centralPoint,
+  const Point& xMin,
+  const Point& xMax,
+  const Indices& pointNumber,
+  const Scalar vMin,
+  const Scalar vMax,
+  const Bool withMonoDimCuts,
+  const Bool isFilled) const
+{
+  return evaluation_.drawCrossCuts(centralPoint, xMin, xMax, pointNumber, vMin, vMax, withMonoDimCuts, isFilled);
+}
+
+/** Draw cross sections of the function assumed to have 1D output (vMin and vMax are calculated) */
+GridLayout FunctionImplementation::drawCrossCuts(const Point& centralPoint,
+  const Point& xMin,
+  const Point& xMax,
+  const Indices& pointNumber,
+  const Bool withMonoDimCuts,
+  const Bool isFilled) const
+{
+  return evaluation_.drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimCuts, isFilled);
+}
+
 void FunctionImplementation::setStopCallback(StopCallback callBack, void * state)
 {
   evaluation_.setStopCallback(callBack, state);

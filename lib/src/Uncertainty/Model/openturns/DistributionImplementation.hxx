@@ -876,6 +876,8 @@ protected:
   mutable UniVariatePolynomial generatingFunction_;
 
 #ifndef SWIG
+  //To allow use of wrappers
+  friend class Distribution;
 
   // Class used to wrap the computePDF() method for interpolation purpose
   class PDFWrapper: public EvaluationImplementation
@@ -884,6 +886,13 @@ protected:
     PDFWrapper(const DistributionImplementation * p_distribution)
       : EvaluationImplementation()
       , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+    PDFWrapper(DistributionImplementation::Implementation p_distribution)
+      : EvaluationImplementation()
+      , p_distribution_(p_distribution.get())
+      , p_shared_distribution_(p_distribution)
     {
       // Nothing to do
     }
@@ -939,6 +948,7 @@ protected:
 
   private:
     const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   };  // class PDFWrapper
 
   // Class used to wrap the computeLogPDF() method for interpolation purpose
@@ -1009,9 +1019,16 @@ protected:
   class CDFWrapper: public EvaluationImplementation
   {
   public:
-    CDFWrapper(const DistributionImplementation * p_distribution)
+    CDFWrapper(const DistributionImplementation* p_distribution)
       : EvaluationImplementation()
       , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+    CDFWrapper(DistributionImplementation::Implementation p_distribution)
+      : EvaluationImplementation()
+      , p_distribution_(p_distribution.get())
+      , p_shared_distribution_(p_distribution)
     {
       // Nothing to do
     }
@@ -1077,6 +1094,7 @@ protected:
 
   private:
     const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   }; // class CDFWrapper
 
   // Structure used to implement the computeQuantile() method efficiently

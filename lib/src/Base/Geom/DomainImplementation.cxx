@@ -22,6 +22,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -87,6 +89,35 @@ Sample DomainImplementation::computeDistance(const Sample & sample) const
   for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
     result(i, 0) = computeDistance(sample[i]);
   return result;
+}
+
+GridLayout DomainImplementation::draw(const Sample& sample, const String& inColor, const String& outColor) const
+{
+  if(!(sample.getDimension() >= 2))throw InvalidArgumentException(HERE) << "Error: cannot draw sample of dimension=" << sample.getDimension() << " less than 2.";
+  Sample insideSample(0, sample.getDimension()), outsideSample(0, sample.getDimension());
+  for(UnsignedInteger i = 0; i < sample.getSize(); i++)
+  {
+    if(contains(sample[i]))
+      insideSample.add(sample[i]);
+    else
+      outsideSample.add(sample[i]);
+  }
+  GridLayout grid(sample.getDimension() - 1, sample.getDimension() - 1);
+  grid.setTitle("Cross cuts of domain " + getName() + (sample.getName().empty() ? "" : (" tested with sample " + sample.getName())));
+  for(UnsignedInteger iX = 0; iX < sample.getDimension(); iX++)
+  {
+    for(UnsignedInteger iY = iX + 1; iY < sample.getDimension(); iY++)
+    {
+      Sample in2DSample(insideSample.getMarginal(Indices({ iX,iY }))), out2DSample(outsideSample.getMarginal(Indices({ iX,iY })));
+      Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "", true);
+      graph.add(Cloud(in2DSample, inColor, "fsquare", "In"));
+      graph.add(Cloud(out2DSample, outColor, "fsquare", "Out"));
+      if(iX == 0 && iY + 1 == sample.getDimension())
+        graph.setLegendPosition("topright");
+      grid.setGraph(iY - 1, iX, graph);
+    }
+  }
+  return grid;
 }
 
 /* Get the dimension of the domain*/
