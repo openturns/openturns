@@ -53,6 +53,18 @@ References
   doi: 10.1016/B978-0-12-818190-4.00008-5.
 - [robertson2024]_
 
+Acknowledgement
+---------------
+
+The project this use case is derived of was developed as part of WP6 -
+"Advance fuel performance modeling" in the EU-supported `APIS project <https://apis-project.eu/>`_,
+with the aim to deliver a new calibration methodology
+to the stakeholders. Funded by the European Union. Views and opinions expressed on the present page,
+and in the examples built upon this use case are however those of the authors
+only and do not necessarily reflect those of the European Union or Euratom.
+Neither the European Union nor the granting authority can be held responsible for them.
+Further, the project was developed with funding from the `Swedish Nuclear Centre <https://www.skc.kth.se/>`_.
+
 API documentation
 -----------------
 
