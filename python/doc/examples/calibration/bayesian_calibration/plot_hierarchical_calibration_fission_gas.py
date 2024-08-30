@@ -31,6 +31,8 @@ Bayesian calibration of hierarchical fission gas release models
 # In the network above, full arrows represent deterministic relationships and dashed arrows probabilistic relationships.
 # More precisely, the conditional distribution of the node at the end of two dashed arrows when (only) the starting nodes are known
 # is a normal distribution with parameters equal to these starting nodes.
+# Note that due to constraints on the input domains of the :math:`\model_i` models, for every :math:`1 \leq i \leq \sampleSize_{\mathrm{exp}}`,
+# the distributions of :math:`x_{\mathrm{diff}, i}` and :math:`x_{\mathrm{crack}, i}` are truncated to the input domain boundaries.
 #
 # Such a hierarchical approach was used in [robertson2024]_, showing how a hierarchical probabilistic model can be sampled using a Metropolis-Hastings-within-Gibbs sampler.
 # The authors calibrated the models against measurements from the International Fuel Performance Experiments (IFPE) database.
@@ -47,6 +49,7 @@ import matplotlib.pyplot as plt
 # Load the models
 
 from openturns.usecases import fission_gas
+
 fgr = fission_gas.FissionGasRelease()
 desc = fgr.get_input_description()  # description of the model inputs (diff, crack)
 ndim = len(desc)  # dimension of the model inputs: 2
@@ -91,7 +94,7 @@ likelihoods = [
 # distributions of :math:`\mu_{\mathrm{diff}}` and :math:`\mu_{\mathrm{crack}}`.
 
 mu_rv = ot.RandomVector(ot.TruncatedNormal())
-mu_desc = ["$\\mu$_{{{}}}".format(label) for label in desc]
+mu_desc = [f"$\\mu$_{{{label}}}" for label in desc]
 
 # %%
 # The conditional posterior distribution of :math:`\sigma_{\mathrm{diff}}`
@@ -106,7 +109,7 @@ mu_desc = ["$\\mu$_{{{}}}".format(label) for label in desc]
 # distribution of :math:`\sigma_{\mathrm{diff}}^2` and :math:`\sigma_{\mathrm{crack}}^2`.
 
 sigma_square_rv = ot.RandomVector(ot.TruncatedDistribution(ot.InverseGamma(), 0.0, 1.0))
-sigma_square_desc = ["$\\sigma$_{{{}}}^2".format(label) for label in desc]
+sigma_square_desc = [f"$\\sigma$_{{{label}}}^2" for label in desc]
 
 
 # %%
@@ -218,7 +221,6 @@ class PosteriorLogDensityX(ot.OpenTURNSPythonFunction):
     """
 
     def __init__(self, exp):
-
         # State description: mu values, then sigma values, then for each experiment x values
         state_length = (1 + 1 + nexp) * ndim
         super().__init__(state_length, 1)
@@ -265,7 +267,7 @@ ubs_sigma_square = np.array([40, 10]) ** 2
 # %%
 # Initial state
 initial_mus = [10.0, 0.3]
-initial_sigma_squares = [20.0 ** 2, 0.5 ** 2]
+initial_sigma_squares = [20.0**2, 0.5**2]
 initial_x = np.repeat([[19.0, 0.4]], repeats=nexp, axis=0).flatten().tolist()
 initial_state = initial_mus + initial_sigma_squares + initial_x
 
@@ -347,7 +349,7 @@ for exp in range(nexp):
 sampler = ot.Gibbs(samplers)
 x_desc = []
 for i in range(1, nexp + 1):
-    x_desc += ["x_{{{}, {}}}".format(label, i) for label in desc]
+    x_desc += [f"x_{{{label}, {i}}}" for label in desc]
 sampler.setDescription(mu_desc + sigma_square_desc + x_desc)
 
 # %%
@@ -442,10 +444,8 @@ _ = View(full_grid, scatter_kw={"alpha": 0.1})
 #
 # Retrieve the :math:`\mu` and :math:`\sigma^2` columns in the sample.
 
-mu = samples.getMarginal(["$\\mu$_{{{}}}".format(label) for label in desc])
-sigma_square = samples.getMarginal(
-    ["$\\sigma$_{{{}}}^2".format(label) for label in desc]
-)
+mu = samples.getMarginal([f"$\\mu$_{{{label}}}" for label in desc])
+sigma_square = samples.getMarginal([f"$\\sigma$_{{{label}}}^2" for label in desc])
 
 
 # %%

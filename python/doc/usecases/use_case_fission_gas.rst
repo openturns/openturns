@@ -5,8 +5,9 @@ Fission gas release
 
 Fuel performance codes [1] like *TRANSURANUS* [2, 3] predict the behavior of nuclear fuel rods,
 such as the temperature, internal pressure, and fission gas release.
-This use case presents several simplified models of fission gas release,
-as a fraction of what is created by the fission reaction.
+This use case presents several simplified Gaussian process surrogate models for fission gas release
+fitted to training data generated with *TRANSURANUS*.
+Fission gas release is expressed as a fraction of what is created by the fission reaction.
 They are derived from the work by [robertson2024]_.
 
 Each of the models has two inputs:
@@ -36,7 +37,9 @@ corresponding to the measured :math:`y_i` are unobserved.
 
 The relationships between these quantities are represented in the following network.
 Full arrows represent deterministic relationships,
-while dashed arrows represent probabilistic relationships (e.g. a normal distribution).
+while dashed arrows represent probabilistic relationships
+(e.g. a truncated normal distribution, with truncation bounds determined
+by the range of the surro).
 
 .. figure:: ../_static/fission_gas_network.png
     :align: center
