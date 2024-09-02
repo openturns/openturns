@@ -45,7 +45,7 @@ SequentialSamplingAlgorithmImplementation::SequentialSamplingAlgorithmImplementa
 {
   const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
-  if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on samples of different size.";
+  if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on X/Y samples of different size (" << dataSize << " vs " << y.getSize() << ")";
 }
 
 /* Virtual constructor */
