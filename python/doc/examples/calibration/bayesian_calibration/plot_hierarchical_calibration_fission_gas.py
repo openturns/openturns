@@ -515,12 +515,12 @@ prior = ot.JointDistribution(
         ot.Uniform(lbs[0], ubs[0]),
         ot.Uniform(lbs[1], ubs[1]),
         ot.TruncatedDistribution(
-            ot.InverseGamma(0.01, 10000000),
+            ot.InverseGamma(0.01, 1e7),
             lbs_sigma_square[0],
             float(ubs_sigma_square[0]),
         ),
         ot.TruncatedDistribution(
-            ot.InverseGamma(0.01, 10000000),
+            ot.InverseGamma(0.01, 1e7),
             lbs_sigma_square[1],
             float(ubs_sigma_square[1]),
         ),

@@ -39,7 +39,7 @@ The relationships between these quantities are represented in the following netw
 Full arrows represent deterministic relationships,
 while dashed arrows represent probabilistic relationships
 (e.g. a truncated normal distribution, with truncation bounds determined
-by the range of the surro).
+by the range of the model).
 
 .. figure:: ../_static/fission_gas_network.png
     :align: center
