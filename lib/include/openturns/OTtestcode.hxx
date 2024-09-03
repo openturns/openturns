@@ -88,34 +88,6 @@ public:
 
 
 
-
-
-/**
- * Function parseOptions analyse what the user put
- * on the command line of the executable.
- */
-inline void parseOptions(int argc, char *argv[])
-{
-  for(int i = 1; i < argc; ++ i)
-  {
-    if (!strcmp(argv[i], "--version"))
-    {
-      std::cout << argv[0] << " version " << PACKAGE_VERSION
-                << " (copyright 2005-2010 " << PACKAGE_NAME << ")"
-                << std::endl;
-      exit(ExitCode::Success);
-    }
-  } /* end for */
-
-#if defined(_MSC_VER) && (_MSC_VER < 1900)
-  // Windows displays scientific notation with 3 digits in the exponent.
-  // We force 2 digits to avoid test failures.
-  _set_output_format(_TWO_DIGIT_EXPONENT);
-#endif
-}
-
-
-
 /**
  * Random generator initialization
  */
