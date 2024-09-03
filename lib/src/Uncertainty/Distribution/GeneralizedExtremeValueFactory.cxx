@@ -141,7 +141,7 @@ public:
     Point value(1);
     if (sigma <= 0.0)
     {
-      value[0] = -std::log(SpecFunc::Infinity);
+      value[0] = -SpecFunc::LogMaxScalar;
       return value;
     }
 
@@ -295,7 +295,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::Infinity));
+      return Point(1, -SpecFunc::LogMaxScalar);
     }
   }
 
@@ -1217,7 +1217,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::Infinity));
+      return Point(1, -SpecFunc::LogMaxScalar);
     }
   }
 
