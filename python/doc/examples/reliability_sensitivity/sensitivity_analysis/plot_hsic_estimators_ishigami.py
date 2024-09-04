@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep  4 11:22:33 2024
-
-@author: f37280
-"""
-
 """
 The HSIC sensitivity indices: the Ishigami model
 ================================================
