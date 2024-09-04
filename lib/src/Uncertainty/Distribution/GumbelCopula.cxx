@@ -222,7 +222,7 @@ Point GumbelCopula::computePDFGradient(const Point & point) const
   const Scalar v = point[1];
   // A copula has a null PDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
-  const Scalar epsilon = ResourceMap::GetAsScalar("DistFunc-Precision");
+  const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
   return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
 }
 
