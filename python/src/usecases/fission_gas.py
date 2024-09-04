@@ -90,5 +90,5 @@ class FissionGasRelease:
 
         self.measurement_uncertainty = lambda v: ((v * 0.05) ** 2 + 1e-4) ** 0.5
 
-    def get_input_description(self):
+    def getInputDescription(self):
         return self._Xtrain.getDescription()

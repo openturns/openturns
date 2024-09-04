@@ -51,7 +51,7 @@ import matplotlib.pyplot as plt
 from openturns.usecases import fission_gas
 
 fgr = fission_gas.FissionGasRelease()
-desc = fgr.get_input_description()  # description of the model inputs (diff, crack)
+desc = fgr.getInputDescription()  # description of the model inputs (diff, crack)
 ndim = len(desc)  # dimension of the model inputs: 2
 nexp = fgr.measurement_values.getSize()  # number of sets of experimental conditions
 models = fgr.models  # the nexp models
@@ -141,7 +141,7 @@ class PosteriorParametersMu(ot.OpenTURNSPythonFunction):
     def __init__(self, dim=0, lb=-100, ub=100):
         self._dim = dim
 
-        # state description: mu values, then sigma values, then for each experiment x values
+        # State description: mu values, then sigma values, then for each experiment x values
         state_length = (1 + 1 + nexp) * ndim
         super().__init__(state_length, 4)
         self._xindices = range(state_length)[2 * ndim :][dim::ndim]
