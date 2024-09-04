@@ -5,13 +5,13 @@ Create a customized distribution or copula
 # %%
 # In this example we are going to create a distribution or copula.
 #
-# The way to go is inheriting the PythonDistribution class and overload the methods of the Distribution object.
+# The way to go is inheriting the :class:`~openturns.PythonDistribution`, get the  class and overload the methods of the :class:`~openturns.Distribution` object.
 #
-# To create a Copula, the user has to overload isCopula() and return True.
+# To create a Copula, the user has to overload `isCopula()` and return `True`.
 #
 # Then an instance of the new class can be passed on into a Distribution object.
 #
-# At least computeCDF should be overridden.
+# At least `computeCDF` should be overridden.
 
 # %%
 import openturns as ot
@@ -25,7 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# Inherit PythonDistribution :
+# Inherit :class:`~openturns.PythonDistribution`:
 
 
 # %%
@@ -142,7 +142,7 @@ class UniformNdPy(ot.PythonDistribution):
 distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))
 
 # %%
-# And plot the `cdf`:
+# And plot the CDF:
 
 # %%
 graph = distribution.drawCDF()
@@ -156,7 +156,7 @@ view = viewer.View(graph)
 distribution.getSample(5)
 
 # %%
-# or compute the `mean`:
+# or compute the mean:
 
 # %%
 distribution.getMean()
@@ -168,4 +168,4 @@ distribution.getMean()
 distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
 plt.show()
 # %%
-# And do more (see `Distribution` for all methods)
+# And do more (see :class:`~openturns.Distribution` for all methods)

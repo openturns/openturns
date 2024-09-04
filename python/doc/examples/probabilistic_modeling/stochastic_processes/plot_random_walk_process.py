@@ -11,14 +11,14 @@ Create a random walk process
 #
 # .. math::
 #    \begin{aligned}
-#      X_{t_0} & = & \underline{x}_{t_0} \\
+#      X_{t_0} & = & \vect{x}_{t_0} \\
 #      \forall n>0,\: X_{t_n} & = & X_{t_{n-1}} + \varepsilon_{t_n}
 #    \end{aligned}
 #
-# where :math:`\underline{x}_0 \in \mathbb{R}^d` and :math:`\varepsilon` is a white noise of
+# where :math:`\vect{x}_0 \in \mathbb{R}^d` and :math:`\varepsilon` is a white noise of
 # dimension :math:`d`.
 #
-# The library proposes to model it through the object *RandomWalk* defined
+# The library proposes to model it through the object :class:`~openturns.RandomWalk` defined
 # thanks to the origin, the distribution of the white noise and the time
 # grid.
 
@@ -60,7 +60,7 @@ view = viewer.View(graph)
 origin = [0.0] * 2
 
 # %%
-# color palette
+# Color palette
 pal = ["red", "cyan", "blue", "yellow", "green"]
 
 # %%

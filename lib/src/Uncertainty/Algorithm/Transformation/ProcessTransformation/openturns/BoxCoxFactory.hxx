@@ -96,12 +96,12 @@ public:
                               const Sample &outputSample,
                               const Basis &basis,
                               const Point &shift,
-                              LinearModelResult &linearModelResult);
+                              LinearModelResult & linearModelResultOut);
 
   BoxCoxTransform buildWithLM(const Sample &inputSample,
                               const Sample &outputSample,
                               const Point &shift,
-                              LinearModelResult &linearModelResult);
+                              LinearModelResult & linearModelResultOut);
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

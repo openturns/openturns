@@ -212,6 +212,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Convert the input vector to Point */
   Point inP(n);
   std::copy(x, x + n, inP.begin());
+  Point inClip(inP);
 
   const UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   const UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
@@ -226,7 +227,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
         throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
     // evaluate the function on the clipped point (still penalized if outside the bounds)
-    Point inClip(inP);
     if (problem.hasBounds())
     {
       const Point lowerBound(problem.getBounds().getLowerBound());
@@ -235,9 +235,9 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
       for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
       {
         if (problem.getBounds().getFiniteLowerBound()[i])
-          inClip[i] = std::max(inP[i], lowerBound[i] - maximumConstraintError);
+          inClip[i] = std::max(inClip[i], lowerBound[i] - maximumConstraintError);
         if (problem.getBounds().getFiniteUpperBound()[i])
-          inClip[i] = std::min(inP[i], upperBound[i] + maximumConstraintError);
+          inClip[i] = std::min(inClip[i], upperBound[i] + maximumConstraintError);
       }
     }
     outP = problem.getObjective().operator()(inClip);
@@ -266,7 +266,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Compute the inequality constraints at inP */
   if (problem.hasInequalityConstraint())
   {
-    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inP));
+    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inClip));
     algorithm->inequalityConstraintHistory_.add(constraintInequalityValue);
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
@@ -275,7 +275,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Compute the equality constraints at inP */
   if (problem.hasEqualityConstraint())
   {
-    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inP);
+    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inClip);
     algorithm->equalityConstraintHistory_.add(constraintEqualityValue);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;

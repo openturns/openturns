@@ -65,7 +65,7 @@ function.gradient(x)
 
 def regularFuncSample(X):
     # Create a numpy array with the contents of X without copy
-    xarray = np.array(X, copy=False)
+    xarray = np.asarray(X)
     # Get columns as vectors, there is also no copy
     x0, x1, x2 = xarray.T
     # Allocate a numpy array to store result

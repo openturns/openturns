@@ -23,6 +23,7 @@
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -149,13 +150,19 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   // The parameters are scaled back
   // X_norm = alpha * (X - beta)
   // X = beta + X_norm / alpha
-  Point scaledParameters(4, beta);
-  scaledParameters[0] += parameters[0] / alpha;// mu
-  scaledParameters[1] = parameters[1] / alpha;// sigma
-  scaledParameters[2] -= oneEps / alpha;// a
-  scaledParameters[3] += oneEps / alpha;// b
+  const Scalar mu = beta + parameters[0] / alpha;
+  const Scalar sigma = parameters[1] / alpha;
+  const Scalar a = beta - oneEps / alpha;
+  const Scalar b = beta + oneEps / alpha;
 
-  TruncatedNormal result(buildAsTruncatedNormal(scaledParameters));
+  // check if the parameters of the Normal part make sense wrt the bound parameters
+  // note that we still want to allow it from the ctor of TruncatedNormal
+  // but not in the context of inference as in the chaos we want to avoid such degenerated distributions
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
+  if (Normal(mu, sigma).computeProbability(Interval(a, b)) < epsilon)
+    throw InvalidArgumentException(HERE) << "Likelihood-optimized TruncatedNormal is not valid";
+
+  TruncatedNormal result(buildAsTruncatedNormal({mu, sigma, a, b}));
 
   // abort if distribution is not valid
   if (!SpecFunc::IsNormal(result.getMean()[0]))

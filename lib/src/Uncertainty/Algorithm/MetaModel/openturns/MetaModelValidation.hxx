@@ -24,10 +24,10 @@
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GridLayout.hxx"
+#include "openturns/LeaveOneOutSplitter.hxx"
+#include "openturns/KFoldSplitter.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
 
 /**
  * @class MetaModelValidation
@@ -98,8 +98,19 @@ protected:
   /** R2 score */
   mutable Point r2Score_;
 
-private:
+  /** Compute cross-validation leave-one-out predictions */
+  static Sample ComputeMetamodelLeaveOneOutPredictions(const Sample & outputSample,
+                                                       const Sample & residual,
+                                                       const Point & leverages,
+                                                       const LeaveOneOutSplitter & splitter);
 
+  /** Compute cross-validation K-Fold predictions */
+  static Sample ComputeMetamodelKFoldPredictions(const Sample & outputSample,
+                                                 const Sample & residual,
+                                                 const SymmetricMatrix & projectionMatrix, 
+                                                 const KFoldSplitter & splitter);
+
+private:
 
 }; /* class MetaModelValidation */
 

@@ -3,7 +3,6 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 ot_install_header_file (OT.hxx)
-ot_add_source_file (openturns_library_ok.c)
 
 # Recurse in subdirectories
 add_subdirectory (Base)
@@ -123,11 +122,6 @@ target_compile_features (OT PUBLIC cxx_std_11)
 
 set_property (TARGET OT PROPERTY OPENTURNS_ENABLED_FEATURES "${OPENTURNS_ENABLED_FEATURES}")
 set_property (TARGET OT APPEND PROPERTY EXPORT_PROPERTIES "OPENTURNS_ENABLED_FEATURES")
-
-# Build an empty executable to check link dependencies and completeness
-add_executable (linktest main.cxx)
-target_link_libraries (linktest OT)
-set_target_properties (linktest PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${PROJECT_BINARY_DIR}/lib/src")
 
 # Add targets to the build-tree export set
 export(TARGETS OT FILE "${PROJECT_BINARY_DIR}/OpenTURNS-Targets.cmake")

@@ -78,7 +78,7 @@ sample1 = distribution1.getSample(int(w1 * n))
 sample2 = distribution2.getSample(int(w2 * n))
 
 # %%
-# Then we merge the sub-samples into a larger one with the `add` method of the `Sample` class.
+# Then we merge the sub-samples into a larger one with the `add` method of the :class:`~openturns.Sample` class.
 
 # %%
 sample = ot.Sample(sample1)
@@ -105,7 +105,7 @@ view = otv.View(graph)
 # Simulation based on a mixture
 # -----------------------------
 #
-# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the `Mixture` class.
+# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the :class:`~openturns.Mixture` class.
 # It takes as input argument a list of distributions and a list of weights.
 
 # %%

@@ -17,7 +17,7 @@ ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%
-# routine to draw a distribution cloud and a sample
+# Routine to draw a distribution cloud and a sample.
 
 
 def draw(dist, Y):
@@ -41,7 +41,7 @@ def draw(dist, Y):
 
 
 # %%
-# generate some multivariate data to estimate, with correlation
+# Generate some multivariate data to estimate, with correlation.
 f = ot.SymbolicFunction(
     ["U", "xi1", "xi2"],
     ["sin(U)/(1+cos(U)^2)+0.05*xi1", "sin(U)*cos(U)/(1+cos(U)^2)+0.05*xi2"],
@@ -53,12 +53,12 @@ N = 200
 Y = f(X.getSample(N))
 
 # %%
-# estimation by multivariate kernel smoothing
+# Estimation by multivariate kernel smoothing.
 multi_ks = ot.KernelSmoothing().build(Y)
 view = viewer.View(draw(multi_ks, Y))
 
 # %%
-# estimation by empirical beta copula
+# Estimation by empirical beta copula.
 beta_copula = ot.EmpiricalBernsteinCopula(Y, len(Y))
 marginals = [
     ot.KernelSmoothing().build(Y.getMarginal(j)) for j in range(Y.getDimension())

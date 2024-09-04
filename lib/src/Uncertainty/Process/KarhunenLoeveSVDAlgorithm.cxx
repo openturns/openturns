@@ -287,7 +287,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
     }
     else
-      throw InvalidArgumentException(HERE) << "Unknow random SVD variant: " << ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant");
+      throw InvalidArgumentException(HERE) << "Unknown random SVD variant: " << ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant");
   }
   else
   {

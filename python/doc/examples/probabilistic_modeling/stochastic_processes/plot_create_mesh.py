@@ -32,7 +32,7 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# We define a time grid from a starting time `tMin`, a time step `tStep` and a number of time steps `n`.
+# We define a time grid from a starting time :math:`tMin`, a time step :math:`tStep` and a number of time steps :math:`n`.
 tMin = 0.0
 tStep = 0.1
 n = 10

@@ -23,3 +23,7 @@ Post-processing
     :template: class.rst_t
 
     LinearModelAnalysis
+
+    :template: classWithPlot.rst_t
+
+    experimental.LinearModelValidation

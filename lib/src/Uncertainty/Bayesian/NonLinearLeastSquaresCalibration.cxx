@@ -316,7 +316,9 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
             << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
   }
   algorithm_.run();
-  Point optimalPoint(algorithm_.getResult().getOptimalPoint());
+  const Point optimalPoint(algorithm_.getResult().getOptimalPoint());
+  if (!optimalPoint.getDimension())
+    throw InvalidArgumentException(HERE) << "optimization in NonLinearLeastSquaresCalibration did not yield a feasible point";
   // If asked for the residual values
   if (residual.getSize() > 0)
   {

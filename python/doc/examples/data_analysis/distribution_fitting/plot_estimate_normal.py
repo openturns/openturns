@@ -28,11 +28,11 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# We consider a sample, here created from a standard normal distribution :
+# We consider a sample, here created from a standard :class:`~openturns.Normal` distribution :
 sample = ot.Normal().getSample(1000)
 
 # %%
-# We can estimate a normal distribution with `ǸormalFactory` :
+# We can estimate a Normal distribution with :class:`~openturns.NormalFactory` :
 distribution = ot.NormalFactory().build(sample)
 
 # %%
@@ -53,7 +53,7 @@ view = viewer.View(graph)
 #
 
 # %%
-# We generate a sample from a Student distribution with parameters :math:`\nu=5.0`, :math:`\mu = -0.5` and a scale parameter :math:`\sigma=2.0`.
+# We generate a sample from a :class:`~openturns.Student` distribution with parameters :math:`\nu=5.0`, :math:`\mu = -0.5` and a scale parameter :math:`\sigma=2.0`.
 sample = ot.Student(5.0, -0.5, 2.0).getSample(1000)
 
 # %%
@@ -75,7 +75,7 @@ view = viewer.View(graph)
 # The Pareto distribution
 # -----------------------
 #
-# By default the parameters of the Pareto distribution are estimated by least squares.
+# By default the parameters of the :class:`~openturns.Pareto` distribution are estimated by least squares.
 #
 
 # %%

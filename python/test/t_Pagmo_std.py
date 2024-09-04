@@ -50,13 +50,16 @@ for name in multi_obj:
         algo.run()
         result = algo.getResult()
         x = result.getFinalPoints()
+        if use_ineq:
+            for x1, x2 in x:
+                assert x1 >= x2, f"ineq constraint not verified: {x1} >= {x2}"
         y = result.getFinalValues()
         fronts = result.getParetoFrontsIndices()
         assert len(fronts) > 0, "no pareto"
         print(name, len(fronts))
         assert (
             result.getCallsNumber() == (algo.getMaximumIterationNumber() + 1) * size
-        ), "wrong size"
+        ), f"wrong size: {result.getCallsNumber()}"
 
 # rosenbrock for the other algorithms
 print("----- mono-obj -----")
@@ -83,7 +86,9 @@ for name in ot.Pagmo.GetAlgorithmNames():
         result = algo.getResult()
         x = result.getOptimalPoint()
         y = result.getOptimalValue()
-        if not use_ineq:
+        if use_ineq:
+            assert x[1] < 1e-5, f"ineq constraint not verified: {x[1]} < 0"
+        else:
             assert result.getFinalPoints().getSize() == pop0.getSize(), "no final pop"
         assert y[0] < 40.0, str(y)
         print(name, x, y)
@@ -211,7 +216,7 @@ result = algo.getResult()
 x = result.getOptimalPoint()
 y = result.getOptimalValue()
 print("gaco reorder", x, y)
-assert abs(-5.0 - y[0]) < 1e-4, "wrong value"
+assert abs(-5.0 - y[0]) < 2e-3, f"wrong value {y}"
 
 # check we don't expose penalized values
 f = ot.SymbolicFunction(

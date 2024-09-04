@@ -10,7 +10,7 @@ Estimate a multivariate ARMA process
 # in a process sample.
 #
 # We estimate :math:`(\underline{\beta}, \sigma^2)` thanks to the
-# *ARMALikelihoodFactory* object and its method *build*, acting on a
+# class:`~openturns.ARMALikelihoodFactory` object and its method *build*, acting on a
 # time series or on a sample of time series. It produces a result of
 # type *ARMA*.
 # Note that no evaluation of selection criteria such as *AIC* and *BIC*

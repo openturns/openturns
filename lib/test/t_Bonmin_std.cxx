@@ -43,44 +43,27 @@ int main()
 
     // Definition of objective function
     const Description inputVariables = {"x0", "x1", "x2", "x3"};
-    Description objective(1, "-x0 -x1 -x2");
+    const Description objective(1, "-x0 -x1 -x2");
     SymbolicFunction objectiveFunction(inputVariables, objective);
 
     // Definition of bounds
-    Point variablesLowerBounds(4);
-    Point variablesUpperBounds(4);
+    const Point variablesLowerBounds(4, 0.0);
+    const Point variablesUpperBounds = {1.0, DBL_MAX, DBL_MAX, 5.0};
     Collection<UnsignedInteger> variablesFiniteLowerBounds(4, 1);
-    Collection<UnsignedInteger> variablesFiniteUpperBounds(4, 1);
-    variablesLowerBounds[0] = 0;
-    variablesUpperBounds[0] = 1;
-
-    variablesLowerBounds[1] = 0;
-    variablesUpperBounds[1] = DBL_MAX;
-    variablesFiniteUpperBounds[1] = 0;
-
-    variablesLowerBounds[2] = 0;
-    variablesUpperBounds[2] = DBL_MAX;
-    variablesFiniteUpperBounds[2] = 0;
-
-    variablesLowerBounds[3] = 0;
-    variablesUpperBounds[3] = 5;
-    Interval variablesBounds(variablesLowerBounds, variablesUpperBounds, variablesFiniteLowerBounds, variablesFiniteUpperBounds) ;
+    Collection<UnsignedInteger> variablesFiniteUpperBounds = {1, 0, 0, 1};
+    Interval variablesBounds(variablesLowerBounds, variablesUpperBounds, variablesFiniteLowerBounds, variablesFiniteUpperBounds);
 
     // Definition of inequality constraints:
     // Bonmin constraints are defined as g_l <= g(x) <= g_u
     // OpenTURNS' are defined as g(x) >= 0
-    Description inequalityFormulas(3);
-    inequalityFormulas[0] = "-(x1 - 1/2)^2 - (x2 - 1/2)^2 + 1/4";
-    inequalityFormulas[1] = "-x0 + x1";
-    inequalityFormulas[2] = "-x0 - x2 - x3 + 2";
+    const Description inequalityFormulas = {"-(x1 - 1/2)^2 - (x2 - 1/2)^2 + 1/4", "-x0 + x1", "-x0 - x2 - x3 + 2"};
     SymbolicFunction inequalityConstraints(inputVariables, inequalityFormulas);
 
     // Definition of variables types
-    Indices varTypes(4);
-    varTypes[0] = OT::OptimizationProblemImplementation::BINARY;
-    varTypes[1] = OT::OptimizationProblemImplementation::CONTINUOUS;
-    varTypes[2] = OT::OptimizationProblemImplementation::CONTINUOUS;
-    varTypes[3] = OT::OptimizationProblemImplementation::INTEGER;
+    const Indices varTypes = {OT::OptimizationProblemImplementation::BINARY,
+                              OT::OptimizationProblemImplementation::CONTINUOUS,
+                              OT::OptimizationProblemImplementation::CONTINUOUS,
+                              OT::OptimizationProblemImplementation::INTEGER};
 
     // Definition of OptimizationProblem
     OptimizationProblem problem(objectiveFunction);

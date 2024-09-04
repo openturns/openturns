@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Swapped InverseGamma shape/scale parameters: InverseGamma(k, lambda)
 
 ==== New classes ====
 
@@ -41,6 +42,7 @@
  * Vector=>Field chaos-based metamodel and sensitivity algorithm
 
 ==== New classes ====
+ * FunctionalChaosValidation (openturns.experimental)
  * SmoothedUniformFactory (openturns.experimental)
  * GeneralizedParetoValidation (openturns.experimental)
  * SamplePartition (openturns.experimental)

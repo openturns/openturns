@@ -87,6 +87,10 @@ public:
   /** Upper bound accessor */
   void setUpperBound(const Indices & upperBound) override;
 
+  /** The marginal enumerate function */
+  using EnumerateFunctionImplementation::getMarginal;
+  EnumerateFunction getMarginal(const Indices & indices) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

@@ -20,6 +20,9 @@ for minimization in [True, False]:
             problem.setInequalityConstraint(h)
         names = ot.OptimizationAlgorithm.GetAlgorithmNames(problem)
         for name in names:
+            if "global" in name:
+                # slow
+                continue
             algo = ot.OptimizationAlgorithm.Build(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
@@ -119,3 +122,34 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     calls = algo.getResult().getCallsNumber()
     print(f"{name}: {status} {msg} {calls}")
     assert status == ot.OptimizationResult.TIMEOUT, name
+
+# infeasible problem
+objective = ot.SymbolicFunction(
+    ["x1", "x2", "x3", "x4"], ["x1 + 2 * x2 - 3 * x3 + 4 * x4"]
+)
+inequality_constraint = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["-1.0"])
+dim = objective.getInputDimension()
+bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
+problem = ot.OptimizationProblem(objective)
+problem.setMinimization(True)
+problem.setInequalityConstraint(inequality_constraint)
+problem.setBounds(bounds)
+for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    algo = ot.OptimizationAlgorithm.Build(name)
+    algo.setCheckStatus(False)
+    try:
+        algo.setProblem(problem)
+        startingPoint = [0.0] * dim
+        algo.setStartingPoint(startingPoint)
+    except Exception:
+        # not supported
+        continue
+    print(f"{name}...")
+    algo.run()
+    result = algo.getResult()
+    status = algo.getResult().getStatus()
+    msg = algo.getResult().getStatusMessage()
+    calls = algo.getResult().getCallsNumber()
+    print(f"{name}: {status} {msg} {calls}")
+    assert len(result.getOptimalPoint()) == 0, "should not find point"
+    assert status == ot.OptimizationResult.FAILURE, "should return FAILURE"

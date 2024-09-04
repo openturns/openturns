@@ -14,14 +14,21 @@ Comparison of two samples
     qqplot_graph
     smirnov_test
 
-Estimation of a parametric model
---------------------------------
+Estimation of a nonparametric model
+-----------------------------------
 
 .. toctree::
     :maxdepth: 1
 
     empirical_cdf
     kernel_smoothing
+
+Estimation of a parametric model
+--------------------------------
+
+.. toctree::
+    :maxdepth: 1
+
     maximum_likelihood
     parametric_estimation
 

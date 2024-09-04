@@ -12,17 +12,14 @@
 <!DOCTYPE configuration>
   <openturns-configuration version="1" >
 
-  <Path-TemporaryDirectory     value_str="@TEMPDIR@"      />
   <!-- TBB-ThreadsNumber is set by default to the number of cores of the machine.
        To set manually the number of threads used for parallel computing, uncomment the following line:
     -->
   <!--<TBB-ThreadsNumber    value_int="1"    />-->
-  <Cache-MaxSize          value_int="1024" />
+  <Cache-MaxSize          value_int="65536" />
 
   <!-- OT::Os parameters -->
-  <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
-  <Os-DeleteTimeout    value_int="2"    />
 
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
@@ -556,7 +553,7 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel   value_float="0.95" />
   <GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel value_float="0.95" />
-  <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
+  <GeneralizedParetoFactory-MaximumCallsNumber value_int="1000" />
   <GeneralizedParetoFactory-MeanResidualLifePointNumber   value_int="100" />
   <GeneralizedParetoFactory-ThresholdStabilityPointNumber value_int="100" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
@@ -579,13 +576,14 @@
   <KernelMixture-SmallSize            value_int="50"   />
   
   <!-- OT::KernelSmoothing parameters -->
-  <KernelSmoothing-AbsolutePrecision   value_float="0.0"            />
-  <KernelSmoothing-CutOffPlugin        value_float="5.0"            />
-  <KernelSmoothing-RelativePrecision   value_float="1.0e-5"         />
-  <KernelSmoothing-ResidualPrecision   value_float="1.0e-10"        />
-  <KernelSmoothing-BinNumber           value_int="1024" />
-  <KernelSmoothing-MaximumIteration    value_int="50"   />
-  <KernelSmoothing-SmallSize           value_int="250"  />
+  <KernelSmoothing-AbsolutePrecision   value_float="0.0"     />
+  <KernelSmoothing-CutOffPlugin        value_float="5.0"     />
+  <KernelSmoothing-RelativePrecision   value_float="1.0e-5"  />
+  <KernelSmoothing-ResidualPrecision   value_float="1.0e-10" />
+  <KernelSmoothing-DefaultShiftScale   value_float="1.0e-5"  />
+  <KernelSmoothing-BinNumber           value_int="1024"      />
+  <KernelSmoothing-MaximumIteration    value_int="50"        />
+  <KernelSmoothing-SmallSize           value_int="250"       />
   
   <!-- OT::LogNormal parameters -->
   <LogNormal-CharacteristicFunctionSmallSigmaThreshold value_float="0.2"           />
@@ -603,6 +601,9 @@
   <MarginalDistribution-MaximumError        value_float="1.0e-7"      />
   <MarginalDistribution-MaximumSubIntervals value_int="128"           />
   <MarginalDistribution-Rule                value_str="G15K31"         />
+
+  <!-- MarginalUniformOrderStatistics parameters -->
+  <MarginalUniformOrderStatistics-LargeCaseCDF value_int="1000"           />
 
   <!-- Meixner parameters -->
   <MeixnerDistribution-MaximumAbsoluteError      value_float="1.0e-12"         />
@@ -866,17 +867,23 @@
   <FunctionalChaosSobolIndices-MaximumNumberOfOutput value_int="1000" />
   <FunctionalChaosSobolIndices-PrintColumnWidth value_int="15" />
 
+  <!-- OT::FunctionalChaosValidation parameters -->
+  <FunctionalChaosValidation-ModelSelection        value_bool="false" />
+
   <!-- OT::LeastSquaresExpansion parameters -->
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
 
   <!-- OT::LinearModelAlgorithm parameters -->
-  <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
+  <LinearModelAlgorithm-DecompositionMethod        value_str="QR" />
   
   <!-- OT::LinearModelAnalysis parameters -->
   <LinearModelAnalysis-IdentifiersNumber           value_int="3" />
   <LinearModelAnalysis-PrintEllipsisThreshold value_int="20"     />
   <LinearModelAnalysis-SmallPValueFormat      value_str="{:.4e}" />
   <LinearModelAnalysis-LargePValueFormat      value_int="{:.4f}" />
+
+  <!-- OT::LinearModelValidation parameters -->
+  <LinearModelValidation-ModelSelection            value_bool="false" />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
   <LinearModelStepwiseAlgorithm-Penalty                  value_float="2.0"      />
@@ -1094,6 +1101,7 @@
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
   <SimplicialCubature-DefaultMaximumCallsNumber   value_int="10000" />
   <SimplicialCubature-DefaultRule value_int="3" />
+  <SimplicialCubature-MarginalDiscretizationIntervalsNumber value_int="1" />
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />

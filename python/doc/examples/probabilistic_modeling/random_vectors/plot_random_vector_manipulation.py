@@ -3,7 +3,7 @@ Create a random vector
 ======================
 """
 # %%
-# The RandomVector object represents the concept of random variable.
+# The :class:`~openturns.RandomVector` object represents the concept of random variable.
 #
 # In this example we are going to exhibit some of its main methods.
 

@@ -17,20 +17,20 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# create a collection of distribution
+# Create a collection of distributions
 coll = [ot.Beta(1.5, 1.7, 0.0, 1.0), ot.Beta(2.0, 2.3, 0.5, 1.2)]
 
 # %%
-# create the distribution
+# Create the distribution
 distribution = ot.MaximumEntropyOrderStatisticsDistribution(coll)
 print(distribution)
 
 # %%
-# draw a sample (ordered!)
+# Draw a sample (ordered!)
 distribution.getSample(10)
 
 # %%
-# draw PDF
+# Draw PDF
 graph = distribution.drawPDF()
 view = viewer.View(graph)
 plt.show()

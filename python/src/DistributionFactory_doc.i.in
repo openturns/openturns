@@ -74,7 +74,7 @@ listFactories : collection of :class:`~openturns.DistributionFactory`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistributionFactory::GetByName
-"Instanciate a distribution factory.
+"Instantiate a distribution factory.
 
 Parameters
 ----------

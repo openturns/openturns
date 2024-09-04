@@ -63,6 +63,7 @@ for bootstrapSize in bootstrapSizes:
     rtol = 1.0e-2
     atol = 0.0
     ott.assert_almost_equal(parameterMAP, trueParameter, rtol, atol)
+    multiStartSize = 10
     algo.setOptimizationAlgorithm(
         ot.MultiStart(
             ot.TNC(),
@@ -71,9 +72,7 @@ for bootstrapSize in bootstrapSizes:
                 ot.Normal(
                     candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())
                 ),
-                ot.ResourceMap.GetAsUnsignedInteger(
-                    "NonLinearLeastSquaresCalibration-MultiStartSize"
-                ),
+                multiStartSize,
             ).generate(),
         )
     )

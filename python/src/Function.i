@@ -278,7 +278,7 @@ def _exec_sample_multiprocessing_func_sample(func_sample, n_cpus):
         if nsim < n_cpus:
             return func_sample(X)
 
-        a = np.array(X, copy=False)
+        a = np.asarray(X)
         rs = p.map(func_sample, [a[r:r+(nsim//n_cpus), :] for r in range(0, nsim, nsim//n_cpus)])
         p.close()
         p.join()
@@ -367,7 +367,7 @@ class PythonFunction(Function):
     >>> import openturns as ot
     >>> import numpy as np
     >>> def a_exec_sample(X):
-    ...     Xarray = np.array(X, copy=False)
+    ...     Xarray = np.asarray(X)
     ...     Y = 3.0 * Xarray[:,0] - Xarray[:,1]
     ...     return np.expand_dims(Y, axis=1)
     >>> def a_grad(X):

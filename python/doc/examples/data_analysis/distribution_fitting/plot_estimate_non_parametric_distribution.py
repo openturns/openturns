@@ -25,7 +25,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 
 # %%
-# We create the data from a Gamma distribution :
+# We create the data from a :class:`~openturns.Gamma` distribution :
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Gamma(6.0, 1.0)
 sample = distribution.getSample(800)
@@ -76,7 +76,7 @@ view = viewer.View(graph)
 #
 # We experiment with several kernels to perform the smoothing :
 #
-# - the standard normal kernel
+# - the standard Normal kernel
 # - the triangular kernel
 # - the Epanechnikov kernel
 # - the uniform kernel
@@ -138,7 +138,7 @@ view = viewer.View(graph)
 
 # %%
 # We observe that all the kernels produce very similar results in practice.
-# The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard normal kernel is a fine choice.
+# The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard Normal kernel is a fine choice.
 # The most important aspect of kernel smoothing is the choice of the bandwidth.
 
 
@@ -204,7 +204,7 @@ view = viewer.View(graph)
 # Boundary corrections
 # --------------------
 #
-# We finish this example on an advanced feature of the kernel smoothing, the boundary corrections.
+# We detail here an advanced feature of the kernel smoothing, the boundary corrections.
 #
 
 # %%
@@ -223,7 +223,7 @@ graph = myDist.drawPDF()
 # %%
 # We use two different kernels :
 #
-# - a standard normal kernel
+# - a standard Normal kernel
 # - the same kernel with a boundary correction
 #
 
@@ -257,5 +257,60 @@ view = viewer.View(graph)
 # %%
 # The boundary correction made has a remarkable impact on the quality of the estimate for the small values.
 
+# %%
+# Log-transform treatment
+# -----------------------
+#
+# We finish this example on another advanced feature of the kernel smoothing: the log-transform treatment.
+# This treatment is highly suited to skewed distributions, which are all challenging for kernel smoothing.
+#
+
+# %%
+# We consider several distributions which have significant skewness:
+distCollection = [ot.LogNormal(0.0, 2.5), ot.Beta(20000.5, 2.5, 0.0, 1.0), ot.Exponential(),
+                  ot.WeibullMax(1.0, 0.9, 0.0), ot.Mixture([ot.Normal(-1.0, 0.5), ot.Normal(1.0, 1.0)], [0.4, 0.6]),
+                  ot.Mixture([ot.LogNormal(-1.0, 1.0, -1.0), ot.LogNormal(1.0, 1.0, 1.0)], [0.2, 0.8])]
+
+# %%
+# For each distribution, we do the following steps:
+#
+# - we generate a sample of size 5000,
+# - we fit a kernel smoothing distribution without the log-transform treatment,
+# - we fit a kernel smoothing distribution with the log-transform treatment,
+# - we plot the real distribution and both non parametric estimations.
+#
+# Other transformations could be used, but the Log-transform one is quite effective. If the skewness is moderate,
+# there is almost no change wrt simple kernel smoothing. But if the skewness is large, the transformation performs
+# very well. Note that, in addition, this transformation performs an automatic boundary correction.
+grid = ot.GridLayout(2, 3)
+ot.RandomGenerator.SetSeed(0)
+for i, distribution in enumerate(distCollection):
+    sample = distribution.getSample(5000)
+
+    # We draw the real distribution
+    graph = distribution.drawPDF()
+    graph.setLegends([distribution.getClassName()])
+    # We choose the default kernel
+    kernel = ot.KernelSmoothing()
+
+    # We activate no particular treatment
+    fitted = kernel.build(sample)
+    curve = fitted.drawPDF()
+    curve.setLegends(["Fitted"])
+    graph.add(curve)
+
+    # We activate the log-transform treatment
+    kernel.setUseLogTransform(True)
+    fitted = kernel.build(sample)
+    curve = fitted.drawPDF()
+    curve.setLegends(["Fitted LogTransform"])
+    curve = curve.getDrawable(0)
+    curve.setLineStyle("dashed")
+
+    graph.add(curve)
+    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
+    grid.setGraph(i // 3, i % 3, graph)
+
+view = viewer.View(grid)
 
 plt.show()

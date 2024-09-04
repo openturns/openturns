@@ -22,6 +22,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
       -DSWIG_COMPILE_FLAGS="-O1" \
       -DUSE_SPHINX=OFF \
+      -DUSE_HMAT=ON \
       ${source_dir}
 make install
 OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 200 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random

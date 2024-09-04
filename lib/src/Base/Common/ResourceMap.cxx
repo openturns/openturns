@@ -19,10 +19,8 @@
  *
  */
 #include <mutex>
+#include <thread>
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_UNISTD_H
-#include <unistd.h>                 // for sysconf
-#endif
 #include "openturns/OSS.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Exception.hxx"
@@ -621,16 +619,8 @@ void ResourceMap::loadConfigurationFile()
 /* Load the configuration defined at installation time */
 void ResourceMap::loadDefaultConfiguration()
 {
-#ifndef _WIN32
-  addAsString("Path-TemporaryDirectory", "/tmp");
-  addAsUnsignedInteger("TBB-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
-#else
-  addAsString("Path-TemporaryDirectory", "TEMP");
-  UnsignedInteger numberOfProcessors = 0;
-  std::istringstream iss(getenv("NUMBER_OF_PROCESSORS"));
-  iss >> numberOfProcessors;
-  addAsUnsignedInteger("TBB-ThreadsNumber", numberOfProcessors);
-#endif
+  // using physical cores numbers (logical/2) is faster in most situations
+  addAsUnsignedInteger("TBB-ThreadsNumber", std::max(std::thread::hardware_concurrency() / 2, 1u));
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
     try
@@ -642,12 +632,10 @@ void ResourceMap::loadDefaultConfiguration()
       throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got " << env_num_threads;
     }
   }
-  addAsUnsignedInteger("Cache-MaxSize", 1024);
+  addAsUnsignedInteger("Cache-MaxSize", 65536);
 
   // Os parameters
-  addAsBool("Os-CreateProcess", false);
   addAsBool("Os-RemoveFiles", true);
-  addAsUnsignedInteger("Os-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
   addAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel", 0);
@@ -1185,7 +1173,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10);
   addAsScalar("GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel", 0.95);
   addAsScalar("GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel", 0.95);
-  addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
+  addAsUnsignedInteger("GeneralizedParetoFactory-MaximumCallsNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
@@ -1212,6 +1200,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
+  addAsScalar("KernelSmoothing-DefaultShiftScale", 1.0e-5);
   addAsUnsignedInteger("KernelSmoothing-BinNumber", 1024);
   addAsUnsignedInteger("KernelSmoothing-MaximumIteration", 50);
   addAsUnsignedInteger("KernelSmoothing-SmallSize", 250);
@@ -1501,6 +1490,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput", 1000);
   addAsUnsignedInteger("FunctionalChaosSobolIndices-PrintColumnWidth", 15);
 
+  // FunctionalChaosValidation parameters //
+  addAsBool("FunctionalChaosValidation-ModelSelection", false);
+
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
 
@@ -1509,6 +1501,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
   addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
   addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
+
+  // LinearModelValidation parameters //
+  addAsBool("LinearModelValidation-ModelSelection", false);
 
   // LinearModelStepwiseAlgorithm parameters //
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
@@ -1727,6 +1722,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
   addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 10000);
   addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
+  addAsUnsignedInteger("SimplicialCubature-MarginalDiscretizationIntervalsNumber", 1);
 
   // SparseMethod parameters //
   addAsScalar("SparseMethod-ErrorThreshold", 1.0e-3);

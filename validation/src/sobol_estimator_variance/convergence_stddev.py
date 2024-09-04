@@ -273,7 +273,7 @@ if __name__ == "__main__":
     E.setParameter(ot.LogNormalMuSigmaOverMu()([3e4, 0.12, 0.0]))
     F = ot.LogNormal()
     F.setParameter(ot.LogNormalMuSigmaOverMu()([0.1, 0.20, 0.0]))
-    distribution_poutre = ot.ComposedDistribution([L, b, h, E, F])
+    distribution_poutre = ot.JointDistribution([L, b, h, E, F])
 
     # Saltelli
     runConvergence(

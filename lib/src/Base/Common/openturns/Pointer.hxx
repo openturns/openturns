@@ -232,7 +232,7 @@ public:
    */
   inline Bool unique() const
   {
-    return ptr_.unique();
+    return ptr_.use_count() == 1;
   }
 
   /**

@@ -892,8 +892,10 @@ Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) c
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeCDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeCDFPolicy policy(inSample, result, *this);
+  // This calls GaussKronrodRule::InitializeRules before entering parallel region to prevent concurrent access
+  GaussKronrod::GetRules();
+  TBBImplementation::ParallelFor(0, size, policy);
   return result;
 }
 

@@ -14,6 +14,18 @@ import sys
 import os
 import subprocess
 from sphinx_gallery.sorting import ExplicitOrder
+import sphinx_gallery
+
+try:
+    from packaging.version import Version
+except ImportError:
+    from pkg_resources import parse_version as Version
+
+try:
+    import joblib
+    have_joblib = True
+except ImportError:
+    have_joblib = False
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -69,7 +81,7 @@ extensions.append('matplotlib.sphinxext.plot_directive')
 plot_formats = ['png']
 
 extensions.append('sphinx_copybutton')
-copybutton_prompt_text = ">>> "
+copybutton_exclude = '.linenos, .gp'
 
 extensions.append('sphinx_gallery.gen_gallery')
 sphinx_gallery_conf = {
@@ -127,6 +139,9 @@ sphinx_gallery_conf = {
     'min_reported_time': 2,
 }
 
+if Version(sphinx_gallery.__version__) >= Version("0.17.0"):
+    sphinx_gallery_conf["parallel"] = have_joblib
+
 # TODO: drop jquery in custom search.html
 extensions.append('sphinxcontrib.jquery')
 
@@ -134,7 +149,7 @@ extensions.append('sphinxcontrib.jquery')
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = {'.rst': 'restructuredtext'}
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'

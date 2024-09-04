@@ -81,3 +81,19 @@ for index in range(25):
     print("index=", index, repr(m))
     assert m[0] <= 3, "wrong bound"
     assert index == index_inv, "wrong inverse"
+#
+print("Test getMarginal() from indices")
+f = ot.HyperbolicAnisotropicEnumerateFunction(5, 0.5)
+marginalf = f.getMarginal([0, 3, 4])
+for index in range(10):
+    m = marginalf(index)
+    index_inv = marginalf.inverse(m)
+    print("index=", index, repr(m), index_inv)
+
+print("Test getMarginal() from a single integer")
+f = ot.HyperbolicAnisotropicEnumerateFunction(5, 0.5)
+marginalf = f.getMarginal(3)
+for index in range(10):
+    m = marginalf(index)
+    index_inv = marginalf.inverse(m)
+    print("index=", index, repr(m), index_inv)

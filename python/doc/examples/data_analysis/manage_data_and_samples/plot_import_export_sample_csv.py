@@ -11,7 +11,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a sample from a 2-d gaussian distribution.
+# Create a sample from a 2-d Gaussian distribution.
 sample = ot.Normal(2).getSample(5)
 sample.setDescription(["u1", "u2"])
 

@@ -32,7 +32,7 @@ import openturns.viewer as viewer
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Generate 3 samples, sample1 and sample2 arise from the same distribution
+# Generate 3 samples, `sample1` and `sample2` arise from the same distribution
 distribution1 = ot.Gumbel(0.2, 0.5)
 distribution2 = ot.Uniform()
 
@@ -42,17 +42,17 @@ sample2 = distribution1.getSample(100)
 sample3 = distribution2.getSample(100)
 
 # %%
-# Visually compare sample1 and sample2 using QQ-plot
+# Visually compare `sample1` and `sample2` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample2)
 view = viewer.View(graph)
 
 # %%
-# Visually compare sample1 and sample3 using QQ-plot
+# Visually compare `sample1` and `sample3` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample3)
 view = viewer.View(graph)
 
 # %%
-# Numerically test sample1 against sample2
+# Numerically test `sample1` against `sample2`
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
 print(
     "Samples follow the same distribution?",
@@ -62,7 +62,7 @@ print(
 )
 
 # %%
-# Numerically test sample1 against sample3
+# Numerically test `sample1` against `sample3`
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample3)
 print(
     "Samples follow the same distribution?",

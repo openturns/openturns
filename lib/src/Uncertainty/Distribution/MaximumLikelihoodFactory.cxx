@@ -318,9 +318,12 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   solver.setProblem(problem);
   solver.run();
 
+  const Point parameter(solver.getResult().getOptimalPoint());
+  if (!parameter.getDimension())
+    throw InvalidArgumentException(HERE) << "optimization in MaximumLikelihoodFactory did not yield feasible points";
+
   Point effectiveParameter(effectiveParameterSize);
   // set unknown values
-  Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
   {
@@ -331,7 +334,7 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
     }
   }
   // set known values
-  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
   {
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];

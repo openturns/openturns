@@ -526,7 +526,7 @@ if __name__ == "__main__":
     E.setParameter(ot.LogNormalMuSigmaOverMu()([3e4, 0.12, 0.0]))
     F = ot.LogNormal()
     F.setParameter(ot.LogNormalMuSigmaOverMu()([0.1, 0.20, 0.0]))
-    distribution_poutre = ot.ComposedDistribution([L, b, h, E, F])
+    distribution_poutre = ot.JointDistribution([L, b, h, E, F])
 
     sTest_poutre_saltelli = SensitivityConfidenceTest(
         model_poutre,
@@ -567,7 +567,7 @@ if __name__ == "__main__":
         ["2*X1 + X2 - 3*X3 + 0.3*X1*X2", "-5*X1 + 4*X2 - 0.8*X2*X3 + 2*X3"],
     )
     model_aggregated.setName("AggregatedSobol")
-    distribution_aggregated = ot.ComposedDistribution([ot.Uniform()] * 3)
+    distribution_aggregated = ot.JointDistribution([ot.Uniform()] * 3)
 
     sTest_poutre_saltelli = SensitivityConfidenceTest(
         model_aggregated,
