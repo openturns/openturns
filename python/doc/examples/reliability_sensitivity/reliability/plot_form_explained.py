@@ -16,8 +16,8 @@ import openturns.viewer as otv
 import numpy as np
 
 # %%
-# Position of the problem
-# -----------------------
+# Context
+# -------
 #
 # We consider a bivariate random vector :math:`X = (X_1, X_2)` with the following independent marginals:
 #
@@ -44,11 +44,11 @@ graphPDF.setLegendPosition("lower right")
 contours = graphPDF.getDrawable(0).getImplementation()
 contours.setColorMapNorm("log")
 graphPDF.setDrawable(contours, 0)
-view = otv.View(graphPDF)
+view = otv.View(graphPDF, square_axes=True)
 
 
 # %%
-# We consider the model :math:`f : (x_1, x_2) \mapsto x_1 x_2` which maps the random input vector :math:`X` to the output variable :math:`Y=f(X) \in \mathbb{R}`.
+# We consider the model :math:`f : (x_1, x_2) \mapsto x_1 x_2` which maps the random input vector :math:`\vect{X}` to the output variable :math:`Y=f(\vect{x}) \in \mathbb{R}`.
 # We also draw the isolines of the model `f`.
 #
 f = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
@@ -56,7 +56,7 @@ graphModel = f.draw([0.0, -10.0], [10.0, 10.0])
 graphModel.setXTitle(r"$x_1$")
 graphModel.setXTitle(r"$x_2$")
 graphModel.setTitle(r"Isolines of the model : $Y = f(X)$")
-view = otv.View(graphModel)
+view = otv.View(graphModel, square_axes=True)
 
 
 # %%
@@ -67,8 +67,7 @@ view = otv.View(graphModel)
 #
 #    P_f = \int_{\mathcal{D}} \mathbf{1}_{\mathcal{D}}(x) df_{X_1,X_2}(x)
 #
-# where :math:`\mathcal{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} / x_1 x_2 \geq s \}` is the failure domain.
-# In the general case the probability density function :math:`f_{X_1,X_2}` and the domain of integration :math:`\mathcal{D}` are difficult to handle.
+# where :math:`\mathcal{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} / f(x_1, x_2) = x_1 x_2 \geq s \}` is the failure domain.
 
 # %%
 # We first define RandomVector objects and the failure event associated to the output random variable.
@@ -80,47 +79,52 @@ event = ot.ThresholdEvent(vectorY, ot.Greater(), s)
 
 # %%
 # This event can easily be represented with a 1D curve as it is a branch of an hyperbole.
-# If :math:`y =  x_1 x_2 = 10.0`, then the boundary of the domain of failure is the curve :
+# If :math:`y =  x_1 x_2 = s`, then the boundary of the domain of failure is the curve :
 #
 # .. math::
+#    :label:`functionh`
 #
-#    h : x_1 \mapsto \frac{10.0}{x_1}
+#   h : x_1 \mapsto \frac{s}{x_1}
 #
+# This event is also the isoline of the model :math:`f` associated to the
+# level :math:`s`. We can draw it with the 'draw' method of the model
+# :math:`f`.
 
 # %%
-# We shall represent this curve using a :class:`~openturns.Contour` object.
-nx, ny = 15, 15
-xx = ot.Box([nx], ot.Interval([0.0], [10.0])).generate()
-yy = ot.Box([ny], ot.Interval([-10.0], [10.0])).generate()
-inputData = ot.Box([nx, ny], ot.Interval([0.0, -10.0], [10.0, 10.0])).generate()
-outputData = f(inputData)
-mycontour = ot.Contour(xx, yy, outputData)
-mycontour.setLevels([10.0])
-mycontour.setLabels(["10.0"])
-myGraph = ot.Graph("Representation of the failure domain", r"$X_1$", r"$X_2$", True, "")
-myGraph.add(mycontour)
+nbPoints = 101
+myGraph = f.draw([0.0, -10.0], [10.0, 10.0], [nbPoints]*2)
+draw_frontier = myGraph.getDrawable(0)
+draw_frontier.setLevels([s])
+draw_frontier.setLegend(r'$Y = $ ' + str(s))
+myGraph.setDrawables([draw_frontier])
 
 # %%
-texts = [r" Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
-myText = ot.Text([[4.0, 4.0]], texts)
+texts = [r" Event : $\mathcal{D} = \{Y \geq $" + str(s) + "$\}$"]
+myText = ot.Text([[4.0, 3.0]], texts)
 myText.setTextSize(1)
 myText.setColor("black")
 myGraph.add(myText)
-view = otv.View(myGraph)
+
+# %%
+myGraph.setTitle("Representation of the failure domain")
+myGraph.setXTitle(r"$X_1$")
+myGraph.setYTitle(r"$X_2$")
+myGraph.setLegendPosition('topright')
+
+view = otv.View(myGraph, square_axes=True)
 
 # %%
 # We can superimpose the event boundary with the 2D-PDF ot the input variables :
 #
-mycontour.setColor("black")
-mycontour.setLabels(["event"])
-graphPDF.add(mycontour)
+draw_frontier.setColor("black")
+graphPDF.add(draw_frontier)
 graphPDF.setLegendPosition("lower right")
-view = otv.View(graphPDF)
+view = otv.View(graphPDF, square_axes=True)
 
 # %%
 # From the previous figure we observe that in the failure domain the PDF takes small (and even very small) values.
 # Consequently the probability of the failure, the integral :math:`P_f` is also expected to be small.
-# The FORM/SORM methods estimate this kind of integral.
+# The FORM/SORM methods estimate the failure probability.
 #
 
 # %%
@@ -129,47 +133,59 @@ view = otv.View(graphPDF)
 #
 # The basic steps of the FORM (or SORM) algorithm are :
 #
-# - an isoprobabilistic transform ;
-# - finding the design point : that is the nearest point wrt the origin in the standard space ;
-# - estimating the probability integral.
+# - use an isoprobabilistic transformation to map the input random vecyor into the standard space;
+# - find the design point which is the nearest point wrt the origin in the standard space;
+# - estimate the probability.
 #
-# As mentioned, both the density function and the domain of integration are complex in general.
-# The first step of the FORM method makes the density easier to work with and the second step tackles
-# the domain of integration problem.
-#
-# Variable transform
-# ^^^^^^^^^^^^^^^^^^
+# Isoprobabilistic transformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 
 # %%
-# OpenTURNS has several isoprobabilistic transforms and the FORM/SORM classes implement the Generalized
-# Nataf and Rosenblatt transforms. In this case the `distX` distribution is not elliptical so the default method is the Rosenblatt transform.
+# The interest of such the  isoprobabilistic transformation is the rotational
+# invariance of the
+# distribution in the standard space.
+#
+# OpenTURNS has several isoprobabilistic transformations, depending on the distribution of the input random vector:
+#
+# - the Nataf transformation is used if the input distribution has a normal copula, 
+# - the Generalized Nataf transformation is used if the input distribution has an elliptical copula,
+# - the Rosenblatt transformation is used in any cases.
+#
+# The Nataf and  Rosenblatt transformations map the input random vector into a vector that follows a
+# normal distribution with zero mean and unit variance. The Generalized Nataf transformation maps the
+# input random vector into a vector that follows the standard elliptical distribution associated to the
+# elliptical copula.
+#
+# In this case the input distribution is not elliptical so the isoprobabilistic transformation is the
+# Rosenblatt transformation.
 #
 print("Is Elliptical ? ", distX.isElliptical())
 
 # %%
-# We seek an isoprobabilistic transform :math:`T` such as
+# The Rosenblatt transformation :math:`T` is defined as:
 #
 # .. math::
-#    T : X \mapsto Z
+#    T : \vect{X} \mapsto \vect{Z}
 #
-# where each component of :math:`Z` is a standard unit gaussian.
+# where the components of :math:`\vect{Z}` are independent normal
+# distributions with zero mean and unit variance.
 #
 # The isoprobabilistic transform and its inverse are methods of the distribution `distX` :
 transformation = distX.getIsoProbabilisticTransformation()
 inverseTransformation = distX.getInverseIsoProbabilisticTransformation()
 
 # %%
-# The main goal of this step is to work with a simpler probability density function of
-# the input variables as they will be standard gaussian unit and uncorrelated. The domain of
-# integration will still be complicated but will be handled with a well chosen approximate.
-#
-
-# %%
 # We detail the Rosenblatt transform in this simple case.
-# In this example we consider independent variables so the transform is simpler, we only have to
-# perform the transformation on each variable. For the second one is already a standard unit gaussian
-# we transform the first variable only.
+# In this example, we consider independent variables so the transform is simpler as it is a marginal
+# transformation: 
+#
+# .. math::
+#    Z_i = \Phi^{-1} \circ F_i(X_i)
+#
+# where :math:`F_i` is the cumulated distribution function of :math:`X_i` and
+# :math:`\Phi` the one of the standard normal distribution. Note that in this example,
+# :math:`\Phi^{-1} \circ F_2 = Id`.
 #
 
 # %%
@@ -178,21 +194,10 @@ inverseTransformation = distX.getInverseIsoProbabilisticTransformation()
 xi = vectorX.getRealization()
 
 # %%
-# The first step of the Rosenblatt transform is to build a random variable :math:`u` with a uniform law in ]0,1[.
-# This is done through an evaluation of the CDF of `distX1` at the given point in the physical space.
-# Once again, please note that the second component is left unchanged.
-#
+# We build `zi` the mapping of `xi`. The point `zi` is said to be in the standard space.
 ui = [distX1.computeCDF(xi[0]), xi[1]]
-
-# %%
-# The second step is to build a standard unit gaussian from a uniform variable. This is done by a
-# simple call to the probit function. The point `zi` is said to be in the standard space.
 zi = [-ot.Normal().computeInverseSurvivalFunction(ui[0])[0], ui[1]]
-
-# %%
-# The sought transform then maps a point in the physical space to the standard space :
-print(xi, "->", ui, "->", zi)
-
+print(xi, "->", zi)
 
 # %%
 # We also build the isoprobabilistic transform :math:`T_1` and its inverse :math:`T_1^{-1}` for the
@@ -201,11 +206,7 @@ transformX1 = distX1.getIsoProbabilisticTransformation()
 inverseTransformX1 = distX1.getInverseIsoProbabilisticTransformation()
 
 # %%
-# We can check the result of our experiment against :
-#
-# - the 2D-transform :math:`T` ;
-# - the 1D-transform :math:`T_1` and the second component unchanged ;
-#
+# We can check the result of our experiment using the transformation implemented by the distribution :
 # and observe the results are the same.
 zi1D = [transformX1([xi[0]])[0], xi[1]]
 zi2D = transformation(xi)
@@ -215,24 +216,24 @@ print("zi2D = ", zi2D)
 
 
 # %%
-# We can represent the boundary of the event in the standard space : that is a composition of the
-# hyperbole :math:`h : x \mapsto 10/x` and the inverse transform :math:`T_1^{-1}` defined by
-# :math:`inverseTransformX1`.
-failureBoundaryPhysicalSpace = ot.SymbolicFunction(["x"], ["10.0 / x"])
-failureBoundaryStandardSpace = ot.ComposedFunction(
-    failureBoundaryPhysicalSpace, inverseTransformX1
-)
-x = np.linspace(1.1, 5.0, 100)
-cx = np.array([failureBoundaryStandardSpace([xi])[0] for xi in x])
+# The model on the standard space is defined by:
+#
+# .. math::
+#    g = f \circ T^{-1}
+#
+# We can define it using the capacities of functions composition of the library.
+g = ot.ComposedFunction(f, inverseTransformation)
+graphStandardSpace = g.draw([0.0, 0.0], [7.0, 7.0], [101]*2)
 
-graphStandardSpace = ot.Graph(
-    "Failure event in the standard space", r"$u_1$", r"$u_2$", True, ""
-)
-curveCX = ot.Curve(x, cx, r"Boundary of the event $\partial \mathcal{D}$")
-curveCX.setLineStyle("solid")
-curveCX.setColor("blue")
-graphStandardSpace.add(curveCX)
+draw_frontier_stand_space = graphStandardSpace.getDrawable(0)
+draw_frontier_stand_space.setLevels([s])
+draw_frontier_stand_space.setLegend(r"Boundary of the event $\partial \mathcal{D}$")
+draw_frontier_stand_space.setColor("blue")
+graphStandardSpace.setDrawables([draw_frontier_stand_space])
 
+graphStandardSpace.setXTitle(r"$u_1$")
+graphStandardSpace.setYTitle(r"$u_2$")
+graphStandardSpace.setTitle('Failure event in the standard space')
 
 # %%
 # We add the origin to the previous graph.
@@ -241,23 +242,24 @@ cloud.setColor("black")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("origin")
 graphStandardSpace.add(cloud)
-graphStandardSpace.setGrid(True)
-graphStandardSpace.setLegendPosition("lower right")
 
 # Some annotation
-texts = [r"Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
-myText = ot.Text([[3.0, 4.0]], texts)
+s = [r"Event : $\mathcal{D} = \{Y \geq $" + str(s) + "$\}$"]
+myText = ot.Text([[4.0, 3.0]], texts)
 myText.setTextSize(1)
 myText.setColor("black")
 graphStandardSpace.add(myText)
-view = otv.View(graphStandardSpace)
+
+graphStandardSpace.setLegendPosition("lower right")
+view = otv.View(graphStandardSpace, square_axes=True)
 
 # %%
 # The design point
 # ^^^^^^^^^^^^^^^^
 #
-# The FORM and SORM methods assume that the failure probability integral has its support in
-# the vicinity of the closest point of the domain to the origin.
+# Due to the spherical distribution in the standard space, the area that contributes
+# the most to the integral defining the probability is the vicinity of the closest point
+# of the failure domain to the origin of the standard space.
 # Then the second step of the method is to find this point, *the design point*, through a
 # minimization problem under constraints.
 #
@@ -277,7 +279,7 @@ solver.setMaximumConstraintError(1.0e-3)
 algoFORM = ot.FORM(solver, event, distX.getMean())
 
 # %%
-# We are ready to run the algorithm and store the result :
+# We are ready to run the algorithm and store the result.
 algoFORM.run()
 result = algoFORM.getResult()
 
@@ -295,10 +297,9 @@ print("Design point in standard space : ", designPointStandardSpace)
 betaHL = result.getHasoferReliabilityIndex()
 print("Hasofer index : ", betaHL)
 
-
 # %%
 # We visualize it on the previous graph.
-cloud = ot.Cloud([designPointStandardSpace[0]], [designPointStandardSpace[1]])
+cloud = ot.Cloud([designPointStandardSpace])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point")
@@ -313,54 +314,51 @@ cc = ot.Curve(
 cc.setLineStyle("dashed")
 cc.setColor("black")
 graphStandardSpace.add(cc)
-view = otv.View(graphStandardSpace)
+graphStandardSpace.setLegendPosition('topright')
+view = otv.View(graphStandardSpace, square_axes=True)
 
 # %%
-# Estimating the failure probability integral
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Estimate the failure probability
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The last step of the FORM algorithm is to replace the domain of integration by the half-space at
-# the design point. In this simple example the half-space is delimited by the tangent at the design
-# point in the standard space.
+# The last step of the FORM algorithm is to replace the domain of integration by the half-space
+# delimited by the tangent at the design point in the standard space.
+# To draw the tangent, we define the function:
 #
-# The expression of the failure domain boundary in the standard space is the composition of the
-# hyperbole :math:`h:x \mapsto 10/x` and the inverse transform on the first variable. We can compute
-# the gradient (here the first derivative of a 1D function :math:`h(u_0)` ) at any given point with the
-# getGradient method :
+# .. math::
+#    M(x,y) \rightarrow \leftangle \nabla g(U^*), U^*M \rightangle
+#
+# Then, the tangent half-space is the isoline associated to the zero level.
+# %%
+center = designPointStandardSpace
+grad_design_point = g.gradient(designPointStandardSpace)
+constant = [0.0]
+linearMat = ot.Matrix(1,2)
+linearMat[0,0] = grad_design_point[0,0]
+linearMat[0,1] = grad_design_point[1,0]
+linearProj = ot.LinearFunction(center, constant, linearMat)
+
+graph_tangent = linearProj.getMarginal(0).draw([0.0, 0.0], [7.0, 7.0], [101]*2)
+draw_tangent = graph_tangent.getDrawable(0)
+draw_tangent.setLevels([0])
+draw_tangent.setLegend(r"$\mathcal{\Pi}_{u_0}$ (FORM)")
+draw_tangent.setColor('green')
+draw_tangent.setLineStyle('dashed')
+graphStandardSpace.add(draw_tangent)
+graphStandardSpace.setLegendPosition('topright')
+view = otv.View(graphStandardSpace, square_axes=True)
 
 # %%
-u0 = [designPointStandardSpace[0]]
-du0 = failureBoundaryStandardSpace.getGradient().gradient(u0)
-print("abscissa of the design point u0  = ", u0[0])
-print("value of the failure boundary at u0 = ", failureBoundaryStandardSpace(u0)[0])
-print("value of the gradient of the failure boundary at u0 = ", du0[0, 0])
-
-
-# %%
-# In the standard space the equation of the tangent :math:`\Pi_{u_0}(x)` is given by
+# In the standard space, the FORM probability is approximated by:
 #
 # .. math::
 #
-#    \Pi_{u_0}(x) = (h \circ T^{-1}) (u_0) + \frac{d}{dx} (h \circ T^{-1}) (u_0) (x-u_0)
+#    P_{FORM} \approx E(-\beta_{HL}),
 #
-x = np.linspace(1.1, 5.0, 100)
-hyperplane = failureBoundaryStandardSpace(u0)[0] + du0[0, 0] * (x - u0)
-curveHyperplane = ot.Curve(x, hyperplane, r"$\Pi_{u_0}$ (FORM)")
-curveHyperplane.setLineStyle("dashed")
-curveHyperplane.setColor("green")
-graphStandardSpace.add(curveHyperplane)
-view = otv.View(graphStandardSpace)
-
-# %%
-# In the standard space the PDF of the input variables is rotationally invariant so
+# where :math:`E(.)` is the marginal cumulative distribution function along any direction of
+# the spherical distribution in the standard space. In this example, this is the normal distribution.
 #
-# .. math::
-#
-#    P_f \approx E(\beta_{HL}),
-#
-# where :math:`E(.)` is the survival function of the standard unit gaussian.
-#
-pf = ot.Normal().computeSurvivalFunction(betaHL)
+pf = ot.Normal().computeCDF(-betaHL)
 print("FORM : Pf = ", pf)
 
 # %%
@@ -368,23 +366,41 @@ print("FORM : Pf = ", pf)
 pf = result.getEventProbability()
 print("Probability of failure (FORM) Pf = ", pf)
 
-
 # %%
 # The SORM approximation
 # ----------------------
 #
-# The SORM approximate uses an osculating paraboloid instead of the half-space delimited by the
-# tangent at the design point. In this case it is a simple parabola we can obtain through Taylor expansion at the design point.
-# However, in the general case one has to manipulate the gradient and the hessian in the
-# standard space which is cumbersome.
+# The SORM approximation uses the curvatures of the domain at the design point: 
 #
+# .. math::
+#
+#    P_{SORM} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i \beta_{HL}}} 
+#
+# and approximates the frontier by the osculating paraboloid at the design point.
+
 
 # %%
-# We need the value of the second derivative of the failure boundary function at the design point in
-# the standard space :
+# In this example, we can easily implement the frontier of the event in the 
+# physical space:
+#
+# .. math::
+#
+#  h : x_1 \mapsto \dfrac{s}{x_2}
+#
+# In the standard space, the frontier is defined by the composed function
+# :math:`h \circ T^{-1}`.
+failureBoundaryPhysicalSpace = ot.SymbolicFunction(["x"], ["10.0 / x"])
+failureBoundaryStandardSpace = ot.ComposedFunction(
+    failureBoundaryPhysicalSpace, inverseTransformX1
+)
+# %%
+# We need the value of the second derivative of the failure boundary function
+# at the design point in the standard space :
 u0 = [designPointStandardSpace[0]]
+du0 = failureBoundaryStandardSpace.getGradient().gradient(u0)
 d2u0 = failureBoundaryStandardSpace.getHessian().hessian(u0)
 print("abscissa of the design point u0  = ", u0[0])
+print("value of the failure boundary at u0 = ", failureBoundaryStandardSpace(u0)[0])
 print("value of the hessian of the failure boundary at u0 = ", d2u0[0, 0, 0])
 
 
@@ -395,7 +411,7 @@ print("value of the hessian of the failure boundary at u0 = ", d2u0[0, 0, 0])
 #
 #    \mathcal{P}_{u_0}(x) = h \circ T^{-1} (u_0) + \frac{d}{dx} (h \circ T^{-1})(u_0) (x-u_0) + \frac{1}{2} \frac{d^2}{dx^2} (h \circ T^{-1})(u_0) (x-u_0)^2
 #
-x = np.linspace(1.1, 5.0, 100)
+x = np.linspace(1.1, 4.0, 100)
 parabola = (
     failureBoundaryStandardSpace(u0)[0]
     + du0[0, 0] * (x - u0)
@@ -405,6 +421,7 @@ curveParabola = ot.Curve(x, parabola, r"$\mathcal{P}_{u_0}$ (SORM)")
 curveParabola.setLineStyle("dashed")
 curveParabola.setColor("orange")
 graphStandardSpace.add(curveParabola)
+graphStandardSpace.setLegendPosition('topright')
 view = otv.View(graphStandardSpace)
 
 
