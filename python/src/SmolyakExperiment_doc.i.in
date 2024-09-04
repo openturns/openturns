@@ -211,6 +211,7 @@ Consider the tensor product of 1D polynomials:
     p_i \in \mathcal{P}_{m_i}^{(1)}
     \right\}.
 
+Assume that :math:`m_{k_i}` is the polynomial degree of exactness of the :math:`i`-th marginal univariate quadrature rule using :math:`k_i` nodes, for any math:`i \in \{1,...,\inputDim\}`.
 Therefore the Smolyak quadrature is exact for all polynomials of the non-classical 
 vector space (see [novak1999]_ theorem 2 page 88 and [peter2019]_ section 5.4 page 2-17):
 
