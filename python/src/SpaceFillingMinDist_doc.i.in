@@ -9,10 +9,24 @@ Compute the criterion based on the minimal distance of sample points:
     :nowrap:
 
     \begin{equation*}
-      \phi_{min}(X) = \min_{i \neq j} ||x^{(i)} - x^{(j)}||
+      \phi_{min}(\mat{X}) = \min_{i \neq j} \norm{ \vect{x}^{(i)} - \vect{x}^{(j)} }
+    \end{equation*}
+
+
+If at least one of the sample points does not belong to the unit cube
+(i.e. not all components belong to the interval :math:`[0,1]`),
+then the whole sample is rescaled.
+Letting :math:`\vect{M}` (resp. :math:`\vect{m}`) denote the point
+containing the component-wise maximum (resp. minimum) values of the sample,
+the actual formula is in this case:
+
+.. math::
+    :nowrap:
+
+    \begin{equation*}
+      \phi_{min}(X) = \min_{i \neq j} \norm{ \frac{\vect{x}^{(i)} - \vect{x}^{(j)}}{\vect{M} - \vect{m}} }
     \end{equation*}
 "
-
 %enddef
 %feature("docstring") OT::SpaceFillingMinDist
 OT_SpaceFillingMinDist_doc
