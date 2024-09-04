@@ -13,7 +13,6 @@ from openturns.usecases import ishigami_function
 # HSIC estimators rely on a reproducing kernel of a Hilbert space. We can use them to compute sensitivity
 # indices. We present the methods on the :ref:`Ishigami function<use-case-ishigami>`.
 
-()
 # %%
 # Definition of the model
 # -----------------------
