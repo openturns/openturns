@@ -93,6 +93,8 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [davis1975] Davis, P.-J. and P.Rabinowitz, P. (1975). *Methods of numerical integration*,
+    Academic Press.
 .. [deRocquigny2006] De Rocquigny, É. (2006).
     *La maîtrise des incertitudes dans un contexte industriel.
     1re partie: une approche méthodologique globale basée sur des exemples.*
