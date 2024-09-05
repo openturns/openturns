@@ -267,13 +267,14 @@ as Python functions.
 Special constants
 =================
 
-    SpecFunc.MaxScalar : inf
-    SpecFunc.ActualMaxScalar : maximum float value
-    SpecFunc.LogMaxScalar : log of SpecFunc.MinScalar (inf)
-    SpecFunc.MinScalar : minimum positive float value
-    SpecFunc.LowestScalar : -inf
-    SpecFunc.LogMinScalar : log of SpecFunc.MinScalar
-    
+- SpecFunc.MaxScalar : inf
+- SpecFunc.ActualMaxScalar : maximum float value
+- SpecFunc.LogMaxScalar : log of SpecFunc.MinScalar (inf)
+- SpecFunc.MinScalar : minimum positive float value
+- SpecFunc.LowestScalar : -inf
+- SpecFunc.LogMinScalar : log of SpecFunc.MinScalar
+
+
 External code coupling
 ======================
 

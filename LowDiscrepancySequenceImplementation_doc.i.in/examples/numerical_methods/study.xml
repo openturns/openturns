@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openturns-study version="1">
+  <object class="Point" id="56" size="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">4</numericalscalar>
+  </object>
+  <object class="MatrixImplementation" id="9" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">1</numericalscalar>
+  </object>
+  <object class="Point" id="57" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Point" id="58" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Point" id="60" size="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">-18.951884278805807</numericalscalar>
+  </object>
+  <object class="Point" id="61" size="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">26.951884278805807</numericalscalar>
+  </object>
+  <object class="PersistentCollection&lt;UnsignedInteger&gt;" id="62" size="1" StudyVisible="false" StudyLabel="">
+    <unsignedlong index="0">0</unsignedlong>
+  </object>
+  <object class="PersistentCollection&lt;UnsignedInteger&gt;" id="63" size="1" StudyVisible="false" StudyLabel="">
+    <unsignedlong index="0">0</unsignedlong>
+  </object>
+  <object class="Interval" id="59" dimension_="1" StudyVisible="false" StudyLabel="">
+    <object member="lowerBound_" id="60"/>
+    <object member="upperBound_" id="61"/>
+    <object member="finiteLowerBound_" id="62"/>
+    <object member="finiteUpperBound_" id="63"/>
+  </object>
+  <object class="Description" id="64" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">X0</string>
+  </object>
+  <object class="MatrixImplementation" id="18" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">1</numericalscalar>
+  </object>
+  <object class="Point" id="65" size="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">3</numericalscalar>
+  </object>
+  <object class="MatrixImplementation" id="20" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">9</numericalscalar>
+  </object>
+  <object class="MatrixImplementation" id="21" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">1</numericalscalar>
+  </object>
+  <object class="MatrixImplementation" id="22" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">3</numericalscalar>
+  </object>
+  <object class="MatrixImplementation" id="23" size="1" nbRows_="1" nbColumns_="1" StudyVisible="false" StudyLabel="">
+    <numericalscalar index="0">0.33333333333333331</numericalscalar>
+  </object>
+  <object class="Normal" id="55" name="Normal" integrationNodesNumber_="255" isAlreadyComputedMean_="true" isAlreadyComputedCovariance_="false" isAlreadyComputedGaussNodesAndWeights_="false" dimension_="1" weight_="1" isCopula_="false" normalizationFactor_="0.33333333333333331" logNormalizationFactor="-0.91893853320467278" hasIndependentCopula_="true" StudyVisible="true" StudyLabel="distribution">
+    <object member="mean_" id="56"/>
+    <object member="covariance_" id="9"/>
+    <object member="gaussNodes_" id="57"/>
+    <object member="gaussWeights_" id="58"/>
+    <object member="range_" id="59"/>
+    <object member="description_" id="64"/>
+    <object member="R_" id="18"/>
+    <object member="sigma_" id="65"/>
+    <object member="mean_duplicate" id="56"/>
+    <object member="shape_" id="20"/>
+    <object member="inverseR_" id="21"/>
+    <object member="cholesky_" id="22"/>
+    <object member="inverseCholesky_" id="23"/>
+  </object>
+  <object class="Description" id="26" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="27" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Point" id="28" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="29" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="30" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="31" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Description" id="32" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">x1 + x2</string>
+  </object>
+  <object class="SymbolicEvaluation" id="25" callsNumber_="0" StudyVisible="false" StudyLabel="">
+    <object member="inputDescription_" id="26"/>
+    <object member="outputDescription_" id="27"/>
+    <object member="parameter_" id="28"/>
+    <object member="parameterDescription_" id="29"/>
+    <object member="inputVariablesNames_" id="30"/>
+    <object member="outputVariablesNames_" id="31"/>
+    <object member="formulas_" id="32"/>
+  </object>
+  <object class="Point" id="34" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="36" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="37" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Point" id="38" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="39" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="40" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="41" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Description" id="42" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">x1 + x2</string>
+  </object>
+  <object class="SymbolicEvaluation" id="35" callsNumber_="0" StudyVisible="false" StudyLabel="">
+    <object member="inputDescription_" id="36"/>
+    <object member="outputDescription_" id="37"/>
+    <object member="parameter_" id="38"/>
+    <object member="parameterDescription_" id="39"/>
+    <object member="inputVariablesNames_" id="40"/>
+    <object member="outputVariablesNames_" id="41"/>
+    <object member="formulas_" id="42"/>
+  </object>
+  <object class="SymbolicGradient" id="33" callsNumber_="0" StudyVisible="false" StudyLabel="">
+    <object member="parameter_" id="34"/>
+    <object member="evaluation_" id="35"/>
+  </object>
+  <object class="Point" id="44" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="46" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="47" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Point" id="48" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="49" size="0" StudyVisible="false" StudyLabel=""/>
+  <object class="Description" id="50" size="2" StudyVisible="false" StudyLabel="">
+    <string index="0">x1</string>
+    <string index="1">x2</string>
+  </object>
+  <object class="Description" id="51" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">y0</string>
+  </object>
+  <object class="Description" id="52" size="1" StudyVisible="false" StudyLabel="">
+    <string index="0">x1 + x2</string>
+  </object>
+  <object class="SymbolicEvaluation" id="45" callsNumber_="0" StudyVisible="false" StudyLabel="">
+    <object member="inputDescription_" id="46"/>
+    <object member="outputDescription_" id="47"/>
+    <object member="parameter_" id="48"/>
+    <object member="parameterDescription_" id="49"/>
+    <object member="inputVariablesNames_" id="50"/>
+    <object member="outputVariablesNames_" id="51"/>
+    <object member="formulas_" id="52"/>
+  </object>
+  <object class="SymbolicHessian" id="43" callsNumber_="0" StudyVisible="false" StudyLabel="">
+    <object member="parameter_" id="44"/>
+    <object member="evaluation_" id="45"/>
+  </object>
+  <object class="FunctionImplementation" id="24" useDefaultGradientImplementation_="false" useDefaultHessianImplementation_="false" StudyVisible="true" StudyLabel="function">
+    <object member="evaluation_" id="25"/>
+    <object member="gradient_" id="33"/>
+    <object member="hessian_" id="43"/>
+  </object>
+</openturns-study>

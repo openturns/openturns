@@ -65,7 +65,6 @@ view = otv.View(graph_model, square_axes=True)
 # We consider  the univariate output variable :
 #
 # .. math::
-#    :label: modelDef
 #
 #   Y = \model(\inputRV)
 #
@@ -390,7 +389,7 @@ view = otv.View(graph_standard_space, square_axes=True)
 #
 # .. math::
 #
-#    \mathcal{P}_{z^*} = \{ (\vect{z} \in \Rset^2 \, | \,
+#    \mathcal{P}_{z^*} = \{ \vect{z} \in \Rset^2 \, | \,
 #                \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} = 0\}
 #
 # We can use the class LinearFunction.

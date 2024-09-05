@@ -1,0 +1,60 @@
+{{ objname }}
+{{ underline }}
+
+.. plot::
+    :include-source: False
+
+    import openturns as ot
+    from matplotlib import pyplot as plt
+    from openturns.viewer import View
+
+    def flow(X):
+        Y0 = X[0]
+        Y1 = X[1]
+        t = X[2]
+        dY0 = Y0 * (2.0 - Y1)
+        dY1 = Y1 * (Y0 - 1.0)
+        return [dY0, dY1]
+
+    f = ot.PythonFunction(3, 2, flow)
+    phi = ot.ParametricFunction(f, [2], [0.0])
+    solver = ot.{{ objname }}(phi)
+
+    initialState = [2.0, 2.0]
+    nt = 47
+    dt = 0.1
+    timeGrid = ot.RegularGrid(0.0, dt, nt)
+    result = solver.solve(initialState, timeGrid)
+    xMin = result.getMin()
+    xMax = result.getMax()
+    delta = 0.2 * (xMax - xMin)
+    mesh = ot.IntervalMesher([12]*2).build(ot.Interval(xMin - delta, xMax + delta))
+    field = ot.Field(mesh, phi(mesh.getVertices()))
+    ot.ResourceMap.SetAsScalar("Field-ArrowScaling", 0.1)
+    graph = field.draw()
+    cloud = ot.Cloud(mesh.getVertices())
+    cloud.setColor("black")
+    graph.add(cloud)
+    curve = ot.Curve(result)
+    curve.setColor("red")
+    curve.setLineWidth(2)
+    graph.add(curve)
+    graph.setTitle("Lotka-Volterra ODE system")
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    View(graph, figure=fig)
+    plt.xlabel(r'$y_0$')
+    plt.ylabel(r'$y_1$')
+    plt.grid()
+
+.. currentmodule:: {{ module }}
+
+.. autoclass:: {{ objname }}
+
+   {% block methods %}
+   .. automethod:: __init__
+   {% endblock %}
+
+.. minigallery:: {{module}}.{{objname}}
+   :add-heading: Examples using the class
