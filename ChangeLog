@@ -6,6 +6,7 @@
 
 ==== Major changes ====
  * Swapped InverseGamma shape/scale parameters: InverseGamma(k, lambda)
+ * New Gaussian process regression classes
 
 ==== New classes ====
 
