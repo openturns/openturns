@@ -520,10 +520,19 @@ Examples
 %feature("docstring") OT::VisualTest::DrawPairs
 "Draw 2-d projections of a multivariate sample.
 
+
+Available usages:
+    VisualTest.DrawPairs(*sample*)
+
+    VisualTest.DrawPairs(*inputSample, outputSample*);
+
 Parameters
 ----------
 sample : 2-d sequence of float
     Samples to draw.
+    
+inputSample, outputSample : 2-d sequence of float
+    Input and output samples to draw the relationships between inputs and outputs.
 
 Returns
 -------

@@ -297,6 +297,36 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
   return grid;
 }
 
+/* Draw 2-d projections of a multivariate sample */
+GridLayout VisualTest::DrawPairs(const Sample & inputSample, const Sample & outputSample)
+{
+  const UnsignedInteger inputDimension = inputSample.getDimension();
+  const UnsignedInteger outputDimension = outputSample.getDimension();
+  
+  GridLayout grid(outputDimension, inputDimension);
+  const Description inputDescription(inputSample.getDescription());
+  const Description outputDescription(outputSample.getDescription());
+  
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+    {
+      Cloud cloud(inputSample.getMarginal({j}), outputSample.getMarginal({i}));
+     
+      Graph graph("", i == outputDimension - 1 ? inputDescription[j] : "", j == 0 ? outputDescription[i] : "", true, "topright");
+      graph.add(cloud);
+      int location = GraphImplementation::TICKNONE;
+      if (i == outputDimension - 1)
+        location |= GraphImplementation::TICKX;
+      if (j == 0)
+        location |= GraphImplementation::TICKY;
+      graph.setTickLocation(static_cast<GraphImplementation::TickLocation>(location));
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
 
 /* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
 GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
