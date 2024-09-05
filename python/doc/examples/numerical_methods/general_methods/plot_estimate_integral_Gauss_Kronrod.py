@@ -18,21 +18,24 @@ import openturns.viewer as otv
 # Introduction
 # ============
 #
-# In this example, we present the :class:`~openturns.GaussKronrod` algorithm for one dimensional integration. That is, the algorithm can approximate the integral :
+# In this example, we present the :class:`~openturns.GaussKronrod` algorithm for one dimensional integration. That is, the algorithm can approximate the integral:
 #
 # .. math::
 #    \int_a^b f(x) dx
 #
-# where :math:`f:[a,b] \rightarrow \mathbb{R}^p` is a function, :math:`[a,b] \subset \mathbb{R}` with :math:`a\leq b` is a one dimensional interval and :math:`p` is the dimension of the output.
+# where :math:`f:[a,b] \rightarrow \mathbb{R}^p` is a function,
+# :math:`[a,b] \subset \mathbb{R}` with :math:`a\leq b` is a one dimensional interval,
+# :math:`p` is the dimension of the output.
 # Notice that the dimension of the input must be equal to 1, but the number of outputs can be greater than 1.
 #
-# Suppose that we have estimated the integral with Gaussian quadrature and :math:`m` quadrature nodes. If we want to improve the accuracy and use more nodes, the issue is that the new nodes do not correspond to the old ones: therefore, we cannot reuse the function evaluations.
+# Suppose that we have estimated the integral with Gaussian quadrature and :math:`m` quadrature nodes.
+# If we want to improve the accuracy and use more nodes, the issue is that the new nodes do not correspond to the old ones: therefore, we cannot reuse the function evaluations.
 #
 # The Gauss-Kronrod algorithm improves the situation by using two different methods:
 #
 # - a Gaussian quadrature rule with :math:`m` nodes,
 # - a Kronrod extension with :math:`2m+1` nodes.
-# 
+#
 # The rule :math:`(G_m,K_{2m+1})` is called a Gauss-Kronrod pair. In the Kronrod extension, the first :math:`m` nodes are equal to the nodes in Gaussian quadrature.
 #
 # The Gaussian quadrature rule with :math:`m` nodes is exact for polynomials of degree :math:`2m-1`.
@@ -47,7 +50,7 @@ import openturns.viewer as otv
 # Example
 # =======
 # The following example is from [davis1975]_ p.325:
-# 
+#
 # .. math::
 #    \int_0^1 \frac{2}{2 + \sin(10 \pi x)} dx = \frac{2}{\sqrt{3}} = 1.154700538379251529.
 
@@ -134,17 +137,18 @@ error[0]
 
 # %%
 # During the algorithm, a collection of subintegrals
-# 
+#
 # .. math::
 #    \int_{a_i}^{b_i} g(x) dx
-# 
+#
 # are approximated.
 # The outputs :math:`ai` and :math:`bi` contain the subintervals used in the algorithm.
 print('ai:', ai)
 print('bi:', bi)
 
 # %%
-# The corresponding value of the integrals are in :math:`fi`. Since :math:`f` can be a multidimensional point, this is a :class:`~openturns.Sample`, which dimension corresponds to the output dimension of the function :math:`f`.
+# The corresponding value of the integrals are in :math:`fi`.
+# Since :math:`f` can be a multidimensional point, this is a :class:`~openturns.Sample`, which dimension corresponds to the output dimension of the function :math:`f`.
 print('fi:', fi)
 
 # %%
@@ -174,6 +178,7 @@ quadrature_rule.getOrder()
 # %%
 # We first analyze the Gaussian quadrature rule. The first parameter is the weight :math:`\omega_0` in front of :math:`f(0)`.
 quadrature_rule.getZeroGaussWeight()
+
 
 # %%
 # The method :meth:`~openturns.GaussKronrodRule.getOtherGaussWeights` returns the weights :math:`\omega_k` in front of :math:`f(\xi_k) + f(-\xi_k)`.
