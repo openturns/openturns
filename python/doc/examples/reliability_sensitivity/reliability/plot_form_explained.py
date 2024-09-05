@@ -96,7 +96,8 @@ event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 
 
 # %%
-# The boundary of the failure domain can easily be represented with a 1D curve as it is a branch of an hyperbole: the boundary is the graph of the function defined from :math:`\Rset` into  :math:`\Rset` by:
+# The boundary of the failure domain can easily be represented as it is a branch of an hyperbole: the
+# boundary is the graph of the function defined from :math:`\Rset` into  :math:`\Rset` by:
 #
 # .. math::
 #    :label: defH
@@ -115,10 +116,10 @@ event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 # %%
 nb_points = 101
 graph_g = g.draw([0.0, -10.0], [20.0, 10.0], [nb_points] * 2)
-draw_frontier = graph_g.getDrawable(0)
-draw_frontier.setLevels([s])
-draw_frontier.setLegend(r'Boundary $\partial \mathcal{D}$')
-graph_g.setDrawables([draw_frontier])
+draw_boundary = graph_g.getDrawable(0)
+draw_boundary.setLevels([s])
+draw_boundary.setLegend(r'Boundary $\partial \mathcal{D}$')
+graph_g.setDrawables([draw_boundary])
 
 # %%
 texts = [r" $\mathcal{D} = \{(x_1, x_2)\, |\, g(x_1, x_2) \geq 10 \}$"]
@@ -137,8 +138,8 @@ view = otv.View(graph_g, square_axes=True)
 
 # %%
 # We can superimpose the event boundary with the bivariate PDF insolines of the input distribution:
-draw_frontier.setColor("black")
-graph_PDF.add(draw_frontier)
+draw_boundary.setColor("black")
+graph_PDF.add(draw_boundary)
 graph_PDF.setLegendPosition("lower right")
 view = otv.View(graph_PDF, square_axes=True)
 
@@ -277,11 +278,11 @@ g_tilde = ot.ComposedFunction(g, inverse_transformation)
 # We draw the graph of :math:`\widetilde{g}` in the standard space.
 graph_standard_space = g_tilde.draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
 
-draw_frontier_stand_space = graph_standard_space.getDrawable(0)
-draw_frontier_stand_space.setLevels([s])
-draw_frontier_stand_space.setLegend(r"Boundary $\partial \mathcal{\tilde{D}}$")
-draw_frontier_stand_space.setColor("blue")
-graph_standard_space.setDrawables([draw_frontier_stand_space])
+draw_boundary_stand_space = graph_standard_space.getDrawable(0)
+draw_boundary_stand_space.setLevels([s])
+draw_boundary_stand_space.setLegend(r"Boundary $\partial \mathcal{\tilde{D}}$")
+draw_boundary_stand_space.setColor("blue")
+graph_standard_space.setDrawables([draw_boundary_stand_space])
 
 graph_standard_space.setXTitle(r"$z_1$")
 graph_standard_space.setYTitle(r"$z_2$")
@@ -380,11 +381,12 @@ view = otv.View(graph_standard_space, square_axes=True)
 #
 # .. math::
 #
-#    M \rightarrow \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} 
+#    M \rightarrow \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}}
 #
-# where :math:`\nabla \vect{\widetilde{\model}(\vect{z}^*)}` is the gradient of the function :math:`\widetilde{\model}`
+# where :math:`\nabla \vect{\widetilde{\model}(\vect{z}^*)}` is the gradient of the
+# function :math:`\widetilde{\model}`
 # at the design point :math:`Z^*(\vect{z}^*)`.
-# Then, the tangent hyperplane is the isoline associated to the zero level of the previous function:
+# Then, the tangent hyperplane is the isoline associated to the zero level of the previous function :
 #
 # .. math::
 #
@@ -411,7 +413,7 @@ graph_standard_space.setLegendPosition('topright')
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
-# As the failure domain in the standard space does not contain the origin of the space :math:`\vect{0}`,
+# Depending on whether the origin of the standard space :math:`\vect{0}` belongs to the failure domain,
 # the FORM probability is defined by:
 #
 # .. math::
@@ -449,7 +451,7 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 #
 #    \kappa_i^0 = \beta_{HL} \kappa_i
 #
-# The Breitung approximation is valid for :math:`\beta_{HL} \rightarrow +\infty` and is defined by:
+# The Breitung approximation is valid for :math:`\beta_{HL} \rightarrow +\infty` and is defined by :
 #
 # .. math::
 #
@@ -458,7 +460,7 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 #    P_{SORM, Breitung} \approx E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
 #                      \mbox{if }  \vect{0} \in \set{\widetilde{D}}
 #
-# and approximates the frontier by the osculating paraboloid at the design point.
+# and approximates the boundary by the osculating paraboloid at the design point.
 #
 # Note that the term :math:`\kappa_i^0` does not depend on :math:`\beta_{HL}`.
 
@@ -509,12 +511,12 @@ view = otv.View(graph_standard_space)
 # %%
 # The next step is to estimate the principal curvatures of the osculating paraboloid.
 #
-# For any regular function :math:`g` the curvature :math:`\kappa(x_0)` at the point :math:`x_0` in
+# For any regular function :math:`\ell: \Rset \rightarrow \Rset` the curvature :math:`\kappa(x)` at the point :math:`x` in
 # cartesian coordinates reads as:
 #
 # .. math::
 #
-#    \kappa(x_0) = \frac{g''(x_0)}{(1+[g'(x_0)]^2)^{3/2}}.
+#    \kappa(x) = \frac{\ell''(x)}{(1+[\ell'(x)]^2)^{3/2}}.
 #
 # For the oscillating parabola of concern we use the gradient and hessian previously computed :
 #
