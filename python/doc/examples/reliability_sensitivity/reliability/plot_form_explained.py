@@ -118,38 +118,37 @@ graph_g.setLegendPosition('topright')
 view = otv.View(graph_g, square_axes=True)
 
 # %%
-# We can superimpose the event boundary with the bivariate PDF ot the input distribution:
-#
+# We can superimpose the event boundary with the bivariate PDF insolines of the input distribution:
 draw_frontier.setColor("black")
 graph_PDF.add(draw_frontier)
 graph_PDF.setLegendPosition("lower right")
 view = otv.View(graph_PDF, square_axes=True)
 
 # %%
-# From the previous figure, we observe that in the failure domain, the PDF takes small (and even very small) values.
-# Consequently the failure probability :math:`P_f`
-# is also expected to be small.
+# From the previous figure, we observe that in the failure domain, the PDF takes small
+# (and even very small) values.
+# Consequently the failure probability :math:`P_f` is also expected to be small.
 # The FORM/SORM methods estimate the failure probability.
 #
 
 # %%
-# The FORM approximation
-# ----------------------
+# The FORM/SORM approximations
+# ----------------------------
 #
-# The basic steps of the FORM (or SORM) algorithm are :
+# The basic steps of the FORM and SORM algorithms are :
 #
 # - use an isoprobabilistic transformation to map the input random vector into the standard space;
-# - find the design point which is the nearest point wrt the origin in the standard space;
+# - find the design point which is the nearest point to the origin in the standard space;
 # - estimate the probability.
-#
-# Isoprobabilistic transformation
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 
 # %%
+# Isoprobabilistic transformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
 # The interest of the  isoprobabilistic transformation is the rotational
-# invariance of the
-# distribution in the standard space.
+# invariance of the distribution in the standard space. This property reduces the dimension
+# of the problem to 1.
 #
 # OpenTURNS has several isoprobabilistic transformations, depending on the distribution of the input random vector:
 #
@@ -168,12 +167,12 @@ view = otv.View(graph_PDF, square_axes=True)
 print("Is Elliptical ? ", dist_X.isElliptical())
 
 # %%
-# The Rosenblatt transformation :math:`T` is defined as:
+# The Rosenblatt transformation :math:`T` is defined by:
 #
 # .. math::
 #    T : \vect{x} \mapsto \vect{z}
 #
-# such that the random vector :math:`\vect{Z}` follows a bivariate normal distribution
+# such that the random vector :math:`\vect{Z} = T(\vect{X})` follows a bivariate normal distribution
 # with zero mean and unit variance. It follows that the components :math:`Z_1` and
 # :math:`Z_2` are independent.
 #
@@ -186,49 +185,60 @@ print("Is Elliptical ? ", dist_X.isElliptical())
 #
 # where :math:`F_i` is the cumulative distribution function (CDF) of :math:`X_i` and
 # :math:`\Phi` the CDF of the univariate normal distribution with zero mean and unit variance.
-# Note that in this example,
-# :math:`\Phi^{-1} \circ F_2 = Id` as :math:`F_2 = \Phi`.
+# Note that in this example, :math:`\Phi^{-1} \circ F_2 = I_d` as :math:`F_2 = \Phi`.
 
-# The isoprobabilistic transform and its inverse are methods of the distribution `dist_X` :
+# The isoprobabilistic transform and its inverse are methods of the distribution :
 transformation = dist_X.getIsoProbabilisticTransformation()
 inverse_transformation = dist_X.getInverseIsoProbabilisticTransformation()
 
 # %%
 # Let us detail this transformation, step by step.
 # We draw a realization of the random input vector. This point is said to be in the physical space.
-# We shall focus on the first component.
 xi = vector_X.getRealization()
 
 # %%
-# We build `zi` the mapping of `xi`. The point `zi` is said to be in the standard space.
+# We build `zi` the mapping of `xi` through the Rosenblatt transformation.
+# The point `zi` is said to be in the standard space.
 ui = [dist_X1.computeCDF(xi[0]), xi[1]]
-zi = [ot.Normal().computeQuantile(ui[0])[0], ui[1]]
+zi = [ot.Normal().computeQuantile(ui[0])[0], xi[1]]
 print(xi, "->", zi)
 
 # %%
 # We also build the isoprobabilistic transform :math:`T_1` and its inverse :math:`T_1^{-1}` for the
 # first marginal :
+#
+# .. math::
+#
+#    T_1 = \Phi^{-1} \circ F_1
+#
 transform_X1 = dist_X1.getIsoProbabilisticTransformation()
 inverse_transform_X1 = dist_X1.getInverseIsoProbabilisticTransformation()
 
 # %%
-# We can check the result of our experiment using the transformation implemented by the distribution :
-# we observe the results are the same.
+# We can implement the transformation using :math:`T_1` on the first components
+# directly using :math:`T` on both components `xi`:
 zi1D = [transform_X1([xi[0]])[0], xi[1]]
 zi2D = transformation(xi)
+
+# %%
+# We can check the result of our experiment : we observe the results are the same.
 print("zi = ", zi)
 print("zi1D = ", zi1D)
 print("zi2D = ", zi2D)
 
 
 # %%
-# The model on the standard space is defined by:
+# The model in the standard space is defined by:
 #
 # .. math::
+#
 #     \tilde{g} = g \circ T^{-1}
 #
-# We can define it using the capacities the composition of functions implemented in the library.
+# We can define it using the capacities of the composition of functions implemented in the library.
 g_tilde = ot.ComposedFunction(g, inverse_transformation)
+
+# %%
+# We draw the graph of :math:`\tilde{g}` in the standard space.
 graph_standard_space = g_tilde.draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
 
 draw_frontier_stand_space = graph_standard_space.getDrawable(0)
@@ -249,7 +259,7 @@ cloud.setPointStyle("fcircle")
 cloud.setLegend("origin")
 graph_standard_space.add(cloud)
 
-# Some annotation
+# Some annotations
 s = [r"Event : $\mathcal{D} = \{Y \geq 10 \}$"]
 text_graph = ot.Text([[4.0, 3.0]], texts)
 text_graph.setTextSize(1)
@@ -268,7 +278,6 @@ view = otv.View(graph_standard_space, square_axes=True)
 # of the failure domain to the origin of the standard space.
 # Then the second step of the method is to find this point, *the design point*, through a
 # minimization problem under constraints.
-#
 
 # %%
 # We configure the Cobyla solver that we use for the optimization :
@@ -281,7 +290,7 @@ solver.setMaximumConstraintError(1.0e-3)
 
 # %%
 # We build the FORM algorithm with its basic constructor. The starting point for the optimization
-# algorithm is the mean of the input random vector.
+# algorithm is the mean of the input distribution.
 algo_FORM = ot.FORM(solver, event, dist_X.getMean())
 
 # %%
@@ -298,14 +307,14 @@ design_point_standard_space = result.getStandardSpaceDesignPoint()
 print("Design point in physical space : ", design_point_physical_space)
 print("Design point in standard space : ", design_point_standard_space)
 
-
 # %%
-# We can get the Hasofer index with the `getHasoferReliabilityIndex` method which is the distance of the design point to the origin:
+# We can get the Hasofer index with the `getHasoferReliabilityIndex` method which is the distance of
+# the design point to the origin :
 beta_HL = result.getHasoferReliabilityIndex()
 print("Hasofer index : ", beta_HL)
 
 # %%
-# We visualize it on the previous graph.
+# We visualize the design point on the previous graph.
 cloud = ot.Cloud([design_point_standard_space])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
@@ -325,25 +334,34 @@ graph_standard_space.setLegendPosition('topright')
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
-# Estimate the failure probability
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# The FORM approximation
+# ^^^^^^^^^^^^^^^^^^^^^^
 #
-# The last step of the FORM algorithm is to replace the domain of integration by the hyperplane
+# The last step of the FORM algorithm is to replace the failure domain by the hyperplane
 # which is tangent to the failure domain at the design point in the standard space.
-# To draw the hyperplane, we define the function:
+# To draw this hyperplane :math:`\mathcal{P}_{\vect{z}^*}`, we define the function from
+# :math:`\Rset^2` to :math:`\Rset` defined by :
 #
 # .. math::
 #
-#    M(x,y) \rightarrow \langle \nabla \tilde{g}(Z^*), \vect{Z^*M} \rangle
+#    M \rightarrow \langle \nabla \vect{\tilde{g}(\vect{z}^*)}, \vect{Z^*M} \rangle
 #
-# Then, the tangent hyperplane is the isoline associated to the zero level of the previous function.
+# where :math:`\vect{\tilde{g}(\vect{z}^*)}` is the gradient of the function :math:`\tilde{g}`
+# at the design point :math:`Z^*(z^*)`.
+# Then, the tangent hyperplane is the isoline associated to the zero level of the previous function:
+#
+# .. math::
+#
+#    \mathcal{P}_{z^*} = \{ (\vect{z} \in \Rset^2 \, | \, \langle \nabla \tilde{g}(Z^*),
+#                            \vect{Z^*M} \rangle = \}
+#
 # We can use the class LinearFunction.
 center = design_point_standard_space
 grad_design_point = g_tilde.gradient(design_point_standard_space)
 constant = [0.0]
 linear_mat = ot.Matrix(1, 2)
-linear_mat[0,0] = grad_design_point[0, 0]
-linear_mat[0,1] = grad_design_point[1, 0]
+linear_mat[0, 0] = grad_design_point[0, 0]
+linear_mat[0, 1] = grad_design_point[1, 0]
 linear_proj = ot.LinearFunction(center, constant, linear_mat)
 
 graph_tangent = linear_proj.getMarginal(0).draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
@@ -357,7 +375,8 @@ graph_standard_space.setLegendPosition('topright')
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
-# In the standard space, the FORM probability is approximated by:
+# As the failure domain in the standard space does not contain the origin of the space,
+# the FORM probability is defined by:
 #
 # .. math::
 #
@@ -371,20 +390,20 @@ pf = ot.Normal().computeCDF(-beta_HL)
 print("FORM : Pf = ", pf)
 
 # %%
-# This probability of failure is the one computed in the FORMResult and obtained with the 
-# `getEventProbability` method:
+# This failure probability is implemented but the FORM algorithm and can be obtained
+# with the `getEventProbability` method. We check we have the same result.
 pf = result.getEventProbability()
 print("Probability of failure (FORM) Pf = ", pf)
 
 # %%
 # The SORM approximation
-# ----------------------
+# ^^^^^^^^^^^^^^^^^^^^^^
 #
 # The SORM approximation uses the curvatures :math:`\kappa_i` of the domain at the design point. The Breitung approximation is defined by:
 #
 # .. math::
 #
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}} 
+#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}}
 #
 # and approximates the frontier by the osculating paraboloid at the design point.
 
@@ -420,7 +439,8 @@ print("value of the hessian of the failure boundary at this abscissa= ", d2z1_st
 #
 # .. math::
 #
-#    z_1 \mapsto  = h \circ T_1^{-1} (z_1^*) + \frac{d}{du_1} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*) + \frac{1}{2} \frac{d^2}{dz_1^2} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*)^2
+#    z_1 \mapsto  = h \circ T_1^{-1} (z_1^*) + \frac{d}{du_1} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*) +
+#     \frac{1}{2} \frac{d^2}{dz_1^2} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*)^2
 #
 z = np.linspace(1.1, 4.0, 100)
 parabola = (
