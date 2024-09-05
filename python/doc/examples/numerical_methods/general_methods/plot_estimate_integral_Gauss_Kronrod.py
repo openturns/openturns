@@ -179,7 +179,6 @@ quadrature_rule.getOrder()
 # We first analyze the Gaussian quadrature rule. The first parameter is the weight :math:`\omega_0` in front of :math:`f(0)`.
 quadrature_rule.getZeroGaussWeight()
 
-
 # %%
 # The method :meth:`~openturns.GaussKronrodRule.getOtherGaussWeights` returns the weights :math:`\omega_k` in front of :math:`f(\xi_k) + f(-\xi_k)`.
 quadrature_rule.getOtherGaussWeights()
