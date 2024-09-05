@@ -31,7 +31,7 @@ characteristic function=(0.312305,0.758322)
 log characteristic function=(-0.198312,1.18013)
 pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
-cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.5]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
 quantile=class=Point name=Unnamed dimension=1 values=[0.724745]
 cdf(quantile)=0.25
