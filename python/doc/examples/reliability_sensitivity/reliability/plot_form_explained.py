@@ -424,7 +424,7 @@ if isOriginFail:
     pf_FORM = normal.computeCDF(beta_HL)
 else:
     pf_FORM = normal.computeCDF(-beta_HL)
-print("FORM : Pf_FORM = ", pf_FORM )
+print("FORM : Pf_FORM = ", pf_FORM)
 
 # %%
 # This failure probability is implemented but the FORM algorithm and can be obtained
@@ -436,17 +436,26 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 # The SORM approximation
 # ^^^^^^^^^^^^^^^^^^^^^^
 #
-# The SORM approximation uses the curvatures :math:`\kappa_i` of the domain at the design point. The Breitung approximation is defined by:
+# The SORM approximation uses the main curvatures :math:`\kappa_i^0` of the homothetic of the failure domain
+# at distance 1 from the origin. These curvatures are calculated  at the design point.
+# They are linked to the curvatures :math:`\kappa_i` of the failure domain by:
 #
 # .. math::
 #
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}} &
+#    \kappa_i^0 = \beta_{HL} \kappa_i
+#
+# The Breitung approximation is valid for :math:`\beta_{HL} \rightarrow +\infty` and is defined by:
+#
+# .. math::
+#
+#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
 #                      \mbox{if }  \vect{0} \in \mathcal{\tilde{D}} \\
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}} &
+#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
 #                      \mbox{if }  \vect{0} \notin \mathcal{\tilde{D}}
 #
 # and approximates the frontier by the osculating paraboloid at the design point.
-
+#
+# Note that the term :math:`\kappa_i^0` does not depend on :math:`\beta_{HL}`.
 
 # %%
 # In this example, we can easily implement the frontier of the event in the
