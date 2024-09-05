@@ -345,7 +345,8 @@ Point Student::computePDFGradient(const Point & point) const
     for (UnsignedInteger i = 0; i < 2 * dimension; ++i) pdfGradient[i + 1] = ellipticalPDFGradient[i];
     return pdfGradient;
   }
-  else throw NotYetImplementedException(HERE) << "In Student::computePDFGradient(const Point & point) const";
+  else
+    return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
@@ -367,7 +368,8 @@ Point Student::computeCDFGradient(const Point & point) const
     cdfGradient[2] = (DistFunc::pStudent(nu_, x / (sigma_[0] + eps)) - DistFunc::pStudent(nu_, x / (sigma_[0] - eps))) * i2Eps;
     return cdfGradient;
   }
-  else throw NotYetImplementedException(HERE) << "In Student::computeCDFGradient(const Point & point) const";
+  else
+    return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
