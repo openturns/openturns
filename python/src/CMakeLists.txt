@@ -1031,6 +1031,11 @@ ot_add_python_module(experimental experimental_module.i
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
+                     GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
+                     GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
+                     GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
+                     GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
+                     GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
