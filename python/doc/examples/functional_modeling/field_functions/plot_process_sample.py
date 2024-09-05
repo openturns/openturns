@@ -44,7 +44,7 @@ cm = chaboche_model.ChabocheModel()
 
 # %%
 N = 100
-mesh = ot.RegularGrid(cm.strainMin, (cm.strainMax-cm.strainMin)/N, N)
+mesh = ot.RegularGrid(cm.strainMin, (cm.strainMax - cm.strainMin) / N, N)
 vertices = mesh.getVertices()
 
 # %%
@@ -91,7 +91,7 @@ X_distribution = ot.JointDistribution([R_distribution, C_distribution, gamma_dis
 # 50 samples of the input vector :math:`\vect{X}` are generated.
 
 # %%
-n_samples = 50 
+n_samples = 50
 X_samples = X_distribution.getSample(n_samples)
 
 # %%
@@ -121,8 +121,8 @@ viewer.View(graph)
 
 # %%
 # It is possible to create a :class:`~openturns.ProcessSample` from the obtained field samples.
-# For that, each obtained sample is added to the :class:`~openturns.ProcessSample` using the :class:`~openturns.Field` structure. 
-# When the :class:`~openturns.ProcessSample` is created, by default a process sample with a value of 0. 
+# For that, each obtained sample is added to the :class:`~openturns.ProcessSample` using the :class:`~openturns.Field` structure.
+# When the :class:`~openturns.ProcessSample` is created, by default a process sample with a value of 0.
 # for all the vertices is stored so it is important to remove it.
 
 # %%
@@ -145,14 +145,14 @@ process_sample_variance = process_sample.computeVariance()
 # %%
 graph = ot.Graph("Sample process mean and realizations", "Strain", "Stress (Pa)", True, "")
 for i in range(n_samples):
-    if i==0:
+    if i == 0:
         curve = ot.Curve(vertices, Y_list[i], "process samples")
         curve.setColor("blue")
         graph.add(curve)
     else:
         curve = ot.Curve(vertices, Y_list[i])
         curve.setColor("blue")
-        graph.add(curve) 
+        graph.add(curve)
 
 curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
 curve.setColor("red")
