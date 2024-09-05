@@ -142,12 +142,12 @@ error[0]
 #    \int_{a_i}^{b_i} g(x) dx
 #
 # are approximated.
-# The outputs :math:`ai` and :math:`bi` contain the subintervals used in the algorithm.
+# The outputs :math:`a_i` and :math:`b_i` contain the subintervals used in the algorithm.
 print('ai:', ai)
 print('bi:', bi)
 
 # %%
-# The corresponding value of the integrals are in :math:`fi`.
+# The corresponding value of the integrals are in :math:`f_i`.
 # Since :math:`f` can be a multidimensional point, this is a :class:`~openturns.Sample`, which dimension corresponds to the output dimension of the function :math:`f`.
 print('fi:', fi)
 
@@ -156,7 +156,7 @@ print('fi:', fi)
 sum(fi)[0]
 
 # %%
-# The estimated error of each integral is in :math:`ei`:
+# The estimated error of each integral is in :math:`e_i`:
 print(ei)
 number_of_intervals = ai.getDimension()
 print('number of intervals:', number_of_intervals)
@@ -179,7 +179,7 @@ quadrature_rule.getOrder()
 # We first analyze the Gaussian quadrature rule. The first parameter is the weight :math:`\omega_0` in front of :math:`f(0)`.
 quadrature_rule.getZeroGaussWeight()
 
-# %%
+# %%
 # The method :meth:`~openturns.GaussKronrodRule.getOtherGaussWeights` returns the weights :math:`\omega_k` in front of :math:`f(\xi_k) + f(-\xi_k)`.
 quadrature_rule.getOtherGaussWeights()
 
