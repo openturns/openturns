@@ -4,7 +4,7 @@ Fit a parametric copula
 """
 
 # %%
-# In this example we are going to estimate the parameters of a gaussian copula from a sample.
+# In this example we are going to estimate the parameters of a Gaussian copula from a sample.
 
 # %%
 import openturns as ot
@@ -21,7 +21,7 @@ copula = ot.NormalCopula(R)
 sample = copula.getSample(500)
 
 # %%
-# Estimate a normal copula
+# Estimate a Normal copula
 distribution = ot.NormalCopulaFactory().build(sample)
 print(distribution)
 

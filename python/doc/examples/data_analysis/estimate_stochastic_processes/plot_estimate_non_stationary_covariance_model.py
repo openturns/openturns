@@ -18,14 +18,14 @@ Estimate a non stationary covariance function
 #    \end{aligned}
 #
 # The domain :math:`\mathcal{D}` is discretized on a mesh :math:`\mathcal{M}` which is a time grid with 64 points.
-# We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
+# We build a Normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
 # :math:`C` as covariance function.
 # We discretize the covariance model :math:`C` using :math:`C(t_k, t_\ell)`
 # for each :math:`(t_k, t_\ell)\in \mathcal{M} \times \mathcal{M}`.
 # We get a :math:`N=10^3` fields from the process :math:`X` from which we
 # estimate the covariance model :math:`C`.
 #
-# We use the object *NonStationaryCovarianceModelFactory* which creates a *UserDefinedCovarianceModel*.
+# We use the object :class:`~openturns.NonStationaryCovarianceModelFactory` which creates a :class:`~openturns.UserDefinedCovarianceModel`.
 
 # %%
 import math as m
@@ -65,7 +65,7 @@ graph.setLegendPosition("")
 view = viewer.View(graph)
 
 # %%
-# Create data from a non stationary normal process Omega * [0,T]--> R
+# Create data from a non stationary Normal process Omega * [0,T]--> R
 
 # Create the collection of HermitianMatrix
 covariance = ot.CovarianceMatrix(N)
@@ -78,7 +78,7 @@ for k in range(N):
 covmodel = ot.UserDefinedCovarianceModel(tgrid, covariance)
 
 # %%
-# Create the normal process with that covariance model
+# Create the Normal process with that covariance model
 # based on the mesh tgrid
 process = ot.GaussianProcess(covmodel, tgrid)
 

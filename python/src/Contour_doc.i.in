@@ -241,6 +241,7 @@ getAlpha"
 
 %feature("docstring") OT::Contour::isVminUsed
 "Accessor to the flag isVminUsed of the Contour element.
+If false, the *vmin* value is ignored.
 
 Returns
 -------
@@ -262,6 +263,7 @@ setIsVminUsed"
 
 %feature("docstring") OT::Contour::setIsVminUsed
 "Accessor to the flag isVminUsed of the Contour element.
+If false, the *vmin* value is ignored.
 
 Parameters
 ----------
@@ -290,6 +292,12 @@ Examples
 >>> print(contour.getVmin())
 5.0
 
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
 See Also
 --------
 setVmin"
@@ -304,6 +312,12 @@ Parameters
 vmin : float
     The vmin value of the Contour element.
 
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
 See Also
 --------
 getVmin"
@@ -312,6 +326,7 @@ getVmin"
 
 %feature("docstring") OT::Contour::isVmaxUsed
 "Accessor to the flag isVmaxUsed of the Contour element.
+If false, the *vmax* value is ignored.
 
 Returns
 -------
@@ -333,6 +348,7 @@ setIsVmaxUsed"
 
 %feature("docstring") OT::Contour::setIsVmaxUsed
 "Accessor to the flag isVmaxUsed of the Contour element.
+If false, the *vmax* value is ignored.
 
 Parameters
 ----------
@@ -361,6 +377,12 @@ Examples
 >>> print(contour.getVmax())
 5.0
 
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
 See Also
 --------
 setVmax"
@@ -374,6 +396,12 @@ Parameters
 ----------
 vmax : float
     The vmax value of the Contour element.
+
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
 
 See Also
 --------

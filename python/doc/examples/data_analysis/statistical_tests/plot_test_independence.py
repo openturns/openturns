@@ -30,7 +30,7 @@ ot.Log.Show(ot.Log.NONE)
 # (depending on the p-value threshold).
 #
 # - the Pearson test: it tests if there exists a linear relation between two
-#   scalar samples which form a gaussian vector (which is equivalent to have a
+#   scalar samples which form a Gaussian vector (which is equivalent to have a
 #   linear correlation coefficient not equal to zero).
 #   If both samples are :math:`\underline{x} = (x_i)_{1 \leq i \leq n}` and
 #   :math:`\underline{y} = (y_i)_{1 \leq i \leq n}`, and :math:`\bar{x} = \displaystyle \frac{1}{n}\sum_{i=1}^n x_i`
@@ -43,7 +43,7 @@ ot.Log.Show(ot.Log.NONE)
 # The variable :math:`D` tends towards a :math:`\chi^2(n-2)`, under the
 # hypothesis of normality of both samples.
 # The hypothesis of a linear coefficient equal to 0 is rejected (which is
-# equivalent to the independence of the samples) if D is too high
+# equivalent to the independence of the samples) if :math:`D` is too high
 # (depending on the p-value threshold).
 #
 # - the Spearman test: it tests if there exists a monotonous relation between two scalar samples.
@@ -54,7 +54,7 @@ ot.Log.Show(ot.Log.NONE)
 #      D = 1-\frac{6\sum_{i=1}^n (r_i - s_i)^2}{n(n^2-1)}
 #
 # where :math:`r_i = rank(x_i)` and  :math:`s_i = rank(y_i)`. :math:`D` is
-# such that :math:`\sqrt{n-1}D` tends towards the standard normal distribution.
+# such that :math:`\sqrt{n-1}D` tends towards the standard Normal distribution.
 #
 
 # %%
@@ -132,12 +132,12 @@ distribution = ot.JointDistribution(marginals, copula)
 sample = distribution.getSample(30)
 
 # %%
-# Next, we split it in two samples : firstSample of dimension=2, secondSample of dimension=1.
+# Next, we split it in two samples : `firstSample` of dimension=2, `secondSample` of dimension=1.
 firstSample = sample[:, :2]
 secondSample = sample[:, 2]
 
 # %%
-# We test independence of each component of firstSample against the secondSample :
+# We test independence of each component of `firstSample` against `secondSample` :
 test_results = ot.LinearModelTest.FullRegression(firstSample, secondSample)
 for i in range(len(test_results)):
     print(

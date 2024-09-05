@@ -72,6 +72,10 @@ Bibliography
     http://ceres-solver.org
 .. [chacon2018] Chacón, J. E., & Duong, T. (2018).
     *Multivariate kernel smoothing and its applications.* CRC Press.
+.. [charpentier2015] Charpentier, A., & Flachaire, E. (2014).
+    *Log-Transform Kernel Density Estimation of Income Distribution* WP 2015-Nr 6,
+    AMSE Aix Marseille School of Economics.
+    `pdf <https://www.amse-aixmarseille.fr/sites/default/files/_dt/2012/wp_2015_-_nr_06.pdf>`__
 .. [chihara1978] Chihara, T. S. (1978).
     *An introduction to orthogonal polynomials.* Dover publications.
 .. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
@@ -95,6 +99,11 @@ Bibliography
     Society for Industrial and Applied Mathematics.
 .. [davis1975] Davis, P.-J. and P.Rabinowitz, P. (1975). *Methods of numerical integration*,
     Academic Press.
+.. [delmas2006] Delmas, J.F. and Jourdain, B. *Modèles aléatoires: Applications aux
+    sciences de l'ingénieur et du vivant* , Berlin, Heidelberg: Springer Berlin Heidelberg (2006).
+    *La maîtrise des incertitudes dans un contexte industriel.
+    1re partie: une approche méthodologique globale basée sur des exemples.*
+    Journal de la Société française de statistique, 147 (3), 33-71.
 .. [deRocquigny2006] De Rocquigny, É. (2006).
     *La maîtrise des incertitudes dans un contexte industriel.
     1re partie: une approche méthodologique globale basée sur des exemples.*
@@ -146,7 +155,7 @@ Bibliography
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003.
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
 .. [ghanem1991] Ghanem R. and P. Spanos, 1991,
-    *Stochastic finite elements – A spectral approach*,
+    *Stochastic finite elements - A spectral approach*,
     Springer Verlag. (Reedited by Dover Publications, 2003).
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
@@ -157,9 +166,9 @@ Bibliography
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
-.. [hahn2005] Thomas Hahn, *Cuba — a library for multidimensional numerical integration*
+.. [hahn2005] Thomas Hahn, *Cuba - a library for multidimensional numerical integration*
     Computer Physics Communications, 168(2), 78-95.
-    `pdf <https://arxiv.org/pdf/hep-ph/0404043>`
+    `pdf <https://arxiv.org/pdf/hep-ph/0404043>`__
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
     approximate matrix decompositions*,
@@ -206,6 +215,10 @@ Bibliography
     *Global optimization of expensive black-box functions*,
     Journal of Global Optimization, 13(4), 455-492, 1998.
     `pdf <https://openturns.github.io/openturns/papers/jones1998.pdf>`__
+.. [jones1993] M.C. Jones,
+    *Simple boundary correction for kernel density estimation*,
+    Statistics and Computing. Vol. 3, Issue 3, 1993, pp. 135-146,
+    https://doi.org/10.1007/BF00147776
 .. [Keutelian1991] Hovhannes Keutelian.
     *The Kolmogorov-Smirnov test when parameters are estimated from data*,
     30 April 1991, Fermilab.

@@ -35,7 +35,6 @@ static const Factory<EnclosingSimplexMonotonic1D> Factory_EnclosingSimplexMonoto
 /* Constructor without parameters */
 EnclosingSimplexMonotonic1D::EnclosingSimplexMonotonic1D()
   : EnclosingSimplexAlgorithmImplementation()
-  , increasing_(true)
 {
   // Nothing to do
 }
@@ -43,7 +42,6 @@ EnclosingSimplexMonotonic1D::EnclosingSimplexMonotonic1D()
 /* Parameter constructor */
 EnclosingSimplexMonotonic1D::EnclosingSimplexMonotonic1D(const Sample & vertices)
   : EnclosingSimplexAlgorithmImplementation()
-  , increasing_(true)
 {
   IndicesCollection simplices;
   setVerticesAndSimplices(vertices, simplices);
@@ -159,6 +157,21 @@ String EnclosingSimplexMonotonic1D::__repr__() const
 String EnclosingSimplexMonotonic1D::__str__(const String & ) const
 {
   return OSS(false) << "class=" << EnclosingSimplexMonotonic1D::GetClassName();
+}
+
+/* Method save() stores the object through the StorageManager */
+void EnclosingSimplexMonotonic1D::save(Advocate & adv) const
+{
+  EnclosingSimplexAlgorithmImplementation::save(adv);
+  adv.saveAttribute("increasing_", increasing_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void EnclosingSimplexMonotonic1D::load(Advocate & adv)
+{
+  EnclosingSimplexAlgorithmImplementation::load(adv);
+  adv.loadAttribute("increasing_", increasing_);
 }
 
 END_NAMESPACE_OPENTURNS

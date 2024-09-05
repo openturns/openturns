@@ -165,10 +165,7 @@ void Bonmin::run()
   for (UnsignedInteger i = 0; i < algos.getSize(); ++ i)
     if (!app.options()->SetIntegerValue("bonmin." + algos[i] + "_log_level", 0))
       throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin." << algos[i] << "_log_level";
-  if (getMaximumConstraintError() > 0.0)
-    app.options()->SetNumericValue("constr_viol_tol", getMaximumConstraintError());
-  else
-    app.options()->SetNumericValue("constr_viol_tol", SpecFunc::MinScalar);
+  app.options()->SetNumericValue("constr_viol_tol", std::max(getMaximumConstraintError(), SpecFunc::MinScalar));
   app.options()->SetNumericValue("bound_relax_factor", 0.0);
   GetOptionsFromResourceMap(app.options());
 

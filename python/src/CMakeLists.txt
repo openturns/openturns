@@ -7,11 +7,6 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 # allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
-if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
-  execute_process (COMMAND ${Python_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
-                   OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif ()
-
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
 add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
@@ -22,14 +17,12 @@ add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ope
 add_custom_target (generate_docstrings)
 add_custom_target (pylib)
 
-include_directories (BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
-include_directories (BEFORE ${CMAKE_CURRENT_SOURCE_DIR})
-
 set (OPENTURNS_PYTHON_MODULES)
 macro (ot_add_python_module MODULENAME SOURCEFILE)
   set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON)
   set_source_files_properties (${SOURCEFILE} PROPERTIES SWIG_MODULE_NAME ${MODULENAME})
+  set_source_files_properties (${SOURCEFILE} PROPERTIES INCLUDE_DIRECTORIES "${INTERNAL_INCLUDE_DIRS};${CMAKE_CURRENT_SOURCE_DIR}")
+
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
@@ -64,7 +57,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   add_custom_target (generate_${MODULENAME}_docstrings
                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
                       -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
-		      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
+                      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
                       DEPENDS ${docstring_sources})
   add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
 
@@ -72,22 +65,18 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
 
   add_dependencies (${MODULENAME} generate_swig_runtime)
-  target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
+  target_include_directories (${MODULENAME} PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
   swig_link_libraries (${MODULENAME} OT)
 
   if (TARGET Python::Module)
     target_link_libraries (${MODULENAME} Python::Module)
   else ()
+    target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
     target_link_libraries_with_dynamic_lookup (${MODULENAME} ${Python_LIBRARIES})
   endif ()
 
   set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
-
   set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
-
-  if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
-    set_target_properties (${MODULENAME} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
-  endif ()
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
@@ -873,6 +862,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
+                      LinearModelValidation.i LinearModelValidation_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
@@ -887,6 +877,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       UnionEvent.i UnionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
+                      FunctionalChaosValidation.i FunctionalChaosValidation_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
 		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                       IntegrationExpansion.i IntegrationExpansion_doc.i.in
@@ -1053,10 +1044,10 @@ else ()
   target_link_libraries_with_dynamic_lookup (memoryview ${Python_LIBRARIES})
 endif ()
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
-if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
-  set_target_properties (memoryview PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
-elseif (WIN32 AND NOT CYGWIN)
+if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
+else ()
+  set_target_properties(memoryview PROPERTIES SUFFIX ".so")
 endif ()
 set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)

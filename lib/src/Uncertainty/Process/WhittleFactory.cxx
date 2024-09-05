@@ -433,6 +433,8 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
 
         // optimal point
         const Point optpoint(solver.getResult().getOptimalPoint());
+	if (!optpoint.getDimension())
+	  throw InvalidArgumentException(HERE) << "optimization in WhittleFactory did not yield feasible points";
         theta = optpoint;
       }
       // Compute the information criteria

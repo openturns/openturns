@@ -173,9 +173,10 @@ Scalar EllipticalDistribution::computeDensityGeneratorSecondDerivative(const Sca
 /* Get the DDF of the distribution */
 Point EllipticalDistribution::computeDDF(const Point & point) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
   switch(dimension)
   {
     case 1:
@@ -253,9 +254,10 @@ Point EllipticalDistribution::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar EllipticalDistribution::computePDF(const Point & point) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
   switch(dimension)
   {
     case 1:
@@ -315,9 +317,10 @@ Scalar EllipticalDistribution::computePDF(const Point & point) const
 /* Get the log-PDF of the distribution */
 Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
   switch(dimension)
   {
     case 1:
@@ -386,10 +389,10 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
 /* Get the PDF gradient of the distribution */
 Point EllipticalDistribution::computePDFGradient(const Point & point) const
 {
-  if (point.getDimension() != getDimension())
-    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
   const Point u(normalize(point));
   Point iRu(u);
   for (UnsignedInteger i = 0; i < dimension; ++ i)

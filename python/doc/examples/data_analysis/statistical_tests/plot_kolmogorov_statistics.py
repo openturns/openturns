@@ -5,9 +5,9 @@ Kolmogorov-Smirnov : understand the statistics
 # %%
 
 # %%
-# In this example, we illustrate how the Kolmogorov-Smirnov statistic is computed.
+# In this example, we illustrate how the Kolmogorov-Smirnov (KS) statistic is computed.
 #
-# * We generate a sample from a normal distribution.
+# * We generate a sample from a Normal distribution.
 # * We create a uniform distribution and estimate its parameters from the sample.
 # * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulated distribution function.
 
@@ -19,7 +19,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# The `computeKSStatisticsIndex()` function computes the Kolmogorov-Smirnov
+# The `computeKSStatisticsIndex` function computes the Kolmogorov-Smirnov
 # distance between the sample and the distribution.
 # Furthermore, it returns the index which achieves the maximum distance
 # in the sorted sample.
@@ -98,7 +98,7 @@ def drawKSDistance(sample, distribution, observation, D, distFactory):
 
 
 # %%
-# We generate a sample from a standard normal distribution.
+# We generate a sample from a standard Normal distribution.
 
 # %%
 N = ot.Normal()

@@ -75,19 +75,32 @@ public:
   /** Kernel accessor */
   Distribution getKernel() const;
 
-  /* Boundary correction accessor, shortcut for setBoundingOption(NONE) or setBoundingOption(BOTH) */
+  /** Boundary correction accessor, shortcut for setBoundingOption(NONE) or setBoundingOption(BOTH) */
   void setBoundaryCorrection(const Bool boundaryCorrection);
+  Bool getBoundaryCorrection() const;
 
-  /* Boundary correction accessor */
+  /** Boundary correction accessor */
   void setBoundingOption(const BoundingOption boundingOption);
 
-  /* Boundary accessor */
+  /** Boundary accessor */
   void setLowerBound(const Scalar lowerBound);
   void setUpperBound(const Scalar upperBound);
 
-  /* Automatic boundary accessor */
+  /** Automatic boundary accessor */
   void setAutomaticLowerBound(const Bool automaticLowerBound);
   void setAutomaticUpperBound(const Bool automaticUpperBound);
+
+  /** Binning accessors */
+  void setBinning(const Bool binned);
+  Bool getBinning() const;
+
+  /** Bin number accessor */
+  void setBinNumber(const UnsignedInteger binNumber);
+  UnsignedInteger getBinNumber() const;
+
+  /** Use log transform accessor */
+  void setUseLogTransform(const Bool useLog);
+  Bool getUseLogTransform() const;
 
   /** Compute the bandwidth according to Silverman's rule */
   Point computeSilvermanBandwidth(const Sample & sample) const;
@@ -124,13 +137,13 @@ private:
   Distribution kernel_;
 
   // Flag to tell if we compute a binned version of the estimator
-  Bool binned_;
+  Bool binned_ = false;
 
   // Number of bins in each dimension
-  UnsignedInteger binNumber_;
+  UnsignedInteger binNumber_ = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber");
 
   // Direction of the boundary treatment
-  BoundingOption boundingOption_;
+  BoundingOption boundingOption_ = NONE;
 
   // Known bounds
   Scalar lowerBound_;
@@ -138,6 +151,8 @@ private:
   Scalar upperBound_;
   Bool automaticUpperBound_;
 
+  // Use log transform
+  Bool useLogTransform_ = false;
 }; /* class KernelSmoothing */
 
 

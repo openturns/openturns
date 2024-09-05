@@ -278,7 +278,9 @@ void EfficientGlobalOptimization::run()
     const OptimizationResult improvementResult(solver.getResult());
 
     // store improvement
-    Point improvementValue(improvementResult.getOptimalValue());
+    const Point improvementValue(improvementResult.getOptimalValue());
+    if (!improvementValue.getDimension())
+      throw InvalidArgumentException(HERE) << "optimization in EGO did not yield feasible points";
     expectedImprovement_.add(improvementValue);
 
     const Point newPoint(improvementResult.getOptimalPoint());

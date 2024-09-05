@@ -464,8 +464,10 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   solver.run();
   const OptimizationAlgorithm::Result result(solver.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
-  const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger evaluationNumber = result.getCallsNumber();
+  const Point optimalParameters(result.getOptimalPoint());
+  if (!optimalParameters.getDimension())
+    throw InvalidArgumentException(HERE) << "optimization in GeneralLinearModelAlgorithm did not yield feasible points";
+  const UnsignedInteger callsNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)
@@ -475,7 +477,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   }
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
-  LOGINFO(OSS() << evaluationNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  LOGINFO(OSS() << callsNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
 
   return optimalLogLikelihood;
 }

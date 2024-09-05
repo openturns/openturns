@@ -79,3 +79,15 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 # negative quantile bug
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
+
+# quantile bug
+alpha = 0.05
+beta = 0.05
+for n in range(59, 100):
+    d = ot.Binomial(n, alpha)
+    k = d.computeQuantile(beta)[0]
+    p1 = d.computeCDF(k - 1)
+    p2 = d.computeCDF(k)
+    ok = p1 < beta <= p2
+    print(f"n={n} k={k:.0f} p(k-1)={p1:.4f} p(k)={p2:.4f} ok={ok}")
+    assert ok

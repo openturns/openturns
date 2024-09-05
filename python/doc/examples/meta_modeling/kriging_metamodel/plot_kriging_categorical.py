@@ -81,7 +81,7 @@ for i in range(len(lowerBoundInd)):
     initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
 initDistInd = ot.JointDistribution(initDistInd)
 initSampleInd = initDistInd.getSample(10)
-optAlgInd = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleInd)
+optAlgInd = ot.MultiStart(ot.Cobyla(), initSampleInd)
 
 # %%
 # Generate the training data set
@@ -96,7 +96,7 @@ yPlt = fun(xPlt)
 # %%
 # Initialize  and parameterize the optimization algorithm
 initSampleLV = initDistLV.getSample(30)
-optAlgLV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleLV)
+optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 
 # %%
 # Create and train the Gaussian process models
@@ -295,7 +295,7 @@ for i in range(len(lowerBoundInd)):
     initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
 initDistInd = ot.JointDistribution(initDistInd)
 initSampleInd = initDistInd.getSample(10)
-optAlgInd = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleInd)
+optAlgInd = ot.MultiStart(ot.Cobyla(), initSampleInd)
 
 # %%
 # In order to assess their respective robustness with regards to the training data set,
@@ -316,7 +316,7 @@ for rep in range(5):
 
     # Initialize  and parameterize the optimization algorithm
     initSampleLV = initDistLV.getSample(10)
-    optAlgLV = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSampleLV)
+    optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(dim).build()

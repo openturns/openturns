@@ -36,19 +36,8 @@ static const Factory<Mixture> Factory_Mixture;
 /* Default constructor */
 Mixture::Mixture()
   : DistributionImplementation()
-  , distributionCollection_()
-  , base_()
-  , alias_()
-  , uniformWeights_(true)
-  , p_()
-  , pdfApproximationCDF_()
-  , cdfApproximation_()
-  , pdfApproximationCCDF_()
-  , ccdfApproximation_()
-  , useApproximatePDFCDF_(false)
 {
   setName("Mixture");
-  setParallel(true);
   // Set an empty range
   setDistributionCollection(DistributionCollection(1));
 }
@@ -56,16 +45,6 @@ Mixture::Mixture()
 /* Parameters constructor */
 Mixture::Mixture(const DistributionCollection & coll)
   : DistributionImplementation()
-  , distributionCollection_()
-  , base_()
-  , alias_()
-  , uniformWeights_(true)
-  , p_()
-  , pdfApproximationCDF_()
-  , cdfApproximation_()
-  , pdfApproximationCCDF_()
-  , ccdfApproximation_()
-  , useApproximatePDFCDF_(false)
 {
   setName("Mixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
@@ -73,7 +52,7 @@ Mixture::Mixture(const DistributionCollection & coll)
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
-  setDistributionCollection( coll );
+  setDistributionCollection(coll);
 }
 
 /* Parameters constructor */
@@ -252,6 +231,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     ccdfApproximation_ = interpolation[3];
     useApproximatePDFCDF_ = true;
   }
+  isDiscreteOrContinuous_ = isContinuous() || isDiscrete();
 }
 
 
@@ -295,6 +275,8 @@ Scalar Mixture::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (!isDiscreteOrContinuous_)
+    throw InvalidArgumentException(HERE) << "Cannot compute the PDF of a neither continuous nor discrete Mixture.";
   if (useApproximatePDFCDF_)
   {
     if (point[0] < getMean()[0]) return pdfApproximationCDF_.derivate(point)[0];

@@ -45,7 +45,8 @@
 #endif
 #include <pagmo/algorithms/nsga2.hpp>
 #include <pagmo/algorithms/moead.hpp>
-#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+#define PAGMO_VERSION_NR PAGMO_VERSION_MAJOR * 100000 + PAGMO_VERSION_MINOR * 100 + PAGMO_VERSION_PATCH
+#if PAGMO_VERSION_NR >= 201900
 #include <pagmo/algorithms/moead_gen.hpp>
 #endif
 #include <pagmo/algorithms/maco.hpp>
@@ -63,7 +64,9 @@ struct PagmoProblem
 {
   PagmoProblem() {};
 
-  PagmoProblem(const Pagmo *algorithm, Sample *evaluationInputHistory, Sample *evaluationOutputHistory)
+  PagmoProblem(const Pagmo *algorithm,
+               Sample *evaluationInputHistory,
+               Sample *evaluationOutputHistory)
     : algorithm_(algorithm)
     , evaluationInputHistory_(evaluationInputHistory)
     , evaluationOutputHistory_(evaluationOutputHistory)
@@ -109,8 +112,8 @@ struct PagmoProblem
   pagmo::vector_double fitness(const pagmo::vector_double & inv) const
   {
     const Point inP(renumber(Point(inv.begin(), inv.end())));
-    evaluationInputHistory_->add(inP);
     Point outP(algorithm_->getProblem().getObjective()(inP));
+    evaluationInputHistory_->add(inP);
     evaluationOutputHistory_->add(outP);
     for (UnsignedInteger i = 0; i < outP.getDimension(); ++ i)
       if (!algorithm_->getProblem().isMinimization(i))
@@ -129,7 +132,7 @@ struct PagmoProblem
     if (algorithm_->progressCallback_.first)
     {
       const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
-      algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
+      algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * (algorithm_->getMaximumIterationNumber() + 1)), algorithm_->progressCallback_.second);
     }
     if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
       throw InterruptionException(HERE) << "User stopped optimization";
@@ -176,6 +179,7 @@ struct PagmoProblem
     const UnsignedInteger blockSize = algorithm_->getBlockSize();
     const UnsignedInteger size = xs.size() / inputDimension;
     const UnsignedInteger blockNumber = static_cast<UnsignedInteger>(ceil(1.0 * size / blockSize));
+
     UnsignedInteger totalDimension = outputDimension;
     if (problem.hasEqualityConstraint())
       totalDimension += problem.getEqualityConstraint().getOutputDimension();
@@ -192,13 +196,14 @@ struct PagmoProblem
         const Point xsi(xs.begin() + offset + i * inputDimension, xs.begin() + offset + (i + 1) * inputDimension);
         inSb[i] = renumber(xsi);
       }
-      evaluationInputHistory_->add(inSb);
       Sample outSb(problem.getObjective()(inSb));
+      evaluationInputHistory_->add(inSb);
       evaluationOutputHistory_->add(outSb);
       for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
         for (UnsignedInteger j = 0; j < outputDimension; ++ j)
           if (!problem.isMinimization(j))
             outSb(i, j) *= -1.0;
+
       if (problem.hasEqualityConstraint())
         outSb.stack(problem.getEqualityConstraint()(inSb));
       if (problem.hasInequalityConstraint())
@@ -215,7 +220,7 @@ struct PagmoProblem
       if (algorithm_->progressCallback_.first)
       {
         const UnsignedInteger callsNumber = evaluationInputHistory_->getSize();
-        algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * algorithm_->getMaximumIterationNumber()), algorithm_->progressCallback_.second);
+        algorithm_->progressCallback_.first((100.0 * callsNumber) / (algorithm_->getStartingSample().getSize() * (algorithm_->getMaximumIterationNumber() + 1)), algorithm_->progressCallback_.second);
       }
       if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
         throw InterruptionException(HERE) << "User stopped optimization";
@@ -293,7 +298,7 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
   const Description multiObjectiveAgorithms = {"nsga2", "moead",
-#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+#if PAGMO_VERSION_NR >= 201900
                                                "moead_gen",
 #endif
                                                "mhaco", "nspso"
@@ -314,13 +319,15 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
 
 void Pagmo::run()
 {
-  if (!startingSample_.getSize())
+  Sample startingSample(getStartingSample());
+  UnsignedInteger size = startingSample.getSize();
+  if (!size)
     throw InvalidArgumentException(HERE) << "Starting sample is empty";
-  if (startingSample_.getDimension() != getProblem().getDimension())
+  if (startingSample.getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Starting sample dimension does not match problem dimension";
-  for (UnsignedInteger i = 0; i < startingSample_.getSize(); ++ i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Point inP(startingSample_[i]);
+    const Point inP(startingSample[i]);
     if (!getProblem().getBounds().contains(inP))
       LOGWARN(OSS() << "Starting point " << i << " lies outside bounds");
     if (!getProblem().isContinuous())
@@ -345,61 +352,16 @@ void Pagmo::run()
   pagmo::problem prob(pproblem);
   const pagmo::vector_double ctol(prob.get_nc(), getMaximumConstraintError());
   prob.set_c_tol(ctol);
-  const Description constrainedAgorithms = {"gaco", "ihs"};
-  Bool emulatedConstraints = false;
-  if ((getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()) && !constrainedAgorithms.contains(getAlgorithmName()))
+
+  // most algorithms do not support constraints but they can be emulated (by penalization for example)
+  const Bool emulatedConstraints = (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
+                                    && !Description({"gaco", "ihs"}).contains(getAlgorithmName());
+  if (emulatedConstraints)
   {
-    emulatedConstraints = true;
     const String unconstrainMethod = ResourceMap::GetAsString("Pagmo-UnconstrainMethod");
     prob = pagmo::unconstrain(prob, unconstrainMethod);
   }
-  pagmo::population pop(prob, 0, 0);
 
-  // nsga2 needs the population size to be a multiple of 4
-  UnsignedInteger populationSize = startingSample_.getSize();
-  if ((algoName_ == "nsga2") && (populationSize % 4))
-  {
-    LOGINFO(OSS() << "Pagmo: must drop the last " << (populationSize % 4) << " points of the initial population for NSGA2 as the size=" << populationSize << " is not a multiple of 4");
-    populationSize = 4 * (populationSize / 4);
-  }
-  // with mhaco starting population must satisfy constraints
-  if ((algoName_ == "mhaco") && (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()))
-  {
-    Sample startingSampleConstrained(0, getProblem().getDimension());
-    Sample ineqOutput;
-    if (getProblem().hasInequalityConstraint())
-      ineqOutput = getProblem().getInequalityConstraint()(startingSample_);
-    Sample eqOutput;
-    if (getProblem().hasEqualityConstraint())
-      eqOutput = getProblem().getEqualityConstraint()(startingSample_);
-    for (UnsignedInteger i = 0; i < populationSize; ++ i)
-    {
-      Bool ok = true;
-      if (getProblem().hasInequalityConstraint())
-        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
-          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
-      if (getProblem().hasEqualityConstraint())
-        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
-          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
-      if (ok)
-        startingSampleConstrained.add(startingSample_[i]);
-    }
-    if (!startingSampleConstrained.getSize())
-      throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
-    if (startingSampleConstrained.getSize() < populationSize)
-    {
-      const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(populationSize, startingSampleConstrained.getSize()));
-      const Indices indices(selection.begin(), selection.end());
-      startingSample_ = startingSampleConstrained.select(indices);
-      LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
-    }
-  }
-  for (UnsignedInteger i = 0; i < populationSize; ++ i)
-  {
-    const Point inP(startingSample_[i]);
-    pagmo::vector_double x(pproblem.renumber(inP).toStdVector());
-    pop.push_back(x);
-  }
   pagmo::algorithm algo;
   if (algoName_ == "gaco")
   {
@@ -414,10 +376,15 @@ void Pagmo::run()
     const Scalar focus = ResourceMap::GetAsScalar("Pagmo-gaco-focus");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
-      ker = std::min(ker, populationSize);
+      ker = std::min(ker, size);
     pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "de")
@@ -483,8 +450,13 @@ void Pagmo::run()
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     pagmo::pso_gen algorithm_impl(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "sea")
@@ -532,7 +504,16 @@ void Pagmo::run()
     const Scalar cmu = ResourceMap::GetAsScalar("Pagmo-cmaes-cmu");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-cmaes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::cmaes(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    const Bool force_bounds = getProblem().hasBounds();
+    pagmo::cmaes algorithm_impl(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
+    if (!emulatedConstraints)
+      algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
+    algo = algorithm_impl;
   }
   else if (algoName_ == "xnes")
   {
@@ -542,19 +523,33 @@ void Pagmo::run()
     const Scalar eta_b = ResourceMap::GetAsScalar("Pagmo-xnes-eta_b");
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-xnes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
+    const Bool force_bounds = getProblem().hasBounds();
+    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
   }
 #endif
   else if (algoName_ == "nsga2")
   {
+    const UnsignedInteger reminder = size % 4;
+    if (reminder)
+    {
+      LOGINFO(OSS() << "Pagmo: must drop the last " << reminder << " points of the initial population for NSGA2 as the size (" << size << ") is not a multiple of 4");
+      size -= reminder;
+      startingSample.split(size);
+    }
+
     // nsga2(unsigned gen = 1u, double cr = 0.95, double eta_c = 10., double m = 0.01, double eta_m = 50., unsigned seed = pagmo::random_device::next())
     const Scalar cr = ResourceMap::GetAsScalar("Pagmo-nsga2-cr");
     const Scalar eta_c = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_c");
     const Scalar m = ResourceMap::GetAsScalar("Pagmo-nsga2-m");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_m");
     pagmo::nsga2 algorithm_impl(getMaximumIterationNumber(), cr, eta_c, m, eta_m);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "moead")
@@ -571,7 +566,7 @@ void Pagmo::run()
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
     algo = pagmo::moead(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
   }
-#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+#if PAGMO_VERSION_NR >= 201900
   else if (algoName_ == "moead_gen")
   {
     // moead_gen(unsigned gen = 1u, std::string weight_generation = "grid", std::string decomposition = "tchebycheff", population::size_type neighbours = 20u, double CR = 1.0, double F = 0.5, double eta_m = 20., double realb = 0.9, unsigned limit = 2u, bool preserve_diversity = true, unsigned seed = pagmo::random_device::next())
@@ -584,11 +579,52 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    algo = pagmo::moead_gen(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    pagmo::moead_gen algorithm_impl(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
+    if (!emulatedConstraints)
+      algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
+    algo = algorithm_impl;
   }
 #endif
   else if (algoName_ == "mhaco")
   {
+    // starting population must satisfy constraints
+    if (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
+    {
+      Sample startingSampleConstrained(0, getProblem().getDimension());
+      Sample ineqOutput;
+      if (getProblem().hasInequalityConstraint())
+        ineqOutput = getProblem().getInequalityConstraint()(startingSample);
+      Sample eqOutput;
+      if (getProblem().hasEqualityConstraint())
+        eqOutput = getProblem().getEqualityConstraint()(startingSample);
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+        Bool ok = true;
+        if (getProblem().hasInequalityConstraint())
+          for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+            ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+        if (getProblem().hasEqualityConstraint())
+          for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+            ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+        if (ok)
+          startingSampleConstrained.add(startingSample[i]);
+      }
+      if (!startingSampleConstrained.getSize())
+        throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
+      if (startingSampleConstrained.getSize() < size)
+      {
+        const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(size, startingSampleConstrained.getSize()));
+        const Indices indices(selection.begin(), selection.end());
+        startingSample = startingSampleConstrained.select(indices);
+        LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
+      }
+    }
+
     // maco(unsigned gen = 100u, unsigned ker = 63u, double q = 1.0, unsigned threshold = 1u, unsigned n_gen_mark = 7u, unsigned evalstop = 100000u, double focus = 0., bool memory = false, unsigned seed = pagmo::random_device::next())
     UnsignedInteger ker = ResourceMap::GetAsUnsignedInteger("Pagmo-mhaco-ker");
     const Scalar q = ResourceMap::GetAsScalar("Pagmo-mhaco-q");
@@ -597,10 +633,15 @@ void Pagmo::run()
     const Scalar focus = ResourceMap::GetAsScalar("Pagmo-mhaco-focus");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
-      ker = std::min(ker, populationSize);
+      ker = std::min(ker, size);
     pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else if (algoName_ == "nspso")
@@ -615,8 +656,13 @@ void Pagmo::run()
     const String diversity_mechanism = ResourceMap::GetAsString("Pagmo-nspso-diversity_mechanism");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     pagmo::nspso algorithm_impl(getMaximumIterationNumber(), omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
+#if PAGMO_VERSION_NR >= 201901
+    // requires https://github.com/esa/pagmo2/pull/575
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#else
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
     algo = algorithm_impl;
   }
   else
@@ -624,7 +670,44 @@ void Pagmo::run()
   algo.set_verbosity(Log::HasDebug());
   algo.set_seed(seed_);
 
+  // evaluate initial population
+  pagmo::population pop(prob);
+  // requires https://github.com/esa/pagmo2/pull/575
+#if PAGMO_VERSION_NR >= 201901
+  const OptimizationProblem problem(getProblem());
+  const UnsignedInteger inputDimension = problem.getObjective().getInputDimension();
+  const UnsignedInteger blockSize = getBlockSize();
+  const UnsignedInteger blockNumber = static_cast<UnsignedInteger>(ceil(1.0 * size / blockSize));
+  for (UnsignedInteger outerSampling = 0; outerSampling < blockNumber; ++ outerSampling)
+  {
+    const UnsignedInteger effectiveBlockSize = ((outerSampling == (blockNumber - 1)) && (size % blockSize)) ? (size % blockSize) : blockSize;
+    Sample inSb(effectiveBlockSize, inputDimension);
+    for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
+      inSb[i] = startingSample[i + outerSampling * blockSize];
+    const pagmo::vector_double inV(inSb.getImplementation()->getData().toStdVector());
+    const pagmo::vector_double outV(prob.batch_fitness(inV));
+    const UnsignedInteger nf = outV.size() / effectiveBlockSize;
+    for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
+    {
+      const pagmo::vector_double inVi(inV.begin() + i * inputDimension, inV.begin() + (i + 1) * inputDimension);
+      const pagmo::vector_double outVi(outV.begin() + i * nf, outV.begin() + (i + 1) * nf);
+      pop.push_back(inVi, outVi);
+    }
+  }
+#else
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Point inP(startingSample[i]);
+    pagmo::vector_double x(pproblem.renumber(inP).toStdVector());
+    pagmo::vector_double y(prob.fitness(x));
+    pop.push_back(x, y);
+  }
+#endif
+
+  // evolve initial population over several generations
   pop = algo.evolve(pop);
+
+  // retrieve results
   result_ = OptimizationResult(getProblem());
   result_.setCallsNumber(evaluationInputHistory.getSize());
   result_.setIterationNumber(getMaximumIterationNumber());
@@ -757,7 +840,6 @@ Point Pagmo::getStartingPoint() const
 /* Starting sample accessor */
 void Pagmo::setStartingSample(const Sample & startingSample)
 {
-//   checkStartingSampleConsistentWithOptimizationProblem(startingSample, getProblem());
   startingSample_ = startingSample;
 }
 
@@ -775,7 +857,7 @@ Description Pagmo::GetAlgorithmNames()
                                  "cmaes", "xnes",
 #endif
                                  "nsga2", "moead",
-#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+#if PAGMO_VERSION_NR >= 201900
                                  "moead_gen",
 #endif
                                  "mhaco", "nspso"

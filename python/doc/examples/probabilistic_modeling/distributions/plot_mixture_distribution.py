@@ -20,7 +20,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# create a collection of distribution and the associated weights
+# Create a collection of distribution and the associated weights
 distributions = [
     ot.Triangular(1.0, 2.0, 4.0),
     ot.Normal(-1.0, 1.0),
@@ -29,27 +29,27 @@ distributions = [
 weights = [0.4, 1.0, 0.2]
 
 # %%
-# create the mixture
+# Create the mixture
 distribution = ot.Mixture(distributions, weights)
 print(distribution)
 
 # %%
-# draw PDF
+# Draw PDF
 graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# define a list of copulas and the associated weights
+# Define a list of copulas and the associated weights
 copulas = [ot.GumbelCopula(4.5), ot.ClaytonCopula(2.3)]
 weights = [0.2, 0.8]
 
 # %%
-# create a mixture of copulas
+# Create a mixture of copulas
 distribution = ot.Mixture(copulas, weights)
 print(distribution)
 
 # %%
-# draw PDF
+# Draw PDF
 graph = distribution.drawPDF()
 view = viewer.View(graph)
 plt.show()

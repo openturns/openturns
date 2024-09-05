@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
@@ -229,3 +230,20 @@ ot.RandomGenerator.SetSeed(8457)
 sample = distribution.getSample(30)
 h = factory.computePluginBandwidth(sample)[0]
 print("with reduced cutoff. h=%.6g" % (h))
+
+# test of logTransform
+for i, distribution in enumerate([ot.LogNormal(0.0, 2.5),
+                                  ot.Beta(20000.5, 2.5, 0.0, 1.0),
+                                  ot.Exponential(),
+                                  ot.WeibullMax(1.0, 0.9, 0.0),
+                                  ot.Mixture([ot.LogNormal(-1.0, 1.0, -1.0), ot.LogNormal(1.0, 1.0, 1.0)], [0.2, 0.8])]):
+    sample = distribution.getSample(10000)
+    kernel = ot.KernelSmoothing()
+    kernel.setUseLogTransform(True)
+    fitted = kernel.build(sample)
+    quantile = distribution.computeQuantile(0.25)
+    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
+    quantile = distribution.computeQuantile(0.5)
+    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
+    quantile = distribution.computeQuantile(0.75)
+    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)

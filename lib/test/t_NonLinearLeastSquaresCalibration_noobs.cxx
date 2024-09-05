@@ -36,10 +36,7 @@ int main(int, char *[])
     UnsignedInteger m = 100;
     Sample x(m, 0);
 
-    Description inVars(0);
-    inVars.add("a");
-    inVars.add("b");
-    inVars.add("c");
+    const Description inVars = {"a", "b", "c"};
     // Derived from y = a + b * x + c * x^2 at x=[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0]
     Description formulas(1, "a +  -1.0  * b +  1.0  * c");
     formulas.add("a +  -0.6  * b +  0.36  * c");
@@ -50,19 +47,14 @@ int main(int, char *[])
     SymbolicFunction g(inVars, formulas);
     UnsignedInteger inputDimension = g.getInputDimension();
     UnsignedInteger outputDimension = g.getOutputDimension();
-    Point trueParameter(0);
-    trueParameter.add(2.8);
-    trueParameter.add(1.2);
-    trueParameter.add(0.5);
+    const Point trueParameter = {2.8, 1.2, 0.5};
     Indices params(inputDimension);
     params.fill();
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(outputDimension), Point(outputDimension, 0.05), IdentityMatrix(outputDimension)).getSample(y.getSize());
     Point candidate(inputDimension, 1.0);
-    Indices bootstrapSizes(0);
-    bootstrapSizes.add(0);
-    bootstrapSizes.add(100);
+    const Indices bootstrapSizes = {0, 100};
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
     {
       fullprint << "Bootstrap size =" << bootstrapSizes[n] << std::endl;
@@ -76,7 +68,8 @@ int main(int, char *[])
       assert_almost_equal(parameterMAP, trueParameter, 1e-2);
       // Test with TNC
       fullprint << "2. TNC optim" << std::endl;
-      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
+      const UnsignedInteger multiStartSize = 10;
+      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), multiStartSize).generate()));
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;

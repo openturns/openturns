@@ -20,4 +20,45 @@ kurtosis= class=Point name=Unnamed dimension=1 values=[2.91746]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.15]
 parameters= [class=PointWithDescription name=X0 dimension=2 description=[n,p] values=[15,0.7]]
 Standard representative= Binomial(n = 15, p = 0.7)
-95.00% bilateral confidence interval  = [7, 14]
+95.00% bilateral confidence interval  = [7, 13]
+n=59 k=1 p(k-1)=0.0485 p(k)=0.1991 ok=True
+n=60 k=1 p(k-1)=0.0461 p(k)=0.1916 ok=True
+n=61 k=1 p(k-1)=0.0438 p(k)=0.1843 ok=True
+n=62 k=1 p(k-1)=0.0416 p(k)=0.1773 ok=True
+n=63 k=1 p(k-1)=0.0395 p(k)=0.1705 ok=True
+n=64 k=1 p(k-1)=0.0375 p(k)=0.1639 ok=True
+n=65 k=1 p(k-1)=0.0356 p(k)=0.1576 ok=True
+n=66 k=1 p(k-1)=0.0339 p(k)=0.1515 ok=True
+n=67 k=1 p(k-1)=0.0322 p(k)=0.1456 ok=True
+n=68 k=1 p(k-1)=0.0306 p(k)=0.1399 ok=True
+n=69 k=1 p(k-1)=0.0290 p(k)=0.1345 ok=True
+n=70 k=1 p(k-1)=0.0276 p(k)=0.1292 ok=True
+n=71 k=1 p(k-1)=0.0262 p(k)=0.1241 ok=True
+n=72 k=1 p(k-1)=0.0249 p(k)=0.1192 ok=True
+n=73 k=1 p(k-1)=0.0236 p(k)=0.1145 ok=True
+n=74 k=1 p(k-1)=0.0225 p(k)=0.1100 ok=True
+n=75 k=1 p(k-1)=0.0213 p(k)=0.1056 ok=True
+n=76 k=1 p(k-1)=0.0203 p(k)=0.1014 ok=True
+n=77 k=1 p(k-1)=0.0193 p(k)=0.0973 ok=True
+n=78 k=1 p(k-1)=0.0183 p(k)=0.0934 ok=True
+n=79 k=1 p(k-1)=0.0174 p(k)=0.0897 ok=True
+n=80 k=1 p(k-1)=0.0165 p(k)=0.0861 ok=True
+n=81 k=1 p(k-1)=0.0157 p(k)=0.0826 ok=True
+n=82 k=1 p(k-1)=0.0149 p(k)=0.0792 ok=True
+n=83 k=1 p(k-1)=0.0142 p(k)=0.0760 ok=True
+n=84 k=1 p(k-1)=0.0135 p(k)=0.0729 ok=True
+n=85 k=1 p(k-1)=0.0128 p(k)=0.0699 ok=True
+n=86 k=1 p(k-1)=0.0121 p(k)=0.0671 ok=True
+n=87 k=1 p(k-1)=0.0115 p(k)=0.0643 ok=True
+n=88 k=1 p(k-1)=0.0110 p(k)=0.0617 ok=True
+n=89 k=1 p(k-1)=0.0104 p(k)=0.0592 ok=True
+n=90 k=1 p(k-1)=0.0099 p(k)=0.0567 ok=True
+n=91 k=1 p(k-1)=0.0094 p(k)=0.0544 ok=True
+n=92 k=1 p(k-1)=0.0089 p(k)=0.0521 ok=True
+n=93 k=2 p(k-1)=0.0500 p(k)=0.1504 ok=True
+n=94 k=2 p(k-1)=0.0479 p(k)=0.1454 ok=True
+n=95 k=2 p(k-1)=0.0459 p(k)=0.1405 ok=True
+n=96 k=2 p(k-1)=0.0440 p(k)=0.1358 ok=True
+n=97 k=2 p(k-1)=0.0422 p(k)=0.1312 ok=True
+n=98 k=2 p(k-1)=0.0404 p(k)=0.1268 ok=True
+n=99 k=2 p(k-1)=0.0387 p(k)=0.1225 ok=True

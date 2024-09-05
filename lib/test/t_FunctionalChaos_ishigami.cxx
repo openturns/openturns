@@ -117,6 +117,27 @@ int main(int, char *[])
           Bool involvesModelSelection = projectionStrategy.involvesModelSelection() || adaptiveStrategy.getImplementation()->involvesModelSelection();
           assert_equal(involvesModelSelection, involvesModelSelectionPCE);
 
+          if (result.isLeastSquares() && not result.involvesModelSelection())
+          {
+            LeaveOneOutSplitter splitterLOO(samplingSize);
+            FunctionalChaosValidation validationLOO(result, splitterLOO);
+            const Point r2ScoreLOO(validationLOO.computeR2Score());
+            fullprint << "Analytical cross-validation LOO R2 score = " << r2ScoreLOO << std::endl;
+          }
+          else
+          {
+            fullprint << "Cannot perform analytical cross-validation: PCE is from integration or model selection involved. " << std::endl;
+            fullprint << "Use classical cross-validation instead. " << std::endl;
+            const UnsignedInteger testSampleSize = 500;
+            const Sample inputSampleTest(distribution.getSample(testSampleSize));
+            const Sample outputSampleTest(model(inputSampleTest));
+            const Function metamodel(result.getMetaModel());
+            const Sample metamodelPredictions(metamodel(inputSampleTest));
+            MetaModelValidation validation(outputSampleTest, metamodelPredictions);
+            const Point r2Score(validation.computeR2Score());
+            fullprint << "Cross-validation R2 score = " << r2Score << std::endl;
+          }
+          
           // Post-process the results
           FunctionalChaosRandomVector vector(result);
           Scalar mean = vector.getMean()[0];

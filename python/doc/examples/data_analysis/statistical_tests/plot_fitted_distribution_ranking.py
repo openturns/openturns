@@ -92,7 +92,7 @@ view = otv.View(graph)
 distributions = [ot.Poisson(2.0), ot.Geometric(0.1)]
 
 # %%
-# Rank the discrete models wrt the ChiSquared p-values:
+# Rank the discrete models with respect to the ChiSquared p-values:
 ot.ResourceMap.SetAsBool("FittingTest-ChiSquaredCheckSample", False)
 estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(
     sample, distributions
@@ -100,7 +100,7 @@ estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(
 test_result
 
 # %%
-# Rank the discrete models wrt the BIC criteria:
+# Rank the discrete models with respect to the BIC criteria:
 ot.FittingTest.BestModelBIC(sample, distributions)
 otv.View.ShowAll()
 

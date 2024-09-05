@@ -25,7 +25,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# generate some data
+# Generate some data
 
 # Create the time grid
 # In the context of the spectral estimate or Fourier transform use,
