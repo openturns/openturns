@@ -28,6 +28,12 @@
 #endif
 #if defined(OPENTURNS_HAVE_HDF5) && defined(OPENTURNS_HAVE_LIBXML2)
 %include XMLH5StorageManager.i
+#else
+// needed for sphinx
+%pythoncode %{
+class XMLH5StorageManager:
+    pass
+%}
 #endif
 %include TTY.i
 %include Log.i
