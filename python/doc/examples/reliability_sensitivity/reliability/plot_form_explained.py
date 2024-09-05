@@ -254,7 +254,7 @@ print("zi2D = ", zi2D)
 g_tilde = ot.ComposedFunction(g, inverse_transformation)
 
 # %%
-# The falure domain in the standard space is defined by: 
+# The falure domain in the standard space is defined by :
 #
 # .. math::
 #
