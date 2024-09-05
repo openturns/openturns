@@ -406,25 +406,31 @@ graph_standard_space.setLegendPosition('topright')
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
-# As the failure domain in the standard space does not contain the origin of the space,
+# As the failure domain in the standard space does not contain the origin of the space :math:`\vect{0}`,
 # the FORM probability is defined by:
 #
 # .. math::
 #
-#    P_{FORM} \approx E(-\beta_{HL}),
+#    P_{FORM} \approx E(-\beta_{HL}) & \mbox{if }  \vect{0} \in \mathcal{\tilde{D}} \\
+#    P_{FORM} \approx E(-\beta_{HL}) & \mbox{if }  \vect{0} \notin \mathcal{\tilde{D}}
 #
 # where :math:`E(.)` is the marginal cumulative distribution function along any direction of
 # the spherical distribution in the standard space. In this example, this is the normal distribution.
 # So we have:
 #
-pf = ot.Normal().computeCDF(-beta_HL)
-print("FORM : Pf = ", pf)
+isOriginFail = result.getIsStandardPointOriginInFailureSpace()
+normal = ot.Normal()
+if isOriginFail:
+    pf_FORM = normal.computeCDF(beta_HL)
+else:
+    pf_FORM = normal.computeCDF(-beta_HL)
+print("FORM : Pf_FORM = ", pf_FORM )
 
 # %%
 # This failure probability is implemented but the FORM algorithm and can be obtained
 # with the `getEventProbability` method. We check we have the same result.
 pf = result.getEventProbability()
-print("Probability of failure (FORM) Pf = ", pf)
+print("Probability of failure (FORM) Pf_FORM  = ", pf)
 
 # %%
 # The SORM approximation
@@ -434,7 +440,10 @@ print("Probability of failure (FORM) Pf = ", pf)
 #
 # .. math::
 #
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}}
+#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}} &
+#                      \mbox{if }  \vect{0} \in \mathcal{\tilde{D}} \\
+#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\beta_{HL} \kappa_i}} &
+#                      \mbox{if }  \vect{0} \notin \mathcal{\tilde{D}}
 #
 # and approximates the frontier by the osculating paraboloid at the design point.
 
@@ -523,8 +532,11 @@ print("Curvature (library) = ", result_SORM.getSortedCurvatures()[1])
 # The library implements the Breitung, Hohenbichler and Tvedt estimates.
 # We detail here the calculus of the Breitung approximation.
 coeff = (1.0 + beta_HL * curvature) ** (-0.5)
-pf = (1.0 - ot.Normal().computeCDF(beta_HL)) * coeff
-print("SORM : Pf = ", pf)
+if isOriginFail:
+    pf_SORM = (normal.computeCDF(beta_HL)) * coeff
+else:
+    pf_SORM = (normal.computeCDF(-beta_HL)) * coeff
+print("SORM : Pf_SORM = ", pf_SORM)
 
 # %%
 # We can compare with the different estimators:
