@@ -195,10 +195,10 @@ Point Laplace::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(2, 0.0);
-  const Scalar factor = std::abs(point[0] - mu_) * lambda_;
-  const Scalar expFactor = std::exp(-factor);
+  const Scalar tau = point[0] - mu_;
+  const Scalar expFactor = std::exp(-std::abs(tau) * lambda_);
   cdfGradient[0] = -0.5 * lambda_ * expFactor;
-  cdfGradient[1] = 0.5 * factor / lambda_ * expFactor;
+  cdfGradient[1] = 0.5 * tau * expFactor;
   return cdfGradient;
 }
 
