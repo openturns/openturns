@@ -50,6 +50,8 @@ OT_Function_getOutputDimension_doc
 OT_Function_getParameterDimension_doc
 %feature("docstring") OT::Function::draw
 OT_Function_draw_doc
+%feature("docstring") OT::Function::drawCrossCuts
+OT_Function_drawCrossCuts_doc
 %feature("docstring") OT::Function::getParameter
 OT_Function_getParameter_doc
 %feature("docstring") OT::Function::setParameter

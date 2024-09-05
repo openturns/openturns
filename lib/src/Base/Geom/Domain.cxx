@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,6 +70,13 @@ Scalar Domain::computeDistance(const Point & point) const
 Sample Domain::computeDistance(const Sample & sample) const
 {
   return getImplementation()->computeDistance(sample);
+}
+
+/** Draw the sample as a cloud of points in or out of the domain */
+GridLayout Domain::draw(const Sample& sample,
+  const String& inColor,
+  const String& outColor) const {
+  return getImplementation()->draw(sample, inColor, outColor);
 }
 
 String Domain::__repr__() const

@@ -103,7 +103,7 @@ GridLayout DomainImplementation::draw(const Sample& sample, const String& inColo
       outsideSample.add(sample[i]);
   }
   GridLayout grid(sample.getDimension() - 1, sample.getDimension() - 1);
-  grid.setTitle("Cross cuts of domain " + getName() + (sample.getName().empty() ? "" : (" tested with sample " + sample.getName())));
+  grid.setTitle("Projections of domain " + getName() + (sample.getName().empty() ? "" : (" tested with sample " + sample.getName())));
   for(UnsignedInteger iX = 0; iX < sample.getDimension(); iX++)
   {
     for(UnsignedInteger iY = iX + 1; iY < sample.getDimension(); iY++)
