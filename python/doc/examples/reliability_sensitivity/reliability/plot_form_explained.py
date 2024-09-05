@@ -11,7 +11,7 @@ An illustrated example of a FORM probability estimate
 # simple example. We focus on the different steps and compare them with an analytic
 # computation whenever possible.
 #
-# See :ref:`FORM <_form_approximation>` and :ref:`SORM <_sorm_approximation>` and to get more theoretical details.
+# See :ref:`FORM <form_approximation>` and :ref:`SORM <sorm_approximation>` and to get more theoretical details.
 import openturns as ot
 import openturns.viewer as otv
 import numpy as np
@@ -20,7 +20,7 @@ import numpy as np
 # Context
 # -------
 #
-# We consider a bivariate random vector :math:`X = (X_1, X_2)` with the following independent components that follow:
+# We consider a bivariate random vector :math:`\inputRV = (X_1, X_2)` with the following independent components that follow:
 #
 # - the exponential distribution with parameter :math:`\lambda=1`, :math:`X_1 \sim \mathcal{E}(1.0)` ;
 # - the standard unit gaussian :math:`X_2 \sim \mathcal{N}(0,1)`.
@@ -50,9 +50,9 @@ view = otv.View(graph_PDF, square_axes=True)
 #
 # .. math::
 #
-#    g : (x_1, x_2) \mapsto x_1 x_2
+#    \model : (x_1, x_2) \mapsto x_1 x_2
 #
-# We start by drawing the isolines of the model :math:`g`.
+# We start by drawing the isolines of the model :math:`\model`.
 g = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
 graph_model = g.draw([0.0, -10.0], [20.0, 10.0])
 graph_model.setXTitle(r"$x_1$")
@@ -65,25 +65,27 @@ view = otv.View(graph_model, square_axes=True)
 # We consider  the univariate output variable :
 #
 # .. math::
+#    :label: modelDef
 #
-#   Y = f(\vect{X})
+#   Y = \model(\inputRV)
 #
 # We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event.
 # This probability is simply expressed as the following integral for a continuous random vector
-# :math:`\vect{X}`:
+# :math:`\inputRV`:
 #
 # .. math::
+#    :label: PfDef
 #
-#    P_f = \Prob{Y \geq s} = \int_{\mathcal{D}} \mathbf{1}_{\mathcal{D}}(x) f_{\vect{X}}(x)d\vect{x}
+#    P_f = \Prob{Y \geq s} = \int_{\set{D}} \mathbf{1}_{\set{D}}(x) \pdf d\vect{x}
 #
 # where:
 #
 # .. math::
 #
-#  \mathcal{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  g(x_1, x_2) \geq s \}
+#  \set{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \model(x_1, x_2) \geq s \}
 #
-# is the failure domain and :math:`f_{\vect{X}}` is the probability density function (PDF)
-# of :math:`\vect{X}`.
+# is the failure domain and :math:`\inputMeasure` is the probability density function (PDF)
+# of :math:`\inputRV`.
 
 # %%
 # We first define RandomVector objects and the failure event associated to the output random variable.
@@ -94,21 +96,21 @@ event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 
 
 # %%
-# This event can easily be represented with a 1D curve as it is a branch of an hyperbole: the boundary
-# of the failure domain is the graph of the function defined from :math:`\Rset` into  :math:`\Rset` by:
+# The boundary of the failure domain can easily be represented with a 1D curve as it is a branch of an hyperbole: the boundary is the graph of the function defined from :math:`\Rset` into  :math:`\Rset` by:
 #
 # .. math::
+#    :label: defH
 #
 #    h : x_1 \mapsto x_2 = \frac{s}{x_1}
 #
-# The frontier of the failure domain is also the isoline of the model :math:`g` associated to the
+# The boundary of the failure domain is also the isoline of the model :math:`\model` associated to the
 # level :math:`s` :
 #
 # .. math::
 #
-#    \partial \mathcal{D} =  \{(x_1, x_2)\, |\, g(x_1, x_2) = s \}
+#    \partial \set{D} =  \{(x_1, x_2)\, |\, \model(x_1, x_2) = s \}
 #
-# We can draw it with the `draw` method of the function :math:`g`.
+# We can draw it with the `draw` method of the function :math:`\model`.
 
 # %%
 nb_points = 101
@@ -186,13 +188,15 @@ print("Is Elliptical ? ", dist_X.isElliptical())
 # The Rosenblatt transformation :math:`T` is defined by:
 #
 # .. math::
+#    :label: defT
+#
 #    T : \vect{x} \mapsto \vect{z}
 #
-# such that the random vector :math:`\vect{Z} = T(\vect{X})` follows a bivariate normal distribution
+# such that the random vector :math:`\standardRV = T(\inputRV)` follows a bivariate normal distribution
 # with zero mean and unit variance. It follows that the components :math:`Z_1` and
 # :math:`Z_2` are independent.
 #
-# We detail the Rosenblatt transform in this simple case where the input random vector :math:`\vect{X}`
+# We detail the Rosenblatt transform in this simple case where the input random vector :math:`\inputRV`
 # has independent components. Then, the Rosenblatt transform is defined by:
 #
 # .. math::
@@ -224,6 +228,7 @@ print(xi, "->", ui, "->", zi)
 # first marginal :
 #
 # .. math::
+#    :label: detT1
 #
 #    T_1 = \Phi^{-1} \circ F_1
 #
@@ -248,7 +253,7 @@ print("zi2D = ", zi2D)
 #
 # .. math::
 #
-#     \tilde{g} = g \circ T^{-1}
+#     \widetilde{\model} = \model \circ T^{-1}
 #
 # We can define it using the capacities of the composition of functions implemented in the library.
 g_tilde = ot.ComposedFunction(g, inverse_transformation)
@@ -258,18 +263,18 @@ g_tilde = ot.ComposedFunction(g, inverse_transformation)
 #
 # .. math::
 #
-#  \mathcal{\tilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \tilde{g}(z_1, z_2) \geq s \}
+#  \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \widetilde{\model}(z_1, z_2) \geq s \}
 #
 # and its boundary is defined by :
 #
 # .. math::
 #
-#    \partial \mathcal{\tilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,
-#       \tilde{g}(z_1, z_2) = s \}
+#    \partial \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,
+#       \widetilde{\model}(z_1, z_2) = s \}
 #
 
 # %%
-# We draw the graph of :math:`\tilde{g}` in the standard space.
+# We draw the graph of :math:`\widetilde{g}` in the standard space.
 graph_standard_space = g_tilde.draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
 
 draw_frontier_stand_space = graph_standard_space.getDrawable(0)
@@ -375,16 +380,16 @@ view = otv.View(graph_standard_space, square_axes=True)
 #
 # .. math::
 #
-#    M \rightarrow \langle \nabla \vect{\tilde{g}(\vect{z}^*)}, \vect{Z^*M} \rangle
+#    M \rightarrow \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} 
 #
-# where :math:`\vect{\tilde{g}(\vect{z}^*)}` is the gradient of the function :math:`\tilde{g}`
-# at the design point :math:`Z^*(z^*)`.
+# where :math:`\nabla \vect{\widetilde{\model}(\vect{z}^*)}` is the gradient of the function :math:`\widetilde{\model}`
+# at the design point :math:`Z^*(\vect{z}^*)`.
 # Then, the tangent hyperplane is the isoline associated to the zero level of the previous function:
 #
 # .. math::
 #
-#    \mathcal{P}_{z^*} = \{ (\vect{z} \in \Rset^2 \, | \, \langle \nabla \tilde{g}(Z^*),
-#                            \vect{Z^*M} \rangle = \}
+#    \mathcal{P}_{z^*} = \{ (\vect{z} \in \Rset^2 \, | \,
+#                \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} = 0\}
 #
 # We can use the class LinearFunction.
 center = design_point_standard_space
@@ -411,8 +416,8 @@ view = otv.View(graph_standard_space, square_axes=True)
 #
 # .. math::
 #
-#    P_{FORM} \approx E(-\beta_{HL}) & \mbox{if }  \vect{0} \in \mathcal{\tilde{D}} \\
-#    P_{FORM} \approx E(-\beta_{HL}) & \mbox{if }  \vect{0} \notin \mathcal{\tilde{D}}
+#    P_{FORM} \approx E(-\beta_{HL}) & \quad  \mbox{if }  \vect{0} \notin \set{\widetilde{D}} \\
+#    P_{FORM} \approx E(+\beta_{HL}) & \quad  \mbox{if }  \vect{0} \in \set{\widetilde{D}}
 #
 # where :math:`E(.)` is the marginal cumulative distribution function along any direction of
 # the spherical distribution in the standard space. In this example, this is the normal distribution.
@@ -449,23 +454,19 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 # .. math::
 #
 #    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
-#                      \mbox{if }  \vect{0} \in \mathcal{\tilde{D}} \\
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
-#                      \mbox{if }  \vect{0} \notin \mathcal{\tilde{D}}
+#                      \mbox{if }  \vect{0} \notin \set{\widetilde{D}} \\
+#    P_{SORM, Breitung} \approx E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
+#                      \mbox{if }  \vect{0} \in \set{\widetilde{D}}
 #
 # and approximates the frontier by the osculating paraboloid at the design point.
 #
 # Note that the term :math:`\kappa_i^0` does not depend on :math:`\beta_{HL}`.
 
 # %%
-# In this example, we can easily implement the frontier of the event in the
-# physical space:
+# In this example, we can easily implement the boundary of the failure domain in the
+# physical space, using the function :math:`h` defined in :eq:`defH`.
 #
-# .. math::
-#
-#    h : x_1 \mapsto \dfrac{s}{x_1}
-#
-# In the standard space, the frontier is defined by the composed function
+# In the standard space, the boundary is defined by the composed function
 # :math:`z_1 \mapsto h \circ T_1^{-1}(z_1)`.
 failure_boundary_physical_space = ot.SymbolicFunction(["x"], ["10.0 / x"])
 failure_boundary_standard_space = ot.ComposedFunction(
@@ -488,7 +489,7 @@ print("value of the hessian of the failure boundary at this abscissa= ", d2z1_st
 #
 # .. math::
 #
-#    z_1 \mapsto  = h \circ T_1^{-1} (z_1^*) + \frac{d}{du_1} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*) +
+#    z_1 \mapsto   h \circ T_1^{-1} (z_1^*) + \frac{d}{du_1} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*) +
 #     \frac{1}{2} \frac{d^2}{dz_1^2} (h \circ T_1^{-1})(z_1^*) (z_1-z_1^*)^2
 #
 z = np.linspace(1.1, 4.0, 100)

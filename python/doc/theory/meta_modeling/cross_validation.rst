@@ -33,9 +33,9 @@ in terms of the weighted :math:`L^2`-norm:
 .. math::
    \operatorname{MSE} \left(\metaModel\right)
    & = \left\| \model(\inputReal) - \metaModel(\inputReal) \right\|_{L^2(\physicalInputSpace)}^2 \\
-   & = \int_{\physicalInputSpace} \left( \model(\inputReal) - \metaModel(\inputReal) \right)^2  \inputProbabilityDensityFunction(\inputReal) d\inputReal
+   & = \int_{\physicalInputSpace} \left( \model(\inputReal) - \metaModel(\inputReal) \right)^2  \pdf d\inputReal
 
-where :math:`\inputProbabilityDensityFunction` is the probability density function
+where :math:`\inputMeasure` is the probability density function
 of the random vector :math:`\inputRV`.
 In this section, we present the cross-validation of linear least squares
 models, as presented in [wang2012]_ page 485.
