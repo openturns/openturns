@@ -311,7 +311,7 @@ GridLayout VisualTest::DrawPairs(const Sample & inputSample, const Sample & outp
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
-      Cloud cloud(inputSample.getMarginal({j}), outputSample.getMarginal({i}));
+      Cloud cloud(inputSample.getMarginal(j), outputSample.getMarginal(i));
      
       Graph graph("", i == outputDimension - 1 ? inputDescription[j] : "", j == 0 ? outputDescription[i] : "", true, "topright");
       graph.add(cloud);
