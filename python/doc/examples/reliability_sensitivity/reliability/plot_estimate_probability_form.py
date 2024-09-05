@@ -10,16 +10,10 @@ Use the FORM - SORM algorithms
 # - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohenbichler and Breitung,
 # - the Hasofer reliability index and the generalized ones evaluated from the Breitung, Tvedt and Hohenbichler approximations,
 # - the importance factors defined as the normalized director factors of the design point in the :math:`U`-space
-# - the sensitivity factors of the Hasofer reliability index and the FORM probability.
+# - the sensitivity factors of the Hasofer reliability index and the FORM probability,
 # - the coordinates of the mean point in the standard event space.
 #
-# The coordinates of the mean point in the standard event space is:
-#
-# .. math::
-#    \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1
-#
-#
-# where :math:`E_1` is the spheric univariate distribution of the standard space and :math:`\beta` is the reliability index.
+# See :ref:`FORM <_form_approximation>` and :ref:`SORM <_sorm_approximation>` and to get more theoretical details.
 
 # %%
 # Model definition

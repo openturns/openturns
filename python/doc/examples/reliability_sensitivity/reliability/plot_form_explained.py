@@ -11,6 +11,7 @@ An illustrated example of a FORM probability estimate
 # simple example. We focus on the different steps and compare them with an analytic
 # computation whenever possible.
 #
+# See :ref:`FORM <_form_approximation>` and :ref:`SORM <_sorm_approximation>` and to get more theoretical details.
 import openturns as ot
 import openturns.viewer as otv
 import numpy as np
@@ -51,8 +52,7 @@ view = otv.View(graph_PDF, square_axes=True)
 #
 #    g : (x_1, x_2) \mapsto x_1 x_2
 #
-# and the  output variable :math:`Y = f(\vect{x}) \in \mathbb{R}`.
-# We also draw the isolines of the model :math:`g`.
+# We start by drawing the isolines of the model :math:`g`.
 g = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
 graph_model = g.draw([0.0, -10.0], [20.0, 10.0])
 graph_model.setXTitle(r"$x_1$")
@@ -62,6 +62,12 @@ view = otv.View(graph_model, square_axes=True)
 
 
 # %%
+# We consider  the univariate output variable :
+#
+# .. math::
+#
+#   Y = f(\vect{X})
+#
 # We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event.
 # This probability is simply expressed as the following integral for a continuous random vector
 # :math:`\vect{X}`:
@@ -70,7 +76,12 @@ view = otv.View(graph_model, square_axes=True)
 #
 #    P_f = \Prob{Y \geq s} = \int_{\mathcal{D}} \mathbf{1}_{\mathcal{D}}(x) f_{\vect{X}}(x)d\vect{x}
 #
-# where :math:`\mathcal{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} / g(x_1, x_2) \geq s \}`
+# where:
+#
+# .. math::
+#
+#  \mathcal{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  g(x_1, x_2) \geq s \}
+#
 # is the failure domain and :math:`f_{\vect{X}}` is the probability density function (PDF)
 # of :math:`\vect{X}`.
 
@@ -90,27 +101,32 @@ event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 #
 #    h : x_1 \mapsto x_2 = \frac{s}{x_1}
 #
-# This event is also the isoline of the model :math:`g` associated to the
-# level :math:`s`. We can draw it with the `draw` method of the function
-# :math:`g`.
+# The frontier of the failure domain is also the isoline of the model :math:`g` associated to the
+# level :math:`s` :
+#
+# .. math::
+#
+#    \partial \mathcal{D} =  \{(x_1, x_2)\, |\, g(x_1, x_2) = s \}
+#
+# We can draw it with the `draw` method of the function :math:`g`.
 
 # %%
 nb_points = 101
 graph_g = g.draw([0.0, -10.0], [20.0, 10.0], [nb_points] * 2)
 draw_frontier = graph_g.getDrawable(0)
 draw_frontier.setLevels([s])
-draw_frontier.setLegend(r'$y = $ ' + str(s))
+draw_frontier.setLegend(r'Boundary $\partial \mathcal{D}$')
 graph_g.setDrawables([draw_frontier])
 
 # %%
-texts = [r" Event : $\mathcal{D} = \{Y \geq 10 \}$"]
+texts = [r" $\mathcal{D} = \{(x_1, x_2)\, |\, g(x_1, x_2) \geq 10 \}$"]
 text_graph = ot.Text([[10.0, 3.0]], texts)
 text_graph.setTextSize(1)
 text_graph.setColor("black")
 graph_g.add(text_graph)
 
 # %%
-graph_g.setTitle("Representation of the failure domain")
+graph_g.setTitle("Failure domain in the physical space")
 graph_g.setXTitle(r"$x_1$")
 graph_g.setYTitle(r"$x_2$")
 graph_g.setLegendPosition('topright')
@@ -148,7 +164,7 @@ view = otv.View(graph_PDF, square_axes=True)
 #
 # The interest of the  isoprobabilistic transformation is the rotational
 # invariance of the distribution in the standard space. This property reduces the dimension
-# of the problem to 1.
+# of the problem to 1. See :ref:`Isoprobabilistic transformation <isoprobabilistic_transformation>` to get more theoretical details.
 #
 # OpenTURNS has several isoprobabilistic transformations, depending on the distribution of the input random vector:
 #
@@ -198,10 +214,10 @@ xi = vector_X.getRealization()
 
 # %%
 # We build `zi` the mapping of `xi` through the Rosenblatt transformation.
-# The point `zi` is said to be in the standard space.
-ui = [dist_X1.computeCDF(xi[0]), xi[1]]
-zi = [ot.Normal().computeQuantile(ui[0])[0], xi[1]]
-print(xi, "->", zi)
+# The point `zi` is said to be in the standard space. Note that the second component remained unchanged.
+ui = [dist_X1.computeCDF(xi[0]), dist_X2.computeCDF(xi[1])]
+zi = [ot.Normal().computeQuantile(ui[0])[0], ot.Normal().computeQuantile(ui[1])[0]]
+print(xi, "->", ui, "->", zi)
 
 # %%
 # We also build the isoprobabilistic transform :math:`T_1` and its inverse :math:`T_1^{-1}` for the
@@ -238,18 +254,33 @@ print("zi2D = ", zi2D)
 g_tilde = ot.ComposedFunction(g, inverse_transformation)
 
 # %%
+# The falure domain in the standard space is defined by: 
+#
+# .. math::
+#
+#  \mathcal{\tilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \tilde{g}(z_1, z_2) \geq s \}
+#
+# and its boundary is defined by :
+#
+# .. math::
+#
+#    \partial \mathcal{\tilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,
+#       \tilde{g}(z_1, z_2) = s \}
+#
+
+# %%
 # We draw the graph of :math:`\tilde{g}` in the standard space.
 graph_standard_space = g_tilde.draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
 
 draw_frontier_stand_space = graph_standard_space.getDrawable(0)
 draw_frontier_stand_space.setLevels([s])
-draw_frontier_stand_space.setLegend(r"Boundary of the event $\partial \mathcal{D}$")
+draw_frontier_stand_space.setLegend(r"Boundary $\partial \mathcal{\tilde{D}}$")
 draw_frontier_stand_space.setColor("blue")
 graph_standard_space.setDrawables([draw_frontier_stand_space])
 
 graph_standard_space.setXTitle(r"$z_1$")
 graph_standard_space.setYTitle(r"$z_2$")
-graph_standard_space.setTitle('Failure event in the standard space')
+graph_standard_space.setTitle('Failure domain in the standard space')
 
 # %%
 # We add the origin to the previous graph.
@@ -260,7 +291,7 @@ cloud.setLegend("origin")
 graph_standard_space.add(cloud)
 
 # Some annotations
-s = [r"Event : $\mathcal{D} = \{Y \geq 10 \}$"]
+texts = [r"$\mathcal{\tilde{D}} = \{(z_1, z_2)\, |\, \tilde{g}(z_1, z_2) \geq 10 \}$"]
 text_graph = ot.Text([[4.0, 3.0]], texts)
 text_graph.setTextSize(1)
 text_graph.setColor("black")
@@ -428,8 +459,8 @@ failure_boundary_standard_space = ot.ComposedFunction(
 z1_star = [design_point_standard_space[0]]
 dz1_star = failure_boundary_standard_space.getGradient().gradient(z1_star)
 d2z1_star = failure_boundary_standard_space.getHessian().hessian(z1_star)
-print("abscissa of the design point = ", z1_star[0])
-print("value of the failure boundary at this abscissa = ", failure_boundary_standard_space(z1_star)[0])
+print("first component of the design point = ", z1_star[0])
+print("second component of the design point = ", failure_boundary_standard_space(z1_star)[0])
 print("value of the hessian of the failure boundary at this abscissa= ", d2z1_star[0, 0, 0])
 
 
