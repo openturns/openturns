@@ -209,6 +209,17 @@ Bool MinCopula::hasIndependentCopula() const
   return (getDimension() == 1);
 }
 
+/* Parameters value and description accessor */
+Point MinCopula::getParameter() const
+{
+  return {};
+}
+
+Description MinCopula::getParameterDescription() const
+{
+  return {};
+}
+
 /* Method save() stores the object through the StorageManager */
 void MinCopula::save(Advocate & adv) const
 {
