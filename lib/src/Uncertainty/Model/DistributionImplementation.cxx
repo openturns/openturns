@@ -1303,7 +1303,7 @@ Scalar DistributionImplementation::computeLogGeneratingFunction(const Scalar z) 
 
 Complex DistributionImplementation::computeGeneratingFunction(const Complex & z) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error:  cannot use the computeCharacteristicFunction method with distributions of dimension > 1";
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: cannot use the computeGeneratingFunction method with distributions of dimension > 1";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: cannot compute the generating function for non discrete distributions.";
   Complex value(0.0);
   // Create the generating function as a univariate polynomial. It will be used as such if the distribution is integral, or as a container for the individual probabilities if the distribution is not integral
