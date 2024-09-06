@@ -95,6 +95,13 @@ public:
   using DistributionImplementation::getSupport;
   Sample getSupport(const Interval & interval) const override;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
+
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
 

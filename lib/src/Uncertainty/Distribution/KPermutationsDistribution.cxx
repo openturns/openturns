@@ -257,6 +257,24 @@ void KPermutationsDistribution::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
+Point KPermutationsDistribution::getParameter() const
+{
+  return {static_cast<Scalar>(k_), static_cast<Scalar>(n_)};
+}
+
+void KPermutationsDistribution::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  setKN(parameter[0], parameter[1]);
+}
+
+/* Parameters description accessor */
+Description KPermutationsDistribution::getParameterDescription() const
+{
+  return {"k", "n"};
+}
+
+/* Parameters value and description accessor */
 KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
