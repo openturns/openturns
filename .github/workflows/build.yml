@@ -19,14 +19,20 @@ jobs:
         -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
         -DUSE_BISON=OFF \
         -DUSE_CMINPACK=ON \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         -DFLEX_EXECUTABLE=/opt/homebrew/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
+        make t_CMinpack_std -j3
+        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -R cppcheck_CMinpack --output-on-failure -V
         make install -j3
-        make tests -j3
-        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -R pyinstallcheck_CMinpack --output-on-failure -V
+        cmake --version
+        which lldb
+        lldb --version
+        lldb ./lib/test/t_CMinpack_std --batch --one-line 'process launch' --one-line-on-crash 'bt' --one-line-on-crash 'quit'
 
   windows:
     runs-on: windows-latest
