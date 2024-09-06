@@ -329,6 +329,24 @@ Function ExtremeValueCopula::getPickandFunction() const
   return pickandFunction_;
 }
 
+/* Parameters value and description accessor */
+Point ExtremeValueCopula::getParameter() const
+{
+  return pickandFunction_.getParameter();
+}
+
+void ExtremeValueCopula::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != pickandFunction_.getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << pickandFunction_.getParameter().getSize() << " values, got " << parameter.getSize();
+  pickandFunction_.setParameter(parameter);
+}
+
+/* Parameters description accessor */
+Description ExtremeValueCopula::getParameterDescription() const
+{
+  return pickandFunction_.getParameterDescription();
+}
+
 /* Method save() stores the object through the StorageManager */
 void ExtremeValueCopula::save(Advocate & adv) const
 {
