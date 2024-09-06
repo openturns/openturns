@@ -298,48 +298,6 @@ Point Wishart::getStandardDeviation() const
   return sigma;
 }
 
-
-/* Parameters value and description accessor */
-Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
-{
-  PointWithDescription point(getDimension() + 1);
-  Description description(point.getDimension());
-  const UnsignedInteger p = cholesky_.getDimension();
-  UnsignedInteger index = 0;
-  const CovarianceMatrix V(getV());
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      point[index] = V(i, j);
-      description[index] = String(OSS() << "V_" << i << "_" << j);
-      ++index;
-    }
-  point[index] = nu_;
-  description[index] = "nu";
-  point.setDescription(description);
-  PointWithDescriptionCollection parameters(point.getDimension());
-  return parameters;
-}
-
-void Wishart::setParametersCollection(const PointCollection & parametersCollection)
-{
-  const Scalar w = getWeight();
-  const Scalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
-  const UnsignedInteger p = static_cast< UnsignedInteger >(pReal);
-  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
-  CovarianceMatrix V(p);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      V(i, j) = parametersCollection[0][index];
-      ++index;
-    }
-  const Scalar nu = parametersCollection[0][index];
-  *this = Wishart(V, nu);
-  setWeight(w);
-}
-
 Point Wishart::getParameter() const
 {
   const CovarianceMatrix V(getV());
