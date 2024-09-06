@@ -18,7 +18,7 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=~/.local \
         -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
         -DUSE_BISON=OFF \
-        -DUSE_CMINPACK=OFF \
+        -DUSE_CMINPACK=ON \
         -DFLEX_EXECUTABLE=/opt/homebrew/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
