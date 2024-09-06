@@ -2549,7 +2549,7 @@ struct MinimumVolumeIntervalWrapper
 
   Scalar computeB(const Scalar A) const
   {
-    const Scalar alphaB = prob_ + p_distribution_->computeCDF(A);
+    const Scalar alphaB = std::min(prob_ + p_distribution_->computeCDF(A), 1.0);
     const Scalar B = p_distribution_->computeQuantile(alphaB)[0];
     return B;
   }
