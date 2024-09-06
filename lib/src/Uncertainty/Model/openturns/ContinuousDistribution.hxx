@@ -53,18 +53,6 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /** Get the CDF of the distribution */
-  using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const override;
-
-  /** Get the survival function of the distribution */
-  using DistributionImplementation::computeSurvivalFunction;
-  Scalar computeSurvivalFunction(const Point & point) const override;
-
-protected:
-  /** Interpolate the CDF for smooth continuous distributions */
-  Collection<PiecewiseHermiteEvaluation> interpolateCDF(const UnsignedInteger n);
-
 public:
   /** String converter */
   String __repr__() const override;

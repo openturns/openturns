@@ -716,8 +716,14 @@ Scalar DistributionImplementation::computeLogPDF(const Point & point) const
 
 /* Get the CDF, complementary CDF and survival function of the distribution */
 /* On a Point */
-Scalar DistributionImplementation::computeCDF(const Point & ) const
+Scalar DistributionImplementation::computeCDF(const Point & point) const
 {
+  if (isContinuous())
+  {
+    const Interval interval(getRange().getLowerBound(), point);
+    LOGINFO(OSS() << "In DistributionImplementation::computeCDF, using computeProbabilityContinuous(), interval=" << interval.__str__());
+    return computeProbabilityContinuous(interval);
+  }
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDF(const Point & point) const";
 }
 
@@ -765,6 +771,9 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
     allOutside &= (point[i] <= lowerBounds[i]);
   }
   if (allOutside) return 1.0;
+
+  // For continuous distributions
+  if (isContinuous()) return computeProbability(Interval(point, upperBounds));
 
   // Use Poincaré's formula
   const Scalar cdf = computeCDF(point);
@@ -818,6 +827,20 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
   // So
   // InverseSurvivalFunction(q) = 2mu-Quantile(q)
   if (isElliptical()) return getMean() * 2.0 - computeQuantile(prob, false, marginalProb);
+
+  // If the distribution is a copula, we only need to look for solutions on the diagonal
+  if (isCopula())
+  {
+    const DiagonalSurvivalFunctionWrapper diagonalSurvivalFunction(this);
+    // Use Brent's method to compute the quantile efficiently for continuous distributions
+    const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+    const Scalar solution = solver.solve(diagonalSurvivalFunction, prob, 0.0, 1.0, 1.0, 0.0);//, leftSurvival, rightSurvival);
+    LOGINFO(OSS(false) << "tau=" << solution);
+    marginalProb = 1.0 - solution;
+    return Point(getDimension(), solution);
+  }
+
+
   // If the distribution is not continuous, no generic implementation is available at this point
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeInverseSurvivalFunction: no generic implementation for noncontinuous distributions.";
   // Extract the marginal distributions

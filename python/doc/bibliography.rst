@@ -128,6 +128,9 @@ Bibliography
     4th ed., McGraw-Hill, 1983
 .. [dlib2009] Davis E. King, *Dlib-ml: A Machine Learning Toolkit*,
     Journal of Machine Learning Research, 10:1755-1758, 2009.
+.. [dobrolowski2014] Dobrolowski, E. and Kumar, P., *Some properties of the Marshall-Olkin and generalized Cuadras-Augé families of copulas*,
+    The Australian Journal of Mathematical Analysis and Applications, 11(1), 1-13, 2014.
+    `pdf <https://ajmaa.org/searchroot/files/pdf/v11n1/v11i1p2.pdf>`__
 .. [doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
     mimeo, Nuffield College, University of Oxford, 2005.
     `pdf <https://www.doornik.com/research/ziggurat.pdf>`__

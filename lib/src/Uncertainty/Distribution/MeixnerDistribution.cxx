@@ -406,6 +406,50 @@ void MeixnerDistribution::update()
   dc_ = solver.getResult().getOptimalValue()[0] - c_;
 }
 
+/* Build a C1 interpolation of the CDF function */
+Collection<PiecewiseHermiteEvaluation> MeixnerDistribution::interpolateCDF(const UnsignedInteger n)
+{
+  const PDFWrapper pdfWrapper(this);
+  const Scalar xMin = getRange().getLowerBound()[0];
+  const Scalar xMax = getRange().getUpperBound()[0];
+  const Scalar mu = getMean()[0];
+  Point locationsCDF(n);
+  Point locationsCCDF(n);
+  Point valuesCDF(n);
+  Point valuesCCDF(n);
+  Point derivativesCDF(n);
+  Point derivativesCCDF(n);
+  Scalar xCDFOld = xMin;
+  Scalar xCCDFOld = xMax;
+  locationsCDF[0] = xMin;
+  locationsCCDF[n - 1] = xMax;
+  GaussKronrod algo;
+  const Scalar stepCDF = (mu - xMin) / (n - 1.0);
+  const Scalar stepCCDF = (xMax - mu) / (n - 1.0);
+  for (UnsignedInteger i = 1; i < n; ++i)
+  {
+    const Scalar xCDF = xMin + i * stepCDF;
+    const Scalar xCCDF = xMax - i * stepCCDF;
+    locationsCDF[i] = xCDF;
+    locationsCCDF[n - i - 1] = xCCDF;
+    Point ai;
+    Point bi;
+    Sample fi;
+    Point ei;
+    Scalar error = -1.0;
+    valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
+    valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
+    derivativesCDF[i] = computePDF(xCDF);
+    derivativesCCDF[n - i - 1] = -computePDF(xCCDF);
+    xCDFOld = xCDF;
+    xCCDFOld = xCCDF;
+  }
+  Collection<PiecewiseHermiteEvaluation> coll(2);
+  coll[0] = PiecewiseHermiteEvaluation(locationsCDF, valuesCDF, derivativesCDF);
+  coll[1] = PiecewiseHermiteEvaluation(locationsCCDF, valuesCCDF, derivativesCCDF);
+  return coll;
+}
+
 /* Get one realization of the distribution
    We use the ratio-of-uniform method:
    if b=\sup_x \sqrt{p(x)}, c=\inf_x x\sqrt{p(x)}, d=\sup_x x\sqrt{p(x)}

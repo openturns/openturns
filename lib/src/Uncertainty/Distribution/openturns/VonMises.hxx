@@ -65,13 +65,13 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the distribution */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */

@@ -21,20 +21,21 @@ The MarshallOlkin copula is a bivariate copula defined by:
 
     C(u_1, u_2) = 
     \begin{cases}
-    u_1^{1-\alpha} u_2, \textrm{ if } u_1^{1-\alpha} \geq u_2^{1-\beta} \\
+    u_1^{1-\alpha} u_2, \textrm{ if } u_1^\alpha \geq u_2^\beta \\
     u_1 u_2^{1-\beta}, \textrm{ otherwise.}
     \end{cases}
 
 for :math:`(u_1, u_2) \in [0, 1]^2`. 
 
-This copula is also known as the generalized Cuadras-Auge copula. 
+This copula is also known as the generalized Cuadras-Augé copula.
 
 Independence corresponds to :math:`\alpha = 0` or :math:`\beta = 0`.
 
 The minimum copula corresponds to :math:`\alpha = \beta = 1`.
 
 More details on this copula can be found in [nelsen2006]_, 
-chapter 3, section 3.1.1, page 52.
+chapter 3, section 3.1.1, page 52,
+or in [dobrolowski2014]_.
 
 Examples
 --------

@@ -49,7 +49,7 @@ public:
                       const Distribution & right);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ProductDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -68,7 +68,7 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Scalar scalar) const override;
   Scalar computePDF(const Point & point) const override;
 private:
@@ -94,7 +94,7 @@ private:
                       const Scalar d) const;
 public:
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
 private:

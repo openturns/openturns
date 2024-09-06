@@ -45,7 +45,7 @@ public:
 
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Rice & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -66,17 +66,17 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the logarithm of the PDF of the distribution */
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point). If tail=true, compute P(X >= point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  using ContinuousDistribution::computeComplementaryCDF;
+  using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */

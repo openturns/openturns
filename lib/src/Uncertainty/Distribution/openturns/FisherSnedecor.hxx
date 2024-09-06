@@ -45,7 +45,7 @@ public:
 
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const FisherSnedecor & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -65,21 +65,21 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   // LogPDFGradient
-  using ContinuousDistribution::computeLogPDFGradient;
+  using DistributionImplementation::computeLogPDFGradient;
   Point computeLogPDFGradient(const Point & point) const override;
 
   // PDFGradient
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the quantile of the Triangular distribution */

@@ -93,6 +93,9 @@ public:
   /** Get one realization of the distribution */
   Point getRealization() const override;
 
+  /** Check if the distribution is continuous */
+  Bool isContinuous() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

@@ -46,7 +46,7 @@ public:
                     const Distribution & right);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const RatioDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -65,7 +65,7 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 private:
   Scalar computePDFQ1(const Scalar x,

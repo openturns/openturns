@@ -44,7 +44,7 @@ public:
                    const Scalar lambda);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Laplace & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -64,21 +64,21 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the distribution */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the complementary CDF of the distribution */
-  using ContinuousDistribution::computeComplementaryCDF;
+  using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
@@ -89,11 +89,11 @@ public:
   Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
-  using ContinuousDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution */

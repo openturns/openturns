@@ -46,7 +46,7 @@ public:
   SquaredNormal(Scalar mu, Scalar sigma);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const SquaredNormal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -67,11 +67,11 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the CDF of the SquaredNormal distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
