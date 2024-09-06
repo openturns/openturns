@@ -86,11 +86,6 @@ public:
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 
-  /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const PointCollection & parametersCollection) override;
-
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
