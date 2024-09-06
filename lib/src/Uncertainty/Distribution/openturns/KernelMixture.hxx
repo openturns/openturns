@@ -47,7 +47,7 @@ public:
 
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const KernelMixture & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -80,21 +80,21 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the KernelMixture */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the KernelMixture */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the KernelMixture */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  using ContinuousDistribution::computeComplementaryCDF;
+  using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the survival function */
-  using ContinuousDistribution::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -104,20 +104,20 @@ public:
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDF gradient of the distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDF gradient of the distribution */
-  using ContinuousDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using ContinuousDistribution::computeConditionalPDF;
+  using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
   Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using ContinuousDistribution::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 

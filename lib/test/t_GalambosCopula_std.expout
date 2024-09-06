@@ -11,7 +11,6 @@ anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class
 point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.634686,-0.634686] pdf=1.23198 cdf=0.059814
 Survival      =0.659814
 Survival (ref)=0.659814
-Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0258323,0.0258323]
 Survival(inverse survival)=0.95
 Quantile=class=Point name=Unnamed dimension=2 values=[0.67295,0.67295]
 CDF(quantile)=0.5

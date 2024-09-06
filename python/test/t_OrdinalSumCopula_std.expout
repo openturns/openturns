@@ -19,16 +19,16 @@ Inverse survival= [0.0299408,0.0299408]
 Survival(inverse survival)=0.95000
 Quantile= [0.567157,0.567157]
 CDF(quantile)= 0.5
-Minimum volume interval= [0.160334, 0.839666]
-[0.160334, 0.839666]
-threshold=0.67933
+Minimum volume interval= [0.0135212, 0.986479]
+[0.0135212, 0.986479]
+threshold=0.97296
 Minimum volume level set= {x | f(x) <= -0.21629} with f=
 MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2)))
 beta=1.24146
-Bilateral confidence interval= [0.160334, 0.839666]
-[0.160334, 0.839666]
-beta=0.67933
+Bilateral confidence interval= [0.0135212, 0.986479]
+[0.0135212, 0.986479]
+beta=0.97296
 Unilateral confidence interval (lower tail)= [0, 0.971607]
 [0, 0.971607]
 beta=0.97161

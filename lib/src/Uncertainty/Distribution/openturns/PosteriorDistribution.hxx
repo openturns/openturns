@@ -47,7 +47,7 @@ public:
                         const Sample & observations);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const PosteriorDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -63,16 +63,16 @@ public:
   PosteriorDistribution * clone() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
 

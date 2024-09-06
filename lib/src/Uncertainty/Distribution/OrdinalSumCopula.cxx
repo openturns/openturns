@@ -324,20 +324,27 @@ Scalar OrdinalSumCopula::computeProbability(const Interval & interval) const
   // Compute the contribution of the first block
   Point xMin(dimension, 0.0);
   Point xMax(dimension, bounds_[0]);
-  Scalar probability = copulaCollection_[0].computeProbability(interval.intersect(Interval(xMin, xMax)) * (1.0 / blockLengths_[0]));
+  Scalar probability = blockLengths_[0] * copulaCollection_[0].computeProbability(interval.intersect(Interval(xMin, xMax)) * (1.0 / blockLengths_[0]));
   // Sum the contribution of all the intermediate blocks
   xMin = xMax;
   const UnsignedInteger size = bounds_.getSize();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     xMax = Point(dimension, bounds_[i]);
-    probability += copulaCollection_[i].computeProbability(interval.intersect(Interval(xMin, xMax) - Interval(xMin, xMin)) * (1.0 / blockLengths_[i]));
+    const Interval intersection(interval.intersect(Interval(xMin, xMax)));
+    const Point lowerBound(intersection.getLowerBound());
+    const Point upperBound(intersection.getUpperBound());
+    const Interval shiftedInterval(lowerBound - xMin, upperBound - xMin);
+    probability += blockLengths_[i] * copulaCollection_[i].computeProbability(shiftedInterval * (1.0 / blockLengths_[i]));
     xMin = xMax;
   }
   // And the contribution of the last block
   xMax = Point(dimension, 1.0);
-  probability += copulaCollection_[size].computeProbability(interval.intersect(Interval(xMin, xMax) - Interval(xMin, xMin)) * (1.0 / blockLengths_[size]));
-
+  const Interval intersection(interval.intersect(Interval(xMin, xMax)));
+  const Point lowerBound(intersection.getLowerBound());
+  const Point upperBound(intersection.getUpperBound());
+  const Interval shiftedInterval(lowerBound - xMin, upperBound - xMin);
+  probability += blockLengths_[size] * copulaCollection_[size].computeProbability(shiftedInterval * (1.0 / blockLengths_[size]));
   return probability;
 }
 

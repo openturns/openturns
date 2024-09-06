@@ -241,7 +241,7 @@ Refer to :ref:`copula`.
     JoeCopula
     GalambosCopula
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     MarshallOlkinCopula
 

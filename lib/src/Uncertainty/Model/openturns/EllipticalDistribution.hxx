@@ -67,17 +67,17 @@ public:
   Bool hasEllipticalCopula() const override;
 
   /** Get the DDF of the distribution */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the PDF gradient of the distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Compute the density generator of the elliptical distribution, i.e.
@@ -93,7 +93,7 @@ public:
   virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the survival function */
-  using ContinuousDistribution::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
@@ -148,7 +148,7 @@ public:
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Parameters value accessor */

@@ -61,7 +61,7 @@ public:
       const Bool checkMarginals = ResourceMap::GetAsBool("MaximumEntropyOrderStatisticsDistribution-CheckMarginals"));
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -91,13 +91,13 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -122,7 +122,7 @@ private:
 public:
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Tell if the distribution uses approximations for the exponential terms */

@@ -50,7 +50,7 @@ public:
                                   const Function & linkFunction = Function());
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const JointByConditioningDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -69,12 +69,12 @@ public:
   Point getRealization() const override;
 
   /** Compute the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /* Interface specific to JointByConditioningDistribution */
   /** Compute the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Conditioned distribution accessor */

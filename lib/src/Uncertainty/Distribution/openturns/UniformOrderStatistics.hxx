@@ -41,7 +41,7 @@ public:
   explicit UniformOrderStatistics(const UnsignedInteger dimension = 1);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const UniformOrderStatistics & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -62,13 +62,13 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -95,17 +95,17 @@ public:
   /* Interface specific to UniformOrderStatistics */
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using ContinuousDistribution::computeConditionalPDF;
+  using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
   Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using ContinuousDistribution::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using ContinuousDistribution::computeConditionalQuantile;
+  using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 

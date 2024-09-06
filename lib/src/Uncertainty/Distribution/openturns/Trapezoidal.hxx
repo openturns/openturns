@@ -47,7 +47,7 @@ public:
               const Scalar d);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Trapezoidal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -66,30 +66,30 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the gradient of the logPDF w.r.t the parameters of the distribution */
-  using ContinuousDistribution::computeLogPDFGradient;
+  using DistributionImplementation::computeLogPDFGradient;
   Point computeLogPDFGradient(const Point & point) const override;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
-  using ContinuousDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */

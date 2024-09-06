@@ -46,7 +46,7 @@ public:
                            const Bool isEmiricalCopulaSample = false);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const EmpiricalBernsteinCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -78,15 +78,15 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the EmpiricalBernsteinCopula */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the log-PDF of the EmpiricalBernsteinCopula */
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the EmpiricalBernsteinCopula */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -103,7 +103,7 @@ public:
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using ContinuousDistribution::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const UnsignedInteger i) const override;
   Distribution getMarginal(const Indices & indices) const override;
 

@@ -47,7 +47,7 @@ public:
 
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Triangular & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -68,16 +68,16 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the Triangular distribution */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the Triangular distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Scalar scalar) const override;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the Triangular distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
 
@@ -91,11 +91,11 @@ public:
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the Triangular distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the Triangular distribution */
-  using ContinuousDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the entropy of the distribution */

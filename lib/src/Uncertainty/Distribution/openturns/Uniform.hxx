@@ -45,7 +45,7 @@ public:
 
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Uniform & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -67,19 +67,19 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Scalar scalar) const override;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
-  using ContinuousDistribution::computeComplementaryCDF;
+  using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Scalar scalar) const override;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
@@ -96,11 +96,11 @@ public:
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
-  using ContinuousDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
-  using ContinuousDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the probability content of an interval */
