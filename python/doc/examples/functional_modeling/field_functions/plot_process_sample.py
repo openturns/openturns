@@ -4,7 +4,7 @@ Create a process sample from a sample
 """
 
 # %%
-# In this example, a :class:`~openturns.ProcessSample` is created from a sample.
+# In this example, a :class:`~openturns.ProcessSample` is created from data.
 # The purpose is to illustrate how to create a :class:`~openturns.ProcessSample` from an already available sample of a field.
 # In addition, the computation of statistics of the process sample is presented.
 # The :class:`~openturns.ProcessSample` is defined over a :class:`~openturns.Mesh`.
@@ -71,7 +71,7 @@ Y = [f(vertices[i])[0] for i in range(N)]
 graph = ot.Graph("One realization of the stochastic process", "Strain", "Stress (Pa)", True, "")
 curve = ot.Curve(vertices.asPoint(), Y)
 graph.add(curve)
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # The distribution of the input vector :math:`\vect{X}` is defined.
@@ -113,7 +113,7 @@ for i in range(n_samples):
     curve = ot.Curve(vertices, Y_list[i])
     curve.setColor("blue")
     graph.add(curve)
-viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # Creation of the process sample
@@ -147,15 +147,19 @@ graph = ot.Graph("Sample process mean and realizations", "Strain", "Stress (Pa)"
 for i in range(n_samples):
     if i == 0:
         curve = ot.Curve(vertices, Y_list[i], "process samples")
-        curve.setColor("blue")
-        graph.add(curve)
     else:
         curve = ot.Curve(vertices, Y_list[i])
-        curve.setColor("blue")
-        graph.add(curve)
+    curve.setColor("blue")
+    graph.add(curve)
 
 curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
 curve.setColor("red")
 graph.add(curve)
 graph.setLegendPosition("topleft")
-viewer.View(graph)
+view = viewer.View(graph)
+
+# %%
+# Display all figures
+
+# %%
+viewer.View.ShowAll()
