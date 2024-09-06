@@ -104,7 +104,7 @@ event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 #    h : x_1 \mapsto x_2 = \frac{s}{x_1}
 #
 # The boundary of the failure domain is also the isoline of the model :math:`\model` associated to the
-# level :math:`s` :
+# level :math:`s`:
 #
 # .. math::
 #
@@ -153,7 +153,7 @@ view = otv.View(graph_PDF, square_axes=True)
 # The FORM/SORM approximations
 # ----------------------------
 #
-# The basic steps of the FORM and SORM algorithms are :
+# The basic steps of the FORM and SORM algorithms are:
 #
 # - use an isoprobabilistic transformation to map the input random vector into the standard space;
 # - find the design point which is the nearest point to the origin in the standard space;
@@ -225,7 +225,7 @@ print(xi, "->", ui, "->", zi)
 
 # %%
 # We also build the isoprobabilistic transform :math:`T_1` and its inverse :math:`T_1^{-1}` for the
-# first marginal :
+# first marginal:
 #
 # .. math::
 #    :label: detT1
@@ -259,13 +259,13 @@ print("zi2D = ", zi2D)
 g_tilde = ot.ComposedFunction(g, inverse_transformation)
 
 # %%
-# The falure domain in the standard space is defined by :
+# The failure domain in the standard space is defined by:
 #
 # .. math::
 #
 #  \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \widetilde{\model}(z_1, z_2) \geq s \}
 #
-# and its boundary is defined by :
+# and its boundary is defined by:
 #
 # .. math::
 #
@@ -345,7 +345,7 @@ print("Design point in standard space : ", design_point_standard_space)
 
 # %%
 # We can get the Hasofer index with the `getHasoferReliabilityIndex` method which is the distance of
-# the design point to the origin :
+# the design point to the origin:
 beta_HL = result.getHasoferReliabilityIndex()
 print("Hasofer index : ", beta_HL)
 
@@ -376,7 +376,7 @@ view = otv.View(graph_standard_space, square_axes=True)
 # The last step of the FORM algorithm is to replace the failure domain by the hyperplane
 # which is tangent to the failure domain at the design point in the standard space.
 # To draw this hyperplane :math:`\mathcal{P}_{\vect{z}^*}`, we define the function from
-# :math:`\Rset^2` to :math:`\Rset` defined by :
+# :math:`\Rset^2` to :math:`\Rset` defined by:
 #
 # .. math::
 #
@@ -475,7 +475,7 @@ failure_boundary_standard_space = ot.ComposedFunction(
 )
 # %%
 # We need the value of the second derivative of the failure boundary function
-# at the abscissa of the design point in the standard space :
+# at the abscissa of the design point in the standard space:
 z1_star = [design_point_standard_space[0]]
 dz1_star = failure_boundary_standard_space.getGradient().gradient(z1_star)
 d2z1_star = failure_boundary_standard_space.getHessian().hessian(z1_star)
@@ -517,7 +517,7 @@ view = otv.View(graph_standard_space)
 #
 #    \kappa(x) = \frac{\ell''(x)}{(1+[\ell'(x)]^2)^{3/2}}.
 #
-# For the oscillating parabola of concern we use the gradient and hessian previously computed :
+# For the oscillating parabola of concern we use the gradient and hessian previously computed:
 #
 curvature = (d2z1_star[0, 0, 0]) / (1 + (dz1_star[0, 0]) ** 2) ** (3 / 2)
 print("Curvature (analytic formula) = ", curvature)
@@ -529,12 +529,12 @@ algo_SORM = ot.SORM(solver, event, dist_X.getMean())
 algo_SORM.run()
 
 # %%
-# The SORM result is obtained with the `getResult` method :
+# The SORM result is obtained with the `getResult` method:
 result_SORM = algo_SORM.getResult()
 
 # %%
 # The principal curvatures of the osculating paraboloid at the design point is obtained by the
-# `getSortedCurvatures` method :
+# `getSortedCurvatures` method:
 print("Curvature (library) = ", result_SORM.getSortedCurvatures()[1])
 
 
