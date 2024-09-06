@@ -343,7 +343,8 @@ Description Wishart::getParameterDescription() const
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      description[index] = (OSS() << "v_" << i << "_" << j);
+      description[index] = (OSS() << "V_" << i << "_" << j);
+      ++ index;
     }
   }
   description[index] = "nu";
