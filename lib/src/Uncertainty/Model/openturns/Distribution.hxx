@@ -142,8 +142,8 @@ public:
   Sample getSampleByQMC(const UnsignedInteger size) const;
 
   /** Get function representation of PFD and CDF*/
-  FunctionImplementation getPDFFunction() const;
-  FunctionImplementation getCDFFunction() const;
+  FunctionImplementation getPDF() const;
+  FunctionImplementation getCDF() const;
 
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;

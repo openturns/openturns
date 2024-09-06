@@ -568,7 +568,7 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   UnsignedInteger inputDim = getInputDimension();
   if(!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with input dimension=" << getInputDimension() << " less than 2 using this method. See the other draw() methods.";
   if(getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
-  if(!(xMin.getDimension() == inputDim && xMax.getDimension() == inputDim && pointNumber.getSize() == inputDim)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
+  if(!(xMin.getDimension() == inputDim && xMax.getDimension() == inputDim && pointNumber.getSize() == inputDim)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be of dimension " << inputDim;
   for(UnsignedInteger i=0;i<inputDim;i++)
     if(!(pointNumber[i] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   Bool buildVMinMax = vMax == -HUGE_VAL && vMin == -HUGE_VAL;

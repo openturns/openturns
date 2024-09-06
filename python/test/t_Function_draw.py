@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.viewer import View
 
 ot.TESTPREAMBLE()
 
@@ -36,3 +37,7 @@ graph2D = f.draw(
     1, 2, 1, centralPoint, ot.Point(2, -5.0), ot.Point(2, 5.0), ot.Indices(2, 21)
 )
 print("graph2D=", graph2D)
+# Cross cuts
+crossCuts = f.getMarginal(0).drawCrossCuts(
+    centralPoint, ot.Point(3, -5.0), ot.Point(3, 5.0), ot.Indices(3, 10))
+print("crossCuts=", crossCuts)

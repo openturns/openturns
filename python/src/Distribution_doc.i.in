@@ -256,3 +256,35 @@ OT_Distribution_sqrt_doc
 OT_Distribution_cbrt_doc
 %feature("docstring") OT::Distribution::abs
 OT_Distribution_abs_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Distribution::getPDF
+"Return the PDF as a :class:`~openturns.FunctionImplementation`.
+
+Returns
+-------
+PDF : :class:`~openturns.FunctionImplementation`
+    The PDF of the distribution as a :class:`~openturns.FunctionImplementation`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dist = ot.Distribution(ot.Normal(2., 3.))
+>>> dist.getPDF().draw(-4,8)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Distribution::getCDF
+"Return the CDF as a :class:`~openturns.FunctionImplementation`.
+
+Returns
+-------
+PDF : :class:`~openturns.FunctionImplementation`
+    The CDF of the distribution as a :class:`~openturns.FunctionImplementation`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dist = ot.Distribution(ot.Normal(2., 3.))
+>>> dist.getCDF().draw(-4,8)"

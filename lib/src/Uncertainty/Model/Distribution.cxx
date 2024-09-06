@@ -389,11 +389,11 @@ Sample Distribution::getSampleByQMC(const UnsignedInteger size) const
   return getImplementation()->getSampleByQMC(size);
 }
 
-FunctionImplementation Distribution::getPDFFunction() const {
+FunctionImplementation Distribution::getPDF() const {
   return FunctionImplementation(DistributionImplementation::PDFWrapper(getImplementation()));
 }
 
-FunctionImplementation Distribution::getCDFFunction() const {
+FunctionImplementation Distribution::getCDF() const {
   return FunctionImplementation(DistributionImplementation::CDFWrapper(getImplementation()));
 }
 

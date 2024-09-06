@@ -28,6 +28,7 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
+  setRandomGenerator();
 
   try
   {
@@ -44,7 +45,12 @@ int main(int, char *[])
     // Contains
     fullprint << "is point " << p1 << " inside " << domain << "? " << (domain.contains(p1) ? "yes" : "no") << std::endl;
     fullprint << "is point " << p2 << " inside " << domain << "? " << (domain.contains(p2) ? "yes" : "no") << std::endl;
-
+    // Draw
+    domain = Interval({ -2.0, 0.0, -1 }, { 2., 3., 1. });
+    Uniform U = Uniform(-3, 4);
+    Distribution dist = JointDistribution({ U, U, U });
+    GridLayout grid = domain.draw(dist.getSample(30));
+    fullprint << "Grid=" << grid << std::endl;
   }
   catch (TestFailed & ex)
   {
