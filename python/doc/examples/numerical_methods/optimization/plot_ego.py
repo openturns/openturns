@@ -102,7 +102,7 @@ view = viewer.View(graph)
 # We use default settings (1.0) for the scale parameters of the covariance model, but configure the amplitude to 0.1, which better corresponds to the properties of the Ackley function.
 
 # %%
-covarianceModel = ot.SquaredExponential([1.0] * dim, [0.5])
+covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 1.5)
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
@@ -153,6 +153,8 @@ fexact
 
 # %%
 graph = result.drawOptimalValueHistory()
+optimum_curve = ot.Curve(ot.Sample([[0, fexact[0]], [9, fexact[0]]]))
+graph.add(optimum_curve)
 view = viewer.View(graph)
 
 # %%
@@ -260,7 +262,7 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-covarianceModel = ot.SquaredExponential([1.0] * dim, [1.0])
+covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 1.5)
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 
