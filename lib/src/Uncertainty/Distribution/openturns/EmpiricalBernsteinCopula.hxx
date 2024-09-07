@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EMPIRICALBERNSTEINCOPULA_HXX
 #define OPENTURNS_EMPIRICALBERNSTEINCOPULA_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * made from the empirical compula and a Bernstein approximation
  */
 class OT_API EmpiricalBernsteinCopula
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

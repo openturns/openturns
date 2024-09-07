@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RICE_HXX
 #define OPENTURNS_RICE_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Rice distribution.
  */
 class OT_API Rice
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

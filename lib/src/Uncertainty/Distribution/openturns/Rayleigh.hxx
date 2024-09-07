@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RAYLEIGH_HXX
 #define OPENTURNS_RAYLEIGH_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Rayleigh distribution.
  */
 class OT_API Rayleigh
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

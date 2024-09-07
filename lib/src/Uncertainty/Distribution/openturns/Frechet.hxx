@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FRECHET_HXX
 #define OPENTURNS_FRECHET_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Frechet distribution.
  */
 class OT_API Frechet
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTDISTRIBUTION_HXX
 #define OPENTURNS_PRODUCTDISTRIBUTION_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Pointer.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The ProductDistribution distribution.
  */
 class OT_API ProductDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

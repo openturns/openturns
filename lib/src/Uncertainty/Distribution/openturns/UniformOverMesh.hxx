@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIFORMOVERMESH_HXX
 #define OPENTURNS_UNIFORMOVERMESH_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The UniformOverMesh distribution.
  */
 class OT_API UniformOverMesh
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

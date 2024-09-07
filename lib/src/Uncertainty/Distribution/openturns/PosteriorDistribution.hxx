@@ -22,7 +22,7 @@
 #define OPENTURNS_POSTERIORDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The PosteriorDistribution distribution.
  */
 class OT_API PosteriorDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

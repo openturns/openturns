@@ -34,7 +34,7 @@ static const Factory<InverseChiSquare> Factory_InverseChiSquare;
 
 /* Default constructor */
 InverseChiSquare::InverseChiSquare()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(1.0)
   , normalizationFactor_(0.0)
 {
@@ -45,7 +45,7 @@ InverseChiSquare::InverseChiSquare()
 
 /* Parameters constructor */
 InverseChiSquare::InverseChiSquare(const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
@@ -320,7 +320,7 @@ Description InverseChiSquare::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void InverseChiSquare::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -328,7 +328,7 @@ void InverseChiSquare::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseChiSquare::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
   computeRange();

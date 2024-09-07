@@ -22,7 +22,7 @@
 #define OPENTURNS_JOINTBYCONDITIONINGDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Function.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The JointByConditioningDistribution distribution.
  */
 class OT_API JointByConditioningDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 

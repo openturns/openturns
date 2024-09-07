@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CHISQUARE_HXX
 #define OPENTURNS_CHISQUARE_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The ChiSquare distribution.
  */
 class OT_API ChiSquare
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

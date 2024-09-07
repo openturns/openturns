@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
 #define OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A subclass for elliptical usual distributions.
  */
 class OT_API EllipticalDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 

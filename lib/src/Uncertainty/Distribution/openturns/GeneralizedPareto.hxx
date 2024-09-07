@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GENERALIZEDPARETO_HXX
 #define OPENTURNS_GENERALIZEDPARETO_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Pareto.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The GeneralizedPareto distribution.
  */
 class OT_API GeneralizedPareto
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

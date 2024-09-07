@@ -35,7 +35,7 @@ static const Factory<LogNormal> Factory_LogNormal;
 
 /* Default constructor */
 LogNormal::LogNormal()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(0.0)
@@ -56,7 +56,7 @@ LogNormal::LogNormal()
 LogNormal::LogNormal(const Scalar muLog,
                      const Scalar sigmaLog,
                      const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(gamma)
@@ -479,7 +479,7 @@ Scalar LogNormal::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void LogNormal::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "muLog_", muLog_ );
   adv.saveAttribute( "sigmaLog_", sigmaLog_ );
   adv.saveAttribute( "gamma_", gamma_ );
@@ -490,7 +490,7 @@ void LogNormal::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LogNormal::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "muLog_", muLog_ );
   adv.loadAttribute( "sigmaLog_", sigmaLog_ );
   adv.loadAttribute( "gamma_", gamma_ );

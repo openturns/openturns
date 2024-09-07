@@ -33,7 +33,7 @@ static const Factory<LogUniform> Factory_LogUniform;
 
 /* Default constructor */
 LogUniform::LogUniform()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , aLog_(-1.0)
   , bLog_(1.0)
   , a_(std::exp(-1.0))
@@ -47,7 +47,7 @@ LogUniform::LogUniform()
 /* Parameters constructor */
 LogUniform::LogUniform(const Scalar aLog,
                        const Scalar bLog)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , aLog_(aLog)
   , bLog_(bLog)
   , a_(std::exp(aLog_))
@@ -340,7 +340,7 @@ Scalar LogUniform::getBLog() const
 /* Method save() stores the object through the StorageManager */
 void LogUniform::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "aLog_", aLog_ );
   adv.saveAttribute( "bLog_", bLog_ );
   adv.saveAttribute( "a_", a_ );
@@ -350,7 +350,7 @@ void LogUniform::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LogUniform::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "aLog_", aLog_ );
   adv.loadAttribute( "bLog_", bLog_ );
   adv.loadAttribute( "a_", a_ );

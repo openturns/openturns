@@ -41,7 +41,7 @@ static const Factory<TruncatedOverMesh> Factory_TruncatedOverMesh;
 
 /* Default constructor */
 TruncatedOverMesh::TruncatedOverMesh()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("TruncatedOverMesh");
   setMesh(RegularGrid(0.0, 1.0, 2));
@@ -49,7 +49,7 @@ TruncatedOverMesh::TruncatedOverMesh()
 
 /* Parameters constructor */
 TruncatedOverMesh::TruncatedOverMesh(const Distribution & distribution, const Mesh & mesh)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , distribution_(distribution)
 {
   setName("TruncatedOverMesh");
@@ -191,7 +191,7 @@ Point TruncatedOverMesh::getRealization() const
 /* Get a sample of the distribution */
 Sample TruncatedOverMesh::getSample(const UnsignedInteger size) const
 {
-  return ContinuousDistribution::getSample(size);
+  return DistributionImplementation::getSample(size);
 }
 
 
@@ -332,7 +332,7 @@ Mesh TruncatedOverMesh::getMesh() const
 /* Method save() stores the object through the StorageManager */
 void TruncatedOverMesh::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "mesh_", mesh_ );
 }
@@ -340,7 +340,7 @@ void TruncatedOverMesh::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TruncatedOverMesh::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   Mesh mesh;
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "mesh_", mesh );

@@ -22,7 +22,7 @@
 #define OPENTURNS_HISTOGRAM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/PersistentObject.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Histogram distribution.
  */
 class OT_API Histogram
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 

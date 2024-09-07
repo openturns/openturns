@@ -22,7 +22,7 @@
 #define OPENTURNS_INVERSEWISHART_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/TriangularMatrix.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The InverseWishart distribution.
  */
 class OT_API InverseWishart
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

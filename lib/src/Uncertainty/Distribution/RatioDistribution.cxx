@@ -35,7 +35,7 @@ static const Factory<RatioDistribution> Factory_RatioDistribution;
 
 /* Default constructor */
 RatioDistribution::RatioDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , left_(Uniform(0.0, 1.0))
   , right_(Uniform(0.0, 1.0))
 {
@@ -48,7 +48,7 @@ RatioDistribution::RatioDistribution()
 /* Parameters constructor to use when the two bounds are finite */
 RatioDistribution::RatioDistribution(const Distribution & left,
                                      const Distribution & right)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , left_()
   , right_()
 {
@@ -297,7 +297,7 @@ Complex RatioDistribution::computeCharacteristicFunction(const Scalar x) const
   const Scalar varLeft = left_.getCovariance()(0, 0);
   const Scalar varRight = right_.getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return Complex(1.0, -x * muLeft * muRight);
-  if (std::abs(x) > ResourceMap::GetAsScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
+  if (std::abs(x) > ResourceMap::GetAsScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return DistributionImplementation::computeCharacteristicFunction(x);
   const Scalar aLeft = left_.getRange().getLowerBound()[0];
   const Scalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
@@ -421,7 +421,7 @@ Bool RatioDistribution::isIntegral() const
 /* Method save() stores the object through the StorageManager */
 void RatioDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "left_", left_ );
   adv.saveAttribute( "right_", right_ );
 }
@@ -429,7 +429,7 @@ void RatioDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void RatioDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "left_", left_ );
   adv.loadAttribute( "right_", right_ );
   computeRange();

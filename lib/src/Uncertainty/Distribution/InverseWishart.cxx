@@ -35,7 +35,7 @@ static const Factory<InverseWishart> Factory_InverseWishart;
 
 /* Default constructor */
 InverseWishart::InverseWishart()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
@@ -46,7 +46,7 @@ InverseWishart::InverseWishart()
 /* Parameters constructor */
 InverseWishart::InverseWishart(const CovarianceMatrix & v,
                                const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(-1.0) // implies nu_ != nu: see setNu
 {
   setName("InverseWishart");
@@ -214,7 +214,7 @@ Scalar InverseWishart::computeCDF(const Point & point) const
     return 0.0;
   if (point[0] > getRange().getUpperBound()[0])
     return 1.0;
-  return ContinuousDistribution::computeCDF(point);
+  return DistributionImplementation::computeCDF(point);
 }
 
 /* Compute the mean of the distribution */
@@ -409,7 +409,7 @@ void InverseWishart::update()
 /* Method save() stores the object through the StorageManager */
 void InverseWishart::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
@@ -419,7 +419,7 @@ void InverseWishart::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseWishart::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );

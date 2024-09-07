@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NONCENTRALSTUDENT_HXX
 #define OPENTURNS_NONCENTRALSTUDENT_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The NonCentralStudent distribution.
  */
 class OT_API NonCentralStudent
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

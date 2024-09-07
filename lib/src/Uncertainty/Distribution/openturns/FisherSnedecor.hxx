@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FISHERSNEDECOR_HXX
 #define OPENTURNS_FISHERSNEDECOR_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Fisher-Snedecor distribution.
  */
 class OT_API FisherSnedecor
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

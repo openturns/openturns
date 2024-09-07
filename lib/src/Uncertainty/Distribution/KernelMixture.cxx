@@ -35,7 +35,7 @@ static const Factory<KernelMixture> Factory_KernelMixture;
 
 /* Default constructor */
 KernelMixture::KernelMixture()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , p_kernel_(Distribution().getImplementation())
   , bandwidth_(0)
   , bandwidthInverse_(0)
@@ -55,7 +55,7 @@ KernelMixture::KernelMixture()
 KernelMixture::KernelMixture(const Distribution & kernel,
                              const Point & bandwidth,
                              const Sample & sample)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , p_kernel_(kernel.getImplementation())
   , bandwidth_(0)
   , bandwidthInverse_(0)
@@ -76,7 +76,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   setBandwidth(bandwidth);
   if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
   {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
+    // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = coll[0];
     cdfApproximation_ = coll[1];
@@ -158,7 +158,7 @@ void KernelMixture::setInternalSample(const Sample & sample)
   computeRange();
   if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
   {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
+    // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = coll[0];
     cdfApproximation_ = coll[1];
@@ -872,7 +872,7 @@ Bool KernelMixture::hasIndependentCopula() const
 /* Method save() stores the object through the StorageManager */
 void KernelMixture::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "kernel_", Distribution(p_kernel_) );
   adv.saveAttribute( "bandwidth_", bandwidth_ );
   adv.saveAttribute( "bandwidthInverse_", bandwidthInverse_ );
@@ -888,7 +888,7 @@ void KernelMixture::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KernelMixture::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   Distribution kernel;
   adv.loadAttribute( "kernel_", kernel );
   p_kernel_ = kernel.getImplementation();

@@ -33,7 +33,7 @@ static const Factory<VonMises> Factory_VonMises;
 
 /* Default constructor */
 VonMises::VonMises()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , kappa_(0.0)
   , normalizationFactor_(0.0)
@@ -49,7 +49,7 @@ VonMises::VonMises()
 /* Parameters constructor */
 VonMises::VonMises(const Scalar mu,
                    const Scalar kappa)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , kappa_(0.0)
   , normalizationFactor_(0.0)
@@ -251,7 +251,7 @@ Description VonMises::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void VonMises::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "kappa_", kappa_ );
 }
@@ -265,7 +265,7 @@ Bool VonMises::isElliptical() const
 /* Method load() reloads the object from the StorageManager */
 void VonMises::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "kappa_", kappa_ );
   update();

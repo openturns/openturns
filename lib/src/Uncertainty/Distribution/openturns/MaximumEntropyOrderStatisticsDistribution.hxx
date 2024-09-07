@@ -22,7 +22,7 @@
 #define OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GaussKronrod.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The maximum entropy order statistics distribution
  */
 class OT_API MaximumEntropyOrderStatisticsDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 

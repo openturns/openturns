@@ -39,7 +39,7 @@ static const Factory<MaximumEntropyOrderStatisticsDistribution> Factory_MaximumE
 
 /* Default constructor */
 MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("MaximumEntropyOrderStatisticsDistribution");
   DistributionCollection coll({Uniform(-1.0, 0.5), Uniform(-0.5, 1.0)});
@@ -56,7 +56,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
 MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribution(const DistributionCollection & coll,
     const Bool useApprox,
     const Bool checkMarginals)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , distributionCollection_(coll)
 {
   setName("MaximumEntropyOrderStatisticsDistribution");
@@ -75,7 +75,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
     const Bool useApprox,
     const Collection<PiecewiseHermiteEvaluation> & exponentialFactorApproximation,
     const Description & description)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , distributionCollection_(coll)
   , partition_(partition)
   , useApproximation_(useApprox)
@@ -998,14 +998,14 @@ Description MaximumEntropyOrderStatisticsDistribution::getParameterDescription()
 /* Method save() stores the object through the StorageManager */
 void MaximumEntropyOrderStatisticsDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute("distributionCollection_", distributionCollection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MaximumEntropyOrderStatisticsDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   DistributionPersistentCollection coll;
   adv.loadAttribute("distributionCollection_", coll);
   setDistributionCollection(coll);

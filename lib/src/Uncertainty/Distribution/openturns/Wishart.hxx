@@ -22,7 +22,7 @@
 #define OPENTURNS_WISHART_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/TriangularMatrix.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Wishart distribution.
  */
 class OT_API Wishart
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

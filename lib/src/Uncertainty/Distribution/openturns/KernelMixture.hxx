@@ -22,7 +22,7 @@
 #define OPENTURNS_KERNELMIXTURE_HXX
 
 #include "openturns/Distribution.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of KernelMixture.
  */
 class OT_API KernelMixture
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
