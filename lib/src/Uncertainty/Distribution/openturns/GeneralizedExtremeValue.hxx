@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The GeneralizedExtremeValue distribution.
  */
 class OT_API GeneralizedExtremeValue
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

@@ -22,7 +22,7 @@
 #define OPENTURNS_LOGISTIC_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Logistic distribution.
  */
 class OT_API Logistic
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

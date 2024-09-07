@@ -38,7 +38,7 @@ static const Factory<Dirichlet> Factory_Dirichlet;
 
 /* Default constructor */
 Dirichlet::Dirichlet()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , theta_(0)
   , sumTheta_(0.0)
   , normalizationFactor_(0.0)
@@ -53,7 +53,7 @@ Dirichlet::Dirichlet()
 
 /* Parameters constructor */
 Dirichlet::Dirichlet(const Point & theta)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , theta_(0)
   , sumTheta_(0.0)
   , normalizationFactor_(0.0)
@@ -700,7 +700,7 @@ Description Dirichlet::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void Dirichlet::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "theta_", theta_ );
   adv.saveAttribute( "sumTheta_", sumTheta_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -709,7 +709,7 @@ void Dirichlet::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Dirichlet::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "theta_", theta_ );
   adv.loadAttribute( "sumTheta_", sumTheta_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );

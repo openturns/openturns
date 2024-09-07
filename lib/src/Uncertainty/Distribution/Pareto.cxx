@@ -33,7 +33,7 @@ static const Factory<Pareto> Factory_Pareto;
 
 /* Default constructor */
 Pareto::Pareto()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(1.0)
   , alpha_(1.0)
   , gamma_(0.0)
@@ -47,7 +47,7 @@ Pareto::Pareto()
 Pareto::Pareto(const Scalar beta,
                const Scalar alpha,
                const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(beta)
   , alpha_(1.0)
   , gamma_(gamma)
@@ -365,7 +365,7 @@ Scalar Pareto::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void Pareto::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "gamma_", gamma_ );
@@ -374,7 +374,7 @@ void Pareto::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Pareto::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "gamma_", gamma_ );

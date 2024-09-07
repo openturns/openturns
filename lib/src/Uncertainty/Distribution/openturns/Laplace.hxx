@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LAPLACE_HXX
 #define OPENTURNS_LAPLACE_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Laplace distribution.
  */
 class OT_API Laplace
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

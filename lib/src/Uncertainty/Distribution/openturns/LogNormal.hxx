@@ -22,7 +22,7 @@
 #define OPENTURNS_LOGNORMAL_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The LogNormal distribution.
  */
 class OT_API LogNormal
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

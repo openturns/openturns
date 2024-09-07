@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_WEIBULLMIN_HXX
 #define OPENTURNS_WEIBULLMIN_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The WeibullMin distribution.
  */
 class OT_API WeibullMin
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

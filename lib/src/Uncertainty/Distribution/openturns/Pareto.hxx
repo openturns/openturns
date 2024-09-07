@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PARETO_HXX
 #define OPENTURNS_PARETO_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Pareto distribution.
  */
 class OT_API Pareto
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

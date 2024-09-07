@@ -35,7 +35,7 @@ static const Factory<Epanechnikov> Factory_Epanechnikov;
 
 /* Default constructor */
 Epanechnikov::Epanechnikov()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("Epanechnikov");
   setDimension(1);
@@ -236,13 +236,13 @@ Description Epanechnikov::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void Epanechnikov::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Epanechnikov::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

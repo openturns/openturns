@@ -35,7 +35,7 @@ static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , sigma_(1.0)
   , a_(-1.0)
@@ -62,7 +62,7 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
                                  const Scalar sigma,
                                  const Scalar a,
                                  const Scalar b)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(mu)
   , sigma_(0.0)
   , a_(a)
@@ -673,7 +673,7 @@ Scalar TruncatedNormal::getB() const
 /* Method save() stores the object through the StorageManager */
 void TruncatedNormal::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "a_", a_ );
@@ -690,7 +690,7 @@ void TruncatedNormal::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TruncatedNormal::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "a_", a_ );

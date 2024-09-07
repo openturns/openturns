@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_BETA_HXX
 #define OPENTURNS_BETA_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Beta distribution.
  */
 class OT_API Beta
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

@@ -22,7 +22,7 @@
 #define OPENTURNS_INVERSEGAMMA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The InverseGamma distribution.
  */
 class OT_API InverseGamma
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

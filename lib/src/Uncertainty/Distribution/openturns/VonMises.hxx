@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_VONMISES_HXX
 #define OPENTURNS_VONMISES_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The VonMises distribution.
  */
 class OT_API VonMises
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TRUNCATEDOVERMESH_HXX
 #define OPENTURNS_TRUNCATEDOVERMESH_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The TruncatedOverMesh distribution.
  */
 class OT_API TruncatedOverMesh
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

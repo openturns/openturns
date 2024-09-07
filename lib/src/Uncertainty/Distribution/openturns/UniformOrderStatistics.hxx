@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIFORMORDERSTATISTICS_HXX
 #define OPENTURNS_UNIFORMORDERSTATISTICS_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/MeshDomain.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The UniformOrderStatistics distribution.
  */
 class OT_API UniformOrderStatistics
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

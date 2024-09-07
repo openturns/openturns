@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIFORM_HXX
 #define OPENTURNS_UNIFORM_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Uniform distribution.
  */
 class OT_API Uniform
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

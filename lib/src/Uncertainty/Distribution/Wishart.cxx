@@ -35,7 +35,7 @@ static const Factory<Wishart> Factory_Wishart;
 
 /* Default constructor */
 Wishart::Wishart()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , cholesky_()
   , nu_(1.0)
 {
@@ -48,7 +48,7 @@ Wishart::Wishart()
 /* Parameters constructor */
 Wishart::Wishart(const CovarianceMatrix & v,
                  const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , cholesky_()
   , nu_(-1.0)
 {
@@ -210,7 +210,7 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar Wishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return ContinuousDistribution::computeCDF(point);
+  return DistributionImplementation::computeCDF(point);
 }
 
 /* Compute the mean of the distribution */
@@ -407,7 +407,7 @@ void Wishart::update()
 /* Method save() stores the object through the StorageManager */
 void Wishart::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
@@ -416,7 +416,7 @@ void Wishart::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Wishart::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );

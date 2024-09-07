@@ -40,7 +40,7 @@ SquaredNormal::SquaredNormal()
 
 /* Constructor */
 SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
-  : ContinuousDistribution(), mu_(mu), sigma_(sigma)
+  : DistributionImplementation(), mu_(mu), sigma_(sigma)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "The standard deviation must be > 0 sigma=" << sigma;
   setName("SquaredNormal");
@@ -218,7 +218,7 @@ Scalar SquaredNormal::getSigma() const
 /* Method save() stores the object through the StorageManager */
 void SquaredNormal::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "sigma_", sigma_ );
 }
@@ -226,7 +226,7 @@ void SquaredNormal::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SquaredNormal::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "sigma_", sigma_ );
   computeRange();

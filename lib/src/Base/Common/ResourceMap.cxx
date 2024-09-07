@@ -1596,9 +1596,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
 
-  // ContinuousDistribution parameters //
-  addAsUnsignedInteger("ContinuousDistribution-DefaultIntegrationNodesNumber", 256);
-
   // DiscreteDistribution parameters //
   addAsScalar("DiscreteDistribution-SupportEpsilon", 1.0e-14);
 

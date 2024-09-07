@@ -40,7 +40,7 @@ static const Factory<JointByConditioningDistribution> Factory_JointByConditionin
 
 /* Default constructor */
 JointByConditioningDistribution::JointByConditioningDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   const SymbolicFunction linkFunction(Description({"y0"}), Description({"y0", "y0 + 1"}));
   setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
@@ -52,7 +52,7 @@ JointByConditioningDistribution::JointByConditioningDistribution()
 JointByConditioningDistribution::JointByConditioningDistribution(const Distribution & conditionedDistribution,
                                      const Distribution & conditioningDistribution,
                                      const Function & linkFunction0)
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
   if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
@@ -506,7 +506,7 @@ void JointByConditioningDistribution::computeCovariance() const
 /* Method save() stores the object through the StorageManager */
 void JointByConditioningDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "conditionedDistribution_", conditionedDistribution_ );
   adv.saveAttribute( "conditioningDistribution_", conditioningDistribution_ );
   adv.saveAttribute( "linkFunction_", linkFunction_ );
@@ -515,7 +515,7 @@ void JointByConditioningDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void JointByConditioningDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "conditionedDistribution_", conditionedDistribution_ );
   adv.loadAttribute( "conditioningDistribution_", conditioningDistribution_ );
   adv.loadAttribute( "linkFunction_", linkFunction_ );

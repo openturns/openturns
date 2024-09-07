@@ -222,7 +222,7 @@ Scalar Student::computeCDF(const Point & point) const
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return ContinuousDistribution::computeCDF(point);
+    return DistributionImplementation::computeCDF(point);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
@@ -270,7 +270,7 @@ Scalar Student::computeProbability(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   if (interval.isEmpty()) return 0.0;
-  // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
+  // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the DistributionImplementation upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval
   /* General case */
@@ -282,7 +282,7 @@ Scalar Student::computeProbability(const Interval & interval) const
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return ContinuousDistribution::computeProbability(interval);
+    return DistributionImplementation::computeProbability(interval);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");

@@ -22,7 +22,7 @@
 #define OPENTURNS_BURR_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Burr distribution.
  */
 class OT_API Burr
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

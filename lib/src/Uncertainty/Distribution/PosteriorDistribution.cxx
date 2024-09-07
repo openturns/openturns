@@ -37,7 +37,7 @@ static const Factory<PosteriorDistribution> Factory_PosteriorDistribution;
 
 /* Default constructor */
 PosteriorDistribution::PosteriorDistribution()
-  : ContinuousDistribution(),
+  : DistributionImplementation(),
     deconditionedDistribution_(),
     observations_()
 {
@@ -52,7 +52,7 @@ PosteriorDistribution::PosteriorDistribution()
 /* Parameters constructor */
 PosteriorDistribution::PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
     const Sample & observations)
-  : ContinuousDistribution(),
+  : DistributionImplementation(),
     deconditionedDistribution_(),
     observations_(observations)
 {
@@ -135,7 +135,7 @@ Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
   // FIXME: computeExpectation seems to incorrectly compute the CDF of the prior
   if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
-    return ContinuousDistribution::computeCDF(point);
+    return DistributionImplementation::computeCDF(point);
 
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -308,7 +308,7 @@ void PosteriorDistribution::computeCovariance() const
 /* Method save() stores the object through the StorageManager */
 void PosteriorDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
   adv.saveAttribute( "observations_", observations_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
@@ -317,7 +317,7 @@ void PosteriorDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void PosteriorDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
   adv.loadAttribute( "observations_", observations_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );

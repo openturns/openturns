@@ -35,7 +35,7 @@ static const Factory<NonCentralChiSquare> Factory_NonCentralChiSquare;
 /* Default constructor */
 NonCentralChiSquare::NonCentralChiSquare(const Scalar nu,
     const Scalar lambda)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , lambda_(0.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
@@ -266,7 +266,7 @@ UnsignedInteger NonCentralChiSquare::getMaximumIteration() const
 /* Method save() stores the object through the StorageManager */
 void NonCentralChiSquare::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "maximumIteration_", maximumIteration_ );
@@ -275,7 +275,7 @@ void NonCentralChiSquare::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NonCentralChiSquare::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "maximumIteration_", maximumIteration_ );

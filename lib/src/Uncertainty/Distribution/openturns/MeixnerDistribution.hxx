@@ -22,7 +22,7 @@
 #define OPENTURNS_MEIXNERDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The MeixnerDistribution distribution.
  */
 class OT_API MeixnerDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

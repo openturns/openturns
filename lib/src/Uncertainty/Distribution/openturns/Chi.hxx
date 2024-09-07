@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CHI_HXX
 #define OPENTURNS_CHI_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Chi distribution.
  */
 class OT_API Chi
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

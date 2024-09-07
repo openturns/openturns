@@ -34,7 +34,7 @@ static const Factory<Chi> Factory_Chi;
 
 /* Default constructor */
 Chi::Chi()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
@@ -46,7 +46,7 @@ Chi::Chi()
 
 /* Parameters constructor */
 Chi::Chi(const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
@@ -310,7 +310,7 @@ Description Chi::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void Chi::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -318,7 +318,7 @@ void Chi::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Chi::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
   update();

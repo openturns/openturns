@@ -31,7 +31,7 @@ static const Factory<GeneralizedExtremeValue> Factory_GeneralizedExtremeValue;
 
 /* Default constructor */
 GeneralizedExtremeValue::GeneralizedExtremeValue()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , actualDistribution_(Gumbel(1.0, 0.0))
   , mu_(0.0)
   , sigma_(1.0)
@@ -45,7 +45,7 @@ GeneralizedExtremeValue::GeneralizedExtremeValue()
 GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
     const Scalar sigma,
     const Scalar xi)
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("GeneralizedExtremeValue");
   setMuSigmaXi(mu, sigma, xi);
@@ -55,7 +55,7 @@ GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
 
 /* Parameters constructor to use when the two bounds are finite */
 GeneralizedExtremeValue::GeneralizedExtremeValue(const Distribution & distribution)
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("GeneralizedExtremeValue");
   setActualDistribution(distribution);
@@ -587,7 +587,7 @@ Gumbel GeneralizedExtremeValue::asGumbel() const
 /* Method save() stores the object through the StorageManager */
 void GeneralizedExtremeValue::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "xi_", xi_ );
@@ -597,7 +597,7 @@ void GeneralizedExtremeValue::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void GeneralizedExtremeValue::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "xi_", xi_ );

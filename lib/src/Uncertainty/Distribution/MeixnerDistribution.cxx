@@ -39,7 +39,7 @@ static const Factory<MeixnerDistribution> Factory_MeixnerDistribution;
 
 /* Default constructor */
 MeixnerDistribution::MeixnerDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , solver_(new TNC())
   , beta_(0.0)
   , alpha_(0.0)
@@ -59,7 +59,7 @@ MeixnerDistribution::MeixnerDistribution(const Scalar beta,
     const Scalar alpha,
     const Scalar delta,
     const Scalar mu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , solver_(new TNC())
   , beta_(0.0)
   , alpha_(0.0)
@@ -649,7 +649,7 @@ Bool MeixnerDistribution::isElliptical() const
 /* Method save() stores the object through the StorageManager */
 void MeixnerDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "delta_", delta_ );
@@ -660,7 +660,7 @@ void MeixnerDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MeixnerDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "delta_", delta_ );

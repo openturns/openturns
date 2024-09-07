@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EPANECHNIKOV_HXX
 #define OPENTURNS_EPANECHNIKOV_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Epanechnikov distribution.
  */
 class OT_API Epanechnikov
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

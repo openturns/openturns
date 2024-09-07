@@ -43,7 +43,7 @@ static const Factory<EllipticalDistribution> Factory_EllipticalDistribution;
 
 /* Default constructor */
 EllipticalDistribution::EllipticalDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , sigma_(1, 1.0)
   , R_(1)
 {
@@ -55,7 +55,7 @@ EllipticalDistribution::EllipticalDistribution(const Point & mu,
     const Point & sigma,
     const CorrelationMatrix & R,
     const Scalar covarianceScalingFactor)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , sigma_(sigma)
   , R_(R)
   , covarianceScalingFactor_(covarianceScalingFactor)
@@ -855,7 +855,7 @@ Description EllipticalDistribution::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void EllipticalDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "mu_", mean_ );
@@ -866,7 +866,7 @@ void EllipticalDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EllipticalDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
   if (adv.hasAttribute("mean_duplicate"))

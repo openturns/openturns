@@ -34,7 +34,7 @@ static const Factory<Exponential> Factory_Exponential;
 
 /* Default constructor */
 Exponential::Exponential()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , lambda_(1.0)
   , gamma_(0.0)
 {
@@ -46,7 +46,7 @@ Exponential::Exponential()
 /* Parameters constructor */
 Exponential::Exponential(const Scalar lambda,
                          const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , lambda_(0.0)
   , gamma_(gamma)
 {
@@ -348,7 +348,7 @@ void Exponential::computeRange()
 /* Method save() stores the object through the StorageManager */
 void Exponential::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "gamma_", gamma_ );
 }
@@ -356,7 +356,7 @@ void Exponential::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Exponential::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "gamma_", gamma_ );
   computeRange();

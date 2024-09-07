@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LOGUNIFORM_HXX
 #define OPENTURNS_LOGUNIFORM_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The LogUniform distribution.
  */
 class OT_API LogUniform
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

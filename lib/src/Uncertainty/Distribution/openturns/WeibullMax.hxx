@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_WEIBULLMAX_HXX
 #define OPENTURNS_WEIBULLMAX_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The WeibullMax distribution.
  */
 class OT_API WeibullMax
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

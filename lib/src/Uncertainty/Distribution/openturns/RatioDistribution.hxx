@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RATIODISTRIBUTION_HXX
 #define OPENTURNS_RATIODISTRIBUTION_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The RatioDistribution distribution.
  */
 class OT_API RatioDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:

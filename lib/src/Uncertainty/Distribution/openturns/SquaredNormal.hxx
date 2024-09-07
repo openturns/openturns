@@ -22,7 +22,7 @@
 #define OPENTURNS_SQUAREDNORMAL_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The SquaredNormal (gaussian) distribution.
  */
 class OT_API SquaredNormal
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
 
   CLASSNAME

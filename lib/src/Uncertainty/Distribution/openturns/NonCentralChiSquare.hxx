@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NONCENTRALCHISQUARE_HXX
 #define OPENTURNS_NONCENTRALCHISQUARE_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The NonCentralChiSquare distribution.
  */
 class OT_API NonCentralChiSquare
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
