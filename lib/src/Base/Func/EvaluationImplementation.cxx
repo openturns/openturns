@@ -657,7 +657,7 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   return grid;
 }
 
-/** Draw the cross-cuts of the function suposed to have 1D output (vMin and vMax are calculated) */
+/** Draw the cross-cuts of the function supposed to have 1D output (vMin and vMax are calculated) */
 GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   const Point& xMin,
   const Point& xMax,

@@ -271,7 +271,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> dist = ot.Distribution(ot.Normal(2., 3.))
->>> dist.getPDF().draw(-4,8)"
+>>> graph = dist.getPDF().draw(-4,8)"
 
 // ---------------------------------------------------------------------
 
@@ -287,4 +287,5 @@ Examples
 --------
 >>> import openturns as ot
 >>> dist = ot.Distribution(ot.Normal(2., 3.))
->>> dist.getCDF().draw(-4,8)"
+>>> graph = dist.getCDF().draw(-4,8)
+"

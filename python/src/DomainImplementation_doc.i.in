@@ -105,10 +105,10 @@ Examples
 >>> U = ot.Uniform(-3, 4)
 >>> dist = ot.JointDistribution([U, U, U])
 >>> sample = dist.getSample(200)
->>> grid = f.draw(sample)
+>>> grid = domain.draw(sample)
 >>> View(grid).show()"
 %enddef
-%feature("docstring") OT::Domain::draw
+%feature("docstring") OT::DomainImplementation::draw
 OT_Domain_draw_doc
 
 // ---------------------------------------------------------------------

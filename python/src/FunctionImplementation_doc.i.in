@@ -743,9 +743,9 @@ OT_Function_draw_doc
 "Draw the 2D and 1D cross cuts of a 1D output function as a :class:`~openturns.GridLayout`.
 
 Available usages:
-    drawCrssCuts(*centralPoint, xiMin, xiMax, ptNb, withMonoDimCuts, isFilled*)
+    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, withMonoDimCuts, isFilled*)
 
-    drawCrssCuts(*centralPoint, xiMin, xiMax, ptNb, vMin, vMax, withMonoDimCuts, isFilled*)
+    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, vMin, vMax, withMonoDimCuts, isFilled*)
 
 Parameters
 ----------
