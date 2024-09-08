@@ -56,7 +56,7 @@ type : str
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.GetType('DiscreteDistribution-SupportEpsilon')
+>>> ot.ResourceMap.GetType('Distribution-SupportEpsilon')
 'float'"
 
 // ---------------------------------------------------------------------
@@ -76,7 +76,7 @@ value : str
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.Set('DiscreteDistribution-SupportEpsilon', '1.0e-14')
+>>> ot.ResourceMap.Set('Distribution-SupportEpsilon', '1.0e-14')
 "
 
 // ---------------------------------------------------------------------

@@ -22,7 +22,7 @@
 #define OPENTURNS_MULTINOMIAL_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Multinomial distribution.
  */
 class OT_API Multinomial
-  : public DiscreteDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -45,9 +45,17 @@ public:
   Multinomial(const UnsignedInteger n,
               const Point & p);
 
+  /** Tell if the distribution is continuous */
+  Bool isContinuous() const override;
+
+  /** Tell if the distribution is discrete */
+  Bool isDiscrete() const override;
+
+  /** Tell if the distribution is integer valued */
+  Bool isIntegral() const override;
 
   /** Comparison operator */
-  using DiscreteDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Multinomial & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -70,18 +78,18 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the distribution */
-  using DiscreteDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using DiscreteDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the survival function of the distribution */
-  using DiscreteDistribution::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -97,7 +105,7 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Get the i-th marginal distribution */
-  using DiscreteDistribution::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */

@@ -26,7 +26,6 @@
 %include DistributionFactoryImplementation.i
 %include DistributionFactory.i
 %include EllipticalDistribution.i
-%include DiscreteDistribution.i
 %include ArchimedeanCopula.i
 %include SklarCopula.i
 

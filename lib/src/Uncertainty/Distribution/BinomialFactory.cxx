@@ -20,7 +20,7 @@
  */
 #include "openturns/BinomialFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -69,7 +69,7 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
   Scalar var = 0.0;
   Scalar sum = 0.0;
   UnsignedInteger upperBound = 0;
-  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);

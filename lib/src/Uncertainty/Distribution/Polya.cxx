@@ -34,7 +34,7 @@ static const Factory<Polya> Factory_Polya;
 
 /* Default constructor */
 Polya::Polya()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , r_(1.0)
   , p_(0.5)
 {
@@ -47,7 +47,7 @@ Polya::Polya()
 /* Parameters constructor */
 Polya::Polya(const Scalar r,
                                    const Scalar p)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , r_(r)
   , p_(p)
 {
@@ -57,6 +57,24 @@ Polya::Polya(const Scalar r,
   setP(p);
   setDimension( 1 );
   computeRange();
+}
+
+/* Tell if the distribution is continuous */
+Bool Polya::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Polya::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Polya::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -350,7 +368,7 @@ Complex Polya::computeLogGeneratingFunction(const Complex & z) const
 /* Method save() stores the object through the StorageManager */
 void Polya::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "r_", r_ );
   adv.saveAttribute( "p_", p_ );
 }
@@ -358,7 +376,7 @@ void Polya::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Polya::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "r_", r_ );
   adv.loadAttribute( "p_", p_ );
   computeRange();

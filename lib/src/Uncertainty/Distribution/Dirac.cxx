@@ -33,7 +33,7 @@ static const Factory<Dirac> Factory_Dirac;
 
 /* Default constructor */
 Dirac::Dirac()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , point_(1, 0.0)
 {
   setName("Dirac");
@@ -44,7 +44,7 @@ Dirac::Dirac()
 
 /* Parameters constructor */
 Dirac::Dirac(const Scalar p)
-  : DiscreteDistribution()
+  : DistributionImplementation()
 {
   setName("Dirac");
   // We set the dimension of the Dirac distribution
@@ -55,13 +55,31 @@ Dirac::Dirac(const Scalar p)
 
 /* Parameters constructor */
 Dirac::Dirac(const Point & point)
-  : DiscreteDistribution()
+  : DistributionImplementation()
 {
   setName( "Dirac" );
   // We set the dimension of the Dirac distribution
   setDimension(point.getDimension());
   setPoint(point);
   computeRange();
+}
+
+/* Tell if the distribution is continuous */
+Bool Dirac::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Dirac::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Dirac::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -368,14 +386,14 @@ Bool Dirac::hasIndependentCopula() const
 /* Method save() stores the object through the StorageManager */
 void Dirac::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "point_", point_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Dirac::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "point_", point_ );
 }
 

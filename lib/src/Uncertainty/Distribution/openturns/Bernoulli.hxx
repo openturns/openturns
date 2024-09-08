@@ -22,7 +22,7 @@
 #define OPENTURNS_BERNOULLI_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Bernoulli distribution.
  */
 class OT_API Bernoulli
-  : public DiscreteDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -43,8 +43,17 @@ public:
   /** Parameters constructor */
   explicit Bernoulli(const Scalar p);
 
+  /** Tell if the distribution is continuous */
+  Bool isContinuous() const override;
+
+  /** Tell if the distribution is discrete */
+  Bool isDiscrete() const override;
+
+  /** Tell if the distribution is integer valued */
+  Bool isIntegral() const override;
+
   /** Comparison operator */
-  using DiscreteDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Bernoulli & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -64,19 +73,19 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using DiscreteDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using DiscreteDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDFGradient of the distribution */
-  using DiscreteDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
-  using DiscreteDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the entropy of the distribution */

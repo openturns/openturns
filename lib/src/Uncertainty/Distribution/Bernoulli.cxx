@@ -33,7 +33,7 @@ static const Factory<Bernoulli> Factory_Bernoulli;
 
 /* Default constructor */
 Bernoulli::Bernoulli()
-  : DiscreteDistribution(),
+  : DistributionImplementation(),
     p_(0.5)
 {
   setName( "Bernoulli" );
@@ -44,7 +44,7 @@ Bernoulli::Bernoulli()
 
 /* Parameters constructor */
 Bernoulli::Bernoulli(const Scalar p)
-  : DiscreteDistribution(),
+  : DistributionImplementation(),
     p_(-1.0)
 {
   setName( "Bernoulli" );
@@ -52,6 +52,24 @@ Bernoulli::Bernoulli(const Scalar p)
   setP(p);
   // We set the dimension of the Bernoulli distribution
   setDimension( 1 );
+}
+
+/* Tell if the distribution is continuous */
+Bool Bernoulli::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Bernoulli::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Bernoulli::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -282,14 +300,14 @@ void Bernoulli::computeRange()
 /* Method save() stores the object through the StorageManager */
 void Bernoulli::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "p_", p_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Bernoulli::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "p_", p_ );
 }
 

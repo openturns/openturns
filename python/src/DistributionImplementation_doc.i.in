@@ -3572,3 +3572,29 @@ Examples
 %enddef
 %feature("docstring") OT::DistributionImplementation::drawLowerExtremalDependenceFunction
 OT_Distribution_drawLowerExtremalDependenceFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSupportEpsilon_doc
+"Accessor to the support tolerance for discrete distributions.
+
+Returns
+-------
+epsilon : float
+    The support tolerance."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSupportEpsilon
+OT_Distribution_getSupportEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setSupportEpsilon_doc
+"Accessor to the support tolerance for discrete distributions.
+
+Parameters
+----------
+epsilon : float
+    The support tolerance."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setSupportEpsilon
+OT_Distribution_setSupportEpsilon_doc
