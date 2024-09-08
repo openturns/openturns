@@ -459,7 +459,7 @@ Bool MixedHistogramUserDefined::isDiscrete() const
 /* Check if the distribution is integral */
 Bool MixedHistogramUserDefined::isIntegral() const
 {
-  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const UnsignedInteger size = kind_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {

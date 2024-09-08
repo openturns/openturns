@@ -22,7 +22,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -98,7 +98,7 @@ Polya PolyaFactory::buildAsPolya(const Sample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Polya distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = 0.0;
   Scalar var = 0.0;
-  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);

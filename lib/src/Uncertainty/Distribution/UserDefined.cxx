@@ -34,7 +34,7 @@ static const Factory<UserDefined> Factory_UserDefined;
 
 /* Default constructor */
 UserDefined::UserDefined()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , points_(1, 1)
   , probabilities_(1, 1.0)
   , cumulativeProbabilities_(1, 1.0)
@@ -48,7 +48,7 @@ UserDefined::UserDefined()
 
 /* Constructor from a sample */
 UserDefined::UserDefined(const Sample & sample)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , points_(0, 0)
   , probabilities_(0)
   , cumulativeProbabilities_(0)
@@ -68,7 +68,7 @@ UserDefined::UserDefined(const Sample & sample)
 /* Constructor from a sample and the associated weights */
 UserDefined::UserDefined(const Sample & sample,
                          const Point & weights)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , points_(0, 0)
   , probabilities_(0)
   , cumulativeProbabilities_(0)
@@ -82,6 +82,31 @@ UserDefined::UserDefined(const Sample & sample,
   setData(sample, weights);
   if ((getDimension() == 1) || (sample.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
   if(!sample.getDescription().isBlank()) setDescription(sample.getDescription());
+}
+
+/* Tell if the distribution is continuous */
+Bool UserDefined::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool UserDefined::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool UserDefined::isIntegral() const
+{
+  if (getDimension() != 1) return false;
+  const UnsignedInteger size = points_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar x = points_(i, 0);
+    if (std::abs(x - round(x)) >= supportEpsilon_) return false;
+  }
+  return true;
 }
 
 /* Comparison operator */
@@ -350,19 +375,6 @@ Sample UserDefined::getSupport() const
 Point UserDefined::getProbabilities() const
 {
   return probabilities_;
-}
-
-/* Tell if the distribution is integer valued */
-Bool UserDefined::isIntegral() const
-{
-  if (getDimension() != 1) return false;
-  const UnsignedInteger size = points_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar x = points_(i, 0);
-    if (std::abs(x - round(x)) >= supportEpsilon_) return false;
-  }
-  return true;
 }
 
 /* Compute the mean of the distribution */
@@ -737,7 +749,7 @@ Bool UserDefined::hasIndependentCopula() const
 /* Method save() stores the object through the StorageManager */
 void UserDefined::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "points_", points_ );
   adv.saveAttribute( "probabilities_", probabilities_ );
   adv.saveAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );
@@ -747,7 +759,7 @@ void UserDefined::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void UserDefined::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "points_", points_ );
   adv.loadAttribute( "probabilities_", probabilities_ );
   adv.loadAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );

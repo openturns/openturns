@@ -34,7 +34,7 @@ static const Factory<Hypergeometric> Factory_Hypergeometric;
 
 /* Default constructor */
 Hypergeometric::Hypergeometric()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , n_(0)
   , k_(0)
   , m_(0)
@@ -50,7 +50,7 @@ Hypergeometric::Hypergeometric()
 Hypergeometric::Hypergeometric(const UnsignedInteger n,
                                const UnsignedInteger k,
                                const UnsignedInteger m)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , n_(n)
   , k_(k)
   , m_(m)
@@ -64,6 +64,24 @@ Hypergeometric::Hypergeometric(const UnsignedInteger n,
   computeProbabilities();
   // We set the dimension of the Hypergeometric distribution
   setDimension( 1 );
+}
+
+/* Tell if the distribution is continuous */
+Bool Hypergeometric::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Hypergeometric::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Hypergeometric::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -416,7 +434,7 @@ Scalar Hypergeometric::computeScalarQuantile(const Scalar prob,
 /* Method save() stores the object through the StorageManager */
 void Hypergeometric::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "m_", m_ );
@@ -425,7 +443,7 @@ void Hypergeometric::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Hypergeometric::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "m_", m_ );

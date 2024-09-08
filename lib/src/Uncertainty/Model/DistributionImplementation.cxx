@@ -834,7 +834,7 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
     const DiagonalSurvivalFunctionWrapper diagonalSurvivalFunction(this);
     // Use Brent's method to compute the quantile efficiently for continuous distributions
     const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-    const Scalar solution = solver.solve(diagonalSurvivalFunction, prob, 0.0, 1.0, 1.0, 0.0);//, leftSurvival, rightSurvival);
+    const Scalar solution = solver.solve(diagonalSurvivalFunction, prob, 0.0, 1.0, 1.0, 0.0);
     LOGINFO(OSS(false) << "tau=" << solution);
     marginalProb = 1.0 - solution;
     return Point(getDimension(), solution);
@@ -3703,7 +3703,7 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
     const Bool logScale) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
-  if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (xMax < xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
@@ -3711,7 +3711,7 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
   Graph graphPDF(title, xName, "PDF", true, "topright", 1, scale);
   Point point(2);
-  point[0] = xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const Sample gridY(computePDF(support));
 
   Sample data(0, 2);
@@ -3725,7 +3725,7 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
     point[1] = 0.0;
     data.add(point);
   }
-  point[0] = xMax + ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
   graphPDF.add(Curve(data, "red", "solid", 2, title));
@@ -3958,7 +3958,7 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     const Bool logScale) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
-  if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (xMax < xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
@@ -3966,7 +3966,7 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
   Graph graphLogPDF(title, xName, "PDF", true, "topright", 1, scale);
   Point point(2);
-  point[0] = xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const Sample gridY(computeLogPDF(support));
 
   Sample data(0, 2);
@@ -3980,7 +3980,7 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     point[1] = 0.0;
     data.add(point);
   }
-  point[0] = xMax + ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
   graphLogPDF.add(Curve(data, "red", "solid", 2, title));
@@ -4959,6 +4959,7 @@ void DistributionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "description_", description_ );
   adv.saveAttribute( "isCopula_", isCopula_ );
   adv.saveAttribute( "isParallel_", isParallel_ );
+  adv.saveAttribute( "supportEpsilon_", supportEpsilon_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -4980,6 +4981,8 @@ void DistributionImplementation::load(Advocate & adv)
   adv.loadAttribute( "isCopula_", isCopula_ );
   if (adv.hasAttribute("isParallel_"))
     adv.loadAttribute( "isParallel_", isParallel_ );
+  if (adv.hasAttribute("supportEpsilon_"))
+    adv.loadAttribute( "supportEpsilon_", supportEpsilon_ );
 }
 
 /* Transformation of distributions by usual functions */
@@ -5399,6 +5402,19 @@ void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon
   if (!(quantileEpsilon >= 0.0) || !(quantileEpsilon <= 1.0))
     throw InvalidArgumentException(HERE) << "Quantile epsilon must be in [0, 1] here epsilon=" << quantileEpsilon;
   quantileEpsilon_ = quantileEpsilon;
+}
+
+/* Support tolerance accessor */
+void DistributionImplementation::setSupportEpsilon(const Scalar epsilon)
+{
+  if (!isDiscrete()) throw NotYetImplementedException(HERE) << "Support epsilon defined for discrete distributions only.";
+  supportEpsilon_ = epsilon;
+}
+
+Scalar DistributionImplementation::getSupportEpsilon() const
+{
+  if (!isDiscrete()) throw NotYetImplementedException(HERE) << "Support epsilon defined for discrete distributions only.";
+  return supportEpsilon_;
 }
 
 END_NAMESPACE_OPENTURNS

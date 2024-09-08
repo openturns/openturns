@@ -22,7 +22,7 @@
 #define OPENTURNS_USERDEFINED_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Indices.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The UserDefined distribution.
  */
 class OT_API UserDefined
-  : public DiscreteDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -51,9 +51,17 @@ public:
   UserDefined(const Sample & points,
               const Point & weights);
 
+  /** Tell if the distribution is continuous */
+  Bool isContinuous() const override;
+
+  /** Tell if the distribution is discrete */
+  Bool isDiscrete() const override;
+
+  /** Tell if the distribution is integer valued */
+  Bool isIntegral() const override;
 
   /** Comparison operator */
-  using DiscreteDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const UserDefined & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -77,19 +85,19 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the distribution */
-  using DiscreteDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using DiscreteDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDFGradient of the distribution */
-  using DiscreteDistribution::computePDFGradient;
+  using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
-  using DiscreteDistribution::computeCDFGradient;
+  using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the support of a discrete distribution that intersect a given interval */
@@ -100,9 +108,6 @@ public:
   /** Get the discrete probability levels */
   using DistributionImplementation::getProbabilities;
   Point getProbabilities() const override;
-
-  /** Tell if the distribution is integer valued */
-  Bool isIntegral() const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
@@ -129,7 +134,7 @@ public:
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Merge the identical points of the support */
-  void compactSupport(const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"));
+  void compactSupport(const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon"));
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const override;

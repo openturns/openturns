@@ -975,9 +975,7 @@
   <Distribution-SmallDimensionEntropy             value_int="3"       />
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
-
-  <!-- OT::DiscreteDistribution parameters -->
-  <DiscreteDistribution-SupportEpsilon value_float="1.0e-14" />
+  <Distribution-SupportEpsilon            value_float="1.0e-14" />
   
   <!-- OT::DiscreteMarkovChain parameters -->
   <DiscreteMarkovChain-DOTArcColor value_str="black" />

@@ -34,7 +34,7 @@ static const Factory<DiscreteCompoundDistribution> Factory_DiscreteCompoundDistr
 
 /* Default constructor */
 DiscreteCompoundDistribution::DiscreteCompoundDistribution()
-  : DiscreteDistribution()
+  : DistributionImplementation()
 {
   setName("DiscreteCompoundDistribution");
   setDimension(1);
@@ -44,11 +44,29 @@ DiscreteCompoundDistribution::DiscreteCompoundDistribution()
 /** Constructor using distributions */
 DiscreteCompoundDistribution::DiscreteCompoundDistribution(const Distribution & baseDistribution,
     const Distribution & compoundDistribution)
-  : DiscreteDistribution()
+  : DistributionImplementation()
 {
   setName("DiscreteCompoundDistribution");
   setDimension(1);
   setBaseAndCompoundDistributions(baseDistribution, compoundDistribution);
+}
+
+/* Tell if the distribution is continuous */
+Bool DiscreteCompoundDistribution::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool DiscreteCompoundDistribution::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool DiscreteCompoundDistribution::isIntegral() const
+{
+  return true;
 }
 
 /* Constructs PDF */
@@ -259,7 +277,7 @@ Description DiscreteCompoundDistribution::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void DiscreteCompoundDistribution::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute("baseDistribution_", baseDistribution_);
   adv.saveAttribute("compoundDistribution_", compoundDistribution_);
   adv.saveAttribute("distribution_", distribution_);
@@ -268,7 +286,7 @@ void DiscreteCompoundDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void DiscreteCompoundDistribution::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute("baseDistribution_", baseDistribution_);
   adv.loadAttribute("compoundDistribution_", compoundDistribution_);
   adv.loadAttribute("distribution_", distribution_);

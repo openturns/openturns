@@ -22,7 +22,7 @@
 #define OPENTURNS_KPERMUTATIONSDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The KPermutationsDistribution distribution.
  */
 class OT_API KPermutationsDistribution
-  : public DiscreteDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -46,9 +46,17 @@ public:
   KPermutationsDistribution(const UnsignedInteger k,
                             const UnsignedInteger n);
 
+  /** Tell if the distribution is continuous */
+  Bool isContinuous() const override;
+
+  /** Tell if the distribution is discrete */
+  Bool isDiscrete() const override;
+
+  /** Tell if the distribution is integer valued */
+  Bool isIntegral() const override;
 
   /** Comparison operator */
-  using DiscreteDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const KPermutationsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -69,23 +77,23 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using DiscreteDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using DiscreteDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using DiscreteDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the quantile of the distribution */
-  using DiscreteDistribution::computeQuantile;
+  using DistributionImplementation::computeQuantile;
   Point computeQuantile(const Scalar prob,
                         const Bool tail,
                         Scalar & marginalProb) const override;
 
   /** Get the i-th marginal distribution */
-  using DiscreteDistribution::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */

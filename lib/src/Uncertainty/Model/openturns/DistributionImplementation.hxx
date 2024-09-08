@@ -778,6 +778,10 @@ public:
   Scalar getQuantileEpsilon() const;
   void setQuantileEpsilon(const Scalar quantileEpsilon);
 
+  /** Support tolerance accessor for discrete distributions */
+  void setSupportEpsilon(const Scalar epsilon);
+  Scalar getSupportEpsilon() const;
+
 protected:
   /** Filter identical entries */
   static Description DeduplicateDecription(const Description & description);
@@ -876,6 +880,9 @@ protected:
   /** Optimization for the generating function evaluation */
   mutable Bool isAlreadyCreatedGeneratingFunction_;
   mutable UniVariatePolynomial generatingFunction_;
+
+  /** Tolerance to say if a point is in the support of the distribution */
+  Scalar supportEpsilon_ = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
 
 #ifndef SWIG
 

@@ -33,7 +33,7 @@ static const Factory<Poisson> Factory_Poisson;
 
 /* Default constructor */
 Poisson::Poisson()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , lambda_(1.0)
 {
   setName( "Poisson" );
@@ -44,7 +44,7 @@ Poisson::Poisson()
 
 /* Parameters constructor */
 Poisson::Poisson(const Scalar lambda)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , lambda_(0.0)
 {
   setName( "Poisson" );
@@ -52,6 +52,24 @@ Poisson::Poisson(const Scalar lambda)
   setDimension( 1 );
   // This call set also the range.
   setLambda(lambda);
+}
+
+/* Tell if the distribution is continuous */
+Bool Poisson::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Poisson::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Poisson::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -279,14 +297,14 @@ Scalar Poisson::getLambda() const
 /* Method save() stores the object through the StorageManager */
 void Poisson::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "lambda_", lambda_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Poisson::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "lambda_", lambda_ );
   computeRange();
 }
