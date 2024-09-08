@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.viewer import View
 
 ot.TESTPREAMBLE()
 

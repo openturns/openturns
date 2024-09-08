@@ -8,16 +8,6 @@
 #include "openturns/OTCommon.hxx"
 %}
 
-%pythonbegin %{
-if _swig_python_version_info >= (3, 8, 0):
-    import os
-    for p in os.environ["PATH"].split(';'):
-        try:
-            os.add_dll_directory(p)
-        except:
-            continue
-%}
-
 %include typemaps.i
 %include OTtypes.i
 %include OTexceptions.i
