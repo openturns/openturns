@@ -555,7 +555,7 @@ Graph EvaluationImplementation::draw(const Point & xMin,
   return draw(0, 1, 0, Point(2), xMin, xMax, pointNumber, scale);
 }
 
-/** Draw the cross-cuts of the function suposed to have 1D output */
+/** Draw the cross-cuts of the function supposed to have 1D output */
 GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   const Point& xMin,
   const Point& xMax,
