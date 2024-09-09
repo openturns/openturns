@@ -155,6 +155,9 @@ public:
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
 
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
+
   /** Get the shifted moments of the distribution */
   Point getShiftedMoment(const UnsignedInteger n, const Point & shift) const override;
 
