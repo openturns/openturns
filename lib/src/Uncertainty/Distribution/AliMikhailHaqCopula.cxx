@@ -253,7 +253,12 @@ Point AliMikhailHaqCopula::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computePDFGradient(const Point & point) const";
+  const Scalar u = point[0];
+  const Scalar v = point[1];
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+    return {0.0};
+  else
+    return {(3*(u - 1.0)*(v - 1.0)*(theta_*(theta_*(u - 1.0)*(v - 1.0) + (u + 1.0)*(v + 1.0) - 3.0) + 1.0) + (theta_*(u - 1.0)*(v - 1.0) - 1.0)*(-2*theta_*(u - 1.0)*(v - 1.0) - (u + 1.0)*(v + 1.0) + 3.0))/std::pow(theta_*(u - 1.0)*(v - 1.0) - 1.0, 4.0)};
 }
 
 /* Get the CDFGradient of the distribution */
@@ -262,7 +267,12 @@ Point AliMikhailHaqCopula::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computeCDFGradient(const Point & point) const";
+  const Scalar u = point[0];
+  const Scalar v = point[1];
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+    return {0.0};
+  else
+    return { u * v * (u - 1.0) * (v - 1.0) / std::pow(theta_ * (u - 1.0) * (v - 1.0) - 1.0, 2.0)};
 }
 
 /* Get the quantile of the distribution */
