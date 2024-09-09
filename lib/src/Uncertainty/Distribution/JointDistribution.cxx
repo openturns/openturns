@@ -635,46 +635,61 @@ Scalar JointDistribution::computeProbability(const Interval & interval) const
 /* Get the PDF gradient of the distribution */
 Point JointDistribution::computePDFGradient(const Point & point) const
 {
+  if (!core_.isCopula() || !hasIndependentCopula())
+    return DistributionImplementation::computePDFGradient(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   Point gradient;
-  // First, put the gradient according to marginal parameters
   // The marginal parameters are supposed to be independent from one marginal distribution
   // to the others
-  for (UnsignedInteger i = 0; i < dimension; ++i)
+  Point marginalPDF(dimension);
+  Scalar pdf = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    marginalPDF[i] = distributionCollection_[i].computePDF(point[i]);
+    if (marginalPDF[i] == 0.0)
+      return Point(getParameter().getDimension());
+    pdf *= marginalPDF[i];
+  }
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const Point marginalGradient(distributionCollection_[i].computePDFGradient(Point(1, point[i])));
-    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
-    for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
+    gradient.add(marginalGradient / marginalPDF[i]);
   }
-  const Point coreGradient(core_.computePDFGradient(point));
-  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
-  // Then, put the gradient according to the core parameters
-  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
-  return gradient;
+  return gradient * pdf;
 }
 
 /* Get the CDF gradient of the distribution */
 Point JointDistribution::computeCDFGradient(const Point & point) const
 {
+  if (!core_.isCopula() || !hasIndependentCopula())
+    return DistributionImplementation::computeCDFGradient(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   Point gradient;
-  // First, put the gradient according to marginal parameters
   // The marginal parameters are supposed to be independent from one marginal distribution
   // to the others
+  Point marginalCDF(dimension);
+  Scalar cdf = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    marginalCDF[i] = distributionCollection_[i].computeCDF(point[i]);
+    cdf *= marginalCDF[i];
+  }
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point marginalGradient(distributionCollection_[i].computeCDFGradient(Point(1, point[i])));
-    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
-    for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
+    Point marginalGradient(distributionCollection_[i].getParameter().getDimension());
+    if (marginalCDF[i] > 0.0)
+    {
+      marginalGradient = distributionCollection_[i].computeCDFGradient(Point(1, point[i]));
+      marginalGradient *= cdf / marginalCDF[i];
+    }
+    gradient.add(marginalGradient);
   }
-  const Point coreGradient(core_.computeCDFGradient(point));
-  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
-  // Then, put the gradient according to the core parameters
-  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
   return gradient;
 }
 
