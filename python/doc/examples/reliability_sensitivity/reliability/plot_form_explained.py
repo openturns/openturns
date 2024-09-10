@@ -23,7 +23,7 @@ import numpy as np
 # We consider a bivariate random vector :math:`\inputRV = (X_1, X_2)` with the following independent components that follow:
 #
 # - the exponential distribution with parameter :math:`\lambda=1`, :math:`X_1 \sim \mathcal{E}(1.0)` ;
-# - the standard unit gaussian :math:`X_2 \sim \mathcal{N}(0,1)`.
+# - the standard unit normal distribution :math:`X_2 \sim \mathcal{N}(0,1)`.
 #
 # The support of the input vector is :math:`[0, +\infty[ \times \mathbb{R}`
 dist_X1 = ot.Exponential(1.0)
@@ -34,7 +34,7 @@ dist_X = ot.JointDistribution([dist_X1, dist_X2])
 # %%
 # We can draw the isolines of the PDF of the distribution `dist_X`:
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
-graph_PDF = dist_X.drawPDF([0.0, -10], [20, 10])
+graph_PDF = dist_X.drawPDF([0.0, -10.0], [20.0, 10.0])
 graph_PDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
 graph_PDF.setXTitle(r"$x_1$")
 graph_PDF.setYTitle(r"$x_2$")
@@ -69,8 +69,7 @@ view = otv.View(graph_model, square_axes=True)
 #   Y = \model(\inputRV)
 #
 # We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event.
-# This probability is simply expressed as the following integral for a continuous random vector
-# :math:`\inputRV`:
+# This probability is simply expressed for a continuous random vector :math:`\inputRV` as:
 #
 # .. math::
 #    :label: PfDef
@@ -280,7 +279,6 @@ graph_standard_space = g_tilde.draw([0.0, 0.0], [7.0, 7.0], [101] * 2)
 draw_boundary_stand_space = graph_standard_space.getDrawable(0)
 draw_boundary_stand_space.setLevels([s])
 draw_boundary_stand_space.setLegend(r"Boundary $\partial \mathcal{\tilde{D}}$")
-draw_boundary_stand_space.setColor("blue")
 graph_standard_space.setDrawables([draw_boundary_stand_space])
 
 graph_standard_space.setXTitle(r"$z_1$")
@@ -373,7 +371,7 @@ view = otv.View(graph_standard_space, square_axes=True)
 # The FORM approximation
 # ^^^^^^^^^^^^^^^^^^^^^^
 #
-# The last step of the FORM algorithm is to replace the failure domain by the hyperplane
+# The last step of the FORM algorithm is to replace the failure domain boundary by the hyperplane
 # which is tangent to the failure domain at the design point in the standard space.
 # To draw this hyperplane :math:`\mathcal{P}_{\vect{z}^*}`, we define the function from
 # :math:`\Rset^2` to :math:`\Rset` defined by:

@@ -14,8 +14,7 @@ orthogonalBasis : :class:`~openturns.OrthogonalBasis`
 maximumDimension : positive int
     Maximum index of the basis function that can be used by the :class:`~openturns.EnumerateFunction`.
 maximumSize : positive int, :math:`maximumSize \leq maximumDimension`
-    Maximum
-    number of functions used in the meta model.
+    Maximum number of functions used in the meta model.
     Its default value is the `CleaningStrategy-DefaultMaximumSize` key of
     the :class:`~openturns.ResourceMap`.
 significanceFactor : float 
@@ -49,14 +48,14 @@ The method proceeds as follows:
 
 - Generate an initial PC basis made of the *maximumSize* first functions
   (according to the adopted :class:`~openturns.EnumerateFunction`), or
-  equivalently an initial set of indices :math:`\cK = \{0, \ldots, \textrm{maximumSize} - 1\}`.
+  equivalently an initial set of indices :math:`\cK = \{0, \ldots, maximumSize - 1\}`.
 
 - Discard from the basis any function :math:`\Psi_j` associated with 
   an insignificant coefficient :math:`a_j`, i.e. such that:
 
 .. math::
 
-    |a_j| \leq \epsilon \times \max_{ k \in \cK, k \neq 0 } |a_k|.
+    |a_j| \leq \epsilon \max_{ k \in \cK, k \neq 0 } |a_k|.
 
 - Add the next function to the current basis :math:`\cK` according to the :class:`~openturns.EnumerateFunction` used.
 - Reiterate the procedure until the first *maximumDimension* functions have been considered.

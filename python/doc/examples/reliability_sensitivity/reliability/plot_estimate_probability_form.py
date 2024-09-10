@@ -13,7 +13,7 @@ Use the FORM - SORM algorithms
 # - the sensitivity factors of the Hasofer reliability index and the FORM probability,
 # - the coordinates of the mean point in the standard event space.
 #
-# See :ref:`FORM <form_approximation>` and :ref:`SORM <sorm_approximation>` and to get more theoretical details.
+# See :ref:`FORM <form_approximation>` and :ref:`SORM <sorm_approximation>` for theoretical details.
 
 # %%
 # Model definition
