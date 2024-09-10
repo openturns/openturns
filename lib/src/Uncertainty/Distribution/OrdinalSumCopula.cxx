@@ -395,24 +395,6 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
   return CorrelationMatrix(tauKendall);
 }
 
-/* Get the PDF gradient of the distribution */
-Point OrdinalSumCopula::computePDFGradient(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computePDFGradient(const Point & point) const";
-}
-
-/* Get the CDF gradient of the distribution */
-Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeCDFGradient(const Point & point) const";
-}
-
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
