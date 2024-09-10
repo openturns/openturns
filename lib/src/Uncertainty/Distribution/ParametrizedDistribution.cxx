@@ -68,6 +68,12 @@ Bool ParametrizedDistribution::equals(const DistributionImplementation & other) 
   return p_other && (*this == *p_other);
 }
 
+/* Get one realization of the distribution */
+Point ParametrizedDistribution::getRealization() const
+{
+  return distribution_.getRealization();
+}
+
 /* Get the DDF of the distribution */
 Point ParametrizedDistribution::computeDDF(const Point & point) const
 {
@@ -87,7 +93,6 @@ Scalar ParametrizedDistribution::computeLogPDF(const Point & point) const
   return distribution_.computeLogPDF(point);
 }
 
-
 /* Get the CDF of the distribution */
 Scalar ParametrizedDistribution::computeCDF(const Point & point) const
 {
@@ -100,6 +105,11 @@ Scalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) co
   return distribution_.computeComplementaryCDF(point);
 }
 
+/* Compute the entropy of the distribution */
+Scalar ParametrizedDistribution::computeEntropy() const
+{
+  return distribution_.computeEntropy();
+}
 
 Complex ParametrizedDistribution::computeCharacteristicFunction(const Scalar x) const
 {
@@ -188,6 +198,24 @@ Bool ParametrizedDistribution::isContinuous() const
   return distribution_.isContinuous();
 }
 
+
+/* Check if the distribution is a copula */
+Bool ParametrizedDistribution::isCopula() const
+{
+  return distribution_.isCopula();
+}
+
+/* Check if the distribution is discrete */
+Bool ParametrizedDistribution::isDiscrete() const
+{
+  return distribution_.isDiscrete();
+}
+
+/* Tell if the distribution is integer valued */
+Bool ParametrizedDistribution::isIntegral() const
+{
+  return distribution_.isIntegral();
+}
 
 /* String converter */
 String ParametrizedDistribution::__repr__() const
