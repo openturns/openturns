@@ -1,4 +1,0 @@
-.. _Optimization:
-
-Optimization
-------------

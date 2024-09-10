@@ -1,4 +1,0 @@
-.. _IterativeStatistics:
-
-Iterative statistics
---------------------
