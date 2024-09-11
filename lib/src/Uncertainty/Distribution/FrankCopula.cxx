@@ -241,7 +241,7 @@ Point FrankCopula::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In FrankCopula::computePDFGradient(const Point & point) const";
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
@@ -250,7 +250,7 @@ Point FrankCopula::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In FrankCopula::computeCDFGradient(const Point & point) const";
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
