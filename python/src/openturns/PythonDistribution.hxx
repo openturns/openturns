@@ -59,6 +59,9 @@ public:
   /** Comparison operator */
   using DistributionImplementation::operator ==;
   Bool operator ==(const PythonDistribution & other) const;
+protected:
+  Bool equals(const DistributionImplementation & other) const override;
+public:
 
   /** String converter */
   String __repr__() const override;

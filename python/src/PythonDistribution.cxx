@@ -118,10 +118,17 @@ PythonDistribution::~PythonDistribution()
 }
 
 /* Comparison operator */
-Bool PythonDistribution::operator ==(const PythonDistribution & ) const
+Bool PythonDistribution::operator ==(const PythonDistribution & other) const
 {
-  return true;
+  return pyObj_ == other.pyObj_;
 }
+
+Bool PythonDistribution::equals(const DistributionImplementation & other) const
+{
+  const PythonDistribution* p_other = dynamic_cast<const PythonDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String PythonDistribution::__repr__() const
