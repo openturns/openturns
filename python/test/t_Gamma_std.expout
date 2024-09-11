@@ -1,27 +1,18 @@
 Distribution  Gamma(k = 1.5, lambda = 2.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.281847]
-oneSample first= [-0.263977]  last= [-0.375541]
-mean= [0.101621]
-covariance= [[ 0.247946 ]]
-Kolmogorov test for the generator, sample size= 100  is  accepted
-Kolmogorov test for the generator, sample size= 1000  is  accepted
+oneRealization= [0.0406965]
 Point=  [1]
 ddf     = [-0.278355]
-ddf (FD)= -0.278355
 log pdf= -2.05205
 pdf     =0.128471
-pdf (FD)=0.128471
 cdf= 0.942442
 ccdf= 0.0575585
 survival= 0.0575585
 characteristic function=(0.892418, 0.0632527)
 log characteristic function=(-0.111315, 0.0707596)
 pdf gradient     = [0.16512,-0.115624,0.278355]
-pdf gradient (FD)= [0.16512,-0.115624,0.278355]
 cdf gradient     = [-0.0875625,0.0770828,-0.128471]
-cdf gradient (FD)= [-0.0875625,0.0770828,-0.128471]
 quantile= [1.06295]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.429631]
@@ -50,27 +41,18 @@ kurtosis= [7]
 Distribution  Gamma(k = 15, lambda = 2.5, gamma = 0)
 Elliptical =  False
 Continuous =  True
-oneRealization= [6.03324]
-oneSample first= [4.73401]  last= [3.93099]
-mean= [6.02305]
-covariance= [[ 2.44857 ]]
-Kolmogorov test for the generator, sample size= 100  is  accepted
-Kolmogorov test for the generator, sample size= 1000  is  accepted
+oneRealization= [5.84498]
 Point=  [1]
 ddf     = [1.00845e-05]
-ddf (FD)= 1.00845e-05
 log pdf= -13.9469
 pdf     =8.76911e-07
-pdf (FD)=8.76911e-07
 cdf= 6.91531e-08
 ccdf= 1
 survival= 1
 characteristic function=(0.275588, -0.178824)
 log characteristic function=(-1.11315, 5.7076)
 pdf gradient     = [-1.54166e-06,4.38456e-06,-1.00845e-05]
-pdf gradient (FD)= [-1.54166e-06,4.38456e-06,-1.00845e-05]
 cdf gradient     = [-1.26959e-07,3.50764e-07,-8.76911e-07]
-cdf gradient (FD)= [-1.26959e-07,3.50764e-07,-8.76911e-07]
 quantile= [8.75459]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.69853]

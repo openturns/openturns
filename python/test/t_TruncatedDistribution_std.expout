@@ -14,9 +14,7 @@ cdf=0.178195
 ccdf=0.821805
 cdf (ref)=0.178195
 pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
 cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
@@ -53,10 +51,10 @@ Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[2.69199]
-oneSample first= class=Point name=Unnamed dimension=1 values=[2.79367]  last= class=Point name=Unnamed dimension=1 values=[1.76978]
-mean= class=Point name=Unnamed dimension=1 values=[2.64435]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.23607]
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.59149]
+oneSample first= class=Point name=Unnamed dimension=1 values=[3.14189]  last= class=Point name=Unnamed dimension=1 values=[2.75486]
+mean= class=Point name=Unnamed dimension=1 values=[2.6524]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.22045]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf      = class=Point name=Unnamed dimension=1 values=[0.0747934]
 ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0747934]
@@ -66,9 +64,7 @@ cdf=0.156452
 ccdf=0.843548
 cdf (ref)=0.156452
 pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.170682,-0.135523,0.0958891]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.170682,-0.135523,0.0958891,0]
 cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.0962429,-0.0480282,-0.240327]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0962429,-0.0480282,-0.240327,0]
 quantile= class=Point name=Unnamed dimension=1 values=[4.67299]
 quantile= class=Point name=Unnamed dimension=1 values=[4.67299]
 cdf(quantile)=0.950000
@@ -105,10 +101,10 @@ Standard representative= TruncatedNormal(mu = -0.98995, sigma = 0.0150754, a = -
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[2.38239]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.09659]  last= class=Point name=Unnamed dimension=1 values=[0.440643]
-mean= class=Point name=Unnamed dimension=1 values=[1.72507]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.64216]
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.45549]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.632917]  last= class=Point name=Unnamed dimension=1 values=[0.368086]
+mean= class=Point name=Unnamed dimension=1 values=[1.71713]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.67027]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf      = class=Point name=Unnamed dimension=1 values=[0.0615199]
 ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0615199]
@@ -118,9 +114,7 @@ cdf=0.406521
 ccdf=0.593479
 cdf (ref)=0.406521
 pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.0282122,-0.119643,-0.0333077]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0282122,-0.119643,0,-0.0333077]
 cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.22793,0.157493,-0.0489101]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.22793,0.157493,0,-0.0489101]
 quantile= class=Point name=Unnamed dimension=1 values=[3.64324]
 quantile= class=Point name=Unnamed dimension=1 values=[3.64324]
 cdf(quantile)=0.950000
@@ -157,10 +151,10 @@ Standard representative= TruncatedNormal(mu = 0.980392, sigma = 0.0147059, a = -
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4])
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.19283]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.7907]  last= class=Point name=Unnamed dimension=1 values=[3.44825]
-mean= class=Point name=Unnamed dimension=1 values=[2.35742]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643133]
+oneRealization= class=Point name=Unnamed dimension=1 values=[3.42681]
+oneSample first= class=Point name=Unnamed dimension=1 values=[2.40981]  last= class=Point name=Unnamed dimension=1 values=[3.42199]
+mean= class=Point name=Unnamed dimension=1 values=[2.35555]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.641586]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf      = class=Point name=Unnamed dimension=1 values=[0.0851881]
 ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0851881]
@@ -170,9 +164,7 @@ cdf=0.178195
 ccdf=0.821805
 cdf (ref)=0.178195
 pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
 cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
@@ -211,10 +203,10 @@ Distribution  TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0
 [-0.5, 2])
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=2 values=[0.700632,0.685971]
-oneSample first= class=Point name=Unnamed dimension=2 values=[1.31238,-0.229081]  last= class=Point name=Unnamed dimension=2 values=[0.703041,0.833959]
-mean= class=Point name=Unnamed dimension=2 values=[0.446438,0.447146]
-covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.369052,0.00251245,0.00251245,0.375656]
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.394328,0.761261]
+oneSample first= class=Point name=Unnamed dimension=2 values=[-0.255554,0.136819]  last= class=Point name=Unnamed dimension=2 values=[1.95356,-0.095957]
+mean= class=Point name=Unnamed dimension=2 values=[0.440783,0.449352]
+covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.375687,0.000808423,0.000808423,0.37764]
 Point=  class=Point name=Unnamed dimension=2 values=[1.5,1.5]
 ddf      = class=Point name=Unnamed dimension=2 values=[-0.0562691,-0.0562691]
 ddf (ref)= class=Point name=Unnamed dimension=2 values=[-0.0251622,-0.0251622]
@@ -224,9 +216,7 @@ cdf=0.872574
 ccdf=0.127426
 cdf (ref)=0.870849
 pdf gradient      = class=Point name=Unnamed dimension=9 values=[0.039548,0.0628233,0.039548,0.0628233,0.0844037,0.0197498,0.0197498,-0.00302873,-0.00302873]
-pdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[0.0251622,0.0209685,0.0251622,0.0209685,0.0377433]
 cdf gradient      = class=Point name=Unnamed dimension=9 values=[-0.07807,-0.146682,-0.07807,-0.146682,0,-0.0324012,-0.0324012,-0.0704505,-0.0704505]
-cdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[-0.120865,-0.181297,-0.120865,-0.181297,0]
 quantile= class=Point name=Unnamed dimension=2 values=[1.75438,1.75438]
 quantile= class=Point name=Unnamed dimension=2 values=[1.95451,1.95451]
 cdf(quantile)=0.950000
@@ -253,10 +243,10 @@ Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
 Distribution  TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.89179]
-oneSample first= class=Point name=Unnamed dimension=1 values=[2.8788]  last= class=Point name=Unnamed dimension=1 values=[1.60894]
-mean= class=Point name=Unnamed dimension=1 values=[1.79533]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.422322]
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.23016]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.847165]  last= class=Point name=Unnamed dimension=1 values=[2.09176]
+mean= class=Point name=Unnamed dimension=1 values=[1.78206]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.41974]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf      = class=Point name=Unnamed dimension=1 values=[0.270908]
 ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.270908]
@@ -266,9 +256,7 @@ cdf=0.344184
 ccdf=0.655816
 cdf (ref)=0.344184
 pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.479854,0.0924181,-0.270908,0]
-pdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.479854,0.0924181,-0.270908]
 cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.415009,-0.0795937,-0.553345,0]
-cdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.415009,-0.0795937,-0.553345]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 cdf(quantile)=0.950000

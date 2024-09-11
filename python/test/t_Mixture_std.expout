@@ -10,7 +10,6 @@ mean= class=Point name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.88439,3.99293,0.644831,3.99293,9.41608,2.09091,0.644831,2.09091,1.58061]
 Point=  class=Point name=Unnamed dimension=3 values=[1,1,1]
 ddf     = class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
-ddf (FD)= class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 log pdf=-5.135163
 pdf     =0.005886
 conditional PDF0.184614

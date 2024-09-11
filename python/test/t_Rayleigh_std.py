@@ -20,94 +20,27 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", repr(oneRealization))
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
-
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", repr(point))
 
 # Show PDF and CDF of point
-eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
-print(
-    "ddf (FD)=",
-    repr(
-        ot.Point(
-            1,
-            (
-                distribution.computePDF(point + ot.Point(1, eps))
-                - distribution.computePDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps),
-        )
-    ),
-)
+
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
-print(
-    "pdf (FD)= %.9f"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps),
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CF = distribution.computeCharacteristicFunction(point[0])
 print("characteristic function= (%.12g%+.12gj)" % (CF.real, CF.imag))
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
-PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (
-    ot.Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point)
-    - ot.Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computePDF(
-        point
-    )
-) / (2.0 * eps)
-PDFgrFD[1] = (
-    ot.Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point)
-    - ot.Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computePDF(
-        point
-    )
-) / (2.0 * eps)
-print("pdf gradient (FD)=", repr(PDFgrFD))
+
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (
-    ot.Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point)
-    - ot.Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(
-        point
-    )
-) / (2.0 * eps)
-CDFgrFD[1] = (
-    ot.Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point)
-    - ot.Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(
-        point
-    )
-) / (2.0 * eps)
-print("cdf gradient (FD)=", repr(CDFgrFD))
+
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", repr(quantile))
 print("cdf(quantile)=", distribution.computeCDF(quantile))
@@ -167,3 +100,7 @@ kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 beta = distribution.getBeta()
 print("beta=", beta)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

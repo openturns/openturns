@@ -1009,6 +1009,7 @@ ot_add_python_module(uncertainty uncertainty_module.i
                     )
 
 ot_add_python_module(testing testing_module.i
+                     OTtestcode_doc.i.in
                     )
 
 ot_add_python_module(experimental experimental_module.i

@@ -123,3 +123,9 @@ ott.assert_almost_equal(error[0], 0.0)
 # test getMarginal with full indices
 print(distribution)
 print(distribution.getMarginal([0, 1, 2]))
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()  # slow
+checker.skipCorrelation()  # slow
+checker.run()

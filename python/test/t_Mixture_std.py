@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -57,41 +58,15 @@ print("covariance=", repr(oneSample.computeCovariance()))
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", repr(point))
 
-# Show PDF and CDF of point
-eps = 1e-5
-
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
-# by the finite difference technique
-ddfFD = ot.Point(dimension)
-for i in range(dimension):
-    left = ot.Point(point)
-    left[i] += eps
-    right = ot.Point(point)
-    right[i] -= eps
-    ddfFD[i] = (distribution.computePDF(left) - distribution.computePDF(right)) / (
-        2.0 * eps
-    )
-print("ddf (FD)=", repr(ddfFD))
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-# by the finite difference technique from CDF
-if dimension == 1:
-    print(
-        "pdf (FD)=%.6f"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
 
 x = 0.6
 y = [0.2] * (dimension - 1)
@@ -118,31 +93,10 @@ print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
 assert distribution.computePDFGradient([point]).getDimension() == len(PDFgr)
 print("pdf gradient=", PDFgr)
-# by the finite difference technique
-# PDFgrFD = Point(4)
-# PDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point) -
-#                   Mixture(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
-#     PDFgrFD[1] = (Mixture(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
-#     PDFgrFD[2] = (Mixture(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computePDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
-#     PDFgrFD[3] = (Mixture(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
-# print "pdf gradient (FD)=" , repr(PDFgrFD)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient=", CDFgr)
-# CDFgrFD = Point(4)
-# CDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point) -
-#                   Mixture(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
-#     CDFgrFD[1] = (Mixture(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
-#     CDFgrFD[2] = (Mixture(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
-#     CDFgrFD[3] = (Mixture(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-#                   Mixture(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
-# print "cdf gradient (FD)=",  repr(CDFgrFD)
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -211,6 +165,12 @@ newMixture = ot.Mixture(atoms, weights)
 print("newMixture pdf= %.12g" % newMixture.computePDF(2.5))
 print("atoms kept in mixture=", newMixture.getDistributionCollection())
 print("newMixture=", newMixture)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()  # slow
+checker.skipCorrelation()  # slow
+checker.run()
 
 # check for non stricly increasing CDF: must return the inf of [1, 2]
 distribution = ot.Mixture([ot.Uniform(0.0, 1.0), ot.Uniform(2.0, 3.0)])

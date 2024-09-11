@@ -27,7 +27,6 @@
 #include <string>         // for std::string
 #include <sstream>        // for std::ostringstream
 #include <cstdlib>        // for exit codes
-#include <cstring>        // for strcmp
 
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
@@ -40,6 +39,10 @@
 #include "openturns/Mesh.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
+#include "openturns/Dirac.hxx"
+#include "openturns/FittingTest.hxx"
+#include "openturns/DomainEvent.hxx"
+#include "openturns/ProbabilitySimulationAlgorithm.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -425,6 +428,644 @@ void assert_equal(const T & a, const T & b, const String errMsg = "")
     throw TestFailed(OSS() << "Value " << a << " is not equal to " << b << " " << errMsg);
   }
 }
+
+
+class DistributionChecker
+{
+public:
+  explicit DistributionChecker(const Distribution & distribution)
+  : distribution_(distribution) {}
+
+  void run() const
+  {
+    checkPrint();
+    checkGeneral();
+    checkComparison();
+    checkPDF();
+    checkLogPDF();
+    if (enableCDF_)
+      checkCDF();
+    if (enableDDF_)
+      checkDDF();
+    checkComplementaryCDF();
+    checkSurvival();
+    checkInverseSurvival();
+    checkQuantile();
+    if (enableProbability_)
+      checkProbability();
+    checkFitting();
+    if (enableEntropy_)
+      checkEntropy();
+    checkMoments();
+    if (enableParameters_)
+      checkParameters();
+    if (enableGradient_)
+    {
+      checkPDFGradient();
+      checkCDFGradient();
+    }
+    if (enableMinimumVolumeInterval_)
+      checkMinimumVolumeInterval();
+    if (enableMinimumVolumeLevelSet_)
+      checkMinimumVolumeLevelSet();
+    if (enableConfidenceInterval_)
+      checkConfidenceInterval();
+    if (enableCharacteristicFunction_)
+      checkCharacteristicFunction();
+    if (enableGeneratingFunction_)
+      checkGeneratingFunction();
+  }
+
+  void skipCDF() { enableCDF_ = false; }
+  void skipDDF() { enableDDF_ = false; }
+  void skipMoments() { enableMoments_ = false; }
+  void skipCorrelation() { enableCorrelation_ = false; }
+  void skipMinimumVolumeLevelSet() { enableMinimumVolumeLevelSet_ = false; }
+  void skipMinimumVolumeInterval() { enableMinimumVolumeInterval_ = false; }
+  void skipConfidenceInterval() { enableConfidenceInterval_ = false; }
+  void skipParameters() { enableParameters_ = false; }
+  void skipProbability() { enableProbability_ = false; }
+  void skipCharacteristicFunction() { enableCharacteristicFunction_ = false; }
+  void skipGeneratingFunction() { enableGeneratingFunction_ = false; }
+  void skipGradient() { enableGradient_ = false; }
+  void skipEntropy() { enableEntropy_ = false; }
+  void setEntropyTolerance(const Scalar entropyTolerance) { entropyTolerance_ = entropyTolerance; }
+  void setCDFTolerance(const Scalar cdfTolerance) { cdfTolerance_ = cdfTolerance; }
+  void setPDFTolerance(const Scalar pdfTolerance) { pdfTolerance_ = pdfTolerance; }
+  void setDDFTolerance(const Scalar ddfTolerance) { ddfTolerance_ = ddfTolerance; }
+  void setParameterTolerance(const Scalar parameterTolerance) { parameterTolerance_ = parameterTolerance; }
+  void setQuantileTolerance(const Scalar quantileTolerance) { quantileTolerance_ = quantileTolerance; }
+  void setDomainTolerance(const Scalar domainTolerance) { domainTolerance_ = domainTolerance; }
+  void setEntropySamplingSize(const UnsignedInteger entropySamplingSize) { entropySamplingSize_ = entropySamplingSize; }
+  void setDomainSamplingSize(const UnsignedInteger domainSamplingSize) { domainSamplingSize_ = domainSamplingSize; }
+  void setMeanTolerance (const Scalar meanTolerance) { meanTolerance_ = meanTolerance; }
+  void setStandardDeviationTolerance (const Scalar standardDeviationTolerance) { standardDeviationTolerance_ = standardDeviationTolerance; }
+  void setSkewnessTolerance (const Scalar skewnessTolerance) { skewnessTolerance_ = skewnessTolerance; }
+  void setKurtosisTolerance (const Scalar kurtosisTolerance) { kurtosisTolerance_ = kurtosisTolerance; }
+  void setCorrelationTolerance (const Scalar correlationTolerance) { correlationTolerance_ = correlationTolerance; }
+  void setMomentsSamplingSize(const Scalar momentsSamplingSize) { momentsSamplingSize_ = momentsSamplingSize; }
+  void setPDFSamplingSize(const Scalar pdfSamplingSize) { pdfSamplingSize_ = pdfSamplingSize; }
+  void setCDFSamplingSize(const Scalar cdfSamplingSize) { cdfSamplingSize_ = cdfSamplingSize; }
+  void setFittingSamplingSize(const Scalar fittingSamplingSize) { fittingSamplingSize_ = fittingSamplingSize; }
+
+private:
+
+  void checkPrint() const
+  {
+    LOGTRACE(OSS() << distribution_.__repr__());
+    LOGTRACE(OSS() << distribution_.__str__());
+    LOGTRACE(OSS() << distribution_.__repr_markdown__());
+    LOGTRACE(OSS() << distribution_._repr_html_());
+  }
+  
+  void checkGeneral() const
+  {
+    LOGTRACE(OSS() << "elliptical=" << distribution_.isElliptical());
+    LOGTRACE(OSS() << "continuous=" << distribution_.isContinuous());
+    LOGTRACE(OSS() << "discrete=" << distribution_.isDiscrete());
+    LOGTRACE(OSS() << "integral=" << distribution_.isIntegral());
+    LOGTRACE(OSS() << "copula=" << distribution_.isCopula());
+
+    Distribution standardRep(distribution_.getStandardRepresentative());
+    LOGTRACE(OSS() << "Standard representative=" << standardRep);
+  }
+    
+  void checkGeneratingFunction() const
+  {
+    if (distribution_.isDiscrete() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking generating function...");
+      const Complex z(0.3, 0.7);
+      Complex GF = distribution_.computeGeneratingFunction(z);
+      LOGTRACE(OSS() << "generating function=" << GF);
+      Complex LGF = distribution_.computeLogGeneratingFunction(z);
+      LOGTRACE(OSS() << "log generating function=" << LGF);
+    }
+  }
+
+  void checkCharacteristicFunction() const
+  {
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking characteristic function...");
+      const Scalar t = 0.0;
+      Complex CF = distribution_.computeCharacteristicFunction(t);
+      LOGTRACE(OSS() << "characteristic function=" << CF);
+      assert_almost_equal(CF, Complex(1.0, 0.0));
+      Complex LCF = distribution_.computeLogCharacteristicFunction(t);
+      LOGTRACE(OSS() << "log characteristic function=" << LCF);
+      assert_almost_equal(LCF, Complex(0.0, 0.0));
+    }
+  }
+
+  void checkComparison() const
+  {
+    LOGTRACE(OSS() << "checking comparison operators...");
+    if (!(distribution_ == distribution_))
+      throw TestFailed(OSS() << "operator==(self) failed for " << distribution_);
+    if (distribution_ != distribution_)
+      throw TestFailed(OSS() << "operator==(self) failed for " << distribution_);
+    const Distribution distribution2(distribution_);
+    if (!(distribution2 == distribution_))
+      throw TestFailed(OSS() << "operator==(copy) failed for " << distribution_);
+    if (distribution2 != distribution_)
+      throw TestFailed(OSS() << "operator!=(copy) failed for " << distribution_);
+    const Dirac dirac(42.0);
+    if (distribution_ == dirac)
+      throw TestFailed(OSS() << "operator==(other) failed for " << distribution_);
+    if (!(distribution2 != dirac))
+      throw TestFailed(OSS() << "operator!=(other) failed for " << distribution_);
+  }
+  
+  void checkPDF() const
+  {
+    LOGTRACE(OSS() << "checking PDF...");
+    const Sample sample(distribution_.getSample(pdfSamplingSize_));
+    for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+    {
+      const Point x(sample[i]);
+      const Scalar pdf = distribution_.computePDF(x);
+      LOGTRACE(OSS() << "pdf=" << pdf);
+      if (!(pdf > 0.0))
+        throw TestFailed(OSS() << "pdf(x) failed for " << distribution_);
+    }
+  }
+
+  void checkLogPDF() const
+  {
+    LOGTRACE(OSS() << "checking LogPDF...");
+    const Sample sample(distribution_.getSample(pdfSamplingSize_));
+    for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+    {
+      const Point x(sample[i]);
+      const Scalar lpdf2 = std::log(distribution_.computePDF(x));
+      LOGTRACE(OSS() << "log(pdf)=" << lpdf2);
+      const Scalar lpdf1 = distribution_.computeLogPDF(x);
+      LOGTRACE(OSS() << "logpdf  =" << lpdf1);
+      assert_almost_equal(lpdf1, lpdf2);
+    }
+  }
+
+  void checkCDF() const
+  {
+    LOGTRACE(OSS() << "checking CDF...");
+    // check CDF at bounds
+    const UnsignedInteger dimension = distribution_.getDimension();
+    const Point epsilon(dimension, std::pow(ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon"), 1.0 / 3.0));
+    const Scalar cdflb = distribution_.computeCDF(distribution_.getRange().getLowerBound() - epsilon);
+    LOGTRACE(OSS() << "cdf(lb)=" << cdflb);
+    assert_almost_equal(cdflb, 0.0, cdfTolerance_, cdfTolerance_,  "cdf(lb) " + distribution_.__repr__());
+    const Scalar cdfub = distribution_.computeCDF(distribution_.getRange().getUpperBound() + epsilon);
+    LOGTRACE(OSS() << "cdf(ub)=" << cdfub);
+    assert_almost_equal(cdfub, 1.0, cdfTolerance_, cdfTolerance_,  "cdf(ub) " + distribution_.__repr__());
+
+    if (distribution_.isContinuous() && (dimension == 1))
+    {
+      const Sample sample(distribution_.getSample(cdfSamplingSize_));
+      for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+      {
+        const Point x(sample[i]);
+        const Scalar pdf1 = distribution_.computePDF(x);
+        LOGTRACE(OSS() << "pdf    =" << pdf1);
+        const Scalar cdf1 = distribution_.computeCDF(Point({x[0] + epsilon[0]}));
+        const Scalar cdf2 = distribution_.computeCDF(Point({x[0] - epsilon[0]}));
+        const Scalar pdf2 = (cdf1 - cdf2) / (2.0 * epsilon[0]);
+        LOGTRACE(OSS() << "pdf(fd)=" << pdf2);
+        assert_almost_equal(pdf1, pdf2, pdfTolerance_, pdfTolerance_,  "cdf " + distribution_.__repr__());
+      }
+    }
+  }
+
+  void checkDDF() const
+  {
+    if (distribution_.isContinuous())
+    {
+      LOGTRACE(OSS() << "checking DDF...");
+      const Sample sample(distribution_.getSample(10));
+      const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+      for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+      {
+        const Point x(sample[i]);
+        const Point ddf1 = distribution_.computeDDF(x);
+        LOGTRACE(OSS() << "ddf    =" << ddf1 << " x=" << x);
+        Point ddf2(distribution_.getDimension());
+        if (ddf1.getDimension() != distribution_.getDimension())
+          throw TestFailed(OSS() << "expected ddf of dimension " << distribution_.getDimension() << " got " << ddf1.getDimension() << " for " << distribution_);
+        for (UnsignedInteger j = 0; j < distribution_.getDimension(); ++ j)
+        {
+          Point xp(x);
+          xp[j] += epsilon;
+          const Scalar pdf1 = distribution_.computePDF(xp);
+          Point xm(x);
+          xm[j] -= epsilon;
+          const Scalar pdf2 = distribution_.computePDF(xm);
+          ddf2[j] = (pdf1 - pdf2) / (2.0 * epsilon);
+        }
+        LOGTRACE(OSS() << "ddf(fd)=" << ddf2);
+        assert_almost_equal(ddf1, ddf2, ddfTolerance_, ddfTolerance_, "ddf " + distribution_.__repr__());
+      }
+    }
+  }
+  
+  void checkComplementaryCDF() const
+  {
+    if (distribution_.isContinuous() && !distribution_.isCopula() && (distribution_.getDimension() < 4))
+    {
+      LOGTRACE(OSS() << "checking CCDF...");
+      const Sample sample(distribution_.getSample(5));
+      for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
+      {
+        const Point x(sample[i]);
+        const Scalar ccdf2 = 1.0 - distribution_.computeCDF(x);
+        LOGTRACE(OSS() << " 1-cdf=" << ccdf2);
+        const Scalar ccdf1 = distribution_.computeComplementaryCDF(x);
+        LOGTRACE(OSS() << "  ccdf=" << ccdf1);
+        assert_almost_equal(ccdf1, ccdf2, cdfTolerance_, cdfTolerance_, "ccdf " + distribution_.__repr__());
+      }
+    }
+  }
+  
+  void checkSurvival() const
+  {
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking survival...");
+      const Point x(distribution_.getRealization());
+      const Scalar survival = distribution_.computeSurvivalFunction(x);
+      LOGTRACE(OSS() << "survival=" << survival);
+      const Scalar survival2 = 1.0 - distribution_.computeCDF(x);
+      LOGTRACE(OSS() << "   1-cdf=" << survival2);
+      assert_almost_equal(survival, survival2, cdfTolerance_, cdfTolerance_, "survival " + distribution_.__repr__());
+    }
+  }
+
+  void checkInverseSurvival() const
+  {
+    if (distribution_.isContinuous() && distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking inverse survival...");
+      const Point inverseSurvival(distribution_.computeInverseSurvivalFunction(0.95));
+      const Scalar survival = distribution_.computeSurvivalFunction(inverseSurvival);
+      LOGTRACE(OSS() << "inverseSurvival=" << inverseSurvival << " survival=" << survival);
+      assert_almost_equal(survival, 0.95, quantileTolerance_, quantileTolerance_, "inverse survival " + distribution_.__repr__());
+    }
+  }
+
+  void checkQuantile() const
+  {
+    if (distribution_.isContinuous() && distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking quantile...");
+      const Point quantile1 = distribution_.computeQuantile(0.95);
+      if (!distribution_.getRange().contains(quantile1))
+        throw TestFailed(OSS() << "quantile not in range for " << distribution_);
+      const Scalar cdf1 = distribution_.computeCDF(quantile1);
+      LOGTRACE(OSS() << "quantile=" << quantile1 << " cdf=" << cdf1);
+      assert_almost_equal(cdf1, 0.95, quantileTolerance_, quantileTolerance_, "quantile " + distribution_.__repr__());
+      
+      const Point quantile2 = distribution_.computeQuantile(0.95, true);
+      if (!distribution_.getRange().contains(quantile2))
+        throw TestFailed(OSS() << "quantile not in range for " << distribution_);
+      const Scalar cdf2 = distribution_.computeCDF(quantile2);
+      LOGTRACE(OSS() << "quantile=" << quantile2 << " cdf=" << cdf2);
+      assert_almost_equal(cdf2, 0.05, quantileTolerance_, quantileTolerance_, "quantile(tail) " + distribution_.__repr__());
+    }
+  }
+
+  void checkProbability() const
+  {
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking probability...");
+      const Scalar proba1 = distribution_.computeProbability(distribution_.getRange());
+      LOGTRACE(OSS() << "proba(range)=" << proba1);
+      assert_almost_equal(proba1, 1.0, cdfTolerance_, cdfTolerance_, "proba(range) " + distribution_.__repr__());
+
+      const Scalar proba2 = distribution_.computeProbability(Interval(-SpecFunc::MaxScalar, SpecFunc::MaxScalar));
+      LOGTRACE(OSS() << "proba(R)=" << proba2);
+      assert_almost_equal(proba2, 1.0, cdfTolerance_, cdfTolerance_, "proba(R) " + distribution_.__repr__());
+    }
+  }
+
+  void checkPDFGradient() const
+  {
+    if (!distribution_.isContinuous())
+      return;
+
+    const Point x(distribution_.getRealization());
+    const Point parameter(distribution_.getParameter());
+    LOGTRACE(OSS() << "checking PDF gradient...");
+    const Point pdfGr = distribution_.computePDFGradient(x);
+    LOGTRACE(OSS() << "pdfgrad=    " << pdfGr.__str__() << " x=" << x.__str__() << " params=" << parameter.__str__());
+    if (pdfGr.getDimension() != parameter.getDimension())
+      throw TestFailed(OSS() << "wrong pdfGradient(x) dimension (" << pdfGr.getDimension() << ") expected (" << parameter.getDimension() << ") for " << distribution_);
+    const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+    Point pdfgrfd(parameter.getDimension());
+    for (UnsignedInteger j = 0; j < parameter.getDimension(); ++ j)
+    {
+      Distribution distributionClone(distribution_);
+      Point param1(parameter);
+      param1[j] += epsilon;
+      distributionClone.setParameter(param1);
+      const Scalar pdf1 = distributionClone.computePDF(x);
+      Point param2(parameter);
+      param2[j] -= epsilon;
+      distributionClone.setParameter(param2);
+      const Scalar pdf2 = distributionClone.computePDF(x);
+      pdfgrfd[j] = (pdf1 - pdf2) / (2.0 * epsilon);
+      
+    }
+    LOGTRACE(OSS() << "pdfgrad(fd)=" << pdfgrfd.__str__());
+    assert_almost_equal(pdfGr, pdfgrfd, parameterTolerance_, parameterTolerance_, "wrong pdf gradient for " + distribution_.__repr__());
+  }
+
+  void checkCDFGradient() const
+  {
+    if (!distribution_.isContinuous())
+      return;
+    if (distribution_.getDimension() < 4)
+    {
+      LOGTRACE(OSS() << "checking CDF gradient...");
+      const Point x(distribution_.getRealization());
+      const Point parameter(distribution_.getParameter());
+      const Point cdfGr = distribution_.computeCDFGradient(x);
+      LOGTRACE(OSS() << "cdfgrad=    " << cdfGr.__str__() << " x=" << x.__str__() << " params=" << parameter.__str__());
+      if (cdfGr.getDimension() != parameter.getDimension())
+        throw TestFailed(OSS() << "wrong cdfGradient(x) dimension (" << cdfGr.getDimension() << ") expected (" << parameter.getDimension() << ") for " << distribution_);
+      const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+      Point cdfgrfd(parameter.getDimension());
+      for (UnsignedInteger j = 0; j < parameter.getDimension(); ++ j)
+      {
+        Distribution distributionClone(distribution_);
+        Point param1(parameter);
+        param1[j] += epsilon;
+        distributionClone.setParameter(param1);
+        const Scalar cdf1 = distributionClone.computeCDF(x);
+        Point param2(parameter);
+        param2[j] -= epsilon;
+        distributionClone.setParameter(param2);
+        const Scalar cdf2 = distributionClone.computeCDF(x);
+        cdfgrfd[j] = (cdf1 - cdf2) / (2.0 * epsilon);
+      }
+      LOGTRACE(OSS() << "cdfgrad(fd)=" << cdfgrfd.__str__());
+      assert_almost_equal(cdfGr, cdfgrfd, parameterTolerance_, parameterTolerance_, "wrong cdf gradient for " + distribution_.__repr__());
+    }
+  }
+
+  void checkFitting() const
+  {
+    const Point x = distribution_.getRealization();
+    LOGTRACE(OSS() << "oneRealization=" << x);
+    if (x.getDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "wrong realization dimension for " << distribution_);
+    
+    if (distribution_.isContinuous())
+    {
+      if (!distribution_.getRange().contains(x))
+        throw TestFailed(OSS() << "realization not in range for " << distribution_);
+    }
+    else if (distribution_.isDiscrete())
+    {
+      const Sample support(distribution_.getSupport());
+      if (support.find(x) >= support.getSize())
+        throw TestFailed(OSS() << "realization not in support for " << distribution_);
+    }
+
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking fit with Kolmogorov/ChiSquared ...");
+      UnsignedInteger size = fittingSamplingSize_;
+      // Iteratively increase the sample size.
+      for (UnsignedInteger i = 0; i < 2; ++ i)
+      {
+        Bool accepted = true;
+        if (distribution_.isContinuous())
+          accepted = FittingTest::Kolmogorov(distribution_.getSample(size), distribution_).getBinaryQualityMeasure();
+        else if (distribution_.isDiscrete())
+          accepted = FittingTest::ChiSquared(distribution_.getSample(size), distribution_).getBinaryQualityMeasure();
+        LOGTRACE(OSS() << "Kolmogorov test for size " << size << " accepted=" << accepted);
+        if (!accepted)
+          throw TestFailed(OSS() << "kolmogorov test failed for " << distribution_);
+        size *= 10;
+      }
+    }
+  }
+
+  void checkEntropy() const
+  {
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking entropy...");
+      const Scalar entropy = distribution_.computeEntropy();
+      LOGTRACE(OSS() << "entropy=" << entropy);
+      const Scalar entropyMC  = -distribution_.computeLogPDF(distribution_.getSample(entropySamplingSize_)).computeMean()[0];
+      LOGTRACE(OSS() << "entropy(MC)=" << entropyMC);
+      assert_almost_equal(entropy, entropyMC, entropyTolerance_, entropyTolerance_, "entropy " + distribution_.__repr__());
+    }
+  }
+
+  void checkMoments() const
+  {
+    if (!enableMoments_ && !enableCorrelation_)
+      return;
+
+    LOGTRACE(OSS() << "generating big sample...");
+    const Sample sample(distribution_.getSample(momentsSamplingSize_));
+
+    if (enableMoments_)
+    {
+      LOGTRACE(OSS() << "checking moments...");
+      const Point mean(distribution_.getMean());
+      LOGTRACE(OSS() << "mean    =" << mean);
+      const Point meanMC(sample.computeMean());
+      LOGTRACE(OSS() << "mean(MC)=" << meanMC);
+      assert_almost_equal(mean, meanMC, meanTolerance_, meanTolerance_, "mean " + distribution_.__repr__());
+
+      const Point stddev(distribution_.getStandardDeviation());
+      LOGTRACE(OSS() << "stddev    =" << stddev);
+      const Point stddevMC(sample.computeStandardDeviation());
+      LOGTRACE(OSS() << "stddev(MC)=" << stddevMC);
+      assert_almost_equal(stddev, stddevMC, standardDeviationTolerance_, standardDeviationTolerance_, "stddev " + distribution_.__repr__());
+
+      const Point skewness(distribution_.getSkewness());
+      LOGTRACE(OSS() << "skewness    =" << skewness);
+      const Point skewnessMC(sample.computeSkewness());
+      LOGTRACE(OSS() << "skewness(MC)=" << skewnessMC);
+      assert_almost_equal(skewness, skewnessMC, skewnessTolerance_, skewnessTolerance_, "skewness " + distribution_.__repr__());
+
+      const Point kurtosis(distribution_.getKurtosis());
+      LOGTRACE(OSS() << "kurtosis    =" << kurtosis);
+      const Point kurtosisMC(sample.computeKurtosis());
+      LOGTRACE(OSS() << "kurtosis(MC)=" << kurtosisMC);
+      assert_almost_equal(kurtosis, kurtosisMC, kurtosisTolerance_, kurtosisTolerance_, "kurtosis " + distribution_.__repr__());
+    }
+
+    if (enableCorrelation_)
+    {
+      LOGTRACE(OSS() << "checking correlation...");
+      const CovarianceMatrix covariance(distribution_.getCovariance());
+      LOGTRACE(OSS() << "covariance    =" << covariance);
+      const CovarianceMatrix covarianceMC(sample.computeCovariance());
+      LOGTRACE(OSS() << "covariance(MC)=" << covarianceMC);
+      assert_almost_equal(covariance, covarianceMC, correlationTolerance_, correlationTolerance_, "covariance " + distribution_.__repr__());
+
+      const CorrelationMatrix correlation(distribution_.getCorrelation());
+      LOGTRACE(OSS() << "correlation    =" << correlation);
+      const CorrelationMatrix correlationMC(sample.computeLinearCorrelation());
+      LOGTRACE(OSS() << "correlation(MC)=" << correlationMC);
+      assert_almost_equal(correlation, correlationMC, correlationTolerance_, correlationTolerance_, "correlation " + distribution_.__repr__());
+
+      const CorrelationMatrix spearman(distribution_.getSpearmanCorrelation());
+      LOGTRACE(OSS() << "spearman    =" << spearman);
+      const CorrelationMatrix spearmanMC(sample.computeSpearmanCorrelation());
+      LOGTRACE(OSS() << "spearman(MC)=" << spearmanMC);
+      assert_almost_equal(spearman, spearmanMC, correlationTolerance_, correlationTolerance_, "spearman " + distribution_.__repr__());
+
+      const CorrelationMatrix kendall(distribution_.getKendallTau());
+      LOGTRACE(OSS() << "kendall    =" << kendall);
+      const CorrelationMatrix kendallMC(sample.computeKendallTau());
+      LOGTRACE(OSS() << "kendall(MC)=" << kendallMC);
+      assert_almost_equal(kendall, kendallMC, correlationTolerance_, correlationTolerance_, "kendall " + distribution_.__repr__());
+    }
+  }
+
+  void checkParameters() const
+  {
+    const Point parameter1(distribution_.getParameter());
+    LOGTRACE(OSS() << "parameter =" << parameter1 << " pdim=" << parameter1.getDimension());
+    for (UnsignedInteger j = 0; j < parameter1.getDimension(); ++ j)
+    {
+      Point parameter2(parameter1);
+      parameter2[j] += 1e-2;
+      LOGTRACE(OSS() << "parameter2=" << parameter2);
+      Distribution distribution2(distribution_);
+      distribution2.setParameter(parameter2);
+      Point parameter3(distribution2.getParameter());
+      LOGTRACE(OSS() << "parameter3=" << parameter3);
+      try
+      {
+        assert_almost_equal(parameter3, parameter2);
+      }
+      catch (const TestFailed &)
+      {
+        // try increment integer parameter
+        parameter2 = distribution_.getParameter();
+        parameter2[j] += 1.0;
+        distribution2.setParameter(parameter2);
+        parameter3 = distribution2.getParameter();
+        LOGTRACE(OSS() << "parameter3=" << parameter3);
+        assert_almost_equal(parameter3, parameter2);
+      }
+    }
+
+    const Distribution::PointWithDescriptionCollection parameters(distribution_.getParametersCollection());
+    LOGTRACE(OSS() << "parameters=" << parameters);
+    if (!parameters.getSize())
+      throw TestFailed(OSS() << "null parameter collection size for " << distribution_);
+  }
+  
+  void checkMinimumVolumeInterval() const
+  {
+    if (distribution_.isContinuous() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking min volume interval...");
+      const Scalar probability = 0.9;
+      Scalar threshold = 0.0;
+      Interval interval(distribution_.computeMinimumVolumeIntervalWithMarginalProbability(probability, threshold));
+      LOGTRACE(OSS() << "minvol interval=" << interval);
+      const Scalar computedProbability = distribution_.computeProbability(interval);
+      LOGTRACE(OSS() << "proba(minvol interval)=" << computedProbability);
+      assert_almost_equal(probability, computedProbability, domainTolerance_, domainTolerance_, "proba(minvol interval) " + distribution_.__repr__());
+    }
+  }
+
+  Scalar computeDomainProbabilityMC(const Domain & domain) const
+  {
+    const DomainEvent event(RandomVector(distribution_), domain);
+    ProbabilitySimulationAlgorithm algo(event);
+    algo.setBlockSize(domainSamplingSize_);
+    algo.setMaximumOuterSampling(1);
+    algo.run();
+    return algo.getResult().getProbabilityEstimate();
+  }
+
+  void checkMinimumVolumeLevelSet() const
+  {
+    if (distribution_.isContinuous() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking min volume levelset...");
+      const Scalar probability = 0.9;
+      Scalar threshold = 0.0;
+      LevelSet levelSet(distribution_.computeMinimumVolumeLevelSetWithThreshold(probability, threshold));
+      const Scalar mcProbability = computeDomainProbabilityMC(levelSet);
+      LOGTRACE(OSS() << "proba(minvol levelset)=" << mcProbability);
+      assert_almost_equal(mcProbability, probability, domainTolerance_, domainTolerance_, "proba(minvol levelset) " + distribution_.__repr__());
+    }
+  }
+
+  void checkConfidenceInterval() const
+  {
+    if (distribution_.isContinuous() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking confidence interval...");
+      const Scalar probability = 0.95;
+      Scalar beta = 0.0;
+      const Interval interval1(distribution_.computeBilateralConfidenceIntervalWithMarginalProbability(probability, beta));
+      LOGTRACE(OSS() << "Bilateral confidence interval=" << interval1);
+      const Scalar mcProbability1 = computeDomainProbabilityMC(interval1);
+      LOGTRACE(OSS() << "proba(bilateral)=" << mcProbability1);
+      assert_almost_equal(mcProbability1, probability, domainTolerance_, domainTolerance_, "proba(ci bilateral) " + distribution_.__repr__());
+
+      const Interval interval2(distribution_.computeUnilateralConfidenceIntervalWithMarginalProbability(probability, false, beta));
+      LOGTRACE(OSS() << "Unilateral confidence interval (lower tail)=" << interval2);
+      const Scalar mcProbability2 = computeDomainProbabilityMC(interval2);
+      LOGTRACE(OSS() << "proba(lower tail)=" << mcProbability2);
+      assert_almost_equal(mcProbability2, probability, domainTolerance_, domainTolerance_, "proba(ci lower tail) " + distribution_.__repr__());
+
+      const Interval interval3(distribution_.computeUnilateralConfidenceIntervalWithMarginalProbability(probability, true, beta));
+      LOGTRACE(OSS() << "Unilateral confidence interval (upper tail)=" << interval3);
+      const Scalar mcProbability3 = computeDomainProbabilityMC(interval3);
+      LOGTRACE(OSS() << "proba(upper tail)=" << mcProbability3);
+      assert_almost_equal(mcProbability3, probability, domainTolerance_, domainTolerance_, "proba(ci upper tail) " + distribution_.__repr__());
+    }
+  }
+
+  DistributionChecker() {}
+
+  Distribution distribution_;
+  Bool enableCDF_ = true;
+  Bool enableDDF_ = true;
+  Bool enableMoments_ = true;
+  Scalar meanTolerance_ = 1e-2;
+  Scalar standardDeviationTolerance_ = 1e-2;
+  Scalar skewnessTolerance_ = 1e-1;
+  Scalar kurtosisTolerance_ = 5.0;
+  Bool enableCorrelation_ = true;
+  Scalar correlationTolerance_ = 2e-2;
+  mutable Sample sample_;
+  Bool enableMinimumVolumeInterval_ = true;
+  Bool enableMinimumVolumeLevelSet_ = true;
+  Bool enableConfidenceInterval_ = true;
+  Bool enableParameters_ = true;
+  Bool enableProbability_ = true;
+  Bool enableGeneratingFunction_ = true;
+  Bool enableCharacteristicFunction_ = true;
+  Bool enableGradient_ = true;
+  Bool enableEntropy_ = true;
+  Scalar entropyTolerance_ = 2e-3;
+  Scalar cdfTolerance_ = 1e-5;
+  Scalar pdfTolerance_ = 1e-3;
+  Scalar ddfTolerance_ = 1e-3;
+  Scalar quantileTolerance_ = 1e-5;
+  Scalar parameterTolerance_ = 1e-5;
+  Scalar domainTolerance_ = 1e-2;
+  UnsignedInteger momentsSamplingSize_ = 1000000;
+  UnsignedInteger entropySamplingSize_ = 1000000;
+  UnsignedInteger domainSamplingSize_ = 1000000;
+  UnsignedInteger pdfSamplingSize_ = 10;
+  UnsignedInteger cdfSamplingSize_ = 5;
+  UnsignedInteger fittingSamplingSize_ = 100;
+};
 
 } /* namespace Test */
 

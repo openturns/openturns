@@ -22,7 +22,7 @@ margin PDF=0.241971
 margin CDF=0.158655
 margin quantile= class=Point name=Unnamed dimension=1 values=[1]
 margin realization= class=Point name=Unnamed dimension=1 values=[1.64156]
-indices= [1,0]
+indices= [1, 0]
 margins= class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 margins PDF=0.094354
 margins CDF=0.062514

@@ -6,9 +6,6 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.895308]
-oneSample= class=Sample name=FrankCopula implementation=class=SampleImplementation name=FrankCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.016871],[0.347057,0.945426],[0.92068,0.721499],[0.0632061,0.142503],[0.714382,0.513452],[0.373767,0.654314],[0.883503,0.519404],[0.92851,0.915709],[0.684575,0.864187],[0.359802,0.923248]]
-anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.501102]
-anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0329314,0.0329314,0.0835427]
 Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.449735  cdf=0.073888
 Quantile= class=Point name=Unnamed dimension=2 values=[0.662772,0.662772]
 CDF(quantile)=0.500000
@@ -19,9 +16,9 @@ entropy=-0.079520
 Minimum volume interval= [0.0127327, 0.987267]
 [0.0127327, 0.987267]
 threshold= [0.974535]
-Minimum volume level set= {x | f(x) <= 0.665792} with f=
+Minimum volume level set= {x | f(x) <= 0.662245} with f=
 MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5))
-beta= [0.513866]
+beta= [0.515692]
 Bilateral confidence interval= [0.0127327, 0.987267]
 [0.0127327, 0.987267]
 beta= [0.974535]
@@ -35,16 +32,16 @@ margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.185475]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.28199]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.219923]
-indices= [1,0]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.814497]
+indices= [1, 0]
 margins= class=FrankCopula name=FrankCopula dimension=2 theta=2.5
 margins PDF=1.334391
 margins CDF=0.107307
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.974144,0.974144]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.0964744,0.429225]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.638269,0.49089]

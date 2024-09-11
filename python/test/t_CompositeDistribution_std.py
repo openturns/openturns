@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -26,41 +27,19 @@ oneSample = distribution.getSample(size)
 print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
 print("mean=", oneSample.computeMean())
 print("covariance=", oneSample.computeCovariance())
-# RandomGenerator::SetSeed(0)
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-    size *= 10
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
-eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", DDF)
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     = %.10g" % PDF)
-print(
-    "pdf (FD)= %.10g"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -81,8 +60,6 @@ print(
     "Survival(inverseSurvival)=%.6f"
     % distribution.computeSurvivalFunction(inverseSurvival)
 )
-# Takes too much time
-# print("entropy=%.6f" % distribution.computeEntropy())
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
@@ -146,3 +123,10 @@ function = distribution.getFunction()
 print("function=", function)
 newDistribution = ot.CompositeDistribution(function, antecedent)
 print("newDistribution=", newDistribution)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipEntropy()  # slow
+checker.skipMinimumVolumeInterval()  # wrong proba
+checker.skipMinimumVolumeLevelSet()  # slow
+checker.run()

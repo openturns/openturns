@@ -7,8 +7,6 @@ Elliptical copula=  False
 Independent copula=  False
 oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.901557]
 oneSample= class=Sample name=ClaytonCopula implementation=class=SampleImplementation name=ClaytonCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0526823],[0.347057,0.895953],[0.92068,0.794201],[0.0632061,0.0551566],[0.714382,0.621802],[0.373767,0.583326],[0.883503,0.65348],[0.92851,0.935197],[0.684575,0.88113],[0.359802,0.865943]]
-anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.50134]
-anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0628988,0.0628988,0.0838004]
 Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=3.387901  cdf=0.152117
 Quantile= class=Point name=Unnamed dimension=2 values=[0.618165,0.618165]
 CDF(quantile)=0.500000
@@ -19,9 +17,9 @@ entropy=-0.538461
 Minimum volume interval= [0.0156773, 0.984323]
 [0.0156773, 0.984323]
 threshold= [0.968645]
-Minimum volume level set= {x | f(x) <= 0.816613} with f=
+Minimum volume level set= {x | f(x) <= 0.803102} with f=
 MinimumVolumeLevelSetEvaluation(ClaytonCopula(theta = 2.5))
-beta= [0.441926]
+beta= [0.447937]
 Bilateral confidence interval= [0.0156773, 0.984323]
 [0.0156773, 0.984323]
 beta= [0.968645]
@@ -35,19 +33,19 @@ margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.185475]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.592662]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.219923]
-indices= [1,0]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.744515]
+indices= [1, 0]
 margins= class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2.5
 margins PDF=2.754677
 margins CDF=0.190662
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.973879,0.973879]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.0964744,0.148447]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.0405473,0.0808849]
 ClaytonCopula(theta = 1e-12)
 PDF( [1e-12,1e-12] )=1.000000000709e+00
 CDF( [1e-12,1e-12] )=1.000000000763e-24

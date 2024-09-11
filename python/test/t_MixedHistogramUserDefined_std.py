@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import time
+import openturns.testing as ott
 
 ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
 
@@ -62,6 +62,12 @@ kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 print("Standard representative=", distribution.getStandardRepresentative())
 
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipCorrelation()  # slow
+# checker.skipMinimumVolumeLevelSet()  # slow
+checker.run()
+
 
 # higher dimension
 dim = 8
@@ -74,14 +80,8 @@ x = [3.0] * dim
 x[dim - 2] = 5.0
 bench = 0
 distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
-t0 = time.time()
 print("pdf=%.6g" % distribution.computePDF(x))
-t1 = time.time()
-# print('pdf t=%.6g' % (t1-t0))
-t0 = time.time()
 print("cdf=%.6g" % distribution.computeCDF(x))
-t1 = time.time()
-# print('cdf t=%.6g' % (t1-t0))
 
 # test default ctor
 ot.MixedHistogramUserDefined().getSample(5)
