@@ -1,7 +1,6 @@
 // SWIG file bayesian_module.i
 
 %module(package="openturns", docstring="Bayesian algorithms.") bayesian
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

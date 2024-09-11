@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Deterministic meta-package.") base
 //#pragma SWIG nowarn=314
-//%feature("autodoc","1");
 
 %pythoncode %{
 from openturns.typ import PlatformInfo
