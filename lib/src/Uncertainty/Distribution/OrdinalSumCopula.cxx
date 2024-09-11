@@ -486,9 +486,7 @@ Point OrdinalSumCopula::getParameter() const
   Point point;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
     point.add(copulaCollection_[i].getParameter());
-  }
   return point;
 }
 
@@ -505,6 +503,7 @@ void OrdinalSumCopula::setParameter(const Point & parameter)
     // ith copula parameters
     Point newParameter(atomParametersDimension);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    globalIndex += atomParametersDimension;
     copulaCollection_[i].setParameter(newParameter);
   } // atoms
 }
