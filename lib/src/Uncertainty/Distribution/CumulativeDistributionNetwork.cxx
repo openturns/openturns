@@ -333,6 +333,47 @@ Bool CumulativeDistributionNetwork::hasIndependentCopula() const
   return true;
 }
 
+Point CumulativeDistributionNetwork::getParameter() const
+{
+  Point point;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    point.add(distributionCollection_[i].getParameter());
+  return point;
+}
+
+void CumulativeDistributionNetwork::setParameter(const Point & parameter)
+{
+  UnsignedInteger globalIndex = 0;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
+    const UnsignedInteger atomParametersDimension = distributionCollection_[i].getParameterDimension();
+    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
+    // ith copula parameters
+    Point newParameter(atomParametersDimension);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    distributionCollection_[i].setParameter(newParameter);
+    globalIndex += atomParametersDimension;
+  } // atoms
+}
+
+Description CumulativeDistributionNetwork::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Description parameterDescription(distributionCollection_[i].getParameterDescription());
+    const UnsignedInteger parameterDimension = parameterDescription.getSize();
+    for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
+      description.add(OSS() << parameterDescription[j] << "_distribution_" << i);
+  }
+  return description;
+}
+
 /* Method save() stores the object through the StorageManager */
 void CumulativeDistributionNetwork::save(Advocate & adv) const
 {
