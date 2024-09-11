@@ -898,6 +898,7 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
   // set marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
     distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
+  setDistributionCollection(distributionCollection_);
 }
 
 
@@ -932,6 +933,50 @@ Bool MaximumEntropyOrderStatisticsDistribution::hasEllipticalCopula() const
 Bool MaximumEntropyOrderStatisticsDistribution::hasIndependentCopula() const
 {
   return partition_.getSize() == (getDimension() - 1);
+}
+
+Point MaximumEntropyOrderStatisticsDistribution::getParameter() const
+{
+  Point point;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    point.add(distributionCollection_[i].getParameter());
+  return point;
+}
+
+void MaximumEntropyOrderStatisticsDistribution::setParameter(const Point & parameter)
+{
+  UnsignedInteger globalIndex = 0;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
+    const UnsignedInteger atomParametersDimension = distributionCollection_[i].getParameterDimension();
+    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
+    // ith copula parameters
+    Point newParameter(atomParametersDimension);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    globalIndex += atomParametersDimension;
+    distributionCollection_[i].setParameter(newParameter);
+  } // atoms
+  setDistributionCollection(distributionCollection_);
+}
+
+Description MaximumEntropyOrderStatisticsDistribution::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Description parameterDescription(distributionCollection_[i].getParameterDescription());
+    const UnsignedInteger parameterDimension = parameterDescription.getSize();
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    {
+      description.add(OSS() << parameterDescription[j] << "_copula_" << i);
+    }
+  }
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */
