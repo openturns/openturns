@@ -378,7 +378,7 @@ Point NormalCopula::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In NormalCopula::computePDFGradient(const Point & point) const";
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDF gradient of the distribution */
@@ -386,7 +386,7 @@ Point NormalCopula::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In NormalCopula::computeCDFGradient(const Point & point) const";
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
