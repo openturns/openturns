@@ -242,15 +242,15 @@ Scalar SklarCopula::computeSurvivalFunction(const Point & point) const
 }
 
 /* Get the PDFGradient of the distribution */
-Point SklarCopula::computePDFGradient(const Point & ) const
+Point SklarCopula::computePDFGradient(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In SklarCopula::computePDFGradient(const Point & point) const";
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
-Point SklarCopula::computeCDFGradient(const Point & ) const
+Point SklarCopula::computeCDFGradient(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In SklarCopula::computeCDFGradient(const Point & point) const";
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution
