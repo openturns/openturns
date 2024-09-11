@@ -3,12 +3,8 @@ Distribution  Binomial(n = 15, p = 0.7)
 Elliptical =  False
 Continuous =  False
 oneRealization= class=Point name=Unnamed dimension=1 values=[10]
-oneSample first= class=Point name=Unnamed dimension=1 values=[8]  last= class=Point name=Unnamed dimension=1 values=[12]
-mean= class=Point name=Unnamed dimension=1 values=[10.4842]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.20027]
 Point=  class=Point name=Unnamed dimension=1 values=[5]
 pdf     =0.002980
-pdf (FD)=0.002980
 cdf=0.003653
 quantile= class=Point name=Unnamed dimension=1 values=[13]
 cdf(quantile)=0.964732

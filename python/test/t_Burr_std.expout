@@ -3,20 +3,10 @@ Distribution  Burr(c = 1.5, k = 4.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.393842]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.719504]  last= class=Point name=Unnamed dimension=1 values=[0.257588]
-mean= class=Point name=Unnamed dimension=1 values=[0.383125]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0960551]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0861923]
 pdf     = 0.0267008010312
-pdf (FD)= 0.026700801
 cdf= 0.990836694178
-pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00992994,-0.0219098]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00992994,-0.0219098]
 cdf gradient     = class=Point name=Unnamed dimension=2 values=[0.0108262,0.00955539]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.0108262,0.00955539]
 quantile= class=Point name=Unnamed dimension=1 values=[0.963592]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0508413]

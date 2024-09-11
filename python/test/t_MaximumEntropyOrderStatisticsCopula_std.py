@@ -1,10 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
-
 
 # Force the use of the approximation to avoid timeout
 ot.ResourceMap.SetAsBool(
@@ -48,8 +47,6 @@ print("covariance=", repr(oneSample.computeCovariance()))
 point = ot.Point([0.35, 0.15, 0.02, 0.33])
 print("Point= ", point)
 
-# Show PDF and CDF of point
-eps = 1e-5
 # derivative of PDF with regards its arguments
 DDF = copula.computeDDF(point)
 print("ddf     =", repr(DDF))
@@ -68,30 +65,9 @@ CCDF = copula.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 condCDF = copula.computeConditionalCDF(0.6, point[:3])
 print("condCDF     =%.6f" % condCDF)
-# PDFgr = copula.computePDFGradient(point)
-# print "pdf gradient     =", repr(PDFgr)
-# quantile
 quantile = copula.computeQuantile(0.95)
 print("quantile=", repr(quantile))
 print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
-# Get 95% survival function TAKES TOO MUCH TIME
-# inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
-# print("InverseSurvival=", repr(inverseSurvival))
-# print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
-# Confidence regions
-# threshold = ot.Point()
-# print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
-# print("threshold=", threshold)
-# beta = ot.Point()
-# levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
-# print("Minimum volume level set=", levelSet)
-# print("beta=", beta)
-# print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
-# print("beta=", beta)
-# print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
-# print("beta=", beta)
-# print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
-# print("beta=", beta)
 
 condQuantile = copula.computeConditionalQuantile(0.6, point[:3])
 print("condQuantile     =%.6f" % condQuantile)
@@ -137,3 +113,10 @@ quantile = ot.Point(margins.computeQuantile(0.8))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
+
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.skipMoments()  # slow
+checker.skipCorrelation()  # slow
+checker.run()

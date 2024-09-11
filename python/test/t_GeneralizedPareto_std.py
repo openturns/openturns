@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -31,111 +32,26 @@ for xi in [-0.2, 0.0, 0.2]:
     print("mean=", repr(oneSample.computeMean()))
     print("covariance=", repr(oneSample.computeCovariance()))
 
-    size = 100
-    for i in range(2):
-        msg = ""
-        if ot.FittingTest.Kolmogorov(
-            distribution.getSample(size), distribution
-        ).getBinaryQualityMeasure():
-            msg = "accepted"
-        else:
-            msg = "rejected"
-        print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-        size *= 10
-
     # Define a point
     point = ot.Point(distribution.getDimension(), 1.5)
     print("Point= ", repr(point))
 
-    # Show PDF and CDF of point
-    eps = 1e-5
     # DDF = distribution.computeDDF( point )
     # print "ddf     =", repr(DDF)
-    print(
-        "ddf (FD)=",
-        repr(
-            ot.Point(
-                1,
-                (
-                    distribution.computePDF(point + ot.Point(1, eps))
-                    - distribution.computePDF(point + ot.Point(1, -eps))
-                )
-                / (2.0 * eps),
-            )
-        ),
-    )
+
     PDF = distribution.computePDF(point)
     print("pdf     = %.12g" % PDF)
-    print(
-        "pdf (FD)= %.9f"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps),
-        )
-    )
+
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
     # CF = distribution.computeCharacteristicFunction( point[0] )
     # print "characteristic function=", CF
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
-    PDFgrFD = ot.Point(3)
-    PDFgrFD[0] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma() + eps, distribution.getXi(), distribution.getU()
-        ).computePDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma() - eps, distribution.getXi(), distribution.getU()
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    PDFgrFD[1] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi() + eps, distribution.getU()
-        ).computePDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi() - eps, distribution.getU()
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    PDFgrFD[2] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi(), distribution.getU() + eps
-        ).computePDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi(), distribution.getU() - eps
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    print("pdf gradient (FD)=", repr(PDFgrFD))
+
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
-    CDFgrFD = ot.Point(3)
-    CDFgrFD[0] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma() + eps, distribution.getXi(), distribution.getU()
-        ).computeCDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma() - eps, distribution.getXi(), distribution.getU()
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    CDFgrFD[1] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi() + eps, distribution.getU()
-        ).computeCDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi() - eps, distribution.getU()
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    CDFgrFD[2] = (
-        ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi(), distribution.getU() + eps
-        ).computeCDF(point)
-        - ot.GeneralizedPareto(
-            distribution.getSigma(), distribution.getXi(), distribution.getU() - eps
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    print("cdf gradient (FD)=", repr(CDFgrFD))
+
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=", distribution.computeCDF(quantile))
@@ -194,3 +110,8 @@ for xi in [-0.2, 0.0, 0.2]:
     parameters = distribution.getParametersCollection()
     print("parameters=", repr(parameters))
     print("Standard representative=", distribution.getStandardRepresentative())
+
+    ot.Log.Show(ot.Log.TRACE)
+    ot.RandomGenerator.SetSeed(1)
+    checker = ott.DistributionChecker(distribution)
+    checker.run()

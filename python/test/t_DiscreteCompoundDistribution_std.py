@@ -56,3 +56,8 @@ covariance = distribution.getCovariance()
 print("covariance=", repr(covariance))
 print("Standard representative=", distribution.getStandardRepresentative())
 # print("probabilities=", distribution.getProbabilities())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipParameters()  # see UserDefined
+checker.run()

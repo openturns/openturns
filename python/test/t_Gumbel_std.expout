@@ -3,21 +3,14 @@ Distribution  Gumbel(beta = 0.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[-0.114155]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.54112]  last= class=Point name=Unnamed dimension=1 values=[-0.846682]
-mean= class=Point name=Unnamed dimension=1 values=[-0.20325]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.416712]
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.180043]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.180043]
 log pdf=-2.356640
 pdf     =0.094738
-pdf (FD)=0.094738
 cdf=0.951432
 ccdf=0.048568
 pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
 cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
 quantile= class=Point name=Unnamed dimension=1 values=[0.985098]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.04859]

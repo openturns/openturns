@@ -3,13 +3,9 @@ Distribution  Skellam(lambda1 = 10, lambda2 = 5)
 Elliptical =  False
 Continuous =  False
 oneRealization= [11]
-oneSample first= [11]  last= [7]
-mean= [4.9883]
-covariance= [[ 15.3189 ]]
 Point=  [12]
 log pdf= -3.91245138189
 pdf     = 0.0199914343056
-pdf (FD)= 0.0199914343056
 cdf= 0.971360859022
 ccdf= 0.028639140978
 characteristic function= (-0.0861799503022-0.0425613135496j)

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -99,5 +100,9 @@ for nDistribution in range(len(coll)):
     print(
         "Standard representative=", distribution.getStandardRepresentative().__str__()
     )
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipCorrelation()  # slow
+    checker.run()
     # Additional tests to make codecov happy
     distribution = ot.MarginalDistribution(fullDistribution, 0)

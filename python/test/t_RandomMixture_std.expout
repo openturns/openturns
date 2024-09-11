@@ -12,7 +12,6 @@ Point=  [0.5]
 ddf      =0.0625
 ddf (ref)= [0.0625]
 pdf      =0.156250
-pdf  (FD)=0.156250
 pdf (ref)=0.156250
 cdf      =0.195313
 cdf (ref)=0.195312
@@ -46,15 +45,14 @@ Distribution  class=RandomMixture name=RandomMixture distribution collection=[cl
 Distribution  RandomMixture(Normal(mu = 0, sigma = 1) + Normal(mu = 1, sigma = 2) + Normal(mu = -2, sigma = 2))
 Elliptical =  True
 Continuous =  True
-oneRealization= [2.57239]
-oneSample first= [-7.73611]  last= [0.219605]
-mean= [-1.00692]
-covariance= [[ 9.14206 ]]
+oneRealization= [0.365475]
+oneSample first= [0.298394]  last= [0.350012]
+mean= [-0.982178]
+covariance= [[ 8.8894 ]]
 Point=  [0.5]
 ddf      =-0.019559
 ddf (ref)= [-0.0195592]
 pdf      =0.117355
-pdf  (FD)=0.117355
 pdf (ref)=0.117355
 cdf      =0.691462
 cdf (ref)=0.691462
@@ -88,15 +86,14 @@ Distribution  class=RandomMixture name=RandomMixture distribution collection=[cl
 Distribution  RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
 Elliptical =  False
 Continuous =  True
-oneRealization= [2.3902]
-oneSample first= [1.80165]  last= [5.94924]
-mean= [3.00598]
-covariance= [[ 3.02995 ]]
+oneRealization= [1.58988]
+oneSample first= [2.08211]  last= [2.41078]
+mean= [2.97735]
+covariance= [[ 2.91748 ]]
 Point=  [0.5]
 ddf      =0.22745
 ddf (ref)= [0.227449]
 pdf      =0.075816
-pdf  (FD)=0.075816
 pdf (ref)=0.075816
 cdf      =0.014388
 cdf (ref)=0.014388

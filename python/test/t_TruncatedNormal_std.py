@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -21,66 +22,19 @@ for distribution in [
     oneRealization = distribution.getRealization()
     print("oneRealization=", repr(oneRealization))
 
-    # Test for sampling
-    size = 10000
-    oneSample = distribution.getSample(size)
-    print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-    print("mean=", repr(oneSample.computeMean()))
-    print("covariance=", repr(oneSample.computeCovariance()))
-
-    size = 100
-    for i in range(2):
-        msg = ""
-        if ot.FittingTest.Kolmogorov(
-            distribution.getSample(size), distribution
-        ).getBinaryQualityMeasure():
-            msg = "accepted"
-        else:
-            msg = "rejected"
-        print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-        size *= 10
-
     # Define a point
     point = ot.Point(distribution.getDimension(), 3.5)
     print("Point= ", repr(point))
 
-    # Show PDF and CDF of point
-    eps = 1e-5
-
     # derivative of PDF with regards its arguments
     DDF = distribution.computeDDF(point)
     print("ddf     =", repr(DDF))
-    # by the finite difference technique
-    print(
-        "ddf (FD)=",
-        repr(
-            ot.Point(
-                1,
-                (
-                    distribution.computePDF(point + ot.Point(1, eps))
-                    - distribution.computePDF(point + ot.Point(1, -eps))
-                )
-                / (2.0 * eps),
-            )
-        ),
-    )
 
     # PDF value
     LPDF = distribution.computeLogPDF(point)
     print("log pdf=%.6f" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6f" % PDF)
-    # by the finite difference technique from CDF
-    print(
-        "pdf (FD)=%.6f"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
 
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)
@@ -90,190 +44,14 @@ for distribution in [
 
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
-    # by the finite difference technique
-    PDFgrFD = ot.Point(4)
-    PDFgrFD[0] = (
-        ot.TruncatedNormal(
-            distribution.getMu() + eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computePDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu() - eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    PDFgrFD[1] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() + eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computePDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() - eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    PDFgrFD[2] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() + eps,
-            distribution.getB(),
-        ).computePDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() - eps,
-            distribution.getB(),
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    PDFgrFD[3] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() + eps,
-        ).computePDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() - eps,
-        ).computePDF(point)
-    ) / (2.0 * eps)
-    print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the logPDF with regards the parameters of the distribution
     logPDFgr = distribution.computeLogPDFGradient(point)
     print("log-pdf gradient     =", repr(logPDFgr))
-    # by the finite difference technique
-    logPDFgrFD = ot.Point(4)
-    logPDFgrFD[0] = (
-        ot.TruncatedNormal(
-            distribution.getMu() + eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computeLogPDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu() - eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computeLogPDF(point)
-    ) / (2.0 * eps)
-    logPDFgrFD[1] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() + eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computeLogPDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() - eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computeLogPDF(point)
-    ) / (2.0 * eps)
-    logPDFgrFD[2] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() + eps,
-            distribution.getB(),
-        ).computeLogPDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() - eps,
-            distribution.getB(),
-        ).computeLogPDF(point)
-    ) / (2.0 * eps)
-    logPDFgrFD[3] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() + eps,
-        ).computeLogPDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() - eps,
-        ).computeLogPDF(point)
-    ) / (2.0 * eps)
-    print("log-pdf gradient (FD)=", repr(logPDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
-    CDFgrFD = ot.Point(4)
-    CDFgrFD[0] = (
-        ot.TruncatedNormal(
-            distribution.getMu() + eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computeCDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu() - eps,
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB(),
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    CDFgrFD[1] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() + eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computeCDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma() - eps,
-            distribution.getA(),
-            distribution.getB(),
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    CDFgrFD[2] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() + eps,
-            distribution.getB(),
-        ).computeCDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA() - eps,
-            distribution.getB(),
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    CDFgrFD[3] = (
-        ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() + eps,
-        ).computeCDF(point)
-        - ot.TruncatedNormal(
-            distribution.getMu(),
-            distribution.getSigma(),
-            distribution.getA(),
-            distribution.getB() - eps,
-        ).computeCDF(point)
-    ) / (2.0 * eps)
-    print("cdf gradient (FD)=", repr(CDFgrFD))
 
     # quantile
     quantile = distribution.computeQuantile(0.95)
@@ -334,3 +112,15 @@ for distribution in [
     parameters = distribution.getParametersCollection()
     print("parameters=", repr(parameters))
     print("Standard representative=", distribution.getStandardRepresentative())
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipCharacteristicFunction()
+    checker.skipEntropy()  # slow
+    checker.skipMinimumVolumeLevelSet()  # slow
+    if ot.Normal(distribution.getMu(), distribution.getSigma()).computeProbability(distribution.getRange()) < 0.25:
+        # when rejection becomes too costly
+        checker.skipMoments()
+        checker.skipCorrelation()
+        checker.skipConfidenceInterval()
+    checker.run()

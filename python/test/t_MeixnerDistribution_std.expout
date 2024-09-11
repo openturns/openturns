@@ -3,15 +3,9 @@ Distribution  MeixnerDistribution(beta = 1.5, alpha = 0.5, delta = 2.5, gamma = 
 Elliptical =  False
 Continuous =  True
 oneRealization= [2.06954]
-oneSample first= [0.267624]  last= [-2.89629]
-mean= [0.426758]
-covariance= [[ 2.89038 ]]
-Kolmogorov test for the generator, sample size= 100  is  accepted
-Kolmogorov test for the generator, sample size= 1000  is  accepted
 Point=  [1]
 log pdf=-1.517348
 pdf     =0.219293
-pdf (FD)=0.219283
 PDF gradient= [-0.0855978,0.0793061,-0.0152517,0.0605973]
 cdf=0.640774
 CDF gradient= [-0.219293,-0.4305,-0.1123,-0.219293]

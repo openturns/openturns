@@ -299,3 +299,19 @@ These methods are dedicated to coupling external codes by means of text files.
     :template: class.rst_t
 
     UniVariateFunction
+
+.. _testing_module:
+
+Testing module
+==============
+This module is dedicated to the development in the library.
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    testing.assert_almost_equal
+
+    :template: class.rst_t
+
+    testing.DistributionChecker

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -130,3 +131,7 @@ print(
     ")=",
     copula6D.computeSequentialConditionalQuantile(resCDF),
 )
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.run()

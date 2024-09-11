@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -87,9 +88,7 @@ for i in range(dim):
     print("margin realization=", repr(margin.getRealization()))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))
@@ -102,3 +101,8 @@ print("margins realization=", repr(margins.getRealization()))
 
 print("chi=", copula.computeUpperTailDependenceMatrix())
 print("chiL=", copula.computeLowerTailDependenceMatrix())
+
+ot.Log.Show(ot.Log.TRACE)
+ot.RandomGenerator.SetSeed(0)
+checker = ott.DistributionChecker(copula)
+checker.run()

@@ -3,15 +3,9 @@ Distribution  Hypergeometric(n = 25, k = 7, m = 14)
 Elliptical =  False
 Continuous =  False
 oneRealization= [2]
-oneSample first= [3]  last= [3]
-mean= [3.956]
-covariance= [[ 1.3246 ]]
-Chi2 test for the generator, sample size= 100  is accepted
-Chi2 test for the generator, sample size= 1000  is accepted
 Point=  [5]
 log pdf= -1.47376350877
 pdf     = 0.229061784897
-pdf (FD)= 0.229061784897
 cdf= 0.92414187643
 ccdf= 0.0758581235698
 characteristic function= (0.112691702824+0.314426247514j)

@@ -4,26 +4,16 @@ Mean=  class=Point name=Unnamed dimension=1 values=[5.48108]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.1428]
 Elliptical =  False
 oneRealization= class=Point name=Unnamed dimension=1 values=[6.23752]
-oneSample first= class=Point name=Unnamed dimension=1 values=[9.63201]  last= class=Point name=Unnamed dimension=1 values=[4.32244]
-mean= class=Point name=Unnamed dimension=1 values=[5.52363]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.34744]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.675676]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.675676]
 log pdf=-2.694627
 pdf     =0.067568
-pdf (FD)=0.067568
 cdf=0.003378
 ccdf=0.996622
 characteristic function= (-0.115059431951+0.0386019620712j)
 pdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
 log-pdf gradient     = class=Point name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
-log-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
 cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
-cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
 quantile= class=Point name=Unnamed dimension=1 values=[11.1469]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.47]
@@ -53,18 +43,11 @@ Distribution  Trapezoidal(a = 1, b = 1, c = 3, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[5.42222]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27728]
 Elliptical =  False
-oneRealization= class=Point name=Unnamed dimension=1 values=[2.65345]
-oneSample first= class=Point name=Unnamed dimension=1 values=[5.46722]  last= class=Point name=Unnamed dimension=1 values=[3.24916]
-mean= class=Point name=Unnamed dimension=1 values=[5.43296]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27893]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[5.89233]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-2.014903
 pdf     =0.133333
-pdf (FD)=0.133333
 cdf=0.013333
 ccdf=0.986667
 characteristic function= (-0.108371008362+0.0503646282831j)
@@ -97,18 +80,11 @@ Distribution  Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[5.4]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.24667]
 Elliptical =  False
-oneRealization= class=Point name=Unnamed dimension=1 values=[4.06927]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.54064]  last= class=Point name=Unnamed dimension=1 values=[9.92759]
-mean= class=Point name=Unnamed dimension=1 values=[5.40197]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.23506]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[4.72556]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.769231]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.769231]
 log pdf=-2.564949
 pdf     =0.076923
-pdf (FD)=0.076923
 cdf=0.003846
 ccdf=0.996154
 characteristic function= (-0.1186605461+0.0558853713745j)
@@ -141,18 +117,11 @@ Distribution  Trapezoidal(a = 1, b = 1, c = 1, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[5.33333]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
 Elliptical =  False
-oneRealization= class=Point name=Unnamed dimension=1 values=[5.00016]
-oneSample first= class=Point name=Unnamed dimension=1 values=[10.8908]  last= class=Point name=Unnamed dimension=1 values=[11.1461]
-mean= class=Point name=Unnamed dimension=1 values=[5.33282]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.5907]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.36614]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.0118343]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0118343]
 log pdf=-1.879524
 pdf     =0.152663
-pdf (FD)=0.152663
 cdf=0.015325
 ccdf=0.984675
 characteristic function= (-0.110887732511+0.0691917799374j)
@@ -185,18 +154,11 @@ Distribution  Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[7.54987]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8692]
 Elliptical =  False
-oneRealization= class=Point name=Unnamed dimension=1 values=[5.85989]
-oneSample first= class=Point name=Unnamed dimension=1 values=[13.4942]  last= class=Point name=Unnamed dimension=1 values=[3.79764]
-mean= class=Point name=Unnamed dimension=1 values=[7.55731]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.9015]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[5.84072]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.387597]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.387597]
 log pdf=-3.250374
 pdf     =0.038760
-pdf (FD)=0.038760
 cdf=0.001938
 ccdf=0.998062
 characteristic function= (-0.0444405891758+0.0919845543507j)
@@ -229,18 +191,11 @@ Distribution  Trapezoidal(a = 1, b = 1, c = 14, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[7.5]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.0833]
 Elliptical =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.12575]
-oneSample first= class=Point name=Unnamed dimension=1 values=[8.06296]  last= class=Point name=Unnamed dimension=1 values=[5.9333]
-mean= class=Point name=Unnamed dimension=1 values=[7.51259]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8878]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[10.6537]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-2.564949
 pdf     =0.076923
-pdf (FD)=0.076923
 cdf=0.007692
 ccdf=0.992308
 characteristic function= (-0.041125105127+0.0983600726093j)
@@ -273,18 +228,11 @@ Distribution  Trapezoidal(a = 1, b = 14, c = 14, d = 14)
 Mean=  class=Point name=Unnamed dimension=1 values=[9.66667]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
 Elliptical =  False
-oneRealization= class=Point name=Unnamed dimension=1 values=[11.8001]
-oneSample first= class=Point name=Unnamed dimension=1 values=[10.6483]  last= class=Point name=Unnamed dimension=1 values=[8.13993]
-mean= class=Point name=Unnamed dimension=1 values=[9.67024]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.31687]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[13.4634]
 Point=  class=Point name=Unnamed dimension=1 values=[1.1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.0118343]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.0118343]
 log pdf=-6.739337
 pdf     =0.001183
-pdf (FD)=0.001183
 cdf=0.000059
 ccdf=0.999941
 characteristic function= (0.0286375222568+0.127528365281j)
