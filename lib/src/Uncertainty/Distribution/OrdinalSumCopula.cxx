@@ -253,10 +253,11 @@ Point OrdinalSumCopula::computeDDF(const Point & point) const
   const SignedInteger index = findBlock(point[0]);
   // There is no candidate
   if (index < 0) return Point(dimension, 0.0);
-  // The point is in the candidate
-  if (isInBlock(point, index)) return copulaCollection_[index].computeDDF(point);
   // The point is not in the candidate
-  return Point(dimension, 0.0);
+  if (!isInBlock(point, index)) return Point(dimension, 0.0);
+  // The point is in the candidate
+  const Point shift(dimension, (index > 0) ? bounds_[index - 1] : 0.0);
+  return std::pow(blockLengths_[index], - 1.0 * dimension) * copulaCollection_[index].computeDDF((point - shift)/ blockLengths_[index]);
 }
 
 /* Get the PDF of the OrdinalSumCopula */
@@ -284,13 +285,8 @@ Scalar OrdinalSumCopula::computePDF(const Point & point) const
     return pdf;
   }
   // The point is in the candidate, compute the value of the corresponding copula
-  if (index == 0)
-  {
-    pdf = std::pow(blockLengths_[0], 1.0 - dimension) * copulaCollection_[0].computePDF(point / blockLengths_[0]);
-    LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
-    return pdf;
-  }
-  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - Point(dimension, bounds_[index - 1])) / blockLengths_[index]);
+  const Point shift(dimension, (index > 0) ? bounds_[index - 1] : 0.0);
+  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - shift) / blockLengths_[index]);
   LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
   return pdf;
 }
