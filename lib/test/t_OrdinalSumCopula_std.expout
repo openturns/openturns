@@ -10,7 +10,7 @@ oneSample first=class=Point name=Unnamed dimension=2 values=[0.207289,0.30774] l
 mean=class=Point name=Unnamed dimension=2 values=[0.502599,0.50222]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08245,0.076185,0.076185,0.082852]
 Point= class=Point name=Unnamed dimension=2 values=[0.6,0.6]
-ddf     =class=Point name=Unnamed dimension=2 values=[0.25786,0.25786]
+ddf     =class=Point name=Unnamed dimension=2 values=[5.86093,5.86093]
 pdf     =2.92442
 cdf=0.543575
 Survival      =0.343575
