@@ -42,9 +42,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   : ContinuousDistribution()
 {
   setName("MaximumEntropyOrderStatisticsDistribution");
-  DistributionCollection coll(2);
-  coll[0] = Uniform(-1.0, 0.5);
-  coll[1] = Uniform(-0.5, 1.0);
+  DistributionCollection coll({Uniform(-1.0, 0.5), Uniform(-0.5, 1.0)});
   integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   // This call set also the range. Use approximation but don't check marginals.
   setDistributionCollection(coll, true, false);
@@ -859,7 +857,25 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+
+  // avoid description warning with identical entries
+  std::map<String, UnsignedInteger> occurrence;
+  UnsignedInteger idx = 0;
+  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
+  {
+    const String currentName(description[i]);
+    ++ occurrence[currentName];
+    if (occurrence[currentName] > 1)
+    {
+      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
+        ++ idx;
+      const String newName(OSS() << "X" << idx);
+      ++ occurrence[newName]; // avoid duplicates with new ones too
+      description[i] = newName;
+    }
+  }
   setDescription(description);
+
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
   // We must set useApproximation_ to false even if we use approximation, as we need to perform exact computations to build the approximation. The flag is set to the correct value by interpolateExponentialFactors()
   useApproximation_ = false;
