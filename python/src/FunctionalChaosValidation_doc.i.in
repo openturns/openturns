@@ -167,3 +167,13 @@ Returns
 r2Score : :class:`~openturns.Point`
     The coefficient of determination R2"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosValidation::getFunctionalChaosResult
+"Result accessor.
+
+Returns
+-------
+result : :class:`~openturns.FunctionalChaosResult`
+    The result provided."
+
