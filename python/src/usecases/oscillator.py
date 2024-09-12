@@ -13,85 +13,93 @@ class Oscillator:
     ----------
 
     dim : int
-          dim = 8, dimension of the problem
+        dim = 8, dimension of the problem
 
     model : :class:`~openturns.SymbolicFunction`
-            The limit state function
+        The limit state function
 
     muMp : float
-          muMp = 1.5, mean of the mass of the primary system
+        muMp = 1.5, mean of the mass of the primary system
 
     sigmaOverMuMp : float
-          sigmaOverMuMp = 0.1, coefficient of variation of the mass of the primary system
+        sigmaOverMuMp = 0.1, coefficient of variation of the mass of the primary system
 
-    distributionMp : :class:`~openturns.LogNormal` distribution of the mass of the primary system
-         distributionMp = ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
+    distributionMp : :class:`~openturns.LogNormal`
+        Distribution of the mass of the primary system
+        distributionMp = ot.LogNormalMuSigmaOverMu(muMp, sigmaOverMuMp).getDistribution()
 
     muMs : float
-          muMs = 0.01, mean of the mass of the primary system
+        muMs = 0.01, mean of the mass of the primary system
 
     sigmaOverMuMs : float
-          sigmaOverMuMs = 0.1, coefficient of variation of the mass of the primary system
+        sigmaOverMuMs = 0.1, coefficient of variation of the mass of the primary system
 
-    distributionMs : :class:`~openturns.LogNormal` distribution of the mass of the secondary system
-          distributionMs = ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
+    distributionMs : :class:`~openturns.LogNormal`
+        Distribution of the mass of the secondary system
+        distributionMs = ot.LogNormalMuSigmaOverMu(muMs, sigmaOverMuMs).getDistribution()
 
     muKp : float
-          muKp = 1, mean of the spring stiffness of the primary system
+        muKp = 1, mean of the spring stiffness of the primary system
 
     sigmaOverMuKp : float
-          sigmaOverMuKp = 0.2, coefficient of variation of the spring stiffness of the primary system
+        sigmaOverMuKp = 0.2, coefficient of variation of the spring stiffness of the primary system
 
-    distributionKp : :class:`~openturns.LogNormal` distribution of the spring stiffness of the primary system
-          distributionKp = ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
+    distributionKp : :class:`~openturns.LogNormal`
+        Distribution of the spring stiffness of the primary system
+        distributionKp = ot.LogNormalMuSigmaOverMu(muKp, sigmaOverMuKp).getDistribution()
 
     muKs : float
-          muKs = 0.01, mean of the spring stiffness of the secondary system
+        muKs = 0.01, mean of the spring stiffness of the secondary system
 
     sigmaOverMuKs : float
-          sigmaOverMuKs = 0.2, coefficient of variation of the spring stiffness of the secondary system
+        sigmaOverMuKs = 0.2, coefficient of variation of the spring stiffness of the secondary system
 
-    distributionKs : :class:`~openturns.LogNormal` distribution of the spring stiffness of the secondary system
-          distributionKs = ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
+    distributionKs : :class:`~openturns.LogNormal`
+        Distribution of the spring stiffness of the secondary system
+        distributionKs = ot.LogNormalMuSigmaOverMu(muKs, sigmaOverMuKs).getDistribution()
 
     muZetap : float
-          muZetap = 0.05, mean of the damping ratio of the primary system
+        muZetap = 0.05, mean of the damping ratio of the primary system
 
     sigmaOverMuZetap : float
-          sigmaOverMuZetap = 0.4, coefficient of variation of the damping ratio of the primary system
+        sigmaOverMuZetap = 0.4, coefficient of variation of the damping ratio of the primary system
 
-    distributionZetap : :class:`~openturns.LogNormal` distribution of the damping ratio of the primary system
-          distributionZetap = ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
+    distributionZetap : :class:`~openturns.LogNormal`
+        Distribution of the damping ratio of the primary system
+        distributionZetap = ot.LogNormalMuSigmaOverMu(muZetap, sigmaOverMuZetap).getDistribution()
 
     muZetas : float
-          muZetas = 0.02, mean of the damping ratio of the secondary system
+        muZetas = 0.02, mean of the damping ratio of the secondary system
 
     sigmaOverMuZetas : float
-          sigmaOverMuZetas = 0.5, coefficient of variation of the damping ratio of the secondary system
+        sigmaOverMuZetas = 0.5, coefficient of variation of the damping ratio of the secondary system
 
-    distributionZetas : :class:`~openturns.LogNormal` distribution of the damping ratio of the secondary system
-          distributionZetas = ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
+    distributionZetas : :class:`~openturns.LogNormal`
+        Distribution of the damping ratio of the secondary system
+        distributionZetas = ot.LogNormalMuSigmaOverMu(muZetas, sigmaOverMuZetas).getDistribution()
 
     muFs : float
-          muFs = 27.5, mean of the loading capacity of the secondary spring
+        muFs = 27.5, mean of the loading capacity of the secondary spring
 
     sigmaOverFs : float
-          sigmaOverFs = 0.1, coefficient of variation of the loading capacity of the secondary spring
+        sigmaOverFs = 0.1, coefficient of variation of the loading capacity of the secondary spring
 
-    distributionFs : :class:`~openturns.LogNormal` distribution of the loading capacity of the secondary spring
-          distributionFs = ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
+    distributionFs : :class:`~openturns.LogNormal`
+        Distribution of the loading capacity of the secondary spring
+        distributionFs = ot.LogNormalMuSigmaOverMu(muFs, sigmaOverFs).getDistribution()
 
     muS0 : float
-          muS0 = 100, mean of the intensity of the white noise
+        muS0 = 100, mean of the intensity of the white noise
 
     sigmaOverS0 : float
-          sigmaOverS0 = 0.1, coefficient of variation of the intensity of the white noise
+        sigmaOverS0 = 0.1, coefficient of variation of the intensity of the white noise
 
-    distributionS0 : :class:`~openturns.LogNormal` distribution of the intensity of the white noise
-          distributionS0 = ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
+    distributionS0 : :class:`~openturns.LogNormal`
+        Distribution of the intensity of the white noise
+        distributionS0 = ot.LogNormalMuSigmaOverMu(muS0, sigmaOverS0).getDistribution()
 
     distribution : :class:`~openturns.JointDistribution`
-                   The joint distribution of the input parameters
+        The joint distribution of the input parameters
 
     Examples
     --------

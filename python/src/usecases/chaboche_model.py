@@ -36,20 +36,20 @@ class ChabocheModel:
 
     Attributes
     ----------
-    dim : The dimension of the problem
-        dim=4.
+    dim : int
+        Dimension of the problem, dim=4.
 
     Strain : :class:`~openturns.Uniform` distribution
-        `ot.Uniform(strainMin, strainMax)`
+        `Uniform(strainMin, strainMax)`
 
     R : :class:`~openturns.Dirac` distribution
-        `ot.Dirac(trueR)`
+        `Dirac(trueR)`
 
     C : :class:`~openturns.Dirac` distribution
-        `ot.Dirac(trueC)`
+        `Dirac(trueC)`
 
     Gamma : :class:`~openturns.Dirac` distribution
-        `ot.Dirac(trueGamma)`
+        `Dirac(trueGamma)`
 
     inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
@@ -60,8 +60,8 @@ class ChabocheModel:
         More precisely, we have :math:`\vect{X} = (\epsilon, R,
         C, \gamma)` and  :math:`Y = \sigma`.
 
-    data : :class:`~openturns.Sample` of size 10 and dimension 2
-        A data set which contains noisy observations of the strain (column 0)
+    data : :class:`~openturns.Sample`
+        A data set of size 10 and dimension 2 which contains noisy observations of the strain (column 0)
         and the stress (column 1).
 
     Examples
