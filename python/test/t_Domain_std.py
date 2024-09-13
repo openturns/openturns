@@ -20,7 +20,7 @@ print("Dimension=", domain.getDimension())
 print("is point ", p1, " inside ", domain, "? ", p1 in domain)
 print("is point ", p2, " inside ", domain, "? ", p2 in domain)
 # Draw
-domain = ot.Interval([-2.0, 0.0, -1], [2., 3., 1.])
+domain = ot.Domain(ot.Interval([-2.0, 0.0, -1], [2., 3., 1.]))
 U = ot.Uniform(-3, 3)
 dist = ot.JointDistribution([U, U, U])
 grid = domain.draw(dist.getSample(30))

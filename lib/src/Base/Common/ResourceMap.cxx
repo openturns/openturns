@@ -1058,8 +1058,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DomainImplementation parameters
   addAsScalar("Domain-SmallVolume",   1.0e-12);
-  addAsString("Domain-DefaultInColor", "green");
-  addAsString("Domain-DefaultOutColor", "red");
+  addAsString("Domain-DefaultInColor", "#FF7F0E");
+  addAsString("Domain-DefaultOutColor", "#1F77B4");
 
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);

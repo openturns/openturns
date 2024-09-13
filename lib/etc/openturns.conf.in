@@ -438,8 +438,8 @@
 
   <!-- OT::DomainImplementation parameters -->
   <Domain-SmallVolume value_float="1.0e-12" />
-  <Domain-DefaultInColor value_str="green" />
-  <Domain-DefaultOutColor value_str="red" />
+  <Domain-DefaultInColor value_str="#FF7F0E" />
+  <Domain-DefaultOutColor value_str="#1F77B4" />
 
   <!-- OT::Mesh parameters -->
   <Mesh-BackfaceCulling   value_bool="false" />

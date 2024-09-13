@@ -112,7 +112,7 @@ GridLayout DomainImplementation::draw(const Sample& sample, const String& inColo
       Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "", true);
       graph.add(Cloud(in2DSample, inColor, "fsquare", "In"));
       graph.add(Cloud(out2DSample, outColor, "fsquare", "Out"));
-      if(iX == 0 && iY + 1 == sample.getDimension())
+      if(iX == 0 && iY == 1)
         graph.setLegendPosition("topright");
       grid.setGraph(iY - 1, iX, graph);
     }
