@@ -757,7 +757,7 @@ void handleException()
   if (exception)
   {
     PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_GetExcInfo(&type, &value, &traceback);
 
     String exceptionMessage("Python exception");
 
@@ -783,7 +783,7 @@ void handleException()
       }
     }
 
-    PyErr_Restore(type, value, traceback);
+    PyErr_SetExcInfo(type, value, traceback);
     PyErr_Print();
     throw InternalException(HERE) << exceptionMessage;
   }
