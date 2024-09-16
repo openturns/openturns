@@ -12,6 +12,7 @@ Sequentially adding new points to a Kriging
 
 # %%
 import openturns as ot
+import openturns.experimental as otexp
 from openturns.viewer import View
 import numpy as np
 from openturns import viewer
@@ -59,10 +60,12 @@ def createMyBasicKriging(X, Y):
     """
     basis = ot.ConstantBasisFactory(dimension).build()
     covarianceModel = ot.MaternModel([1.0], 1.5)
-    algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
+    fitter = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fitter.run()
+    algo = otexp.GaussianProcessRegression(fitter.getResult())
     algo.run()
-    krigResult = algo.getResult()
-    return krigResult
+    gprResult = algo.getResult()
+    return gprResult
 
 
 # %%
@@ -83,13 +86,13 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 
 # %%
-def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
+def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
     """
     Given a kriging result, plot the data, the kriging metamodel
     and a confidence interval.
     """
     samplesize = X.getSize()
-    meta = krigResult.getMetaModel()
+    meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
     graphKriging.setLegends(["Kriging"])
     # Create a grid of points and evaluate the function and the kriging
@@ -98,8 +101,9 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     yFunction = g(xGrid)
     yKrig = meta(xGrid)
     # Compute the conditional covariance
+    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
     epsilon = ot.Sample(nbpoints, [1.0e-8])
-    conditionalVariance = krigResult.getConditionalMarginalVariance(xGrid) + epsilon
+    conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid) + epsilon
     conditionalSigma = sqrt(conditionalVariance)
     # Compute the quantile of the Normal distribution
     alpha = 1 - (1 - level) / 2
@@ -149,8 +153,8 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
 # We start by creating the initial Kriging metamodel on the 4 points in the design of experiments.
 
 # %%
-krigResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(krigResult, xMin, xMax, X, Y)
+gprResult = createMyBasicKriging(X, Y)
+graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
 view = viewer.View(graph)
 
 
@@ -163,14 +167,15 @@ view = viewer.View(graph)
 
 
 # %%
-def getNewPoint(xMin, xMax, krigResult):
+def getNewPoint(xMin, xMax, gprResult):
     """
     Returns a new point to be added to the design of experiments.
     This point maximizes the conditional variance of the kriging.
     """
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
-    conditionalVariance = krigResult.getConditionalMarginalVariance(xGrid)
+    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
+    conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid)
     iMaxVar = int(np.argmax(conditionalVariance))
     xNew = xGrid[iMaxVar, 0]
     xNew = ot.Point([xNew])
@@ -182,7 +187,7 @@ def getNewPoint(xMin, xMax, krigResult):
 
 
 # %%
-xNew = getNewPoint(xMin, xMax, krigResult)
+xNew = getNewPoint(xMin, xMax, gprResult)
 xNew
 
 # %%
@@ -198,8 +203,8 @@ Y.add(yNew)
 
 # %%
 # sphinx_gallery_thumbnail_number = 3
-krigResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(krigResult, xMin, xMax, X, Y)
+gprResult = createMyBasicKriging(X, Y)
+graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
 graph.setTitle("Kriging #0")
 view = viewer.View(graph)
 
@@ -208,12 +213,12 @@ view = viewer.View(graph)
 
 # %%
 for krigingStep in range(5):
-    xNew = getNewPoint(xMin, xMax, krigResult)
+    xNew = getNewPoint(xMin, xMax, gprResult)
     yNew = g(xNew)
     X.add(xNew)
     Y.add(yNew)
-    krigResult = createMyBasicKriging(X, Y)
-    graph = plotMyBasicKriging(krigResult, xMin, xMax, X, Y)
+    gprResult = createMyBasicKriging(X, Y)
+    graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
     graph.setTitle("Kriging #%d " % (krigingStep + 1) + graph.getTitle())
     View(graph)
 
