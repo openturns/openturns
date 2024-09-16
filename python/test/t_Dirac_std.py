@@ -70,7 +70,7 @@ quantile = distribution.computeQuantile(0.95)
 # Test invalid quantile
 try:
     q12 = distribution.computeScalarQuantile(1.2)
-    raise ValueError("Expected a TypeError but got quantile(1.2) = {}".format(q12))
+    raise ValueError(f"Expected a TypeError but got quantile(1.2) = {q12}")
 except TypeError:
     pass
 print("quantile=", quantile)

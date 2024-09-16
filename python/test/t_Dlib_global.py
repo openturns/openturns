@@ -4,15 +4,15 @@ import openturns as ot
 
 
 def printResults(result, problemName):
-    print("*** {} completed:".format(problemName))
-    print("      -- Optimal point = ", result.getOptimalPoint())
-    print("      -- Optimal value = ", result.getOptimalValue())
-    print("      -- Iteration number = ", result.getIterationNumber())
-    print("      -- Evaluation number = ", result.getCallsNumber())
-    print("      -- Absolute error = {:.6e}".format(result.getAbsoluteError()))
-    print("      -- Relative error = {:.6e}".format(result.getRelativeError()))
-    print("      -- Residual error = {:.6e}".format(result.getResidualError()))
-    print("      -- Constraint error = {:.6e}".format(result.getConstraintError()))
+    print(f"*** {problemName} completed:")
+    print(f"      -- Optimal point = {result.getOptimalPoint()}")
+    print(f"      -- Optimal value = {result.getOptimalValue()}")
+    print(f"      -- Iteration number = {result.getIterationNumber()}")
+    print(f"      -- Evaluation number = {result.getCallsNumber()}")
+    print(f"      -- Absolute error = {result.getAbsoluteError():.6e}")
+    print(f"      -- Relative error = {result.getRelativeError():.6e}")
+    print(f"      -- Residual error = {result.getResidualError():.6e}")
+    print(f"      -- Constraint error = {result.getConstraintError():.6e}")
 
 
 # Define the problems based on Rastrigin function
