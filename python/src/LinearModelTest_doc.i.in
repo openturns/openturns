@@ -303,7 +303,7 @@ Parameters
 firstSample : 2-d sequence of float
     First tested sample.
 secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1. This sample should be ordered.
+    Second tested sample, of dimension 1. This sample should be ordered in increasing order.
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 hypothesis : str
