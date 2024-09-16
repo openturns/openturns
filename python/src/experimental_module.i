@@ -69,7 +69,6 @@
 
 /* Uncertainty/Distribution */
 %include SmoothedUniformFactory.i
-%include TruncatedOverMesh.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
 %include GeneralizedExtremeValueValidation.i

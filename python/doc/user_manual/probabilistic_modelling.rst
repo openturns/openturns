@@ -83,7 +83,7 @@ Continuous parametric distributions
     TruncatedNormal
 
     :template: classWithPlot.rst_t
-    experimental.TruncatedOverMesh
+    TruncatedOverMesh
 
     :template: Distribution.rst_t
     Uniform

@@ -734,6 +734,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedDistribution.i TruncatedDistribution_doc.i.in
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
+                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
@@ -1022,7 +1023,6 @@ ot_add_python_module(experimental experimental_module.i
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
-                     TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in

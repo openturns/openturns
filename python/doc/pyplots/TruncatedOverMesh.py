@@ -1,5 +1,4 @@
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.viewer import View
 
 ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 64)
@@ -18,7 +17,7 @@ mesh = ot.LevelSetMesher([51] * 2).build(levelSet, box, False)
 pdf_2d = ot.Graph("Normal distribution over a mesh, PDF", "x1", "x2", True)
 cdf_2d = ot.Graph("Normal distribution over a mesh, CDF", "x1", "x2", True)
 dist = ot.Normal([0] * 2, [2] * 2)
-distribution_2d = otexp.TruncatedOverMesh(dist, mesh)
+distribution_2d = ot.TruncatedOverMesh(dist, mesh)
 mesh_g = mesh.draw()
 mesh_g.setLegends([""])
 mesh_g.setTitle("Mesh of domain D={" + formula + "<=" + str(threshold) + "}")
