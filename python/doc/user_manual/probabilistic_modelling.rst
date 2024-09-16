@@ -254,7 +254,7 @@ Refer to :ref:`copula`.
 
     :template: Copula.rst_t
     NormalCopula
-    experimental.StudentCopula
+    StudentCopula
 
 
 Combining and transforming copulas

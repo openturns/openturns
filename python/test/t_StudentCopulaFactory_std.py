@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -11,11 +10,11 @@ if not ot.PlatformInfo.HasFeature("boost"):
 dim = 2
 nu = 4.5
 R = ot.CorrelationMatrix(dim, [1.0, 0.5, 0.5, 1.0])
-distribution = otexp.StudentCopula(nu, R)
+distribution = ot.StudentCopula(nu, R)
 size = 100000
 sample = distribution.getSample(size)
 
-factory = otexp.StudentCopulaFactory()
+factory = ot.StudentCopulaFactory()
 estimatedDistribution = factory.build(sample)
 print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))

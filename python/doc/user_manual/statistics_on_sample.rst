@@ -141,7 +141,7 @@ Building copulas from samples
     IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
-    experimental.StudentCopulaFactory
+    StudentCopulaFactory
 
 Sensitivity Analysis
 ====================
