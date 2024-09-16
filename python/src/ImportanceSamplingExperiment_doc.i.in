@@ -43,7 +43,7 @@ and importance sampling to estimate a probability.
 The `ImportanceSamplingExperiment` class is nonadaptive, i.e. the parameters of the instrumental distribution are 
 set once for all.
 See :class:`~openturns.NAIS` for an adaptive importance sampling algorithm 
-and :class:`~openturns.experimental.CrossEntropyImportanceSampling` for another algorithm.
+and :class:`~openturns.CrossEntropyImportanceSampling` for another algorithm.
 
 See also
 --------

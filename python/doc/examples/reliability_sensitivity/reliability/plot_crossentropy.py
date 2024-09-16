@@ -6,7 +6,7 @@ Cross Entropy Importance Sampling
 #
 # The objective is to evaluate a failure probability using Cross Entropy Importance Sampling.
 # Two versions in the standard or physical spaces are implemented.
-# See :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+# See :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.PhysicalSpaceCrossEntropyImportanceSampling`.
 # We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
 
@@ -15,7 +15,6 @@ Cross Entropy Importance Sampling
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import stressed_beam
 
@@ -63,7 +62,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 # We choose to set the intermediate quantile level to 0.35.
 
 # %%
-standardSpaceIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
+standardSpaceIS = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
 
 # %%
 # The sample size at each iteration can be changed by the following accessor:
@@ -204,7 +203,7 @@ print(
     ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)]),
 )
 
-physicalSpaceIS1 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 
@@ -245,7 +244,7 @@ activeParameters = ot.Indices([0, 3])
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 500], [16, 1000])
 initialParameters = [15, 750]
-physicalSpaceIS2 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS2.run()
@@ -305,7 +304,7 @@ bounds = ot.Interval(
 )
 initialParameters = auxiliaryDistribution.getParameter()
 
-physicalSpaceIS3 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS3.run()
@@ -346,12 +345,12 @@ view = otv.View(graph)
 
 # %%
 # The `quantileLevel` parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultQuantileLevel`.
-# Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling`
-# and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+# Be careful that this key changes the value number of both :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling`
+# and :class:`~openturns.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%
 ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.4)
-physicalSpaceIS4 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS4 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 print("Modified quantile level:", physicalSpaceIS4.getQuantileLevel())
