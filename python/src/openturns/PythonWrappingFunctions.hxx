@@ -497,6 +497,7 @@ static inline
 bool
 isAPythonBufferOf(PyObject * pyObj)
 {
+  (void) pyObj;
 #ifndef Py_LIMITED_API
   if (PyObject_CheckBuffer(pyObj))
   {
