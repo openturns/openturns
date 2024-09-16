@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -15,7 +14,7 @@ lower = [-0.75, -0.5]
 upper = [0.75, 0.5]
 mesh = mesher.build(domain, ot.Interval(lower, upper), False)
 dist = ot.Normal(2)
-distribution = otexp.TruncatedOverMesh(dist, mesh)
+distribution = ot.TruncatedOverMesh(dist, mesh)
 print("Distribution ", distribution)
 
 # Is this distribution elliptical ?

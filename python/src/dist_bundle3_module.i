@@ -45,6 +45,7 @@
 %include TriangularFactory.i
 %include TruncatedNormal.i
 %include TruncatedNormalFactory.i
+%include TruncatedOverMesh.i
 %include Uniform.i
 %include UniformFactory.i
 %include UniformMuSigma.i

@@ -171,6 +171,7 @@
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/TruncatedNormal.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
+#include "openturns/TruncatedOverMesh.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UniformMuSigma.hxx"

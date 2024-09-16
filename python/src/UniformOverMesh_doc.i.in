@@ -8,7 +8,7 @@ mesh : :class:`~openturns.Mesh`
 
 See also
 --------
-openturns.experimental.TruncatedOverMesh
+TruncatedOverMesh
 
 Notes
 -----
