@@ -64,12 +64,6 @@
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
 
-/* Uncertainty/Algorithm/EventSimulation */
-%include CrossEntropyResult.i
-%include CrossEntropyImportanceSampling.i
-%include StandardSpaceCrossEntropyImportanceSampling.i
-%include PhysicalSpaceCrossEntropyImportanceSampling.i
-
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
 

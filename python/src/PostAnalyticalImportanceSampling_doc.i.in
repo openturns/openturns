@@ -16,7 +16,7 @@ analyticalResult : :class:`~openturns.AnalyticalResult`
 
 See also
 --------
-PostAnalyticalControlledImportanceSampling, NAIS, experimental.CrossEntropyImportanceSampling
+PostAnalyticalControlledImportanceSampling, NAIS, CrossEntropyImportanceSampling
 
 Examples
 --------
