@@ -190,3 +190,6 @@ quadrature_rule.getOtherKronrodNodes()
 # %%
 # The method :meth:`~openturns.GaussKronrodRule.getOtherKronrodWeights` returns the weights :math:`\alpha_k` in the Kronrod extension.
 quadrature_rule.getOtherKronrodWeights()
+
+otv.View.ShowAll()
+
