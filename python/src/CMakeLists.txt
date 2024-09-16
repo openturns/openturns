@@ -725,6 +725,8 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       SquaredNormal.i SquaredNormal_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
+                      StudentCopula.i StudentCopula_doc.i.in
+                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                       Trapezoidal.i Trapezoidal_doc.i.in
                       TrapezoidalFactory.i TrapezoidalFactory_doc.i.in
                       Triangular.i Triangular_doc.i.in
@@ -1020,8 +1022,6 @@ ot_add_python_module(experimental experimental_module.i
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
-                     StudentCopula.i StudentCopula_doc.i.in
-                     StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in

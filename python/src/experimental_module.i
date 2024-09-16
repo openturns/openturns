@@ -69,8 +69,6 @@
 
 /* Uncertainty/Distribution */
 %include SmoothedUniformFactory.i
-%include StudentCopula.i
-%include StudentCopulaFactory.i
 %include TruncatedOverMesh.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
