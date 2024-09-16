@@ -20,8 +20,9 @@ for theta in list_theta:
     cdf_graph.add(cdf_curve)
 pdf_graph.setColors([palette[i] for i in range(4)])
 cdf_graph.setColors([palette[i] for i in range(4)])
-pdf_graph.setLegends(["theta={}".format(theta) for theta in list_theta])
-cdf_graph.setLegends(["theta={}".format(theta) for theta in list_theta])
+legends = [f"theta={theta}" for theta in list_theta]
+pdf_graph.setLegends(legends)
+cdf_graph.setLegends(legends)
 distribution_2d_1 = ot.Dirichlet(theta_1)
 distribution_2d_2 = ot.Dirichlet(theta_2)
 pdf_2d_1.add(distribution_2d_1.drawPDF())
