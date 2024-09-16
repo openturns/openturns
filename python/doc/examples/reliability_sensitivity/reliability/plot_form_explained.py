@@ -165,13 +165,13 @@ view = otv.View(graph_PDF, square_axes=True)
 #
 # The interest of the  isoprobabilistic transformation is the rotational
 # invariance of the distribution in the standard space. This property reduces the dimension
-# of the problem to 1. See :ref:`Isoprobabilistic transformation <isoprobabilistic_transformation>` to get more theoretical details.
+# of the problem to 1. See :ref:`Isoprobabilistic transformation <isoprobabilistic_transformation>` for more theoretical details.
 #
 # OpenTURNS has several isoprobabilistic transformations, depending on the distribution of the input random vector:
 #
 # - the Nataf transformation is used if the input distribution has a normal copula,
 # - the Generalized Nataf transformation is used if the input distribution has an elliptical copula,
-# - the Rosenblatt transformation is used in any cases.
+# - the Rosenblatt transformation is used in any other cases.
 #
 # The Nataf and  Rosenblatt transformations map the input random vector into a vector that follows a
 # normal distribution with zero mean and unit variance. The Generalized Nataf transformation maps the
