@@ -59,7 +59,7 @@ import openturns.viewer as otv
 integrand = ot.SymbolicFunction(["x"], ["2 / (2 + sin(10 * pi_ * x))"])
 integrand.setOutputDescription([r"$\frac{2}{2 + sin(10 \pi x)}$"])
 graph = integrand.draw(0.0, 1.0, 200)
-otv.View(graph)
+_ = otv.View(graph)
 
 # %%
 # We see that regular spikes and valleys will make this function difficult to integrate, because of the large curvatures implied at these points.
