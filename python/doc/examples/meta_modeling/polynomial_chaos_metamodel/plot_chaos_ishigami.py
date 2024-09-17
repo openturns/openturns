@@ -28,9 +28,9 @@ ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 
 # %%
-# The `IshigamiModel` data class contains the input distribution :math:`\vect{X}=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami function in `im.model`.
+# The `IshigamiModel` data class contains the input distribution :math:`\vect{X}=(X_1, X_2, X_3)` in `im.inputDistribution` and the Ishigami function in `im.model`.
 # We also have access to the input variable names with
-input_names = im.distributionX.getDescription()
+input_names = im.inputDistribution.getDescription()
 
 
 # %%
@@ -42,7 +42,7 @@ input_names = im.distributionX.getDescription()
 
 # %%
 sampleSize = 1000
-inputSample = im.distributionX.getSample(sampleSize)
+inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 
 
@@ -69,7 +69,7 @@ view = otv.View(graph)
 
 # %%
 sampleSize = 100
-inputTrain = im.distributionX.getSample(sampleSize)
+inputTrain = im.inputDistribution.getSample(sampleSize)
 outputTrain = im.model(inputTrain)
 
 # %%
@@ -103,7 +103,7 @@ enumerateFunction = multivariateBasis.getEnumerateFunction()
 basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 chaosAlgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+    inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 
 # %%
@@ -135,7 +135,7 @@ metamodel = chaosResult.getMetaModel()
 
 # %%
 n_valid = 1000
-inputTest = im.distributionX.getSample(n_valid)
+inputTest = im.inputDistribution.getSample(n_valid)
 outputTest = im.model(inputTest)
 metamodelPredictions = metamodel(inputTest)
 val = ot.MetaModelValidation(outputTest, metamodelPredictions)
@@ -199,7 +199,7 @@ chaosSI
 # Draw Sobol' indices.
 
 # %%
-dim_input = im.distributionX.getDimension()
+dim_input = im.inputDistribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = im.model.getInputDescription()

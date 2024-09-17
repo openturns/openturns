@@ -412,7 +412,7 @@ dimension = im.dim
 model = im.model
 
 marginals = [im.X1, im.X2, im.X3]
-distribution = im.distributionX
+distribution = im.inputDistribution
 
 # Create the orthogonal basis
 polynomialCollection = [ot.LegendreFactory()] * dimension

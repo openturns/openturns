@@ -52,7 +52,7 @@ class FireSatelliteModel:
         Drag coefficient (-) distribution
         Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
-    distributionX : :class:`~openturns.JointDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -193,7 +193,7 @@ class FireSatelliteModel:
         self.Cd = ot.TruncatedNormal(1.0, 0.3, 1.0 - 3 * 0.3, 1.0 + 3 * 0.3)
 
         # Input distribution
-        self.distributionX = ot.JointDistribution(
+        self.inputDistribution = ot.JointDistribution(
             [
                 self.H,
                 self.Pother,
@@ -207,7 +207,7 @@ class FireSatelliteModel:
             ]
         )
 
-        self.distributionX.setDescription(
+        self.inputDistribution.setDescription(
             ["H", "Pother", "Fs", "theta", "Lsp", "q", "RD", "Lalpha", "Cd"]
         )
 

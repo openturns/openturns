@@ -36,7 +36,7 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 # The `IshigamiModel` data class contains the input independent joint distribution :
-distribution = im.distributionX
+distribution = im.inputDistribution
 
 # %%
 # and the Ishigami function :
