@@ -82,7 +82,7 @@ class WingWeightModel:
         Paint weight (lb/ft^2) distribution
         Tenth marginal, ot.Uniform(0.025, 0.08)
 
-    distributionX : :class:`~openturns.JointDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -140,7 +140,7 @@ class WingWeightModel:
         self.Wp.setName("Wp")
 
         # Input distribution
-        self.distributionX = ot.JointDistribution(
+        self.inputDistribution = ot.JointDistribution(
             [
                 self.Sw,
                 self.Wfw,
@@ -154,7 +154,7 @@ class WingWeightModel:
                 self.Wp,
             ]
         )
-        self.distributionX.setDescription(
+        self.inputDistribution.setDescription(
             ["Sw", "Wfw", "A", "Lambda", "q", "l", "tc", "Nz", "Wdg", "Wp"]
         )
 

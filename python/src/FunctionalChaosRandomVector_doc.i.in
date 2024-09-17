@@ -169,7 +169,7 @@ Examples
 >>> import openturns as ot
 >>> im = ishigami_function.IshigamiModel()
 >>> sampleSize = 1000
->>> inputTrain = im.distributionX.getSample(sampleSize)
+>>> inputTrain = im.inputDistribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 >>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
@@ -179,7 +179,7 @@ Examples
 >>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 >>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 >>> chaosAlgo = ot.FunctionalChaosAlgorithm(
-...     inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+...     inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 ... )
 >>> chaosAlgo.run()
 >>> chaosResult = chaosAlgo.getResult()
@@ -262,7 +262,7 @@ Examples
 >>> import math
 >>> im = ishigami_function.IshigamiModel()
 >>> sampleSize = 1000
->>> inputTrain = im.distributionX.getSample(sampleSize)
+>>> inputTrain = im.inputDistribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 >>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
@@ -272,7 +272,7 @@ Examples
 >>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 >>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 >>> chaosAlgo = ot.FunctionalChaosAlgorithm(
-...     inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+...     inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 ... )
 >>> chaosAlgo.run()
 >>> chaosResult = chaosAlgo.getResult()

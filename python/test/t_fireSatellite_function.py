@@ -13,7 +13,7 @@ Test the import of the FireSatellite model data class.
 """
 m = fireSatellite_function.FireSatelliteModel()
 
-assert_almost_equal(m.model(m.distributionX.getMean())[0], 0.011659, 1e-2)
+assert_almost_equal(m.model(m.inputDistribution.getMean())[0], 0.011659, 1e-2)
 
 # test getMarginal (if serialization is available)
 if ot.PlatformInfo.HasFeature("libxml2"):

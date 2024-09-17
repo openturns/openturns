@@ -68,10 +68,10 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 # The :class:`~openturns.usecases.ishigami_function.IshigamiModel` data class contains the input distribution
-# :math:`\vect{X}=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami
+# :math:`\vect{X}=(X_1, X_2, X_3)` in `im.inputDistribution` and the Ishigami
 # function in `im.model`.
 # We also have access to the input variable names with:
-input_names = im.distributionX.getDescription()
+input_names = im.inputDistribution.getDescription()
 
 # %%
 # Draw the function
@@ -79,7 +79,7 @@ input_names = im.distributionX.getDescription()
 
 # %%
 n = 10000
-sampleX = im.distributionX.getSample(n)
+sampleX = im.inputDistribution.getSample(n)
 sampleY = im.model(sampleX)
 
 # %%
@@ -108,9 +108,9 @@ view = viewer.View(graph)
 
 # %%
 size = 1000
-sie = ot.SobolIndicesExperiment(im.distributionX, size)
+sie = ot.SobolIndicesExperiment(im.inputDistribution, size)
 inputDesign = sie.generate()
-input_names = im.distributionX.getDescription()
+input_names = im.inputDistribution.getDescription()
 inputDesign.setDescription(input_names)
 inputDesign.getSize()
 
@@ -171,7 +171,7 @@ view = viewer.View(graph)
 # %%
 size = 1000
 computeSecondOrder = True
-sie = ot.SobolIndicesExperiment(im.distributionX, size, computeSecondOrder)
+sie = ot.SobolIndicesExperiment(im.inputDistribution, size, computeSecondOrder)
 inputDesign = sie.generate()
 print(inputDesign.getSize())
 inputDesign.setDescription(input_names)

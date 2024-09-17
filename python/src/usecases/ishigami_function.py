@@ -33,7 +33,7 @@ class IshigamiModel:
     X3 : :class:`~openturns.Uniform`
         Third marginal, ot.Uniform(-np.pi, np.pi)
 
-    distributionX : :class:`~openturns.JointDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     ishigami : :class:`~openturns.SymbolicFunction`
@@ -108,8 +108,8 @@ class IshigamiModel:
         self.X3.setDescription(["X3"])
 
         # Input distribution
-        self.distributionX = ot.JointDistribution([self.X1, self.X2, self.X3])
-        self.distributionX.setDescription(["X1", "X2", "X3"])
+        self.inputDistribution = ot.JointDistribution([self.X1, self.X2, self.X3])
+        self.inputDistribution.setDescription(["X1", "X2", "X3"])
 
         self.ishigami = ot.SymbolicFunction(
             ["X1", "X2", "X3", "a", "b"],

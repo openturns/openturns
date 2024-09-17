@@ -31,7 +31,7 @@ model = m.model
 # We also define the distribution of input variables to build the training and test sets.
 
 # %%
-inputDistribution = m.distributionX
+inputDistribution = m.inputDistribution
 
 
 # %%

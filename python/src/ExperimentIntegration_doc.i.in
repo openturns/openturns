@@ -32,7 +32,7 @@ Integrate the Ishigami physical model.
 >>> im = ishigami_function.IshigamiModel()
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 32768
->>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
+>>> experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> approximatedOutputMean = integration.integrate(im.model)
 >>> print(approximatedOutputMean)
@@ -47,7 +47,7 @@ Compute the L2 norm of a function.
 ... )
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 65536
->>> experiment = ot.MonteCarloExperiment(im.distributionX, sampleSize)
+>>> experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
 >>> print(functionNorm)
@@ -91,7 +91,7 @@ Examples
 3.5
 >>> sampleSize = 2 ** 12  # Sobol' sequence is a base 2 sequence
 >>> sequence = ot.SobolSequence(im.dim)
->>> experiment = ot.LowDiscrepancyExperiment(sequence, im.distributionX, 
+>>> experiment = ot.LowDiscrepancyExperiment(sequence, im.inputDistribution, 
 ...                                          sampleSize, False)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> approximatedOutputMean = integration.integrate(im.model)
@@ -140,7 +140,7 @@ Examples
 ... ['sin(x1) + 7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1) - 3.5'])
 >>> sampleSize = 2 ** 12  # Sobol' sequence is a base 2 sequence
 >>> sequence = ot.SobolSequence(im.dim)
->>> experiment = ot.LowDiscrepancyExperiment(sequence, im.distributionX, sampleSize, False)
+>>> experiment = ot.LowDiscrepancyExperiment(sequence, im.inputDistribution, sampleSize, False)
 >>> integration = otexp.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
 >>> print(functionNorm[0])

@@ -25,11 +25,11 @@ Addition, subtraction and multiplication of univariate polynomials:
 
 >>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> Q = ot.UniVariatePolynomial([1.0, 2.0])
->>> print(f'({P}) + ({Q}) = {P + Q}'
+>>> print(f'({P}) + ({Q}) = {P + Q}')
 (1 + 2 * X + 3 * X^2) + (1 + 2 * X) = 2 + 4 * X + 3 * X^2
->>> print(f'({P}) - ({Q}) = {P - Q}'
+>>> print(f'({P}) - ({Q}) = {P - Q}')
 (1 + 2 * X + 3 * X^2) - (1 + 2 * X) = 3 * X^2
->>> print(f'({P}) * ({Q}) = {P * Q}'
+>>> print(f'({P}) * ({Q}) = {P * Q}')
 (1 + 2 * X + 3 * X^2) * (1 + 2 * X) = 1 + 4 * X + 7 * X^2 + 6 * X^3"
 %enddef
 %feature("docstring") OT::UniVariatePolynomialImplementation
