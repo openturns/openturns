@@ -114,8 +114,10 @@ view = otv.View(g)
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
+
+
 def kernel2(x):
-    return [m.exp(-(x[0]**2 + x[1]**2)) + m.exp(-8 * ((x[0]-4)**2 + (x[1]-4)**2))]
+    return [m.exp(-(x[0]**2 + x[1]**2)) + m.exp(-8 * ((x[0] - 4)**2 + (x[1] - 4)**2))]
 
 
 integrand = ot.PythonFunction(2, 1, kernel2)
@@ -167,6 +169,8 @@ view = otv.View(g)
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
+
+
 def kernel3(x):
     return [m.cos(2.0 * x[0]) * m.cos(1.5 * x[1])]
 
@@ -189,6 +193,8 @@ lower_func = ot.SymbolicFunction(["x"], ["-2 - cos(x)"])
 # We draw the iso-lines of the integrand function in the domain of integration.
 # To do that, we define a new function which is the restriction
 # of the integrand function to the integration domain.
+
+
 def kernel3_insideDomain(x):
     low_x = lower_func([x[0]])[0]
     up_x = upper_func([x[0]])[0]
@@ -201,7 +207,7 @@ def kernel3_insideDomain(x):
 integrand_domain = ot.PythonFunction(2, 1, kernel3_insideDomain)
 a = 2 * m.pi
 b = 4.0
-# here, we ask for more levels thant the default number.
+# here, we ask for more levels than the default number store in :class:`~openturns.ResourceMap`.
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 30)
 g = integrand_domain.draw([-a, -b], [a, b])
 
