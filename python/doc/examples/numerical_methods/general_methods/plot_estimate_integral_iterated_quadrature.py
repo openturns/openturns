@@ -43,11 +43,13 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
 
+
 def kernel1(x):
     if x[0]**2 + x[1]**2 <= 4:
         return [1.0]
     else:
         return [0.0]
+
 
 integrand = ot.PythonFunction(2, 1, kernel1)
 domain = ot.Interval([-2.0, -2.0], [2.0, 2.0])
@@ -79,8 +81,8 @@ integration_algo = ot.IteratedQuadrature(ot.GaussKronrod(maximumSubIntervals, ma
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
 # that stores all the calls to the function.
 integrand_memoized = ot.MemoizeFunction(integrand)
-I = integration_algo.integrate(integrand_memoized, domain)
-print('I = ', I)
+I_value = integration_algo.integrate(integrand_memoized, domain)
+print('I = ', I_value[0])
 nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
@@ -113,7 +115,8 @@ view = otv.View(g)
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
 def kernel2(x):
-    return [m.exp(-(x[0]**2 + x[1]**2)) + m.exp(-8*((x[0]-4)**2 + (x[1]-4)**2))]
+    return [m.exp(-(x[0]**2 + x[1]**2)) + m.exp(-8 * ((x[0]-4)**2 + (x[1]-4)**2))]
+
 
 integrand = ot.PythonFunction(2, 1, kernel2)
 domain = ot.Interval([-2.0, -2.0], [6.0, 6.0])
@@ -129,8 +132,8 @@ g.setYTitle('y')
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
 # that stores all the calls to the function.
 integrand_memoized = ot.MemoizeFunction(integrand)
-I = integration_algo.integrate(integrand_memoized, domain)
-print('I = ', I)
+I_value = integration_algo.integrate(integrand_memoized, domain)
+print('I = ', I_value[0])
 nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
@@ -165,7 +168,8 @@ view = otv.View(g)
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
 def kernel3(x):
-    return [m.cos(2.0*x[0]) * m.cos(1.5*x[1])]
+    return [m.cos(2.0 * x[0]) * m.cos(1.5 * x[1])]
+
 
 integrand = ot.PythonFunction(2, 1, kernel3)
 
@@ -192,6 +196,7 @@ def kernel3_insideDomain(x):
         return kernel3(x)
     else:
         return [0.0]
+
 
 integrand_domain = ot.PythonFunction(2, 1, kernel3_insideDomain)
 a = 2 * m.pi
@@ -223,8 +228,8 @@ maximumSubIntervals = 4
 maximumError = 1e-4
 GKRule = ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15)
 integration_algo = ot.IteratedQuadrature(ot.GaussKronrod(maximumSubIntervals, maximumError, GKRule))
-I = integration_algo.integrate(integrand_memoized, -a, a, [lower_func], [upper_func])
-print('I = ', I[0])
+I_value = integration_algo.integrate(integrand_memoized, -a, a, [lower_func], [upper_func])
+print('I = ', I_value[0])
 nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
