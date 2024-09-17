@@ -74,6 +74,7 @@
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
 %include GeneralizedExtremeValueFactory.i
+%include GeneralizedExtremeValueValidation.i
 %include GumbelFactory.i
 %include GumbelLambdaGamma.i
 %include GumbelMuSigma.i
