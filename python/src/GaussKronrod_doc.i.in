@@ -19,7 +19,8 @@ The Gauss-Kronrod algorithm enables to approximate the definite integral:
     \int_{a}^b f(t)\di{t}
 
 
-with :math:`f: \Rset \mapsto \Rset^p`, using both approximations : Gauss and Kronrod ones defined by:
+with :math:`f: \Rset \mapsto \Rset^p`, using both Gauss and Kronrod approximations, respectively
+defined by:
 
 .. math::
 
@@ -31,8 +32,9 @@ and:
 
   \int_{-1}^1 f(t)\di{t}\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
 
-where :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
+where :math:`m = 2n+1`, :math:`n \in \Nset`, :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
 
+The number of points used in both approximations is fixed by the :class:`~openturns.GaussKronrodRule`.
 
 
 The Gauss-Kronrod algorithm evaluates the integral using the Gauss and the Konrod approximations. If the difference between both approximations is greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same length. The Gauss-Kronrod algorithm is then applied on both subintervals with the sames rules. The algorithm is iterative until the  difference between both approximations is less that *maximumError*. In that case, the integral on the subinterval is approximated by the Kronrod sum. The subdivision process is limited by *maximumSubIntervals* that imposes the maximum number of subintervals.
