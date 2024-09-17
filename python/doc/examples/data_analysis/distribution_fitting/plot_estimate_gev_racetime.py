@@ -54,7 +54,6 @@ Estimate a GEV on race times data
 # First, we load the race times dataset. We start by looking at them through time.
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 from openturns.usecases import coles
 
 data = coles.Coles().racetime
@@ -109,7 +108,7 @@ print("Standard dev = ", parameterEstimate.getStandardDeviation())
 # - the quantile-quantile pot,
 # - the return level plot,
 # - the data histogram and the density of the fitted model.
-validation = otexp.GeneralizedExtremeValueValidation(result_LL, sample)
+validation = ot.GeneralizedExtremeValueValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 

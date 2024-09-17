@@ -239,7 +239,7 @@ Graphical tests
     VisualTest.DrawLowerExtremalDependenceFunction
 
     :template: class.rst_t
-    experimental.GeneralizedExtremeValueValidation
+    GeneralizedExtremeValueValidation
     experimental.GeneralizedParetoValidation
 
 Hypothesis tests

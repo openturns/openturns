@@ -71,7 +71,6 @@
 %include SmoothedUniformFactory.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
-%include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosValidation.i
