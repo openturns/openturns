@@ -94,7 +94,7 @@ class ChabocheModel:
 
         if strainMin >= strainMax:
             raise ValueError(
-                "Strain minimum = %s >= strainMax = %s." % (strainMin, strainMax)
+                f"Strain minimum = {strainMin} >= strainMax = {strainMax}."
             )
         self.strainMin = strainMin
         self.strainMax = strainMax

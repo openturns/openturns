@@ -144,9 +144,9 @@ class LogisticModel:
             return z
 
         self.model = ot.PythonFunction(24, nbdates, logisticModel)
-        inputLabels = ["t%d" % (i) for i in range(nbdates)]
+        inputLabels = [f"t{i}" for i in range(nbdates)]
         inputLabels.append("a")
         inputLabels.append("c")
-        outputLabels = ["z%d" % (i) for i in range(nbdates)]
+        outputLabels = [f"z{i}" for i in range(nbdates)]
         self.model.setInputDescription(inputLabels)
         self.model.setOutputDescription(outputLabels)
