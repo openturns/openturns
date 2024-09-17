@@ -65,7 +65,7 @@ Generate a random sample from a Normal distribution:
 Draw an Henry plot against a given (wrong) Normal distribution:
 
 >>> henry_graph = ot.VisualTest.DrawHenryLine(sample, distribution)
->>> henry_graph.setTitle('Henry plot against given %s' % ot.Normal(3.0, 1.0))
+>>> henry_graph.setTitle(f'Henry plot against given {ot.Normal(3.0, 1.0)}')
 >>> View(henry_graph).show()
 
 Draw an Henry plot against an inferred Normal distribution:

@@ -1119,8 +1119,7 @@ def PlotDesign(
         bounds = ot.Interval(lowerBound, upperBound)
     if bounds.getDimension() != dim:
         raise ValueError(
-            "Dimension of bounds %d do not match the dimension of the sample %d"
-            % (bounds.getDimension(), dim)
+            f"Dimension of bounds ({bounds.getDimension}) do not match the dimension of the sample ({dim})"
         )
 
     # Check the subdivisions
@@ -1129,8 +1128,7 @@ def PlotDesign(
         subdivisions = [size] * dim
     if len(subdivisions) != dim:
         raise ValueError(
-            "Number of subdivisions %d does not match the dimension of the sample %d"
-            % (len(subdivisions), dim)
+            f"Number of subdivisions ({len(subdivisions)}) does not match the dimension of the sample ({dim})"
         )
 
     # Get description
