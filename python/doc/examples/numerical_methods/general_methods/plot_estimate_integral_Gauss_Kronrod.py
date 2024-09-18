@@ -157,7 +157,6 @@ sum(fi)[0]
 
 # %%
 # The estimated error of each integral is in :math:`e_i`:
-print(ei)
 number_of_intervals = ai.getDimension()
 print('number of intervals:', number_of_intervals)
 for i in range(number_of_intervals):
