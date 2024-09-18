@@ -160,6 +160,10 @@ public:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
+  /** Get function representation of PFD and CDF*/
+  Function getPDF() const;
+  Function getCDF() const;
+
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;
@@ -889,12 +893,12 @@ protected:
     {
       // Nothing to do
     }
-    PDFWrapper(DistributionImplementation::Implementation p_distribution)
+    PDFWrapper(const DistributionImplementation & distribution)
       : EvaluationImplementation()
-      , p_distribution_(p_distribution.get())
-      , p_shared_distribution_(p_distribution)
+      , p_distribution_(NULL)
+      , p_shared_distribution_(distribution.clone())
     {
-      // Nothing to do
+      p_distribution_ = p_shared_distribution_.get();
     }
 
     PDFWrapper * clone() const override
@@ -1025,12 +1029,12 @@ protected:
     {
       // Nothing to do
     }
-    CDFWrapper(DistributionImplementation::Implementation p_distribution)
+    CDFWrapper(const DistributionImplementation & distribution)
       : EvaluationImplementation()
-      , p_distribution_(p_distribution.get())
-      , p_shared_distribution_(p_distribution)
+      , p_distribution_(NULL)
+      , p_shared_distribution_(distribution.clone())
     {
-      // Nothing to do
+      p_distribution_ = p_shared_distribution_.get();
     }
 
     CDFWrapper * clone() const override

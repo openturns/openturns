@@ -180,6 +180,10 @@ OT_Distribution_getSample_doc
 OT_Distribution_getSampleByInversion_doc
 %feature("docstring") OT::Distribution::getSampleByQMC
 OT_Distribution_getSampleByQMC_doc
+%feature("docstring") OT::Distribution::getPDF
+OT_Distribution_getPDF_doc
+%feature("docstring") OT::Distribution::getCDF
+OT_Distribution_getCDF_doc
 %feature("docstring") OT::Distribution::getShapeMatrix
 OT_Distribution_getShapeMatrix_doc
 %feature("docstring") OT::Distribution::getSkewness
@@ -256,36 +260,3 @@ OT_Distribution_sqrt_doc
 OT_Distribution_cbrt_doc
 %feature("docstring") OT::Distribution::abs
 OT_Distribution_abs_doc
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Distribution::getPDF
-"Return the PDF as a :class:`~openturns.FunctionImplementation`.
-
-Returns
--------
-PDF : :class:`~openturns.FunctionImplementation`
-    The PDF of the distribution as a :class:`~openturns.FunctionImplementation`.
-
-Examples
---------
->>> import openturns as ot
->>> dist = ot.Distribution(ot.Normal(2., 3.))
->>> graph = dist.getPDF().draw(-4,8)"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Distribution::getCDF
-"Return the CDF as a :class:`~openturns.FunctionImplementation`.
-
-Returns
--------
-PDF : :class:`~openturns.FunctionImplementation`
-    The CDF of the distribution as a :class:`~openturns.FunctionImplementation`.
-
-Examples
---------
->>> import openturns as ot
->>> dist = ot.Distribution(ot.Normal(2., 3.))
->>> graph = dist.getCDF().draw(-4,8)
-"
