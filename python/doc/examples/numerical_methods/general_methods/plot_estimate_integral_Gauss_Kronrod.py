@@ -146,7 +146,7 @@ error[0]
 print('ai:', ai)
 print('bi:', bi)
 
-# %%
+# %%s
 # The corresponding value of the integrals are in :math:`f_i`.
 # Since :math:`f` can be a multidimensional point, this is a :class:`~openturns.Sample`, which dimension corresponds to the output dimension of the function :math:`f`.
 print('fi:', fi)
@@ -165,4 +165,3 @@ for i in range(number_of_intervals):
     )
 
 otv.View.ShowAll()
-
