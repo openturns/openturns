@@ -298,7 +298,7 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
 }
 
 /* Draw 2-d projections of a multivariate sample */
-GridLayout VisualTest::DrawPairs(const Sample & inputSample, const Sample & outputSample)
+GridLayout VisualTest::DrawPairsXY(const Sample & inputSample, const Sample & outputSample)
 {
   const UnsignedInteger inputDimension = inputSample.getDimension();
   const UnsignedInteger outputDimension = outputSample.getDimension();
