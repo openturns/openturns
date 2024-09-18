@@ -79,7 +79,7 @@ otherKronrodNodes : :class:`~openturns.Point`
 "
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussKronrodRule::getOtherKronrodWeights
-"Accessor to the  positive nodes used in the Gauss-Kronrod approximation.
+"Accessor to the  weights used in the Gauss-Kronrod approximation.
 
 Returns
 -------
