@@ -34,7 +34,7 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 #    f : & \Rset^2 \rightarrow \Rset \\
 #        & (x,y) \rightarrow 1_{{x^2+y^2 \leq 4}}(x,y)
 #
-# the domain :math:`\set{D}` =[-2,2]\times [-2,2]` and the integral:
+# the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
 #    I = \dint_{\set{D}} f(x,y)\,dxdy
@@ -107,7 +107,7 @@ view = otv.View(g)
 #    f : & \Rset^2 \rightarrow \Rset \\
 #        & (x,y) \rightarrow e^{-(x^2+y^2)} + e^{-8((x-4)^2+(y-4)^2)}
 #
-# the domain :math:`\set{D}` =[-2,2]\times [-2,2]` and the integral:
+# the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
 #    I = \dint_{\set{D}} f(x,y)\,dxdy
@@ -161,7 +161,7 @@ view = otv.View(g)
 #    f : & \Rset^2 \rightarrow \Rset \\
 #        & (x,y) \rightarrow cos(2x) * sin(1.5y)
 #
-# the domain :math:`\set{D}` =\{(x,y)\, |\, -2\pi \leq x \leq 2\pi, -2-cos(x) \leq y  \leq 2+cos(x) \}`
+# the domain :math:`\set{D} = \{(x,y)\, |\, -2\pi \leq x \leq 2\pi, -2-cos(x) \leq y  \leq 2+cos(x) \}`
 # and the integral:
 #
 # .. math::
