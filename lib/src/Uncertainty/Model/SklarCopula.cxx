@@ -144,8 +144,9 @@ Point SklarCopula::computeDDF(const Point & point) const
   }
   const Scalar pdfDistribution = distribution_.computePDF(x);
   Point result(distribution_.computeDDF(x));
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] -= ddfX[i] * pdfDistribution / pdfX[i];
-  return result * (1.0 / factor);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    result[i] = (result[i] - ddfX[i] * pdfDistribution / pdfX[i]) / pdfX[i] / factor;
+  return result;
 }
 
 /* Get the PDF of the distribution
