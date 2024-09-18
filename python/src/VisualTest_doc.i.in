@@ -567,7 +567,7 @@ graph : :class:`~openturns.GridLayout`
 
 Notes
 -----
-This method allows to draw the relationships between the margins of two samples.
+This method allows one to draw the relationships between the margins of two samples.
 This consists of a collection of 2-d projections of the marginals of sampleY (in lines)
 with respect to the marginals of sampleX (in columns).
 The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
