@@ -161,8 +161,7 @@ number_of_intervals = ai.getDimension()
 print('number of intervals:', number_of_intervals)
 for i in range(number_of_intervals):
     print(
-        "Integral #%d : [%.4f, %.4f] is %.4f with error %.3e"
-        % (i, ai[i], bi[i], fi[i, 0], ei[i])
+        f"Integral #{i} : [{ai[i]:.4f}, {bi[i]:.4f}] is {fi[i, 0]:.4f} with error {ei[i]:.3e}"
     )
 
 # %%
