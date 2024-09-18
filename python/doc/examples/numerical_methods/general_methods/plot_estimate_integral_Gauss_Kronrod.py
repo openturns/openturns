@@ -52,7 +52,7 @@ import openturns.viewer as otv
 # The following example is from [davis1975]_ p.325:
 #
 # .. math::
-#    \int_0^1 \frac{2}{2 + \sin(10 \pi x)} dx = \frac{2}{\sqrt{3}} = 1.154700538379251529.
+#    \int_0^1 f(x) dx = \int_0^1 \frac{2}{2 + \sin(10 \pi x)} dx = \frac{2}{\sqrt{3}} = 1.154700538379251529.
 
 # %%
 # We first define the function as a :class:`~openturns.SymbolicFunction`.
@@ -72,7 +72,7 @@ before_evaluation_number
 # %%
 # Basic use
 # =========
-# We first choose the Gauss-Kronrod rule. Six methods are available: we select the "G11K23" rule.
+# We first choose the Gauss-Kronrod rule. Six quadratures are available: we select the "G11K23" rule.
 # It uses 11 nodes from a Gauss rule and 23 nodes from a Kronrod rule, re-using the nodes from the Gauss rule.
 quadrature_rule = ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23)
 
@@ -139,7 +139,7 @@ error[0]
 # During the algorithm, a collection of subintegrals
 #
 # .. math::
-#    \int_{a_i}^{b_i} g(x) dx
+#    \int_{a_i}^{b_i} f(x) dx
 #
 # are approximated.
 # The outputs :math:`a_i` and :math:`b_i` contain the subintervals used in the algorithm.
@@ -163,31 +163,6 @@ for i in range(number_of_intervals):
     print(
         f"Integral #{i} : [{ai[i]:.4f}, {bi[i]:.4f}] is {fi[i, 0]:.4f} with error {ei[i]:.3e}"
     )
-
-# %%
-# The quadrature rule
-# ===================
-# The object created by :class:`~openturns.GaussKronrodRule` defines the nodes and weights of the quadrature rule.
-# We use the notations in the help page of :class:`~openturns.GaussKronrodRule`.
-#
-# The method :meth:`~openturns.GaussKronrodRule.getOrder` returns the parameter :math:`m`:
-quadrature_rule.getOrder()
-
-# %%
-# We first analyze the Gaussian quadrature rule. The first parameter is the weight :math:`\omega_0` in front of :math:`f(0)`.
-quadrature_rule.getZeroGaussWeight()
-
-# %%
-# The method :meth:`~openturns.GaussKronrodRule.getOtherGaussWeights` returns the weights :math:`\omega_k` in front of :math:`f(\xi_k) + f(-\xi_k)`.
-quadrature_rule.getOtherGaussWeights()
-
-# %%
-# The method :meth:`~openturns.GaussKronrodRule.getOtherKronrodNodes` returns the nodes. The Kronrod nodes interlace the Gaussian nodes.
-quadrature_rule.getOtherKronrodNodes()
-
-# %%
-# The method :meth:`~openturns.GaussKronrodRule.getOtherKronrodWeights` returns the weights :math:`\alpha_k` in the Kronrod extension.
-quadrature_rule.getOtherKronrodWeights()
 
 otv.View.ShowAll()
 
