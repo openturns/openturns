@@ -298,25 +298,28 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
 }
 
 /* Draw 2-d projections of a multivariate sample */
-GridLayout VisualTest::DrawPairsXY(const Sample & inputSample, const Sample & outputSample)
+GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sampleY)
 {
-  const UnsignedInteger inputDimension = inputSample.getDimension();
-  const UnsignedInteger outputDimension = outputSample.getDimension();
+  const UnsignedInteger sampleXDimension = sampleX.getDimension();
+  const UnsignedInteger sampleYDimension = sampleY.getDimension();
   
-  GridLayout grid(outputDimension, inputDimension);
-  const Description inputDescription(inputSample.getDescription());
-  const Description outputDescription(outputSample.getDescription());
+  GridLayout grid(sampleYDimension, sampleXDimension);
+  const Description sampleXDescription(sampleX.getDescription());
+  const Description sampleYDescription(sampleY.getDescription());
   
-  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+  if (sampleX.getSize() != sampleY.getSize())
+    throw InvalidRangeException(HERE) << "The two samples must have the same size.";
+  
+  for (UnsignedInteger i = 0; i < sampleYDimension; ++ i)
   {
-    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+    for (UnsignedInteger j = 0; j < sampleXDimension; ++ j)
     {
-      Cloud cloud(inputSample.getMarginal(j), outputSample.getMarginal(i));
+      Cloud cloud(sampleX.getMarginal(j), sampleY.getMarginal(i));
      
-      Graph graph("", i == outputDimension - 1 ? inputDescription[j] : "", j == 0 ? outputDescription[i] : "", true, "topright");
+      Graph graph("", i == sampleYDimension - 1 ? sampleXDescription[j] : "", j == 0 ? sampleYDescription[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
-      if (i == outputDimension - 1)
+      if (i == sampleYDimension - 1)
         location |= GraphImplementation::TICKX;
       if (j == 0)
         location |= GraphImplementation::TICKY;

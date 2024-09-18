@@ -75,7 +75,7 @@ OT_API Graph DrawHenryLine(const Sample & sample,
 OT_API GridLayout DrawPairs(const Sample & sample);
 
 /** Draw 2-d projections of input / output sample */
-OT_API GridLayout DrawPairs(const Sample & inputSample, const Sample & outputSample);
+OT_API GridLayout DrawPairsXY(const Sample & sampleX, const Sample & sampleY);
 
 /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
 OT_API GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);

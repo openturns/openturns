@@ -520,23 +520,14 @@ Examples
 %feature("docstring") OT::VisualTest::DrawPairs
 "Draw 2-d projections of a multivariate sample.
 
-
-Available usages:
-    VisualTest.DrawPairs(*sample*)
-
-    VisualTest.DrawPairs(*inputSample, outputSample*);
-
 Parameters
 ----------
 sample : 2-d sequence of float
     Samples to draw.
-    
-inputSample, outputSample : 2-d sequence of float
-    Input and output samples to draw the relationships between inputs and outputs.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.GridLayout`
     The graph object
 
 Notes
@@ -556,6 +547,45 @@ Examples
 >>> size = 100
 >>> sample = distribution.getSample(size)
 >>> clouds = ot.VisualTest.DrawPairs(sample)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::VisualTest::DrawPairsXY
+"Draw 2-d projections between marginals of two samples.
+
+Parameters
+----------
+sampleX : 2-d sequence of float
+    First sample.
+sampleY : 2-d sequence of float
+    Second sample.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph object
+
+Notes
+-----
+This method allows to draw the relationships between the margins of two samples.
+This consists of a collection of 2-d projections of the marginals of sampleY (in lines)
+with respect to the marginals of sampleX (in columns).
+The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The color is given by the first individual color in the default palette.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sampleX = distribution.getSample(size)
+>>> sampleY = distribution.getSample(size)
+>>> clouds = ot.VisualTest.DrawPairsXY(sampleX, sampleY)
 >>> View(clouds).show()"
 
 // ---------------------------------------------------------------------

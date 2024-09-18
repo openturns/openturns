@@ -8,7 +8,7 @@ Visualize pairs between two samples
 # This is usual when we analyze the relationship of output sample of a model depending on input sample.
 # This can be achieved by plotting the outputs versus the inputs.
 # When there are several inputs (which is the most often encountered case) and several outputs (which is less often).
-# The :meth:`~openturns.VisualTest.DrawPairs` method provides a tool to plot the pairs of input and output marginal samples and see the correlations graphically.
+# The :meth:`~openturns.VisualTest.DrawPairsXY` method provides a tool to plot the pairs of input and output marginal samples and see the correlations graphically.
 
 # %%
 import openturns as ot
@@ -33,7 +33,7 @@ input_sample = distribution.getSample(100)
 output_sample = model(input_sample)
 
 # %% Visualize the data
-graph = ot.VisualTest.DrawPairs(input_sample, output_sample)
+graph = ot.VisualTest.DrawPairsXY(input_sample, output_sample)
 graph.setTitle("Clouds of input / output samples")
 view = viewer.View(graph)
 viewer.View.ShowAll()
