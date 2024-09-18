@@ -7,14 +7,14 @@ Estimate a multivariate integral with IteratedQuadrature
 # Introduction
 # ------------
 #
-# In this example, we compute the following integral:
+# In this example, we consider a function math:`f: \Rset^d \mapsto \Rset`
+# and we compute the following integral:
 #
 # .. math::
-#    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{n-1}(x_0, \dots, x_{n-2})}^{u_{n-1}(x_0, \dots, x_{n-2})}
-#    \, f(x_0, \dots, x_{n-1})\mathrm{d}{x_{n-1}}\dots\mathrm{d}{x_0}
+#    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{d-1}(x_0, \dots, x_{d-2})}^{u_{d-1}(x_0, \dots, x_{d-2})}
+#    \, f(x_0, \dots, x_{d-1})\mathrm{d}{x_{d-1}}\dots\mathrm{d}{x_0}
 #
-# using an iterated quadrature algorithm :class:`~openturns.IteratedQuadrature`
-# class, based on the Gauss-Kronrod
+# using an iterated quadrature algorithm :class:`~openturns.IteratedQuadrature`, based on the Gauss-Kronrod
 # :class:`~openturns.GaussKronrod` 1d quadrature algorithm.
 
 import openturns as ot
@@ -22,22 +22,24 @@ import openturns.viewer as otv
 import math as m
 
 # %%
-# To get beter colours for the function iso-lines.
+# To get better colours for the function iso-lines.
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 
 # %%
-# Case 1: the integrand function presents a lot of discontinuities.
+# Case 1: The integrand function presents a lot of discontinuities.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We consider the function:
 #
 # .. math::
-#    f : & \Rset^2 \rightarrow \Rset \\
-#        & (x,y) \rightarrow 1_{{x^2+y^2 \leq 4}}(x,y)
+#    f : \begin{array}{lcl}
+#          \Rset^2 & \rightarrow & \Rset \\
+#          (x,y) & \rightarrow & 1_{{x^2+y^2 \leq 4}}(x,y)
+#          \end{array}
 #
 # the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
-#    I = \dint_{\set{D}} f(x,y)\,dxdy
+#    I = \int_{\set{D}} f(x,y)\,dxdy.
 #
 
 # %%
@@ -63,15 +65,16 @@ g.setXTitle('x')
 g.setYTitle('y')
 
 # %%
-# We compute the integral using and  :class:`~openturns.IteratedQuadrature`
+# We compute the integral using an  :class:`~openturns.IteratedQuadrature`
 # algorithm with
 # the :class:`~openturns.GaussKronrodRule`  *G11K23*, which means that we use
-# on each sub-interval:
+# on each subinterval:
 #
 # - 11 points for the Gauss approximations,
 # - 23 points for the Kronrod approximation including the 11 previous ones.
 #
-# We limit the number of subintervals and we  define a maximum error between both approximations.
+# We limit the number of subintervals and we  define a maximum error between both approximations:
+# when the difference between both approximations is lower, a new subdivision is performed.
 maximumSubIntervals = 32
 maximumError = 1e-4
 GKRule = ot.GaussKronrodRule(ot.GaussKronrodRule.G1K3)
@@ -87,8 +90,8 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw the nodes on the graph that contains the iso-lines of the
-# function :math:`f`. We can see that the algorithm focuses the nodes where the
+# We can draw in black the nodes on the graph that contains the iso-lines of the
+# function :math:`f`. We can see that the algorithm focuses on the nodes where the
 # function has its discontinuities.
 cloud_nodes = ot.Cloud(nodes)
 cloud_nodes.setPointStyle('dot')
@@ -104,13 +107,16 @@ view = otv.View(g)
 # We consider the function:
 #
 # .. math::
-#    f : & \Rset^2 \rightarrow \Rset \\
-#        & (x,y) \rightarrow e^{-(x^2+y^2)} + e^{-8((x-4)^2+(y-4)^2)}
+#
+#    f : \begin{array}{lcl}
+#          \Rset^2 & \rightarrow & \Rset \\
+#          (x,y) & \rightarrow & e^{-(x^2+y^2)} + e^{-8((x-4)^2+(y-4)^2)}
+#          \end{array}
 #
 # the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
-#    I = \dint_{\set{D}} f(x,y)\,dxdy
+#    I = \int_{\set{D}} f(x,y)\,dxdy.
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
@@ -140,9 +146,9 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw the nodes on the graph that contains the iso-lines of the
-# function :math:`f`. We can see that the algorithm focuses the nodes where the function
-# had rapid variations.
+# We can draw in black the nodes on the graph that contains the iso-lines of the
+# function :math:`f`. We can see that the algorithm focuses on the nodes where the function
+# has rapid variations.
 cloud_nodes = ot.Cloud(nodes)
 cloud_nodes.setPointStyle('dot')
 cloud_nodes.setColor('blue')
@@ -158,14 +164,17 @@ view = otv.View(g)
 # We consider the function:
 #
 # .. math::
-#    f : & \Rset^2 \rightarrow \Rset \\
-#        & (x,y) \rightarrow cos(2x) * sin(1.5y)
+#
+#    f : \begin{array}{lcl}
+#          \Rset^2 & \rightarrow & \Rset \\
+#          (x,y) & \rightarrow & cos(2x) * sin(1.5y)
+#        \end{array}
 #
 # the domain :math:`\set{D} = \{(x,y)\, |\, -2\pi \leq x \leq 2\pi, -2-cos(x) \leq y  \leq 2+cos(x) \}`
 # and the integral:
 #
 # .. math::
-#    I = \dint_{\set{D}} f(x,y)\,dxdy
+#    I = \int_{\set{D}} f(x,y)\,dxdy.
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
@@ -181,10 +190,12 @@ integrand = ot.PythonFunction(2, 1, kernel3)
 # The domain of integration is defined by the two following functions:
 #
 # .. math::
-#    x \rightarrow upper_func(x) = 2+cos(x)
+#
+#    x \rightarrow u(x) = 2+cos(x)
 #
 # .. math::
-#    x \rightarrow lower_func(x) = -2-cos(x)
+#
+#    x \rightarrow  \ell(x) = -2-cos(x)
 #
 upper_func = ot.SymbolicFunction(["x"], [" 2 + cos(x)"])
 lower_func = ot.SymbolicFunction(["x"], ["-2 - cos(x)"])
@@ -225,6 +236,7 @@ g.add(up_bound)
 g.setTitle(r'Function $f(x,y) =  cos(2x) * sin(1.5y)$')
 g.setXTitle('x')
 g.setYTitle('y')
+view = otv.View(g)
 
 # %%
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
@@ -240,8 +252,8 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw the nodes on the graph that contains the iso-lines of the
-# function :math:`f`. We can see that the algorithm focuses the nodes where
+# We can draw in black the nodes on the graph that contains the iso-lines of the
+# function :math:`f`. We can see that the algorithm focuses on the nodes where
 # the function has rapid variations.
 cloud_nodes = ot.Cloud(nodes)
 cloud_nodes.setPointStyle('dot')

@@ -4,15 +4,11 @@
 Parameters
 ----------
 univariateQuadrature : :class:`~openturns.IntegrationAlgorithm`
+
     By default, the integration algorithm is the Gauss-Kronrod
     algorithm (:class:`~openturns.GaussKronrod`)  with the parameters
     `IteratedQuadrature-MaximumSubIntervals`,
     `IteratedQuadrature-MaximumError`, `IteratedQuadrature-Rule` in :class:`~openturns.ResourceMap`.
-    Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
-    leads to a more precise evaluation of the integral but the cost is
-    greater. It is recommended to increase the order of the quadratic
-    rule and the number of sub intervals if the integrand or one of
-    the bound functions is smooth but with many oscillations. 
 
 Notes
 -----
@@ -24,6 +20,16 @@ This class enables to approximate the following integral:
 
 with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`l_k, u_k: \Rset^k \mapsto \Rset` and :math:`n\geq 1`. For :math:`n=1`, there is no bound functions :math:`l_k` and :math:`u_k`.
 
+
+Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
+leads to a more precise evaluation of the integral but the cost is
+greater.
+
+It is recommended to increase the order of the quadratic
+rule and the number of sub intervals if the integrand or one of
+the bound functions is smooth but with many oscillations.
+
+When the function :math:`f: \Rset \mapsto \Rset^p` has a scalar input, use the iterated quadrature algorithm of the :class:`~openturns.GaussKronrod` class.
 
 Examples
 --------
