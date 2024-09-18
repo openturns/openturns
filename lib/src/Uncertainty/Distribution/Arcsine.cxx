@@ -168,7 +168,7 @@ Scalar Arcsine::computeComplementaryCDF(const Point & point) const
 Complex Arcsine::computeCharacteristicFunction(const Scalar x) const
 {
   //  return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
-  return std::exp(Complex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
+  return std::exp(Complex(0.0, 0.5 * (a_ + b_) * x)) * j0(0.5 * (b_ - a_) * x);
 }
 
 /* Get the PDFGradient of the distribution */
