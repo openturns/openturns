@@ -9,7 +9,7 @@ Create a linear least squares model
 # We consider the function :math:`h : \Rset^2 \rightarrow \Rset^2` is defined by:
 #
 # .. math::
-#    \vect{h}(x_1, x_2) = \left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)
+#    \vect{h}(x_1, x_2) = \Tr{\left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)}
 #
 # for any :math:`\vect{x} \in \Rset^2`.
 # Since the output is a dimension 2 vector, the model has vector
