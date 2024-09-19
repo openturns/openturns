@@ -9,7 +9,7 @@ Taylor approximations
 # We consider the function :math:`\vect{h} : \Rset^2 \rightarrow \Rset^2` defined by:
 #
 # .. math::
-#    \vect{h}(\vect{x}) = \left( \cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right).
+#    \vect{h}(\vect{x}) = \Tr{\left( \cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)}.
 #
 # for any :math:`\vect{x} \in \Rset^2`.
 # The metamodel :math:`\widehat{\vect{h}}` is an approximation of the model :math:`\vect{h}`:
