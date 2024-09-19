@@ -7,11 +7,7 @@ Mixture of experts
 # The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
 #
 # .. math::
-#    \begin{aligned}
-#      f(\vect{x}) &= f_1(\vect{x}) \quad \forall \vect{x} \in \text{Class}_1 \\
-#      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k \\
-#      f(\vect{x}) &= f_n(\vect{x}) \quad \forall \vect{x} \in \text{Class}_n
-#    \end{aligned}
+#      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k
 #
 # where the :math:`n` classes are defined by the classifier.
 #
