@@ -3,7 +3,7 @@ Mixture of experts
 ==================
 """
 # %%
-# In this example we are going to approximate a piece-wise continuous function using an expert mixture of metamodels.
+# In this example we are going to approximate a piecewise continuous function using an expert mixture of metamodels.
 #
 # The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
 #
