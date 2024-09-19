@@ -17,7 +17,8 @@ ot.Log.Show(ot.Log.NONE)
 im = ishigami_function.IshigamiModel()
 
 # %%
-# The `IshigamiModel` data class contains the input distribution of the random vector :math:`\vect{X}=\Tr{(X_1, X_2, X_3)}` in `im.distributionX` and the Ishigami function in `im.model`.
+# The `IshigamiModel` data class contains the input distribution of the random vector
+# :math:`\vect{X}=\Tr{(X_1, X_2, X_3)}` in `im.distributionX` and the Ishigami function in `im.model`.
 # We also have access to the input variable names with:
 input_names = im.distributionX.getDescription()
 

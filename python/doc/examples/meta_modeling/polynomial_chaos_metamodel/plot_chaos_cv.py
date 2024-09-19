@@ -271,7 +271,6 @@ def compute_R2_score_by_kfold(
         r2Score[i] = 1.0 - mse[i] / sampleVariance[i]
     return r2Score
 
-
     """
     Compute mean squared error by (naive) KFold.
 
@@ -332,6 +331,7 @@ def compute_R2_score_by_kfold(
 
 # %%
 # We start by generating the input and output samples. We use a sample size equal to 1000.
+
 
 # %%
 im = ishigami_function.IshigamiModel()

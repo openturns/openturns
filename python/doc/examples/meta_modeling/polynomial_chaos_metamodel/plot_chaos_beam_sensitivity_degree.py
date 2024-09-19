@@ -214,6 +214,7 @@ for totalDegree in range(1, maxDegree + 1):
 # %%
 # Let us repeat the following experiment to see the variability of the :math:`R^2` coefficient.
 
+
 # %%
 def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
     """For a given sample size N, for degree from 1 to maxDegree,

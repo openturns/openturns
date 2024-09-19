@@ -100,9 +100,9 @@ view = viewer.View(graph)
 #
 # .. math::
 #
-#     \widehat{h_k}(\vect{x}) = h_k(\vect{x}_0) + \sum_{i=1}^{2} 
+#     \widehat{h_k}(\vect{x}) = h_k(\vect{x}_0) + \sum_{i=1}^{2}
 #     \frac{\partial h_k}{\partial x_i}(\vect{x}_0) \left(x_i - x_{0,i} \right) +
-#     \frac{1}{2} \sum_{i,j=1}^{2} 
+#     \frac{1}{2} \sum_{i,j=1}^{2}
 #     \frac{\partial^2 h_k}{\partial x_i \partial x_j}(\vect{x}_0) \left(x_i - x_{0,i} \right) \left(x_j - x_{0,j} \right)
 #
 # for any :math:`\vect{x} \in \Rset^2`.
