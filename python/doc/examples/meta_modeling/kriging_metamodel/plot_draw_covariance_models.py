@@ -13,7 +13,7 @@ import pylab as pl
 #
 # Gaussian processes are a common fixture in `UQ`.
 # They are defined by their covariance function and the library implements several of them.
-# In this example we depict covariance functions and play with parameters
+# In this example we plot covariance functions and modify their parameters
 # for two families of models: the generalized exponential model and the Matérn models.
 #
 # For visualization sake we limit ourselves to the dimension 1.
