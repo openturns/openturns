@@ -17,7 +17,7 @@ Create a polynomial chaos metamodel from a data set
 # Let :math:`\vect{g}` be the function defined by:
 #
 # .. math::
-#    \vect{g}(\mathbf{x}) = \left[\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right]
+#    \vect{g}(\vect{x}) = \Tr{\left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right)}
 #
 #
 # for any :math:`\vect{x} \in \Rset^2`.
