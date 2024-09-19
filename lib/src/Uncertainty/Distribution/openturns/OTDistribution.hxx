@@ -49,6 +49,7 @@
 #include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/PointConditionalDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/Dirac.hxx"

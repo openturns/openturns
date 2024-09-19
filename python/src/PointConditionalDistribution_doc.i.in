@@ -1,0 +1,113 @@
+%feature("docstring") OT::PointConditionalDistribution
+"Distribution conditioned by a deterministic vector.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Given a deterministic vector defined by its values :math:`\vect{x}_\mathcal{I}` and indices :math:`\mathcal{I}`
+relative to a distribution :math:`L_\theta(X)`, we defined the conditioned distribution:
+
+.. math::
+
+    L_\varphi(\vect{X}_{\bar{\mathcal{I}}}) = L(\vect{X}_{\bar{\mathcal{I}}} | \Theta = \theta, \vect{X}_\mathcal{I} =\vect{x}_\mathcal{I})
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`L_\theta(X)`
+conditioningIndices : sequence of int
+    Conditioning vector indices :math:`\mathcal{I}`
+conditioningValues : sequence of float
+    Conditioning vector values :math:`\vect{x}_\mathcal{I}`
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    p_{\vect{X}_{\bar{\mathcal{I}}}}(x_{\bar{\mathcal{I}}}) = \dfrac{p_{X}(x_{\bar{\mathcal{I}}}, \vect{x}_{\mathcal{I}})}{p_{X_{\mathcal{I}}}(\vect{x}_{\mathcal{I}})}
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> indices = [1]
+>>> values = [2.0]
+>>> distribution = ot.Normal(3)
+>>> R = ot.CorrelationMatrix(3)
+>>> R[1, 0] = R[2, 0] = R[2, 1] = 0.9
+>>> distribution.setR(R)
+>>> distribution = otexp.PointConditionalDistribution(distribution, indices, values)
+>>> sample = distribution.getSample(2)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::getDistribution
+"Underlying distribution accessor.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`L_\theta(X)`"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::getConditioningIndices
+"Conditioning vector indices accessor.
+
+Returns
+-------
+conditioningIndices : :class:`~openturns.Indices`
+    Conditioning vector indices :math:`\mathcal{I}`"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::getConditioningValues
+"Conditioning vector values accessor.
+
+Returns
+-------
+conditioningValues : :class:`~openturns.Point`
+    Conditioning vector values :math:`\vect{x}_\mathcal{I}`"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::getSimplifiedVersion
+"Simplified distribution accessor.
+
+Returns
+-------
+simplified : :class:`~openturns.Distribution`
+    Simplified distribution when an analytical simplification is available."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::getIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the CDF.
+
+Returns
+-------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    Integration algorithm used to compute the CDF.
+    Default value is :class:`~openturns.GaussKronrod` with a subintervals number
+    specified by the `PointConditionalDistribution-MaximumSubIntervals` key in
+    :class:`~openturns.ResourceMap` and a maximum error value
+    specified by the `PointConditionalDistribution-MaximumError` key
+    in :class:`~openturns.ResourceMap`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointConditionalDistribution::setIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the CDF.
+
+Parameters
+----------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    Integration algorithm used to compute the CDF.
+    Default value is :class:`~openturns.GaussKronrod` with a subintervals number
+    specified by the `PointConditionalDistribution-MaximumSubIntervals` key in
+    :class:`~openturns.ResourceMap` and a maximum error value
+    specified by the `PointConditionalDistribution-MaximumError` key
+    in :class:`~openturns.ResourceMap`."

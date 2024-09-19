@@ -1108,6 +1108,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
+  // PointConditionalDistribution parameters //
+  addAsScalar("PointConditionalDistribution-MaximumError", 1.0e-7);
+  addAsString("PointConditionalDistribution-Rule", "G15K31");
+  addAsUnsignedInteger("PointConditionalDistribution-MaximumSubIntervals", 128);
+  addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
+  addAsUnsignedInteger("PointConditionalDistribution-CDFSamplingSize", 10000);
+
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
 

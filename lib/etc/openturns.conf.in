@@ -488,6 +488,13 @@
   <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
   <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
+  <!-- OT::PointConditionalDistribution parameters -->
+  <PointConditionalDistribution-MaximumError value_float="1.0e-7" />
+  <PointConditionalDistribution-Rule value_str="G15K31" />
+  <PointConditionalDistribution-MaximumSubIntervals value_int="128" />
+  <PointConditionalDistribution-SmallDimension value_int="6" />
+  <PointConditionalDistribution-CDFSamplingSize     value_int="10000" />
+
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
