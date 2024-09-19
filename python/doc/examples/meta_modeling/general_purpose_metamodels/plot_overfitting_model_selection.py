@@ -113,9 +113,9 @@ view = otv.View(graph)
 # .. math::
 #    P(\vect{x}) = \beta_0 + \beta_1 \vect{x} + ... + \beta_p \vect{x}^p,
 #
-# for any :math:`\vect{x}\in\mathbb{R}`, where :math:`p` is the polynomial degree and :math:`\beta\in\mathbb{R}^{p+1}` is the vector of the coefficients of the model.
-# Let :math:`n` be the training sample size and let :math:`\vect{x}_1,...,\vect{x}_n \in \mathbb{R}` be the abscissas of the training set.
-# The design matrix :math:`\mat{X} \in \mathbb{R}^{n \times (p+1)}` is
+# for any :math:`x \in \Rset`, where :math:`p` is the polynomial degree and :math:`\vect{\beta} \in \Rset^{p+1}` is the vector of the coefficients of the model.
+# Let :math:`\sampleSize` be the training sample size and let :math:`\vect{x}_1,...,\vect{x}_\sampleSize \in \Rset` be the abscissas of the training set.
+# The design matrix :math:`\mat{X} \in \Rset^{n \times (p+1)}` is
 #
 # .. math::
 #    \vect{x}_{i,j} = \vect{x}^j_i,
