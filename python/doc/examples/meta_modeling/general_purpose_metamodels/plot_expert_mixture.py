@@ -27,7 +27,7 @@ Mixture of experts
 #    p(\vect{x}) = \sum_{i=1}^n w_ip_i(\vect{x})
 #
 #
-# The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j=\text{argmax}_j \log w_kp_k(\vect{x})`.
+# The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j=\argmax_j \log w_k p_k(\vect{x})`.
 #
 # The grade of :math:`\vect{x}` with respect to the class :math:`k` is :math:`\log w_kp_k(\vect{x})`.
 #
