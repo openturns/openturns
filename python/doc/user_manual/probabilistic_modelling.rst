@@ -175,6 +175,11 @@ Combining and transforming distributions
 
     :template: Distribution.rst_t
     DeconditionedDistribution
+
+    :template: classWithPlot.rst_t
+    experimental.PointConditionalDistribution
+
+    :template: Distribution.rst_t
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
 

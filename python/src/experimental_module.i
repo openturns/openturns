@@ -68,6 +68,7 @@
 %include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Distribution */
+%include PointConditionalDistribution.i
 %include SmoothedUniformFactory.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
