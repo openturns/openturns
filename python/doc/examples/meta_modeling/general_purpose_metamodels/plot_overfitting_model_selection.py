@@ -124,7 +124,7 @@ view = otv.View(graph)
 # The least squares solution is:
 #
 # .. math::
-#    \beta^\star = \textrm{argmin}_{\beta \in \mathbb{R}^{p+1}} \| \mat{X}\beta - \vect{y}\|_2^2.
+#    \beta^\star = \argmin_{\vect{\beta} \in \Rset^{p+1}} \| \mat{X} \vect{\beta} - \vect{y}\|_2^2.
 #
 
 # %%
