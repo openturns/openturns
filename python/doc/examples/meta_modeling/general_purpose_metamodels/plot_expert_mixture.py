@@ -14,7 +14,7 @@ Mixture of experts
 #      f(\vect{x}) &= f_n(\vect{x}) \quad \forall \vect{x} \in \text{Class}_n
 #    \end{aligned}
 #
-# where the `n` classes are defined by the classifier.
+# where the :math:`n` classes are defined by the classifier.
 #
 # Using the supervised mode the classifier partitions the input and output spaces at once:
 #
