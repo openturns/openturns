@@ -107,7 +107,7 @@ view = otv.View(graph)
 # Compute the coefficients of the polynomial decomposition
 # --------------------------------------------------------
 #
-# Let :math:`\vect{y} \in \mathbb{R}^n` be a vector of observations.
+# Let :math:`\vect{y} \in \Rset^n` be a vector of observations.
 # The polynomial model is
 #
 # .. math::
