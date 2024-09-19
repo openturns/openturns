@@ -4,7 +4,7 @@ Mixture of experts
 """
 # %%
 # In this example we are going to approximate a piecewise continuous function using an expert mixture of metamodels.
-# The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
+# The metamodels will be represented by the family of :math:`f_k \forall k \in \llbracket 1, n \rrbracket`:
 #
 # .. math::
 #      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k
