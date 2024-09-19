@@ -114,11 +114,11 @@ view = otv.View(graph)
 #    P(x) = \beta_0 + \beta_1 x + ... + \beta_p x^p,
 #
 # for any :math:`x \in \Rset`, where :math:`p` is the polynomial degree and :math:`\vect{\beta} \in \Rset^{p+1}` is the vector of the coefficients of the model.
-# Let :math:`\sampleSize` be the training sample size and let :math:`\vect{x}_1,...,\vect{x}_\sampleSize \in \Rset` be the abscissas of the training set.
+# Let :math:`\sampleSize` be the training sample size and let :math:`x_1,...,x_\sampleSize \in \Rset` be the abscissas of the training set.
 # The design matrix :math:`\mat{X} \in \Rset^{n \times (p+1)}` is
 #
 # .. math::
-#    \vect{x}_{i,j} = \vect{x}^j_i,
+#    x_{i,j} = x^j_i,
 #
 # for :math:`i=1,...,n` and :math:`j=0,...,p`.
 # The least squares solution is:

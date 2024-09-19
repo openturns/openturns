@@ -180,7 +180,6 @@ type(trajectories)
 # By comparison, the `getSample` method of a :class:`~openturns.KrigingRandomVector` would return a :class:`~openturns.Sample`.
 
 # %%
-# sphinx_gallery_thumbnail_number = 3
 graph = trajectories.drawMarginal()
 graph.add(plot_data_test(x_test, y_test))
 graph.add(plot_data_train(x_train, y_train))
@@ -191,6 +190,7 @@ graph.setLegendPosition("upper right")
 graph.setTitle("10 simulated trajectories")
 view = viewer.View(graph)
 plt.show()
+# sphinx_gallery_thumbnail_number = 3
 
 # %%
 # References

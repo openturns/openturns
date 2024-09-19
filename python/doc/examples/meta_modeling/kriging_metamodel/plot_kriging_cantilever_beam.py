@@ -167,9 +167,8 @@ view = viewer.View(graph)
 # the observed outputs and the metamodel outputs.
 
 # %%
-# sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
 graph.setTitle("R2 = %.2f%%" % (100 * r2Score))
 view = viewer.View(graph)
-
 plt.show()
+# sphinx_gallery_thumbnail_number = 3

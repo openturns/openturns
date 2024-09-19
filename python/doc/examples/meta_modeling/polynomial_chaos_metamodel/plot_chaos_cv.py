@@ -478,7 +478,6 @@ view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 
 # %%
 # Compare the two cross-validation methods.
-# sphinx_gallery_thumbnail_number = 4
 graph = ot.Graph("CV : split vs K-Fold", "Degree", "$R^2$", True)
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleSplit)
 cloud.setPointStyle("circle")
@@ -492,6 +491,8 @@ graph.setLegendPosition("topleft")
 graph.setColors(ot.Drawable().BuildDefaultPalette(2))
 graph.setBoundingBox(boundingBox)
 view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
+# sphinx_gallery_thumbnail_number = 4
+
 
 # %%
 # Conclusion
