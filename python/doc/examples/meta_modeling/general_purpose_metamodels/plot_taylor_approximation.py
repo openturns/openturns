@@ -15,7 +15,7 @@ Taylor approximations
 # The metamodel :math:`\widehat{\vect{h}}` is an approximation of the model :math:`\vect{h}`:
 #
 # .. math::
-#    \vect{y} \, \approx \, \widehat{\vect{h}}(\vect{x})
+#    \vect{y} \approx \widehat{\vect{h}}(\vect{x})
 #
 # for any :math:`\vect{x} \in \Rset^2`. We note  :math:`h_k`, :math:`k=1, 2` the marginal outputs
 # In this example, we consider two different approximations:
