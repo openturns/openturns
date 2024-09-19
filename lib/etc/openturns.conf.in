@@ -493,6 +493,12 @@
   <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
   <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
+  <!-- OT::PointConditionalDistribution parameters -->
+  <PointConditionalDistribution-CubaAlgorithm value_str="cuhre" />
+  <PointConditionalDistribution-OptimizationAlgorithm value_str="Cobyla" />
+  <PointConditionalDistribution-SmallDimension value_int="6" />
+  <PointConditionalDistribution-UseSimplifiedVersion value_bool="true" />
+
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
@@ -1111,7 +1117,7 @@
   <!-- SimplicialCubature parameters -->
   <SimplicialCubature-DefaultMaximumAbsoluteError value_float="0.0" />
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
-  <SimplicialCubature-DefaultMaximumCallsNumber   value_int="10000" />
+  <SimplicialCubature-DefaultMaximumCallsNumber   value_int="100000" />
   <SimplicialCubature-DefaultRule value_int="3" />
   <SimplicialCubature-MarginalDiscretizationIntervalsNumber value_int="1" />
 

@@ -1113,6 +1113,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
+  // PointConditionalDistribution parameters //
+  addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
+  addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
+  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
+
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
 
@@ -1732,7 +1738,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
   addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
-  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 10000);
+  addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 100000);
   addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
   addAsUnsignedInteger("SimplicialCubature-MarginalDiscretizationIntervalsNumber", 1);
 

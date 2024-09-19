@@ -9,6 +9,7 @@
  * New Gaussian process regression classes
 
 ==== New classes ====
+ * PointConditionalDistribution (openturns.experimental)
 
 ==== API changes ====
  * SmolyakExperiment left the experimental module
