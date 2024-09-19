@@ -3,7 +3,7 @@ Create a general linear model metamodel
 =======================================
 """
 # %%
-# In this example we are going to create a global approximation of a model response using a general linear model.
+# In this example we create a global approximation of a model response using a general linear model.
 # We show how to use the :class:`~openturns.GeneralLinearModelAlgorithm` class, which estimates the parameters of the model.
 
 # %%

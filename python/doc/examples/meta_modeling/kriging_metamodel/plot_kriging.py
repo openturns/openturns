@@ -10,10 +10,10 @@ Kriging : multiple input dimensions
 # We consider the function
 #
 # .. math::
-#    g(\vect{X}) = \cos(X_1 + X_2)
+#    g(\vect{x}) = \cos(x_1 + x_2)
 #
 #
-# for any :math:`\vect{X}\in\mathbb{R}^2`.
+# for any :math:`\vect{x} \in \Rset^2`.
 # We assume that :math:`X_1` and :math:`X_2` have a Gaussian distribution :
 #
 # .. math::

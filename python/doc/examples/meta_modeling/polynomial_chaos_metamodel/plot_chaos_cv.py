@@ -272,18 +272,6 @@ def compute_R2_score_by_kfold(
     return r2Score
 
 
-# %%
-# The next function computes the R2 score by K-Fold.
-
-
-def compute_R2_score_by_kfold(
-    inputSample,
-    outputSample,
-    multivariateBasis,
-    totalDegree,
-    distribution,
-    kParameter=5,
-):
     """
     Compute mean squared error by (naive) KFold.
 

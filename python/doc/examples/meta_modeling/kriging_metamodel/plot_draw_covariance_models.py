@@ -16,7 +16,7 @@ import pylab as pl
 # In this example we plot covariance functions and modify their parameters
 # for two families of models: the generalized exponential model and the Matérn models.
 #
-# For visualization sake we limit ourselves to the dimension 1.
+# For visualization sake, we limit ourselves to the dimension 1.
 dimension = 1
 
 # %%
@@ -276,7 +276,7 @@ _ = fig.suptitle(
 
 # %%
 # Except for very small values of the correlation length, trajectories are usually smooth. It is the
-# main effect of the squared exponential model which leads to smooth process.
+# main effect of the squared exponential model which leads to smooth processes.
 
 
 # %%

@@ -111,7 +111,7 @@ view = otv.View(graph)
 # The polynomial model is
 #
 # .. math::
-#    P(\vect{x}) = \beta_0 + \beta_1 \vect{x} + ... + \beta_p \vect{x}^p,
+#    P(x) = \beta_0 + \beta_1 x + ... + \beta_p x^p,
 #
 # for any :math:`x \in \Rset`, where :math:`p` is the polynomial degree and :math:`\vect{\beta} \in \Rset^{p+1}` is the vector of the coefficients of the model.
 # Let :math:`\sampleSize` be the training sample size and let :math:`\vect{x}_1,...,\vect{x}_\sampleSize \in \Rset` be the abscissas of the training set.

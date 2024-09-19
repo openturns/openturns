@@ -20,7 +20,7 @@ Create a polynomial chaos metamodel from a data set
 #    \vect{g}(\mathbf{x}) = \left[\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right]
 #
 #
-# for any :math:`\mathbf{x}\in\mathbb{R}^2`.
+# for any :math:`\vect{x} \in \Rset^2`.
 #
 # We assume that
 #

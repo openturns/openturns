@@ -4,7 +4,6 @@ Mixture of experts
 """
 # %%
 # In this example we are going to approximate a piecewise continuous function using an expert mixture of metamodels.
-#
 # The metamodels will be represented by the family of :math:`f_k \forall k \in [\![1, n\!]`:
 #
 # .. math::
@@ -75,7 +74,7 @@ adaptiveStrategy = ot.FixedStrategy(
 )
 
 # %%
-# Segment 1: :math:`(-1.0; 0.0)`
+# Interval 1: :math:`[-1.0; 0.0]`
 d1 = ot.Uniform(-1.0, 0.0)
 X1 = d1.getSample(samplingSize)
 Y1 = f(X1)
@@ -86,7 +85,7 @@ graph = mm1.draw(-1.0, -1e-6)
 view = viewer.View(graph)
 
 # %%
-# Segment 2: :math:`(0.0, 1.0)`
+# Interval 2: :math:`[0.0, 1.0]`
 d2 = ot.Uniform(0.0, 1.0)
 X2 = d2.getSample(samplingSize)
 Y2 = f(X2)

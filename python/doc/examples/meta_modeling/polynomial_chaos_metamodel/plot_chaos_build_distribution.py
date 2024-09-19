@@ -31,7 +31,7 @@ formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
-# Then we create a sample :math:`x` and compute the corresponding output sample :math:`y`.
+# Then we create a sample `x` and compute the corresponding output sample `y`.
 
 # %%
 distribution = ot.Normal(dimension)

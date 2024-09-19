@@ -214,7 +214,7 @@ Y = model(X)
 # The :class:`~openturns.FunctionalChaosAlgorithm` class combines
 #
 # * the model : `model`,
-# * the distribution of the input random vector : `distribution` ,
+# * the distribution of the input random vector : `distribution`,
 # * the truncature strategy of the multivariate basis,
 # * and the evaluation strategy of the coefficients.
 
