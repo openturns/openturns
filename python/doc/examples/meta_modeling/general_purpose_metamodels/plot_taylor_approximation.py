@@ -58,9 +58,8 @@ b = 0.0
 # The first order Taylor expansion of the output marginal :math:`h_k` is:
 #
 # .. math::
-#    \widehat{h_k}(\vect{x}) \,
-#    = \, h_k(\vect{x}_0) \, +
-#      \, \sum_{i=1}^{2} \; \frac{\partial h_k}{\partial x_i}(\vect{x}_0).\left(x_i - x_{0,i} \right)
+#    \widehat{h_k}(\vect{x}) = h_k(\vect{x}_0) +
+#      \sum_{i=1}^{2} \frac{\partial h_k}{\partial x_i}(\vect{x}_0) \left(x_i - x_{0,i} \right)
 #
 # for any :math:`\vect{x} \in \Rset^2`.
 
