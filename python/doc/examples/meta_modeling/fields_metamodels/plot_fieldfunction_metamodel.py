@@ -4,7 +4,7 @@ Metamodel of a field function
 """
 # %%
 #
-# In this example we are going to create a metamodel of a field function following these steps:
+# In this example we create a metamodel of a field function following these steps:
 #
 # 1. Create a field model over an 1-d mesh ;
 # 2. Create a Gaussian process ;
