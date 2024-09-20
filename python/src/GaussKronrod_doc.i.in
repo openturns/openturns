@@ -41,7 +41,7 @@ The final integral is the sum of the integrals evaluated on all the subintervals
 
     \int_{a}^b f(t)\di{t} = \sum_i \int_{a_i}^{b_i} f(t)\di{t}
 
-It is possible to get all the subintervals  :math:`[a_i, b_i]` with a particular use of the method :math:`integrate`.
+It is possible to get all the subintervals  :math:`[a_i, b_i]` with a particular use of the method :meth:`integrate`.
 
 Note that the integral over each subinterval :math:`[a_i, b_i]` uses the Gauss-Kronrod algorithm where the integrand function is rescaled by the mapping function:
 

@@ -7,7 +7,7 @@ Estimate a multivariate integral with IteratedQuadrature
 # Introduction
 # ------------
 #
-# In this example, we consider a function math:`f: \Rset^d \mapsto \Rset`
+# In this example, we consider a function :math:`f: \Rset^d \mapsto \Rset`
 # and we compute the following integral:
 #
 # .. math::
@@ -148,7 +148,7 @@ print('Nodes : ', nodes)
 # %%
 # We can draw in black the nodes on the graph that contains the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the function
-# has rapid variations.
+# has fast variations.
 cloud_nodes = ot.Cloud(nodes)
 cloud_nodes.setPointStyle('dot')
 cloud_nodes.setColor('blue')
@@ -254,7 +254,7 @@ print('Nodes : ', nodes)
 # %%
 # We can draw in black the nodes on the graph that contains the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where
-# the function has rapid variations.
+# the function has fast variations.
 cloud_nodes = ot.Cloud(nodes)
 cloud_nodes.setPointStyle('dot')
 cloud_nodes.setColor('black')
@@ -262,6 +262,10 @@ cloud_nodes.setColor('black')
 g.add(cloud_nodes)
 g.setLegendPosition('')
 view = otv.View(g)
+
+# %%
+# Reset ResourceMap
+ot.ResourceMap.Reload()
 
 # %%
 # Show all the graphs.

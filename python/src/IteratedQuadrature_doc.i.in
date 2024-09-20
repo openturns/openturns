@@ -25,7 +25,7 @@ Note that the default parametrisation of the :class:`~openturns.GaussKronrod` cl
 leads to a more precise evaluation of the integral but the cost is
 greater.
 
-It is recommended to increase the order of the quadratic
+It is recommended to increase the order of the quadrature
 rule and the number of sub intervals if the integrand or one of
 the bound functions is smooth but with many oscillations.
 

@@ -56,7 +56,7 @@ The approximated integral is:
 
 where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
 
-To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the mapping function~:math:`\varphi`:
+To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the mapping function denoted :math:`\varphi` and defined by:
 
 .. math::
     :label: mapping
