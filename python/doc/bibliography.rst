@@ -270,8 +270,8 @@ Bibliography
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
 .. [lemieux2009] Lemieux, C. (2009). *Monte Carlo and Quasi-Monte Carlo Sampling*.
     Springer. Springer Series in Statistics.
-.. [leriche2021] Le Riche, R., & Picheny, V. (2021). *ERevisiting Bayesian optimization in the
-    light of the COCO benchmark.* Structural and Multidisciplinary 
+.. [leriche2021] Le Riche, R., & Picheny, V. (2021). *Revisiting Bayesian optimization in the
+    light of the COCO benchmark.* Structural and Multidisciplinary
     Optimization, 64, 3063-3087.
 .. [liu2006] Liu, R., & Owen, A. B. (2006). *Estimating mean dimensionality of
     analysis of variance decompositions.* Journal of the American Statistical
