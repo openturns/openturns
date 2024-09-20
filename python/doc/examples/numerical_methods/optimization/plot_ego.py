@@ -77,7 +77,7 @@ view = viewer.View(graph)
 # Before using the EGO algorithm, we must create an initial kriging.
 # In order to do this, we must create a design of experiment which fills the space.
 # In this situation, the :class:`~openturns.LHSExperiment` is a good place to start (but other design of experiments may allow one to better fill the space).
-# We use a uniform distribution in order to create a LHS design. 
+# We use a uniform distribution in order to create a LHS design.
 # The length of the first LHS is set to ten times the problem dimension as recommended in [jones1998]_.
 
 # %%
