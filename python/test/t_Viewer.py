@@ -282,4 +282,15 @@ cloud = ot.Cloud(ot.Normal(2).getSample(100), "cloud")
 graph.add(cloud)
 view = View(graph)
 
+# contour bug
+outputSample = ot.Uniform().getSample(49)
+x = [[-3.58], [-2.38667], [-1.19333], [0], [1.19333], [2.38667], [3.58]]
+y = [[-3.58], [-2.38667], [-1.19333], [0], [1.19333], [2.38667], [3.58]]
+contour = ot.Contour(x, y, outputSample)
+contour.setLevels([0.0])
+contour.setLabels(["0.0"])
+graph = ot.Graph("", "", "", True)
+graph.add(contour)
+view = View(graph)
+
 view.ShowAll(block=True)

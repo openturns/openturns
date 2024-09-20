@@ -681,7 +681,15 @@ class View:
                 else:
                     contourset = self._ax[0].contour(X, Y, Z, **contour_kw)
                 self._contoursets.append(contourset)
-                if drawable.getDrawLabels() and not contour.isFilled():
+
+                # matplotlib may fail with ValueError exception "RGBA sequence should have length 3 or 4'"
+                # can either disable labels or color map to work around it
+                draw_labels = drawable.getDrawLabels()
+                if draw_labels and len(drawable.getLevels()) == 1 and contour_kw.get("cmap", "") != "" and matplotlib_version >= Version("3.6") and matplotlib_version < Version("3.7"):
+                    warnings.warn("openturns.viewer: disabling contour labels to work around matplotlib 3.6.x issue")
+                    draw_labels = False
+
+                if draw_labels and not contour.isFilled():
                     # Matplotlib does not support labels in filled contours well
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
