@@ -82,7 +82,7 @@ algorithm.
 | :class:`~openturns.GaussianNonLinearCalibration`     | Distribution of the MAP with respect to randomness in the data        |
 +------------------------------------------------------+-----------------------------------------------------------------------+
 
-**Table 1.** Content of the distribution returned by  `getParameterPosterior()` different classes returning a `CalibrationResult`.
+**Table 1.** Content of the distribution returned by  :meth:`~openturns.CalibrationResult.getParameterPosterior()` different classes returning a :class:`~openturns.CalibrationResult`.
 
 
 Returns
