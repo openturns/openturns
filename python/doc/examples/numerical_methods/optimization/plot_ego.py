@@ -99,7 +99,8 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We now create the kriging metamodel. We selected the :class:`~openturns.MaternModel` covariance model with a constant basis.
+# We now create the kriging metamodel.
+# We selected the :class:`~openturns.MaternModel` covariance model with a constant basis as recommended in [leriche2021]_.
 
 # %%
 covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
