@@ -86,9 +86,10 @@ view = otv.View(graph_model, square_axes=True)
 # of :math:`\inputRV`.
 
 # %%
-# We first define RandomVector objects and the failure event associated to the output random variable.
-vector_X = ot.RandomVector(dist_X)
-vector_Y = ot.CompositeRandomVector(g, vector_X)
+# We first define random vectors with the :class:`~openturns.RandomVector` 
+# and the failure event associated to the output random variable.
+vectorX = ot.RandomVector(distX)
+vectorY = ot.CompositeRandomVector(f, vectorX)
 s = 10.0
 event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 
