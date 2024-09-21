@@ -25,7 +25,7 @@ import numpy as np
 # - the exponential distribution with parameter :math:`\lambda=1`, :math:`X_1 \sim \mathcal{E}(1.0)` ;
 # - the standard unit normal distribution :math:`X_2 \sim \mathcal{N}(0,1)`.
 #
-# The support of the input vector is :math:`[0, +\infty[ \times \mathbb{R}`
+# The support of the input vector is :math:`[0, +\infty[ \times \Rset`
 dist_X1 = ot.Exponential(1.0)
 dist_X2 = ot.Normal()
 dist_X = ot.JointDistribution([dist_X1, dist_X2])
@@ -80,16 +80,16 @@ view = otv.View(graph_model, square_axes=True)
 #
 # .. math::
 #
-#  \set{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \model(x_1, x_2) \geq s \}
+#  \set{D} = \{ (x_1, x_2) \in [0,+\infty[ \times \Rset \, | \,  \model(x_1, x_2) \geq s \}
 #
 # is the failure domain and :math:`\inputMeasure` is the probability density function (PDF)
 # of :math:`\inputRV`.
 
 # %%
-# We first define random vectors with the :class:`~openturns.RandomVector` 
+# We first define random vectors with the :class:`~openturns.RandomVector`
 # and the failure event associated to the output random variable.
-vectorX = ot.RandomVector(distX)
-vectorY = ot.CompositeRandomVector(f, vectorX)
+vector_X = ot.RandomVector(dist_X)
+vector_Y = ot.CompositeRandomVector(g, vector_X)
 s = 10.0
 event = ot.ThresholdEvent(vector_Y, ot.Greater(), s)
 
@@ -206,8 +206,7 @@ print("Is Elliptical ? ", dist_X.isElliptical())
 # where :math:`F_i` is the cumulative distribution function (CDF) of :math:`X_i` and
 # :math:`\Phi` the CDF of the univariate normal distribution with zero mean and unit variance.
 # Note that in this example, :math:`\Phi^{-1} \circ F_2 = I_d` as :math:`F_2 = \Phi`.
-
-# The isoprobabilistic transform and its inverse are methods of the distribution :
+# The isoprobabilistic transform and its inverse are methods of the distribution:
 transformation = dist_X.getIsoProbabilisticTransformation()
 inverse_transformation = dist_X.getInverseIsoProbabilisticTransformation()
 
@@ -263,13 +262,13 @@ g_tilde = ot.ComposedFunction(g, inverse_transformation)
 #
 # .. math::
 #
-#  \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,  \widetilde{\model}(z_1, z_2) \geq s \}
+#  \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \Rset \, | \,  \widetilde{\model}(z_1, z_2) \geq s \}
 #
 # and its boundary is defined by:
 #
 # .. math::
 #
-#    \partial \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \mathbb{R} \, | \,
+#    \partial \set{\widetilde{D}} = \{ (z_1, z_2) \in [0,+\infty[ \times \Rset \, | \,
 #       \widetilde{\model}(z_1, z_2) = s \}
 #
 
@@ -287,14 +286,7 @@ graph_standard_space.setYTitle(r"$z_2$")
 graph_standard_space.setTitle('Failure domain in the standard space')
 
 # %%
-# We add the origin to the previous graph.
-cloud = ot.Cloud([0.0], [0.0])
-cloud.setColor("black")
-cloud.setPointStyle("fcircle")
-cloud.setLegend("origin")
-graph_standard_space.add(cloud)
-
-# Some annotations
+# We add some annotations
 texts = [r"$\mathcal{\tilde{D}} = \{(z_1, z_2)\, |\, \tilde{g}(z_1, z_2) \geq 10 \}$"]
 text_graph = ot.Text([[4.0, 3.0]], texts)
 text_graph.setTextSize(1)
@@ -389,9 +381,9 @@ view = otv.View(graph_standard_space, square_axes=True)
 # .. math::
 #
 #    \mathcal{P}_{z^*} = \{ \vect{z} \in \Rset^2 \, | \,
-#                \scalarproduct{\nabla \widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} = 0\}
+#                \scalarproduct{\nabla\widetilde{\model}(\vect{z}^*)}{\vect{Z^*M}} = 0\}
 #
-# We can use the class LinearFunction.
+# We can use the :class:`~openturns.LinearFunction` class.
 center = design_point_standard_space
 grad_design_point = g_tilde.gradient(design_point_standard_space)
 constant = [0.0]
@@ -416,8 +408,10 @@ view = otv.View(graph_standard_space, square_axes=True)
 #
 # .. math::
 #
-#    P_{FORM} \approx E(-\beta_{HL}) & \quad  \mbox{if }  \vect{0} \notin \set{\widetilde{D}} \\
-#    P_{FORM} \approx E(+\beta_{HL}) & \quad  \mbox{if }  \vect{0} \in \set{\widetilde{D}}
+#    P_{FORM} =  \begin{cases}
+#                   E(-\beta_{HL}) & \text{ if }  \vect{0} \notin \set{\widetilde{D}} \\
+#                    E(+\beta_{HL}) & \text{ if }  \vect{0} \in \set{\widetilde{D}}
+#                 \end{cases}
 #
 # where :math:`E(.)` is the marginal cumulative distribution function along any direction of
 # the spherical distribution in the standard space. In this example, this is the normal distribution.
@@ -453,10 +447,12 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 #
 # .. math::
 #
-#    P_{SORM, Breitung} \approx E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
-#                      \mbox{if }  \vect{0} \notin \set{\widetilde{D}} \\
-#    P_{SORM, Breitung} \approx E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} &
-#                      \mbox{if }  \vect{0} \in \set{\widetilde{D}}
+#    P_{SORM, Breitung} = \begin{cases}
+#                 E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ if }
+#                         \vect{0} \notin \set{\widetilde{D}} \\
+#                    E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ if }
+#                          \vect{0} \in \set{\widetilde{D}}
+#                 \end{cases}
 #
 # and approximates the boundary by the osculating paraboloid at the design point.
 #
@@ -516,7 +512,7 @@ view = otv.View(graph_standard_space)
 #
 #    \kappa(x) = \frac{\ell''(x)}{(1+[\ell'(x)]^2)^{3/2}}.
 #
-# For the oscillating parabola of concern we use the gradient and hessian previously computed:
+# For the osculating parabola of concern we use the gradient and hessian previously computed:
 #
 curvature = (d2z1_star[0, 0, 0]) / (1 + (dz1_star[0, 0]) ** 2) ** (3 / 2)
 print("Curvature (analytic formula) = ", curvature)
