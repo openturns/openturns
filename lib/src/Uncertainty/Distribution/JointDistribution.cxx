@@ -42,6 +42,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -823,6 +824,33 @@ void JointDistribution::computeRange()
   }
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
+
+
+/* Get the support of a distribution that intersect a given interval */
+Sample JointDistribution::getSupport(const Interval & interval) const
+{
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
+  if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
+  Collection<Sample> marginalSupport(getDimension());
+  Indices marginalSize(getDimension());
+  for (UnsignedInteger j = 0; j < getDimension(); ++ j)
+  {
+    marginalSupport[j] = distributionCollection_[j].getSupport(interval.getMarginal(j));
+    marginalSize[j] = marginalSupport[j].getSize();
+  }
+  IndicesCollection tuples(Tuples(marginalSize).generate());
+  Sample support(0, getDimension());
+  for (UnsignedInteger i = 0; i < tuples.getSize(); ++ i)
+  {
+    Point x(getDimension());
+    for (UnsignedInteger j = 0; j < getDimension(); ++ j)
+      x[j] = marginalSupport[j](tuples(i, j), 0);
+    if (computePDF(x) > 0.0)
+      support.add(x);
+  }
+  return support;
+}
+
 
 /* Compute the mean of the distribution. It is cheap if the marginal means are cheap */
 void JointDistribution::computeMean() const
