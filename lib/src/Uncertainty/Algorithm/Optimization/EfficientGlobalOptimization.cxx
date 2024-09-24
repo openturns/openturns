@@ -92,12 +92,17 @@ public:
 
   Point operator()(const Point & x) const
   {
+    return Point(1, computeAsScalar(x));
+  }
+
+  Scalar computeAsScalar(const Point & x) const
+  {
     const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
     const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
     const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk))
-      return Point(1, SpecFunc::LowestScalar);
+      return SpecFunc::LowestScalar;
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -106,15 +111,21 @@ public:
       if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
       ei *= (1.0 - sqrt(noiseVariance) / sqrt(noiseVariance + sk2));
     }
-    return Point(1, ei);
+    return ei;
   }
 
   Sample operator()(const Sample & theta) const
   {
     const UnsignedInteger size = theta.getSize();
+    // avoid creating size points
+    Point theta_i(theta.getDimension());
     Sample outS(size, 1);
     for (UnsignedInteger i = 0; i < size; ++ i)
-      outS[i] = operator()(theta[i]);
+    {
+      for (UnsignedInteger j = 0; j < theta_i.getSize(); ++ j)
+        theta_i[j] = theta(i, j);
+      outS(i, 0) = computeAsScalar(theta_i);
+    }
     return outS;
   }
 
