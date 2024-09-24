@@ -40,7 +40,6 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
-  , improvementFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
   , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
   , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
@@ -56,7 +55,6 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
-  , improvementFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
   , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
   , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
@@ -332,16 +330,6 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    // improvement stopping criterion
-    Bool improvementStop = false;
-    const Scalar improvementTerm = improvementFactor_ * std::abs(optimalValue[0]);
-    if (problem.isMinimization())
-      improvementStop = improvementValue[0] < improvementTerm;
-    else
-      improvementStop = improvementValue[0] > improvementTerm;
-    if (improvementStop) LOGINFO(OSS() << "Stopped algorithm over the improvement criterion");
-    exitLoop = exitLoop || improvementStop;
-
     // add new point to design
     inputSample.add(newPoint);
     outputSample.add(newValue);
@@ -466,17 +454,6 @@ Sample EfficientGlobalOptimization::getExpectedImprovement() const
   return expectedImprovement_;
 }
 
-/* improvement criterion factor accessor */
-void EfficientGlobalOptimization::setImprovementFactor(const Scalar improvementFactor)
-{
-  improvementFactor_ = improvementFactor;
-}
-
-Scalar EfficientGlobalOptimization::getImprovementFactor() const
-{
-  return improvementFactor_;
-}
-
 /* correlation length stopping criterion factor accessor */
 void EfficientGlobalOptimization::setCorrelationLengthFactor(const Scalar correlationLengthFactor)
 {
@@ -545,7 +522,6 @@ void EfficientGlobalOptimization::save(Advocate & adv) const
   adv.saveAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
   adv.saveAttribute("multiStartNumber_", multiStartNumber_);
   adv.saveAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
-  adv.saveAttribute("improvementFactor_", improvementFactor_);
   adv.saveAttribute("correlationLengthFactor_", correlationLengthFactor_);
   adv.saveAttribute("aeiTradeoff_", aeiTradeoff_);
   adv.saveAttribute("noiseModel_", noiseModel_);
@@ -560,7 +536,6 @@ void EfficientGlobalOptimization::load(Advocate & adv)
   adv.loadAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
   adv.loadAttribute("multiStartNumber_", multiStartNumber_);
   adv.loadAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
-  adv.loadAttribute("improvementFactor_", improvementFactor_);
   adv.loadAttribute("correlationLengthFactor_", correlationLengthFactor_);
   adv.loadAttribute("aeiTradeoff_", aeiTradeoff_);
   adv.loadAttribute("noiseModel_", noiseModel_);
