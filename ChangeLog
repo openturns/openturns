@@ -22,6 +22,7 @@
  * Removed deprecated Cobyla/TNC.setIgnoreFailure method
  * Removed deprecated OptimizationAlgorithm.setMaximumEvaluationNumber method
  * Removed deprecated OptimizationResult.getEvaluationNumber
+ * Drop improvement factor attribute and accessors in EfficientGlobalOptimization
 
 === Documentation ===
  * Copy button for code blocks
