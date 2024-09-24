@@ -1581,6 +1581,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
   addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
+  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
+  addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
@@ -1591,7 +1593,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
-  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
   addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
 

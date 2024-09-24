@@ -953,14 +953,16 @@
   <Distribution-ScaleColorsDiscretePDF            value_bool="true"               />
   <Distribution-ShowSupportDiscretePDF            value_bool="true"               />
   <Distribution-UseCovarianceAdaptiveAlgorithm    value_bool="true"               />
+  <Distribution-QMax                              value_float="0.85"              />
+  <Distribution-QMin                              value_float="0.15"              />
   <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
   <Distribution-DependenceEpsilon                 value_float="1.0e-12"           />
   <Distribution-DiscreteDrawPDFScaling            value_float="0.25"              />
-  <Distribution-QMax                              value_float="0.85"              />
-  <Distribution-QMin                              value_float="0.15"              />
-  <Distribution-EntropySamplingMethod             value_int="MonteCarlo"/>
+  <Distribution-EntropySamplingMethod             value_str="MonteCarlo" />
+  <Distribution-RoughnessSamplingMethod           value_str="MonteCarlo" />
+  <Distribution-SupportPointStyleDiscretePDF      value_str="dot" />
   <Distribution-CharacteristicFunctionBlockMax    value_int="20"      />
   <Distribution-CharacteristicFunctionNMax        value_int="1000000" />
   <Distribution-DefaultIntegrationNodesNumber     value_int="255"     />
@@ -971,7 +973,6 @@
   <Distribution-EntropySamplingSize               value_int="524288"  />
   <Distribution-MinimumVolumeLevelSetSamplingSize value_int="16384"   />
   <Distribution-SmallDimensionEntropy             value_int="3"       />
-  <Distribution-RoughnessSamplingMethod           value_int="MonteCarlo"/>
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
 
