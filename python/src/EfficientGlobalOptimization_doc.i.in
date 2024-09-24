@@ -204,32 +204,6 @@ period : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::setImprovementFactor
-"Improvement criterion factor accessor.
-
-Parameters
-----------
-alpha : positive float, default=0.0 (disables the criterion)
-    Used to define a stopping criterion on the improvement criterion:
-    :math:`I_{max} < \alpha |Y_{min}|`
-    with :math:`I_{max}` the current maximum of the improvement
-    and :math:`Y_{min}` the current optimum."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::getImprovementFactor
-"Improvement criterion factor accessor.
-
-Returns
--------
-alpha : positive float, default=0.0 (disables the criterion)
-    Used to define a stopping criterion on the improvement criterion:
-    :math:`I_{max} < \alpha |Y_{min}|`
-    with :math:`I_{max}` the current maximum of the improvement
-    and :math:`Y_{min}` the current optimum."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::EfficientGlobalOptimization::setCorrelationLengthFactor
 "Correlation length stopping criterion factor accessor.
 

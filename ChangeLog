@@ -26,6 +26,7 @@
  * Deprecated ConditionalDistribution in favor of DeconditionedDistribution
  * Deprecated NegativeBinomial in favor of Polya
  * Deprecated NegativeBinomialFactory in favor of PolyaFactory
+ * Removed EfficientGlobalOptimization.get/setImprovementFactor improvement factor accessors
 
 === Documentation ===
  * Copy button for code blocks
