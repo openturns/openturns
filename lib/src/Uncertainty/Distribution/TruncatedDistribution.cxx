@@ -328,6 +328,9 @@ Point TruncatedDistribution::getRealization() const
 /* Get the DDF of the distribution: DDF_trunc = 1[a, b] * DDF / P([a, b]) */
 Point TruncatedDistribution::computeDDF(const Point & point) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeDDF(point);
+
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   if (!getRange().contains(point)) return Point(getDimension(), 0.0);
@@ -338,6 +341,9 @@ Point TruncatedDistribution::computeDDF(const Point & point) const
 /* Get the PDF of the distribution: PDF_trunc = 1[a, b] * PDF / P([a, b]) */
 Scalar TruncatedDistribution::computePDF(const Point & point) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computePDF(point);
+
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   if (getDimension() == 1)
@@ -354,6 +360,9 @@ Scalar TruncatedDistribution::computePDF(const Point & point) const
 /* Get the CDF of the distribution: CDF_trunc = 1[a, b] * (CDF - CDF(a)) / P([a, b]) + 1]b, inf] */
 Scalar TruncatedDistribution::computeCDF(const Point & point) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeCDF(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -373,6 +382,9 @@ Scalar TruncatedDistribution::computeCDF(const Point & point) const
 
 Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSurvivalFunction(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -442,6 +454,9 @@ Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeScalarQuantile(prob, tail);
+
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
   if (tail) return distribution_.computeScalarQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_));
@@ -573,6 +588,9 @@ Distribution TruncatedDistribution::getMarginal(const UnsignedInteger i) const
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution TruncatedDistribution::getMarginal(const Indices & indices) const
 {
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getMarginal(indices);
+
   Interval marginalBounds(bounds_.getMarginal(indices));
   return new TruncatedDistribution(distribution_.getMarginal(indices), marginalBounds);
 }
