@@ -49,8 +49,9 @@ The expectation and variance of the first-order expansion are:
 .. math::
 
     \Expect{Y} \approx \model (\vect{\mu})\\
-    \Var{Y} \approx \sum_{i=1}^\inputDim \sigma_i^2 \left(\left(\frac{\partial \model }{\partial x_i}
-    \right)(\vect{\mu}) \right)^2
+    \Var{Y} \approx \sum_{i,j=1}^\inputDim c_{ij} \left(\frac{\partial \model }
+    {\partial x_i} \right)(\vect{\mu})\left(\frac{\partial \model }
+    {\partial x_j} \right)(\vect{\mu})
 
 In the special case where the inputs are independent, then
 the variance expression is simplified and we get:
