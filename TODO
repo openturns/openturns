@@ -3,3 +3,4 @@ At the same time, we need to rename MaxScalar to Infinity and ActualMaxScalar to
 Remove ComposedDistribution in some future version
 Remove ComposedCopula in some future version
 Remove NegativeBinomial alias in some future version
+Remove NegativeBinomialFactory alias in some future version

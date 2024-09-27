@@ -47,10 +47,10 @@ PolyaFactory * PolyaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-struct NegativeBinomialFactoryParameterConstraint
+struct PolyaFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  NegativeBinomialFactoryParameterConstraint(const Sample & sample,
+  PolyaFactoryParameterConstraint(const Sample & sample,
       const Scalar mean):
     sample_(sample),
     mean_(mean)
@@ -78,20 +78,20 @@ struct NegativeBinomialFactoryParameterConstraint
 
 Distribution PolyaFactory::build(const Sample & sample) const
 {
-  return buildAsNegativeBinomial(sample).clone();
+  return buildAsPolya(sample).clone();
 }
 
 Distribution PolyaFactory::build(const Point & parameters) const
 {
-  return buildAsNegativeBinomial(parameters).clone();
+  return buildAsPolya(parameters).clone();
 }
 
 Distribution PolyaFactory::build() const
 {
-  return buildAsNegativeBinomial().clone();
+  return buildAsPolya().clone();
 }
 
-Polya PolyaFactory::buildAsNegativeBinomial(const Sample & sample) const
+Polya PolyaFactory::buildAsPolya(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Polya distribution from a sample of size < 2";
@@ -110,8 +110,8 @@ Polya PolyaFactory::buildAsNegativeBinomial(const Sample & sample) const
     mean = (x + i * mean) / (i + 1.0);
   }
   // Build the constraint
-  NegativeBinomialFactoryParameterConstraint constraint(sample, mean);
-  const Function f(bindMethod<NegativeBinomialFactoryParameterConstraint, Point, Point>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
+  PolyaFactoryParameterConstraint constraint(sample, mean);
+  const Function f(bindMethod<PolyaFactoryParameterConstraint, Point, Point>(constraint, &PolyaFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval using the moment estimate
   Scalar a = 1.0;
   Scalar b = 2.0;
@@ -144,7 +144,7 @@ Polya PolyaFactory::buildAsNegativeBinomial(const Sample & sample) const
   return result;
 }
 
-Polya PolyaFactory::buildAsNegativeBinomial(const Point & parameters) const
+Polya PolyaFactory::buildAsPolya(const Point & parameters) const
 {
   try
   {
@@ -158,7 +158,7 @@ Polya PolyaFactory::buildAsNegativeBinomial(const Point & parameters) const
   }
 }
 
-Polya PolyaFactory::buildAsNegativeBinomial() const
+Polya PolyaFactory::buildAsPolya() const
 {
   return Polya();
 }
