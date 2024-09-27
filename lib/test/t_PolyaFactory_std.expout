@@ -3,6 +3,6 @@ Estimated distribution=class=Polya name=Polya dimension=1 r=15.0803 p=0.699114
 Default distribution=class=Polya name=Polya dimension=1 r=1 p=0.5
 Distribution from parameters=class=Polya name=Polya dimension=1 r=15 p=0.7
 Polya          =class=Polya name=Polya dimension=1 r=15 p=0.7
-Estimated negativeBinomial=class=Polya name=Polya dimension=1 r=15.0803 p=0.699114
-Default negativeBinomial=class=Polya name=Polya dimension=1 r=1 p=0.5
+Estimated polya=class=Polya name=Polya dimension=1 r=15.0803 p=0.699114
+Default polya=class=Polya name=Polya dimension=1 r=1 p=0.5
 Polya from parameters=class=Polya name=Polya dimension=1 r=15 p=0.7

@@ -43,13 +43,13 @@ int main(int, char *[])
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
-    Polya estimatedNegativeBinomial(factory.buildAsNegativeBinomial(sample));
+    Polya estimatedPolya(factory.buildAsPolya(sample));
     fullprint << "Polya          =" << distribution << std::endl;
-    fullprint << "Estimated negativeBinomial=" << estimatedNegativeBinomial << std::endl;
-    estimatedNegativeBinomial = factory.buildAsNegativeBinomial();
-    fullprint << "Default negativeBinomial=" << estimatedNegativeBinomial << std::endl;
-    estimatedNegativeBinomial = factory.buildAsNegativeBinomial(distribution.getParameter());
-    fullprint << "Polya from parameters=" << estimatedNegativeBinomial << std::endl;
+    fullprint << "Estimated polya=" << estimatedPolya << std::endl;
+    estimatedPolya = factory.buildAsPolya();
+    fullprint << "Default polya=" << estimatedPolya << std::endl;
+    estimatedPolya = factory.buildAsPolya(distribution.getParameter());
+    fullprint << "Polya from parameters=" << estimatedPolya << std::endl;
   }
   catch (TestFailed & ex)
   {

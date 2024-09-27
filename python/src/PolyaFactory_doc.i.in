@@ -22,16 +22,16 @@ DistributionFactory, Polya"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PolyaFactory::buildAsNegativeBinomial
+%feature("docstring") OT::PolyaFactory::buildAsPolya
 "Estimate the distribution as native distribution.
 
 **Available usages**:
 
-    buildAsNegativeBinomial()
+    buildAsPolya()
 
-    buildAsNegativeBinomial(*sample*)
+    buildAsPolya(*sample*)
 
-    buildAsNegativeBinomial(*param*)
+    buildAsPolya(*param*)
 
 Parameters
 ----------
