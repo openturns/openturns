@@ -149,21 +149,6 @@ private:
 
 }; /* class Polya */
 
-// @deprecated
-class OT_API NegativeBinomial
-  : public Polya
-{
-  CLASSNAME
-public:
-  NegativeBinomial()
-    : Polya() {}
-
-  NegativeBinomial(const Scalar r,
-                   const Scalar p)
-    : Polya(r, p) {}
-
-};
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_POLYA_HXX */
