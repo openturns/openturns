@@ -364,8 +364,4 @@ void Polya::load(Advocate & adv)
   computeRange();
 }
 
-CLASSNAMEINIT(NegativeBinomial)
-
-static const Factory<NegativeBinomial> Factory_NegativeBinomial;
-
 END_NAMESPACE_OPENTURNS
