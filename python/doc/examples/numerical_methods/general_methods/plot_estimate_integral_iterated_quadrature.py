@@ -39,7 +39,7 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 # the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
-#    I = \int_{\set{D}} f(x,y)\,dxdy.
+#    I = \int_{\set{D}} f(x,y)\,dxdy = 4\pi
 #
 
 # %%
@@ -58,11 +58,12 @@ domain = ot.Interval([-2.0, -2.0], [2.0, 2.0])
 
 # %%
 # We draw the iso-lines of the integrand function which is
-# constant equal to 1 inside the cercle and equal to 0.0 outside.
+# constant equal to 1 inside the circle with radius equal to 2 and equal to 0.0 outside.
 g = integrand.draw([-3.0, -3.0], [3.0, 3.0])
-g.setTitle(r'Function $f(x,y) = 1_{\{x+2+y^2 \leq 4\}}(x,y)$')
+g.setTitle(r'Function $f(x,y) = 1_{\{x^2+y^2 \leq 4\}}(x,y)$')
 g.setXTitle('x')
 g.setYTitle('y')
+view = otv.View(g)
 
 # %%
 # We compute the integral using an  :class:`~openturns.IteratedQuadrature`
@@ -78,7 +79,8 @@ g.setYTitle('y')
 maximumSubIntervals = 32
 maximumError = 1e-4
 GKRule = ot.GaussKronrodRule(ot.GaussKronrodRule.G1K3)
-integration_algo = ot.IteratedQuadrature(ot.GaussKronrod(maximumSubIntervals, maximumError, GKRule))
+integ_algo = ot.GaussKronrod(maximumSubIntervals, maximumError, GKRule)
+integration_algo = ot.IteratedQuadrature(integ_algo)
 
 # %%
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
@@ -86,11 +88,12 @@ integration_algo = ot.IteratedQuadrature(ot.GaussKronrod(maximumSubIntervals, ma
 integrand_memoized = ot.MemoizeFunction(integrand)
 I_value = integration_algo.integrate(integrand_memoized, domain)
 print('I = ', I_value[0])
+print('Exact value = ', 4*m.pi)
 nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw in black the nodes on the graph that contains the iso-lines of the
+# We can draw in blue the nodes on the graph that contains the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the
 # function has its discontinuities.
 cloud_nodes = ot.Cloud(nodes)
@@ -117,6 +120,11 @@ view = otv.View(g)
 #
 # .. math::
 #    I = \int_{\set{D}} f(x,y)\,dxdy.
+#
+# Using Mapple, we obtain the reference value: 
+#
+# .. math::
+#    I_{ref} = 3.51961338289448753812591427600
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
@@ -146,7 +154,7 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw in black the nodes on the graph that contains the iso-lines of the
+# We can draw in blue the nodes on the graph that contains the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the function
 # has fast variations.
 cloud_nodes = ot.Cloud(nodes)
@@ -167,14 +175,19 @@ view = otv.View(g)
 #
 #    f : \begin{array}{lcl}
 #          \Rset^2 & \rightarrow & \Rset \\
-#          (x,y) & \rightarrow & cos(2x) * sin(1.5y)
+#          (x,y) & \rightarrow & \cos(2x) \sin(1.5y)
 #        \end{array}
 #
-# the domain :math:`\set{D} = \{(x,y)\, |\, -2\pi \leq x \leq 2\pi, -2-cos(x) \leq y  \leq 2+cos(x) \}`
+# the domain :math:`\set{D} = \{(x,y)\, |\, -2\pi \leq x \leq 2\pi, -2 - \cos(x) \leq y  \leq 2 + \cos(x) \}`
 # and the integral:
 #
 # .. math::
 #    I = \int_{\set{D}} f(x,y)\,dxdy.
+#
+# Using Mapple, we obtain the reference value: 
+#
+# .. math::
+#    I_{ref} = -0.548768615494004063851543284777
 
 # %%
 # We first define the integrand :math:`f` and the domain :math:`\set{D}`.
@@ -191,11 +204,11 @@ integrand = ot.PythonFunction(2, 1, kernel3)
 #
 # .. math::
 #
-#    x \rightarrow u(x) = 2+cos(x)
+#    x \rightarrow u(x) = 2 + \cos(x)
 #
 # .. math::
 #
-#    x \rightarrow  \ell(x) = -2-cos(x)
+#    x \rightarrow  \ell(x) = -2 - \cos(x)
 #
 upper_func = ot.SymbolicFunction(["x"], [" 2 + cos(x)"])
 lower_func = ot.SymbolicFunction(["x"], ["-2 - cos(x)"])
@@ -233,7 +246,7 @@ up_bound.setLineWidth(2)
 
 g.add(low_bound)
 g.add(up_bound)
-g.setTitle(r'Function $f(x,y) =  cos(2x) * sin(1.5y)$')
+g.setTitle(r'Function $f(x,y) =  cos(2x)sin(1.5y)$')
 g.setXTitle('x')
 g.setYTitle('y')
 view = otv.View(g)
