@@ -321,6 +321,10 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   conditioningIndices.check(inputDimension);
   const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
   const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
+  
+  // Check independence
+  if (!distribution_.hasIndependentCopula())
+    throw InvalidArgumentException(HERE) << "This class can only manage an independent copula.";
 
   // Create the conditioned orthogonal basis
   const String basicClassName(orthogonalBasis_.getImplementation()->getClassName());
