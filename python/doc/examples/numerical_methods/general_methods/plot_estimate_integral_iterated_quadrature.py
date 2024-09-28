@@ -88,7 +88,7 @@ integration_algo = ot.IteratedQuadrature(integ_algo)
 integrand_memoized = ot.MemoizeFunction(integrand)
 I_value = integration_algo.integrate(integrand_memoized, domain)
 print('I = ', I_value[0])
-print('Exact value = ', 4*m.pi)
+print('Exact value = ', 4 * m.pi)
 nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
@@ -119,9 +119,9 @@ view = otv.View(g)
 # the domain :math:`\set{D} =[-2,2]\times [-2,2]` and the integral:
 #
 # .. math::
-#    I = \int_{\set{D}} f(x,y)\,dxdy.
+#    I = \int_{\set{D}} f(x,y)\, dxdy.
 #
-# Using Mapple, we obtain the reference value: 
+# Using Mapple, we obtain the reference value:
 #
 # .. math::
 #    I_{ref} = 3.51961338289448753812591427600
@@ -182,9 +182,9 @@ view = otv.View(g)
 # and the integral:
 #
 # .. math::
-#    I = \int_{\set{D}} f(x,y)\,dxdy.
+#    I = \int_{\set{D}} f(x,y)\, dxdy.
 #
-# Using Mapple, we obtain the reference value: 
+# Using Mapple, we obtain the reference value:
 #
 # .. math::
 #    I_{ref} = -0.548768615494004063851543284777
