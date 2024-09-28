@@ -127,7 +127,7 @@ Conditional expectation of a polynomial chaos expansion
 #     \standardReal_{\vect{u}}^{(0)}\right)
 #
 # for any :math:`\standardReal_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
-# We assume that the polynomial basis uses tensor product:
+# We assume that the polynomial basis are defined by the tensor product:
 #
 # .. math::
 #

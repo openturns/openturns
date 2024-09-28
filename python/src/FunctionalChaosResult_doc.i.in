@@ -236,6 +236,11 @@ This method returns the functional chaos result corresponding to the conditional
 expectation of the output given an input vector.
 Indeed, the conditional expectation of a polynomial chaos expansion is, again, 
 a polynomial chaos expansion.
+This is possible only if the marginals of the input distribution are independent.
+Otherwise, an exception is generated.
+An example is provided in :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_conditional_expectation`.
+
+We consider the notations introduced in :ref:`functional_chaos`.
 Let :math:`\inputRV \in \Rset^{\inputDim}` be the input and let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
 be a set of marginal indices. 
 Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
@@ -322,7 +327,7 @@ For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let
     \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
     = 
     \begin{cases}
-    \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\inputDim \pi_{\alpha_i}^{(i)} (z_i) & \textrm{if } \alpha_i = 0 \textrm{ for any } i \not \in \vect{u},. \\
+    \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\inputDim \pi_{\alpha_i}^{(i)} (z_i) & \textrm{if } \alpha_i = 0 \textrm{ for any } i \not \in \vect{u}, \\
     1 & \textrm{if } \alpha_i = 0 \textrm{ for } i = 1, ..., \inputDim, \\
     0 & \textrm{otherwise}.
     \end{cases}
