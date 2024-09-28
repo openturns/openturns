@@ -725,7 +725,7 @@ Scalar DistributionImplementation::computePDF(const Point & point) const
     const UnsignedInteger numNullBits = dimension_ - SpecFunc::BitCount(i);
     pdf += (1.0 - 2.0 * (numNullBits % 2)) * cdfSample(i, 0);
   }
-  return pdf / std::pow(epsilon, 1.0 * dimension_);
+  return std::max(0.0, pdf / std::pow(epsilon, 1.0 * dimension_));
 }
 
 Scalar DistributionImplementation::computeLogPDF(const Point & point) const
