@@ -322,57 +322,32 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
   const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
 
-  // Restrict the orthogonal basis
-  // TODO: create a new OrthogonalBasis.getMarginal(activeIndices)
+  // Create the conditioned orthogonal basis
   const String basicClassName(orthogonalBasis_.getImplementation()->getClassName());
-  if (basicClassName != "OrthogonalProductPolynomialFactory")
-    throw InvalidArgumentException(HERE) << "This class can only manage an OrthogonalProductPolynomialFactory "
-          << "but current basis is" << basicClassName;
-  const OrthogonalProductPolynomialFactory* p_basis = dynamic_cast<const OrthogonalProductPolynomialFactory*>(orthogonalBasis_.getImplementation().get());
-  const OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialCollection(p_basis->getPolynomialFamilyCollection());
-
-  // Restrict the collection of polynomial families
-  OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialMarginalCollection;
-  for (UnsignedInteger index = 0; index < inputDimension; ++ index)
-    if (conditioningIndices.contains(index))
-      polynomialMarginalCollection.add(polynomialCollection[index]);
-
-  // Restrict the enumeration function
-  // TODO: create a new EnumerateFunction.getMarginal(activeIndices)
-  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
-  const EnumerateFunctionImplementation enumerateFunctionImplementation(enumerateFunction.getImplementation());
-  const String enumerateName(enumerateFunction.getImplementation()->getClassName());
-  EnumerateFunction enumerateFunctionMarginal;
-  const UnsignedInteger activeDimension = conditioningIndices.getSize();
-  if (enumerateName == "LinearEnumerateFunction")
+  OrthogonalBasis orthogonalBasisMarginal;
+  if (basicClassName == "OrthogonalProductPolynomialFactory")
   {
-    enumerateFunctionMarginal = LinearEnumerateFunction(activeDimension);
+    const OrthogonalProductPolynomialFactory* p_basis = dynamic_cast<const OrthogonalProductPolynomialFactory*>(orthogonalBasis_.getImplementation().get());
+    orthogonalBasisMarginal = p_basis->getMarginal(conditioningIndices);
   }
-  else if (enumerateName == "HyperbolicAnisotropicEnumerateFunction")
+  else if (basicClassName != "OrthogonalProductFunctionFactory")
   {
-    const HyperbolicAnisotropicEnumerateFunction* p_rule = dynamic_cast<const HyperbolicAnisotropicEnumerateFunction*>(enumerateFunction.getImplementation().get());
-    const Scalar quasiNorm(p_rule->getQ());
-    const Point weightVector(p_rule->getWeight());
-    Point weightMarginal(activeDimension);
-    for (UnsignedInteger i = 0; i < activeDimension; ++i)
-      weightMarginal[i] = weightVector[conditioningIndices[i]];
-    enumerateFunctionMarginal = HyperbolicAnisotropicEnumerateFunction(weightMarginal, quasiNorm);
-  }
-  else if (enumerateName == "NormInfEnumerateFunction")
-  {
-    enumerateFunctionMarginal = NormInfEnumerateFunction(activeDimension);
+    const OrthogonalProductFunctionFactory* p_basis = dynamic_cast<const OrthogonalProductFunctionFactory*>(orthogonalBasis_.getImplementation().get());
+    orthogonalBasisMarginal = p_basis->getMarginal(conditioningIndices);
   }
   else
-    throw InvalidArgumentException(HERE) << "Cannot manage an enumerate function with "
-      << enumerateName;
-
-  // Create the conditioned orthogonal basis
-  const OrthogonalProductPolynomialFactory orthogonalBasisMarginal(polynomialMarginalCollection, enumerateFunctionMarginal);
+    throw InvalidArgumentException(HERE) << "This class can only manage an OrthogonalProductPolynomialFactory "
+          << "or an OrthogonalProductFunctionFactory "
+          << "but current basis is" << basicClassName;
 
   // Create the active transformation and its inverse
   const Distribution measureMarginal(orthogonalBasisMarginal.getMeasure());
   const DistributionTransformation transformationMarginal(inputDistributionMarginal, measureMarginal);
   const DistributionTransformation inverseTransformationMarginal(transformationMarginal.inverse());
+
+  // Restrict the enumeration function
+  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
+  EnumerateFunction enumerateFunctionMarginal(enumerateFunction.getMarginal(conditioningIndices));
 
   // Condition the multi-indices (taking into account for model selection)
   // Get the indices of active multi-indices in the reduced enumeration rule
@@ -393,6 +368,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
     if (isActive)
     {
       listOfActiveIndices.add(k);
+      const UnsignedInteger activeDimension = conditioningIndices.getSize();
       Indices activeMultiIndex(activeDimension);
       UnsignedInteger localIndex = 0;
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
