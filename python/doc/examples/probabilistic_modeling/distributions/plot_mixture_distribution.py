@@ -183,13 +183,13 @@ view = otv.View(g_hist_trunc)
 # Then we model :math:`X|X \geq x_0` by a Generalized Pareto distribution (GPD). We start by
 # extracting from the sample all the values greater than :math:`x_0` to build the upper
 # sample. We get about :math:`n(1-w)` points.
-sample_X_upper = ot.Sample(0,1)
+sample_X_upper = ot.Sample(0, 1)
 for i in range(len(sample_X)):
-    if sample_X[i,0] > x0:
+    if sample_X[i, 0] > x0:
         sample_X_upper.add(sample_X[i])
 
 print('Excess number = ', sample_X_upper.getSize())
-print('n(1-w) = ', int(n*(1-w)))
+print('n(1-w) = ', int(n * (1 - w)))
 
 # %%
 # Then we fit a GPD parameterized by :math:`(\sigma, \xi, x_0)`: the
@@ -218,7 +218,7 @@ view = otv.View(g_gpd)
 # %%
 # Then we can create the mixture using the truncated Histogram distribution below :math:`x_0`
 # and the GPD over :math:`x_0` weighted by :math:`w` and :math:`(1-w)`.
-mixt_dist = ot.Mixture([hist_trunc, gpd_estimated], [w, 1-w])
+mixt_dist = ot.Mixture([hist_trunc, gpd_estimated], [w, 1 - w])
 g_hist.add(mixt_dist.drawPDF())
 
 ord_Max = max(hist_dist.getImplementation().getHeight())
