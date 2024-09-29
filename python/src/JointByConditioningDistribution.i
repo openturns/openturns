@@ -12,6 +12,9 @@
 
 %pythoncode %{
 def BayesDistribution(conditionedDistribution, conditioningDistribution, linkFunction=None):
+    """
+    Retro-compatibility alias for JointByConditioningDistribution.
+    """
     openturns.common.Log.Warn('class BayesDistribution is deprecated in favor of JointByConditioningDistribution')
     if linkFunction is None:
         linkFunction = openturns.func.IdentityFunction(conditioningDistribution.getDimension())
