@@ -259,7 +259,7 @@ nodes : :class:`~openturns.Sample`.
     
 Notes
 -----
-The nodes are those associated to the scaled function: :math:`(\xi^{N_i}_{n_i})`.
+The nodes are those associated to the function: :math:`(\xi^{N_i}_{n_i})`.
 
 Examples
 --------
