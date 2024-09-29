@@ -12,6 +12,9 @@
 
 %pythoncode %{
 def ConditionalDistribution(conditionedDistribution, conditioningDistribution, linkFunction=None):
+    """
+    Retro-compatibility alias for DeconditionedDistribution.
+    """
     openturns.common.Log.Warn('class ConditionalDistribution is deprecated in favor of DeconditionedDistribution')
     if linkFunction is None:
         linkFunction = openturns.func.IdentityFunction(conditioningDistribution.getDimension())
