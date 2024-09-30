@@ -235,7 +235,7 @@ Scalar JointByConditioningDistribution::computeCDF(const Point & point) const
   Point lowerY(conditioningDistribution_.getRange().getLowerBound());
   const Function kernel(JointByConditioningCDFKernel(conditionedDistribution_, conditioningDistribution_, linkFunction_, x));
   const Scalar cdf = IteratedQuadrature().integrate(kernel, Interval(lowerY, y))[0];
-  return cdf;
+  return SpecFunc::Clip01(cdf);
 }
 
 Distribution JointByConditioningDistribution::getConditionedDistribution() const
