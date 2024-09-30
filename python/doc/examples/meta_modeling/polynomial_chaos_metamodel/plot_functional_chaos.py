@@ -14,13 +14,13 @@ Create a polynomial chaos metamodel from a data set
 # In this example we create a global approximation of a model response using
 # polynomial chaos expansion.
 #
-# Let :math:`h` be the function defined by:
+# Let :math:`\vect{g}` be the function defined by:
 #
 # .. math::
-#    g(\mathbf{x}) = \left[\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right]
+#    \vect{g}(\vect{x}) = \Tr{\left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right)}
 #
 #
-# for any :math:`\mathbf{x}\in\mathbb{R}^2`.
+# for any :math:`\vect{x} \in \Rset^2`.
 #
 # We assume that
 #
@@ -87,7 +87,7 @@ ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize",
 # %%
 # The main topic of this example is to introduce the next constructor of
 # :class:`~openturns.FunctionalChaosAlgorithm`.
-# Notice that the only input arguments are the input and output sample.
+# Notice that the only input arguments are the input and output samples.
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
 algo.run()
 result = algo.getResult()
@@ -132,7 +132,7 @@ view = viewer.View(graph)
 # We see that the metamodel fits approximately to the model, except
 # perhaps for extreme values of :math:`x_2`.
 # However, there is a better way of globally validating the metamodel,
-# using the :class:`~openturns.MetaModelValidation` on a validation design of experiment.
+# using the :class:`~openturns.MetaModelValidation` on a validation design of experiments.
 
 # %%
 n_valid = 100
@@ -154,7 +154,7 @@ view = viewer.View(graph)
 # %%
 # The coefficient of determination is not extremely satisfactory for the
 # first output, but is would be sufficient for a central dispersion study.
-# The second output has a much more satisfactory R2: only one single
+# The second output has a much more satisfactory :math:`R^2`: only one single
 # extreme point is far from the diagonal of the graphics.
 
 # %%
@@ -166,7 +166,7 @@ chaosSI = ot.FunctionalChaosSobolIndices(result)
 chaosSI
 
 # %%
-# Let us analyse the results of this global sensitivity analysis.
+# Let us analyze the results of this global sensitivity analysis.
 #
 # * We see that the first output involves significant multi-indices with
 #   higher marginal degree.
@@ -193,9 +193,9 @@ view = viewer.View(graph)
 # Testing the sensitivity to the degree
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# With the specific constructor of `FunctionalChaosAlgorithm` that
+# With the specific constructor of :class:`~openturns.FunctionalChaosAlgorithm` that
 # we use, the `FunctionalChaosAlgorithm-MaximumTotalDegree`
-# in the `ResourceMap` configure the maximum degree explored by
+# in the `ResourceMap` configures the maximum degree explored by
 # the algorithm. This degree is a trade-off.
 #
 # * If the maximum degree is too low, the polynomial may miss some
@@ -255,15 +255,15 @@ plt.show()
 
 # %%
 # We see that a low total degree is not sufficient to describe the
-# first output with good R2 score.
+# first output with good :math:`R^2` score.
 # However, the coefficient of determination can drop when the total degree increases.
-# The R2 score of the second output seems to be much less satisfactory:
+# The :math:`R^2` score of the second output seems to be much less satisfactory:
 # a little more work would be required to improve the metamodel.
 #
 # In this situation, the following methods may be used.
 #
 # * Since the distribution of the input is known, we may want to give
-#   this information to the `FunctionalChaosAlgorithm`.
+#   this information to the :class:`~openturns.FunctionalChaosAlgorithm`.
 #   This prevents the algorithm from trying to fit the input distribution
 #   which best fit to the data.
 # * We may want to customize the `adaptiveStrategy` by selecting an enumerate
@@ -274,7 +274,7 @@ plt.show()
 #   to compute the coefficient which improves the estimation.
 #   For example, it might be interesting to
 #   try an integration rule instead of the least squares method.
-#   Notice that a specific design of experiment is required in this case.
+#   Notice that a specific design of experiments is required in this case.
 
 # %%
 # Reset default settings

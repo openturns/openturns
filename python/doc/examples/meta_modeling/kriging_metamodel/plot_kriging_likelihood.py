@@ -6,8 +6,8 @@ Kriging : draw the likelihood
 # Abstract
 # --------
 #
-# In this short example we draw the loglikelihood as a function of the scale
-# parameter of a covariance kriging model.
+# In this short example we draw the log-likelihood as a function of the scale
+# parameter of a covariance Kriging model.
 import openturns as ot
 import openturns.viewer as otv
 
@@ -31,7 +31,7 @@ covarianceModel = ot.SquaredExponential(1)
 covarianceModel = ot.MaternModel([1.0], 1.5)
 
 # %%
-# We are now ready to build the kriging algorithm, run it and store the result :
+# We are now ready to build the Kriging algorithm, run it and store the result :
 algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -50,7 +50,7 @@ ot.ResourceMap.SetAsBool(
 reducedLogLikelihoodFunction = algo.getReducedLogLikelihoodFunction()
 
 # %%
-# We draw the reduced loglikelihood :math:`\mathcal{L}(\theta)` as a function
+# We draw the reduced log-likelihood :math:`\mathcal{L}(\theta)` as a function
 # of the parameter :math:`\theta`.
 graph = reducedLogLikelihoodFunction.draw(0.1, 10.0, 100)
 graph.setXTitle(r"$\theta$")
@@ -58,7 +58,7 @@ graph.setYTitle(r"$\mathcal{L}(\theta)$")
 graph.setTitle(r"Log-likelihood as a function of $\theta$")
 
 # %%
-# We represent the estimated parameter as a point on the loglikelihood curve :
+# We represent the estimated parameter as a point on the log-likelihood curve :
 L_theta = reducedLogLikelihoodFunction(theta)
 cloud = ot.Cloud(theta, L_theta)
 cloud.setColor("red")
@@ -68,7 +68,7 @@ graph.setLegends([r"Matern $\nu = 1.5$", r"$\theta$ estimate"])
 
 # %%
 # We verify on the previous graph that the estimate of :math:`\theta` maximizes
-# the loglikelihood.
+# the log-likelihood.
 
 # %%
 # Display figures

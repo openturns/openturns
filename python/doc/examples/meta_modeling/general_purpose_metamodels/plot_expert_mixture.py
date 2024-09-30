@@ -12,12 +12,12 @@ Mixture of experts
 #
 # for any :math:`\vect{z} \in \textrm{Class}_k` where the :math:`n_c \in \Nset` classes are defined by the classifier.
 #
-# Using the supervised mode the classifier partitions the input and output space at once:
+# Using the supervised mode the classifier partitions the input and output spaces at once:
 #
 # .. math::
 #    \vect{z} = (\vect{x}, f(\vect{x}))
 #
-# The classifier is MixtureClassifier based on a MixtureDistribution defined as:
+# The classifier is :class:`~openturns.MixtureClassifier` based on a :class:`~openturns.Mixture` distribution defined as:
 #
 # .. math::
 #    p(\vect{x}) = \sum_{i=1}^{n_c} w_i p_i(\vect{x})
@@ -71,7 +71,7 @@ adaptiveStrategy = ot.FixedStrategy(
 )
 
 # %%
-# Segment 1: (-1.0; 0.0)
+# Interval 1: :math:`[-1.0; 0.0]`
 d1 = ot.Uniform(-1.0, 0.0)
 X1 = d1.getSample(samplingSize)
 Y1 = f(X1)
@@ -82,7 +82,7 @@ graph = mm1.draw(-1.0, -1e-6)
 view = viewer.View(graph)
 
 # %%
-# Segment 2: (0.0, 1.0)
+# Interval 2: :math:`[0.0, 1.0]`
 d2 = ot.Uniform(0.0, 1.0)
 X2 = d2.getSample(samplingSize)
 Y2 = f(X2)
