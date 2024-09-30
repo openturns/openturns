@@ -8,15 +8,16 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
-    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
+inputSample, outputSample : 2-d sequence of float
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^\inputDim` and
+    :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^\outputDim`.
 
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model of the Gaussian process. See notes for the details.
 
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
-    If :math:`d>1`, the same basis is used for each marginal output.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^\inputDim \rightarrow \Rset`.
+    If :math:`\outputDim > 1`, the same basis is used for each marginal output.
 
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralLinearModelResult*.
@@ -24,9 +25,13 @@ keepCovariance : bool, optional
 
 Notes
 -----
-We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all :math:`k`, with :math:`\cM:\Rset^n \mapsto \Rset^d` a given function.
-
-The objective is to build a metamodel :math:`\tilde{\cM}`, using a **general linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where
+:math:`\sampleSize \in \Nset` is the sample size, :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k \in \{1, ..., \sampleSize\}`
+and :math:`\model:\Rset^\inputDim \mapsto \Rset^\outputDim` is the model.
+The objective is to build a metamodel :math:`\metaModel`, using a **general linear model**: the sample
+:math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the restriction of a Gaussian process
+:math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`.
+The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 .. math::
 
@@ -39,14 +44,18 @@ where:
     \vect{\mu}(\vect{x}) = \left(
       \begin{array}{l}
         \mu_1(\vect{x}) \\
-        \dots  \\
-        \mu_d(\vect{x})
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
        \end{array}
      \right)
 
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{n_\ell} \beta_j^\ell \varphi_j^\ell(\vect{x})` and :math:`\varphi_j^\ell: \Rset^n \rightarrow \Rset` the trend functions.
-
-:math:`\vect{W}` is a Gaussian process of dimension :math:`d` with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{n_\ell} \beta_j^\ell \varphi_j^\ell(\vect{x})`
+for any :math:`\ell \in \{1, ..., \outputDim\}`,
+where :math:`n_\ell \in \Nset` is the number trend functions of the :math:`\ell`-th output component, and
+:math:`\varphi_j^\ell: \Rset^\inputDim \rightarrow \Rset` the trend functions.
+The Gaussian process :math:`\vect{W}` is of dimension :math:`\outputDim` with zero mean and covariance function
+:math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :ref:`process_definitions`
+for the notations).
 
 We note:
 
@@ -55,7 +64,7 @@ We note:
     \vect{\beta}^\ell = \left(
       \begin{array}{l}
         \beta_1^\ell \\
-        \dots  \\
+        \vdots  \\
         \beta_{n_\ell}^\ell
        \end{array}
      \right) \in \Rset^{n_\ell}
@@ -63,15 +72,21 @@ We note:
      \vect{\beta} = \left(
       \begin{array}{l}
          \vect{\beta}^1\\
-        \dots  \\
-         \vect{\beta}^d
+         \vdots  \\
+         \vect{\beta}^\outputDim
        \end{array}
-     \right)\in \Rset^{\sum_{\ell=1}^p n_\ell}
+     \right)\in \Rset^{n_t}
 
+where :math:`n_t = \sum_{\ell = 1}^p n_\ell` is the total number of trend functions for all
+output dimensions.
 
-The *GeneralLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
-
-The estimation is done by maximizing the *reduced* log-likelihood of the model, see its expression below.
+The *GeneralLinearModelAlgorithm* class estimates the coefficients
+:math:`(\beta_j^\ell)_{j=1, ..., n_\ell, \; \ell=1, ..., \outputDim}` and :math:`\vect{p}`
+where :math:`\vect{p}` is the vector of parameters of the covariance model, i.e. a subset of
+:math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`, that has been declared as
+*active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
+The estimation is done by maximizing the *reduced* log-likelihood of the model
+(see the equation :eq:`logLikelihood` below).
 
 **Estimation of the parameters** :math:`\beta_j^\ell` and :math:`\vect{p}`
 
@@ -82,81 +97,101 @@ We note:
     \vect{y} = \left(
       \begin{array}{l}
         \vect{y}_1 \\
-        \dots  \\
-        \vect{y}_N
+        \vdots  \\
+        \vect{y}_\sampleSize
        \end{array}
-     \right) \in \Rset^{dN},
+     \right) \in \Rset^{\sampleSize \outputDim},
      \quad
      \vect{m}_{\vect{\beta}} = \left(
       \begin{array}{l}
         \vect{\mu}(\vect{x}_1) \\
-        \dots  \\
-        \vect{\mu}(\vect{x}_N)
+        \vdots  \\
+        \vect{\mu}(\vect{x}_\sampleSize)
        \end{array}
-     \right) \in \Rset^{dN}
+     \right) \in \Rset^{\sampleSize \outputDim}
 
- and
+and
 
 .. math::
 
     \mat{C}_{\vect{p}} = \left(
       \begin{array}{lcl}
-        \mat{C}_{11} & \dots &  \mat{C}_{1N}\\
-        \dots & \dots & \\
-        \mat{C}_{N1} & \dots &  \mat{C}_{NN}
+        \mat{C}_{11} & \dots &  \mat{C}_{1 \sampleSize}\\
+        \vdots       &       & \vdots \\
+        \mat{C}_{\sampleSize1} & \dots &  \mat{C}_{\sampleSize\sampleSize}
        \end{array}
-     \right) \in \cS_{dN}^+(\Rset)
+     \right) \in \cS_{\sampleSize \outputDim}^+(\Rset)
 
 where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)`.
-
 The model likelihood writes:
 
 .. math::
 
-    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = \dfrac{1}{(2\pi)^{dN/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m} \right)  \right]
+    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
+    = \dfrac{1}{(2\pi)^{\frac{1}{2} \sampleSize \outputDim} \left|\det\left(\mat{C}_{\vect{p}}\right)\right|^{\frac{1}{2}}}
+    \exp\left( -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m} \right)  \right)
 
-If :math:`\mat{L}` is the Cholesky factor of :math:`\mat{C}`, ie the lower triangular matrix with positive diagonal such that :math:`\mat{L}\,\Tr{\mat{L}} = \mat{C}`, then:
+Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix
+with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
+Therefore the log-likelihood is:
 
 .. math::
     :label: logLikelihood
 
-    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
+    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
+    = \alpha - \log \left( \det \left(\mat{L}_{\vect{p}}\right) \right)
+    -\dfrac{1}{2}  \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2_2
 
+where :math:`\alpha \in \Rset` is a constant independent of :math:`\vect{\beta}` and :math:`\vect{p}`.
 The maximization of :eq:`logLikelihood` leads to the following optimality condition for :math:`\vect{\beta}`:
 
 .. math::
 
-    \vect{\beta}^*(\vect{p}^*)=\argmin_{\vect{\beta}} \| \mat{L}_{\vect{p}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
+    \vect{\beta}^*(\vect{p}^*)
+    = \argmin_{\vect{\beta}} \left\| \mat{L}_{\vect{p}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
 
-This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
+This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a
+general relation between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into
+:eq:`logLikelihood`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`, then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1, then:
+In the particular case where :math:`\outputDim = \dim(\vect{\sigma}) = 1` and :math:`\sigma` is a part of
+:math:`\vect{p}`, then a further reduction is possible. In this case, let :math:`\vect{q}` be
+the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1.
+Therefore:
 
 .. math::
 
-    \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2=\| \mat{L}_{\vect{q}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2/\sigma^2
+    \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2 
+    = \frac{1}{\sigma^2} \left\| \mat{L}_{\vect{q}}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2.
 
-showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition for :math:`\sigma` reads:
+This shows that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality
+condition for :math:`\sigma` reads:
 
 .. math::
 
-    \vect{\sigma}^*(\vect{q}^*)=\dfrac{1}{N}\| \mat{L}_{\vect{q}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}^*(\vect{q}^*)}) \|^2
+    \vect{\sigma}^*(\vect{q}^*)
+    =\dfrac{1}{\sampleSize} 
+    \left\| \mat{L}_{\vect{q}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)}\right) \right\|^2_2.
 
-which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
+This leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}`
+and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
 The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method.
-User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names.
+User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm`
+resource map key to one of the :class:`~openturns.NLopt` solver names.
 
 It is also possible to proceed as follows:
 
-    - ask for the reduced log-likelihood function of the *GeneralLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
-    - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimization algorithms (that can take into account some additional constraints if needed)
-    - set the optimal parameter value into the covariance model used in the *GeneralLinearModelAlgorithm*
-    - tell the algorithm not to optimize the parameter using *setOptimizeParameters*
+- ask for the reduced log-likelihood function of the *GeneralLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
+- optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any
+  optimization algorithms (that can take into account some additional constraints if needed)
+- set the optimal parameter value into the covariance model used in the *GeneralLinearModelAlgorithm*
+- tell the algorithm not to optimize the parameter using *setOptimizeParameters*
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
-    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
+
+- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim = 1` and :math:`\sigma` is not part of :math:`\vect{p}`
+- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize - d_p}` in the optimality condition for :math:`\sigma`, where :math:`d_p \in \Nset` is the dimension of the vector :math:`\vect{p}`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
@@ -167,11 +202,13 @@ To use it, the `GeneralLinearModelAlgorithm-LinearAlgebra` resource map key shou
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:
 
-.. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
+.. math::
+    \widehat{\vect{y}}_k 
+    = \vect{y}_k + \epsilon_k, \quad \epsilon_k \sim \mathcal{N}\left(0, \tau_k^2\right)
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x'], ['x+x * sin(x)'])
@@ -214,7 +251,7 @@ result : :class:`~openturns.GeneralLinearModelResult`
 Returns
 -------
 inputSample : :class:`~openturns.Sample`
-    The input sample :math:`(\vect{x}_k)_{1 \leq k \leq N}`."
+    The input sample :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`."
 
 // ---------------------------------------------------------------------
 
@@ -224,7 +261,7 @@ inputSample : :class:`~openturns.Sample`
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-    The output sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` ."
+    The output sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` ."
 
 // ---------------------------------------------------------------------
 
@@ -243,7 +280,7 @@ The log-likelihood function may be useful for some postprocessing: maximization 
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
