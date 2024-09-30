@@ -1104,10 +1104,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("BurrFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
-  // ConditionalDistribution parameters //
-  addAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256);
-  addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
+  // DeconditionedDistribution parameters //
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
@@ -1240,11 +1240,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Multinomial-eta", 1.0e-9);
   addAsScalar("Multinomial-smallA", 10.0);
 
-  // NegativeBinomialFactory parameters //
-  addAsScalar("NegativeBinomialFactory-AbsolutePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-RelativePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-ResidualPrecision", 1.0e-12);
-  addAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration", 50);
+  // PolyaFactory parameters //
+  addAsScalar("PolyaFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("PolyaFactory-MaximumIteration", 50);
 
   // Normal parameters //
   addAsScalar("Normal-MaximumCDFEpsilon", 5.0e-6);

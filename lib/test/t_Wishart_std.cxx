@@ -143,6 +143,15 @@ int main(int, char *[])
     Arcsine::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
+
+    // Verify covariance
+    CovarianceMatrix matrix(2);
+    matrix(0, 0) = 10.0;
+    matrix(1, 0) = 5.0;
+    matrix(1, 1) = 8.0;
+    Wishart multidimensional(matrix, 3.0);
+    CovarianceMatrix empirical(multidimensional.getSample(100000).computeCovariance());
+    assert_almost_equal(multidimensional.getCovariance(), empirical, 0.02, 0.0);
   }
   catch (TestFailed & ex)
   {

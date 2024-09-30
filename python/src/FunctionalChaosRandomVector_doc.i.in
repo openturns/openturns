@@ -59,7 +59,7 @@ First, we create the PCE.
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDimension = 1
 >>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
->>> distribution = ot.ComposedDistribution([ot.Uniform()] * inputDimension)
+>>> distribution = ot.JointDistribution([ot.Uniform()] * inputDimension)
 >>> polyColl = [0.0] * inputDimension
 >>> for i in range(distribution.getDimension()):
 ...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))

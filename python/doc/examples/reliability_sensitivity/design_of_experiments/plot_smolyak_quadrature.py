@@ -115,7 +115,7 @@ print("Log-relative error in base 10= %.2f" % (lre10))
 # %%
 # We see that Smolyak's quadrature has produced a quite accurate
 # approximation of the integral.
-# With only 781 nodes in dimension 4, the approximation has more than 2 correct
+# With only 781 nodes in dimension 5, the approximation has more than 2 correct
 # digits.
 
 # %%

@@ -3,28 +3,29 @@ Mixture of experts
 ==================
 """
 # %%
-# In this example we are going to approximate a piecewise continuous function using an expert mixture of metamodels.
-# The metamodels will be represented by the family of :math:`f_k \forall k \in \llbracket 1, n \rrbracket`:
+# In this example we are going to approximate a piece wise continuous function using an expert mixture of metamodels.
+#
+# The metamodels will be represented by the family of functions :math:`f_k \forall \in [1, n_c]`:
 #
 # .. math::
-#      f(\vect{x}) &= f_k(\vect{x}) \quad \forall \vect{x} \in \text{Class}_k
+#      f(\vect{x}) = f_k(\vect{x})
 #
-# where the :math:`n` classes are defined by the classifier.
+# for any :math:`\vect{z} \in \textrm{Class}_k` where the :math:`n_c \in \Nset` classes are defined by the classifier.
 #
 # Using the supervised mode the classifier partitions the input and output spaces at once:
 #
 # .. math::
-#    z =(\vect{x}, f( \vect{x}))
+#    \vect{z} = (\vect{x}, f(\vect{x}))
 #
 # The classifier is :class:`~openturns.MixtureClassifier` based on a :class:`~openturns.Mixture` distribution defined as:
 #
 # .. math::
-#    p(\vect{x}) = \sum_{i=1}^n w_ip_i(\vect{x})
+#    p(\vect{x}) = \sum_{i=1}^{n_c} w_i p_i(\vect{x})
 #
 #
-# The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j=\argmax_j \log w_k p_k(\vect{x})`.
+# The rule to assign a point to a class is defined as follows: :math:`\vect{x}` is assigned to the class :math:`j = \operatorname{argmax}_j \log w_k p_k(\vect{z})`.
 #
-# The grade of :math:`\vect{x}` with respect to the class :math:`k` is :math:`\log w_kp_k(\vect{x})`.
+# The grade of :math:`\vect{x}` with respect to the class :math:`k` is :math:`\log w_k p_k(\vect{x})`.
 #
 #
 

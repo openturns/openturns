@@ -229,6 +229,38 @@ void Wishart::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the covariance of the distribution */
+void Wishart::computeCovariance() const
+{
+  // Get the collection of Indices of the random matrix
+  // in the order of the corresponding flattened random vector
+  const UnsignedInteger p = cholesky_.getDimension();
+  Collection<Indices>  matrixIndices;
+  for (UnsignedInteger i = 0; i < p; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      matrixIndices.add(Indices({i, j}));
+    }
+  }
+
+  // Populate the covariance matrix of the flattened random vector
+  const CovarianceMatrix V(getV());
+  covariance_ = CovarianceMatrix(getDimension());
+  for (UnsignedInteger row = 0; row < matrixIndices.getSize(); ++row)
+  {
+    for (UnsignedInteger col = 0; col <= row; ++col)
+    {
+      const UnsignedInteger irow = matrixIndices[row][0];
+      const UnsignedInteger icol = matrixIndices[col][0];
+      const UnsignedInteger jrow = matrixIndices[row][1];
+      const UnsignedInteger jcol = matrixIndices[col][1];
+      covariance_(row, col) = nu_ * (V(irow, jcol) *  V(icol, jrow) + V(irow, icol) * V(jrow, jcol));
+    }
+  }
+  isAlreadyComputedCovariance_ = true;
+}
+
 /* Compute the entropy of the distribution */
 Scalar Wishart::computeEntropy() const
 {

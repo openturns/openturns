@@ -194,12 +194,10 @@ Differential equation solvers
     RungeKutta
     Fehlberg
 
-Special constants & functions
-=============================
-
 Special functions
------------------
-Special functions are implemented as C++ static methods and are hence casted
+=================
+
+Special functions are implemented as C++ static methods and are available
 as Python functions.
 
 .. autosummary::
@@ -264,6 +262,18 @@ as Python functions.
     SpecFunc.TriGamma
 
 .. _coupling_tools:
+
+
+Special constants
+=================
+
+- SpecFunc.MaxScalar : inf
+- SpecFunc.ActualMaxScalar : maximum float value
+- SpecFunc.LogMaxScalar : log of SpecFunc.MaxScalar (inf)
+- SpecFunc.MinScalar : minimum positive float value
+- SpecFunc.LowestScalar : -inf
+- SpecFunc.LogMinScalar : log of SpecFunc.MinScalar
+
 
 External code coupling
 ======================

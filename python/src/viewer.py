@@ -596,9 +596,12 @@ class View:
             elif drawableKind == "Contour":
                 contour = drawable.getImplementation()
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
+                # X values move with columns
+                # Y values move with rows
+                # Z shape is therefore (getY().getSize(), getX().getSize())
                 Z = np.reshape(
                     drawable.getData(),
-                    (drawable.getX().getSize(), drawable.getY().getSize()),
+                    (drawable.getY().getSize(), drawable.getX().getSize()),
                 )
                 if len(drawable.getLevels()) > 0:
                     contour_kw.setdefault("levels", drawable.getLevels())

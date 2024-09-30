@@ -22,6 +22,10 @@
  * Removed deprecated Cobyla/TNC.setIgnoreFailure method
  * Removed deprecated OptimizationAlgorithm.setMaximumEvaluationNumber method
  * Removed deprecated OptimizationResult.getEvaluationNumber
+ * Deprecated BayesDistribution in favor of JointByConditioningDistribution
+ * Deprecated ConditionalDistribution in favor of DeconditionedDistribution
+ * Deprecated NegativeBinomial in favor of Polya
+ * Deprecated NegativeBinomialFactory in favor of PolyaFactory
 
 === Documentation ===
  * Copy button for code blocks

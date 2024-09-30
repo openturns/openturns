@@ -238,22 +238,33 @@ void InverseWishart::computeCovariance() const
 {
   const UnsignedInteger p = cholesky_.getDimension();
   const Scalar den = (nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0);
-  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3";
-  const CovarianceMatrix V(getV());
-  covariance_ = CovarianceMatrix(getDimension());
-  UnsignedInteger indexRow = 0;
+  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3, here nu = " << nu_ << " and p = " << p;
+
+  // Get the collection of Indices of the random matrix
+  // in the order of the corresponding flattened random vector
+  Collection<Indices>  matrixIndices;
   for (UnsignedInteger i = 0; i < p; ++i)
+  {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      UnsignedInteger indexColumn = 0;
-      for (UnsignedInteger m = 0; m <= i; ++m)
-        for (UnsignedInteger n = 0; n <= j; ++n)
-        {
-          covariance_(indexRow, indexColumn) = (2.0 * V(i, j) * V(m, n) + (nu_ - p - 1.0) * (V(i, m) * V(j, n) + V(i, n) * V(m, j))) / den;
-          ++indexColumn;
-        }
-      ++indexRow;
+      matrixIndices.add(Indices({i, j}));
     }
+  }
+
+  // Populate the covariance matrix of the flattened random vector
+  const CovarianceMatrix V(getV());
+  covariance_ = CovarianceMatrix(getDimension());
+  for (UnsignedInteger row = 0; row < matrixIndices.getSize(); ++row)
+  {
+    for (UnsignedInteger col = 0; col <= row; ++col)
+    {
+      const UnsignedInteger irow = matrixIndices[row][0];
+      const UnsignedInteger icol = matrixIndices[col][0];
+      const UnsignedInteger jrow = matrixIndices[row][1];
+      const UnsignedInteger jcol = matrixIndices[col][1];
+      covariance_(row, col) = ((nu_ - p + 1.0) * V(irow, jcol) * V(icol, jrow) + (nu_ - p - 1.0) * V(irow, icol) * V(jrow, jcol)) / den;
+    }
+  }
   isAlreadyComputedCovariance_ = true;
 }
 
