@@ -558,7 +558,7 @@ Parameters
 sampleX : 2-d sequence of float
     First sample.
 sampleY : 2-d sequence of float
-    Second sample.
+    Second sample. It must have the same size as the first sample.
 
 Returns
 -------
