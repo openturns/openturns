@@ -120,6 +120,11 @@ error[0]
 
 # %%
 # We see that the error estimate is a little lower than the tolerance, which indicates that the integral should be correctly approximated.
+
+# %%
+# In the next advanced example, let us now use the powerful feature of the
+# algorithm that is, the ability to get the intermediate sub-intervals
+# used by the algorithm.
 error = ot.Point()
 lowerBound = 0.0
 upperBound = 1.0
