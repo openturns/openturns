@@ -47,30 +47,10 @@ outputSample = im.model(inputSample)
 
 
 # %%
-def plotXvsY(sampleX, sampleY):
-    dimX = sampleX.getDimension()
-    dimY = sampleY.getDimension()
-    descriptionX = sampleX.getDescription()
-    descriptionY = sampleY.getDescription()
-    grid = ot.GridLayout(dimY, dimX)
-    for i in range(dimY):
-        for j in range(dimX):
-            graph = ot.Graph("", descriptionX[j], descriptionY[i], True, "")
-            cloud = ot.Cloud(sampleX[:, j], sampleY[:, i])
-            graph.add(cloud)
-            if j == 0:
-                graph.setYTitle(descriptionY[i])
-            else:
-                graph.setYTitle("")
-            if i == dimY - 1:
-                graph.setXTitle(descriptionX[j])
-            else:
-                graph.setXTitle("")
-            grid.setGraph(i, j, graph)
-    return grid
+# Display relationships between the output and the inputs
 
-
-grid = plotXvsY(inputSample, outputSample)
+# %%
+grid = ot.VisualTest.DrawPairsXY(inputSample, outputSample)
 view = otv.View(grid, figure_kw={"figsize": (12.0, 4.0)})
 
 # %%
