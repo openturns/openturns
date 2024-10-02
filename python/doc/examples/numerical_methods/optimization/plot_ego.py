@@ -3,7 +3,7 @@ EfficientGlobalOptimization examples
 ====================================
 """
 # %%
-# The EGO algorithm (Jones, 1998) is an adaptative optimization method based on
+# The EGO algorithm [jones1998]_ is an adaptative optimization method based on
 # kriging.
 #
 # An initial design of experiment is used to build a first metamodel.
@@ -14,7 +14,7 @@ EfficientGlobalOptimization examples
 # variance.
 #
 # Then the new point is evaluated using the original model and the metamodel is
-# relearnt on the extended design of experiment.
+# relearnt on the extended design of experiments.
 
 
 # %%
@@ -76,15 +76,16 @@ view = viewer.View(graph)
 #
 # Before using the EGO algorithm, we must create an initial kriging.
 # In order to do this, we must create a design of experiment which fills the space.
-# In this situation, the `LHSExperiment` is a good place to start (but other design of experiments may allow one to better fill the space).
-# We use a uniform distribution in order to create a LHS design with 50 points.
+# In this situation, the :class:`~openturns.LHSExperiment` is a good place to start (but other design of experiments may allow one to better fill the space).
+# We use a uniform distribution in order to create a LHS design.
+# The length of the first LHS is set to ten times the problem dimension as recommended in [jones1998]_.
 
 # %%
 listUniformDistributions = [
     ot.Uniform(lowerbound[i], upperbound[i]) for i in range(dim)
 ]
 distribution = ot.JointDistribution(listUniformDistributions)
-sampleSize = 50
+sampleSize = 10 * dim
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()
 outputSample = model(inputSample)
@@ -98,11 +99,11 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We now create the kriging metamodel. We selected the `SquaredExponential` covariance model with a constant basis (the `MaternModel` may perform better in this case).
-# We use default settings (1.0) for the scale parameters of the covariance model, but configure the amplitude to 0.1, which better corresponds to the properties of the Ackley function.
+# We now create the kriging metamodel.
+# We selected the :class:`~openturns.MaternModel` covariance model with a constant basis as recommended in [leriche2021]_.
 
 # %%
-covarianceModel = ot.SquaredExponential([1.0] * dim, [0.5])
+covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
@@ -111,7 +112,7 @@ kriging.run()
 # Create the optimization problem
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# We finally create the `OptimizationProblem` and solve it with `EfficientGlobalOptimization`.
+# We finally create the :class:`~openturns.OptimizationProblem` and solve it with class:`~openturns.EfficientGlobalOptimization`.
 
 # %%
 problem = ot.OptimizationProblem()
@@ -122,12 +123,12 @@ problem.setBounds(bounds)
 # %%
 # In order to show the various options, we configure them all, even if most could be left to default settings in this case.
 #
-# The most important method is `setMaximumCallsNumber` which limits the number of iterations that the algorithm can perform.
-# In the Ackley example, we choose to perform 10 iterations of the algorithm.
+# The most important method is :class:`~openturns.EfficientGlobalOptimization.setMaximumCallsNumber` which limits the number of iterations that the algorithm can perform.
+# In the Ackley example, we choose to perform 30 iterations of the algorithm.
 
 # %%
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-algo.setMaximumCallsNumber(10)
+algo.setMaximumCallsNumber(30)
 algo.run()
 result = algo.getResult()
 
@@ -145,14 +146,16 @@ fexact
 
 # %%
 # Compared to the minimum function value, we see that the EGO algorithm
-# provides solution which is not very accurate.
-# However, the optimal point is in the neighbourhood of the exact solution,
+# provides solution which is accurate.
+# Indeed, the optimal point is in the neighbourhood of the exact solution,
 # and this is quite an impressive success given the limited amount of function
-# evaluations: only 60 evaluations for the initial DOE and 10 iterations of
-# the EGO algorithm, for a total equal to 70 function evaluations.
+# evaluations: only 20 evaluations for the initial DOE and 30 iterations of
+# the EGO algorithm, for a total equal to 50 function evaluations.
 
 # %%
 graph = result.drawOptimalValueHistory()
+optimum_curve = ot.Curve(ot.Sample([[0, fexact[0]], [29, fexact[0]]]))
+graph.add(optimum_curve)
 view = viewer.View(graph)
 
 # %%
@@ -174,25 +177,6 @@ view = viewer.View(graph)
 # %%
 # We see that the initial (black) points are dispersed in the whole domain,
 # while the solution points are much closer to the solution.
-#
-# However, the final solution produced by the EGO algorithm is not very accurate.
-# This is why we finalize the process by adding a local optimization step.
-
-# %%
-algo2 = ot.NLopt(problem, "LD_LBFGS")
-algo2.setStartingPoint(result.getOptimalPoint())
-algo2.run()
-result = algo2.getResult()
-
-# %%
-result.getOptimalPoint()
-
-# %%
-# The corrected solution is now extremely accurate.
-
-# %%
-graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
 
 # %%
 # Branin test-case
@@ -245,7 +229,7 @@ view = viewer.View(graph)
 
 # %%
 distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim)
-sampleSize = 50
+sampleSize = 10 * dim
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()
 outputSample = objectiveFunction(inputSample)
@@ -260,7 +244,7 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-covarianceModel = ot.SquaredExponential([1.0] * dim, [1.0])
+covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 
@@ -282,7 +266,7 @@ problem.setBounds(bounds)
 # %%
 # We configure the algorithm, with the model noise:
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noise)
-algo.setMaximumCallsNumber(20)
+algo.setMaximumCallsNumber(30)
 
 # %%
 # We run the algorithm and get the result:
@@ -318,13 +302,13 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We see that the EGO algorithm found the second local minimum.
-# Given the limited number of function evaluations, the other local minimas have not been explored.
+# We see that the EGO algorithm reached the different optima locations.
 
 # %%
 graph = result.drawOptimalValueHistory()
+optimum_curve = ot.Curve(ot.Sample([[0, fexact[0][0]], [29, fexact[0][0]]]))
+graph.add(optimum_curve)
 view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
-
 plt.show()
 
 # %%
