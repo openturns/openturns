@@ -125,7 +125,6 @@ Discrete parametric distributions
     :template: classWithPlot.rst_t
     Polya
     KPermutationsDistribution
-    NegativeBinomial
 
     :template: Distribution.rst_t
     Poisson
