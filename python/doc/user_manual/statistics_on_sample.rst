@@ -223,6 +223,7 @@ Graphical tests
     :template: functionWithPlot.rst_t
 
     VisualTest.DrawPairs
+    VisualTest.DrawPairsXY
     VisualTest.DrawPairsMarginals
     VisualTest.DrawParallelCoordinates
     VisualTest.DrawHenryLine
