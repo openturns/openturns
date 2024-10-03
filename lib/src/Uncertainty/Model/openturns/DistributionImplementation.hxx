@@ -779,6 +779,8 @@ public:
   void setQuantileEpsilon(const Scalar quantileEpsilon);
 
 protected:
+  /** Filter identical entries */
+  static Description DeduplicateDecription(const Description & description);
 
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const Scalar xMin,

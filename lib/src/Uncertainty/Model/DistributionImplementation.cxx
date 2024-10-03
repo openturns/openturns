@@ -4813,6 +4813,29 @@ UnsignedInteger DistributionImplementation::getParameterDimension() const
   return getParameter().getSize();
 }
 
+/* Filter identical entries */
+Description DistributionImplementation::DeduplicateDecription(const Description & description)
+{
+  std::map<String, UnsignedInteger> occurrence;
+  UnsignedInteger idx = 0;
+  Description result(description);
+  for (UnsignedInteger i = 0; i < result.getSize(); ++ i)
+  {
+    const String currentName(result[i]);
+    ++ occurrence[currentName];
+    if (occurrence[currentName] > 1)
+    {
+      // replace duplicate with the first free "XN" name
+      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
+        ++ idx;
+      const String newName(OSS() << "X" << idx);
+      ++ occurrence[newName]; // avoid duplicates with new ones too
+      result[i] = newName;
+    }
+  }
+  return result;
+}
+
 /* Description accessor */
 void DistributionImplementation::setDescription(const Description & description)
 {
