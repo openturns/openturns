@@ -294,25 +294,7 @@ void JointDistribution::setDistributionCollection(const DistributionCollection &
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-
-  // avoid description warning with identical entries
-  std::map<String, UnsignedInteger> occurrence;
-  UnsignedInteger idx = 0;
-  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
-  {
-    const String currentName(description[i]);
-    ++ occurrence[currentName];
-    if (occurrence[currentName] > 1)
-    {
-      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
-        ++ idx;
-      const String newName(OSS() << "X" << idx);
-      ++ occurrence[newName]; // avoid duplicates with new ones too
-      description[i] = newName;
-    }
-  }
-  setDescription(description);
-
+  setDescription(DeduplicateDecription(description));
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
