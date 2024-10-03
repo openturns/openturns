@@ -288,13 +288,15 @@ void JointByConditioningDistribution::setConditionedAndConditioningDistributions
 
   Description description(conditioningDistribution.getDescription());
   description.add(conditionedDistribution.getDescription());
+
   // avoid description warning with identical entries
-  Description::const_iterator it = std::unique(description.begin(), description.end());
-  if (it != description.end())
+  std::sort(description.begin(), description.end());
+  if (std::unique(description.begin(), description.end()) != description.end())
   {
     description = Description::BuildDefault(conditioningDistribution.getDimension(), "Y");
     description.add(Description::BuildDefault(conditionedDistribution.getDimension(), "X"));
   }
+
   setDescription(description);
 }
 

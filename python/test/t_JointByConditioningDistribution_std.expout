@@ -5,7 +5,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= [0.629877,1.88281,-1.75408]
-oneSample=     [ X0         X1         X2         ]
+oneSample=     [ Y0         Y1         X0         ]
 0 : [  0.347057   1.96942    2.72115   ]
 1 : [  0.0632061  1.29276    0.515725  ]
 2 : [  0.373767   1.73727    2.87065   ]
