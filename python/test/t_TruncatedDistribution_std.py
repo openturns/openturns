@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 
@@ -97,25 +98,12 @@ for testCase in range(len(distribution)):
     CCDF = distribution[testCase].computeComplementaryCDF(point)
     print("ccdf=%.6f" % CCDF)
     print("cdf (ref)=%.6f" % referenceDistribution[testCase].computeCDF(point))
-    try:
-        PDFgr = distribution[testCase].computePDFGradient(point)
-        print("pdf gradient      =", repr(cleanPoint(PDFgr)))
-        print(
-            "pdf gradient (ref)=",
-            repr(cleanPoint(referenceDistribution[testCase].computePDFGradient(point))),
-        )
-    except Exception:
-        pass
 
-    try:
-        CDFgr = distribution[testCase].computeCDFGradient(point)
-        print("cdf gradient      =", repr(cleanPoint(CDFgr)))
-        print(
-            "cdf gradient (ref)=",
-            repr(cleanPoint(referenceDistribution[testCase].computeCDFGradient(point))),
-        )
-    except Exception:
-        pass
+    PDFgr = distribution[testCase].computePDFGradient(point)
+    print("pdf gradient      =", repr(cleanPoint(PDFgr)))
+
+    CDFgr = distribution[testCase].computeCDFGradient(point)
+    print("cdf gradient      =", repr(cleanPoint(CDFgr)))
 
     # quantile
     quantile = distribution[testCase].computeQuantile(0.95)
@@ -195,6 +183,13 @@ for testCase in range(len(distribution)):
         "Standard representative=",
         referenceDistribution[testCase].getStandardRepresentative(),
     )
+
+    ot.Log.Show(ot.Log.TRACE)
+    ot.RandomGenerator.SetSeed(1)
+    checker = ott.DistributionChecker(distribution[testCase])
+    checker.skipMinimumVolumeLevelSet()  # slow
+    checker.run()
+
 # Check simplification
 candidates = [
     ot.Normal(1.0, 2.0),

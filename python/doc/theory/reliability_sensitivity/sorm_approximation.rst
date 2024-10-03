@@ -38,7 +38,7 @@ Let  :math:`(\kappa_i)_{1 \leq i \leq \inputDim-1}` the :math:`(n-1)` main curva
 point in the standard space.
 Several approximations are available,
 detailed here in the case where the origin of the standard
-space does not belong to the failure domain:
+space does not belong to the failure domain.
 
 **Breitung’s formula** is an asymptotic result. The
 usual formula used in the normal standard space has been generalized
@@ -54,7 +54,7 @@ density function of the spherical distributions in the standard space:
 
 
 where :math:`\Phi` is the cumulative distribution function of the standard 1D normal
-distribution and  :math:`(\kappa_1^0, \dots, \kappa_\inputDim^0)` the main curvatures of the
+distribution and  :math:`(\kappa_1^0, \dots, \kappa_{\inputDim-1}^0)` the main curvatures of the
 homothetic of the failure domain at distance 1 from the origin.
 
 **Hohenbichler’s formula** is an approximation of :eq:`PfSORM_B`:
@@ -62,7 +62,7 @@ homothetic of the failure domain at distance 1 from the origin.
 .. math::
     :label: PfSORM_HB
 
-       P_{Hohenbichler} = \Phi(-\beta) \prod_{i=1}^{d-1} \left( 1+\frac{\phi(-\beta)}{\beta \Phi(-\beta)}\kappa_i^0
+       P_{Hohenbichler} = \Phi(-\beta) \prod_{i=1}^{\inputDim-1} \left( 1+\frac{\phi(-\beta)}{\beta \Phi(-\beta)}\kappa_i^0
        \right)  ^{-1/2}
 
 Recording to the Mill's ratio, :math:`\frac{\phi(-\beta)}{\beta \Phi(-\beta)}` tends to 1 when :math:`\beta` tends

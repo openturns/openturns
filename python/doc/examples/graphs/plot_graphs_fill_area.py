@@ -16,7 +16,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We generate a sample from a standard gaussian distribution.
+# We generate a sample from the standard Normal distribution.
 
 # %%
 dist = ot.Normal()

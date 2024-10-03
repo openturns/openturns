@@ -53,7 +53,7 @@
 #include "openturns/LogUniformFactory.hxx"
 #include "openturns/MeixnerDistributionFactory.hxx"
 #include "openturns/MultinomialFactory.hxx"
-#include "openturns/NegativeBinomialFactory.hxx"
+#include "openturns/PolyaFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/ParetoFactory.hxx"
@@ -141,7 +141,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetDiscr
   collection.add(DiracFactory());
   collection.add(GeometricFactory());
   collection.add(MultinomialFactory());
-  collection.add(NegativeBinomialFactory());
+  collection.add(PolyaFactory());
   collection.add(PoissonFactory());
   collection.add(UserDefinedFactory());
   collection.add(SkellamFactory());

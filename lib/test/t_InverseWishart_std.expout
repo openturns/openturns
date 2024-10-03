@@ -27,7 +27,7 @@ quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.0903302]
 cdf (tail)=0.95
 pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.000135385,-9.97944e-05]
 cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.000503875,0.000410437]
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[0.872999] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0458714] upper bound=class=Point name=Unnamed dimension=1 values=[0.877774] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseWishart(V = 
 [[ 1 ]], nu = 5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseWishart(V = 
@@ -50,6 +50,6 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[nu : 1,  : 5]]
+parameters=[[V_0_0 : 1, nu : 5]]
 Standard representative=InverseWishart(V = 
 [[ 1 ]], nu = 5)

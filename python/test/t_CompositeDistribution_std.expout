@@ -6,13 +6,10 @@ oneRealization= [1.51269]
 oneSample first= [-0.304726]  last= [4.32165]
 mean= [0.981731]
 covariance= [[ 3.68811 ]]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  [1]
 ddf     = [-0.0620066]
 log pdf= -1.82876523119
 pdf     = 0.1606117638
-pdf (FD)= 0.1606117638
 cdf= 0.621614338562
 ccdf= 0.378385661438
 survival= 0.378385661438

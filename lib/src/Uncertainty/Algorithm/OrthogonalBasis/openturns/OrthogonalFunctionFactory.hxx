@@ -28,6 +28,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class OrthogonalBasis;
+
 /**
  * @class OrthogonalFunctionFactory
  *
@@ -51,7 +53,7 @@ public:
   Function build(const UnsignedInteger index) const override;
 
   /** Build the Function of the given multi-indices */
-  Function build(const Indices & indices) const;
+  virtual Function build(const Indices & indices) const;
 
   /** Return the measure upon which the basis is orthogonal */
   virtual Distribution getMeasure() const;
@@ -61,6 +63,10 @@ public:
 
   /** Virtual constructor */
   OrthogonalFunctionFactory * clone() const override;
+
+  
+  /** Get the function factory corresponding to marginal input indices */
+  virtual OrthogonalBasis getMarginal(const Indices & indices) const;
 
   Bool isOrthogonal() const override;
 

@@ -144,8 +144,9 @@ Point SklarCopula::computeDDF(const Point & point) const
   }
   const Scalar pdfDistribution = distribution_.computePDF(x);
   Point result(distribution_.computeDDF(x));
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] -= ddfX[i] * pdfDistribution / pdfX[i];
-  return result * (1.0 / factor);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    result[i] = (result[i] - ddfX[i] * pdfDistribution / pdfX[i]) / pdfX[i] / factor;
+  return result;
 }
 
 /* Get the PDF of the distribution
@@ -242,15 +243,15 @@ Scalar SklarCopula::computeSurvivalFunction(const Point & point) const
 }
 
 /* Get the PDFGradient of the distribution */
-Point SklarCopula::computePDFGradient(const Point & ) const
+Point SklarCopula::computePDFGradient(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In SklarCopula::computePDFGradient(const Point & point) const";
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
-Point SklarCopula::computeCDFGradient(const Point & ) const
+Point SklarCopula::computeCDFGradient(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In SklarCopula::computeCDFGradient(const Point & point) const";
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution

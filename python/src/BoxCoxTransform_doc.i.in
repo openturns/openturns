@@ -4,9 +4,9 @@
 Refer to :ref:`boxcox_transformation`.
 
 Available constructors:
-    BoxCoxTransform(*lambdaVect, shiftVect = [0]*)
+    BoxCoxTransform(*lambdaVect, shiftVect*)
 
-    BoxCoxTransform(*lambda, shift=0*)
+    BoxCoxTransform(*lambda, shift*)
 
 Parameters
 ----------

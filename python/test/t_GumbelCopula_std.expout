@@ -40,7 +40,7 @@ margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
 margin realization= class=Point name=Unnamed dimension=1 values=[0.910321]
-indices= [1,0]
+indices= [1, 0]
 margins= class=GumbelCopula name=GumbelCopula dimension=2 theta=2.5
 margins PDF=2.034871
 margins CDF=0.160538

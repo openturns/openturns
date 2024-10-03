@@ -2,25 +2,17 @@ Distribution  VonMises(mu = -0.5, kappa=1.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.492446]
-oneSample first= [-0.494608]  last= [0.388969]
-mean= [-0.512904]
-covariance= [[ 1.08763 ]]
-Kolmogorov test for the generator, sample size= 100  is  True
-Kolmogorov test for the generator, sample size= 1000  is  True
 Point=  [1]
 ddf     = [-0.160799]
 log pdf= -2.23055863162
 pdf     =0.107468
-pdf (FD)=0.107468
 cdf= 0.927414932933
 ccdf= 0.0725850670669
 survival= 0.0725850670669
 characteristic function=(0.523156, -0.285801)
 log characteristic function=(-0.517291, -0.5)
 pdf gradient     = [0.160799,-0.0564635]
-pdf gradient (FD)= [0.160799,-0.0564635]
 cdf gradient     = [-0.107468,0.0747113]
-cdf gradient (FD)= [-0.107468,0.0747113]
 quantile= [1.25235]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.25235]

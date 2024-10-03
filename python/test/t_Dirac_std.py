@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -167,3 +168,9 @@ print("covariance=", covariance)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()
+checker.skipCorrelation()
+checker.run()

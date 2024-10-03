@@ -605,7 +605,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
-                      BayesDistribution.i BayesDistribution_doc.i.in
+                      JointByConditioningDistribution.i JointByConditioningDistribution_doc.i.in
                       Bernoulli.i Bernoulli_doc.i.in
                       BernoulliFactory.i BernoulliFactory_doc.i.in
                       EmpiricalBernsteinCopula.i EmpiricalBernsteinCopula_doc.i.in
@@ -695,11 +695,11 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i.in
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
-                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
+                      DeconditionedDistribution.i DeconditionedDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
-                      NegativeBinomial.i NegativeBinomial_doc.i.in
-                      NegativeBinomialFactory.i NegativeBinomialFactory_doc.i.in
+                      Polya.i Polya_doc.i.in
+                      PolyaFactory.i PolyaFactory_doc.i.in
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in
                       Normal.i Normal_doc.i.in
@@ -1009,6 +1009,7 @@ ot_add_python_module(uncertainty uncertainty_module.i
                     )
 
 ot_add_python_module(testing testing_module.i
+                     OTtestcode_doc.i.in
                     )
 
 ot_add_python_module(experimental experimental_module.i
@@ -1031,6 +1032,11 @@ ot_add_python_module(experimental experimental_module.i
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
+                     GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
+                     GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
+                     GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
+                     GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
+                     GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

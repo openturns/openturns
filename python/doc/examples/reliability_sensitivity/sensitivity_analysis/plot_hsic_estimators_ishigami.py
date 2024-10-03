@@ -13,7 +13,6 @@ from openturns.usecases import ishigami_function
 # HSIC estimators rely on a reproducing kernel of a Hilbert space. We can use them to compute sensitivity
 # indices. We present the methods on the :ref:`Ishigami function<use-case-ishigami>`.
 
-
 # %%
 # Definition of the model
 # -----------------------
@@ -148,7 +147,7 @@ criticalDomain = ot.Interval(5, float("inf"))
 dist2criticalDomain = ot.DistanceToDomainFunction(criticalDomain)
 
 # %%
-# We define the parameters in our function from the output sample
+# We define the empirical parameter values in our function from the output sample
 s = 0.1 * Y.computeStandardDeviation()[0]
 
 # %%
@@ -158,6 +157,11 @@ f = ot.SymbolicFunction(["x", "s"], ["exp(-x/s)"])
 phi = ot.ParametricFunction(f, [1], [s])
 filterFunction = ot.ComposedFunction(phi, dist2criticalDomain)
 
+# %%
+# We modify the output covariance kernel so as to adapt it to the filtered output
+Y_filtered = filterFunction(Y)
+outputCovariance.setScale(Y_filtered.computeStandardDeviation())
+covarianceModelCollection[-1] = outputCovariance
 
 # %%
 # We choose an unbiased estimator
@@ -213,6 +217,11 @@ view8 = otv.View(graph8)
 # analysis. To do so, one has to work with a weight function.
 # Here the weight function is the filter function we used previously.
 weightFunction = filterFunction
+
+# %%
+# We revert to the covariance kernel associated to the unfiltered output
+outputCovariance.setScale(Y.computeStandardDeviation())
+covarianceModelCollection[-1] = outputCovariance
 
 # %%
 # We have to select a biased -but asymptotically unbiased- estimator

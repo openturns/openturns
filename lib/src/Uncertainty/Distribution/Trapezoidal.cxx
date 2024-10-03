@@ -291,7 +291,7 @@ Point Trapezoidal::computeCDFGradient(const Point & point) const
     cdfGradient[0] = -0.25 * (d_ - x) * (d_ - x) * h_ * h_ / (d_ - c_);
     cdfGradient[1] = -0.25 * (d_ - x) * (d_ - x) * h_ * h_ / (d_ - c_);
     cdfGradient[2] =  0.25 * (d_ - x) * (d_ - x) * (a_ + b_ - 2.0 * c_) * h_ * h_ / ((d_ - c_) * (d_ - c_));
-    cdfGradient[3] = -0.25 * (d_ - x) * (2.0 * a_ * c_ - a_ * d_ - a_ * x + 2.0 * b_ * c_ - b_ * x - 2.0 * c_ * c_ + 2.0 * d_ * x) * h_ * h_ / ((d_ - c_) * (d_ - c_));
+    cdfGradient[3] = ((d_ - c_) * h_ * ((d_ - x) * (d_ - x) * h_ - 4.0 * (d_ - x)) + 2.0 * (d_ - x) * (d_ - x) * h_) / (4.0 * (d_ - c_) * (d_ - c_));
   }
   return cdfGradient;
 }

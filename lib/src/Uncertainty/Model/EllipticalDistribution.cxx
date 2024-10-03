@@ -403,14 +403,14 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
-  Point pdfGradient(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
+  Point pdfGradient(2 * dimension + (dimension > 1 ? ((dimension - 1) * dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     Scalar iSigma = 1.0 / sigma_[i];
     // dPDF / dmu_i
-    pdfGradient[i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
+    pdfGradient[2 * i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
     // dPDF / dsigma_i
-    pdfGradient[dimension + i] = pdfGradient[i] * u[i] - normalizationFactor_ * phi * iSigma;
+    pdfGradient[2 * i + 1] = pdfGradient[2 * i] * u[i] - normalizationFactor_ * phi * iSigma;
   }
   if (getDimension() > 1)
   {

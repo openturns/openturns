@@ -134,6 +134,11 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 
+  /** Parameters accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+  Description getParameterDescription() const override;
+
   /** Get the kth approximation */
   PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 

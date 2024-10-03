@@ -425,6 +425,7 @@ Complex Normal::computeCharacteristicFunction(const Point & x) const
 
 Complex Normal::computeLogCharacteristicFunction(const Scalar x) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Normal: cannot use computeCharacteristicFunction with dimension > 1";
   return Complex(-0.5 * sigma_[0] * sigma_[0] * x * x, mean_[0] * x);
 }
 

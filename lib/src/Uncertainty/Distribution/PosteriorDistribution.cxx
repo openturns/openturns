@@ -38,34 +38,34 @@ static const Factory<PosteriorDistribution> Factory_PosteriorDistribution;
 /* Default constructor */
 PosteriorDistribution::PosteriorDistribution()
   : ContinuousDistribution(),
-    conditionalDistribution_(),
+    deconditionedDistribution_(),
     observations_()
 {
   setName("PosteriorDistribution");
   // First, set the observations
-  observations_ = Sample(1, conditionalDistribution_.getConditionedDistribution().getMean());
-  // Then, set the conditional distribution. It also set the dimension.
-  setConditionalDistribution(conditionalDistribution_);
+  observations_ = Sample(1, deconditionedDistribution_.getConditionedDistribution().getMean());
+  // Then, set the deconditioned distribution. It also set the dimension.
+  setDeconditionedDistribution(deconditionedDistribution_);
   computeRange();
 }
 
 /* Parameters constructor */
-PosteriorDistribution::PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
+PosteriorDistribution::PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
     const Sample & observations)
   : ContinuousDistribution(),
-    conditionalDistribution_(),
+    deconditionedDistribution_(),
     observations_(observations)
 {
   setName("PosteriorDistribution");
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a posterior distribution with no observation.";
-  setConditionalDistribution(conditionalDistribution);
+  setDeconditionedDistribution(deconditionedDistribution);
 }
 
 /* Comparison operator */
 Bool PosteriorDistribution::operator ==(const PosteriorDistribution & other) const
 {
   if (this == &other) return true;
-  return (conditionalDistribution_ == other.conditionalDistribution_) && (observations_ == other.observations_);
+  return (deconditionedDistribution_ == other.deconditionedDistribution_) && (observations_ == other.observations_);
 }
 
 Bool PosteriorDistribution::equals(const DistributionImplementation & other) const
@@ -81,7 +81,7 @@ String PosteriorDistribution::__repr__() const
   oss << "class=" << PosteriorDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " conditional distribution=" << conditionalDistribution_
+      << " deconditioned distribution=" << deconditionedDistribution_
       << " observations=" << observations_;
   return oss;
 }
@@ -89,7 +89,7 @@ String PosteriorDistribution::__repr__() const
 String PosteriorDistribution::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(conditional distribution = " << conditionalDistribution_.__str__() << ", observations =\n" << offset << observations_.__str__(offset) << ")";
+  oss << getClassName() << "(deconditioned distribution = " << deconditionedDistribution_.__str__() << ", observations =\n" << offset << observations_.__str__(offset) << ")";
   return oss;
 }
 
@@ -108,7 +108,7 @@ Point PosteriorDistribution::computeLikelihood(const Point & theta) const
 /* Compute the log-likelihood of the observations */
 Scalar PosteriorDistribution::computeLogLikelihood(const Point & theta) const
 {
-  Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
+  Distribution conditionedDistribution(deconditionedDistribution_.getConditionedDistribution());
   conditionedDistribution.setParameter(theta);
   Scalar logLikelihood = 0.0;
   const UnsignedInteger size = observations_.getSize();
@@ -125,7 +125,7 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
+  const Scalar value = deconditionedDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
   return std::exp(value);
 }
 
@@ -134,7 +134,7 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
 Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
   // FIXME: computeExpectation seems to incorrectly compute the CDF of the prior
-  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+  if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
     return ContinuousDistribution::computeCDF(point);
 
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -142,7 +142,7 @@ Scalar PosteriorDistribution::computeCDF(const Point & point) const
   Description inputDescription(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
   const SymbolicFunction f(inputDescription, Description(1, "1"));
-  const Scalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
+  const Scalar cdf = deconditionedDistribution_.computeExpectation(f, point)[0];
   return cdf;
 }
 
@@ -158,22 +158,22 @@ void PosteriorDistribution::setParametersCollection(const PointCollection & )
 }
 
 
-/* Conditional distribution accessor */
-void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribution & conditionalDistribution)
+/* Deconditioned distribution accessor */
+void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution)
 {
-  if (observations_.getDimension() != conditionalDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
-  conditionalDistribution_ = conditionalDistribution;
-  setDimension(conditionalDistribution.getConditioningDistribution().getDimension());
+  if (observations_.getDimension() != deconditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
+  deconditionedDistribution_ = deconditionedDistribution;
+  setDimension(deconditionedDistribution.getConditioningDistribution().getDimension());
   logNormalizationFactor_ = 0.0;
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-    logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
+    logNormalizationFactor_ += deconditionedDistribution_.computeLogPDF(observations_[i]);
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 
   // FIXME: tweak normalization factor
-  if (conditionalDistribution_.getConditioningDistribution().isContinuous())
+  if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
   {
     GaussLegendre integrationAlgorithm(getDimension());
     const Scalar iPDF = integrationAlgorithm.integrate(PDFWrapper(this), getRange())[0];
@@ -181,9 +181,9 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   }
 }
 
-ConditionalDistribution PosteriorDistribution::getConditionalDistribution() const
+DeconditionedDistribution PosteriorDistribution::getDeconditionedDistribution() const
 {
-  return conditionalDistribution_;
+  return deconditionedDistribution_;
 }
 
 
@@ -191,9 +191,9 @@ ConditionalDistribution PosteriorDistribution::getConditionalDistribution() cons
 void PosteriorDistribution::setObservations(const Sample & observations)
 {
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
-  if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
+  if (observations.getDimension() != deconditionedDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
   observations_ = observations;
-  setConditionalDistribution(conditionalDistribution_);
+  setDeconditionedDistribution(deconditionedDistribution_);
 }
 
 Sample PosteriorDistribution::getObservations() const
@@ -210,7 +210,7 @@ Scalar PosteriorDistribution::getLogNormalizationFactor() const
 /* Compute the numerical range of the distribution given the parameters values */
 void PosteriorDistribution::computeRange()
 {
-  setRange(conditionalDistribution_.conditioningDistribution_.getRange());
+  setRange(deconditionedDistribution_.conditioningDistribution_.getRange());
 }
 
 class PosteriorDistributionLikelihoodEvaluation : public EvaluationImplementation
@@ -245,7 +245,7 @@ void PosteriorDistribution::computeMean() const
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
   const Function likelihood(PosteriorDistributionLikelihoodEvaluation(*this));
-  mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
+  mean_ = deconditionedDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -294,7 +294,7 @@ void PosteriorDistribution::computeCovariance() const
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
   const Function likelihood(PosteriorDistributionLikelihoodEvaluation(*this));
-  const Point result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
+  const Point result(deconditionedDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -309,7 +309,7 @@ void PosteriorDistribution::computeCovariance() const
 void PosteriorDistribution::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "conditionalDistribution_", conditionalDistribution_ );
+  adv.saveAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
   adv.saveAttribute( "observations_", observations_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
@@ -318,7 +318,7 @@ void PosteriorDistribution::save(Advocate & adv) const
 void PosteriorDistribution::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "conditionalDistribution_", conditionalDistribution_ );
+  adv.loadAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
   adv.loadAttribute( "observations_", observations_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   computeRange();

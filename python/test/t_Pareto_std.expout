@@ -3,24 +3,13 @@ Distribution  Pareto(beta = 7.5, alpha=5, gamma=-7)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[2.14939]
-oneSample first= class=Point name=Unnamed dimension=1 values=[4.51542]  last= class=Point name=Unnamed dimension=1 values=[1.37695]
-mean= class=Point name=Unnamed dimension=1 values=[2.40131]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.61066]
-skewness= class=Point name=Unnamed dimension=1 values=[3.54775]
-kurtosis= class=Point name=Unnamed dimension=1 values=[27.2028]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 range=  [0.5, (10126.8) +inf[
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.339467]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.339467]
 pdf     = 0.452622771263
-pdf (FD)= 0.452622771
 cdf= 0.275803565979
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.301749,0.0613129,0.339467]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.301749,0.0613129,0.339467]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.482798,0.0467386,-0.452623]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.482798,0.0467386,-0.452623]
 quantile= class=Point name=Unnamed dimension=1 values=[6.65423]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.577336]

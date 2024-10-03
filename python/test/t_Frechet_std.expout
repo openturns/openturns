@@ -2,25 +2,17 @@ Distribution  Frechet(beta = 1.5, alpha = 6, gamma = -1)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.705878]
-oneSample first= [1.12231]  last= [0.539283]
-mean= [0.698001]
-covariance= [[ 0.177003 ]]
-Kolmogorov test for the generator, sample size= 100  is  True
-Kolmogorov test for the generator, sample size= 1000  is  True
 Point=  [1]
 ddf     = [-1.32548]
 log pdf= -0.805458661668
 pdf     =0.446883
-pdf (FD)=0.446883
 cdf= 0.836960404867
 ccdf= 0.163039595133
 survival= 0.163039595133
 characteristic function=(0.72659, 0.574653)
 log characteristic function=(-0.0764829, 0.669162)
 pdf gradient     = [1.46939,-0.0311988,1.32548]
-pdf gradient (FD)= [1.46939,-0.0311988,1.32548]
 cdf gradient     = [-0.595844,0.0428534,-0.446883]
-cdf gradient (FD)= [-0.595844,0.0428534,-0.446883]
 quantile= [1.46083]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.249321]

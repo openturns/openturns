@@ -52,9 +52,7 @@ print("Quantile=", repr(quantile))
 print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = distribution.getMarginal(indices)
 print("margins=", repr(margins))

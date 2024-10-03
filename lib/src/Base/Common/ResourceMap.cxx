@@ -887,7 +887,6 @@ void ResourceMap::loadDefaultConfiguration()
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
   addAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
-  addAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor", 0.0);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
@@ -1104,10 +1103,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("BurrFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
-  // ConditionalDistribution parameters //
-  addAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256);
-  addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
+  // DeconditionedDistribution parameters //
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
@@ -1240,11 +1239,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Multinomial-eta", 1.0e-9);
   addAsScalar("Multinomial-smallA", 10.0);
 
-  // NegativeBinomialFactory parameters //
-  addAsScalar("NegativeBinomialFactory-AbsolutePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-RelativePrecision", 1.0e-12);
-  addAsScalar("NegativeBinomialFactory-ResidualPrecision", 1.0e-12);
-  addAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration", 50);
+  // PolyaFactory parameters //
+  addAsScalar("PolyaFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("PolyaFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("PolyaFactory-MaximumIteration", 50);
 
   // Normal parameters //
   addAsScalar("Normal-MaximumCDFEpsilon", 5.0e-6);
@@ -1520,6 +1519,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+
+  // GaussianProcessFitter parameters //
+  addAsBool("GaussianProcessFitter-KeepCovariance", true);
+  addAsBool("GaussianProcessFitter-OptimizeParameters", true);
+  addAsBool("GaussianProcessFitter-UnbiasedVariance", true);
+  addAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", true);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
+  addAsScalar("GaussianProcessFitter-MeanEpsilon", 1.0e-12);
+  addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
+  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK");
 
   // KrigingAlgorithm parameters //
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");

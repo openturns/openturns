@@ -174,7 +174,8 @@ Field ConditionedGaussianProcess::getRealization() const
   // L the Cholesky factor of the covariance discretized over the mesh
   // x an iid sequence of standard normal random variables
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
-  Sample values(fullSize, getOutputDimension());
+  const UnsignedInteger size = mesh_.getVerticesNumber();
+  Sample values(size, getOutputDimension());
   Point deviation(covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize));
   // Set to zero the deviations at known positions
   for (UnsignedInteger i = 0; i < knownValuesIndices_.getSize(); ++i)

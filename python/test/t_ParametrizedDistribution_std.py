@@ -19,45 +19,17 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
-eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", DDF)
-print(
-    "ddf (FD)= %.6g"
-    % (
-        (
-            distribution.computePDF(point + ot.Point(1, eps))
-            - distribution.computePDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.6g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6g" % PDF)
-print(
-    "pdf (FD)=%.6g"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
 CDF = distribution.computeCDF(point)
 print("cdf= %.6g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -121,3 +93,8 @@ print("kendall=", kendall)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.RandomGenerator.SetSeed(2)
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

@@ -58,33 +58,17 @@ int main(int, char *[])
     Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
-    // Test for sampling
-    UnsignedInteger size = 10000;
-    Sample oneSample = distribution.getSample( size );
-    fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
-    fullprint << "mean=" << oneSample.computeMean() << std::endl;
-    fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-    fullprint << "skewness=" << oneSample.computeSkewness() << std::endl;
-    fullprint << "kurtosis=" << oneSample.computeKurtosis() << std::endl;
-    size = 100;
-    for (UnsignedInteger i = 0; i < 2; ++i)
-    {
-      fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
-      size *= 10;
-    }
     // Define a point
     Point point(distribution.getDimension(), 9.1);
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
     Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
     Scalar CCDF = distribution.computeComplementaryCDF( point );
@@ -103,20 +87,8 @@ int main(int, char *[])
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
-    Point PDFgrFD(2);
-    PDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computePDF(point) -
-                  Arcsine(distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computePDF(point) -
-                  Arcsine(distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
-    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
-    Point CDFgrFD(2);
-    CDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-                  Arcsine(distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-                  Arcsine(distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
-    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     // Confidence regions
     Scalar threshold;
     fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
@@ -132,7 +104,6 @@ int main(int, char *[])
     fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
     fullprint << "beta=" << beta << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
-    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();
@@ -152,6 +123,10 @@ int main(int, char *[])
     Arcsine::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
+
+    Log::Show(Log::TRACE);
+    DistributionChecker checker(distribution);
+    checker.run();
   }
   catch (TestFailed & ex)
   {

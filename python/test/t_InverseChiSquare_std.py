@@ -20,55 +20,17 @@ for n in range(len(allDistributions)):
     oneRealization = distribution.getRealization()
     print("oneRealization=", oneRealization)
 
-    # Test for sampling
-    size = 10000
-    oneSample = distribution.getSample(size)
-    print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-    print("mean=", oneSample.computeMean())
-    print("covariance=", oneSample.computeCovariance())
-    size = 100
-    for i in range(2):
-        if ot.FittingTest.Kolmogorov(
-            distribution.getSample(size), distribution
-        ).getBinaryQualityMeasure():
-            msg = "accepted"
-        else:
-            msg = "rejected"
-        print("Kolmogorov test for the generator, sample size=", size, " is ", msg)
-        size *= 10
-
     # Define a point
     point = ot.Point(distribution.getDimension(), 2.0 / distribution.getNu())
     print("Point= ", point)
 
     # Show PDF and CDF of point
-    eps = 1e-5
     DDF = distribution.computeDDF(point)
     print("ddf     =", DDF)
-    print(
-        "ddf (FD)=%.6g"
-        % (
-            (
-                distribution.computePDF(point + ot.Point(1, eps))
-                - distribution.computePDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
     LPDF = distribution.computeLogPDF(point)
     print("log pdf= %.12g" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6g" % PDF)
-    print(
-        "pdf (FD)=%.6g"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
@@ -81,20 +43,8 @@ for n in range(len(allDistributions)):
     print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", PDFgr)
-    PDFgrFD = ot.Point(1)
-    PDFgrFD[0] = (
-        ot.InverseChiSquare(distribution.getNu() + eps).computePDF(point)
-        - ot.InverseChiSquare(distribution.getNu() - eps).computePDF(point)
-    ) / (2.0 * eps)
-    print("pdf gradient (FD)=", PDFgrFD)
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", CDFgr)
-    CDFgrFD = ot.Point(1)
-    CDFgrFD[0] = (
-        ot.InverseChiSquare(distribution.getNu() + eps).computeCDF(point)
-        - ot.InverseChiSquare(distribution.getNu() - eps).computeCDF(point)
-    ) / (2.0 * eps)
-    print("cdf gradient (FD)=", CDFgrFD)
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)= %.2f" % distribution.computeCDF(quantile))
@@ -166,3 +116,8 @@ for n in range(len(allDistributions)):
         ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
     )
     ott.assert_almost_equal(p, 1.0)
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipMinimumVolumeLevelSet()
+    checker.run()

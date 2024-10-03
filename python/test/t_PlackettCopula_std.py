@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -29,12 +30,6 @@ print("oneRealization=", repr(oneRealization))
 size = 10
 oneSample = copula.getSample(size)
 print("oneSample=", repr(oneSample))
-
-# Test for sampling
-size = 10000
-anotherSample = copula.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
 
 # Define a point
 point = ot.Point(dim, 0.2)
@@ -86,21 +81,23 @@ print("beta=", ot.Point(1, beta))
 for i in range(dim):
     margin = copula.getMarginal(i)
     print("margin=", repr(margin))
-    print("margin PDF=%.6f" % margin.computePDF(ot.Point(1, 0.25)))
-    print("margin CDF=%.6f" % margin.computeCDF(ot.Point(1, 0.25)))
+    print("margin PDF=%.6f" % margin.computePDF([0.25]))
+    print("margin CDF=%.6f" % margin.computeCDF([0.25]))
     print("margin quantile=", repr(margin.computeQuantile(0.95)))
     print("margin realization=", repr(margin.getRealization()))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))
-print("margins PDF=%.6f" % margins.computePDF(ot.Point(2, 0.25)))
-print("margins CDF=%.6f" % margins.computeCDF(ot.Point(2, 0.25)))
+print("margins PDF=%.6f" % margins.computePDF([0.25] * 2))
+print("margins CDF=%.6f" % margins.computeCDF([0.25] * 2))
 quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.run()

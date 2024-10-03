@@ -85,7 +85,7 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     MultinomialFactory
-    NegativeBinomialFactory
+    PolyaFactory
     NormalFactory
     ParetoFactory
     PoissonFactory
@@ -223,6 +223,7 @@ Graphical tests
     :template: functionWithPlot.rst_t
 
     VisualTest.DrawPairs
+    VisualTest.DrawPairsXY
     VisualTest.DrawPairsMarginals
     VisualTest.DrawParallelCoordinates
     VisualTest.DrawHenryLine

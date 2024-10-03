@@ -20,19 +20,11 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-
 # Define a point
 point = [1.5] * distribution.getDimension()
 print("Point= ", point)
 
 # Show PDF and CDF of point
-eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", DDF)
 LPDF = distribution.computeLogPDF(point)
@@ -53,124 +45,10 @@ print(
 )
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
-PDFgrFD = ot.Point(4)
-PDFgrFD[0] = (
-    ot.NormalGamma(
-        distribution.getMu() + eps,
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computePDF(point)
-    - ot.NormalGamma(
-        distribution.getMu() - eps,
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computePDF(point)
-) / (2.0 * eps)
-PDFgrFD[1] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa() + eps,
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computePDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa() - eps,
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computePDF(point)
-) / (2.0 * eps)
-PDFgrFD[2] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha() + eps,
-        distribution.getBeta(),
-    ).computePDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha() - eps,
-        distribution.getBeta(),
-    ).computePDF(point)
-) / (2.0 * eps)
-PDFgrFD[3] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta() + eps,
-    ).computePDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta() - eps,
-    ).computePDF(point)
-) / (2.0 * eps)
-print("pdf gradient (FD)=", PDFgrFD)
+
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
-CDFgrFD = ot.Point(4)
-CDFgrFD[0] = (
-    ot.NormalGamma(
-        distribution.getMu() + eps,
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computeCDF(point)
-    - ot.NormalGamma(
-        distribution.getMu() - eps,
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computeCDF(point)
-) / (2.0 * eps)
-CDFgrFD[1] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa() + eps,
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computeCDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa() - eps,
-        distribution.getAlpha(),
-        distribution.getBeta(),
-    ).computeCDF(point)
-) / (2.0 * eps)
-CDFgrFD[2] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha() + eps,
-        distribution.getBeta(),
-    ).computeCDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha() - eps,
-        distribution.getBeta(),
-    ).computeCDF(point)
-) / (2.0 * eps)
-CDFgrFD[3] = (
-    ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta() + eps,
-    ).computeCDF(point)
-    - ot.NormalGamma(
-        distribution.getMu(),
-        distribution.getKappa(),
-        distribution.getAlpha(),
-        distribution.getBeta() - eps,
-    ).computeCDF(point)
-) / (2.0 * eps)
-print("cdf gradient (FD)=", CDFgrFD)
+
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
@@ -224,3 +102,10 @@ print("correlation=", correlation)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()  # slow
+checker.skipCorrelation()  # slow
+checker.skipParameters()
+checker.run()

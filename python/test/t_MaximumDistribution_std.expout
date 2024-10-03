@@ -55,10 +55,10 @@ Standard representative= MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1
 Distribution  MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.813356]
-oneSample first= [0.764471]  last= [1.04927]
-mean= [1.16838]
-covariance= [[ 0.449251 ]]
+oneRealization= [0.859685]
+oneSample first= [1.78646]  last= [2.18777]
+mean= [1.16148]
+covariance= [[ 0.457225 ]]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  [1.0]
@@ -94,10 +94,10 @@ Standard representative= MaximumDistribution(JointDistribution(Normal(mu = 0, si
 Distribution  MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.813356]
-oneSample first= [0.764471]  last= [1.04927]
-mean= [1.16838]
-covariance= [[ 0.449251 ]]
+oneRealization= [0.859685]
+oneSample first= [1.78646]  last= [2.18777]
+mean= [1.16148]
+covariance= [[ 0.457225 ]]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  [1.0]

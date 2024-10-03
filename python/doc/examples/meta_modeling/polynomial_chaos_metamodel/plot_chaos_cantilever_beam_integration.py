@@ -7,11 +7,11 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 # In this example, we create a polynomial chaos metamodel by integration on the
 # :ref:`cantilever beam <use-case-cantilever-beam>` example.
 # We choose to evaluate the coefficients of the chaos decomposition by
-# integration using various kinds of design of experiment:
+# integration using various kinds of design of experiments:
 #
-# - Gauss product
-# - Latin hypercube sampling
-# - Quasi Monte Carlo with a Sobol' sequence
+# - Gauss product,
+# - Latin hypercube sampling,
+# - Quasi Monte-Carlo with a Sobol' sequence.
 #
 # We will compare the results obtained on each design.
 
@@ -69,7 +69,7 @@ adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 
 # %%
 # We begin by getting the standard measure associated with the multivariate polynomial basis.
-# We see that the range of the `Beta` distribution has been standardized into the [-1,1] interval.
+# We see that the range of the `Beta` distribution has been standardized into the `[-1, 1]` interval.
 # This is the same for the `Uniform` distribution and the second `Beta` distribution.
 measure = multivariateBasis.getMeasure()
 print(f"Measure = {measure}")
@@ -175,4 +175,4 @@ otv.View.ShowAll()
 # since the R2 score is excellent, even with the relatively limited amount
 # of simulation (256 points).
 # On the other hand the LHS and low-discrepancy experiments require many more
-# points to achieve a R2 > 99%.
+# points to achieve a :math:`R^2` > 99%.

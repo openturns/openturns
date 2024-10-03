@@ -416,6 +416,21 @@ Bool MarginalDistribution::isIntegral() const
   return distribution_.isIntegral();
 }
 
+Point MarginalDistribution::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void MarginalDistribution::setParameter(const Point & parameter)
+{
+  distribution_.setParameter(parameter);
+}
+
+Description MarginalDistribution::getParameterDescription() const
+{
+  return distribution_.getParameterDescription();
+}
+
 /* UsePDF accessor */
 void MarginalDistribution::setUsePDF(const Bool usePDF)
 {
