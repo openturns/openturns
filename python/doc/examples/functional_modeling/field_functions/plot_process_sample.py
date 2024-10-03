@@ -13,7 +13,7 @@ Create a process sample from a sample
 #
 # For this example, the realizations of a stochastic process are obtained using the Chaboche model.
 # A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
-# In this exemple, the model is defined such that:
+# In this example, the model is defined such that:
 # :math:`\sigma=g(\vect{X},\epsilon)`
 # with :math:`\vect{X}=[R,C,\gamma]^T` a vector of random variables and
 #
