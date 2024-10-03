@@ -62,7 +62,7 @@ plt.show()
 # Because we are going to view several Kriging models in this example,
 # we use a function to automate the process of optimizing the scale parameter
 # and producing the metamodel.
-# Since version 1.15 of the library, input data are no longer rescaled by the
+# Since version `1.15` of the library, input data are no longer rescaled by the
 # :class:`~openturns.KrigingAlgorithm` class, so we need to manually set
 # sensible bounds for the scale parameter.
 
@@ -177,7 +177,7 @@ isotropic = ot.IsotropicCovarianceModel(ot.SquaredExponential(), inputDimension)
 # %%
 # The :class:`~openturns.IsotropicCovarianceModel` class creates an isotropic
 # version with a given input dimension of a :class:`~openturns.CovarianceModel`.
-# Because is is isotropic, it only needs one scale parameter :math:`\theta_{iso}`
+# Because is isotropic, it only needs one scale parameter :math:`\theta_{iso}`
 # and it will make sure :math:`\theta_1 = \theta_2 = \theta_{iso}` at all times
 # during the optimization.
 

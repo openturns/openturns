@@ -247,7 +247,7 @@ Point Triangular::computeCDFGradient(const Point & point) const
     const Scalar fact = xa / (ba * ma);
     cdfGradient[0] = fact * (xm * ba - bx * ma) / (ma * ba);
     cdfGradient[1] = -fact * xa / ma;
-    cdfGradient[2] = -xa / ba;
+    cdfGradient[2] = -xa * xa / (ba * ba * ma);
     return cdfGradient;
   }
   const Scalar fact = bx / (ba * bm);

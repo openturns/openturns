@@ -2,24 +2,15 @@ Distribution  Triangular(a = -0.5, m = 1.5, b = 2.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.44403]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.90705]  last= class=Point name=Unnamed dimension=1 values=[1.09635]
-mean= class=Point name=Unnamed dimension=1 values=[1.17256]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.39567]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.333333]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.333333]
 log pdf=-0.693147
 pdf     =0.500000
-pdf (FD)=0.500000
 cdf=0.375000
 ccdf=0.625000
 characteristic function= (0.312305424736+0.758322070069j)
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
-cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.5]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
 quantile= class=Point name=Unnamed dimension=1 values=[0.724745]
 cdf(quantile)=0.250000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0477226]
@@ -38,16 +29,12 @@ Unilateral confidence interval (upper tail)= [0.0477226, 2.5]
 beta= [0.95]
 Point=  class=Point name=Unnamed dimension=1 values=[2]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.666667]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.666667]
 log pdf=-1.098612
 pdf     =0.333333
-pdf (FD)=0.333333
 cdf=0.916667
 ccdf=0.083333
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
 quantile= class=Point name=Unnamed dimension=1 values=[2.1127]
 cdf(quantile)=0.950000
 mean= class=Point name=Unnamed dimension=1 values=[1.16667]
@@ -59,18 +46,11 @@ parameters= [class=PointWithDescription name=X0 dimension=3 description=[a,m,b] 
 Distribution  Triangular(a = -0.5, m = -0.5, b = 2.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[-0.148747]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.507172]  last= class=Point name=Unnamed dimension=1 values=[-0.0108557]
-mean= class=Point name=Unnamed dimension=1 values=[0.502493]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.500093]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.606457]
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.222222]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222222]
 log pdf=-1.098612
 pdf     =0.333333
-pdf (FD)=0.333333
 cdf=0.750000
 ccdf=0.250000
 characteristic function= (0.692667287389+0.345522222881j)
@@ -92,10 +72,8 @@ Unilateral confidence interval (upper tail)= [-0.424038, 2.5]
 beta= [0.95]
 Point=  class=Point name=Unnamed dimension=1 values=[2]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.222222]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222222]
 log pdf=-2.197225
 pdf     =0.111111
-pdf (FD)=0.111111
 cdf=0.972222
 ccdf=0.027778
 quantile= class=Point name=Unnamed dimension=1 values=[1.82918]
@@ -109,18 +87,11 @@ parameters= [class=PointWithDescription name=X0 dimension=3 description=[a,m,b] 
 Distribution  Triangular(a = -0.5, m = 2.5, b = 2.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.41468]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.277073]  last= class=Point name=Unnamed dimension=1 values=[2.34658]
-mean= class=Point name=Unnamed dimension=1 values=[1.50017]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.501895]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.58512]
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.222222]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.222222]
 log pdf=-1.098612
 pdf     =0.333333
-pdf (FD)=0.333333
 cdf=0.250000
 ccdf=0.750000
 characteristic function= (0.0259311677499+0.773628562078j)
@@ -142,10 +113,8 @@ Unilateral confidence interval (upper tail)= [0.17082, 2.5]
 beta= [0.95]
 Point=  class=Point name=Unnamed dimension=1 values=[2]
 ddf     = class=Point name=Unnamed dimension=1 values=[0.222222]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.222222]
 log pdf=-0.587787
 pdf     =0.555556
-pdf (FD)=0.555556
 cdf=0.694444
 ccdf=0.305556
 quantile= class=Point name=Unnamed dimension=1 values=[2.42404]

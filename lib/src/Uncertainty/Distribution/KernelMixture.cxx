@@ -473,7 +473,7 @@ Point KernelMixture::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In KernelMixture::computePDFGradient(const Point & point) const";
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDF gradient of the distribution */
@@ -482,7 +482,7 @@ Point KernelMixture::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In KernelMixture::computeCDFGradient(const Point & point) const";
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)

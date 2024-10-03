@@ -2,7 +2,7 @@
 "Squared exponential covariance function.
 
 Available constructors:
-    SquaredExponential(*spatialDim=1*)
+    SquaredExponential(*spatialDim*)
 
     SquaredExponential(*scale*)
 

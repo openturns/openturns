@@ -105,3 +105,18 @@ Normal(mu = 0, sigma = 1)"
 %enddef
 %feature("docstring") OT::OrthogonalFunctionFactory::getMeasure
 OT_OrthogonalBasis_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalFunctionFactory::getMarginal
+"Get the marginal orthogonal functions.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < \inputDim`
+    List of marginal indices of the input variables.
+
+Returns
+-------
+functionFamilylist : list of :class:`~openturns.OrthogonalBasis`
+    The marginal orthogonal functions."

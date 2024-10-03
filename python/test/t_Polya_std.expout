@@ -1,0 +1,18 @@
+Distribution  class=Polya name=Polya dimension=1 r=4.5 p=0.7
+Distribution  Polya(r = 4.5, p = 0.7)
+Elliptical =  False
+Continuous =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[7]
+Point=  class=Point name=Unnamed dimension=1 values=[5]
+pdf     =0.063727
+cdf=0.203394
+quantile= class=Point name=Unnamed dimension=1 values=[22]
+cdf(quantile)=0.959829
+entropy=3.113618
+mean= class=Point name=Unnamed dimension=1 values=[10.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[5.91608]
+skewness= class=Point name=Unnamed dimension=1 values=[0.957841]
+kurtosis= class=Point name=Unnamed dimension=1 values=[4.3619]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[35]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[r,p] values=[4.5,0.7]]
+Standard representative= Polya(r = 4.5, p = 0.7)

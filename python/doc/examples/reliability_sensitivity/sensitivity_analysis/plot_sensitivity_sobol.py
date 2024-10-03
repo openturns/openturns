@@ -82,47 +82,11 @@ n = 10000
 sampleX = im.distributionX.getSample(n)
 sampleY = im.model(sampleX)
 
+# %%
+# Display relationships between the output and the inputs
 
 # %%
-def plotXvsY(sampleX, sampleY):
-    """
-    Plot a Y sample against a X sample on a grid.
-
-    Parameters
-    ----------
-    sampleX : ot.Sample(sampleSize, inputDimension)
-        The input sample.
-    sampleY : ot.Sample(sampleSize, outputDimension)
-        The output sample.
-
-    Returns
-    -------
-    grid: ot.GridLayout(outputDimension, inputDimension)
-        The grid of plots of all projections of Y vs X.
-    """
-    dimX = sampleX.getDimension()
-    dimY = sampleY.getDimension()
-    descriptionX = sampleX.getDescription()
-    descriptionY = sampleY.getDescription()
-    grid = ot.GridLayout(dimY, dimX)
-    for i in range(dimY):
-        for j in range(dimX):
-            graph = ot.Graph("", descriptionX[j], descriptionY[i], True, "")
-            cloud = ot.Cloud(sampleX[:, j], sampleY[:, i])
-            graph.add(cloud)
-            if j == 0:
-                graph.setYTitle(descriptionY[i])
-            else:
-                graph.setYTitle("")
-            if i == dimY - 1:
-                graph.setXTitle(descriptionX[j])
-            else:
-                graph.setXTitle("")
-            grid.setGraph(i, j, graph)
-    return grid
-
-
-grid = plotXvsY(sampleX, sampleY)
+grid = ot.VisualTest.DrawPairsXY(sampleX, sampleY)
 _ = ot.viewer.View(grid, figure_kw={"figsize": (10.0, 4.0)})
 
 # %%

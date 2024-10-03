@@ -2,15 +2,9 @@ Distribution  InverseNormal(mu = 2, lambda = 0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.632204]
-oneSample first= class=Point name=Unnamed dimension=1 values=[6.88993]  last= class=Point name=Unnamed dimension=1 values=[0.573857]
-mean= class=Point name=Unnamed dimension=1 values=[1.98518]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.9406]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[3]
 log pdf=-2.934264
 pdf     =0.053170
-pdf (FD)=0.053170
 cdf=0.834308
 ccdf=0.165692
 characteristic function= (0.130776955167+0.348768871351j)

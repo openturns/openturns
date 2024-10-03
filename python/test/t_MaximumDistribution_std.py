@@ -130,6 +130,13 @@ for distribution in coll:
     kendall = distribution.getKendallTau()
     print("kendall=", kendall)
     print("Standard representative=", distribution.getStandardRepresentative())
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipEntropy()  # slow
+    checker.skipMinimumVolumeLevelSet()  # slow
+    checker.run()
+
 # Issue #1643
 coll = [ot.Uniform(), ot.Normal()]
 distribution = ot.MaximumDistribution(coll)

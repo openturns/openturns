@@ -54,6 +54,9 @@ protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
 
+  /** Get one realization of the distribution */
+  Point getRealization() const override;
+
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
@@ -71,6 +74,9 @@ public:
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
+
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
@@ -112,6 +118,15 @@ public:
 
   /** Check if the distribution is continuous */
   Bool isContinuous() const override;
+
+  /** Check if the distribution is a copula */
+  Bool isCopula() const override;
+
+  /** Check if the distribution is discrete */
+  Bool isDiscrete() const override;
+
+  /** Tell if the distribution is integer valued */
+  Bool isIntegral() const override;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
   Scalar getRoughness() const override;

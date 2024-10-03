@@ -73,10 +73,6 @@ public:
   UnsignedInteger getParameterEstimationPeriod() const;
   void setParameterEstimationPeriod(const UnsignedInteger parameterEstimationPeriod);
 
-  /** improvement stopping criterion factor accessor */
-  void setImprovementFactor(const Scalar improvementFactor);
-  Scalar getImprovementFactor() const;
-
   /** correlation length stopping criterion factor accessor */
   void setCorrelationLengthFactor(const Scalar b);
   Scalar getCorrelationLengthFactor() const;
@@ -125,9 +121,6 @@ private:
 
   // relearn kriging parameters every X iterations
   UnsignedInteger parameterEstimationPeriod_ = 0;
-
-  // improvement stopping criterion factor
-  Scalar improvementFactor_ = 0.0;
 
   // correlation length stopping criterion factor
   Scalar correlationLengthFactor_ = 0.0;

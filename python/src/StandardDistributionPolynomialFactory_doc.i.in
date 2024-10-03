@@ -57,7 +57,7 @@ distributions**.
     | :class:`~openturns.Binomial`                                          | :class:`~openturns.KrawtchoukFactory` |
     | :math:`\cB(n, p)`                                                     |                                       |
     +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.NegativeBinomial`                                  | :class:`~openturns.MeixnerFactory`    |
+    | :class:`~openturns.Polya`                                             | :class:`~openturns.MeixnerFactory`    |
     | :math:`\cB^-(r, p)`                                                   |                                       |
     +-----------------------------------------------------------------------+---------------------------------------+
 

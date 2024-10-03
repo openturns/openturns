@@ -1,15 +1,15 @@
 %feature("docstring") OT::MeixnerFactory
 "Meixner specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.NegativeBinomial` distribution.
+For the :class:`~openturns.Polya` distribution.
 
 Parameters
 ----------
 r : float, :math:`r > 0`
-    Number of failures parameter of the :class:`~openturns.NegativeBinomial`
+    Number of failures parameter of the :class:`~openturns.Polya`
     distribution.
 p : float, :math:`0 < p < 1`
-    Success probability parameter of the :class:`~openturns.NegativeBinomial`
+    Success probability parameter of the :class:`~openturns.Polya`
     distribution.
 
 Notes
@@ -36,7 +36,7 @@ and read:
     \end{array}, \quad 1 < i
 
 where :math:`r` and :math:`p` are the parameters of the
-:class:`~openturns.NegativeBinomial` distribution.
+:class:`~openturns.Polya` distribution.
 
 See also
 --------
@@ -57,12 +57,12 @@ Examples
 %feature("docstring") OT::MeixnerFactory::getP
 "Accessor to the success probability parameter :math:`p`.
 
-Of the :class:`~openturns.NegativeBinomial` distribution.
+Of the :class:`~openturns.Polya` distribution.
 
 Returns
 -------
 p : float
-    Success probability parameter of the :class:`~openturns.NegativeBinomial`
+    Success probability parameter of the :class:`~openturns.Polya`
     distribution."
 
 // ---------------------------------------------------------------------
@@ -70,10 +70,10 @@ p : float
 %feature("docstring") OT::MeixnerFactory::getR
 "Accessor to the number of failures parameter :math:`r`.
 
-Of the :class:`~openturns.NegativeBinomial` distribution.
+Of the :class:`~openturns.Polya` distribution.
 
 Returns
 -------
 r : int
-    Number of failures parameter of the :class:`~openturns.NegativeBinomial`
+    Number of failures parameter of the :class:`~openturns.Polya`
     distribution."

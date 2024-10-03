@@ -52,7 +52,7 @@ int main(int, char *[])
   // Create the input distribution
   fullprint << "Create the input distribution" << std::endl;
   const Collection<Distribution> marginals(dimension, Uniform(-M_PI, M_PI));
-  const ComposedDistribution distributionIshigami(marginals);
+  const JointDistribution distributionIshigami(marginals);
 
   const UnsignedInteger sampleSize = 1000000;
   const MonteCarloExperiment experiment2(distributionIshigami, sampleSize);

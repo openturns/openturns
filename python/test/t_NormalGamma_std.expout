@@ -3,10 +3,6 @@ Distribution  NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.947065,0.52143]
-oneSample first= [1.80011,-0.149655]  last= [0.934319,1.22109]
-mean= [0.752078,0.988408]
-covariance= [[ 0.191922  0.0089155 ]
- [ 0.0089155 0.979077  ]]
 Point=  [1.5, 1.5]
 ddf     = [-0.218956,-0.127136]
 log pdf=-2.467966
@@ -17,16 +13,14 @@ survival=0.010593
 Inverse survival= [0.160511,-0.941338]
 Survival(inverse survival)=0.950000
 pdf gradient     = [0.127136,0.00529732,0.0736518,-0.0635678]
-pdf gradient (FD)= [0.127136,0.00529732,0.0736518,-0.0635678]
 cdf gradient     = [-0.349393,0.0436741,0.0135182,-0.00130662]
-cdf gradient (FD)= [-0.349393,0.0436741,0.0135182,-0.00130662]
 quantile= [2.55849,4.59228]
 cdf(quantile)=0.997715
 entropy=1.765404
 threshold=0.986085
-Minimum volume level set= {x | f(x) <= 3.69414} with f=
+Minimum volume level set= {x | f(x) <= 3.68948} with f=
 MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4))
-beta=0.024869
+beta=0.024985
 Bilateral confidence interval= [0.0966867, 2.20341]
 [-1.77733, 3.77733]
 beta=0.985531

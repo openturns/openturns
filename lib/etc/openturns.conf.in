@@ -264,7 +264,6 @@
   <!-- OT::EfficientGlobalOptimization parameters -->
   <EfficientGlobalOptimization-DefaultAEITradeoff               value_float="1.0"           />
   <EfficientGlobalOptimization-DefaultCorrelationLengthFactor   value_float="1.0"           />
-  <EfficientGlobalOptimization-DefaultImprovementFactor         value_float="0.0"           />
   <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_int="100" />
   <EfficientGlobalOptimization-DefaultMultiStartNumber          value_int="20"  />
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
@@ -484,10 +483,10 @@
   <BurrFactory-ResidualPrecision value_float="1e-12"        />
   <BurrFactory-MaximumIteration  value_int="10" />
   
-  <!-- OT::ConditionalDistribution parameters -->
-  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"          />
-  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
-  <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+  <!-- OT::DeconditionedDistribution parameters -->
+  <DeconditionedDistribution-MarginalIntegrationNodesNumber value_int="256"          />
+  <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
@@ -623,11 +622,11 @@
   <Multinomial-eta    value_float="1.0e-9" />
   <Multinomial-smallA value_float="10.0"   />
 
-  <!-- OT::NegativeBinomialFactory parameters -->
-  <NegativeBinomialFactory-AbsolutePrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-RelativePrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-ResidualPrecision value_float="1e-12"        />
-  <NegativeBinomialFactory-MaximumIteration  value_int="50" />
+  <!-- OT::PolyaFactory parameters -->
+  <PolyaFactory-AbsolutePrecision value_float="1e-12"        />
+  <PolyaFactory-RelativePrecision value_float="1e-12"        />
+  <PolyaFactory-ResidualPrecision value_float="1e-12"        />
+  <PolyaFactory-MaximumIteration  value_int="50" />
 
   <!-- OT::Normal parameters -->
   <Normal-MaximumCDFEpsilon              value_float="5.0e-6"             />
@@ -900,6 +899,18 @@
   <GeneralLinearModelAlgorithm-MeanEpsilon                      value_float="1.0e-12" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
+
+  <!-- OT::GaussianProcessFitter parameters -->
+  <GaussianProcessFitter-KeepCovariance                   value_bool="true"      />
+  <GaussianProcessFitter-OptimizeParameters               value_bool="true"      />
+  <GaussianProcessFitter-UnbiasedVariance                 value_bool="true"      />
+  <GaussianProcessFitter-UseAnalyticalAmplitudeEstimate   value_bool="true"      />
+  <GaussianProcessFitter-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
+  <GaussianProcessFitter-DefaultOptimizationScaleFactor   value_float="2.0"     />
+  <GaussianProcessFitter-DefaultOptimizationUpperBound    value_float="1.0e2"   />
+  <GaussianProcessFitter-MeanEpsilon                      value_float="1.0e-12" />
+  <GaussianProcessFitter-DefaultOptimizationAlgorithm     value_str="Cobyla"     />
+  <GaussianProcessFitter-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />

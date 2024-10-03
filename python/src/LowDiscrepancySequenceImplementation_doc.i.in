@@ -17,6 +17,7 @@ The **discrepancy** of a set :math:`P = \{x_1, \hdots, x_N\}` is defined,
 using Niederreiter's notation, as:
 
 .. math::
+    :label: discrepancyDef
 
     D_N(P) = \sup_{B\in J} \left| \frac{A(B;P)}{N} - \lambda_s(B) \right|
 
@@ -25,6 +26,7 @@ is the number of points in :math:`P` that fall into :math:`B`, and :math:`J` is
 the set of s-dimensional intervals or boxes of the form:
 
 .. math::
+    :label: discrepancySet
 
     \prod_{i=1}^s [a_i, b_i) = \{ \mathbf{x} \in \mathbf{R}^s : a_i \le x_i < b_i \} \,
 
@@ -34,6 +36,7 @@ The star-discrepancy :math:`D_N^*(P)` is defined similarly, except that the
 supremum is taken over the set :math:`J^*` of intervals of the form:
 
 .. math::
+    :label: starDiscrepancySet
 
     \prod_{i=1}^s [0, u_i)
 
@@ -74,6 +77,10 @@ Returns
 starDiscrepancy : float
     Star discrepancy of a sample uniformly distributed over [0, 1).
 
+Notes
+-----
+The star discrepancy is detailed in :eq:`discrepancyDef` and :eq:`starDiscrepancySet`.
+    
 Examples
 --------
 >>> import openturns as ot

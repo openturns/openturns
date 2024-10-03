@@ -229,6 +229,38 @@ void Wishart::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the covariance of the distribution */
+void Wishart::computeCovariance() const
+{
+  // Get the collection of Indices of the random matrix
+  // in the order of the corresponding flattened random vector
+  const UnsignedInteger p = cholesky_.getDimension();
+  Collection<Indices>  matrixIndices;
+  for (UnsignedInteger i = 0; i < p; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      matrixIndices.add(Indices({i, j}));
+    }
+  }
+
+  // Populate the covariance matrix of the flattened random vector
+  const CovarianceMatrix V(getV());
+  covariance_ = CovarianceMatrix(getDimension());
+  for (UnsignedInteger row = 0; row < matrixIndices.getSize(); ++row)
+  {
+    for (UnsignedInteger col = 0; col <= row; ++col)
+    {
+      const UnsignedInteger irow = matrixIndices[row][0];
+      const UnsignedInteger icol = matrixIndices[col][0];
+      const UnsignedInteger jrow = matrixIndices[row][1];
+      const UnsignedInteger jcol = matrixIndices[col][1];
+      covariance_(row, col) = nu_ * (V(irow, jcol) *  V(icol, jrow) + V(irow, icol) * V(jrow, jcol));
+    }
+  }
+  isAlreadyComputedCovariance_ = true;
+}
+
 /* Compute the entropy of the distribution */
 Scalar Wishart::computeEntropy() const
 {
@@ -264,48 +296,6 @@ Point Wishart::getStandardDeviation() const
       ++index;
     }
   return sigma;
-}
-
-
-/* Parameters value and description accessor */
-Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
-{
-  PointWithDescription point(getDimension() + 1);
-  Description description(point.getDimension());
-  const UnsignedInteger p = cholesky_.getDimension();
-  UnsignedInteger index = 0;
-  const CovarianceMatrix V(getV());
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      point[index] = V(i, j);
-      description[index] = String(OSS() << "V_" << i << "_" << j);
-      ++index;
-    }
-  point[index] = nu_;
-  description[index] = "nu";
-  point.setDescription(description);
-  PointWithDescriptionCollection parameters(point.getDimension());
-  return parameters;
-}
-
-void Wishart::setParametersCollection(const PointCollection & parametersCollection)
-{
-  const Scalar w = getWeight();
-  const Scalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
-  const UnsignedInteger p = static_cast< UnsignedInteger >(pReal);
-  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
-  CovarianceMatrix V(p);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      V(i, j) = parametersCollection[0][index];
-      ++index;
-    }
-  const Scalar nu = parametersCollection[0][index];
-  *this = Wishart(V, nu);
-  setWeight(w);
 }
 
 Point Wishart::getParameter() const
@@ -353,7 +343,8 @@ Description Wishart::getParameterDescription() const
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      description[index] = (OSS() << "v_" << i << "_" << j);
+      description[index] = (OSS() << "V_" << i << "_" << j);
+      ++ index;
     }
   }
   description[index] = "nu";

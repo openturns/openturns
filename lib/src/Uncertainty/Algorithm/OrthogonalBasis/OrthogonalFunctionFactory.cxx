@@ -22,6 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/OrthogonalBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -88,12 +89,16 @@ EnumerateFunction OrthogonalFunctionFactory::getEnumerateFunction() const
   throw NotYetImplementedException(HERE) << "In OrthogonalFunctionFactory::getEnumerateFunction() const";
 }
 
+/* Get the function factory corresponding to marginal input indices */
+OrthogonalBasis OrthogonalFunctionFactory::getMarginal(const Indices & ) const
+{
+  throw NotYetImplementedException(HERE) << "In OrthogonalBasis::getMarginal() const";
+}
 
 Bool OrthogonalFunctionFactory::isOrthogonal() const
 {
   return true;
 }
-
 
 /* String converter */
 String OrthogonalFunctionFactory::__repr__() const

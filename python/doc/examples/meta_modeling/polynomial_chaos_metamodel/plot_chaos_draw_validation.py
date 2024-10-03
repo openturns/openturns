@@ -4,7 +4,7 @@ Validate a polynomial chaos
 """
 # %%
 #
-# In this example, we show how to perform the draw validation of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
+# In this example, we show how to perform the validation plot of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
 from openturns.usecases import ishigami_function
@@ -44,7 +44,9 @@ outputTrain = im.model(inputTrain)
 chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 
 # %%
-# Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution, that is three independent variables X1, X2 and X3.
+# Since the input distribution is known in our particular case,
+# we instead create the multivariate basis from the distribution,
+# that is three independent variables :math:`X_1` , :math:`X_2` and :math:`X_3` .
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
@@ -86,7 +88,7 @@ r2Score = val.computeR2Score()[0]
 r2Score
 
 # %%
-# The R2 is very close to 1: the metamodel is excellent.
+# The :math:`R^2` is very close to 1: the metamodel seems very accurate.
 
 # %%
 graph = val.drawValidation()

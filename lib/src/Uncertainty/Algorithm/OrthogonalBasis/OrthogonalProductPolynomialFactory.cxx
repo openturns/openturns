@@ -304,4 +304,21 @@ Sample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & de
   return nodes;
 }
 
+/* Get the function factory corresponding to the input marginal indices */
+OrthogonalBasis OrthogonalProductPolynomialFactory::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger size = coll_.getSize();
+  if (!indices.check(size))
+    throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, size-1] and must be different";
+  // Create list of factories corresponding to input marginal indices
+  OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomialMarginalCollection;
+  for (UnsignedInteger index = 0; index < size; ++ index)
+    if (indices.contains(index))
+      polynomialMarginalCollection.add(coll_[index]);
+  // Create function
+  const EnumerateFunction marginalEnumerateFunction(phi_.getMarginal(indices));
+  const OrthogonalProductPolynomialFactory marginalFactory(polynomialMarginalCollection, marginalEnumerateFunction);
+  return marginalFactory;
+}
+
 END_NAMESPACE_OPENTURNS

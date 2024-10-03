@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 from math import sqrt, pi, exp, log
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
+
 ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
 # Deactivate the simplification mechanism as we want to test the Poisson formula
 # based algorithm here
@@ -53,22 +54,11 @@ for testIndex in range(len(testCases)):
     print("Point= ", point)
 
     # Show PDF and CDF of point
-    eps = 1e-5
     DDF = distribution.computeDDF(point)[0]
     print("ddf      =%.5g" % DDF)
     print("ddf (ref)=", distributionReference.computeDDF(point))
     PDF = distribution.computePDF(point)
     print("pdf      =%.6f" % PDF)
-    print(
-        "pdf  (FD)=%.6f"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
     print("pdf (ref)=%.6f" % distributionReference.computePDF(point))
     CDF = distribution.computeCDF(point)
     print("cdf      =%.6f" % CDF)
@@ -156,6 +146,13 @@ for testIndex in range(len(testCases)):
     print("maxSize=", distribution.getMaxSize())
     print("alpha=", distribution.getAlpha())
     print("beta=", distribution.getBeta())
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipEntropy()  # slow
+    checker.skipMinimumVolumeLevelSet()  # slow
+    checker.run()
+
 # Tests of the simplification mechanism
 weights = ot.Point(0)
 coll = ot.DistributionCollection(0)

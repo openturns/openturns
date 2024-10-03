@@ -253,10 +253,11 @@ Point OrdinalSumCopula::computeDDF(const Point & point) const
   const SignedInteger index = findBlock(point[0]);
   // There is no candidate
   if (index < 0) return Point(dimension, 0.0);
-  // The point is in the candidate
-  if (isInBlock(point, index)) return copulaCollection_[index].computeDDF(point);
   // The point is not in the candidate
-  return Point(dimension, 0.0);
+  if (!isInBlock(point, index)) return Point(dimension, 0.0);
+  // The point is in the candidate
+  const Point shift(dimension, (index > 0) ? bounds_[index - 1] : 0.0);
+  return std::pow(blockLengths_[index], - 1.0 * dimension) * copulaCollection_[index].computeDDF((point - shift)/ blockLengths_[index]);
 }
 
 /* Get the PDF of the OrdinalSumCopula */
@@ -284,13 +285,8 @@ Scalar OrdinalSumCopula::computePDF(const Point & point) const
     return pdf;
   }
   // The point is in the candidate, compute the value of the corresponding copula
-  if (index == 0)
-  {
-    pdf = std::pow(blockLengths_[0], 1.0 - dimension) * copulaCollection_[0].computePDF(point / blockLengths_[0]);
-    LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
-    return pdf;
-  }
-  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - Point(dimension, bounds_[index - 1])) / blockLengths_[index]);
+  const Point shift(dimension, (index > 0) ? bounds_[index - 1] : 0.0);
+  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - shift) / blockLengths_[index]);
   LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
   return pdf;
 }
@@ -395,24 +391,6 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
   return CorrelationMatrix(tauKendall);
 }
 
-/* Get the PDF gradient of the distribution */
-Point OrdinalSumCopula::computePDFGradient(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computePDFGradient(const Point & point) const";
-}
-
-/* Get the CDF gradient of the distribution */
-Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeCDFGradient(const Point & point) const";
-}
-
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
@@ -504,9 +482,7 @@ Point OrdinalSumCopula::getParameter() const
   Point point;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
     point.add(copulaCollection_[i].getParameter());
-  }
   return point;
 }
 
@@ -523,6 +499,7 @@ void OrdinalSumCopula::setParameter(const Point & parameter)
     // ith copula parameters
     Point newParameter(atomParametersDimension);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    globalIndex += atomParametersDimension;
     copulaCollection_[i].setParameter(newParameter);
   } // atoms
 }

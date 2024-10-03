@@ -42,9 +42,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   : ContinuousDistribution()
 {
   setName("MaximumEntropyOrderStatisticsDistribution");
-  DistributionCollection coll(2);
-  coll[0] = Uniform(-1.0, 0.5);
-  coll[1] = Uniform(-0.5, 1.0);
+  DistributionCollection coll({Uniform(-1.0, 0.5), Uniform(-0.5, 1.0)});
   integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   // This call set also the range. Use approximation but don't check marginals.
   setDistributionCollection(coll, true, false);
@@ -859,7 +857,25 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+
+  // avoid description warning with identical entries
+  std::map<String, UnsignedInteger> occurrence;
+  UnsignedInteger idx = 0;
+  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
+  {
+    const String currentName(description[i]);
+    ++ occurrence[currentName];
+    if (occurrence[currentName] > 1)
+    {
+      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
+        ++ idx;
+      const String newName(OSS() << "X" << idx);
+      ++ occurrence[newName]; // avoid duplicates with new ones too
+      description[i] = newName;
+    }
+  }
   setDescription(description);
+
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
   // We must set useApproximation_ to false even if we use approximation, as we need to perform exact computations to build the approximation. The flag is set to the correct value by interpolateExponentialFactors()
   useApproximation_ = false;
@@ -898,6 +914,7 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
   // set marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
     distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
+  setDistributionCollection(distributionCollection_);
 }
 
 
@@ -932,6 +949,50 @@ Bool MaximumEntropyOrderStatisticsDistribution::hasEllipticalCopula() const
 Bool MaximumEntropyOrderStatisticsDistribution::hasIndependentCopula() const
 {
   return partition_.getSize() == (getDimension() - 1);
+}
+
+Point MaximumEntropyOrderStatisticsDistribution::getParameter() const
+{
+  Point point;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    point.add(distributionCollection_[i].getParameter());
+  return point;
+}
+
+void MaximumEntropyOrderStatisticsDistribution::setParameter(const Point & parameter)
+{
+  UnsignedInteger globalIndex = 0;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
+    const UnsignedInteger atomParametersDimension = distributionCollection_[i].getParameterDimension();
+    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
+    // ith copula parameters
+    Point newParameter(atomParametersDimension);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    globalIndex += atomParametersDimension;
+    distributionCollection_[i].setParameter(newParameter);
+  } // atoms
+  setDistributionCollection(distributionCollection_);
+}
+
+Description MaximumEntropyOrderStatisticsDistribution::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Description parameterDescription(distributionCollection_[i].getParameterDescription());
+    const UnsignedInteger parameterDimension = parameterDescription.getSize();
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    {
+      description.add(OSS() << parameterDescription[j] << "_copula_" << i);
+    }
+  }
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */
