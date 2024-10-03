@@ -2,6 +2,8 @@
 Create a process sample from a sample
 =====================================
 """
+# sphinx_gallery_thumbnail_number = 3
+# %%
 
 # %%
 # In this example, a :class:`~openturns.ProcessSample` is created from data.
@@ -11,13 +13,10 @@ Create a process sample from a sample
 #
 # For this example, the realizations of a stochastic process are obtained using the Chaboche model.
 # A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
-# The model is defined such that:
+# In this exemple, the model is defined such that:
 # :math:`\sigma=g(\vect{X},\epsilon)`
-# with :math:`\vect{X}=[R,C,\gamma]^T` and
+# with :math:`\vect{X}=[R,C,\gamma]^T` a vector of random variables and
 #
-# - :math:`R`: LogNormal(750e6,11e6)
-# - :math:`C`: Normal(2750e6,250e6)
-# - :math:`\gamma`: Normal(10.,2.)
 # - the strain :math:`\epsilon\in[0.,0.07]`
 # - the stress :math:`\sigma`
 #
@@ -77,11 +76,7 @@ view = viewer.View(graph)
 # The distribution of the input vector :math:`\vect{X}` is defined.
 
 # %%
-R_distribution = ot.LogNormal()
-R_distribution.setParameter(ot.LogNormalMuSigma()([750e6, 11e6, 0.0]))
-C_distribution = ot.Normal(2750e6, 250e6)
-gamma_distribution = ot.Normal(10., 2.)
-X_distribution = ot.JointDistribution([R_distribution, C_distribution, gamma_distribution])
+X_distribution = ot.JointDistribution([cm.R, cm.C, cm.Gamma])
 
 # %%
 # Generate different samples of the field
