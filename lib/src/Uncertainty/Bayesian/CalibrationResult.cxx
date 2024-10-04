@@ -47,8 +47,7 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
                                      const Sample & inputObservations,
                                      const Sample & outputObservations,
                                      const Function & residualFunction,
-                                     const Bool & bayesian
-                                    )
+                                     const Bool bayesian)
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
@@ -579,5 +578,10 @@ GridLayout CalibrationResult::drawResidualsNormalPlot() const
   return grid;
 }
 
+/* Bayesian method accessor */
+Bool CalibrationResult::isBayesian() const
+{
+  return bayesian_;
+}
 
 END_NAMESPACE_OPENTURNS

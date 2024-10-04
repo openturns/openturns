@@ -54,7 +54,7 @@ public:
                     const Sample & inputObservations,
                     const Sample & outputObservations,
                     const Function & residualFunction,
-                    const Bool & bayesianAnalysis);
+                    const Bool bayesianAnalysis);
 
   /** Virtual constructor */
   CalibrationResult * clone() const override;
@@ -86,6 +86,9 @@ public:
   /** Residual function accessors */
   void setResidualFunction(const Function & residualFunction);
   Function getResidualFunction() const;
+
+  /** Bayesian method accessor */
+  Bool isBayesian() const;
 
   /** String converter */
   String __repr__() const override;
