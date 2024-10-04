@@ -267,7 +267,7 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
-  solver_ = OptimizationAlgorithm::Build(solverName);
+  solver_ = OptimizationAlgorithm::GetByName(solverName);
   if ((solverName == "Cobyla") || (solverName == "TNC"))
     solver_.setCheckStatus(false);
 }

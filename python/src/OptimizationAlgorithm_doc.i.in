@@ -60,8 +60,18 @@ OT_OptimizationAlgorithm_getCheckStatus_doc
 
 Parameters
 ----------
-name : str or :class:`~openturns.OptimizationProblem`
-    Name of the algorithm or problem to solve.
+problem : :class:`~openturns.OptimizationProblem`
+    Problem to solve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationAlgorithm::GetByName
+"Instantiate an optimization algorithm from its name.
+
+Parameters
+----------
+name : str
+    Name of the algorithm.
     For example `TNC`, `Cobyla` or one of the :class:`~openturns.NLopt` solver names."
 
 // ---------------------------------------------------------------------

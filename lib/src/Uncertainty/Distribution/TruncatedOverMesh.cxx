@@ -286,7 +286,7 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
     problem.setMinimization(false);
     problem.setBounds(Interval(dimension));
     const String solverName = ResourceMap::GetAsString("TruncatedOverMesh-OptimizationAlgorithm");
-    OptimizationAlgorithm solver(OptimizationAlgorithm::Build(solverName));
+    OptimizationAlgorithm solver(OptimizationAlgorithm::GetByName(solverName));
     solver.setProblem(problem);
     solver.setStartingPoint(Point(dimension, 0.5)); // start from median
     solver.run();

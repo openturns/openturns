@@ -48,7 +48,7 @@ GeneralizedParetoFactory::GeneralizedParetoFactory()
   : DistributionFactoryImplementation()
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  solver_ = OptimizationAlgorithm::Build(ResourceMap::GetAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm"));
+  solver_ = OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm"));
   solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumCallsNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));

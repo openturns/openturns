@@ -1,15 +1,10 @@
 %define OT_OptimizationAlgorithm_doc
 "Base class for optimization wrappers.
 
-Available constructors:
-    OptimizationAlgorithm(*problem, verbose=False*)
-
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem.
-verbose : bool
-    Let solver be more verbose.
 
 Notes
 -----

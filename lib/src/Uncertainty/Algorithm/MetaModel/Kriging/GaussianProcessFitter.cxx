@@ -25,8 +25,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
-#include "openturns/TNC.hxx"
-#include "openturns/Cobyla.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
 #else
@@ -203,13 +201,9 @@ void GaussianProcessFitter::setBasis(const Basis & basis)
 void GaussianProcessFitter::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm"));
-  solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
-  if (cobyla)
-    cobyla->setCheckStatus(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
-  if (tnc)
-    tnc->setCheckStatus(true);
+  solver_ = OptimizationAlgorithm::GetByName(solverName);
+  if ((solverName == "Cobyla") || (solverName == "TNC"))
+    solver_.setCheckStatus(false);
 }
 
 /* Virtual constructor */

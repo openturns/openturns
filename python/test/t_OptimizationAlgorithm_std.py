@@ -23,7 +23,7 @@ for minimization in [True, False]:
             if "global" in name:
                 # slow
                 continue
-            algo = ot.OptimizationAlgorithm.Build(name)
+            algo = ot.OptimizationAlgorithm.GetByName(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
             algo.setMaximumCallsNumber(1000)
@@ -63,7 +63,7 @@ costFunction = ot.PythonFunction(1, 1, _exec)
 problem = ot.OptimizationProblem(costFunction)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
-    algo = ot.OptimizationAlgorithm.Build(name)
+    algo = ot.OptimizationAlgorithm.GetByName(name)
     algo.setMaximumConstraintError(0.0)
     try:
         algo.setProblem(problem)
@@ -103,7 +103,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     if name == "Ipopt":
         # walltime criterion requires ipopt>=3.14
         continue
-    algo = ot.OptimizationAlgorithm.Build(name)
+    algo = ot.OptimizationAlgorithm.GetByName(name)
     try:
         algo.setProblem(problem)
         startingPoint = [0.1] * 2
@@ -135,7 +135,7 @@ problem.setMinimization(True)
 problem.setInequalityConstraint(inequality_constraint)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
-    algo = ot.OptimizationAlgorithm.Build(name)
+    algo = ot.OptimizationAlgorithm.GetByName(name)
     algo.setCheckStatus(False)
     try:
         algo.setProblem(problem)
