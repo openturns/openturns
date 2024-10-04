@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <chrono>
+
 #include "openturns/AdaptiveDirectionalStratification.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/QuadrantSampling.hxx"
@@ -61,9 +63,11 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
 
 void AdaptiveDirectionalStratification::run()
 {
-
   // First, reset the convergence history
   convergenceStrategy_.setDimension(2);
+  result_ = ProbabilitySimulationResult();
+  result_.setEvent(getEvent());
+  result_.setBlockSize(1);
 
   // input dimension
   const UnsignedInteger dimension = standardEvent_.getImplementation()->getFunction().getInputDimension();
@@ -88,6 +92,8 @@ void AdaptiveDirectionalStratification::run()
   const UnsignedInteger n0 = getMaximumOuterSampling();
   const UnsignedInteger blockSize = 1;
 
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
   // effective number of directions
   UnsignedInteger n = 0;
 
@@ -110,14 +116,30 @@ void AdaptiveDirectionalStratification::run()
       const UnsignedInteger ni = static_cast<UnsignedInteger>(gamma_[l] * n0 * w[i]); // (28)
       n += ni;
 
-      QuadrantSampling quadrantSampling (samplingStrategy_, i);
+      QuadrantSampling quadrantSampling(samplingStrategy_, i);
       quadrantSampling.setQuadrantOrientation(quadrantOrientation_);
       quadrantSampling.setStrataIndices(strataIndices);
-      DirectionalSampling directionalSampling (getEvent(), rootStrategy_, quadrantSampling);
-      directionalSampling.setMaximumOuterSampling (ni);
+      DirectionalSampling directionalSampling(getEvent(), rootStrategy_, quadrantSampling);
+      directionalSampling.setMaximumOuterSampling(ni);
       directionalSampling.setMaximumCoefficientOfVariation(getMaximumCoefficientOfVariation());
-      directionalSampling.setBlockSize (blockSize);
+      directionalSampling.setBlockSize(blockSize);
+      if (stopCallback_.first)
+        directionalSampling.setStopCallback(stopCallback_.first, stopCallback_.second);
+      directionalSampling.setMaximumTimeDuration(getMaximumTimeDuration());
       directionalSampling.run();
+
+      result_.setOuterSampling(n);
+      std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+      const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+      result_.setTimeDuration(timeDuration);
+      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+        throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
+
+      if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+        throw InterruptionException(HERE) << "User stopped simulation";
+      if (progressCallback_.first)
+        progressCallback_.first((100.0 * n) / n0, progressCallback_.second);
+
       const ProbabilitySimulationResult result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
@@ -146,7 +168,9 @@ void AdaptiveDirectionalStratification::run()
     const Scalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
 
     // update result
-    setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
+    result_.setProbabilityEstimate(probabilityEstimate);
+    result_.setVarianceEstimate(varianceEstimate);
+    result_.setOuterSampling(n);
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)
